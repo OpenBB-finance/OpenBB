@@ -3,13 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
 from openbb_terminal.cryptocurrency.onchain import ethplorer_model
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
@@ -25,7 +25,7 @@ def display_address_info(
     sortby: str = "index",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about tokens for given ethereum blockchain balance e.g. ETH balance,
     balance of all tokens with name and symbol. [Source: Ethplorer]
@@ -53,10 +53,12 @@ def display_address_info(
     )
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Blockchain Token Information",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -75,7 +77,7 @@ def display_top_tokens(
     sortby: str = "rank",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display top ERC20 tokens [Source: Ethplorer]
 
@@ -99,10 +101,12 @@ def display_top_tokens(
             df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Top ERC20 Tokens",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -122,7 +126,7 @@ def display_top_token_holders(
     sortby: str = "balance",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about top ERC20 token holders. [Source: Ethplorer]
 
@@ -145,10 +149,12 @@ def display_top_token_holders(
     df["balance"] = df["balance"].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="ERC20 Token Holder Info",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -168,7 +174,7 @@ def display_address_history(
     sortby: str = "timestamp",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display information about balance historical transactions. [Source: Ethplorer]
 
@@ -195,10 +201,12 @@ def display_address_history(
     )
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Historical Transactions Information",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -216,7 +224,7 @@ def display_token_info(
     address: str,
     social: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about ERC20 token. [Source: Ethplorer]
 
@@ -237,13 +245,18 @@ def display_token_info(
     )
 
     socials = ["website", "telegram", "reddit", "twitter", "coingecko"]
-    if social:
-        df = df[df["Metric"].isin(["balance", "name", "symbol"] + socials)]
-    else:
-        df = df[~df["Metric"].isin(socials)]
+    df = (
+        df[df["Metric"].isin(["balance", "name", "symbol"] + socials)]
+        if social
+        else df[~df["Metric"].isin(socials)]
+    )
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="ERC20 Token Information"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="ERC20 Token Information",
+        export=bool(export),
     )
 
     export_data(
@@ -260,7 +273,7 @@ def display_token_info(
 def display_tx_info(
     tx_hash: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about transaction. [Source: Ethplorer]
 
@@ -278,6 +291,7 @@ def display_tx_info(
         headers=list(df.columns),
         show_index=False,
         title="Information About Transactions",
+        export=bool(export),
     )
 
     export_data(
@@ -298,7 +312,7 @@ def display_token_history(
     ascend: bool = False,
     hash_: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about token history. [Source: Ethplorer]
 
@@ -334,10 +348,12 @@ def display_token_history(
         df.drop("transactionHash", inplace=True, axis=1)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Token History Information",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -357,7 +373,7 @@ def display_token_historical_prices(
     sortby: str = "date",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display token historical prices with volume and market cap, and average price.
     [Source: Ethplorer]
@@ -389,10 +405,12 @@ def display_token_historical_prices(
     df.loc[:, "cap"] = df["cap"].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Historical Token Prices",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

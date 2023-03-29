@@ -1,8 +1,8 @@
 import logging
 import os
+from typing import Optional
 
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.decorators import check_api_key
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import finnhub_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -13,7 +13,11 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def economy_calendar_events(
-    country: str, limit: int, impact: str, export: str = "", sheet_name: str = None
+    country: str,
+    limit: int,
+    impact: str,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Output economy calendar impact events. [Source: Finnhub]
 
@@ -77,6 +81,7 @@ def economy_calendar_events(
         headers=list(df_econ_calendar.columns),
         show_index=False,
         title="Economy Calendar",
+        export=bool(export),
     )
 
     export_data(

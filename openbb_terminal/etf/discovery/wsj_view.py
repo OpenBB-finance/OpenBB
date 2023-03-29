@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf.discovery import wsj_model
@@ -17,7 +18,7 @@ def show_top_mover(
     sort_type: str = "gainers",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """
     Show top ETF movers from wsj.com
@@ -39,10 +40,12 @@ def show_top_mover(
         return
 
     print_rich_table(
-        data.iloc[:limit],
+        data,
         show_index=False,
         headers=list(data.columns),
         title="ETF Movers",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

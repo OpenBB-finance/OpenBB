@@ -1,15 +1,18 @@
 """Token Terminal Model"""
 import logging
-
 from typing import List
+
 import pandas as pd
 from tokenterminal import TokenTerminal
+
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal import config_terminal as cfg
 
 logger = logging.getLogger(__name__)
 
-token_terminal = TokenTerminal(key=cfg.API_TOKEN_TERMINAL_KEY)
+token_terminal = TokenTerminal(
+    key=get_current_user().credentials.API_TOKEN_TERMINAL_KEY
+)
 
 # Fetch all data for projects'
 try:

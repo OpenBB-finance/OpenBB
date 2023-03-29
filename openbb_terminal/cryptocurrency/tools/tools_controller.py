@@ -5,11 +5,11 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
+from typing import List, Optional
 
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.cryptocurrency.tools import tools_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -17,10 +17,9 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     check_positive_float,
 )
-from openbb_terminal.cryptocurrency.tools import tools_view
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -33,11 +32,11 @@ class ToolsController(BaseController):
     PATH = "/crypto/tools/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -108,7 +107,7 @@ class ToolsController(BaseController):
             help="Flag to show narrative instead of dataframe",
             default=False,
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-a")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -169,7 +168,7 @@ class ToolsController(BaseController):
             default=False,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "--apr")
 
         ns_parser = self.parse_known_args_and_warn(

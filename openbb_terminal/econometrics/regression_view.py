@@ -3,17 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import Optional
 
 import pandas as pd
-from matplotlib import pyplot as plt
 import statsmodels
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.econometrics import regression_model
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -27,7 +25,7 @@ def display_panel(
     entity_effects: bool = False,
     time_effects: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Based on the regression type, this function decides what regression to run.
 
@@ -85,8 +83,8 @@ def display_dwat(
     dependent_variable: pd.Series,
     plot: bool = True,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.axes]] = None,
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ):
     """Show Durbin-Watson autocorrelation tests
 
@@ -100,9 +98,12 @@ def display_dwat(
         Whether to plot the residuals
     export : str
         Format to export data
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
+    fig = OpenBBFigure(
+        yaxis_title="Residual", xaxis_title=dependent_variable.name.capitalize()
+    )
     autocorr = regression_model.get_dwat(model)
 
     if 1.5 < autocorr < 2.5:
@@ -116,29 +117,38 @@ def display_dwat(
             f"be problematic. Please consider lags of the dependent or independent variable."
         )
 
-    if plot:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
+    if not fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dependent_variable.name}_dwat",
+            autocorr,
+            sheet_name,
+        )
 
-        ax.scatter(dependent_variable, model.resid)
-        ax.axhline(y=0, color="r", linestyle="-")
-        ax.set_ylabel("Residual")
-        ax.set_xlabel(dependent_variable.name.capitalize())
-        ax.set_title("Plot of Residuals")
-        theme.style_primary_axis(ax)
+    if plot or fig.is_image_export(export):
+        fig.set_title("Plot of Residuals")
 
-        if external_axes is None:
-            theme.visualize_output()
+        fig.add_scatter(
+            x=dependent_variable,
+            y=model.resid,
+            mode="markers",
+        )
+        fig.add_hline(y=0, line=dict(color="red", dash="dash"))
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"{dependent_variable.name}_dwat",
-        autocorr,
-        sheet_name,
-    )
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{dependent_variable.name}_residuals",
+                dependent_variable,
+                sheet_name,
+                fig,
+            )
+
+        return fig.show(external=external_axes)
+
+    return None
 
 
 @log_start_end(log=logger)
@@ -146,7 +156,7 @@ def display_bgod(
     model: statsmodels.regression.linear_model.RegressionResultsWrapper,
     lags: int = 3,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Show Breusch-Godfrey autocorrelation test
 
@@ -166,6 +176,7 @@ def display_bgod(
         headers=list(["Breusch-Godfrey"]),
         show_index=True,
         title=f"Breusch-Godfrey autocorrelation test [Lags: {lags}]",
+        export=bool(export),
     )
     p_value = df.loc["p-value"][0]
     if p_value > 0.05:
@@ -193,7 +204,7 @@ def display_bgod(
 def display_bpag(
     model: statsmodels.regression.linear_model.RegressionResultsWrapper,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Show Breusch-Pagan heteroscedasticity test
 
@@ -211,6 +222,7 @@ def display_bpag(
         headers=list(["Breusch-Pagan"]),
         show_index=True,
         title="Breusch-Pagan heteroscedasticity test",
+        export=bool(export),
     )
     p_value = df.loc["p-value"][0]
     if p_value > 0.05:

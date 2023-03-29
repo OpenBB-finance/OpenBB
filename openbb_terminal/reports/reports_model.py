@@ -5,26 +5,24 @@ import logging
 
 # pylint: disable=R1732, R0912
 import os
-from pathlib import Path
-from threading import Thread
-import webbrowser
 from ast import literal_eval
 from datetime import datetime
+from pathlib import Path
+from threading import Thread
 from typing import Any, Dict, List, Union
-from ipykernel.kernelapp import IPKernelApp
-import papermill as pm
-import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
+import pandas as pd
+import papermill as pm
+from ipykernel.kernelapp import IPKernelApp
+
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    USER_PORTFOLIO_DATA_DIRECTORY,
-    USER_REPORTS_DIRECTORY,
-    USER_CUSTOM_REPORTS_DIRECTORY,
 )
+from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.forex.forex_controller import FX_TICKERS
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +32,9 @@ REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
 USER_REPORTS = {
     filepath.name: filepath
     for file_type in ["ipynb"]
-    for filepath in USER_CUSTOM_REPORTS_DIRECTORY.rglob(f"*.{file_type}")
+    for filepath in get_current_user().preferences.USER_CUSTOM_REPORTS_DIRECTORY.rglob(
+        f"*.{file_type}"
+    )
 }
 
 # TODO: Trim available choices to avoid errors in notebooks.
@@ -51,16 +51,16 @@ STOCKS_TICKERS = pd.read_csv(stocks_data_path).iloc[:, 0].to_list()
 PORTFOLIO_HOLDINGS_FILES = {
     filepath.name: filepath
     for file_type in ["xlsx", "csv"]
-    for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "holdings").rglob(f"*.{file_type}")
+    for filepath in (
+        get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "holdings"
+    ).rglob(f"*.{file_type}")
 }
 
 PORTFOLIO_HOLDINGS_FILES.update(
     {
-        filepath.name: filepath
-        for file_type in ["xlsx", "csv"]
-        for filepath in (
-            MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "holdings"
-        ).rglob(f"*.{file_type}")
+        "holdings_example.xlsx": MISCELLANEOUS_DIRECTORY
+        / "portfolio"
+        / "holdings_example.xlsx"
     }
 )
 
@@ -103,9 +103,8 @@ def get_arg_choices(report_name: str, arg_name: str) -> Union[List[str], None]:
     """
 
     choices = None
-    if report_name in ("forex", "portfolio"):
-        if "--" + arg_name in REPORT_CHOICES[report_name]:  # type: ignore
-            choices = list(REPORT_CHOICES[report_name]["--" + arg_name].keys())  # type: ignore
+    if report_name in ("forex", "portfolio") and "--" + arg_name in REPORT_CHOICES[report_name]:  # type: ignore
+        choices = list(REPORT_CHOICES[report_name]["--" + arg_name].keys())  # type: ignore
     return choices
 
 
@@ -283,8 +282,10 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         + "_"
         + f"{report_name}{args_to_output}"
     )
-    output_path = str(USER_REPORTS_DIRECTORY / report_output_name)
-    output_path = output_path.replace(".", "_")
+    report_output_name = report_output_name.replace(".", "_")
+    output_path = str(
+        get_current_user().preferences.USER_REPORTS_DIRECTORY / report_output_name
+    )
 
     return output_path
 
@@ -315,11 +316,15 @@ def execute_notebook(input_path, parameters, output_path):
 
         if not result["metadata"]["papermill"]["exception"]:
             console.print(f"\n[green]Notebook:[/green] {output_path}.ipynb")
-            if obbff.OPEN_REPORT_AS_HTML:
+            if get_current_user().preferences.OPEN_REPORT_AS_HTML:
                 report_output_path = os.path.join(
                     os.path.abspath(os.path.join(".")), output_path + ".html"
                 )
-                webbrowser.open(f"file://{report_output_path}")
+                report_output_path = Path(report_output_path)
+
+                plots_backend().send_url(
+                    url=f"/{report_output_path.as_uri()}", title="Reports"
+                )
                 console.print(f"\n[green]Report:[/green] {report_output_path}\n")
             else:
                 console.print("\n")

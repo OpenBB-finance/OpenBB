@@ -9,11 +9,42 @@ import numpy as np
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
+
+call_cols = [
+    "c_Last",
+    "c_Bid",
+    "c_Ask",
+    "c_Volume",
+    "c_Openinterest",
+    "strike",
+    "expiration",
+]
+put_cols = [
+    "p_Last",
+    "p_Bid",
+    "p_Ask",
+    "p_Volume",
+    "p_Openinterest",
+    "strike",
+    "expiration",
+]
+cols = ["lastPrice", "bid", "ask", "volume", "openInterest", "strike", "expiration"]
+
+sorted_chain_columns = [
+    "optionType",
+    "expiration",
+    "strike",
+    "lastPrice",
+    "bid",
+    "ask",
+    "openInterest",
+    "volume",
+]
 
 
 @log_start_end(log=logger)
@@ -84,6 +115,9 @@ def process_response(response_json):
         columns=["c_colour", "p_colour", "drillDownURL"]
     )
     df["expirygroup"] = df["expirygroup"].replace("", np.nan).fillna(method="ffill")
+    df["expiration"] = pd.to_datetime(
+        df["expirygroup"], format="%B %d, %Y"
+    ).dt.strftime("%Y-%m-%d")
     # Make numeric
     columns_w_types = {
         "c_Last": float,
@@ -109,11 +143,22 @@ def process_response(response_json):
     df = df[df.DTE > 0]
     df = df.drop(columns=["DTE"])
 
-    df["expiration"] = pd.to_datetime(
-        df["expirygroup"], format="%B %d, %Y"
-    ).dt.strftime("%Y-%m-%d")
+    # Process into consistent format
+    calls = df[call_cols].copy()
+    puts = df[put_cols].copy()
 
-    return df
+    calls.columns = cols
+    puts.columns = cols
+    calls["optionType"] = "call"
+    puts["optionType"] = "put"
+
+    chain = (
+        pd.concat([calls, puts], axis=0)
+        .sort_values(by=["expiration", "strike"])
+        .reset_index(drop=True)
+    )
+
+    return chain[sorted_chain_columns]
 
 
 @log_start_end(log=logger)
@@ -131,12 +176,12 @@ def option_expirations(symbol: str) -> List[str]:
         List of expiration dates
     """
     df = get_full_option_chain(symbol)
+
     if df.empty:
         return []
+
     # get everything that is not an empty string
-    exps = [exp for exp in list(df.expirygroup.unique()) if exp]
-    # Convert 'January 11, 1993' into '1993-01-11'
-    return [datetime.strptime(exp, "%B %d, %Y").strftime("%Y-%m-%d") for exp in exps]
+    return [exp for exp in list(df.expiration.unique()) if exp]
 
 
 @log_start_end(log=logger)
@@ -200,7 +245,6 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
             },
         ).json()
         if response_json["status"]["rCode"] == 200:
-
             greeks = pd.DataFrame(response_json["data"]["table"]["rows"])
             greeks = greeks.drop(columns="url")
             return greeks

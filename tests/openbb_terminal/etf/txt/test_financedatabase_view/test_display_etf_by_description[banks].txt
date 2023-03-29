@@ -1,6 +1,15 @@
-                              long_name                             family   category  total_assets
-XLF   Financial Select Sector SPDR Fund  SPDR State Street Global Advisors  Financial  41176.387584
-KRE       SPDR S&P Regional Banking ETF  SPDR State Street Global Advisors  Financial    5101.42464
-KBE                   SPDR S&P Bank ETF  SPDR State Street Global Advisors  Financial   3664.192512
-KBWB               Invesco KBW Bank ETF                            Invesco  Financial   2707.920128
-IAT     iShares U.S. Regional Banks ETF                            iShares  Financial    443.543616
+                                                                name                         family category_group          category
+symbol                                                                                                                              
+BNKD    MicroSectors U.S. Big Banks Index -3X Inverse Leveraged ETNs                   Microsectors       Equities           Trading
+BNKU             MicroSectors U.S. Big Banks Index 3X Leveraged ETNs                   Microsectors       Equities           Trading
+CBON                          VanEck Vectors ChinaAMC China Bond ETF        VanEck Asset Management   Fixed income  Emerging Markets
+DPST                    Direxion Daily Regional Banks Bull 3X Shares                 Direxion Funds       Equities           Trading
+IAT                                  iShares U.S. Regional Banks ETF     BlackRock Asset Management       Equities        Financials
+KBE                                                SPDR S&P Bank ETF   State Street Global Advisors       Equities        Financials
+KBWB                                            Invesco KBW Bank ETF  Invesco Investment Management       Equities        Financials
+KCE                                     SPDR S&P Capital Markets ETF   State Street Global Advisors       Equities        Financials
+KRE                                    SPDR S&P Regional Banking ETF   State Street Global Advisors       Equities        Financials
+XLF                                Financial Select Sector SPDR Fund   State Street Global Advisors       Equities        Financials
+FTXO                                     First Trust Nasdaq Bank ETF           First Trust Advisors            NaN               NaN
+INDF                                      Nifty India Financials ETF       Exchange Traded Concepts            NaN               NaN
+SEIX                                     Virtus Seix Senior Loan ETF                         Virtus            NaN               NaN

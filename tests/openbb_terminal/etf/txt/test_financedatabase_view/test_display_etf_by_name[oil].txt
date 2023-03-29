@@ -1,6 +1,27 @@
-                                                     long_name                             family                        category total_assets
-XOP            SPDR S&P Oil & Gas Exploration & Production ETF  SPDR State Street Global Advisors                   Equity Energy  3828.978432
-USO                                 United States Oil Fund, LP                   USCF Investments                            None  3074.400256
-OIH                            VanEck Vectors Oil Services ETF                             VanEck                   Equity Energy   1194.70848
-UCO                        ProShares Ultra Bloomberg Crude Oil                          ProShares  Trading--Leveraged Commodities  1127.778048
-GUSH  Direxion Daily S&P Oil & Gas Exp. & Prod. Bull 2X Shares                     Direxion Funds       Trading--Leveraged Equity   752.131328
+                                                              name                          family category_group category
+symbol                                                                                                                    
+XOP                SPDR S&P Oil & Gas Exploration & Production ETF    State Street Global Advisors       Equities   Energy
+UCO                            ProShares Ultra Bloomberg Crude Oil                       ProShares    Commodities  Trading
+OIH                                VanEck Vectors Oil Services ETF         VanEck Asset Management       Equities   Energy
+IEZ                      iShares U.S. Oil Equipment & Services ETF      BlackRock Asset Management       Equities   Energy
+IEO            iShares U.S. Oil & Gas Exploration & Production ETF      BlackRock Asset Management       Equities   Energy
+GUSH      Direxion Daily S&P Oil & Gas Exp. & Prod. Bull 2X Shares                  Direxion Funds       Equities  Trading
+PXJ                         Invesco Dynamic Oil & Gas Services ETF   Invesco Investment Management       Equities   Energy
+SCO                       ProShares UltraShort Bloomberg Crude Oil                       ProShares    Commodities  Trading
+DUG                                 ProShares UltraShort Oil & Gas                       ProShares       Equities  Trading
+DRIP      Direxion Daily S&P Oil & Gas Exp. & Prod. Bear 2X Shares                  Direxion Funds       Equities  Trading
+DIG                                      ProShares Ultra Oil & Gas                       ProShares       Equities  Trading
+DDG                                      ProShares Short Oil & Gas                       ProShares       Equities  Trading
+XES                    SPDR S&P Oil & Gas Equipment & Services ETF    State Street Global Advisors       Equities   Energy
+CRAK                               VanEck Vectors Oil Refiners ETF         VanEck Asset Management       Equities   Energy
+FRAK                   VanEck Vectors Unconventional Oil & Gas ETF         VanEck Asset Management       Equities   Energy
+USO                                     United States Oil Fund, LP                USCF Investments            NaN      NaN
+USL                            United States 12 Month Oil Fund, LP                USCF Investments            NaN      NaN
+USOI      Credit Suisse X-Links Crude Oil Shares Covered Call ETNs  Credit Suisse Asset Management            NaN      NaN
+BNO                               United States Brent Oil Fund, LP                USCF Investments            NaN      NaN
+NRGU             MicroSectors U.S. Big Oil Index 3X Leveraged ETNs                    Microsectors            NaN      NaN
+FTXN                          First Trust Nasdaq Oil &amp; Gas ETF            First Trust Advisors            NaN      NaN
+DBO                                            Invesco DB Oil Fund   Invesco Investment Management            NaN      NaN
+OILK                     ProShares K-1 Free Crude Oil Strategy ETF                       ProShares            NaN      NaN
+NRGD    MicroSectors U.S. Big Oil Index -3X Inverse Leveraged ETNs                    Microsectors            NaN      NaN
+XOIL                                     Global X Oil Equities ETF                             NaN            NaN      NaN

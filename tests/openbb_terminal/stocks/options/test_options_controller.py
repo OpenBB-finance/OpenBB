@@ -1,12 +1,16 @@
 # IMPORTATION STANDARD
-import os
 import argparse
+import os
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.options import options_controller
 
 # pylint: disable=E1101
@@ -152,9 +156,11 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -165,10 +171,11 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=options_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -202,12 +209,20 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     # MOCK OPTION_EXPIRATIONS + CHAIN + LAST PRICE
     mocker.patch(
-        target=f"{path_controller}.yfinance_model.option_expirations",
+        target=f"{path_controller}.nasdaq_model.option_expirations",
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
         target=f"{path_controller}.tradier_model.option_expirations",
         return_value=EXPIRY_DATES,
+    )
+    mocker.patch(
+        target=f"{path_controller}.yfinance_model.option_expirations",
+        return_value=[],
+    )
+    mocker.patch(
+        target=f"{path_controller}.tradier_model.get_full_option_chain",
+        return_value=CHAIN,
     )
     mocker.patch(
         target=f"{path_controller}.yfinance_model.get_full_option_chain",
@@ -217,12 +232,17 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         target=f"{path_controller}.yfinance_model.get_last_price",
         return_value=100.0,
     )
+    mocker.patch(
+        target=f"{path_controller}.tradier_model.get_last_price",
+        return_value=100.0,
+    )
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=options_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -824,51 +844,6 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             dict(),
         ),
         (
-            "call_parity",
-            [
-                "--put",
-                "--ask",
-                "--min=1",
-                "--max=2",
-                "--export=csv",
-            ],
-            "yfinance_view.show_parity",
-            [
-                "MOCK_TICKER",
-                "2022-01-07",
-                True,
-                True,
-                1,
-                2,
-                "csv",
-            ],
-            dict(),
-        ),
-        (
-            "call_binom",
-            [
-                "1",
-                "--put",
-                "--european",
-                "--xlsx",
-                "--plot",
-                "--volatility=2",
-                "--export=csv",
-            ],
-            "yfinance_view.show_binom",
-            [
-                "MOCK_TICKER",
-                "2022-01-07",
-                1.0,
-                True,
-                True,
-                True,
-                True,
-                2.0,
-            ],
-            dict(),
-        ),
-        (
             "call_pricing",
             [],
             "pricing_controller.PricingController",
@@ -945,15 +920,13 @@ def test_call_func(
         "call_chains",
         "call_grhist",
         "call_plot",
-        "call_parity",
-        "call_binom",
-        "call_pricing",
     ],
 )
 def test_call_func_no_ticker(func, mocker):
+    m = mocker.Mock(**{"chain_id": None})
     mocker.patch(
         "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
-        return_value=True,
+        return_value=m,
     )
     controller = options_controller.OptionsController(ticker=None)
 
@@ -973,15 +946,16 @@ def test_call_func_no_ticker(func, mocker):
         "call_oi",
         "call_vol",
         "call_plot",
-        "call_parity",
-        "call_binom",
-        "call_pricing",
     ],
 )
 def test_call_func_no_selected_date(func, mocker):
     path_controller = "openbb_terminal.stocks.options.options_controller"
 
     # MOCK OPTION_EXPIRATIONS + CHAIN
+    mocker.patch(
+        target=f"{path_controller}.nasdaq_model.option_expirations",
+        return_value=[],
+    )
     mocker.patch(
         target=f"{path_controller}.yfinance_model.option_expirations",
         return_value=[],
@@ -994,10 +968,14 @@ def test_call_func_no_selected_date(func, mocker):
         target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=None,
     )
-
+    mocker.patch(
+        target=f"{path_controller}.tradier_model.get_full_option_chain",
+        return_value=None,
+    )
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     ns = argparse.Namespace()
     ns.exp = ""  # set the exp attribute
+    ns.chain_id = None
     mocker.patch(
         "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
         return_value=ns,  # return the Namespace object

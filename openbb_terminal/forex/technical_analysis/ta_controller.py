@@ -5,35 +5,34 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.technical_analysis import (
     custom_indicators_view,
     momentum_view,
     overlap_view,
     trend_indicators_view,
+    volatility_model,
     volatility_view,
     volume_view,
-    volatility_model,
 )
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.forex.forex_helper import FOREX_SOURCES
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
-    check_positive_list,
     check_positive_float,
+    check_positive_list,
     valid_date,
 )
-from openbb_terminal.forex.forex_helper import FOREX_SOURCES
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +67,7 @@ class TechnicalAnalysisController(StockBaseController):
         start: datetime,
         interval: str,
         data: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -80,7 +79,7 @@ class TechnicalAnalysisController(StockBaseController):
         self.data = data
         self.data["Adj Close"] = data["Close"]
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)

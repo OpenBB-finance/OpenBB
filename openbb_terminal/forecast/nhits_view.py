@@ -2,18 +2,16 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List, Tuple
 from datetime import datetime
+from typing import Optional, Tuple, Union
 
 import pandas as pd
-import matplotlib.pyplot as plt
 
-from openbb_terminal.forecast import nhits_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import helpers, nhits_model
 
 logger = logging.getLogger(__name__)
-# pylint: disable=too-many-arguments
+# pylint: disable=R0913,R0914
 
 
 @log_start_end(log=logger)
@@ -22,7 +20,7 @@ def display_nhits_forecast(
     target_column: str = "close",
     dataset_name: str = "",
     n_predict: int = 5,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     input_chunk_length: int = 14,
@@ -43,14 +41,15 @@ def display_nhits_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
     export_pred_raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    metric: str = "mape",
+    external_axes: bool = False,
 ):
     """Display Nhits forecast
 
@@ -129,14 +128,18 @@ def display_nhits_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    export_pred_raw: bool
+        Whether to export the raw predicted values. Defaults to False.
+    metric: str
+        Metric to use for evaluation. Defaults to "mape".
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = helpers.clean_data(
         data, start_date, end_date, target_column, past_covariates
     )
     if not helpers.check_data(data, target_column, past_covariates):
-        return
+        return None
     output_chunk_length = helpers.check_output(
         output_chunk_length, n_predict, bool(past_covariates)
     )
@@ -170,12 +173,13 @@ def display_nhits_forecast(
         model_save_name=model_save_name,
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
+        metric=metric,
     )
     if ticker_series == []:
-        return
+        return None
 
     probabilistic = False
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name="NHITS",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -193,9 +197,12 @@ def display_nhits_forecast(
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,
+        metric=metric,
         external_axes=external_axes,
     )
     if residuals:
         helpers.plot_residuals(
             _model, past_covariates, ticker_series, forecast_horizon=forecast_horizon
         )
+
+    return fig

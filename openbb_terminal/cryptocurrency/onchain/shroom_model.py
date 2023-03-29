@@ -1,15 +1,15 @@
 """Shroom model"""
-import logging
-from typing import List
 import json
+import logging
 import time
+from typing import List
+
 import pandas as pd
 
-
-from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end, check_api_key
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ def create_query(query: str):
         headers={
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "x-api-key": cfg.API_SHROOM_KEY,
+            "x-api-key": get_current_user().credentials.API_SHROOM_KEY,
         },
     )
     if r.status_code != 200:
@@ -49,7 +49,7 @@ def get_query_results(token):
         headers={
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "x-api-key": cfg.API_SHROOM_KEY,
+            "x-api-key": get_current_user().credentials.API_SHROOM_KEY,
         },
     )
     if r.status_code != 200:
@@ -175,7 +175,6 @@ def get_total_value_locked(
     symbol: str = "USDC",
     interval: int = 1,
 ) -> pd.DataFrame:
-
     """
     Get total value locked for a user/name address and symbol
     TVL measures the total amount of a token that is locked in a contract.
@@ -201,10 +200,11 @@ def get_total_value_locked(
     if not (user_address or address_name):
         console.print("[red]No user address or address name provided.[/red]")
         return pd.DataFrame()
-    if user_address:
-        extra_sql = f"user_address = '{user_address}' and"
-    else:
-        extra_sql = f"address_name = '{address_name}' and"
+    extra_sql = (
+        f"user_address = '{user_address}' and"
+        if user_address
+        else f"address_name = '{address_name}' and"
+    )
 
     sql = f"""
     SELECT

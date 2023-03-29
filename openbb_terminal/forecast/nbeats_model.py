@@ -4,16 +4,15 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Tuple, Union, List, Optional
+from typing import List, Optional, Tuple, Union
 
 import pandas as pd
-
 from darts import TimeSeries
 from darts.models import NBEATSModel
-from openbb_terminal.decorators import log_start_end
 
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +22,7 @@ def get_NBEATS_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     n_predict: int = 5,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     input_chunk_length: int = 14,
@@ -38,6 +37,7 @@ def get_NBEATS_data(
     model_save_name: str = "nbeats_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
+    metric: str = "mape",
 ) -> Tuple[
     Optional[List[TimeSeries]],
     Optional[List[TimeSeries]],
@@ -89,6 +89,8 @@ def get_NBEATS_data(
     save_checkpoints: bool
         Whether or not to automatically save the untrained model and checkpoints from training.
         Defaults to True.
+    metric: str
+        Metric to use for model selection. Defaults to "mape".
 
     Returns
     -------
@@ -119,6 +121,8 @@ def get_NBEATS_data(
         past_covariate_val,
     ) = helpers.past_covs(past_covariates, data, train_split, use_scalers)
 
+    current_user = get_current_user()
+
     nbeats_model = NBEATSModel(
         input_chunk_length=input_chunk_length,
         output_chunk_length=output_chunk_length,
@@ -137,7 +141,7 @@ def get_NBEATS_data(
         random_state=42,
         pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
         log_tensorboard=True,
-        work_dir=USER_FORECAST_MODELS_DIRECTORY,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
@@ -150,11 +154,16 @@ def get_NBEATS_data(
             past_covariate_train,
             past_covariate_val,
         )
+
     best_model = NBEATSModel.load_from_checkpoint(
-        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY
+        model_name=model_save_name,
+        best=True,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
-    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
+    helpers.print_tensorboard_logs(
+        model_save_name, str(current_user.preferences.USER_FORECAST_MODELS_DIRECTORY)
+    )
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(
@@ -169,4 +178,5 @@ def get_NBEATS_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

@@ -5,38 +5,33 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import yfinance as yf
 
-from thepassiveinvestor import create_ETF_report
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import (
     financedatabase_view,
-    stockanalysis_model,
+    fmp_view,
     stockanalysis_view,
-    yfinance_view,
 )
 from openbb_terminal.etf.discovery import disc_controller
-from openbb_terminal.etf import etf_helper
-from openbb_terminal.etf.screener import screener_controller
 from openbb_terminal.etf.technical_analysis import ta_controller
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     export_data,
-    valid_date,
-    compose_export_path,
     list_from_str,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 
@@ -56,9 +51,7 @@ class ETFController(BaseController):
         "holdings",
         "news",
         "candle",
-        "pir",
         "weights",
-        "summary",
         "compare",
         "resources",
     ]
@@ -83,7 +76,7 @@ class ETFController(BaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -92,7 +85,7 @@ class ETFController(BaseController):
         self.etf_holdings: List = list()
         self.TRY_RELOAD = True
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -113,11 +106,9 @@ class ETFController(BaseController):
         mt.add_cmd("overview", self.etf_name)
         mt.add_cmd("holdings", self.etf_name)
         mt.add_cmd("weights", self.etf_name)
-        mt.add_cmd("summary", self.etf_name)
         mt.add_cmd("news", self.etf_name)
         mt.add_cmd("candle", self.etf_name)
         mt.add_raw("\n")
-        mt.add_cmd("pir", self.etf_name)
         mt.add_cmd("compare", self.etf_name)
         mt.add_raw("\n")
         mt.add_menu("ta", self.etf_name)
@@ -265,41 +256,10 @@ class ETFController(BaseController):
 
             self.etf_name = ns_parser.ticker.upper()
             self.etf_data = df_etf_candidate
-            holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
-            if holdings.empty:
-                quote_type = etf_helper.get_quote_type(self.etf_name)
-                if quote_type != "ETF":
-                    if quote_type == "N/A":
-                        console.print(
-                            "[red]Cannot determine ticker type.  Holdings only shown for ETFs\n[/red]"
-                        )
-                    else:
-                        console.print(f"{self.etf_name} is: {quote_type.lower()}")
-                    console.print("No company holdings found!")
-            else:
-                self.etf_holdings.clear()
-                console.print("Top holdings found:")
-                for val in holdings["Name"].values[: ns_parser.limit].tolist():
-                    console.print(f"   {val}")
 
-                for tick, name in zip(
-                    holdings.index[: ns_parser.limit].tolist(),
-                    holdings["Name"].values[: ns_parser.limit].tolist(),
-                ):
-                    if tick != "N/A" and " " not in tick:
-                        if (
-                            "ETF" not in name
-                            and "Future" not in name
-                            and "Bill" not in name
-                            and "Portfolio" not in name
-                            and "%" not in name
-                        ):
-                            self.etf_holdings.append(tick)
-
-                if not self.etf_holdings:
-                    console.print("\n[red]No valid stock ticker was found![/red]")
-
-        console.print()
+            console.print(
+                f"Loading Daily data for {self.etf_name} with starting period {ns_parser.start.strftime('%Y-%m-%d')}.",
+            )
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
@@ -415,12 +375,8 @@ class ETFController(BaseController):
                         sources[idx] += ".com"
                 clean_sources = ",".join(sources)
 
-                d_stock = yf.Ticker(self.etf_name).info
-
                 newsapi_view.display_news(
-                    query=d_stock["shortName"].replace(" ", "+")
-                    if "shortName" in d_stock
-                    else self.etf_name,
+                    query=self.etf_name,
                     limit=ns_parser.limit,
                     start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
@@ -504,6 +460,7 @@ class ETFController(BaseController):
             raw=True,
         )
         if ns_parser:
+            figure = None
             if not self.etf_name:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
                 return
@@ -536,14 +493,13 @@ class ETFController(BaseController):
                                 "greater than 1.[/red]\n"
                             )
 
-                stocks_helper.display_candle(
+                figure = stocks_helper.display_candle(
                     symbol=self.etf_name,
                     data=data,
-                    use_matplotlib=ns_parser.plotly,
-                    intraday=False,
                     add_trend=ns_parser.trendlines,
                     ma=mov_avgs,
                     asset_type="ETF",
+                    external_axes=True,
                 )
 
             export_data(
@@ -552,70 +508,10 @@ class ETFController(BaseController):
                 f"{self.etf_name}",
                 self.etf_data,
                 ns_parser.sheet_name,
+                figure=figure,
             )
-
-    @log_start_end(log=logger)
-    def call_pir(self, other_args):
-        """Process pir command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pir",
-            description="Create passive investor ETF excel report which contains most of the important metrics "
-            "about an ETF obtained from Yahoo Finnace. You are able to input any ETF ticker you like "
-            "within the command to create am extensive report",
-        )
-        parser.add_argument(
-            "-e",
-            "--etfs",
-            type=str,
-            dest="names",
-            help="Symbols to create a report for (e.g. pir ARKW ARKQ QQQ VOO)",
-            default=self.etf_name,
-        )
-        parser.add_argument(
-            "--filename",
-            default=f"ETF_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-            dest="filename",
-            help="Filename of the excel ETF report",
-        )
-        parser.add_argument(
-            "--folder",
-            default=compose_export_path(
-                func_name=parser.prog,
-                dir_path=os.path.dirname(os.path.abspath(__file__)),
-            ).parent,
-            dest="folder",
-            help="Folder where the excel ETF report will be saved",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            etfs = list_from_str(ns_parser.names.upper())
-            if ns_parser.names:
-                # Automatically creates the etf folder inside /OpenBBUserData/exports
-                # if it doesn't exist
-                if not os.path.isdir(ns_parser.folder):
-                    os.makedirs(ns_parser.folder)
-                try:
-                    create_ETF_report(
-                        etfs,
-                        filename=ns_parser.filename,
-                        folder=ns_parser.folder,
-                    )
-                except FileNotFoundError:
-                    console.print(
-                        f"[red]Could not find the file: {ns_parser.filename}[/red]\n"
-                    )
-                    return
-                except Exception:
-                    console.print("[red]Failed to create report.[/red]\n")
-                    return
-
-                console.print(
-                    f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
-                )
+            if figure:
+                figure.show()  # type: ignore
 
     @log_start_end(log=logger)
     def call_weights(self, other_args: List[str]):
@@ -626,16 +522,7 @@ class ETFController(BaseController):
             prog="weights",
             description="Look at ETF sector holdings",
         )
-        parser.add_argument(
-            "-m",
-            "--min",
-            type=check_positive,
-            dest="min",
-            help="Minimum positive float to display sector",
-            default=5,
-            choices=range(1, 100),
-            metavar="MIN",
-        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
@@ -646,32 +533,13 @@ class ETFController(BaseController):
             raw=True,
         )
         if ns_parser:
-            yfinance_view.display_etf_weightings(
+            fmp_view.display_etf_weightings(
                 name=self.etf_name,
                 raw=ns_parser.raw,
-                min_pct_to_display=ns_parser.min,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_summary(self, other_args: List[str]):
-        """Process summary command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="summary",
-            description="Print ETF description summary",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-        )
-        if ns_parser:
-            yfinance_view.display_etf_description(
-                name=self.etf_name,
             )
 
     @log_start_end(log=logger)
@@ -699,11 +567,6 @@ class ETFController(BaseController):
             console.print(
                 "Load a ticker with major holdings to compare them on this menu\n"
             )
-
-    @log_start_end(log=logger)
-    def call_scr(self, _):
-        """Process scr command"""
-        self.queue = self.load_class(screener_controller.ScreenerController, self.queue)
 
     @log_start_end(log=logger)
     def call_disc(self, _):

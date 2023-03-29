@@ -9,12 +9,12 @@ from typing import Any, Optional
 
 import pandas as pd
 
-from openbb_terminal.helper_funcs import request
-import openbb_terminal.config_terminal as cfg
-from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import prepare_all_coins_df
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.parent_classes import CRYPTO_SOURCES
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +70,7 @@ def make_request(**kwargs: Any) -> Optional[dict]:
         response from api request
     """
 
-    api_key = cfg.API_CRYPTO_PANIC_KEY
+    api_key = get_current_user().credentials.API_CRYPTO_PANIC_KEY
     crypto_panic_url = "https://cryptopanic.com/api/v1"
 
     post_kind = kwargs.get("post_kind")

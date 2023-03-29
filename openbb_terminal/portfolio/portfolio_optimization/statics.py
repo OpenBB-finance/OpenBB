@@ -1,9 +1,9 @@
 from typing import List, Optional
+
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.portfolio.portfolio_optimization.parameters.Parameter import (
     Parameter,
 )
-
 
 PERIOD_CHOICES = [
     "1d",
@@ -399,7 +399,7 @@ OPTIMIZATION_PARAMETERS = {
     ),
     "risk_contribution": Parameter(
         name="risk_contribution",
-        type_=Optional[List[str]],
+        type_=Optional[List[str]],  # type: ignore
         default=None,
     ),
     "risk_parity_model": Parameter(
@@ -415,17 +415,17 @@ OPTIMIZATION_PARAMETERS = {
     ),
     "p_views": Parameter(
         name="p_views",
-        type_=Optional[List[List[float]]],
+        type_=Optional[List[List[float]]],  # type: ignore
         default=None,
     ),
     "q_views": Parameter(
         name="q_views",
-        type_=Optional[List[List[float]]],
+        type_=Optional[List[List[float]]],  # type: ignore
         default=None,
     ),
     "delta": Parameter(
         name="delta",
-        type_=Optional[float],
+        type_=Optional[float],  # type: ignore
         default=None,
     ),
     "equilibrium": Parameter(
@@ -451,12 +451,12 @@ OPTIMIZATION_PARAMETERS = {
     ),
     "cvar_simulations_gains": Parameter(
         name="cvar_simulations_gains",
-        type_=Optional[int],
+        type_=Optional[int],  # type: ignore
         default=None,
     ),
     "cvar_significance": Parameter(
         name="cvar_significance",
-        type_=Optional[float],
+        type_=Optional[float],  # type: ignore
         default=None,
     ),
     "linkage": Parameter(
@@ -467,7 +467,7 @@ OPTIMIZATION_PARAMETERS = {
     ),
     "amount_clusters": Parameter(
         name="amount_clusters",
-        type_=Optional[int],
+        type_=Optional[int],  # type: ignore
         default=None,
     ),
     "max_clusters": Parameter(

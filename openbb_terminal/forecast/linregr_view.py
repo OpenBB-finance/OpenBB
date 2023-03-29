@@ -2,15 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, List, Optional
 from datetime import datetime
+from typing import List, Optional, Union
 
 import pandas as pd
-import matplotlib.pyplot as plt
 
-from openbb_terminal.forecast import linregr_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import helpers, linregr_model
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -22,13 +20,13 @@ def display_linear_regression(
     target_column: str = "close",
     dataset_name: str = "",
     n_predict: int = 5,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     output_chunk_length: int = 5,
     lags: Union[int, List[int]] = 14,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
@@ -36,7 +34,8 @@ def display_linear_regression(
     naive: bool = False,
     explainability_raw: bool = False,
     export_pred_raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    metric: str = "mape",
+    external_axes: bool = False,
 ):
     """Display Linear Regression Forecasting
 
@@ -75,14 +74,20 @@ def display_linear_regression(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the
         same as the previous day's closing price. Defaults to False.
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    explainability_raw: bool
+        Whether to show the raw explainability data. Defaults to False.
+    export_pred_raw: bool
+        Whether to export the raw prediction data. Defaults to False.
+    metric: str
+        The metric to use for the model. Defaults to "mape".
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = helpers.clean_data(
         data, start_date, end_date, target_column, past_covariates
     )
     if not helpers.check_data(data, target_column, past_covariates):
-        return
+        return None
     output_chunk_length = helpers.check_output(
         output_chunk_length, n_predict, bool(past_covariates)
     )
@@ -101,10 +106,11 @@ def display_linear_regression(
         forecast_horizon=forecast_horizon,
         output_chunk_length=output_chunk_length,
         lags=lags,
+        metric=metric,
     )
 
     probabilistic = True
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name="LINREGR",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -122,6 +128,7 @@ def display_linear_regression(
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,
+        metric=metric,
         external_axes=external_axes,
     )
     if residuals:
@@ -130,4 +137,6 @@ def display_linear_regression(
         )
 
     # SHAP
-    helpers.plot_explainability(_model, explainability_raw)
+    helpers.plot_explainability(_model, explainability_raw, export=export)
+
+    return fig

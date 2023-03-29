@@ -1,0 +1,96 @@
+Loading Daily data for TSLA with starting period 2020-03-12.
+                                   Company Rating  Price Target
+Date                                                           
+2023-03-08                       Berenberg   HOLD        210.00
+2023-03-03                Daiwa Securities    BUY        218.00
+2023-03-02  Wedbush Morgan Securities Inc.    BUY        225.00
+2023-02-24                Wells Fargo & Co   HOLD        190.00
+2023-02-15                Barclays Capital    BUY        275.00
+2023-02-06  Wedbush Morgan Securities Inc.    BUY        225.00
+2023-01-30                       Berenberg    BUY        200.00
+2023-01-26                Wells Fargo & Co   HOLD        150.00
+2023-01-26                 Citigroup Corp.   HOLD        146.00
+2023-01-26  Wedbush Morgan Securities Inc.    BUY        200.00
+2023-01-26          Cowen and Company, LLC   HOLD        140.00
+2023-01-26                  Wolfe Research    BUY        185.00
+2023-01-26   Bank of America Merrill Lynch   HOLD        155.00
+2023-01-25                     J.P. Morgan   SELL        120.00
+2023-01-25                  Morgan Stanley    BUY        220.00
+2023-01-19                   Piper Sandler    BUY        300.00
+2023-01-17   Bank of America Merrill Lynch   HOLD        130.00
+2023-01-13                 Citigroup Corp.   HOLD        140.00
+2023-01-13                Wells Fargo & Co   HOLD        130.00
+2023-01-05                          Mizuho    BUY        250.00
+2023-01-03                   Goldman Sachs    BUY        205.00
+2022-12-29                  Morgan Stanley    BUY        250.00
+2022-12-28              Baird Patrick & Co    BUY        252.00
+2022-12-23  Wedbush Morgan Securities Inc.    BUY        175.00
+2022-12-22                Capital Depesche    BUY        275.00
+2022-12-21                   Deutsche Bank    BUY        270.00
+2022-12-20                          Mizuho    BUY        285.00
+2022-12-20                Daiwa Securities    BUY        177.00
+2022-12-20                        Evercore   HOLD        200.00
+2022-12-14                   Goldman Sachs    BUY        235.00
+2022-11-23                 Citigroup Corp.   HOLD        176.00
+2022-10-25                  Morgan Stanley    BUY        330.00
+2022-10-20             RBC Capital Markets    BUY        325.00
+2022-10-20  Wedbush Morgan Securities Inc.    BUY        300.00
+2022-10-20                   Deutsche Bank    BUY        355.00
+2022-10-20                          Mizuho    BUY        330.00
+2022-10-14                Wells Fargo & Co   HOLD        230.00
+2022-10-10                  Morgan Stanley    BUY        350.00
+2022-10-06                          Mizuho    BUY        370.00
+2022-10-04                   Goldman Sachs    BUY        333.00
+2022-09-29                   Piper Sandler    BUY        340.00
+2022-09-16                   Deutsche Bank    BUY        400.00
+2022-09-06                  Wolfe Research    BUY        360.00
+2022-08-29                   Deutsche Bank    BUY        375.00
+2022-08-25                  Morgan Stanley    BUY        127.78
+2022-08-25                       Berenberg   HOLD         96.67
+2022-08-25  Wedbush Morgan Securities Inc.    BUY        120.00
+2022-08-02                 Citigroup Corp.   SELL        141.33
+2022-07-21                          Mizuho    BUY        391.67
+2022-07-21                       Berenberg   HOLD        283.33
+2022-07-21   Bank of America Merrill Lynch   HOLD        316.67
+2022-07-21                Wells Fargo & Co   HOLD        276.67
+2022-07-21                Capital Depesche    BUY        271.67
+2022-07-21          Cowen and Company, LLC   HOLD        244.33
+2022-07-19                   Credit Suisse    BUY        333.33
+2022-07-18                Barclays Capital   SELL        126.67
+2022-07-14                  Morgan Stanley    BUY        383.33
+2022-07-13                Capital Depesche    BUY        267.00
+2022-07-11                Wells Fargo & Co   HOLD        273.33
+2022-07-05                     J.P. Morgan   SELL        128.33
+2022-06-28                   Deutsche Bank    BUY        375.00
+2022-06-27                          Mizuho    BUY        383.33
+2022-06-24                   Credit Suisse    BUY        333.33
+2022-06-09                             UBS    BUY        366.67
+2022-06-03          Cowen and Company, LLC   HOLD        233.33
+2022-06-01                   Goldman Sachs    BUY        333.33
+2022-05-24                Daiwa Securities    BUY        266.67
+2022-05-19  Wedbush Morgan Securities Inc.    BUY        333.33
+2022-05-18                   Piper Sandler    BUY        345.00
+2022-05-12                Wells Fargo & Co   HOLD        300.00
+2022-05-10                       Berenberg   HOLD        300.00
+2022-04-22                   Deutsche Bank    BUY        416.67
+2022-04-21                     J.P. Morgan   SELL        131.67
+2022-04-21                 Citigroup Corp.   SELL        125.00
+2022-04-21                Wells Fargo & Co   HOLD        320.00
+2022-04-21          Oppenheimer & Co. Inc.    BUY        430.33
+2022-04-19                   Credit Suisse    BUY        375.00
+2022-04-18                   Piper Sandler    BUY        420.00
+2022-04-04          Cowen and Company, LLC   HOLD        263.33
+2022-04-04                     J.P. Morgan   SELL        111.67
+2022-04-04                             UBS   HOLD        366.67
+2022-02-25                Daiwa Securities    BUY        300.00
+2022-02-14                   Piper Sandler    BUY        450.00
+2022-01-31                   Credit Suisse    BUY        341.67
+2022-01-27                     J.P. Morgan   SELL        108.33
+2022-01-27                Wells Fargo & Co   HOLD        303.33
+2022-01-27                 Citigroup Corp.   SELL        104.33
+2022-01-18                   Credit Suisse   HOLD        341.67
+2022-01-05                          Mizuho    BUY        433.33
+2022-01-03                   Deutsche Bank    BUY        400.00
+2022-01-03                     J.P. Morgan   SELL         98.33
+2021-12-31                   Deutsche Bank    BUY        400.00
+2021-12-28         Argus Research Company     BUY        437.67

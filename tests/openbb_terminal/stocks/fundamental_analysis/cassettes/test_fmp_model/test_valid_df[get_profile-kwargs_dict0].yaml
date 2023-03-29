@@ -10,14 +10,14 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/profile/PM?apikey=MOCK_API_KEY
   response:
     body:
-      string: "[ {\n  \"symbol\" : \"PM\",\n  \"price\" : 90.18,\n  \"beta\" : 0.681566,\n
-        \ \"volAvg\" : 5486803,\n  \"mktCap\" : 139788910592,\n  \"lastDiv\" : 5.0,\n
-        \ \"range\" : \"85.64-112.48\",\n  \"changes\" : 0.559998,\n  \"companyName\"
-        : \"Philip Morris International Inc.\",\n  \"currency\" : \"USD\",\n  \"cik\"
-        : \"0001413329\",\n  \"isin\" : \"US7181721090\",\n  \"cusip\" : \"718172109\",\n
-        \ \"exchange\" : \"New York Stock Exchange\",\n  \"exchangeShortName\" : \"NYSE\",\n
-        \ \"industry\" : \"Tobacco\",\n  \"website\" : \"https://www.pmi.com\",\n
-        \ \"description\" : \"Philip Morris International Inc. operates as a tobacco
+      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"price\": 98.48,\n    \"beta\":
+        0.709205,\n    \"volAvg\": 4480064,\n    \"mktCap\": 152666651976,\n    \"lastDiv\":
+        5.04,\n    \"range\": \"82.85-109.81\",\n    \"changes\": -1.62,\n    \"companyName\":
+        \"Philip Morris International Inc.\",\n    \"currency\": \"USD\",\n    \"cik\":
+        \"0001413329\",\n    \"isin\": \"US7181721090\",\n    \"cusip\": \"718172109\",\n
+        \   \"exchange\": \"New York Stock Exchange\",\n    \"exchangeShortName\":
+        \"NYSE\",\n    \"industry\": \"Tobacco\",\n    \"website\": \"https://www.pmi.com\",\n
+        \   \"description\": \"Philip Morris International Inc. operates as a tobacco
         company working to delivers a smoke-free future and evolving portfolio for
         the long-term to include products outside of the tobacco and nicotine sector.
         The company's product portfolio primarily consists of cigarettes and smoke-free
@@ -31,37 +31,46 @@ interactions:
         owns various cigarette brands, such as Dji Sam Soe, Sampoerna A, and Sampoerna
         U in Indonesia; and Fortune and Jackpot in the Philippines. The company sells
         its smoke-free products in 71 markets. Philip Morris International Inc. was
-        incorporated in 1987 and is headquartered in New York, New York.\",\n  \"ceo\"
-        : \"Mr. Andre Calantzopoulos\",\n  \"sector\" : \"Consumer Defensive\",\n
-        \ \"country\" : \"US\",\n  \"fullTimeEmployees\" : \"69600\",\n  \"phone\"
-        : \"19176632000\",\n  \"address\" : \"120 Park Ave\",\n  \"city\" : \"New
-        York City\",\n  \"state\" : \"NEW YORK\",\n  \"zip\" : \"10017-5592\",\n  \"dcfDiff\"
-        : 2.8876,\n  \"dcf\" : 93.0676,\n  \"image\" : \"https://financialmodelingprep.com/image-stock/PM.png\",\n
-        \ \"ipoDate\" : \"2008-03-17\",\n  \"defaultImage\" : false,\n  \"isEtf\"
-        : false,\n  \"isActivelyTrading\" : true,\n  \"isAdr\" : false,\n  \"isFund\"
-        : false\n} ]"
+        incorporated in 1987 and is headquartered in New York, New York.\",\n    \"ceo\":
+        \"Mr. Andre  Calantzopoulos\",\n    \"sector\": \"Consumer Defensive\",\n
+        \   \"country\": \"US\",\n    \"fullTimeEmployees\": \"69600\",\n    \"phone\":
+        \"917 663 2000\",\n    \"address\": \"120 Park Avenue\",\n    \"city\": \"New
+        York\",\n    \"state\": \"NY\",\n    \"zip\": \"10017-5592\",\n    \"dcfDiff\":
+        3.97239,\n    \"dcf\": 99.7876,\n    \"image\": \"https://financialmodelingprep.com/image-stock/PM.png\",\n
+        \   \"ipoDate\": \"2008-03-17\",\n    \"defaultImage\": false,\n    \"isEtf\":
+        false,\n    \"isActivelyTrading\": true,\n    \"isAdr\": false,\n    \"isFund\":
+        false\n  }\n]"
     headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
       Access-Control-Allow-Headers:
-      - origin, content-type, accept, Authorization, authorization
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
       Access-Control-Allow-Methods:
-      - GET, OPTIONS
+      - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
       - '*'
       Access-Control-Max-Age:
       - '3600'
       Connection:
       - close
+      Content-Length:
+      - '2161'
       Content-Type:
-      - application/json;charset=UTF-8
+      - application/json; charset=utf-8
       Date:
-      - Mon, 18 Jul 2022 09:04:25 GMT
+      - Tue, 07 Mar 2023 17:09:10 GMT
+      ETag:
+      - W/"871-gVoFmYYxb+LMa1KMUYdfDhcNC7w"
       Server:
       - nginx/1.14.0 (Ubuntu)
-      Transfer-Encoding:
-      - chunked
       Vary:
       - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
     status:
       code: 200
-      message: ''
+      message: OK
 version: 1

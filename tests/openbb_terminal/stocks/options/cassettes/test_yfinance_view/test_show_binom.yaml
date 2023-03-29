@@ -18700,7 +18700,7 @@ interactions:
       vary:
       - Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-nodejs--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-nodejs--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '889'
       x-frame-options:
@@ -18752,7 +18752,7 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '2'
       x-request-id:

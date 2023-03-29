@@ -3,10 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import Optional, Union
 
-from matplotlib import pyplot as plt
 import numpy as np
+import pandas as pd
+
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import ccxt_model
 from openbb_terminal.decorators import log_start_end
@@ -21,9 +23,9 @@ def display_order_book(
     symbol: str,
     to_symbol: str,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plots order book for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
@@ -45,20 +47,20 @@ def display_order_book(
     asks = np.asarray(market_book["asks"], dtype=float)
     bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
     asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
-    plot_order_book(
-        bids,
-        asks,
-        f"{exchange.upper()}:{symbol.upper()}/{to_symbol.upper()}",
-        external_axes,
+    fig = plot_order_book(
+        bids, asks, f"{exchange.upper()}:{symbol.upper()}/{to_symbol.upper()}"
     )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ob",
-        market_book,
+        pd.DataFrame(market_book),
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -68,7 +70,7 @@ def display_trades(
     to_symbol: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Prints table showing trades for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
@@ -88,10 +90,12 @@ def display_trades(
     """
     df = ccxt_model.get_trades(exchange_id=exchange, symbol=symbol, to_symbol=to_symbol)
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title=f"Trades for {exchange.upper()}:{symbol.upper()}/{to_symbol.upper()}",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

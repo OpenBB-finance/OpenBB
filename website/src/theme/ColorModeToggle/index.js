@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import { translate } from "@docusaurus/Translate";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import SunIcon from "@site/src/components/Icons/Sun";
 import MoonIcon from "@site/src/components/Icons/Moon";
+import { useLocation } from "@docusaurus/router";
+import DiscordIcon from "@site/src/components/Icons/Discord";
+import TelegramIcon from "@site/src/components/Icons/Telegram";
+import Link from "@docusaurus/Link";
+import { useIFrameContext } from "../Root";
 function ColorModeToggle({ className, value, onChange }) {
+  const { isIFrame } = useIFrameContext();
+  const { pathname } = useLocation();
+  const showBotChange = false; //pathname.startsWith("/bot/discord") || pathname.startsWith("/bot/telegram");
+  // this can be used later to switch between discord and telegram commands on bot
+  const isDiscord = pathname.startsWith("/bot/discord");
   const isBrowser = useIsBrowser();
   const title = translate(
     {
@@ -17,19 +27,72 @@ function ColorModeToggle({ className, value, onChange }) {
       mode:
         value === "dark"
           ? translate({
-            message: "dark mode",
-            id: "theme.colorToggle.ariaLabel.mode.dark",
-            description: "The name for the dark color mode",
-          })
+              message: "dark mode",
+              id: "theme.colorToggle.ariaLabel.mode.dark",
+              description: "The name for the dark color mode",
+            })
           : translate({
-            message: "light mode",
-            id: "theme.colorToggle.ariaLabel.mode.light",
-            description: "The name for the light color mode",
-          }),
+              message: "light mode",
+              id: "theme.colorToggle.ariaLabel.mode.light",
+              description: "The name for the light color mode",
+            }),
     }
   );
+  const command = pathname.split("/").pop();
+  useEffect(() => {
+    if (isIFrame) {
+      onChange("dark");
+    }
+  }, []);
   return (
-    <div className="flex gap-4 ml-4 md:ml-0">
+    <div className="flex gap-4 mr-12 md:mr-0 ml-4">
+      {showBotChange && (
+        <PopoverPrimitive.Root>
+          <PopoverPrimitive.Trigger className="bg-grey-900 radix-state-open:text-white hover:border-grey-200 hover:text-grey-200 radix-state-open:border-white border -mt-[0.6px] h-[34px] w-[34px] text-grey-400 border-grey-400 rounded flex items-center justify-center">
+            {isDiscord ? (
+              <DiscordIcon className="w-4 h-4" />
+            ) : (
+              <TelegramIcon className="w-4 h-4" />
+            )}
+          </PopoverPrimitive.Trigger>
+          <PopoverPrimitive.Content
+            sideOffset={5}
+            align="start"
+            className={clsx(
+              "z-50 bg-grey-900 border text-white border-grey-200 rounded flex flex-col divide-y divide-grey-600 p-4"
+            )}
+          >
+            <Link
+              className={clsx("text-sm inline-flex pb-3 hover:text-white", {
+                "text-grey-400": !isDiscord,
+                "text-white": isDiscord,
+              })}
+              type="button"
+              href={`/bot/discord/${command}`}
+              disabled={!isBrowser}
+              title={title}
+              aria-label={title}
+              aria-live="polite"
+            >
+              <DiscordIcon className="w-4 h-4 mr-2 mt-0.5" /> Discord
+            </Link>
+            <Link
+              className={clsx("text-sm inline-flex pt-3 hover:text-white", {
+                "text-grey-400": isDiscord,
+                "text-white": !isDiscord,
+              })}
+              type="button"
+              href={`/bot/telegram/${command}`}
+              disabled={!isBrowser}
+              title={title}
+              aria-label={title}
+              aria-live="polite"
+            >
+              <TelegramIcon className="w-4 h-4 mr-2 mt-0.5" /> Telegram
+            </Link>
+          </PopoverPrimitive.Content>
+        </PopoverPrimitive.Root>
+      )}
       <PopoverPrimitive.Root>
         <PopoverPrimitive.Trigger className="bg-grey-900 radix-state-open:text-white hover:border-grey-200 hover:text-grey-200 radix-state-open:border-white border -mt-[0.6px] h-[34px] w-[34px] text-grey-400 border-grey-400 rounded flex items-center justify-center">
           {value !== "dark" ? (

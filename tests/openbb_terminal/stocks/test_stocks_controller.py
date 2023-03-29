@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+
 import os
 
 # IMPORTATION THIRDPARTY
@@ -6,6 +7,10 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks import stocks_controller
 from tests.test_helpers import no_dfs
 
@@ -81,9 +86,11 @@ def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.stocks.stocks_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -94,10 +101,11 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=stocks_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -121,10 +129,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.stocks.stocks_controller"
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=stocks_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -249,21 +258,21 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_search",
             [
-                "--query=mock_query",
+                "--query=microsoft",
                 "--limit=1",
                 "--export=csv",
             ],
             "stocks_helper.search",
             [],
             dict(
-                query="mock_query",
+                query="microsoft",
                 limit=1,
                 country="",
                 sector="",
+                industry_group="",
                 industry="",
+                all_exchanges=False,
                 exchange_country="",
-                export="csv",
-                sheet_name=None,
             ),
         ),
         (
@@ -344,13 +353,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_sia",
-            [],
-            "StocksController.load_class",
-            [],
-            dict(),
-        ),
-        (
             "call_ins",
             [],
             "StocksController.load_class",
@@ -373,13 +375,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         ),
         (
             "call_res",
-            [],
-            "StocksController.load_class",
-            [],
-            dict(),
-        ),
-        (
-            "call_dd",
             [],
             "StocksController.load_class",
             [],
@@ -443,14 +438,6 @@ def test_call_func(
     )
 
     # MOCK TICKER + INFO
-    mocker.patch(
-        target=f"{path_controller}.yf.Ticker",
-    )
-    mocker.patch(
-        target=f"{path_controller}.yf.Ticker.info",
-        return_value={"shortName": "MOCK_SHORT_NAME"},
-    )
-
     if mocked_func:
         mock = mocker.Mock()
         mocker.patch(
@@ -503,15 +490,7 @@ def test_call_func_no_parser(func, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "func",
-    [
-        "call_candle",
-        "call_res",
-        "call_dd",
-        "call_fa",
-        "call_bt",
-        "call_ta",
-        "call_qa",
-    ],
+    ["call_res"],
 )
 def test_call_func_no_ticker(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN

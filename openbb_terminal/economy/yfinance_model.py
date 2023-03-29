@@ -5,9 +5,9 @@ import logging
 from datetime import datetime
 from typing import Dict, Optional
 
+import financedatabase as fd
 import pandas as pd
 import yfinance as yf
-import financedatabase as fd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -617,10 +617,7 @@ def get_index(
     pd.Series
         A series with the requested index
     """
-    if index.lower() in INDICES:
-        ticker = INDICES[index.lower()]["ticker"]
-    else:
-        ticker = index
+    ticker = INDICES[index.lower()]["ticker"] if index.lower() in INDICES else index
 
     try:
         if start_date:
@@ -638,6 +635,7 @@ def get_index(
         interval=interval,
         progress=False,
         show_errors=False,
+        ignore_tz=True,
     )
 
     if column not in index_data.columns:
@@ -672,12 +670,11 @@ def get_available_indices() -> Dict[str, Dict[str, str]]:
 def get_indices(
     indices: list,
     interval: str = "1d",
-    start_date: int = None,
-    end_date: int = None,
+    start_date: Optional[int] = None,
+    end_date: Optional[int] = None,
     column: str = "Adj Close",
     returns: bool = False,
 ) -> pd.DataFrame:
-
     """Get data on selected indices over time [Source: Yahoo Finance]
 
     Parameters
@@ -722,32 +719,32 @@ def get_indices(
 
 
 @log_start_end(log=logger)
-def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
+def get_search_indices(keyword: list) -> pd.DataFrame:
     """Search indices by keyword. [Source: FinanceDatabase]
 
     Parameters
     ----------
     keyword: list
         The keyword you wish to search for. This can include spaces.
-    limit: int
-        The amount of views you want to show, by default this is set to 10.
 
     Returns
     -------
     pd.Dataframe
         Dataframe with the available options.
     """
-    if isinstance(keyword, str):
-        keyword_adjusted = keyword.replace(",", " ")
-    else:
-        keyword_adjusted = " ".join(keyword)
-
-    indices = fd.select_indices()
-
-    queried_indices = pd.DataFrame.from_dict(
-        fd.search_products(indices, keyword_adjusted, "short_name"), orient="index"
+    keyword_adjusted = (
+        keyword.replace(",", " ") if isinstance(keyword, str) else " ".join(keyword)  # type: ignore
     )
 
-    queried_indices = queried_indices.iloc[:limit]
+    indices = fd.Indices()
+
+    queried_indices = indices.search(name=keyword_adjusted, exclude_exchanges=True)
+    queried_indices = pd.concat(
+        [
+            queried_indices,
+            indices.search(index=keyword_adjusted),
+        ]
+    )
+    queried_indices = queried_indices.drop_duplicates()
 
     return keyword_adjusted, queried_indices

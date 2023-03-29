@@ -1,12 +1,17 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.options import fdscanner_view
-from openbb_terminal import helper_funcs
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 
+# IMPORTATION INTERNAL
+from openbb_terminal.stocks.options import fdscanner_view
 
 # pylint: disable=E1101
 
@@ -27,10 +32,11 @@ def vcr_config():
 )
 def test_display_options(mocker, toggle):
     # MOCK CHARTS
-    mocker.patch.object(
-        target=helper_funcs.obbff,
-        attribute="USE_TABULATE_DF",
-        new=toggle,
+    preferences = PreferencesModel(USE_TABULATE_DF=toggle)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     # MOCK EXPORT_DATA

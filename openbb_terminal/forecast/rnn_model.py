@@ -4,16 +4,16 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Tuple, Union, List, Optional
+from typing import List, Optional, Tuple, Union
 
 import pandas as pd
-
 from darts import TimeSeries
 from darts.models import RNNModel
 from darts.utils.likelihood_models import GaussianLikelihood
+
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,7 @@ def get_rnn_data(
     input_chunk_size: int = 14,
     force_reset: bool = True,
     save_checkpoints: bool = True,
+    metric: str = "mape",
 ) -> Tuple[
     Optional[List[type[TimeSeries]]],
     Optional[List[type[TimeSeries]]],
@@ -77,6 +78,8 @@ def get_rnn_data(
     save_checkpoints: bool
         Whether or not to automatically save the untrained model and checkpoints from training.
         Defaults to True.
+    metric: str
+        Metric to use for model selection. Defaults to "mape".
 
     Returns
     -------
@@ -103,6 +106,8 @@ def get_rnn_data(
     if not valid:
         return [], [], [], None, None
 
+    current_user = get_current_user()
+
     rnn_model = RNNModel(
         model=model_type,
         hidden_dim=hidden_dim,
@@ -119,7 +124,7 @@ def get_rnn_data(
         save_checkpoints=save_checkpoints,
         likelihood=GaussianLikelihood(),
         log_tensorboard=True,
-        work_dir=USER_FORECAST_MODELS_DIRECTORY,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
@@ -127,10 +132,14 @@ def get_rnn_data(
         warnings.simplefilter("ignore")
         helpers.fit_model(rnn_model, train, val)
     best_model = RNNModel.load_from_checkpoint(
-        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY
+        model_name=model_save_name,
+        best=True,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
-    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
+    helpers.print_tensorboard_logs(
+        model_save_name, str(current_user.preferences.USER_FORECAST_MODELS_DIRECTORY)
+    )
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(
@@ -145,4 +154,5 @@ def get_rnn_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

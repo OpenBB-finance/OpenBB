@@ -1,0 +1,220 @@
+TICKER,Company Name,Revenue,Net Income,Net Margin,Cash Flow
+HMC,Honda Motor Co. Ltd.,108264.49,5659.22,5.23 %,24088.27
+MT,Arcelormittal,76571.0,15565.0,20.33 %,5600.0
+GM,General Motors Company,43108.0,2007.0,4.66 %,-1551.0
+TSLA,Tesla Inc,24318.0,3707.0,15.24 %,-3225.0
+EC,Ecopetrol S a,23422.95,4494.49,19.19 %,1295.61
+GE,General Electric Company,19084.0,-160.0,-,-854.0
+ACN,Accenture Plc,15747.8,1967.04,12.49 %,-1990.13
+CAT,Caterpillar Inc,14994.0,2040.0,13.61 %,3240.0
+KYO,Kyocera Corp,13536.56,1044.69,7.72 %,207.28
+STM,Stmicroelectronics N v,12761.0,2006.0,15.72 %,219.0
+DOW,Dow Inc,11859.0,647.0,5.46 %,1623.0
+NJ,Nidec Corp,10752.78,847.44,7.88 %,328.89
+NUE,Nucor Corporation,10500.76,1799.04,17.13 %,867.36
+QCOM,Qualcomm Inc,9463.0,2235.0,23.62 %,1974.0
+HON,Honeywell International Inc,8951.0,1549.0,17.31 %,-799.0
+MMM,3m Company,8619.0,3863.0,44.82 %,682.0
+NRG,Nrg Energy Inc,8510.0,67.0,0.79 %,-1081.0
+XEL,Xcel Energy Inc,7781.0,649.0,8.34 %,-218.0
+DHR,Danaher Corporation,7663.0,1572.0,20.51 %,1166.0
+CMI,Cummins Inc,7333.0,409.0,5.58 %,37.0
+PCAR,Paccar Inc,7058.9,769.4,10.9 %,92.2
+UNP,Union Pacific Corp,6566.0,1895.0,28.86 %,169.0
+SO,The Southern Company,6238.0,1110.0,17.79 %,484.0
+JCI,Johnson Controls International Plc,6068.0,156.0,2.57 %,-490.0
+GPC,Genuine Parts Co,5675.27,312.36,5.5 %,110.07
+STLD,Steel Dynamics Inc,5651.71,918.48,16.25 %,595.86
+PCG,Pg and e Corp,5394.0,459.0,8.51 %,92.0
+EMR,Emerson Electric Co,5360.0,708.0,13.21 %,-725.0
+ETN,Eaton Corporation Plc,5350.0,608.0,11.36 %,-133.0
+GT,The Goodyear Tire and Rubber Company,5311.0,48.0,0.9 %,-5.0
+LEA,Lear Corp,5241.2,119.2,2.27 %,483.8
+EIX,Edison International,5228.0,-74.0,-,271.0
+X,United States Steel Corp,5203.0,490.0,9.42 %,388.0
+TEN,Tenneco Inc,4931.0,-28.0,-,28.0
+EXC,Exelon Corporation,4845.0,676.0,13.95 %,-217.0
+NVLCN,Novelis Inc,4799.0,183.0,3.81 %,1.0
+APTV,Aptiv Plc,4614.0,306.0,6.63 %,182.0
+PPG,Ppg Industries Inc,4468.0,339.0,7.59 %,98.0
+D,Dominion Energy Inc,4386.0,778.0,17.74 %,1.0
+TT,Trane Technologies Plc,4371.9,552.4,12.64 %,-10.0
+PH,Parker hannifin Corporation,4232.78,388.04,9.17 %,-6145.57
+ETR,Entergy Corporation,4218.62,555.88,13.18 %,-137.33
+ED,Consolidated Edison Inc,4165.0,619.0,14.86 %,-94.0
+BWA,Borgwarner Inc,4060.0,292.0,7.19 %,-149.0
+ITW,Illinois Tool Works Inc,4011.0,727.0,18.13 %,-105.0
+WLK,Westlake Corporation,3956.0,412.0,10.41 %,462.0
+CSX,Csx Corporation,3895.0,1111.0,28.52 %,1587.0
+TEL,Te Connectivity ltd,3841.0,397.0,10.34 %,-295.0
+SRE,Sempra Energy,3617.0,561.0,15.51 %,-1512.0
+GLW,Corning Inc,3488.0,226.0,6.48 %,1.0
+FE,Firstenergy Corp,3475.0,344.0,9.9 %,-255.0
+NSC,Norfolk Southern Corporation,3343.0,958.0,28.66 %,-45.0
+DD,Dupont De Nemours Inc,3317.0,376.0,11.34 %,405.0
+TXT,Textron Inc,3078.0,225.0,7.31 %,-96.0
+UNVR,Univar Solutions Inc,2983.5,312.6,10.48 %,41.5
+CAM,Cameron International Corp,2937.5,243.1,8.28 %,555.9
+TE,Teco Energy Inc,2851.3,41.9,1.47 %,32.4
+AA,Alcoa Corp,2851.0,-769.0,-,-207.0
+EMN,Eastman Chemical Co,2709.0,301.0,11.11 %,5.0
+DAN,Dana Inc,2535.0,-163.0,-,-73.0
+CMC,Commercial Metals Company,2407.07,288.63,11.99 %,-91.86
+ALV,Autoliv Inc,2301.0,106.0,4.61 %,156.0
+ARNC,Arconic Corporation,2280.0,-65.0,-,60.0
+PEG,Public Service Enterprise Group Incorporated,2272.0,114.0,5.02 %,-1383.0
+NIMC,Nisource Inc,2179.0,63.5,2.91 %,-20.9
+DOV,Dover Corp,2158.29,639.06,29.61 %,-209.37
+PPL,Ppl Corporation,2134.0,174.0,8.15 %,-9.0
+HUN,Huntsman Corporation,2011.0,115.0,5.72 %,433.0
+WEC,Wec Energy Group Inc,2003.0,301.7,15.06 %,11.1
+CNP,Centerpoint Energy Inc,1903.0,202.0,10.61 %,-447.0
+AEE,Ameren Corporation,1897.0,237.0,12.49 %,-271.0
+RPM,Rpm International Inc,1791.71,131.54,7.34 %,34.54
+CC,The Chemours Company,1777.0,240.0,13.51 %,20.0
+CMS,Cms energy Corporation,1725.0,183.0,10.61 %,-56.0
+FDML,Federal Mogul Corp,1625.0,-17.0,-,0.0
+ARRS,Arris International Plc,1577.71,-17.03,-,0.0
+RYI,Ryerson Holding Corporation,1543.1,55.1,3.57 %,24.4
+PNW,Pinnacle West Capital Corporation,1469.87,330.63,22.49 %,-22.16
+AKS,Ak Steel Holding Corporation,1445.7,-44.9,-,0.2
+ROP,Roper Technologies Inc,1350.3,327.0,24.22 %,-984.6
+RRX,Regal Rexnord Corp,1325.3,121.9,9.2 %,21.1
+HUBB,Hubbell Inc,1316.2,140.8,10.7 %,-57.3
+LEG,Leggett and Platt Inc,1294.4,71.5,5.52 %,-43.7
+AXTA,Axalta Coating Systems Ltd,1238.7,63.3,5.11 %,35.4
+MTOR,Meritor Inc.,1212.0,76.0,6.27 %,-10.0
+TSE,Trinseo Plc,1178.1,-119.8,-,-21.6
+WOR,Worthington Industries Inc,1175.54,19.51,1.66 %,92.55
+GRMN,Garmin Ltd,1140.43,210.85,18.49 %,-5.08
+TKR,Timken Co,1136.4,90.4,7.95 %,-4.4
+POM,Pepco Holdings Inc,1091.0,58.0,5.32 %,-35.0
+GNRC,Generac Holdings Inc,1088.26,60.45,5.55 %,-237.23
+ATI,Ati Inc,1032.0,64.4,6.24 %,55.1
+VC,Visteon Corp,1026.0,49.0,4.78 %,40.0
+AYI,Acuity Brands Inc,997.9,74.9,7.51 %,60.9
+ECHO,Echo Global Logistics inc,985.59,18.93,1.92 %,-9.96
+MLI,Mueller Industries Inc,944.83,155.81,16.49 %,282.1
+FUL,Fuller H B Co,897.42,50.92,5.67 %,-56.87
+FLS,Flowserve Corp,872.88,40.64,4.66 %,-106.48
+DCI,Donaldson Company Inc,847.3,87.2,10.29 %,-32.3
+IEX,Idex Corp,824.0,178.7,21.69 %,122.9
+CR,Crane Holdings Co,815.1,-59.3,-,-212.0
+ITT,Itt Inc,753.6,103.2,13.69 %,79.3
+KALU,Kaiser Aluminum Corporation,748.9,2.5,0.33 %,67.6
+ALSDPK,Aleris Corporation,725.4,-89.8,-,-53.5
+SHLM,Schulman A Inc,722.24,5.28,0.73 %,0.0
+SCL,Stepan Company,719.19,39.38,5.48 %,-28.9
+ALSN,Allison Transmission Holdings Inc,710.0,139.0,19.58 %,58.0
+CTB,Cooper Tire and Rubber Co,655.83,22.09,3.37 %,-117.83
+CENX,Century Aluminum Company,637.2,106.5,16.71 %,33.5
+MOD,Modine Manufacturing Co,578.8,24.3,4.2 %,11.4
+HOLI,Hollysys Automation Technologies Ltd,554.75,89.34,16.1 %,68.04
+FELE,Franklin Electric Co Inc,551.67,58.97,10.69 %,6.3
+GGG,Graco Inc,545.64,116.23,21.3 %,1.47
+PTC,Ptc Inc,507.93,106.84,21.03 %,-50.16
+KWR,Quaker Chemical Corporation,492.22,25.91,5.26 %,-63.46
+HSC,Harsco Corp,486.91,2.88,0.59 %,-15.77
+FLIR,Flir Systems Inc,467.31,38.81,8.3 %,-20.49
+AIMC,Altra Industrial Motion Corp,466.3,33.6,7.21 %,53.2
+RLGT,Radiant Logistics Inc,460.9,15.1,3.28 %,22.86
+BRSS,"Global Brass & Copper Holdings, Inc.",430.3,18.0,4.18 %,-15.2
+MTRN,Materion Corporation,428.19,19.95,4.66 %,-11.49
+MATV,Mativ Holdings Inc.,426.4,11.8,2.77 %,0.2
+WLKP,Westlake Chemical Partners Lp,415.12,78.31,18.86 %,1.1
+VAL,Valaris Limited,413.3,112.8,27.29 %,36.4
+RRTS,Roadrunner Transportation Systems Inc,400.88,-74.24,-,-1.05
+DLB,Dolby Laboratories Inc,334.92,79.45,23.72 %,3.11
+THRM,Gentherm Incorporated,332.96,9.83,2.95 %,-18.1
+VSM,Versum Materials Inc,324.3,-85.2,-,-118.6
+TMST,Timkensteel Corporation,318.6,-13.3,-,23.7
+VIAV,Viavi Solutions Inc,314.8,71.5,22.71 %,35.3
+FNSR,Finisar Corp,283.36,-8.72,-,0.0
+NPO,Enpro Industries Inc,280.1,27.5,9.82 %,-55.9
+GCP,Gcp Applied Technologies Inc.,268.4,5.5,2.05 %,-11.9
+FOE,Ferro Corporation,266.35,15.39,5.78 %,-77.26
+PTSI,Pam Transportation Services Inc,252.63,24.57,9.72 %,26.24
+CVGI,Commercial Vehicle Group Inc,251.41,3.55,1.41 %,6.46
+NTGR,Netgear Inc,251.19,-0.99,-,0.0
+AAON,Aaon Inc,242.61,27.47,11.32 %,-6.94
+ALGM,Allegro Microsystems Inc,227.37,64.55,28.39 %,40.85
+SRI,Stoneridge inc,226.76,0.73,0.32 %,-8.36
+WMS,Advanced Drainage Systems Inc,223.92,83.18,37.15 %,0.0
+LDL,Lydall Inc,221.74,5.78,2.61 %,13.83
+HLIO,Helios Technologies Inc,207.21,20.38,9.83 %,-4.94
+CGI,Celadon Group Inc,193.6,5.13,2.65 %,11.59
+BELFB,Bel Fuse Inc,177.74,16.55,9.31 %,-4.07
+BOOM,Dmc Global Inc,174.47,8.21,4.71 %,18.99
+KAMN,Kaman Corporation,172.0,0.63,0.36 %,59.91
+CSWI,Csw Industrials Inc,171.09,15.5,9.06 %,1.16
+RELY,Remitly Global Inc,169.26,-33.07,-,-53.23
+BB,Blackberry Limited,169.0,-4.0,-,-176.0
+HLIT,Harmonic Inc,155.74,8.74,5.61 %,-16.54
+SHLO,Shiloh Industries Inc,155.37,-137.13,-,-61.31
+GRC,The Gorman rupp Company,153.79,2.22,1.44 %,-6.54
+SORL,Sorl Auto Parts Inc,152.37,7.42,4.87 %,-65.46
+CTS,Cts Corporation,151.91,11.8,7.77 %,49.17
+VOXX,Voxx International Corporation,143.06,6.35,4.44 %,4.15
+CAAS,China Automotive Systems inc,137.21,8.01,5.84 %,-12.08
+HNH,Handy & Harman Ltd.,135.85,14.58,10.74 %,0.0
+HAYN,Haynes International inc,132.67,7.74,5.83 %,3.09
+FSTR,L b Foster Company,130.02,-2.05,-,-2.72
+PRLB,Proto Labs Inc,121.72,3.95,3.25 %,4.7
+YOU,Clear Secure Inc,115.92,-65.56,-,0.0
+STRT,Strattec Security Corp,112.91,3.84,3.4 %,0.0
+DGII,Digi International Inc.,103.52,4.13,3.99 %,0.13
+AVID,Avid Technology Inc,102.99,12.02,11.67 %,-13.12
+CMT,Core Molding Technologies Inc,101.61,1.32,1.3 %,0.4
+OIG,Orbital Infrastructure Group Inc,99.82,-142.23,-,-3.62
+UFPT,Ufp Technologies Inc,96.97,19.54,20.15 %,4.36
+KMG,Kmg Chemicals Inc,95.2,18.01,18.92 %,0.0
+NPTN,Neophotonics Corp,95.01,9.31,9.79 %,-2.01
+DSWL,Deswell Industries Inc.,85.98,8.23,9.57 %,8.14
+JASN,Jason Industries Inc,84.03,-14.6,-,-12.56
+TREC,Trecora Resources,83.21,-0.38,-,1.4
+STS,Supreme Industries Inc,72.53,1.67,2.3 %,0.0
+EPAC,Enerpac Tool Group Corp,70.72,7.45,10.54 %,8.54
+PGN,Paragon Offshore Plc,57.44,-70.42,-,-51.22
+AAOI,Applied Optoelectronics Inc,56.69,-15.63,-,-6.08
+USAP,Universal Stainless and Alloy Products inc,46.2,-1.3,-,-0.25
+NL,Nl Industries inc,42.86,-8.36,-,-23.26
+CRNC,Cerence Inc,34.77,-230.13,-,-13.61
+EMKR,Emcore Corp,23.68,-7.65,-,-5.82
+ARCW,"Arc Group Worldwide, Inc.",19.86,-6.18,-,0.0
+MINM,Minim Inc,13.83,-4.06,-,-2.78
+IEHC,Ieh Corp,8.61,-0.53,-,0.68
+SEAC,Seachange International Inc,8.29,-3.68,-,0.16
+THTI,"Tht Heat Transfer Technology, Inc.",7.22,-0.13,-,-1.01
+TTLO,Torotel Inc,6.02,0.73,12.13 %,-0.25
+CDTI,"Cdti Advanced Materials, Inc.",4.91,-0.3,-,-0.68
+VYST,Vystar Corporation,3.57,-3.11,-,0.09
+AMTY,Amerityre Corporation,2.65,0.11,4.12 %,0.33
+TKOI,Telkonet Inc,2.02,-0.7,-,-1.24
+ZAAP,Zap,1.14,-23.94,-,-0.07
+RKLY,Rockley Photonics Holdings Limited,0.56,12.03,2163.85 %,-33.89
+FIND,Findex Com Inc,0.45,0.28,62.06 %,0.07
+SNSGF,Sense Technologies Inc,0.33,-0.34,-,0.0
+PFTI,Puradyn Filter Technologies Inc,0.25,-0.53,-,0.0
+OMTK,Omnitek Engineering Corp,0.25,-0.06,-,0.0
+LQMT,Liquidmetal Technologies Inc,0.02,-0.57,-,2.36
+TOVC,"Curaegis Technologies, Inc.",0.0,0.0,-,0.0
+LWLG,Lightwave Logic Inc,0.0,-4.8,-,0.19
+XPL,Solitario Zinc Corp,0.0,-1.06,-,-0.1
+SRCH,Searchlight Minerals Corp.,0.0,0.0,-,0.0
+NIOBF,Niocorp Developments Ltd,0.0,2.55,-,-2.09
+BIXT,Bioxytran Inc,0.0,-0.2,-,-0.13
+REE,Rare Element Resources Ltd,0.0,-1.71,-,0.0
+LEXG,"Lithium Exploration Group, Inc.",0.0,0.12,-,0.04
+LITH,U.s. Lithium Corp.,0.0,-0.05,-,-0.01
+NTK,Nortek Inc,0.0,0.0,-,0.0
+CLC,Clarcor Inc.,0.0,0.0,-,0.0
+MPG,Metaldyne Performance Group Inc.,0.0,0.0,-,0.0
+AGIH,Affinia Group Intermediate Holdings Inc.,0.0,0.0,-,0.0
+TXU,TXU CORP,0.0,0.0,-,0.0
+FPL,"NextEra Energy, Inc.",0.0,0.0,-,0.0
+HAR,Harman International Industries Inc,0.0,0.0,-,0.0
+DPHI,DELPHI CORPORATION,0.0,0.0,-,0.0
+BNI,BURLINGTON NORTHERN SANTA FE CORP.,0.0,0.0,-,0.0
+ROH,ROHM AND HAAS COMPANY,0.0,0.0,-,0.0
+DCN,Dana Corporation,0.0,0.0,-,0.0
+PRKR,Parkervision Inc.,0.0,-4.4,-,0.65

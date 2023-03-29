@@ -1,16 +1,11 @@
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional, Union
 
 import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import ticker
-from matplotlib.lines import Line2D
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
     get_exchange_balances,
@@ -18,12 +13,8 @@ from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_hashrate,
     get_non_zero_addresses,
 )
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    is_valid_axes_count,
-)
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import export_data
 
 logger = logging.getLogger(__name__)
 
@@ -36,9 +27,9 @@ def display_active_addresses(
     end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots active addresses of a certain symbol over time
     [Source: https://glassnode.org]
 
@@ -54,8 +45,8 @@ def display_active_addresses(
         Interval frequency (possible values are: 24h, 1w, 1month)
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if end_date is None:
@@ -64,26 +55,16 @@ def display_active_addresses(
     df_addresses = get_active_addresses(symbol, interval, start_date, end_date)
 
     if df_addresses.empty:
-        return
+        return None
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Addresses")
+    fig.set_title(f"Active {symbol} addresses over time")
 
-    ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
-
-    ax.set_title(f"Active {symbol} addresses over time")
-    ax.set_ylabel("Addresses [thousands]")
-    ax.set_xlim(df_addresses.index[0], df_addresses.index[-1])
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df_addresses.index,
+        y=df_addresses["v"],
+        name="Active Addresses",
+    )
 
     export_data(
         export,
@@ -91,7 +72,10 @@ def display_active_addresses(
         "active",
         df_addresses,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -101,9 +85,9 @@ def display_non_zero_addresses(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.org]
 
@@ -117,8 +101,8 @@ def display_non_zero_addresses(
         Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if end_date is None:
@@ -127,26 +111,12 @@ def display_non_zero_addresses(
     df_addresses = get_non_zero_addresses(symbol, start_date, end_date)
 
     if df_addresses.empty:
-        return
+        return None
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Addresses")
+    fig.set_title(f"{symbol} Addresses with non-zero balances")
 
-    ax.plot(df_addresses.index, df_addresses["v"] / 1_000, linewidth=1.5)
-
-    ax.set_title(f"{symbol} Addresses with non-zero balances")
-    ax.set_ylabel("Number of Addresses")
-    ax.set_xlim(df_addresses.index[0], df_addresses.index[-1])
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(x=df_addresses.index, y=df_addresses["v"], name="Addresses")
 
     export_data(
         export,
@@ -154,7 +124,10 @@ def display_non_zero_addresses(
         "nonzero",
         df_addresses,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -165,9 +138,9 @@ def display_exchange_net_position_change(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots 30d change of the supply held in exchange wallets.
     [Source: https://glassnode.org]
 
@@ -185,8 +158,8 @@ def display_exchange_net_position_change(
         Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if end_date is None:
@@ -197,39 +170,48 @@ def display_exchange_net_position_change(
     )
 
     if df_addresses.empty:
-        return
+        return None
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    ax.fill_between(
-        df_addresses[df_addresses["v"] < 0].index,
-        df_addresses[df_addresses["v"] < 0]["v"].values / 1e3,
-        np.zeros(len(df_addresses[df_addresses["v"] < 0])),
-        facecolor=theme.down_color,
+    fig = OpenBBFigure(
+        yaxis_title=f"30d change of {symbol} supply held in exchange wallets"
     )
-    ax.fill_between(
-        df_addresses[df_addresses["v"] >= 0].index,
-        df_addresses[df_addresses["v"] >= 0]["v"].values / 1e3,
-        np.zeros(len(df_addresses[df_addresses["v"] >= 0])),
-        facecolor=theme.up_color,
+    fig.set_title(
+        f"{symbol}: Exchange Net Position Change - {'all exchanges' if exchange == 'aggregated' else exchange}",
     )
 
-    ax.set_ylabel(f"30d change of {symbol} supply held in exchange wallets [thousands]")
-    ax.set_title(
-        f"{symbol}: Exchange Net Position Change - {'all exchanges' if exchange == 'aggregated' else exchange}"
+    fig.add_scatter(
+        x=df_addresses[df_addresses["v"] < 0].index,
+        y=df_addresses[df_addresses["v"] < 0]["v"].values,
+        mode="lines",
+        name="Negative",
+        line_color=theme.down_color,
     )
-    ax.set_xlim(df_addresses.index[0], df_addresses.index[-1])
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df_addresses[df_addresses["v"] < 0].index,
+        y=np.zeros(len(df_addresses[df_addresses["v"] < 0])),
+        mode="lines",
+        fill="tonexty",
+        name="Negative",
+        line_color=theme.down_color,
+        fillcolor=theme.down_color,
+    )
+    fig.add_scatter(
+        x=df_addresses[df_addresses["v"] >= 0].index,
+        y=df_addresses[df_addresses["v"] >= 0]["v"].values,
+        mode="lines",
+        name="Positive",
+        line_color=theme.up_color,
+    )
+    fig.add_scatter(
+        x=df_addresses[df_addresses["v"] >= 0].index,
+        y=np.zeros(len(df_addresses[df_addresses["v"] >= 0])),
+        mode="lines",
+        fill="tonexty",
+        name="Positive",
+        line_color=theme.up_color,
+        fillcolor=theme.up_color,
+    )
+    fig.update_traces(showlegend=False)
 
     export_data(
         export,
@@ -237,7 +219,10 @@ def display_exchange_net_position_change(
         "change",
         df_addresses,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -249,9 +234,9 @@ def display_exchange_balances(
     end_date: Optional[str] = None,
     percentage: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.org]
 
@@ -271,8 +256,8 @@ def display_exchange_balances(
         Show percentage instead of stacked value.
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -283,37 +268,37 @@ def display_exchange_balances(
     df_balance = get_exchange_balances(symbol, exchange, start_date, end_date)
 
     if df_balance.empty:
-        return
+        return None
 
-    # This plot has 2 axes
-    if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        ax2 = ax1.twinx()
-
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
-
-    if percentage:
-        ax1.plot(df_balance.index, df_balance["percentage"] * 100)
-    else:
-        ax1.plot(df_balance.index, df_balance["stacked"] / 1000)
-
-    ax1.set_ylabel(f"{symbol} units [{'%' if percentage else 'thousands'}]")
-    ax1.set_title(
-        f"{symbol}: Total Balance in {'all exchanges' if exchange == 'aggregated' else exchange}"
+    fig = OpenBBFigure.create_subplots(specs=[[{"secondary_y": True}]])
+    fig.set_title(
+        f"{symbol}: Total Balance in"
+        f" {'all exchanges' if exchange == 'aggregated' else exchange}"
     )
-    ax1.tick_params(axis="x", labelrotation=10)
-    ax1.legend([f"{symbol} Unit"], loc="upper right")
 
-    ax2.grid(visible=False)
-    ax2.plot(df_balance.index, df_balance["price"], color="orange")
-    ax2.set_ylabel(f"{symbol} price [$]")
-    ax2.legend([f"{symbol} Price"], loc="upper left")
+    fig.set_yaxis_title(
+        f"{symbol} units {'[%]' if percentage else ''}", secondary_y=True, side="left"
+    )
+    fig.set_yaxis_title(f"{symbol} price [$]", secondary_y=False, showgrid=False)
 
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df_balance.index,
+        y=df_balance["percentage"] * 100 if percentage else df_balance["stacked"],
+        mode="lines",
+        name=f"{symbol} Unit",
+        secondary_y=True,
+    )
+
+    fig.add_scatter(
+        x=df_balance.index,
+        y=df_balance["price"],
+        mode="lines",
+        name=f"{symbol} Price",
+        line_color="orange",
+        secondary_y=False,
+    )
+
+    fig.update_layout(margin=dict(t=30))
 
     export_data(
         export,
@@ -321,7 +306,10 @@ def display_exchange_balances(
         "eb",
         df_balance,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -332,9 +320,9 @@ def display_hashrate(
     end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots dataframe with mean hashrate of btc or eth blockchain and symbol price.
     [Source: https://glassnode.org]
 
@@ -350,8 +338,8 @@ def display_hashrate(
         Interval frequency (possible values are: 24, 1w, 1month)
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if end_date is None:
@@ -360,41 +348,37 @@ def display_hashrate(
     df = get_hashrate(symbol, interval, start_date, end_date)
 
     if df.empty:
-        return
+        return None
 
-    # This plot has 2 axes
-    if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        ax2 = ax1.twinx()
+    fig = OpenBBFigure.create_subplots(specs=[[{"secondary_y": True}]])
 
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
-
-    ax1.plot(
-        df.index, df["hashrate"] / 1_000_000_000_000, color=theme.down_color, lw=0.8
+    fig.add_scatter(
+        x=df.index,
+        y=df["hashrate"] / 1e12,
+        mode="lines",
+        name="Hash Rate",
+        line_color=theme.down_color,
+        secondary_y=True,
     )
-    ax1.yaxis.set_major_formatter(ticker.StrMethodFormatter("{x:.0f}T"))
-    ax1.set_ylabel(f"{symbol} hashrate (Terahashes/second)")
-    ax1.set_title(f"{symbol}: Mean hashrate")
-    ax1.tick_params(axis="x", labelrotation=10)
 
-    ax2.set_xlim(left=df.index[0])
-    ax2.grid(visible=False)
-    ax2.plot(df.index, df["price"] / 1_000, color=theme.up_color, lw=0.8)
-    ax2.yaxis.set_major_formatter(ticker.StrMethodFormatter("${x:.1f}k"))
-    ax2.set_ylabel(f"{symbol} price [$]")
+    fig.set_yaxis_title(
+        f"{symbol} hashrate (Terahashes/second)",
+        secondary_y=True,
+        side="left",
+        tickformat=".2s",
+    )
+    fig.set_yaxis_title(f"{symbol} price [$]", secondary_y=False, showgrid=False)
+    fig.set_title(f"{symbol}: Mean hashrate")
 
-    # Manually construct the chart legend
-    lines = [
-        Line2D([0], [0], color=color) for color in [theme.up_color, theme.down_color]
-    ]
-    labels = ["Price", "Hash Rate"]
-    ax2.legend(lines, labels)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df.index,
+        y=df["price"],
+        mode="lines",
+        name="Price",
+        line_color=theme.up_color,
+        secondary_y=False,
+    )
+    fig.update_layout(margin=dict(t=30))
 
     export_data(
         export,
@@ -402,4 +386,7 @@ def display_hashrate(
         "hr",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

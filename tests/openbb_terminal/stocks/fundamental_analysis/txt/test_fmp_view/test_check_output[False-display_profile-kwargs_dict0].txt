@@ -1,12 +1,12 @@
                                                   0
 symbol                                           PM
-price                                         90.18
-beta                                       0.681566
-volAvg                                      5486803
-mktCap                                 139788910592
-lastDiv                                         5.0
-range                                  85.64-112.48
-changes                                    0.559998
+price                                          98.5
+beta                                       0.709205
+volAvg                                      4480064
+mktCap                                 152697656576
+lastDiv                                        5.04
+range                                  82.85-109.81
+changes                                        -1.6
 companyName        Philip Morris International Inc.
 currency                                        USD
 cik                                      0001413329
@@ -16,17 +16,17 @@ exchange                    New York Stock Exchange
 exchangeShortName                              NYSE
 industry                                    Tobacco
 website                         https://www.pmi.com
-ceo                        Mr. Andre Calantzopoulos
+ceo                       Mr. Andre  Calantzopoulos
 sector                           Consumer Defensive
 country                                          US
 fullTimeEmployees                             69600
-phone                                   19176632000
-address                                120 Park Ave
-city                                  New York City
-state                                      NEW YORK
+phone                                  917 663 2000
+address                             120 Park Avenue
+city                                       New York
+state                                            NY
 zip                                      10017-5592
-dcfDiff                                      2.8876
-dcf                                         93.0676
+dcfDiff                                     3.97239
+dcf                                         99.7876
 ipoDate                                  2008-03-17
 defaultImage                                  False
 isEtf                                         False

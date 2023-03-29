@@ -1,11 +1,13 @@
 """ Comparison Analysis Marketwatch View """
 __docformat__ = "numpy"
 
-from datetime import datetime
 import logging
 import os
-from typing import List
+from datetime import datetime
+from typing import List, Optional
 
+from openbb_terminal import rich_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -14,7 +16,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.stocks.comparison_analysis import marketwatch_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +26,7 @@ def display_income_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display income data. [Source: Marketwatch].
 
@@ -59,7 +60,7 @@ def display_income_comparison(
         sheet_name,
     )
 
-    if rich_config.USE_COLOR:
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df_financials_compared = df_financials_compared.applymap(
             lambda_financials_colored_values
         )
@@ -73,6 +74,7 @@ def display_income_comparison(
         headers=list(df_financials_compared.columns),
         show_index=True,
         title="Income Data",
+        export=bool(export),
     )
 
 
@@ -82,7 +84,7 @@ def display_balance_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Compare balance between companies. [Source: Marketwatch]
 
@@ -116,7 +118,7 @@ def display_balance_comparison(
         sheet_name,
     )
 
-    if rich_config.USE_COLOR:
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df_financials_compared = df_financials_compared.applymap(
             lambda_financials_colored_values
         )
@@ -130,6 +132,7 @@ def display_balance_comparison(
         headers=list(df_financials_compared.columns),
         show_index=True,
         title="Company Comparison",
+        export=bool(export),
     )
 
 
@@ -139,7 +142,7 @@ def display_cashflow_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Compare cashflow between companies. [Source: Marketwatch]
 
@@ -173,7 +176,7 @@ def display_cashflow_comparison(
         sheet_name,
     )
 
-    if rich_config.USE_COLOR:
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df_financials_compared = df_financials_compared.applymap(
             lambda_financials_colored_values
         )
@@ -187,4 +190,5 @@ def display_cashflow_comparison(
         headers=list(df_financials_compared.columns),
         show_index=True,
         title="Cashflow Comparison",
+        export=bool(export),
     )

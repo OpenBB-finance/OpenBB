@@ -1,17 +1,17 @@
 # IMPORTATION STANDARD
 from typing import Callable
+
+import pandas as pd
 import pytest
 from pandas._typing import Axis
 from pandas.testing import assert_frame_equal
-import pandas as pd
 
 # IMPORTATION INTERNAL
-
 from openbb_terminal.helpers_denomination import (
     DENOMINATION,
-    transform as transform_by_denomination,
     get_denomination,
     get_denominations,
+    transform as transform_by_denomination,
 )
 
 df = pd.DataFrame(
@@ -29,6 +29,7 @@ dftr = df.transpose()
         ("Millions", "Thousands", None, 1, lambda s: s.name == "EPS"),
     ],
 )
+@pytest.mark.skip(reason="Going Bye Bye")
 def test_given_arguments_then_it_transforms_as_expected(
     source: DENOMINATION,
     target: DENOMINATION,

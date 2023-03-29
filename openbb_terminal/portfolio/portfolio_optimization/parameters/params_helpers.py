@@ -1,14 +1,16 @@
 import argparse
-from datetime import datetime, date
-from typing import Any, Dict, List
+from datetime import date, datetime
 from pathlib import Path
-from openbb_terminal.helper_funcs import log_and_raise
+from typing import Any, Dict, List
+
 from openbb_terminal.core.config import paths
-from openbb_terminal.rich_config import console
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     OPTIMIZATION_PARAMETERS,
     TERMINAL_TEMPLATE_MAP,
 )
+from openbb_terminal.rich_config import console
 
 
 def check_save_file(file: str) -> str:
@@ -37,7 +39,9 @@ def load_data_files() -> Dict[str, Path]:
         The dictionary of filenames and their paths
     """
     default_path = paths.MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
-    custom_exports = paths.USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
+    custom_exports = (
+        get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
+    )
     data_files = {}
     for directory in [default_path, custom_exports]:
         for file_type in ["xlsx", "ini"]:
@@ -68,7 +72,6 @@ def check_convert_parameters(received_parameters: dict) -> dict:
     )
 
     for received_name, received_value in received_parameters.items():
-
         # TODO: Remove this line when mapping between template and terminal is not needed
         template_name = TERMINAL_TEMPLATE_MAP.get(received_name, received_name)
 

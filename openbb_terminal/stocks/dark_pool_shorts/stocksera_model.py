@@ -3,12 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 
-import stocksera
 import pandas as pd
-
+import stocksera
 from stocksera.exceptions import StockseraRequestException
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
@@ -33,7 +32,9 @@ def get_cost_to_borrow(symbol: str) -> pd.DataFrame:
     df = pd.DataFrame()
 
     try:
-        client = stocksera.Client(api_key=cfg.API_STOCKSERA_KEY)
+        client = stocksera.Client(
+            api_key=get_current_user().credentials.API_STOCKSERA_KEY
+        )
         df = pd.DataFrame(client.borrowed_shares(ticker=symbol))
         df.columns = ["Ticker", "Fees", "Available", "Date"]
         df.set_index("Date", inplace=True)

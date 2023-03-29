@@ -1,5 +1,6 @@
 # IMPORTATION THIRDPARTY
 import pytest
+
 from openbb_terminal import rich_config
 
 # IMPORTATION INTERNAL
@@ -16,11 +17,6 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_historical(mocker):
-    # MOCK CHARTS
-    mocker.patch(
-        target="openbb_terminal.stocks.options.tradier_view.theme.visualize_output"
-    )
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.tradier_view.export_data")
 

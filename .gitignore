@@ -4,6 +4,7 @@ logs/
 .DS_Store
 *.env
 .venv
+venv*/
 venv
 .vscode
 *.ipynb
@@ -39,6 +40,10 @@ website/functions
 *_sdk_audit.csv
 website/terminaltest
 !build/docker/compose.env
+openbb_terminal/core/plots/assets/plotly*.js
+openbb_terminal/core/plots/plotly_temp.html
+openbb_terminal/core/plots/table_temp.html
+.dccache
 
 # pyinstaller artifacts
 *.pyo
@@ -48,21 +53,8 @@ build/nsis/app
 DMG/*
 *.dmg
 
-# Jupyter Lab Extension build files
-jupyterlab/**/build
-jupyterlab/*/*.bundle.*
-jupyterlab/*/lib/
-jupyterlab/*/*/labextension/
-jupyterlab/*/node_modules/
-jupyterlab/*/*/node_modules/
-jupyterlab/*/*.egg-info/
-jupyterlab/*/.ipynb_checkpoints
-jupyterlab/*/*.tsbuildinfo
-jupyterlab/*/ui-tests/test-results/
-jupyterlab/*/ui-tests/tests/*.ts-snapshots/
-
 # User stylesheets
-styles/user
+openbb_terminal/miscellaneous/styles/user
 
 # the file containing the API keys for the web version
 openbb_terminal_web/setenv
@@ -73,3 +65,9 @@ darts_logs/
 # User data
 custom_imports/*.csv
 custom_imports/*/*.csv
+
+# cache
+cache/
+
+# lightning logs
+lightning_logs/

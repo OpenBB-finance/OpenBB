@@ -3,23 +3,16 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from dateutil import parser as dparse
 
-import openbb_terminal.config_plot as cfg_plot
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.common.behavioural_analysis import twitter_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    get_closing_price,
-    is_valid_axes_count,
-)
+from openbb_terminal.helper_funcs import export_data, get_closing_price
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -27,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_inference(
-    symbol: str, limit: int = 100, export: str = "", sheet_name: str = None
+    symbol: str, limit: int = 100, export: str = "", sheet_name: Optional[str] = None
 ):
     """Prints Inference sentiment from past n tweets.
 
@@ -92,9 +85,9 @@ def display_sentiment(
     n_days_past: int = 2,
     compare: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots sentiments from symbol
 
     Parameters
@@ -111,91 +104,86 @@ def display_sentiment(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export tweet dataframe
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df_tweets = twitter_model.get_sentiment(symbol, n_tweets, n_days_past)
 
     if df_tweets.empty:
-        return
-
-    ax1, ax2, ax3 = None, None, None
+        return None
 
     if compare:
-        # This plot has 3 axes
-        if external_axes is None:
-            _, axes = plt.subplots(
-                3, 1, sharex=False, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
-            )
-            ax1, ax2, ax3 = axes
-        elif is_valid_axes_count(external_axes, 3):
-            (ax1, ax2, ax3) = external_axes
-        else:
-            return
+        plots_kwargs = dict(
+            rows=3,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.05,
+            row_heights=[0.2, 0.6, 0.2],
+        )
     else:
-        # This plot has 2 axes
-        if external_axes is None:
-            _, axes = plt.subplots(
-                2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
-            )
-            ax1, ax2 = axes
-        elif is_valid_axes_count(external_axes, 2):
-            (ax1, ax2) = external_axes
-        else:
-            return
+        plots_kwargs = dict(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.05,
+            row_heights=[0.6, 0.4],
+        )
 
-    ax1.plot(
-        pd.to_datetime(df_tweets["created_at"]),
-        df_tweets["cumulative_compound"].values,
+    fig = OpenBBFigure.create_subplots(**plots_kwargs)  # type: ignore
+
+    fig.add_scatter(
+        x=pd.to_datetime(df_tweets["created_at"]),
+        y=df_tweets["cumulative_compound"].values,
+        row=1,
+        col=1,
     )
-    ax1.set_ylabel("\nCumulative\nVADER Sentiment")
+
+    fig.set_yaxis_title("<br>Cumulative<br>VADER Sentiment", row=1, col=1)
+
     for _, day_df in df_tweets.groupby(by="Day"):
         day_df["time"] = pd.to_datetime(day_df["created_at"])
         day_df = day_df.sort_values(by="time")
-        ax1.plot(
-            day_df["time"],
-            day_df["sentiment"].cumsum(),
-            label=pd.to_datetime(day_df["date"]).iloc[0].strftime("%Y-%m-%d"),
+        fig.add_scatter(
+            x=day_df["time"],
+            y=day_df["sentiment"].cumsum(),
+            row=1,
+            col=1,
         )
-        ax2.bar(
-            df_tweets["date"],
-            df_tweets["positive"],
-            color=theme.up_color,
-            width=theme.volume_bar_width / 100,
+        fig.add_bar(
+            x=df_tweets["date"],
+            y=df_tweets["positive"],
+            row=2,
+            col=1,
+            marker_color=theme.up_color,
         )
-    ax2.bar(
-        df_tweets["date"],
-        -1 * df_tweets["negative"],
-        color=theme.down_color,
-        width=theme.volume_bar_width / 100,
-    )
-    ax1.set_title(
-        f"Twitter's {symbol} total compound sentiment over time is {round(np.sum(df_tweets['sentiment']), 2)}"
-    )
 
-    theme.style_primary_axis(ax1)
-
-    ax2.set_ylabel("VADER Polarity Scores")
-    theme.style_primary_axis(ax2)
+    fig.add_bar(
+        x=df_tweets["date"],
+        y=-1 * df_tweets["negative"],
+        row=2,
+        col=1,
+        marker_color=theme.down_color,
+    )
+    fig.set_yaxis_title("VADER Polarity Scores", row=2, col=1)
 
     if compare:
         # get stock end price for each corresponding day if compare == True
         closing_price_df = get_closing_price(symbol, n_days_past)
-        if ax3:
-            ax3.plot(
-                closing_price_df["Date"],
-                closing_price_df["Close"],
-                label=pd.to_datetime(closing_price_df["Date"])
-                .iloc[0]
-                .strftime("%Y-%m-%d"),
-            )
+        fig.add_scatter(
+            x=closing_price_df["Date"],
+            y=closing_price_df["Close"],
+            name=pd.to_datetime(closing_price_df["Date"]).iloc[0].strftime("%Y-%m-%d"),
+            row=3,
+            col=1,
+        )
+        fig.set_yaxis_title("Stock Price", row=3, col=1)
 
-            ax3.set_ylabel("Stock Price")
-            theme.style_primary_axis(ax3)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.update_layout(
+        title=f"Twitter's {symbol} total compound sentiment over time is {round(np.sum(df_tweets['sentiment']), 2)}",
+        xaxis=dict(type="date"),
+        showlegend=False,
+    )
 
     export_data(
         export,
@@ -203,4 +191,7 @@ def display_sentiment(
         "sentiment",
         df_tweets,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

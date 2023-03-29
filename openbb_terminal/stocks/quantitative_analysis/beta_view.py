@@ -3,13 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
+
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.quantitative_analysis.beta_model import beta_model
-from openbb_terminal.helper_funcs import export_data
 
 logger = logging.getLogger(__name__)
 
@@ -18,12 +20,13 @@ logger = logging.getLogger(__name__)
 def beta_view(
     symbol: str,
     ref_symbol: str,
-    data: pd.DataFrame = None,
-    ref_data: pd.DataFrame = None,
+    data: Optional[pd.DataFrame] = None,
+    ref_data: Optional[pd.DataFrame] = None,
     interval: int = 1440,
     export: str = "",
-    sheet_name: str = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Display the beta scatterplot + linear regression.
 
     Parameters
@@ -38,6 +41,12 @@ def beta_view(
         The reference ticker symbols price data
     interval: int
         The interval of the ref_data. This will ONLY be used if ref_data is None
+    export : str
+        Export dataframe data or plot to csv,json,xlsx,jpeg,pdf,png,svg file
+    sheet_name : str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     try:
         sr, rr, beta, alpha = beta_model(
@@ -45,21 +54,34 @@ def beta_view(
         )
     except Exception as e:
         if str(e) == "Invalid ref ticker":
-            console.print(str(e) + "\n")
-            return
+            return console.print(str(e) + "\n")
         raise e
 
-    _, ax = plt.subplots()
-    ax.scatter(rr, sr)  # plot returns
-    ax.plot(ax.get_xlim(), [x * beta + alpha for x in ax.get_xlim()])  # plot lin reg
-    ax.set(
-        xlabel=f"{ref_symbol} Returns (%)",
-        ylabel=f"{symbol} Returns (%)",
-        title=f"Beta of {symbol} with respect to {ref_symbol}",
+    beta_text = f"Raw Beta={round(beta, 2)}<br>Alpha={round(alpha, 2)}"
+
+    fig = OpenBBFigure(
+        xaxis_title=f"{ref_symbol} Returns (%)", yaxis_title=f"{symbol} Returns (%)"
     )
-    beta_text = f"Raw Beta={round(beta, 2)}\nAlpha={round(alpha, 2)}"
-    ax.text(0.9, 0.1, beta_text, horizontalalignment="right", transform=ax.transAxes)
-    console.print()
+    fig.set_title(f"Beta of {symbol} with respect to {ref_symbol}")
+    fig.add_scatter(x=rr, y=sr, mode="markers", name="Returns")
+
+    fig.add_scatter(
+        x=[min(rr), max(rr)],
+        y=[x * beta + alpha for x in [min(rr), max(rr)]],
+        mode="lines",
+        name="Linear Regression",
+    )
+    fig.add_annotation(
+        x=0.9,
+        y=0.1,
+        text=beta_text,
+        xref="paper",
+        yref="paper",
+        xanchor="right",
+        yanchor="bottom",
+    )
+
+    fig.update_layout(showlegend=False)
 
     df = pd.DataFrame({"sr": sr, "rr": rr})
 
@@ -69,4 +91,7 @@ def beta_view(
         f"beta_alpha={alpha}_beta={beta}",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

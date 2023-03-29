@@ -3,25 +3,25 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_list_dates,
     check_positive,
     check_proportion_range,
-    check_list_dates,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +61,7 @@ class QaController(CryptoBaseController):
         from_symbol: str,
         to_symbol: str,
         data: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -76,7 +76,7 @@ class QaController(CryptoBaseController):
         self.ticker = f"{from_symbol}/{to_symbol}"
         self.target = "Close"
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             choices["pick"].update({c: {} for c in list(data.columns)})
             choices["load"] = {
@@ -292,6 +292,7 @@ class QaController(CryptoBaseController):
                 log_y=ns_parser.log,
                 markers_lines=ns_parser.ml,
                 markers_scatter=ns_parser.ms,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

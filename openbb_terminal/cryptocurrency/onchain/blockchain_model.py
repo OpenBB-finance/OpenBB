@@ -5,8 +5,8 @@ import logging
 
 import pandas as pd
 
-from openbb_terminal.helper_funcs import request
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -126,7 +126,6 @@ def get_btc_single_block(blockhash: str) -> pd.DataFrame:
     data = _blockchain_data_api_make_request(f"rawblock/{blockhash}?format=json")
 
     if data:
-
         df = pd.json_normalize(data)
         return df
 

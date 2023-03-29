@@ -4,12 +4,12 @@ __docformat__ = "numpy"
 # pylint: disable=C0301,C0302
 
 import logging
-from typing import Any, Optional, Tuple
-from datetime import datetime, timedelta
 import re
+from datetime import datetime, timedelta
+from typing import Any, Optional, Tuple
+
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_replace_underscores_in_column_names,
     prettify_column_names,
@@ -20,6 +20,7 @@ from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=unsupported-assignment-operation
 
@@ -165,7 +166,7 @@ def get_messari_timeseries(
 
     url = base_url + f"assets/{symbol}/metrics/{timeseries_id}/time-series"
 
-    headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+    headers = {"x-messari-api-key": get_current_user().credentials.API_MESSARI_KEY}
 
     parameters = {
         "start": start_date,
@@ -217,7 +218,7 @@ def get_links(symbol: str) -> pd.DataFrame:
 
     url = base_url2 + f"assets/{symbol}/profile"
 
-    headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+    headers = {"x-messari-api-key": get_current_user().credentials.API_MESSARI_KEY}
 
     params = {"fields": "profile/general/overview/official_links"}
 
@@ -258,7 +259,7 @@ def get_roadmap(symbol: str, ascend: bool = True) -> pd.DataFrame:
 
     url = base_url2 + f"assets/{symbol}/profile"
 
-    headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+    headers = {"x-messari-api-key": get_current_user().credentials.API_MESSARI_KEY}
 
     params = {"fields": "profile/general/roadmap"}
 
@@ -440,7 +441,7 @@ def get_team(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     url = base_url2 + f"assets/{symbol}/profile"
 
-    headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+    headers = {"x-messari-api-key": get_current_user().credentials.API_MESSARI_KEY}
 
     params = {"fields": "profile/contributors"}
 
@@ -515,7 +516,7 @@ def get_investors(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     url = base_url2 + f"assets/{symbol}/profile"
 
-    headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+    headers = {"x-messari-api-key": get_current_user().credentials.API_MESSARI_KEY}
 
     params = {"fields": "profile/investors"}
 
@@ -588,7 +589,7 @@ def get_governance(symbol: str) -> Tuple[str, pd.DataFrame]:
 
     url = base_url2 + f"assets/{symbol}/profile"
 
-    headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+    headers = {"x-messari-api-key": get_current_user().credentials.API_MESSARI_KEY}
 
     params = {"fields": "profile/governance"}
 
@@ -667,7 +668,7 @@ def get_fundraising(
 
     url = base_url2 + f"assets/{symbol}/profile"
 
-    headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+    headers = {"x-messari-api-key": get_current_user().credentials.API_MESSARI_KEY}
 
     params = {"fields": "profile/economics/launch"}
 

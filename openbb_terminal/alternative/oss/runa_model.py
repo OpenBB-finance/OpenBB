@@ -109,7 +109,7 @@ def get_startups() -> pd.DataFrame:
     pd.DataFrame
         list of startups
     """
-    response = request("https://runacap.com/ross-index/")
+    response = request("https://runacap.com/ross-index/annual-2022")
     soup = BeautifulSoup(response.content, "html.parser")
     startups = []
     if soup:

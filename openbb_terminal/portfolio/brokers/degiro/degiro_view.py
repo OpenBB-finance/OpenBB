@@ -1,6 +1,7 @@
 # IMPORTATION THIRDPARTY
 import logging
 from argparse import Namespace
+from typing import Optional
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -14,15 +15,12 @@ from degiro_connector.trading.models.trading_pb2 import (
     Update,
 )
 
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.decorators import check_api_key
+from openbb_terminal.decorators import check_api_key, log_start_end
 
 # IMPORTATION INTERNAL
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 # pylint: disable=no-member
 
@@ -314,7 +312,7 @@ class DegiroView:
 
     @log_start_end(log=logger)
     @check_api_key(["DG_USERNAME", "DG_PASSWORD"])
-    def login(self, otp: int = None):
+    def login(self, otp: Optional[int] = None):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
         credentials = degiro_model.login_default_credentials()
@@ -513,7 +511,6 @@ class DegiroView:
         )
 
         if portfolio_df is not None:
-
             print_rich_table(
                 df=portfolio_df,
                 headers=list(portfolio_df.columns),

@@ -11,8 +11,8 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +95,6 @@ def get_government_trading(
                 columns={"Date": "TransactionDate", "Senator": "Representative"}
             )
         return pd.DataFrame(response.json())
-
     return pd.DataFrame()
 
 
@@ -507,7 +506,7 @@ def get_qtr_contracts(analysis: str = "total", limit: int = 5) -> pd.DataFrame:
         return pd.DataFrame(df_groups[:limit])
 
     if analysis in {"upmom", "downmom"}:
-        df_coef = pd.DataFrame(columns=["Ticker", "Coef"])
+        coef = []
         df_groups = df_contracts.groupby("Ticker")
         for tick, data in df_groups:
             regr = LinearRegression()
@@ -517,13 +516,12 @@ def get_qtr_contracts(analysis: str = "total", limit: int = 5) -> pd.DataFrame:
             # Train the model using the training sets
             regr.fit(np.arange(0, len(amounts)).reshape(-1, 1), amounts)
 
-            df_coef = df_coef.append(
-                {"Ticker": tick, "Coef": regr.coef_[0]}, ignore_index=True
-            )
+            coef.append({"Ticker": tick, "Coef": regr.coef_[0]})
 
-        return df_coef.sort_values(by=["Coef"], ascending=analysis == "downmom")[
-            "Ticker"
-        ][:limit]
+        return pd.DataFrame(coef).sort_values(
+            by=["Coef"], ascending=analysis == "downmom"
+        )["Ticker"][:limit]
+
     return pd.DataFrame()
 
 

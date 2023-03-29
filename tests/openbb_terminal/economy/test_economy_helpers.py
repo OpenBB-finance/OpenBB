@@ -1,5 +1,6 @@
 import pandas as pd
 import pytest
+
 from openbb_terminal.economy import economy_helpers
 
 

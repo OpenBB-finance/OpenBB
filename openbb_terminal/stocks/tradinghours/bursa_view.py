@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import logging
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks.tradinghours import bursa_model
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.tradinghours import bursa_model
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +56,7 @@ def display_open():
     print_rich_table(
         exchanges,
         show_index=True,
+        index_name="Symbol",
         title="[bold]Open markets[/bold]",
     )
 
@@ -76,6 +77,7 @@ def display_closed():
     print_rich_table(
         exchanges,
         show_index=True,
+        index_name="Symbol",
         title="[bold]Closed markets[/bold]",
     )
 
@@ -96,5 +98,6 @@ def display_all():
     print_rich_table(
         exchanges,
         show_index=True,
+        index_name="Symbol",
         title="[bold]World markets[/bold]",
     )

@@ -4,30 +4,27 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-
-from typing import List
 from datetime import date
+from typing import List, Optional
+
 import pandas as pd
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import get_user_timezone_or_invalid
 from openbb_terminal.menu import session
-from openbb_terminal.helper_funcs import (
-    get_user_timezone_or_invalid,
-)
-from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.tradinghours import bursa_view
 from openbb_terminal.stocks.tradinghours.bursa_model import get_open
+from openbb_terminal.stocks.tradinghours.pandas_market_cal_view import (
+    display_exchange_holidays,
+    get_all_holiday_exchange_short_names,
+)
 from openbb_terminal.stocks.tradinghours.tradinghours_helper import (
     get_exchanges_short_names,
     get_fd_equities_list,
-)
-from openbb_terminal.stocks.tradinghours.pandas_market_cal_view import (
-    get_all_holiday_exchange_short_names,
-    display_exchange_holidays,
 )
 
 logger = logging.getLogger(__name__)
@@ -44,7 +41,7 @@ class TradingHoursController(BaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, ticker: str = "", queue: List[str] = None):
+    def __init__(self, ticker: str = "", queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(queue)
 
@@ -65,10 +62,10 @@ class TradingHoursController(BaseController):
         self.exchange = None
 
         if ticker:
-            if ticker in self.equities:
+            if ticker in self.equities.index:
                 self.symbol = ticker
-                self.symbol_name = self.equities[ticker]["short_name"]
-                self.exchange = self.equities[ticker]["exchange"]
+                self.symbol_name = self.equities.loc[ticker]["name"]
+                self.exchange = self.equities.loc[ticker]["exchange"]
                 open_ex = get_open()
                 if self.exchange in open_ex.index:
                     self.symbol_market_open = True
@@ -81,18 +78,16 @@ class TradingHoursController(BaseController):
         self.data = pd.DataFrame()
         self.timezone = get_user_timezone_or_invalid()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        if self.symbol is not None:
-            if self.symbol_market_open:
-                exchange_opened = "OPENED"
-            else:
-                exchange_opened = "CLOSED"
-        else:
-            exchange_opened = ""
+        exchange_opened = (
+            ("OPENED" if self.symbol_market_open else "CLOSED")
+            if self.symbol is not None
+            else ""
+        )
 
         mt = MenuText("stocks/th/")
         mt.add_cmd("open")
@@ -137,9 +132,9 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.symbol = ns_parser.symbol
-            if ns_parser.symbol in self.equities:
-                self.symbol_name = self.equities[self.symbol]["short_name"]
-                self.exchange = self.equities[self.symbol]["exchange"]
+            if ns_parser.symbol in self.equities.index:
+                self.symbol_name = self.equities.loc[self.symbol]["name"]
+                self.exchange = self.equities.loc[self.symbol]["exchange"]
                 open_ex = get_open()
                 if self.exchange in open_ex.index:
                     self.symbol_market_open = True

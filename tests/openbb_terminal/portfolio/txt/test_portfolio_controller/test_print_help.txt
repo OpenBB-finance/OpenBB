@@ -1,37 +1,34 @@
+>   bro                portfolio/bro
+>   po                 portfolio/po
 
->   bro              brokers holdings, 		 supports: robinhood, ally, degiro, coinbase
->   po               portfolio optimization, 	 optimize your portfolio weights efficiently
+    load               portfolio/load
+    show               portfolio/show
+    bench              portfolio/bench
 
-    load             load data into the portfolio
-    show             show existing transactions
-    bench            define the benchmark
+portfolio/_loaded: 
+portfolio/_riskfreerate: 0%
+portfolio/_benchmark: 
 
-Loaded transactions file: 
-Risk Free Rate:   0.00%
-Benchmark: 
+portfolio/_graphs_:
+[unvl]    holdv              portfolio/holdv[/unvl]
+[unvl]    holdp              portfolio/holdp[/unvl]
+[unvl]    yret               portfolio/yret[/unvl]
+[unvl]    mret               portfolio/mret[/unvl]
+[unvl]    dret               portfolio/dret[/unvl]
+[unvl]    distr              portfolio/distr[/unvl]
+[unvl]    maxdd              portfolio/maxdd[/unvl]
+[unvl]    rvol               portfolio/rvol[/unvl]
+[unvl]    rsharpe            portfolio/rsharpe[/unvl]
+[unvl]    rsort              portfolio/rsort[/unvl]
+[unvl]    rbeta              portfolio/rbeta[/unvl]
+portfolio/_metrics_:
+[unvl]    summary            portfolio/summary[/unvl]
+[unvl]    alloc              portfolio/alloc[/unvl]
+[unvl]    attrib             portfolio/attrib[/unvl]
+[unvl]    metric             portfolio/metric[/unvl]
+[unvl]    perf               portfolio/perf[/unvl]
+portfolio/_risk_:
+[unvl]    var                portfolio/var[/unvl]
+[unvl]    es                 portfolio/es[/unvl]
+[unvl]    om                 portfolio/om[/unvl]
 
-Graphs:[unvl]
-    holdv            holdings of assets (absolute value)
-    holdp            portfolio holdings of assets (in percentage)
-    yret             yearly returns
-    mret             monthly returns
-    dret             daily returns
-    distr            distribution of daily returns
-    maxdd            maximum drawdown
-    rvol             rolling volatility
-    rsharpe          rolling sharpe
-    rsort            rolling sortino
-    rbeta            rolling beta
-[/unvl]
-Metrics:[unvl]
-    summary          all portfolio vs benchmark metrics for a certain period of choice
-    alloc            allocation on an asset, sector, countries or regions basis
-    attrib           display sector attribution of the portfolio compared to the S&P 500
-    metric           portfolio vs benchmark metric for all different periods
-    perf             performance of the portfolio versus benchmark[/unvl]
-
-Risk Metrics:[unvl]
-    var              display value at risk
-    es               display expected shortfall
-    om               display omega ratio[/unvl]
-        

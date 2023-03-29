@@ -1,11 +1,15 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.options import chartexchange_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -24,15 +28,11 @@ def vcr_config():
 )
 def test_display_raw(mocker, tab):
     # MOCK CHARTS
-    mocker.patch.object(
-        target=helper_funcs.obbff,
-        attribute="USE_TABULATE_DF",
-        new=tab,
-    )
-
-    # MOCK VISUALIZE_OUTPUT
+    preferences = PreferencesModel(USE_TABULATE_DF=tab)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.stocks.options.chartexchange_view.theme.visualize_output"
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     # MOCK PLOT_CHART

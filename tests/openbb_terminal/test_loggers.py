@@ -1,11 +1,13 @@
 from pathlib import Path
+
 import pytest
+
 from openbb_terminal import loggers
 from openbb_terminal.core.log.generation.settings import (
-    Settings,
     AppSettings,
     AWSSettings,
     LogSettings,
+    Settings,
 )
 
 settings = Settings(
@@ -14,6 +16,7 @@ settings = Settings(
         name="MOCK_COMMIT_HASH",
         identifier="MOCK_COMMIT_HASH",
         session_id="MOCK_SESSION_ID",
+        user_id="MOCK_USER_ID",
     ),
     aws_settings=AWSSettings(
         aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",
@@ -64,7 +67,10 @@ def test_get_commit_hash(mocker, git):
 
 
 def test_get_commit_hash_obff(mocker):
-    mocker.patch("openbb_terminal.loggers.LOGGING_COMMIT_HASH", "MOCKING_COMMIT_HASH")
+    mocker.patch(
+        "openbb_terminal.loggers.current_system.LOGGING_COMMIT_HASH",
+        "MOCKING_COMMIT_HASH",
+    )
     value = loggers.get_commit_hash()
     assert value
 

@@ -3,23 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import Optional, Union
 
-from matplotlib import pyplot as plt
-from matplotlib import ticker
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    is_valid_axes_count,
-)
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.alternative.oss import github_model
-from openbb_terminal.cryptocurrency.dataframe_helpers import (
-    lambda_long_number_format_with_type_check,
-)
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -28,9 +17,9 @@ logger = logging.getLogger(__name__)
 def display_star_history(
     repo: str,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plots repo summary [Source: https://api.github.com].
 
     Parameters
@@ -39,27 +28,19 @@ def display_star_history(
         Repository to display star history. Format: org/repo, e.g., openbb-finance/openbbterminal
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = github_model.get_stars_history(repo)
     if not df.empty:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
-        ax.plot(df["Date"], df["Stars"])
+        fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Stars")
+        fig.set_title(f"Star History for {repo}")
 
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Stars")
-        ax.set_title(f"Star History for {repo}")
-
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
+        fig.add_scatter(
+            x=df["Date"],
+            y=df["Stars"],
+            mode="lines",
+        )
 
         export_data(
             export,
@@ -67,7 +48,11 @@ def display_star_history(
             "sh",
             df,
             sheet_name,
+            fig,
         )
+        return fig.show(external=external_axes)
+
+    return None
 
 
 @log_start_end(log=logger)
@@ -76,9 +61,9 @@ def display_top_repos(
     categories: str = "",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plots repo summary [Source: https://api.github.com].
 
     Parameters
@@ -91,40 +76,24 @@ def display_top_repos(
         Number of repos to look at
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = github_model.get_top_repos(categories=categories, sortby=sortby, limit=limit)
     if not df.empty:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
-        for _, row in df.iterrows():
-            ax.barh(
-                y=row["full_name"],
-                width=row["stargazers_count" if sortby == "stars" else "forks_count"],
-                height=0.5,
-            )
-
-        ax.set_xlabel(sortby.capitalize())
-        ax.get_xaxis().set_major_formatter(
-            ticker.FuncFormatter(
-                lambda x, _: lambda_long_number_format_with_type_check(x)
-            )
+        fig = OpenBBFigure(
+            xaxis_title=sortby.capitalize(), yaxis_title="Repository Full Name"
         )
-        ax.yaxis.set_label_position("left")
-        ax.yaxis.set_ticks_position("left")
-        ax.set_ylabel("Repository Full Name")
+
+        fig.add_bar(
+            x=df["stargazers_count" if sortby == "stars" else "forks_count"],
+            y=df["full_name"],
+            orientation="h",
+        )
+
         category_substr = "ies" if "," in categories else "y"
         category_str = f"categor{category_substr} {categories} " if categories else ""
-        ax.set_title(f"Top repos {category_str}sorted by {sortby}")
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
+        fig.set_title(f"Top repos {category_str}sorted by {sortby}")
 
         export_data(
             export,
@@ -132,11 +101,17 @@ def display_top_repos(
             "tr",
             df,
             sheet_name,
+            fig,
         )
+        return fig.show(external=external_axes)
+
+    return None
 
 
 @log_start_end(log=logger)
-def display_repo_summary(repo: str, export: str = "", sheet_name: str = None) -> None:
+def display_repo_summary(
+    repo: str, export: str = "", sheet_name: Optional[str] = None
+) -> None:
     """Prints table showing repo summary [Source: https://api.github.com].
 
     Parameters
@@ -149,7 +124,11 @@ def display_repo_summary(repo: str, export: str = "", sheet_name: str = None) ->
     data = github_model.get_repo_summary(repo)
     if not data.empty:
         print_rich_table(
-            data, headers=list(data.columns), show_index=False, title="Repo summary"
+            data,
+            headers=list(data.columns),
+            show_index=False,
+            title="Repo summary",
+            export=bool(export),
         )
 
         export_data(

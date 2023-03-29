@@ -4,20 +4,17 @@ __docformat__ = "numpy"
 # pylint: disable=eval-used
 
 import logging
-from pathlib import Path
-from typing import Dict, Union, Any, Optional
 from itertools import chain
+from pathlib import Path
+from typing import Any, Dict, Optional, Tuple, Union
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
+from openbb_terminal.common import common_model
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.config.paths import (
-    USER_EXPORTS_DIRECTORY,
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-)
-from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)
 
@@ -30,12 +27,15 @@ def get_default_files() -> Dict[str, Path]:
     default_files : Dict[str, Path]
         A dictionary to map the default file names to their paths.
     """
+    current_user = get_current_user()
     default_files = {
         filepath.name: filepath
         for file_type in common_model.file_types
         for filepath in chain(
-            USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
-            USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+            current_user.preferences.USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+            current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY.rglob(
+                f"*.{file_type}"
+            ),
         )
         if filepath.is_file()
     }
@@ -56,7 +56,7 @@ def __sdk_dt_format(x) -> str:
 
 @log_start_end(log=logger)
 def get_options(
-    datasets: Dict[str, pd.DataFrame], dataset_name: str = None
+    datasets: Dict[str, pd.DataFrame], dataset_name: Optional[str] = None
 ) -> Dict[Union[str, Any], pd.DataFrame]:
     """Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 
@@ -102,7 +102,7 @@ def clean(
     fill: Optional[str] = None,
     drop: Optional[str] = None,
     limit: Optional[int] = None,
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, np.bool_]:
     """Clean up NaNs from the dataset
 
     Parameters
@@ -118,8 +118,8 @@ def clean(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with cleaned up data
+    Tuple[pd.DataFrame, np.bool_]
+        The cleaned dataset and a boolean indicating if there are any NaNs left
     """
     kwargs = {}
     if limit:

@@ -4,15 +4,14 @@ __docformat__ = "numpy"
 import logging
 import webbrowser
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +43,11 @@ class ResearchController(BaseController):
     PATH = "/stocks/res/"
 
     def __init__(
-        self, ticker: str, start: datetime, interval: str, queue: List[str] = None
+        self,
+        ticker: str,
+        start: datetime,
+        interval: str,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -53,7 +56,7 @@ class ResearchController(BaseController):
         self.start = start
         self.interval = interval
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 

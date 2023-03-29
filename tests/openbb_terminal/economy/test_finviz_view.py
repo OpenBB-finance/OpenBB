@@ -1,11 +1,15 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.economy import finviz_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -27,8 +31,15 @@ def vcr_config():
 )
 def test_display_valuation(mocker, tab):
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=tab,
+        USE_ION=True,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
@@ -53,8 +64,15 @@ def test_display_valuation(mocker, tab):
 )
 def test_display_performance(mocker, tab):
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=tab,
+        USE_ION=True,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
@@ -104,8 +122,15 @@ def test_display_spectrum(mocker):
 )
 def test_display_future(mocker, tab):
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=tab,
+        USE_ION=True,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")

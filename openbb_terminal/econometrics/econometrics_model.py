@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import logging
 import warnings
 from itertools import combinations
-from typing import Any, Dict, Tuple, Optional, Union
+from typing import Any, Dict, Optional, Tuple, Union
 
 import pandas as pd
 import statsmodels.api as sm
@@ -59,6 +59,24 @@ def get_options(
             )
 
     return option_tables
+
+
+@log_start_end(log=logger)
+def get_corr_df(data: pd.DataFrame) -> pd.DataFrame:
+    """Returns correlation for a given df
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The df to produce statistics for
+
+    Returns
+    -------
+    df: pd.DataFrame
+        The df with the new data
+    """
+    corr = data.corr(numeric_only=True)
+    return corr
 
 
 @log_start_end(log=logger)

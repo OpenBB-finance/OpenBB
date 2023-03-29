@@ -3,20 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
-import matplotlib.pyplot as plt
-import mplfinance as mpf
-
-from openbb_terminal.config_terminal import theme
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.portfolio.brokers.robinhood import robinhood_model
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +24,7 @@ span_title_dict = {
 
 
 @log_start_end(log=logger)
-def display_holdings(export: str = "", sheet_name: str = None):
+def display_holdings(export: str = "", sheet_name: Optional[str] = None):
     """Display stock holdings in robinhood
 
     Parameters
@@ -42,7 +34,10 @@ def display_holdings(export: str = "", sheet_name: str = None):
     """
     holdings = robinhood_model.get_holdings()
     print_rich_table(
-        holdings, headers=list(holdings.columns), title="Robinhood Holdings"
+        holdings,
+        headers=list(holdings.columns),
+        title="Robinhood Holdings",
+        export=bool(export),
     )
 
     export_data(
@@ -59,7 +54,8 @@ def display_historical(
     interval: str = "day",
     window: str = "3month",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ):
     """Display historical portfolio
 
@@ -71,30 +67,24 @@ def display_historical(
         How long to look back, default="3month"
     export : str, optional
         Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     hist = robinhood_model.get_historical(interval, window)
 
-    mpf.plot(
-        hist,
-        type="candle",
-        style=theme.mpf_style,
-        title=f"\nPortfolio for {span_title_dict[window]}",
-        ylabel="Equity ($)",
-        xrotation=10,
-        figratio=(10, 7),
-        figscale=1.10,
-        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        figsize=(plot_autoscale()),
-        update_width_config=dict(
-            candle_linewidth=0.6,
-            candle_width=0.8,
-            volume_linewidth=0.8,
-            volume_width=0.8,
-        ),
+    fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Equity ($)")
+    fig.set_title(f"Portfolio for {span_title_dict[window]}")
+
+    fig.add_candlestick(
+        x=hist.index,
+        open=hist["Open"],
+        high=hist["High"],
+        low=hist["Low"],
+        close=hist["Close"],
+        name="Equity",
     )
-    if obbff.USE_ION:
-        plt.ion()
-    console.print()
 
     export_data(
         export,
@@ -102,4 +92,7 @@ def display_historical(
         "rh_hist",
         hist,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

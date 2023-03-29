@@ -1,20 +1,26 @@
 {
   "stocks": {
-    "filings": ["FinancialModelingPrep"],
     "search": ["FinanceDatabase"],
-    "quote": ["YahooFinance"],
+    "quote": ["FinancialModelingPrep"],
     "tob": ["CBOE"],
     "candle": [],
     "codes": ["Polygon"],
     "news": ["Feedparser", "NewsApi"],
-    "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+    "load": [
+      "YahooFinance",
+      "AlphaVantage",
+      "Polygon",
+      "EODHD",
+      "Intrinio",
+      "DataBento"
+    ],
     "th": {
-      "symbol": ["FinanceDatabase"],
       "open": ["Bursa"],
       "closed": ["Bursa"],
       "all": ["Bursa"],
       "exchange": ["Bursa"],
-      "holidays":["PandasMarketCalendars"]
+      "holidays": ["PandasMarketCalendars"],
+      "symbol": ["FinanceDatabase"]
     },
     "options": {
       "unu": ["FDScanner"],
@@ -24,21 +30,22 @@
         "set": [],
         "scr": ["Syncretism"]
       },
-      "load": ["YahooFinance", "Tradier", "Nasdaq"],
-      "exp": ["YahooFinance", "Tradier", "Nasdaq"],
+      "load": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
+      "exp": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
       "pcr": ["AlphaQuery"],
       "info": ["Barchart"],
-      "chains": ["YahooFinance", "Tradier", "Nasdaq"],
+      "chains": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
       "oi": ["YahooFinance", "Tradier", "Nasdaq"],
       "vol": ["YahooFinance", "Tradier", "Nasdaq"],
       "voi": ["YahooFinance", "Tradier", "Nasdaq"],
-      "hist": ["ChartExchange", "Tradier"],
+      "hist": ["ChartExchange", "Tradier", "Intrinio"],
       "vsurf": ["YahooFinance"],
-      "grhist": ["Syncretism"],
+      "grhist": ["Syncretism", "Intrinio"],
       "plot": ["YahooFinance"],
       "parity": ["YahooFinance"],
       "binom": ["YahooFinance"],
       "greeks": ["YahooFinance"],
+      "eodchain": ["Intrinio"],
       "pricing": {
         "add": [],
         "rmv": [],
@@ -55,6 +62,7 @@
       }
     },
     "disc": {
+      "filings": ["FinancialModelingPrep"],
       "pipo": ["Finnhub"],
       "fipo": ["Finnhub"],
       "gainers": ["YahooFinance"],
@@ -64,7 +72,6 @@
       "active": ["YahooFinance"],
       "ulc": ["YahooFinance"],
       "asc": ["YahooFinance"],
-      "ford": ["Fidelity"],
       "arkord": ["CathiesArk"],
       "upcoming": ["SeekingAlpha"],
       "trending": ["SeekingAlpha"],
@@ -92,9 +99,9 @@
       "vis": ["StockAnalysis"]
     },
     "dps": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "shorted": ["YahooFinance"],
-      "ctb": ["InteractiveBrokers"],
+      "ctb": ["InteractiveBrokers", "Stocksera"],
       "hsi": ["Shortinterest"],
       "prom": ["FINRA"],
       "pos": ["Stockgrid"],
@@ -102,8 +109,7 @@
       "dpotc": ["FINRA"],
       "ftd": ["SEC"],
       "spos": ["Stockgrid"],
-      "psi": ["Stockgrid", "Quandl"],
-      "ctb": ["ibkr", "stocksera"]
+      "psi": ["Stockgrid", "Quandl"]
     },
     "scr": {
       "view": [],
@@ -114,16 +120,14 @@
       "financial": ["Finviz"],
       "ownership": ["Finviz"],
       "performance": ["Finviz"],
-      "technical": ["Finviz"]
+      "technical": ["Finviz"],
+      "arktrades": ["Cathiesark"]
     },
     "ins": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "view": [],
       "set": [],
       "filter": ["OpenInsider"],
-      "stats": ["OpenInsider"],
-      "act": ["BusinessInsider"],
-      "lins": ["Finviz"],
       "lcb": ["OpenInsider"],
       "lpsb": ["OpenInsider"],
       "lit": ["OpenInsider"],
@@ -143,10 +147,13 @@
       "tippm": ["OpenInsider"],
       "tist": ["OpenInsider"],
       "tispw": ["OpenInsider"],
-      "tispm": ["OpenInsider"]
+      "tispm": ["OpenInsider"],
+      "stats": ["OpenInsider"],
+      "act": ["BusinessInsider"],
+      "lins": ["Finviz"]
     },
     "gov": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "lasttrades": ["QuiverQuant"],
       "topbuys": ["QuiverQuant"],
       "topsells": ["QuiverQuant"],
@@ -159,16 +166,14 @@
       "lobbying": ["QuiverQuant"]
     },
     "ba": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "headlines": ["FinBrain"],
       "snews": ["Finnhub"],
       "wsb": ["Reddit"],
-      "watchlist": ["Reddit"],
-      "popular": ["Reddit"],
       "spacc": ["Reddit"],
-      "spac": ["Reddit"],
-      "getdd": ["Reddit"],
       "redditsent": ["Reddit"],
+      "popular": ["Reddit"],
+      "getdd": ["Reddit"],
       "trending": ["Stocktwits"],
       "stalker": ["Stocktwits"],
       "bullbear": ["Stocktwits"],
@@ -179,14 +184,10 @@
       "regions": ["Google"],
       "interest": ["Google"],
       "queries": ["Google"],
-      "rise": ["Google"],
-      "trend": ["SentimentInvestor"],
-      "hist": ["SentimentInvestor"],
-      "jcdr": ["JimCramer"],
-      "jctr": ["JimCramer"]
+      "rise": ["Google"]
     },
     "ca": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "tsne": ["YahooFinance"],
       "get": ["Finviz", "Polygon", "Finnhub"],
       "set": [],
@@ -208,86 +209,84 @@
       "technical": ["Finviz"]
     },
     "fa": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
-      "income": [
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
+      "enterprise": ["FinancialModelingPrep", "YahooFinance"],
+      "overview": [
         "YahooFinance",
+        "Finviz",
+        "FinancialModelingPrep",
+        "AlphaVantage"
+      ],
+      "divs": ["YahooFinance"],
+      "splits": ["YahooFinance"],
+      "rating": ["Finviz", "FinancialModelingPrep"],
+      "rot": ["Finnhub"],
+      "score": ["FinancialModelingPrep"],
+      "warnings": ["MarketWatch"],
+      "mgmt": ["BusinessInsider"],
+      "shrs": ["YahooFinance"],
+      "supplier": ["CSIMarket"],
+      "customer": ["CSIMarket"],
+      "income": [
+        "FinancialModelingPrep",
         "Polygon",
         "AlphaVantage",
-        "FinancialModelingPrep",
-        "EODHD"
+        "EODHD",
+        "YahooFinance"
       ],
       "balance": [
-        "YahooFinance",
+        "FinancialModelingPrep",
         "Polygon",
         "AlphaVantage",
-        "FinancialModelingPrep",
-        "EODHD"
+        "EODHD",
+        "YahooFinance"
       ],
       "cash": [
-        "YahooFinance",
+        "FinancialModelingPrep",
         "Polygon",
         "AlphaVantage",
-        "FinancialModelingPrep",
-        "EODHD"
+        "EODHD",
+        "YahooFinance"
       ],
-      "data": ["Finviz"],
+      "overview": [
+        "Finviz",
+        "FinancialModelingPrep",
+        "AlphaVantage",
+        "YahooFinance"
+      ],
       "mgmt": ["BusinessInsider"],
       "analysis": ["Elect"],
       "score": ["FinancialModelingPrep"],
-      "profile": ["FinancialModelingPrep"],
       "quote": ["FinancialModelingPrep"],
-      "enterprise": ["FinancialModelingPrep"],
-      "metrics": ["FinancialModelingPrep"],
-      "ratios": ["FinancialModelingPrep"],
+      "mktcap": ["FinancialModelingPrep", "YahooFinance"],
       "growth": ["FinancialModelingPrep"],
-      "revfc": ["SeekingAlpha"],
-      "epsfc": ["SeekingAlpha"],
-      "warnings": ["MarketWatch"],
-      "dcf": ["StockAnalysis"],
-      "dcfc": ["FinancialModelingPrep"],
-      "info": ["YahooFinance"],
-      "mktcap": ["YahooFinance"],
-      "shrs": ["YahooFinance"],
-      "sust": ["YahooFinance"],
-      "cal": ["YahooFinance"],
-      "divs": ["YahooFinance"],
-      "splits": ["YahooFinance"],
-      "web": ["YahooFinance"],
-      "hq": ["YahooFinance"],
-      "overview": ["AlphaVantage"],
-      "key": ["AlphaVantage"],
-      "earnings": ["YahooFinance", "AlphaVantage"],
+      "metrics": ["FinancialModelingPrep", "AlphaVantage"],
+      "ratios": ["FinancialModelingPrep"],
+      "dupont": ["AlphaVantage"],
       "fraud": ["AlphaVantage"],
-      "dupont": ["AlphaVantage"]
-    },
-    "dd": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
-      "analyst": ["Finviz"],
-      "rating": ["FinancialModelingPrep"],
-      "rot": ["Finnhub"],
-      "pt": ["BusinessInsider"],
+      "sec": ["MarketWatch", "FinancialModelingPrep"],
+      "analysis": ["Elect"],
+      "earnings": ["AlphaVantage", "YahooFinance"],
+      "epsfc": ["SeekingAlpha"],
+      "revfc": ["SeekingAlpha"],
       "est": ["BusinessInsider"],
-      "sec": ["MarketWatch"],
-      "supplier": ["CSIMarket"],
-      "customer": ["CSIMarket"],
-      "arktrades": ["Cathiesark"]
+      "pt": ["BusinessInsider", "FinancialModelingPrep"],
+      "dcf": ["StockAnalysis"],
+      "dcfc": ["FinancialModelingPrep"]
     },
     "bt": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "whatif": ["YahooFinance"]
     },
     "ta": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
-      "tv": ["TradingView"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "recom": ["TradingView"],
-      "view": ["Finviz"],
-      "summary": ["FinBrain"]
+      "summary": ["FinBrain"],
+      "tv": ["TradingView"],
+      "view": ["Finviz"]
     },
     "qa": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"]
-    },
-    "pred": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"]
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"]
     }
   },
   "crypto": {
@@ -348,6 +347,9 @@
       "ueat": ["BitQuery"],
       "ttcp": ["BitQuery"],
       "baas": ["BitQuery"],
+      "dt": ["Shroom"],
+      "ds": ["Shroom"],
+      "tvl": ["Shroom"],
       "address": ["Ethplorer"],
       "top": ["Ethplorer"],
       "balance": ["Ethplorer"],
@@ -356,14 +358,10 @@
       "holders": ["Ethplorer"],
       "th": ["Ethplorer"],
       "prices": ["Ethplorer"],
-      "tx": ["Ethplorer"],
-      "dt": ["Shroom"],
-      "ds": ["Shroom"],
-      "tvl": ["Shroom"]
+      "tx": ["Ethplorer"]
     },
     "defi": {
       "newsletter": ["Substack"],
-      "dpi": ["DeFiPulse"],
       "vaults": ["Coindix"],
       "tokens": ["TheGraph"],
       "stats": ["TheGraph"],
@@ -374,8 +372,6 @@
       "gdapps": ["DeFiLlama"],
       "stvl": ["DeFiLlama"],
       "dtvl": ["DeFiLlama"],
-      "aterra": ["TerraEngineer"],
-      "ayr": ["TerraEngineer"],
       "sinfo": ["TerraFCD"],
       "validators": ["TerraFCD"],
       "gacc": ["TerraFCD"],
@@ -403,6 +399,7 @@
       "gov": ["Messari"],
       "basic": ["CoinPaprika"],
       "stats": ["Coinbase"],
+      "desc": ["TokenTerminal"],
       "market": ["CoinGecko"],
       "mkt": ["CoinPaprika"],
       "ex": ["CoinPaprika"],
@@ -419,6 +416,7 @@
       "ps": ["CoinPaprika"],
       "mcapdom": ["Messari"],
       "mt": ["Messari"],
+      "funot": ["TokenTerminal"],
       "team": ["Messari"],
       "inv": ["Messari"],
       "tk": ["Messari"],
@@ -431,9 +429,7 @@
       "social": ["CoinGecko"],
       "score": ["CoinGecko"],
       "dev": ["CoinGecko"],
-      "gh": ["Santiment"],
-      "desc": ["TokenTerminal"],
-      "funot": ["TokenTerminal"]
+      "gh": ["Santiment"]
     },
     "ta": {
       "load": ["YahooFinance", "CoinGecko", "CCXT"],
@@ -441,69 +437,112 @@
     },
     "qa": {
       "load": ["YahooFinance", "CoinGecko", "CCXT"]
-    },
-    "pred": {
-      "load": ["YahooFinance", "CoinGecko", "CCXT"]
     }
   },
   "etf": {
     "search": ["FinanceDatabase", "StockAnalysis"],
     "load": ["YahooFinance"],
-    "overview": ["StockAnalysis"],
-    "holdings": ["StockAnalysis"],
-    "weights": ["YahooFinance"],
-    "summary": ["YahooFinance"],
-    "news": ["NewsApi"],
-    "pir": ["ThePassiveInvestor"],
-    "compare": ["StockAnalysis"],
     "disc": {
       "gainers": ["WallStreetJournal"],
       "decliners": ["WallStreetJournal"],
       "active": ["WallStreetJournal"]
     },
-    "screen": {
-      "screen": ["StockAnalysis"],
-      "sbc": ["FinanceDatabase"]
-    }
+    "overview": ["StockAnalysis"],
+    "holdings": ["StockAnalysis"],
+    "weights": ["FinancialModelingPrep"],
+    "news": ["NewsApi"],
+    "compare": ["StockAnalysis"]
   },
   "economy": {
     "overview": ["WallStreetJournal"],
     "futures": ["WallStreetJournal", "Finviz"],
     "map": ["Finviz"],
     "bigmac": ["Nasdaq"],
-    "ycrv": ["FRED"],
     "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
     "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],
     "performance": ["Finviz"],
     "spectrum": ["Finviz"],
-    "macro": ["EconDB"],
+    "gdp": ["OECD"],
+    "rgdp": ["OECD"],
+    "fgdp": ["OECD"],
+    "debt": ["OECD"],
+    "cpi": ["FRED"],
+    "ccpi": ["OECD"],
+    "balance": ["OECD"],
+    "revenue": ["OECD"],
+    "spending": ["OECD"],
+    "trust": ["OECD"],
     "treasury": ["EconDB"],
     "fred": ["FRED"],
     "index": ["YahooFinance"]
   },
   "forex": {
-    "load": ["YahooFinance", "AlphaVantage", "Polygon", "Oanda"],
+    "load": ["YahooFinance", "AlphaVantage", "Polygon"],
     "quote": ["YahooFinance", "AlphaVantage"],
     "fwd": ["FXEmpire"]
   },
   "funds": {
-    "country": ["Investing"],
-    "overview": ["Investing"],
-    "search": ["Investing"],
-    "load": ["Investing"],
-    "info": ["Investing"],
-    "plot": ["Investing"],
-    "sector": ["YahooFinance"],
-    "equity": ["YahooFinance"],
+    "country": ["MorningStar"],
+    "search": ["MorningStar"],
+    "load": ["MorningStar"],
+    "info": ["MorningStar"],
+    "plot": ["MorningStar"],
+    "sector": ["MorningStar"],
+    "carbon": ["MorningStar"],
+    "exclusion": ["MorningStar"],
+    "holdings": ["MorningStar"],
     "alswe": ["Avanza"],
     "infoswe": ["Avanza"]
   },
   "futures": {
     "search": ["YahooFinance"],
-    "historical": ["YahooFinance"],
+    "historical": ["YahooFinance", "DataBento"],
     "curve": ["YahooFinance"]
+  },
+  "fixedincome": {
+    "estr": ["FRED", "ECB"],
+    "sofr": ["FRED"],
+    "sonia": ["FRED"],
+    "ameribor": ["FRED"],
+    "fed": ["FRED"],
+    "iorb": ["FRED"],
+    "projection": ["FRED"],
+    "dwpcr": ["FRED"],
+    "ecb": ["FRED"],
+    "treasury": ["OECD"],
+    "usrates": ["FRED"],
+    "ycrv": ["FRED"],
+    "ecbycrv": ["ECB"],
+    "icebofa": ["FRED"],
+    "moody": ["FRED"],
+    "spot": ["FRED"],
+    "cp": ["FRED"],
+    "hqm": ["FRED"],
+    "icespread": ["FRED"],
+    "tmc": ["FRED"],
+    "ffrmc": ["FRED"],
+    "tbffr": ["FRED"]
+  },
+  "portfolio": {
+    "po": {
+      "maxsharpe": ["YahooFinance"],
+      "minrisk": ["YahooFinance"],
+      "maxutil": ["YahooFinance"],
+      "maxret": ["YahooFinance"],
+      "maxdiv": ["YahooFinance"],
+      "maxdecorr": ["YahooFinance"],
+      "blacklitterman": ["FinancialModelingPrep"],
+      "ef": ["YahooFinance"],
+      "riskparity": ["YahooFinance"],
+      "relriskparity": ["YahooFinance"],
+      "hrp": ["YahooFinance"],
+      "herc": ["YahooFinance"],
+      "nco": ["YahooFinance"],
+      "equal": ["YahooFinance"],
+      "mktcap": ["FinancialModelingPrep"]
+    }
   },
   "alternative": {
     "oss": {

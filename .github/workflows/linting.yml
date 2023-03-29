@@ -16,6 +16,8 @@ on:
       - 'feature/*'
       - 'hotfix/*'
       - 'release/*'
+  merge_group:
+    types: [checks_requested]
 
 # Cancel previous runs that are not yet completed.
 concurrency:
@@ -43,16 +45,14 @@ jobs:
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
       - run: |
-          pip install bandit black codespell mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22 ruff==0.0.236
+          pip install bandit black codespell mypy==1.1.1 pylint==2.17.0 ruff==0.0.256
           pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
-      - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
+      - run: codespell --ignore-words-list=gard,commun,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te,buda,shs,welp --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
       - run: ruff .
       - run: mypy --ignore-missing-imports openbb_terminal
-      - run: shopt -s globstar && pyupgrade --py38-plus **/*.py
-      - run: |
-          pylint terminal.py openbb_terminal tests
+      - run: pylint terminal.py openbb_terminal tests
 
   markdown-link-check:
     name: Markdown Linting

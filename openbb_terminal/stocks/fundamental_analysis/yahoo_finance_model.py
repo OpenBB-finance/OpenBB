@@ -2,25 +2,22 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import datetime, timedelta
+import re
+import ssl
+from datetime import datetime
 from typing import Optional, Tuple
 from urllib.request import Request, urlopen
-import re
 
-import ssl
 import numpy as np
 import pandas as pd
 import yfinance as yf
-
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
-)
 
 logger = logging.getLogger(__name__)
 # pylint: disable=W0212
@@ -42,7 +39,7 @@ def get_info(symbol: str) -> pd.DataFrame:
         DataFrame of yfinance information
     """
     stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
+    df_info = pd.DataFrame(stock.fast_info.items(), columns=["Metric", "Value"])
     df_info = df_info.set_index("Metric")
 
     clean_df_index(df_info)
@@ -135,47 +132,6 @@ def get_shareholders(symbol: str, holder: str = "institutional") -> pd.DataFrame
 
 
 @log_start_end(log=logger)
-def get_sustainability(symbol: str) -> pd.DataFrame:
-    """Get sustainability metrics from yahoo
-
-    Parameters
-    ----------
-    symbol : str
-        Stock ticker symbol
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of sustainability metrics
-    """
-    stock = yf.Ticker(symbol)
-    pd.set_option("display.max_colwidth", None)
-
-    df_sustainability = stock.sustainability
-
-    if df_sustainability is None or df_sustainability.empty:
-        return pd.DataFrame()
-
-    clean_df_index(df_sustainability)
-
-    df_sustainability = df_sustainability.rename(
-        index={
-            "Controversialweapons": "Controversial Weapons",
-            "Socialpercentile": "Social Percentile",
-            "Peercount": "Peer Count",
-            "Governancescore": "Governance Score",
-            "Environmentpercentile": "Environment Percentile",
-            "Animaltesting": "Animal Testing",
-            "Highestcontroversy": "Highest Controversy",
-            "Environmentscore": "Environment Score",
-            "Governancepercentile": "Governance Percentile",
-            "Militarycontract": "Military Contract",
-        }
-    )
-    return df_sustainability
-
-
-@log_start_end(log=logger)
 def get_calendar_earnings(symbol: str) -> pd.DataFrame:
     """Get calendar earnings for ticker symbol
 
@@ -204,52 +160,6 @@ def get_calendar_earnings(symbol: str) -> pd.DataFrame:
     )
 
     return df_calendar.T
-
-
-@log_start_end(log=logger)
-def get_website(symbol: str) -> str:
-    """Gets website of company from yfinance
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-
-    Returns
-    -------
-    str
-        Company website"""
-    stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
-    return df_info[df_info["Metric"] == "website"]["Value"].values[0]
-
-
-@log_start_end(log=logger)
-def get_hq(symbol: str) -> str:
-    """Gets google map url for headquarter
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-
-    Returns
-    -------
-    str
-        Headquarter google maps url
-    """
-    stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
-    df_info = df_info.set_index("Metric")
-
-    maps = "https://www.google.com/maps/search/"
-    for field in ["address1", "address2", "city", "state", "zip", "country"]:
-        if field in df_info.index:
-            maps += (
-                df_info[df_info.index == field]["Value"].values[0].replace(" ", "+")
-                + ","
-            )
-    return maps[:-1]
 
 
 @log_start_end(log=logger)
@@ -287,6 +197,7 @@ def get_dividends(symbol: str) -> pd.DataFrame:
 def get_mktcap(
     symbol: str,
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> Tuple[pd.DataFrame, str]:
     """Get market cap over time for ticker. [Source: Yahoo Finance]
 
@@ -304,22 +215,28 @@ def get_mktcap(
     str:
         Currency of ticker
     """
-
     if start_date is None:
-        start_date = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d")
+        # Set data far in the past to ensure all data is returned
+        start_date = "1900-01-01"
+    if end_date is None:
+        end_date = datetime.now()  # type: ignore
 
     currency = ""
     df_data = yf.download(
-        symbol, start=start_date, progress=False, threads=False, ignore_tz=True
+        symbol,
+        start=start_date,
+        end=end_date,
+        progress=False,
+        threads=False,
+        ignore_tz=True,
     )
     if not df_data.empty:
-
         data = yf.Ticker(symbol).fast_info
         if data:
             df_data["Adj Close"] = df_data["Adj Close"] * data["shares"]
             df_data = df_data["Adj Close"]
 
-            currency = data["currency"]
+            currency = data["currency"] if data["currency"] else ""
 
     return df_data, currency
 
@@ -495,7 +412,11 @@ def get_earnings_history(symbol: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_currency(symbol) -> str:
     """Quick helper to get currency for financial statements"""
-    ticker_info = yf.Ticker(symbol).info
+    try:
+        ticker_info = yf.Ticker(symbol).info
+    except Exception:
+        return "Not Specified"
+
     if "financialCurrency" in ticker_info:
         return ticker_info["financialCurrency"]
     return "Not Specified"

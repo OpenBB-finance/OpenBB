@@ -9,12 +9,11 @@ from typing import Any, Optional
 
 import pandas as pd
 
-
-from openbb_terminal.helper_funcs import request
-import openbb_terminal.config_terminal as cfg
-from openbb_terminal.rich_config import console
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.dataframe_helpers import create_df_index
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -150,7 +149,7 @@ def make_request(
     if address:
         url = url + "/" + address
 
-    url += f"?apiKey={cfg.API_ETHPLORER_KEY}"
+    url += f"?apiKey={get_current_user().credentials.API_ETHPLORER_KEY}"
 
     if "limit" in kwargs:
         url += f"&limit={kwargs['limit']}"

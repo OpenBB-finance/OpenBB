@@ -3,11 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
+from openbb_terminal import rich_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.discovery import ark_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +40,7 @@ def ark_orders_view(
     sells_only: bool = False,
     fund: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints a table of the last N ARK Orders
 
@@ -65,7 +67,10 @@ def ark_orders_view(
     if not df_orders.empty:
         df_orders = ark_model.add_order_total(df_orders.head(limit))
 
-        if rich_config.USE_COLOR:
+        if (
+            rich_config.USE_COLOR
+            and not get_current_user().preferences.USE_INTERACTIVE_DF
+        ):
             df_orders["direction"] = df_orders["direction"].apply(
                 lambda_direction_color_red_green
             )
@@ -78,6 +83,7 @@ def ark_orders_view(
             headers=[x.title() for x in df_orders.columns],
             show_index=False,
             title="Orders by ARK Investment Management LLC",
+            export=bool(export),
         )
 
     export_data(

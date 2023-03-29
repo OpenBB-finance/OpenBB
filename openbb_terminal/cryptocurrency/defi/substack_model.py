@@ -11,15 +11,15 @@ from bs4 import BeautifulSoup
 from dateutil import parser
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def scrape_substack(url: str) -> List[List[str]]:
-    """Helper method to scrape newsletters from substack.
+def scrape_substack_rss(url: str, limit: int = 10) -> List[List[str]]:
+    """Helper method to scrape newsletters from a substack rss feed.
     [Source: substack.com]
 
     Parameters
@@ -37,17 +37,16 @@ def scrape_substack(url: str) -> List[List[str]]:
     """
 
     req = request(url)
-    soup = BeautifulSoup(req.text, features="lxml")
+    soup = BeautifulSoup(req.text, features="xml")
     results: List[List[str]] = []
-    archive = soup.find("div", class_="portable-archive-list")
-    if archive:
-        posts = archive.find_all(
-            "div", class_="post-preview portable-archive-post has-image has-author-line"
-        )
+    rss = soup.find("rss")
+    if rss:
+        posts = rss.find_all("item")[:limit]
         for post in posts:
-            title: str = post.a.text
-            post_url: str = post.a["href"]
-            time: str = post.find("time").get("datetime")
+            title: str = post.title.text
+            post_url: str = post.link.text
+            time_str = post.pubDate.text.split(" (")[0]
+            time: str = time_str
             results.append([title, post_url, time])
     return results
 
@@ -63,19 +62,18 @@ def get_newsletters() -> pd.DataFrame:
         DataFrame with recent news from most popular DeFi related newsletters.
     """
 
-    urls = [
-        "https://defiweekly.substack.com/archive",
-        "https://newsletter.thedefiant.io/archive",
-        "https://thedailygwei.substack.com/archive",
-        "https://todayindefi.substack.com/archive",
-        "https://newsletter.banklesshq.com/archive",
-        "https://defislate.substack.com/archive",
+    urls_rss = [
+        "https://kermankohli.substack.com/feed",
+        "https://thedefiant.io/api/feed",
+        "https://thedailygwei.substack.com/feed",
+        "https://todayindefi.substack.com/feed",
+        "https://defislate.substack.com/feed",
     ]
 
-    threads = len(urls)
+    threads = len(urls_rss)
     newsletters = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
-        for newsletter in executor.map(scrape_substack, urls):
+        for newsletter in executor.map(scrape_substack_rss, urls_rss):
             try:
                 newsletters.append(pd.DataFrame(newsletter))
             except KeyError as e:

@@ -1,26 +1,19 @@
 """Token Terminal View"""
 import logging
 import os
-from typing import List, Optional
-
-from matplotlib import pyplot as plt
+from typing import Optional, Union
 
 import pandas as pd
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
+
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.due_diligence.tokenterminal_model import (
+    METRICS,
+    get_description,
     get_fundamental_metric_from_project,
     get_project_ids,
-    get_description,
-    METRICS,
 )
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    is_valid_axes_count,
-)
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -32,9 +25,9 @@ def display_fundamental_metric_from_project_over_time(
     metric: str,
     project: str,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plots fundamental metric from a project over time [Source: Token Terminal]
 
     Parameters
@@ -45,57 +38,36 @@ def display_fundamental_metric_from_project_over_time(
         The project of interest. See `get_project_ids()` for available categories.
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     if project not in get_project_ids():
-        console.print(
+        return console.print(
             f"[red]'{project}' project selected is invalid. See available projects with def get_project_ids()[/red]\n"
         )
-        return
 
     if metric not in METRICS:
-        console.print(
+        return console.print(
             f"[red]'{metric}' metric selected is invalid.  See available metrics with get_possible_metrics()[/red]\n"
         )
-        return
 
     metric_over_time = get_fundamental_metric_from_project(metric, project)
 
     if metric_over_time.empty:
-        console.print("[red]No data found.[/red]\n")
-        return
+        return console.print("[red]No data found.[/red]\n")
 
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    ax.plot(
-        metric_over_time.index,
-        metric_over_time.values
-        if max(metric_over_time.values) < 10000
-        else metric_over_time.values / 1e6,
+    fig = OpenBBFigure(
+        xaxis_title="Date", yaxis_title=f"{metric.replace('_', ' ').capitalize()} [USD]"
     )
-    ax.set_xlabel("Time")
-    if max(metric_over_time.values) < 10000:
-        labeltouse = "[USD]"
-    else:
-        labeltouse = "[1M USD]"
-    ax.set_ylabel(f"{metric.replace('_', ' ').capitalize()} {labeltouse}")
-    ax.set_xlim([metric_over_time.index[0], metric_over_time.index[-1]])
-
-    ax.set_title(
+    fig.set_title(
         f"{project.replace('_', ' ').capitalize()} {metric.replace('_', ' ').capitalize()}"
     )
 
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=metric_over_time.index,
+        y=metric_over_time.values,
+        name=f"{project.replace('_', ' ').title()}",
+    )
 
     export_data(
         export,
@@ -103,12 +75,17 @@ def display_fundamental_metric_from_project_over_time(
         "funot",
         metric_over_time,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_TOKEN_TERMINAL_KEY"])
-def display_description(project: str, export: str = "", sheet_name: str = None):
+def display_description(
+    project: str, export: str = "", sheet_name: Optional[str] = None
+):
     """Prints description from a project [Source: Token Terminal]
 
     Parameters

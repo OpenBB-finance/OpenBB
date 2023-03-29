@@ -1,21 +1,15 @@
 """LoanScan view"""
 import logging
 import os
-from typing import List, Optional
-import matplotlib.pyplot as plt
+from typing import Optional, Union
+
 import pandas as pd
-import numpy as np
+
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    is_valid_axes_count,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
 
 logger = logging.getLogger(__name__)
 
@@ -27,9 +21,9 @@ def display_crypto_rates(
     rate_type: str = "borrow",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms
     [Source: https://loanscan.io/]
 
@@ -48,77 +42,66 @@ def display_crypto_rates(
     """
     df = loanscan_model.get_rates(rate_type=rate_type)
     if df.empty:
-        console.print("\nError in loanscan request\n")
-    else:
-        valid_platforms = [
-            platform
-            for platform in platforms.lower().split(",")
-            if platform in df.index
-        ]
-        df = df[symbols.upper().split(",")].loc[valid_platforms]
-        df = df.sort_values(df.columns[0], ascending=False, na_position="last")
+        return console.print("\nError in loanscan request\n")
 
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+    valid_platforms = [
+        platform for platform in platforms.lower().split(",") if platform in df.index
+    ]
+    df = df[symbols.upper().split(",")].loc[valid_platforms]
+    df = df.sort_values(df.columns[0], ascending=False, na_position="last")
 
-        df_non_null = pd.melt(df.reset_index(), id_vars=["index"]).dropna()
+    fig = OpenBBFigure.create_subplots(
+        1,
+        3,
+        specs=[[{"type": "domain"}, {"type": "bar", "colspan": 2}, None]],
+        column_widths=[0.1, 0.8, 0.1],
+    )
 
-        assets = df_non_null.variable.unique().tolist()
-        colors = iter(cfg.theme.get_colors(reverse=True))
+    df_non_null = pd.melt(df.reset_index(), id_vars=["index"]).dropna()
 
-        for asset in assets:
+    assets = df_non_null.variable.unique().tolist()
+    colors = iter(theme.get_colors(reverse=True))
 
-            width = df_non_null.loc[(df_non_null.variable == asset)]
-            # silence Setcopywarnings
-            pd.options.mode.chained_assignment = None
-            width["id"] = width["index"] + width["variable"]
+    for asset in assets:
+        width = df_non_null.loc[(df_non_null.variable == asset)]
+        # silence Setcopywarnings
+        pd.options.mode.chained_assignment = None
+        width["id"] = width["index"] + width["variable"]
 
-            ax.barh(
-                y=width["id"],
-                width=width.value * 100,
-                label=asset,
-                height=0.5,
-                color=next(colors),
-            )
-
-        ylabels = df_non_null["index"].values.tolist()
-        ax.set_yticks(np.arange(len(ylabels)))
-        ax.set_yticklabels(ylabels)
-
-        ax.set_xlabel("Rate (%)")
-        ax.set_ylabel("Platform")
-        ax.set_title(f"Cryptos {rate_type} interest rate")
-        cfg.theme.style_primary_axis(ax)
-        ax.tick_params(axis="y", labelsize=8)
-
-        ax.yaxis.set_label_position("left")
-        ax.yaxis.set_ticks_position("left")
-
-        handles, labels = ax.get_legend_handles_labels()
-        ax.legend(handles[::-1], labels[::-1], loc="best")
-
-        if not external_axes:
-            cfg.theme.visualize_output()
-
-        df = df.fillna("-")
-        df = df.applymap(lambda x: str(round(100 * x, 2)) + "%" if x != "-" else x)
-
-        print_rich_table(
-            df.head(limit),
-            headers=list(df.columns),
-            index_name="Platform",
-            show_index=True,
-            title=f"Crypto {rate_type.capitalize()} Interest Rates",
+        fig.add_bar(
+            x=width.value * 100,
+            y=width["id"],
+            orientation="h",
+            name=asset,
+            hovertext=width.value * 100,
+            hovertemplate="%{hovertext:.2f}%",
+            marker_color=next(colors),
+            row=1,
+            col=2,
         )
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "cr",
-            df,
-            sheet_name,
-        )
+    fig.update_layout(
+        title=f"Cryptos {rate_type} interest rate",
+        xaxis_title="Rate (%)",
+        yaxis=dict(side="left", title="Platform"),
+        legend=dict(yanchor="bottom", y=0.01, xanchor="right", x=1),
+    )
+
+    df = df.fillna("-")
+    df = df.applymap(lambda x: str(round(100 * x, 2)) + "%" if x != "-" else x)
+
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        index_name="Platform",
+        show_index=True,
+        title=f"Crypto {rate_type.capitalize()} Interest Rates",
+        export=bool(export),
+        limit=limit,
+    )
+
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "cr", df, sheet_name, fig
+    )
+
+    return fig.show(external=external_axes)

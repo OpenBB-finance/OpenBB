@@ -1,6 +1,5 @@
 import configparser
 import logging
-from pathlib import Path
 
 import pandas as pd
 from finvizfinance.screener import (
@@ -12,26 +11,38 @@ from finvizfinance.screener import (
     valuation,
 )
 
+from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
+)
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "screener"
-PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
-preset_choices = {
-    filepath.name: filepath
-    for filepath in PRESETS_PATH.iterdir()
-    if filepath.suffix == ".ini"
-}
-preset_choices.update(
-    {
-        filepath.name: filepath
-        for filepath in PRESETS_PATH_DEFAULT.iterdir()
-        if filepath.suffix == ".ini"
-    }
+PRESETS_PATH = (
+    get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"
 )
+PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
+preset_choices = {}
+
+if PRESETS_PATH.exists():
+    preset_choices.update(
+        {
+            filepath.name.strip(".ini"): filepath
+            for filepath in PRESETS_PATH.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
+
+if PRESETS_PATH_DEFAULT.exists():
+    preset_choices.update(
+        {
+            filepath.name.strip(".ini"): filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
 
 # pylint: disable=C0302
 

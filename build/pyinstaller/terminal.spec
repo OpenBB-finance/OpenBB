@@ -1,18 +1,16 @@
-# -*- mode: python ; coding: utf-8 -*-
+# -*- mode: python ; coding: utf-8 -*-  # noqa
 import os
-import pathlib
+import shutil
 import subprocess
+import sys
+from pathlib import Path
+
 import scipy
-
 from dotenv import set_key
-
-from PyInstaller.compat import is_darwin, is_win
-from PyInstaller.building.api import PYZ, EXE, COLLECT
-from PyInstaller.building.splash import Splash
+from PyInstaller.building.api import COLLECT, EXE, PYZ
 from PyInstaller.building.build_main import Analysis
-
-
-# import subprocess
+from PyInstaller.building.splash import Splash
+from PyInstaller.compat import is_darwin, is_win
 
 from openbb_terminal.loggers import get_commit_hash
 
@@ -23,21 +21,30 @@ build_type = (
 )
 
 # Local python environment packages folder
-pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+venv_path = Path(sys.executable).parent.parent.resolve()
+
+# Check if we are running in a conda environment
+if is_darwin:
+    pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+else:
+    if "site-packages" in list(venv_path.iterdir()):
+        pathex = str(venv_path / "site-packages")
+    else:
+        pathex = str(venv_path / "lib" / "site-packages")
+
 
 # Removing unused ARM64 binary
-binary_to_remove = pathlib.Path(
-    os.path.join(pathex, "_scs_direct.cpython-39-darwin.so")
-)
+binary_to_remove = Path(os.path.join(pathex, "_scs_direct.cpython-39-darwin.so"))
 print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
 binary_to_remove.unlink(missing_ok=True)
+build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
 
 # Removing inspect hook
-destination = pathlib.Path(
+destination = Path(
     os.path.join(pathex, "pyinstaller/hooks/rthooks", "pyi_rth_inspect.py")
 )
 print("Replacing Pyinstaller Hook: pyi_rth_inspect.py")
-source = "build/pyinstaller/hooks/pyi_rth_inspect.py"
+source = os.path.join(build_assets_folder, "hooks", "pyi_rth_inspect.py")
 subprocess.run(["cp", source, str(destination)], check=True)
 
 
@@ -50,11 +57,16 @@ set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 # Files that are explicitly pulled into the bundle
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
+    (
+        os.path.join(os.getcwd(), "openbb_terminal", "core", "plots"),
+        "openbb_terminal/core/plots",
+    ),
     (os.path.join(pathex, "property_cached"), "property_cached"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
     (os.path.join(pathex, "prophet"), "prophet"),
-    (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
+    (os.path.join(pathex, "whisper"), "whisper"),
+    (os.path.join(pathex, "transformers"), "transformers"),
     (
         os.path.join(pathex, "linearmodels", "datasets"),
         os.path.join("linearmodels", "datasets"),
@@ -64,21 +76,26 @@ added_files = [
         os.path.join("statsmodels", "datasets"),
     ),
     (
-        os.path.join(pathex, "investpy", "resources"),
-        os.path.join("investpy", "resources"),
-    ),
-    (
         os.path.join(pathex, "debugpy", "_vendored"),
         os.path.join("debugpy", "_vendored"),
     ),
     (".env", "."),
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
+    (shutil.which("voila"), "."),
+    (shutil.which("jupyter-lab"), "."),
+    (shutil.which("streamlit"), "."),
 ]
+
 if is_win:
-    added_files.append(
+    added_files.extend(
+        [
             (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
-        )
+            (os.path.join(pathex, "frozendict", "version.py"), "frozendict"),
+        ]
+    )
+
+
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
@@ -96,16 +113,21 @@ hidden_imports = [
     "statsmodels",
     "user_agent",
     "vaderSentiment",
-    "frozendict",
-    "textwrap3",
-    "pyEX",
     "feedparser",
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "scipy.sparse.linalg._isolve._iterative"
+    "pywry.pywry",
+    "scipy.sparse.linalg._isolve._iterative",
+    "whisper",
+    "transformers",
+    "yt_dlp",
+    "textwrap3",
 ]
 
+
+if is_win:
+    hidden_imports.append("frozendict")
 
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],
@@ -126,6 +148,53 @@ analysis_kwargs = dict(
 a = Analysis(**analysis_kwargs)
 pyz = PYZ(a.pure, a.zipped_data, cipher=analysis_kwargs["cipher"])
 
+# Executable icon
+if is_win:
+    exe_icon = (os.path.join(os.getcwd(), "images", "openbb_icon.ico"),)
+if is_darwin:
+    exe_icon = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
+
+block_cipher = None
+# PyWry
+pywry_a = Analysis(
+    [os.path.join(pathex, "pywry", "backend.py")],
+    pathex=[],
+    binaries=[],
+    datas=[],
+    hiddenimports=[],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    win_no_prefer_redirects=False,
+    win_private_assemblies=False,
+    cipher=block_cipher,
+    noarchive=False,
+)
+pywry_pyz = PYZ(pywry_a.pure, pywry_a.zipped_data, cipher=block_cipher)
+
+
+# PyWry EXE
+pywry_exe = EXE(
+    pywry_pyz,
+    pywry_a.scripts,
+    [],
+    exclude_binaries=True,
+    name="OpenBBPlotsBackend",
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    console=True,
+    disable_windowed_traceback=False,
+    target_arch="x86_64",
+    codesign_identity=None,
+    entitlements_file=None,
+    icon=exe_icon,
+)
+
+
 exe_args = [
     pyz,
     a.scripts,
@@ -144,6 +213,7 @@ exe_kwargs = dict(
     target_arch="x86_64",
     codesign_identity=None,
     entitlements_file=None,
+    icon=exe_icon,
 )
 
 
@@ -177,12 +247,16 @@ if is_win:
         text_color="white",
     )
     exe_args += [splash, splash.binaries]
-    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb_icon.ico"),)
 
-if is_darwin:
-    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
 
 exe = EXE(*exe_args, **exe_kwargs)
+pywry_collect_args = [
+    pywry_a.binaries,
+    pywry_a.zipfiles,
+    pywry_a.datas,
+]
 
 if build_type == "folder":
-    coll = COLLECT(*([exe] + collect_args), **collect_kwargs)
+    coll = COLLECT(
+        *([exe] + collect_args + [pywry_exe] + pywry_collect_args), **collect_kwargs
+    )

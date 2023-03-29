@@ -6,13 +6,11 @@ import argparse
 import difflib
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.cryptocurrency.overview.glassnode_view import (
-    display_btc_rainbow,
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
+    get_categories_keys,
 )
 from openbb_terminal.cryptocurrency.overview import (
     blockchaincenter_view,
@@ -28,19 +26,18 @@ from openbb_terminal.cryptocurrency.overview import (
     pycoingecko_view,
     rekt_model,
     rekt_view,
-    withdrawalfees_model,
-    withdrawalfees_view,
     tokenterminal_model,
     tokenterminal_view,
-)
-from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
-    get_categories_keys,
+    withdrawalfees_model,
+    withdrawalfees_view,
 )
 from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
 from openbb_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
 )
 from openbb_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
+from openbb_terminal.cryptocurrency.overview.glassnode_view import display_btc_rainbow
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -51,7 +48,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -90,11 +87,11 @@ class OverviewController(BaseController):
     PATH = "/crypto/ov/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             choices["wfpe"].update(
@@ -163,7 +160,7 @@ class OverviewController(BaseController):
             choices=get_categories_keys(),
             metavar="CATEGORY",
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -229,7 +226,7 @@ class OverviewController(BaseController):
             help="Display N items",
             default=10,
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-m")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -348,7 +345,6 @@ class OverviewController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-
             display_btc_rainbow(
                 start_date=ns_parser.since.strftime("%Y-%m-%d"),
                 end_date=ns_parser.until.strftime("%Y-%m-%d"),

@@ -1,7 +1,26 @@
-                                                           Price   Chg   %Chg     Vol
-0       MicroSectors Gold Miners 3X Inverse Leveraged ETN  15.98 -4.10 -20.42  131.7K
-1         Direxion Daily Gold Miners Index Bear 2X Shares  17.50 -3.02 -14.72    4.9M
-2  Direxion Daily Junior Gold Miners Index Bear 2X Shares  10.02 -1.70 -14.51    6.0M
-3                   ProShares Ultra Bloomberg Natural Gas  29.13 -3.87 -11.73    2.5M
-4             Direxion Daily Semiconductor Bull 3X Shares  50.82 -5.16  -9.22   28.5M
-
+                                                                Price     Chg   %Chg     Vol
+0                              AXS 1.25X NVDA Bear Daily ETF  19.9400 -4.1100 -17.09    1.2M
+1                Direxion Daily Semiconductor Bear 3X Shares  21.3500 -2.3000  -9.73    9.9M
+2                 ProShares UltraShort Bloomberg Natural Gas  67.0900 -5.7600  -7.91  496.0K
+3         MicroSectors FANG+ Index -3X Inverse Leveraged ETN  27.2550 -1.8850  -6.47  312.4K
+4                                    2x Long VIX Futures ETF  19.5200 -1.1100  -5.38  255.0K
+5                   Direxion Daily Technology Bear 3x Shares  28.4800 -1.6100  -5.35  351.7K
+6   Direxion Daily S&P Oil & Gas Exp. & Prod. Bear 2X Shares  14.5400 -0.8200  -5.34  489.5K
+7                   ProShares UltraShort Bloomberg Crude Oil  25.8300 -1.1400  -4.23  209.6K
+8                 ProShares Ultra VIX Short-Term Futures ETF   5.2299 -0.2101  -3.86    2.9M
+9            Direxion Daily S&P 500 High Beta Bear 3X Shares   4.7200 -0.1800  -3.67  191.2K
+10                              ProShares UltraPro Short QQQ  37.5400 -1.3000  -3.35   16.4M
+11                     ProShares UltraPro Short Russell 2000  41.3040 -1.3660  -3.20  300.0K
+12                 Direxion Daily Real Estate Bear 3x Shares  45.4500 -1.4700  -3.13   52.8K
+13                   Direxion Daily Small Cap Bear 3x Shares  26.8800 -0.8400  -3.03    1.1M
+14                      ProShares VIX Short-Term Futures ETF   9.5900 -0.2600  -2.64  721.0K
+15         iPath Series B S&P 500 VIX Short-Term Futures ETN  11.9000 -0.3200  -2.62  622.8K
+16                          ProShares UltraPro Short S&P 500  14.5281 -0.3619  -2.43    2.7M
+17                                     AXS 2X Innovation ETF  64.4860 -1.6040  -2.43   67.0K
+18                      Direxion Daily Energy Bear 2x Shares  30.7400 -0.7600  -2.41   55.9K
+19                     Direxion Daily S&P 500 Bear 3X Shares  19.1800 -0.4600  -2.34    3.3M
+20                                  ProShares UltraShort QQQ  20.5900 -0.4900  -2.32    1.3M
+21                   Direxion Daily Financial Bear 3x Shares  16.8500 -0.3700  -2.15  167.3K
+22                  Direxion Daily FTSE China Bear 3X Shares  10.2301 -0.2199  -2.10    1.0M
+23                          ProShares UltraShort Russell2000  13.9500 -0.2800  -1.97  194.6K
+24                            ProShares UltraPro Short Dow30  26.7100 -0.4500  -1.66    1.3M

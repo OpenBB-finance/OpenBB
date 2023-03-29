@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -12,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def print_options_data(symbol: str, export: str = "", sheet_name: str = None):
+def print_options_data(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Scrapes Barchart.com for the options information
 
     Parameters
@@ -32,6 +33,7 @@ def print_options_data(symbol: str, export: str = "", sheet_name: str = None):
         show_index=False,
         headers=["Info", "Value"],
         title=f"{symbol} Options Information",
+        export=bool(export),
     )
 
     export_data(

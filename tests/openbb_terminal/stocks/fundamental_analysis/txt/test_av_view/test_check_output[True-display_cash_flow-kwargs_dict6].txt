@@ -1,2 +1,29 @@
-No data found from Alpha Vantage
-
+fiscalDateEnding                            2021-12-31 2022-03-31 2022-06-30 2022-09-30 2022-12-31
+Reported Currency                                  USD        USD        USD        USD        USD
+Operating Cash Flow                            4.585 B    3.995 B    2.351 B    5.100 B    3.278 B
+Payments For Operating Activities                    0          0          0          0          0
+Proceeds From Operating Activities                   0          0          0          0          0
+Change In Operating Liabilities                2.384 B    1.598 B      957 M    3.976 B    2.533 B
+Change In Operating Assets                    -5.755 B    1.942 B    2.058 B    3.363 B    4.194 B
+Depreciation Depletion And Amortization          997 M      552 M      578 M      620 M    1.162 B
+Capital Expenditure                            1.810 B    1.767 B    3.230 B      303 M    1.858 B
+Change In Receivables                           -278 M      409 M     -176 M      193 M      698 M
+Inventory                                     -2.884 B      633 M    1.559 B    2.300 B    1.973 B
+Profit Loss                                    2.343 B    3.280 B    2.269 B    3.331 B    3.707 B
+Cash Flow From Investment                     -1.916 B   -2.167 B     -884 M   -2.791 B   -6.131 B
+Cash Flow From Financing                      -1.257 B   -1.914 B     -406 M     -712 M     -495 M
+Proceeds From Repayments Of Short Term Debt          0          0          0          0          0
+Common Stock Repurchased                             0          0          0          0          0
+Payments For Repurchase Of Equity                    0          0          0          0          0
+Payments For Repurchase Of Preferred Stock           0          0          0          0          0
+Dividends Paid                                       0          0          0          0          0
+Dividend Payout Common Stock                         0          0          0          0          0
+Dividend Payout Preferred Stock                      0          0          0          0          0
+Common Stock Issued                                  0          0          0          0          0
+Proceeds From Issuance Of Long Term                  0          0          0          0          0
+Proceeds From Issuance Of Preferred Stock            0          0          0          0          0
+Proceeds From Repurchase Of Equity               262 M      202 M       43 M      229 M       67 M
+Proceeds From Sale Of Treasury Stock                 0          0          0          0          0
+Net Change In Cash                             1.412 B      -86 M    2.847 B    1.597 B          0
+Change In Exchange Rate                              0          0          0          0          0
+Net Income                                     2.321 B    3.318 B    2.259 B    3.292 B    3.687 B

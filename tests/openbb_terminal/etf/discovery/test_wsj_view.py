@@ -1,11 +1,15 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.etf.discovery import wsj_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -26,7 +30,10 @@ def vcr_config():
     ],
 )
 def test_show_top_mover(sort_type, mocker):
-    mocker.patch.object(
-        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=False
+    preferences = PreferencesModel(USE_TABULATE_DF=False)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     wsj_view.show_top_mover(sort_type, limit=5, export="")

@@ -5,16 +5,16 @@ import logging
 
 import pandas as pd
 
-import openbb_terminal.config_terminal as cfg
+import openbb_terminal.cryptocurrency.due_diligence.coinbase_model as cbm
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
+    CoinbaseApiException,
     CoinbaseProAuth,
     _check_account_validity,
     make_coinbase_request,
-    CoinbaseApiException,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-import openbb_terminal.cryptocurrency.due_diligence.coinbase_model as cbm
 
 logger = logging.getLogger(__name__)
 
@@ -50,9 +50,12 @@ def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.Da
     pd.DataFrame
         DataFrame with all your trading accounts.
     """
+    current_user = get_current_user()
     try:
         auth = CoinbaseProAuth(
-            cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+            current_user.credentials.API_COINBASE_KEY,
+            current_user.credentials.API_COINBASE_SECRET,
+            current_user.credentials.API_COINBASE_PASS_PHRASE,
         )
         resp = make_coinbase_request("/accounts", auth=auth)
     except CoinbaseApiException as e:
@@ -148,9 +151,12 @@ def get_account_history(account: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with account history.
     """
+    current_user = get_current_user()
     try:
         auth = CoinbaseProAuth(
-            cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+            current_user.credentials.API_COINBASE_KEY,
+            current_user.credentials.API_COINBASE_SECRET,
+            current_user.credentials.API_COINBASE_PASS_PHRASE,
         )
 
         account = _check_account_validity(account)
@@ -232,10 +238,12 @@ def get_orders(
     pd.DataFrame
         Open orders in your account
     """
-
+    current_user = get_current_user()
     try:
         auth = CoinbaseProAuth(
-            cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+            current_user.credentials.API_COINBASE_KEY,
+            current_user.credentials.API_COINBASE_SECRET,
+            current_user.credentials.API_COINBASE_PASS_PHRASE,
         )
         resp = make_coinbase_request("/orders", auth=auth)
 
@@ -293,9 +301,12 @@ def get_deposits(
     pd.DataFrame
         List of deposits
     """
+    current_user = get_current_user()
     try:
         auth = CoinbaseProAuth(
-            cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+            current_user.credentials.API_COINBASE_KEY,
+            current_user.credentials.API_COINBASE_SECRET,
+            current_user.credentials.API_COINBASE_PASS_PHRASE,
         )
         params = {"type": deposit_type}
 

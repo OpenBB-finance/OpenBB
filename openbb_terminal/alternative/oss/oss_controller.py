@@ -3,23 +3,21 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
+from typing import List, Optional
 
+from openbb_terminal.alternative.oss import github_view, runa_model, runa_view
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.alternative.oss import github_view
-from openbb_terminal.alternative.oss import runa_view, runa_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    valid_repo,
     parse_and_split_input,
+    valid_repo,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -31,11 +29,11 @@ class OSSController(BaseController):
     PATH = "/alternative/oss/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -90,11 +88,10 @@ class OSSController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
         )
-        if ns_parser:
-            if valid_repo(ns_parser.repo):
-                github_view.display_star_history(
-                    repo=ns_parser.repo, export=ns_parser.export
-                )
+        if ns_parser and valid_repo(ns_parser.repo):
+            github_view.display_star_history(
+                repo=ns_parser.repo, export=ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_rs(self, other_args: List[str]):
@@ -118,15 +115,14 @@ class OSSController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
-        if ns_parser:
-            if valid_repo(ns_parser.repo):
-                github_view.display_repo_summary(
-                    repo=ns_parser.repo,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and valid_repo(ns_parser.repo):
+            github_view.display_repo_summary(
+                repo=ns_parser.repo,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_rossidx(self, other_args: List[str]):

@@ -3,39 +3,42 @@ __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines
 
-import sys
-import logging
-import os
 import contextlib
-from enum import Enum
 import io
+import logging
+import sys
+from enum import Enum
 from typing import Dict, List, Union
-import dotenv
+
 import binance
+import oandapyV20.endpoints.pricing
 import pandas as pd
+import praw
 import quandl
 import requests
 import stocksera
-from prawcore.exceptions import ResponseException
-import praw
-import pyEX
-import oandapyV20.endpoints.pricing
-from oandapyV20 import API as oanda_API
-from coinmarketcapapi import CoinMarketCapAPI
-from tokenterminal import TokenTerminal
 from alpha_vantage.timeseries import TimeSeries
+from coinmarketcapapi import CoinMarketCapAPI
+from oandapyV20 import API as oanda_API
+from prawcore.exceptions import ResponseException
+from tokenterminal import TokenTerminal
+
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_credential,
+)
+from openbb_terminal.core.session.env_handler import write_to_dotenv
+from openbb_terminal.core.session.hub_model import upload_config
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
+    CoinbaseApiException,
     CoinbaseProAuth,
     make_coinbase_request,
-    CoinbaseApiException,
 )
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.core.config.paths import USER_ENV_FILE
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
-
-from openbb_terminal.terminal_helper import suppress_stdout
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
+from openbb_terminal.rich_config import console
+from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 
@@ -53,12 +56,13 @@ API_DICT: Dict = {
     "fmp": "FINANCIAL_MODELING_PREP",
     "quandl": "QUANDL",
     "polygon": "POLYGON",
+    "intrinio": "INTRINIO",
+    "databento": "DATABENTO",
     "fred": "FRED",
     "news": "NEWSAPI",
     "tradier": "TRADIER",
     "cmc": "COINMARKETCAP",
     "finnhub": "FINNHUB",
-    "iex": "IEXCLOUD",
     "reddit": "REDDIT",
     "twitter": "TWITTER",
     "rh": "ROBINHOOD",
@@ -66,7 +70,6 @@ API_DICT: Dict = {
     "oanda": "OANDA",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
-    "si": "SENTIMENT_INVESTOR",
     "coinbase": "COINBASE",
     "walert": "WHALE_ALERT",
     "glassnode": "GLASSNODE",
@@ -86,6 +89,22 @@ API_DICT: Dict = {
 # sorting api key section by name
 API_DICT = dict(sorted(API_DICT.items()))
 
+LOCAL_KEYS = [
+    "RH_USERNAME",
+    "RH_PASSWORD",
+    "DG_USERNAME",
+    "DG_PASSWORD",
+    "DG_TOTP_SECRET",
+    "OANDA_ACCOUNT_TYPE",
+    "OANDA_ACCOUNT",
+    "OANDA_TOKEN",
+    "API_BINANCE_KEY",
+    "API_BINANCE_SECRET",
+    "API_COINBASE_KEY",
+    "API_COINBASE_SECRET",
+    "API_COINBASE_PASS_PHRASE",
+]
+
 
 class KeyStatus(str, Enum):
     """Class to handle status messages and colors"""
@@ -100,6 +119,7 @@ class KeyStatus(str, Enum):
         return self.value
 
     def colorize(self):
+        c = ""
         if self.name == self.DEFINED_TEST_FAILED.name:
             c = "red"
         elif self.name == self.NOT_DEFINED.name:
@@ -153,7 +173,6 @@ def set_keys(
         expected_args_dict = get_keys_info()
 
         if api in expected_args_dict:
-
             received_kwargs_list = list(kwargs.keys())
             expected_kwargs_list = expected_args_dict[api]
 
@@ -198,47 +217,6 @@ def get_keys_info() -> Dict[str, List[str]]:
     return args_dict
 
 
-def first_time_user() -> bool:
-    """Whether a user is a first time user. A first time user is someone with an empty .env file.
-    If this is true, it also adds an env variable to make sure this does not run again.
-
-    Returns
-    -------
-    bool
-        Whether or not the user is a first time user
-    """
-    if USER_ENV_FILE.stat().st_size == 0:
-        set_key("OPENBB_PREVIOUS_USE", "True", True)
-        return True
-    return False
-
-
-def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
-    """Set API key.
-
-    Parameters
-    ----------
-    env_var_name: str
-        API name
-    env_var_value: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    """
-    if persist:
-        os.environ[env_var_name] = env_var_value
-        dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
-
-    # Remove "OPENBB_" prefix from env_var
-    if env_var_name.startswith("OPENBB_"):
-        env_var_name = env_var_name[7:]
-
-    # Set cfg.env_var_name = env_var_value
-    setattr(cfg, env_var_name, env_var_value)
-
-
 def get_keys(show: bool = False) -> pd.DataFrame:
     """Get currently set API keys.
 
@@ -264,16 +242,13 @@ def get_keys(show: bool = False) -> pd.DataFrame:
     COINGLASS_KEY  *******
     """
 
-    # TODO: Refactor api variables without prefix API_ and extend API_SOURCE_KEY format
-
-    var_list = [v for v in dir(cfg) if v.startswith("API_")]
-
+    current_user = get_current_user()
     current_keys = {}
 
-    for cfg_var_name in var_list:
-        cfg_var_value = getattr(cfg, cfg_var_name)
-        if cfg_var_value != "REPLACE_ME":
-            current_keys[cfg_var_name[4:]] = cfg_var_value
+    for k, _ in current_user.credentials.get_fields().items():
+        field_value = current_user.credentials.get_value(field=k)
+        if field_value and field_value != "REPLACE_ME":
+            current_keys[k] = field_value
 
     if current_keys:
         df = pd.DataFrame.from_dict(current_keys, orient="index")
@@ -285,6 +260,35 @@ def get_keys(show: bool = False) -> pd.DataFrame:
         return df
 
     return pd.DataFrame()
+
+
+def handle_credential(name: str, value: str, persist: bool = False):
+    """Handle credential
+
+    Parameters
+    ----------
+    name: str
+        Name of credential
+    value: str
+        Value of credential
+    persist: bool, optional
+        Write to .env file. By default, False.
+    """
+    current_user = get_current_user()
+    sync_enabled = current_user.preferences.SYNC_ENABLED
+    local_user = is_local()
+
+    set_credential(name, value)
+
+    if local_user and persist:
+        write_to_dotenv("OPENBB_" + name, value)
+    elif not local_user and sync_enabled and name not in LOCAL_KEYS:
+        upload_config(
+            key=name,
+            value=str(value),
+            type_="keys",
+            auth_header=current_user.profile.get_auth_header(),
+        )
 
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -312,7 +316,7 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> st
     >>> openbb.keys.av(key="example_key")
     """
 
-    set_key("OPENBB_API_KEY_ALPHAVANTAGE", key, persist)
+    handle_credential("API_KEY_ALPHAVANTAGE", key, persist)
     return check_av_key(show_output)
 
 
@@ -330,12 +334,16 @@ def check_av_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME":  # pragma: allowlist secret
+    current_user = get_current_user()
+
+    if (
+        current_user.credentials.API_KEY_ALPHAVANTAGE == "REPLACE_ME"
+    ):  # pragma: allowlist secret
         logger.info("Alpha Vantage key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         df = TimeSeries(
-            key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
+            key=current_user.credentials.API_KEY_ALPHAVANTAGE, output_format="pandas"
         ).get_intraday(symbol="AAPL")
         if df[0].empty:  # pylint: disable=no-member
             logger.warning("Alpha Vantage key defined, test failed")
@@ -345,7 +353,7 @@ def check_av_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -375,7 +383,7 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> s
     >>> openbb.keys.fmp(key="example_key")
     """
 
-    set_key("OPENBB_API_KEY_FINANCIALMODELINGPREP", key, persist)
+    handle_credential("API_KEY_FINANCIALMODELINGPREP", key, persist)
     return check_fmp_key(show_output)
 
 
@@ -392,14 +400,18 @@ def check_fmp_key(show_output: bool = False) -> str:
     status: str
     """
 
+    current_user = get_current_user()
+
     if (
-        cfg.API_KEY_FINANCIALMODELINGPREP == "REPLACE_ME"  # pragma: allowlist secret
+        current_user.credentials.API_KEY_FINANCIALMODELINGPREP
+        == "REPLACE_ME"  # pragma: allowlist secret
     ):  # pragma: allowlist secret
         logger.info("Financial Modeling Prep key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
-            f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+            f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey="
+            f"{current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
         )
         if r.status_code in [403, 401] or "Error Message" in str(r.content):
             logger.warning("Financial Modeling Prep key defined, test failed")
@@ -412,7 +424,7 @@ def check_fmp_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -442,7 +454,7 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.quandl(key="example_key")
     """
 
-    set_key("OPENBB_API_KEY_QUANDL", key, persist)
+    handle_credential("API_KEY_QUANDL", key, persist)
     return check_quandl_key(show_output)
 
 
@@ -460,12 +472,16 @@ def check_quandl_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
+    current_user = get_current_user()
+
+    if (
+        current_user.credentials.API_KEY_QUANDL == "REPLACE_ME"
+    ):  # pragma: allowlist secret
         logger.info("Quandl key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         try:
-            quandl.save_key(cfg.API_KEY_QUANDL)
+            quandl.save_key(current_user.credentials.API_KEY_QUANDL)
             quandl.get("EIA/PET_RWTC_D")
             logger.info("Quandl key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
@@ -474,7 +490,7 @@ def check_quandl_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -504,7 +520,7 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) 
     >>> openbb.keys.polygon(key="example_key")
     """
 
-    set_key("OPENBB_API_POLYGON_KEY", key, persist)
+    handle_credential("API_POLYGON_KEY", key, persist)
     return check_polygon_key(show_output)
 
 
@@ -522,13 +538,15 @@ def check_polygon_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_POLYGON_KEY == "REPLACE_ME":
         logger.info("Polygon key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
             "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
-            f"?apiKey={cfg.API_POLYGON_KEY}"
+            f"?apiKey={current_user.credentials.API_POLYGON_KEY}"
         )
         if r.status_code in [403, 401]:
             logger.warning("Polygon key defined, test failed")
@@ -541,7 +559,7 @@ def check_polygon_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -571,7 +589,7 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> 
     >>> openbb.keys.fred(key="example_key")
     """
 
-    set_key("OPENBB_API_FRED_KEY", key, persist)
+    handle_credential("API_FRED_KEY", key, persist)
     return check_fred_key(show_output)
 
 
@@ -589,12 +607,14 @@ def check_fred_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_FRED_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_FRED_KEY == "REPLACE_ME":
         logger.info("FRED key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
-            f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={cfg.API_FRED_KEY}"
+            f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={current_user.credentials.API_FRED_KEY}"
         )
         if r.status_code in [403, 401, 400]:
             logger.warning("FRED key defined, test failed")
@@ -607,7 +627,7 @@ def check_fred_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -637,7 +657,7 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> 
     >>> openbb.keys.news(key="example_key")
     """
 
-    set_key("OPENBB_API_NEWS_TOKEN", key, persist)
+    handle_credential("API_NEWS_TOKEN", key, persist)
     return check_news_key(show_output)
 
 
@@ -655,12 +675,14 @@ def check_news_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
+    current_user = get_current_user()
+
+    if current_user.credentials.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
         logger.info("News API key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
-            f"https://newsapi.org/v2/everything?q=keyword&apiKey={cfg.API_NEWS_TOKEN}"
+            f"https://newsapi.org/v2/everything?q=keyword&apiKey={current_user.credentials.API_NEWS_TOKEN}"
         )
         if r.status_code in [401, 403]:
             logger.warning("News API key defined, test failed")
@@ -673,7 +695,7 @@ def check_news_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -703,7 +725,7 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) 
     >>> openbb.keys.tradier(key="example_key")
     """
 
-    set_key("OPENBB_API_TRADIER_TOKEN", key, persist)
+    handle_credential("API_TRADIER_TOKEN", key, persist)
     return check_tradier_key(show_output)
 
 
@@ -721,7 +743,9 @@ def check_tradier_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
+    current_user = get_current_user()
+
+    if current_user.credentials.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
         logger.info("Tradier key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
@@ -729,7 +753,7 @@ def check_tradier_key(show_output: bool = False) -> str:
             "https://sandbox.tradier.com/v1/markets/quotes",
             params={"symbols": "AAPL"},
             headers={
-                "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
+                "Authorization": f"Bearer {current_user.credentials.API_TRADIER_TOKEN}",
                 "Accept": "application/json",
             },
         )
@@ -744,7 +768,7 @@ def check_tradier_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -774,7 +798,7 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> s
     >>> openbb.keys.cmc(key="example_key")
     """
 
-    set_key("OPENBB_API_CMC_KEY", key, persist)
+    handle_credential("API_CMC_KEY", key, persist)
     return check_cmc_key(show_output)
 
 
@@ -791,11 +815,13 @@ def check_cmc_key(show_output: bool = False) -> str:
     status: str
     """
 
-    if cfg.API_CMC_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_CMC_KEY == "REPLACE_ME":
         logger.info("Coinmarketcap key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        cmc = CoinMarketCapAPI(cfg.API_CMC_KEY)
+        cmc = CoinMarketCapAPI(current_user.credentials.API_CMC_KEY)
 
         try:
             cmc.cryptocurrency_map()
@@ -806,7 +832,7 @@ def check_cmc_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -836,7 +862,7 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) 
     >>> openbb.keys.finnhub(key="example_key")
     """
 
-    set_key("OPENBB_API_FINNHUB_KEY", key, persist)
+    handle_credential("API_FINNHUB_KEY", key, persist)
     return check_finnhub_key(show_output)
 
 
@@ -854,12 +880,14 @@ def check_finnhub_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_FINNHUB_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_FINNHUB_KEY == "REPLACE_ME":
         logger.info("Finnhub key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = r = request(
-            f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={cfg.API_FINNHUB_KEY}"
+            f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={current_user.credentials.API_FINNHUB_KEY}"
         )
         if r.status_code in [403, 401, 400]:
             logger.warning("Finnhub key defined, test failed")
@@ -872,70 +900,7 @@ def check_finnhub_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
-
-    return str(status)
-
-
-def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> str:
-    """Set IEX Cloud key
-
-    Parameters
-    ----------
-    key: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.iex(key="example_key")
-    """
-
-    set_key("OPENBB_API_IEX_TOKEN", key, persist)
-    return check_iex_key(show_output)
-
-
-def check_iex_key(show_output: bool = False) -> str:
-    """Check IEX Cloud key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
-        logger.info("IEX Cloud key not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            pyEX.Client(  # pylint: disable=no-member
-                api_token=cfg.API_IEX_TOKEN, version="v1"
-            ).quote(symbol="AAPL")
-            logger.info("IEX Cloud key defined, test passed")
-            status = KeyStatus.DEFINED_TEST_PASSED
-        except Exception as _:  # noqa: F841
-            logger.warning("IEX Cloud key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -987,11 +952,11 @@ def set_reddit_key(
         )
     """
 
-    set_key("OPENBB_API_REDDIT_CLIENT_ID", client_id, persist)
-    set_key("OPENBB_API_REDDIT_CLIENT_SECRET", client_secret, persist)
-    set_key("OPENBB_API_REDDIT_PASSWORD", password, persist)
-    set_key("OPENBB_API_REDDIT_USERNAME", username, persist)
-    set_key("OPENBB_API_REDDIT_USER_AGENT", useragent, persist)
+    handle_credential("API_REDDIT_CLIENT_ID", client_id, persist)
+    handle_credential("API_REDDIT_CLIENT_SECRET", client_secret, persist)
+    handle_credential("API_REDDIT_PASSWORD", password, persist)
+    handle_credential("API_REDDIT_USERNAME", username, persist)
+    handle_credential("API_REDDIT_USER_AGENT", useragent, persist)
 
     return check_reddit_key(show_output)
 
@@ -1010,26 +975,27 @@ def check_reddit_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    current_user = get_current_user()
+
     reddit_keys = [
-        cfg.API_REDDIT_CLIENT_ID,
-        cfg.API_REDDIT_CLIENT_SECRET,
-        cfg.API_REDDIT_USERNAME,
-        cfg.API_REDDIT_PASSWORD,
-        cfg.API_REDDIT_USER_AGENT,
+        current_user.credentials.API_REDDIT_CLIENT_ID,
+        current_user.credentials.API_REDDIT_CLIENT_SECRET,
+        current_user.credentials.API_REDDIT_USERNAME,
+        current_user.credentials.API_REDDIT_PASSWORD,
+        current_user.credentials.API_REDDIT_USER_AGENT,
     ]
     if "REPLACE_ME" in reddit_keys:
         logger.info("Reddit key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-
         try:
             with suppress_stdout():
                 praw_api = praw.Reddit(
-                    client_id=cfg.API_REDDIT_CLIENT_ID,
-                    client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-                    username=cfg.API_REDDIT_USERNAME,
-                    user_agent=cfg.API_REDDIT_USER_AGENT,
-                    password=cfg.API_REDDIT_PASSWORD,
+                    client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
+                    client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
+                    username=current_user.credentials.API_REDDIT_USERNAME,
+                    user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
+                    password=current_user.credentials.API_REDDIT_PASSWORD,
                     check_for_updates=False,
                     comment_kind="t1",
                     message_kind="t4",
@@ -1052,7 +1018,7 @@ def check_reddit_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1082,7 +1048,7 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False)
     >>> openbb.keys.bitquery(key="example_key")
     """
 
-    set_key("OPENBB_API_BITQUERY_KEY", key, persist)
+    handle_credential("API_BITQUERY_KEY", key, persist)
     return check_bitquery_key(show_output)
 
 
@@ -1100,12 +1066,14 @@ def check_bitquery_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    bitquery = cfg.API_BITQUERY_KEY
+    current_user = get_current_user()
+
+    bitquery = current_user.credentials.API_BITQUERY_KEY
     if "REPLACE_ME" in bitquery:
         logger.info("Bitquery key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        headers = {"x-api-key": cfg.API_BITQUERY_KEY}
+        headers = {"x-api-key": current_user.credentials.API_BITQUERY_KEY}
         query = """
         {
         ethereum {
@@ -1128,14 +1096,12 @@ def check_bitquery_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
 
 def set_twitter_key(
-    key: str,
-    secret: str,
     access_token: str,
     persist: bool = False,
     show_output: bool = False,
@@ -1172,9 +1138,7 @@ def set_twitter_key(
         )
     """
 
-    set_key("OPENBB_API_TWITTER_KEY", key, persist)
-    set_key("OPENBB_API_TWITTER_SECRET_KEY", secret, persist)
-    set_key("OPENBB_API_TWITTER_BEARER_TOKEN", access_token, persist)
+    handle_credential("API_TWITTER_BEARER_TOKEN", access_token, persist)
 
     return check_twitter_key(show_output)
 
@@ -1193,12 +1157,8 @@ def check_twitter_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    twitter_keys = [
-        cfg.API_TWITTER_KEY,
-        cfg.API_TWITTER_SECRET_KEY,
-        cfg.API_TWITTER_BEARER_TOKEN,
-    ]
-    if "REPLACE_ME" in twitter_keys:
+    current_user = get_current_user()
+    if current_user.credentials.API_TWITTER_BEARER_TOKEN == "REPLACE_ME":
         logger.info("Twitter key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
@@ -1210,7 +1170,10 @@ def check_twitter_key(show_output: bool = False) -> str:
         r = request(
             "https://api.twitter.com/2/tweets/search/recent",
             params=params,  # type: ignore
-            headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
+            headers={
+                "authorization": "Bearer "
+                + current_user.credentials.API_TWITTER_BEARER_TOKEN
+            },
         )
         if r.status_code == 200:
             logger.info("Twitter key defined, test passed")
@@ -1223,7 +1186,7 @@ def check_twitter_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1263,8 +1226,8 @@ def set_rh_key(
         )
     """
 
-    set_key("OPENBB_RH_USERNAME", username, persist)
-    set_key("OPENBB_RH_PASSWORD", password, persist)
+    handle_credential("RH_USERNAME", username, persist)
+    handle_credential("RH_PASSWORD", password, persist)
 
     return check_rh_key(show_output)
 
@@ -1283,7 +1246,12 @@ def check_rh_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    rh_keys = [cfg.RH_USERNAME, cfg.RH_PASSWORD]
+    current_user = get_current_user()
+
+    rh_keys = [
+        current_user.credentials.RH_USERNAME,
+        current_user.credentials.RH_PASSWORD,
+    ]
     if "REPLACE_ME" in rh_keys:
         logger.info("Robinhood key not defined")
         status = KeyStatus.NOT_DEFINED
@@ -1292,7 +1260,7 @@ def check_rh_key(show_output: bool = False) -> str:
         status = KeyStatus.DEFINED_NOT_TESTED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1335,9 +1303,9 @@ def set_degiro_key(
         )
     """
 
-    set_key("OPENBB_DG_USERNAME", username, persist)
-    set_key("OPENBB_DG_PASSWORD", password, persist)
-    set_key("OPENBB_DG_TOTP_SECRET", secret, persist)
+    handle_credential("DG_USERNAME", username, persist)
+    handle_credential("DG_PASSWORD", password, persist)
+    handle_credential("DG_TOTP_SECRET", secret, persist)
 
     return check_degiro_key(show_output)
 
@@ -1356,7 +1324,13 @@ def check_degiro_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    dg_keys = [cfg.DG_USERNAME, cfg.DG_PASSWORD, cfg.DG_TOTP_SECRET]
+    current_user = get_current_user()
+
+    dg_keys = [
+        current_user.credentials.DG_USERNAME,
+        current_user.credentials.DG_PASSWORD,
+        current_user.credentials.DG_TOTP_SECRET,
+    ]
     if "REPLACE_ME" in dg_keys:
         logger.info("Degiro key not defined")
         status = KeyStatus.NOT_DEFINED
@@ -1383,7 +1357,7 @@ def check_degiro_key(show_output: bool = False) -> str:
         del dg  # ensure the object is destroyed explicitly
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1427,9 +1401,9 @@ def set_oanda_key(
         )
     """
 
-    set_key("OPENBB_OANDA_ACCOUNT", account, persist)
-    set_key("OPENBB_OANDA_TOKEN", access_token, persist)
-    set_key("OPENBB_OANDA_ACCOUNT_TYPE", account_type, persist)
+    handle_credential("OANDA_ACCOUNT", account, persist)
+    handle_credential("OANDA_TOKEN", access_token, persist)
+    handle_credential("OANDA_ACCOUNT_TYPE", account_type, persist)
 
     return check_oanda_key(show_output)
 
@@ -1448,13 +1422,18 @@ def check_oanda_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    oanda_keys = [cfg.OANDA_TOKEN, cfg.OANDA_ACCOUNT]
+    current_user = get_current_user()
+
+    oanda_keys = [
+        current_user.credentials.OANDA_TOKEN,
+        current_user.credentials.OANDA_ACCOUNT,
+    ]
     if "REPLACE_ME" in oanda_keys:
         logger.info("Oanda key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        client = oanda_API(access_token=cfg.OANDA_TOKEN)
-        account = cfg.OANDA_ACCOUNT
+        client = oanda_API(access_token=current_user.credentials.OANDA_TOKEN)
+        account = current_user.credentials.OANDA_ACCOUNT
         try:
             parameters = {"instruments": "EUR_USD"}
             request_ = oandapyV20.endpoints.pricing.PricingInfo(
@@ -1469,7 +1448,7 @@ def check_oanda_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1509,8 +1488,8 @@ def set_binance_key(
         )
     """
 
-    set_key("OPENBB_API_BINANCE_KEY", key, persist)
-    set_key("OPENBB_API_BINANCE_SECRET", secret, persist)
+    handle_credential("API_BINANCE_KEY", key, persist)
+    handle_credential("API_BINANCE_SECRET", secret, persist)
 
     return check_binance_key(show_output)
 
@@ -1529,13 +1508,21 @@ def check_binance_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if "REPLACE_ME" in [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]:
+    current_user = get_current_user()
+
+    if "REPLACE_ME" in [
+        current_user.credentials.API_BINANCE_KEY,
+        current_user.credentials.API_BINANCE_SECRET,
+    ]:
         logger.info("Binance key not defined")
         status = KeyStatus.NOT_DEFINED
 
     else:
         try:
-            client = binance.Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+            client = binance.Client(
+                current_user.credentials.API_BINANCE_KEY,
+                current_user.credentials.API_BINANCE_SECRET,
+            )
             client.get_account_api_permissions()
             logger.info("Binance key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
@@ -1544,81 +1531,7 @@ def check_binance_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
-
-    return str(status)
-
-
-def set_si_key(
-    key: str,
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Sentimentinvestor key.
-
-    Parameters
-    ----------
-    key: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.si(key="example_key")
-    """
-
-    set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", key, persist)
-
-    return check_si_key(show_output)
-
-
-def check_si_key(show_output: bool = False) -> str:
-    """Check Sentimentinvestor key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
-    if "REPLACE_ME" in si_keys:
-        logger.info("Sentiment Investor key not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            account = request(
-                f"https://api.sentimentinvestor.com/v1/trending"
-                f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
-            )
-            if account.ok and account.json().get("success", False):
-                logger.info("Sentiment Investor key defined, test passed")
-                status = KeyStatus.DEFINED_TEST_PASSED
-            else:
-                logger.warning("Sentiment Investor key defined, test failed")
-                status = KeyStatus.DEFINED_TEST_FAILED
-        except Exception:
-            logger.warning("Sentiment Investor key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1662,9 +1575,9 @@ def set_coinbase_key(
         )
     """
 
-    set_key("OPENBB_API_COINBASE_KEY", key, persist)
-    set_key("OPENBB_API_COINBASE_SECRET", secret, persist)
-    set_key("OPENBB_API_COINBASE_PASS_PHRASE", passphrase, persist)
+    handle_credential("API_COINBASE_KEY", key, persist)
+    handle_credential("API_COINBASE_SECRET", secret, persist)
+    handle_credential("API_COINBASE_PASS_PHRASE", passphrase, persist)
 
     return check_coinbase_key(show_output)
 
@@ -1682,18 +1595,20 @@ def check_coinbase_key(show_output: bool = False) -> str:
     status: str
     """
 
+    current_user = get_current_user()
+
     if "REPLACE_ME" in [
-        cfg.API_COINBASE_KEY,
-        cfg.API_COINBASE_SECRET,
-        cfg.API_COINBASE_PASS_PHRASE,
+        current_user.credentials.API_COINBASE_KEY,
+        current_user.credentials.API_COINBASE_SECRET,
+        current_user.credentials.API_COINBASE_PASS_PHRASE,
     ]:
         logger.info("Coinbase key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         auth = CoinbaseProAuth(
-            cfg.API_COINBASE_KEY,
-            cfg.API_COINBASE_SECRET,
-            cfg.API_COINBASE_PASS_PHRASE,
+            current_user.credentials.API_COINBASE_KEY,
+            current_user.credentials.API_COINBASE_SECRET,
+            current_user.credentials.API_COINBASE_PASS_PHRASE,
         )
         try:
             resp = make_coinbase_request("/accounts", auth=auth)
@@ -1707,7 +1622,7 @@ def check_coinbase_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1737,7 +1652,7 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.walert(key="example_key")
     """
 
-    set_key("OPENBB_API_WHALE_ALERT_KEY", key, persist)
+    handle_credential("API_WHALE_ALERT_KEY", key, persist)
     return check_walert_key(show_output)
 
 
@@ -1755,13 +1670,15 @@ def check_walert_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_WHALE_ALERT_KEY == "REPLACE_ME":
         logger.info("Walert key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         url = (
             "https://api.whale-alert.io/v1/transactions?api_key="
-            + cfg.API_WHALE_ALERT_KEY
+            + current_user.credentials.API_WHALE_ALERT_KEY
         )
         try:
             response = request(url)
@@ -1776,7 +1693,7 @@ def check_walert_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1808,7 +1725,7 @@ def set_glassnode_key(
     >>> openbb.keys.glassnode(key="example_key")
     """
 
-    set_key("OPENBB_API_GLASSNODE_KEY", key, persist)
+    handle_credential("API_GLASSNODE_KEY", key, persist)
     return check_glassnode_key(show_output)
 
 
@@ -1826,14 +1743,16 @@ def check_glassnode_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_GLASSNODE_KEY == "REPLACE_ME":
         logger.info("Glassnode key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         url = "https://api.glassnode.com/v1/metrics/market/price_usd_close"
 
         parameters = {
-            "api_key": cfg.API_GLASSNODE_KEY,
+            "api_key": current_user.credentials.API_GLASSNODE_KEY,
             "a": "BTC",
             "i": "24h",
             "s": str(1_614_556_800),
@@ -1849,7 +1768,7 @@ def check_glassnode_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1881,7 +1800,7 @@ def set_coinglass_key(
     >>> openbb.keys.coinglass(key="example_key")
     """
 
-    set_key("OPENBB_API_COINGLASS_KEY", key, persist)
+    handle_credential("API_COINGLASS_KEY", key, persist)
     return check_coinglass_key(show_output)
 
 
@@ -1899,13 +1818,15 @@ def check_coinglass_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_COINGLASS_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_COINGLASS_KEY == "REPLACE_ME":
         logger.info("Coinglass key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         url = "https://open-api.coinglass.com/api/pro/v1/futures/openInterest/chart?&symbol=BTC&interval=0"
 
-        headers = {"coinglassSecret": cfg.API_COINGLASS_KEY}
+        headers = {"coinglassSecret": current_user.credentials.API_COINGLASS_KEY}
 
         response = request(url, headers=headers)
 
@@ -1920,7 +1841,7 @@ def check_coinglass_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1950,7 +1871,7 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.cpanic(key="example_key")
     """
 
-    set_key("OPENBB_API_CRYPTO_PANIC_KEY", key, persist)
+    handle_credential("API_CRYPTO_PANIC_KEY", key, persist)
     return check_cpanic_key(show_output)
 
 
@@ -1968,11 +1889,16 @@ def check_cpanic_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
         logger.info("cpanic key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        crypto_panic_url = f"https://cryptopanic.com/api/v1/posts/?auth_token={cfg.API_CRYPTO_PANIC_KEY}"
+        crypto_panic_url = (
+            "https://cryptopanic.com/api/v1/posts/?auth_token="
+            f"{current_user.credentials.API_CRYPTO_PANIC_KEY}"
+        )
         response = request(crypto_panic_url)
 
         if response.status_code == 200:
@@ -1983,7 +1909,7 @@ def check_cpanic_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2015,7 +1941,7 @@ def set_ethplorer_key(
     >>> openbb.keys.ethplorer(key="example_key")
     """
 
-    set_key("OPENBB_API_ETHPLORER_KEY", key, persist)
+    handle_credential("API_ETHPLORER_KEY", key, persist)
     return check_ethplorer_key(show_output)
 
 
@@ -2033,12 +1959,14 @@ def check_ethplorer_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_ETHPLORER_KEY == "REPLACE_ME":
         logger.info("ethplorer key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         ethplorer_url = "https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey="
-        ethplorer_url += cfg.API_ETHPLORER_KEY
+        ethplorer_url += current_user.credentials.API_ETHPLORER_KEY
 
         try:
             response = request(ethplorer_url)
@@ -2053,7 +1981,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2090,8 +2018,8 @@ def set_smartstake_key(
             )
     """
 
-    set_key("OPENBB_API_SMARTSTAKE_KEY", key, persist)
-    set_key("OPENBB_API_SMARTSTAKE_TOKEN", access_token, persist)
+    handle_credential("API_SMARTSTAKE_KEY", key, persist)
+    handle_credential("API_SMARTSTAKE_TOKEN", access_token, persist)
     return check_smartstake_key(show_output)
 
 
@@ -2109,17 +2037,19 @@ def check_smartstake_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    current_user = get_current_user()
+
     if "REPLACE_ME" in [
-        cfg.API_SMARTSTAKE_TOKEN,
-        cfg.API_SMARTSTAKE_KEY,
+        current_user.credentials.API_SMARTSTAKE_TOKEN,
+        current_user.credentials.API_SMARTSTAKE_KEY,
     ]:
         status = KeyStatus.NOT_DEFINED
     else:
         payload = {
             "type": "history",
             "dayCount": 30,
-            "key": cfg.API_SMARTSTAKE_KEY,
-            "token": cfg.API_SMARTSTAKE_TOKEN,
+            "key": current_user.credentials.API_SMARTSTAKE_KEY,
+            "token": current_user.credentials.API_SMARTSTAKE_TOKEN,
         }
 
         smartstake_url = "https://prod.smartstakeapi.com/listData?app=TERRA"
@@ -2144,7 +2074,7 @@ def check_smartstake_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2174,7 +2104,7 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.github(key="example_key")
     """
 
-    set_key("OPENBB_API_GITHUB_KEY", key, persist)
+    handle_credential("API_GITHUB_KEY", key, persist)
     return check_github_key(show_output)
 
 
@@ -2192,7 +2122,11 @@ def check_github_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
+    current_user = get_current_user()
+
+    if (
+        current_user.credentials.API_GITHUB_KEY == "REPLACE_ME"
+    ):  # pragma: allowlist secret
         logger.info("GitHub key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
@@ -2201,7 +2135,7 @@ def check_github_key(show_output: bool = False) -> str:
         # only after certain amount of requests the user will get rate limited
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2231,7 +2165,7 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = False) 
     >>> openbb.keys.messari(key="example_key")
     """
 
-    set_key("OPENBB_API_MESSARI_KEY", key, persist)
+    handle_credential("API_MESSARI_KEY", key, persist)
     return check_messari_key(show_output)
 
 
@@ -2249,15 +2183,17 @@ def check_messari_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    current_user = get_current_user()
+
     if (
-        cfg.API_MESSARI_KEY == "REPLACE_ME"  # pragma: allowlist secret
+        current_user.credentials.API_MESSARI_KEY
+        == "REPLACE_ME"  # pragma: allowlist secret
     ):  # pragma: allowlist secret
         logger.info("Messari key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-
         url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
-        headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+        headers = {"x-messari-api-key": current_user.credentials.API_MESSARI_KEY}
         params = {"fields": "profile/general/overview/official_links"}
         r = request(url, headers=headers, params=params)
 
@@ -2269,7 +2205,7 @@ def check_messari_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2299,7 +2235,7 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) ->
     >>> openbb.keys.eodhd(key="example_key")
     """
 
-    set_key("OPENBB_API_EODHD_KEY", key, persist)
+    handle_credential("API_EODHD_KEY", key, persist)
     return check_eodhd_key(show_output)
 
 
@@ -2317,11 +2253,16 @@ def check_eodhd_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_EODHD_KEY == "REPLACE_ME":  # nosec
+    current_user = get_current_user()
+
+    if current_user.credentials.API_EODHD_KEY == "REPLACE_ME":  # nosec
         logger.info("End of Day Historical Data key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        request_url = f"https://eodhistoricaldata.com/api/exchanges-list/?api_token={cfg.API_EODHD_KEY}&fmt=json"
+        request_url = (
+            "https://eodhistoricaldata.com/api/exchanges-list/?api_token="
+            f"{current_user.credentials.API_EODHD_KEY}&fmt=json"
+        )
         r = request(request_url)
         if r.status_code == 200:
             logger.info("Eodhd key defined, test passed")
@@ -2331,7 +2272,7 @@ def check_eodhd_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2363,7 +2304,7 @@ def set_santiment_key(
     >>> openbb.keys.santiment(key="example_key")
     """
 
-    set_key("OPENBB_API_SANTIMENT_KEY", key, persist)
+    handle_credential("API_SANTIMENT_KEY", key, persist)
     return check_santiment_key(show_output)
 
 
@@ -2381,13 +2322,15 @@ def check_santiment_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_SANTIMENT_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_SANTIMENT_KEY == "REPLACE_ME":
         logger.info("santiment key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         headers = {
             "Content-Type": "application/graphql",
-            "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
+            "Authorization": f"Apikey {current_user.credentials.API_SANTIMENT_KEY}",
         }
 
         # pylint: disable=line-too-long
@@ -2411,7 +2354,7 @@ def check_santiment_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2441,7 +2384,7 @@ def set_shroom_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.shroom(key="example_key")
     """
 
-    set_key("OPENBB_API_SHROOM_KEY", key, persist)
+    handle_credential("API_SHROOM_KEY", key, persist)
     return check_shroom_key(show_output)
 
 
@@ -2459,7 +2402,9 @@ def check_shroom_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_SHROOM_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_SHROOM_KEY == "REPLACE_ME":
         logger.info("Shroom key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
@@ -2467,7 +2412,7 @@ def check_shroom_key(show_output: bool = False) -> str:
             response = request(
                 "https://node-api.flipsidecrypto.com/queries",
                 method="POST",
-                headers={"x-api-key": cfg.API_SHROOM_KEY},
+                headers={"x-api-key": current_user.credentials.API_SHROOM_KEY},
             )
             if response.status_code == 400:
                 # this is expected because shroom returns 400 when query is not passed
@@ -2483,7 +2428,7 @@ def check_shroom_key(show_output: bool = False) -> str:
             logger.warning("Shroom key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2514,7 +2459,7 @@ def set_tokenterminal_key(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.keys.tokenterminal(key="example_key")
     """
-    set_key("OPENBB_API_TOKEN_TERMINAL_KEY", key, persist)
+    handle_credential("API_TOKEN_TERMINAL_KEY", key, persist)
     return check_tokenterminal_key(show_output)
 
 
@@ -2531,11 +2476,16 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
-    if cfg.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
         logger.info("Token Terminal key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        token_terminal = TokenTerminal(key=cfg.API_TOKEN_TERMINAL_KEY)
+        token_terminal = TokenTerminal(
+            key=current_user.credentials.API_TOKEN_TERMINAL_KEY
+        )
 
         if "message" in token_terminal.get_all_projects():
             logger.warning("Token Terminal key defined, test failed")
@@ -2545,7 +2495,7 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2574,7 +2524,7 @@ def set_stocksera_key(key: str, persist: bool = False, show_output: bool = False
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.keys.stocksera(key="example_key")
     """
-    set_key("OPENBB_API_STOCKSERA_KEY", key, persist)
+    handle_credential("API_STOCKSERA_KEY", key, persist)
     return check_stocksera_key(show_output)
 
 
@@ -2591,12 +2541,14 @@ def check_stocksera_key(show_output: bool = False):
     str
         Status of key set
     """
-    if cfg.API_STOCKSERA_KEY == "REPLACE_ME":
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_STOCKSERA_KEY == "REPLACE_ME":
         logger.info("Stocksera key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-
-        client = stocksera.Client(api_key=cfg.API_STOCKSERA_KEY)
+        client = stocksera.Client(api_key=current_user.credentials.API_STOCKSERA_KEY)
 
         try:
             client.borrowed_shares(ticker="AAPL")
@@ -2607,5 +2559,144 @@ def check_stocksera_key(show_output: bool = False):
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
+    return str(status)
+
+
+def set_intrinio_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Intrinio key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.intrinio(key="example_key")
+    """
+
+    handle_credential("API_INTRINIO_KEY", key, persist)
+    return check_intrinio_key(show_output)
+
+
+def check_intrinio_key(show_output: bool = False) -> str:
+    """Check Intrinio key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_INTRINIO_KEY == "REPLACE_ME":
+        logger.info("Intrinio key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        r = request(
+            f"https://api-v2.intrinio.com/securities/AAPL/prices?api_key={current_user.credentials.API_INTRINIO_KEY}"
+        )
+        if r.status_code in [403, 401, 429]:
+            logger.warning("Intrinio key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            logger.info("Intrinio key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("Intrinio key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+def set_databento_key(
+    key: str, persist: bool = False, show_output: bool = False
+) -> str:
+    """Set DataBento key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.databento(key="example_key")
+    """
+
+    handle_credential("API_DATABENTO_KEY", key, persist)
+    return check_databento_key(show_output)
+
+
+def check_databento_key(show_output: bool = False) -> str:
+    """Check DataBento key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_DATABENTO_KEY == "REPLACE_ME":
+        logger.info("DataBento key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        r = request(
+            "https://hist.databento.com/v0/metadata.list_datasets",
+            auth=(f"{current_user.credentials.API_DATABENTO_KEY}", ""),
+        )
+        if r.status_code in [403, 401, 429]:
+            logger.warning("DataBento key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            logger.info("DataBento key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("DataBento key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
     return str(status)

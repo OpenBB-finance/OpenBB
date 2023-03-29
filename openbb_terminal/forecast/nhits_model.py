@@ -4,17 +4,16 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Union, Optional, List, Tuple
-
+from typing import List, Optional, Tuple, Union
 
 import pandas as pd
-
 from darts import TimeSeries
 from darts.models.forecasting.nhits import NHiTSModel
 from darts.utils.likelihood_models import GaussianLikelihood
+
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +24,7 @@ def get_nhits_data(
     target_column: str = "close",
     n_predict: int = 5,
     train_split: float = 0.85,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     forecast_horizon: int = 5,
     input_chunk_length: int = 14,
     output_chunk_length: int = 5,
@@ -44,6 +43,7 @@ def get_nhits_data(
     model_save_name: str = "nhits_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
+    metric: str = "mape",
 ) -> Tuple[
     Optional[List[TimeSeries]],
     Optional[List[TimeSeries]],
@@ -110,6 +110,8 @@ def get_nhits_data(
         discarded). Defaults to True.
     save_checkpoints: bool
         Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+    metric: str
+        Metric to use for model selection. Defaults to "mape".
 
     Returns
     -------
@@ -144,6 +146,8 @@ def get_nhits_data(
 
     # Early Stopping
 
+    current_user = get_current_user()
+
     nhits_model = NHiTSModel(
         input_chunk_length=input_chunk_length,
         output_chunk_length=output_chunk_length,
@@ -166,7 +170,7 @@ def get_nhits_data(
         save_checkpoints=save_checkpoints,
         likelihood=GaussianLikelihood(),
         log_tensorboard=True,
-        work_dir=USER_FORECAST_MODELS_DIRECTORY,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
@@ -180,10 +184,14 @@ def get_nhits_data(
             past_covariate_val,
         )
     best_model = NHiTSModel.load_from_checkpoint(
-        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY
+        model_name=model_save_name,
+        best=True,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
-    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
+    helpers.print_tensorboard_logs(
+        model_save_name, str(current_user.preferences.USER_FORECAST_MODELS_DIRECTORY)
+    )
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(
@@ -198,4 +206,5 @@ def get_nhits_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

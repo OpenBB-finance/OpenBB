@@ -1,6 +1,39 @@
-                                                            long_name                             family                  category  total_assets
-XLE                                    Energy Select Sector SPDR Fund  SPDR State Street Global Advisors             Equity Energy  23081.066496
-PDBC  Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF                            Invesco                      None   4189.590016
-XOP                   SPDR S&P Oil & Gas Exploration & Production ETF  SPDR State Street Global Advisors             Equity Energy   3828.978432
-USO                                        United States Oil Fund, LP                   USCF Investments                      None   3074.400256
-DBC                          Invesco DB Commodity Index Tracking Fund                            Invesco  Commodities Broad Basket    1891.86176
+                                                                               name                          family category_group                  category
+symbol                                                                                                                                                      
+IYE                                                         iShares U.S. Energy ETF      BlackRock Asset Management       Equities                    Energy
+XES                                     SPDR S&P Oil & Gas Equipment & Services ETF    State Street Global Advisors       Equities                    Energy
+UMI                                               USCF Midstream Energy Income Fund                USCF Investments       Equities                    Energy
+UCO                                             ProShares Ultra Bloomberg Crude Oil                       ProShares    Commodities                   Trading
+SCO                                        ProShares UltraShort Bloomberg Crude Oil                       ProShares    Commodities                   Trading
+PXJ                                          Invesco Dynamic Oil & Gas Services ETF   Invesco Investment Management       Equities                    Energy
+PXE                             Invesco Dynamic Energy Exploration & Production ETF   Invesco Investment Management       Equities                    Energy
+PSCE                                                Invesco S&P SmallCap Energy ETF   Invesco Investment Management       Equities                    Energy
+OIH                                                 VanEck Vectors Oil Services ETF         VanEck Asset Management       Equities                    Energy
+XLE                                                  Energy Select Sector SPDR Fund    State Street Global Advisors       Equities                    Energy
+IEZ                                       iShares U.S. Oil Equipment & Services ETF      BlackRock Asset Management       Equities                    Energy
+IEO                             iShares U.S. Oil & Gas Exploration & Production ETF      BlackRock Asset Management       Equities                    Energy
+GUSH                       Direxion Daily S&P Oil & Gas Exp. & Prod. Bull 2X Shares                  Direxion Funds       Equities                   Trading
+XOP                                 SPDR S&P Oil & Gas Exploration & Production ETF    State Street Global Advisors       Equities                    Energy
+DIG                                                       ProShares Ultra Oil & Gas                       ProShares       Equities                   Trading
+FRAK                                    VanEck Vectors Unconventional Oil & Gas ETF         VanEck Asset Management       Equities                    Energy
+ERY                                            Direxion Daily Energy Bear 2X Shares                  Direxion Funds       Equities                   Trading
+ERX                                            Direxion Daily Energy Bull 2X Shares                  Direxion Funds       Equities                   Trading
+EINC                                               VanEck Vectors Energy Income ETF         VanEck Asset Management       Equities                    Energy
+CRAK                                                VanEck Vectors Oil Refiners ETF         VanEck Asset Management       Equities                    Energy
+DUG                                                  ProShares UltraShort Oil & Gas                       ProShares       Equities                   Trading
+DRIP                       Direxion Daily S&P Oil & Gas Exp. & Prod. Bear 2X Shares                  Direxion Funds       Equities                   Trading
+DBC                                        Invesco DB Commodity Index Tracking Fund   Invesco Investment Management    Commodities  Commodities Broad Basket
+DDG                                                       ProShares Short Oil & Gas                       ProShares       Equities                   Trading
+USOI                       Credit Suisse X-Links Crude Oil Shares Covered Call ETNs  Credit Suisse Asset Management            NaN                       NaN
+USO                                                      United States Oil Fund, LP                USCF Investments            NaN                       NaN
+USL                                             United States 12 Month Oil Fund, LP                USCF Investments            NaN                       NaN
+UGA                                                 United States Gasoline Fund, LP                USCF Investments            NaN                       NaN
+FUE     ELEMENTS Linked to the MLCX Biofuels Index (Exchange Series) - Total Return                        Elements            NaN                       NaN
+DBO                                                             Invesco DB Oil Fund   Invesco Investment Management            NaN                       NaN
+FTXN                                           First Trust Nasdaq Oil &amp; Gas ETF            First Trust Advisors            NaN                       NaN
+PDBC                Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF   Invesco Investment Management            NaN                       NaN
+OILK                                      ProShares K-1 Free Crude Oil Strategy ETF                       ProShares            NaN                       NaN
+NRGU                              MicroSectors U.S. Big Oil Index 3X Leveraged ETNs                    Microsectors            NaN                       NaN
+NRGD                     MicroSectors U.S. Big Oil Index -3X Inverse Leveraged ETNs                    Microsectors            NaN                       NaN
+DBE                                                          Invesco DB Energy Fund   Invesco Investment Management            NaN                       NaN
+BNO                                                United States Brent Oil Fund, LP                USCF Investments            NaN                       NaN

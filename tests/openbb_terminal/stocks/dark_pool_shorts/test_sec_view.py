@@ -9,7 +9,6 @@ import pytest
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.dark_pool_shorts import sec_view
 
-
 df_fails_to_deliver = pd.DataFrame(
     data={
         "SETTLEMENT DATE": [
@@ -39,10 +38,6 @@ def vcr_config():
     [True, False],
 )
 def test_fails_to_deliver(mocker, raw):
-
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     mocker.patch(
         target="openbb_terminal.stocks.dark_pool_shorts.sec_model.get_fails_to_deliver",
         new=mocker.Mock(return_value=df_fails_to_deliver.copy()),

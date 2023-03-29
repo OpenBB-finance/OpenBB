@@ -1,0 +1,49 @@
+---
+title: Version 2.3.0
+version: "2.3.0"
+date: 2023-01-31
+description: Version 2.3.0
+sidebar_position: 5
+---
+
+
+## What's new
+- New stocks filings function
+- Quantile anomaly detection in forecasting menu
+- Ability to save data to specific excel sheets
+- File location for presets adjusted and examples added
+- Updated yfinance and starting to chip away at the deprecated functions there
+- General bug fixing and enhancements
+
+## What's changed
+- Adds end date to `forex/load` (#4077) @hjoaquim
+- Hotfix/Windows-CLI (#4087) @tehcoderer
+- Adds auto completion to `news` (#4089) @hjoaquim
+- Update commands with --sheet-name that didn't work (#4088) @JerBouma
+- Improve the `stocks/search` command (#4084) @JerBouma
+-  Update the routine, portfolio and screener files and adjust the documentation (#4021) @JerBouma
+- Add keywords and descriptions to basics, intros and advanced guides (#4052) @JerBouma
+- Nightly Build Optimization (#4073) @luqmanbello
+- Fix UK Economy/Macro Y10YD bug (#4078) @montezdesousa
+- Fix incorrect column label in nasdaq_model.py (#4063) @peter-oroszvari
+- SDK Docs: Clarifies the `Stocks.CA.Balance` example by including, `timeframe = '2021'` (#4072) @deeleeramone
+- Bumping yfinance to 0.2.9 and updating ruff (#4059) @jmaslek
+- Refactor requests throughout (#4033) @jmaslek
+- `openbb.economy.fred_ids` to always return dataframe (#4058) @hjoaquim
+- Upgrade dependencies for bug and for security vulnerabilities. (#4031) @jmaslek
+- Copy paste all the sheet names (#4035) @JerBouma
+- Refactor `stocks/options/voi,vol,oi,chains` (#4017) @hjoaquim
+- Avoid running build on hotfix branches (#4048) @luqmanbello
+- Feature/release branch gitflow (#4034) @luqmanbello
+- Deprecate reddit commands taking too long to connect to PushshiftAPI (#3999) @montezdesousa
+- Hotfix/fix integration tests (#4025) @hjoaquim
+- Hotfix/fix equity reports (#4029) @tehcoderer
+- Small typo in docs (#4036) @jose-donato
+- Fix terminal exit after `--sort p/e` (#4013) @montezdesousa
+- Add back pull request to linting action (#4032) @jmaslek
+- Hotfix --> develop (#4027) @luqmanbello
+- Quantile Anomaly Detection on Timeseries (#3980) @martinb-bb
+- Feature/excel sheets (#4023) @jmaslek
+- Feature - Added Integration Test Automation (#4019) @luqmanbello
+- Adds filings function to the Stocks menu (#3910) @deeleeramone
+- merge the release changes into develop (#4016) @jmaslek

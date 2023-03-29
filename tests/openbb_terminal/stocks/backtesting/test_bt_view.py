@@ -30,13 +30,10 @@ def test_display_simple_ema(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
     end = datetime.strptime("2020-12-02", "%Y-%m-%d")
-    df_stock = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
+    df_stock = stocks_helper.load(symbol=ticker, start_date=start, end_date=end)
     bt_view.display_simple_ema(
         symbol=ticker,
         data=df_stock,
@@ -57,13 +54,10 @@ def test_display_emacross(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
     end = datetime.strptime("2020-12-02", "%Y-%m-%d")
-    df_stock = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
+    df_stock = stocks_helper.load(symbol=ticker, start_date=start, end_date=end)
     bt_view.display_emacross(
         symbol=ticker,
         data=df_stock,
@@ -86,13 +80,10 @@ def test_display_rsi_strategy(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
     end = datetime.strptime("2020-12-02", "%Y-%m-%d")
-    df_stock = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
+    df_stock = stocks_helper.load(symbol=ticker, start_date=start, end_date=end)
     bt_view.display_rsi_strategy(
         symbol=ticker,
         data=df_stock,

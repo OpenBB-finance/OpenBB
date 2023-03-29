@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      user-agent:
+      - Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/534.14 (KHTML,
+        like Gecko) Chrome/9.0.600.0 Safari/534.14
+    method: GET
+    uri: https://tools.morningstar.co.uk/api/rest.svc/klr5zyak8x/security/screener?page=1&pageSize=1&sortOrder=LegalName+asc&outputType=json&version=1&universeIds=FOUSA%24%24ALL&currencyId=EUR&securityDataPoints=SecId%7CTenforeId%7CLegalName&term=Vanguard
+  response:
+    body:
+      string: '{"total": 306,"page": 1,"pageSize": 1,"rows": [{"SecId": "FOUSA00L8W","TenforeId":
+        "52.8.VFIAX","LegalName": "Vanguard 500 Index Fund Admiral Shares"}] }'
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Accept,Origin
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '153'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 23 Mar 2023 18:15:36 GMT
+      Set-Cookie:
+      - ASP.NET_SessionId=wj2y5lp0aozy4mw2s2uz5c11; path=/; secure; HttpOnly; SameSite=None
+      Strict-Transport-Security:
+      - max-age=7200; includeSubDomains
+      Via:
+      - 1.1 62f2a061e41be90ceddd231b5157117c.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 9_FcegDaDkCHBRMORFlGFy4U_BDGaKyG1R-J6a8sOZfr543xVFdoCg==
+      X-Amz-Cf-Pop:
+      - VIE50-P1
+      X-Cache:
+      - Miss from cloudfront
+      p3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"
+    status:
+      code: 200
+      message: OK
+version: 1

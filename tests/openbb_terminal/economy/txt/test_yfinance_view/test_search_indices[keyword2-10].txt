@@ -1,11 +1,741 @@
-                             short_name currency     market exchange exchange timezone
-^A1BSC  Dow Jones Americas Basic Materi      USD  us_market      DJI               EDT
-^A1CYC  Dow Jones Americas Consumer Ser      USD  us_market      DJI               EDT
-^A1DOW         Dow Jones Americas Index      USD  us_market      DJI               EDT
-^A1ENE  Dow Jones Americas Oil & Gas In      USD  us_market      DJI               EDT
-^A1FIN  Dow Jones Americas Financials I      USD  us_market      DJI               EDT
-^A1HCR  Dow Jones Americas Health Care       USD  us_market      DJI               EDT
-^A1IDU  Dow Jones Americas Industrials       USD  us_market      DJI               EDT
-^A1NCY  Dow Jones Americas Consumer Goo      USD  us_market      DJI               EDT
-^A1SGI  Dow Jones Sustainability North       USD  us_market      DJI               EDT
-^A1TEC  Dow Jones Americas Technology I      USD  us_market      DJI               EDT
+                                      name currency     market exchange exchange timezone
+symbol                                                                                   
+^A1BSC     Dow Jones Americas Basic Materi      USD  us_market      DJI               EDT
+^A1CYC     Dow Jones Americas Consumer Ser      USD  us_market      DJI               EDT
+^A1DOW            Dow Jones Americas Index      USD  us_market      DJI               EDT
+^A1ENE     Dow Jones Americas Oil & Gas In      USD  us_market      DJI               EDT
+^A1FIN     Dow Jones Americas Financials I      USD  us_market      DJI               EDT
+^A1HCR     Dow Jones Americas Health Care       USD  us_market      DJI               EDT
+^A1IDU     Dow Jones Americas Industrials       USD  us_market      DJI               EDT
+^A1NCY     Dow Jones Americas Consumer Goo      USD  us_market      DJI               EDT
+^A1SGI     Dow Jones Sustainability North       USD  us_market      DJI               EDT
+^A1TEC     Dow Jones Americas Technology I      USD  us_market      DJI               EDT
+^A1TLS     Dow Jones Americas Telecommunic      USD  us_market      DJI               EDT
+^A1UTI     Dow Jones Americas Utilities In      USD  us_market      DJI               EDT
+^ATDOW             Dow Jones Austria Index      EUR  us_market      DJI               EDT
+^ATDOWD      Dow Jones Austria Index (USD)      USD  us_market      DJI               EDT
+^AUDOWD    Dow Jones Australia Index (USD)      USD  us_market      DJI               EDT
+^B15CDRD   Dow Jones BRIC China 15 DR Inde      USD  us_market      DJI               EDT
+^B15CDRDT  Dow Jones BRIC China 15 DR Tota      USD  us_market      DJI               EDT
+^B15IDRD   Dow Jones BRIC India 15 DR Inde      USD  us_market      DJI               EDT
+^B15IDRDT  Dow Jones BRIC India 15 DR Tota      USD  us_market      DJI               EDT
+^B50ADRD   Dow Jones BRIC 50 All DR Index       USD  us_market      DJI               EDT
+^B50ADRE   Dow Jones BRIC 50 All DR Index       EUR  us_market      DJI               EDT
+^B50BRD    Dow Jones BRIC Brazil 15 Index       USD  us_market      DJI               EDT
+^B50BRE    Dow Jones BRIC Brazil 15 Index       EUR  us_market      DJI               EDT
+^B50CND    Dow Jones BRIC China 15 Index (      USD  us_market      DJI               EDT
+^B50CNE    Dow Jones BRIC China 15 Index (      EUR  us_market      DJI               EDT
+^B50DRD    Dow Jones BRIC 50 DR Index (USD      USD  us_market      DJI               EDT
+^B50DRE    Dow Jones BRIC 50 DR Index (EUR      EUR  us_market      DJI               EDT
+^B50IND    Dow Jones BRIC India 15 Index (      USD  us_market      DJI               EDT
+^B50INE    Dow Jones BRIC India 15 Index (      EUR  us_market      DJI               EDT
+^B50RUD    Dow Jones BRIC Russia 5 Index (      USD  us_market      DJI               EDT
+^B50RUE    Dow Jones BRIC Russia 5 Index (      EUR  us_market      DJI               EDT
+^B5RDRD    Dow Jones BRIC Russia 5 DR Inde      USD  us_market      DJI               EDT
+^B5RDRDT   Dow Jones BRIC Russia 5 DR Tota      USD  us_market      DJI               EDT
+^BEDOW             Dow Jones Belgium Index      EUR  us_market      DJI               EDT
+^BEDOWD      Dow Jones Belgium Index (USD)      USD  us_market      DJI               EDT
+^BR20      Dow Jones Brazil Titans 20 ADR       USD  us_market      DJI               EDT
+^BRIC50D     Dow Jones BRIC 50 Index (USD)      USD  us_market      DJI               EDT
+^BRIC50E     Dow Jones BRIC 50 Index (EUR)      EUR  us_market      DJI               EDT
+^CADOW              Dow Jones Canada Index      CAD  us_market      DJI               EDT
+^CADOWD       Dow Jones Canada Index (USD)      USD  us_market      DJI               EDT
+^CH30      Dow Jones Switzerland Titans 30      CHF  us_market      DJI               EDT
+^CH30D     Dow Jones Switzerland Titans 30      USD  us_market      DJI               EDT
+^CHDOW         Dow Jones Switzerland Index      CHF  us_market      DJI               EDT
+^CHDOWD    Dow Jones Switzerland Index (US      USD  us_market      DJI               EDT
+^CLDOW               Dow Jones Chile Index      CLP  us_market      DJI               EDT
+^CLDOWD        Dow Jones Chile Index (USD)      USD  us_market      DJI               EDT
+^DC1ICLEP  Dow Jones Commodity Index Inver      USD  us_market      DJI               EDT
+^DC2LCLEP  Dow Jones Commodity Index 2X Le      USD  us_market      DJI               EDT
+^DE30      Dow Jones Germany Titans 30 Ind      EUR  us_market      DJI               EDT
+^DE30D     Dow Jones Germany Titans 30 Ind      USD  us_market      DJI               EDT
+^DEDOW             Dow Jones Germany Index      EUR  us_market      DJI               EDT
+^DEDOWD      Dow Jones Germany Index (USD)      USD  us_market      DJI               EDT
+^DJA           Dow Jones Composite Average      USD  us_market      DJI               EDT
+^DJAFK     Dow Jones Africa Titans 50 Inde      USD  us_market      DJI               EDT
+^DJAP25    Dow Jones Islamic Market Asia/P      USD  us_market      DJI               EDT
+^DJAPSD    Dow Jones Asia/Pacific Select D      USD  us_market      DJI               EDT
+^DJAPSDE   Dow Jones Asia/Pacific Select D      EUR  us_market      DJI               EDT
+^DJARB50   Dow Jones Arabia Titans 50 Inde      USD  us_market      DJI               EDT
+^DJASD     Dow Jones Asia Select Dividend       USD  us_market      DJI               EDT
+^DJASDE    Dow Jones Asia Select Dividend       EUR  us_market      DJI               EDT
+^DJAT      Dow Jones Asian Titans 50 Index      USD  us_market      DJI               EDT
+^DJAU            Dow Jones Australia Index      AUD  us_market      DJI               EDT
+^DJAUL     Dow Jones Australia Large-Cap I      AUD  us_market      DJI               EDT
+^DJAULPT     Dow Jones Australia LPT Index      AUD  us_market      DJI               EDT
+^DJAUM     Dow Jones Australia Mid-Cap Ind      AUD  us_market      DJI               EDT
+^DJAUS     Dow Jones Australia Small-Cap I      AUD  us_market      DJI               EDT
+^DJBGI     Dow Jones Brookfield Global Inf      USD  us_market      DJI               EDT
+^DJBGICT   Dow Jones Brookfield Global Inf      CAD  us_market      DJI               EDT
+^DJBGIE    Dow Jones Brookfield Global Inf      EUR  us_market      DJI               EDT
+^DJBIEM    Dow Jones Brookfield Emerging M      USD  us_market      DJI               EDT
+^DJBIEME   Dow Jones Brookfield Emerging M      EUR  us_market      DJI               EDT
+^DJC2IBRP  Dow Jones Commodity Index 2X In      USD  us_market      DJI               EDT
+^DJCASD    Dow Jones Canada Select Dividen      CAD  us_market      DJI               EDT
+^DJCASG    Dow Jones Canada Select Growth       CAD  us_market      DJI               EDT
+^DJCASV    Dow Jones Canada Select Value I      CAD  us_market      DJI               EDT
+^DJCCN1IP  Dow Jones Commodity Index Corn       USD  us_market      DJI               EDT
+^DJCH      Dow Jones China Broad Market In      CNY  us_market      DJI               EDT
+^DJCHOS50  Dow Jones China Offshore 50 Ind      USD  us_market      DJI               EDT
+^DJCI            Dow Jones Commodity Index      USD  us_market      DJI               EDT
+^DJCIA1IT  Dow Jones Commodity Index Alumi      USD  us_market      DJI               EDT
+^DJCIAC    Dow Jones Commodity Index All C      USD  us_market      DJI               EDT
+^DJCIAGC   Dow Jones Commodity Index Agric      USD  us_market      DJI               EDT
+^DJCIAMC   Dow Jones Commodity Index All M      USD  us_market      DJI               EDT
+^DJCIAW    Dow Jones Commodity Index All W      USD  us_market      DJI               EDT
+^DJCIBR    Dow Jones Commodity Index Brent      USD  us_market      DJI               EDT
+^DJCIC2IT  Dow Jones Commodity Index Coppe      USD  us_market      DJI               EDT
+^DJCICC    Dow Jones Commodity Index Cocoa      USD  us_market      DJI               EDT
+^DJCICL    Dow Jones Commodity Index Crude      USD  us_market      DJI               EDT
+^DJCICN     Dow Jones Commodity Index Corn      USD  us_market      DJI               EDT
+^DJCICT    Dow Jones Commodity Index Cotto      USD  us_market      DJI               EDT
+^DJCIEMC   Dow Jones Commodity Index Energ      USD  us_market      DJI               EDT
+^DJCIFC    Dow Jones Commodity Index Feede      USD  us_market      DJI               EDT
+^DJCIGC     Dow Jones Commodity Index Gold      USD  us_market      DJI               EDT
+^DJCIGCP   Dow Jones Commodity Index Gold       USD  us_market      DJI               EDT
+^DJCIGR    Dow Jones Commodity Index Grain      USD  us_market      DJI               EDT
+^DJCIHG    Dow Jones Commodity Index North      USD  us_market      DJI               EDT
+^DJCIHO    Dow Jones Commodity Index Heati      USD  us_market      DJI               EDT
+^DJCIIK    Dow Jones Commodity Index Nicke      USD  us_market      DJI               EDT
+^DJCIIL     Dow Jones Commodity Index Lead      USD  us_market      DJI               EDT
+^DJCIILP   Dow Jones Commodity Index Lead       USD  us_market      DJI               EDT
+^DJCIIM    Dow Jones Commodity Index Indus      USD  us_market      DJI               EDT
+^DJCIIZ     Dow Jones Commodity Index Zinc      USD  us_market      DJI               EDT
+^DJCIIZP   Dow Jones Commodity Index Zinc       USD  us_market      DJI               EDT
+^DJCIKC    Dow Jones Commodity Index Coffe      USD  us_market      DJI               EDT
+^DJCIKW    Dow Jones Commodity Index Kansa      USD  us_market      DJI               EDT
+^DJCILC    Dow Jones Commodity Index Live       USD  us_market      DJI               EDT
+^DJCILH    Dow Jones Commodity Index Lean       USD  us_market      DJI               EDT
+^DJCILV    Dow Jones Commodity Index Lives      USD  us_market      DJI               EDT
+^DJCING    Dow Jones Commodity Index Natur      USD  us_market      DJI               EDT
+^DJCIP        Dow Jones Commodity Index ER      USD  us_market      DJI               EDT
+^DJCIPM    Dow Jones Commodity Index Preci      USD  us_market      DJI               EDT
+^DJCIPT    Dow Jones Commodity Index Petro      USD  us_market      DJI               EDT
+^DJCIRB    Dow Jones Commodity Index Unlea      USD  us_market      DJI               EDT
+^DJCISB    Dow Jones Commodity Index Sugar      USD  us_market      DJI               EDT
+^DJCISF    Dow Jones Commodity Index Softs      USD  us_market      DJI               EDT
+^DJCISI    Dow Jones Commodity Index Silve      USD  us_market      DJI               EDT
+^DJCISO    Dow Jones Commodity Index Soybe      USD  us_market      DJI               EDT
+^DJCIT        Dow Jones Commodity Index TR      USD  us_market      DJI               EDT
+^DJCIWH    Dow Jones Commodity Index Wheat      USD  us_market      DJI               EDT
+^DJCMED        Dow Jones CME Spot FX$INDEX      USD  us_market      DJI               EDT
+^DJCN             Dow Jones China 88 Index      CNY  us_market      DJI               EDT
+^DJCOS50N  Dow Jones China Offshore 50 Tot      USD  us_market      DJI               EDT
+^DJCTR      Dow Jones Composite Average TR      USD  us_market      DJI               EDT
+^DJCY10    Dow Jones Cyprus 10 Titans Inde      EUR  us_market      DJI               EDT
+^DJD-EU    Invesco Dow Jones Industrial Av      USD  us_market      ASE               EDT
+^DJDVN     Dow Jones U.S. Select Dividend       USD  us_market      DJI               EDT
+^DJDXNA    Dow Jones Developed Markets ex-      USD  us_market      DJI               EDT
+^DJECOM    Dow Jones Internet Commerce Ind      USD  us_market      DJI               EDT
+^DJECON    Dow Jones Emerging Markets Cons      USD  us_market      DJI               EDT
+^DJECONE   Dow Jones Emerging Markets Cons      EUR  us_market      DJI               EDT
+^DJEG20    Dow Jones EGX Egypt Titans 20 I      EGP  us_market      DJI               EDT
+^DJEG20D   Dow Jones EGX Egypt Titans 20 I      USD  us_market      DJI               EDT
+^DJEG20DT  Dow Jones EGX Egypt Titans 20 T      USD  us_market      DJI               EDT
+^DJEG20E   Dow Jones EGX Egypt Titans 20 I      EUR  us_market      DJI               EDT
+^DJEMDIV   Dow Jones Emerging Markets Sele      USD  us_market      DJI               EDT
+^DJEMDIVE  Dow Jones Emerging Markets Sele      EUR  us_market      DJI               EDT
+^DJEPCSD   Dow Jones EPAC Select Dividend       USD  us_market      DJI               EDT
+^DJERCUP   Dow Jones Equity All REIT Cappe      USD  us_market      DJI               EDT
+^DJEU25    Dow Jones Islamic Market Europe      USD  us_market      DJI               EDT
+^DJEUGRUN  Dow Jones Global Ex-U.S. Select      USD  us_market      SNP               EDT
+^DJFXJPY          Dow Jones FXCM Yen Index      JPY  us_market      DJI               EDT
+^DJGALY    Dow Jones Global Alternative Yi      USD  us_market      DJI               EDT
+^DJGEQY    Dow Jones Global Equity Yield I      USD  us_market      DJI               EDT
+^DJGEQYT   Dow Jones Global Equity Yield T      USD  us_market      DJI               EDT
+^DJGREY    Dow Jones Global Real Estate Yi      USD  us_market      DJI               EDT
+^DJGSD     Dow Jones Global Select Dividen      USD  us_market      DJI               EDT
+^DJGSDCC   Dow Jones Global Select Dividen      CAD  us_market      DJI               EDT
+^DJGSGRAN  Dow Jones Global Select Green R      AUD  us_market      SNP               EDT
+^DJGSGRNN  Dow Jones Global Select Green R      NZD  us_market      SNP               EDT
+^DJGSGRUN  Dow Jones Global Select Green R      USD  us_market      SNP               EDT
+^DJGSP     Dow Jones Precious Metals Index      USD  us_market      DJI               EDT
+^DJGSPT    Dow Jones Precious Metals Total      USD  us_market      DJI               EDT
+^DJGT      Dow Jones Global Titans 50 Inde      USD  us_market      DJI               EDT
+^DJGTE     Dow Jones Global Titans 50 Inde      EUR  us_market      DJI               EDT
+^DJGYLDT   Dow Jones Global Composite Yiel      USD  us_market      DJI               EDT
+^DJI          Dow Jones Industrial Average      USD  us_market      DJI               EDT
+^DJI100X   Dow Jones Islamic Market Intern      USD  us_market      DJI               EDT
+^DJI2MN    Dow Jones Industrial Average (2      USD  us_market      DJI               EDT
+^DJIAFT1I  Dow Jones Industrial Average Fu      USD  us_market      DJI               EDT
+^DJIBSC    Dow Jones Islamic Market Basic       USD  us_market      DJI               EDT
+^DJICA     Dow Jones Islamic Market Canada      USD  us_market      DJI               EDT
+^DJICH1MN  Dow Jones Islamic Market China       MYR  us_market      DJI               EDT
+^DJICHK    Dow Jones Islamic Market China/      HKD  us_market      DJI               EDT
+^DJICHKU   Dow Jones Islamic Market China/      USD  us_market      DJI               EDT
+^DJICYC    Dow Jones Islamic Market Consum      USD  us_market      DJI               EDT
+^DJID1UN   Dow Jones International Dividen      USD  us_market      NYS               EDT
+^DJIDQLCN  Dow Jones Islamic Market Develo      CAD  us_market      SNP               EDT
+^DJIDQLUN  Dow Jones Islamic Market Develo      USD  us_market      SNP               EDT
+^DJIEMG    Dow Jones Islamic Market World       USD  us_market      DJI               EDT
+^DJIENE    Dow Jones Islamic Market Oil &       USD  us_market      DJI               EDT
+^DJIEW     Dow Jones Industrial Average Eq      USD  us_market      DJI               EDT
+^DJIEWTR   Dow Jones Industrial Average Eq      USD  us_market      NYS               EDT
+^DJIEZ     Dow Jones Islamic Market Euro I      USD  us_market      DJI               EDT
+^DJIEZL    Dow Jones Islamic Market Euro L      USD  us_market      DJI               EDT
+^DJIEZM    Dow Jones Islamic Market Euro M      USD  us_market      DJI               EDT
+^DJIEZS    Dow Jones Islamic Market Euro S      USD  us_market      DJI               EDT
+^DJIFIN    Dow Jones Islamic Market Financ      USD  us_market      DJI               EDT
+^DJIGSD    Dow Jones Islamic Market Global      USD  us_market      DJI               EDT
+^DJIHCR    Dow Jones Islamic Market Health      USD  us_market      DJI               EDT
+^DJIIDU    Dow Jones Islamic Market Indust      USD  us_market      DJI               EDT
+^DJIJP     Dow Jones Islamic Market Japan       USD  us_market      DJI               EDT
+^DJILSCS   Dow Jones Israel Select Consume      ILS  us_market      DJI               EDT
+^DJILSHC   Dow Jones Israel Select Health       ILS  us_market      DJI               EDT
+^DJILSOG   Dow Jones Israel Select Oil & G      ILS  us_market      DJI               EDT
+^DJIMDXJ   Dow Jones Islamic Market Develo      USD  us_market      DJI               EDT
+^DJIMGTUN  Dow Jones Islamic Market Global      USD  us_market      SNP               EDT
+^DJIMIN    Dow Jones Islamic Market India       INR  us_market      DJI               EDT
+^DJIMIND   Dow Jones Islamic Market India       USD  us_market      DJI               EDT
+^DJIMKW    Dow Jones Islamic Market Kuwait      KWD  us_market      DJI               EDT
+^DJIMTR    Dow Jones Islamic Market Turkey      TRY  us_market      DJI               EDT
+^DJINET    Dow Jones Internet Composite In      USD  us_market      DJI               EDT
+^DJINETN   Dow Jones Internet Composite Ne      USD  us_market      DJI               EDT
+^DJINETT   Dow Jones Internet Composite To      USD  us_market      DJI               EDT
+^DJINR     Dow Jones Industrial Average NT      USD  us_market      DJI               EDT
+^DJINTCUN  Dow Jones International Interne      USD  us_market      DJI               EDT
+^DJIPICF   Dow Jones Industrial Average In      USD  us_market      DJI               EDT
+^DJIPICFH  Dow Jones Industrial Average In      HKD  us_market      DJI               EDT
+^DJIPICFT  Dow Jones Industrial Average In      TWD  us_market      DJI               EDT
+^DJIPLCF   Dow Jones Industrial Average 2X      USD  us_market      DJI               EDT
+^DJIPLCFH  Dow Jones Industrial Average 2X      HKD  us_market      DJI               EDT
+^DJIPLCFT  Dow Jones Industrial Average 2X      TWD  us_market      DJI               EDT
+^DJISRL    Dow Jones Islamic Market Sri La      LKR  us_market      DJI               EDT
+^DJISRLD   Dow Jones Islamic Market Sri La      USD  us_market      DJI               EDT
+^DJISVC    Dow Jones Internet Services Ind      USD  us_market      DJI               EDT
+^DJITEC    Dow Jones Islamic Market Techno      USD  us_market      DJI               EDT
+^DJITLS    Dow Jones Islamic Market Teleco      USD  us_market      DJI               EDT
+^DJITR     Dow Jones Industrial Average TR      USD  us_market      DJI               EDT
+^DJIUK     Dow Jones Islamic Market U.K. I      USD  us_market      DJI               EDT
+^DJIUTI    Dow Jones Islamic Market Utilit      USD  us_market      DJI               EDT
+^DJIYW     Dow Jones Industrial Average Yi      USD  us_market      DJI               EDT
+^DJMENXD   Dow Jones MENA ex-Saudi Index (      USD  us_market      DJI               EDT
+^DJMY25    Dow Jones Islamic Market Malays      MYR  us_market      DJI               EDT
+^DJMY25D   Dow Jones Islamic Market Malays      USD  us_market      DJI               EDT
+^DJNAJG    Dow Jones North America Select       CAD  us_market      DJI               EDT
+^DJNAJGAD  Dow Jones North America Select       USD  us_market      DJI               EDT
+^DJR           DOW JONES EQUITY REIT INDEX      USD  us_market      WCB               EDT
+^DJRUGXUP  Dow Jones Russia GDR ex US/EU S      USD  us_market      DJI               EDT
+^DJRUSG    Dow Jones Russia GDR Index (EUR      EUR  us_market      DJI               EDT
+^DJRUSGD   Dow Jones Russia GDR Index (USD      USD  us_market      DJI               EDT
+^DJRUSGR   Dow Jones Russia GDR Total Retu      USD  us_market      DJI               EDT
+^DJSA30    Dow Jones Saudi Titans 30 Index      SAR  us_market      DJI               EDT
+^DJSASD    Dow Jones U.S. Select Aerospace      USD  us_market      DJI               EDT
+^DJSCLCP   Dow Jones Sustainability Chile       CLP  us_market      SNP               EDT
+^DJSCLUP   Dow Jones Sustainability Chile       USD  us_market      SNP               EDT
+^DJSEA1UN  Dow Jones Emerging ASEAN Titans      USD  us_market      DJI               EDT
+^DJSENAE   Dow Jones Sustainability Europe      EUR  us_market      DJI               EDT
+^DJSENAED  Dow Jones Sustainability Europe      USD  us_market      DJI               EDT
+^DJSEUZ    Dow Jones Sustainability Eurozo      EUR  us_market      DJI               EDT
+^DJSEUZD   Dow Jones Sustainability Eurozo      USD  us_market      DJI               EDT
+^DJSFIN    Dow Jones SAFE India Index (INR      INR  us_market      DJI               EDT
+^DJSFIND   Dow Jones SAFE India Index (USD      USD  us_market      DJI               EDT
+^DJSH             Dow Jones Shanghai Index      CNY  us_market      DJI               EDT
+^DJSHCP    Dow Jones U.S. Select Health Ca      USD  us_market      DJI               EDT
+^DJSHMB    Dow Jones U.S. Select Home Cons      USD  us_market      DJI               EDT
+^DJSIK     Dow Jones Sustainability Korea       KRW  us_market      DJI               EDT
+^DJSINS    Dow Jones U.S. Select Insurance      USD  us_market      DJI               EDT
+^DJSINV    Dow Jones U.S. Select Investmen      USD  us_market      DJI               EDT
+^DJSM      Dow Jones Select Micro-Cap Inde      USD  us_market      DJI               EDT
+^DJSMDQ    Dow Jones U.S. Select Medical E      USD  us_market      DJI               EDT
+^DJSMT     Dow Jones Select Micro-Cap Tota      USD  us_market      DJI               EDT
+^DJSND     Dow Jones Sustainability Nordic      USD  us_market      DJI               EDT
+^DJSNE     Dow Jones Sustainability Nordic      EUR  us_market      DJI               EDT
+^DJSOEP    Dow Jones U.S. Select Oil Explo      USD  us_market      DJI               EDT
+^DJSOES    Dow Jones U.S. Select Oil Equip      USD  us_market      DJI               EDT
+^DJSPHM    Dow Jones U.S. Select Pharmaceu      USD  us_market      DJI               EDT
+^DJSRBK    Dow Jones U.S. Select Regional       USD  us_market      DJI               EDT
+^DJSTEL    Dow Jones U.S. Select Telecommu      USD  us_market      DJI               EDT
+^DJSWECD   Dow Jones Sustainability World       USD  us_market      DJI               EDT
+^DJSWECE   Dow Jones Sustainability World       EUR  us_market      DJI               EDT
+^DJSZ             Dow Jones Shenzhen Index      CNY  us_market      DJI               EDT
+^DJT       Dow Jones Transportation Averag      USD  us_market      DJI               EDT
+^DJTATO    Dow Jones Automobiles & Parts T      USD  us_market      DJI               EDT
+^DJTATOE   Dow Jones Automobiles & Parts T      EUR  us_market      DJI               EDT
+^DJTBAK    Dow Jones Banks Titans 30 Index      USD  us_market      DJI               EDT
+^DJTBAKE   Dow Jones Banks Titans 30 Index      EUR  us_market      DJI               EDT
+^DJTBAKT   Dow Jones Banks Titans 30 Total      USD  us_market      DJI               EDT
+^DJTBAS    Dow Jones Basic Resources Titan      USD  us_market      DJI               EDT
+^DJTBASE   Dow Jones Basic Resources Titan      EUR  us_market      DJI               EDT
+^DJTCGS    Dow Jones Travel & Leisure Tita      USD  us_market      DJI               EDT
+^DJTCGSE   Dow Jones Travel & Leisure Tita      EUR  us_market      DJI               EDT
+^DJTCHE    Dow Jones Chemicals Titans 30 I      USD  us_market      DJI               EDT
+^DJTCHEE   Dow Jones Chemicals Titans 30 I      EUR  us_market      DJI               EDT
+^DJTCHET   Dow Jones Chemicals Titans 30 T      USD  us_market      DJI               EDT
+^DJTCNS    Dow Jones Construction & Materi      USD  us_market      DJI               EDT
+^DJTCNSE   Dow Jones Construction & Materi      EUR  us_market      DJI               EDT
+^DJTENG    Dow Jones Oil & Gas Titans 30 I      USD  us_market      DJI               EDT
+^DJTENGE   Dow Jones Oil & Gas Titans 30 I      EUR  us_market      DJI               EDT
+^DJTENGT   Dow Jones Oil & Gas Titans 30 T      USD  us_market      DJI               EDT
+^DJTFOB    Dow Jones Food & Beverage Titan      USD  us_market      DJI               EDT
+^DJTFOBE   Dow Jones Food & Beverage Titan      EUR  us_market      DJI               EDT
+^DJTFVS    Dow Jones Financial Services Ti      USD  us_market      DJI               EDT
+^DJTFVSE   Dow Jones Financial Services Ti      EUR  us_market      DJI               EDT
+^DJTGR     Dow Jones Tiger Titans 50 Index      USD  us_market      DJI               EDT
+^DJTHCA    Dow Jones Health Care Titans 30      USD  us_market      DJI               EDT
+^DJTHCAE   Dow Jones Health Care Titans 30      EUR  us_market      DJI               EDT
+^DJTIGS    Dow Jones Industrial Goods and       USD  us_market      DJI               EDT
+^DJTIGSE   Dow Jones Industrial Goods and       EUR  us_market      DJI               EDT
+^DJTINN    Dow Jones Insurance Titans 30 I      USD  us_market      DJI               EDT
+^DJTINNE   Dow Jones Insurance Titans 30 I      EUR  us_market      DJI               EDT
+^DJTINNT   Dow Jones Insurance Titans 30 T      USD  us_market      DJI               EDT
+^DJTLAB      Dow Jones U.S. Low Beta Index      USD  us_market      DJI               EDT
+^DJTLABT   Dow Jones U.S. Low Beta Total R      USD  us_market      DJI               EDT
+^DJTLMO    Dow Jones U.S. High Momentum In      USD  us_market      DJI               EDT
+^DJTLMOT   Dow Jones U.S. High Momentum To      USD  us_market      DJI               EDT
+^DJTLQU    Dow Jones U.S. Thematic Long Qu      USD  us_market      DJI               EDT
+^DJTLSS    Dow Jones U.S. Thematic Long Si      USD  us_market      DJI               EDT
+^DJTLSV    Dow Jones U.S. Relative Value I      USD  us_market      DJI               EDT
+^DJTLSVT   Dow Jones U.S. Relative Value T      USD  us_market      DJI               EDT
+^DJTMDI    Dow Jones Media Titans 30 Index      USD  us_market      DJI               EDT
+^DJTMDIE   Dow Jones Media Titans 30 Index      EUR  us_market      DJI               EDT
+^DJTMDIT   Dow Jones Media Titans 30 Total      USD  us_market      DJI               EDT
+^DJTMNAB   Dow Jones U.S. Thematic Market       USD  us_market      DJI               EDT
+^DJTMNBCP  Dow Jones U.S. Thematic Market       CAD  us_market      SNP               EDT
+^DJTNCG    Dow Jones Personal & Household       USD  us_market      DJI               EDT
+^DJTNCGE   Dow Jones Personal & Household       EUR  us_market      DJI               EDT
+^DJTREA    Dow Jones Real Estate Titans 30      USD  us_market      DJI               EDT
+^DJTREAE   Dow Jones Real Estate Titans 30      EUR  us_market      DJI               EDT
+^DJTRET    Dow Jones Retail Titans 30 Inde      USD  us_market      DJI               EDT
+^DJTRETE   Dow Jones Retail Titans 30 Inde      EUR  us_market      DJI               EDT
+^DJTRETT   Dow Jones Retail Titans 30 Tota      USD  us_market      DJI               EDT
+^DJTSAB     Dow Jones U.S. High Beta Index      USD  us_market      DJI               EDT
+^DJTSABT   Dow Jones U.S. High Beta Total       USD  us_market      DJI               EDT
+^DJTSEC    Dow Jones Sector Titans Composi      USD  us_market      DJI               EDT
+^DJTSECE   Dow Jones Sector Titans Composi      EUR  us_market      DJI               EDT
+^DJTSMO    Dow Jones U.S. Low Momentum Ind      USD  us_market      DJI               EDT
+^DJTSMOT   Dow Jones U.S. Low Momentum Tot      USD  us_market      DJI               EDT
+^DJTSQU    Dow Jones U.S. Thematic Short Q      USD  us_market      DJI               EDT
+^DJTSSS    Dow Jones U.S. Thematic Short S      USD  us_market      DJI               EDT
+^DJTSSV    Dow Jones U.S. Short Relative V      USD  us_market      DJI               EDT
+^DJTTEL    Dow Jones Telecommunications Ti      USD  us_market      DJI               EDT
+^DJTTELE   Dow Jones Telecommunications Ti      EUR  us_market      DJI               EDT
+^DJTTHE    Dow Jones Technology Titans 30       USD  us_market      DJI               EDT
+^DJTTHEE   Dow Jones Technology Titans 30       EUR  us_market      DJI               EDT
+^DJTUTS    Dow Jones Utilities Titans 30 I      USD  us_market      DJI               EDT
+^DJTUTSE   Dow Jones Utilities Titans 30 I      EUR  us_market      DJI               EDT
+^DJTUTST   Dow Jones Utilities Titans 30 T      USD  us_market      DJI               EDT
+^DJTWD3TP  Dow Jones Taiwan High Quality D      TWD  us_market      DJI               EDT
+^DJU             Dow Jones Utility Average      USD  us_market      DJI               EDT
+^DJULTC    Dow Jones U.S. Large-Cap Techno      USD  us_market      DJI               EDT
+^DJUS                 Dow Jones U.S. Index      USD  us_market      DJI               EDT
+^DJUS50    Dow Jones Islamic Market U.S. T      USD  us_market      DJI               EDT
+^DJUSAE    Dow Jones U.S. Aerospace & Defe      USD  us_market      DJI               EDT
+^DJUSAF    Dow Jones U.S. Delivery Service      USD  us_market      DJI               EDT
+^DJUSAG    Dow Jones U.S. Asset Managers I      USD  us_market      DJI               EDT
+^DJUSAI    Dow Jones U.S. Electronic Equip      USD  us_market      DJI               EDT
+^DJUSAL      Dow Jones U.S. Aluminum Index      USD  us_market      DJI               EDT
+^DJUSAM    Dow Jones U.S. Medical Equipmen      USD  us_market      DJI               EDT
+^DJUSAP    Dow Jones U.S. Automobiles & Pa      USD  us_market      DJI               EDT
+^DJUSAR      Dow Jones U.S. Airlines Index      USD  us_market      DJI               EDT
+^DJUSAS     Dow Jones U.S. Aerospace Index      USD  us_market      DJI               EDT
+^DJUSAT    Dow Jones U.S. Auto Parts Index      USD  us_market      DJI               EDT
+^DJUSAU    Dow Jones U.S. Automobiles Inde      USD  us_market      DJI               EDT
+^DJUSAV    Dow Jones U.S. Media Agencies I      USD  us_market      DJI               EDT
+^DJUSBC    Dow Jones U.S. Broadcasting & E      USD  us_market      DJI               EDT
+^DJUSBD    Dow Jones U.S. Building Materia      USD  us_market      DJI               EDT
+^DJUSBE    Dow Jones U.S. Business Trainin      USD  us_market      DJI               EDT
+^DJUSBK         Dow Jones U.S. Banks Index      USD  us_market      DJI               EDT
+^DJUSBKT   Dow Jones U.S. Banks Total Retu      USD  us_market      DJI               EDT
+^DJUSBM    Dow Jones U.S. Basic Materials       USD  us_market      DJI               EDT
+^DJUSBS    Dow Jones U.S. Basic Resources       USD  us_market      DJI               EDT
+^DJUSBT    Dow Jones U.S. Biotechnology In      USD  us_market      DJI               EDT
+^DJUSBTT   Dow Jones U.S. Biotechnology To      USD  us_market      DJI               EDT
+^DJUSBV     Dow Jones U.S. Beverages Index      USD  us_market      DJI               EDT
+^DJUSCA      Dow Jones U.S. Gambling Index      USD  us_market      DJI               EDT
+^DJUSCC    Dow Jones U.S. Commodity Chemic      USD  us_market      DJI               EDT
+^DJUSCF    Dow Jones U.S. Clothing & Acces      USD  us_market      DJI               EDT
+^DJUSCG    Dow Jones U.S. Travel & Leisure      USD  us_market      DJI               EDT
+^DJUSCH     Dow Jones U.S. Chemicals Index      USD  us_market      DJI               EDT
+^DJUSCM    Dow Jones U.S. Personal Product      USD  us_market      DJI               EDT
+^DJUSCN    Dow Jones U.S. Construction & M      USD  us_market      DJI               EDT
+^DJUSCP    Dow Jones U.S. Containers & Pac      USD  us_market      DJI               EDT
+^DJUSCR    Dow Jones U.S. Computer Hardwar      USD  us_market      DJI               EDT
+^DJUSCS    Dow Jones U.S. Specialized Cons      USD  us_market      DJI               EDT
+^DJUSCT    Dow Jones U.S. Telecommunicatio      USD  us_market      DJI               EDT
+^DJUSCX    Dow Jones U.S. Specialty Chemic      USD  us_market      DJI               EDT
+^DJUSCY    Dow Jones U.S. Consumer Service      USD  us_market      DJI               EDT
+^DJUSDB       Dow Jones U.S. Brewers Index      USD  us_market      DJI               EDT
+^DJUSDIV   Dow Jones U.S. Dividend 100 Ind      USD  us_market      DJI               EDT
+^DJUSDIVN  Dow Jones U.S. Dividend 100 Net      USD  us_market      DJI               EDT
+^DJUSDIVT  Dow Jones U.S. Dividend 100 Tot      USD  us_market      DJI               EDT
+^DJUSDN       Dow Jones U.S. Defense Index      USD  us_market      DJI               EDT
+^DJUSDR    Dow Jones U.S. Food & Drug Reta      USD  us_market      DJI               EDT
+^DJUSDS    Dow Jones U.S. Industrial Suppl      USD  us_market      DJI               EDT
+^DJUSDT    Dow Jones U.S. Diversified REIT      USD  us_market      DJI               EDT
+^DJUSDV    Dow Jones U.S. Computer Service      USD  us_market      DJI               EDT
+^DJUSEC    Dow Jones U.S. Electrical Compo      USD  us_market      DJI               EDT
+^DJUSEE    Dow Jones U.S. Electronic & Ele      USD  us_market      DJI               EDT
+^DJUSEH    Dow Jones U.S. Real Estate Hold      USD  us_market      DJI               EDT
+^DJUSEN     Dow Jones U.S. Oil & Gas Index      USD  us_market      DJI               EDT
+^DJUSENN   Dow Jones U.S. Oil & Gas Net To      USD  us_market      DJI               EDT
+^DJUSENT   Dow Jones U.S. Oil & Gas Total       USD  us_market      DJI               EDT
+^DJUSES    Dow Jones U.S. Real Estate Serv      USD  us_market      DJI               EDT
+^DJUSEU    Dow Jones U.S. Electricity Inde      USD  us_market      DJI               EDT
+^DJUSFA    Dow Jones U.S. Financial Admini      USD  us_market      DJI               EDT
+^DJUSFB    Dow Jones U.S. Food & Beverage       USD  us_market      DJI               EDT
+^DJUSFC    Dow Jones U.S. Fixed Line Telec      USD  us_market      DJI               EDT
+^DJUSFD    Dow Jones U.S. Food Retailers &      USD  us_market      DJI               EDT
+^DJUSFE    Dow Jones U.S. Industrial Machi      USD  us_market      DJI               EDT
+^DJUSFH    Dow Jones U.S. Furnishings Inde      USD  us_market      DJI               EDT
+^DJUSFI    Dow Jones U.S. Financial Servic      USD  us_market      DJI               EDT
+^DJUSFN    Dow Jones U.S. Financials Index      USD  us_market      DJI               EDT
+^DJUSFNC   Dow Jones U.S. Financials Cappe      USD  us_market      DJI               EDT
+^DJUSFNT   Dow Jones U.S. Financials Total      USD  us_market      DJI               EDT
+^DJUSFO    Dow Jones U.S. Food Producers I      USD  us_market      DJI               EDT
+^DJUSFP    Dow Jones U.S. Food Products In      USD  us_market      DJI               EDT
+^DJUSFT      Dow Jones U.S. Footwear Index      USD  us_market      DJI               EDT
+^DJUSGI    Dow Jones U.S. General Industri      USD  us_market      DJI               EDT
+^DJUSGL    Dow Jones U.S. Large-Cap Growth      USD  us_market      DJI               EDT
+^DJUSGM    Dow Jones U.S. Mid-Cap Growth I      USD  us_market      DJI               EDT
+^DJUSGR        Dow Jones U.S. Growth Index      USD  us_market      DJI               EDT
+^DJUSGRUN  Dow Jones U.S. Select Green REI      USD  us_market      SNP               EDT
+^DJUSGS    Dow Jones U.S. Small-Cap Growth      USD  us_market      DJI               EDT
+^DJUSGT    Dow Jones U.S. General Retailer      USD  us_market      DJI               EDT
+^DJUSGU    Dow Jones U.S. Gas Distribution      USD  us_market      DJI               EDT
+^DJUSHB    Dow Jones U.S. Home Constructio      USD  us_market      DJI               EDT
+^DJUSHC    Dow Jones U.S. Health Care Inde      USD  us_market      DJI               EDT
+^DJUSHCT   Dow Jones U.S. Health Care Tota      USD  us_market      DJI               EDT
+^DJUSHD    Dow Jones U.S. Durable Househol      USD  us_market      DJI               EDT
+^DJUSHG    Dow Jones U.S. Household Goods       USD  us_market      DJI               EDT
+^DJUSHI    Dow Jones U.S. Home Improvement      USD  us_market      DJI               EDT
+^DJUSHL    Dow Jones U.S. Hotel & Lodging       USD  us_market      DJI               EDT
+^DJUSHN    Dow Jones U.S. Nondurable House      USD  us_market      DJI               EDT
+^DJUSHP    Dow Jones U.S. Health Care Prov      USD  us_market      DJI               EDT
+^DJUSHR    Dow Jones U.S. Commercial Vehic      USD  us_market      DJI               EDT
+^DJUSHV    Dow Jones U.S. Heavy Constructi      USD  us_market      DJI               EDT
+^DJUSIB    Dow Jones U.S. Insurance Broker      USD  us_market      DJI               EDT
+^DJUSID    Dow Jones U.S. Diversified Indu      USD  us_market      DJI               EDT
+^DJUSIF    Dow Jones U.S. Full Line Insura      USD  us_market      DJI               EDT
+^DJUSIG    Dow Jones U.S. Industrial Goods      USD  us_market      DJI               EDT
+^DJUSIL    Dow Jones U.S. Life Insurance I      USD  us_market      DJI               EDT
+^DJUSIM    Dow Jones U.S. Industrial Metal      USD  us_market      DJI               EDT
+^DJUSIN    Dow Jones U.S. Industrials Inde      USD  us_market      DJI               EDT
+^DJUSINT   Dow Jones U.S. Industrials Tota      USD  us_market      DJI               EDT
+^DJUSIO    Dow Jones U.S. Industrial & Off      USD  us_market      DJI               EDT
+^DJUSIP    Dow Jones U.S. Property & Casua      USD  us_market      DJI               EDT
+^DJUSIQ    Dow Jones U.S. Industrial Engin      USD  us_market      DJI               EDT
+^DJUSIR     Dow Jones U.S. Insurance Index      USD  us_market      DJI               EDT
+^DJUSIS    Dow Jones U.S. Support Services      USD  us_market      DJI               EDT
+^DJUSIT    Dow Jones U.S. Industrial Trans      USD  us_market      DJI               EDT
+^DJUSIU    Dow Jones U.S. Reinsurance Inde      USD  us_market      DJI               EDT
+^DJUSIV    Dow Jones U.S. Business Support      USD  us_market      DJI               EDT
+^DJUSIX    Dow Jones U.S. Nonlife Insuranc      USD  us_market      DJI               EDT
+^DJUSL      Dow Jones U.S. Large-Cap Index      USD  us_market      DJI               EDT
+^DJUSLE    Dow Jones U.S. Leisure Goods In      USD  us_market      DJI               EDT
+^DJUSLG        Dow Jones U.S. Hotels Index      USD  us_market      DJI               EDT
+^DJUSLW       Dow Jones U.S. Low-Cap Index      USD  us_market      DJI               EDT
+^DJUSM        Dow Jones U.S. Mid-Cap Index      USD  us_market      DJI               EDT
+^DJUSMC    Dow Jones U.S. Health Care Equi      USD  us_market      DJI               EDT
+^DJUSME         Dow Jones U.S. Media Index      USD  us_market      DJI               EDT
+^DJUSMF    Dow Jones U.S. Mortgage Finance      USD  us_market      DJI               EDT
+^DJUSMG        Dow Jones U.S. Mining Index      USD  us_market      DJI               EDT
+^DJUSMR    Dow Jones U.S. Mortgage REITs I      USD  us_market      DJI               EDT
+^DJUSMS    Dow Jones U.S. Medical Supplies      USD  us_market      DJI               EDT
+^DJUSMT    Dow Jones U.S. Marine Transport      USD  us_market      DJI               EDT
+^DJUSMU    Dow Jones U.S. Multiutilities I      USD  us_market      DJI               EDT
+^DJUSNC    Dow Jones U.S. Consumer Goods I      USD  us_market      DJI               EDT
+^DJUSNCT   Dow Jones U.S. Consumer Goods T      USD  us_market      DJI               EDT
+^DJUSNF    Dow Jones U.S. Nonferrous Metal      USD  us_market      DJI               EDT
+^DJUSNG    Dow Jones U.S. Personal & House      USD  us_market      DJI               EDT
+^DJUSNS      Dow Jones U.S. Internet Index      USD  us_market      DJI               EDT
+^DJUSOG    Dow Jones U.S. Oil & Gas Produc      USD  us_market      DJI               EDT
+^DJUSOI    Dow Jones U.S. Oil Equipment &       USD  us_market      DJI               EDT
+^DJUSOL    Dow Jones U.S. Integrated Oil &      USD  us_market      DJI               EDT
+^DJUSOQ    Dow Jones U.S. Oil Equipment Se      USD  us_market      DJI               EDT
+^DJUSOS    Dow Jones U.S. Exploration & Pr      USD  us_market      DJI               EDT
+^DJUSPB    Dow Jones U.S. Publishing Index      USD  us_market      DJI               EDT
+^DJUSPC    Dow Jones U.S. Waste & Disposal      USD  us_market      DJI               EDT
+^DJUSPG    Dow Jones U.S. Personal Goods I      USD  us_market      DJI               EDT
+^DJUSPL     Dow Jones U.S. Pipelines Index      USD  us_market      DJI               EDT
+^DJUSPM    Dow Jones U.S. Gold Mining Inde      USD  us_market      DJI               EDT
+^DJUSPN    Dow Jones U.S. Pharmaceuticals       USD  us_market      DJI               EDT
+^DJUSRA    Dow Jones U.S. Apparel Retailer      USD  us_market      DJI               EDT
+^DJUSRB    Dow Jones U.S. Broadline Retail      USD  us_market      DJI               EDT
+^DJUSRCUN  Dow Jones U.S. Real Estate Capp      USD  us_market      SNP               EDT
+^DJUSRD    Dow Jones U.S. Drug Retailers I      USD  us_market      DJI               EDT
+^DJUSRE    Dow Jones U.S. Real Estate Inde      USD  us_market      DJI               EDT
+^DJUSRET   Dow Jones U.S. Real Estate Tota      USD  us_market      DJI               EDT
+^DJUSRH    Dow Jones U.S. Real Estate Inve      USD  us_market      DJI               EDT
+^DJUSRL    Dow Jones U.S. Retail REITs Ind      USD  us_market      DJI               EDT
+^DJUSRN    Dow Jones U.S. Residential REIT      USD  us_market      DJI               EDT
+^DJUSRP    Dow Jones U.S. Recreational Pro      USD  us_market      DJI               EDT
+^DJUSRQ    Dow Jones U.S. Recreational Ser      USD  us_market      DJI               EDT
+^DJUSRR     Dow Jones U.S. Railroads Index      USD  us_market      DJI               EDT
+^DJUSRS    Dow Jones U.S. Specialty Retail      USD  us_market      DJI               EDT
+^DJUSRT        Dow Jones U.S. Retail Index      USD  us_market      DJI               EDT
+^DJUSRU    Dow Jones U.S. Restaurants & Ba      USD  us_market      DJI               EDT
+^DJUSS      Dow Jones U.S. Small-Cap Index      USD  us_market      DJI               EDT
+^DJUSSB    Dow Jones U.S. Investment Servi      USD  us_market      DJI               EDT
+^DJUSSC    Dow Jones U.S. Semiconductors I      USD  us_market      DJI               EDT
+^DJUSSCT   Dow Jones U.S. Semiconductors T      USD  us_market      DJI               EDT
+^DJUSSD    Dow Jones U.S. Soft Drinks Inde      USD  us_market      DJI               EDT
+^DJUSSF    Dow Jones U.S. Consumer Finance      USD  us_market      DJI               EDT
+^DJUSSP    Dow Jones U.S. Specialty Financ      USD  us_market      DJI               EDT
+^DJUSSR    Dow Jones U.S. Specialty REITs       USD  us_market      DJI               EDT
+^DJUSST    Dow Jones U.S. Iron & Steel Ind      USD  us_market      DJI               EDT
+^DJUSSTRN  Dow Jones U.S. Select Short-Ter      USD  us_market      DJI               EDT
+^DJUSSV    Dow Jones U.S. Software & Compu      USD  us_market      DJI               EDT
+^DJUSSW      Dow Jones U.S. Software Index      USD  us_market      DJI               EDT
+^DJUSTB       Dow Jones U.S. Tobacco Index      USD  us_market      DJI               EDT
+^DJUSTC    Dow Jones U.S. Technology Index      USD  us_market      DJI               EDT
+^DJUSTCC   Dow Jones U.S. Technology Cappe      USD  us_market      DJI               EDT
+^DJUSTCT   Dow Jones U.S. Technology Total      USD  us_market      DJI               EDT
+^DJUSTK      Dow Jones U.S. Trucking Index      USD  us_market      DJI               EDT
+^DJUSTP       Dow Jones U.S. Top-Cap Index      USD  us_market      DJI               EDT
+^DJUSTQ    Dow Jones U.S. Technology Hardw      USD  us_market      DJI               EDT
+^DJUSTS    Dow Jones U.S. Transportation S      USD  us_market      DJI               EDT
+^DJUSTT    Dow Jones U.S. Travel & Tourism      USD  us_market      DJI               EDT
+^DJUSTY          Dow Jones U.S. Toys Index      USD  us_market      DJI               EDT
+^DJUSUO    Dow Jones U.S. Gas Water & Mult      USD  us_market      DJI               EDT
+^DJUSUT     Dow Jones U.S. Utilities Index      USD  us_market      DJI               EDT
+^DJUSUTT   Dow Jones U.S. Utilities Total       USD  us_market      DJI               EDT
+^DJUSVA         Dow Jones U.S. Value Index      USD  us_market      DJI               EDT
+^DJUSVE    Dow Jones U.S. Conventional Ele      USD  us_market      DJI               EDT
+^DJUSVL    Dow Jones U.S. Large-Cap Value       USD  us_market      DJI               EDT
+^DJUSVM    Dow Jones U.S. Mid-Cap Value In      USD  us_market      DJI               EDT
+^DJUSVN    Dow Jones U.S. Distillers & Vin      USD  us_market      DJI               EDT
+^DJUSVS    Dow Jones U.S. Small-Cap Value       USD  us_market      DJI               EDT
+^DJUSWC    Dow Jones U.S. Mobile Telecommu      USD  us_market      DJI               EDT
+^DJUSWU         Dow Jones U.S. Water Index      USD  us_market      DJI               EDT
+^DJUTR        Dow Jones Utility Average TR      USD  us_market      DJI               EDT
+^DJX       1/100 DOW JONES INDUSTRIAL AVER      USD  us_market      WCB               EDT
+^DKDOW             Dow Jones Denmark Index      DKK  us_market      DJI               EDT
+^DKDOWD      Dow Jones Denmark Index (USD)      USD  us_market      DJI               EDT
+^DMT       Dow Jones Transportation Averag      USD  us_market      NYS               EDT
+^DTX       DOW JONES TRANSPORTATION AVERAG      USD  us_market      WCB               EDT
+^DUX             DOW JONES UTILITY AVERAGE      USD  us_market      WCB               EDT
+^DVY-EU    iSHARES DOW JONES SELECT DIVIDE      USD  us_market      ASE               EDT
+^DW25      Dow Jones U.S. Broad Stock Mark      USD  us_market      DJI               EDT
+^DWAMRS    Dow Jones Americas Select Real       USD  us_market      DJI               EDT
+^DWAMRT    Dow Jones Americas Select REIT       USD  us_market      DJI               EDT
+^DWAPRS    Dow Jones Asia/Pacific Select R      USD  us_market      DJI               EDT
+^DWCAEC    Dow Jones U.S. Alternative Elec      USD  us_market      DJI               EDT
+^DWCAEG    Dow Jones U.S. Alternative Ener      USD  us_market      DJI               EDT
+^DWCAFL    Dow Jones U.S. Alternative Fuel      USD  us_market      DJI               EDT
+^DWCAIR    Dow Jones U.S. Airlines Total S      USD  us_market      DJI               EDT
+^DWCALU    Dow Jones U.S. Aluminum Total S      USD  us_market      DJI               EDT
+^DWCAMG    Dow Jones U.S. Asset Managers T      USD  us_market      DJI               EDT
+^DWCAPT    Dow Jones U.S. Auto Parts Total      USD  us_market      DJI               EDT
+^DWCARO    Dow Jones U.S. Aerospace Total       USD  us_market      DJI               EDT
+^DWCATO    Dow Jones U.S. Automobiles Tota      USD  us_market      DJI               EDT
+^DWCBNK    Dow Jones U.S. Banks Total Stoc      USD  us_market      DJI               EDT
+^DWCBRW    Dow Jones U.S. Brewers Total St      USD  us_market      DJI               EDT
+^DWCBVG    Dow Jones U.S. Beverages Total       USD  us_market      DJI               EDT
+^DWCCHM    Dow Jones U.S. Chemicals Total       USD  us_market      DJI               EDT
+^DWCCOA    Dow Jones U.S. Coal Total Stock      USD  us_market      DJI               EDT
+^DWCCSE    Dow Jones U.S. Consumer Electro      USD  us_market      DJI               EDT
+^DWCDEF    Dow Jones U.S. Defense Total St      USD  us_market      DJI               EDT
+^DWCELC    Dow Jones U.S. Electricity Tota      USD  us_market      DJI               EDT
+^DWCF      Dow Jones U.S. Total Stock Mark      USD  us_market      DJI               EDT
+^DWCFAF    Dow Jones U.S. Farming & Fishin      USD  us_market      DJI               EDT
+^DWCFOD    Dow Jones U.S. Food Products To      USD  us_market      DJI               EDT
+^DWCFOP    Dow Jones U.S. Food Producers T      USD  us_market      DJI               EDT
+^DWCFOT    Dow Jones U.S. Footwear Total S      USD  us_market      DJI               EDT
+^DWCFRN    Dow Jones U.S. Furnishings Tota      USD  us_market      DJI               EDT
+^DWCFRP    Dow Jones U.S. Forestry & Paper      USD  us_market      DJI               EDT
+^DWCGAM    Dow Jones U.S. Gambling Total S      USD  us_market      DJI               EDT
+^DWCHTL    Dow Jones U.S. Hotels Total Sto      USD  us_market      DJI               EDT
+^DWCINL    Dow Jones U.S. Life Insurance T      USD  us_market      DJI               EDT
+^DWCINS    Dow Jones U.S. Insurance Total       USD  us_market      DJI               EDT
+^DWCINT    Dow Jones U.S. Internet Total S      USD  us_market      DJI               EDT
+^DWCLSG    Dow Jones U.S. Leisure Goods To      USD  us_market      DJI               EDT
+^DWCMDA    Dow Jones U.S. Media Agencies T      USD  us_market      DJI               EDT
+^DWCMDI    Dow Jones U.S. Media Total Stoc      USD  us_market      DJI               EDT
+^DWCMIN    Dow Jones U.S. Mining Total Sto      USD  us_market      DJI               EDT
+^DWCMNG    Dow Jones U.S. General Mining T      USD  us_market      DJI               EDT
+^DWCMTG    Dow Jones U.S. Mortgage REITs T      USD  us_market      DJI               EDT
+^DWCMUT    Dow Jones U.S. Multiutilities T      USD  us_market      DJI               EDT
+^DWCOFF    Dow Jones U.S. Electronic Offic      USD  us_market      DJI               EDT
+^DWCPAP    Dow Jones U.S. Paper Total Stoc      USD  us_market      DJI               EDT
+^DWCPCS    Dow Jones U.S. Gold Mining Tota      USD  us_market      DJI               EDT
+^DWCPF     Dow Jones U.S. Completion Total      USD  us_market      DJI               EDT
+^DWCPIP    Dow Jones U.S. Pipelines Total       USD  us_market      DJI               EDT
+^DWCPSG    Dow Jones U.S. Personal Goods T      USD  us_market      DJI               EDT
+^DWCPUB    Dow Jones U.S. Publishing Total      USD  us_market      DJI               EDT
+^DWCRAI    Dow Jones U.S. Railroads Total       USD  us_market      DJI               EDT
+^DWCREE    Dow Jones U.S. Renewable Energy      USD  us_market      DJI               EDT
+^DWCRNS    Dow Jones U.S. Reinsurance Tota      USD  us_market      DJI               EDT
+^DWCRTD    Dow Jones U.S. Drug Retailers T      USD  us_market      DJI               EDT
+^DWCRTL    Dow Jones U.S. Retail Total Sto      USD  us_market      DJI               EDT
+^DWCRTR    Dow Jones U.S. Retail REITs Tot      USD  us_market      DJI               EDT
+^DWCSFT    Dow Jones U.S. Soft Drinks Tota      USD  us_market      DJI               EDT
+^DWCSOF    Dow Jones U.S. Software Total S      USD  us_market      DJI               EDT
+^DWCSTL    Dow Jones U.S. Iron & Steel Tot      USD  us_market      DJI               EDT
+^DWCTIR    Dow Jones U.S. Tires Total Stoc      USD  us_market      DJI               EDT
+^DWCTOB    Dow Jones U.S. Tobacco Total St      USD  us_market      DJI               EDT
+^DWCTOY    Dow Jones U.S. Toys Total Stock      USD  us_market      DJI               EDT
+^DWCTRK    Dow Jones U.S. Trucking Total S      USD  us_market      DJI               EDT
+^DWCWAT    Dow Jones U.S. Water Total Stoc      USD  us_market      DJI               EDT
+^DWEDRS    Dow Jones Europe Developed Mark      USD  us_market      DJI               EDT
+^DWEDRSE   Dow Jones Europe Developed Mark      EUR  us_market      DJI               EDT
+^DWEURS    Dow Jones Europe Select Real Es      USD  us_market      DJI               EDT
+^DWEURT    Dow Jones Total Europe Select R      USD  us_market      DJI               EDT
+^DWGRO     Dow Jones U.S. Growth Total Sto      USD  us_market      DJI               EDT
+^DWGRS     Dow Jones Global Select Real Es      USD  us_market      DJI               EDT
+^DWGRSA    Dow Jones Global Select Real Es      AUD  us_market      DJI               EDT
+^DWGRT     Dow Jones Global Select REIT In      USD  us_market      DJI               EDT
+^DWL       Dow Jones U.S. Large-Cap Total       USD  us_market      DJI               EDT
+^DWM       Dow Jones U.S. Mid-Cap Total St      USD  us_market      DJI               EDT
+^DWMFRS    Dow Jones Middle East & Africa       USD  us_market      DJI               EDT
+^DWMFRT    Dow Jones Africa & Middle East       USD  us_market      DJI               EDT
+^DWMG      Dow Jones U.S. Mid-Cap Growth T      USD  us_market      DJI               EDT
+^DWMI      Dow Jones U.S. Micro-Cap Total       USD  us_market      DJI               EDT
+^DWMV      Dow Jones U.S. Mid-Cap Value To      USD  us_market      DJI               EDT
+^DWRSF     Dow Jones U.S. Select Real Esta      USD  us_market      DJI               EDT
+^DWRTF     Dow Jones U.S. Select REIT Inde      USD  us_market      DJI               EDT
+^DWRTFN    Dow Jones U.S. Select REIT Net       USD  us_market      DJI               EDT
+^DWRTFT    Dow Jones U.S. Select REIT Tota      USD  us_market      DJI               EDT
+^DWS       Dow Jones U.S. Small-Cap Total       USD  us_market      DJI               EDT
+^DWVAL     Dow Jones U.S. Value Total Stoc      USD  us_market      DJI               EDT
+^DWXRS     Dow Jones Global ex-U.S. Select      USD  us_market      DJI               EDT
+^DWXRT     Dow Jones Global ex-US Select R      USD  us_market      DJI               EDT
+^DXL       JUMBO DJX DOW JONES INDUSTRIAL       USD  us_market      WCB               EDT
+^E1BSC     Dow Jones Europe Basic Material      USD  us_market      DJI               EDT
+^E1CYC     Dow Jones Europe Consumer Servi      USD  us_market      DJI               EDT
+^E1DOW              Dow Jones Europe Index      USD  us_market      DJI               EDT
+^E1ENE     Dow Jones Europe Oil & Gas Inde      USD  us_market      DJI               EDT
+^E1FIN     Dow Jones Europe Financials Ind      USD  us_market      DJI               EDT
+^E1HCR     Dow Jones Europe Health Care In      USD  us_market      DJI               EDT
+^E1IDU     Dow Jones Europe Industrials In      USD  us_market      DJI               EDT
+^E1NCY     Dow Jones Europe Consumer Goods      USD  us_market      DJI               EDT
+^E1TEC     Dow Jones Europe Technology Ind      USD  us_market      DJI               EDT
+^E1TLS     Dow Jones Europe Telecommunicat      USD  us_market      DJI               EDT
+^E1UTI     Dow Jones Europe Utilities Inde      USD  us_market      DJI               EDT
+^E2BSC     Dow Jones Europe ex-U.K. Basic       USD  us_market      DJI               EDT
+^E2CYC     Dow Jones Europe ex-U.K. Consum      USD  us_market      DJI               EDT
+^E2DOW      Dow Jones Europe ex-U.K. Index      USD  us_market      DJI               EDT
+^E2ENE     Dow Jones Europe ex-U.K. Oil &       USD  us_market      DJI               EDT
+^E2FIN     Dow Jones Europe ex-U.K. Financ      USD  us_market      DJI               EDT
+^E2HCR     Dow Jones Europe ex-U.K. Health      USD  us_market      DJI               EDT
+^E2IDU     Dow Jones Europe ex-U.K. Indust      USD  us_market      DJI               EDT
+^E2TEC     Dow Jones Europe ex-U.K. Techno      USD  us_market      DJI               EDT
+^E2TLS     Dow Jones Europe ex-U.K. Teleco      USD  us_market      DJI               EDT
+^E2UTI     Dow Jones Europe ex-U.K. Utilit      USD  us_market      DJI               EDT
+^E3DOW     Dow Jones Europe - Nordic Index      USD  us_market      DJI               EDT
+^ECM       DOW JONES INTERNET COMMERCE IND      USD  us_market      WCB               EDT
+^ES30      Dow Jones Spain Titans 30 Index      EUR  us_market      DJI               EDT
+^ES30D     Dow Jones Spain Titans 30 Index      USD  us_market      DJI               EDT
+^ESDOW               Dow Jones Spain Index      EUR  us_market      DJI               EDT
+^ESDOWD        Dow Jones Spain Index (USD)      USD  us_market      DJI               EDT
+^FDD-EU    FIRST TRUST DOW JONES STOXX SEL      USD  us_market      ASE               EDT
+^FDNIINAV  First Trust Dow Jones Internati      EUR  us_market      NYS               EDT
+^FEZ-EU    FRESCO DOW JONES EURO STOXX 50       USD  us_market      ASE               EDT
+^FGD-EU    First Trust Dow Jones Global Se      USD  us_market      ASE               EDT
+^FIDOW             Dow Jones Finland Index      EUR  us_market      DJI               EDT
+^FIDOWD      Dow Jones Finland Index (USD)      USD  us_market      DJI               EDT
+^FR30      Dow Jones France Titans 30 Inde      EUR  us_market      DJI               EDT
+^FR30D     Dow Jones France Titans 30 Inde      USD  us_market      DJI               EDT
+^FRDOW              Dow Jones France Index      EUR  us_market      DJI               EDT
+^FRDOWD       Dow Jones France Index (USD)      USD  us_market      DJI               EDT
+^GAZZF-IV  iPath Dow Jones   AIG Natural G      USD  us_market      ASE               EDT
+^GBDOW                Dow Jones U.K. Index      GBP  us_market      DJI               EDT
+^GBDOWD         Dow Jones U.K. Index (USD)      USD  us_market      DJI               EDT
+^GRDOW              Dow Jones Greece Index      EUR  us_market      DJI               EDT
+^GRDOWD       Dow Jones Greece Index (USD)      USD  us_market      DJI               EDT
+^HKDOW           Dow Jones Hong Kong Index      HKD  us_market      DJI               EDT
+^HKDOWD    Dow Jones Hong Kong Index (USD)      USD  us_market      DJI               EDT
+^IAK-EU    Ishares Dow Jones US Insurance       USD  us_market      ASE               EDT
+^IAT-EU    Ishares Dow Jones US Regional B      USD  us_market      ASE               EDT
+^IDDOW           Dow Jones Indonesia Index      IDR  us_market      DJI               EDT
+^IDDOWD    Dow Jones Indonesia Index (USD)      USD  us_market      DJI               EDT
+^IDU-EU    iSHARES DOW JONES US UTILITIES       USD  us_market      ASE               EDT
+^IDV-EU    iShares Dow Jones EPAC Select D      USD  us_market      ASE               EDT
+^IEDOW             Dow Jones Ireland Index      EUR  us_market      DJI               EDT
+^IEDOWD      Dow Jones Ireland Index (USD)      USD  us_market      DJI               EDT
+^IEO-EU    Ishares Dow Jones US Oil  and        USD  us_market      ASE               EDT
+^IEZ-EU    Ishares Dow Jones US Oil Equipm      USD  us_market      ASE               EDT
+^IHE-EU    Ishares Dow Jones US Pharmaceut      USD  us_market      ASE               EDT
+^IHF-EU    Ishares Dow Jones US HealthCare      USD  us_market      ASE               EDT
+^IHI-NV    Ishares Dow Jones US Medical De      USD  us_market      ASE               EDT
+^IMUS      Dow Jones Islamic Market U.S. I      USD  us_market      DJI               EDT
+^IMUSL     Dow Jones Islamic Market U.S. L      USD  us_market      DJI               EDT
+^IMUSM     Dow Jones Islamic Market U.S. M      USD  us_market      DJI               EDT
+^IMUSS     Dow Jones Islamic Market U.S. S      USD  us_market      DJI               EDT
+^IMXL      Dow Jones Islamic Market Titans      USD  us_market      DJI               EDT
+^IT30      Dow Jones Italy Titans 30 Index      EUR  us_market      DJI               EDT
+^IT30D     Dow Jones Italy Titans 30 Index      USD  us_market      DJI               EDT
+^ITDOW               Dow Jones Italy Index      EUR  us_market      DJI               EDT
+^ITDOWD        Dow Jones Italy Index (USD)      USD  us_market      DJI               EDT
+^IYC-EU    iSHARES DOW JONES US CONSUMER S      USD  us_market      ASE               EDT
+^IYE-EU    iSHARES DOW JONES US ENERGY SEC      USD  us_market      ASE               EDT
+^IYF-EU    iSHARES DOW JONES US FINANCIAL       USD  us_market      ASE               EDT
+^IYH-EU    iSHARES DOW JONES US HEALTHCARE      USD  us_market      ASE               EDT
+^IYJ-EU    iSHARES DOW JONES US INDUSTRIAL      USD  us_market      ASE               EDT
+^IYK-EU    iSHARES DOW JONES US CONSUMER G      USD  us_market      ASE               EDT
+^IYM-EU    iSHARES DOW JONES US BASIC MAT       USD  us_market      ASE               EDT
+^IYR-EU    iSHARES DOW JONES US REAL ESTAT      USD  us_market      ASE               EDT
+^IYT-EU    iSHARES DOW JONES TRANSPORTATIO      USD  us_market      ASE               EDT
+^IYW-EU    iSHARES DOW JONES US TECHNOLOGY      USD  us_market      ASE               EDT
+^IYY-EU    iSHARES DOW JONES US TOTAL MARK      USD  us_market      ASE               EDT
+^IYZ-EU    iSHARES DOW JONES US TELECOMM S      USD  us_market      ASE               EDT
+^JPDOW               Dow Jones Japan Index      JPY  us_market      DJI               EDT
+^JPDOWD        Dow Jones Japan Index (USD)      USD  us_market      DJI               EDT
+^KR30      Dow Jones South Korea Titans 30      KRW  us_market      DJI               EDT
+^KR30D     Dow Jones South Korea Titans 30      USD  us_market      DJI               EDT
+^KRDOW         Dow Jones South Korea Index      KRW  us_market      DJI               EDT
+^KRDOWD    Dow Jones South Korea Index (US      USD  us_market      DJI               EDT
+^MDYV-EU   SPDR Dow Jones Mid Cap Value ET      USD  us_market      ASE               EDT
+^MUT       Dow Jones High Yield Select 10       USD  us_market      DJI               EDT
+^MXDOW              Dow Jones Mexico Index      MXN  us_market      DJI               EDT
+^MXDOWD       Dow Jones Mexico Index (USD)      USD  us_market      DJI               EDT
+^MYDOW            Dow Jones Malaysia Index      MYR  us_market      DJI               EDT
+^MYDOWD     Dow Jones Malaysia Index (USD)      USD  us_market      DJI               EDT
+^NL30      Dow Jones Netherlands Titans 30      EUR  us_market      DJI               EDT
+^NL30D     Dow Jones Netherlands Titans 30      USD  us_market      DJI               EDT
+^NLDOW         Dow Jones Netherlands Index      EUR  us_market      DJI               EDT
+^NLDOWD    Dow Jones Netherlands Index (US      USD  us_market      DJI               EDT
+^NODOW              Dow Jones Norway Index      NOK  us_market      DJI               EDT
+^NODOWD       Dow Jones Norway Index (USD)      USD  us_market      DJI               EDT
+^NZDOW         Dow Jones New Zealand Index      NZD  us_market      DJI               EDT
+^NZDOWD    Dow Jones New Zealand Index (US      USD  us_market      DJI               EDT
+^PHDOW         Dow Jones Philippines Index      PHP  us_market      DJI               EDT
+^PHDOWD    Dow Jones Philippines Index (US      USD  us_market      DJI               EDT
+^PTDOW            Dow Jones Portugal Index      EUR  us_market      DJI               EDT
+^PTDOWD     Dow Jones Portugal Index (USD)      USD  us_market      DJI               EDT
+^RCI       Dow Jones Composite All REIT In      USD  us_market      DJI               EDT
+^RCIT      Dow Jones Composite All REIT To      USD  us_market      DJI               EDT
+^RWR-EU            SPDR Dow Jones REIT ETF      USD  us_market      ASE               EDT
+^SE30      Dow Jones Sweden Titans 30 Inde      SEK  us_market      DJI               EDT
+^SE30D     Dow Jones Sweden Titans 30 Inde      USD  us_market      DJI               EDT
+^SEDOW              Dow Jones Sweden Index      SEK  us_market      DJI               EDT
+^SEDOWD       Dow Jones Sweden Index (USD)      USD  us_market      DJI               EDT
+^SGDOW           Dow Jones Singapore Index      SGD  us_market      DJI               EDT
+^SGDOWD    Dow Jones Singapore Index (USD)      USD  us_market      DJI               EDT
+^SPSK-EU   SP Funds Dow Jones Global Sukuk      USD  us_market      ASE               EDT
+^TR20      Dow Jones Turkey Titans 20 Inde      TRY  us_market      DJI               EDT
+^TR20D     Dow Jones Turkey Titans 20 Inde      USD  us_market      DJI               EDT
+^TR20DT    Dow Jones Turkey Titans 20 Tota      USD  us_market      DJI               EDT
+^TR20E     Dow Jones Turkey Titans 20 Inde      EUR  us_market      DJI               EDT
+^TWDOW              Dow Jones Taiwan Index      TWD  us_market      DJI               EDT
+^TWDOWD       Dow Jones Taiwan Index (USD)      USD  us_market      DJI               EDT
+^UK50       Dow Jones U.K. Titans 50 Index      GBP  us_market      DJI               EDT
+^UK50D     Dow Jones U.K. Titans 50 Index       USD  us_market      DJI               EDT
+^UK50E     Dow Jones U.K. Titans 50 Index       EUR  us_market      DJI               EDT
+^USDOLLAR      Dow Jones FXCM Dollar Index      USD  us_market      DJI               EDT
+^W1BSC     Dow Jones Global Basic Material      USD  us_market      DJI               EDT
+^W1CYC     Dow Jones Global Consumer Servi      USD  us_market      DJI               EDT
+^W1DOW              Dow Jones Global Index      USD  us_market      DJI               EDT
+^W1ENE     Dow Jones Global Oil & Gas Inde      USD  us_market      DJI               EDT
+^W1FIN     Dow Jones Global Financials Ind      USD  us_market      DJI               EDT
+^W1HCR     Dow Jones Global Health Care In      USD  us_market      DJI               EDT
+^W1IDU     Dow Jones Global Industrials In      USD  us_market      DJI               EDT
+^W1NCY     Dow Jones Global Consumer Goods      USD  us_market      DJI               EDT
+^W1TEC     Dow Jones Global Technology Ind      USD  us_market      DJI               EDT
+^W1TLS     Dow Jones Global Telecommunicat      USD  us_market      DJI               EDT
+^W1UTI     Dow Jones Global Utilities Inde      USD  us_market      DJI               EDT
+^W2BSC     Dow Jones Global ex-U.S. Basic       USD  us_market      DJI               EDT
+^W2CYC     Dow Jones Global ex-U.S. Consum      USD  us_market      DJI               EDT
+^W2DOW      Dow Jones Global ex-U.S. Index      USD  us_market      DJI               EDT
+^W2ENE     Dow Jones Global ex-U.S. Oil &       USD  us_market      DJI               EDT
+^W2FIN     Dow Jones Global ex-U.S. Financ      USD  us_market      DJI               EDT
+^W2HCR     Dow Jones Global ex-U.S. Health      USD  us_market      DJI               EDT
+^W2IDU     Dow Jones Global ex-U.S. Indust      USD  us_market      DJI               EDT
+^W2TEC     Dow Jones Global ex-U.S. Techno      USD  us_market      DJI               EDT
+^W2TLS     Dow Jones Global ex-U.S. Teleco      USD  us_market      DJI               EDT
+^W2UTI     Dow Jones Global ex-U.S. Utilit      USD  us_market      DJI               EDT
+^WEBL-EU   Direxion Daily Dow Jones Intern      USD  us_market      ASE               EDT
+^XLHK      Dow Jones Hong Kong Titans 30 I      HKD  us_market      DJI               EDT
+^ZADOW        Dow Jones South Africa Index      ZAR  us_market      DJI               EDT
+^ZADOWD    Dow Jones South Africa Index (U      USD  us_market      DJI               EDT

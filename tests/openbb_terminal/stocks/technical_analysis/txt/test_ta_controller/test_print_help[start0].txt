@@ -1,39 +1,40 @@
 Ticker: Intraday MOCK_INTERVAL MOCK_TICKER (from 2021-12-01)
 
-    tv                 open interactive chart on                             [TradingView]
     recom              recommendation based on technical indicators          [TradingView]
-    view               view historical data and trendlines                   [Finviz]
     summary            technical summary report                              [FinBrain]
+    tv                 stocks/ta/tv                                          [TradingView]
+    view               view historical data and trendlines                   [Finviz]
 
 Overlap:
     ema                exponential moving average
+    hma                hull moving average
     sma                simple moving average
     wma                weighted moving average
-    hma                hull moving average
-    zlma               zero lag moving average
     vwap               volume weighted average price
+    zlma               zero lag moving average
 Momentum:
     cci                commodity channel index
-    macd               moving average convergence/divergence
-    rsi                relative strength index
-    rsp                relative strength percentile
-    stoch              stochastic oscillator
-    fisher             fisher transform
     cg                 centre of gravity
     clenow             clenow volatility adjusted momentum
     demark             Tom Demark's sequential indicator
+    macd               moving average convergence/divergence
+    fisher             fisher transform
+    rsi                relative strength index
+    rsp                relative strength percentile
+    stoch              stochastic oscillator
 Trend:
     adx                average directional movement index
     aroon              aroon indicator
 Volatility:
+    atr                average true range
     bbands             bollinger bands
+    cones              realized volatility cones
     donchian           donchian channels
     kc                 keltner channels
-    atr                average true range
 Volume:
     ad                 accumulation/distribution line
     adosc              chaikin oscillator
     obv                on balance volume
 Custom:
     fib                fibonacci retracement
-
+    multi              plot multiple indicators on the same chart

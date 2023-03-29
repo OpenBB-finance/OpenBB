@@ -7,19 +7,43 @@ from openbb_terminal.economy import econdb_view
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "parameters, countries, start_date, end_date, convert_currency",
+    "parameters, countries, transform, start_date, end_date, convert_currency, raw",
     [
-        [["RGDP"], ["United States", "Germany"], "2020-01-01", "2020-10-02", False],
-        [["EMP", "PPI"], ["France"], "2010-01-01", "2019-01-01", False],
-        [["GDP", "RGDP"], ["Italy", "Netherlands"], "2016-01-01", "2016-10-10", False],
+        [
+            ["RGDP"],
+            ["United States", "Germany"],
+            "",
+            "2020-01-01",
+            "2020-10-02",
+            "",
+            False,
+        ],
+        [["EMP", "PPI"], ["France"], "TOYA", "2010-01-01", "2019-01-01", "", False],
+        [
+            ["GDP", "RGDP"],
+            ["Italy", "Netherlands"],
+            "TPOP",
+            "2016-01-01",
+            "2016-10-10",
+            "EUR",
+            False,
+        ],
+        [
+            ["GDP", "RGDP"],
+            ["Italy", "Netherlands"],
+            "TUSD",
+            "2016-01-01",
+            "2016-10-10",
+            "USD",
+            True,
+        ],
     ],
 )
 def test_show_macro_data(
-    mocker, parameters, countries, start_date, end_date, convert_currency
+    parameters, countries, transform, start_date, end_date, convert_currency, raw
 ):
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     econdb_view.show_macro_data(
-        parameters, countries, start_date, end_date, convert_currency
+        parameters, countries, transform, start_date, end_date, convert_currency, raw
     )
 
 
@@ -33,10 +57,7 @@ def test_show_macro_data(
         [["average", "inflation"], ["3y", "5y"], "weekly", "2018-06-05", "2018-07-06"],
     ],
 )
-def test_show_treasuries(
-    mocker, instruments, maturities, frequency, start_date, end_date
-):
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
+def test_show_treasuries(instruments, maturities, frequency, start_date, end_date):
     econdb_view.show_treasuries(
         instruments, maturities, frequency, start_date, end_date
     )

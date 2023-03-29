@@ -1,5 +1,6 @@
-from typing import Optional
 import logging
+import re
+from typing import Optional
 
 import pandas as pd
 
@@ -30,18 +31,14 @@ def check_columns(
         The name of the close column, none if df is invalid
 
     """
-    close_col = "Close"
-    for title in ["Adj Close", "Close", "adj_close", "Adj_Close"]:
-        if title in data.columns:
-            close_col = title
-            break
-
-    close_col = "Adj Close" if "Adj Close" in data.columns else "Close"
+    close_regex = r"(Adj\sClose|adj_close|Close)"
     # pylint: disable=too-many-boolean-expressions
     if (
-        ("High" not in data.columns and high)
-        or ("Low" not in data.columns and low)
-        or (close_col not in data.columns and close)
+        (re.findall(r"High", str(data.columns), re.IGNORECASE) is None and high)
+        or (re.findall(r"Low", str(data.columns), re.IGNORECASE) is None and low)
+        or (close_col := re.findall(close_regex, str(data.columns), re.IGNORECASE))
+        is None
+        and close
     ):
         logger.error("Invalid columns. data has columns %s", data.columns)
         console.print(
@@ -49,4 +46,5 @@ def check_columns(
             " are in the dataframe.[/red]"
         )
         return None
-    return close_col
+
+    return [col for col in close_col if col in data.columns][-1]

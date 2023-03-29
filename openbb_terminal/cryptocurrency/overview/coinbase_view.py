@@ -3,14 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.overview import coinbase_model
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +19,7 @@ def display_trading_pairs(
     sortby: str = "quote_increment",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Displays a list of available currency pairs for trading. [Source: Coinbase]
 
@@ -45,6 +42,7 @@ def display_trading_pairs(
         headers=list(df.columns),
         show_index=False,
         title="Available Pairs for Trading",
+        export=bool(export),
     )
 
     export_data(

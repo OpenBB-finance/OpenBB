@@ -9,8 +9,8 @@ import requests
 from scipy import stats
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -230,10 +230,7 @@ def getATSdata(limit: int = 1000, tier_ats: str = "T1") -> Tuple[pd.DataFrame, D
     Tuple[pd.DataFrame, Dict]
         Dark Pools (ATS) Data, Tickers from Dark Pools with better regression slope
     """
-    if tier_ats:
-        tiers = [tier_ats]
-    else:
-        tiers = ["T1", "T2", "OTCE"]
+    tiers = [tier_ats] if tier_ats else ["T1", "T2", "OTCE"]
     df_ats = pd.DataFrame()
 
     for tier in tiers:
@@ -317,7 +314,7 @@ def getTickerFINRAdata(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
             )
             if status_code == 200:
                 if response:
-                    d_data = response[0]
+                    d_data: dict = response[0]
                     d_data.update(d_week)
                     l_data.append(d_data)
                 else:

@@ -1,0 +1,105 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/enterprise-values/PM?apikey=MOCK_API_KEY&limit=0&period=annual
+  response:
+    body:
+      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2022-12-31\",\n    \"stockPrice\":
+        103.83,\n    \"numberOfShares\": 1557000000,\n    \"marketCapitalization\":
+        161663310000,\n    \"minusCashAndCashEquivalents\": 3207000000,\n    \"addTotalDebt\":
+        43123000000,\n    \"enterpriseValue\": 201579310000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2022-09-30\",\n    \"stockPrice\": 92.5299988,\n
+        \   \"numberOfShares\": 0,\n    \"marketCapitalization\": 0,\n    \"minusCashAndCashEquivalents\":
+        5368000000,\n    \"addTotalDebt\": 24580000000,\n    \"enterpriseValue\":
+        19212000000\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2021-12-31\",\n
+        \   \"stockPrice\": 103.5199966,\n    \"numberOfShares\": 1558000000,\n    \"marketCapitalization\":
+        161284154702.8,\n    \"minusCashAndCashEquivalents\": 4496000000,\n    \"addTotalDebt\":
+        27806000000,\n    \"enterpriseValue\": 184594154702.8\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2020-12-31\",\n    \"stockPrice\": 79.6500015,\n
+        \   \"numberOfShares\": 1557000000,\n    \"marketCapitalization\": 124015052335.5,\n
+        \   \"minusCashAndCashEquivalents\": 7280000000,\n    \"addTotalDebt\": 31536000000,\n
+        \   \"enterpriseValue\": 148271052335.5\n  },\n  {\n    \"symbol\": \"PM\",\n
+        \   \"date\": \"2019-12-31\",\n    \"stockPrice\": 84.3300018,\n    \"numberOfShares\":
+        1555000000,\n    \"marketCapitalization\": 131133152799.00002,\n    \"minusCashAndCashEquivalents\":
+        6861000000,\n    \"addTotalDebt\": 31045000000,\n    \"enterpriseValue\":
+        155317152799\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2018-12-31\",\n
+        \   \"stockPrice\": 74.4800034,\n    \"numberOfShares\": 1555000000,\n    \"marketCapitalization\":
+        115816405287,\n    \"minusCashAndCashEquivalents\": 6593000000,\n    \"addTotalDebt\":
+        31759000000,\n    \"enterpriseValue\": 140982405287\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2017-12-31\",\n    \"stockPrice\": 107.9400024,\n
+        \   \"numberOfShares\": 1552000000,\n    \"marketCapitalization\": 167522883724.8,\n
+        \   \"minusCashAndCashEquivalents\": 8447000000,\n    \"addTotalDebt\": 34339000000,\n
+        \   \"enterpriseValue\": 193414883724.8\n  },\n  {\n    \"symbol\": \"PM\",\n
+        \   \"date\": \"2016-12-31\",\n    \"stockPrice\": 95.9599991,\n    \"numberOfShares\":
+        1551000000,\n    \"marketCapitalization\": 148833958604.1,\n    \"minusCashAndCashEquivalents\":
+        4239000000,\n    \"addTotalDebt\": 29067000000,\n    \"enterpriseValue\":
+        173661958604.1\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2015-12-31\",\n
+        \   \"stockPrice\": 90.0100021,\n    \"numberOfShares\": 1549000000,\n    \"marketCapitalization\":
+        139425493252.9,\n    \"minusCashAndCashEquivalents\": 3417000000,\n    \"addTotalDebt\":
+        28480000000,\n    \"enterpriseValue\": 164488493252.9\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2014-12-31\",\n    \"stockPrice\": 80.2399979,\n
+        \   \"numberOfShares\": 1566000000,\n    \"marketCapitalization\": 125655836711.40001,\n
+        \   \"minusCashAndCashEquivalents\": 1682000000,\n    \"addTotalDebt\": 29455000000,\n
+        \   \"enterpriseValue\": 153428836711.40002\n  },\n  {\n    \"symbol\": \"PM\",\n
+        \   \"date\": \"2013-12-31\",\n    \"stockPrice\": 79.0899963,\n    \"numberOfShares\":
+        1622000000,\n    \"marketCapitalization\": 128283973998.59999,\n    \"minusCashAndCashEquivalents\":
+        2154000000,\n    \"addTotalDebt\": 27678000000,\n    \"enterpriseValue\":
+        153807973998.59998\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2012-12-31\",\n
+        \   \"stockPrice\": 87.6500015,\n    \"numberOfShares\": 1692000000,\n    \"marketCapitalization\":
+        148303802538,\n    \"minusCashAndCashEquivalents\": 2983000000,\n    \"addTotalDebt\":
+        22839000000,\n    \"enterpriseValue\": 168159802538\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2011-12-31\",\n    \"stockPrice\": 74.9000015,\n
+        \   \"numberOfShares\": 1725908666,\n    \"marketCapitalization\": 129270561672.263,\n
+        \   \"minusCashAndCashEquivalents\": 2550000000,\n    \"addTotalDebt\": 18545000000,\n
+        \   \"enterpriseValue\": 145265561672.263\n  },\n  {\n    \"symbol\": \"PM\",\n
+        \   \"date\": \"2010-12-31\",\n    \"stockPrice\": 56.5999985,\n    \"numberOfShares\":
+        1839000000,\n    \"marketCapitalization\": 104087397241.5,\n    \"minusCashAndCashEquivalents\":
+        1703000000,\n    \"addTotalDebt\": 16502000000,\n    \"enterpriseValue\":
+        118886397241.5\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2009-12-31\",\n
+        \   \"stockPrice\": 45.5099983,\n    \"numberOfShares\": 1943000000,\n    \"marketCapitalization\":
+        88425926696.9,\n    \"minusCashAndCashEquivalents\": 1540000000,\n    \"addTotalDebt\":
+        15416000000,\n    \"enterpriseValue\": 102301926696.9\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2008-12-31\",\n    \"stockPrice\": 37.1500015,\n
+        \   \"numberOfShares\": 2068000000,\n    \"marketCapitalization\": 76826203102,\n
+        \   \"minusCashAndCashEquivalents\": 1531000000,\n    \"addTotalDebt\": 11961000000,\n
+        \   \"enterpriseValue\": 87256203102\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '4474'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 07 Mar 2023 17:09:11 GMT
+      ETag:
+      - W/"117a-pnWpP1iblLh3xBbpIxvyqkWL/xQ"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

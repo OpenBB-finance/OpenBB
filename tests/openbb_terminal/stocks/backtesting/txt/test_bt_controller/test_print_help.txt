@@ -1,5 +1,7 @@
 Ticker: TSLA
 
+    load               load a specific stock ticker for analysis                       [YahooFinance, AlphaVantage, Polygon, EODHD]
+
     whatif             what if you had bought X shares on day Y                        [YahooFinance]
 
     ema                buy when price exceeds EMA(l)

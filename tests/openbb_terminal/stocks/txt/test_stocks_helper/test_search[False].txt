@@ -1,6 +1,3 @@
-                               long_name   country             sector                         industry exchange
-S4LB.F   Sonae Indústria, S.G.P.S., S.A.  Portugal    Basic Materials         Lumber & Wood Production     None
-SNC.LS          Sonaecom, S.G.P.S., S.A.  Portugal         Technology  Information Technology Services     None
-SON.LS                 Sonae, SGPS, S.A.  Portugal  Consumer Cyclical                Department Stores     None
-SONI.LS  Sonae Indústria, S.G.P.S., S.A.  Portugal    Basic Materials         Lumber & Wood Production     None
-XOA1.SG         Sonaecom, S.G.P.S., S.A.  Portugal         Technology  Information Technology Services     None
+                         name        country                  sector       industry_group  industry exchange
+symbol                                                                                                      
+MSFT    Microsoft Corporation  United States  Information Technology  Software & Services  Software      NMS

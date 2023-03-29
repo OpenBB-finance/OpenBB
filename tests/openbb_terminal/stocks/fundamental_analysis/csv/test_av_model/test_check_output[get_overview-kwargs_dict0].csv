@@ -1,47 +1,47 @@
-,0
+, 
 Symbol,TSLA
-Asset type,Common Stock
+AssetType,Common Stock
 Name,Tesla Inc
 Description,"Tesla, Inc. is an American electric vehicle and clean energy company based in Palo Alto, California. Tesla's current products include electric cars, battery energy storage from home to grid-scale, solar panels and solar roof tiles, as well as other related products and services. In 2020, Tesla had the highest sales in the plug-in and battery electric passenger car segments, capturing 16% of the plug-in market (which includes plug-in hybrids) and 23% of the battery-electric (purely electric) market. Through its subsidiary Tesla Energy, the company develops and is a major installer of solar photovoltaic energy generation systems in the United States. Tesla Energy is also one of the largest global suppliers of battery energy storage systems, with 3 GWh of battery storage supplied in 2020."
-C i k,1318605
+CIK,1318605
 Exchange,NASDAQ
 Currency,USD
 Country,USA
 Sector,MANUFACTURING
 Industry,MOTOR VEHICLES & PASSENGER CAR BODIES
 Address,"3500 DEER CREEK RD, PALO ALTO, CA, US"
-Fiscal year end,December
-Latest quarter,2022-03-31
-Market capitalization,746.408 B
-EBITDA,12.702 B
-PE ratio,97.06
-PEG ratio,1.757
-Book value,32.9
-Dividend per share,0
-Dividend yield,0
-EPS,7.42
-Revenue per share TTM,61.93
-Profit margin,0.135
-Operating margin TTM,0.155
-Return on assets TTM,0.101
-Return on equity TTM,0.283
-Revenue TTM,62.190 B
-Gross profit TTM,13.606 B
-Diluted EPS TTM,7.42
-Quarterly earnings growth YOY,6.32
-Quarterly revenue growth YOY,0.805
-Analyst target price,882.9
-Trailing PE,97.06
-Forward PE,63.29
-Price to sales ratio TTM,12.0
-Price to book ratio,21.9
-EV to revenue,11.83
-EV to EBITDA,56.84
-Beta,2.112
-52 week high,1243.49
-52 week low,620.57
-50 day moving average,722.42
-200 day moving average,908.83
-Shares outstanding,1.036 B
-Dividend date,None
-Ex dividend date,None
+FiscalYearEnd,December
+LatestQuarter,2022-12-31
+MarketCapitalization,595.705 B
+EBITDA,17.439 B
+PERatio,49.68
+PEGRatio,1.281
+BookValue,14.13
+DividendPerShare,0
+DividendYield,0
+EPS,3.79
+RevenuePerShareTTM,26.03
+ProfitMargin,0.154
+OperatingMarginTTM,0.168
+ReturnOnAssetsTTM,0.118
+ReturnOnEquityTTM,0.325
+RevenueTTM,81.462 B
+GrossProfitTTM,20.853 B
+DilutedEPSTTM,3.79
+QuarterlyEarningsGrowthYOY,0.569
+QuarterlyRevenueGrowthYOY,0.372
+AnalystTargetPrice,190.68
+TrailingPE,49.68
+ForwardPE,28.82
+PriceToSalesRatioTTM,6.65
+PriceToBookRatio,12.42
+EVToRevenue,6.41
+EVToEBITDA,29.61
+Beta,2.03
+52WeekHigh,384.29
+52WeekLow,101.81
+50DayMovingAverage,150.4
+200DayMovingAverage,230.59
+SharesOutstanding,3.164 B
+DividendDate,None
+ExDividendDate,None

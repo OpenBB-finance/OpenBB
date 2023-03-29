@@ -5,8 +5,10 @@ import json
 import logging
 import os
 from typing import List
+
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
+
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -131,7 +133,6 @@ def get_coins(
     sortby: str = "Symbol",
     ascend: bool = False,
 ) -> pd.DataFrame:
-
     """Get N coins from CoinGecko [Source: CoinGecko]
 
     Parameters
@@ -150,6 +151,9 @@ def get_coins(
     pd.DataFrame
         N coins
     """
+
+    sortby = sortby.replace("_", " ").title()
+
     client = CoinGeckoAPI()
     df = pd.DataFrame()
     table_size = limit
@@ -198,6 +202,7 @@ def get_gainers_or_losers(
     interval: str = "1h",
     typ: str = "gainers",
     sortby: str = "market_cap",
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Returns data about top gainers - coins which gain the most in given period and
     top losers - coins that lost the most in given period of time. [Source: CoinGecko]
@@ -209,6 +214,8 @@ def get_gainers_or_losers(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
+    ascend: bool
+        Sort data in ascending order
     interval: str
         One from {14d,1h,1y,200d,24h,30d,7d}
     typ: str
@@ -220,6 +227,8 @@ def get_gainers_or_losers(
         Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     """
+
+    sortby = sortby.replace("_", " ").title()
 
     if interval not in API_PERIODS:
         raise ValueError(
@@ -248,11 +257,10 @@ def get_gainers_or_losers(
     )
 
     if sortby in GAINERS_LOSERS_COLUMNS:
-
         sorted_df = sorted_df[
             (sorted_df["Volume [$]"].notna()) & (sorted_df["Market Cap"].notna())
         ]
-        sorted_df = sorted_df.sort_values(by=sortby, ascending=True)
+        sorted_df = sorted_df.sort_values(by=sortby, ascending=ascend)
 
     return sorted_df
 
@@ -261,6 +269,7 @@ def get_gainers(
     interval: str = "1h",
     limit: int = 50,
     sortby: str = "market_cap_rank",
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
@@ -273,6 +282,8 @@ def get_gainers(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
+    ascend: bool
+        Sort data in ascending order
 
     Returns
     -------
@@ -281,7 +292,11 @@ def get_gainers(
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     """
     return get_gainers_or_losers(
-        limit=limit, interval=interval, typ="gainers", sortby=sortby
+        limit=limit,
+        interval=interval,
+        typ="gainers",
+        sortby=sortby,
+        ascend=ascend,
     )
 
 
@@ -289,6 +304,7 @@ def get_losers(
     interval: str = "1h",
     limit: int = 50,
     sortby: str = "market_cap_rank",
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Shows Largest Losers - coins which lose the most in given period. [Source: CoinGecko]
 
@@ -301,6 +317,8 @@ def get_losers(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
+    ascend: bool
+        Sort data in ascending order
 
     Returns
     -------
@@ -309,7 +327,7 @@ def get_losers(
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     """
     return get_gainers_or_losers(
-        limit=limit, interval=interval, typ="losers", sortby=sortby
+        limit=limit, interval=interval, typ="losers", sortby=sortby, ascend=ascend
     )
 
 

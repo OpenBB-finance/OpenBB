@@ -6,12 +6,11 @@ from typing import List, Optional
 
 import pandas as pd
 import requests
-from tqdm import tqdm
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console, optional_rich_track
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +38,22 @@ default_columns = [
     "open_interest",
     "bid",
     "ask",
+]
+
+sorted_chain_columns = [
+    "symbol",
+    "option_type",
+    "expiration",
+    "strike",
+    "bid",
+    "ask",
+    "open_interest",
+    "volume",
+    "mid_iv",
+    "delta",
+    "gamma",
+    "theta",
+    "vega",
 ]
 
 
@@ -92,7 +107,7 @@ def get_historical_options(
         "https://sandbox.tradier.com/v1/markets/history",
         params={"symbol": {symbol}, "interval": "daily"},
         headers={
-            "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
             "Accept": "application/json",
         },
     )
@@ -128,28 +143,39 @@ option_col_map = {"open_interest": "openinterest", "mid_iv": "iv"}
 
 @log_start_end(log=logger)
 @check_api_key(["API_TRADIER_TOKEN"])
-def get_full_option_chain(symbol: str) -> pd.DataFrame:
+def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
     """Get available expiration dates for given ticker
 
     Parameters
     ----------
     symbol: str
         Ticker symbol to get expirations for
+    quiet: bool
+        Suppress output of progress bar
 
     Returns
     -------
     pd.DataFrame
-       Dataframe of all option chains
+        Dataframe of all option chains
     """
 
     expirations = option_expirations(symbol)
     options_dfs: pd.DataFrame = []
 
-    for expiry in tqdm(expirations, desc="Getting option chains"):
+    for expiry in optional_rich_track(
+        expirations, suppress_output=quiet, desc="Getting Option Chain"
+    ):
         chain = get_option_chain(symbol, expiry)
         options_dfs.append(chain)
-
-    return pd.concat(options_dfs)
+    chain = pd.concat(options_dfs)
+    chain = chain[sorted_chain_columns].rename(
+        columns={
+            "mid_iv": "iv",
+            "open_interest": "openInterest",
+            "option_type": "optionType",
+        }
+    )
+    return chain
 
 
 @log_start_end(log=logger)
@@ -171,7 +197,7 @@ def option_expirations(symbol: str) -> List[str]:
         "https://sandbox.tradier.com/v1/markets/options/expirations",
         params={"symbol": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
-            "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
             "Accept": "application/json",
         },
     )
@@ -208,7 +234,7 @@ def get_option_chain(symbol: str, expiry: str) -> pd.DataFrame:
     params = {"symbol": symbol, "expiration": expiry, "greeks": "true"}
 
     headers = {
-        "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
+        "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
         "Accept": "application/json",
     }
 
@@ -282,7 +308,7 @@ def get_last_price(symbol: str):
         "https://sandbox.tradier.com/v1/markets/quotes",
         params={"symbols": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
-            "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
             "Accept": "application/json",
         },
     )

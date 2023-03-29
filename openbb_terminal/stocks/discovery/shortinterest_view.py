@@ -3,18 +3,18 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.discovery import shortinterest_model
-from openbb_terminal.stocks.discovery import yahoofinance_model
+from openbb_terminal.stocks.discovery import shortinterest_model, yahoofinance_model
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def low_float(limit: int = 5, export: str = "", sheet_name: str = None):
+def low_float(limit: int = 5, export: str = "", sheet_name: Optional[str] = None):
     """Prints top N low float stocks from https://www.lowfloat.com
 
     Parameters
@@ -32,6 +32,7 @@ def low_float(limit: int = 5, export: str = "", sheet_name: str = None):
         headers=list(df_low_float.columns),
         show_index=False,
         title="Top Float Stocks",
+        export=bool(export),
     )
 
     export_data(
@@ -47,7 +48,7 @@ def low_float(limit: int = 5, export: str = "", sheet_name: str = None):
 def hot_penny_stocks(
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     source: str = "YahooFinance",
 ):
     """Prints top N hot penny stocks from https://www.pennystockflow.com
@@ -74,10 +75,12 @@ def hot_penny_stocks(
         return
 
     print_rich_table(
-        df_penny_stocks.head(limit),
+        df_penny_stocks,
         headers=list(df_penny_stocks.columns) if source != "Shortinterest" else None,
         show_index=False,
         title="Top Penny Stocks",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

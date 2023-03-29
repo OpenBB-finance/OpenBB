@@ -952,13 +952,13 @@ interactions:
       Content-Type:
       - text/html;charset=UTF-8
       Date:
-      - Tue, 24 Jan 2023 09:56:45 GMT
+      - Thu, 02 Feb 2023 12:38:42 GMT
       Server:
       - Microsoft-IIS/8.5
       Set-Cookie:
-      - cfid=9ae5f087-f2cf-45a1-a670-2c78f29f1f21;Path=/;Expires=Mon, 13-Feb-2023
-        11:34:49 UTC;HTTPOnly
-      - cftoken=0;Path=/;Expires=Mon, 13-Feb-2023 11:34:49 UTC;HTTPOnly
+      - cfid=b881061c-1e21-41ea-8eef-41909d069e27;Path=/;Expires=Wed, 22-Feb-2023
+        14:16:46 UTC;HTTPOnly
+      - cftoken=0;Path=/;Expires=Wed, 22-Feb-2023 14:16:46 UTC;HTTPOnly
       X-AspNet-Version:
       - 4.0.30319
       X-Powered-By:
@@ -979,7 +979,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/AMAT?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"AMAT","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":322151400,"regularMarketTime":1674507604,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":114.155,"chartPreviousClose":109.65,"previousClose":109.65,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"high":[111.69000244140625,112.9186019897461,114.22000122070312,114.72000122070312,114.91000366210938,114.19000244140625,114.2300033569336,114.15499877929688],"open":[108.52999877929688,111.38999938964844,112.0999984741211,113.91000366210938,114.38999938964844,113.72000122070312,113.97000122070312,114.15499877929688],"close":[111.38999938964844,112.0999984741211,113.9000015258789,114.3915023803711,113.72000122070312,113.94000244140625,114.12999725341797,114.15499877929688],"volume":[1123285,876020,1119081,618597,521418,758765,932452,0],"low":[108.5,110.83360290527344,112.06999969482422,113.87999725341797,113.6500015258789,113.11000061035156,113.52999877929688,114.15499877929688]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"AMAT","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":322151400,"regularMarketTime":1675285205,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":119.01,"chartPreviousClose":111.49,"previousClose":111.49,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"close":[114.37000274658203,115.0999984741211,114.5250015258789,114.9000015258789,114.44000244140625,119.05999755859375,119.06999969482422,119.01000213623047],"open":[112.11000061035156,114.38999938964844,115.0780029296875,114.55999755859375,114.91999816894531,114.4800033569336,119.06999969482422,119.01000213623047],"high":[114.37999725341797,115.45999908447266,115.27999877929688,114.9000015258789,115.26000213623047,119.06999969482422,120.12999725341797,119.01000213623047],"low":[111.91000366210938,113.80000305175781,114.11000061035156,114.33000183105469,113.58000183105469,113.5199966430664,118.55000305175781,119.01000213623047],"volume":[1087530,909600,675476,467805,577036,1807568,1939204,0]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -1000,11 +1000,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1661'
+      - '1674'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 24 Jan 2023 09:56:45 GMT
+      - Thu, 02 Feb 2023 12:38:43 GMT
       server:
       - ATS
       vary:
@@ -1012,13 +1012,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '11'
+      - '13'
       x-request-id:
-      - 9d0a77f6-76f6-410b-af7a-7654414fac5c
+      - 05116ec0-7207-4ca0-a24c-f4bbefeedf1b
       x-yahoo-request-id:
-      - ebcp3rhhsvaqt
+      - 4rp0ssthtnbmj
       y-rid:
-      - ebcp3rhhsvaqt
+      - 4rp0ssthtnbmj
     status:
       code: 200
       message: OK
@@ -1035,10 +1035,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/AMN?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"AMN","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1005661800,"regularMarketTime":1674507601,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":101.67,"chartPreviousClose":99.14,"previousClose":99.14,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1674570600,"start":1674550800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1674594000,"start":1674570600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1674608400,"start":1674594000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1674507600,"start":1674484200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"open":[100.0,100.45999908447266,102.0199966430664,101.47000122070312,101.4000015258789,101.91000366210938,101.32499694824219,101.66999816894531],"volume":[83552,142512,86576,64854,64529,120599,137470,0],"high":[100.58000183105469,102.66000366210938,102.33000183105469,101.54499816894531,102.12999725341797,102.02999877929688,102.11000061035156,101.66999816894531],"close":[100.45999908447266,101.88999938964844,101.40499877929688,101.30999755859375,101.88500213623047,101.35870361328125,101.6500015258789,101.66999816894531],"low":[98.20999908447266,100.39179992675781,101.31999969482422,100.87999725341797,101.08820343017578,100.68000030517578,101.19000244140625,101.66999816894531]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"AMN","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1005661800,"regularMarketTime":1675285202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":99.77,"chartPreviousClose":95.84,"previousClose":95.84,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"low":[94.83999633789062,96.13999938964844,96.86000061035156,96.69000244140625,96.33000183105469,96.0,99.38999938964844,99.7699966430664],"open":[95.29000091552734,96.52999877929688,97.61000061035156,97.0,97.22000122070312,96.47879791259766,99.5,99.7699966430664],"high":[96.86000061035156,97.69999694824219,97.61000061035156,97.63999938964844,97.69999694824219,99.98999786376953,100.19000244140625,99.7699966430664],"close":[96.44000244140625,97.61000061035156,96.9800033569336,97.1500015258789,96.44999694824219,99.48999786376953,99.93000030517578,99.7699966430664],"volume":[124242,84379,38956,56220,85674,249610,256091,0]}]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -1056,11 +1056,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1655'
+      - '1595'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 24 Jan 2023 09:56:45 GMT
+      - Thu, 02 Feb 2023 12:38:43 GMT
       server:
       - ATS
       vary:
@@ -1068,13 +1068,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '7'
+      - '8'
       x-request-id:
-      - 361810bb-d479-4a6e-924b-df2ba29af408
+      - 20168879-6a97-4001-8cd8-bad0e39b424d
       x-yahoo-request-id:
-      - bst1l9hhsvaqu
+      - 2663bh9htnbmj
       y-rid:
-      - bst1l9hhsvaqu
+      - 2663bh9htnbmj
     status:
       code: 200
       message: OK
@@ -1091,10 +1091,66 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/BABA?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"BABA","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1411133400,"regularMarketTime":1674507683,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":119.53,"chartPreviousClose":119.86,"previousClose":119.86,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1674570600,"start":1674550800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1674594000,"start":1674570600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1674608400,"start":1674594000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1674507600,"start":1674484200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"open":[120.0,120.05000305175781,119.08999633789062,118.75,119.98999786376953,119.34590148925781,119.51000213623047,119.52999877929688],"volume":[4522360,1792700,1449179,1921577,1537356,1017359,1103873,0],"high":[120.30000305175781,120.05000305175781,119.55999755859375,120.04000091552734,120.20999908447266,119.50499725341797,119.68000030517578,119.52999877929688],"close":[120.0199966430664,119.09010314941406,118.75,119.98500061035156,119.33999633789062,119.5,119.51000213623047,119.52999877929688],"low":[118.13719940185547,119.08000183105469,118.69999694824219,118.61000061035156,119.18000030517578,118.91999816894531,119.2593002319336,119.52999877929688]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"BABA","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1411133400,"regularMarketTime":1675285282,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":112.82,"chartPreviousClose":110.2,"previousClose":110.2,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"open":[111.86000061035156,110.87000274658203,111.05000305175781,110.58000183105469,111.02999877929688,111.37999725341797,113.04000091552734,112.81999969482422],"high":[113.37999725341797,111.39869689941406,111.33999633789062,111.05560302734375,111.8499984741211,113.34500122070312,113.94999694824219,112.81999969482422],"close":[110.8499984741211,111.03009796142578,110.58999633789062,111.0199966430664,111.37999725341797,113.04000091552734,112.80000305175781,112.81999969482422],"volume":[5888956,2739331,942802,914050,1137407,2344819,2188996,0],"low":[110.56999969482422,110.1500015258789,110.56999969482422,110.33999633789062,110.55999755859375,110.7699966430664,112.58000183105469,112.81999969482422]}]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1677'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 02 Feb 2023 12:38:43 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '10'
+      x-request-id:
+      - 9771051a-2956-4726-bdd6-4e7d7dda7a51
+      x-yahoo-request-id:
+      - ffcghvhhtnbmj
+      y-rid:
+      - ffcghvhhtnbmj
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/BROS?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"BROS","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1631712600,"regularMarketTime":1675285202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":38.52,"chartPreviousClose":38.11,"previousClose":38.11,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"high":[38.290000915527344,37.709999084472656,36.869998931884766,36.779998779296875,37.439998626708984,38.75,39.130001068115234,38.52000045776367],"close":[37.320098876953125,36.869998931884766,36.279998779296875,36.689998626708984,37.17070007324219,38.720001220703125,38.52000045776367,38.52000045776367],"open":[38.09000015258789,37.34000015258789,36.84000015258789,36.27000045776367,36.689998626708984,37.140098571777344,38.720001220703125,38.52000045776367],"low":[37.11000061035156,36.331298828125,36.27000045776367,36.220001220703125,36.439998626708984,36.97999954223633,38.43000030517578,38.52000045776367],"volume":[158238,263548,107608,93254,226486,361127,301435,0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -1116,7 +1172,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 24 Jan 2023 09:56:45 GMT
+      - Thu, 02 Feb 2023 12:38:44 GMT
       server:
       - ATS
       vary:
@@ -1124,69 +1180,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '9'
+      - '14'
       x-request-id:
-      - d9f49752-362d-45a3-841c-4d6ed97ff86d
+      - 5eaf903e-7296-40c8-99b1-b102bc5adac8
       x-yahoo-request-id:
-      - b1pn7s5hsvaqu
+      - 6d8m24thtnbmj
       y-rid:
-      - b1pn7s5hsvaqu
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/BROS?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"BROS","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1631712600,"regularMarketTime":1674507644,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":34.42,"chartPreviousClose":34.0,"previousClose":34.0,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1674570600,"start":1674550800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1674594000,"start":1674570600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1674608400,"start":1674594000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1674507600,"start":1674484200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"open":[33.900001525878906,35.130001068115234,35.83000183105469,35.195701599121094,35.119998931884766,34.65999984741211,34.5099983215332,34.41999816894531],"high":[35.20000076293945,36.34000015258789,35.83000183105469,35.195701599121094,35.15999984741211,34.70989990234375,34.630001068115234,34.41999816894531],"volume":[202723,373481,136638,146268,68834,97400,98705,0],"low":[33.75,35.09000015258789,35.06999969482422,34.57500076293945,34.56999969482422,34.37099838256836,34.38999938964844,34.41999816894531],"close":[35.064998626708984,35.810001373291016,35.20000076293945,35.115299224853516,34.66999816894531,34.55500030517578,34.38999938964844,34.41999816894531]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1624'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 24 Jan 2023 09:56:46 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '9'
-      x-request-id:
-      - 343e3f9e-2bb3-4d18-8919-2212eefdbfd0
-      x-yahoo-request-id:
-      - d33i72phsvaqu
-      y-rid:
-      - d33i72phsvaqu
+      - 6d8m24thtnbmj
     status:
       code: 200
       message: OK
@@ -1203,231 +1203,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/CHPT?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"CHPT","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1568640600,"regularMarketTime":1674507602,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":11.87,"chartPreviousClose":11.09,"previousClose":11.09,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"low":[10.949999809265137,11.380000114440918,11.510000228881836,11.5600004196167,11.672300338745117,11.619999885559082,11.800000190734863,11.869999885559082],"volume":[3379387,1250688,805975,1231441,1161772,828440,1083902,0],"open":[11.15999984741211,11.53499984741211,11.55370044708252,11.604999542236328,11.725000381469727,11.760000228881836,11.819999694824219,11.869999885559082],"high":[11.664999961853027,11.625,11.630000114440918,11.729999542236328,11.800000190734863,11.850000381469727,11.909899711608887,11.869999885559082],"close":[11.539999961853027,11.550000190734863,11.609999656677246,11.720000267028809,11.755000114440918,11.8149995803833,11.880000114440918,11.869999885559082]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1656'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 24 Jan 2023 09:56:46 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '16'
-      x-request-id:
-      - 98a1d131-904d-474e-8d42-7a758d67a314
-      x-yahoo-request-id:
-      - 2lat6cthsvaqu
-      y-rid:
-      - 2lat6cthsvaqu
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/CLF?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"CLF","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":99153000,"regularMarketTime":1674507602,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":20.61,"chartPreviousClose":20.97,"previousClose":20.97,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"low":[20.581600189208984,20.415000915527344,20.479999542236328,20.56999969482422,20.540000915527344,20.3700008392334,20.405000686645508,20.610000610351562],"volume":[1947329,1768704,1129211,948031,927471,1665215,1835551,0],"open":[20.969999313354492,20.587099075317383,20.545000076293945,20.576400756835938,20.610000610351562,20.559999465942383,20.440000534057617,20.610000610351562],"high":[21.024999618530273,20.639999389648438,20.700000762939453,20.7450008392334,20.709999084472656,20.600000381469727,20.639999389648438,20.610000610351562],"close":[20.584999084472656,20.542200088500977,20.579999923706055,20.604999542236328,20.559999465942383,20.438899993896484,20.6299991607666,20.610000610351562]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1671'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 24 Jan 2023 09:56:46 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '13'
-      x-request-id:
-      - a91f37dd-3526-4b54-b0c7-08733d22d8bb
-      x-yahoo-request-id:
-      - 0v7hvhphsvaqu
-      y-rid:
-      - 0v7hvhphsvaqu
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/F?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"F","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":76253400,"regularMarketTime":1674507791,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":12.8,"chartPreviousClose":12.4,"previousClose":12.4,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1674570600,"start":1674550800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1674594000,"start":1674570600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1674608400,"start":1674594000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1674507600,"start":1674484200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"open":[12.479999542236328,12.63010025024414,12.6899995803833,12.774999618530273,12.885000228881836,12.819999694824219,12.805000305175781,12.800000190734863],"high":[12.649999618530273,12.755000114440918,12.779999732971191,12.899999618530273,12.90999984741211,12.845000267028809,12.84000015258789,12.800000190734863],"volume":[10012594,6919144,5264099,5888016,5771403,6224390,7166775,0],"low":[12.430000305175781,12.600000381469727,12.675000190734863,12.770000457763672,12.800000190734863,12.75,12.75,12.800000190734863],"close":[12.635000228881836,12.690400123596191,12.779999732971191,12.88599967956543,12.8149995803833,12.800000190734863,12.805000305175781,12.800000190734863]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1642'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 24 Jan 2023 09:56:46 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '16'
-      x-request-id:
-      - c9c2436b-97df-4b7a-9756-31b65354d74c
-      x-yahoo-request-id:
-      - 0guaj9dhsvaqu
-      y-rid:
-      - 0guaj9dhsvaqu
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/LLY?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"LLY","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":76253400,"regularMarketTime":1674507790,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":342.21,"chartPreviousClose":346.07,"previousClose":346.07,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"open":[346.6099853515625,345.57000732421875,343.57000732421875,342.1340026855469,342.95001220703125,342.0199890136719,340.6875,342.2099914550781],"volume":[402366,431244,314880,344234,381198,401041,709780,0],"high":[346.6099853515625,345.79998779296875,343.5799865722656,343.29998779296875,343.5799865722656,342.5400085449219,342.4200134277344,342.2099914550781],"close":[345.635009765625,343.614990234375,342.0950012207031,342.8999938964844,341.9800109863281,340.6199951171875,342.2099914550781,342.2099914550781],"low":[342.5,343.44000244140625,341.2799987792969,341.70001220703125,341.9700012207031,340.6199951171875,340.2200012207031,342.2099914550781]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1628'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 24 Jan 2023 09:56:46 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '10'
-      x-request-id:
-      - afe155a4-f804-4641-b869-90bab5f82dd8
-      x-yahoo-request-id:
-      - dq8b33hhsvaqu
-      y-rid:
-      - dq8b33hhsvaqu
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/META?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"META","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1337347800,"regularMarketTime":1674507604,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":143.27,"chartPreviousClose":139.37,"previousClose":139.37,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"high":[141.99000549316406,143.27000427246094,143.08999633789062,143.0399932861328,143.16000366210938,143.3699951171875,143.75999450683594,143.27000427246094],"low":[138.66000366210938,141.5449981689453,142.35000610351562,142.3000030517578,142.1999969482422,142.08999633789062,142.86000061035156,143.27000427246094],"volume":[6844279,3394886,3059685,2361397,2691366,3093241,2950180,0],"open":[139.5,141.94000244140625,142.67999267578125,142.6300048828125,142.91000366210938,142.69000244140625,142.99000549316406,143.27000427246094],"close":[141.9322052001953,142.64500427246094,142.6300048828125,142.9199981689453,142.6750030517578,142.98500061035156,143.27000427246094,143.27000427246094]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"CHPT","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1568640600,"regularMarketTime":1675285202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":12.46,"chartPreviousClose":12.14,"previousClose":12.14,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"close":[11.944999694824219,11.869999885559082,11.869999885559082,11.979999542236328,12.055000305175781,12.614999771118164,12.456399917602539,12.460000038146973],"open":[12.25,11.942700386047363,11.869999885559082,11.875,11.975000381469727,12.0600004196167,12.614999771118164,12.460000038146973],"high":[12.324999809265137,12.009900093078613,11.960000038146973,12.0,12.149999618530273,12.640000343322754,12.760000228881836,12.460000038146973],"low":[11.8100004196167,11.675000190734863,11.819999694824219,11.850000381469727,11.801600456237793,11.920299530029297,12.449999809265137,12.460000038146973],"volume":[2140439,1053977,460433,435667,929598,2418758,1975628,0]}]}}],"error":null}}'
     headers:
       Age:
       - '1'
@@ -1448,67 +1224,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1663'
+      - '1631'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 24 Jan 2023 09:56:46 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '13'
-      x-request-id:
-      - 012779d2-8d3a-4917-8495-446ba0966b61
-      x-yahoo-request-id:
-      - ajljf11hsvaqv
-      y-rid:
-      - ajljf11hsvaqv
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/MPW?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"MPW","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1120829400,"regularMarketTime":1674507601,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":13.78,"chartPreviousClose":13.72,"previousClose":13.72,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"low":[13.604999542236328,13.729999542236328,13.760000228881836,13.760000228881836,13.729999542236328,13.699999809265137,13.680000305175781,13.779999732971191],"high":[13.854999542236328,13.880000114440918,13.899999618530273,13.850000381469727,13.84000015258789,13.8100004196167,13.800000190734863,13.779999732971191],"close":[13.829999923706055,13.829999923706055,13.765000343322754,13.819999694824219,13.744999885559082,13.725000381469727,13.774999618530273,13.779999732971191],"open":[13.640000343322754,13.835000038146973,13.826399803161621,13.765000343322754,13.819999694824219,13.75,13.728899955749512,13.779999732971191],"volume":[1562295,1470184,1827142,678643,863833,1155311,1507701,0]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1664'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 24 Jan 2023 09:56:47 GMT
+      - Thu, 02 Feb 2023 12:38:43 GMT
       server:
       - ATS
       vary:
@@ -1518,11 +1238,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '11'
       x-request-id:
-      - a0653400-31d1-402d-a196-04fa5a7b334b
+      - f5761605-29af-4191-b2fe-78cc53b773bb
       x-yahoo-request-id:
-      - 69fd4cdhsvaqv
+      - 2eifg6thtnbmk
       y-rid:
-      - 69fd4cdhsvaqv
+      - 2eifg6thtnbmk
     status:
       code: 200
       message: OK
@@ -1536,10 +1256,10 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/NUE?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/CLF?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"NUE","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":322151400,"regularMarketTime":1674507601,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":153.85,"chartPreviousClose":153.47,"previousClose":153.47,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1674570600,"start":1674550800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1674594000,"start":1674570600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1674608400,"start":1674594000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1674507600,"start":1674484200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"open":[153.6999969482422,153.54010009765625,153.63999938964844,153.77999877929688,154.3800048828125,153.07000732421875,153.27000427246094,153.85000610351562],"volume":[165973,115821,103056,165238,118267,202236,218759,0],"high":[154.8699951171875,153.9600067138672,154.32000732421875,154.4600067138672,154.4199981689453,153.32000732421875,153.7899932861328,153.85000610351562],"close":[153.8000030517578,153.61500549316406,153.7449951171875,154.36000061035156,153.02499389648438,153.2100067138672,153.77000427246094,153.85000610351562],"low":[153.47000122070312,153.039794921875,153.47000122070312,153.6999969482422,152.97000122070312,152.12730407714844,152.99000549316406,153.85000610351562]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"CLF","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":99153000,"regularMarketTime":1675285202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":21.89,"chartPreviousClose":21.35,"previousClose":21.35,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1675348200,"start":1675328400,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1675371600,"start":1675348200,"gmtoffset":-18000},"post":{"timezone":"EST","end":1675386000,"start":1675371600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1675285200,"start":1675261800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"high":[21.356000900268555,21.25,21.136899948120117,21.280000686645508,21.3700008392334,21.81999969482422,21.979999542236328,21.889999389648438],"open":[21.229999542236328,21.180099487304688,21.1299991607666,21.05500030517578,21.274999618530273,21.2549991607666,21.80500030517578,21.889999389648438],"volume":[1961760,1013720,791554,536735,838390,2062365,1660598,0],"close":[21.184999465942383,21.124000549316406,21.049999237060547,21.274999618530273,21.2549991607666,21.809999465942383,21.889999389648438,21.889999389648438],"low":[20.94499969482422,21.065000534057617,20.959999084472656,21.030000686645508,21.0802001953125,21.084999084472656,21.770000457763672,21.889999389648438]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -1560,11 +1280,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1664'
+      - '1650'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 24 Jan 2023 09:56:47 GMT
+      - Thu, 02 Feb 2023 12:38:44 GMT
       server:
       - ATS
       vary:
@@ -1572,13 +1292,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '8'
+      - '7'
       x-request-id:
-      - 94e3b047-1501-4a76-a0c1-bc8302216852
+      - f109ab50-a833-4b1d-8397-427ad86c8381
       x-yahoo-request-id:
-      - 5o9e42dhsvaqv
+      - 78vt4mphtnbmk
       y-rid:
-      - 5o9e42dhsvaqv
+      - 78vt4mphtnbmk
     status:
       code: 200
       message: OK
@@ -1592,178 +1312,10 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/PLNT?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/F?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PLNT","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1438867800,"regularMarketTime":1674507602,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":80.87,"chartPreviousClose":79.22,"previousClose":79.22,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1674570600,"start":1674550800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1674594000,"start":1674570600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1674608400,"start":1674594000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1674507600,"start":1674484200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"open":[79.30000305175781,79.41999816894531,80.6500015258789,79.91999816894531,80.45500183105469,80.72000122070312,80.79499816894531,80.87000274658203],"volume":[236012,253788,132141,161296,206166,306658,349901,0],"high":[79.62000274658203,81.05000305175781,80.6500015258789,80.45500183105469,80.75,80.97000122070312,81.18000030517578,80.87000274658203],"close":[79.38999938964844,80.61499786376953,79.94989776611328,80.45500183105469,80.72000122070312,80.79499816894531,80.86000061035156,80.87000274658203],"low":[78.48999786376953,79.3499984741211,79.8499984741211,79.83999633789062,80.33000183105469,80.6500015258789,80.75,80.87000274658203]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '3'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1615'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 24 Jan 2023 09:56:44 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '9'
-      x-request-id:
-      - bec93e56-9f1c-47a4-8f86-d5c6f204e96c
-      x-yahoo-request-id:
-      - aicd4n1hsvaqs
-      y-rid:
-      - aicd4n1hsvaqs
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/PRTA?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PRTA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1355841000,"regularMarketTime":1674507604,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":55.1,"chartPreviousClose":54.56,"previousClose":54.56,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"low":[53.47999954223633,54.599998474121094,54.779998779296875,55.040000915527344,55.43000030517578,54.32500076293945,54.47100067138672,55.099998474121094],"volume":[0,36670,22417,26322,51887,86732,97689,0],"open":[54.5099983215332,54.79499816894531,55.060001373291016,55.14500045776367,55.5099983215332,55.474998474121094,54.90999984741211,55.099998474121094],"high":[54.9900016784668,55.29999923706055,55.13999938964844,55.560001373291016,55.72999954223633,55.5,55.150001525878906,55.099998474121094],"close":[54.77000045776367,55.095001220703125,55.09000015258789,55.5099983215332,55.439998626708984,54.9900016784668,55.09000015258789,55.099998474121094]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1627'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 24 Jan 2023 09:56:47 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '53'
-      x-request-id:
-      - 144e44cd-f90e-490e-9eda-01d52a9c05d7
-      x-yahoo-request-id:
-      - dam19qdhsvaqv
-      y-rid:
-      - dam19qdhsvaqv
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/SOFI?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"SOFI","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1609770600,"regularMarketTime":1674507604,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":5.87,"chartPreviousClose":5.67,"previousClose":5.67,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"high":[5.820000171661377,5.840000152587891,5.78000020980835,5.829999923706055,5.880000114440918,5.869999885559082,5.889999866485596,5.869999885559082],"open":[5.710000038146973,5.760000228881836,5.755000114440918,5.744999885559082,5.821499824523926,5.835000038146973,5.864999771118164,5.869999885559082],"close":[5.761600017547607,5.755000114440918,5.75,5.821899890899658,5.835000038146973,5.864999771118164,5.869999885559082,5.869999885559082],"volume":[8056931,6221083,6213915,4222799,5230974,4992406,3574159,0],"low":[5.630000114440918,5.730000019073486,5.699999809265137,5.71999979019165,5.800000190734863,5.800000190734863,5.849999904632568,5.869999885559082]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1627'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 24 Jan 2023 09:56:47 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '10'
-      x-request-id:
-      - e89e5863-d197-4323-b929-7961f73344e6
-      x-yahoo-request-id:
-      - 2egln79hsvaqv
-      y-rid:
-      - 2egln79hsvaqv
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/TOL?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TOL","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":521213400,"regularMarketTime":1674507601,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":56.04,"chartPreviousClose":55.86,"previousClose":55.86,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"low":[55.369998931884766,56.04999923706055,56.119998931884766,56.189998626708984,55.970001220703125,55.79999923706055,55.880001068115234,56.040000915527344],"volume":[159949,71701,72093,71248,114382,122821,211080,0],"open":[55.560001373291016,56.179901123046875,56.119998931884766,56.31999969482422,56.209999084472656,55.98500061035156,55.900001525878906,56.040000915527344],"high":[56.349998474121094,56.345001220703125,56.400001525878906,56.43000030517578,56.27000045776367,56.099998474121094,56.11000061035156,56.040000915527344],"close":[56.16999816894531,56.119998931884766,56.310001373291016,56.20000076293945,55.97999954223633,55.88999938964844,56.04999923706055,56.040000915527344]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"F","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":76253400,"regularMarketTime":1675285387,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":13.79,"chartPreviousClose":13.51,"previousClose":13.51,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"volume":[12586779,7936640,6455404,3986876,6628407,14398975,11632913,0],"low":[13.524999618530273,13.550000190734863,13.5600004196167,13.600000381469727,13.5600004196167,13.550000190734863,13.789999961853027,13.789999961853027],"high":[13.75,13.739999771118164,13.65999984741211,13.65999984741211,13.710000038146973,13.890000343322754,13.989999771118164,13.789999961853027],"open":[13.555000305175781,13.725000381469727,13.64009952545166,13.614999771118164,13.65999984741211,13.649999618530273,13.890000343322754,13.789999961853027],"close":[13.725000381469727,13.640000343322754,13.614999771118164,13.650099754333496,13.645000457763672,13.88860034942627,13.800000190734863,13.789999961853027]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -1788,7 +1340,63 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 24 Jan 2023 09:56:47 GMT
+      - Thu, 02 Feb 2023 12:38:44 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '23'
+      x-request-id:
+      - ef8067a8-daa6-4648-a368-0f85b6d8bce4
+      x-yahoo-request-id:
+      - 4ddg4vlhtnbmk
+      y-rid:
+      - 4ddg4vlhtnbmk
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/LLY?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"LLY","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":76253400,"regularMarketTime":1675285406,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":342.57,"chartPreviousClose":344.15,"previousClose":344.15,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"high":[345.94000244140625,341.7099914550781,342.1400146484375,341.239990234375,342.69000244140625,343.4150085449219,344.7349853515625,342.57000732421875],"close":[339.239990234375,341.5,338.5899963378906,340.6499938964844,340.3500061035156,343.19000244140625,342.8699951171875,342.57000732421875],"open":[342.7900085449219,339.29998779296875,341.510009765625,338.6000061035156,340.6300048828125,340.5799865722656,343.19500732421875,342.57000732421875],"low":[338.7799987792969,338.5899963378906,337.5199890136719,338.1600036621094,339.8699951171875,339.010009765625,342.0,342.57000732421875],"volume":[531337,333223,322217,304003,315020,328208,440560,0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1625'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 02 Feb 2023 12:38:44 GMT
       server:
       - ATS
       vary:
@@ -1798,11 +1406,403 @@ interactions:
       x-envoy-upstream-service-time:
       - '11'
       x-request-id:
-      - 2e6fa4c7-159f-428a-ade1-525ec60b0cb1
+      - 32c516a8-1df6-464d-bac5-dad2f1533883
       x-yahoo-request-id:
-      - 5uphkbhhsvaqv
+      - 2kbjndhhtnbmk
       y-rid:
-      - 5uphkbhhsvaqv
+      - 2kbjndhhtnbmk
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/META?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"META","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1337347800,"regularMarketTime":1675285204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":153.12,"chartPreviousClose":148.97,"previousClose":148.97,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"high":[149.6199951171875,149.97999572753906,149.35519409179688,149.61500549316406,150.73989868164062,153.27999877929688,153.5800018310547,153.1199951171875],"close":[149.3553924560547,148.69000244140625,149.24000549316406,149.61500549316406,149.77139282226562,152.32000732421875,153.10989379882812,153.1199951171875],"volume":[7130860,4299095,2260008,2617359,4278962,7820657,5844949,0],"low":[147.05999755859375,148.13499450683594,148.47000122070312,148.80999755859375,148.49000549316406,148.33999633789062,152.22000122070312,153.1199951171875],"open":[148.25,149.36000061035156,148.66000366210938,149.22999572753906,149.6195068359375,149.77999877929688,152.32000732421875,153.1199951171875]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1666'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 02 Feb 2023 12:38:44 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '12'
+      x-request-id:
+      - ec85ef85-f274-44dd-8bf2-20804b34737a
+      x-yahoo-request-id:
+      - 1e2aj45htnbmk
+      y-rid:
+      - 1e2aj45htnbmk
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/MPW?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"MPW","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1120829400,"regularMarketTime":1675285201,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":12.93,"chartPreviousClose":12.95,"previousClose":12.95,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"close":[12.770000457763672,12.670000076293945,12.640000343322754,12.600000381469727,12.619999885559082,12.919300079345703,12.930000305175781,12.930000305175781],"open":[13.0,12.770000457763672,12.670000076293945,12.640000343322754,12.609000205993652,12.625,12.914999961853027,12.930000305175781],"high":[13.039999961853027,12.789999961853027,12.6899995803833,12.680000305175781,12.694999694824219,12.9350004196167,13.0600004196167,12.930000305175781],"low":[12.75,12.59000015258789,12.59000015258789,12.59000015258789,12.539999961853027,12.510000228881836,12.89050006866455,12.930000305175781],"volume":[1561906,1531771,1243946,942599,2056545,3173847,3102586,0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1632'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 02 Feb 2023 12:38:44 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '13'
+      x-request-id:
+      - 4e5cca16-bd86-43ba-b716-bb4d57f7b272
+      x-yahoo-request-id:
+      - et46ujhhtnbml
+      y-rid:
+      - et46ujhhtnbml
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/NUE?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"NUE","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":322151400,"regularMarketTime":1675285202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":174.98,"chartPreviousClose":169.02,"previousClose":169.02,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"close":[167.28280639648438,167.85000610351562,167.875,170.78500366210938,171.27000427246094,174.35470581054688,174.99000549316406,174.97999572753906],"open":[167.75,167.36000061035156,167.7899932861328,167.92999267578125,170.8249969482422,171.27000427246094,174.35499572753906,174.97999572753906],"volume":[243196,155091,165021,177702,272351,372703,537426,0],"low":[166.10000610351562,166.3300018310547,167.2100067138672,167.7899932861328,169.9499969482422,170.41000366210938,174.3300018310547,174.97999572753906],"high":[168.26499938964844,168.14999389648438,168.32139587402344,170.8000030517578,171.74000549316406,174.4499969482422,175.75,174.97999572753906]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1633'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 02 Feb 2023 12:38:45 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '12'
+      x-request-id:
+      - 5d033dfe-ce35-4059-9f74-96e83959b96d
+      x-yahoo-request-id:
+      - 05i13s5htnbml
+      y-rid:
+      - 05i13s5htnbml
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/PLNT?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PLNT","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1438867800,"regularMarketTime":1675285202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":83.8,"chartPreviousClose":84.65,"previousClose":84.65,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1675348200,"start":1675328400,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1675371600,"start":1675348200,"gmtoffset":-18000},"post":{"timezone":"EST","end":1675386000,"start":1675371600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1675285200,"start":1675261800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"high":[84.91999816894531,84.61000061035156,83.375,83.13999938964844,83.0999984741211,83.95500183105469,84.33000183105469,83.80000305175781],"close":[84.55000305175781,83.38999938964844,83.04000091552734,83.04000091552734,82.87000274658203,83.94999694824219,83.76499938964844,83.80000305175781],"open":[84.3499984741211,84.61000061035156,83.375,83.08000183105469,83.06999969482422,82.80000305175781,83.9800033569336,83.80000305175781],"volume":[58893,42131,59549,60817,40883,79152,121285,0],"low":[84.13999938964844,83.38999938964844,82.62999725341797,82.73999786376953,82.68000030517578,82.37000274658203,83.58380126953125,83.80000305175781]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '4'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1612'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 02 Feb 2023 12:38:41 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-baseline-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '11'
+      x-request-id:
+      - 7dcdad95-61b4-4115-8d1e-7d62d4299ca1
+      x-yahoo-request-id:
+      - 2q6csdhhtnbmh
+      y-rid:
+      - 2q6csdhhtnbmh
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/PRTA?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PRTA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1355841000,"regularMarketTime":1675285204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":53.67,"chartPreviousClose":56.55,"previousClose":56.55,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"close":[55.61000061035156,53.415000915527344,54.2599983215332,54.400001525878906,54.10499954223633,54.08000183105469,53.709999084472656,53.66999816894531],"open":[56.5,55.529998779296875,53.43000030517578,54.15999984741211,54.41999816894531,54.119998931884766,54.08000183105469,53.66999816894531],"high":[56.869998931884766,55.529998779296875,54.5099983215332,54.5099983215332,54.459999084472656,55.0099983215332,54.16999816894531,53.66999816894531],"low":[55.064998626708984,53.36000061035156,53.43000030517578,53.939998626708984,53.64500045776367,53.38999938964844,53.31999969482422,53.66999816894531],"volume":[55346,63060,44001,30638,33624,89382,150538,0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1631'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 02 Feb 2023 12:38:45 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '10'
+      x-request-id:
+      - 5262fbab-ffb1-44d9-b355-a851aaa31150
+      x-yahoo-request-id:
+      - 6gqj2jphtnbml
+      y-rid:
+      - 6gqj2jphtnbml
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/SOFI?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"SOFI","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1609770600,"regularMarketTime":1675285204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":7.38,"chartPreviousClose":6.93,"previousClose":6.93,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"close":[6.985000133514404,6.982500076293945,7.045199871063232,7.054999828338623,7.125,7.389999866485596,7.380000114440918,7.380000114440918],"open":[6.929999828338623,6.989999771118164,6.985000133514404,7.045100212097168,7.054999828338623,7.130000114440918,7.394999980926514,7.380000114440918],"volume":[14248360,7470470,6990433,6620495,8954827,19392883,8997300,0],"low":[6.860000133514404,6.860000133514404,6.960000038146973,7.014999866485596,7.0,7.010000228881836,7.309999942779541,7.380000114440918],"high":[7.070000171661377,7.0,7.050000190734863,7.099999904632568,7.210000038146973,7.46999979019165,7.46999979019165,7.380000114440918]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1602'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 02 Feb 2023 12:38:45 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '13'
+      x-request-id:
+      - 5c5d2217-1439-46d5-bd19-ec98f678d362
+      x-yahoo-request-id:
+      - 0geck85htnbml
+      y-rid:
+      - 0geck85htnbml
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TOL?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TOL","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":521213400,"regularMarketTime":1675285202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":60.26,"chartPreviousClose":59.49,"previousClose":59.49,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1675348200,"start":1675328400,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1675371600,"start":1675348200,"gmtoffset":-18000},"post":{"timezone":"EST","end":1675386000,"start":1675371600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1675285200,"start":1675261800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"close":[59.130001068115234,58.869998931884766,58.52000045776367,58.67499923706055,58.82500076293945,60.439998626708984,60.290000915527344,60.2599983215332],"low":[59.04999923706055,58.61000061035156,58.48500061035156,58.5,58.02000045776367,58.290000915527344,60.18000030517578,60.2599983215332],"open":[59.130001068115234,59.15999984741211,58.869998931884766,58.54999923706055,58.66999816894531,58.84000015258789,60.45000076293945,60.2599983215332],"volume":[291792,149860,84870,172527,284689,505487,535860,0],"high":[59.75,59.34000015258789,58.880001068115234,58.77000045776367,58.90999984741211,60.459999084472656,60.939998626708984,60.2599983215332]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1622'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 02 Feb 2023 12:38:45 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '9'
+      x-request-id:
+      - a5ed960e-7ea7-45bd-a015-86cdf2a231f6
+      x-yahoo-request-id:
+      - ev5n7jhhtnbmm
+      y-rid:
+      - ev5n7jhhtnbmm
     status:
       code: 200
       message: OK
@@ -1819,7 +1819,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/WDS?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"WDS","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":848327400,"regularMarketTime":1674507601,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":26.39,"chartPreviousClose":25.98,"previousClose":25.98,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"low":[26.059999465942383,26.09000015258789,26.360000610351562,26.339599609375,26.399999618530273,26.299999237060547,26.31999969482422,26.389999389648438],"high":[26.270000457763672,26.489999771118164,26.440000534057617,26.540000915527344,26.600000381469727,26.450000762939453,26.43000030517578,26.389999389648438],"close":[26.209999084472656,26.360000610351562,26.395000457763672,26.510000228881836,26.420000076293945,26.344999313354492,26.3799991607666,26.389999389648438],"open":[26.170000076293945,26.18000030517578,26.3700008392334,26.399999618530273,26.521900177001953,26.440000534057617,26.344999313354492,26.389999389648438],"volume":[165875,101908,28697,43203,51346,67971,95575,0]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"WDS","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":848327400,"regularMarketTime":1675285202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":25.31,"chartPreviousClose":25.98,"previousClose":25.98,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"high":[25.34000015258789,25.299999237060547,25.299999237060547,25.010000228881836,25.06999969482422,25.5,25.579999923706055,25.309999465942383],"close":[25.274999618530273,25.2450008392334,24.989999771118164,24.93000030517578,25.020000457763672,25.440000534057617,25.309999465942383,25.309999465942383],"volume":[184011,121530,174169,216181,60995,191457,284472,0],"low":[25.1200008392334,25.18000030517578,24.924999237060547,24.69499969482422,24.90999984741211,24.950000762939453,25.30500030517578,25.309999465942383],"open":[25.200000762939453,25.270000457763672,25.260000228881836,25.0,24.937999725341797,25.030000686645508,25.43000030517578,25.309999465942383]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -1840,11 +1840,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1658'
+      - '1633'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 24 Jan 2023 09:56:47 GMT
+      - Thu, 02 Feb 2023 12:38:46 GMT
       server:
       - ATS
       vary:
@@ -1852,13 +1852,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '10'
+      - '11'
       x-request-id:
-      - 660b0bb4-4276-40c2-8e51-cffd820b418a
+      - aea1440c-cfd0-4b79-a6c4-e749ccc4bcac
       x-yahoo-request-id:
-      - 5fq8au5hsvaqv
+      - 5hd7qnhhtnbmm
       y-rid:
-      - 5fq8au5hsvaqv
+      - 5hd7qnhhtnbmm
     status:
       code: 200
       message: OK
@@ -1875,7 +1875,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/WHR?range=1d&interval=1h&includePrePost=False&events=div%2Csplits%2CcapitalGains
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"WHR","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":99153000,"regularMarketTime":1674507826,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":152.12,"chartPreviousClose":150.82,"previousClose":150.82,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1674550800,"end":1674570600,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1674570600,"end":1674594000,"gmtoffset":-18000},"post":{"timezone":"EST","start":1674594000,"end":1674608400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1674484200,"end":1674507600,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1674484200,1674487800,1674491400,1674495000,1674498600,1674502200,1674505800,1674507600],"indicators":{"quote":[{"low":[150.6699981689453,151.80999755859375,152.33999633789062,152.72999572753906,152.48500061035156,151.83999633789062,152.0399932861328,152.1199951171875],"high":[152.1199951171875,153.19000244140625,152.89999389648438,153.05999755859375,153.4499969482422,152.67999267578125,152.5500030517578,152.1199951171875],"close":[151.8300018310547,152.72000122070312,152.89999389648438,152.81500244140625,152.5800018310547,152.1699981689453,152.08999633789062,152.1199951171875],"open":[151.47999572753906,151.80999755859375,152.8300018310547,152.9149932861328,152.72500610351562,152.6699981689453,152.22999572753906,152.1199951171875],"volume":[36025,51455,40150,38643,37947,54826,83087,0]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"WHR","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":99153000,"regularMarketTime":1675285489,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":156.5,"chartPreviousClose":155.59,"previousClose":155.59,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675328400,"end":1675348200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675348200,"end":1675371600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675371600,"end":1675386000,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1675261800,"end":1675285200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675261800,1675265400,1675269000,1675272600,1675276200,1675279800,1675283400,1675285200],"indicators":{"quote":[{"volume":[129134,128039,129360,61704,81687,123465,238590,0],"low":[152.82000732421875,151.69000244140625,151.69000244140625,152.30999755859375,151.7050018310547,152.02999877929688,155.8800048828125,156.5],"high":[155.57000732421875,153.52000427246094,153.2100067138672,153.25999450683594,153.1300048828125,156.8800048828125,158.33999633789062,156.5],"open":[155.0,153.41000366210938,152.0,153.0800018310547,152.63499450683594,152.75,156.89999389648438,156.5],"close":[153.33999633789062,152.0,153.02999877929688,152.55499267578125,152.66600036621094,156.84100341796875,156.4949951171875,156.5]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -1896,11 +1896,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1654'
+      - '1563'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 24 Jan 2023 09:56:48 GMT
+      - Thu, 02 Feb 2023 12:38:46 GMT
       server:
       - ATS
       vary:
@@ -1908,13 +1908,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '11'
+      - '13'
       x-request-id:
-      - 8743860b-c93b-422d-bd0d-936775bda2eb
+      - 1c390e8b-ef47-4fba-b29f-fce7ccbc28eb
       x-yahoo-request-id:
-      - 4ed9hv5hsvar0
+      - 6og32rlhtnbmm
       y-rid:
-      - 4ed9hv5hsvar0
+      - 6og32rlhtnbmm
     status:
       code: 200
       message: OK

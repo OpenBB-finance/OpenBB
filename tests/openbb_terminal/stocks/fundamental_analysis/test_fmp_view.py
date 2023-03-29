@@ -4,8 +4,11 @@
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.fundamental_analysis import fmp_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -21,7 +24,7 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_valinvest_score():
-    fmp_view.valinvest_score(symbol="PM")
+    fmp_view.valinvest_score(symbol="PM", years=10)
 
 
 @pytest.mark.vcr
@@ -40,12 +43,8 @@ def test_display_filings():
             {"symbol": "PM"},
         ),
         (
-            "display_quote",
-            {"symbol": "PM"},
-        ),
-        (
             "display_enterprise",
-            {"symbol": "PM", "limit": 5, "quarterly": False},
+            {"symbol": "PM", "quarterly": False},
         ),
         (
             "display_discounted_cash_flow",
@@ -81,6 +80,21 @@ def test_display_filings():
     "use_tab",
     [True, False],
 )
-def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
-    monkeypatch.setattr(helper_funcs.obbff, "USE_TABULATE_DF", use_tab)
+def test_check_output(func, kwargs_dict, mocker, use_tab):
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=use_tab,
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
+
     getattr(fmp_view, func)(**kwargs_dict)
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_rating():
+    fmp_view.rating(symbol="TSLA", limit=5, export=None)

@@ -1,3 +1,26 @@
-  Symbol                           Name  Price (Intraday)  Change % Change   Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
-0   ORCL             Oracle Corporation            102.68   13.91  +15.66%  35.427M           10.002M   280.682B          21.75
-1   EPAY  Bottomline Technologies, Inc.             51.44    6.74  +15.08%   612218            342098     2.324B               
+   Symbol                                   Name  Price (Intraday)   Change % Change   Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
+0    ORCL                     Oracle Corporation          102.6800  13.9100  +15.66%  35.427M           10.002M   280.682B          21.75
+1    EPAY          Bottomline Technologies, Inc.           51.4400   6.7400  +15.08%   612218            342098     2.324B               
+2    LWLG                  Lightwave Logic, Inc.           19.6000   2.2700  +13.10%   1.445M            744643     2.133B               
+3     YMM           Full Truck Alliance Co. Ltd.           11.4200   1.1800  +11.52%   4.483M            2.319M      12.4B               
+4    CORT      Corcept Therapeutics Incorporated           18.9500   1.8500  +10.85%   2.045M            948527     2.188B          22.84
+5     CXM                         Sprinklr, Inc.           14.9500   1.4400  +10.66%   2.358M            456674     3.813B               
+6   EGRNY                 China Evergrande Group            5.5500   0.5200  +10.27%    25648             69958     3.361B           1.17
+7    OSCR                     Oscar Health, Inc.           10.7100   0.9500   +9.73%   1.137M            1.688M     2.244B               
+8    INFA                       Informatica Inc.           38.4700   3.4700   +9.90%   434726            1.166M    10.695B               
+9    HALO            Halozyme Therapeutics, Inc.           34.7600   2.9400   +9.26%    1.07M            812714     4.894B           12.5
+10    VAL                        Valaris Limited           33.0500   2.4000   +7.83%   826505            477159     2.479B               
+11  SWMAY                Swedish Match AB (publ)            7.7500   0.5500   +7.64%    85435             92109    12.144B           6.77
+12   AVGO                          Broadcom Inc.          624.8900  41.4700   +7.11%   3.589M            1.747M   257.213B          46.32
+13      F                     Ford Motor Company           20.9600   1.3900   +7.10%  92.948M           89.354M    83.761B           29.4
+14    ASO      Academy Sports and Outdoors, Inc.           46.2200   2.9900   +6.92%   7.312M            2.606M     4.113B           8.23
+15   MNSO           MINISO Group Holding Limited           11.7000   0.7300   +6.65%   1.367M            460851     3.585B          42.24
+16  GARPF              Golden Agri-Resources Ltd            0.1773   0.0111   +6.70%    23250              9627      2.48B           4.93
+17   COST           Costco Wholesale Corporation          558.8700  34.5400   +6.59%   3.851M            2.023M   246.922B          49.59
+18   BRDS                      Bird Global, Inc.            8.7600   0.5500   +6.64%   655967            947261     2.402B               
+19    AUR                Aurora Innovation, Inc.           13.4900   0.8200   +6.47%   2.116M            2.628M    15.162B               
+20    PAY               Paymentus Holdings, Inc.           29.0300   1.7700   +6.49%   298508            253203      3.08B         744.33
+21  EGRNF                 China Evergrande Group            0.2300   0.0131   +6.04%   223860            903077     3.232B           1.22
+22    JBL                             Jabil Inc.           65.0700   3.3500   +5.43%    1.25M            903941     9.327B          14.21
+23  FNMFN  Federal National Mortgage Association            5.9000   0.3000   +5.36%   113336             34743     4.296B         536.36
+24    CCK                   Crown Holdings, Inc.          109.0000   5.1600   +4.96%   1.222M            1.003M    13.937B          24.55

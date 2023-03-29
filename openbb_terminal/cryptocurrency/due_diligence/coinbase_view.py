@@ -3,12 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import Optional, Union
 
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
-import matplotlib.pyplot as plt
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
 from openbb_terminal.decorators import log_start_end
@@ -16,16 +15,14 @@ from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
-
 
 @log_start_end(log=logger)
 def display_order_book(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plots a list of available currency pairs for trading. [Source: Coinbase]
 
     Parameters
@@ -34,11 +31,11 @@ def display_order_book(
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     bids, asks, pair, market_book = coinbase_model.get_order_book(symbol)
-    plot_order_book(bids, asks, pair, external_axes)
+    fig = plot_order_book(bids, asks, pair)
 
     export_data(
         export,
@@ -46,7 +43,10 @@ def display_order_book(
         "book",
         pd.DataFrame(market_book),
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -55,7 +55,7 @@ def display_trades(
     limit: int = 20,
     side: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing last N trades for chosen trading pair. [Source: Coinbase]
 
@@ -73,7 +73,9 @@ def display_trades(
 
     df = coinbase_model.get_trades(symbol, limit, side)
 
-    print_rich_table(df, headers=list(df.columns), show_index=False)
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, export=bool(export)
+    )
 
     export_data(
         export,
@@ -86,7 +88,10 @@ def display_trades(
 
 @log_start_end(log=logger)
 def display_candles(
-    symbol: str, interval: str = "24hour", export: str = "", sheet_name: str = None
+    symbol: str,
+    interval: str = "24hour",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing candles for chosen trading pair and time interval. [Source: Coinbase]
 
@@ -103,7 +108,11 @@ def display_candles(
     df = coinbase_model.get_candles(symbol, interval)
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=True, title="Trading Pair Candles"
+        df,
+        headers=list(df.columns),
+        show_index=True,
+        title="Trading Pair Candles",
+        export=bool(export),
     )
 
     export_data(
@@ -116,7 +125,9 @@ def display_candles(
 
 
 @log_start_end(log=logger)
-def display_stats(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_stats(
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
+) -> None:
     """Prints table showing 24 hr stats for the product. Volume is in base currency units.
     Open, high and low are in quote currency units.  [Source: Coinbase]
 
@@ -135,6 +146,7 @@ def display_stats(symbol: str, export: str = "", sheet_name: str = None) -> None
         headers=list(df.columns),
         show_index=False,
         title=f"Coinbase:{symbol.upper()} 24 hr Product Stats",
+        export=bool(export),
     )
 
     export_data(

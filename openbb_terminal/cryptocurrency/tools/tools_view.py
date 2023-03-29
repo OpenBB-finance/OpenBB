@@ -3,11 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.tools.tools_model import calculate_apy, calculate_il
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ def display_apy(
     compounding_times: int,
     narrative: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Displays APY value converted from APR
 
@@ -46,6 +47,7 @@ def display_apy(
             headers=list(df.columns),
             show_index=False,
             title="APR/APY Calculator",
+            export=bool(export),
         )
 
     export_data(
@@ -65,7 +67,7 @@ def display_il(
     initial_pool_value: int,
     narrative: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Displays Impermanent Loss in a custom liquidity pool
 
@@ -101,6 +103,7 @@ def display_il(
             headers=list(df.columns),
             show_index=False,
             title="Impermanent Loss Calculator",
+            export=bool(export),
         )
 
     export_data(

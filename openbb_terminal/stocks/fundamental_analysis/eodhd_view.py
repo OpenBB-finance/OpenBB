@@ -2,17 +2,14 @@
 __docformat__ = "numpy"
 import logging
 import os
+from typing import Optional
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
     print_rich_table,
-    plot_autoscale,
 )
 from openbb_terminal.stocks.fundamental_analysis import eodhd_model
 
@@ -27,9 +24,9 @@ def display_fundamentals(
     limit: int = 10,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tickers balance sheet; income statement; cash flow statement
 
@@ -52,6 +49,8 @@ def display_fundamentals(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     fundamentals = eodhd_model.get_financials(symbol, statement, quarterly, ratios)
     title_str = {
         "Balance_Sheet": "Balance Sheet",
@@ -97,25 +96,31 @@ def display_fundamentals(
             denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            ax.bar(df_rounded.index, df_rounded[plot[0].replace("_", " ")])
-            title = (
+            fig.add_bar(
+                x=df_rounded.index,
+                y=df_rounded[plot[0].replace("_", " ")],
+                name=plot[0].replace("_", " "),
+            )
+            fig.set_title(
                 f"{plot[0].replace('_', ' ').capitalize()} QoQ Growth of {symbol.upper()}"
                 if ratios
                 else f"{plot[0].replace('_', ' ').capitalize()} of {symbol.upper()} {denomination}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].bar(
-                    df_rounded.index, df_rounded[plot[i].replace("_", " ")], width=0.5
+                fig.add_bar(
+                    x=df_rounded.index,
+                    y=df_rounded[plot[i].replace("_", " ")],
+                    name=plot[i].replace("_", " "),
+                    row=i + 1,
+                    col=1,
                 )
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.set_title(
+                    f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
+                )
+
+        fig.show(external=fig.is_image_export(export))
     else:
         # Snake case to english
         fundamentals.index = fundamentals.index.to_series().apply(
@@ -125,14 +130,18 @@ def display_fundamentals(
         # Readable numbers
         fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(
-            fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
+            fundamentals.applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
             title=f"{symbol} {title_str}",
+            export=bool(export),
+            limit=limit,
         )
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         statement,
         fundamentals,
         sheet_name,
+        fig,
     )

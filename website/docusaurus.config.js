@@ -34,8 +34,8 @@ const config = {
       {
         redirects: [
           {
-            from: "/terminal/guides/intros/forecasting",
-            to: "/terminal/guides/intros/forecast",
+            from: "/terminal/usage/intros/forecasting",
+            to: "/terminal/usage/intros/forecast",
           },
         ],
       },
@@ -51,7 +51,7 @@ const config = {
         },
       };
     },
-    [
+    /*[
       "@docusaurus/plugin-content-docs",
       {
         id: "sdk",
@@ -62,7 +62,17 @@ const config = {
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
-    require.resolve("@cmfcmf/docusaurus-search-local"),
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "bot",
+        path: "content/bot",
+        routeBasePath: "bot",
+        editUrl:
+          "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+        sidebarPath: require.resolve("./sidebars.js"),
+      },
+    ],*/
   ],
   presets: [
     [
@@ -73,15 +83,11 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
             "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
-          routeBasePath: "terminal",
-          path: "content/terminal",
+          routeBasePath: "/",
+          path: "content",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
-        },
-        gtag: {
-          trackingID: "G-YN9SL785J6",
-          anonymizeIP: true,
         },
       }),
     ],
@@ -95,10 +101,17 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      // TODO - Jose can you make this so we get lighter color on main view - like bot docs
       colorMode: {
         defaultMode: "dark",
         disableSwitch: false,
         respectPrefersColorScheme: false,
+      },
+      algolia: {
+        appId: "7D1HQ0IXAS",
+        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",
+        indexName: "openbbterminal",
+        contextualSearch: false,
       },
     }),
 };

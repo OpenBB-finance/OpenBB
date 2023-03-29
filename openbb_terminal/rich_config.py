@@ -1,17 +1,25 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
-import os
 import json
+import os
 from pathlib import Path
-from typing import Tuple
+from typing import Iterable, Optional, Tuple, Union
+
+import i18n
 from rich import panel
 from rich.console import Console, Theme
+from rich.progress import track
 from rich.text import Text
-import i18n
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+
+from openbb_terminal.core.config.paths import (
+    USER_DATA_SOURCES_DEFAULT_FILE,
+)
+from openbb_terminal.core.plots.plotly_helper import theme
+from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+)
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -19,7 +27,6 @@ from openbb_terminal import feature_flags as obbff
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
 # https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
 
-CUSTOM_THEME = Theme(cfg.theme.console_style)
 
 RICH_TAGS = [
     "[menu]",
@@ -63,13 +70,13 @@ def get_ordered_list_sources(command_path: str):
     list:
         list of sources
     """
+    current_user = get_current_user()
     try:
         # Loading in both source files: default sources and user sources
-        default_data_source = MISCELLANEOUS_DIRECTORY / "data_sources_default.json"
-        user_data_source = Path(obbff.PREFERRED_DATA_SOURCE_FILE)
+        user_data_source = Path(current_user.preferences.PREFERRED_DATA_SOURCE_FILE)
 
         # Opening default sources file from the repository root
-        with open(str(default_data_source)) as json_file:
+        with open(str(USER_DATA_SOURCES_DEFAULT_FILE)) as json_file:
             json_doc = json.load(json_file)
 
         # If the user has added sources to their own sources file in OpenBBUserData, then use that
@@ -98,14 +105,12 @@ def get_ordered_list_sources(command_path: str):
                 # If we have not find the `load` on the deepest level it means we may be in a sub-menu
                 # and we can use the load from the Base class
                 if path_objects[0] == "load":
-
                     # Get the context associated with the sub-menu (e.g. stocks, crypto, ...)
                     context = command_path.split("/")[1]
 
                     # Grab the load source from that context if it exists, otherwise throws an error
-                    if context in json_doc:
-                        if "load" in json_doc[context]:
-                            return json_doc[context]["load"]
+                    if context in json_doc and "load" in json_doc[context]:
+                        return json_doc[context]["load"]
 
                 # We didn't find the next level, so flag that that command default source is missing
                 # Which means that there aren't more than 1 source and therefore no selection is necessary
@@ -120,7 +125,7 @@ def get_ordered_list_sources(command_path: str):
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
-            f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
+            f"{current_user.preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
         return None
@@ -186,10 +191,11 @@ class MenuText:
             column alignment for the value. This allows for a better UX experience.
         """
         parameter_translated = i18n.t(self.menu_path + key_param)
-        if col_align > len(parameter_translated):
-            space = (col_align - len(parameter_translated)) * " "
-        else:
-            space = ""
+        space = (
+            (col_align - len(parameter_translated)) * " "
+            if col_align > len(parameter_translated)
+            else ""
+        )
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
     def add_cmd(self, key_command: str, condition: bool = True):
@@ -212,15 +218,12 @@ class MenuText:
         sources = get_ordered_list_sources(f"/{self.menu_path}{key_command}")
 
         if sources:
-            if self.col_src > len(cmd):
-                space = (self.col_src - len(cmd)) * " "
-            else:
-                space = " "
+            space = (self.col_src - len(cmd)) * " " if self.col_src > len(cmd) else " "
             cmd += f"{space}[src][{', '.join(sources)}][/src]"
 
         self.menu_text += cmd + "\n"
 
-    def add_menu(self, key_menu: str, condition: bool = True):
+    def add_menu(self, key_menu: str, condition: Optional[Union[bool, str]] = True):
         """Append menu text (after translation from key) to a menu
 
         Parameters
@@ -258,12 +261,24 @@ class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
     def __init__(self):
-        self.console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
+        self.preferences = get_current_user().preferences
+        self.__console = Console(
+            theme=Theme(theme.console_style), highlight=False, soft_wrap=True
+        )
         self.menu_text = ""
         self.menu_path = ""
 
+    def reload_console(self):
+        current_preferences = get_current_user().preferences
+        if current_preferences != self.preferences:
+            self.preferences = current_preferences
+            theme.apply_console_style(current_preferences.RICH_STYLE)
+            self.__console = Console(
+                theme=Theme(theme.console_style), highlight=False, soft_wrap=True
+            )
+
     def capture(self):
-        return self.console.capture()
+        return self.__console.capture()
 
     @staticmethod
     def filter_rich_tags(text):
@@ -291,11 +306,17 @@ class ConsoleAndPanel:
         return text
 
     def print(self, *args, **kwargs):
+        self.reload_console()
+        current_user = get_current_user()
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
-                if obbff.ENABLE_RICH_PANEL:
-                    version = f"[param]OpenBB Terminal v{obbff.VERSION}[/param] (https://openbb.co)"
-                    self.console.print(
+                if current_user.preferences.ENABLE_RICH_PANEL:
+                    if current_user.preferences.SHOW_VERSION:
+                        version = get_current_system().VERSION
+                        version = f"[param]OpenBB Terminal v{version}[/param] (https://openbb.co)"
+                    else:
+                        version = "[param]OpenBB Terminal[/param] (https://openbb.co)"
+                    self.__console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],
                             title=kwargs["menu"],
@@ -305,14 +326,42 @@ class ConsoleAndPanel:
                     )
 
                 else:
-                    self.console.print(kwargs["text"])
+                    self.__console.print(kwargs["text"])
             else:
                 print(self.filter_rich_tags(kwargs["text"]))
         else:
             if not os.getenv("TEST_MODE"):
-                self.console.print(*args, **kwargs)
+                self.__console.print(*args, **kwargs)
             else:
                 print(*args, **kwargs)
 
+    def input(self, *args, **kwargs):
+        self.print(*args, **kwargs, end="")
+        return input()
+
 
 console = ConsoleAndPanel()
+
+
+def optional_rich_track(
+    inputs: Iterable,
+    suppress_output: bool = False,
+    desc: str = "",
+    total: Optional[int] = None,
+):
+    """Generate a rich track progress bar if desired
+
+    Parameters
+    ----------
+    inputs : Iterable
+        The items to be looped through
+    suppress_output : bool, optional
+        Flag to suppress the output, by default False
+    desc : str, optional
+        String to describe the progress bar, by default ""
+    total : Optional[int], optional
+        Total number of items to be looped through, by default None
+    """
+    if suppress_output:
+        return inputs
+    return track(inputs, description=desc, total=total)

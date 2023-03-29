@@ -3,11 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 
+import pandas as pd
+
 from openbb_terminal.common.behavioural_analysis import stocktwits_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -82,11 +82,20 @@ def display_stalker(user: str, limit: int = 10):
         Number of messages to show, by default 10
     """
     messages = stocktwits_model.get_stalker(user, limit)
-    for message in messages:
-        console.print("-------------------")
-        console.print(
-            "[yellow]"
-            + message["created_at"].replace("T", " ").replace("Z", "")
-            + "[/yellow]"
-        )
-        console.print(message["body"] + "\n")
+
+    df_messages = pd.DataFrame.from_dict(messages)
+
+    df_messages["created_at"] = pd.to_datetime(df_messages["created_at"])
+
+    df_messages = pd.DataFrame(df_messages, columns=["created_at", "id", "body", "url"])
+
+    # We look for a date name in the column to assume its a date on frontend side for filtering etc
+    df_messages.rename(columns={"created_at": "created_at_date"}, inplace=True)
+
+    df_messages = df_messages.drop(["id", "url"], axis=1)
+
+    print_rich_table(
+        df_messages,
+        show_index=False,
+        limit=limit,
+    )

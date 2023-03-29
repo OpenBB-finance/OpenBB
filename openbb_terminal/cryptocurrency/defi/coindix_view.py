@@ -7,10 +7,7 @@ from typing import Optional
 
 from openbb_terminal.cryptocurrency.defi import coindix_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +24,7 @@ def display_defi_vaults(
     ascend: bool = True,
     link: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
     maximize returns of its crypto assets. [Source: https://coindix.com/]
@@ -77,10 +74,12 @@ def display_defi_vaults(
         df.drop("Link", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Top DeFi Vaults",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

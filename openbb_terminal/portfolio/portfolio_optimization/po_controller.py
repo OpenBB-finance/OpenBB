@@ -5,37 +5,31 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List, Dict, Tuple
+from typing import Dict, List, Optional, Tuple
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import parent_classes
+from openbb_terminal import (
+    parent_classes,
+)
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-    USER_PORTFOLIO_DATA_DIRECTORY,
 )
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    check_non_negative,
-    get_rf,
-)
+from openbb_terminal.helper_funcs import check_non_negative, get_rf
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.portfolio.portfolio_optimization import (
-    optimizer_helper,
+    excel_model,
     optimizer_model,
     optimizer_view,
     statics,
 )
-from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.parameters import (
     params_controller,
     params_view,
 )
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -155,9 +149,6 @@ def get_valid_portfolio_categories(
 class PortfolioOptimizationController(BaseController):
     """Portfolio Optimization Controller class"""
 
-    DEFAULT_PORTFOLIO_DIRECTORY = MISCELLANEOUS_DIRECTORY / "portfolio_examples"
-    DEFAULT_ALLOCATION_DIRECTORY = DEFAULT_PORTFOLIO_DIRECTORY / "allocation"
-    DEFAULT_OPTIMIZATION_DIRECTORY = DEFAULT_PORTFOLIO_DIRECTORY / "optimization"
     FILE_TYPE_LIST = ["xlsx", "ini"]
 
     CHOICES_COMMANDS = [
@@ -165,10 +156,6 @@ class PortfolioOptimizationController(BaseController):
         "rpf",
         "load",
         "plot",
-        "equal",
-        "mktcap",
-        "dividend",
-        "property",
         "maxsharpe",
         "minrisk",
         "maxutil",
@@ -181,6 +168,8 @@ class PortfolioOptimizationController(BaseController):
         "hrp",
         "herc",
         "nco",
+        "mktcap",
+        "equal",
         "ef",
         "file",
     ]
@@ -196,17 +185,11 @@ class PortfolioOptimizationController(BaseController):
         allocation_file_map = {
             filepath.name: filepath
             for file_type in cls.FILE_TYPE_LIST
-            for filepath in cls.DEFAULT_ALLOCATION_DIRECTORY.rglob(f"*.{file_type}")
+            for filepath in (
+                get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY
+                / "allocation"
+            ).rglob(f"*.{file_type}")
         }
-        allocation_file_map.update(
-            {
-                filepath.name: filepath
-                for file_type in cls.FILE_TYPE_LIST
-                for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "allocation").rglob(
-                    f"*.{file_type}"
-                )
-            }
-        )
 
         return allocation_file_map
 
@@ -215,27 +198,20 @@ class PortfolioOptimizationController(BaseController):
         optimization_file_map = {
             filepath.name: filepath
             for file_type in cls.FILE_TYPE_LIST
-            for filepath in cls.DEFAULT_OPTIMIZATION_DIRECTORY.rglob(f"*.{file_type}")
+            for filepath in (
+                get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY
+                / "optimization"
+            ).rglob(f"*.{file_type}")
         }
-
-        optimization_file_map.update(
-            {
-                filepath.name: filepath
-                for file_type in cls.FILE_TYPE_LIST
-                for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "optimization").rglob(
-                    f"*.{file_type}"
-                )
-            }
-        )
 
         return optimization_file_map
 
     def __init__(
         self,
-        tickers: List[str] = None,
-        portfolios: Dict = None,
-        categories: Dict = None,
-        queue: List[str] = None,
+        tickers: Optional[List[str]] = None,
+        portfolios: Optional[Dict] = None,
+        categories: Optional[Dict] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -255,6 +231,9 @@ class PortfolioOptimizationController(BaseController):
         if categories:
             self.categories = dict(categories)
             self.available_categories = list(self.categories.keys())
+
+            if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
+                self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
         else:
             self.categories = dict()
             self.available_categories = list()
@@ -269,24 +248,27 @@ class PortfolioOptimizationController(BaseController):
 
         self.params: Dict = {}
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            if self.portfolios:
-                self.choices["show"]["--portfolios"] = {
-                    c: {} for c in list(self.portfolios.keys())
-                }
-                self.choices["rpf"]["--portfolios"] = {
-                    c: {} for c in list(self.portfolios.keys())
-                }
-                self.choices["plot"]["--portfolios"] = {
-                    c: {} for c in list(self.portfolios.keys())
-                }
-                self.completer = NestedCompleter.from_nested_dict(self.choices)
+        if (
+            session
+            and get_current_user().preferences.USE_PROMPT_TOOLKIT
+            and self.portfolios
+        ):
+            self.choices["show"]["--portfolios"] = {
+                c: {} for c in list(self.portfolios.keys())
+            }
+            self.choices["rpf"]["--portfolios"] = {
+                c: {} for c in list(self.portfolios.keys())
+            }
+            self.choices["plot"]["--portfolios"] = {
+                c: {} for c in list(self.portfolios.keys())
+            }
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -328,10 +310,8 @@ class PortfolioOptimizationController(BaseController):
         mt.add_info("_other_optimization_techniques_")
         mt.add_cmd("equal", self.tickers)
         mt.add_cmd("mktcap", self.tickers)
-        mt.add_cmd("dividend", self.tickers)
-        mt.add_cmd("property", self.tickers)
-
         mt.add_raw("\n")
+
         mt.add_param("_optimized_portfolio", ", ".join(self.portfolios.keys()))
         mt.add_raw("\n")
 
@@ -564,18 +544,19 @@ class PortfolioOptimizationController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="file",
-            description="Select parameter file to use",
+            description="Select parameter file to use. The OpenBB Parameters Template can be "
+            "found inside the Portfolio Optimization documentation. Please type `about` to access the documentation.",
         )
 
         parser.add_argument(
             "-f",
             "--file",
-            required="-h" not in other_args,
             nargs="+",
             dest="file",
             help="Parameter file to be used",
             choices=self.optimization_file_map.keys(),
             metavar="FILE",
+            type=str,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")
@@ -583,14 +564,19 @@ class PortfolioOptimizationController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            self.current_file = " ".join(ns_parser.file)
-
-            if self.current_file in self.optimization_file_map:
-                file_location = self.optimization_file_map[self.current_file]
+            if not ns_parser.file:
+                console.print(
+                    "[green]The OpenBB Parameters Template can be found inside "
+                    "the Portfolio Optimization documentation. Please type `about` "
+                    "to access the documentation. [green]\n"
+                )
             else:
-                file_location = self.current_file  # type: ignore
+                self.current_file = " ".join(ns_parser.file)
 
-            self.params, self.current_model = params_view.load_file(file_location)
+                file_location = self.optimization_file_map.get(
+                    self.current_file, self.current_file
+                )
+                self.params, self.current_model = params_view.load_file(file_location)  # type: ignore
 
     @log_start_end(log=logger)
     def call_params(self, _):
@@ -627,9 +613,8 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected saved portfolios",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-pf")
 
         parser = self.po_parser(parser, ct=True)
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
@@ -666,9 +651,8 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="portfolios to be removed from the saved portfolios",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-pf")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -677,13 +661,13 @@ class PortfolioOptimizationController(BaseController):
                 if portfolio in portfolios:
                     self.portfolios.pop(portfolio)
                     portfolios.remove(portfolio)
-                    console.print(f"[yellow]Removed '{portfolio}'.[/yellow]")
+                    console.print(f"[param]Removed '{portfolio}'.[/param]")
                 else:
                     console.print(f"[red]Portfolio '{portfolio}' does not exist.[/red]")
 
             if self.portfolios:
                 console.print(
-                    f"\n[yellow]Current Portfolios: [/yellow]{('None', ', '.join(portfolios))[bool(portfolios)]}"
+                    f"\n[param]Current Portfolios: [/param]{('None', ', '.join(portfolios))[bool(portfolios)]}"
                 )
 
             self.update_runtime_choices()
@@ -699,31 +683,68 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            required="-h" not in other_args,
             nargs="+",
             dest="file",
             help="Allocation file to be used",
             choices=self.allocation_file_map.keys(),
+        )
+        parser.add_argument(
+            "-e",
+            "--example",
+            help="Run an example allocation file to understand how the portfolio optimization menu can be used.",
+            dest="example",
+            action="store_true",
+            default=False,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            filename = " ".join(ns_parser.file)
+            filename = ""
 
-            if filename in self.allocation_file_map:
-                file_location = self.allocation_file_map[filename]
+            if ns_parser.file:
+                filename = " ".join(ns_parser.file)
+            elif ns_parser.example:
+                filename = "OpenBB Example Portfolio"
             else:
-                file_location = filename  # type: ignore
+                console.print(
+                    "[green]Please input a filename with load --file or obtain an example with load --example[/green]"
+                )
 
-            self.tickers, self.categories = excel_model.load_allocation(file_location)
-            self.available_categories = list(self.categories.keys())
-            if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
-                self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
-            self.portfolios = dict()
-            self.update_runtime_choices()
-            self.current_portfolio = filename
+            if filename:
+                if ns_parser.example:
+                    file_location = (
+                        MISCELLANEOUS_DIRECTORY
+                        / "portfolio"
+                        / "allocation_example.xlsx"
+                    )
+
+                    console.print(
+                        "[green]Loading an example, please type `about` "
+                        "to learn how to create your own Portfolio Optimization Excel sheet.[/green]\n"
+                    )
+                elif filename in self.allocation_file_map:
+                    file_location = self.allocation_file_map[filename]
+                else:
+                    file_location = filename  # type: ignore
+
+                self.tickers, self.categories = excel_model.load_allocation(
+                    file_location
+                )
+                self.available_categories = list(self.categories.keys())
+                if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
+                    self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
+                self.portfolios = dict()
+                self.update_runtime_choices()
+                self.current_portfolio = filename
+
+                console.print(
+                    f"[param]Portfolio loaded:[/param] {self.current_portfolio}"
+                )
+                console.print(
+                    f"[param]Categories:[/param] {', '.join(self.available_categories)}\n"
+                )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -797,9 +818,8 @@ class PortfolioOptimizationController(BaseController):
             r=True,
             a=True,
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-pf")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -820,8 +840,8 @@ class PortfolioOptimizationController(BaseController):
                 or ns_parser.heat
             ):
                 console.print(
-                    "[yellow]Please select at least one chart to plot[/yellow]",
-                    "[yellow]from the following: -pi, -hi, -dd, -rc, -he.[/yellow]",
+                    "[red]Please select at least one chart to plot "
+                    "from the following: -pi, -hi, -dd, -rc, -he.[/red]",
                 )
                 return
 
@@ -869,7 +889,6 @@ class PortfolioOptimizationController(BaseController):
                     )
 
             if ns_parser.pie or ns_parser.rc_chart or ns_parser.heat:
-
                 if not categories:
                     console.print(
                         "[yellow]Categories must be provided to use -pi, -rc or -he.[/yellow]"
@@ -1010,135 +1029,6 @@ class PortfolioOptimizationController(BaseController):
                 maxnan=ns_parser.max_nan,
                 threshold=ns_parser.threshold_value,
                 method=ns_parser.nan_fill_method,
-                s_property="marketCap",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free,
-                alpha=ns_parser.significance_level,
-                value=ns_parser.long_allocation,
-                table=True,
-            )
-
-            self.portfolios[ns_parser.name.upper()] = weights
-            self.count += 1
-            self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_dividend(self, other_args: List[str]):
-        """Process dividend command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dividend",
-            description="Returns a portfolio that is weighted based dividend yield.",
-        )
-        parser = self.po_parser(
-            parser,
-            rm=True,
-            mt=True,
-            p=True,
-            s=True,
-            e=True,
-            lr=True,
-            freq=True,
-            mn=True,
-            th=True,
-            r=True,
-            a=True,
-            v=True,
-            name="DIVIDEND_",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 stocks selected to perform calculations."
-                )
-                return
-
-            console.print(
-                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
-            )
-
-            weights = optimizer_view.display_property_weighting(
-                symbols=self.tickers,
-                interval=ns_parser.historic_period,
-                start_date=ns_parser.start_period,
-                end_date=ns_parser.end_period,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.return_frequency,
-                maxnan=ns_parser.max_nan,
-                threshold=ns_parser.threshold_value,
-                method=ns_parser.nan_fill_method,
-                s_property="dividendYield",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free,
-                alpha=ns_parser.significance_level,
-                value=ns_parser.long_allocation,
-                table=True,
-            )
-
-            self.portfolios[ns_parser.name.upper()] = weights
-            self.count += 1
-            self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_property(self, other_args: List[str]):
-        """Process property command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="property",
-            description="Returns a portfolio that is weighted based on selected property.",
-        )
-        parser.add_argument(
-            "-pr",
-            "--property",
-            required=bool("-h" not in other_args),
-            type=optimizer_helper.check_valid_property_type,
-            dest="s_property",
-            choices=yahoo_finance_model.yf_info_choices,
-            help="""Property info to weight. Use one of yfinance info options.""",
-            metavar="PROPERTY",
-        )
-        parser = self.po_parser(
-            parser,
-            rm=True,
-            mt=True,
-            p=True,
-            s=True,
-            e=True,
-            lr=True,
-            freq=True,
-            mn=True,
-            th=True,
-            r=True,
-            a=True,
-            v=True,
-            name="PROPERTY_",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 stocks selected to perform calculations."
-                )
-                return
-
-            console.print(
-                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
-            )
-
-            weights = optimizer_view.display_property_weighting(
-                symbols=self.tickers,
-                interval=ns_parser.historic_period,
-                start_date=ns_parser.start_period,
-                end_date=ns_parser.end_period,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.return_frequency,
-                maxnan=ns_parser.max_nan,
-                threshold=ns_parser.threshold_value,
-                method=ns_parser.nan_fill_method,
-                s_property=ns_parser.s_property,
                 risk_measure=ns_parser.risk_measure.lower(),
                 risk_free_rate=ns_parser.risk_free,
                 alpha=ns_parser.significance_level,
@@ -2305,25 +2195,34 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            current_user = get_current_user()
             if len(ns_parser.download) > 0:
                 file = (
-                    USER_EXPORTS_DIRECTORY / "portfolio" / "views" / ns_parser.download
+                    current_user.preferences.USER_EXPORTS_DIRECTORY
+                    / "portfolio"
+                    / "views"
+                    / ns_parser.download
                 )
 
                 excel_model.excel_bl_views(file=file, stocks=self.tickers, n=1)
                 return
 
             if ns_parser.file:
-                excel_file = USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file
+                excel_file = (
+                    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY
+                    / "views"
+                    / ns_parser.file
+                )
                 p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
             else:
                 p_views = ns_parser.p_views
                 q_views = ns_parser.q_views
 
-            if ns_parser.benchmark is None:
-                benchmark = None
-            else:
-                benchmark = self.portfolios[ns_parser.benchmark.upper()]
+            benchmark = (
+                None
+                if ns_parser.benchmark is None
+                else self.portfolios[ns_parser.benchmark.upper()]
+            )
 
             table = True
             if "historic_period_sa" in vars(ns_parser):
@@ -2364,7 +2263,9 @@ class PortfolioOptimizationController(BaseController):
             if table is False:
                 if ns_parser.file_sa:
                     excel_file = (
-                        USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
+                        get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY
+                        / "views"
+                        / ns_parser.file_sa
                     )
                     p_views_sa, q_views_sa = excel_model.load_bl_views(
                         excel_file=excel_file

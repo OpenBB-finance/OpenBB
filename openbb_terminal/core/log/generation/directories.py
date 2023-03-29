@@ -1,8 +1,8 @@
 # IMPORTATION STANDARD
-import os
 import uuid
 from pathlib import Path
-from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY
+
+from openbb_terminal.core.session.current_user import get_current_user
 
 # IMPORTATION THIRDPARTY
 
@@ -13,25 +13,25 @@ from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY
 def get_log_dir() -> Path:
     """Retrieve application's log directory."""
 
-    log_dir = USER_DATA_DIRECTORY.joinpath("logs")
+    log_dir = (
+        get_current_user().preferences.USER_DATA_DIRECTORY.joinpath("logs").absolute()
+    )
 
-    if not os.path.isdir(log_dir.absolute()):
-        os.mkdir(log_dir.absolute())
+    if not log_dir.is_dir():
+        log_dir.mkdir(parents=True, exist_ok=True)
 
-    log_id = log_dir.absolute().joinpath(".logid")
+    log_id = (log_dir / ".logid").absolute()
 
-    if not os.path.isfile(log_id.absolute()):
+    if not log_id.is_file():
         logging_id = f"{uuid.uuid4()}"
-        with open(log_id.absolute(), "a") as a_file:
-            a_file.write(f"{logging_id}\n")
+        log_id.write_text(logging_id, encoding="utf-8")
     else:
-        with open(log_id.absolute()) as a_file:
-            logging_id = a_file.readline().rstrip()
+        logging_id = log_id.read_text(encoding="utf-8").rstrip()
 
-    uuid_log_dir = log_dir.absolute().joinpath(logging_id)
+    uuid_log_dir = (log_dir / logging_id).absolute()
 
-    if not os.path.isdir(uuid_log_dir.absolute()):
-        os.mkdir(uuid_log_dir.absolute())
+    if not uuid_log_dir.is_dir():
+        uuid_log_dir.mkdir(parents=True, exist_ok=True)
 
     return uuid_log_dir
 

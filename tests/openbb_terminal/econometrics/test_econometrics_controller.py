@@ -1,5 +1,15 @@
-import pytest
+# IMPORTATION STANDARD
+
+
+# IMPORTATION THIRDPARTY
 import pandas as pd
+import pytest
+
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.econometrics.econometrics_controller import EconometricsController
 
 # pylint: disable=W0621
@@ -7,14 +17,13 @@ from openbb_terminal.econometrics.econometrics_controller import EconometricsCon
 
 @pytest.fixture()
 def controller(mocker):
-    if mocker:
-        mocker.patch(
-            "openbb_terminal.econometrics.econometrics_controller.obbff.USE_PROMPT_TOOLKIT",
-            True,
-        )
-        mocker.patch(
-            "openbb_terminal.econometrics.econometrics_controller.session", True
-        )
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
+    mocker.patch("openbb_terminal.econometrics.econometrics_controller.session", True)
     return EconometricsController()
 
 

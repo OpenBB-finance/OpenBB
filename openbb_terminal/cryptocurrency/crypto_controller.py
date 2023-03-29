@@ -5,22 +5,22 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from typing import List, Optional
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.cryptocurrency.crypto_views import find
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     display_all_coins,
     plot_chart,
 )
-from openbb_terminal.cryptocurrency.crypto_views import find
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_view,
     coinpaprika_view,
     finbrain_crypto_view,
     pycoingecko_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -30,7 +30,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 # pylint: disable=import-outside-toplevel
 
@@ -82,11 +82,11 @@ class CryptoController(CryptoBaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             choices["load"] = {
@@ -256,7 +256,7 @@ class CryptoController(CryptoBaseController):
             upper_symbol = ns_parser.symbol.upper()
             if "-USD" not in ns_parser.symbol:
                 upper_symbol += "-USD"
-            if upper_symbol in pyth_model.ASSETS.keys():
+            if upper_symbol in pyth_model.ASSETS:
                 console.print(
                     "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
                 )
@@ -290,15 +290,7 @@ class CryptoController(CryptoBaseController):
             if not self.symbol:
                 console.print("No coin loaded. First use `load {symbol}`\n")
                 return
-            export_data(
-                ns_parser.export,
-                os.path.join(os.path.dirname(os.path.abspath(__file__))),
-                f"{self.symbol}",
-                self.current_df,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-            )
-
-            plot_chart(
+            figure = plot_chart(
                 exchange=self.exchange,
                 source=self.source,
                 to_symbol=self.symbol,
@@ -306,6 +298,15 @@ class CryptoController(CryptoBaseController):
                 prices_df=self.current_df,
                 interval=self.current_interval,
                 yscale="log" if ns_parser.logy else "linear",
+                external_axes=ns_parser.is_image,
+            )
+            export_data(
+                ns_parser.export,
+                os.path.join(os.path.dirname(os.path.abspath(__file__))),
+                f"{self.symbol}",
+                self.current_df,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                figure=figure,
             )
 
     @log_start_end(log=logger)
@@ -503,7 +504,7 @@ class CryptoController(CryptoBaseController):
             choices=range(1, 300),
             metavar="SKIP",
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(

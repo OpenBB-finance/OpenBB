@@ -1,13 +1,14 @@
-from datetime import datetime, timedelta
-import logging
 import json
+import logging
+from datetime import datetime, timedelta
 from typing import Optional
 
 import pandas as pd
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end, check_api_key
+
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request, str_date_to_timestamp
 from openbb_terminal.rich_config import console
-from openbb_terminal.helper_funcs import str_date_to_timestamp, request
 
 # pylint: disable=unsupported-assignment-operation
 
@@ -212,7 +213,7 @@ def get_close_price(
     url = api_url + "market/price_usd_close"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
         "s": str(ts_start_date),
@@ -277,7 +278,7 @@ def get_non_zero_addresses(
     url = api_url + "addresses/non_zero_count"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
         "s": str(ts_start_date),
@@ -342,7 +343,7 @@ def get_active_addresses(
     url = api_url + "addresses/active_count"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": interval,
         "s": str(ts_start_date),
@@ -407,7 +408,7 @@ def get_hashrate(
     url2 = api_url + "market/price_usd_close"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": interval,
         "s": str(ts_start_date),
@@ -496,7 +497,7 @@ def get_exchange_balances(
     url3 = api_url + "market/price_usd_close"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
         "e": exchange,
@@ -512,7 +513,6 @@ def get_exchange_balances(
     )  # get price TODO: grab data from loaded symbol
 
     if r1.status_code == 200 and r2.status_code == 200 and r3.status_code == 200:
-
         df1 = pd.DataFrame(json.loads(r1.text))
         df1.set_index("t", inplace=True)
         df1.rename(columns={"v": "stacked"}, inplace=True)
@@ -586,7 +586,7 @@ def get_exchange_net_position_change(
     url = api_url + "distribution/exchange_net_position_change"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
         "e": exchange,

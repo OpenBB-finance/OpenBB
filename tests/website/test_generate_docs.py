@@ -1,7 +1,9 @@
 from typing import Optional
+
 import pytest
 
 try:
+    from openbb_terminal.core.sdk.trailmap import get_signature_parameters
     from website import (
         generate_sdk_markdown as gen_sdk,
         generate_terminal_markdown as gen_term,
@@ -41,25 +43,30 @@ def mock_func(arg1: Optional[str] = "Test", arg2: Optional[bool] = True) -> bool
 
 
 # pylint:disable=too-few-public-methods
+class MockFuncAttrs:
+    """Mock function attributes"""
+
+    def __init__(self):
+        self.lineon = 69
+        self.full_path = "test/mock_func.py"
+        self.long_doc = mock_func.__doc__
+        self.func_unwrapped = mock_func
+        self.func_def = (
+            'openbb.mock(arg1: Optional[str] = "Test", arg2: Optional[bool] = True)'
+        )
+        self.params = {}
+        for k, p in get_signature_parameters(mock_func, mock_func.__globals__).items():
+            self.params[k] = p
+
+
 class MockTrailMap:
     """Mock trail map"""
 
     def __init__(self):
-        self.trailmap = ""
-        self.func_attr = {"model": mock_func}
-        self.class_attr = {"model": "mock"}
-        self.lineon = {"model": 69}
-        self.full_path = {"model": "test/mock_func.py"}
-        self.model = "mock_func"
-        self.long_doc = {"model": mock_func.__doc__}
-        self.func_def = {
-            "model": 'openbb.mock(arg1: Optional[str] = "Test", arg2: Optional[bool] = True)'
-        }
-        self.params = {"model": {}}
-        for k, p in gen_sdk.get_signature_parameters(
-            mock_func, mock_func.__globals__
-        ).items():
-            self.params["model"][k] = p
+        self.func_attrs = {}
+        self.func_attrs["model"] = MockFuncAttrs()
+        self.model = mock_func
+        self.class_attr = "mock"
 
 
 EXPECTED_OUTPUT = """Stuff here or stuff there, it doesn't matter, it's everywhere.

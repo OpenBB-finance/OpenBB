@@ -24,6 +24,8 @@ mkdir DMG
 cp -r build/pyinstaller/macOS_package_assets/* DMG/
 mv dist/OpenBBTerminal DMG/"$DISK_IMAGE_NAME"/.OpenBB
 
+osascript build/pyinstaller/setup_icons_post.applescript
+
 # Create a DMG with create-dmg
 #
 # NOTE:

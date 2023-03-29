@@ -3,12 +3,11 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from datetime import datetime
-from typing import List
+from datetime import date, datetime
+from typing import List, Optional
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -20,17 +19,18 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.discovery import (
     ark_view,
     finnhub_view,
+    finviz_view,
+    fmp_view,
     nasdaq_view,
     seeking_alpha_view,
     shortinterest_view,
     yahoofinance_view,
-    finviz_view,
 )
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.rich_config import console, MenuText
 
 # pylint:disable=C0302
 
@@ -60,6 +60,7 @@ class DiscoveryController(BaseController):
         "rtat",
         "divcal",
         "heatmap",
+        "filings",
     ]
 
     arkord_sortby_choices = [
@@ -114,11 +115,11 @@ class DiscoveryController(BaseController):
     heatmap_timeframes = ["day", "week", "month", "3month", "6month", "year", "ytd"]
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -126,6 +127,7 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/disc/")
+        mt.add_cmd("filings", "FinancialModelingPrep")
         mt.add_cmd("pipo", "Finnhub")
         mt.add_cmd("fipo", "Finnhub")
         mt.add_cmd("gainers", "Yahoo Finance")
@@ -657,7 +659,7 @@ class DiscoveryController(BaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=10,
             help="Limit of upcoming earnings release dates to display.",
         )
         parser.add_argument(
@@ -666,8 +668,16 @@ class DiscoveryController(BaseController):
             action="store",
             dest="n_pages",
             type=check_positive,
-            default=10,
+            default=1,
             help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start  date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=date.today(),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -678,6 +688,7 @@ class DiscoveryController(BaseController):
             seeking_alpha_view.upcoming_earning_release_dates(
                 num_pages=ns_parser.n_pages,
                 limit=ns_parser.limit,
+                start_date=ns_parser.start_date,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
@@ -788,7 +799,7 @@ class DiscoveryController(BaseController):
             action="store",
             dest="s_type",
             choices=self.cnews_type_choices,
-            default="Top-News",
+            default="top-news",
             help="number of news to display",
         )
         parser.add_argument(
@@ -911,4 +922,43 @@ class DiscoveryController(BaseController):
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_filings(self, other_args: List[str]) -> None:
+        """Process Filings command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="filings",
+            description="The most-recent filings submitted to the SEC",
+        )
+        parser.add_argument(
+            "-p",
+            "--pages",
+            dest="pages",
+            metavar="pages",
+            type=int,
+            default=1,
+            help="The number of pages to get data from (1000 entries/page; maximum 30 pages)",
+        )
+        parser.add_argument(
+            "-t",
+            "--today",
+            dest="today",
+            action="store_true",
+            default=False,
+            help="Show all filings from today",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
+        )
+        if ns_parser:
+            fmp_view.display_filings(
+                ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
             )

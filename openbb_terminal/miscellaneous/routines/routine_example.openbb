@@ -1,0 +1,23 @@
+# Go into the stocks context
+stocks
+
+# Load a company ticker, e.g. Apple
+load AAPL
+
+# Show a candle chart with a 20 day Moving Average
+candle --ma 20
+
+# Switch over to the Fundamental Analysis menu
+fa
+
+# Show Management
+mgmt
+
+# Show price targets charts
+pt
+
+# Show future estimations
+est
+
+# Return to home
+home

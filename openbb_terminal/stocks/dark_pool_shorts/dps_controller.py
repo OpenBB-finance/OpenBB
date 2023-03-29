@@ -4,13 +4,12 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -21,16 +20,16 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
+    ibkr_view,
     quandl_view,
     sec_view,
     shortinterest_view,
     stockgrid_view,
-    yahoofinance_view,
-    ibkr_view,
     stocksera_view,
+    yahoofinance_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -58,7 +57,11 @@ class DarkPoolShortsController(StockBaseController):
     CHOICES_GENERATION = True
 
     def __init__(
-        self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
+        self,
+        ticker: str,
+        start: str,
+        stock: pd.DataFrame,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -67,7 +70,7 @@ class DarkPoolShortsController(StockBaseController):
         self.start = start
         self.stock = stock
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -159,7 +162,7 @@ class DarkPoolShortsController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if ns_parser.source == "ibkr":
+            if ns_parser.source == "InteractiveBrokers":
                 ibkr_view.display_cost_to_borrow(
                     limit=ns_parser.number,
                     export=ns_parser.export,
@@ -167,7 +170,7 @@ class DarkPoolShortsController(StockBaseController):
                     if ns_parser.sheet_name
                     else None,
                 )
-            else:
+            elif ns_parser.source == "Stocksera":
                 stocksera_view.cost_to_borrow(
                     self.ticker, limit=ns_parser.number, raw=ns_parser.raw
                 )

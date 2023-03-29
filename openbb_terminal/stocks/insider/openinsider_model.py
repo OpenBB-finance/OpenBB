@@ -2,16 +2,16 @@ import configparser
 import logging
 import textwrap
 from datetime import datetime
-from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
 from bs4 import BeautifulSoup
 
-from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -1109,20 +1109,30 @@ def get_preset_choices() -> Dict:
     filepath as value
     """
 
-    PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "insider"
-    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
-    preset_choices = {
-        filepath.name.strip(".ini"): filepath
-        for filepath in PRESETS_PATH.iterdir()
-        if filepath.suffix == ".ini"
-    }
-    preset_choices.update(
-        {
-            filepath.name.strip(".ini"): filepath
-            for filepath in PRESETS_PATH_DEFAULT.iterdir()
-            if filepath.suffix == ".ini"
-        }
+    PRESETS_PATH = (
+        get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "insider"
     )
+    PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "insider"
+
+    preset_choices = {}
+
+    if PRESETS_PATH.exists():
+        preset_choices.update(
+            {
+                filepath.name.strip(".ini"): filepath
+                for filepath in PRESETS_PATH.iterdir()
+                if filepath.suffix == ".ini"
+            }
+        )
+
+    if PRESETS_PATH_DEFAULT.exists():
+        preset_choices.update(
+            {
+                filepath.name.strip(".ini"): filepath
+                for filepath in PRESETS_PATH_DEFAULT.iterdir()
+                if filepath.suffix == ".ini"
+            }
+        )
 
     return preset_choices
 

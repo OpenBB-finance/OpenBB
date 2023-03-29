@@ -1,0 +1,221 @@
+                                        Company Name    Revenue  Net Income Net Margin  Cash Flow
+TICKER                                                                                           
+HMC                             Honda Motor Co. Ltd.  108264.49     5659.22     5.23 %   24088.27
+MT                                     Arcelormittal   76571.00    15565.00    20.33 %    5600.00
+GM                            General Motors Company   43108.00     2007.00     4.66 %   -1551.00
+TSLA                                       Tesla Inc   24318.00     3707.00    15.24 %   -3225.00
+EC                                     Ecopetrol S a   23422.95     4494.49    19.19 %    1295.61
+GE                          General Electric Company   19084.00     -160.00          -    -854.00
+ACN                                    Accenture Plc   15747.80     1967.04    12.49 %   -1990.13
+CAT                                  Caterpillar Inc   14994.00     2040.00    13.61 %    3240.00
+KYO                                     Kyocera Corp   13536.56     1044.69     7.72 %     207.28
+STM                           Stmicroelectronics N v   12761.00     2006.00    15.72 %     219.00
+DOW                                          Dow Inc   11859.00      647.00     5.46 %    1623.00
+NJ                                        Nidec Corp   10752.78      847.44     7.88 %     328.89
+NUE                                Nucor Corporation   10500.76     1799.04    17.13 %     867.36
+QCOM                                    Qualcomm Inc    9463.00     2235.00    23.62 %    1974.00
+HON                      Honeywell International Inc    8951.00     1549.00    17.31 %    -799.00
+MMM                                       3m Company    8619.00     3863.00    44.82 %     682.00
+NRG                                   Nrg Energy Inc    8510.00       67.00     0.79 %   -1081.00
+XEL                                  Xcel Energy Inc    7781.00      649.00     8.34 %    -218.00
+DHR                              Danaher Corporation    7663.00     1572.00    20.51 %    1166.00
+CMI                                      Cummins Inc    7333.00      409.00     5.58 %      37.00
+PCAR                                      Paccar Inc    7058.90      769.40     10.9 %      92.20
+UNP                               Union Pacific Corp    6566.00     1895.00    28.86 %     169.00
+SO                              The Southern Company    6238.00     1110.00    17.79 %     484.00
+JCI               Johnson Controls International Plc    6068.00      156.00     2.57 %    -490.00
+GPC                                 Genuine Parts Co    5675.27      312.36      5.5 %     110.07
+STLD                              Steel Dynamics Inc    5651.71      918.48    16.25 %     595.86
+PCG                                    Pg and e Corp    5394.00      459.00     8.51 %      92.00
+EMR                              Emerson Electric Co    5360.00      708.00    13.21 %    -725.00
+ETN                            Eaton Corporation Plc    5350.00      608.00    11.36 %    -133.00
+GT              The Goodyear Tire and Rubber Company    5311.00       48.00      0.9 %      -5.00
+LEA                                        Lear Corp    5241.20      119.20     2.27 %     483.80
+EIX                             Edison International    5228.00      -74.00          -     271.00
+X                           United States Steel Corp    5203.00      490.00     9.42 %     388.00
+TEN                                      Tenneco Inc    4931.00      -28.00          -      28.00
+EXC                               Exelon Corporation    4845.00      676.00    13.95 %    -217.00
+NVLCN                                    Novelis Inc    4799.00      183.00     3.81 %       1.00
+APTV                                       Aptiv Plc    4614.00      306.00     6.63 %     182.00
+PPG                               Ppg Industries Inc    4468.00      339.00     7.59 %      98.00
+D                                Dominion Energy Inc    4386.00      778.00    17.74 %       1.00
+TT                            Trane Technologies Plc    4371.90      552.40    12.64 %     -10.00
+PH                       Parker hannifin Corporation    4232.78      388.04     9.17 %   -6145.57
+ETR                              Entergy Corporation    4218.62      555.88    13.18 %    -137.33
+ED                           Consolidated Edison Inc    4165.00      619.00    14.86 %     -94.00
+BWA                                   Borgwarner Inc    4060.00      292.00     7.19 %    -149.00
+ITW                          Illinois Tool Works Inc    4011.00      727.00    18.13 %    -105.00
+WLK                             Westlake Corporation    3956.00      412.00    10.41 %     462.00
+CSX                                  Csx Corporation    3895.00     1111.00    28.52 %    1587.00
+TEL                              Te Connectivity ltd    3841.00      397.00    10.34 %    -295.00
+SRE                                    Sempra Energy    3617.00      561.00    15.51 %   -1512.00
+GLW                                      Corning Inc    3488.00      226.00     6.48 %       1.00
+FE                                  Firstenergy Corp    3475.00      344.00      9.9 %    -255.00
+NSC                     Norfolk Southern Corporation    3343.00      958.00    28.66 %     -45.00
+DD                             Dupont De Nemours Inc    3317.00      376.00    11.34 %     405.00
+TXT                                      Textron Inc    3078.00      225.00     7.31 %     -96.00
+UNVR                            Univar Solutions Inc    2983.50      312.60    10.48 %      41.50
+CAM                       Cameron International Corp    2937.50      243.10     8.28 %     555.90
+TE                                   Teco Energy Inc    2851.30       41.90     1.47 %      32.40
+AA                                        Alcoa Corp    2851.00     -769.00          -    -207.00
+EMN                              Eastman Chemical Co    2709.00      301.00    11.11 %       5.00
+DAN                                         Dana Inc    2535.00     -163.00          -     -73.00
+CMC                        Commercial Metals Company    2407.07      288.63    11.99 %     -91.86
+ALV                                      Autoliv Inc    2301.00      106.00     4.61 %     156.00
+ARNC                             Arconic Corporation    2280.00      -65.00          -      60.00
+PEG     Public Service Enterprise Group Incorporated    2272.00      114.00     5.02 %   -1383.00
+NIMC                                    Nisource Inc    2179.00       63.50     2.91 %     -20.90
+DOV                                       Dover Corp    2158.29      639.06    29.61 %    -209.37
+PPL                                  Ppl Corporation    2134.00      174.00     8.15 %      -9.00
+HUN                             Huntsman Corporation    2011.00      115.00     5.72 %     433.00
+WEC                             Wec Energy Group Inc    2003.00      301.70    15.06 %      11.10
+CNP                           Centerpoint Energy Inc    1903.00      202.00    10.61 %    -447.00
+AEE                               Ameren Corporation    1897.00      237.00    12.49 %    -271.00
+RPM                            Rpm International Inc    1791.71      131.54     7.34 %      34.54
+CC                              The Chemours Company    1777.00      240.00    13.51 %      20.00
+CMS                           Cms energy Corporation    1725.00      183.00    10.61 %     -56.00
+FDML                              Federal Mogul Corp    1625.00      -17.00          -       0.00
+ARRS                         Arris International Plc    1577.71      -17.03          -       0.00
+RYI                      Ryerson Holding Corporation    1543.10       55.10     3.57 %      24.40
+PNW                Pinnacle West Capital Corporation    1469.87      330.63    22.49 %     -22.16
+AKS                     Ak Steel Holding Corporation    1445.70      -44.90          -       0.20
+ROP                           Roper Technologies Inc    1350.30      327.00    24.22 %    -984.60
+RRX                               Regal Rexnord Corp    1325.30      121.90      9.2 %      21.10
+HUBB                                     Hubbell Inc    1316.20      140.80     10.7 %     -57.30
+LEG                            Leggett and Platt Inc    1294.40       71.50     5.52 %     -43.70
+AXTA                      Axalta Coating Systems Ltd    1238.70       63.30     5.11 %      35.40
+MTOR                                    Meritor Inc.    1212.00       76.00     6.27 %     -10.00
+TSE                                      Trinseo Plc    1178.10     -119.80          -     -21.60
+WOR                       Worthington Industries Inc    1175.54       19.51     1.66 %      92.55
+GRMN                                      Garmin Ltd    1140.43      210.85    18.49 %      -5.08
+TKR                                        Timken Co    1136.40       90.40     7.95 %      -4.40
+POM                               Pepco Holdings Inc    1091.00       58.00     5.32 %     -35.00
+GNRC                            Generac Holdings Inc    1088.26       60.45     5.55 %    -237.23
+ATI                                          Ati Inc    1032.00       64.40     6.24 %      55.10
+VC                                      Visteon Corp    1026.00       49.00     4.78 %      40.00
+AYI                                Acuity Brands Inc     997.90       74.90     7.51 %      60.90
+ECHO                       Echo Global Logistics inc     985.59       18.93     1.92 %      -9.96
+MLI                           Mueller Industries Inc     944.83      155.81    16.49 %     282.10
+FUL                                    Fuller H B Co     897.42       50.92     5.67 %     -56.87
+FLS                                   Flowserve Corp     872.88       40.64     4.66 %    -106.48
+DCI                            Donaldson Company Inc     847.30       87.20    10.29 %     -32.30
+IEX                                        Idex Corp     824.00      178.70    21.69 %     122.90
+CR                                 Crane Holdings Co     815.10      -59.30          -    -212.00
+ITT                                          Itt Inc     753.60      103.20    13.69 %      79.30
+KALU                     Kaiser Aluminum Corporation     748.90        2.50     0.33 %      67.60
+ALSDPK                            Aleris Corporation     725.40      -89.80          -     -53.50
+SHLM                                  Schulman A Inc     722.24        5.28     0.73 %       0.00
+SCL                                   Stepan Company     719.19       39.38     5.48 %     -28.90
+ALSN               Allison Transmission Holdings Inc     710.00      139.00    19.58 %      58.00
+CTB                        Cooper Tire and Rubber Co     655.83       22.09     3.37 %    -117.83
+CENX                        Century Aluminum Company     637.20      106.50    16.71 %      33.50
+MOD                          Modine Manufacturing Co     578.80       24.30      4.2 %      11.40
+HOLI            Hollysys Automation Technologies Ltd     554.75       89.34     16.1 %      68.04
+FELE                        Franklin Electric Co Inc     551.67       58.97    10.69 %       6.30
+GGG                                        Graco Inc     545.64      116.23     21.3 %       1.47
+PTC                                          Ptc Inc     507.93      106.84    21.03 %     -50.16
+KWR                      Quaker Chemical Corporation     492.22       25.91     5.26 %     -63.46
+HSC                                      Harsco Corp     486.91        2.88     0.59 %     -15.77
+FLIR                                Flir Systems Inc     467.31       38.81      8.3 %     -20.49
+AIMC                    Altra Industrial Motion Corp     466.30       33.60     7.21 %      53.20
+RLGT                           Radiant Logistics Inc     460.90       15.10     3.28 %      22.86
+BRSS            Global Brass & Copper Holdings, Inc.     430.30       18.00     4.18 %     -15.20
+MTRN                            Materion Corporation     428.19       19.95     4.66 %     -11.49
+MATV                             Mativ Holdings Inc.     426.40       11.80     2.77 %       0.20
+WLKP                   Westlake Chemical Partners Lp     415.12       78.31    18.86 %       1.10
+VAL                                  Valaris Limited     413.30      112.80    27.29 %      36.40
+RRTS           Roadrunner Transportation Systems Inc     400.88      -74.24          -      -1.05
+DLB                           Dolby Laboratories Inc     334.92       79.45    23.72 %       3.11
+THRM                           Gentherm Incorporated     332.96        9.83     2.95 %     -18.10
+VSM                             Versum Materials Inc     324.30      -85.20          -    -118.60
+TMST                         Timkensteel Corporation     318.60      -13.30          -      23.70
+VIAV                             Viavi Solutions Inc     314.80       71.50    22.71 %      35.30
+FNSR                                    Finisar Corp     283.36       -8.72          -       0.00
+NPO                             Enpro Industries Inc     280.10       27.50     9.82 %     -55.90
+GCP                    Gcp Applied Technologies Inc.     268.40        5.50     2.05 %     -11.90
+FOE                                Ferro Corporation     266.35       15.39     5.78 %     -77.26
+PTSI                 Pam Transportation Services Inc     252.63       24.57     9.72 %      26.24
+CVGI                    Commercial Vehicle Group Inc     251.41        3.55     1.41 %       6.46
+NTGR                                     Netgear Inc     251.19       -0.99          -       0.00
+AAON                                        Aaon Inc     242.61       27.47    11.32 %      -6.94
+ALGM                        Allegro Microsystems Inc     227.37       64.55    28.39 %      40.85
+SRI                                   Stoneridge inc     226.76        0.73     0.32 %      -8.36
+WMS                    Advanced Drainage Systems Inc     223.92       83.18    37.15 %       0.00
+LDL                                       Lydall Inc     221.74        5.78     2.61 %      13.83
+HLIO                         Helios Technologies Inc     207.21       20.38     9.83 %      -4.94
+CGI                                Celadon Group Inc     193.60        5.13     2.65 %      11.59
+BELFB                                   Bel Fuse Inc     177.74       16.55     9.31 %      -4.07
+BOOM                                  Dmc Global Inc     174.47        8.21     4.71 %      18.99
+KAMN                               Kaman Corporation     172.00        0.63     0.36 %      59.91
+CSWI                             Csw Industrials Inc     171.09       15.50     9.06 %       1.16
+RELY                              Remitly Global Inc     169.26      -33.07          -     -53.23
+BB                                Blackberry Limited     169.00       -4.00          -    -176.00
+HLIT                                    Harmonic Inc     155.74        8.74     5.61 %     -16.54
+SHLO                           Shiloh Industries Inc     155.37     -137.13          -     -61.31
+GRC                          The Gorman rupp Company     153.79        2.22     1.44 %      -6.54
+SORL                             Sorl Auto Parts Inc     152.37        7.42     4.87 %     -65.46
+CTS                                  Cts Corporation     151.91       11.80     7.77 %      49.17
+VOXX                  Voxx International Corporation     143.06        6.35     4.44 %       4.15
+CAAS                    China Automotive Systems inc     137.21        8.01     5.84 %     -12.08
+HNH                              Handy & Harman Ltd.     135.85       14.58    10.74 %       0.00
+HAYN                        Haynes International inc     132.67        7.74     5.83 %       3.09
+FSTR                              L b Foster Company     130.02       -2.05          -      -2.72
+PRLB                                  Proto Labs Inc     121.72        3.95     3.25 %       4.70
+YOU                                 Clear Secure Inc     115.92      -65.56          -       0.00
+STRT                          Strattec Security Corp     112.91        3.84      3.4 %       0.00
+DGII                         Digi International Inc.     103.52        4.13     3.99 %       0.13
+AVID                             Avid Technology Inc     102.99       12.02    11.67 %     -13.12
+CMT                    Core Molding Technologies Inc     101.61        1.32      1.3 %       0.40
+OIG                 Orbital Infrastructure Group Inc      99.82     -142.23          -      -3.62
+UFPT                            Ufp Technologies Inc      96.97       19.54    20.15 %       4.36
+KMG                                Kmg Chemicals Inc      95.20       18.01    18.92 %       0.00
+NPTN                               Neophotonics Corp      95.01        9.31     9.79 %      -2.01
+DSWL                         Deswell Industries Inc.      85.98        8.23     9.57 %       8.14
+JASN                            Jason Industries Inc      84.03      -14.60          -     -12.56
+TREC                               Trecora Resources      83.21       -0.38          -       1.40
+STS                           Supreme Industries Inc      72.53        1.67      2.3 %       0.00
+EPAC                         Enerpac Tool Group Corp      70.72        7.45    10.54 %       8.54
+PGN                             Paragon Offshore Plc      57.44      -70.42          -     -51.22
+AAOI                     Applied Optoelectronics Inc      56.69      -15.63          -      -6.08
+USAP      Universal Stainless and Alloy Products inc      46.20       -1.30          -      -0.25
+NL                                 Nl Industries inc      42.86       -8.36          -     -23.26
+CRNC                                     Cerence Inc      34.77     -230.13          -     -13.61
+EMKR                                     Emcore Corp      23.68       -7.65          -      -5.82
+ARCW                       Arc Group Worldwide, Inc.      19.86       -6.18          -       0.00
+MINM                                       Minim Inc      13.83       -4.06          -      -2.78
+IEHC                                        Ieh Corp       8.61       -0.53          -       0.68
+SEAC                     Seachange International Inc       8.29       -3.68          -       0.16
+THTI              Tht Heat Transfer Technology, Inc.       7.22       -0.13          -      -1.01
+TTLO                                     Torotel Inc       6.02        0.73    12.13 %      -0.25
+CDTI                   Cdti Advanced Materials, Inc.       4.91       -0.30          -      -0.68
+VYST                              Vystar Corporation       3.57       -3.11          -       0.09
+AMTY                           Amerityre Corporation       2.65        0.11     4.12 %       0.33
+TKOI                                    Telkonet Inc       2.02       -0.70          -      -1.24
+ZAAP                                             Zap       1.14      -23.94          -      -0.07
+RKLY              Rockley Photonics Holdings Limited       0.56       12.03  2163.85 %     -33.89
+FIND                                  Findex Com Inc       0.45        0.28    62.06 %       0.07
+SNSGF                         Sense Technologies Inc       0.33       -0.34          -       0.00
+PFTI                 Puradyn Filter Technologies Inc       0.25       -0.53          -       0.00
+OMTK                        Omnitek Engineering Corp       0.25       -0.06          -       0.00
+LQMT                    Liquidmetal Technologies Inc       0.02       -0.57          -       2.36
+TOVC                     Curaegis Technologies, Inc.       0.00        0.00          -       0.00
+LWLG                             Lightwave Logic Inc       0.00       -4.80          -       0.19
+XPL                              Solitario Zinc Corp       0.00       -1.06          -      -0.10
+SRCH                      Searchlight Minerals Corp.       0.00        0.00          -       0.00
+NIOBF                       Niocorp Developments Ltd       0.00        2.55          -      -2.09
+BIXT                                   Bioxytran Inc       0.00       -0.20          -      -0.13
+REE                       Rare Element Resources Ltd       0.00       -1.71          -       0.00
+LEXG                 Lithium Exploration Group, Inc.       0.00        0.12          -       0.04
+LITH                              U.s. Lithium Corp.       0.00       -0.05          -      -0.01
+NTK                                       Nortek Inc       0.00        0.00          -       0.00
+CLC                                     Clarcor Inc.       0.00        0.00          -       0.00
+MPG                 Metaldyne Performance Group Inc.       0.00        0.00          -       0.00
+AGIH        Affinia Group Intermediate Holdings Inc.       0.00        0.00          -       0.00
+TXU                                         TXU CORP       0.00        0.00          -       0.00
+FPL                             NextEra Energy, Inc.       0.00        0.00          -       0.00
+HAR              Harman International Industries Inc       0.00        0.00          -       0.00
+DPHI                              DELPHI CORPORATION       0.00        0.00          -       0.00
+BNI               BURLINGTON NORTHERN SANTA FE CORP.       0.00        0.00          -       0.00
+ROH                            ROHM AND HAAS COMPANY       0.00        0.00          -       0.00
+DCN                                 Dana Corporation       0.00        0.00          -       0.00
+PRKR                               Parkervision Inc.       0.00       -4.40          -       0.65

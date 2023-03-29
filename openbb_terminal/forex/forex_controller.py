@@ -5,31 +5,29 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.common.quantitative_analysis import qa_view
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forex import forex_helper, fxempire_view, av_view
-from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.forex import av_view, forex_helper, fxempire_view
+from openbb_terminal.forex.forex_helper import (
+    FOREX_SOURCES,
+    SOURCES_INTERVALS,
+    parse_forex_symbol,
+)
 from openbb_terminal.helper_funcs import (
-    valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import (
-    console,
-    MenuText,
-    get_ordered_list_sources,
-)
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.forex.forex_helper import parse_forex_symbol
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -39,7 +37,8 @@ logger = logging.getLogger(__name__)
 forex_data_path = os.path.join(
     os.path.dirname(__file__), os.path.join("data", "polygon_tickers.csv")
 )
-FX_TICKERS = pd.read_csv(forex_data_path).iloc[:, 0].to_list()
+tickers = pd.read_csv(forex_data_path).iloc[:, 0].to_list()
+FX_TICKERS = list(set(tickers + [t[-3:] + t[:3] for t in tickers if len(t) == 6]))
 
 
 class ForexController(BaseController):
@@ -63,7 +62,7 @@ class ForexController(BaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(queue)
 
@@ -73,9 +72,8 @@ class ForexController(BaseController):
         self.source = get_ordered_list_sources(f"{self.PATH}load")[0]
         self.data = pd.DataFrame()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
-
             choices["load"].update({c: {} for c in FX_TICKERS})
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -150,8 +148,16 @@ class ForexController(BaseController):
             "--start",
             default=(datetime.now() - timedelta(days=365)),
             type=valid_date,
-            help="Start date of data.",
+            help="The starting date (format YYYY-MM-DD) of the forex pair",
             dest="start_date",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the forex pair",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -172,13 +178,13 @@ class ForexController(BaseController):
             self.to_symbol = ns_parser.ticker[3:]
 
             if self.to_symbol and self.from_symbol:
-
                 self.data = forex_helper.load(
                     to_symbol=self.to_symbol,
                     from_symbol=self.from_symbol,
                     resolution=ns_parser.resolution,
                     interval=ns_parser.interval,
                     start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     source=ns_parser.source,
                 )
 
@@ -186,10 +192,11 @@ class ForexController(BaseController):
                     console.print(
                         "\n[red]No historical data loaded.\n\n"
                         f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
-                        f"and that '{ns_parser.source}' supports the requested range.[/red]\n"
+                        f"and that '{ns_parser.source}' supports the requested range.[/red]"
                     )
                 else:
                     self.data.index.name = "date"
+                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.")
 
                 export_data(
                     ns_parser.export,
@@ -198,12 +205,8 @@ class ForexController(BaseController):
                     self.data.copy(),
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
-
                 self.source = ns_parser.source
-                if self.source != "YahooFinance":
-                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
             else:
-
                 console.print("\n[red]Make sure to load.[/red]\n")
 
     @log_start_end(log=logger)
@@ -214,14 +217,6 @@ class ForexController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="candle",
             description="Show candle for loaded fx data",
-        )
-        parser.add_argument(
-            "-p",
-            "--plotly",
-            dest="plotly",
-            action="store_false",
-            default=True,
-            help="Flag to show interactive plotly chart",
         )
         parser.add_argument(
             "--sort",
@@ -290,10 +285,12 @@ class ForexController(BaseController):
 
             data = stocks_helper.process_candle(self.data)
             if ns_parser.raw:
-                if ns_parser.trendlines:
-                    if (data.index[1] - data.index[0]).total_seconds() >= 86400:
-                        data = stocks_helper.find_trendline(data, "OC_High", "high")
-                        data = stocks_helper.find_trendline(data, "OC_Low", "low")
+                if (
+                    ns_parser.trendlines
+                    and (data.index[1] - data.index[0]).total_seconds() >= 86400
+                ):
+                    data = stocks_helper.find_trendline(data, "OC_High", "high")
+                    data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
                 qa_view.display_raw(
                     data=data,
@@ -325,7 +322,6 @@ class ForexController(BaseController):
                     to_symbol=self.to_symbol,
                     from_symbol=self.from_symbol,
                     data=data,
-                    use_matplotlib=ns_parser.plotly,
                     add_trend=ns_parser.trendlines,
                     ma=mov_avgs,
                     yscale="log" if ns_parser.logy else "linear",

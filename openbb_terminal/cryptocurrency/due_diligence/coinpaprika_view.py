@@ -3,8 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-
-from pandas.plotting import register_matplotlib_converters
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
@@ -16,7 +15,6 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
 
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=C0302, too-many-lines
@@ -89,7 +87,7 @@ def display_twitter(
     sortby: str = "date",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
@@ -115,10 +113,12 @@ def display_twitter(
         return
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Twitter Timeline",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -138,7 +138,7 @@ def display_events(
     ascend: bool = False,
     links: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing all events for given coin id. [Source: CoinPaprika]
 
@@ -173,7 +173,12 @@ def display_events(
         df.drop("link", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(limit), headers=list(df.columns), show_index=False, title="All Events"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="All Events",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -192,7 +197,7 @@ def display_exchanges(
     sortby: str = "adjusted_volume_24h_share",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing all exchanges for given coin id. [Source: CoinPaprika]
 
@@ -217,10 +222,12 @@ def display_exchanges(
         return
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="All Exchanges",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -241,7 +248,7 @@ def display_markets(
     ascend: bool = True,
     links: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing all markets for given coin id. [Source: CoinPaprika]
 
@@ -279,7 +286,12 @@ def display_markets(
         df.drop("market_url", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(limit), headers=list(df.columns), show_index=False, title="All Markets"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="All Markets",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -296,7 +308,7 @@ def display_price_supply(
     from_symbol: str = "BTC",
     to_symbol: str = "USD",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing ticker information for single coin [Source: CoinPaprika]
 
@@ -321,7 +333,11 @@ def display_price_supply(
     df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Coin Information"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Coin Information",
+        export=bool(export),
     )
 
     export_data(
@@ -337,7 +353,7 @@ def display_price_supply(
 def display_basic(
     symbol: str = "BTC",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing basic information for coin. Like:
         name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.
@@ -359,7 +375,11 @@ def display_basic(
         return
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Basic Coin Information"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Basic Coin Information",
+        export=bool(export),
     )
 
     export_data(

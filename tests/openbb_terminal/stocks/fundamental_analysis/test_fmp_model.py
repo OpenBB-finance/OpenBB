@@ -1,9 +1,8 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pytest
-import numpy as np
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
@@ -22,9 +21,9 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_get_score():
-    result = fmp_model.get_score(symbol="PM")
+    result = fmp_model.get_score(symbol="PM", years=10)
     if result:
-        assert isinstance(result, np.number)
+        assert isinstance(result, dict)
 
 
 @pytest.mark.vcr
@@ -36,12 +35,8 @@ def test_get_score():
             {"symbol": "PM"},
         ),
         (
-            "get_quote",
-            {"symbol": "PM"},
-        ),
-        (
             "get_enterprise",
-            {"symbol": "PM", "limit": 5, "quarterly": False},
+            {"symbol": "PM", "quarterly": False},
         ),
         (
             "get_dcf",
@@ -81,3 +76,10 @@ def test_get_score():
 def test_valid_df(func, kwargs_dict):
     result_df = getattr(fmp_model, func)(**kwargs_dict)
     assert isinstance(result_df, pd.DataFrame)
+
+
+@pytest.mark.vcr
+def test_get_rating(recorder):
+    result_df = fmp_model.get_rating(symbol="TSLA")
+
+    recorder.capture(result_df)

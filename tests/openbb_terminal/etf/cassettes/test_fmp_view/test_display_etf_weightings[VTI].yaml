@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/VTI?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: "{\n  \"Error Message\": \"Invalid API KEY. Please retry or visit our
+        documentation to create one FREE https://site.financialmodelingprep.com/developer/docs\"\n}"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '154'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Feb 2023 14:56:10 GMT
+      ETag:
+      - W/"9a-ufKRTAmgqkT6Vv3bqU5trChBRE8"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

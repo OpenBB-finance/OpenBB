@@ -2,8 +2,8 @@
 import datetime
 import logging
 import math
-from typing import List, Union
 from pathlib import Path
+from typing import List, Union
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -21,11 +21,12 @@ from degiro_connector.trading.models.trading_pb2 import (
     Update,
 )
 
+from openbb_terminal.core.session.current_user import get_current_user
+
 # IMPORTATION INTERNAL
-import openbb_terminal.config_terminal as config
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper
+from openbb_terminal.rich_config import console
 
 # pylint: disable=no-member,no-else-return
 
@@ -46,12 +47,14 @@ class DegiroModel:
         Returns:
             Credentials: credentials object with default settings
         """
+        current_user = get_current_user()
+
         return Credentials(
             int_account=None,
-            username=config.DG_USERNAME,
-            password=config.DG_PASSWORD,
+            username=current_user.credentials.DG_USERNAME,
+            password=current_user.credentials.DG_PASSWORD,
             one_time_password=None,
-            totp_secret_key=config.DG_TOTP_SECRET,
+            totp_secret_key=current_user.credentials.DG_TOTP_SECRET,
         )
 
     def get_default_trading_api(self):

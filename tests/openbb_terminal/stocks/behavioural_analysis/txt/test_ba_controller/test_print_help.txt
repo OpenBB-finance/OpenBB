@@ -1,11 +1,13 @@
-    load               load a specific stock ticker for analysis                       [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
+    load               load a specific stock ticker for analysis                       [YahooFinance, AlphaVantage, Polygon, EODHD]
 
 Ticker: TSLA
 
     headlines          sentiment from 15+ major news headlines                         [FinBrain]
     snews              stock price displayed over sentiment of news headlines          [Finnhub]
     wsb                show what WSB gang is up to in subreddit wallstreetbets         [Reddit]
+    popular            show popular tickers                                            [Reddit]
     spacc              show other users spacs announcements from subreddit SPACs       [Reddit]
+    getdd              gets due diligence from another user's post                     [Reddit]
     redditsent         searches reddit for ticker and finds reddit sentiment           [Reddit]
     trending           trending stocks                                                 [Stocktwits]
     stalker            stalk stocktwits user's last messages                           [Stocktwits]

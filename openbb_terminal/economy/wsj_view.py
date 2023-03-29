@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import wsj_model
@@ -13,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_overview(export: str = "", sheet_name: str = None):
+def display_overview(export: str = "", sheet_name: Optional[str] = None):
     """Market overview with daily change. [Source: Wall St. Journal]
 
     Parameters
@@ -31,6 +32,7 @@ def display_overview(export: str = "", sheet_name: str = None):
         show_index=False,
         headers=list(df_data.columns),
         title="Market Overview",
+        export=bool(export),
     )
 
     export_data(
@@ -43,7 +45,7 @@ def display_overview(export: str = "", sheet_name: str = None):
 
 
 @log_start_end(log=logger)
-def display_indices(export: str = "", sheet_name: str = None):
+def display_indices(export: str = "", sheet_name: Optional[str] = None):
     """US indices. [Source: Wall St. Journal]
 
     Parameters
@@ -57,7 +59,11 @@ def display_indices(export: str = "", sheet_name: str = None):
         return
 
     print_rich_table(
-        df_data, show_index=False, headers=list(df_data.columns), title="US Indices"
+        df_data,
+        show_index=False,
+        headers=list(df_data.columns),
+        title="US Indices",
+        export=bool(export),
     )
 
     export_data(
@@ -70,7 +76,7 @@ def display_indices(export: str = "", sheet_name: str = None):
 
 
 @log_start_end(log=logger)
-def display_futures(export: str = "", sheet_name: str = None):
+def display_futures(export: str = "", sheet_name: Optional[str] = None):
     """Futures/Commodities. [Source: Wall St. Journal]
 
     Parameters
@@ -88,6 +94,7 @@ def display_futures(export: str = "", sheet_name: str = None):
         show_index=False,
         headers=list(df_data.columns),
         title="Futures/Commodities [Source: Wall St. Journal]",
+        export=bool(export),
     )
 
     export_data(
@@ -100,7 +107,7 @@ def display_futures(export: str = "", sheet_name: str = None):
 
 
 @log_start_end(log=logger)
-def display_usbonds(export: str = "", sheet_name: str = None):
+def display_usbonds(export: str = "", sheet_name: Optional[str] = None):
     """US bonds. [Source: Wall St. Journal]
 
     Parameters
@@ -114,7 +121,11 @@ def display_usbonds(export: str = "", sheet_name: str = None):
         return
 
     print_rich_table(
-        df_data, show_index=False, headers=list(df_data.columns), title="US Bonds"
+        df_data,
+        show_index=False,
+        headers=list(df_data.columns),
+        title="US Bonds",
+        export=bool(export),
     )
 
     export_data(
@@ -127,7 +138,7 @@ def display_usbonds(export: str = "", sheet_name: str = None):
 
 
 @log_start_end(log=logger)
-def display_glbonds(export: str = "", sheet_name: str = None):
+def display_glbonds(export: str = "", sheet_name: Optional[str] = None):
     """Global bonds. [Source: Wall St. Journal]
 
     Parameters
@@ -141,7 +152,11 @@ def display_glbonds(export: str = "", sheet_name: str = None):
         return
 
     print_rich_table(
-        df_data, show_index=False, headers=list(df_data.columns), title="Global Bonds"
+        df_data,
+        show_index=False,
+        headers=list(df_data.columns),
+        title="Global Bonds",
+        export=bool(export),
     )
 
     export_data(
@@ -154,7 +169,7 @@ def display_glbonds(export: str = "", sheet_name: str = None):
 
 
 @log_start_end(log=logger)
-def display_currencies(export: str = "", sheet_name: str = None):
+def display_currencies(export: str = "", sheet_name: Optional[str] = None):
     """Display currencies. [Source: Wall St. Journal]
 
     Parameters
@@ -168,7 +183,11 @@ def display_currencies(export: str = "", sheet_name: str = None):
         return
 
     print_rich_table(
-        df_data, show_index=False, headers=list(df_data.columns), title="Currencies"
+        df_data,
+        show_index=False,
+        headers=list(df_data.columns),
+        title="Currencies",
+        export=bool(export),
     )
 
     export_data(

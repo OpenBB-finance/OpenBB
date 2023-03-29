@@ -1,21 +1,15 @@
 """Rekt view"""
 import logging
 import os
-from typing import Optional, List
+from typing import Optional, Union
 
-from matplotlib import pyplot as plt
-from matplotlib import ticker
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.alternative.oss import runa_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
-    lambda_long_number_format,
     print_rich_table,
-    is_valid_axes_count,
 )
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -32,9 +26,9 @@ def display_rossindex(
     show_growth: bool = True,
     chart_type: str = "stars",
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plots list of startups from ross index [Source: https://runacap.com/]
 
     Parameters
@@ -53,8 +47,8 @@ def display_rossindex(
         Chart type {stars,forks}
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = runa_model.get_startups()
 
@@ -65,65 +59,63 @@ def display_rossindex(
             df = df.sort_values(by=sortby, ascending=ascend)
         df = df.head(limit)
         if show_chart:
-            if external_axes is None:
-                _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 2):
-                (ax1, _) = external_axes
-            else:
-                return
-            for _, row in df[::-1].iterrows():
-                ax1.barh(
-                    y=row["GitHub"],
-                    width=row["Forks" if chart_type == "forks" else "Stars"],
-                )
-            ax1.set_xlabel("Forks" if chart_type == "forks" else "Stars")
-            ax1.get_xaxis().set_major_formatter(
-                ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
+            fig = OpenBBFigure.create_subplots(
+                1,
+                3,
+                specs=[[{"type": "domain"}, {"type": "bar", "colspan": 2}, None]],
+                column_widths=[0.1, 0.8, 0.1],
             )
-            ax1.grid(axis="y")
-            ax1.yaxis.set_label_position("left")
-            ax1.yaxis.set_ticks_position("left")
-            ax1.set_ylabel("Company")
-            ax1.yaxis.set_tick_params(labelsize=8)
-            title = "Total Forks" if chart_type == "forks" else "Total Stars"
-            ax1.set_title(f"ROSS Index - {title}")
-            if external_axes is None:
-                theme.visualize_output()
+            fig.update_layout(
+                xaxis_title=chart_type.title(), yaxis=dict(title="Company", side="left")
+            )
+
+            fig.set_title(f"ROSS Index - Total {chart_type.title()}")
+
+            fig.add_bar(
+                x=df[chart_type.title()],
+                y=df["GitHub"],
+                orientation="h",
+                name=chart_type.title(),
+                text=df[chart_type.title()],
+                textposition="auto",
+                row=1,
+                col=2,
+            )
+
         if show_growth:
-            if external_axes is None:
-                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            elif is_valid_axes_count(external_axes, 2):
-                (ax, _) = external_axes
-            else:
-                return
-            for _, row in df[::-1].iterrows():
-                ax.barh(
-                    y=row["GitHub"],
-                    width=row["FG" if chart_type == "forks" else "SG"],
-                )
-            ax.yaxis.set_label_position("left")
-            ax.yaxis.set_ticks_position("left")
-            ax.set_ylabel("Company")
-            ax.set_xlabel("Annual Growth [times]")
-            ax.yaxis.set_tick_params(labelsize=8)
-            title = (
-                "Forks Annual Growth"
-                if chart_type == "forks"
-                else "Stars Annual Growth"
+            fig = OpenBBFigure.create_subplots(
+                1,
+                3,
+                specs=[[{"type": "domain"}, {"type": "bar", "colspan": 2}, None]],
+                column_widths=[0.1, 0.8, 0.1],
             )
-            ax.set_title(f"ROSS Index - {title}")
-            fig.tight_layout()
-            if external_axes is None:
-                theme.visualize_output()
+            fig.update_layout(
+                xaxis_title="Annual Growth [times]",
+                yaxis=dict(title="Company", side="left"),
+            )
+            fig.set_title(f"ROSS Index - {chart_type.title()} Annual Growth")
+            fig.add_bar(
+                x=df["FG" if chart_type == "forks" else "SG"],
+                y=df["GitHub"],
+                orientation="h",
+                name="Annual Growth [times]",
+                text=df["FG" if chart_type == "forks" else "SG"],
+                textposition="auto",
+                row=1,
+                col=2,
+            )
+
         show_df = df.drop(["SG", "FG"], axis=1)
         show_df = show_df.fillna("")
         show_df["GitHub"] = show_df["GitHub"].str.wrap(10)
         print_rich_table(
-            show_df.head(limit),
+            show_df,
             headers=list(show_df.columns),
             floatfmt=".1f",
             show_index=False,
             title="ROSS Index - the fastest-growing open-source startups",
+            export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -133,3 +125,8 @@ def display_rossindex(
             df,
             sheet_name,
         )
+
+        if show_chart or show_growth:
+            return fig.show(external=external_axes)
+
+    return None

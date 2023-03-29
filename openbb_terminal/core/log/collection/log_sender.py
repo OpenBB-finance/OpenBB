@@ -1,20 +1,20 @@
 # IMPORTATION STANDARD
+import os
 from copy import deepcopy
-from threading import Thread
-from queue import SimpleQueue
 from pathlib import Path
+from queue import SimpleQueue
+from threading import Thread
 
-# IMPORTATION THIRDPARTY
-
-# IMPORTATION INTERNAL
-from openbb_terminal.feature_flags import LOG_COLLECTION
+from openbb_terminal.core.log.collection.s3_sender import send_to_s3
 from openbb_terminal.core.log.constants import (
     ARCHIVES_FOLDER_NAME,
     S3_FOLDER_SUFFIX,
     TMP_FOLDER_NAME,
 )
-from openbb_terminal.core.log.collection.s3_sender import send_to_s3
 from openbb_terminal.core.log.generation.settings import Settings
+
+# IMPORTATION THIRDPARTY
+# IMPORTATION INTERNAL
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 
@@ -42,8 +42,8 @@ class LogSender(Thread):
     @staticmethod
     def start_required() -> bool:
         """Check if it makes sense to start a LogsSender instance ."""
-
-        return LOG_COLLECTION
+        value = os.getenv("OPENBB_LOG_COLLECT") or "True"
+        return value.lower() == "true"
 
     @property
     def settings(self) -> Settings:
@@ -68,7 +68,7 @@ class LogSender(Thread):
         identifier = app_settings.identifier
 
         while True:
-            item: QueueItem = queue.get()
+            item: QueueItem = queue.get()  # type: ignore
             file = item.path
             last = item.last
 
@@ -130,7 +130,8 @@ class LogSender(Thread):
 
     def max_size_exceeded(self, file: Path) -> bool:
         """Check if the log file is bigger than 2MB."""
-
+        if not file.exists():
+            return False
         return file.stat().st_size > 2 * 1024 * 1024
 
     def send_path(self, path: Path, last: bool = False):

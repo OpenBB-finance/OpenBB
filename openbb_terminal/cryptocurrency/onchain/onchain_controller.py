@@ -7,18 +7,14 @@ import argparse
 import difflib
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
     INTERVALS_HASHRATE,
 )
-from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import (
-    display_hashrate,
-)
+from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import display_hashrate
 from openbb_terminal.cryptocurrency.onchain import (
     bitquery_model,
     bitquery_view,
@@ -31,6 +27,7 @@ from openbb_terminal.cryptocurrency.onchain import (
     whale_alert_model,
     whale_alert_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -41,7 +38,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -93,14 +90,14 @@ class OnchainController(BaseController):
     PATH = "/crypto/onchain/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
         self.address = ""
         self.address_type = ""
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             choices["hr"].update({c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS})
@@ -192,7 +189,7 @@ class OnchainController(BaseController):
             default=12,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-u")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -234,7 +231,7 @@ class OnchainController(BaseController):
             choices=shroom_model.DAPP_STATS_PLATFORM_CHOICES,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-p")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -416,7 +413,7 @@ class OnchainController(BaseController):
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -580,7 +577,7 @@ class OnchainController(BaseController):
             required="-h" not in other_args,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "--address")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -677,10 +674,10 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="hist",
             description="""
-                   Display history for given ethereum blockchain balance.
-                    e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
-                   [Source: Ethplorer]
-               """,
+                Display history for given ethereum blockchain balance.
+                e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+                [Source: Ethplorer]
+            """,
         )
         parser.add_argument(
             "-l",
@@ -890,10 +887,10 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="th",
             description="""
-                     Displays info about token history.
-                     e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-                     [Source: Ethplorer]
-                 """,
+                Displays info about token history.
+                e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+                [Source: Ethplorer]
+            """,
         )
         parser.add_argument(
             "-l",
@@ -959,10 +956,10 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="tx",
             description="""
-                  Display info ERC20 token transaction on ethereum blockchain.
-                  e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
-                  [Source: Ethplorer]
-              """,
+                Display info ERC20 token transaction on ethereum blockchain.
+                e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
+                [Source: Ethplorer]
+            """,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -989,9 +986,9 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="prices",
             description="""
-                  "Display token historical prices. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-                  [Source: Ethplorer]
-              """,
+                Display token historical prices. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+                [Source: Ethplorer]
+            """,
         )
         parser.add_argument(
             "-l",
@@ -1048,9 +1045,9 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="lt",
             description="""
-                      Display Trades on Decentralized Exchanges aggregated by DEX or Month
-                      [Source: https://graphql.bitquery.io/]
-                  """,
+                Display Trades on Decentralized Exchanges aggregated by DEX or Month
+                [Source: https://graphql.bitquery.io/]
+            """,
         )
         parser.add_argument(
             "-k",
@@ -1134,9 +1131,9 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="dvcp",
             description="""
-                      Display daily volume for given crypto pair
-                      [Source: https://graphql.bitquery.io/]
-                  """,
+                Display daily volume for given crypto pair
+                [Source: https://graphql.bitquery.io/]
+            """,
         )
         parser.add_argument(
             "-c",
@@ -1186,7 +1183,7 @@ class OnchainController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1214,9 +1211,9 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="tv",
             description="""
-                      Display token volume on different Decentralized Exchanges.
-                      [Source: https://graphql.bitquery.io/]
-                  """,
+                Display token volume on different Decentralized Exchanges.
+                [Source: https://graphql.bitquery.io/]
+            """,
         )
         parser.add_argument(
             "-c",
@@ -1264,7 +1261,7 @@ class OnchainController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1292,9 +1289,9 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ueat",
             description="""
-                      Display number of unique ethereum addresses which made a transaction in given time interval,
-                      [Source: https://graphql.bitquery.io/]
-                  """,
+                Display number of unique ethereum addresses which made a transaction in given time interval,
+                [Source: https://graphql.bitquery.io/]
+            """,
         )
         parser.add_argument(
             "-l",
@@ -1366,9 +1363,9 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ttcp",
             description="""
-                      Display most traded crypto pairs on given decentralized exchange in chosen time period.
-                      [Source: https://graphql.bitquery.io/]
-                  """,
+                Display most traded crypto pairs on given decentralized exchange in chosen time period.
+                [Source: https://graphql.bitquery.io/]
+            """,
         )
         parser.add_argument(
             "-l",
@@ -1479,9 +1476,9 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="baas",
             description="""
-                      Display average bid, ask prices, spread for given crypto pair for chosen time period
-                      [Source: https://graphql.bitquery.io/]
-                  """,
+                Display average bid, ask prices, spread for given crypto pair for chosen time period
+                [Source: https://graphql.bitquery.io/]
+            """,
         )
         parser.add_argument(
             "-c",
@@ -1530,7 +1527,7 @@ class OnchainController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1598,9 +1595,9 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="btcblockdata",
             description="""
-                          Display block data from Blockchain.com,
-                          [Source: https://api.blockchain.info/]
-                      """,
+                Display block data from Blockchain.com,
+                [Source: https://api.blockchain.info/]
+            """,
         )
 
         if other_args and "-" not in other_args[0]:

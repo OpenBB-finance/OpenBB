@@ -1,7 +1,26 @@
-                                                             Price     Chg   %Chg    Vol
-0               MicroSectors Gold Miners 3X Leveraged ETN  11.8000  1.9800  20.16   1.5M
-1         Direxion Daily Gold Miners Index Bull 2X Shares  53.1800  6.5900  14.14   4.7M
-2  Direxion Daily Junior Gold Miners Index Bull 2X Shares  66.3400  8.1200  13.95   2.1M
-3                              ELEMENTS ETN-Rogers Energy   3.3808  0.4008  13.45  81.1K
-4              ProShares UltraShort Bloomberg Natural Gas  49.6000  5.3700  12.14   1.4M
-
+                                                                       Price      Chg   %Chg     Vol
+0                           GraniteShares 1.5x Long NVDA Daily ETF   37.4900   6.4600  20.82   55.8K
+1                                  Breakwave Dry Bulk Shipping ETF    7.9800   0.6900   9.47  345.6K
+2                      Direxion Daily Semiconductor Bull 3X Shares   15.0600   1.2300   8.89   16.3M
+3                            ProShares Ultra Bloomberg Natural Gas    5.2400   0.3800   7.82   16.5M
+4                        Direxion Daily South Korea Bull 3X Shares    8.9400   0.5300   6.30   56.7K
+5                        MicroSectors FANG+ Index 3X Leveraged ETN   75.6700   4.2500   5.95  298.1K
+6                  MicroSectors FANG & Innovation 3x Leveraged ETN   34.2100   1.8500   5.72  124.2K
+7                         Direxion Daily Technology Bull 3x Shares   29.4000   1.4600   5.23  516.8K
+8         Direxion Daily S&P Oil & Gas Exp. & Prod. Bull 2X Shares  133.4900   6.5000   5.12   81.9K
+9                              United States Natural Gas Fund L.P.    7.9215   0.3415   4.51    4.7M
+10                             ProShares Ultra Bloomberg Crude Oil   26.8609   1.0909   4.23  446.7K
+11                                        VanEck Semiconductor ETF  242.6300   8.3900   3.58  758.2K
+12  iPath Series B Bloomberg Natural Gas Subindex Total Return ETN   12.5700   0.4100   3.37   52.1K
+13                                       iShares Semiconductor ETF  413.1000  12.5800   3.14  206.6K
+14                                          ProShares UltraPro QQQ   23.0450   0.6750   3.02   20.1M
+15                         Direxion Daily Small Cap Bull 3x Shares   39.6500   1.1600   3.01    1.1M
+16                       Direxion Daily Real Estate Bull 3x Shares   11.0500   0.3100   2.89   65.2K
+17                                  ProShares UltraPro Russell2000   46.6738   1.2938   2.85   77.8K
+18                            Direxion Daily Energy Bull 2X Shares   61.2100   1.6200   2.72  110.7K
+19                 SPDR S&P Oil & Gas Exploration & Production ETF  131.9200   3.3900   2.64  620.2K
+20                              Invesco Dynamic Semiconductors ETF  117.3360   2.9960   2.62   95.6K
+21                      GraniteShares 1.5x Long Coinbase Daily ETF    9.5400   0.2400   2.58  115.9K
+22                                         iShares MSCI Taiwan ETF   45.0350   1.0950   2.49  274.9K
+23                                         iShares MSCI Brazil ETF   28.8750   0.6750   2.39  964.5K
+24                           Direxion Daily S&P 500 Bull 3X Shares   70.1000   1.6000   2.34    1.4M

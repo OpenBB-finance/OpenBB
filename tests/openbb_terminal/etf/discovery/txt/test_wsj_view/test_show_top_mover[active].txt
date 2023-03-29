@@ -1,7 +1,26 @@
-                                                Price   Chg  %Chg     Vol
-0                      SPDR S&P 500 ETF Trust  451.75 -4.74 -1.04  109.1M
-1                      ProShares UltraPro QQQ   64.37 -2.32 -3.48   91.2M
-2            Financial Select Sector SPDR ETF   39.25 -0.67 -1.68   85.9M
-3                  Invesco QQQ Trust Series I  366.48 -4.07 -1.10   81.4M
-4  ProShares Ultra VIX Short-Term Futures ETF   14.20  0.52  3.80   80.2M
-
+                                                        Price     Chg   %Chg    Vol
+0                            ProShares UltraPro QQQ   23.1700  0.8000   3.58  22.5M
+1                      ProShares UltraPro Short QQQ   37.4300 -1.4100  -3.63  19.1M
+2       Direxion Daily Semiconductor Bull 3X Shares   15.1804  1.3504   9.76  18.1M
+3             ProShares Ultra Bloomberg Natural Gas    5.2400  0.3800   7.82  17.5M
+4       Direxion Daily Semiconductor Bear 3X Shares   21.2350 -2.4150 -10.21  11.2M
+5                            SPDR S&P 500 ETF Trust  402.0700  3.5300   0.89   9.3M
+6                        Invesco QQQ Trust Series I  297.8900  3.6400   1.24   6.7M
+7                       iShares China Large-Cap ETF   29.1050  0.1650   0.57   5.2M
+8               United States Natural Gas Fund L.P.    7.9393  0.3593   4.74   5.0M
+9     iShares iBoxx $ High Yield Corporate Bond ETF   74.4106  0.5206   0.70   4.8M
+10             Direxion Daily TSLA Bull 1.5X Shares   12.7100  0.2500   2.01   4.8M
+11        Direxion Daily S&P Biotech Bull 3X Shares    6.8600  0.0700   1.03   4.6M
+12           Vanguard Short-Term Corporate Bond ETF   75.4000  0.0900   0.12   3.9M
+13            Direxion Daily S&P 500 Bear 3X Shares   19.1700 -0.4700  -2.39   3.8M
+14       ProShares Ultra VIX Short-Term Futures ETF    5.2099 -0.2301  -4.23   3.7M
+15                               ARK Innovation ETF   39.9000 -0.3700  -0.92   3.7M
+16                 Financial Select Sector SPDR ETF   35.8600  0.2600   0.73   3.2M
+17                 ProShares UltraPro Short S&P 500   14.5090 -0.3810  -2.56   2.9M
+18  Direxion Daily 20+ Year Treasury Bull 3X Shares    7.9950  0.1550   1.98   2.8M
+19                          ProShares Short S&P 500   15.3501 -0.1199  -0.78   2.8M
+20                              ProShares Short QQQ   13.1850 -0.1650  -1.24   2.8M
+21               KraneShares CSI China Internet ETF   30.5450  0.3150   1.04   2.5M
+22                         iShares Russell 2000 ETF  190.2000  2.2600   1.20   2.0M
+23                    Energy Select Sector SPDR ETF   84.8100  1.3000   1.56   2.0M
+24                iShares MSCI Emerging Markets ETF   39.4200  0.4300   1.10   1.9M

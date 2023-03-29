@@ -4,10 +4,10 @@ from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ def get_ipo_calendar(
         end_date = datetime.now().strftime("%Y-%m-%d")
 
     response = request(
-        f"https://finnhub.io/api/v1/calendar/ipo?from={start_date}&to={end_date}&token={cfg.API_FINNHUB_KEY}"
+        f"https://finnhub.io/api/v1/calendar/ipo?from={start_date}&to={end_date}&token={get_current_user().credentials.API_FINNHUB_KEY}"
     )
 
     df = pd.DataFrame()
@@ -92,10 +92,11 @@ def get_past_ipo(
     """
     today = datetime.now()
 
-    if start_date is None:
-        start = (today - timedelta(days=num_days_behind)).strftime("%Y-%m-%d")
-    else:
-        start = start_date
+    start = (
+        (today - timedelta(days=num_days_behind)).strftime("%Y-%m-%d")
+        if start_date is None
+        else start_date
+    )
 
     df_past_ipo = (
         get_ipo_calendar(start, today.strftime("%Y-%m-%d"))
@@ -132,10 +133,11 @@ def get_future_ipo(
     """
     today = datetime.now()
 
-    if end_date is None:
-        end = (today + timedelta(days=num_days_ahead)).strftime("%Y-%m-%d")
-    else:
-        end = end_date
+    end = (
+        (today + timedelta(days=num_days_ahead)).strftime("%Y-%m-%d")
+        if end_date is None
+        else end_date
+    )
 
     df_future_ipo = (
         get_ipo_calendar(today.strftime("%Y-%m-%d"), end)

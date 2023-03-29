@@ -2,15 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List
 from datetime import datetime
+from typing import Optional, Union
 
 import pandas as pd
-import matplotlib.pyplot as plt
 
-from openbb_terminal.forecast import theta_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import helpers, theta_model
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -28,14 +26,15 @@ def display_theta_forecast(
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
     export_pred_raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
+    metric: str = "mape",
+    external_axes: bool = False,
 ):
     """Display Theta forecast
 
@@ -74,13 +73,17 @@ def display_theta_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
-    external_axes:Optional[List[plt.axes]]
-        External axes to plot on
+    export_pred_raw: bool
+        Whether to export the raw predicted values. Defaults to False.
+    metric: str
+        The metric to use for backtesting. Defaults to "mape".
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):
-        return
+        return None
     (
         ticker_series,
         historical_fcast,
@@ -96,12 +99,13 @@ def display_theta_forecast(
         target_column=target_column,
         start_window=start_window,
         forecast_horizon=forecast_horizon,
+        metric=metric,
     )
     if ticker_series == []:
-        return
+        return None
 
     probabilistic = False
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name=f"THETA_{best_theta:.2f}",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -120,6 +124,7 @@ def display_theta_forecast(
         naive=naive,
         export_pred_raw=export_pred_raw,
         external_axes=external_axes,
+        metric=metric,
     )
 
     if residuals:
@@ -127,3 +132,5 @@ def display_theta_forecast(
         console.print(
             "[red]Theta residual is currently not supported. Please stay tuned![/red]"
         )
+
+    return fig

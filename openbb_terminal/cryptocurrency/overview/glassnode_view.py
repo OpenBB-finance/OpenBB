@@ -1,26 +1,15 @@
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
-import matplotlib
 import numpy as np
 import pandas as pd
-from matplotlib import dates as mdates
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.cryptocurrency.overview.glassnode_model import (
-    get_btc_rainbow,
-)
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    is_valid_axes_count,
-)
+from openbb_terminal import OpenBBFigure, theme
+from openbb_terminal.cryptocurrency.overview.glassnode_model import get_btc_rainbow
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import export_data
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +20,8 @@ def display_btc_rainbow(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ):
     """Displays bitcoin rainbow chart
     [Price data from source: https://glassnode.com]
@@ -46,8 +35,8 @@ def display_btc_rainbow(
         Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if end_date is None:
@@ -56,15 +45,10 @@ def display_btc_rainbow(
     df_data = get_btc_rainbow(start_date, end_date)
 
     if df_data.empty:
-        return
+        return None
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Price [USD]")
+    fig.set_title("Bitcoin Rainbow Chart")
 
     d0 = datetime.strptime("2012-01-01", "%Y-%m-%d")
     dend = datetime.strptime(end_date, "%Y-%m-%d")
@@ -87,61 +71,82 @@ def display_btc_rainbow(
 
     x_dates = pd.date_range(df_data.index[0], dend, freq="d")
 
-    ax.fill_between(x_dates, y0, y1, color="red", alpha=0.7)
-    ax.fill_between(x_dates, y1, y2, color="orange", alpha=0.7)
-    ax.fill_between(x_dates, y2, y3, color="yellow", alpha=0.7)
-    ax.fill_between(x_dates, y3, y4, color="green", alpha=0.7)
-    ax.fill_between(x_dates, y4, y5, color="blue", alpha=0.7)
-    ax.fill_between(x_dates, y5, y6, color="violet", alpha=0.7)
-    ax.fill_between(x_dates, y6, y7, color="indigo", alpha=0.7)
-    ax.fill_between(x_dates, y7, y8, color="purple", alpha=0.7)
+    color_list = [
+        "rgba(255, 0, 0, 0.7)",
+        "rgba(255, 165, 0, 0.7)",
+        "rgba(255, 255, 0, 0.7)",
+        "rgba(0, 128, 0, 0.7)",
+        "rgba(0, 0, 255, 0.7)",
+        "rgba(238, 130, 238, 0.7)",
+        "rgba(75, 0, 130, 0.7)",
+        "rgba(128, 0, 128, 0.7)",
+    ]
+    labels = [
+        "Bubble bursting imminent!!",
+        "SELL!",
+        "Everyone FOMO'ing....",
+        "Is this a bubble??",
+        "Still cheap",
+        "Accumulate",
+        "BUY!",
+        "Basically a Fire Sale",
+        "Bitcoin Price",
+    ]
+    for i, (ytop, ybottom, color, label) in enumerate(
+        zip(
+            [y1, y2, y3, y4, y5, y6, y7, y8],
+            [y0, y1, y2, y3, y4, y5, y6, y7],
+            color_list,
+            labels,
+        )
+    ):
+        fig.add_scatter(
+            x=x_dates,
+            y=ytop,
+            mode="lines",
+            line_color=color,
+            showlegend=False,
+            name="",
+        )
+        fig.add_scatter(
+            x=x_dates,
+            y=ybottom,
+            mode="lines",
+            fill="tonexty",
+            fillcolor=color,
+            line_color=color,
+            name=label,
+        )
 
-    ax.semilogy(df_data.index, df_data["v"].values)
-    ax.set_xlim(df_data.index[0], dend)
-    ax.set_title("Bitcoin Rainbow Chart")
-    ax.set_ylabel("Price [USD]")
-
-    ax.legend(
-        [
-            "Bubble bursting imminent!!",
-            "SELL!",
-            "Everyone FOMO'ing....",
-            "Is this a bubble??",
-            "Still cheap",
-            "Accumulate",
-            "BUY!",
-            "Basically a Fire Sale",
-            "Bitcoin Price",
-        ],
-        prop={"size": 8},
+    fig.add_scatter(
+        x=df_data.index,
+        y=df_data["v"].values,
+        mode="lines",
+        line_color=theme.get_colors()[0],
+        name="Bitcoin Price",
     )
 
-    sample_dates = np.array(
-        [
-            datetime(2012, 11, 28),
-            datetime(2016, 7, 9),
-            datetime(2020, 5, 11),
-            datetime(2024, 4, 4),
-        ]
-    )
-    sample_dates = mdates.date2num(sample_dates)
-    ax.vlines(x=sample_dates, ymin=0, ymax=max(y0), color="grey")
-    for i, x in enumerate(sample_dates):
-        if mdates.date2num(d0) < x < mdates.date2num(dend):
-            ax.text(x, 1, f"Halving {i+1}", rotation=-90, verticalalignment="center")
+    sample_dates = [
+        datetime(2012, 11, 28),
+        datetime(2016, 7, 9),
+        datetime(2020, 5, 11),
+        datetime(2024, 4, 4),
+    ]
 
-    ax.minorticks_off()
-    ax.yaxis.set_major_formatter(
-        matplotlib.ticker.FuncFormatter(lambda x, _: int(x) if x >= 1 else x)
-    )
-    ax.yaxis.set_major_locator(
-        matplotlib.ticker.LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
-    )
+    for i, date in enumerate(sample_dates):
+        if d0 < date < dend:
+            fig.add_vline(x=date, line_width=2, line_color="grey")
+            fig.add_annotation(
+                x=date,
+                y=min(y0),
+                text=f"Halving {i+1}",
+                textangle=90,
+                xshift=10,
+                yshift=-120,
+                font=dict(color="grey"),
+            )
 
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.update_layout(legend=dict(traceorder="normal"), yaxis_type="log")
 
     export_data(
         export,
@@ -149,4 +154,7 @@ def display_btc_rainbow(
         "btcrb",
         df_data,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

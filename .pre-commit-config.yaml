@@ -10,21 +10,21 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
-    rev: 22.12.0
+    rev: 23.1.0
     hooks:
       - id: black
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.236'
+    rev: "v0.0.256"
     hooks:
       - id: ruff
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.2
+    rev: v2.2.4
     hooks:
       - id: codespell
         entry: codespell
         args:
           [
-            "--ignore-words-list=te,commun,ro,zar,vie,hel,jewl,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl,ot",
+            "--ignore-words-list=shs,gard,te,commun,ro,zar,vie,hel,jewl,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl,ot",
             "--quiet-level=2",
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
           ]
@@ -47,7 +47,7 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: pylint openbb_terminal terminal.py tests -j 4
+        entry: pylint openbb_terminal terminal.py tests -j 0
         language: system
         types: [python]
   - repo: https://github.com/Yelp/detect-secrets
@@ -61,14 +61,11 @@ repos:
             "--exclude-files",
             "cassettes/*",
             "--exclude-files",
+            "record/*",
+            "--exclude-files",
             "website/content/api/*",
           ]
         exclude: package.lock.json
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.1
-    hooks:
-      - id: pyupgrade
-        args: [--py38-plus]
   - repo: local
     hooks:
       - id: reserved_args
