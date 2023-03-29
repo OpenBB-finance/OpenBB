@@ -9,7 +9,7 @@ env:
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
 
-on: push
+on: [push, pull_request]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
