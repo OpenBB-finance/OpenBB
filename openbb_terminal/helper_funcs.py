@@ -1869,7 +1869,7 @@ def search_wikipedia(expression: str) -> None:
         response_json = json.loads(response.text)
         res = {
             "title": response_json["title"],
-            "url": f"[blue]{response_json['content_urls']['desktop']['page']}[/blue]",
+            "url": f"{response_json['content_urls']['desktop']['page']}",
             "summary": response_json["extract"],
         }
     else:
