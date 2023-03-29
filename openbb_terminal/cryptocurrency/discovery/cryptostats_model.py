@@ -45,14 +45,16 @@ def get_fees(marketcap: bool, tvl: bool, date) -> pd.DataFrame:
     res = response.json()
     data = res["data"]
     df = pd.DataFrame(columns=["Symbol", "Name", "Category", "One Day Fees"])
-    for i in range(len(data)):
-        metadata = data[i]["metadata"]
-        results = data[i]["results"]
+
+    for i, item in enumerate(data):
+        metadata = item["metadata"]
+        results = item["results"]
         symbol = metadata.get("tokenTicker", "")
         name = metadata.get("name", "")
         category = metadata.get("category", "")
         fees = results.get("oneDayTotalFees", "")
         df.loc[i] = [symbol, name, category, fees]
+
     df = df.groupby(["Symbol", "Name", "Category"]).sum().reset_index()
     df = df.sort_values("One Day Fees", ascending=False)
 
