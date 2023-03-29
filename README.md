@@ -73,12 +73,14 @@ If you wish to install the OpenBB Terminal or the OpenBB SDK, please use one of 
 |:-|:-|
 |[Windows Installer](https://docs.openbb.co/terminal/installation/windows)|Recommended way for Windows if you just want to use the OpenBB Terminal|
 |[MacOS Installer](https://docs.openbb.co/terminal/installation/macos)|Recommended way for MacOS if you just want to use the OpenBB Terminal|
+|[Source](https://docs.openbb.co/terminal/installation/source)|If you wish to contribute to the development of the OpenBB Terminal|
 |[Docker](https://docs.openbb.co/terminal/installation/docker)|An alternative way if you just want to use the OpenBB Terminal|
-|[Python](https://docs.openbb.co/terminal/installation/source)|If you wish to contribute to the development of the OpenBB Terminal|
 
 |**OpenBB SDK** &nbsp; &nbsp; &nbsp; &nbsp; |**Usage**|
 |:-|:-|
-|[SDK Installation](https://docs.openbb.co/sdk/installation)|Recommended way if you just want to use the OpenBB SDK|
+|[PyPI](https://docs.openbb.co/terminal/installation/pypi)|If you wish to use the OpenBB SDK in Python or Jupyter Notebooks|
+|[Source](https://docs.openbb.co/terminal/installation/source)|If you wish to contribute to the development of the OpenBB Terminal|
+nbsp;|
 
 ## 2. Contributing
 
