@@ -88,7 +88,7 @@ def display_historical(
     )
 
     if df.empty:
-        return
+        return None
 
     if not comparison:
         fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Nav").set_title(title)
@@ -281,3 +281,4 @@ def display_sector(
         fig.set_title(title.rstrip(","), wrap=True, wrap_width=60)
 
         return fig.show(external=external_axes)
+    return None
