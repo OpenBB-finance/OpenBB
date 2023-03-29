@@ -257,6 +257,12 @@ from openbb_terminal.forex import (
     sdk_helpers as forex_sdk_helpers,
 )
 
+# Funds
+from openbb_terminal.mutual_funds import (
+    mstarpy_model as funds_mstarpy_model,
+    mstarpy_view as funds_mstarpy_view,
+)
+
 # Futures
 from openbb_terminal.futures import (
     yfinance_model as futures_yfinance_model,
