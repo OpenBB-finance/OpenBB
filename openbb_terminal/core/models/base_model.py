@@ -1,6 +1,6 @@
+import dataclasses as dc
 from typing import Any, Optional
 
-import dataclasses as dc
 from pydantic.dataclasses import dataclass
 
 # pylint: disable=too-many-instance-attributes, disable=no-member
