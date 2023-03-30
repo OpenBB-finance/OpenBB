@@ -96,6 +96,7 @@ async def plot_indicators(
         main_ticker,
         candles=not tickers,
         volume=not tickers,
+        volume_ticks_x=5,
     )
 
     fig.update_traces(showlegend=False)
@@ -157,8 +158,8 @@ async def plot_indicators(
 
     y_min, y_max = data["Low"].min().min(), data["High"].max().max()
     y_range = y_max - y_min
-    y_min -= y_range * 0.4
-    y_max += y_range * 0.4
+    y_min -= y_range * 0.05
+    y_max += y_range * 0.05
 
     yaxis = "yaxis" if tickers else "yaxis2"
 
@@ -278,7 +279,7 @@ class Handler:
 
                     dt_now = datetime.now().strftime("%Y%m%d_%H%M%S")
                     filename = f"{dt_now}_{main_ticker}_technical_analysis"
-                    fig.show(external=True)
+                    fig.show(external=True, bar_width=0.00001)
 
                     if list(
                         set(indicators).intersection(
