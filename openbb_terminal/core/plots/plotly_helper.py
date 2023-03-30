@@ -1025,7 +1025,9 @@ class OpenBBFigure(go.Figure):
         """
         self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
-        self._export_image = export_image
+
+        if isinstance(export_image, Path):
+            self._export_image = export_image.suffix == ".pdf"
 
         if export_image and not plots_backend().isatty:
             if isinstance(export_image, str):

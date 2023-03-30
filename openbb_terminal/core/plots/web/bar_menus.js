@@ -246,18 +246,20 @@ function downloadImage(filename, extension) {
     imageDownload = domtoimage.toJpeg;
   } else if (extension == "svg") {
     imageDownload = domtoimage.toSvg;
+  } else if (extension == "pdf") {
+    Plotly.downloadImage(globals.CHART_DIV, {
+      format: "svg",
+      height: globals.CHART_DIV.clientHeight,
+      width: globals.CHART_DIV.clientWidth,
+      filename: filename,
+    });
+    return;
   } else {
     console.log("Invalid extension");
     return;
   }
-
   imageDownload(document.getElementById("openbb_container"))
     .then(function (dataUrl) {
-      let img = new Image(
-        globals.CHART_DIV.clientWidth,
-        globals.CHART_DIV.clientHeight
-      );
-      img.src = dataUrl;
       downloadURI(dataUrl, filename + "." + extension);
       loader.classList.remove("show");
     })

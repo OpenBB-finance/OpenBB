@@ -390,7 +390,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     let filename = window.export_image.split("/").pop();
     const extension = filename.split(".").pop().replace("jpg", "jpeg");
 
-    if (["jpeg", "png", "svg"].includes(extension)) {
+    if (["jpeg", "png", "svg", "pdf"].includes(extension)) {
       hideModebar();
       non_blocking(function () {
         downloadImage(filename.split(".")[0], extension);
