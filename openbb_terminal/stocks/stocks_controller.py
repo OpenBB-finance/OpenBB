@@ -73,7 +73,8 @@ class StocksController(StockBaseController):
         sector = stocks_options["sector"].tolist()
         industry_group = stocks_options["industry_group"].tolist()
         industry = stocks_options["industry"].tolist()
-    except Exception:
+    except Exception as e:
+        logger.exception(e)
         country, sector, industry_group, industry = {}, {}, {}, {}
         console.print(
             "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command will not work. "
