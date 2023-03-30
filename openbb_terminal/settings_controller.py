@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import argparse
-import json
 import logging
 import os
 import os.path
@@ -14,7 +13,6 @@ from typing import List, Optional, Union
 import pytz
 
 import openbb_terminal.core.session.hub_model as Hub
-import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import theme
 
 # IMPORTATION INTERNAL
@@ -294,13 +292,6 @@ class SettingsController(BaseController):
                     type_="settings",
                     auth_header=get_current_user().profile.get_auth_header(),
                 )
-                if ns_parser.style == "hub":
-                    response = Hub.fetch_user_configs(
-                        get_current_user().profile.get_session()
-                    )
-                    if response:
-                        configs = json.loads(response.content)
-                        Local.save_theme_from_hub(configs)
                 console.print("Theme updated.")
 
     @log_start_end(log=logger)

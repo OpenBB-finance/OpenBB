@@ -9,8 +9,6 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
-import openbb_terminal.core.session.hub_model as Hub
-import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.session.constants import SOURCES_URL
 
 # IMPORTATION THIRDPARTY
@@ -140,19 +138,6 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            if is_local():
-                self.load_sources_json_file()
-            else:
-                response = Hub.fetch_user_configs(
-                    get_current_user().profile.get_session()
-                )
-                if response:
-                    configs = json.loads(response.content)
-                    Local.set_sources_from_hub(configs)
-
-                self.json_doc = get_current_user().sources.sources_dict
-                self.generate_commands_with_sources()
-
             try:
                 the_item = self.commands_with_sources[ns_parser.cmd]
             except KeyError:
