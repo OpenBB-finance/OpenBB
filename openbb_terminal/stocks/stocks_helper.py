@@ -392,6 +392,7 @@ def load(  # pylint: disable=too-many-return-statements
             df_stock_candidate = load_stock_av(
                 symbol, int_string, start_date, end_date, s_interval
             )
+            s_start = df_stock_candidate.index[0]
 
         elif source == "YahooFinance":
             s_int = str(interval) + "m"
