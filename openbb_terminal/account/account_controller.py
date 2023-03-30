@@ -1,12 +1,10 @@
 import argparse
-import json
 import logging
 import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
 from openbb_terminal.account.account_model import (
-    get_diff,
     get_routines_info,
     set_login_called,
 )
@@ -18,9 +16,7 @@ from openbb_terminal.core.session import (
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
-    set_preference,
 )
-from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
