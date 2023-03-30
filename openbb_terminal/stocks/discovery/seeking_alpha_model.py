@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import date, timedelta
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -43,25 +43,21 @@ def get_filters(date_str: str) -> str:
 
 
 @log_start_end(log=logger)
-def get_next_earnings(limit: int = 10, start_date: Optional[date] = None) -> DataFrame:
+def get_next_earnings(limit: int = 10, start_date: date = date.today()) -> DataFrame:
     """Returns a DataFrame with upcoming earnings
 
     Parameters
     ----------
     limit : int
         Number of pages
-    start_date: Optional[date]
-        Date to start from
+    start_date: date
+        Date to start from. Defaults to today
 
     Returns
     -------
     DataFrame
         Upcoming earnings DataFrame
     """
-    if start_date is None:
-        start_date = date.today()
-        start_date = date(start_date.year, start_date.month, start_date.day)
-
     base_url = "https://seekingalpha.com/api/v3/earnings_calendar/tickers"
     df_earnings = pd.DataFrame()
 
