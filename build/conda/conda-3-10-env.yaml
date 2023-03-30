@@ -1,0 +1,30 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python =3.10.8
+  - git
+  # Build dependencies
+  - pip
+  - pybind11
+  - cmake
+  # System dependencies
+  - openssl =1.1.1
+  - libtiff
+  # Main dependencies
+  - numpy ==1.23.4
+  # Forecasting dependencies
+  - ffmpeg
+  - lightgbm ==3.3.5
+  # Optimization dependencies
+  - cvxpy ==1.2.2
+  - pip:
+    # Build dependencies
+    - poetry ==1.4.0
+    # Main dependencies
+    - charset-normalizer ==3.1.0
+    # Forecasting dependencies
+    - catboost ==1.1.1
+    - xgboost ==1.7.4
+    # Optimization dependencies
+    - qdldl ==0.1.5.post3

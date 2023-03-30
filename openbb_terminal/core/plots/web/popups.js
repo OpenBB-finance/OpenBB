@@ -384,6 +384,7 @@ function on_submit(popup_id, on_annotation = null) {
           yaxis = main_trace.yaxis.replace("yaxis", "y");
           yaxis_id = main_trace.yaxis;
         }
+        gd.layout.showlegend = true;
 
         if (popup_data.trace_type == "candlestick") {
           trace = {
@@ -410,7 +411,6 @@ function on_submit(popup_id, on_annotation = null) {
             yaxis: yaxis,
           };
         } else {
-          gd.layout.showlegend = true;
 
           orginal_data = data;
           let non_null = data.findIndex(
