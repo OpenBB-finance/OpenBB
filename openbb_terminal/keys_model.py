@@ -89,6 +89,7 @@ API_DICT: Dict = {
 # sorting api key section by name
 API_DICT = dict(sorted(API_DICT.items()))
 
+# List of keys that are not stored in the hub
 LOCAL_KEYS = [
     "RH_USERNAME",
     "RH_PASSWORD",
