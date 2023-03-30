@@ -663,7 +663,6 @@ def display_candle(
         fig.add_trend(data, secondary_y=True)
 
     fig.update_layout(yaxis2=dict(title="Stock Price ($)", type=yscale))
-    fig.add_logscale_menus("yaxis2")
 
     return fig.show(external=external_axes)
 

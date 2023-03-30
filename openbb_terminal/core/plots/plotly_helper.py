@@ -1597,7 +1597,11 @@ class OpenBBFigure(go.Figure):
                 self.layout.margin["l"] += 20
 
             if (yaxis2 and yaxis2.side == "left") or yaxis.side == "left":
-                title = yaxis.title.text if not yaxis2 else yaxis2.title.text
+                title = (
+                    yaxis.title.text
+                    if not yaxis2 or yaxis2.side != "left"
+                    else yaxis2.title.text
+                )
                 xshift = -110 if not title else -135
                 self.layout.margin["l"] += 60
 
