@@ -30,20 +30,10 @@ jobs:
   trigger-macos-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger M1 MacOs Build
+      - name: Trigger M1 & Intel MacOs Build
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: m1_macos_build.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          wait-for-completion-timeout: 2h
-
-  trigger-intel-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Intel MacOs Build
-        uses: aurelien-baudet/workflow-dispatch@v2
-        with:
-          workflow: intel_macos_build.yml
+          workflow: macos_build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
 
