@@ -1,6 +1,6 @@
-import dataclasses
 from typing import Any, Optional
 
+import dataclasses as dc
 from pydantic.dataclasses import dataclass
 
 # pylint: disable=too-many-instance-attributes, disable=no-member
@@ -31,7 +31,7 @@ class BaseModel:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert model to dict."""
-        return dataclasses.asdict(self)
+        return dc.asdict(self)
 
     def get_default(self, field: str) -> Optional[Any]:
         """Get default field value."""
