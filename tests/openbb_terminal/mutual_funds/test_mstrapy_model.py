@@ -29,15 +29,13 @@ def test_load_funds(term, country):
 
 @pytest.mark.record_http
 @pytest.mark.parametrize(
-    "term, country, pageSize, expected_columns",
+    "term, country, limit, expected_columns",
     [
         ("Vanguard", "US", 1, ["SecId", "TenforeId", "LegalName"]),
     ],
 )
-def test_search_funds(record, term, country, pageSize, expected_columns):
-    searched_funds = mstarpy_model.search_funds(
-        term=term, country=country, pageSize=pageSize
-    )
+def test_search_funds(record, term, country, limit, expected_columns):
+    searched_funds = mstarpy_model.search_funds(term=term, country=country, limit=limit)
     record.add_verify(obj=searched_funds)
 
     assert searched_funds is not None

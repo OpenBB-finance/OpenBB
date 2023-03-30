@@ -237,7 +237,7 @@ function downloadImage() {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
   domtoimage
-    .toPng(document.getElementById("all-your-base"))
+    .toPng(document.getElementById("openbb_container"))
     .then(function (dataUrl) {
       let img = new Image(
         globals.CHART_DIV.clientWidth,
