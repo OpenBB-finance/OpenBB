@@ -133,6 +133,7 @@ class PlotlyTA(PltTA):
     def subplots(self, value: List[str]):
         self.__subplots__ = value
 
+    # pylint: disable=R0913
     def __plot__(
         self,
         df_stock: Union[pd.DataFrame, pd.Series],
@@ -142,6 +143,7 @@ class PlotlyTA(PltTA):
         volume: bool = True,
         prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
+        volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
         if isinstance(df_stock, pd.Series):
@@ -163,7 +165,9 @@ class PlotlyTA(PltTA):
 
         self.prepost = prepost
 
-        return self.plot_fig(fig=fig, symbol=symbol, candles=candles)
+        return self.plot_fig(
+            fig=fig, symbol=symbol, candles=candles, volume_ticks_x=volume_ticks_x
+        )
 
     @staticmethod
     def plot(
@@ -174,6 +178,7 @@ class PlotlyTA(PltTA):
         volume: bool = True,
         prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
+        volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """Plot a chart with the given indicators.
 
@@ -200,12 +205,14 @@ class PlotlyTA(PltTA):
             Plot pre and post market data, by default False
         fig : OpenBBFigure, optional
             Plotly figure to plot on, by default None
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
         """
         if indicators is None and PLOTLY_TA is not None:
             indicators = PLOTLY_TA.indicators
 
         return PlotlyTA().__plot__(
-            df_stock, indicators, symbol, candles, volume, prepost, fig
+            df_stock, indicators, symbol, candles, volume, prepost, fig, volume_ticks_x
         )
 
     @staticmethod
@@ -387,6 +394,7 @@ class PlotlyTA(PltTA):
         fig: Optional[OpenBBFigure] = None,
         symbol: str = "",
         candles: bool = True,
+        volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """Plot indicators on plotly figure
 
@@ -398,6 +406,8 @@ class PlotlyTA(PltTA):
             Symbol to plot, by default uses the dataframe.name attribute if available or ""
         candles : bool, optional
             Plot a candlestick chart, by default True (if False, plots a line chart)
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
 
         Returns
         -------
@@ -418,7 +428,7 @@ class PlotlyTA(PltTA):
         subplot_row, fig_new = 2, {}
         inchart_index, ma_done = 0, False
 
-        figure = self.process_fig(figure)
+        figure = self.process_fig(figure, volume_ticks_x)
 
         # Aroon indicator is always plotted first since it has 2 subplot rows
         plot_indicators = sorted(
@@ -480,6 +490,9 @@ class PlotlyTA(PltTA):
         figure.update_layout(showlegend=False)
         figure.hide_holidays(self.prepost)
 
+        if not self.show_volume:
+            figure.update_layout(margin=dict(l=20))
+
         # We remove xaxis labels from all but bottom subplot, and we make sure
         # they all match the bottom one
         xbottom = f"y{subplot_row}"
@@ -494,13 +507,15 @@ class PlotlyTA(PltTA):
 
         return figure
 
-    def process_fig(self, fig: OpenBBFigure) -> OpenBBFigure:
+    def process_fig(self, fig: OpenBBFigure, volume_ticks_x: int = 7) -> OpenBBFigure:
         """Process plotly figure before plotting indicators
 
         Parameters
         ----------
         fig : OpenBBFigure
             Plotly figure to process
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
 
         Returns
         -------
@@ -550,6 +565,8 @@ class PlotlyTA(PltTA):
             new_subplot.layout.update({layout: fig.layout[layout]})
 
         if self.show_volume:
-            new_subplot.add_inchart_volume(self.df_stock, self.close_column)
+            new_subplot.add_inchart_volume(
+                self.df_stock, self.close_column, volume_ticks_x=volume_ticks_x
+            )
 
         return new_subplot

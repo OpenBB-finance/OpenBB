@@ -838,7 +838,7 @@ class OpenBBFigure(go.Figure):
 
     @staticmethod
     def chart_volume_scaling(
-        df_volume: pd.DataFrame, range_x: int = 7
+        df_volume: pd.DataFrame, volume_ticks_x: int = 7
     ) -> Dict[str, list]:
         """Takes df_volume and returns volume_ticks, tickvals for chart volume scaling
 
@@ -846,7 +846,7 @@ class OpenBBFigure(go.Figure):
         ----------
         df_volume : pd.DataFrame
             Dataframe of volume (e.g. df_volume = df["Volume"])
-        range_x : int, optional
+        volume_ticks_x : int, optional
             Number to multiply volume, by default 7
 
         Returns
@@ -871,7 +871,7 @@ class OpenBBFigure(go.Figure):
             floor(first_val * 3),
             floor(first_val * 4),
         ]
-        volume_range = [0, floor(volume_ticks * range_x)]
+        volume_range = [0, floor(volume_ticks * volume_ticks_x)]
 
         return {"range": volume_range, "ticks": tickvals}
 
@@ -882,6 +882,7 @@ class OpenBBFigure(go.Figure):
         volume_col: Optional[str] = "Volume",
         row: Optional[int] = 1,
         col: Optional[int] = 1,
+        volume_ticks_x: int = 7,
     ) -> None:
         """Add in-chart volume to a subplot.
 
@@ -897,11 +898,13 @@ class OpenBBFigure(go.Figure):
             Row number, by default 2
         col : `int`, optional
             Column number, by default 1
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
         """
         colors = np.where(
             df_stock.Open < df_stock[close_col], theme.up_color, theme.down_color
         )
-        vol_scale = self.chart_volume_scaling(df_stock[volume_col])
+        vol_scale = self.chart_volume_scaling(df_stock[volume_col], volume_ticks_x)
         self.add_bar(
             x=df_stock.index,
             y=df_stock[volume_col],
@@ -913,7 +916,7 @@ class OpenBBFigure(go.Figure):
             opacity=0.5,
             secondary_y=False,
         )
-        ticksize = 14 - (self.subplots_kwargs["rows"] // 2)
+        ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
             yaxis=dict(
                 fixedrange=True,
@@ -1540,8 +1543,8 @@ class OpenBBFigure(go.Figure):
 
         if not plots_backend().isatty:
             org_margin = self.layout.margin
-            margin = dict(l=40, r=60, b=80, t=50, pad=0)
-            for key, max_val in zip(["l", "r", "b", "t"], [60, 50, 80, 40]):
+            margin = dict(l=40, r=60, b=80, t=50)
+            for key, max_val in zip(["l", "r", "b", "t"], [60, 50, 80, 50]):
                 org = org_margin[key] or 0
                 if (org + margin[key]) > max_val:
                     self.layout.margin[key] = max_val
@@ -1555,7 +1558,8 @@ class OpenBBFigure(go.Figure):
         if (
             not plots_backend().isatty
             or not get_current_user().preferences.PLOT_ENABLE_PYWRY
-            or self._export_image
+            or isinstance(self._export_image, Path)
+            and self._export_image.suffix == ".pdf"
         ):
             self.add_annotation(
                 yref="paper",

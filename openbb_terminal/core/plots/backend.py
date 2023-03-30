@@ -185,7 +185,7 @@ class Backend(PyWry):
                 {
                     "html_path": self.get_plotly_html(),
                     "json_data": json.loads(fig.to_json()),
-                    "export_image": str(export_image).replace(".pdf", ".svg"),
+                    "export_image": str(export_image),
                     **self.get_kwargs(title),
                 }
             )
@@ -198,15 +198,15 @@ class Backend(PyWry):
         pdf = export_image.suffix == ".pdf"
         img_path = export_image.resolve()
 
-        if pdf:
-            img_path = img_path.with_suffix(".svg")
-
         checks = 0
         while not img_path.exists():
             await asyncio.sleep(0.2)
             checks += 1
             if checks > 50:
                 break
+
+        if pdf:
+            img_path = img_path.rename(img_path.with_suffix(".svg"))
 
         if img_path.exists():
             if pdf:
@@ -373,9 +373,9 @@ class Backend(PyWry):
                 PyWry.__version__
             ) < version.parse("0.3.5"):
                 console.print(
-                    "[bold red]Pywry version 0.3.5 or higher is required to use the "
-                    "OpenBB Plots backend.[/bold red]\n"
-                    "[yellow]Please update pywry with 'pip install pywry --upgrade'[/yellow]"
+                    "[bold red]PyWry version 0.3.5 or higher is required to use the "
+                    "OpenBB Plots backend.[/]\n"
+                    "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
                 )
                 self.max_retries = 0  # pylint: disable=W0201
                 return

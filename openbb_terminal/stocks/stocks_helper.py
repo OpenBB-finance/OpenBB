@@ -403,8 +403,8 @@ def load(
                 return pd.DataFrame()
 
             df_stock_candidate.index = pd.to_datetime(
-                df_stock_candidate.index, utc=True
-            )
+                df_stock_candidate.index
+            ).tz_localize(None)
 
             s_start = (
                 pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
@@ -416,6 +416,7 @@ def load(
             console.print(
                 "[red]We currently do not support intraday data with Intrinio.[/red]\n"
             )
+            return pd.DataFrame()
 
         elif source == "Polygon":
             request_url = (
