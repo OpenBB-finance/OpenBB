@@ -1226,7 +1226,7 @@ def main(
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:
-        os.environ["DEBUG_MODE"] = "true"
+        cfg.change_debug_mode(new_value=True)
 
     cfg.start_plot_backend()
 

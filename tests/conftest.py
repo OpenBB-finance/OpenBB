@@ -364,7 +364,7 @@ def disable_check_api():
 
 
 def enable_debug():
-    os.environ["DEBUG_MODE"] = "true"
+    config_terminal.change_debug_mode(new_value=True)
 
 
 def pytest_configure(config: Config) -> None:

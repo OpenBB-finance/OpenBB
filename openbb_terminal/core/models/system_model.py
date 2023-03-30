@@ -36,6 +36,7 @@ class SystemModel(BaseModel):
 
     # Others
     TEST_MODE: bool = False
+    DEBUG_MODE: bool = False
     ENABLE_AUTHENTICATION: bool = False
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation

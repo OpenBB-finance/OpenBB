@@ -355,7 +355,7 @@ def reset(queue: Optional[List[str]] = None):
     logger.info("resetting")
     plt.close("all")
     plots_backend().close(reset=True)
-    debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
+    debug = get_current_system().DEBUG_MODE
 
     # we clear all openbb_terminal modules from sys.modules
     try:

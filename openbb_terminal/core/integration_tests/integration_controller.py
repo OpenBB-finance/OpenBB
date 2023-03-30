@@ -15,6 +15,7 @@ from pathlib import Path
 from traceback import FrameSummary, extract_tb, format_list
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
+from openbb_terminal.config_terminal import change_debug_mode, change_log_collect
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
@@ -707,14 +708,19 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
+    # user
     current_user = get_current_user()
     current_user.preferences.ENABLE_EXIT_AUTO_HELP = False
     current_user.preferences.USE_ION = True
     current_user.preferences.USE_PROMPT_TOOLKIT = False
     current_user.preferences.REMEMBER_CONTEXTS = False
     set_current_user(current_user)
-    os.environ["DEBUG_MODE"] = "True"
-    os.environ["OPENBB_LOG_COLLECT"] = "False"
+
+    # system
+    change_debug_mode(new_value=True)
+    change_log_collect(new_value=False)
+
+    # run integration tests
     parse_args_and_run()
 
 
