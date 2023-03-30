@@ -10,6 +10,12 @@ import requests
 import pandas as pd
 
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.session.current_user import get_current_user
+
+
+base_url = 'https://api.ultimainsights.ai/v1'
+current_user = get_current_user()
+auth_header = {'Authorization': f'Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}'}
 
 
 def get_news(
@@ -49,9 +55,11 @@ def get_news(
     while not have_data:
         if term:
             term = quote(term)
-            data = requests.get(f'https://api.ultimainsights.ai/v1/getNewsArticles/{term}')
+            term = term.upper()
+            data = requests.get(f'{base_url}/getNewsArticles/{term}', headers=auth_header)
         else:
-            data = requests.get('https://api.ultimainsights.ai/v1/getNewsArticles/FCX')
+            console.print("[red]No term specified. Unable to retrieve data\n[/red]")
+            break
 
         if (
             hasattr(data, "status") and data.status_code == 200
@@ -97,3 +105,22 @@ def get_news(
     df = df.sort_values(by=[sort], ascending=False)
 
     return df
+
+
+def supported_terms() -> list:
+    """Get supported terms for news. [Source: Ultima Insights]
+
+    Returns
+    -------
+    terms: list
+        list of supported terms (tickers)
+
+    """
+
+    # Necessary for installer so that it can locate the correct certificates for
+    # API calls and https
+    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
+    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+    os.environ["SSL_CERT_FILE"] = certifi.where()
+    data = requests.get(f'{base_url}/supportedTickers')
+    return list(data.json())
