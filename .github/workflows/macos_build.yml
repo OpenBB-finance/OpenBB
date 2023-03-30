@@ -42,7 +42,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
+          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2.2.0
@@ -52,7 +52,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env-full.yaml
+          environment-file: build/conda/conda-3-9-env.yaml
           activate-environment: build_env
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
