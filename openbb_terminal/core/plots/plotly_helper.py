@@ -1025,9 +1025,7 @@ class OpenBBFigure(go.Figure):
         """
         self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
-
-        if isinstance(export_image, Path):
-            self._export_image = export_image.suffix == ".pdf"
+        self._export_image = export_image
 
         if export_image and not plots_backend().isatty:
             if isinstance(export_image, str):
@@ -1560,7 +1558,8 @@ class OpenBBFigure(go.Figure):
         if (
             not plots_backend().isatty
             or not get_current_user().preferences.PLOT_ENABLE_PYWRY
-            or self._export_image
+            or isinstance(self._export_image, Path)
+            and self._export_image.suffix == ".pdf"
         ):
             self.add_annotation(
                 yref="paper",
