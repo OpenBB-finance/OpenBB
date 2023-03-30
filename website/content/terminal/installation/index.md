@@ -35,6 +35,12 @@ import LinkCard from "@site/src/components/General/LinkCard";
     platform = "macos"
 />
 <LinkCard
+	title="Pypi"
+	description="Installing the OpenBB Terminal via Pip"
+    url="/terminal/installation/Pypi"
+    platform = "pypi"
+/>
+<LinkCard
 	title="Docker"
 	description="Installing the OpenBB Terminal via Docker"
     url="/terminal/installation/docker"
