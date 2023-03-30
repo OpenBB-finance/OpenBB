@@ -1,4 +1,4 @@
-""" Feedparser Model """
+""" Ultima Insights News Monitor Model """
 __docformat__ = "numpy"
 
 import os
@@ -6,18 +6,23 @@ from typing import List
 from urllib.parse import quote
 
 import certifi
-import requests
+import logging
 import pandas as pd
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
+
+
+logger = logging.getLogger(__name__)
 
 
 base_url = 'https://api.ultimainsights.ai/v1'
-current_user = get_current_user()
-auth_header = {'Authorization': f'Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}'}
 
 
+@log_start_end(log=logger)
+@check_api_key(["API_ULTIMAINSIGHTS_KEY"])
 def get_news(
     term: str = "", sources: str = "", sort: str = "articlePublishedDate"
 ) -> pd.DataFrame:
@@ -48,15 +53,17 @@ def get_news(
     os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
+    current_user = get_current_user()
+    auth_header = {'Authorization': f'Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}'}
+
     have_data = False
-    console.print("[yellow]Fetching data. Please be patient\n[/yellow]")
     limit = 0
 
     while not have_data:
         if term:
             term = quote(term)
             term = term.upper()
-            data = requests.get(f'{base_url}/getNewsArticles/{term}', headers=auth_header)
+            data = request(f'{base_url}/getNewsArticles/{term}', headers=auth_header)
         else:
             console.print("[red]No term specified. Unable to retrieve data\n[/red]")
             break
@@ -107,6 +114,7 @@ def get_news(
     return df
 
 
+@log_start_end(log=logger)
 def supported_terms() -> list:
     """Get supported terms for news. [Source: Ultima Insights]
 
@@ -122,5 +130,34 @@ def supported_terms() -> list:
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
     os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     os.environ["SSL_CERT_FILE"] = certifi.where()
-    data = requests.get(f'{base_url}/supportedTickers')
+    data = request(f'{base_url}/supportedTickers')
     return list(data.json())
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_ULTIMAINSIGHTS_KEY"])
+def get_company_info(ticker: str) -> dict:
+    """Get company info for a given ticker. [Source: Ultima Insights]
+
+    Parameters
+    ----------
+    ticker : str
+        ticker to search for company info
+
+    Returns
+    -------
+    company_info: dict
+        dictionary of company info
+    """
+
+    # Necessary for installer so that it can locate the correct certificates for
+    # API calls and https
+    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
+    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+    os.environ["SSL_CERT_FILE"] = certifi.where()
+
+    current_user = get_current_user()
+    auth_header = {'Authorization': f'Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}'}
+
+    data = request(f'{base_url}/getCompanyInfo/{ticker}', headers=auth_header)
+    return data.json()

@@ -1191,7 +1191,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, https://beta.ultimainsights.ai/")
+            console.print("For your API Key, https://ultimainsights.ai/")
             return
 
         if other_args and "-" not in other_args[0][0]:

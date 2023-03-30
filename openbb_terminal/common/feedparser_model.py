@@ -13,7 +13,7 @@ from openbb_terminal.rich_config import console
 
 
 def get_news(
-    term: str = "", sources: str = "", sort: str = "published"
+    term: str = "", sources: str = "", sort: str = "published", display_message: bool = True
 ) -> pd.DataFrame:
     """Get news for a given term and source. [Source: Feedparser]
 
@@ -25,6 +25,8 @@ def get_news(
         sources to exclusively show news from (separated by commas)
     sort: str
         the column to sort by
+    display_message: bool
+        whether to display a message to the user
 
     Returns
     -------
@@ -43,7 +45,8 @@ def get_news(
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
     have_data = False
-    console.print("[yellow]Fetching data. Please be patient\n[/yellow]")
+    if display_message:
+        console.print("[yellow]Fetching data. Please be patient\n[/yellow]")
     limit = 0
 
     while not have_data:

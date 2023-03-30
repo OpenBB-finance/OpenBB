@@ -39,15 +39,25 @@ def display_news(
         the column to sort by
     """
     console.print()
-    breaking_news = feedparser_model.get_news(term, sources=','.join(['bloomberg', 'reuters', 'wsj']), sort=sort)
+    company_name = ultima_newsmonitor_model.get_company_info(term)['companyShortName']
+    # TODO: calling them all together does not work with feedparser
+    bbg = feedparser_model.get_news(company_name, sources='bloomberg', sort='published', display_message=False)
+    wsj = feedparser_model.get_news(company_name, sources='wsj', sort='published', display_message=False)
+    reuters = feedparser_model.get_news(company_name, sources='reuters', sort='published', display_message=False)
+    cnbc = feedparser_model.get_news(company_name, sources='cnbc', sort='published', display_message=False)
+    breaking_news = pd.concat([bbg, wsj, reuters, cnbc])
+    breaking_news = breaking_news.sort_values(by='published', ascending=False)
+    b_n = []
+    for _, row in breaking_news.iterrows():
+        if pd.to_datetime(row['published']).tz_convert(None) > pd.to_datetime('today'):
+            b_n.append(row)
+    breaking_news = pd.DataFrame(b_n)
     if len(breaking_news) > 0:
-        breaking_news = breaking_news[breaking_news['published'] > pd.Timestamp.now() - pd.Timedelta(hours=24)]
-        if len(breaking_news) > 0:
-            console.print("Uncategorized Breaking News (Bloomberg, Reuters, WSJ):")
-            for _, row in breaking_news.head(limit).iterrows():
-                console.print(f"> {row['published']} - {row['title']}")
-                console.print(row["link"] + "\n")
-    console.print("------------------------")
+        console.print("Uncategorized Breaking News (Bloomberg, Reuters, WSJ, CNBC):")
+        for _, row in breaking_news.head(limit).iterrows():
+            console.print(f"> {row['published']} - {row['title']}")
+            console.print(row["link"] + "\n")
+        console.print("------------------------")
 
     articles = ultima_newsmonitor_model.get_news(term, sources, sort)
     console.print("News Powered by [purple]ULTIMA INSIGHTS[/purple].\nFor more info: https://www.ultimainsights.ai\n")

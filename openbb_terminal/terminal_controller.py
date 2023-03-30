@@ -243,7 +243,7 @@ class TerminalController(BaseController):
             parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
         if news_parser:
-            query = " ".join(news_parser.term)
+            query = " ".join(news_parser.term).upper()
             if query not in ultima_newsmonitor_view.supported_terms():
                 feedparser_view.display_news(
                     term=query,
