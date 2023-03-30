@@ -24,9 +24,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:18 GMT
+      - Thu, 30 Mar 2023 20:08:26 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:18 GMT
+      - Thu, 30 Mar 2023 20:09:26 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:06 GMT
       Vary:
@@ -34,7 +34,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '99'
+      - '90'
     status:
       code: 200
       message: OK
@@ -63,9 +63,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:20 GMT
+      - Thu, 30 Mar 2023 20:08:26 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:20 GMT
+      - Thu, 30 Mar 2023 20:09:26 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:03 GMT
       Vary:
@@ -73,7 +73,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '98'
+      - '89'
     status:
       code: 200
       message: OK
@@ -102,9 +102,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:20 GMT
+      - Thu, 30 Mar 2023 20:08:27 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:20 GMT
+      - Thu, 30 Mar 2023 20:09:27 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:05 GMT
       Vary:
@@ -112,7 +112,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '97'
+      - '88'
     status:
       code: 200
       message: OK
@@ -141,9 +141,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:21 GMT
+      - Thu, 30 Mar 2023 20:08:27 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:21 GMT
+      - Thu, 30 Mar 2023 20:09:27 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:05 GMT
       Vary:
@@ -151,7 +151,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '96'
+      - '87'
     status:
       code: 200
       message: OK
@@ -180,9 +180,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:21 GMT
+      - Thu, 30 Mar 2023 20:08:28 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:21 GMT
+      - Thu, 30 Mar 2023 20:09:28 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:02 GMT
       Vary:
@@ -190,7 +190,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '95'
+      - '86'
     status:
       code: 200
       message: OK
@@ -219,9 +219,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:21 GMT
+      - Thu, 30 Mar 2023 20:08:28 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:21 GMT
+      - Thu, 30 Mar 2023 20:09:28 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:06 GMT
       Vary:
@@ -229,7 +229,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '94'
+      - '85'
     status:
       code: 200
       message: OK
@@ -258,9 +258,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:22 GMT
+      - Thu, 30 Mar 2023 20:08:29 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:22 GMT
+      - Thu, 30 Mar 2023 20:09:29 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:02 GMT
       Vary:
@@ -268,7 +268,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '93'
+      - '84'
     status:
       code: 200
       message: OK
@@ -297,9 +297,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:22 GMT
+      - Thu, 30 Mar 2023 20:08:29 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:22 GMT
+      - Thu, 30 Mar 2023 20:09:29 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:03 GMT
       Vary:
@@ -307,7 +307,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '92'
+      - '83'
     status:
       code: 200
       message: OK
@@ -336,9 +336,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:23 GMT
+      - Thu, 30 Mar 2023 20:08:30 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:22 GMT
+      - Thu, 30 Mar 2023 20:09:30 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:03 GMT
       Vary:
@@ -346,7 +346,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '91'
+      - '82'
     status:
       code: 200
       message: OK
@@ -375,9 +375,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:23 GMT
+      - Thu, 30 Mar 2023 20:08:30 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:23 GMT
+      - Thu, 30 Mar 2023 20:09:30 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:05 GMT
       Vary:
@@ -385,7 +385,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '90'
+      - '81'
     status:
       code: 200
       message: OK
@@ -414,9 +414,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:24 GMT
+      - Thu, 30 Mar 2023 20:08:31 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:24 GMT
+      - Thu, 30 Mar 2023 20:09:30 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:10 GMT
       Vary:
@@ -424,7 +424,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '89'
+      - '80'
     status:
       code: 200
       message: OK
@@ -453,9 +453,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:14:24 GMT
+      - Thu, 30 Mar 2023 20:08:31 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:15:24 GMT
+      - Thu, 30 Mar 2023 20:09:31 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:04 GMT
       Vary:
@@ -463,7 +463,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '88'
+      - '79'
     status:
       code: 200
       message: OK
