@@ -219,7 +219,13 @@ class Backend(PyWry):
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
                     subprocess.check_call([opener, export_image])  # nosec: B603
 
-    def send_table(self, df_table: pd.DataFrame, title: str = "", source: str = "", theme: str = "dark"):
+    def send_table(
+        self,
+        df_table: pd.DataFrame,
+        title: str = "",
+        source: str = "",
+        theme: str = "dark",
+    ):
         """Send table data to the backend to be displayed in a table.
 
         Parameters

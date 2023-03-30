@@ -350,9 +350,14 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        # we need to get here the theme of the user that can be either "black" or "white" and send it to send_table function
+        theme = current_user.preferences.THEME
+        table_theme = "white" if theme == "light" else theme
+
         plots_backend().send_table(
-            df_table=df_outgoing, title=title, source=source,   # type: ignore
+            df_table=df_outgoing,
+            title=title,
+            source=source,  # type: ignore
+            theme=table_theme,
         )
         return
 

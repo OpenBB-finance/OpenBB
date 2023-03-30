@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
@@ -86,7 +86,7 @@ class PreferencesModel(BaseModel):
     MPL_STYLE: str = "dark"
     PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
-    PLOT_STYLE: str = "dark"
+    THEME: Literal["dark", "light"] = "dark"
 
     # PATHS
     PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
