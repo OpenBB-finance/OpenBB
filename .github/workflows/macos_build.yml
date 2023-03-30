@@ -61,7 +61,7 @@ jobs:
         run: |
           pip list
           python -m pip install -r requirements-full.txt
-          pip install openbb
+          pip install -e .
 
       - name: Build Bundle
         run: build/pyinstaller/build4mac.sh
