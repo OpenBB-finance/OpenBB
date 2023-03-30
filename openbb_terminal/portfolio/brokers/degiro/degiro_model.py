@@ -48,13 +48,18 @@ class DegiroModel:
             Credentials: credentials object with default settings
         """
         current_user = get_current_user()
+        totp_secret_key = (
+            None
+            if current_user.credentials.DG_TOTP_SECRET == "REPLACE_ME"
+            else current_user.credentials.DG_TOTP_SECRET
+        )
 
         return Credentials(
             int_account=None,
             username=current_user.credentials.DG_USERNAME,
             password=current_user.credentials.DG_PASSWORD,
             one_time_password=None,
-            totp_secret_key=current_user.credentials.DG_TOTP_SECRET,
+            totp_secret_key=totp_secret_key,
         )
 
     def get_default_trading_api(self):
