@@ -40,7 +40,12 @@ def format_units(num: int) -> str:
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def notes(search_query: str, limit: int = 10):
+def notes(
+    search_query: str,
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+):
     """Display series notes. [Source: FRED]
 
     Parameters
@@ -49,6 +54,10 @@ def notes(search_query: str, limit: int = 10):
         Text query to search on fred series notes database
     limit : int
         Maximum number of series notes to display
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    sheet_name : Optional[str]
+        The name of the sheet
     """
     df_search = fred_model.get_series_notes(search_query)
 
@@ -61,6 +70,14 @@ def notes(search_query: str, limit: int = 10):
         show_index=False,
         headers=["Series ID", "Title", "Description"],
         limit=limit,
+        export=bool(export),
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "fred",
+        df_search,
+        sheet_name,
     )
 
 
@@ -93,6 +110,8 @@ def display_fred_series(
         Output only raw data
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    sheet_name : Optional[str]
+        The name of the sheet
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
@@ -132,6 +151,17 @@ def display_fred_series(
     )
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
 
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "fred",
+            data,
+            sheet_name,
+            fig,
+        )
+        return None, None
+
     if raw:
         data = data.sort_index(ascending=False)
         print_rich_table(
@@ -142,15 +172,7 @@ def display_fred_series(
             export=bool(export),
             limit=limit,
         )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "fred",
-        data,
-        sheet_name,
-        fig,
-    )
+        return None, None
 
     if get_data:
         fig.show(external=external_axes)

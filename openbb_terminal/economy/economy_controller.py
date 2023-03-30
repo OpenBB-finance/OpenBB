@@ -1389,8 +1389,13 @@ class EconomyController(BaseController):
                 query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(search_query=query)
 
-                if not df_search.empty:
-                    fred_view.notes(search_query=query, limit=ns_parser.limit)
+                if isinstance(df_search, pd.DataFrame) and not df_search.empty:
+                    fred_view.notes(
+                        search_query=query,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
+                    )
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
@@ -1431,7 +1436,7 @@ class EconomyController(BaseController):
                     get_data=True,
                 )
 
-                if not df.empty:
+                if isinstance(df, pd.DataFrame) and not df.empty:
                     for series_id, data in detail.items():
                         self.FRED_TITLES[
                             series_id
@@ -1448,7 +1453,7 @@ class EconomyController(BaseController):
                     if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
-                else:
+                elif not ns_parser.export and not ns_parser.raw:
                     console.print("[red]No data found for the given Series ID[/red]")
 
             elif not parameters and ns_parser.raw:
