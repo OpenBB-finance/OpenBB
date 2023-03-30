@@ -43,14 +43,14 @@ def get_filters(date_str: str) -> str:
 
 
 @log_start_end(log=logger)
-def get_next_earnings(limit: int = 10, start: Optional[date] = None) -> DataFrame:
+def get_next_earnings(limit: int = 10, start_date: Optional[date] = None) -> DataFrame:
     """Returns a DataFrame with upcoming earnings
 
     Parameters
     ----------
     limit : int
         Number of pages
-    date: Optional[date]
+    start_date: Optional[date]
         Date to start from
 
     Returns
@@ -58,13 +58,16 @@ def get_next_earnings(limit: int = 10, start: Optional[date] = None) -> DataFram
     DataFrame
         Upcoming earnings DataFrame
     """
-    if start is None:
-        start = date.today()
+    if start_date is None:
+        start_date = date.today()
+        start_date = date(start_date.year, start_date.month, start_date.day)
+
     base_url = "https://seekingalpha.com/api/v3/earnings_calendar/tickers"
     df_earnings = pd.DataFrame()
 
     for _ in range(0, limit):
-        date_str = start.strftime("%Y-%m-%d")
+        start_date = pd.to_datetime(start_date)
+        date_str = start_date.strftime("%Y-%m-%d")
         response = request(base_url + get_filters(date_str), timeout=10)
         json = response.json()
         try:
@@ -72,11 +75,11 @@ def get_next_earnings(limit: int = 10, start: Optional[date] = None) -> DataFram
             cleaned_data = [x["attributes"] for x in data]
             temp_df = pd.DataFrame.from_records(cleaned_data)
             temp_df = temp_df.drop(columns=["sector_id"])
-            temp_df["Date"] = start
+            temp_df["Date"] = start_date  # pylint: disable=E1137
             df_earnings = pd.concat(
                 [df_earnings, temp_df], join="outer", ignore_index=True
             )
-            start = start + timedelta(days=1)
+            start_date = start_date + timedelta(days=1)
         except KeyError:
             pass
 
