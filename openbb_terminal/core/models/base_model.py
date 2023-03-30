@@ -31,7 +31,7 @@ class BaseModel:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert model to dict."""
-        return dc.asdict(self)
+        return dc.asdict(self)  # type: ignore
 
     def get_default(self, field: str) -> Optional[Any]:
         """Get default field value."""
