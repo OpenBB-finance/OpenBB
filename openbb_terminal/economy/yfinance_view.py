@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, Tuple, Union
+from typing import Optional, Union
 
 import pandas as pd
 
@@ -34,7 +34,7 @@ def show_indices(
     export: str = "",
     sheet_name: Optional[str] = None,
     limit: int = 10,
-) -> Union[pd.DataFrame, Tuple[pd.DataFrame, OpenBBFigure]]:
+) -> Union[pd.DataFrame, OpenBBFigure]:
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters
     ----------
@@ -107,8 +107,6 @@ def show_indices(
     if len(indices) < 2:
         fig.update_layout(title=f"{' - '.join(new_title)}", yaxis=dict(side="right"))
 
-    fig.show(external=external_axes)
-
     if raw:
         # was a -iloc so we need to flip the index as we use head
         indices_data = indices_data.sort_index(ascending=False)
@@ -131,10 +129,7 @@ def show_indices(
             fig,
         )
 
-    if (output := indices_data) is not None and external_axes:
-        output = (indices_data, fig.show(external=external_axes))
-
-    return output
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

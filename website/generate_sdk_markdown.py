@@ -186,7 +186,7 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]]) -> str:
     cmd_cards = ""
     for cmd in cmd_text:
         url = f"/sdk/reference/{cmd['url']}/{cmd['title']}".replace("//", "/")
-        description = shorten(cmd["description"], width=116, placeholder="...")
+        description = shorten(f"{cmd['description']}", width=116, placeholder="...")
         cmd_cards += f"""<ReferenceCard
     title="{cmd["title"]}"
     description="{description}"
