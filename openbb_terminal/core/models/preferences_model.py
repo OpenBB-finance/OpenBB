@@ -39,7 +39,6 @@ class PreferencesModel(BaseModel):
     PLOT_PYWRY_HEIGHT: PositiveInt = 762
 
     # FEATURE FLAGS
-    SYNC_ENABLED: bool = True
     FILE_OVERWRITE: bool = False
     SHOW_VERSION: bool = True
     RETRY_WITH_LOAD: bool = False

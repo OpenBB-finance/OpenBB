@@ -109,7 +109,5 @@ def whoami():
     if not local_user:
         console.print(f"[info]email:[/info] {current_user.profile.email}")
         console.print(f"[info]uuid:[/info] {current_user.profile.uuid}")
-        sync = "ON" if current_user.preferences.SYNC_ENABLED else "OFF"
-        console.print(f"[info]sync:[/info] {sync}")
     else:
         print_guest_block_msg()

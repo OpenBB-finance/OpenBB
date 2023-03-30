@@ -39,8 +39,6 @@ class AccountController(BaseController):
     CHOICES_COMMANDS = [
         "login",
         "logout",
-        "sync",
-        "pull",
         "clear",
         "list",
         "upload",
@@ -99,8 +97,6 @@ class AccountController(BaseController):
         """Print help"""
         mt = MenuText("account/", 100)
         mt.add_info("_info_")
-        mt.add_cmd("sync")
-        mt.add_cmd("pull")
         mt.add_cmd("clear")
         mt.add_raw("\n")
         mt.add_info("_routines_")
@@ -158,87 +154,6 @@ class AccountController(BaseController):
                     cls=True,
                 )
                 self.print_help()
-
-    @log_start_end(log=logger)
-    def call_sync(self, other_args: List[str]):
-        """Sync"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sync",
-            description="Turn on/off the automatic sending of configurations when changed.",
-        )
-        parser.add_argument(
-            "--on",
-            dest="sync",
-            help="Turn on sync",
-            action="store_true",
-        )
-        parser.add_argument(
-            "--off",
-            dest="sync",
-            help="Turn on sync",
-            action="store_false",
-        )
-        parser.set_defaults(sync=None)
-
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local() and "-h" not in other_args and "--help" not in other_args:
-            print_guest_block_msg()
-        else:
-            if ns_parser:
-                if ns_parser.sync is None:
-                    sync = (
-                        "ON"
-                        if get_current_user().preferences.SYNC_ENABLED is True
-                        else "OFF"
-                    )
-                    console.print(f"sync is {sync}, use --on or --off to change.")
-                else:
-                    set_preference(
-                        name="SYNC_ENABLED",
-                        value=ns_parser.sync,
-                    )
-                    current_user = get_current_user()
-                    write_to_dotenv(
-                        "OPENBB_SYNC_ENABLED",
-                        str(current_user.preferences.SYNC_ENABLED),
-                    )
-                    sync = (
-                        "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
-                    )
-                    console.print(f"[info]sync:[/info] {sync}")
-
-    @log_start_end(log=logger)
-    def call_pull(self, other_args: List[str]):
-        """Pull data"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pull",
-            description="Pull and apply stored configurations from the cloud.",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local() and "-h" not in other_args and "--help" not in other_args:
-            print_guest_block_msg()
-        else:
-            if ns_parser:
-                current_user = get_current_user()
-                response = Hub.fetch_user_configs(current_user.profile.get_session())
-                if response:
-                    configs_diff = get_diff(configs=json.loads(response.content))
-                    if configs_diff:
-                        i = console.input(
-                            "\nDo you want to load the configurations above? (y/n): "
-                        )
-                        console.print("")
-                        if i.lower() in ["y", "yes"]:
-                            Local.set_credentials_from_hub(configs=configs_diff)
-                            console.print("[info]Done.[/info]")
-                        else:
-                            console.print("[info]Aborted.[/info]")
-                    else:
-                        console.print("[info]No changes to apply.[/info]")
 
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):

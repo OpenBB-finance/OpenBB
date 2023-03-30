@@ -176,36 +176,6 @@ CONFIGS = {
 }
 
 
-@pytest.mark.skip("Not working?")
-@pytest.mark.parametrize(
-    "sync",
-    [
-        "False",
-        "True",
-    ],
-)
-def test_apply_configs_sync(mocker, sync: str, test_user: UserModel):
-    mocker.patch(
-        target="openbb_terminal.core.session.current_user.set_current_user",
-        return_value=test_user,
-    )
-    mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=test_user,
-    )
-
-    CONFIGS["features_settings"]["SYNC_ENABLED"] = sync
-    local_model.apply_configs(CONFIGS)
-
-    preferences = test_user.preferences
-
-    print("__TEST__", sync, type(sync))
-    if sync == "False":
-        assert preferences.SYNC_ENABLED is False
-    else:
-        assert preferences.SYNC_ENABLED is True
-
-
 @pytest.mark.parametrize(
     "exists",
     [
