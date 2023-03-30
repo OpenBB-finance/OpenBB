@@ -1559,7 +1559,7 @@ class OpenBBFigure(go.Figure):
             not plots_backend().isatty
             or not get_current_user().preferences.PLOT_ENABLE_PYWRY
             or isinstance(self._export_image, Path)
-            and self._export_image.suffix == ".pdf"
+            and self._export_image.suffix in [".svg", ".pdf"]
         ):
             self.add_annotation(
                 yref="paper",
