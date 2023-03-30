@@ -6142,14 +6142,14 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "pytest-recorder"
-version = "0.2.1"
+version = "0.2.3"
 description = "Pytest plugin, meant to facilitate unit tests writing for tools consumming Web APIs."
 category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "pytest_recorder-0.2.1-py3-none-any.whl", hash = "sha256:df525cbaa41aa6bb133a917b53f71358b8f56f65852187cb4a96a39e2085f568"},
-    {file = "pytest_recorder-0.2.1.tar.gz", hash = "sha256:3a5fe2941efbf49aa5373c5abd88f51ab0cca5e6007f9dbccd6286da3b239eef"},
+    {file = "pytest_recorder-0.2.3-py3-none-any.whl", hash = "sha256:a2aa1f58a72e78585151840503c88b2a4b7aa85651ce3a08232c86e2680d0c90"},
+    {file = "pytest_recorder-0.2.3.tar.gz", hash = "sha256:ecba7069c87d6e30229db82a091c61e6abb18662c69eeb78a3866ea8b37f04b7"},
 ]
 
 [package.dependencies]

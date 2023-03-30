@@ -247,7 +247,7 @@ pyprind==2.11.3 ; python_version >= "3.8" and python_full_version != "3.9.7" and
 pyrsistent==0.19.3 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pytest-cov==3.0.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pytest-mock==3.10.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
-pytest-recorder==0.2.1 ; python_version >= "3.8" and python_version < "3.11" and python_full_version != "3.9.7"
+pytest-recorder==0.2.3 ; python_version >= "3.8" and python_version < "3.11" and python_full_version != "3.9.7"
 pytest-recording==0.12.2 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pytest-timeout==2.1.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pytest-xdist==3.2.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
