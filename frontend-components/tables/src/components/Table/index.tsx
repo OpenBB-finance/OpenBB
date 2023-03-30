@@ -95,16 +95,16 @@ function getCellWidth(row, column) {
 }
 
 export default function Table({
-    data,
-    columns,
-    title,
-    initialTheme,
-  }: {
-    data: any[];
-    columns: any[];
-    title: string;
-    initialTheme: "light" | "dark";
-  }) {
+  data,
+  columns,
+  title,
+  initialTheme,
+}: {
+  data: any[];
+  columns: any[];
+  title: string;
+  initialTheme: "light" | "dark";
+}) {
   const [colorTheme, setTheme] = useDarkMode(initialTheme);
   const [darkMode, setDarkMode] = useState(
     colorTheme === "dark" ? true : false
@@ -563,7 +563,10 @@ export default function Table({
                           <th
                             key={header.id}
                             colSpan={header.colSpan}
-                            className="text-grey-500 bg-grey-100 dark:bg-grey-850 font-normal text-left text-sm h-10"
+                            className="text-grey-500 bg-grey-100 dark:bg-grey-850 font-normal text-left text-sm h-10 p-4"
+                            style={{
+                              width: header.getSize(),
+                            }}
                           >
                             {header.isPlaceholder
                               ? null
