@@ -46,7 +46,8 @@ body {
   display: flex;
 }
 
-.all-your-base {
+.openbb_container {
+  align-items: center;
   width: 100%;
   height: 100%;
   background-color: #000000;
@@ -73,7 +74,6 @@ body {
   font-family: "Fira Code", monospace, "Arial Black";
   visibility: visible;
 }
-
 
 #changecolor {
   position: absolute;
@@ -196,13 +196,13 @@ body {
 
 .modebar {
   z-index: 5000 !important;
-  position: absolute !important;
-  bottom: 0px !important;
+  position: fixed !important;
+  bottom: 10px !important;
   top: auto !important;
   left: 50% !important;
   right: auto !important;
   align-items: center;
-  transform: translateX(-50%) translateY(80%) !important;
+  transform: translate(-50%, 10%) !important;
 }
 
 @media screen and (max-width: 600px) {
@@ -212,7 +212,7 @@ body {
   }
 
   .modebar {
-    bottom: 60px !important;
+    bottom: 20px !important;
   }
 }
 
@@ -597,10 +597,6 @@ button {
   width: 20px;
   height: 20px;
   animation: spin 1.5s linear infinite;
-  opacity: 0;
-}
-
-.loader.show {
   opacity: 1;
 }
 
@@ -1314,4 +1310,14 @@ video {
       #0b203d 64%,
       #06101a 82%,
       #060709);
+}
+
+
+@media screen and (max-height: 1000px) and (max-width: 1100px) {
+  ._header strong {
+    font-size: 1.1rem !important;
+  }
+  ._header p {
+    font-size: 1.0rem !important;
+  }
 }

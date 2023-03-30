@@ -48,7 +48,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.2.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.20.0.min.js"
 BACKEND = None
 
 
@@ -93,7 +93,9 @@ class Backend(PyWry):
         try:
             with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
                 html = file.read()
-                html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
+                html = html.replace(
+                    "{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri())
+                ).replace("{{PLOTLYJS_PATH}}", str(PLOTLYJS_PATH.as_uri()))
 
             # We create a temporary file to inject the path to the script tag
             # This is so we don't have to modify the original file
@@ -183,7 +185,7 @@ class Backend(PyWry):
                 {
                     "html_path": self.get_plotly_html(),
                     "json_data": json.loads(fig.to_json()),
-                    "export_image": str(export_image).replace(".pdf", ".svg"),
+                    "export_image": str(export_image),
                     **self.get_kwargs(title),
                 }
             )
@@ -196,15 +198,15 @@ class Backend(PyWry):
         pdf = export_image.suffix == ".pdf"
         img_path = export_image.resolve()
 
-        if pdf:
-            img_path = img_path.with_suffix(".svg")
-
         checks = 0
         while not img_path.exists():
             await asyncio.sleep(0.2)
             checks += 1
             if checks > 50:
                 break
+
+        if pdf:
+            img_path = img_path.rename(img_path.with_suffix(".svg"))
 
         if img_path.exists():
             if pdf:
@@ -350,9 +352,9 @@ class Backend(PyWry):
                 PyWry.__version__
             ) < version.parse("0.3.5"):
                 console.print(
-                    "[bold red]Pywry version 0.3.5 or higher is required to use the "
-                    "OpenBB Plots backend.[/bold red]\n"
-                    "[yellow]Please update pywry with 'pip install pywry --upgrade'[/yellow]"
+                    "[bold red]PyWry version 0.3.5 or higher is required to use the "
+                    "OpenBB Plots backend.[/]\n"
+                    "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
                 )
                 self.max_retries = 0  # pylint: disable=W0201
                 return
@@ -374,7 +376,9 @@ async def download_plotly_js():
     try:
         # we use aiohttp to download plotly.js
         # this is so we don't have to block the main thread
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(verify_ssl=False)
+        ) as session:
             async with session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
                 with open(str(PLOTLYJS_PATH), "wb") as f:
                     while True:
