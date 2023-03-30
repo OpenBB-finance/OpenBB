@@ -404,7 +404,7 @@ def load(  # pylint: disable=too-many-return-statements
             else:
                 end_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
-            df_stock_candidate = yf.download(
+            df_stock_candidate: pd.DataFrame = yf.download(
                 symbol,
                 start=start_date.strftime("%Y-%m-%d"),
                 end=end_date,
@@ -433,22 +433,14 @@ def load(  # pylint: disable=too-many-return-statements
             if df_stock_candidate.empty:
                 return pd.DataFrame()
 
-            try:
-                df_stock_candidate.index = df_stock_candidate.index.tz_convert(
-                    "US/Eastern"
-                )
-            except TypeError:
-                # This is done to resolve the unit test error
-                df_stock_candidate.index = df_stock_candidate.index.tz_localize(
-                    "US/Eastern"
-                )
+            df_stock_candidate.index = pd.to_datetime(
+                df_stock_candidate.index
+            ).tz_localize(None)
 
             s_start_dt = df_stock_candidate.index[0]
 
             s_start = (
-                s_start_dt
-                if s_start_dt > start_date.astimezone(pytz.timezone("US/Eastern"))
-                else start_date
+                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
             )
 
             df_stock_candidate.index.name = "date"
@@ -457,6 +449,7 @@ def load(  # pylint: disable=too-many-return-statements
             console.print(
                 "[red]We currently do not support intraday data with Intrinio.[/red]\n"
             )
+            return pd.DataFrame()
 
         elif source == "Polygon":
             request_url = (
