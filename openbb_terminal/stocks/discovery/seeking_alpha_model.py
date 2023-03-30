@@ -67,7 +67,7 @@ def get_next_earnings(limit: int = 10, start_date: Optional[date] = None) -> Dat
 
     for _ in range(0, limit):
         start_date = pd.to_datetime(start_date)
-        date_str = start_date.strftime("%Y-%m-%d")
+        date_str = str(start_date.strftime("%Y-%m-%d"))
         response = request(base_url + get_filters(date_str), timeout=10)
         json = response.json()
         try:
