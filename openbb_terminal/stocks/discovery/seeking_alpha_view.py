@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def upcoming_earning_release_dates(
     num_pages: int = 1,
     limit: int = 10,
-    start_date: Optional[date] = None,
+    start_date: date = date.today(),
     export: str = "",
     sheet_name: Optional[str] = None,
 ):

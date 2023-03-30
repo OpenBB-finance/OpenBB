@@ -43,13 +43,13 @@ def get_filters(date_str: str) -> str:
 
 
 @log_start_end(log=logger)
-def get_next_earnings(limit: int = 10, start_date: date = date.today()) -> DataFrame:
+def get_next_earnings(limit: int = 5, start_date: date = date.today()) -> DataFrame:
     """Returns a DataFrame with upcoming earnings
 
     Parameters
     ----------
     limit : int
-        Number of pages
+        Number of days to look ahead
     start_date: date
         Date to start from. Defaults to today
 
@@ -87,6 +87,15 @@ def get_next_earnings(limit: int = 10, start_date: date = date.today()) -> DataF
             "exchange": "Exchange",
         }
     )
+
+    df_earnings = df_earnings[
+        df_earnings["Date"] <= pd.to_datetime(start_date + timedelta(days=limit))
+    ]
+
+    if df_earnings.empty:
+        console.print("No earnings found. Try adjusting the date.\n")
+        return pd.DataFrame()
+
     return df_earnings
 
 
