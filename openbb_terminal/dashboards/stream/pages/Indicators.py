@@ -18,6 +18,7 @@ from openbb_terminal.rich_config import console
 cfg.change_logging_suppress(new_value=True)
 
 # Import the OpenBB SDK
+# pylint: disable=wrong-import-position
 from openbb_terminal.sdk import openbb  # noqa: E402
 
 pd.options.plotting.backend = "plotly"
