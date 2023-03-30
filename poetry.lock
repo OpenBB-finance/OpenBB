@@ -6142,14 +6142,14 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "pytest-recorder"
-version = "0.2.2"
+version = "0.2.3"
 description = "Pytest plugin, meant to facilitate unit tests writing for tools consumming Web APIs."
 category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "pytest_recorder-0.2.2-py3-none-any.whl", hash = "sha256:8cace03735480c3dcb1756f104f7e007b4b215dc2f829dfc7bac4247e6d8e0df"},
-    {file = "pytest_recorder-0.2.2.tar.gz", hash = "sha256:aa9335ed65bc8b1fecd81f6f72f59c39e26c335b81f93ef677b77c2736acf99f"},
+    {file = "pytest_recorder-0.2.3-py3-none-any.whl", hash = "sha256:a2aa1f58a72e78585151840503c88b2a4b7aa85651ce3a08232c86e2680d0c90"},
+    {file = "pytest_recorder-0.2.3.tar.gz", hash = "sha256:ecba7069c87d6e30229db82a091c61e6abb18662c69eeb78a3866ea8b37f04b7"},
 ]
 
 [package.dependencies]
@@ -9721,4 +9721,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "f42d13cb0ce4bd5cdf5c6a0fdf499ad2342b42969ce2c79803c29bfe111f0f89"
+content-hash = "46b40a625675d92b85ef9290a80da37d0c0334785c89b4fe2ee4696744b9c4d1"
