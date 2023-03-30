@@ -12,6 +12,7 @@ class CredentialsModel(BaseModel):
     """Model for credentials."""
 
     # Data providers
+    API_ULTIMAINSIGHTS_KEY: str = "REPLACE_ME"
     API_DATABENTO_KEY: str = "REPLACE_ME"
     API_KEY_ALPHAVANTAGE: str = "REPLACE_ME"
     API_KEY_FINANCIALMODELINGPREP: str = "REPLACE_ME"
