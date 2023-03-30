@@ -403,8 +403,8 @@ def load(
                 return pd.DataFrame()
 
             df_stock_candidate.index = pd.to_datetime(
-                df_stock_candidate.index, utc=True
-            )
+                df_stock_candidate.index
+            ).tz_localize(None)
 
             s_start = (
                 pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
@@ -416,6 +416,7 @@ def load(
             console.print(
                 "[red]We currently do not support intraday data with Intrinio.[/red]\n"
             )
+            return pd.DataFrame()
 
         elif source == "Polygon":
             request_url = (
@@ -837,9 +838,6 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
 
     perf_df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
     perf_df = perf_df.applymap(lambda x: str(round(x, 2)) + " %")
-    perf_df = perf_df.applymap(
-        lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]"
-    )
     if len(closes) > 252:
         perf_df["Volatility (1Y)"] = (
             str(round(100 * np.sqrt(252) * closes[-252:].pct_change().std(), 2)) + " %"
