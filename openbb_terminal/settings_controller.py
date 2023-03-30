@@ -24,6 +24,7 @@ from openbb_terminal.core.config.paths import (
     STYLES_DIRECTORY_REPO,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
+from openbb_terminal.core.session.constants import CHARTS_TABLES_URL, COLORS_URL
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -277,7 +278,8 @@ class SettingsController(BaseController):
             help="To use 'custom' option, go to https://openbb.co/customize and create your theme."
             " Then, place the downloaded file 'openbb_config.richstyle.json'"
             f" inside {get_current_user().preferences.USER_STYLES_DIRECTORY} or "
-            f"{STYLES_DIRECTORY_REPO}.",
+            f"{STYLES_DIRECTORY_REPO}. If you have a hub account you can change colors "
+            f"here {COLORS_URL}.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
@@ -318,7 +320,8 @@ class SettingsController(BaseController):
             type=str,
             dest="style",
             choices=["dark", "light"],
-            help="Choose theme style.",
+            help="Choose theme style. If you have a hub account you can change theme "
+            f"here {CHARTS_TABLES_URL}.",
             required="-h" not in other_args and "--help" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -329,13 +332,12 @@ class SettingsController(BaseController):
                 self.set_and_save_preference("THEME", ns_parser.style)
             else:
                 set_preference("THEME", ns_parser.style)
-                # TODO: Upload to hub
-                # Hub.upload_config(
-                #     key="PLOT_STYLE",
-                #     value=ns_parser.style,
-                #     type_="settings",
-                #     auth_header=get_current_user().profile.get_auth_header(),
-                # )
+                Hub.upload_config(
+                    key="chart_table",
+                    value=ns_parser.style,
+                    type_="terminal_style",
+                    auth_header=get_current_user().profile.get_auth_header(),
+                )
             console.print("Theme updated.")
 
     @log_start_end(log=logger)
