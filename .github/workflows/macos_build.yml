@@ -66,6 +66,7 @@ jobs:
       - name: Build Bundle
         run: build/pyinstaller/build4mac.sh
         shell: bash
+
       - name: Creating Application Keychain
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
@@ -87,6 +88,7 @@ jobs:
           security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
           echo "Setting Partition List"
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
+
       - name: Create Signed Package
         env:
           APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
@@ -99,15 +101,18 @@ jobs:
           build/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1
           mv build/pyinstaller/macOS/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminalM1.pkg
         shell: bash
+
       - name: Deleting Previous Keychain
         run: |
           echo "Deleting Previous Keychain to Clean Instance"
           rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
           rm -rf dist
           rm -rf DMG
+
       - name: Notorize DMG
         env:
           NOTARIZE_APPLE_ID: ${{ secrets.NOTARIZE_APPLE_ID }}
@@ -115,19 +120,23 @@ jobs:
           NOTARIZE_APPLE_TEAM_ID: ${{ secrets.NOTARIZE_APPLE_TEAM_ID }}
         run: |
           xcrun notarytool submit OpenBBTerminalM1.pkg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
+
       - name: Staple
         run: |
           xcrun stapler staple OpenBBTerminalM1.pkg
+
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
           rm -rf dist
           rm -rf DMG
+
       - name: Save Build Artifact PKG
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.items.name }}
           path: OpenBBTerminalM1.pkg
+
       - name: Get contents from PkgUtil
         run: |
           pkgutil --expand-full OpenBBTerminalM1.pkg extract/
