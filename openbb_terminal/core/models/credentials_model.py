@@ -11,7 +11,7 @@ with open(MISCELLANEOUS_DIRECTORY / "models" / "credentials.json") as f:
 
 dc = make_dataclass(
     cls_name="CredentialsModel",
-    fields=[(k, str, v) for k, v in credentials_json.items()],
+    fields=[(k, str, "REPLACE_ME") for k in credentials_json.keys()],
     bases=(BaseModel,),
 )
 dc.__repr__ = dc.__base__.__repr__  # type: ignore
