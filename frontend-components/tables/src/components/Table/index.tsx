@@ -94,20 +94,8 @@ function getCellWidth(row, column) {
   }
 }
 
-export default function Table({
-  data,
-  columns,
-  title,
-  source = "",
-  initialTheme,
-}: {
-  data: any[];
-  columns: any[];
-  title: string;
-  source?: string;
-  initialTheme: "light" | "dark";
-}) {
-  const [colorTheme, setTheme] = useDarkMode(initialTheme);
+export default function Table({ data, columns, title }: any) {  // source = ""
+  const [colorTheme, setTheme] = useDarkMode();
   const [darkMode, setDarkMode] = useState(
     colorTheme === "dark" ? true : false
   );
@@ -465,9 +453,9 @@ export default function Table({
               </div>
               <p className="font-bold w-1/3 flex flex-col gap-0.5 items-center">
                 {title}
-                {source && (
+                {/* {source && (
                   <span className="font-normal text-[10px]">{`[${source}]`}</span>
-                )}
+                )} */}
               </p>
               <p className="w-1/3 text-right text-xs">
                 {new Intl.DateTimeFormat("en-GB", {
@@ -477,11 +465,11 @@ export default function Table({
                   .format(date)
                   .replace(/:\d\d /, " ")}
               </p>
-              {source && source.includes("*") && (
+              {/* {source && typeof source === "string" && source.includes("*") && (
                 <p className="text-[8px] absolute bottom-0 right-4">
                   *not affiliated
                 </p>
-              )}
+              )} */}
             </div>
             <div className="overflow-x-auto">
               <table
