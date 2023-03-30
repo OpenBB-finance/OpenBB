@@ -333,7 +333,9 @@ def load(  # pylint: disable=too-many-return-statements
     # Daily
     if int(interval) == 1440:
         if source == "AlphaVantage":
-            df_stock_candidate = load_stock_av(symbol, int_string, start_date, end_date)
+            df_stock_candidate: pd.DataFrame = load_stock_av(
+                symbol, int_string, start_date, end_date
+            )
 
         elif source == "YahooFinance":
             df_stock_candidate = load_stock_yf(
@@ -404,7 +406,7 @@ def load(  # pylint: disable=too-many-return-statements
             else:
                 end_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
-            df_stock_candidate: pd.DataFrame = yf.download(
+            df_stock_candidate = yf.download(
                 symbol,
                 start=start_date.strftime("%Y-%m-%d"),
                 end=end_date,
