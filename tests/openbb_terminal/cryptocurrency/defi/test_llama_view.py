@@ -63,7 +63,6 @@ def gzip_data(response):
     return response
 
 
-@pytest.mark.vcr(before_record_response=filter_json_data)
 @pytest.mark.record_stdout
 def test_display_defi_protocols():
     llama_view.display_defi_protocols(
