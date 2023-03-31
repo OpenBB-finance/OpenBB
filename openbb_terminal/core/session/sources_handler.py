@@ -1,10 +1,26 @@
 import json
+from pathlib import Path
 
-from openbb_terminal.core.config.paths import USER_DATA_SOURCES_DEFAULT_FILE
 
+def read_sources(path: str) -> dict:
+    """Read sources from file.
 
-def read_sources() -> dict:
-    """Read sources from file."""
-    with open(USER_DATA_SOURCES_DEFAULT_FILE) as file:
-        sources = json.load(file)
-        return sources
+    Parameters
+    ----------
+    path : str
+        Path to file
+
+    Returns
+    -------
+    dict
+        Dictionary with sources
+    """
+    try:
+        converted_path = Path(path)
+        with open(converted_path) as file:
+            sources = json.load(file)
+            return sources
+    except Exception as e:
+        print(f"[Failed to load preferred source from file: " f"{path}")
+        print(e)
+        return {}
