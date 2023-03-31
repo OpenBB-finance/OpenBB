@@ -8,11 +8,18 @@ import pandas as pd
 import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.rich_config import console
-from openbb_terminal.sdk import openbb
+
+# Suppressing sdk logs
+cfg.change_logging_suppress(new_value=True)
+
+# Import the OpenBB SDK
+# pylint: disable=wrong-import-position
+from openbb_terminal.sdk import openbb  # noqa: E402
 
 pd.options.plotting.backend = "plotly"
 st.set_page_config(
