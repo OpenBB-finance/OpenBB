@@ -22,8 +22,8 @@ jobs:
     strategy:
       matrix:
         items: [
-          {os: [self-hosted, macos, ARM64], name: "OpenBBM1.pkg", package: "OpenBBTerminalM1.pkg"},
-          {os: [self-hosted, macos, x64], name: "OpenBBIntel.pkg", package: "OpenBBTerminalIntel.pkg"}
+          {os: [self-hosted, macos, ARM64], name: "OpenBBM1.pkg", package: "OpenBBTerminalM1.pkg", dir: "OpenBBTerminalM1"},
+          {os: [self-hosted, macos, x64], name: "OpenBBIntel.pkg", package: "OpenBBTerminalIntel.pkg", dir: "OpenBBTerminalIntel"}
         ]
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
@@ -99,7 +99,7 @@ jobs:
           APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
-          build/pyinstaller/macOS/build-macos.sh ${{ matrix.items.package }} 0.0.1 ${{ matrix.items.package }}
+          build/pyinstaller/macOS/build-macos.sh ${{ matrix.items.dir }} 0.0.1 ${{ matrix.items.package }}
           mv build/pyinstaller/macOS/target/pkg/${{ matrix.items.package }} ${{ matrix.items.package }}
         shell: bash
 
