@@ -18,7 +18,6 @@ from openbb_terminal.core.session.current_user import (
     set_sources,
 )
 from openbb_terminal.core.session.hub_model import upload_config
-from openbb_terminal.core.session.sources_handler import read_sources
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -68,9 +67,19 @@ class SourcesController(BaseController):
     def update_json_doc(self):
         """Update the json doc. If local, read from file."""
         if is_local():
-            sources_dict = read_sources(
-                Path(get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE)
-            )
+            try:
+                sources_path = Path(
+                    get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE
+                )
+                with open(sources_path) as file:
+                    sources_dict = json.load(file)
+            except Exception as e:
+                msg = (
+                    f"Failed to read sources file {sources_path}, set a valid file"
+                    " to use this menu."
+                )
+                raise Exception(msg) from e
+
             set_sources(sources_dict)
         self.json_doc = get_current_user().sources.sources_dict
         self.generate_commands_with_sources()
