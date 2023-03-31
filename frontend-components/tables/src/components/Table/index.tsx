@@ -33,8 +33,8 @@ function getCellWidth(row, column) {
     const indexLabel = row.hasOwnProperty("index")
       ? "index"
       : row.hasOwnProperty("Index")
-      ? "Index"
-      : null;
+        ? "Index"
+        : null;
     const indexValue = indexLabel ? row[indexLabel] : null;
     const value = row[column];
     const valueType = typeof value;
@@ -95,6 +95,7 @@ function getCellWidth(row, column) {
 }
 
 export default function Table({ data, columns, title }: any) {  // source = ""
+  const [formatting, setFormatting] = useState(true);
   const [colorTheme, setTheme] = useDarkMode();
   const [darkMode, setDarkMode] = useState(
     colorTheme === "light" ? true : false
@@ -140,11 +141,12 @@ export default function Table({ data, columns, title }: any) {  // source = ""
         size: getColumnWidth(data, column, column),
         footer: column,
         cell: ({ row }: any) => {
+          if (!formatting) return row.original[column];
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
-            ? "Index"
-            : null;
+              ? "Index"
+              : null;
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
@@ -231,7 +233,7 @@ export default function Table({ data, columns, title }: any) {  // source = ""
         },
       })),
     ],
-    [advanced, colors]
+    [advanced, colors, formatting]
   );
 
   const [columnOrder, setColumnOrder] = useState(
@@ -330,7 +332,7 @@ export default function Table({ data, columns, title }: any) {  // source = ""
       >
         <div className="bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur flex gap-2 px-6 items-center justify-between pt-4 ">
           <div className="flex gap-10 items-center">
-            <div className="flex gap-[14px]">
+            <div className="flex gap-[14px] items-center">
               <input
                 id="advanced"
                 type="checkbox"
@@ -340,7 +342,7 @@ export default function Table({ data, columns, title }: any) {  // source = ""
               <label htmlFor="advanced">Advanced</label>
             </div>
             {advanced && (
-              <div className="flex gap-[14px]">
+              <div className="flex gap-[14px] items-center">
                 <input
                   id="colors"
                   type="checkbox"
@@ -348,6 +350,17 @@ export default function Table({ data, columns, title }: any) {  // source = ""
                   onChange={() => setColors(!colors)}
                 />
                 <label htmlFor="colors">Colors</label>
+              </div>
+            )}
+            {advanced && (
+              <div className="flex gap-[14px] items-center">
+                <input
+                  id="formatting"
+                  type="checkbox"
+                  checked={formatting}
+                  onChange={() => setFormatting(!formatting)}
+                />
+                <label htmlFor="formatting">Formatting</label>
               </div>
             )}
             {/*advanced && (
@@ -477,9 +490,9 @@ export default function Table({ data, columns, title }: any) {  // source = ""
                 style={{
                   fontSize: `${Number(fontSize) * 100}%`,
                 }}
-                /*style={{
-        width: table.getCenterTotalSize(),
-      }}*/
+              /*style={{
+      width: table.getCenterTotalSize(),
+    }}*/
               >
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (
@@ -558,9 +571,9 @@ export default function Table({ data, columns, title }: any) {  // source = ""
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.footer,
-                                  header.getContext()
-                                )}
+                                header.column.columnDef.footer,
+                                header.getContext()
+                              )}
                           </th>
                         ))}
                       </tr>
