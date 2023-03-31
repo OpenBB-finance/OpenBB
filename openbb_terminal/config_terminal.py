@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-import dataclasses
 from pathlib import Path
 
 # IMPORTATION THIRDPARTY
@@ -12,11 +11,7 @@ from openbb_terminal.base_helpers import load_env_files, load_env_vars, strtoboo
 from openbb_terminal.core.config.paths import I18N_DICT_LOCATION
 from openbb_terminal.core.config.paths_helper import init_userdata
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.session.current_system import (
-    get_current_system,
-    set_current_system,
-    set_system_variable,
-)
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user
 
 from .helper_classes import TerminalStyle as _TerminalStyle
