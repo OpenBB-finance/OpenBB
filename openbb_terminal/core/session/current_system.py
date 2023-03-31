@@ -3,7 +3,8 @@ from copy import deepcopy
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.models import SystemModel
-from openbb_terminal.core.session.system_handler import handle_system, save_system
+from openbb_terminal.core.session.env_handler import read_env
+from openbb_terminal.core.session.utils import load_dict_to_model
 
 
 def get_current_system() -> SystemModel:
@@ -14,8 +15,8 @@ def get_current_system() -> SystemModel:
 def set_current_system(system: SystemModel):
     """Set current system."""
     global __system  # pylint: disable=global-statement
-    save_system(system)
     __system = system
 
 
-__system = handle_system()
+__env_dict = read_env()
+__system = load_dict_to_model(__env_dict, SystemModel)
