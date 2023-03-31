@@ -1,3 +1,0 @@
-
-[bold red]Failed to remove /Users/diogosousa/.openbb_terminal/session.json
-Please delete this file manually![/bold red]

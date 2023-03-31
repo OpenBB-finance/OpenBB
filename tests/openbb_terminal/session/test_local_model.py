@@ -123,7 +123,6 @@ def test_remove_session_file_not_exist():
     os_mock.remove.assert_not_called()
 
 
-@pytest.mark.record_stdout
 def test_remove_session_file_exception():
     with patch("openbb_terminal.core.session.local_model.os") as os_mock:
         os_mock.remove.side_effect = Exception
@@ -150,7 +149,6 @@ def test_remove_cli_history_file_not_exist():
     os_mock.remove.assert_not_called()
 
 
-@pytest.mark.record_stdout
 def test_remove_cli_history_file_exception():
     with patch("openbb_terminal.core.session.local_model.os") as os_mock:
         os_mock.remove.side_effect = Exception
