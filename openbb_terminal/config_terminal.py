@@ -60,9 +60,7 @@ def setup_version():
     version = try_get_version_from_dist()
 
     if version:
-        current_system = get_current_system()
-        updated_system = dataclasses.replace(current_system, VERSION=version)  # type: ignore
-        set_current_system(updated_system)
+        set_system_variable("VERSION", version)
 
 
 def setup_logging_app_name():
@@ -75,19 +73,7 @@ def setup_logging_app_name():
     """
 
     if "site-packages" in __file__:
-        current_system = get_current_system()
-        updated_system = dataclasses.replace(
-            current_system, LOGGING_APP_NAME="gst_packaged_pypi"
-        )  # type: ignore
-        set_current_system(updated_system)
-
-
-def setup_logging_sub_app(sub_app: str):
-    """Setup the logging sub app"""
-
-    current_system = get_current_system()
-    updated_system = dataclasses.replace(current_system, LOGGING_SUB_APP=sub_app)  # type: ignore
-    set_current_system(updated_system)
+        set_system_variable("LOGGING_APP_NAME", "gst_packaged_pypi")
 
 
 def setup_config_terminal():
