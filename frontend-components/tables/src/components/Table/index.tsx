@@ -21,7 +21,6 @@ import xss from "xss";
 import useLocalStorage from "../../utils/useLocalStorage";
 import Toast from "../Toast";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import useDarkMode from "../../utils/useDarkMode";
 
 const date = new Date();
 
@@ -96,14 +95,6 @@ function getCellWidth(row, column) {
 
 export default function Table({ data, columns, title }: any) {  // source = ""
   const [formatting, setFormatting] = useState(true);
-  const [colorTheme, setTheme] = useDarkMode();
-  const [darkMode, setDarkMode] = useState(
-    colorTheme === "light" ? true : false
-  );
-  const toggleDarkMode = (checked) => {
-    setTheme(colorTheme);
-    setDarkMode(checked);
-  };
   const [currentPage, setCurrentPage] = useLocalStorage(
     "rowsPerPage",
     DEFAULT_ROWS_PER_PAGE
@@ -380,17 +371,6 @@ export default function Table({ data, columns, title }: any) {  // source = ""
                   Reset Order
                 </button>
               )}
-              <button
-                onClick={() => {
-                  toggleDarkMode(!darkMode);
-                }}
-              >
-                {darkMode ? (
-                  <MoonIcon className="w-4 h-4" />
-                ) : (
-                  <SunIcon className="w-4 h-4" />
-                )}
-              </button>
               <Select
                 labelType="row"
                 value={fontSize}
