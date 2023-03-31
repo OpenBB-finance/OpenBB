@@ -115,10 +115,10 @@ jobs:
           NOTARIZE_APPLE_PWD: ${{ secrets.NOTARIZE_APPLE_PWD }}
           NOTARIZE_APPLE_TEAM_ID: ${{ secrets.NOTARIZE_APPLE_TEAM_ID }}
         run: |
-          xcrun notarytool submit OpenBBTerminalM1.pkg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
+          xcrun notarytool submit ${{ matrix.items.package }} --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
       - name: Staple
         run: |
-          xcrun stapler staple OpenBBTerminalM1.pkg
+          xcrun stapler staple ${{ matrix.items.package }}
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
