@@ -153,7 +153,7 @@ def open_openbb_documentation(
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
-            if command == "settings" or command == "featflags":
+            if command in ["settings", "featflags"]:
                 path = "/guides?path=/usage/guides/customizing-the-terminal"
                 command = ""
             else:
