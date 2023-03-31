@@ -41,6 +41,7 @@ from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_preference,
 )
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -1226,7 +1227,7 @@ def main(
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:
-        cfg.change_debug_mode(new_value=True)
+        set_system_variable("DEBUG_MODE", True)
 
     cfg.start_plot_backend()
 

@@ -15,7 +15,7 @@ from pathlib import Path
 from traceback import FrameSummary, extract_tb, format_list
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
-from openbb_terminal.config_terminal import change_debug_mode, change_log_collect
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
@@ -717,8 +717,8 @@ def main():
     set_current_user(current_user)
 
     # system
-    change_debug_mode(new_value=True)
-    change_log_collect(new_value=False)
+    set_system_variable("DEBUG_MODE", True)
+    set_system_variable("LOG_COLLECT", False)
 
     # run integration tests
     parse_args_and_run()

@@ -27,13 +27,6 @@ def start_plot_backend():
     plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
 
 
-def change_test_mode(new_value: bool):
-    """Change the test mode value"""
-    current_system = get_current_system()
-    updated_system = dataclasses.replace(current_system, TEST_MODE=new_value)  # type: ignore
-    set_current_system(updated_system)
-
-
 def change_debug_mode(new_value: bool):
     """Change the debug mode value"""
     current_system = get_current_system()
