@@ -25,15 +25,16 @@ en:
   account/generate: Generate a Personal Access Token
   account/show: Shows the current Personal Access Token
   account/revoke: Revoke the Personal Access Token
-  account/_info_: Cloud storage of keys, settings and feature flags
-  account/sync: Turns the cloud synchronization on/off
-  account/pull: Pull data from cloud
-  account/clear: Clear data from cloud
+  account/_info_: Cloud storage of keys
+  account/sync: Turn the keys synchronization on/off
+  account/pull: Pull keys from cloud
+  account/clear: Clear keys from cloud
   account/_routines_: Cloud storage of routines
   account/list: List available routines
   account/upload: Upload routine
   account/download: Download routine
   account/delete: Delete routine
+  keys/_source: Source
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   keys/mykeys: get your defined keys
   keys/_status_: Status
@@ -43,6 +44,7 @@ en:
   defined, not tested: defined, not tested
   defined, test inconclusive: defined, test inconclusive
   sources/_info_: Get and set default data sources
+  sources/_source: Source
   sources/get: get available data sources associated with command
   sources/set: set default data source for a command
   featflags/_info_: Feature flags through environment variables
@@ -64,8 +66,12 @@ en:
   featflags/overwrite: whether to overwrite Excel files if they already exists
   featflags/version: whether to show the version in the bottom right corner
   featflags/tbhint: displays usage hints in the bottom toolbar
-  settings/_info_: Settings through environment variables
+  settings/_info_: Current settings
+  settings/_cmds_: Change settings
   settings/colors: set your own terminal colors
+  settings/_colors: Colors
+  settings/plotstyle: set your own plot style
+  settings/_plotstyle: Plot style
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used
@@ -955,13 +961,17 @@ en:
   econometrics/plot: plot data from a dataset
   econometrics/type: change types of the columns or display their types
   econometrics/desc: show descriptive statistics of a dataset
+  econometrics/corr: Plot the correlation coefficients for dataset features
+  econometrics/season: Plot the seasonality for a dataset column
   econometrics/index: set (multi) index based on columns
   econometrics/clean: clean a dataset by filling or dropping NaNs
   econometrics/modify: combine columns of datasets and delete or rename columns
   econometrics/add: Add columns to dataset with option to use formulas
+  econometrics/eval: create new series by performing operations on loaded data
   econometrics/delete: Delete columns from dataset
   econometrics/combine: Combine columns from different datasets
   econometrics/rename: Rename column from dataset
+  econometrics/lag: Add lag to a variable by shifting a column
   econometrics/_regression_: Regression
   econometrics/_regression_tests_: Regression Tests
   econometrics/ols: fit a (multi) linear regression model

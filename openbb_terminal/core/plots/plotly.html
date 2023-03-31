@@ -12,17 +12,24 @@
     <script src="/{{MAIN_PATH}}/web/popups.js" type="text/javascript"></script>
     <script src="/{{MAIN_PATH}}/web/main.js" type="text/javascript"></script>
     <script
-      src="/{{MAIN_PATH}}/assets/plotly-2.18.2.min.js"
+      src="/{{PLOTLYJS_PATH}}"
       type="text/javascript"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
+      integrity="sha512-01CJ9/g7e8cUmY0DFTMcUw/ikS799FHiOA0eyHsUWfOetgbx/t6oV4otQ5zXKQyIrQGTHSmRVPIgrgLcZi/WMA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     ></script>
   </head>
 
   <body>
     <!-- Plotly -->
-    <div>
+    <div id="openbb_container">
       <div
+        id="openbb_header"
         class="_header flex items-center justify-between gap-4 py-2 px-4 text-center"
-        style="z-index: 99999999999; position: fixed; width: 100%; top: 0"
+        style="z-index: 99999999999; width: 100%; top: 0; max-height: 60px;"
       >
         <div class="w-1/3">
           <svg
@@ -38,16 +45,24 @@
             ></path>
           </svg>
         </div>
-        <strong class="w-1/3 font-bold" id="title"></strong>
+        <strong class="w-1/3 font-bold" id="title" style="font-size: 16px;"></strong>
         <p class="w-1/3 text-right" id="date"></p>
       </div>
       <div
         id="openbb_chart"
         class="plotly-graph-div"
-        style="margin-top: 10px"
       ></div>
     </div>
-    <div id="loader" class="loader"></div>
+    <div
+      id="openbb_footer"
+      class="_footer flex items-center justify-between gap-4 py-2 px-4 text-center"
+      style="z-index: 99999999999; width: 100%; bottom: 0; max-height: 60px;"
+    >......................</div>
+
+    <div id="loading" class="saving">
+      <div id="loading_text" class="loading_text"></div><div id="loader" class="loader"></div>
+    </div>
+
 
     <!-- Popups Overlay -->
     <div id="popup_overlay" class="popup_overlay">
@@ -69,11 +84,25 @@
 
           <div style="margin-top: 10px">
             <label for="csv_name">Name of the trace</label>
-            <input type="text" id="csv_name" value="" />
+            <textarea
+            id="csv_name" style="width: 100%; max-width: 100%;
+            max-height: 200px; margin-top: 8px;" rows="2" cols="20"
+            value="" placeholder="Enter a name for the trace"></textarea>
           </div>
 
           <div style="margin-top: 10px" id="csv_columns"><!-- Empty --></div>
           <div style="margin-top: 10px" id="csv_colors"><!-- Empty --></div>
+
+          <div style="margin-top: 10px; display: none;" id="csv_scatter_options">
+
+            <div id="csv_percent_change_div" style="display: none;">
+              <input type="checkbox" id="csv_percent_change" name="csv_scatter_check" onclick="onlyOne(this)" />
+              <label for="csv_percent_change">Plot as percent change from first value</label>
+            </div><br />
+
+            <input type="checkbox" id="csv_same_yaxis" name="csv_scatter_check" onclick="onlyOne(this)" />
+            <label for="csv_same_yaxis">Share Y-axis</label>
+          </div><br />
 
           <div style="float: right; margin-top: 20px">
             <button
@@ -126,9 +155,13 @@
             .format(date)
             .replace(/:\d\d /, " ");
 
+          document
+            .querySelector('meta[name="color-scheme"]')
+            .setAttribute("content", window.plotly_figure.layout.template.layout.mapbox.style);
+
           document.getElementById("date").innerHTML = formattedDate;
           document.getElementById("title").innerHTML =
-          window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";
+            window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";
 
           CHART_DIV = document.getElementById("openbb_chart");
           CSV_DIV = document.getElementById("popup_csv");

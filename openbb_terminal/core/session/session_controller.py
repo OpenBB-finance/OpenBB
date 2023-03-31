@@ -3,7 +3,6 @@ from typing import Tuple
 from prompt_toolkit import PromptSession
 
 import openbb_terminal.core.session.local_model as Local
-from openbb_terminal import terminal_controller
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.session_model import (
@@ -80,6 +79,8 @@ def prompt(welcome=True):
 
 def launch_terminal():
     """Launch terminal"""
+    from openbb_terminal import terminal_controller
+
     terminal_controller.parse_args_and_run()
 
 

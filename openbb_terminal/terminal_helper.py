@@ -243,8 +243,9 @@ def print_guest_block_msg():
     """Block guest users from using the terminal."""
     if is_local():
         console.print(
-            "[info]You are currently logged as a guest.\n"
-            f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+            "[info]You are currently logged as a guest.[/info]\n"
+            "[info]Login to use this feature.[/info]\n\n"
+            f"[info]If you don't have an account, you can create one here: [/info][cmds]{REGISTER_URL}\n[/cmds]"
         )
 
 

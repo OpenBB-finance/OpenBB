@@ -11,7 +11,13 @@ from openbb_terminal import (
     keys_model,
     keys_view,
 )
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.config.paths import (
+    PACKAGE_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+    SETTINGS_ENV_FILE,
+)
+from openbb_terminal.core.session.constants import KEYS_URL
+from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -59,6 +65,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """Print help"""
         self.check_keys_status()
         mt = MenuText("keys/")
+        mt.add_param(
+            "_source",
+            f"{SETTINGS_ENV_FILE}\n        {PACKAGE_ENV_FILE}\n        {REPOSITORY_ENV_FILE}"
+            if is_local()
+            else KEYS_URL,
+        )
+        mt.add_raw("\n")
         mt.add_info("_keys_")
         mt.add_raw("\n")
         mt.add_cmd("mykeys")

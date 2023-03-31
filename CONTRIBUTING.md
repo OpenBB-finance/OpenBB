@@ -58,7 +58,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 ## Adding a new command
 
-Before implementing a new command we highly recommend that you go through [Understand Code Structure](#understand-code-structure) and [Follow Coding Guidelines](#follow-coding-guidelines). This will allow you to get your PR merged faster and keep consistency of our code base.
+Before implementing a new command we highly recommend that you go through [Understand Code Structure](#understand-code-structure) and [Follow Coding Guidelines](#follow-coding-guidelines). This will allow you to get your PR merged faster and maintain consistency in our code base.
 
 In the next sections we describe the process to add a new command.
 We will be adding a function to get price targets from the Financial Modeling Prep API.  Note that there already exists a function to get price targets from the Business Insider website, `stocks/fa/pt`, so we will be adding a new function to get price targets from the Financial Modeling Prep API, and go through adding sources.

@@ -28,7 +28,6 @@ CANDLE_SORT = [
 FOREX_SOURCES: Dict = {
     "YahooFinance": "YahooFinance",
     "AlphaVantage": "AlphaAdvantage",
-    "Oanda": "Oanda",
     "Polygon": "Polygon",
 }
 

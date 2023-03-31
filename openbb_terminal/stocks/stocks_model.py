@@ -73,7 +73,7 @@ def load_stock_av(
         )
         if interval == "Minute":
             df_stock_candidate: pd.DataFrame = ts.get_intraday(
-                symbol=symbol, interval=interval_min
+                symbol=symbol, interval=interval_min, outputsize="full"
             )[0]
         elif interval == "Daily":
             df_stock_candidate = ts.get_daily_adjusted(
@@ -102,15 +102,15 @@ def load_stock_av(
         console.print("No data found.")
         return pd.DataFrame()
 
-    df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
-
     df_stock_candidate.sort_index(ascending=True, inplace=True)
 
-    # Slice dataframe from the starting date YYYY-MM-DD selected
+    df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+
     df_stock_candidate = df_stock_candidate[
-        (df_stock_candidate.index >= start_date.strftime("%Y-%m-%d"))
-        & (df_stock_candidate.index <= end_date.strftime("%Y-%m-%d"))
+        (df_stock_candidate.index >= start_date)
+        & (df_stock_candidate.index <= end_date)
     ]
+
     return df_stock_candidate
 
 
@@ -132,6 +132,9 @@ def load_stock_yf(
         start_date = datetime(
             1970, 1, 2
         )  # 1 day buffer in case of timezone adjustments
+
+    # add 1 day to end_date to include the last day
+    end_date = end_date + pd.Timedelta(days=1)
 
     # Adding a dropna for weekly and monthly because these include weird NaN columns.
     df_stock_candidate = yf.download(
@@ -167,18 +170,28 @@ def load_stock_yf(
 
 
 def load_stock_eodhd(
-    symbol: str, start_date: datetime, end_date: datetime, weekly: bool, monthly: bool
+    symbol: str,
+    start_date: datetime,
+    end_date: datetime,
+    weekly: bool,
+    monthly: bool,
+    intraday: bool = False,
 ) -> pd.DataFrame:
+    request_url = "https://eodhistoricaldata.com/api/eod/"
+
     int_ = "d"
     if weekly:
         int_ = "w"
     elif monthly:
         int_ = "m"
+    elif intraday:
+        int_ = "1m"
+        request_url = "https://eodhistoricaldata.com/api/intraday/"
 
     request_url = (
-        f"https://eodhistoricaldata.com/api/eod/"
+        f"{request_url}"
         f"{symbol.upper()}?"
-        f"{start_date.strftime('%Y-%m-%d')}&"
+        f"from={start_date.strftime('%Y-%m-%d')}&"
         f"to={end_date.strftime('%Y-%m-%d')}&"
         f"period={int_}&"
         f"api_token={get_current_user().credentials.API_EODHD_KEY}&"

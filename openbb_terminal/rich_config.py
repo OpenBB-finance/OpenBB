@@ -12,10 +12,14 @@ from rich.console import Console, Theme
 from rich.progress import track
 from rich.text import Text
 
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_DATA_SOURCES_DEFAULT_FILE,
+)
 from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.session.current_system import get_current_system
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+)
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -23,7 +27,6 @@ from openbb_terminal.core.session.current_user import get_current_user
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
 # https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
 
-CUSTOM_THEME = Theme(theme.console_style)
 
 RICH_TAGS = [
     "[menu]",
@@ -70,11 +73,10 @@ def get_ordered_list_sources(command_path: str):
     current_user = get_current_user()
     try:
         # Loading in both source files: default sources and user sources
-        default_data_source = MISCELLANEOUS_DIRECTORY / "data_sources_default.json"
         user_data_source = Path(current_user.preferences.PREFERRED_DATA_SOURCE_FILE)
 
         # Opening default sources file from the repository root
-        with open(str(default_data_source)) as json_file:
+        with open(str(USER_DATA_SOURCES_DEFAULT_FILE)) as json_file:
             json_doc = json.load(json_file)
 
         # If the user has added sources to their own sources file in OpenBBUserData, then use that
@@ -259,12 +261,24 @@ class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
     def __init__(self):
-        self.console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
+        self.preferences = get_current_user().preferences
+        self.__console = Console(
+            theme=Theme(theme.console_style), highlight=False, soft_wrap=True
+        )
         self.menu_text = ""
         self.menu_path = ""
 
+    def reload_console(self):
+        current_preferences = get_current_user().preferences
+        if current_preferences != self.preferences:
+            self.preferences = current_preferences
+            theme.apply_console_style(current_preferences.RICH_STYLE)
+            self.__console = Console(
+                theme=Theme(theme.console_style), highlight=False, soft_wrap=True
+            )
+
     def capture(self):
-        return self.console.capture()
+        return self.__console.capture()
 
     @staticmethod
     def filter_rich_tags(text):
@@ -292,6 +306,7 @@ class ConsoleAndPanel:
         return text
 
     def print(self, *args, **kwargs):
+        self.reload_console()
         current_user = get_current_user()
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
@@ -301,7 +316,7 @@ class ConsoleAndPanel:
                         version = f"[param]OpenBB Terminal v{version}[/param] (https://openbb.co)"
                     else:
                         version = "[param]OpenBB Terminal[/param] (https://openbb.co)"
-                    self.console.print(
+                    self.__console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],
                             title=kwargs["menu"],
@@ -311,12 +326,12 @@ class ConsoleAndPanel:
                     )
 
                 else:
-                    self.console.print(kwargs["text"])
+                    self.__console.print(kwargs["text"])
             else:
                 print(self.filter_rich_tags(kwargs["text"]))
         else:
             if not os.getenv("TEST_MODE"):
-                self.console.print(*args, **kwargs)
+                self.__console.print(*args, **kwargs)
             else:
                 print(*args, **kwargs)
 

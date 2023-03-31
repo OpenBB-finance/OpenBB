@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Optional
+from typing import Dict, Literal, Optional
 
 import requests
 
@@ -235,7 +235,7 @@ def fetch_user_configs(
 def upload_config(
     key: str,
     value: str,
-    type_: str,
+    type_: Literal["keys", "settings", "sources"],
     auth_header: str,
     base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
@@ -248,8 +248,8 @@ def upload_config(
         The key to patch.
     value : str
         The value to patch.
-    type_ : str
-        The type of the patch, either "keys" or "settings".
+    type_ : Literal["keys", "settings", "sources"]
+        The type of the patch.
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
     base_url : str
@@ -262,7 +262,7 @@ def upload_config(
     Optional[requests.Response]
         The response from the patch request.
     """
-    if type_ not in ["keys", "settings"]:
+    if type_ not in ["keys", "settings", "sources"]:
         console.print("[red]\nInvalid patch type.[/red]")
         return None
 
@@ -310,11 +310,11 @@ def clear_user_configs(
     Optional[requests.Response]
         The response from the put request.
     """
-    data: Dict[str, dict] = {"features_keys": {}, "features_settings": {}}
+    data: Dict[str, dict] = {"features_keys": {}}
 
     try:
         response = requests.put(
-            url=base_url + "terminal/user",
+            url=base_url + "user",
             headers={"Authorization": auth_header},
             json=data,
             timeout=timeout,

@@ -6,6 +6,30 @@ let globals = {
   cmd_src_idx: null,
 };
 
+function loadingOverlay(message) {
+  const loading = document.getElementById("loading");
+  const loading_text = document.getElementById("loading_text");
+
+  loading_text.innerHTML = message;
+  loading.classList.add("show");
+
+  let is_loaded = setInterval(function () {
+    if (loading.classList.contains("show")) {
+      clearInterval(is_loaded);
+    }
+  }, 10);
+}
+
+const non_blocking = (func, delay) => {
+  let timeout;
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), delay);
+  };
+};
+
 function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   // Main function that plots the graphs and initializes the bar menus
   globals.CHART_DIV = chartdiv;
@@ -16,12 +40,22 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   console.log("plotly_figure", plotly_figure);
   let graphs = plotly_figure;
 
+  const loading = document.getElementById("loading");
+
   // We add the event listeners for csv file/type changes
   globals.CSV_DIV.querySelector("#csv_file").addEventListener(
     "change",
     function () {
       console.log("file changed");
-      checkFile(globals.CSV_DIV);
+      loadingOverlay("Loading CSV");
+      setTimeout(function () {
+        non_blocking(function () {
+          checkFile(globals.CSV_DIV);
+        }, 2)();
+        setTimeout(function () {
+          loading.classList.remove("show");
+        }, 200);
+      }, 1000);
     }
   );
   globals.CSV_DIV.querySelector("#csv_trace_type").addEventListener(
@@ -32,38 +66,78 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     }
   );
 
+  globals.filename = openbbFilename(graphs);
+
   // Sets the config with the custom buttons
   CONFIG = {
     scrollZoom: true,
     responsive: true,
     displaylogo: false,
     displayModeBar: true,
-    toImageButtonOptions: {
-      format: "svg",
-      filename: openbbFilename(graphs),
-      height: globals.CHART_DIV.clientHeight,
-      width: globals.CHART_DIV.clientWidth,
-    },
-    modeBarButtonsToRemove: ["lasso2d", "select2d"],
+    modeBarButtonsToRemove: ["lasso2d", "select2d", "downloadImage"],
     modeBarButtons: [
       [
         {
           name: "Download Data (Ctrl+S)",
           icon: Plotly.Icons.disk,
           click: function (gd) {
-            downloadData(gd);
+            loadingOverlay("Saving CSV");
+            setTimeout(function () {
+              downloadData(gd);
+            }, 500);
+            setTimeout(function () {
+              loading.classList.remove("show");
+            }, 1000);
           },
         },
+        // {
+        //   name: "Upload Image (Ctrl+U)",
+        //   icon: Plotly.Icons.uploadImage,
+        //   click: function (gd) {
+        //     downloadImage();
+        //   },
+        // },
         {
-          name: "Upload Image (Ctrl+U)",
-          icon: Plotly.Icons.uploadImage,
-          click: function (gd) {
-            downloadImage();
+          name: "Download Plot",
+          icon: Plotly.Icons.camera,
+          click: function () {
+            loadingOverlay("Saving Image");
+            hideModebar();
+            non_blocking(function () {
+              downloadImage(globals.filename, "png");
+              setTimeout(function () {
+                setTimeout(function () {
+                  loading.classList.remove("show");
+                  hideModebar();
+                }, 50);
+              }, 25);
+            }, 2)();
           },
         },
-        "toImage",
       ],
-      ["drawline", "drawopenpath", "drawcircle", "drawrect", "eraseshape"],
+      [
+        {
+          name: "Edit Color (Ctrl+E)",
+          icon: ICONS.changeColor,
+          click: function () {
+            // We need to check if the button is active or not
+            let title = "Edit Color (Ctrl+E)";
+            let button = globals.barButtons[title];
+            let active = true;
+            if (button.style.border == "transparent") {
+              active = false;
+            }
+            // We call the function that changes the border color
+            button_pressed(title, active);
+            changeColor();
+          },
+        },
+        "drawline",
+        "drawopenpath",
+        "drawcircle",
+        "drawrect",
+        "eraseshape",
+      ],
       ["zoomIn2d", "zoomOut2d", "resetScale2d", "zoom2d", "pan2d"],
       [
         {
@@ -91,22 +165,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           },
         },
         {
-          name: "Edit Color (Ctrl+E)",
-          icon: ICONS.changeColor,
-          click: function () {
-            // We need to check if the button is active or not
-            let title = "Edit Color (Ctrl+E)";
-            let button = globals.barButtons[title];
-            let active = true;
-            if (button.style.border == "transparent") {
-              active = false;
-            }
-            // We call the function that changes the border color
-            button_pressed(title, active);
-            changeColor();
-          },
-        },
-        {
           name: "Auto Scale (Ctrl+Shift+A)",
           icon: Plotly.Icons.autoscale,
           click: function () {
@@ -116,20 +174,9 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             let active = true;
             if (button.style.border == "transparent") {
               active = false;
-
-              const autoscale = (func, delay) => {
-                let timeout;
-                return function () {
-                  const context = this;
-                  const args = arguments;
-                  clearTimeout(timeout);
-                  timeout = setTimeout(() => func.apply(context, args), delay);
-                };
-              };
-
               globals.CHART_DIV.on(
                 "plotly_relayout",
-                autoscale(function (eventdata) {
+                non_blocking(function (eventdata) {
                   if (eventdata["xaxis.range[0]"] == undefined) {
                     return;
                   }
@@ -150,6 +197,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       ],
     ],
   };
+  graphs.layout.title = "";
 
   // We make sure to fill in any missing layout properties with default values
   if (!("font" in graphs.layout)) {
@@ -171,28 +219,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       pad: 2,
     };
   }
-
-  // We setup keyboard shortcuts custom to OpenBB
-  window.document.addEventListener("keydown", function (e) {
-    if (e.ctrlKey && e.key.toLowerCase() == "t") {
-      openPopup("popup_text");
-    }
-    if (e.ctrlKey && e.key.toLowerCase() == "e") {
-      changeColor();
-    }
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "t") {
-      openPopup("popup_title");
-    }
-    if (e.ctrlKey && e.key.toLowerCase() == "s") {
-      downloadData(globals.CHART_DIV);
-    }
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "c") {
-      openPopup("popup_csv");
-    }
-    if (e.key == "Escape") {
-      closePopup();
-    }
-  });
 
   graphs.layout.autosize = true;
   // We set the height and width to undefined, so that plotly.js can
@@ -232,7 +258,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       trace.name = trace.name + "         ";
       trace.hoverlabel = {
         namelength: name_length,
-
       };
     }
   });
@@ -247,8 +272,12 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   // We check for the dark mode
   if (graphs.layout.template.layout.mapbox.style == "dark") {
     document.body.style.backgroundColor = "#000000";
+    document.getElementById("openbb_footer").style.color = "#000000";
     graphs.layout.template.layout.paper_bgcolor = "#000000";
     graphs.layout.template.layout.plot_bgcolor = "#000000";
+  } else {
+    document.body.style.backgroundColor = "#FFFFFF";
+    document.getElementById("openbb_footer").style.color = "#FFFFFF";
   }
 
   // We set the plot config and plot the chart
@@ -256,8 +285,8 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   Plotly.newPlot(globals.CHART_DIV, graphs, { responsive: true });
 
   // Create global variables to for use later
-  let modebar = document.getElementsByClassName("modebar-container");
-  let modebar_buttons = modebar[0].getElementsByClassName("modebar-btn");
+  const modebar = document.getElementsByClassName("modebar-container")[0];
+  const modebar_buttons = modebar.getElementsByClassName("modebar-btn");
   globals.barButtons = {};
 
   for (let i = 0; i < modebar_buttons.length; i++) {
@@ -268,10 +297,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     button.style.border = "transparent";
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
-
-  // We check if the chart is a 3D mesh to make sure to adjust the
-  // window close interval if exporting plot to image
-  let is_3dmesh = false;
 
   if (globals.CHART_DIV.layout.yaxis.type != undefined) {
     if (globals.CHART_DIV.layout.yaxis.type == "log" && !globals.logYaxis) {
@@ -300,9 +325,52 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       };
       Plotly.update(globals.CHART_DIV, layout_update);
     }
-  } else {
-    is_3dmesh = true;
   }
+
+  if (window.plotly_figure.layout.template.layout.mapbox.style === "light") {
+    for (const el of document.styleSheets[0].cssRules) {
+      if (el.selectorText === ".modebar-group") {
+        el.style.backgroundColor = "#FFFFFF";
+      }
+    }
+  }
+
+  function hideModebar() {
+    if (globals.modebarHidden) {
+      modebar.style.display = "flex";
+      globals.modebarHidden = false;
+    } else {
+      modebar.style.display = "none";
+      globals.modebarHidden = true;
+    }
+  }
+
+  // We setup keyboard shortcuts custom to OpenBB
+  window.document.addEventListener("keydown", function (e) {
+    if (e.key.toLowerCase() == "h" && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      hideModebar();
+    }
+    if (e.ctrlKey && e.key.toLowerCase() == "t") {
+      openPopup("popup_text");
+    }
+    if (e.ctrlKey && e.key.toLowerCase() == "e") {
+      changeColor();
+    }
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "t") {
+      openPopup("popup_title");
+    }
+    if (e.ctrlKey && e.key.toLowerCase() == "s") {
+      downloadData(globals.CHART_DIV);
+    }
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "c") {
+      e.preventDefault();
+      openPopup("popup_csv");
+    }
+    if (e.key == "Escape") {
+      closePopup();
+    }
+  });
 
   // send a relayout event to trigger the initial zoom/bars-resize
   // check if the xaxis.range is defined
@@ -318,39 +386,15 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
 
   // We check to see if window.save_png is defined and true
   if (window.save_image != undefined && window.export_image) {
-    // if is_3dmesh is true, we set the close_interval to 1000
-    let close_interval = is_3dmesh ? 1000 : 500;
-
     // We get the extension of the file and check if it is valid
     let filename = window.export_image.split("/").pop();
     const extension = filename.split(".").pop().replace("jpg", "jpeg");
 
-    if (["jpeg", "png", "svg"].includes(extension)) {
-      // We run Plotly.downloadImage to save the chart as an image
-      Plotly.downloadImage(globals.CHART_DIV, {
-        format: extension,
-        width: globals.CHART_DIV.clientWidth,
-        height: globals.CHART_DIV.clientHeight,
-        filename: filename.split(".")[0],
-      });
+    if (["jpeg", "png", "svg", "pdf"].includes(extension)) {
+      hideModebar();
+      non_blocking(function () {
+        downloadImage(filename.split(".")[0], extension);
+      }, 2)();
     }
-    setTimeout(function () {
-      window.close();
-    }, close_interval);
   }
 }
-
-// listen to cmd+h or ctrl+h to hide the modebar
-document.addEventListener("keydown", function (event) {
-  if (event.key == "h" && (event.ctrlKey || event.metaKey)) {
-    event.preventDefault();
-    const modebar = document.getElementsByClassName("modebar-container")[0];
-    if (globals.modebarHidden) {
-      modebar.style.display = "flex";
-      globals.modebarHidden = false;
-    } else {
-      modebar.style.display = "none";
-      globals.modebarHidden = true;
-    }
-  }
-});

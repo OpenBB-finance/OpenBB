@@ -28,6 +28,7 @@ def revert_current_user(mocker):
         target="openbb_terminal.core.session.current_user.__current_user",
         new=mock_current_user,
     )
+    mocker.patch("openbb_terminal.keys_model.write_to_dotenv")
 
     yield
 

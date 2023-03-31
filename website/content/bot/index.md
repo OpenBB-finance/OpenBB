@@ -49,8 +49,8 @@ To know more about OpenBB Bot, you can start by reading the [Installation Guide]
 
 ### Using OpenBB Bot
 
-To learn how to use OpenBB Bot, you can start by reading the [Basics Guide](/bot/guides).
+To learn how to use OpenBB Bot, you can start by reading the [Basics Guide](/bot/guides/discord).
 
 ### Bot Reference
 
-The Reference section is a complete list of all functions available for OpenBB Bot. It can be found [here](/bot/reference/).
+The Reference section is a complete list of all functions available for OpenBB Bot. It can be found [here](/bot/reference/discord).

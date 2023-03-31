@@ -1,55 +1,83 @@
-import os
+import re
+from pathlib import Path
+from typing import Dict, List
 
-# This script is used to generate the index.mdx files for the reference section of the
-# docs Copy paste the output of the .txt file into the section
-# it generates relative to the index.mdx file
+reference_import = """import ReferenceCard from "@site/src/components/General/ReferenceCard";
 
-# get the file names of all the files in a given relative path
-files_discord = os.listdir(os.path.join(os.getcwd(), "discord"))
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+"""
+wopen_kwargs = {"encoding": "utf-8", "newline": "\n"}
 
-files_telegram = os.listdir(os.path.join(os.getcwd(), "telegram"))
 
-# remove last entry in a list cause it is not needed
-files_discord.pop()
-files_telegram.pop()
-# remove index.md from the list
+def create_cmd_cards(cmd_text: List[Dict[str, str]], url: str) -> str:
+    cmd_cards = ""
+    for cmd in cmd_text:
+        cmd_cards += f"""<ReferenceCard
+    title="{cmd["name"]}"
+    description="{cmd["description"]}"
+    url="/bot/reference/{url}/{cmd["name"]}"
+/>\n"""
+    return cmd_cards
 
-# create discord reference card
-with open(os.path.join(os.getcwd(), "discord", "discord.txt"), "w") as f:
-    for x in files_discord:
-        desc_text = []
-        # if x is index.mdx or index.md then skip
-        if x == "index.md" or x == "index.mdx":
-            pass
-        else:
-            description = os.listdir(os.path.join(os.getcwd(), "discord", x))
-            for xx in description:
-                if xx == "index.md" or xx == "index.mdx":
-                    pass
-                else:
-                    desc_text.append(os.path.splitext(xx)[0])
-            f.write(
-                '<ReferenceCard title="{}" description="{}" url="/bot/reference/discord/{}" />\n'.format(
-                    x, ", ".join(desc_text), x
-                )
+
+def create_nested_subfolder_card(folder: Path, url: str) -> str:
+    nested_card = f"""<ReferenceCard
+        title="{folder.name}"
+        description="{' '.join([sub.stem for sub in folder.glob('**/*.md*') if sub.is_file() and sub.stem != 'index'])}"
+        url="/bot/reference/{url}/{folder.name}"
+    />\n"""
+    return nested_card
+
+
+for bot in ["discord", "telegram"]:
+    for folder in (Path(__file__).parent / bot).iterdir():
+        rel_path = folder.relative_to(Path(__file__).parent / bot)
+        cmd_cards: List[Dict[str, str]] = []
+
+        for file in folder.glob("*.md*"):
+            if file.stem == "index":
+                continue
+
+            desc_regex = re.compile(
+                r"---\n\n# ([^\n]+)(.*)### Usage", (re.DOTALL | re.MULTILINE)
+            )
+            description = desc_regex.search(file.read_text()).group(2).strip()  # type: ignore
+
+            cmd_dict = dict(
+                name=file.stem,
+                description=description,
+                url=f"{bot}/{rel_path}",
             )
 
-# create telegram reference card
-with open(os.path.join(os.getcwd(), "telegram", "telegram.txt"), "w") as f:
-    for x in files_telegram:
-        desc_text = []
-        # if x is index.mdx or index.md then skip
-        if x == "index.md" or x == "index.mdx":
-            pass
-        else:
-            description = os.listdir(os.path.join(os.getcwd(), "telegram", x))
-            for xx in description:
-                if xx == "index.md" or xx == "index.mdx":
-                    pass
-                else:
-                    desc_text.append(os.path.splitext(xx)[0])
-            f.write(
-                '<ReferenceCard title="{}" description="{}" url="/bot/reference/telegram/{}" />\n'.format(
-                    x, ", ".join(desc_text), x
+            cmd_cards.append(cmd_dict)
+
+        if not cmd_cards:
+            continue
+
+        with open(
+            Path(__file__).parent / bot / rel_path / "index.mdx", "w", **wopen_kwargs  # type: ignore
+        ) as subindex:
+            subindex.write(f"# {folder.name}\n\n{reference_import}\n")
+
+            for subfolder in folder.glob("*"):
+                if not subfolder.is_dir():
+                    continue
+
+                subindex.write(
+                    create_nested_subfolder_card(subfolder, f"{bot}/{rel_path}")
                 )
+
+            subindex.write(
+                create_cmd_cards(cmd_cards, f'{bot}/{"/".join(rel_path.parts)}')
             )
+            subindex.write("</ul>\n")
+
+    with open(Path(__file__).parent / bot / "index.mdx", "w", **wopen_kwargs) as index:  # type: ignore
+        index.write(f"# OpenBB {bot.title()} Reference\n\n{reference_import}\n")
+
+        for folder in (Path(__file__).parent / bot).glob("*"):
+            if not folder.is_dir():
+                continue
+
+            index.write(create_nested_subfolder_card(folder, bot))
+        index.write("</ul>\n")

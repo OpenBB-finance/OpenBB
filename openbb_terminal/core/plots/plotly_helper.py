@@ -23,7 +23,9 @@ from plotly.subplots import make_subplots
 from scipy import stats
 
 from openbb_terminal.base_helpers import console, strtobool
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    STYLES_DIRECTORY_REPO,
+)
 from openbb_terminal.core.plots.backend import PLOTLYJS_PATH, plots_backend
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
@@ -44,14 +46,13 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
-    USER_STYLES_LOCATION = (
-        get_current_user().preferences.USER_DATA_DIRECTORY / "styles" / "user"
-    )
+    STYLES_REPO = STYLES_DIRECTORY_REPO
+    USER_STYLES_DIRECTORY = get_current_user().preferences.USER_STYLES_DIRECTORY
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
     plotly_template: Dict[str, Any] = {}
+    mapbox_style: str = "dark"
 
     console_styles_available: Dict[str, Path] = {}
     console_style: Dict[str, Any] = {}
@@ -81,22 +82,33 @@ class TerminalStyle:
             The name of the Rich style to use, by default ""
         """
         self.plt_style = plt_style or self.plt_style
-        console_style = console_style or "dark"
         self.load_available_styles()
-
-        console_json_path = self.console_styles_available.get("dark", None)
-        for style in ["openbb_config", console_style]:
-            if style in self.console_styles_available:
-                console_json_path = self.console_styles_available[style]
-                break
-
-        if console_json_path:
-            self.console_style = self.load_json_style(console_json_path)
         self.load_style(plt_style)
+        self.load_style(plt_style)
+        self.apply_console_style(console_style)
+
+    def apply_console_style(self, style: Optional[str] = "") -> None:
+        """Apply the style to the console."""
+
+        if style in self.console_styles_available:
+            json_path: Optional[Path] = self.console_styles_available[style]
+        else:
+            self.load_available_styles()
+            if style in self.console_styles_available:
+                json_path = self.console_styles_available[style]
+            else:
+                console.print("\nInvalid console style. Using default.")
+                json_path = self.console_styles_available.get("dark", None)
+
+        if json_path:
+            self.console_style = self.load_json_style(json_path)
+        else:
+            console.print("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
-        style = style or self.plt_style
+        if not style:
+            style = get_current_user().preferences.PLOT_STYLE
 
         if style != self.plt_style:
             self.load_style(style)
@@ -104,12 +116,24 @@ class TerminalStyle:
         style = style.lower().replace("light", "white")  # type: ignore
 
         if self.plt_style and self.plotly_template:
+            self.plotly_template.setdefault("layout", {}).setdefault(
+                "mapbox", {}
+            ).setdefault("style", "dark")
+            if "tables" in self.plt_styles_available:
+                tables = self.load_json_style(self.plt_styles_available["tables"])
+                pio.templates["openbb_tables"] = go.layout.Template(tables)
+
             pio.templates["openbb"] = go.layout.Template(self.plotly_template)
             if style in ["dark", "white"]:
                 pio.templates.default = f"plotly_{style}+openbb"
                 return
 
             pio.templates.default = "openbb"
+            self.mapbox_style = (
+                self.plotly_template.setdefault("layout", {})
+                .setdefault("mapbox", {})
+                .setdefault("style", "dark")
+            )
 
     def load_available_styles_from_folder(self, folder: Path) -> None:
         """Load custom styles from folder.
@@ -131,20 +155,20 @@ class TerminalStyle:
             ["plt_styles_available", "console_styles_available"],
             [".pltstyle.json", ".richstyle.json"],
         ):
-            for file in folder.glob(f"*{ext}"):
+            for file in folder.rglob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
 
     def load_available_styles(self) -> None:
         """Load custom styles from default and user folders."""
-        self.load_available_styles_from_folder(self.DEFAULT_STYLES_LOCATION)
-        self.load_available_styles_from_folder(self.USER_STYLES_LOCATION)
+        self.load_available_styles_from_folder(self.STYLES_REPO)
+        self.load_available_styles_from_folder(self.USER_STYLES_DIRECTORY)
 
     def load_json_style(self, file: Path) -> Dict[str, Any]:
         """Load style from json file.
 
         Parameters
         ----------
-        file : str
+        file : Path
             Path to the file containing the style
 
         Returns
@@ -165,8 +189,13 @@ class TerminalStyle:
         """
         style = style or self.plt_style
 
-        if style in self.plt_styles_available:
-            self.load_plt_style(style)
+        if style not in self.plt_styles_available:
+            console.print(
+                f"[red]Plot Style {style} not found. Using default style.[/red]",
+            )
+            style = "dark"
+
+        self.load_plt_style(style)
 
     def load_plt_style(self, style: str) -> None:
         """Load Plotly style from file.
@@ -206,6 +235,7 @@ class TerminalStyle:
         list
             List of colors e.g. ["#00ACFF", "#FF0000"]
         """
+        self.apply_style()
         colors = self.plotly_template.get("layout", {}).get("colorway", PLT_COLORWAY)
         if reverse:
             colors.reverse()
@@ -271,6 +301,8 @@ class OpenBBFigure(go.Figure):
         self._exported = False
         self._cmd_xshift = 0
         self._bar_width = 0.2
+        self._export_image: Optional[Union[Path, str]] = ""
+
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
         if xaxis := kwargs.pop("xaxis", None):
@@ -806,7 +838,7 @@ class OpenBBFigure(go.Figure):
 
     @staticmethod
     def chart_volume_scaling(
-        df_volume: pd.DataFrame, range_x: int = 7
+        df_volume: pd.DataFrame, volume_ticks_x: int = 7
     ) -> Dict[str, list]:
         """Takes df_volume and returns volume_ticks, tickvals for chart volume scaling
 
@@ -814,7 +846,7 @@ class OpenBBFigure(go.Figure):
         ----------
         df_volume : pd.DataFrame
             Dataframe of volume (e.g. df_volume = df["Volume"])
-        range_x : int, optional
+        volume_ticks_x : int, optional
             Number to multiply volume, by default 7
 
         Returns
@@ -839,7 +871,7 @@ class OpenBBFigure(go.Figure):
             floor(first_val * 3),
             floor(first_val * 4),
         ]
-        volume_range = [0, floor(volume_ticks * range_x)]
+        volume_range = [0, floor(volume_ticks * volume_ticks_x)]
 
         return {"range": volume_range, "ticks": tickvals}
 
@@ -850,6 +882,7 @@ class OpenBBFigure(go.Figure):
         volume_col: Optional[str] = "Volume",
         row: Optional[int] = 1,
         col: Optional[int] = 1,
+        volume_ticks_x: int = 7,
     ) -> None:
         """Add in-chart volume to a subplot.
 
@@ -865,12 +898,13 @@ class OpenBBFigure(go.Figure):
             Row number, by default 2
         col : `int`, optional
             Column number, by default 1
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
         """
-        colors = [
-            theme.down_color if row.Open < row[close_col] else theme.up_color
-            for _, row in df_stock.iterrows()
-        ]
-        vol_scale = self.chart_volume_scaling(df_stock[volume_col])
+        colors = np.where(
+            df_stock.Open < df_stock[close_col], theme.up_color, theme.down_color
+        )
+        vol_scale = self.chart_volume_scaling(df_stock[volume_col], volume_ticks_x)
         self.add_bar(
             x=df_stock.index,
             y=df_stock[volume_col],
@@ -882,7 +916,7 @@ class OpenBBFigure(go.Figure):
             opacity=0.5,
             secondary_y=False,
         )
-        ticksize = 14 - (self.subplots_kwargs["rows"] // 2)
+        ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
             yaxis=dict(
                 fixedrange=True,
@@ -991,6 +1025,7 @@ class OpenBBFigure(go.Figure):
         """
         self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
+        self._export_image = export_image
 
         if export_image and not plots_backend().isatty:
             if isinstance(export_image, str):
@@ -1000,6 +1035,7 @@ class OpenBBFigure(go.Figure):
         if kwargs.pop("margin", True):
             self._adjust_margins()
 
+        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -1010,16 +1046,15 @@ class OpenBBFigure(go.Figure):
         )
 
         # Set modebar style
-        if self.layout.template.layout.mapbox.style == "dark":  # type: ignore
-            self.update_layout(  # type: ignore
-                newshape_line_color="gold",
-                modebar=dict(
-                    orientation="v",
-                    bgcolor="#2A2A2A",
-                    color="#FFFFFF",
-                    activecolor="#d1030d",
-                ),
-            )
+        self.update_layout(  # type: ignore
+            newshape_line_color="gold" if theme.mapbox_style == "dark" else "#0d0887",
+            modebar=dict(
+                orientation="v",
+                bgcolor="#2A2A2A" if theme.mapbox_style == "dark" else "gray",
+                color="#FFFFFF" if theme.mapbox_style == "dark" else "black",
+                activecolor="#d1030d" if theme.mapbox_style == "dark" else "blue",
+            ),
+        )
 
         if external or self._exported:
             return self  # type: ignore
@@ -1317,6 +1352,7 @@ class OpenBBFigure(go.Figure):
                 full_html=False,
             )
         )
+        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -1479,6 +1515,7 @@ class OpenBBFigure(go.Figure):
         fig.update_layout(
             height=height,
             width=width,
+            template="openbb_tables",
             margin=dict(l=0, r=0, b=0, t=0, pad=0),
             font=dict(size=14),
         )
@@ -1491,24 +1528,23 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            [80, 60, 85, 60, 0] if not self._has_secondary_y else [60, 50, 85, 40, 0]
+            dict(l=80, r=60, b=85, t=40, pad=0)
+            if not self._has_secondary_y
+            else dict(l=60, r=50, b=85, t=40, pad=0)
         )
 
         # We adjust margins
         if plots_backend().isatty:
-            for key, add in zip(
-                ["l", "r", "b", "t", "pad"],
-                margin_add,
-            ):
+            for key in ["l", "r", "b", "t", "pad"]:
                 if key in self.layout.margin and self.layout.margin[key] is not None:
-                    self.layout.margin[key] += add
+                    self.layout.margin[key] += margin_add.get(key, 0)
                 else:
-                    self.layout.margin[key] = add
+                    self.layout.margin[key] = margin_add.get(key, 0)
 
         if not plots_backend().isatty:
             org_margin = self.layout.margin
-            margin = dict(l=40, r=60, b=80, t=50, pad=0)
-            for key, max_val in zip(["l", "r", "b", "t"], [60, 50, 80, 40]):
+            margin = dict(l=40, r=60, b=80, t=50)
+            for key, max_val in zip(["l", "r", "b", "t"], [60, 50, 80, 50]):
                 org = org_margin[key] or 0
                 if (org + margin[key]) > max_val:
                     self.layout.margin[key] = max_val
@@ -1519,20 +1555,26 @@ class OpenBBFigure(go.Figure):
 
     def _set_watermark(self) -> None:
         """Set the watermark for OpenBB Terminal."""
-        self.add_annotation(
-            yref="paper",
-            xref="paper",
-            x=1,
-            y=0,
-            text="OpenBB Terminal",
-            font_size=17,
-            font_color="gray",
-            opacity=0.5,
-            xanchor="right",
-            yanchor="bottom",
-            yshift=-80,
-            xshift=40,
-        )
+        if (
+            not plots_backend().isatty
+            or not get_current_user().preferences.PLOT_ENABLE_PYWRY
+            or isinstance(self._export_image, Path)
+            and self._export_image.suffix in [".svg", ".pdf"]
+        ):
+            self.add_annotation(
+                yref="paper",
+                xref="paper",
+                x=1,
+                y=0,
+                text="OpenBB Terminal",
+                font_size=17,
+                font_color="gray",
+                opacity=0.5,
+                xanchor="right",
+                yanchor="bottom",
+                yshift=-80,
+                xshift=40,
+            )
 
     # pylint: disable=import-outside-toplevel
     def _add_cmd_source(self) -> None:
@@ -1556,7 +1598,7 @@ class OpenBBFigure(go.Figure):
 
             if (yaxis2 and yaxis2.side == "left") or yaxis.side == "left":
                 title = yaxis.title.text if not yaxis2 else yaxis2.title.text
-                xshift = -110 if not title else -150
+                xshift = -110 if not title else -135
                 self.layout.margin["l"] += 60
 
             self.add_annotation(
@@ -1567,7 +1609,7 @@ class OpenBBFigure(go.Figure):
                 text=command_location,
                 textangle=-90,
                 font_size=24,
-                font_color="gray",
+                font_color="gray" if theme.mapbox_style == "dark" else "black",
                 opacity=0.5,
                 yanchor="middle",
                 xanchor="left",
@@ -1590,13 +1632,14 @@ class OpenBBFigure(go.Figure):
     def add_logscale_menus(self, yaxis: str = "yaxis") -> None:
         """Set the menus for the figure."""
         self._added_logscale = True
+        bg_color = "#000000" if theme.mapbox_style == "dark" else "#FFFFFF"  # type: ignore
+        font_color = "#FFFFFF" if theme.mapbox_style == "dark" else "#000000"  # type: ignore
         self.update_layout(
             xaxis=dict(
                 rangeslider=dict(visible=False),
                 rangeselector=dict(
-                    bgcolor="#000000",
-                    bordercolor="gold",
-                    font=dict(color="white"),
+                    bgcolor=bg_color,
+                    font=dict(color=font_color),
                     buttons=list(
                         [
                             dict(
@@ -1630,8 +1673,8 @@ class OpenBBFigure(go.Figure):
         self.update_layout(
             updatemenus=[
                 dict(
-                    bgcolor="#0f0f0f",
-                    font=dict(color="white", size=14),
+                    bgcolor=bg_color,
+                    font=dict(color=font_color, size=14),
                     buttons=[
                         dict(
                             label="linear   ",

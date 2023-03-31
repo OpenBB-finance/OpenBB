@@ -8,11 +8,18 @@ import pandas as pd
 import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.rich_config import console
-from openbb_terminal.sdk import openbb
+
+# Suppressing sdk logs
+cfg.change_logging_suppress(new_value=True)
+
+# Import the OpenBB SDK
+# pylint: disable=wrong-import-position
+from openbb_terminal.sdk import openbb  # noqa: E402
 
 pd.options.plotting.backend = "plotly"
 st.set_page_config(
@@ -96,6 +103,7 @@ async def plot_indicators(
         main_ticker,
         candles=not tickers,
         volume=not tickers,
+        volume_ticks_x=5,
     )
 
     fig.update_traces(showlegend=False)
@@ -157,8 +165,8 @@ async def plot_indicators(
 
     y_min, y_max = data["Low"].min().min(), data["High"].max().max()
     y_range = y_max - y_min
-    y_min -= y_range * 0.4
-    y_max += y_range * 0.4
+    y_min -= y_range * 0.05
+    y_max += y_range * 0.05
 
     yaxis = "yaxis" if tickers else "yaxis2"
 
@@ -278,7 +286,7 @@ class Handler:
 
                     dt_now = datetime.now().strftime("%Y%m%d_%H%M%S")
                     filename = f"{dt_now}_{main_ticker}_technical_analysis"
-                    fig.show(external=True)
+                    fig.show(external=True, bar_width=0.00001)
 
                     if list(
                         set(indicators).intersection(

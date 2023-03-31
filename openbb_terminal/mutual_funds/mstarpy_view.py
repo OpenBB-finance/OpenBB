@@ -2,7 +2,6 @@ import logging
 from typing import Union
 
 import mstarpy
-import numpy as np
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure
@@ -23,7 +22,6 @@ def display_carbon_metrics(loaded_funds: mstarpy.Funds):
     ----------
     loaded_funds: mstarpy.Funds
         class mstarpy.Funds instantiated with selected funds
-
     """
     carbonMetrics = mstarpy_model.load_carbon_metrics(loaded_funds)
 
@@ -42,7 +40,6 @@ def display_exclusion_policy(loaded_funds: mstarpy.Funds):
     ----------
     loaded_funds: mstarpy.Funds
         class mstarpy.Funds instantiated with selected funds
-
     """
     exclusion_policy = mstarpy_model.load_exclusion_policy(loaded_funds)
 
@@ -75,61 +72,56 @@ def display_historical(
         type of comparison, can be index, category, both
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> f = openbb.funds.load("Vanguard", "US")
+    >>> openbb.funds.historical_chart(f)
     """
 
     title = f"Performance of {loaded_funds.name}"
+    start_date_dt = pd.to_datetime(start_date)
+    end_date_dt = pd.to_datetime(end_date)
+    df = mstarpy_model.get_historical(
+        loaded_funds, start_date_dt, end_date_dt, comparison
+    )
+
+    if df.empty:
+        return None
 
     if not comparison:
-        data = loaded_funds.nav(start_date, end_date, frequency="daily")
         fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Nav").set_title(title)
-
-        df = pd.DataFrame(data)
-        df["date"] = pd.to_datetime(df["date"])
         fig.add_scatter(
-            x=df.date,
+            x=df.index,
             y=df.nav,
             name=f"{loaded_funds.name}",
             mode="lines",
         )
 
     else:
-        data = loaded_funds.historicalData()
-        comparison_list = {
-            "index": [
-                "fund",
-                "index",
-            ],
-            "category": ["fund", "category"],
-            "both": ["fund", "index", "category"],
-        }
         fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Performance (Base 100)")
-
-        for x in comparison_list[comparison]:
-            df = pd.DataFrame(data["graphData"][x])
-            df["date"] = pd.to_datetime(df["date"])
-            df = df.loc[(df["date"] >= start_date) & (df["date"] <= end_date)]
-            df["pct"] = (df["value"] / df["value"].shift(1) - 1).fillna(0)
-            df["base_100"] = 100 * np.cumprod(1 + df["pct"])
-
-            if x == "fund":
+        data = loaded_funds.historicalData()
+        for col in df.columns:
+            if col == "fund":
                 label = f"funds : {loaded_funds.name}"
             else:
-                key = f"{x}Name"
+                key = f"{col}Name"
                 if key in data:
-                    label = f"{x} : {data[key]}"
+                    label = f"{col} : {data[key]}"
                     title += f" vs {label},"
                 else:
-                    label = x
+                    label = col
 
             fig.add_scatter(
-                x=df.date,
-                y=df.base_100,
+                x=df.index,
+                y=df[col],
                 name=f"{label}",
                 mode="lines",
             )
 
-        fig.set_title(title.rstrip(","), wrap=True, wrap_width=70)
-        fig.update_layout(margin=dict(t=65))
+    fig.set_title(title.rstrip(","), wrap=True, wrap_width=70)
+    fig.update_layout(margin=dict(t=65))
 
     return fig.show(external=external_axes)
 
@@ -142,10 +134,8 @@ def display_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
     ----------
     loaded_funds: mstarpy.Funds
         class mstarpy.Funds instantiated with selected funds
-
     holding_type : str
         type of holdings, can be all, equity, bond, other
-
     """
 
     holdings = mstarpy_model.load_holdings(loaded_funds, holding_type)
@@ -175,10 +165,13 @@ def display_load(
     ----------
     term : str
         String that will be searched for
-
     country: str
         Country to filter on
 
+    Returns
+    -------
+    mstarpy.Funds
+        class mstarpy.Funds instantiated with selected funds
     """
     iso_country = mapping_country[country] if country else ""
     funds = mstarpy_model.load_funds(term, country=iso_country)
@@ -206,7 +199,7 @@ def display_search(
         Number to show
     """
     iso_country = mapping_country[country] if country else ""
-    searches = mstarpy_model.search_funds(term, country=iso_country, pageSize=limit)
+    searches = mstarpy_model.search_funds(term, country=iso_country, limit=limit)
     if searches.empty:
         console.print("No matches found.")
         return
@@ -238,41 +231,54 @@ def display_sector(
         can be equity or fixed income
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
+
+    Returns
+    -------
+    fig : plotly.graph_objects.Figure
+        Plotly figure object
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> f = openbb.funds.load("Vanguard", "US")
+    >>> openbb.funds.sector_chart(f)
     """
-    key = "EQUITY" if asset_type == "equity" else "FIXEDINCOME"
 
-    d = loaded_funds.sector()[key]
-    fig = OpenBBFigure()
+    df = mstarpy_model.get_sector(loaded_funds, asset_type)
 
-    width = -0.3
+    if not df.empty:
+        fig = OpenBBFigure()
 
-    title = "Sector breakdown of"
-    for x in ["fund", "index", "category"]:
-        name = d[f"{x}Name"]
-        data = d[f"{x}Portfolio"]
+        width = -0.3
 
-        p_date = data["portfolioDate"]
-        portfolio_date = p_date[:10] if p_date else ""
-        data.pop("portfolioDate")
+        title = "Sector breakdown of"
+        for x in ["fund", "index", "category"]:
+            name = df[f"{x}Name"].iloc[0]
+            data = df[f"{x}Portfolio"].to_dict()
 
-        labels = list(data.keys())
-        values = list(data.values())
+            p_date = data["portfolioDate"]
+            portfolio_date = p_date[:10] if p_date else ""
+            data.pop("portfolioDate")
 
-        # if all values are 0, skip
-        values = [0 if v is None else v for v in values]
-        if sum(values) == 0:
-            continue
+            labels = list(data.keys())
+            values = list(data.values())
 
-        fig.add_bar(
-            x=labels,
-            y=values,
-            name=f"{x} : {name} - {portfolio_date}",
-        )
-        width += 0.3  # the width of the bars
+            # if all values are 0, skip
+            values = [0 if v is None else v for v in values]
+            if sum(values) == 0:
+                continue
 
-        title += f" {name},"
+            fig.add_bar(
+                x=labels,
+                y=values,
+                name=f"{x} : {name} - {portfolio_date}",
+            )
+            width += 0.3  # the width of the bars
 
-    fig.update_layout(margin=dict(t=45), xaxis=dict(tickangle=-15))
-    fig.set_title(title.rstrip(","), wrap=True, wrap_width=60)
+            title += f" {name},"
 
-    return fig.show(external=external_axes)
+        fig.update_layout(margin=dict(t=45), xaxis=dict(tickangle=-15))
+        fig.set_title(title.rstrip(","), wrap=True, wrap_width=60)
+
+        return fig.show(external=external_axes)
+    return None

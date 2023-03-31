@@ -22,7 +22,7 @@ function App() {
     process.env.NODE_ENV === "production" ? null : JSON.parse(cryptoData)
   );
   const [title, setTitle] = useState("Interactive Table");
-  const [source, setSource] = useState("");
+  // const [source, setSource] = useState("");
 
   if (process.env.NODE_ENV === "production") {
     useEffect(() => {
@@ -34,9 +34,9 @@ function App() {
           if (data.title && typeof data.title === "string") {
             setTitle(data.title);
           }
-          if (data.source && typeof data.source === "string") {
-            setSource(data.source);
-          }
+          // if (data.source && typeof data.source === "string") {
+          //   setSource(data.source);
+          // }
           clearInterval(interval);
         }
       }, 100);
@@ -72,11 +72,11 @@ function App() {
   const transformedData = transformData(data);
 
   return (
-    <div className="relative h-full bg-black">
+    <div className="relative h-full bg-white dark:bg-black text-black dark:text-white">
       <DndProvider backend={HTML5Backend}>
         {transformedData && (
           <Table
-            source={source}
+            // source={source}
             title={title}
             data={transformedData.data}
             columns={transformedData.columns}
