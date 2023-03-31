@@ -40,9 +40,9 @@ def display_news(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df, number = newsapi_model.get_news(query, limit, start_date, show_newest, sources)
+    df = newsapi_model.get_news(query, limit, start_date, show_newest, sources)
     if not df.empty:
-        print_rich_table(df, title=f"News - {number} articles", export=bool(export))
+        print_rich_table(df, title="News - articles", export=bool(export))
 
     export_data(
         export,

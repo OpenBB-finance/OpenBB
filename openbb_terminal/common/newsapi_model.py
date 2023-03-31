@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import Optional, Tuple
+from typing import Optional
 
 import pandas as pd
 
@@ -23,7 +23,7 @@ def get_news(
     start_date: Optional[str] = None,
     show_newest: bool = True,
     sources: str = "",
-) -> Tuple[pd.DataFrame, int]:
+) -> pd.DataFrame:
     """Get news for a given term. [Source: NewsAPI]
 
     Parameters
@@ -39,8 +39,8 @@ def get_news(
 
     Returns
     -------
-    Tuple[pd.DataFrame, int]
-        DataFrame with news articles and number of articles found
+    pd.DataFrame
+        DataFrame with columns Date, Description, URL
     """
 
     if start_date is None:
@@ -79,9 +79,9 @@ def get_news(
         df = pd.DataFrame(articles)
         df["publishedAt"] = pd.to_datetime(df["publishedAt"])
         df["publishedAt"].apply(lambda x: x.strftime("%Y-%m-%d %H:%M:%S"))
-        df = df[["publishedAt", "description", "url", "author"]]
-        df.columns = ["Date", "Description", "URL", "Author"]
+        df = df[["publishedAt", "description", "url"]]
+        df.columns = ["Date", "Description", "URL"]
         df = df[:limit]
-        return df, len(articles)
+        return df
 
-    return pd.DataFrame(), 0
+    return pd.DataFrame()
