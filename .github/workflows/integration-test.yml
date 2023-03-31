@@ -5,6 +5,7 @@ on:
     branches:
       - release/*
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -41,7 +42,7 @@ jobs:
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
-        version: 1.3.2
+        version: 1.4.0
         virtualenvs-create: true
         virtualenvs-in-project: true
 

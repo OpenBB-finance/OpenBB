@@ -7,10 +7,7 @@ from datetime import datetime
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import (
-    PreferencesModel,
-    copy_user,
-)
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks import stocks_helper, stocks_view

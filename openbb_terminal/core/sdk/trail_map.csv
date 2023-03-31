@@ -267,6 +267,13 @@ forex.oanda.positionbook,forex_oanda_model.positionbook_plot_data_request,forex_
 forex.oanda.price,forex_oanda_model.fx_price_request,forex_oanda_view.get_fx_price
 forex.oanda.summary,forex_oanda_model.account_summary_request,forex_oanda_view.get_account_summary
 forex.quote,forex_sdk_helpers.quote,
+funds.load,funds_mstarpy_model.load_funds,
+funds.search,funds_mstarpy_model.search_funds,
+funds.holdings,funds_mstarpy_model.load_holdings,
+funds.exclusion,funds_mstarpy_model.load_exclusion_policy,
+funds.carbon,funds_mstarpy_model.load_carbon_metrics,
+funds.historical,funds_mstarpy_model.get_historical,funds_mstarpy_view.display_historical
+funds.sector,funds_mstarpy_model.get_sector,funds_mstarpy_view.display_sector
 futures.curve,futures_yfinance_model.get_curve_futures,futures_yfinance_view.display_curve
 futures.historical,futures_sdk_model.get_historical,futures_yfinance_view.display_historical
 futures.search,futures_yfinance_model.get_search_futures,

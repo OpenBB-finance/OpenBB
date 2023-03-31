@@ -192,6 +192,7 @@ function changeColor() {
     globals.color_picker = null;
   }
 }
+
 function uploadImage() {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
@@ -233,18 +234,34 @@ function uploadImage() {
     });
 }
 
-function downloadImage() {
+function downloadImage(filename, extension) {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
-  domtoimage
-    .toPng(document.getElementById("openbb_container"))
+
+  let imageDownload = undefined;
+
+  if (extension == "png") {
+    imageDownload = domtoimage.toPng;
+  } else if (extension == "jpeg") {
+    imageDownload = domtoimage.toJpeg;
+  // } else if (extension == "svg") {
+  //   imageDownload = domtoimage.toSvg;
+  } else if (["svg", "pdf"].includes(extension)) {
+    Plotly.downloadImage(globals.CHART_DIV, {
+      format: "svg",
+      height: globals.CHART_DIV.clientHeight,
+      width: globals.CHART_DIV.clientWidth,
+      filename: filename,
+    });
+    return;
+  } else {
+    console.log("Invalid extension");
+    return;
+  }
+  imageDownload(document.getElementById("openbb_container"))
     .then(function (dataUrl) {
-      let img = new Image(
-        globals.CHART_DIV.clientWidth,
-        globals.CHART_DIV.clientHeight
-      );
-      img.src = dataUrl;
-      downloadURI(dataUrl, globals.filename + ".png");
+      downloadURI(dataUrl, filename + "." + extension);
+      loader.classList.remove("show");
     })
     .catch(function (error) {
       console.error("oops, something went wrong!", error);
