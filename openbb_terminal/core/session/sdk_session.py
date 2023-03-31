@@ -86,11 +86,10 @@ def logout():
     >>> openbb.logout()
     """
     current_user = get_current_user()
-    local_user = get_current_user()
     session_model.logout(
         auth_header=current_user.profile.get_auth_header(),
         token=current_user.profile.token,
-        guest=local_user,
+        guest=is_local(),
     )
 
 
