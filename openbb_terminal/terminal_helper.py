@@ -69,7 +69,7 @@ def print_goodbye():
 
     console.print(
         "Join us           : [cmds]https://openbb.co/discord[/cmds]\n"
-        "Follow us         : [cmds]https://twitter.com/openbb_finance[/cmds]\n"
+        "Follow us         : [cmds]https://openbb.co/twitter[/cmds]\n"
         "Ask support       : [cmds]https://openbb.co/support[/cmds]\n"
         "Request a feature : [cmds]https://openbb.co/request-a-feature[/cmds]\n"
     )
@@ -129,60 +129,65 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://my.openbb.dev/app/terminal", command=None, arg_type=""
+    path, url="http://localhost:8009/app/terminal",#"https://my.openbb.dev/app/terminal", 
+    command=None, arg_type=""
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
     if path == "/" and command is None:
-        path = "/guides"
+        path = "/guides?path=/usage/basics"
         command = ""
     elif "keys" in path:
-        path = "/usage?full=1&path=/guides/api-keys"
+        path = "/guides?path=/usage/guides/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/usage?path=/guides/customizing-the-terminal"
+        path = "/guides?path=/usage/guides/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/usage?path=/guides/customizing-the-terminal"
+        path = "/guides?path=/usage/guides/customizing-the-terminal#using-the-feature-flags-menu"
         command = ""
     elif "sources" in path:
-        path = "/usage?path=/guides/changing-sources"
-        command = ""
-    elif "params" in path:
-        path = "/usage?path=/intros/portfolio/po"
+        path = "/guides?path=/usage/guides/changing-sources"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
-            path = f"/reference?path={path}"
+            if command == "settings" or command == "featflags":
+                path = "/guides?path=/usage/guides/customizing-the-terminal"
+                command = ""
+            else:
+                path = f"/reference?path={path}"
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
-                path = f"/usage?path=/intros/common/{menu}"
+                path = f"/guides?path=/usage/intros/common/{menu}"
             elif command == "forecast":
                 command = ""
-                path = "/usage?path=/intros/forecast"
+                path = "/guides?path=/usage/intros/forecast"
             else:
-                path = f"/usage?path=/intros/{path}"
+                path = f"/guides?path=/usage/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
             path = (
-                f"/usage?path=/intros/common/{menu}"
+                f"/guides?path=/usage/intros/common/{menu}"
                 if menu in ["ta", "ba", "qa"]
-                else f"/usage?path=/intros/{path}"
+                else f"/guides?path=/usage/intros/{path}"
             )
 
     if command:
         if command == "keys":
-            path = "/usage?full=1&path=/guides/api-keys"
+            path = "/guides?path=/usage/guides/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/usage?path=/guides/customizing-the-terminal"
+            path = "/guides?path=/usage/guides/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/usage?path=/guides/changing-sources"
+            path = "/guides?path=/usage/guides/changing-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/usage?path=/guides/scripts-and-routines"
+            path = "/guides?path=/usage/guides/scripts-and-routines"
+            command = ""
+        elif command == "sources":
+            path = "/guides?path=/usage/guides/changing-sources"
             command = ""
         elif command in [
             "intro",
@@ -196,7 +201,7 @@ def open_openbb_documentation(
             path = "/guides"
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/guides?path=/intros/common/{command}"
+            path = f"/guides?path=/usage/intros/common/{command}"
             command = ""
 
         path += command
