@@ -130,7 +130,7 @@ def update_terminal():
 
 def open_openbb_documentation(
     path,
-    url="http://localhost:8009/app/terminal",  # "https://my.openbb.dev/app/terminal",
+    url="https://my.openbb.dev/app/terminal",
     command=None,
     arg_type="",
 ):
@@ -150,6 +150,9 @@ def open_openbb_documentation(
         command = ""
     elif "sources" in path:
         path = "/guides?path=/usage/guides/changing-sources"
+        command = ""
+    elif "account" in path:
+        path = "/guides?path=/usage/guides/basics"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
@@ -199,6 +202,7 @@ def open_openbb_documentation(
             "update",
             "wiki",
             "news",
+            "account"
         ]:
             path = "/guides"
             command = ""
