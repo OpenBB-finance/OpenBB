@@ -118,6 +118,9 @@ def test_logout_user(mocker, guest):
     mock_delete_session = mocker.patch(path + "Hub.delete_session")
     mock_remove_session_file = mocker.patch(path + "Local.remove_session_file")
     mock_remove_cli_history_file = mocker.patch(path + "Local.remove_cli_history_file")
+    mock_remove_log_handlers = mocker.patch(path + "remove_log_handlers")
+    mock_set_default_user = mocker.patch(path + "set_default_user")
+    mock_setup_logging = mocker.patch(path + "setup_logging")
     mock_plt_close = mocker.patch(path + "plt.close")
 
     auth_header = "Bearer test_token"
@@ -128,4 +131,7 @@ def test_logout_user(mocker, guest):
         mock_delete_session.assert_called_once_with(auth_header, token)
         mock_remove_session_file.assert_called_once()
     mock_remove_cli_history_file.assert_called_once()
+    mock_remove_log_handlers.assert_called_once()
+    mock_set_default_user.assert_called_once()
+    mock_setup_logging.assert_called_once()
     mock_plt_close.assert_called_once()
