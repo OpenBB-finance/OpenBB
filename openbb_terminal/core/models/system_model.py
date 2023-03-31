@@ -34,6 +34,9 @@ class SystemModel(BaseModel):
     LOGGING_SUPPRESS: bool = False
     LOG_COLLECT: bool = True
 
+    # Personalization section
+    DISABLE_STREAMLIT_WARNING: bool = False
+
     # Others
     TEST_MODE: bool = False
     DEBUG_MODE: bool = False

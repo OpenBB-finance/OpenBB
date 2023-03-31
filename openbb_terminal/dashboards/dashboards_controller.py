@@ -18,6 +18,10 @@ import dotenv
 import numpy as np
 import psutil
 
+from openbb_terminal.core.session.current_system import (
+    get_current_system,
+    set_system_variable,
+)
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY, SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
@@ -393,15 +397,10 @@ def is_streamlit_activated() -> bool:
         )
         return False
 
-    def _set_key():
-        dotenv.set_key(
-            SETTINGS_ENV_FILE,
-            "OPENBB_DISABLE_STREAMLIT_WARNING",
-            "1",
-        )
-        os.environ["OPENBB_DISABLE_STREAMLIT_WARNING"] = "1"
+    def _disable_warning():
+        set_system_variable("DISABLE_STREAMLIT_WARNING", True)
 
-    if load_env_vars("OPENBB_DISABLE_STREAMLIT_WARNING", strtobool, False):
+    if get_current_system().DISABLE_STREAMLIT_WARNING:
         return True
 
     run_activate = console.input(
@@ -414,21 +413,21 @@ def is_streamlit_activated() -> bool:
         return _declined()
 
     if not run_activate:
-        _set_key()
+        _disable_warning()
         return True
 
     try:
         console.print("\n[green]Activating streamlit. This may take a few seconds.[/]")
         activate = os.system("streamlit activate")  # nosec: B605 B607
         if activate == 0:
-            _set_key()
+            _disable_warning()
             return True
 
         already_activated = console.input(
             "\n[yellow]Was streamlit already activated? Y/n?[/]"
         ).lower()
         if already_activated == "y":
-            _set_key()
+            _disable_warning()
             return True
         return _declined()
 
