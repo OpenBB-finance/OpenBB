@@ -84,7 +84,6 @@ class TerminalStyle:
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
-        self.load_style(plt_style)
         self.apply_console_style(console_style)
 
     def apply_console_style(self, style: Optional[str] = "") -> None:
