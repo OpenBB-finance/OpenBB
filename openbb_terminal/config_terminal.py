@@ -27,20 +27,6 @@ def start_plot_backend():
     plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
 
 
-def change_debug_mode(new_value: bool):
-    """Change the debug mode value"""
-    current_system = get_current_system()
-    updated_system = dataclasses.replace(current_system, DEBUG_MODE=new_value)  # type: ignore
-    set_current_system(updated_system)
-
-
-def change_log_collect(new_value: bool):
-    """Change the log collect value"""
-    current_system = get_current_system()
-    updated_system = dataclasses.replace(current_system, LOG_COLLECT=new_value)  # type: ignore
-    set_current_system(updated_system)
-
-
 def setup_i18n(i18n_path: Path = I18N_DICT_LOCATION):
     """Select the terminal translation language."""
 
