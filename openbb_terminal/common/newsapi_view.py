@@ -5,8 +5,6 @@ import logging
 import os
 from typing import Optional
 
-import pandas as pd
-
 from openbb_terminal.common import newsapi_model
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -18,7 +16,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_NEWS_TOKEN"])
 def display_news(
     query: str,
-    limit: int = 3,
+    limit: int = 10,
     start_date: Optional[str] = None,
     show_newest: bool = True,
     sources: str = "",
@@ -42,15 +40,14 @@ def display_news(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    tables = newsapi_model.get_news(query, limit, start_date, show_newest, sources)
-    if tables:
-        for table in tables:
-            print_rich_table(table[0], title=table[1]["title"], export=bool(export))
+    df, number = newsapi_model.get_news(query, limit, start_date, show_newest, sources)
+    if not df.empty:
+        print_rich_table(df, title=f"News - {number} articles", export=bool(export))
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"news_{query}_{'_'.join(sources)}",
-        pd.DataFrame(tables),
+        df,
         sheet_name,
     )

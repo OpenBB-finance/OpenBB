@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, List, Optional, Tuple
+from typing import Optional, Tuple
 
 import pandas as pd
 
@@ -23,7 +23,7 @@ def get_news(
     start_date: Optional[str] = None,
     show_newest: bool = True,
     sources: str = "",
-) -> List[Tuple[pd.DataFrame, Any]]:
+) -> Tuple[pd.DataFrame, int]:
     """Get news for a given term. [Source: NewsAPI]
 
     Parameters
@@ -39,9 +39,8 @@ def get_news(
 
     Returns
     -------
-    tables : List[Tuple[pd.DataFrame, dict]]
-        List of tuples containing news df in first index,
-        dict containing title of news df.
+    Tuple[pd.DataFrame, int]
+        DataFrame with news articles and number of articles found
     """
 
     if start_date is None:
@@ -56,66 +55,33 @@ def get_news(
         if "," in sources:
             sources = ".com,".join(sources.split(","))
         link += f"&domains={sources}.com"
-
     link += f"&apiKey={get_current_user().credentials.API_NEWS_TOKEN}"
-
     response = request(link)
-
     articles = {}
 
-    # Check that the API response was successful
     if response.status_code == 200:
         response_json = response.json()
-        console.print(
-            f"{response_json['totalResults']} news articles for",
-            f" {query} were found since {start_date}\n",
-        )
-
         articles = (
             response_json["articles"]
             if show_newest
             else response_json["articles"][::-1]
         )
-
     elif response.status_code == 426:
         console.print(f"Error in request: {response.json()['message']}", "\n")
-
     elif response.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
-
     elif response.status_code == 429:
         console.print("[red]Exceeded number of calls per minute[/red]\n")
-
     else:
         console.print(f"Error in request: {response.json()['message']}", "\n")
 
-    tables: List[Tuple[pd.DataFrame, dict]] = []
     if articles:
-        for idx, article in enumerate(articles):
-            # Unnecessary to use source name because contained in link article["source"]["name"]
-            if "description" in article:
-                data = [
-                    [article["publishedAt"].replace("T", " ").replace("Z", "")],
-                    [f"{article['description']}"],
-                    [article["url"]],
-                ]
-                table = pd.DataFrame(
-                    data, index=["published", "content", "link"], columns=["Content"]
-                )
+        df = pd.DataFrame(articles)
+        df["publishedAt"] = pd.to_datetime(df["publishedAt"])
+        df["publishedAt"].apply(lambda x: x.strftime("%Y-%m-%d %H:%M:%S"))
+        df = df[["publishedAt", "description", "url", "author"]]
+        df.columns = ["Date", "Description", "URL", "Author"]
+        df = df[:limit]
+        return df, len(articles)
 
-            else:
-                data = [
-                    [article["publishedAt"].replace("T", " ").replace("Z", "")],
-                    [article["url"]],
-                ]
-
-                table = pd.DataFrame(
-                    data, index=["published", "link"], columns=["Content"]
-                )
-
-            table.columns = table.columns.str.title()
-            tables.append((table, article))
-            if idx >= limit - 1:
-                break
-
-    return tables
+    return pd.DataFrame(), 0
