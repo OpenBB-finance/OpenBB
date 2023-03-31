@@ -88,13 +88,13 @@ def get_next_earnings(limit: int = 5, start_date: date = date.today()) -> DataFr
         }
     )
 
-    df_earnings = df_earnings[
-        df_earnings["Date"] <= pd.to_datetime(start_date + timedelta(days=limit))
-    ]
-
     if df_earnings.empty:
         console.print("No earnings found. Try adjusting the date.\n")
         return pd.DataFrame()
+
+    df_earnings = df_earnings[
+        df_earnings["Date"] <= pd.to_datetime(start_date + timedelta(days=limit))
+    ]
 
     return df_earnings
 
