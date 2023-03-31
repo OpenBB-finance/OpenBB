@@ -36,6 +36,8 @@ class SystemModel(BaseModel):
 
     # Personalization section
     DISABLE_STREAMLIT_WARNING: bool = False
+    DISABLE_FORECASTING_WARNING: bool = False
+    DISABLE_OPTIMIZATION_WARNING: bool = False
 
     # Others
     TEST_MODE: bool = False
