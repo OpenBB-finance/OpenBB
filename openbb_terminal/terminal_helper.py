@@ -129,8 +129,10 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="http://localhost:8009/app/terminal",#"https://my.openbb.dev/app/terminal", 
-    command=None, arg_type=""
+    path,
+    url="http://localhost:8009/app/terminal",  # "https://my.openbb.dev/app/terminal",
+    command=None,
+    arg_type="",
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
