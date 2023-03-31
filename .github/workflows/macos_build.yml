@@ -127,11 +127,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.items.name }}
-          path: OpenBBTerminalM1.pkg
+          path: ${{ matrix.items.name }}
       - name: Get contents from PkgUtil
         run: |
-          pkgutil --expand-full OpenBBTerminalM1.pkg extract/
-          rm -rf OpenBBTerminalM1.pkg
+          pkgutil --expand-full ${{ matrix.items.name }} extract/
+          rm -rf ${{ matrix.items.name }}
 
       - name: Run Integration Tests
         run: |
