@@ -197,7 +197,7 @@ function createInstaller() {
     log_info "Application installer generation process started.(3 Steps)"
     buildPackage
     chmod -R 754 "${TARGET_DIRECTORY}/darwinpkg"
-    buildProduct OpenBBTerminalM1.pkg
+    buildProduct "$3"
     log_info "Application installer generation steps finished."
 }
 
