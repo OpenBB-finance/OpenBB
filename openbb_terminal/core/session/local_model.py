@@ -79,7 +79,10 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
             return True
         return True
     except Exception:
-        console.print("\n[red]Failed to remove login file.[/red]")
+        console.print(
+            f"\n[bold red]Failed to remove {file_path}"
+            "\nPlease delete this file manually![/bold red]"
+        )
         return False
 
 
@@ -103,7 +106,10 @@ def remove_cli_history_file(file_path: Path = HIST_FILE_PATH) -> bool:
             return True
         return True
     except Exception:
-        console.print("\n[red]Failed to remove terminal history file.[/red]")
+        console.print(
+            f"\n[bold red]Failed to remove {file_path}"
+            "\nPlease delete this file manually![/bold red]"
+        )
         return False
 
 
