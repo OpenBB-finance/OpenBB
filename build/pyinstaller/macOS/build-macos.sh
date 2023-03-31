@@ -180,7 +180,7 @@ function buildPackage() {
     --root "${TARGET_DIRECTORY}/darwinpkg" \
     --identifier "OpenBB Terminal" \
     --ownership preserve \
-    "${TARGET_DIRECTORY}/package/${PRODUCT}.pkg"
+    "${TARGET_DIRECTORY}/package/${PRODUCT}"
 }
 
 # Creates the target/pkg folder. This includes the finished pkg file to let users download
