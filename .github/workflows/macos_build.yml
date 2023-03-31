@@ -62,6 +62,7 @@ jobs:
           pip list
           python -m pip install -r requirements-full.txt
           pip install -e .
+          pip list
 
       - name: Build Bundle
         run: build/pyinstaller/build4mac.sh
