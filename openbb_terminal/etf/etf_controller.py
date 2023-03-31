@@ -17,6 +17,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import (
     financedatabase_view,
     fmp_view,
+    stockanalysis_model,
     stockanalysis_view,
 )
 from openbb_terminal.etf.discovery import disc_controller
@@ -557,16 +558,52 @@ class ETFController(BaseController):
             console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
-    def call_ca(self, _):
+    def call_ca(self, other_args: List[str]):
         """Process ca command"""
-        if len(self.etf_holdings) > 0:
-            self.queue = ca_controller.ComparisonAnalysisController(
-                self.etf_holdings, self.queue
-            ).menu(custom_path_menu_above="/stocks/")
-        else:
-            console.print(
-                "Load a ticker with major holdings to compare them on this menu\n"
-            )
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ca",
+            description="Compare ETFs with each other",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            default=5,
+            help="Limit number of major holdings to compare",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+        )
+
+        if ns_parser:
+
+            if len(self.etf_holdings) == 0:
+                self.etf_holdings = list(
+                    stockanalysis_model.get_etf_holdings(self.etf_name)[
+                        : ns_parser.limit
+                    ].index
+                )
+                if len(self.etf_holdings) == 0:
+                    console.print(
+                        "Load a ticker with major holdings to compare them on this menu\n"
+                    )
+                self.queue = ca_controller.ComparisonAnalysisController(
+                    self.etf_holdings, self.queue
+                ).menu(custom_path_menu_above="/stocks/")
+            elif len(self.etf_holdings) > 0:
+                self.queue = ca_controller.ComparisonAnalysisController(
+                    self.etf_holdings, self.queue
+                ).menu(custom_path_menu_above="/stocks/")
 
     @log_start_end(log=logger)
     def call_disc(self, _):
