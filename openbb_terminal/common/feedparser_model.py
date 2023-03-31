@@ -13,7 +13,10 @@ from openbb_terminal.rich_config import console
 
 
 def get_news(
-    term: str = "", sources: str = "", sort: str = "published", display_message: bool = True
+    term: str = "",
+    sources: str = "",
+    sort: str = "published",
+    display_message: bool = True,
 ) -> pd.DataFrame:
     """Get news for a given term and source. [Source: Feedparser]
 

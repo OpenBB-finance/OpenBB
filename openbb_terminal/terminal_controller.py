@@ -23,12 +23,12 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich import panel
 
-from openbb_terminal.common import feedparser_view, ultima_newsmonitor_view
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.account.account_model import (
     get_login_called,
     set_login_called,
 )
+from openbb_terminal.common import feedparser_view, ultima_newsmonitor_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,

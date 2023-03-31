@@ -46,7 +46,7 @@ class OpenBBSDK:
         SDKLogger()
         self.login = lib.sdk_session.login
         self.logout = lib.sdk_session.logout
-        self.news = lib.common_feedparser_model.get_news
+        self.news = lib.common_ultima_newsmonitor_model.get_news
         self.whoami = lib.sdk_session.whoami
         SDKLogger._try_to_login(self)
 
@@ -213,6 +213,38 @@ class OpenBBSDK:
         return ctrl.EtfController()
 
     @property
+    def fixedincome(self):
+        """Fixedincome Submodule
+
+        Attributes:
+            `ameribor`: Obtain data for American Interbank Offered Rate (AMERIBOR)\n
+            `cp`: Obtain Commercial Paper data\n
+            `dwpcr`: Obtain data for the Discount Window Primary Credit Rate.\n
+            `ecb`: Obtain data for ECB interest rates.\n
+            `ecbycrv`: Gets euro area yield curve data from ECB.\n
+            `estr`: Obtain data for Euro Short-Term Rate (ESTR)\n
+            `fed`: Obtain data for Effective Federal Funds Rate.\n
+            `ffrmc`: Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate\n
+            `hqm`: The HQM yield curve represents the high quality corporate bond market, i.e.,\n
+            `icebofa`: Get data for ICE BofA US Corporate Bond Indices.\n
+            `icespread`: Get data for ICE BofA US Corporate Bond Spreads\n
+            `iorb`: Obtain data for Interest Rate on Reserve Balances.\n
+            `moody`: Get data for Moody Corporate Bond Index\n
+            `projection`: Obtain data for the Federal Reserve's projection of the federal funds rate.\n
+            `sofr`: Obtain data for Secured Overnight Financing Rate (SOFR)\n
+            `sonia`: Obtain data for Sterling Overnight Index Average (SONIA)\n
+            `spot`: The spot rate for any maturity is the yield on a bond that provides\n
+            `tbffr`: Get data for Selected Treasury Bill Minus Federal Funds Rate.\n
+            `tmc`: Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.\n
+            `treasury`: Gets interest rates data from selected countries (3 month and 10 year)\n
+            `usrates`: Plot various treasury rates from the United States\n
+            `ycrv`: Gets yield curve data from FRED.\n
+            `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
+        """
+
+        return model.FixedincomeRoot()
+
+    @property
     def forecast(self):
         """Forecasting Submodule
 
@@ -280,38 +312,6 @@ class OpenBBSDK:
         """
 
         return model.ForecastRoot()
-
-    @property
-    def fixedincome(self):
-        """Fixedincome Submodule
-
-        Attributes:
-            `ameribor`: Obtain data for American Interbank Offered Rate (AMERIBOR)\n
-            `cp`: Obtain Commercial Paper data\n
-            `dwpcr`: Obtain data for the Discount Window Primary Credit Rate.\n
-            `ecb`: Obtain data for ECB interest rates.\n
-            `ecbycrv`: Gets euro area yield curve data from ECB.\n
-            `estr`: Obtain data for Euro Short-Term Rate (ESTR)\n
-            `fed`: Obtain data for Effective Federal Funds Rate.\n
-            `ffrmc`: Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate\n
-            `hqm`: The HQM yield curve represents the high quality corporate bond market, i.e.,\n
-            `icebofa`: Get data for ICE BofA US Corporate Bond Indices.\n
-            `icespread`: Get data for ICE BofA US Corporate Bond Spreads\n
-            `iorb`: Obtain data for Interest Rate on Reserve Balances.\n
-            `moody`: Get data for Moody Corporate Bond Index\n
-            `projection`: Obtain data for the Federal Reserve's projection of the federal funds rate.\n
-            `sofr`: Obtain data for Secured Overnight Financing Rate (SOFR)\n
-            `sonia`: Obtain data for Sterling Overnight Index Average (SONIA)\n
-            `spot`: The spot rate for any maturity is the yield on a bond that provides\n
-            `tbffr`: Get data for Selected Treasury Bill Minus Federal Funds Rate.\n
-            `tmc`: Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.\n
-            `treasury`: Gets interest rates data from selected countries (3 month and 10 year)\n
-            `usrates`: Plot various treasury rates from the United States\n
-            `ycrv`: Gets yield curve data from FRED.\n
-            `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
-        """
-
-        return model.FixedincomeRoot()
 
     @property
     def forex(self):
@@ -400,6 +400,7 @@ class OpenBBSDK:
             `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
             `twitter`: Set Twitter key\n
+            `ultimainsights`: Set Ultima Insights key\n
             `walert`: Set Walert key\n
         """
 
@@ -515,6 +516,7 @@ class OpenBBSDK:
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
+            `news`: Get news for a given term and source. [Source: Feedparser]\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Gets ticker quote from FMP\n
             `search`: Search selected query for tickers.\n

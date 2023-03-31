@@ -2756,7 +2756,9 @@ def check_ultimainsights_key(show_output: bool = False) -> str:
     else:
         r = request(
             "https://api.ultimainsights.ai/v1/checkAPIKey",
-            headers={'Authorization': f'Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}'},
+            headers={
+                "Authorization": f"Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}"
+            },
         )
         if r.status_code in [403, 401, 429]:
             logger.warning("Ultima Insights key defined, test failed")

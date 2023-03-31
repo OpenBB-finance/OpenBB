@@ -4,7 +4,11 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.common.ultima_newsmonitor_model import get_news, supported_terms, get_company_info
+from openbb_terminal.common.ultima_newsmonitor_model import (
+    get_company_info,
+    get_news,
+    supported_terms,
+)
 
 
 # @pytest.mark.default_cassette("test_get_news.yaml")
@@ -33,7 +37,10 @@ def test_supported_terms(recorder):
 
 # @pytest.mark.default_cassette("test_get_company_info.yaml")
 # @pytest.mark.vcr
-@pytest.mark.parametrize("ticker", ["AAPL", "TSLA", "FCX", "asdf$#"], )
+@pytest.mark.parametrize(
+    "ticker",
+    ["AAPL", "TSLA", "FCX", "asdf$#"],
+)
 def test_get_company_info(ticker, recorder):
     df = get_company_info(ticker=ticker)
     recorder.capture(df)

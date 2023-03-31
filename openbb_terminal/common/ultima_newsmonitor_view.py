@@ -6,7 +6,8 @@ import os
 from typing import Optional
 
 import pandas as pd
-from openbb_terminal.common import ultima_newsmonitor_model, feedparser_model
+
+from openbb_terminal.common import feedparser_model, ultima_newsmonitor_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
@@ -39,17 +40,25 @@ def display_news(
         the column to sort by
     """
     console.print()
-    company_name = ultima_newsmonitor_model.get_company_info(term)['companyShortName']
+    company_name = ultima_newsmonitor_model.get_company_info(term)["companyShortName"]
     # TODO: calling them all together does not work with feedparser
-    bbg = feedparser_model.get_news(company_name, sources='bloomberg', sort='published', display_message=False)
-    wsj = feedparser_model.get_news(company_name, sources='wsj', sort='published', display_message=False)
-    reuters = feedparser_model.get_news(company_name, sources='reuters', sort='published', display_message=False)
-    cnbc = feedparser_model.get_news(company_name, sources='cnbc', sort='published', display_message=False)
+    bbg = feedparser_model.get_news(
+        company_name, sources="bloomberg", sort="published", display_message=False
+    )
+    wsj = feedparser_model.get_news(
+        company_name, sources="wsj", sort="published", display_message=False
+    )
+    reuters = feedparser_model.get_news(
+        company_name, sources="reuters", sort="published", display_message=False
+    )
+    cnbc = feedparser_model.get_news(
+        company_name, sources="cnbc", sort="published", display_message=False
+    )
     breaking_news = pd.concat([bbg, wsj, reuters, cnbc])
-    breaking_news = breaking_news.sort_values(by='published', ascending=False)
+    breaking_news = breaking_news.sort_values(by="published", ascending=False)
     b_n = []
     for _, row in breaking_news.iterrows():
-        if pd.to_datetime(row['published']).tz_convert(None) > pd.to_datetime('today'):
+        if pd.to_datetime(row["published"]).tz_convert(None) > pd.to_datetime("today"):
             b_n.append(row)
     breaking_news = pd.DataFrame(b_n)
     if len(breaking_news) > 0:
@@ -60,11 +69,13 @@ def display_news(
         console.print("------------------------")
 
     articles = ultima_newsmonitor_model.get_news(term, sources, sort)
-    console.print("News Powered by [purple]ULTIMA INSIGHTS[/purple].\nFor more info: https://www.ultimainsights.ai\n")
-    articles = articles.head(limit).sort_values(by='relevancyScore', ascending=False)
+    articles = articles.head(limit).sort_values(by="relevancyScore", ascending=False)
     for _, row in articles.iterrows():
-        console.print(f"> {row['articlePublishedDate']} - {row['articleHeadline']} -> {row['riskCategory']} "
-                      f"(\x1B[3m{row['riskExtDescription']}\x1B[0m) -> relevancy score: {round(row['relevancyScore'], 2) if row['relevancyScore'] < 5 else 5}/5 Stars")
+        console.print(
+            f"> {row['articlePublishedDate']} - {row['articleHeadline']} -> {row['riskCategory']} "
+            f"(\x1B[3m{row['riskExtDescription']}\x1B[0m) -> "
+            f"relevancy score: {round(row['relevancyScore'], 2) if row['relevancyScore'] < 5 else 5}/5 Stars"
+        )
         console.print(row["articleURL"] + "\n")
     console.print()
 

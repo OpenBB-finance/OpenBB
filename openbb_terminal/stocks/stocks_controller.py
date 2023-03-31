@@ -9,7 +9,11 @@ from typing import List, Optional
 
 import financedatabase as fd
 
-from openbb_terminal.common import feedparser_view, newsapi_view, ultima_newsmonitor_view
+from openbb_terminal.common import (
+    feedparser_view,
+    newsapi_view,
+    ultima_newsmonitor_view,
+)
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -552,7 +556,7 @@ class StocksController(StockBaseController):
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
             if self.ticker:
-                if ns_parser.source == 'UltimaInsights':
+                if ns_parser.source == "UltimaInsights":
                     query = str(self.ticker).upper()
                     if query in ultima_newsmonitor_view.supported_terms():
                         ultima_newsmonitor_view.display_news(

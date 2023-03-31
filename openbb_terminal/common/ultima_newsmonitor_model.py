@@ -1,12 +1,12 @@
 """ Ultima Insights News Monitor Model """
 __docformat__ = "numpy"
 
+import logging
 import os
 from typing import List
 from urllib.parse import quote
 
 import certifi
-import logging
 import pandas as pd
 
 from openbb_terminal.core.session.current_user import get_current_user
@@ -14,11 +14,10 @@ from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
-
 logger = logging.getLogger(__name__)
 
 
-base_url = 'https://api.ultimainsights.ai/v1'
+base_url = "https://api.ultimainsights.ai/v1"
 
 
 @log_start_end(log=logger)
@@ -54,7 +53,9 @@ def get_news(
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
     current_user = get_current_user()
-    auth_header = {'Authorization': f'Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}'}
+    auth_header = {
+        "Authorization": f"Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}"
+    }
 
     have_data = False
     limit = 0
@@ -63,7 +64,7 @@ def get_news(
         if term:
             term = quote(term)
             term = term.upper()
-            data = request(f'{base_url}/getNewsArticles/{term}', headers=auth_header)
+            data = request(f"{base_url}/getNewsArticles/{term}", headers=auth_header)
         else:
             console.print("[red]No term specified. Unable to retrieve data\n[/red]")
             break
@@ -78,7 +79,9 @@ def get_news(
                 break
             limit = limit + 1
 
-        elif hasattr(data, "status") and data.status_code != 200:  # If data request failed
+        elif (
+            hasattr(data, "status") and data.status_code != 200
+        ):  # If data request failed
             console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
             break
         else:
@@ -99,15 +102,33 @@ def get_news(
                         newdata.append(entry)
 
         if newdata:
-            df = pd.DataFrame(newdata, columns=["articleHeadline", "articleURL", "articlePublishedDate",
-                                                "riskCategory", "riskExtDescription", "relevancyScore"])
+            df = pd.DataFrame(
+                newdata,
+                columns=[
+                    "articleHeadline",
+                    "articleURL",
+                    "articlePublishedDate",
+                    "riskCategory",
+                    "riskExtDescription",
+                    "relevancyScore",
+                ],
+            )
         else:
             return pd.DataFrame()
     else:
-        df = pd.DataFrame(data.json(), columns=["articleHeadline", "articleURL", "articlePublishedDate",
-                                                "riskCategory", "riskExtDescription", "relevancyScore"])
-    df = df[df['relevancyScore'] < 5]
-    df['riskExtDescription'] = df['riskExtDescription'].str.replace('\n', '')
+        df = pd.DataFrame(
+            data.json(),
+            columns=[
+                "articleHeadline",
+                "articleURL",
+                "articlePublishedDate",
+                "riskCategory",
+                "riskExtDescription",
+                "relevancyScore",
+            ],
+        )
+    df = df[df["relevancyScore"] < 5]
+    df["riskExtDescription"] = df["riskExtDescription"].str.replace("\n", "")
     df["articlePublishedDate"] = pd.to_datetime(df["articlePublishedDate"])
     df = df.sort_values(by=[sort], ascending=False)
 
@@ -130,7 +151,7 @@ def supported_terms() -> list:
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
     os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     os.environ["SSL_CERT_FILE"] = certifi.where()
-    data = request(f'{base_url}/supportedTickers')
+    data = request(f"{base_url}/supportedTickers")
     return list(data.json())
 
 
@@ -157,7 +178,9 @@ def get_company_info(ticker: str) -> dict:
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
     current_user = get_current_user()
-    auth_header = {'Authorization': f'Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}'}
+    auth_header = {
+        "Authorization": f"Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}"
+    }
 
-    data = request(f'{base_url}/getCompanyInfo/{ticker}', headers=auth_header)
+    data = request(f"{base_url}/getCompanyInfo/{ticker}", headers=auth_header)
     return data.json()
