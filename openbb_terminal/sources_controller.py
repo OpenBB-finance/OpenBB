@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 import argparse
 import json
 import logging
-import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -19,6 +18,7 @@ from openbb_terminal.core.session.current_user import (
     set_sources,
 )
 from openbb_terminal.core.session.hub_model import upload_config
+from openbb_terminal.core.session.sources_handler import read_sources
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -34,6 +34,7 @@ logger = logging.getLogger(__name__)
 def unique(sequence):
     seen = set()
     return [x for x in sequence if not (x in seen or seen.add(x))]
+
 
 # TODO: This menu needs to be refactored
 
@@ -65,30 +66,14 @@ class SourcesController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_json_doc(self):
-        """Update the json doc"""
+        """Update the json doc. If local, read from file."""
         if is_local():
-            sources_dict = self.load_sources_json_file()
+            sources_dict = read_sources(
+                Path(get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE)
+            )
             set_sources(sources_dict)
         self.json_doc = get_current_user().sources.sources_dict
         self.generate_commands_with_sources()
-
-    def load_sources_json_file(self) -> dict:
-        """Load the .json file
-
-        Returns
-        -------
-        dict
-            The json file content
-        """
-
-        SOURCES_FILE = Path(get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE)
-        if (
-            not os.getenv("TEST_MODE")
-            and SOURCES_FILE.exists()
-            and SOURCES_FILE.stat().st_size > 0
-        ):
-            with open(str(SOURCES_FILE)) as json_file:
-                return json.load(json_file)
 
     def generate_commands_with_sources(self):
         """Generate choices"""

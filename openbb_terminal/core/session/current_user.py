@@ -1,6 +1,7 @@
 # IMPORTS STANDARD
 import dataclasses
 from copy import deepcopy
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 # IMPORTS INTERNAL
@@ -18,7 +19,7 @@ from openbb_terminal.core.session.utils import load_dict_to_model
 __env_dict = read_env()
 __credentials = load_dict_to_model(__env_dict, CredentialsModel)
 __preferences = load_dict_to_model(__env_dict, PreferencesModel)
-__sources = SourcesModel(sources_dict=read_sources(__preferences.PREFERRED_DATA_SOURCE_FILE))  # type: ignore
+__sources = SourcesModel(sources_dict=read_sources(Path(__preferences.PREFERRED_DATA_SOURCE_FILE)))  # type: ignore
 
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
@@ -62,7 +63,9 @@ def set_default_user():
     env_dict = read_env()
     credentials = load_dict_to_model(env_dict, CredentialsModel)
     preferences = load_dict_to_model(env_dict, PreferencesModel)
-    sources = SourcesModel(sources_dict=read_sources())
+    sources = SourcesModel(
+        sources_dict=read_sources(Path(preferences.PREFERRED_DATA_SOURCE_FILE))
+    )
     profile = ProfileModel()
     local_user = UserModel(  # type: ignore
         credentials=credentials,
