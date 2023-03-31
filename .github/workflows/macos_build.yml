@@ -67,6 +67,7 @@ jobs:
       - name: Build Bundle
         run: build/pyinstaller/build4mac.sh
         shell: bash
+
       - name: Creating Application Keychain
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
@@ -88,6 +89,7 @@ jobs:
           security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
           echo "Setting Partition List"
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
+
       - name: Create Signed Package
         env:
           APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
@@ -100,15 +102,18 @@ jobs:
           build/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1 ${{ matrix.items.package }}
           mv build/pyinstaller/macOS/target/pkg/${{ matrix.items.package }} ${{ matrix.items.package }}
         shell: bash
+
       - name: Deleting Previous Keychain
         run: |
           echo "Deleting Previous Keychain to Clean Instance"
           rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
           rm -rf dist
           rm -rf DMG
+
       - name: Notorize DMG
         env:
           NOTARIZE_APPLE_ID: ${{ secrets.NOTARIZE_APPLE_ID }}
@@ -119,16 +124,19 @@ jobs:
       - name: Staple
         run: |
           xcrun stapler staple ${{ matrix.items.package }}
+
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
           rm -rf dist
           rm -rf DMG
+
       - name: Save Build Artifact PKG
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.items.name }}
           path: ${{ matrix.items.package }}
+          
       - name: Get contents from PkgUtil
         run: |
           pkgutil --expand-full ${{ matrix.items.package }} extract/
