@@ -98,7 +98,7 @@ jobs:
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
           build/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1
-          mv build/pyinstaller/macOS/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminalM1.pkg
+          mv build/pyinstaller/macOS/target/pkg/${{ matrix.items.package }} ${{ matrix.items.package }}
         shell: bash
       - name: Deleting Previous Keychain
         run: |
