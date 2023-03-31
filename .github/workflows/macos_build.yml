@@ -22,8 +22,8 @@ jobs:
     strategy:
       matrix:
         items: [
-          {os: [self-hosted, macos, ARM64], name: "OpenBBM1.pkg"},
-          {os: [self-hosted, macos, x64], name: "OpenBBIntel.pkg"}
+          {os: [self-hosted, macos, ARM64], name: "OpenBBM1.pkg", package: "OpenBBTerminalM1.pkg"},
+          {os: [self-hosted, macos, x64], name: "OpenBBIntel.pkg", package: "OpenBBTerminalIntel.pkg"}
         ]
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
@@ -128,11 +128,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.items.name }}
-          path: ${{ matrix.items.name }}
+          path: ${{ matrix.items.package }}
       - name: Get contents from PkgUtil
         run: |
-          pkgutil --expand-full ${{ matrix.items.name }} extract/
-          rm -rf ${{ matrix.items.name }}
+          pkgutil --expand-full ${{ matrix.items.package }} extract/
+          rm -rf ${{ matrix.items.package }}
 
       - name: Run Integration Tests
         run: |
