@@ -64,7 +64,11 @@ def get_news(
         if term:
             term = quote(term)
             term = term.upper()
-            data = request(f"{base_url}/getNewsArticles/{term}", headers=auth_header)
+            if term in supported_terms():
+                data = request(f"{base_url}/getNewsArticles/{term}", headers=auth_header)
+            else:
+                console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
+                break
         else:
             console.print("[red]No term specified. Unable to retrieve data\n[/red]")
             break
@@ -116,6 +120,8 @@ def get_news(
         else:
             return pd.DataFrame()
     else:
+        if not have_data:
+            return pd.DataFrame()
         df = pd.DataFrame(
             data.json(),
             columns=[
@@ -129,9 +135,9 @@ def get_news(
         )
     df = df[df["relevancyScore"] < 5]
     df["riskExtDescription"] = df["riskExtDescription"].str.replace("\n", "")
+    df['riskExtDescription'] = df['riskExtDescription'].str.replace('\n', '')
     df["articlePublishedDate"] = pd.to_datetime(df["articlePublishedDate"])
     df = df.sort_values(by=[sort], ascending=False)
-
     return df
 
 
@@ -182,5 +188,9 @@ def get_company_info(ticker: str) -> dict:
         "Authorization": f"Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}"
     }
 
-    data = request(f"{base_url}/getCompanyInfo/{ticker}", headers=auth_header)
-    return data.json()
+    if ticker in supported_terms():
+        data = request(f'{base_url}/getCompanyInfo/{ticker}', headers=auth_header)
+        return data.json()
+    else:
+        console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
+        return {}
