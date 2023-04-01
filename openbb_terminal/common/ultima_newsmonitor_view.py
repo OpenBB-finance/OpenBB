@@ -78,6 +78,7 @@ def display_news(
             f"relevancy score: {round(row['relevancyScore'], 2) if row['relevancyScore'] < 5 else 5}/5 Stars"
         )
         console.print(row["articleURL"] + "\n")
+    console.print("[red]To report any issues, please visit https://beta.ultimainsights.ai/my-account/support[/red]\n")
     console.print()
 
     export_data(
