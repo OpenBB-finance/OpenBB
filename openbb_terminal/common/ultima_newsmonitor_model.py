@@ -23,9 +23,9 @@ base_url = "https://api.ultimainsights.ai/v1"
 @log_start_end(log=logger)
 @check_api_key(["API_ULTIMAINSIGHTS_KEY"])
 def get_news(
-    term: str = "", sources: str = "", sort: str = "articlePublishedDate"
+    term: str = "", sort: str = "articlePublishedDate"
 ) -> pd.DataFrame:
-    """Get news for a given term and source. [Source: Feedparser]
+    """Get news for a given term and source. [Source: Ultima Insights News Monitor]
 
     Parameters
     ----------
@@ -64,6 +64,7 @@ def get_news(
         if term:
             term = quote(term)
             term = term.upper()
+            term = term.strip()
             if term in supported_terms():
                 data = request(f"{base_url}/getNewsArticles/{term}", headers=auth_header)
             else:
@@ -91,48 +92,19 @@ def get_news(
         else:
             # console.print("[red]Could not retrieve data\n[/red]")
             break
-
-    # Filter based on data sources
-    if sources:
-        newdata: List = []
-        for entry in list(data.json()):
-            # check if sources specified
-            if "," in sources:
-                if entry["articlePublisher"].lower().find(sources.lower()) != -1:
-                    newdata.append(entry)
-            else:
-                for s in sources.split(","):
-                    if entry["articlePublisher"].lower().find(s.lower()) != -1:
-                        newdata.append(entry)
-
-        if newdata:
-            df = pd.DataFrame(
-                newdata,
-                columns=[
-                    "articleHeadline",
-                    "articleURL",
-                    "articlePublishedDate",
-                    "riskCategory",
-                    "riskExtDescription",
-                    "relevancyScore",
-                ],
-            )
-        else:
-            return pd.DataFrame()
-    else:
-        if not have_data:
-            return pd.DataFrame()
-        df = pd.DataFrame(
-            data.json(),
-            columns=[
-                "articleHeadline",
-                "articleURL",
-                "articlePublishedDate",
-                "riskCategory",
-                "riskExtDescription",
-                "relevancyScore",
-            ],
-        )
+    if not data.json():
+        return pd.DataFrame()
+    df = pd.DataFrame(
+        data.json(),
+        columns=[
+            "articleHeadline",
+            "articleURL",
+            "articlePublishedDate",
+            "riskCategory",
+            "riskExtDescription",
+            "relevancyScore",
+        ],
+    )
     df = df[df["relevancyScore"] < 5]
     df["riskExtDescription"] = df["riskExtDescription"].str.replace("\n", "")
     df['riskExtDescription'] = df['riskExtDescription'].str.replace('\n', '')
