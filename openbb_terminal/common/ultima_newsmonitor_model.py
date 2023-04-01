@@ -31,8 +31,6 @@ def get_news(
     ----------
     term : str
         term to search on the news articles
-    sources: str
-        sources to exclusively show news from (separated by commas)
     sort: str
         the column to sort by
 
