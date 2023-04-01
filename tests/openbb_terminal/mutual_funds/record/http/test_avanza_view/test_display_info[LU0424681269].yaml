@@ -1,0 +1,87 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
+    method: GET
+    uri: https://www.avanza.se/_api/fund-guide/guide/207548
+  response:
+    body:
+      string: !!binary |
+        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
+        VOfy8n50cdV/Run3v/8H9nGKFgEhAAA=
+    headers:
+      AVANZA_TRACE_ID:
+      - 4d7cd7b970624cf3
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 01 Apr 2023 17:42:18 GMT
+      Keep-Alive:
+      - timeout=30
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, User-Agent
+    status:
+      code: 200
+      message: OK
+version: 1
