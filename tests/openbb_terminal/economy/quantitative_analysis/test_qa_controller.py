@@ -1,6 +1,5 @@
 # IMPORTATION STANDARD
 
-import datetime
 import os
 
 import pandas as pd
@@ -18,14 +17,6 @@ from openbb_terminal.economy.quantitative_analysis import qa_controller
 # pylint: disable=E1111
 # pylint: disable=C0302
 
-# These are for the MACRO tests
-# united_states_CPI
-# date
-# 1947-01-01          21.480000
-# 1947-02-01          21.620001
-# 1947-03-01          22.000000
-# 1947-04-01          22.000000
-# create a pandas dataframe from the above output
 MOCK_CPI = pd.DataFrame.from_dict(
     {
         "date": {
@@ -204,7 +195,10 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = economy_controller.EconomyController(queue=None).menu()
+    result_menu = qa_controller.QaController(
+        all_economy_data=MOCK_OBJ,
+        queue=None,
+    ).menu()
 
     assert result_menu == ["help"]
 
@@ -214,7 +208,7 @@ def test_menu_without_queue_completion(mocker):
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "openbb_terminal.economy.economy_controller"
+    path_controller = "openbb_terminal.economy.quantitative_analysis.qa_controller"
 
     # DISABLE AUTO-COMPLETION
     preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
@@ -244,22 +238,24 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch(
-        target=f"{path_controller}.EconomyController.switch",
+        target=f"{path_controller}.QaController.switch",
         new=mock_switch,
     )
 
-    result_menu = economy_controller.EconomyController(queue=None).menu()
+    result_menu = qa_controller.QaController(
+        all_economy_data=MOCK_OBJ,
+        queue=None,
+    ).menu()
 
     assert result_menu == ["help"]
 
 
-@pytest.mark.record_stdout
+@pytest.mark.record_verify_screen
 def test_print_help():
-    controller = economy_controller.EconomyController(queue=None)
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
     controller.print_help()
 
 
-@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "an_input, expected_queue",
     [
@@ -272,6 +268,7 @@ def test_print_help():
             "r",
             [
                 "quit",
+                "quit",
                 "reset",
                 "economy",
             ],
@@ -279,7 +276,7 @@ def test_print_help():
     ],
 )
 def test_switch(an_input, expected_queue):
-    controller = economy_controller.EconomyController(queue=None)
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
     queue = controller.switch(an_input=an_input)
 
     assert queue == expected_queue
@@ -289,24 +286,23 @@ def test_switch(an_input, expected_queue):
 def test_call_cls(mocker):
     mocker.patch("os.system")
 
-    controller = economy_controller.EconomyController(queue=None)
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
     controller.call_cls([])
 
     assert controller.queue == []
     os.system.assert_called_once_with("cls||clear")
 
 
-@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "func, queue, expected_queue",
     [
         (
             "call_exit",
             [],
-            ["quit", "quit"],
+            ["quit", "quit", "quit"],
         ),
-        ("call_exit", ["help"], ["quit", "quit", "help"]),
-        ("call_home", [], ["quit"]),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
         ("call_help", [], []),
         ("call_quit", [], ["quit"]),
         ("call_quit", ["help"], ["quit", "help"]),
@@ -314,6 +310,7 @@ def test_call_cls(mocker):
             "call_reset",
             [],
             [
+                "quit",
                 "quit",
                 "reset",
                 "economy",
@@ -324,6 +321,7 @@ def test_call_cls(mocker):
             ["help"],
             [
                 "quit",
+                "quit",
                 "reset",
                 "economy",
                 "help",
@@ -332,7 +330,7 @@ def test_call_cls(mocker):
     ],
 )
 def test_call_func_expect_queue(expected_queue, func, queue):
-    controller = economy_controller.EconomyController(queue=queue)
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=queue)
     result = getattr(controller, func)([])
 
     assert result is None
