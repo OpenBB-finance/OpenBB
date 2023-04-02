@@ -102,7 +102,7 @@ def setup_config_terminal(app_name: str = "gst"):
     init_userdata()
     # To avoid starting plots backend twice
     if app_name != "gst":
-        start_plot_backend(app_name)
+        start_plot_backend()
     setup_i18n()
     setup_version()
     setup_logging_app_name()
