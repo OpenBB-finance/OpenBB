@@ -18,9 +18,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def upcoming_earning_release_dates(
-    num_pages: int = 1,
-    limit: int = 10,
-    start_date: Optional[date] = None,
+    limit: int = 5,
+    start_date: date = date.today(),
     export: str = "",
     sheet_name: Optional[str] = None,
 ):
@@ -37,8 +36,8 @@ def upcoming_earning_release_dates(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    print(start_date)
-    df_earnings = seeking_alpha_model.get_next_earnings(num_pages, start_date)
+
+    df_earnings = seeking_alpha_model.get_next_earnings(limit, start_date)
 
     if df_earnings.empty:
         console.print("No upcoming earnings release dates found")
@@ -50,7 +49,6 @@ def upcoming_earning_release_dates(
         headers=df_earnings.columns,
         title="Upcoming Earnings Releases",
         export=bool(export),
-        limit=limit,
     )
 
     if export:
