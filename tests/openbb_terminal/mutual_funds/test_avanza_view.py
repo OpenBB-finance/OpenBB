@@ -5,7 +5,7 @@ import pytest
 from openbb_terminal.mutual_funds import avanza_view
 
 
-@pytest.mark.record_verify_screen
+@pytest.mark.record_http
 @pytest.mark.parametrize(
     "isin",
     ["LU0424681269"],

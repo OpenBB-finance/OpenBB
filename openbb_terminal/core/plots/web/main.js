@@ -104,7 +104,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             loadingOverlay("Saving Image");
             hideModebar();
             non_blocking(function () {
-              downloadImage();
+              downloadImage(globals.filename, "png");
               setTimeout(function () {
                 setTimeout(function () {
                   loading.classList.remove("show");
@@ -298,10 +298,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
 
-  // We check if the chart is a 3D mesh to make sure to adjust the
-  // window close interval if exporting plot to image
-  let is_3dmesh = false;
-
   if (globals.CHART_DIV.layout.yaxis.type != undefined) {
     if (globals.CHART_DIV.layout.yaxis.type == "log" && !globals.logYaxis) {
       console.log("yaxis.type changed to log");
@@ -329,8 +325,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       };
       Plotly.update(globals.CHART_DIV, layout_update);
     }
-  } else {
-    is_3dmesh = true;
   }
 
   if (window.plotly_figure.layout.template.layout.mapbox.style === "light") {
@@ -392,24 +386,15 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
 
   // We check to see if window.save_png is defined and true
   if (window.save_image != undefined && window.export_image) {
-    // if is_3dmesh is true, we set the close_interval to 1000
-    let close_interval = is_3dmesh ? 1000 : 500;
-
     // We get the extension of the file and check if it is valid
     let filename = window.export_image.split("/").pop();
     const extension = filename.split(".").pop().replace("jpg", "jpeg");
 
-    if (["jpeg", "png", "svg"].includes(extension)) {
-      // We run Plotly.downloadImage to save the chart as an image
-      Plotly.downloadImage(globals.CHART_DIV, {
-        format: extension,
-        width: globals.CHART_DIV.clientWidth,
-        height: globals.CHART_DIV.clientHeight,
-        filename: filename.split(".")[0],
-      });
+    if (["jpeg", "png", "svg", "pdf"].includes(extension)) {
+      hideModebar();
+      non_blocking(function () {
+        downloadImage(filename.split(".")[0], extension);
+      }, 2)();
     }
-    setTimeout(function () {
-      window.close();
-    }, close_interval);
   }
 }

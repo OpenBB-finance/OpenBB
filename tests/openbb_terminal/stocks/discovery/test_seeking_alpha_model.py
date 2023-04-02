@@ -17,7 +17,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_get_next_earnings(recorder):
-    df_earnings = seeking_alpha_model.get_next_earnings(1, start=date(2023, 3, 22))
+    df_earnings = seeking_alpha_model.get_next_earnings(1, start_date=date(2023, 3, 22))
     recorder.capture(df_earnings)
 
 
