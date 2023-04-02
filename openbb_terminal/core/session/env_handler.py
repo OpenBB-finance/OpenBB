@@ -1,5 +1,4 @@
 # IMPORTS STANDARD
-from pathlib import Path
 from typing import Any, Dict, Optional
 
 # IMPORTS THIRDPARTY
