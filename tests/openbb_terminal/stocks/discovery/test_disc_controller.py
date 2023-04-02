@@ -7,10 +7,7 @@ from datetime import datetime
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import (
-    PreferencesModel,
-    copy_user,
-)
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.stocks.discovery import disc_controller
 
 
@@ -345,9 +342,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_upcoming",
             "seeking_alpha_view.upcoming_earning_release_dates",
-            ["--pages=10", "--start=2023-03-22", "--limit=5", "--export=csv"],
+            ["--start=2023-03-22", "--limit=5", "--export=csv"],
             {
-                "num_pages": 10,
                 "limit": 5,
                 "start_date": datetime(2023, 3, 22),
                 "export": "csv",
