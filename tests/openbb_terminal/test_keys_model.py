@@ -343,24 +343,26 @@ def test_set_bitquery_key(args: List[str], persist: bool, show_output: bool, moc
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "access_token, persist, show_output",
+    "args, persist, show_output",
     [
         (
-            "test_access_token",
+            ["test_key", "test_secret", "test_access_token"],
             False,
             True,
         ),
         (
-            "test_access_token",
+            ["test_key", "test_secret", "test_access_token"],
             False,
             False,
         ),
     ],
 )
-def test_set_twitter_key(access_token: str, persist: bool, show_output: bool, mocker):
+def test_set_twitter_key(args: List[str], persist: bool, show_output: bool, mocker):
     mock_check = mocker.patch("openbb_terminal.keys_model.check_twitter_key")
     keys_model.set_twitter_key(
-        access_token=access_token,
+        key=args[0],
+        secret=args[1],
+        access_token=args[2],
         persist=persist,
         show_output=show_output,
     )
