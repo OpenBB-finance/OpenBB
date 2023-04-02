@@ -1121,6 +1121,8 @@ def check_bitquery_key(show_output: bool = False) -> str:
 
 
 def set_twitter_key(
+    key: str,
+    secret: str,
     access_token: str,
     persist: bool = False,
     show_output: bool = False,
@@ -1156,7 +1158,8 @@ def set_twitter_key(
             access_token="example_access_token"
         )
     """
-
+    handle_credential("API_TWITTER_KEY", key, persist)
+    handle_credential("API_TWITTER_SECRET_KEY", secret, persist)
     handle_credential("API_TWITTER_BEARER_TOKEN", access_token, persist)
 
     return check_twitter_key(show_output)
