@@ -1,7 +1,8 @@
 function get_popup(data = null, popup_id = null) {
   let popup = null;
   popup_id = popup_id.replace("popup_", "");
-  let style = "padding: 5px 2px 2px 5px !important; margin: 2px 0 !important;";
+  const style =
+    "padding: 5px 2px 2px 5px !important; margin: 2px 0 !important;";
 
   if (popup_id == "title") {
     let title = globals.title;
@@ -98,9 +99,9 @@ function get_popup(data = null, popup_id = null) {
     <div style="margin-bottom: 20px;">
         <label for="popup_textarea"><b>Text:</b>
         <div id="popup_textarea_warning" class="popup_warning">Text is required</div></label><br>
-        <textarea id="addtext_textarea" style="${style} width: 100%; max-width: 100%; max-height: 200px; margin-top: 8px;" rows="4" cols="50" value="${
-      data.text
-    }"
+        <textarea id="addtext_textarea" style="${style}
+          width: 100%; max-width: 100%; max-height: 200px;
+          margin-top: 8px;" rows="4" cols="50" value="${data.text}"
             placeholder="Enter text here">${data.text}</textarea><br>
         </div>
         <div style="display:flex;justify-content: space-between;">
@@ -177,7 +178,8 @@ function get_popup(data = null, popup_id = null) {
       class="_btn"
       href="https://twitter.com/intent/tweet?text=Check this chart from @openbb_finance - ${data.url}"
       >Share</a>
-      <button onclick="navigator.clipboard.writeText('${data.url}')" style="margin-top: 10px;" class="_btn">Copy to clipboard</button>
+      <button onclick="navigator.clipboard.writeText('${data.url}')" style="margin-top: 10px;"
+        class="_btn">Copy to clipboard</button>
       </div>
       </div>
       `;
