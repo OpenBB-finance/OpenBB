@@ -3,15 +3,16 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
-# IMPORTATION INTERNAL
-from openbb_terminal.keys_controller import KeysController
 from openbb_terminal.core.models.user_model import (
-    UserModel,
-    ProfileModel,
     CredentialsModel,
     PreferencesModel,
+    ProfileModel,
     SourcesModel,
+    UserModel,
 )
+
+# IMPORTATION INTERNAL
+from openbb_terminal.keys_controller import KeysController
 
 controller = KeysController(menu_usage=False)
 
