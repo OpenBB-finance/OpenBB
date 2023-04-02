@@ -34,7 +34,7 @@ def read_env() -> Dict[str, Any]:
     return __env_dict_filtered
 
 
-def write_to_dotenv(name: str, value: str, file: Path = SETTINGS_ENV_FILE) -> None:
+def write_to_dotenv(name: str, value: str) -> None:
     """Write to .env file.
 
     Parameters
@@ -44,5 +44,5 @@ def write_to_dotenv(name: str, value: str, file: Path = SETTINGS_ENV_FILE) -> No
     value : str
         Value of the variable.
     """
-    print(f"Writing to {file} file...")
-    set_key(str(file), name, str(value))
+    print(f"Writing to {SETTINGS_ENV_FILE} file...")
+    set_key(str(SETTINGS_ENV_FILE), name, str(value))
