@@ -355,6 +355,7 @@ class Backend(PyWry):
             )
             if not hasattr(PyWry, "__version__"):
                 try:
+                    # pylint: disable=C0415
                     from pywry import __version__ as pywry_version
                 except ImportError:
                     console.print(message)
