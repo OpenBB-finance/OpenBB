@@ -6,7 +6,6 @@ import pandas as pd
 
 # IMPORTATION THIRDPARTY
 import pytest
-from pandas import Timestamp
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
@@ -36,114 +35,6 @@ MOCK_CPI = pd.DataFrame.from_dict(
 
 MOCK_OBJ = {}
 MOCK_OBJ["united_states_CPI"] = MOCK_CPI
-
-
-MOCK_UNITS = {"United States": {"CPI": "Index"}, "United Kingdom": {"CPI": "Index"}}
-
-MOCK_FRED_NOTES = pd.DataFrame.from_dict(
-    {
-        "id": {0: "UNRATE"},
-        "realtime_start": {0: "2022-11-04"},
-        "realtime_end": {0: "2022-11-04"},
-        "title": {0: "Unemployment Rate"},
-        "observation_start": {0: "1948-01-01"},
-        "observation_end": {0: "2022-10-01"},
-        "frequency": {0: "Monthly"},
-        "frequency_short": {0: "M"},
-        "units": {0: "Percent"},
-        "units_short": {0: "%"},
-        "seasonal_adjustment": {0: "Seasonally Adjusted"},
-        "seasonal_adjustment_short": {0: "SA"},
-        "last_updated": {0: "2022-11-04 07:44:03-05"},
-        "popularity": {0: 94},
-        "group_popularity": {0: 94},
-        "notes": {0: "The unemployment rate represents the number of unemployed"},
-    }
-)
-
-MOCK_CHECK_IDS2 = {
-    "realtime_start": "2022-11-04",
-    "realtime_end": "2022-11-04",
-    "seriess": [
-        {
-            "id": "DGS5",
-            "realtime_start": "2022-11-04",
-            "realtime_end": "2022-11-04",
-            "title": "Market Yield on U.S. Treasury Securities at 5-Year Cons",
-            "observation_start": "1962-01-02",
-            "observation_end": "2022-11-03",
-            "frequency": "Daily",
-            "frequency_short": "D",
-            "units": "Percent",
-            "units_short": "%",
-            "seasonal_adjustment": "Not Seasonally Adjusted",
-            "seasonal_adjustment_short": "NSA",
-            "last_updated": "2022-11-04 15:18:14-05",
-            "popularity": 79,
-            "notes": "For further information regarding treasury con",
-        }
-    ],
-}
-
-MOCK_CHECK_IDS1 = {
-    "realtime_start": "2022-11-04",
-    "realtime_end": "2022-11-04",
-    "seriess": [
-        {
-            "id": "DGS2",
-            "realtime_start": "2022-11-04",
-            "realtime_end": "2022-11-04",
-            "title": "Market Yield on U.S. Treasury Securities at 2-Year Constant Masis",
-            "observation_start": "1976-06-01",
-            "observation_end": "2022-11-03",
-            "frequency": "Daily",
-            "frequency_short": "D",
-            "units": "Percent",
-            "units_short": "%",
-            "seasonal_adjustment": "Not Seasonally Adjusted",
-            "seasonal_adjustment_short": "NSA",
-            "last_updated": "2022-11-04 15:18:11-05",
-            "popularity": 82,
-            "notes": "For further information regarding treasury constant maturity data, please refer to ",
-        }
-    ],
-}
-
-MOCK_FRED_AGG = pd.DataFrame.from_dict(
-    {
-        "dgs2": {
-            Timestamp("2022-11-02 00:00:00"): 4.61,
-            Timestamp("2022-11-03 00:00:00"): 4.71,
-        },
-        "dgs5": {
-            Timestamp("2022-11-02 00:00:00"): 4.3,
-            Timestamp("2022-11-03 00:00:00"): 4.36,
-        },
-    }
-)
-
-MOCK_DETAIL = {
-    "dgs2": {
-        "title": "Market Yield on U.S. Treasury Securities at 2-Year Constant M",
-        "units": "%",
-    },
-    "dgs5": {
-        "title": "Market Yield on U.S. Treasury Securities at 5-Year Constant ",
-        "units": "%",
-    },
-}
-
-
-@pytest.fixture(scope="module")
-def vcr_config():
-    return {
-        "filter_headers": [("User-Agent", None)],
-        "filter_query_parameters": [
-            ("period1", "MOCK_PERIOD_1"),
-            ("period2", "MOCK_PERIOD_2"),
-            ("date", "MOCK_DATE"),
-        ],
-    }
 
 
 @pytest.mark.parametrize(
