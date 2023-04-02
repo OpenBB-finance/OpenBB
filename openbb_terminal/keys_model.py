@@ -319,6 +319,9 @@ def check_av_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if (
@@ -384,6 +387,9 @@ def check_fmp_key(show_output: bool = False) -> str:
     -------
     status: str
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -457,6 +463,9 @@ def check_quandl_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if (
@@ -522,6 +531,9 @@ def check_polygon_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -592,6 +604,9 @@ def check_fred_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_FRED_KEY == "REPLACE_ME":
@@ -660,6 +675,9 @@ def check_news_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
@@ -727,6 +745,9 @@ def check_tradier_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -800,6 +821,9 @@ def check_cmc_key(show_output: bool = False) -> str:
     status: str
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_CMC_KEY == "REPLACE_ME":
@@ -864,6 +888,9 @@ def check_finnhub_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -960,6 +987,9 @@ def check_reddit_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     reddit_keys = [
@@ -1034,6 +1064,7 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False)
     """
 
     handle_credential("API_BITQUERY_KEY", key, persist)
+
     return check_bitquery_key(show_output)
 
 
@@ -1050,6 +1081,9 @@ def check_bitquery_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1142,6 +1176,9 @@ def check_twitter_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
     if current_user.credentials.API_TWITTER_BEARER_TOKEN == "REPLACE_ME":
         logger.info("Twitter key not defined")
@@ -1210,7 +1247,6 @@ def set_rh_key(
             password="example_password"
         )
     """
-
     handle_credential("RH_USERNAME", username, persist)
     handle_credential("RH_PASSWORD", password, persist)
 
@@ -1230,6 +1266,9 @@ def check_rh_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1308,6 +1347,9 @@ def check_degiro_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1407,6 +1449,9 @@ def check_oanda_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     oanda_keys = [
@@ -1492,6 +1537,9 @@ def check_binance_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1580,6 +1628,9 @@ def check_coinbase_key(show_output: bool = False) -> str:
     status: str
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if "REPLACE_ME" in [
@@ -1655,6 +1706,9 @@ def check_walert_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_WHALE_ALERT_KEY == "REPLACE_ME":
@@ -1727,6 +1781,9 @@ def check_glassnode_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1803,6 +1860,9 @@ def check_coinglass_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_COINGLASS_KEY == "REPLACE_ME":
@@ -1874,6 +1934,9 @@ def check_cpanic_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
@@ -1943,6 +2006,9 @@ def check_ethplorer_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2021,6 +2087,9 @@ def check_smartstake_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2107,6 +2176,9 @@ def check_github_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if (
@@ -2167,6 +2239,9 @@ def check_messari_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2238,6 +2313,9 @@ def check_eodhd_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_EODHD_KEY == "REPLACE_ME":  # nosec
@@ -2306,6 +2384,9 @@ def check_santiment_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2387,6 +2468,9 @@ def check_shroom_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_SHROOM_KEY == "REPLACE_ME":
@@ -2462,6 +2546,9 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
@@ -2527,6 +2614,9 @@ def check_stocksera_key(show_output: bool = False):
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_STOCKSERA_KEY == "REPLACE_ME":
@@ -2590,6 +2680,9 @@ def check_intrinio_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2660,6 +2753,9 @@ def check_databento_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
