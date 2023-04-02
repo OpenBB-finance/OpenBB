@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # c5m
 
-This command allows the user to retrieve an intraday 5 minute chart for a given ticker. The command is /c5m ticker:AMD, and it will output a chart for the specified ticker. The chart will show intraday movements of the stock over the last 5 minutes. This command is useful for performing technical analysis and tracking short-term price movements.
+This command allows the user to retrieve an intraday 5 minute chart for a given ticker. This chart will display the candlestick chart for the day. It will provide a visual representation of the stock's performance over the current day. This command is useful for performing technical analysis and tracking short-term price movements.
 
 ### Usage
 

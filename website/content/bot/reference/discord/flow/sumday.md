@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # sumday
 
-This command allows the user to retrieve the total premium of stock ticker AMD for the current trading day. It provides a summary of the total premium of the stock AMD for the current trading day in a single result.
+This command allows the user to retrieve the total premium of the given stock ticker for the current trading day. We categorize the calls and puts by where the trade occurred on the bid/ask. For example, Above Ask, means the trade happened over the current Ask price.
 
 ### Usage
 

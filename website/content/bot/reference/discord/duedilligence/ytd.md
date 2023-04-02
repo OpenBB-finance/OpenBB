@@ -8,7 +8,7 @@ description: OpenBB Discord Command
 
 ?
 
-This command allows the user to retrieve the stock's year-to-date performance for a particular ticker symbol (AAPL in this example). It displays the stock's performance over the last 12 months, including the opening and closing prices, the highest and lowest prices, the total volume traded, and the total return on the stock during the period.
+This command allows the user to retrieve the stock's year-to-date performance for a particular ticker symbol. It displays the stock's performance over various periods of time, from 5 days to 5 years.
 
 ### Usage
 

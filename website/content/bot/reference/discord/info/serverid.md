@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # serverid
 
-This command allows the user to retrieve the Server ID of the current instance. The Server ID is a unique identifier associated with the server, and can be used to identify the server in various contexts.
+This command allows the user to retrieve the Server ID of discord room. The Server ID is a unique identifier associated with the server and is needed for some autoposting features when you link your account.
 
 ### Usage
 

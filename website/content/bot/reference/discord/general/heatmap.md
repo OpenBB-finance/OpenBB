@@ -6,9 +6,7 @@ description: OpenBB Discord Command
 
 # heatmap
 
-?
-
-This command allows the user to retrieve Daily Heat Maps by Market. The user must specify the market they are interested in, in this case the S&P 500. The sector is optional and can be used to narrow down the search. The Daily Heat Maps will be provided to the user in response to the command.
+This command allows the user to retrieve Daily Heat Maps by Market and Sector. The Daily Heat Maps will allow the user a quick overview of current stock market performance.
 
 ### Usage
 

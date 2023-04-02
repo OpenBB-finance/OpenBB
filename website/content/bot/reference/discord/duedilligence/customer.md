@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # customer
 
-This command allows the user to retrieve Display customers of the company using the ticker symbol AMD. The command will return a list of customers that have a Display account with the company and have the AMD ticker symbol associated with them. The output of the command will include the customer name, address, and other relevant information.
+This command allows the user to display customers of the company using the given symbol.
 
 ### Usage
 

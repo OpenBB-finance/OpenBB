@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # splits
 
-This command retrieves a list of recent stock splits for a given ticker. The command takes a ticker symbol as an argument and returns the most recent stock splits for that ticker. This command is useful for tracking the splits of a particular stock over time.
+This command retrieves a list of recent stock splits for a given ticker. This command is useful for tracking the splits of a particular stock over time.
 
 ### Usage
 

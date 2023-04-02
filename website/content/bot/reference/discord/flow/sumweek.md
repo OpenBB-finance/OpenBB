@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # sumweek
 
-This command retrieves the Graph Total Premium weekly summary for a given stock ticker. The summary includes the amount of premium that was paid for Graph Total options for the given week, as well as the volume of options traded and other important metrics. This summary can be used to track and analyze the stock's performance over a given period of time.
+This command allows the user to retrieve the top flow for the week for Calls and Puts by stock. This will provide the user with an overview of the market's current sentiment towards a particular stock as well as an overall view of the market's sentiment towards all stocks.
 
 ### Usage
 

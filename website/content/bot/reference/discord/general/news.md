@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # news
 
-This command allows the user to retrieve the latest news for a given ticker, such as AMD. The user will be provided with a list of the most recent news stories related to the ticker that they specify, providing them with up-to-date information about the stock.
+This command allows the user to retrieve the latest news for a given ticker.
 
 ### Usage
 

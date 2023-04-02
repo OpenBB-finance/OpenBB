@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # top
 
-This command will retrieve the top cryptocurrencies, ranked by market capitalization. It will return a list of the most valuable cryptocurrencies, allowing the user to quickly get a snapshot of the current market.
+This command will retrieve the top cryptocurrencies, ranked by market capitalization, allowing the user to quickly get a snapshot of the current market.
 
 ### Usage
 

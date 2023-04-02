@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # 8ball
 
-This command allows the user to ask the 8-ball a question and receive an answer. The user will enter the command "/fun 8ball" followed by a question, such as "Will I make money today?". The 8-ball will then give an answer to the user's question.
+This command allows the user to ask the 8-ball a question and receive an answer. The question must end in a question mark.
 
 ### Usage
 

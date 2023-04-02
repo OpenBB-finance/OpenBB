@@ -6,9 +6,7 @@ description: OpenBB Discord Command
 
 # earnings
 
-?
-
-This command allows the user to retrieve the expected earnings for the next business day (2022-07-29) sorted by market capitalization. The displayed earnings will include company name, ticker, expected date, estimated earnings, and market cap of the company. This information can be used to help the user make informed decisions about their investments.
+This command allows the user to retrieve the expected earnings for the given business day. The displayed earnings will include company ticker, expected time, sector, and float of the company. This information can be used to help the user make informed decisions about their investments.
 
 ### Usage
 

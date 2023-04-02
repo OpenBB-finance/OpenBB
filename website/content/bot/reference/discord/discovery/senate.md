@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # senate
 
-This command retrieves the most recent senate trades for all tickers. It provides the user with a list of the most recent senate trades for any given ticker, including the date and time of the trade and the price information.
+This command retrieves the most recent senate trades for all tickers including the date and time of the trade and the price information.
 
 ### Usage
 

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # indices
 
-This command provides a real-time overview of the major US stock indices, such as the Dow Jones Industrial Average, the S&P 500, and the NASDAQ Composite. It displays the most current index values, as well as the percentage change from the previous day. Additionally, it shows the indices' highs and lows for the day, and the total volume traded on that day.
+This command provides a real-time overview of the major US stock indices, such as the Dow Jones Industrial Average, the S&P 500, and the NASDAQ Composite. It displays the most current index values, as well as the percentage change from the previous day.
 
 ### Usage
 

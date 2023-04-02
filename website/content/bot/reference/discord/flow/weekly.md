@@ -6,8 +6,7 @@ description: OpenBB Discord Command
 
 # weekly
 
-This command allows the user to retrieve the Top 20 flow by Premium for a stock with a weekly expiration. The command /flow weekly ticker:AMD will show the user the current Top 20 flow in premium for the stock symbol AMD for the current week. This command allows the user to quickly view the current market conditions for the stock and spot potential trading opportunities.
-
+This command allows the user to retrieve the Top 20 flow by Premium for a stock with an option contact expiring that week.
 ### Usage
 
 ```python wordwrap

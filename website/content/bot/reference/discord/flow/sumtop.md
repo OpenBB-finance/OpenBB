@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # sumtop
 
-This command allows the user to retrieve the top flow for the day for Calls and Puts by stock. It will return a summary of the total number of Calls and Puts for a particular stock, as well as the total number of Calls and Puts traded for all stocks. This will provide the user with an overview of the market's current sentiment towards a particular stock as well as an overall view of the market's sentiment towards all stocks.
+This command allows the user to retrieve the top flow for the day for Calls and Puts by stock. This will provide the user with an overview of the market's current sentiment towards a particular stock as well as an overall view of the market's sentiment towards all stocks.
 
 ### Usage
 

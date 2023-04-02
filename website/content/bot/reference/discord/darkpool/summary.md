@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # summary
 
-This command retrieves a summary of all the prints by percentage of MarketCap over the last 10 days, sorted by MarketCap. The summary includes the total number of prints and their total percentage of MarketCap, as well as the percentages of prints by individual MarketCap range.
+This command retrieves a summary of all the prints by percentage of MarketCap over the last x days, sorted by MarketCap. The summary includes the total number of prints and their total percentage of MarketCap, as well as the float and short percentage.
 
 ### Usage
 

@@ -6,9 +6,7 @@ description: OpenBB Discord Command
 
 # cm
 
-?
-
-This command allows you to view a monthly candlestick chart for a given stock or cryptocurrency. The chart displays the open, close, high and low prices for the selected ticker/coin each month. The command is /cm ticker:AMD, where AMD is replaced by the desired ticker/coin. This command is useful for analyzing the long-term performance of a stock or cryptocurrency.
+This command allows you to view a monthly candlestick chart for a given stock or cryptocurrency. The chart displays the open, close, high and low prices for the selected ticker/coin each month. This command is useful for analyzing the long-term performance of a stock or cryptocurrency.
 
 ### Usage
 

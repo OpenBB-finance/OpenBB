@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # alldp
 
-This command allows the user to retrieve the last 15 darkpool trades for the specified stock ticker. A darkpool is a private stock trading system that allows large trades to take place without affecting the public market, providing access to larger and more efficient trades. The command /dp alldp ticker:AMD will provide the user with the last 15 darkpool trades for the AMD stock ticker.
+This command allows the user to retrieve the last 15 darkpool trades for the specified stock ticker. A darkpool is a private stock trading system that allows large trades to take place without affecting the public market, providing access to larger and more efficient trades.
 
 ### Usage
 

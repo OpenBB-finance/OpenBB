@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # divinfo
 
-This command retrieves dividend information for a given stock, provided that the stock ticker is specified. For example, if the user enters "/dd divinfo ticker:AAPL", the function will return dividend information for the stock with the ticker symbol 'AAPL' (Apple Inc.).
+This command retrieves dividend information for a given stock. The data includes dividend rate, yield, and ex-div date.
 
 ### Usage
 

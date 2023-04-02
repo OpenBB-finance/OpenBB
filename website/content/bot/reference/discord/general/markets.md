@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # markets
 
-This command allows the user to retrieve a markets overview which provides a quick summary of current market conditions. The overview includes real-time prices of the most actively traded currencies, commodities, stocks, and indices, as well as data about the major trends in the markets. The user can also get an idea of the overall market sentiment and make more informed decisions about their investments.
+This command allows the user to retrieve a markets overview which provides a quick summary of current market conditions. The overview includes prices of the largest ETFs, with the amount of stocks current above and below the SMA 200/50 and Advancers / Decliners.
 
 ### Usage
 

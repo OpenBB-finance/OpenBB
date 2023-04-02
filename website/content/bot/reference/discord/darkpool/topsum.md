@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # topsum
 
-The /dp topsum command allows the user to retrieve total block and dark pool data from the top of the order book. This command will return the total quantity of the best bid and ask and the number of orders at the best bid and ask. It also returns the total quantity and number of orders of the next five levels of bids and asks.
+This command allows the user to retrieve total block and dark pool data summary. It sums all darkpool prints and gives a table of the largest by symbol as well as a graph for comparison.
 
 ### Usage
 
