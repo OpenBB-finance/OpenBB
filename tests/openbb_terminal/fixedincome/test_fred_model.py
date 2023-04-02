@@ -89,8 +89,9 @@ def test_get_fed(parameter, kwargs):
 
 
 @pytest.mark.record_http
-def test_get_iorb():
-    df = fred_model.get_iorb()
+@pytest.mark.parametrize("start_date, end_date", [("2023-01-01", "2023-03-30")])
+def test_get_iorb(start_date, end_date):
+    df = fred_model.get_iorb(start_date=start_date, end_date=end_date)
 
     assert isinstance(df, DataFrame)
     assert not df.empty
@@ -196,8 +197,9 @@ def test_get_spot(maturity, category, start_date, end_date):
 
 
 @pytest.mark.record_http
-def test_get_hqm():
-    df = fred_model.get_hqm()
+@pytest.mark.parametrize("date, par", [("2023-03-30", False)])
+def test_get_hqm(date, par):
+    df = fred_model.get_hqm(date=date, par=par)
 
     assert isinstance(df[0], DataFrame)
     assert not df[0].empty

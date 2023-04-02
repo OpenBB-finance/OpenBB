@@ -130,5 +130,6 @@ def test_plot_spot():
 
 
 @pytest.mark.record_http
-def test_plot_hqm():
-    fred_view.plot_hqm()
+@pytest.mark.parametrize("date, kwargs", [("2023-03-30", {})])
+def test_plot_hqm(date, kwargs):
+    fred_view.plot_hqm(date, **kwargs)

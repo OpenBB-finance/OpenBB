@@ -10,11 +10,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB6MT
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"5.18\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -24,9 +24,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:26 GMT
+      - Sun, 02 Apr 2023 16:26:42 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:26 GMT
+      - Sun, 02 Apr 2023 16:27:42 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:06 GMT
       Vary:
@@ -34,7 +34,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '90'
+      - '120'
     status:
       code: 200
       message: OK
@@ -49,11 +49,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB1YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"5.15\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -63,9 +63,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:26 GMT
+      - Sun, 02 Apr 2023 16:26:42 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:26 GMT
+      - Sun, 02 Apr 2023 16:27:42 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:03 GMT
       Vary:
@@ -73,7 +73,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '89'
+      - '119'
     status:
       code: 200
       message: OK
@@ -88,11 +88,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB2YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"5.07\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -102,9 +102,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:27 GMT
+      - Sun, 02 Apr 2023 16:26:43 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:27 GMT
+      - Sun, 02 Apr 2023 16:27:43 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:05 GMT
       Vary:
@@ -112,7 +112,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '88'
+      - '118'
     status:
       code: 200
       message: OK
@@ -127,11 +127,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB3YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"4.95\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -141,9 +141,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:27 GMT
+      - Sun, 02 Apr 2023 16:26:43 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:27 GMT
+      - Sun, 02 Apr 2023 16:27:43 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:05 GMT
       Vary:
@@ -151,7 +151,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '87'
+      - '117'
     status:
       code: 200
       message: OK
@@ -166,11 +166,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB5YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"4.82\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -180,9 +180,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:28 GMT
+      - Sun, 02 Apr 2023 16:26:44 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:28 GMT
+      - Sun, 02 Apr 2023 16:27:43 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:02 GMT
       Vary:
@@ -190,7 +190,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '86'
+      - '116'
     status:
       code: 200
       message: OK
@@ -205,11 +205,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB7YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"4.91\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -219,9 +219,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:28 GMT
+      - Sun, 02 Apr 2023 16:26:44 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:28 GMT
+      - Sun, 02 Apr 2023 16:27:44 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:06 GMT
       Vary:
@@ -229,7 +229,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '85'
+      - '115'
     status:
       code: 200
       message: OK
@@ -244,11 +244,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB10YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"5.13\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -258,9 +258,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:29 GMT
+      - Sun, 02 Apr 2023 16:26:44 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:29 GMT
+      - Sun, 02 Apr 2023 16:27:44 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:02 GMT
       Vary:
@@ -268,7 +268,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '84'
+      - '114'
     status:
       code: 200
       message: OK
@@ -283,11 +283,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB20YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"5.14\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -297,9 +297,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:29 GMT
+      - Sun, 02 Apr 2023 16:26:45 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:29 GMT
+      - Sun, 02 Apr 2023 16:27:45 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:03 GMT
       Vary:
@@ -307,7 +307,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '83'
+      - '113'
     status:
       code: 200
       message: OK
@@ -322,11 +322,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB30YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"5.0\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -336,9 +336,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:30 GMT
+      - Sun, 02 Apr 2023 16:26:45 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:30 GMT
+      - Sun, 02 Apr 2023 16:27:45 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:03 GMT
       Vary:
@@ -346,7 +346,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '82'
+      - '112'
     status:
       code: 200
       message: OK
@@ -361,11 +361,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB50YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"4.91\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -375,9 +375,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:30 GMT
+      - Sun, 02 Apr 2023 16:26:45 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:30 GMT
+      - Sun, 02 Apr 2023 16:27:45 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:05 GMT
       Vary:
@@ -385,7 +385,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '81'
+      - '111'
     status:
       code: 200
       message: OK
@@ -400,11 +400,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB75YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"4.86\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -414,9 +414,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:31 GMT
+      - Sun, 02 Apr 2023 16:26:46 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:30 GMT
+      - Sun, 02 Apr 2023 16:27:46 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:10 GMT
       Vary:
@@ -424,7 +424,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '80'
+      - '110'
     status:
       code: 200
       message: OK
@@ -439,11 +439,11 @@ interactions:
     uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2023-02-08&series_id=HQMCB100YR
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-30\"
-        realtime_end=\"2023-03-30\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-04-02\"
+        realtime_end=\"2023-04-02\" observation_start=\"2023-02-08\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
         sort_order=\"asc\" count=\"1\" offset=\"0\" limit=\"100000\">\n  <observation
-        realtime_start=\"2023-03-30\" realtime_end=\"2023-03-30\" date=\"2023-02-01\"
+        realtime_start=\"2023-04-02\" realtime_end=\"2023-04-02\" date=\"2023-02-01\"
         value=\"4.83\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
@@ -453,9 +453,9 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 30 Mar 2023 20:08:31 GMT
+      - Sun, 02 Apr 2023 16:26:46 GMT
       Expires:
-      - Thu, 30 Mar 2023 20:09:31 GMT
+      - Sun, 02 Apr 2023 16:27:46 GMT
       Last-Modified:
       - Fri, 10 Mar 2023 20:33:04 GMT
       Vary:
@@ -463,7 +463,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '79'
+      - '109'
     status:
       code: 200
       message: OK
