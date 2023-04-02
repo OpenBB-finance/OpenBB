@@ -161,7 +161,7 @@ function checkFile(popup, type = false) {
         `;
 
         csv_colors.innerHTML = `
-                    <b>Candlestick colors:</b><br><br>
+                    <b>Candlestick colors:</b><br>
 
                     <label for="csv_increasing">Increasing</label>
                     <input type="color" id="csv_increasing" value="#00ACFF"></input>
@@ -181,10 +181,10 @@ function checkFile(popup, type = false) {
         globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display =
           "none";
       } else {
-        let color_text = csv_type.value == "bar" ? "Bar color:" : "Line color:";
+        let color_text = csv_type.value == "bar" ? "Bar color" : "Line color";
         csv_columns.innerHTML = `
                     <b>Columns:</b><br>
-                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                    <div style="margin-top: 5px; margin-bottom: 10px;">
                       <label for="csv_x">X axis</label>
                       <select id="csv_x">
                           ${options}
@@ -194,11 +194,12 @@ function checkFile(popup, type = false) {
                       <label for="csv_y">Y axis</label>
                       <select id="csv_y">
                           ${options}
-                      </select><br><br>
+                      </select>
                     </div>
                 `;
         csv_colors.innerHTML = `
-                    <label for="csv_color"><b>${color_text}</b></label>
+                    <label style="margin-top: 10px; margin-bottom: 10px;"
+                      for="csv_color"><b>${color_text}:</b></label>
                     <input type="color" id="csv_color" value="#FFDD00"></input>
                 `;
 

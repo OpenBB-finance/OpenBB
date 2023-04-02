@@ -299,6 +299,21 @@ function get_popup_data(popup_id = null) {
   return data;
 }
 
+const trace_defaults = {
+  overlaying: "y",
+  side: "left",
+  tickfont: { size: 12 },
+  tickpadding: 5,
+  showgrid: false,
+  showline: false,
+  showticklabels: true,
+  showlegend: true,
+  zeroline: false,
+  anchor: "x",
+  type: "linear",
+  autorange: true,
+};
+
 function on_submit(popup_id, on_annotation = null) {
   // popup_id is either 'title', 'text', or 'csv' (for now)
   // and is used to determine which popup to get data from
@@ -422,7 +437,25 @@ function on_submit(popup_id, on_annotation = null) {
           }
         });
 
+        // We check how many yaxis have ticklabels on the left
+        let left_yaxis_ticks = Object.keys(gd.layout)
+          .filter((k) => k.startsWith("yaxis"))
+          .map((k) => gd.layout[k])
+          .filter(
+            (yaxis) =>
+              yaxis.side == "left" &&
+              (yaxis.overlaying == "y" ||
+                (yaxis.fixedrange != undefined && yaxis.fixedrange == true))
+          ).length;
+
+        // Multiply by 5 to get the xshift for cmd source text
+        let add_xshift = Math.min(left_yaxis_ticks * 5, 30);
+
+        // We set showlegend's to true
         main_trace.showlegend = true;
+        gd.layout.showlegend = true;
+
+        // Just in case xaxis/yaxis is not defined
         if (main_trace.xaxis == undefined) {
           main_trace.xaxis = "x";
         }
@@ -430,8 +463,12 @@ function on_submit(popup_id, on_annotation = null) {
           main_trace.yaxis = "y";
         }
 
+        // Set the yaxis id
         let yaxis_id = main_trace.yaxis;
         let yaxis;
+
+        // If we want to plot on a secondary yaxis
+        // we get the number of yaxis and add 1 to it
         if (popup_data.same_yaxis == false) {
           let yaxes = Object.keys(gd.layout)
             .filter((k) => k.startsWith("yaxis"))
@@ -440,6 +477,9 @@ function on_submit(popup_id, on_annotation = null) {
           yaxis = `y${yaxes.length + 1}`;
           yaxis_id = `yaxis${yaxes.length + 1}`;
           console.log(`yaxis: ${yaxis} ${yaxis_id}`);
+
+          // If percent change is true we set the yaxis id
+          // in the globals so we can use it later
           if (
             globals.csv_yaxis_id == null &&
             popup_data.percent_change == true
@@ -448,10 +488,17 @@ function on_submit(popup_id, on_annotation = null) {
             globals.csv_yaxis = yaxis;
           }
         } else {
+          // Plot on the same yaxis
           yaxis = main_trace.yaxis.replace("yaxis", "y");
-          yaxis_id = main_trace.yaxis;
         }
-        gd.layout.showlegend = true;
+
+        // We get the yaxis ticksuffix
+        let ticksuffix = left_yaxis_ticks > 0 ? "     " : "";
+        if (globals.percent_yaxis_added || globals.added_traces.length > 0) {
+          ticksuffix = "       ".repeat(left_yaxis_ticks);
+        }
+
+        // Bar trace
         if (popup_data.trace_type == "bar") {
           trace = {
             x: data.map(function (row) {
@@ -467,7 +514,10 @@ function on_submit(popup_id, on_annotation = null) {
             showlegend: true,
             yaxis: yaxis,
           };
-        } else if (popup_data.trace_type == "candlestick") {
+        }
+
+        // Candlestick trace
+        if (popup_data.trace_type == "candlestick") {
           trace = {
             x: data.map(function (row) {
               return row[popup_data.x];
@@ -491,7 +541,11 @@ function on_submit(popup_id, on_annotation = null) {
             showlegend: true,
             yaxis: yaxis,
           };
-        } else if (popup_data.trace_type == "scatter") {
+        }
+
+        // Scatter trace
+        if (popup_data.trace_type == "scatter") {
+          // We get the first non null value
           orginal_data = data;
           let non_null = data.findIndex(
             (x) => x[popup_data.y] != null && x[popup_data.y] != 0
@@ -526,18 +580,15 @@ function on_submit(popup_id, on_annotation = null) {
             yaxis: popup_data.percent_change ? globals.csv_yaxis : yaxis,
           };
 
+          // For the percent change we add a new yaxis
+          // if it doesn't exist
           if (
             !globals.percent_yaxis_added &&
             popup_data.percent_change == true &&
             popup_data.same_yaxis == false
           ) {
-            let ticksuffix =
-              gd.data.length > 1
-                ? "      ".repeat(globals.added_traces.length + 1)
-                : "";
             gd.layout[yaxis_id] = {
-              overlaying: "y",
-              side: "left",
+              ...trace_defaults,
               title: {
                 text: "% Change",
                 font: {
@@ -545,38 +596,27 @@ function on_submit(popup_id, on_annotation = null) {
                 },
                 standoff: 0,
               },
-              tickfont: { size: 14 },
               ticksuffix: ticksuffix,
               tickformat: ".0%",
-              tickpadding: 5,
-              showgrid: false,
-              showlegend: true,
-              showline: false,
-              showticklabels: true,
-              zeroline: false,
-              anchor: "x",
-              type: "linear",
-              autorange: true,
             };
             globals.percent_yaxis_added = true;
             if (globals.cmd_src_idx != null) {
-              gd.layout.annotations[globals.cmd_src_idx].xshift -=
-                gd.data.length > 1 ? 40 : 35;
-              gd.layout.margin.l += gd.data.length > 1 ? 50 : 45;
+              let xshift = gd.layout.annotations[globals.cmd_src_idx].xshift;
+              xshift -= left_yaxis_ticks > 0 ? 50 + add_xshift : 35;
+
+              // just in case we have a lot of yaxis
+              xshift += xshift < -320 ? 10 + 2 * left_yaxis_ticks : 0;
+
+              gd.layout.annotations[globals.cmd_src_idx].xshift = xshift;
+              gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 + add_xshift : 45;
             }
           }
         }
 
+        // New yaxis and not percent change
         if (!popup_data.percent_change && popup_data.same_yaxis == false) {
-          let ticksuffix = gd.data.length > 1 ? "     " : "";
-          if (globals.percent_yaxis_added || globals.added_traces.length > 0) {
-            ticksuffix = "      ".repeat(globals.added_traces.length + 1);
-          }
-
-          console.log(`data.length: ${gd.data.length}`);
           gd.layout[yaxis_id] = {
-            overlaying: "y",
-            side: "left",
+            ...trace_defaults,
             title: {
               text: popup_data.name,
               font: {
@@ -584,23 +624,18 @@ function on_submit(popup_id, on_annotation = null) {
               },
               standoff: 0,
             },
-            tickfont: { size: 14 },
             ticksuffix: ticksuffix,
-            tickpadding: 5,
-            showgrid: false,
-            showline: false,
-            showticklabels: true,
-            showlegend: true,
-            zeroline: false,
-            anchor: "x",
-            type: "linear",
-            autorange: true,
             layer: "below traces",
           };
           if (globals.cmd_src_idx != null) {
-            gd.layout.annotations[globals.cmd_src_idx].xshift -=
-              globals.added_traces.length > 1 ? 45 : 35;
-            gd.layout.margin.l += globals.added_traces.length > 1 ? 50 : 45;
+            let xshift = gd.layout.annotations[globals.cmd_src_idx].xshift;
+            xshift -= left_yaxis_ticks > 0 ? 40 + add_xshift : 40;
+
+            // just in case we have a lot of yaxis
+            xshift += xshift < -320 ? 10 + 2 * left_yaxis_ticks : 0;
+
+            gd.layout.annotations[globals.cmd_src_idx].xshift = xshift;
+            gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 : 45;
           }
         }
         console.log(trace);
@@ -617,7 +652,7 @@ function on_submit(popup_id, on_annotation = null) {
         // We empty the fields and innerHTML after the plot is made
         globals.CSV_DIV.querySelector("#csv_colors").innerHTML = "";
         globals.CSV_DIV.querySelector("#csv_columns").innerHTML = "";
-        globals.CSV_DIV.querySelector("#csv_scatter_options").style.display =
+        globals.CSV_DIV.querySelector("#csv_plot_yaxis_options").style.display =
           "none";
 
         globals.CSV_DIV.querySelectorAll("input").forEach(function (input) {

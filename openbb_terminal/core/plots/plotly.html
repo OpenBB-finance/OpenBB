@@ -71,28 +71,28 @@
         <div id="popup_csv" class="popup_content">
           <div>
             <label for="csv_file">CSV file</label>
-            <input type="file" id="csv_file" accept=".csv, .txt" />
+            <input type="file" id="csv_file" accept=".csv" />
           </div>
 
-          <div style="margin-top: 10px">
-            <label for="csv_trace_type">Display data type</label>
+          <div style="margin-top: 15px">
+            <label for="csv_trace_type"><b>Type:</b></label>
             <select id="csv_trace_type" value="scatter">
               <option value="bar">Bar</option>
               <option value="candlestick">Candlestick</option>
-              <option value="scatter">Scatter</option>
+              <option value="scatter">Scatter (Line)</option>
             </select>
           </div>
 
-          <div style="margin-top: 10px">
-            <label for="csv_name">Name of the trace</label>
+          <div style="margin-top: 12px">
+            <label for="csv_name"><b>Trace Name:</b></label>
             <textarea
             id="csv_name" style="padding: 5px 2px 2px 5px !important; width: 100%; max-width: 100%;
             max-height: 200px; margin-top: 8px;" rows="2" cols="20"
-            value="" placeholder="Enter a name for the trace"></textarea>
+            value="" placeholder="Enter a name to give this trace"></textarea>
           </div>
 
-          <div style="margin-top: 10px" id="csv_columns"><!-- Empty --></div>
-          <div style="margin-top: 10px" id="csv_colors"><!-- Empty --></div>
+          <div style="margin-top: 15px" id="csv_columns"><!-- Empty --></div>
+          <div style="margin-top: 15px" id="csv_colors"><!-- Empty --></div>
 
           <div style="margin-top: 10px; display: none;" id="csv_plot_yaxis_options">
 
