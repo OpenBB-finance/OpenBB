@@ -1,1 +1,2 @@
-[grey30]not defined[/grey30]
+Checking status...
+[grey30]Not defined[/grey30]
