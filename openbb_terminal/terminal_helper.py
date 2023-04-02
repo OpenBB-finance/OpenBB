@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 from packaging import version
 
 from openbb_terminal import thought_of_the_day as thought
+from openbb_terminal.base_helpers import load_env_files
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
@@ -355,6 +356,7 @@ def reset(queue: Optional[List[str]] = None):
     logger.info("resetting")
     plt.close("all")
     plots_backend().close(reset=True)
+    load_env_files()
     debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
     # we clear all openbb_terminal modules from sys.modules

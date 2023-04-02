@@ -96,11 +96,13 @@ def setup_logging_sub_app(sub_app: str):
     set_current_system(updated_system)
 
 
-def setup_config_terminal():
+def setup_config_terminal(app_name: str = "gst"):
     """Setup the config terminal"""
     load_env_files()
     init_userdata()
-    start_plot_backend()
+    # To avoid starting plots backend twice
+    if app_name != "gst":
+        start_plot_backend(app_name)
     setup_i18n()
     setup_version()
     setup_logging_app_name()
