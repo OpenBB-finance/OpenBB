@@ -23,6 +23,7 @@ from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
 
+from openbb_terminal.core.models.credentials_model import LOCAL_CREDENTIALS
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -89,31 +90,15 @@ API_DICT: Dict = {
 # sorting api key section by name
 API_DICT = dict(sorted(API_DICT.items()))
 
-LOCAL_KEYS = [
-    "RH_USERNAME",
-    "RH_PASSWORD",
-    "DG_USERNAME",
-    "DG_PASSWORD",
-    "DG_TOTP_SECRET",
-    "OANDA_ACCOUNT_TYPE",
-    "OANDA_ACCOUNT",
-    "OANDA_TOKEN",
-    "API_BINANCE_KEY",
-    "API_BINANCE_SECRET",
-    "API_COINBASE_KEY",
-    "API_COINBASE_SECRET",
-    "API_COINBASE_PASS_PHRASE",
-]
-
 
 class KeyStatus(str, Enum):
     """Class to handle status messages and colors"""
 
-    DEFINED_TEST_FAILED = "defined, test failed"
-    NOT_DEFINED = "not defined"
-    DEFINED_TEST_PASSED = "defined, test passed"
-    DEFINED_TEST_INCONCLUSIVE = "defined, test inconclusive"
-    DEFINED_NOT_TESTED = "defined, not tested"
+    DEFINED_TEST_FAILED = "Defined, test failed"
+    NOT_DEFINED = "Not defined"
+    DEFINED_TEST_PASSED = "Defined, test passed"
+    DEFINED_TEST_INCONCLUSIVE = "Defined, test inconclusive"
+    DEFINED_NOT_TESTED = "Defined, not tested"
 
     def __str__(self):
         return self.value
@@ -282,7 +267,7 @@ def handle_credential(name: str, value: str, persist: bool = False):
 
     if local_user and persist:
         write_to_dotenv("OPENBB_" + name, value)
-    elif not local_user and sync_enabled and name not in LOCAL_KEYS:
+    elif not local_user and sync_enabled and name not in LOCAL_CREDENTIALS:
         upload_config(
             key=name,
             value=str(value),
