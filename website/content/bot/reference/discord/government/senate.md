@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # senate
 
-Displays recent senate trades for all tickers or for a specific ticker
+This command allows a user to view the recent trades of senate stocks for all tickers or for a specific ticker. For example, if the user requests "/gov senate ticker:GE", then the command will return the recent trades for the ticker 'GE'.
 
 ### Usage
 

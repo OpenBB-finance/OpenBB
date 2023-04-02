@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # 1hr
 
-Displays Top 15 Tickers in the last hour
+This command retrieves the top 15 stocks that have been traded in the past hour. It provides the user with an up-to-date overview of the stocks that have been the most active over the past hour, allowing the user to quickly identify trends and potentially capitalize on them.
 
 ### Usage
 

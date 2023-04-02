@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # levels
 
-Biggest Levels for All Prints over last X days.
+This command allows the user to retrieve the Biggest Levels for All Prints over the last 10 days for the TSLA ticker. This information is useful in assessing the overall performance of the stock, as it provides information on the largest levels of prints over the last 10 days.
 
 ### Usage
 

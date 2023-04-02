@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # summary
 
-Summary of all flow by % of MarketCap
+This command allows the user to retrieve a summary of all the flow of the market capitalization over the past 5 days, with the result sorted by float. This summary will include the total market capitalization, the number of stocks traded, the percentage of stocks traded, and the percentage change in market capitalization.
 
 ### Usage
 

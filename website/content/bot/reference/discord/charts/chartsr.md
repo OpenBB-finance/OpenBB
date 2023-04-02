@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # chartsr
 
-Displays Support and Resistance Levels for the ticker provided
+This command allows the user to retrieve Displays Support and Resistance Levels for the ticker provided. It will display the support and resistance levels of a given ticker, such as AMC, on a chart. This command uses the data provided by the user to show the support and resistance levels that are likely to be seen in the future. These levels can help the user in making better trading decisions.
 
 ### Usage
 

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # supplier
 
-Displays suppliers of the company.
+This command allows users to retrieve the list of Displays suppliers associated with the company with the given ticker. It returns a list of suppliers with contact information and product details.
 
 ### Usage
 

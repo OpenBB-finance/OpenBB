@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # urban
 
-Searches on the Urban Dictionary.
+This command allows the user to search for a definition of a word on Urban Dictionary. It will return the top definition of the word as well as other related definitions. The user can enter the word they wish to search for after the command, in this example the word is "Shill". The command will then search Urban Dictionary and return the search results in the chat.
 
 ### Usage
 

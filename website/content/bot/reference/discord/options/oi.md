@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # oi
 
-Displays OI and call/put ratio for given stock - can add EXP date too for bigger breakdown
+This command allows the user to retrieve the Displays Open Interest and Call/Put ratio for a given stock. Optionally, the user can also specify an expiration date to get a more granular breakdown. For example, the command /op oi ticker:AMC can be used to retrieve the Open Interest and Call/Put ratio for AMC stock.
 
 ### Usage
 

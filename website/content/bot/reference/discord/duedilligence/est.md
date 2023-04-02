@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # est
 
-Displays earning estimates.
+This command allows the user to retrieve Display's earning estimates for a given stock ticker symbol. The user can enter the command "/dd est ticker:MMM" and the function will return the estimated earnings for the specified stock ticker. This can be used as a helpful tool for investors to get an idea of how a stock may perform in terms of earnings.
 
 ### Usage
 

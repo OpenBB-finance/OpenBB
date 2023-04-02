@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # instholdings
 
-Displays top 15 Institutional Holdings for given stock
+This command allows the user to retrieve the top 15 institutional holdings for a given stock. This command utilizes the ticker symbol of the stock, in this example AMD, to return a list of the most popular institutional holdings of the stock. This list is retrieved from the most recent available institutional holdings reported to the United States Securities and Exchange Commission.
 
 ### Usage
 

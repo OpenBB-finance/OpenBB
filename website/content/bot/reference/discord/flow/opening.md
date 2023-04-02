@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # opening
 
-Top 20 flow by Premium for a stock with opening condition - Vol  OI
+This command allows the user to retrieve the Top 20 flows by premium for a stock with opening condition - Vol OI utilizing the ticker symbol AMD. This returns data sets that can be used to track the stock's opening price in relation to its volume, open interest, and premium for the Top 20 flows.
 
 ### Usage
 

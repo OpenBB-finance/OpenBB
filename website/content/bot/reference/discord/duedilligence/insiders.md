@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # insiders
 
-Displays 15 latest insider transactions for given stock
+This command allows the user to retrieve the 15 most recent insider transactions for a given stock, in this case AMD. It will provide information such as the date of the transaction, the company insider involved, the number of shares traded, the type of transaction (buy/sell), and the average price of the transaction.
 
 ### Usage
 

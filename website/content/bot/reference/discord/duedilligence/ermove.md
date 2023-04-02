@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # ermove
 
-Display implied move for a stock based on option prices.
+This command allows the user to retrieve the Display implied move (DIM) for a stock based on the current option prices. The command "/dd ermove" is followed by the stock ticker, in this case "AMD", to get the implied move for the specified stock. The implied move is a measure of how far the stock is expected to move during the option's expiration.
 
 ### Usage
 

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # flip
 
-Flip a coin for your witcher
+This command allows the user to retrieve a 'Flip a coin for your witcher' result. It will generate a random coin flip, displaying either a 'Heads' or 'Tails' outcome in order to provide a bit of fun and entertainment.
 
 ### Usage
 

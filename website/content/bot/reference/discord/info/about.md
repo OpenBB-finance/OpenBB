@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # about
 
-About OpenBB Terminal
+The "/info" command allows users to retrieve information about OpenBB Terminal, including details about its features and how to use it. This command will provide users with a comprehensive overview of OpenBB Terminal, helping them understand the platform better and make the most out of its features.
 
 ### Usage
 

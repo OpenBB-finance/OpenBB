@@ -6,7 +6,9 @@ description: OpenBB Discord Command
 
 # bio
 
-Get fundamental information about a crypto
+?
+
+This command allows the user to retrieve fundamental information about a crypto, such as its current price, 24-hour trading volume, market cap, and other key metrics, by entering a specific crypto symbol (e.g. "BTC") as an argument.
 
 ### Usage
 

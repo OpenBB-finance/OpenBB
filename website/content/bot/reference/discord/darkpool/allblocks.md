@@ -6,7 +6,9 @@ description: OpenBB Discord Command
 
 # allblocks
 
-Last 15 Block Trades.
+?
+
+The command /dp topsum allows the user to retrieve the last 15 block trades of a given security. This command will provide a summary of the last 15 block trades, including the time, price, quantity, and total gross value of each trade.
 
 ### Usage
 

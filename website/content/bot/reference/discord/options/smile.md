@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # smile
 
-Displays Options Volatility Smile.
+This command allows the user to retrieve the Display Options Volatility Smile for the given ticker (AMD) and expiry (2022-07-29). The Display Options Volatility Smile is a graphical representation of the implied volatility for a given option that can be used to gauge the market sentiment for a particular security. The Volatility Smile allows the user to get a better understanding of the options market and make more informed trading decisions.
 
 ### Usage
 

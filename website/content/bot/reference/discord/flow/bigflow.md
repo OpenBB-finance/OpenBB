@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # bigflow
 
-Returns the top 20 largest flow by premium for a stock
+This command retrieves the top 20 largest flow by premium for a stock, in this case AMD. It does this by going through the stock's data and finding the most significant flows for each premium. This allows the user to get a comprehensive overview of the stock's performance and make more informed decisions.
 
 ### Usage
 

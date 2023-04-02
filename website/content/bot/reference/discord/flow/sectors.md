@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # sectors
 
-Summary of all flow by % of MarketCap by Sector
+This command retrieves a summary of all flows by MarketCap percentage by sector over the past 5 days, with a focus on energy sector. It provides an overview of the total flow, the composition of the flow, and the recent price and returns for the sector.
 
 ### Usage
 

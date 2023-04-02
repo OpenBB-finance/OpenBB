@@ -6,7 +6,9 @@ description: OpenBB Discord Command
 
 # wsb
 
-Display Top 15 Trendings Stocks - WSB
+?
+
+This command allows the user to view the top 15 trending stocks on WallStreetBets (WSB) using the /disc wsb command. It retrieves information from the WallStreetBets community, providing real-time updates on the most popular stocks mentioned on the platform. This allows users to make informed decisions about their stock investments.
 
 ### Usage
 

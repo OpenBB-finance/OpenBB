@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # stats
 
-Displays Options Statistics for a stock.
+This command allows the user to retrieve Display Options Statistics for a stock with the ticker symbol AMC. This includes information such as Open Interest, Volume, Implied Volatility, and various other metrics associated with the stock's options. This data can be used to analyze the stock's performance and make informed decisions when trading.
 
 ### Usage
 

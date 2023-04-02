@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # watchlist
 
-Displays markets overview
+This command allows the user to retrieve a markets overview, which includes current stock prices, market indices, and other related information. This can be useful for tracking market trends and getting a quick snapshot of the markets at a glance.
 
 ### Usage
 

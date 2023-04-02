@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # vol
 
-Displays Options Strike Volume can add EXP date for bigger breakdown
+This command allows the user to retrieve Display Options Strike Volume for a specified ticker, such as AMD. This data can be broken down further by adding an expiration date for a more detailed breakdown.
 
 ### Usage
 

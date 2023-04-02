@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # sectors
 
-Summary of all prints by % of MarketCap by Sector
+This command allows the user to retrieve a summary of all prints by % of MarketCap by Sector over the last 5 days, with a focus on Basic Materials sector. The user will be able to view the basic materials sector's market cap over the last 5 days, as well as the overall market cap of all sectors over the last 5 days.
 
 ### Usage
 

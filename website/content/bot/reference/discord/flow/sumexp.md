@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # sumexp
 
-Flow summary by expiration date.
+This command allows users to view the summary of all Flow options contracts for the specified ticker (AMD in this case) that expire on the specified date (2022-07-29 in this case). It provides the user with a comprehensive overview of the Flow options contracts, including the total open interest (OI) across all strikes, the underlying price, the total OI change over the past 24 hours, and the highest bid/ask spread.
 
 ### Usage
 

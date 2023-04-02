@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # trendingst
 
-Display Top 15 Trendings Stocks - StockTwits
+This command allows the user to retrieve the top 15 trending stocks from StockTwits according to the most recent discussion. The stocks are displayed in order of most trending, as determined by the most discussed stocks in the StockTwits community. This command is an efficient way to stay up to date on the most popular stocks in the market.
 
 ### Usage
 

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # add
 
-Add an autopost webhook feed to this channel.
+This command allows the user to add an autopost webhook feed to a channel. It allows the user to receive notifications from external webhooks in the channel without having to manually post them. This can be used to keep track of changes to external websites, applications, or services and ensure that the channel is up to date with the latest information.
 
 ### Usage
 

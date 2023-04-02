@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # pm
 
-Displays Pre-Market stocks according to chosen screener.
+This command allows the user to retrieve and view pre-market stock data according to a custom screener set by the user. The command offers the user the ability to view the top pre-market gainers, giving the user a better understanding of the market’s movements before the market officially opens.
 
 ### Usage
 

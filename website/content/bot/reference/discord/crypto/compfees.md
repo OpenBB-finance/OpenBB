@@ -6,7 +6,9 @@ description: OpenBB Discord Command
 
 # compfees
 
-Get protocol fees over time
+?
+
+This command allows users to retrieve the Get Protocol fees over time for the Dogecoin project. It provides an overview of all fees occurring in the Get Protocol using the Dogecoin blockchain. It includes information such as the type of fee, the amount of the fee, and the time the fee occurred.
 
 ### Usage
 
