@@ -6,6 +6,13 @@ import pandas as pd
 import pytest
 
 from openbb_terminal import keys_model
+from openbb_terminal.core.models.user_model import (
+    UserModel,
+    ProfileModel,
+    CredentialsModel,
+    PreferencesModel,
+    SourcesModel,
+)
 
 # pylint: disable=R0902,R0903,W1404,C0302
 TEST_PATH = Path(__file__).parent.resolve()
@@ -17,7 +24,6 @@ def vcr_config():
     return {
         "filter_query_parameters": [
             ("api_key", "test_key"),
-            ("apikey", "test_key"),
         ],
     }
 
@@ -29,6 +35,15 @@ def mock(mocker):
     )
     mocker.patch(
         target="openbb_terminal.keys_model.write_to_dotenv",
+    )
+    mocker.patch(
+        target="openbb_terminal.keys_model.get_current_user",
+        return_value=UserModel(
+            profile=ProfileModel(),
+            credentials=CredentialsModel(),
+            preferences=PreferencesModel(),
+            sources=SourcesModel(),
+        ),
     )
 
 
