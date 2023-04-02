@@ -27,11 +27,13 @@ def vcr_config():
 
 
 @pytest.fixture(autouse=True)
-def revert_current_user(mocker):
+def mock(mocker):
     mocker.patch(
         target="openbb_terminal.keys_model.set_credential",
     )
-    yield
+    mocker.patch(
+        target="openbb_terminal.keys_model.write_to_dotenv",
+    )
 
 
 def test_get_keys():
