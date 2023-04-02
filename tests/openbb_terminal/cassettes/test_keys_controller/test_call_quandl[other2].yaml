@@ -1,0 +1,171 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      accept:
+      - application/json
+      request-source:
+      - python
+      request-source-version:
+      - 3.7.0
+      x-api-token:
+      - '1234'
+    method: GET
+    uri: https://data.nasdaq.com/api/v3/datatables/ZACKS/FC?ticker%5B%5D=AAPL&ticker%5B%5D=MSFT&per_end_date.gte=2015-01-01&qopts.columns%5B%5D=ticker&qopts.columns%5B%5D=per_end_date
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/22QwQqDMBBE/2XPEYxCaXMTSk8tFNqbSLC6B2mMEiO0hPx7Vw9aMeQ0bycz7Dqo
+        S0vvpRCEmwWIPIfb4/IEBknMjxFPopRDwbY0PkVpvKeHIE2DCYs3y+7Xfds/Xds2NJiwtgUSCgZV
+        p8ZWD7SnA122tDjYpnqjIav99rPGjwXPlnmPRqKuJd0HV9d5Ur7wDFqc7kZ2+ier0QydkU0NQo9K
+        ef8DySf53mUBAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining
+      Access-Control-Max-Age:
+      - '1728000'
+      Allow:
+      - GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'self';
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 22 Sep 2022 06:58:53 GMT
+      ETag:
+      - W/"3ade0c7e6c161de7ebf518f20481e4bc"
+      Location:
+      - https://data.nasdaq.com/api/v3/datatables/ZACKS/FC
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - origin-when-cross-origin
+      Server:
+      - openresty
+      Set-Cookie:
+      - visid_incap_2170999=ELpqO7RfSbmVmpXmoAWIzKwHLGMAAAAAQUIPAAAAAABBeczn8bW6Kk5fQ7rAlP/P;
+        expires=Fri, 22 Sep 2023 06:17:59 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=MaUAAoiE5g6JvgFJKj7S7QAAAAB4nEFDoFsfZ6joHpYOB0SU; path=/; Domain=.nasdaq.com
+      - incap_ses_1466_2170999=8ObYLge6dwV5dozCkUdYFK0HLGMAAAAAhSlOSDHGSiRrTh6HbI5Lzg==;
+        path=/; Domain=.nasdaq.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      X-CDN:
+      - Imperva
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Iinfo:
+      - 11-24204327-24204337 NNYN CT(7 21 0) RT(1663829932983 119) q(0 0 0 1) r(1
+        1) U2
+      X-RateLimit-Limit:
+      - '50'
+      X-RateLimit-Remaining:
+      - '38'
+      X-Request-Id:
+      - 5652c5e2-27cd-40e7-b9eb-d7b8c2269c2d
+      X-Runtime:
+      - '0.065616'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+      accept:
+      - application/json
+      request-source:
+      - python
+      request-source-version:
+      - 3.7.0
+      x-api-token:
+      - '1234'
+    method: GET
+    uri: https://data.nasdaq.com/api/v3/datasets/EIA/PET_RWTC_D/data?order=asc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/1WNsQrCMBBAf+W4WYJVp24dHNzqJE4SkjOG1ju8JGAt/XcjTp0ePB68GV/Fsh9v
+        pCqK7YxOPGGL52P33ja4wSelZMNPXQiclNEDSwYlJ4Hjh2CSotD1JxhoaqHZ7Q8G+pFsqvmD3LAK
+        oM4ga2WwkQ1cpYCzDPdY/Sos7En/yrr65QyJco4cksFl+QI8U/RNuQAAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining
+      Access-Control-Max-Age:
+      - '1728000'
+      Allow:
+      - GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 09 Feb 2023 18:15:55 GMT
+      Server:
+      - openresty
+      Set-Cookie:
+      - visid_incap_2170999=8AoKTreLRsGvQVdoqN1Ew1s45WMAAAAAQUIPAAAAAAAviVTMJhQOAM9RKlkAz7qn;
+        expires=Fri, 09 Feb 2024 06:51:22 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=7aYWfQNAP2jcE2cWKj7S7QAAAAAAi+SrwRFJNJZfA7QusuHd; path=/; Domain=.nasdaq.com
+      - incap_ses_617_2170999=iefcTOAvUB9gg52AywaQCFs45WMAAAAA4bZef24ttbI/fjU6zw2EAA==;
+        path=/; Domain=.nasdaq.com
+      Transfer-Encoding:
+      - chunked
+      X-CDN:
+      - Imperva
+      X-Iinfo:
+      - 13-35768452-35768469 NNYN CT(40 64 0) RT(1675966555342 54) q(0 0 2 2) r(2
+        2) U11
+      X-RateLimit-Limit:
+      - '50'
+      X-RateLimit-Remaining:
+      - '46'
+      X-Request-Id:
+      - f000d806-aa0c-4d8b-b010-6a3d498b5ff6
+      X-Runtime:
+      - '0.006882'
+    status:
+      code: 400
+      message: Bad Request
+version: 1

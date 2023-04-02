@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: '
+
+      {{ getMetric(metric: "dev_activity"){{ timeseriesData( slug: "ethereum" from:
+      ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){{ datetime
+      value }} }} }}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Apikey test_key
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/graphql
+      User-Agent:
+      - python-requests/2.28.1
+    method: POST
+    uri: https://api.santiment.net/graphql
+  response:
+    body:
+      string: '{"errors":{"details":"Apikey ''test_key'' is not valid"}}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 754e832cfd9e950c-LIS
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '55'
+      Date:
+      - Tue, 04 Oct 2022 14:12:25 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=wtM3RbEm%2FCuR29Ru%2FlXHnEEnG84XHFDcm%2B8U%2BTUaFbjkq6VfWApnXDELV0QbxCj6UXt%2B9%2BlwyfXfY3POm42%2BE6GMFO%2B6RLgWRQD0VHnhTp51VopaqbSi0QOhX59hhHMiz6a6"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,X-SharedAccess-Authorization
+      access-control-allow-methods:
+      - GET, POST, OPTIONS
+      set-cookie:
+      - INGRESSCOOKIE=1664892746.904.11247.492222; Path=/.+; Secure; HttpOnly
+      x-request-id:
+      - a7495d3f7084c8e35492c70576bf4b6d
+    status:
+      code: 400
+      message: Bad Request
+version: 1

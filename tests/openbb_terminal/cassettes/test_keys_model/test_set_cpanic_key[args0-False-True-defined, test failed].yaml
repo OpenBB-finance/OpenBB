@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://cryptopanic.com/api/v1/posts/?auth_token=test_key
+  response:
+    body:
+      string: '{"status":"Incomplete","info":"Token not found"}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '48'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 04 Oct 2022 14:12:18 GMT
+      Server:
+      - nginx/1.19.3
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Cookie
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 400
+      message: Bad Request
+version: 1

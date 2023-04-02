@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - deflate, gzip
+      Accepts:
+      - application/json
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      X-CMC_PRO_API_KEY:
+      - test_key
+    method: GET
+    uri: https://pro-api.coinmarketcap.com/v1/cryptocurrency/map
+  response:
+    body:
+      string: "{\n    \"status\": {\n        \"timestamp\": \"2022-10-04T14:12:03.295Z\",\n
+        \       \"error_code\": 1001,\n        \"error_message\": \"This API Key is
+        invalid.\",\n        \"elapsed\": 0,\n        \"credit_count\": 0\n    }\n}"
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '203'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 04 Oct 2022 14:12:03 GMT
+      Referrer-Policy:
+      - origin-when-cross-origin
+      Server:
+      - Tengine
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      Vary:
+      - origin
+      Via:
+      - 1.1 fd9cb9e48122da1a05d6c3c1a873d502.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - xvL6RO0nJkIRHLGiTLux8t3UqXXPge1-4DuqzZ5PtdBSOQX_vdpudw==
+      X-Amz-Cf-Pop:
+      - LIS50-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Envoy-Decorator-Operation:
+      - coinmarketcap-pro-apis.cmc-api.svc.cluster.local:80/*
+      X-Envoy-Upstream-Service-Time:
+      - '2'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Traefik-Route:
+      - coinmarketcap-pro-apis
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
