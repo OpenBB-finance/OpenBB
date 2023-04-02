@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import date, timedelta
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -43,28 +43,27 @@ def get_filters(date_str: str) -> str:
 
 
 @log_start_end(log=logger)
-def get_next_earnings(limit: int = 10, start: Optional[date] = None) -> DataFrame:
+def get_next_earnings(limit: int = 5, start_date: date = date.today()) -> DataFrame:
     """Returns a DataFrame with upcoming earnings
 
     Parameters
     ----------
     limit : int
-        Number of pages
-    date: Optional[date]
-        Date to start from
+        Number of days to look ahead
+    start_date: date
+        Date to start from. Defaults to today
 
     Returns
     -------
     DataFrame
         Upcoming earnings DataFrame
     """
-    if start is None:
-        start = date.today()
     base_url = "https://seekingalpha.com/api/v3/earnings_calendar/tickers"
     df_earnings = pd.DataFrame()
 
     for _ in range(0, limit):
-        date_str = start.strftime("%Y-%m-%d")
+        start_date = pd.to_datetime(start_date)
+        date_str = str(start_date.strftime("%Y-%m-%d"))
         response = request(base_url + get_filters(date_str), timeout=10)
         json = response.json()
         try:
@@ -72,11 +71,11 @@ def get_next_earnings(limit: int = 10, start: Optional[date] = None) -> DataFram
             cleaned_data = [x["attributes"] for x in data]
             temp_df = pd.DataFrame.from_records(cleaned_data)
             temp_df = temp_df.drop(columns=["sector_id"])
-            temp_df["Date"] = start
+            temp_df["Date"] = start_date  # pylint: disable=E1137
             df_earnings = pd.concat(
                 [df_earnings, temp_df], join="outer", ignore_index=True
             )
-            start = start + timedelta(days=1)
+            start_date = start_date + timedelta(days=1)
         except KeyError:
             pass
 
@@ -88,6 +87,15 @@ def get_next_earnings(limit: int = 10, start: Optional[date] = None) -> DataFram
             "exchange": "Exchange",
         }
     )
+
+    if df_earnings.empty:
+        console.print("No earnings found. Try adjusting the date.\n")
+        return pd.DataFrame()
+
+    df_earnings = df_earnings[
+        df_earnings["Date"] <= pd.to_datetime(start_date + timedelta(days=limit))
+    ]
+
     return df_earnings
 
 
