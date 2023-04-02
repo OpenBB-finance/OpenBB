@@ -1,5 +1,4 @@
 """Test the fred view."""
-import pandas as pd
 import pytest
 
 from openbb_terminal.economy import fred_view
