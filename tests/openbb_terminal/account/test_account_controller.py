@@ -90,7 +90,6 @@ def fixture_test_user(mocker):
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["sync", "help"], ["help"]),
         (["quit", "help"], ["help"]),
     ],
 )
@@ -280,8 +279,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "func",
     [
         "call_logout",
-        "call_sync",
-        "call_pull",
         "call_clear",
         "call_list",
         "call_upload",

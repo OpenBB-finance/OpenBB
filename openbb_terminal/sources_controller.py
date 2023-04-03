@@ -5,12 +5,9 @@ __docformat__ = "numpy"
 import argparse
 import json
 import logging
-import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
-import openbb_terminal.core.session.hub_model as Hub
-import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.session.constants import SOURCES_URL
 
 # IMPORTATION THIRDPARTY
@@ -38,6 +35,9 @@ def unique(sequence):
     return [x for x in sequence if not (x in seen or seen.add(x))]
 
 
+# TODO: This menu needs to be refactored
+
+
 class SourcesController(BaseController):
     """Sources Controller class"""
 
@@ -52,12 +52,8 @@ class SourcesController(BaseController):
         super().__init__(queue)
 
         self.commands_with_sources: Dict[str, List[str]] = {}
-        self.json_doc = {}
-        if is_local():
-            self.load_sources_json_file()
-
-        self.json_doc = get_current_user().sources.sources_dict
-        self.generate_commands_with_sources()
+        self.json_doc: dict = {}
+        self.update_json_doc()
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -68,18 +64,25 @@ class SourcesController(BaseController):
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    def load_sources_json_file(self):
-        """Load the .json file"""
+    def update_json_doc(self):
+        """Update the json doc. If local, read from file."""
+        if is_local():
+            try:
+                sources_path = Path(
+                    get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE
+                )
+                with open(sources_path) as file:
+                    sources_dict = json.load(file)
+            except Exception as e:
+                msg = (
+                    f"Failed to read sources file {sources_path}, set a valid file"
+                    " to use this menu."
+                )
+                raise Exception(msg) from e
 
-        SOURCES_FILE = Path(get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE)
-        if (
-            not os.getenv("TEST_MODE")
-            and SOURCES_FILE.exists()
-            and SOURCES_FILE.stat().st_size > 0
-        ):
-            with open(str(SOURCES_FILE)) as json_file:
-                self.json_doc = json.load(json_file)
-                set_sources(self.json_doc)
+            set_sources(sources_dict)
+        self.json_doc = get_current_user().sources.sources_dict
+        self.generate_commands_with_sources()
 
     def generate_commands_with_sources(self):
         """Generate choices"""
@@ -140,19 +143,7 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            if is_local():
-                self.load_sources_json_file()
-            else:
-                response = Hub.fetch_user_configs(
-                    get_current_user().profile.get_session()
-                )
-                if response:
-                    configs = json.loads(response.content)
-                    Local.set_sources_from_hub(configs)
-
-                self.json_doc = get_current_user().sources.sources_dict
-                self.generate_commands_with_sources()
-
+            self.update_json_doc()
             try:
                 the_item = self.commands_with_sources[ns_parser.cmd]
             except KeyError:
@@ -203,7 +194,7 @@ class SourcesController(BaseController):
                 other_args.insert(2, "-s")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.load_sources_json_file()
+            self.update_json_doc()
 
             success, valid_sources = self.update_dict_and_valid_sources(ns_parser)
 

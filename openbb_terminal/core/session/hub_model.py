@@ -120,7 +120,7 @@ def delete_session(
         console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
-        console.print("[red]Failed to delete server session.[/red]")
+        console.print("[bold red]Failed to delete server session.[/bold red]")
         return None
 
 
