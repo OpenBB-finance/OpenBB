@@ -49,7 +49,6 @@ oandapyV20 = "^0.6.3"
 valinvest = "^0.0.2"
 bt = "^0.2.9"
 vaderSentiment = "3.3.2"
-GitPython = "^3.1.17"
 fred = "^3.1"
 financedatabase = "^2.0.9"
 holidays = "^0.14.2"
@@ -102,7 +101,7 @@ jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
 rapidfuzz = "^2.13.7"
-streamlit = "^1.17.0"
+streamlit = {version="^1.17.0", optional = true}
 pywry = "^0.4.5"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
@@ -123,10 +122,11 @@ pydantic = "^1.10.5"
 [tool.poetry.extras]
 forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
 optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp", "dash"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 doc = ["docstring-parser"]
+dash = ["streamlit"]
 
 [tool.poetry.group.dev.dependencies]
 pytest-xdist = "^3.2.0"

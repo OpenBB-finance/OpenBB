@@ -184,7 +184,7 @@ name = "altair"
 version = "4.2.2"
 description = "Altair: A declarative statistical visualization library for Python."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "altair-4.2.2-py3-none-any.whl", hash = "sha256:8b45ebeaf8557f2d760c5c77b79f02ae12aee7c46c27c06014febab6f849bc87"},
@@ -730,7 +730,7 @@ name = "blinker"
 version = "1.5"
 description = "Fast, simple object-to-object and broadcast signaling"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
     {file = "blinker-1.5-py2.py3-none-any.whl", hash = "sha256:1eb563df6fdbc39eeddc177d953203f99f097e9bf0e2b8f9f3cf18b6ca425e36"},
@@ -917,7 +917,7 @@ name = "cachetools"
 version = "5.3.0"
 description = "Extensible memoizing collections and decorators"
 category = "main"
-optional = false
+optional = true
 python-versions = "~=3.7"
 files = [
     {file = "cachetools-5.3.0-py3-none-any.whl", hash = "sha256:429e1a1e845c008ea6c85aa35d4b98b65d6a9763eeef3e37e92728a12d1de9d4"},
@@ -5363,7 +5363,7 @@ name = "pyarrow"
 version = "11.0.0"
 description = "Python library for Apache Arrow"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "pyarrow-11.0.0-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:40bb42afa1053c35c749befbe72f6429b7b5f45710e85059cdd534553ebcf4f2"},
@@ -5674,7 +5674,7 @@ name = "pydeck"
 version = "0.8.0"
 description = "Widget for deck.gl maps"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "pydeck-0.8.0-py2.py3-none-any.whl", hash = "sha256:a8fa7757c6f24bba033af39db3147cb020eef44012ba7e60d954de187f9ed4d5"},
@@ -5938,7 +5938,7 @@ name = "pympler"
 version = "1.0.1"
 description = "A development tool to measure, monitor and analyze the memory behavior of Python objects."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 files = [
     {file = "Pympler-1.0.1-py3-none-any.whl", hash = "sha256:d260dda9ae781e1eab6ea15bacb84015849833ba5555f141d2d9b7b7473b307d"},
@@ -7369,7 +7369,7 @@ name = "semver"
 version = "2.13.0"
 description = "Python helper for Semantic Versioning (http://semver.org/)"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
     {file = "semver-2.13.0-py2.py3-none-any.whl", hash = "sha256:ced8b23dceb22134307c1b8abfa523da14198793d9787ac838e70e29e77458d4"},
@@ -7974,7 +7974,7 @@ name = "streamlit"
 version = "1.20.0"
 description = "The fastest way to build data apps in Python"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7, !=3.9.7"
 files = [
     {file = "streamlit-1.20.0-py2.py3-none-any.whl", hash = "sha256:41a544b8dc618ee65726da3ac76149c5b2bf3da7bde6d50625c4f7ec95e6c9e8"},
@@ -8950,7 +8950,7 @@ name = "validators"
 version = "0.20.0"
 description = "Python Data Validation for Humans™."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.4"
 files = [
     {file = "validators-0.20.0.tar.gz", hash = "sha256:24148ce4e64100a2d5e267233e23e7afeb55316b47d30faae7eb6e7292bc226a"},
@@ -9714,6 +9714,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [extras]
 all = ["Riskfolio-Lib", "lightgbm", "openai-whisper", "pytorch-lightning", "setuptools-rust", "torch", "transformers", "u8darts", "yt-dlp"]
+dash = ["streamlit"]
 doc = ["docstring-parser"]
 forecast = ["lightgbm", "openai-whisper", "pytorch-lightning", "setuptools-rust", "torch", "transformers", "u8darts", "yt-dlp"]
 installer = ["pyinstaller"]
@@ -9723,4 +9724,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "eea16610cfa778bbec55be286394c380ba5d73c906a56c0def649b0ba33e81a7"
+content-hash = "7ed4c43d18631ae6c0c6ae09a99debdb16b524d99a060f3e21af85ebb0ad93c1"

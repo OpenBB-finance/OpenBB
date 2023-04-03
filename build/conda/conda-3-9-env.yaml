@@ -3,7 +3,6 @@ channels:
   - defaults
 dependencies:
   - python =3.9.13
-  - git
   # Build dependencies
   - pip
   - pybind11
