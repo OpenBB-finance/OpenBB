@@ -12,11 +12,17 @@ with open(MISCELLANEOUS_DIRECTORY / "models" / "hub_credentials.json") as f:
 with open(MISCELLANEOUS_DIRECTORY / "models" / "local_credentials.json") as f:
     LOCAL_CREDENTIALS = json.load(f)
 
+with open(MISCELLANEOUS_DIRECTORY / "models" / "logging_credentials.json") as f:
+    LOGGING_CREDENTIALS = json.load(f)
+
 
 dc = make_dataclass(
     cls_name="CredentialsModel",
     fields=[
-        (k, str, "REPLACE_ME") for k in list(HUB_CREDENTIALS) + list(LOCAL_CREDENTIALS)
+        (k, str, "REPLACE_ME")
+        for k in list(HUB_CREDENTIALS)
+        + list(LOCAL_CREDENTIALS)
+        + list(LOGGING_CREDENTIALS)
     ],
     bases=(BaseModel,),
 )

@@ -23,8 +23,6 @@ class SystemModel(BaseModel):
 
     # Logging section
     LOGGING_APP_NAME: str = "gst"
-    LOGGING_AWS_ACCESS_KEY_ID: str = "REPLACE_ME"
-    LOGGING_AWS_SECRET_ACCESS_KEY: str = "REPLACE_ME"
     LOGGING_COMMIT_HASH: str = "REPLACE_ME"
     LOGGING_FREQUENCY: Literal["D", "H", "M", "S"] = "H"
     LOGGING_HANDLERS: Literal["stdout", "stderr", "noop", "file"] = "file"
