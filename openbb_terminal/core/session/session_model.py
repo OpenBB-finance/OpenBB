@@ -1,6 +1,6 @@
 import json
 from enum import Enum
-from typing import Any, Optional, Dict
+from typing import Any, Dict, Optional
 
 import matplotlib.pyplot as plt
 
