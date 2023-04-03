@@ -1,10 +1,11 @@
 import json
 from pathlib import Path
+from typing import Dict
 
-from openbb_terminal.core.config.paths import OPENBB_DATA_SOURCES_DEFAULT_FILE
+from openbb_terminal.core.models.sources_model import read_default_sources
 
 
-def read_sources(path: Path) -> dict:
+def read_sources(path: Path) -> Dict:
     """Read sources from file.
 
     Parameters
@@ -14,7 +15,7 @@ def read_sources(path: Path) -> dict:
 
     Returns
     -------
-    dict
+    Dict
         Dictionary with sources
     """
     try:
@@ -22,7 +23,5 @@ def read_sources(path: Path) -> dict:
             return json.load(file)
     except Exception as e:
         print(f"\nFailed to read data sources file: " f"{path}\n{e}\n")
-        print("Using OpenBB defaults for guest mode.")
-
-        with open(OPENBB_DATA_SOURCES_DEFAULT_FILE) as file:
-            return json.load(file)
+        print("Using OpenBB defaults.")
+        return read_default_sources()

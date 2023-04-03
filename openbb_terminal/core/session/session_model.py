@@ -12,6 +12,7 @@ from openbb_terminal.base_helpers import (
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     ProfileModel,
+    SourcesModel,
     UserModel,
 )
 from openbb_terminal.core.session.current_user import (
@@ -79,12 +80,17 @@ def login(session: dict) -> LoginStatus:
     session : dict
         The session info.
     """
-    # create a new user
+    # Create a new user:
+    #   credentials: stored in hub, so we set default here
+    #   profile: stored in hub, so we set default here
+    #   preferences: stored locally, so we use the current user preferences
+    #   sources: stored in hub, so we set default here
+
     hub_user = UserModel(  # type: ignore
         credentials=CredentialsModel(),
         profile=ProfileModel(),
         preferences=get_current_user().preferences,
-        sources=get_current_user().sources,
+        sources=SourcesModel(),
     )
     response = Hub.fetch_user_configs(session)
     if response is not None:
