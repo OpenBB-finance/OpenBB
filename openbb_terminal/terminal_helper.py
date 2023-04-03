@@ -235,8 +235,7 @@ def is_auth_enabled() -> bool:
     bool
         If authentication is enabled
     """
-    # TODO: This function is a temporary way to block authentication
-    return str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+    return True
 
 
 def print_guest_block_msg():
