@@ -262,6 +262,15 @@ class ETFController(BaseController):
                 f"Loading Daily data for {self.etf_name} with starting period {ns_parser.start.strftime('%Y-%m-%d')}.",
             )
 
+            try:
+                self.etf_holdings = list(
+                    stockanalysis_model.get_etf_holdings(self.etf_name)[
+                        : ns_parser.limit
+                    ].index
+                )
+            except Exception as e:
+                console.print(f"Error: {e}")
+
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
@@ -564,19 +573,8 @@ class ETFController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ca",
-            description="Compare ETFs with each other",
+            description="Compare ETF's holdings with each other",
         )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="Limit number of major holdings to compare",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
 
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -586,20 +584,10 @@ class ETFController(BaseController):
         )
 
         if ns_parser:
-
             if len(self.etf_holdings) == 0:
-                self.etf_holdings = list(
-                    stockanalysis_model.get_etf_holdings(self.etf_name)[
-                        : ns_parser.limit
-                    ].index
+                console.print(
+                    "Load a ticker with major holdings to compare them on this menu\n"
                 )
-                if len(self.etf_holdings) == 0:
-                    console.print(
-                        "Load a ticker with major holdings to compare them on this menu\n"
-                    )
-                self.queue = ca_controller.ComparisonAnalysisController(
-                    self.etf_holdings, self.queue
-                ).menu(custom_path_menu_above="/stocks/")
             elif len(self.etf_holdings) > 0:
                 self.queue = ca_controller.ComparisonAnalysisController(
                     self.etf_holdings, self.queue
