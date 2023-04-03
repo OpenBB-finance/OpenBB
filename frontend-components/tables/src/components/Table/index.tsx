@@ -155,7 +155,7 @@ export default function Table({
             ? "index"
             : row.original.hasOwnProperty("Index")
               ? "Index"
-              : null;
+              : columns[0]
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
@@ -187,6 +187,12 @@ export default function Table({
           if (probablyDate) {
             if (typeof value === "string") {
               return <p>{value}</p>;
+            }
+
+            if (typeof value === "number") {
+              if (value < 1000000000000) {
+                return <p>{value}</p>
+              }
             }
 
             try {
@@ -380,7 +386,7 @@ export default function Table({
                   toggleDarkMode(!darkMode);
                 }}
               >
-                {darkMode ? (
+                {!darkMode ? (
                   <MoonIcon className="w-4 h-4" />
                 ) : (
                   <SunIcon className="w-4 h-4" />
