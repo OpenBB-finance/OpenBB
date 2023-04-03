@@ -49,7 +49,7 @@ To know more about OpenBB Bot, you can start by reading the [Installation Guide]
 
 ### Using OpenBB Bot
 
-To learn how to use OpenBB Bot, you can start by reading the [Basics Guide](/bot/guides/discord).
+To learn how to use OpenBB Bot, you can start by reading the [Basics Guide](/bot/usage/discord).
 
 ### Bot Reference
 
