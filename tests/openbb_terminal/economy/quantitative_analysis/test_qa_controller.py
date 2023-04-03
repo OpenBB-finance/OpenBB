@@ -33,6 +33,7 @@ MOCK_CPI = pd.DataFrame.from_dict(
     }
 )
 
+
 MOCK_OBJ = {}
 MOCK_OBJ["united_states_CPI"] = MOCK_CPI
 
@@ -226,3 +227,29 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 
     assert result is None
     assert controller.queue == expected_queue
+
+
+@pytest.mark.record_verify_screen
+def test_call_summary():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_summary([])
+
+    assert result is None
+    assert controller.queue == []
+
+
+def test_call_line():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_line([])
+
+    assert result is None
+    assert controller.queue == []
+
+
+# @pytest.mark.record_verify_screen
+def test_call_raw():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_raw([])
+
+    assert result is None
+    assert controller.queue == []
