@@ -27,10 +27,10 @@ const ICONS = {
 };
 
 function onlyOne(checkbox) {
-  var checkboxes = document.getElementsByName('csv_scatter_check')
+  var checkboxes = document.getElementsByName("csv_plot_yaxis_check");
   checkboxes.forEach((item) => {
-      if (item !== checkbox) item.checked = false
-  })
+    if (item !== checkbox) item.checked = false;
+  });
 }
 
 function add_annotation(data, yshift, popup_data, current_text = null) {
@@ -97,10 +97,13 @@ function checkFile(popup, type = false) {
   let csv_type = popup.querySelector("#csv_trace_type");
   let csv_columns = popup.querySelector("#csv_columns");
   let csv_colors = popup.querySelector("#csv_colors");
-  let csv_scatter_options = popup.querySelector("#csv_scatter_options");
-  csv_scatter_options.style.display = "none";
-  csv_scatter_options.querySelector("#csv_percent_change_div").style.display = "inline-block";
-
+  let csv_plot_yaxis_options = popup.querySelector("#csv_plot_yaxis_options");
+  let csv_bar_orientation = popup.querySelector("#csv_bar_orientation");
+  csv_plot_yaxis_options.style.display = "none";
+  csv_bar_orientation.style.display = "none";
+  csv_plot_yaxis_options.querySelector(
+    "#csv_percent_change_div"
+  ).style.display = "inline-block";
 
   if (csv_file.files.length > 0) {
     console.log("file selected");
@@ -158,7 +161,7 @@ function checkFile(popup, type = false) {
         `;
 
         csv_colors.innerHTML = `
-                    <b>Candlestick colors:</b><br><br>
+                    <b>Candlestick colors:</b><br>
 
                     <label for="csv_increasing">Increasing</label>
                     <input type="color" id="csv_increasing" value="#00ACFF"></input>
@@ -175,11 +178,13 @@ function checkFile(popup, type = false) {
               headers[headers_lower.indexOf("date")];
           }
         }
-        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display = "none";
+        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display =
+          "none";
       } else {
+        let color_text = csv_type.value == "bar" ? "Bar color" : "Line color";
         csv_columns.innerHTML = `
                     <b>Columns:</b><br>
-                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                    <div style="margin-top: 5px; margin-bottom: 10px;">
                       <label for="csv_x">X axis</label>
                       <select id="csv_x">
                           ${options}
@@ -189,11 +194,12 @@ function checkFile(popup, type = false) {
                       <label for="csv_y">Y axis</label>
                       <select id="csv_y">
                           ${options}
-                      </select><br><br>
+                      </select>
                     </div>
                 `;
         csv_colors.innerHTML = `
-                    <label for="csv_color"><b>Line color:</b></label>
+                    <label style="margin-top: 10px; margin-bottom: 10px;"
+                      for="csv_color"><b>${color_text}:</b></label>
                     <input type="color" id="csv_color" value="#FFDD00"></input>
                 `;
 
@@ -213,7 +219,13 @@ function checkFile(popup, type = false) {
             headers[headers_lower.indexOf("close")];
         }
       }
-      csv_scatter_options.style.display = "inline-block";
+      if (csv_type.value == "bar") {
+        csv_bar_orientation.style.display = "inline-block";
+        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display =
+          "none";
+      }
+
+      csv_plot_yaxis_options.style.display = "inline-block";
 
       // we try to guess the date and time to remove from the name of the file
       // if "_" in the name of the file,

@@ -26,7 +26,8 @@ except ImportError as e:
 
 from svglib.svglib import svg2rlg
 
-from openbb_terminal.base_helpers import console, strtobool
+from openbb_terminal.base_helpers import console
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 
 if not PYWRY_AVAILABLE:
@@ -69,8 +70,8 @@ class Backend(PyWry):
         self.isatty = (
             not JUPYTER_NOTEBOOK
             and sys.stdin.isatty()
-            and not strtobool(os.environ.get("TEST_MODE", False))
-            and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
+            and not get_current_system().TEST_MODE
+            and not get_current_user().preferences.ENABLE_QUICK_EXIT
             and current_process().name == "MainProcess"
         )
         if hasattr(PyWry, "__version__") and PyWry.__version__ == "0.0.0":
