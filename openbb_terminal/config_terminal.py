@@ -107,11 +107,13 @@ def setup_logging_sub_app(sub_app: str):
     set_current_system(updated_system)
 
 
-def setup_config_terminal():
+def setup_config_terminal(is_sdk: bool = False):
     """Setup the config terminal"""
     load_env_files()
     init_userdata()
-    start_plot_backend()
+    # To avoid starting plots backend twice
+    if is_sdk:
+        start_plot_backend()
     setup_i18n()
     setup_version()
     setup_logging_app_name()

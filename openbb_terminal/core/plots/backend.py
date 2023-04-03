@@ -377,14 +377,24 @@ class Backend(PyWry):
     async def check_backend(self):
         """Override to check if isatty."""
         if self.isatty:
-            if not hasattr(PyWry, "__version__") or version.parse(
-                PyWry.__version__
-            ) < version.parse("0.3.5"):
-                console.print(
-                    "[bold red]PyWry version 0.3.5 or higher is required to use the "
-                    "OpenBB Plots backend.[/]\n"
-                    "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
-                )
+            message = (
+                "[bold red]PyWry version 0.3.5 or higher is required to use the "
+                "OpenBB Plots backend.[/]\n"
+                "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
+            )
+            if not hasattr(PyWry, "__version__"):
+                try:
+                    # pylint: disable=C0415
+                    from pywry import __version__ as pywry_version
+                except ImportError:
+                    console.print(message)
+                    self.max_retries = 0
+                    return
+
+                PyWry.__version__ = pywry_version  # pylint: disable=W0201
+
+            if version.parse(PyWry.__version__) < version.parse("0.3.5"):
+                console.print(message)
                 self.max_retries = 0  # pylint: disable=W0201
                 return
             await super().check_backend()

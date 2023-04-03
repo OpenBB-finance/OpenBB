@@ -1092,7 +1092,9 @@ class OpenBBFigure(go.Figure):
             legend=dict(
                 tracegroupgap=height / 4.5,
                 groupclick="toggleitem",
-                orientation="v",
+                orientation="v"
+                if not self.layout.legend.orientation
+                else self.layout.legend.orientation,
             ),
             barmode="overlay",
             bargap=0,
