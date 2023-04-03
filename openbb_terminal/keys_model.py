@@ -260,14 +260,13 @@ def handle_credential(name: str, value: str, persist: bool = False):
         Write to .env file. By default, False.
     """
     current_user = get_current_user()
-    sync_enabled = current_user.preferences.SYNC_ENABLED
     local_user = is_local()
 
     set_credential(name, value)
 
     if local_user and persist:
         write_to_dotenv("OPENBB_" + name, value)
-    elif not local_user and sync_enabled and name not in LOCAL_CREDENTIALS:
+    elif not local_user and name not in LOCAL_CREDENTIALS:
         upload_config(
             key=name,
             value=str(value),

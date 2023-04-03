@@ -236,7 +236,7 @@ def is_auth_enabled() -> bool:
         If authentication is enabled
     """
     # TODO: This function is a temporary way to block authentication
-    return str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+    return get_current_system().ENABLE_AUTHENTICATION
 
 
 def print_guest_block_msg():
@@ -355,7 +355,7 @@ def reset(queue: Optional[List[str]] = None):
     logger.info("resetting")
     plt.close("all")
     plots_backend().close(reset=True)
-    debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
+    debug = get_current_system().DEBUG_MODE
 
     # we clear all openbb_terminal modules from sys.modules
     try:
@@ -365,10 +365,14 @@ def reset(queue: Optional[List[str]] = None):
                 del sys.modules[module]
 
         # pylint: disable=import-outside-toplevel
+        # we run the terminal again
+        from openbb_terminal.core.session import session_controller
         from openbb_terminal.terminal_controller import main
 
-        # we run the terminal again
-        main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+        if is_local():
+            main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+        else:
+            session_controller.main()
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))

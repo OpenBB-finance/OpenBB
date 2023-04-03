@@ -4,9 +4,6 @@ from inspect import signature
 from logging import Logger, getLogger
 from typing import Any, Callable, Dict, Optional
 
-import dotenv
-
-from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.sdk.sdk_init import (
     FORECASTING_TOOLKIT_ENABLED,
@@ -14,23 +11,26 @@ from openbb_terminal.core.sdk.sdk_init import (
     OPTIMIZATION_TOOLKIT_ENABLED,
     OPTIMIZATION_TOOLKIT_WARNING,
 )
-from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.session.current_system import (
+    get_current_system,
+    set_system_variable,
+)
 from openbb_terminal.rich_config import console
 
 SETTINGS_ENV_FILE.parent.mkdir(parents=True, exist_ok=True)
 
-if not FORECASTING_TOOLKIT_ENABLED and not load_env_vars(
-    "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
+if (
+    not FORECASTING_TOOLKIT_ENABLED
+    and not get_current_system().DISABLE_FORECASTING_WARNING
 ):
-    dotenv.set_key(str(SETTINGS_ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
+    set_system_variable("DISABLE_FORECASTING_WARNING", True)
     console.print(FORECASTING_TOOLKIT_WARNING)
 
-if not OPTIMIZATION_TOOLKIT_ENABLED and not load_env_vars(
-    "OPENBB_DISABLE_OPTIMIZATION_WARNING", strtobool, False
+if (
+    not OPTIMIZATION_TOOLKIT_ENABLED
+    and not get_current_system().DISABLE_OPTIMIZATION_WARNING
 ):
-    dotenv.set_key(
-        str(SETTINGS_ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True"
-    )
+    set_system_variable("DISABLE_OPTIMIZATION_WARNING", True)
     console.print(OPTIMIZATION_TOOLKIT_WARNING)
 
 
@@ -357,7 +357,7 @@ from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-cfg.setup_config_terminal()
+cfg.setup_config_terminal(is_sdk=True)
 
 logger = logging.getLogger(__name__)
 cfg.theme.applyMPLstyle()

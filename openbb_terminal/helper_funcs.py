@@ -49,6 +49,7 @@ from openbb_terminal import (
 )
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user, set_preference
@@ -350,8 +351,14 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
+        theme = current_user.preferences.THEME
+        table_theme = "white" if theme == "light" else theme
+
         plots_backend().send_table(
-            df_table=df_outgoing, title=title, source=source  # type: ignore
+            df_table=df_outgoing,
+            title=title,
+            source=source,  # type: ignore
+            theme=table_theme,
         )
         return
 
@@ -1445,7 +1452,7 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     current_user = get_current_user()
     if current_user.preferences.FILE_OVERWRITE:
         return False, True
-    if os.environ.get("TEST_MODE") == "True":
+    if get_current_system().TEST_MODE:
         return False, True
     if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
