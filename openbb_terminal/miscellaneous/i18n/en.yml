@@ -68,8 +68,8 @@ en:
   settings/_cmds_: Change settings
   settings/colors: set your own terminal colors
   settings/_colors: Colors
-  settings/plotstyle: set your own plot style
-  settings/_plotstyle: Plot style
+  settings/theme: set plots and tables theme
+  settings/_theme: Theme
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used
