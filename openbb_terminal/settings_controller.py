@@ -350,7 +350,9 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.file:
             if os.path.exists(ns_parser.file):
-                self.set_and_save_preference("USER_DATA_SOURCES_FILE", ns_parser.file)
+                self.set_and_save_preference(
+                    "USER_DATA_SOURCES_FILE", str(ns_parser.file)
+                )
                 console.print("[green]Sources file changed successfully![/green]")
             else:
                 console.print("[red]Couldn't find the sources file![/red]")

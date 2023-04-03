@@ -15,6 +15,7 @@ from openbb_terminal.core.session.current_user import (
     is_local,
     set_sources,
 )
+from pathlib import Path
 from openbb_terminal.core.session.hub_model import upload_config
 from openbb_terminal.core.session.sources_handler import write_sources
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -150,7 +151,9 @@ class SourcesController(BaseController):
                 if is_local():
                     write_sources(
                         sources=sources_dict,
-                        path=get_current_user().preferences.USER_DATA_SOURCES_FILE,
+                        path=Path(
+                            get_current_user().preferences.USER_DATA_SOURCES_FILE
+                        ),
                     )
                 else:
                     upload_config(

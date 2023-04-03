@@ -1,6 +1,7 @@
 # IMPORTS STANDARD
 import dataclasses
 from copy import deepcopy
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 # IMPORTS INTERNAL
@@ -20,7 +21,7 @@ __env_dict = read_env()
 __credentials = load_dict_to_model(__env_dict, CredentialsModel)  # type: ignore
 __preferences = load_dict_to_model(__env_dict, PreferencesModel)
 __sources = SourcesModel()  # type: ignore
-__sources.update(flatten(read_sources(__preferences.USER_DATA_SOURCES_FILE)))
+__sources.update(flatten(read_sources(Path(__preferences.USER_DATA_SOURCES_FILE))))
 
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
@@ -65,7 +66,7 @@ def set_default_user():
     credentials = load_dict_to_model(env_dict, CredentialsModel)
     preferences = load_dict_to_model(env_dict, PreferencesModel)
     sources = SourcesModel()
-    sources.update(flatten(read_sources(preferences.USER_DATA_SOURCES_FILE)))
+    sources.update(flatten(read_sources(Path(preferences.USER_DATA_SOURCES_FILE))))
     profile = ProfileModel()
     default_user = UserModel(  # type: ignore
         credentials=credentials,

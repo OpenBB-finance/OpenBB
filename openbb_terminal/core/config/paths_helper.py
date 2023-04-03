@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+from pathlib import Path
 from typing import List
 
 from openbb_terminal.core.config.paths import (
@@ -62,7 +63,7 @@ dirs_list = [
 dirs_files = [
     SETTINGS_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    current_user.preferences.USER_DATA_SOURCES_FILE,
+    Path(current_user.preferences.USER_DATA_SOURCES_FILE),
 ]
 initialized = False
 
