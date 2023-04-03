@@ -359,7 +359,7 @@ class SettingsController(BaseController):
         if ns_parser:
             if ns_parser.default:
                 self.set_and_save_preference(
-                    "PREFERRED_DATA_SOURCE_FILE", str(USER_DATA_SOURCES_DEFAULT_FILE)
+                    "PREFERRED_DATA_SOURCE_FILE", USER_DATA_SOURCES_DEFAULT_FILE
                 )
                 console.print("[green]Sources file changed successfully![/green]")
             elif ns_parser.file:

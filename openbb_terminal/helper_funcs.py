@@ -1949,12 +1949,12 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
 
 
 @lru_cache
-def load_json(path: str) -> Dict[str, str]:
+def load_json(path: Path) -> Dict[str, str]:
     """Load a dictionary from a json file path.
 
     Parameter
     ----------
-    path : str
+    path : Path
         The path for the json file
 
     Returns

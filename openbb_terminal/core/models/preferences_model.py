@@ -88,8 +88,8 @@ class PreferencesModel(BaseModel):
     THEME: Literal["dark", "light"] = "dark"
 
     # PATHS
-    PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
     GUESS_EASTER_EGG_FILE: str = os.getcwd() + os.path.sep + "guess_game.json"
+    PREFERRED_DATA_SOURCE_FILE = USER_DATA_SOURCES_DEFAULT_FILE
     USER_DATA_DIRECTORY = HOME_DIRECTORY / "OpenBBUserData"
     USER_EXPORTS_DIRECTORY = USER_DATA_DIRECTORY / "exports"
     USER_CUSTOM_IMPORTS_DIRECTORY = USER_DATA_DIRECTORY / "custom_imports"

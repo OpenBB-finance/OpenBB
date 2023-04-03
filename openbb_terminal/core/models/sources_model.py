@@ -48,3 +48,7 @@ class SourcesModel(BaseModel):
 
     def __repr__(self):
         return super().__repr__()
+
+    def update(self, other: Dict):
+        """Update sources dict."""
+        self.sources_dict.update(other)

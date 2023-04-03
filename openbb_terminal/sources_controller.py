@@ -160,3 +160,9 @@ class SourcesController(BaseController):
                         type_="sources",
                         auth_header=get_current_user().profile.get_auth_header(),
                     )
+            else:
+                console.print(
+                    f"[red]'{ns_parser.source}' is not a valid data source for "
+                    f"'{ns_parser.cmd}' command.[/red]\n"
+                    f"[param]\nAvailable :[/param] {', '.join(sources_dict[ns_parser.cmd])}\n"
+                )
