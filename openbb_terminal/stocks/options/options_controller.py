@@ -937,7 +937,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     df_chain = self.chain.copy()
                     if ns_parser.to_display:
-                        needed = ["expiration", "strike", "optionType"]
+                        needed = ["symbol", "optionType", "expiration", "strike"]
                         to_display = ns_parser.to_display.split(",")
                         display = [col for col in to_display if col not in needed]
                         df_chain = df_chain[needed + display]
