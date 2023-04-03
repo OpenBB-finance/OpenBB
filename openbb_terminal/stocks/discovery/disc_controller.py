@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from datetime import date, datetime
+from datetime import datetime
 from typing import List, Optional
 
 from openbb_terminal.core.session.current_user import get_current_user
@@ -659,25 +659,16 @@ class DiscoveryController(BaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=10,
-            help="Limit of upcoming earnings release dates to display.",
-        )
-        parser.add_argument(
-            "-p",
-            "--pages",
-            action="store",
-            dest="n_pages",
-            type=check_positive,
-            default=1,
-            help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
+            default=5,
+            help="Limit of upcoming earnings release dates to look ahead.",
         )
         parser.add_argument(
             "-s",
             "--start",
             type=valid_date,
-            help="Start  date of data, in YYYY-MM-DD format",
+            help="Start  date of data, in YYYY-MM-DD format. Defaults to today.",
             dest="start_date",
-            default=date.today(),
+            default=datetime.today().strftime("%Y-%m-%d"),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -686,7 +677,6 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             seeking_alpha_view.upcoming_earning_release_dates(
-                num_pages=ns_parser.n_pages,
                 limit=ns_parser.limit,
                 start_date=ns_parser.start_date,
                 export=ns_parser.export,
