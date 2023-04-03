@@ -532,7 +532,7 @@ export default function Table({
                             <td
                               key={cell.id}
                               className={clsx(
-                                "whitespace-normal p-4",
+                                "whitespace-normal p-4 text-black dark:text-white",
                                 {
                                   "bg-grey-100 dark:bg-grey-850": idx % 2 === 0,
                                   "bg-grey-200 dark:bg-[#202020]":
