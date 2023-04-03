@@ -253,6 +253,8 @@ export default function Table({
     return !isEqual(currentOrder, defaultOrder);
   }, [columnOrder, rtColumns]);
 
+  console.log(validatePageSize(currentPage))
+
   const table = useReactTable({
     data,
     columns: rtColumns,
@@ -275,7 +277,7 @@ export default function Table({
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: currentPage,
+        pageSize: typeof currentPage === "string" ? currentPage.includes("All") ? data.length : parseInt(currentPage) : currentPage,
       },
     },
   });
@@ -524,7 +526,7 @@ export default function Table({
                             <td
                               key={cell.id}
                               className={clsx(
-                                "whitespace-nowrap overflow-auto p-4",
+                                "whitespace-normal p-4",
                                 {
                                   "bg-grey-100 dark:bg-grey-850": idx % 2 === 0,
                                   "bg-grey-200 dark:bg-[#202020]":

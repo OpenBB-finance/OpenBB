@@ -34,6 +34,7 @@ export default function Pagination({
         value={currentPage}
         onChange={(value) => {
           const newValue = validatePageSize(value)
+          console.log(newValue)
           setCurrentPage(newValue);
           if (newValue.toString().includes("All")) table.setPageSize(totalRows);
           else table.setPageSize(newValue);
