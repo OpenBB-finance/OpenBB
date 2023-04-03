@@ -16,7 +16,7 @@ from openbb_terminal.core.session.current_user import (
     set_sources,
 )
 from openbb_terminal.core.session.hub_model import upload_config
-from openbb_terminal.core.session.sources_handler import update_sources
+from openbb_terminal.core.session.sources_handler import write_sources
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_and_split_input
@@ -148,9 +148,8 @@ class SourcesController(BaseController):
                 set_sources(sources_dict)
 
                 if is_local():
-                    update_sources(
-                        cmd=ns_parser.cmd,
-                        defaults=sources_dict[ns_parser.cmd],
+                    write_sources(
+                        sources=sources_dict,
                         path=get_current_user().preferences.USER_DATA_SOURCES_FILE,
                     )
                 else:

@@ -21,25 +21,28 @@ def read_sources(path: Path) -> Dict:
         Dictionary with sources
     """
     try:
-        if os.stat(path).st_size == 0:
-            return {}
-        with open(path) as file:
-            return json.load(file)
+        if path.exists() and os.stat(path).st_size > 0:
+            with open(path) as file:
+                return json.load(file)
+        return {}
     except Exception as e:
         print(f"\nFailed to read data sources file: {path}\n{e}\n")
         print("Using OpenBB defaults.")
         return {}
 
 
-def update_sources(cmd, defaults, path: Path):
-    try:
-        if os.stat(path).st_size == 0:
-            sources = {}
-        with open(path) as f:
-            sources = json.load(f)
+def write_sources(sources: Dict, path: Path):
+    """Write sources to file.
 
-        sources.update(generate_sources_dict({cmd: defaults}))
+    Parameters
+    ----------
+    sources : Dict
+        Dictionary with sources
+    path : Path
+        Path to file
+    """
+    try:
         with open(path, "w") as f:
-            json.dump(sources, f, indent=4)
+            json.dump(generate_sources_dict(sources), f, indent=4)
     except Exception as e:
         print(f"\nFailed to write data sources file: {path}\n{e}\n")
