@@ -26,8 +26,6 @@ en:
   account/show: Shows the current Personal Access Token
   account/revoke: Revoke the Personal Access Token
   account/_info_: Cloud storage of keys
-  account/sync: Turn the keys synchronization on/off
-  account/pull: Pull keys from cloud
   account/clear: Clear keys from cloud
   account/_routines_: Cloud storage of routines
   account/list: List available routines
@@ -70,8 +68,8 @@ en:
   settings/_cmds_: Change settings
   settings/colors: set your own terminal colors
   settings/_colors: Colors
-  settings/plotstyle: set your own plot style
-  settings/_plotstyle: Plot style
+  settings/theme: set plots and tables theme
+  settings/_theme: Theme
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used

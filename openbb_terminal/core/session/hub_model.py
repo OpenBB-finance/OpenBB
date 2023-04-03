@@ -120,7 +120,7 @@ def delete_session(
         console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
-        console.print("[red]Failed to delete server session.[/red]")
+        console.print("[bold red]Failed to delete server session.[/bold red]")
         return None
 
 
@@ -235,7 +235,7 @@ def fetch_user_configs(
 def upload_config(
     key: str,
     value: str,
-    type_: Literal["keys", "settings", "sources"],
+    type_: Literal["keys", "settings", "sources", "terminal_style"],
     auth_header: str,
     base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
@@ -248,7 +248,7 @@ def upload_config(
         The key to patch.
     value : str
         The value to patch.
-    type_ : Literal["keys", "settings", "sources"]
+    type_ : Literal["keys", "settings", "sources", "terminal_style"]
         The type of the patch.
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
@@ -262,13 +262,14 @@ def upload_config(
     Optional[requests.Response]
         The response from the patch request.
     """
-    if type_ not in ["keys", "settings", "sources"]:
+    if type_ not in ["keys", "settings", "sources", "terminal_style"]:
         console.print("[red]\nInvalid patch type.[/red]")
         return None
 
     data = {"key": f"features_{type_}.{key}", "value": value}
 
     try:
+        console.print("Sending to OpenBB hub...")
         response = requests.patch(
             url=base_url + "terminal/user",
             headers={"Authorization": auth_header},
