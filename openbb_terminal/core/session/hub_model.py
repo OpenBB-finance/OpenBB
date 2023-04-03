@@ -269,6 +269,7 @@ def upload_config(
     data = {"key": f"features_{type_}.{key}", "value": value}
 
     try:
+        console.print("Sending to OpenBB hub...")
         response = requests.patch(
             url=base_url + "terminal/user",
             headers={"Authorization": auth_header},

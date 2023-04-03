@@ -3,11 +3,15 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
-# IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import (
+from openbb_terminal.core.models.user_model import (
+    CredentialsModel,
     PreferencesModel,
-    copy_user,
+    ProfileModel,
+    SourcesModel,
+    UserModel,
 )
+
+# IMPORTATION INTERNAL
 from openbb_terminal.keys_controller import KeysController
 
 controller = KeysController(menu_usage=False)
@@ -16,21 +20,20 @@ controller = KeysController(menu_usage=False)
 
 
 @pytest.fixture(autouse=True)
-def revert_current_user(mocker):
+def mock(mocker):
     mocker.patch(
         target="openbb_terminal.keys_model.set_credential",
     )
-    preferences = PreferencesModel(
-        ENABLE_CHECK_API=False,
-    )
-    mock_current_user = copy_user(preferences=preferences)
-    mocker.patch(
-        target="openbb_terminal.core.session.current_user.__current_user",
-        new=mock_current_user,
-    )
     mocker.patch("openbb_terminal.keys_model.write_to_dotenv")
-
-    yield
+    mocker.patch(
+        target="openbb_terminal.keys_model.get_current_user",
+        return_value=UserModel(
+            profile=ProfileModel(),
+            credentials=CredentialsModel(),
+            preferences=PreferencesModel(),
+            sources=SourcesModel(),
+        ),
+    )
 
 
 class MockCFG:
