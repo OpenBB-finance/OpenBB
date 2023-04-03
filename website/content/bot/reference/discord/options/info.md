@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # info
 
-This command allows the user to quickly and easily retrieve various display option information (volatility, IV rank, etc.) for a specific ticker symbol (e.g. AMD). The command returns a list of all the available options with their corresponding data, providing users with up-to-date information to make informed decisions.
+This command allows the user to quickly and easily retrieve various option information (volatility, IV rank, put/call ratio, etc.) for a specific ticker symbol.
 
 ### Usage
 

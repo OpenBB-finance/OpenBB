@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # technical
 
-This command allows the user to retrieve stock screener results according to the chosen technical signal. Specifically, the command "/scr technical signal:Top Gainers" will retrieve the top gainers based on the technical signal chosen. The results of the stock screener can be used to identify stocks that may have potential for price appreciation.
+This command allows the user to retrieve stock screener results according to the chosen technical signal.
 
 ### Usage
 

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # vol
 
-This command allows the user to retrieve Display Options Strike Volume for a specified ticker, such as AMD. This data can be broken down further by adding an expiration date for a more detailed breakdown.
+This command allows the user to retrieve a chart of Options Volume by Strike for a specified ticker. This data can be broken down further by adding an expiration date for a more detailed breakdown.
 
 ### Usage
 

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # maxpain
 
-This command retrieves the Max Pain on expiration date for a given stock. It provides the user with the maximum pain point for a given stock (ticker:AMC) on the expiration date (2022-07-29). This data is useful for investors to evaluate their options and make more informed decisions.
+This command retrieves the Max Pain on expiration date for a given stock. Max Pain is the strike price with the most open options contracts and it is the price at which the stock would cause financial losses for the largest number of option holders at expiration.
 
 ### Usage
 

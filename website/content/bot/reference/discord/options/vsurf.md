@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # vsurf
 
-This command allows the user to retrieve an options volatility surface for the ticker symbol AMD. Specifically, it will provide a surface based on implied volatilities calculated from options prices, indicating the relationship between the stock price and the implied volatility of options on the stock.
+This command allows the user to retrieve an options volatility surface for the ticker symbol. Specifically, it will provide a surface based on implied volatilities calculated from options prices, indicating the relationship between the stock price and the implied volatility of options on the stock.
 
 ### Usage
 

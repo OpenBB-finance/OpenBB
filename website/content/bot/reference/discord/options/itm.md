@@ -6,9 +6,7 @@ description: OpenBB Discord Command
 
 # itm
 
-?
-
-This command allows the user to retrieve a list of Displays In-the-Money options for the stock ticker symbol AMD, sorted by expiry date. In-the-Money options have an intrinsic value and thus have a greater chance of being exercised than out-of-the-money options. The command also displays a summary of the option chain, including the expiry date, strike price, and bid/ask prices.
+This command allows the user to retrieve a list of In-the-Money options for the stock ticker symbol sorted by expiry date. The command compares the amount of Calls and Puts In-the-Money vs Out-the-Money and gives a total.
 
 ### Usage
 

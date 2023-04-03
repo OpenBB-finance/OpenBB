@@ -6,9 +6,7 @@ description: OpenBB Discord Command
 
 # chains
 
-?
-
-This command allows users to retrieve Display Options Chain by Expiry, which gives an overview of the available options contracts for a specific stock with a given expiration date. Specifically, this command will display the available Call options contracts for the ticker symbol AMD that have an expiration date of 2022-07-29.
+This command allows users to retrieve Options Chain by Expiry, which gives an overview of the bid, ask, and open interest of options contracts for a specific stock.
 
 ### Usage
 

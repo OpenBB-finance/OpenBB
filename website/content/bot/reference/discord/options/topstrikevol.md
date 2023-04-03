@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # topstrikevol
 
-This command allows the user to retrieve an option strike volume breakdown for a given security (ticker: AMD in this example) with the ability to add an expiration date for a more detailed breakdown. The command is written in Python, using the wordwrap/op topstrikevol command.
+This command allows the user to retrieve the top option strike by volume for a given security with the ability to add an expiration date for a more detailed breakdown.
 
 ### Usage
 

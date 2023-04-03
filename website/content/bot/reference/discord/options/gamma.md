@@ -6,9 +6,7 @@ description: OpenBB Discord Command
 
 # gamma
 
-?
-
-This command allows the user to view the available Display Options Gamma Levels for a particular stock, in this case AMD. Display Options Gamma Levels are important to understanding the rate of change for the option's Delta when the underlying stock price changes. Knowing this information can help traders make informed decisions about which options to purchase.
+This command allows the user to view the Options Gamma Levels for a particular stock. Options Gamma Levels are important to understanding the rate of change for the option's Delta when the underlying stock price changes. Knowing this information can help traders make informed decisions about which options to purchase.
 
 ### Usage
 

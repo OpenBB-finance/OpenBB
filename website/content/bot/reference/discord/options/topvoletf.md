@@ -6,9 +6,7 @@ description: OpenBB Discord Command
 
 # topvoletf
 
-?
-
-This command allows users to view the top 15 ETFs with the highest options volume. The data is retrieved from a reliable source and is updated daily. The ETFs are sorted by the highest options volume, with the highest volume ETF being listed first. The data is easily accessible and can be used to gain insight into the current market trends.
+This command allows the user to retrieve the Top 15 Highest ETF options volumes by adding the call and put volume together. This data can be used to identify the most liquid options for trading.
 
 ### Usage
 

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # topoichange
 
-This command allows the user to view the top 15 stocks with the highest OI Change. It will display the stock name, the OI Change, and the closing price of the stocks. This gives users a helpful overview of the stocks that have seen the most significant change in open interest.
+This command allows the user to view the top 15 stocks with the highest OI Change. It will display the stock name, the OI Change by put and call, and previous levels. This gives users a helpful overview of the stocks that have seen the most significant change in open interest.
 
 ### Usage
 
@@ -19,8 +19,6 @@ This command allows the user to view the top 15 stocks with the highest OI Chang
 ## Parameters
 
 This command has no parameters
-
-
 
 ---
 

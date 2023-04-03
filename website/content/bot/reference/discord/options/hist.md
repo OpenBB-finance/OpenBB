@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # hist
 
-This command allows the user to retrieve the historical price of options for the given parameters of ticker (AMD), expiry (2022-07-29), strike (80), option type (Calls) and interval (15) for the past 5 days in a chart format.
+This command allows the user to retrieve the historical price of options for the given parameters of a ticker, expiry, strike , option type, and interval for the past x days in a chart format.
 
 ### Usage
 

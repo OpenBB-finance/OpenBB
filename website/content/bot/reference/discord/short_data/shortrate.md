@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # shortrate
 
-This command allows the user to retrieve the Display Short Shares spot borrow rate from Interactive Brokers for the given ticker, in this case AMD. The spot borrow rate is the rate at which a user may borrow shares from the broker in order to short sell the security. This command allows the user to check the current rate and make more informed decisions about their short selling activities.
+This command allows the user to retrieve the Display Short Shares spot borrow rate from Interactive Brokers for the given ticker. The spot borrow rate is the rate at which a user may borrow shares from the broker in order to short sell the security. This command allows the user to check the current rate and make more informed decisions about their short selling activities.
 
 ### Usage
 
