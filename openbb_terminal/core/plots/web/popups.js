@@ -71,7 +71,7 @@ function get_popup(data = null, popup_id = null) {
     globals.TITLE_DIV.querySelector("#title_text").focus();
     popup = globals.TITLE_DIV;
   } else if (popup_id == "text") {
-    let has_annotation = false;
+    let has_annotation = data == undefined ? false : true;
     if (data == undefined) {
       data = {
         text: "",
@@ -81,8 +81,6 @@ function get_popup(data = null, popup_id = null) {
         },
         bordercolor: "#822661",
       };
-    } else {
-      has_annotation = true;
     }
 
     // we replace <br> with \n so that the textarea can display the text properly
@@ -207,10 +205,10 @@ function get_popup_data(popup_id = null) {
 
     let xaxis_div = globals.TITLE_DIV.querySelector("#xaxis_div");
     let yaxis_div = globals.TITLE_DIV.querySelector("#yaxis_div");
-    console.log(xaxis_div, yaxis_div);
+    console.log("xaxis_div: ", xaxis_div, "yaxis_div: ", yaxis_div);
 
     if (xaxis_div != null) {
-      // get all the inputs that start with 'title_xaxis'
+      // We query all inputs that start with 'title_xaxis'
       let xaxis_inputs = xaxis_div.querySelectorAll(
         "input[id^=title_xaxis], select[id^=title_xaxis]"
       );
@@ -221,7 +219,7 @@ function get_popup_data(popup_id = null) {
     }
 
     if (yaxis_div != null) {
-      // get all the inputs that start with 'title_yaxis'
+      // We query all inputs that start with 'title_yaxis'
       let yaxis_inputs = yaxis_div.querySelectorAll(
         "input[id^=title_yaxis], select[id^=title_yaxis]"
       );
@@ -230,6 +228,7 @@ function get_popup_data(popup_id = null) {
         data[yaxis_id] = input.value;
       });
     }
+    console.log("Title data:", data);
   } else if (popup_id == "text") {
     data = {
       text: globals.TEXT_DIV.querySelector("#addtext_textarea").value,
@@ -248,7 +247,7 @@ function get_popup_data(popup_id = null) {
 
     // we replace \n with <br> so that line breaks are displayed properly on the graph
     data.text = data.text.replace(/\n/g, "<br>");
-    console.log(data);
+    console.log("Text data:", data);
   } else if (popup_id == "csv") {
     let trace_type = globals.CSV_DIV.querySelector("#csv_trace_type").value;
     if (trace_type == "candlestick") {
@@ -277,7 +276,6 @@ function get_popup_data(popup_id = null) {
           ? true
           : false,
       };
-      console.log(data);
     } else if (trace_type == "bar") {
       let orientation = globals.CSV_DIV.querySelector("#csv_bar_horizontal")
         .checked
@@ -292,11 +290,11 @@ function get_popup_data(popup_id = null) {
           : false,
         orientation: orientation,
       };
-      console.log(data);
     }
-    data.name = globals.CSV_DIV.querySelector("#csv_name").value;
-    data.file = globals.CSV_DIV.querySelector("#csv_file");
     data.trace_type = trace_type;
+    data.name = globals.CSV_DIV.querySelector("#csv_name").value;
+    console.log("CSV data:", data);
+    data.file = globals.CSV_DIV.querySelector("#csv_file");
   }
   return data;
 }
@@ -337,6 +335,7 @@ function on_submit(popup_id, on_annotation = null) {
       }
 
       gd.on("plotly_clickannotation", function (eventData) {
+        console.log("plotly_clickannotation", eventData);
         let annotation = eventData.annotation;
         openPopup("popup_text");
         get_popup(annotation, (popup_id = "text"));
@@ -353,6 +352,7 @@ function on_submit(popup_id, on_annotation = null) {
       });
 
       let clickHandler = function (eventData) {
+        console.log("plotly_click", eventData);
         let x = eventData.points[0].x;
         let yaxis = eventData.points[0].fullData.yaxis;
         let y = 0;
@@ -640,7 +640,7 @@ function on_submit(popup_id, on_annotation = null) {
             gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 : 45;
           }
         }
-        console.log(trace);
+        console.log("trace: ", trace);
 
         globals.added_traces.push(trace.name);
 
