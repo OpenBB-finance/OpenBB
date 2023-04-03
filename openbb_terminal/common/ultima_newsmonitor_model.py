@@ -99,13 +99,14 @@ def get_news(
             "articleURL",
             "articlePublishedDate",
             "riskCategory",
-            "riskExtDescription",
+            "riskElaboratedDescription",
             "relevancyScore",
         ],
     )
     df = df[df["relevancyScore"] < 5]
-    df["riskExtDescription"] = df["riskExtDescription"].str.replace("\n", "")
-    df['riskExtDescription'] = df['riskExtDescription'].str.replace('\n', '')
+    df = df[df["relevancyScore"] > 3.5]
+    df["riskElaboratedDescription"] = df["riskElaboratedDescription"].str.replace("\n", "")
+    df['riskElaboratedDescription'] = df['riskElaboratedDescription'].str.replace('\n', '')
     df["articlePublishedDate"] = pd.to_datetime(df["articlePublishedDate"])
     df = df.sort_values(by=[sort], ascending=False)
     return df
