@@ -24,7 +24,7 @@ from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-cfg.setup_config_terminal()
+cfg.setup_config_terminal(is_sdk=True)
 
 logger = logging.getLogger(__name__)
 cfg.theme.applyMPLstyle()
