@@ -243,7 +243,8 @@ def is_auth_enabled() -> bool:
     bool
         If authentication is enabled
     """
-    return True
+    # TODO: This function is a temporary way to block authentication
+    return get_current_system().ENABLE_AUTHENTICATION
 
 
 def print_guest_block_msg():
@@ -362,7 +363,7 @@ def reset(queue: Optional[List[str]] = None):
     logger.info("resetting")
     plt.close("all")
     plots_backend().close(reset=True)
-    debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
+    debug = get_current_system().DEBUG_MODE
 
     # we clear all openbb_terminal modules from sys.modules
     try:
