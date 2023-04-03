@@ -221,7 +221,13 @@ class Backend(PyWry):
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
                     subprocess.check_call([opener, export_image])  # nosec: B603
 
-    def send_table(self, df_table: pd.DataFrame, title: str = "", source: str = ""):
+    def send_table(
+        self,
+        df_table: pd.DataFrame,
+        title: str = "",
+        source: str = "",
+        theme: str = "dark",
+    ):
         """Send table data to the backend to be displayed in a table.
 
         Parameters
@@ -232,6 +238,8 @@ class Backend(PyWry):
             Title to display in the window, by default ""
         source : str, optional
             Source of the data, by default ""
+        theme : light or dark, optional
+            Theme of the table, by default "light"
         """
         self.loop.run_until_complete(self.check_backend())
 
@@ -260,7 +268,7 @@ class Backend(PyWry):
         width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
 
         json_data = json.loads(df_table.to_json(orient="split"))
-        json_data.update(dict(title=title, source=source or ""))
+        json_data.update(dict(title=title, source=source or "", theme=theme or "dark"))
 
         self.outgoing.append(
             json.dumps(
@@ -348,14 +356,24 @@ class Backend(PyWry):
     async def check_backend(self):
         """Override to check if isatty."""
         if self.isatty:
-            if not hasattr(PyWry, "__version__") or version.parse(
-                PyWry.__version__
-            ) < version.parse("0.3.5"):
-                console.print(
-                    "[bold red]PyWry version 0.3.5 or higher is required to use the "
-                    "OpenBB Plots backend.[/]\n"
-                    "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
-                )
+            message = (
+                "[bold red]PyWry version 0.3.5 or higher is required to use the "
+                "OpenBB Plots backend.[/]\n"
+                "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
+            )
+            if not hasattr(PyWry, "__version__"):
+                try:
+                    # pylint: disable=C0415
+                    from pywry import __version__ as pywry_version
+                except ImportError:
+                    console.print(message)
+                    self.max_retries = 0
+                    return
+
+                PyWry.__version__ = pywry_version  # pylint: disable=W0201
+
+            if version.parse(PyWry.__version__) < version.parse("0.3.5"):
+                console.print(message)
                 self.max_retries = 0  # pylint: disable=W0201
                 return
             await super().check_backend()

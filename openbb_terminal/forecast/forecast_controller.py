@@ -772,6 +772,14 @@ class ForecastController(BaseController):
             help="Alias name to give to the dataset",
             type=str,
         )
+        parser.add_argument(
+            "--sheet-name",
+            dest="sheet_name",
+            default=None,
+            nargs="+",
+            help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+        )
+
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
 
@@ -796,7 +804,14 @@ class ForecastController(BaseController):
                         "[red]The file/dataset selected has already been loaded.[/red]\n"
                     )
                     return
-                data = common_model.load(file, self.DATA_FILES, {})
+                data = common_model.load(
+                    file,
+                    data_files=self.DATA_FILES,
+                    data_examples={},
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
                 if not data.empty:
                     self.files_full.append([ns_parser.file, ns_parser.alias])
                     self.load(alias, data)

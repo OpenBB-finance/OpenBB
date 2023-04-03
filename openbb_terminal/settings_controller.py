@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import argparse
-import json
 import logging
 import os
 import os.path
@@ -14,7 +13,6 @@ from typing import List, Optional, Union
 import pytz
 
 import openbb_terminal.core.session.hub_model as Hub
-import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import theme
 
 # IMPORTATION INTERNAL
@@ -24,6 +22,7 @@ from openbb_terminal.core.config.paths import (
     STYLES_DIRECTORY_REPO,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
+from openbb_terminal.core.session.constants import CHARTS_TABLES_URL, COLORS_URL
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -62,9 +61,9 @@ class SettingsController(BaseController):
         "lang",
         "monitor",
         "pheight",
-        "plotstyle",
         "pwidth",
         "tbnews",
+        "theme",
         "tweetnews",
         "tz",
         "userdata",
@@ -138,9 +137,9 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_setting("dt", current_user.preferences.USE_DATETIME)
         mt.add_raw("\n")
-        mt.add_cmd("plotstyle")
+        mt.add_cmd("theme")
         mt.add_raw("\n")
-        mt.add_param("_plotstyle", current_user.preferences.PLOT_STYLE)
+        mt.add_param("_theme", current_user.preferences.THEME)
         mt.add_raw("\n")
         mt.add_cmd("colors")
         mt.add_raw("\n")
@@ -277,7 +276,8 @@ class SettingsController(BaseController):
             help="To use 'custom' option, go to https://openbb.co/customize and create your theme."
             " Then, place the downloaded file 'openbb_config.richstyle.json'"
             f" inside {get_current_user().preferences.USER_STYLES_DIRECTORY} or "
-            f"{STYLES_DIRECTORY_REPO}.",
+            f"{STYLES_DIRECTORY_REPO}. If you have a hub account you can change colors "
+            f"here {COLORS_URL}.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
@@ -285,7 +285,6 @@ class SettingsController(BaseController):
         if ns_parser:
             if is_local():
                 self.set_and_save_preference("RICH_STYLE", ns_parser.style)
-                console.print("Theme updated.")
             else:
                 set_preference("RICH_STYLE", ns_parser.style)
                 Hub.upload_config(
@@ -294,51 +293,42 @@ class SettingsController(BaseController):
                     type_="settings",
                     auth_header=get_current_user().profile.get_auth_header(),
                 )
-                if ns_parser.style == "hub":
-                    response = Hub.fetch_user_configs(
-                        get_current_user().profile.get_session()
-                    )
-                    if response:
-                        configs = json.loads(response.content)
-                        Local.save_theme_from_hub(configs)
-                console.print("Theme updated.")
+            console.print("Colors updated.")
 
     @log_start_end(log=logger)
-    def call_plotstyle(self, other_args: List[str]):
-        """Process plotstyle command"""
-        # TODO: Add support for any style like in colors command. Choices should be
-        #  theme.plt_styles_available. Don't forget to theme.load_available_styles(),
-        #  to allow for files in user's styles directory created after the app started.
+    def call_theme(self, other_args: List[str]):
+        """Process theme command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="plotstyle",
-            description="Choose plot style.",
+            prog="theme",
+            description="Choose theme style.",
         )
         parser.add_argument(
             "-s",
             "--style",
             type=str,
             dest="style",
-            help="Choose plot style.",
+            choices=["dark", "light"],
+            help="Choose theme style. If you have a hub account you can change theme "
+            f"here {CHARTS_TABLES_URL}.",
             required="-h" not in other_args and "--help" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.style:
-            self.set_and_save_preference("PLOT_STYLE", ns_parser.style)
-            # if is_local():
-            #     self.set_and_save_preference("PLOT_STYLE", ns_parser.style)
-            # else:
-            #     set_preference("PLOT_STYLE", ns_parser.style)
-            #     Hub.upload_config(
-            #         key="PLOT_STYLE",
-            #         value=ns_parser.style,
-            #         type_="settings",
-            #         auth_header=get_current_user().profile.get_auth_header(),
-            #     )
-            # console.print("Plot style updated.")
+            if is_local():
+                self.set_and_save_preference("THEME", ns_parser.style)
+            else:
+                set_preference("THEME", ns_parser.style)
+                Hub.upload_config(
+                    key="chart_table",
+                    value=ns_parser.style,
+                    type_="terminal_style",
+                    auth_header=get_current_user().profile.get_auth_header(),
+                )
+            console.print("Theme updated.")
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):

@@ -84,7 +84,6 @@ class TerminalStyle:
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
-        self.load_style(plt_style)
         self.apply_console_style(console_style)
 
     def apply_console_style(self, style: Optional[str] = "") -> None:
@@ -108,7 +107,7 @@ class TerminalStyle:
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
         if not style:
-            style = get_current_user().preferences.PLOT_STYLE
+            style = get_current_user().preferences.THEME
 
         if style != self.plt_style:
             self.load_style(style)
@@ -243,7 +242,7 @@ class TerminalStyle:
 
 
 theme = TerminalStyle(
-    get_current_user().preferences.PLOT_STYLE, get_current_user().preferences.RICH_STYLE
+    get_current_user().preferences.THEME, get_current_user().preferences.RICH_STYLE
 )
 theme.apply_style()
 
@@ -1093,7 +1092,9 @@ class OpenBBFigure(go.Figure):
             legend=dict(
                 tracegroupgap=height / 4.5,
                 groupclick="toggleitem",
-                orientation="v",
+                orientation="v"
+                if not self.layout.legend.orientation
+                else self.layout.legend.orientation,
             ),
             barmode="overlay",
             bargap=0,
