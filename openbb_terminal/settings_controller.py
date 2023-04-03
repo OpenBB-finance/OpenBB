@@ -285,7 +285,7 @@ class SettingsController(BaseController):
         if ns_parser:
             if is_local():
                 self.set_and_save_preference("RICH_STYLE", ns_parser.style)
-                console.print("Rich style updated.")
+                console.print("Colors updated.")
             else:
                 set_preference("RICH_STYLE", ns_parser.style)
                 Hub.upload_config(
@@ -294,7 +294,7 @@ class SettingsController(BaseController):
                     type_="settings",
                     auth_header=get_current_user().profile.get_auth_header(),
                 )
-                console.print("Rich style updated.")
+                console.print("Colors updated.")
 
     @log_start_end(log=logger)
     def call_theme(self, other_args: List[str]):
