@@ -1,7 +1,7 @@
 # This is for helpers that do NOT import any OpenBB Modules
 import logging
 import os
-from typing import Any, Callable, List, Literal, Optional
+from typing import Any, List, Literal, Optional
 
 from dotenv import load_dotenv
 from rich.console import Console
@@ -42,39 +42,6 @@ def handle_error(name: str, default: Any, menu: menus = ""):
     base += "[/red]\n"
     console.print(base)
     return default
-
-
-def load_env_vars(
-    name: str, converter: Callable, default: Any, menu: menus = ""
-) -> Any:
-    """Loads an environment variable and attempts to convert it to the correct data type.
-    Will return the provided default if it fails
-
-    Parameters
-    ----------
-    name: str
-        The name of the environment variable
-    converter: Callable
-        The function to convert the env variable to the desired format
-    default: Any
-        The value to return if the converter fails
-    menu: menus
-        If provided, will tell the user where to fix the setting
-
-    Returns
-    ----------
-    Any
-        The value or the default
-    """
-    raw_var = os.getenv(name, str(default))
-    try:
-        return converter(raw_var)
-    except ValueError:
-        return handle_error(name, default, menu)
-    except AttributeError:
-        return handle_error(name, default, menu)
-    except TypeError:
-        return handle_error(name, default, menu)
 
 
 def strtobool(val):
