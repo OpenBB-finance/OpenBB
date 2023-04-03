@@ -13,7 +13,7 @@ import { useVirtual } from "react-virtual";
 import Select from "../Select";
 import { formatNumberMagnitude, fuzzyFilter, isEqual } from "../../utils/utils";
 import DraggableColumnHeader from "./ColumnHeader";
-import Pagination from "./Pagination";
+import Pagination, { validatePageSize } from "./Pagination";
 import Export from "./Export";
 import Timestamp from "./Timestamp";
 import FilterColumns from "./FilterColumns";
@@ -115,7 +115,8 @@ export default function Table({
   };
   const [currentPage, setCurrentPage] = useLocalStorage(
     "rowsPerPage",
-    DEFAULT_ROWS_PER_PAGE
+    DEFAULT_ROWS_PER_PAGE,
+    validatePageSize
   );
   const [advanced, setAdvanced] = useLocalStorage("advanced", false);
   const [colors, setColors] = useLocalStorage("colors", false);
