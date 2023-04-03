@@ -935,8 +935,15 @@ class OptionsController(BaseController):
                             f"Expiration not an option. Expiration set to {self.selected_date}"
                         )
                 if self.selected_date:
+                    df_chain = self.chain.copy()
+                    if ns_parser.to_display:
+                        needed = ["expiration", "strike", "optionType"]
+                        to_display = ns_parser.to_display.split(",")
+                        display = [col for col in to_display if col not in needed]
+                        df_chain = df_chain[needed + display]
+
                     display_chains(
-                        chain=self.chain,
+                        chain=df_chain,
                         expire=self.selected_date,
                         calls_only=ns_parser.calls,
                         puts_only=ns_parser.puts,
