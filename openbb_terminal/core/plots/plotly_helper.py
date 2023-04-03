@@ -1530,7 +1530,7 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=85, t=40, pad=0)
+            dict(l=80, r=60, b=90, t=40, pad=0)
             if not self._has_secondary_y
             else dict(l=60, r=50, b=85, t=40, pad=0)
         )
@@ -1599,7 +1599,11 @@ class OpenBBFigure(go.Figure):
                 self.layout.margin["l"] += 20
 
             if (yaxis2 and yaxis2.side == "left") or yaxis.side == "left":
-                title = yaxis.title.text if not yaxis2 else yaxis2.title.text
+                title = (
+                    yaxis.title.text
+                    if not yaxis2 or yaxis2.side != "left"
+                    else yaxis2.title.text
+                )
                 xshift = -110 if not title else -135
                 self.layout.margin["l"] += 60
 
