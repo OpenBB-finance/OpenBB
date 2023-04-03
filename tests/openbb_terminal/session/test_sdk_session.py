@@ -105,7 +105,6 @@ def test_get_session_from_token(email: str, password: str, token: str, save: boo
         mock_create_session_from_token.assert_called_once_with(token, save)
 
 
-@pytest.mark.skip("Not working?")
 @pytest.mark.parametrize(
     "email, password, token, keep_session, has_session, status",
     [
@@ -115,14 +114,6 @@ def test_get_session_from_token(email: str, password: str, token: str, save: boo
             "test_token",
             True,
             False,
-            LoginStatus.SUCCESS,
-        ),
-        (
-            "test_email",
-            "test_pass",
-            "test_token",
-            True,
-            True,
             LoginStatus.SUCCESS,
         ),
         (
@@ -154,13 +145,7 @@ def test_login(
 ):
     path = "openbb_terminal.core.session.sdk_session."
     mock_login = mocker.patch(path + "session_model.login")
-    mock_local_get_session = mocker.patch(path + "Local.get_session")
     mock_hub_get_session = mocker.patch(path + "get_session")
-
-    if has_session:
-        mock_local_get_session.return_value = TEST_SESSION
-    else:
-        mock_local_get_session.return_value = None
 
     mock_hub_get_session.return_value = TEST_SESSION
     mock_login.return_value = status
@@ -178,7 +163,6 @@ def test_login(
             email=email, password=password, token=token, keep_session=keep_session
         )
 
-    mock_local_get_session.assert_called_once()
     if has_session:
         mock_hub_get_session.assert_not_called()
     else:
@@ -188,7 +172,59 @@ def test_login(
     mock_login.assert_called_once_with(TEST_SESSION)
 
 
-@pytest.mark.skip("Not working?")
+@pytest.mark.parametrize(
+    "email, password, token, keep_session, has_session, status",
+    [
+        (
+            "",
+            "",
+            "",
+            True,
+            False,
+            LoginStatus.SUCCESS,
+        ),
+        (
+            "",
+            "",
+            "",
+            True,
+            True,
+            LoginStatus.SUCCESS,
+        ),
+    ],
+)
+def test_login_no_args(
+    mocker,
+    email: str,
+    password: str,
+    token: str,
+    keep_session: bool,
+    has_session: bool,
+    status: LoginStatus,
+):
+    path = "openbb_terminal.core.session.sdk_session."
+    mock_login = mocker.patch(path + "session_model.login")
+    mock_local_get_session = mocker.patch(path + "Local.get_session")
+    mock_hub_get_session = mocker.patch(path + "get_session")
+
+    mock_local_get_session.return_value = TEST_SESSION if has_session else None
+    mock_hub_get_session.return_value = TEST_SESSION
+    mock_login.return_value = status
+
+    sdk_session.login(
+        email=email, password=password, token=token, keep_session=keep_session
+    )
+
+    if has_session:
+        mock_local_get_session.assert_called_once()
+        mock_hub_get_session.assert_not_called()
+    else:
+        mock_hub_get_session.assert_called_once_with(
+            email, password, token, keep_session
+        )
+    mock_login.assert_called_once_with(TEST_SESSION)
+
+
 def test_logout(mocker, test_user):
     test_user.profile.load_user_info(TEST_SESSION, "testy@email.com")
     mocker.patch(
@@ -205,7 +241,6 @@ def test_logout(mocker, test_user):
         )
 
 
-@pytest.mark.skip("Not working?")
 @pytest.mark.record_stdout
 def test_whoami_guest():
     sdk_session.whoami()

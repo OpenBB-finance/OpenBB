@@ -11,7 +11,16 @@ from openbb_terminal.core.models import BaseModel
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
 class SystemModel(BaseModel):
-    """Data model for system variables and configurations."""
+    """
+    Data model for system variables and configurations.
+
+    Disclaimer:
+        If you need to have a system related variable that is a credential like
+        `LOGGING_AWS_ACCESS_KEY_ID` and `LOGGING_AWS_SECRET_ACCESS_KEY`, you need
+        refer to the following function
+        `openbb_terminal.core.log.generation.settings_logger.log_system`,
+        in order to filter it from the logs.
+    """
 
     # System section
     OS: str = str(platform.system())

@@ -54,7 +54,7 @@ DMG/*
 *.dmg
 
 # User stylesheets
-openbb_terminal/miscellaneous/styles/user
+openbb_terminal/miscellaneous/styles/user/hub.richstyle.json
 
 # the file containing the API keys for the web version
 openbb_terminal_web/setenv

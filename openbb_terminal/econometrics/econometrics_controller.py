@@ -170,6 +170,7 @@ class EconometricsController(BaseController):
                 "-a": "-alias",
                 "--examples": None,
                 "-e": "--examples",
+                "--sheet-name": None,
             }
 
             for feature in ["export", "show", "desc", "clear", "index"]:
@@ -349,6 +350,13 @@ class EconometricsController(BaseController):
             default=False,
             dest="examples",
         )
+        parser.add_argument(
+            "--sheet-name",
+            dest="sheet_name",
+            default=None,
+            nargs="+",
+            help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
@@ -405,7 +413,14 @@ class EconometricsController(BaseController):
                 )
                 return
 
-            data = common_model.load(file, self.DATA_FILES, common_model.DATA_EXAMPLES)
+            data = common_model.load(
+                file,
+                data_files=self.DATA_FILES,
+                data_examples=common_model.DATA_EXAMPLES,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
             if not data.empty:
                 data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
