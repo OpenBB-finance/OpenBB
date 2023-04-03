@@ -33,6 +33,7 @@ from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_INCREASING_COLORWAY,
     PLT_TBL_ROW_COLORS,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
@@ -1075,7 +1076,7 @@ class OpenBBFigure(go.Figure):
             except Exception:
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
-                if strtobool(os.environ.get("DEBUG_MODE", False)):
+                if get_current_system().DEBUG_MODE:
                     console.print_exception()
 
                 # We check if any figures were initialized before the backend failed

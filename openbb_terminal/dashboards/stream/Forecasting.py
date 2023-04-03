@@ -9,13 +9,13 @@ import streamlit as st
 import yfinance as yf
 from rich.table import Table
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
 
 # Suppressing sdk logs
-cfg.change_logging_suppress(new_value=True)
+set_system_variable("LOGGING_SUPPRESS", True)
 
 # Import the OpenBB SDK
 # pylint: disable=wrong-import-position

@@ -41,6 +41,17 @@ class SystemModel(BaseModel):
     LOGGING_VERBOSITY: int = 20
     LOGGING_SUB_APP: str = "terminal"
     LOGGING_SUPPRESS: bool = False
+    LOG_COLLECT: bool = True
+
+    # Personalization section
+    DISABLE_STREAMLIT_WARNING: bool = False
+    DISABLE_FORECASTING_WARNING: bool = False
+    DISABLE_OPTIMIZATION_WARNING: bool = False
+
+    # Others
+    TEST_MODE: bool = False
+    DEBUG_MODE: bool = False
+    ENABLE_AUTHENTICATION: bool = True
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()
