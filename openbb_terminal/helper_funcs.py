@@ -1968,7 +1968,7 @@ def load_json(path: Path) -> Dict[str, str]:
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
-            f"{get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
+            f"{get_current_user().preferences.USER_DATA_SOURCES_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
         return {}

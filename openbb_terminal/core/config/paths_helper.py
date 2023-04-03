@@ -5,7 +5,6 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     SETTINGS_DIRECTORY,
     SETTINGS_ENV_FILE,
-    USER_DATA_SOURCES_DEFAULT_FILE,
 )
 from openbb_terminal.core.session.current_user import get_current_user
 
@@ -58,8 +57,13 @@ dirs_list = [
     current_user.preferences.USER_PRESETS_DIRECTORY / "stocks" / "insider",
     current_user.preferences.USER_PRESETS_DIRECTORY / "etf" / "screener",
     current_user.preferences.USER_ROUTINES_DIRECTORY,
+    current_user.preferences.USER_DATA_DIRECTORY / "sources",
 ]
-dirs_files = [SETTINGS_ENV_FILE, REPOSITORY_ENV_FILE, USER_DATA_SOURCES_DEFAULT_FILE]
+dirs_files = [
+    SETTINGS_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+    current_user.preferences.USER_DATA_SOURCES_FILE,
+]
 initialized = False
 
 

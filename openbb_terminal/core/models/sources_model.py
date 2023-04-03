@@ -4,7 +4,7 @@ from typing import Dict
 
 from pydantic.dataclasses import Field, dataclass
 
-from openbb_terminal.core.config.paths import OPENBB_DATA_SOURCES_DEFAULT_FILE
+from openbb_terminal.core.config.paths import DATA_SOURCES_DEFAULT_FILE
 from openbb_terminal.core.models.base_model import BaseModel
 
 # pylint: disable=useless-parent-delegation
@@ -30,12 +30,12 @@ def read_default_sources() -> Dict:
         Dictionary with sources
     """
     try:
-        with open(OPENBB_DATA_SOURCES_DEFAULT_FILE) as file:
+        with open(DATA_SOURCES_DEFAULT_FILE) as file:
             return flatten(json.load(file))
     except Exception as e:
         print(
             f"\nFailed to read data sources file: "
-            f"{OPENBB_DATA_SOURCES_DEFAULT_FILE}\n{e}\n"
+            f"{DATA_SOURCES_DEFAULT_FILE}\n{e}\n"
         )
         return {}
 

@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 from typing import Dict
 
@@ -21,8 +22,14 @@ def read_sources(path: Path) -> Dict:
         Dictionary with sources
     """
     try:
+        if os.stat(path).st_size == 0:
+            return {}
         with open(path) as file:
-            return flatten(json.load(file))
+            d = json.load(file)
+            if d:
+                return flatten(d)
+            else:
+                return {}
     except Exception as e:
         print(f"\nFailed to read data sources file: {path}\n{e}\n")
         print("Using OpenBB defaults.")

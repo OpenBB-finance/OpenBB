@@ -20,7 +20,6 @@ from openbb_terminal.core.config.paths import (
     I18N_DICT_LOCATION,
     SETTINGS_ENV_FILE,
     STYLES_DIRECTORY_REPO,
-    USER_DATA_SOURCES_DEFAULT_FILE,
 )
 from openbb_terminal.core.session.constants import CHARTS_TABLES_URL, COLORS_URL
 from openbb_terminal.core.session.current_user import (
@@ -205,7 +204,7 @@ class SettingsController(BaseController):
             mt.add_raw("\n")
             mt.add_param(
                 "_data_source",
-                get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE,
+                get_current_user().preferences.USER_DATA_SOURCES_FILE,
             )
             mt.add_raw("\n")
         mt.add_setting("tbnews", current_user.preferences.TOOLBAR_TWEET_NEWS)
@@ -346,30 +345,15 @@ class SettingsController(BaseController):
             dest="file",
             help="file",
         )
-        parser.add_argument(
-            "-d",
-            "--default",
-            action="store_true",
-            dest="default",
-            help="Reset to default",
-        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
         ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            if ns_parser.default:
-                self.set_and_save_preference(
-                    "PREFERRED_DATA_SOURCE_FILE", USER_DATA_SOURCES_DEFAULT_FILE
-                )
+        if ns_parser and ns_parser.file:
+            if os.path.exists(ns_parser.file):
+                self.set_and_save_preference("USER_DATA_SOURCES_FILE", ns_parser.file)
                 console.print("[green]Sources file changed successfully![/green]")
-            elif ns_parser.file:
-                if os.path.exists(ns_parser.file):
-                    self.set_and_save_preference(
-                        "PREFERRED_DATA_SOURCE_FILE", ns_parser.file
-                    )
-                    console.print("[green]Sources file changed successfully![/green]")
-                else:
-                    console.print("[red]Couldn't find the sources file![/red]")
+            else:
+                console.print("[red]Couldn't find the sources file![/red]")
 
     @log_start_end(log=logger)
     def call_autoscaling(self, other_args: List[str]):

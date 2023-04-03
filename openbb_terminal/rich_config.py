@@ -106,7 +106,7 @@ def get_ordered_list_sources(command_path: str):
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
-            f"{current_user.preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
+            f"{current_user.preferences.USER_DATA_SOURCES_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
         return None

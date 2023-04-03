@@ -64,7 +64,7 @@ class SourcesController(BaseController):
         mt = MenuText("sources/")
         mt.add_param(
             "_source",
-            get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE
+            get_current_user().preferences.USER_DATA_SOURCES_FILE
             if is_local()
             else SOURCES_URL,
         )
@@ -151,7 +151,7 @@ class SourcesController(BaseController):
                     write_sources(
                         cmd=ns_parser.cmd,
                         defaults=sources_dict[ns_parser.cmd],
-                        path=get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE,
+                        path=get_current_user().preferences.USER_DATA_SOURCES_FILE,
                     )
                 else:
                     upload_config(
