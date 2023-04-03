@@ -34,7 +34,10 @@ def log_all_settings(with_rollover: bool = True) -> None:
 
 def log_system() -> None:
     """Log system"""
-    logger.info("SYSTEM: %s ", json.dumps(get_current_system().to_dict()))
+    system_dict = get_current_system().to_dict()
+    system_dict.pop("LOGGING_AWS_ACCESS_KEY_ID", None)
+    system_dict.pop("LOGGING_AWS_SECRET_ACCESS_KEY", None)
+    logger.info("SYSTEM: %s ", json.dumps(system_dict))
 
 
 def log_credentials() -> None:
