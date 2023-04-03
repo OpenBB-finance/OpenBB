@@ -1,4 +1,5 @@
 import json
+from collections.abc import MutableMapping
 from typing import Dict
 
 from pydantic.dataclasses import Field, dataclass
@@ -7,6 +8,17 @@ from openbb_terminal.core.config.paths import OPENBB_DATA_SOURCES_DEFAULT_FILE
 from openbb_terminal.core.models.base_model import BaseModel
 
 # pylint: disable=useless-parent-delegation
+
+
+def flatten(d, parent_key="", sep="/"):
+    items = []
+    for k, v in d.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, MutableMapping):
+            items.extend(flatten(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
 
 
 def read_default_sources() -> Dict:
@@ -19,7 +31,7 @@ def read_default_sources() -> Dict:
     """
     try:
         with open(OPENBB_DATA_SOURCES_DEFAULT_FILE) as file:
-            return json.load(file)
+            return flatten(json.load(file))
     except Exception as e:
         print(
             f"\nFailed to read data sources file: "
