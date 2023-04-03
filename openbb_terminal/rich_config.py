@@ -1,7 +1,6 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
-import os
 from typing import Iterable, Optional, Tuple, Union
 
 import i18n
@@ -290,7 +289,7 @@ class ConsoleAndPanel:
         self.reload_console()
         current_user = get_current_user()
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
-            if not os.getenv("TEST_MODE"):
+            if not get_current_system().TEST_MODE:
                 if current_user.preferences.ENABLE_RICH_PANEL:
                     if current_user.preferences.SHOW_VERSION:
                         version = get_current_system().VERSION
@@ -311,7 +310,7 @@ class ConsoleAndPanel:
             else:
                 print(self.filter_rich_tags(kwargs["text"]))
         else:
-            if not os.getenv("TEST_MODE"):
+            if not get_current_system().TEST_MODE:
                 self.__console.print(*args, **kwargs)
             else:
                 print(*args, **kwargs)

@@ -244,8 +244,8 @@ function downloadImage(filename, extension) {
     imageDownload = domtoimage.toPng;
   } else if (extension == "jpeg") {
     imageDownload = domtoimage.toJpeg;
-  // } else if (extension == "svg") {
-  //   imageDownload = domtoimage.toSvg;
+    // } else if (extension == "svg") {
+    //   imageDownload = domtoimage.toSvg;
   } else if (["svg", "pdf"].includes(extension)) {
     Plotly.downloadImage(globals.CHART_DIV, {
       format: "svg",
