@@ -159,6 +159,10 @@ class SourcesController(BaseController):
                         type_="sources",
                         auth_header=get_current_user().profile.get_auth_header(),
                     )
+                console.print(
+                    f"Default data source for '{ns_parser.cmd}' set to "
+                    f"'{ns_parser.source}'.\n"
+                )
             else:
                 console.print(
                     f"[red]'{ns_parser.source}' is not a valid data source for "

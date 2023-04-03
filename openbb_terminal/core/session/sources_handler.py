@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from typing import Dict
 
-from openbb_terminal.core.sources.utils import generate_sources_dict
+from openbb_terminal.core.sources.utils import extend_sources_dict
 
 
 # instead of assigning to SourcesModel we should just update the sources_dict
@@ -43,6 +43,6 @@ def write_sources(sources: Dict, path: Path):
     """
     try:
         with open(path, "w") as f:
-            json.dump(generate_sources_dict(sources), f, indent=4)
+            json.dump(extend_sources_dict(sources), f, indent=4)
     except Exception as e:
         print(f"\nFailed to write data sources file: {path}\n{e}\n")

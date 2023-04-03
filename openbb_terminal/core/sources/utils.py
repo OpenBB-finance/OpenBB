@@ -74,8 +74,8 @@ def merge_dicts(list_of_dicts: List[Dict[str, Any]]) -> Dict[str, Any]:
     return result
 
 
-def generate_sources_dict(sources: Dict[str, str]) -> Dict[str, Any]:
-    """Generate a dictionary of sources.
+def extend_sources_dict(sources: Dict[str, str]) -> Dict[str, Any]:
+    """Extend a dictionary with nested dictionaries.
 
     Parameters
     ----------
