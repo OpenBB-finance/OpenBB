@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # pm
 
-Displays all available screeners. /scr all, /scr pm, /scr ah
+This command offers the user the ability to view the top pre-market gainers, losers, and most active, giving the user a better understanding of the market’s movements before the market officially opens.
 
 ### Usage
 

@@ -1,17 +1,17 @@
 ---
 ########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
-title: ytd
+title: holdings
 description: OpenBB Discord Command
 ---
 
-# ytd
+# etf holdings
 
-This command allows the user to retrieve the stock's year-to-date performance for a particular ticker symbol. It displays the stock's performance over various periods of time, from 5 days to 5 years.
+This command returns the holdings for an ETF sorted by percent of ETF.
 
 ### Usage
 
 ```python wordwrap
-/dd ytd ticker
+/etf holdings [etf]
 ```
 
 ---
@@ -20,7 +20,7 @@ This command allows the user to retrieve the stock's year-to-date performance fo
 
 | Name | Description | Optional | Choices |
 | ---- | ----------- | -------- | ------- |
-| ticker | Stock Ticker | False | None |
+| etf | ETF ticker (only for `holdings`) | True | None |
 
 
 ---
@@ -28,6 +28,6 @@ This command allows the user to retrieve the stock's year-to-date performance fo
 ## Examples
 
 ```
-/dd ytd ticker:AAPL
+/etf holdings SPY
 ```
 ---

@@ -7,6 +7,7 @@ description: OpenBB Discord Command
 # weekly
 
 This command allows the user to retrieve the Top 20 flow by Premium for a stock with an option contact expiring that week.
+
 ### Usage
 
 ```python wordwrap

@@ -1,17 +1,17 @@
 ---
 ########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
-title: ytd
+title: tops
 description: OpenBB Discord Command
 ---
 
-# ytd
+# etf tops
 
-This command allows the user to retrieve the stock's year-to-date performance for a particular ticker symbol. It displays the stock's performance over various periods of time, from 5 days to 5 years.
+This command returns the top ETFs for the day - sorted by gainers, losers, or active.
 
 ### Usage
 
 ```python wordwrap
-/dd ytd ticker
+/etf tops [sort]
 ```
 
 ---
@@ -20,7 +20,7 @@ This command allows the user to retrieve the stock's year-to-date performance fo
 
 | Name | Description | Optional | Choices |
 | ---- | ----------- | -------- | ------- |
-| ticker | Stock Ticker | False | None |
+| sort | Possible sort options to run. If not provided, defaults to gainers | True | gainers, losers, active |
 
 
 ---
@@ -28,6 +28,6 @@ This command allows the user to retrieve the stock's year-to-date performance fo
 ## Examples
 
 ```
-/dd ytd ticker:AAPL
+/etf tops
 ```
 ---

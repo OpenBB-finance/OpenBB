@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # heatmap
 
-Daily Heat Maps by Market. Sector is optional.
+This command allows the user to retrieve Daily Heat Maps by Market and Sector. The Daily Heat Maps will allow the user a quick overview of current stock market performance.
 
 ### Usage
 
