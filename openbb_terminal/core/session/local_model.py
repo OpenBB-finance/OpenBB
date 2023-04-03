@@ -117,9 +117,11 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
+    # Saving the RICH_STYLE state allows user to change from hub rich style to local
     set_credentials_from_hub(configs)
-    set_preferences_from_hub(configs, ["RICH_STYLE", "PLOT_STYLE"])
-    save_theme_from_hub(configs)
+    set_preferences_from_hub(configs, fields=["RICH_STYLE"])
+    set_rich_style_from_hub(configs)
+    set_chart_table_style_from_hub(configs)
     set_sources_from_hub(configs)
 
 
@@ -156,8 +158,8 @@ def set_preferences_from_hub(configs: dict, fields: Optional[List[str]] = None):
                 set_preference(k, v)
 
 
-def save_theme_from_hub(configs: dict):
-    """Set theme.
+def set_rich_style_from_hub(configs: dict):
+    """Set rich style from hub.
 
     Parameters
     ----------
@@ -167,9 +169,9 @@ def save_theme_from_hub(configs: dict):
     if configs:
         terminal_style = configs.get("features_terminal_style", {}) or {}
         if terminal_style:
-            user_style = terminal_style.get("theme", None)
-            if user_style:
-                user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
+            rich_style = terminal_style.get("theme", None)
+            if rich_style:
+                rich_style = {k: v.replace(" ", "") for k, v in rich_style.items()}
                 try:
                     with open(
                         MISCELLANEOUS_DIRECTORY
@@ -178,14 +180,31 @@ def save_theme_from_hub(configs: dict):
                         / "hub.richstyle.json",
                         "w",
                     ) as f:
-                        json.dump(user_style, f)
+                        json.dump(rich_style, f)
 
+                    # Default to hub theme
                     preferences = configs.get("features_settings", {}) or {}
                     if "RICH_STYLE" not in preferences:
                         set_preference("RICH_STYLE", "hub")
 
                 except Exception:
-                    console.print("[red]Failed to save theme.[/red]")
+                    console.print("[red]Failed to set rich style.[/red]")
+
+
+def set_chart_table_style_from_hub(configs: dict):
+    """Set chart and table style from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        terminal_style = configs.get("features_terminal_style", {}) or {}
+        if terminal_style:
+            chart_table = terminal_style.get("chart_table", None)
+            if chart_table:
+                set_preference("THEME", chart_table)
 
 
 def set_sources_from_hub(configs: dict):
