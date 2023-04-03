@@ -85,7 +85,6 @@ class TerminalStyle:
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
-        self.load_style(plt_style)
         self.apply_console_style(console_style)
 
     def apply_console_style(self, style: Optional[str] = "") -> None:
@@ -1094,7 +1093,9 @@ class OpenBBFigure(go.Figure):
             legend=dict(
                 tracegroupgap=height / 4.5,
                 groupclick="toggleitem",
-                orientation="v",
+                orientation="v"
+                if not self.layout.legend.orientation
+                else self.layout.legend.orientation,
             ),
             barmode="overlay",
             bargap=0,

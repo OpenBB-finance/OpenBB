@@ -7,8 +7,8 @@ from .crypto_sdk_model import CryptoRoot
 from .econometrics_sdk_model import EconometricsRoot
 from .economy_sdk_model import EconomyRoot
 from .etf_sdk_model import EtfRoot
-from .forecast_sdk_model import ForecastRoot
 from .fixedincome_sdk_model import FixedincomeRoot
+from .forecast_sdk_model import ForecastRoot
 from .forex_sdk_model import ForexRoot
 from .funds_sdk_model import FundsRoot
 from .futures_sdk_model import FuturesRoot

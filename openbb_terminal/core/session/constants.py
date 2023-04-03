@@ -3,8 +3,8 @@ BASE_URL = "https://payments.openbb.dev/"
 
 HUB_URL = "https://my.openbb.dev/"
 REGISTER_URL = HUB_URL + "register"
-SOURCES_URL = HUB_URL + "app/terminal/datasources"
-KEYS_URL = HUB_URL + "app/terminal/apikeys"
+SOURCES_URL = HUB_URL + "app/terminal/data-sources"
+KEYS_URL = HUB_URL + "app/terminal/api-keys"
 COLORS_URL = HUB_URL + "app/terminal/theme"
 CHARTS_TABLES_URL = HUB_URL + "app/terminal/theme/charts-tables"
 
