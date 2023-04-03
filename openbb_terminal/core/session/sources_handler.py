@@ -22,6 +22,6 @@ def read_sources(path: Path) -> Dict:
         with open(path) as file:
             return json.load(file)
     except Exception as e:
-        print(f"\nFailed to read data sources file: " f"{path}\n{e}\n")
+        print(f"\nFailed to read data sources file: {path}\n{e}\n")
         print("Using OpenBB defaults.")
         return read_default_sources()
