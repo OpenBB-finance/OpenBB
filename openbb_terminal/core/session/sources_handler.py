@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Dict
 
 from openbb_terminal.core.models.sources_model import flatten, read_default_sources
+from openbb_terminal.core.sources.utils import generate_sources_dict
 
 
 def read_sources(path: Path) -> Dict:
@@ -25,3 +26,11 @@ def read_sources(path: Path) -> Dict:
         print(f"\nFailed to read data sources file: {path}\n{e}\n")
         print("Using OpenBB defaults.")
         return read_default_sources()
+
+
+def write_sources(cmd, defaults, path: Path):
+    try:
+        with open(path, "w") as f:
+            json.dump(generate_sources_dict({cmd: defaults}), f, indent=4)
+    except Exception as e:
+        print(f"\nFailed to write data sources file: {path}\n{e}\n")
