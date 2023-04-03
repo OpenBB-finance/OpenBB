@@ -51,4 +51,5 @@ class SourcesModel(BaseModel):
 
     def update(self, other: Dict):
         """Update sources dict."""
+        # TODO: fix this to support updating nested dicts
         self.sources_dict.update(other)
