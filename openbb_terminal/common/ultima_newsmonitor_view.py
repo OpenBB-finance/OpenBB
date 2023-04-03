@@ -40,7 +40,14 @@ def display_news(
         the column to sort by
     """
     console.print()
-    company_name = ultima_newsmonitor_model.get_company_info(term)["companyShortName"]
+    if term not in ultima_newsmonitor_model.supported_terms():
+        console.print(f"[red]Unsupported ticker: {term}[/red]")
+        return
+    company_info = ultima_newsmonitor_model.get_company_info(term)
+    if 'companyShortName' in company_info:
+        company_name = company_info['companyShortName']
+    else:
+        company_name = term
     # TODO: calling them all together does not work with feedparser
     bbg = feedparser_model.get_news(
         company_name, sources="bloomberg", sort="published", display_message=False
