@@ -1,5 +1,6 @@
 import re
 from pathlib import Path
+from textwrap import shorten
 from typing import Dict, List
 
 reference_import = """import ReferenceCard from "@site/src/components/General/ReferenceCard";
@@ -12,6 +13,7 @@ wopen_kwargs = {"encoding": "utf-8", "newline": "\n"}
 def create_cmd_cards(cmd_text: List[Dict[str, str]], url: str) -> str:
     cmd_cards = ""
     for cmd in cmd_text:
+        cmd["description"] = shorten(f"{cmd['description']}", 116, placeholder="...")
         cmd_cards += f"""<ReferenceCard
     title="{cmd["name"]}"
     description="{cmd["description"]}"

@@ -2,12 +2,12 @@
 __docformat__ = "numpy"
 import functools
 import logging
-import os
 from ssl import SSLError
 
 import pandas as pd
 from requests.exceptions import RequestException
 
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_current_user,
@@ -63,7 +63,7 @@ def log_start_end(func=None, log=None):
                 extra={"func_name_override": func.__name__},
             )
 
-            if str(os.environ.get("DEBUG_MODE", "false")).lower() == "true":
+            if get_current_system().DEBUG_MODE:
                 value = func(*args, **kwargs)
                 log.info("END", extra={"func_name_override": func.__name__})
                 return value

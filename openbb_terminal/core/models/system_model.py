@@ -11,7 +11,16 @@ from openbb_terminal.core.models import BaseModel
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
 class SystemModel(BaseModel):
-    """Data model for system variables and configurations."""
+    """
+    Data model for system variables and configurations.
+
+    Disclaimer:
+        If you need to have a system related variable that is a credential like
+        `LOGGING_AWS_ACCESS_KEY_ID` and `LOGGING_AWS_SECRET_ACCESS_KEY`, you need
+        refer to the following function
+        `openbb_terminal.core.log.generation.settings_logger.log_system`,
+        in order to filter it from the logs.
+    """
 
     # System section
     OS: str = str(platform.system())
@@ -32,6 +41,17 @@ class SystemModel(BaseModel):
     LOGGING_VERBOSITY: int = 20
     LOGGING_SUB_APP: str = "terminal"
     LOGGING_SUPPRESS: bool = False
+    LOG_COLLECT: bool = True
+
+    # Personalization section
+    DISABLE_STREAMLIT_WARNING: bool = False
+    DISABLE_FORECASTING_WARNING: bool = False
+    DISABLE_OPTIMIZATION_WARNING: bool = False
+
+    # Others
+    TEST_MODE: bool = False
+    DEBUG_MODE: bool = False
+    ENABLE_AUTHENTICATION: bool = True
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()

@@ -24,6 +24,7 @@ from openbb_terminal import (
     decorators,
     helper_funcs,
 )
+from openbb_terminal.core.session.current_system import set_system_variable
 
 # pylint: disable=redefined-outer-name
 
@@ -37,7 +38,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
     "txt": [str],
 }
 
-os.environ["TEST_MODE"] = "True"
+set_system_variable("TEST_MODE", True)
 
 
 class Record:
@@ -364,7 +365,7 @@ def disable_check_api():
 
 
 def enable_debug():
-    os.environ["DEBUG_MODE"] = "true"
+    set_system_variable("DEBUG_MODE", True)
 
 
 def pytest_configure(config: Config) -> None:

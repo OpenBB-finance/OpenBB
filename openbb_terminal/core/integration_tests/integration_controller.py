@@ -19,6 +19,7 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user, set_current_user
 from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
@@ -707,14 +708,19 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
+    # user
     current_user = get_current_user()
     current_user.preferences.ENABLE_EXIT_AUTO_HELP = False
     current_user.preferences.USE_ION = True
     current_user.preferences.USE_PROMPT_TOOLKIT = False
     current_user.preferences.REMEMBER_CONTEXTS = False
     set_current_user(current_user)
-    os.environ["DEBUG_MODE"] = "True"
-    os.environ["OPENBB_LOG_COLLECT"] = "False"
+
+    # system
+    set_system_variable("DEBUG_MODE", True)
+    set_system_variable("LOG_COLLECT", False)
+
+    # run integration tests
     parse_args_and_run()
 
 

@@ -59,7 +59,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_keys_status(self) -> None:
         """Check keys status"""
         for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
-            self.status_dict[api] = getattr(keys_model, "check_" + str(api) + "_key")()
+            try:
+                self.status_dict[api] = getattr(
+                    keys_model, "check_" + str(api) + "_key"
+                )()
+            except Exception:
+                self.status_dict[api] = str(
+                    keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE
+                )
 
     def print_help(self):
         """Print help"""
@@ -521,6 +528,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["twitter"] = keys_model.set_twitter_key(
+                key=ns_parser.key,
+                secret=ns_parser.secret,
                 access_token=ns_parser.token,
                 persist=True,
                 show_output=True,
