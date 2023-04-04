@@ -7,8 +7,8 @@ import pytest
 from openbb_terminal.common.ultima_newsmonitor_view import display_news
 
 
-# @pytest.mark.vcr
-# @pytest.mark.record_stdout
+@pytest.mark.vcr
+@pytest.mark.record_stdout
 @pytest.mark.parametrize("term", ["", "AAPL", "TSLA", "FCX", "asdf&%$"])
 def test_display_news(term, mocker):
     # MOCK EXPORT_DATA

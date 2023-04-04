@@ -11,8 +11,7 @@ from openbb_terminal.common.ultima_newsmonitor_model import (
 )
 
 
-# @pytest.mark.default_cassette("test_get_news.yaml")
-# @pytest.mark.vcr
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "term",
     [
