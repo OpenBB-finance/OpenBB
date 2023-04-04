@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # chains
 
-Displays Options Chain by Expiry.
+This command allows users to retrieve Options Chain by Expiry, which gives an overview of the bid, ask, and open interest of options contracts for a specific stock.
 
 ### Usage
 

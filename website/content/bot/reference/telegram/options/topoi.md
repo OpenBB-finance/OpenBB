@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # topoi
 
-Displays Top Open Interest
+This command allows the user to retrieve Top Open Interest among all stocks. This command queries the current market data and provides a list of the most actively traded stocks and options in the current market.
 
 ### Usage
 

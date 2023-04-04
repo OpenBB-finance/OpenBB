@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # news
 
-Display the most recent news for ticker
+This command allows the user to retrieve the latest news for a given ticker.
 
 ### Usage
 

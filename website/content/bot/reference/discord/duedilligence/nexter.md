@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # nexter
 
-Returns next Earnings Date for a stock.
+This command will retrieve the next earnings date for the given stock ticker symbol.
 
 ### Usage
 

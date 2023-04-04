@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # ta
 
-Displays a given stocks Technical Analysis summary.
+This command allows the user to retrieve a technical analysis summary for a given stock ticker. The summary includes several indicators such as moving averages, fibonacci levels, support and resistance levels, and other technical metrics.
 
 ### Usage
 
