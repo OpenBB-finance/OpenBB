@@ -97,7 +97,6 @@ optional arguments:
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
-  --exchange            Show exchange information. (default: False)
   --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
