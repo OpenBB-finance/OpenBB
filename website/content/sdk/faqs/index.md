@@ -39,7 +39,7 @@ import LinkCard from "@site/src/components/General/LinkCard";
 <LinkCard
 	title="Bugs, Support and Feedback"
   url="/sdk/faqs/bugs_support_feedback"
-  description="Common bugs and suppport/feedback channels"
+  description="Common bugs and support/feedback channels"
   type="sdk"
 />
 <LinkCard
