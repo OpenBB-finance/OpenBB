@@ -53,3 +53,12 @@ workflows:
       - rule: '!$isDraft() && $hasFileName("pyproject.toml") && !$rule("changes-requirements")'
         extra-actions:
           - $warn("The `pyproject.toml` file has been changed. Please make sure that the files `requirements.txt` and `requirements-full.txt` do not need to be updated")
+  - name: EOF
+    description: Verify files EOF
+    always-run: true
+    if:
+      # By default, Reviewpad splits each file in the patch using the line feed character (\n or LF). 
+      # This means that if a file has a carriage return character (\r) at the end, it indicates that the file has CRLF line endings instead.
+      - rule: $hasCodePattern("\r$$")
+        extra-actions:
+          - $warn("It looks like you have files with `CRLF` line endings. Please make sure that all files have `LF` line endings")
