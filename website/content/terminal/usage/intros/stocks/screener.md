@@ -129,7 +129,7 @@ The examples below will demonstrate the expected outputs, and provide some conte
 
 ### View
 
-See the specified paramaters for a custom preset with the `view` function.
+See the specified parameters for a custom preset with the `view` function.
 
 ```console
 view -p bull_runs_over_10pct
@@ -190,7 +190,7 @@ This preset contains no parameters other than the signal.
 
 ### S&P 500 Sector Components
 
-A series of presets are included that filter the S&P 500 constituents by sector.  There are no parameters, so these presets simply return the compenents for comparison.
+A series of presets are included that filter the S&P 500 constituents by sector.  There are no parameters, so these presets simply return the components for comparison.
 
 ![S&P 500](https://user-images.githubusercontent.com/85772166/229921343-605d0fbe-645f-4c69-83a9-a0034bc5c00e.png)
 
