@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from typing import Dict
 
+from openbb_terminal.core.models.sources_model import flatten
 from openbb_terminal.core.sources.utils import extend_sources_dict
 
 
@@ -23,7 +24,7 @@ def read_sources(path: Path) -> Dict:
     try:
         if path.exists() and os.stat(path).st_size > 0:
             with open(path) as file:
-                return json.load(file)
+                return flatten(json.load(file))
         return {}
     except Exception as e:
         print(f"\nFailed to read data sources file: {path}\n{e}\n")
