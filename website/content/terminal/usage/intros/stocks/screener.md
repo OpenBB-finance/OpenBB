@@ -3,7 +3,7 @@ title: Stock Screener
 keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics]
 description: The Stock Screener is a diverse tool for stock discovery.  Get to it from the `Stocks` menu by typing `scr` and then pressing `enter`.
 ---
-The Stock Screener is a diverse tool for stock discovery.  Get to it from the `Stocks` menu by typing `scr` and then pressing `enter`.  There are six categories of statistics to sort the defined criteria by.
+The Stock Screener is a diverse tool for discovering comapanies.  It is a great jumping point for narrowing the universe of stocks at the beginning of a research workflow.  Get to the screener from the `Stocks` menu by typing `scr`, and then pressing `enter`.  There are six categories of statistics to sort the defined criteria by.
 
 - overview
 - valuation
@@ -20,8 +20,8 @@ The default preset upon entering the sub-menu is, `top_gainers`.  This preset, l
 
 | Preset and Signal Name |                                                                 Description |
 | :--------------------- | --------------------------------------------------------------------------: |
-| top_gainers            |                                 stocks with the highest %% price gain today |
-| top_losers             |                                 stocks with the highest %% price loss today |
+| top_gainers            |                                  stocks with the highest % price gain today |
+| top_losers             |                                  stocks with the highest % price loss today |
 | new_high               |                                            stocks making 52-week high today |
 | new_low                |                                             stocks making 52-week low today |
 | most_volatile          |                 stocks with the highest widest high/low trading range today |
@@ -54,9 +54,12 @@ The default preset upon entering the sub-menu is, `top_gainers`.  This preset, l
 | head_shoulders         |           chart formation that predicts a bullish-to-bearish trend reversal |
 | head_shoulders_inverse |           chart formation that predicts a bearish-to-bullish trend reversal |
 
-These signals offer a good starting point, and results can be narrowed by creating a custom preset with defined parameters.  Place new presets (which are text files saved as an `.ini` type) in the OpenBBUserData folder: `~/OpenBBUserData/presets/stocks/screener`.  Files saved here will populate as a choice the next time the Terminal is launched.   The next section will provide some guidance for creating a custom preset.
+These signals offer a good starting point, and results can be narrowed by creating a custom preset with defined parameters.  Place new presets (which are text files saved as an `.ini` type) in the OpenBBUserData folder: `~/OpenBBUserData/presets/stocks/screener`.  Files saved here will populate as a choice the next time the Terminal is launched.   The next section provides guidance for using and creating presets.
 
-:::note Refer to the template file [here]() for all of the available parameters and accpeted values.:::
+:::note Refer to the template file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt) for all of the available parameters and accpeted values.
+
+All of the included presets can be viewed online [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/stocks/screener)
+:::
 
 Preset parameters are grouped into major categories:
 
@@ -84,12 +87,16 @@ The `General` category, for example, has two parameters: Order and Signal.  The 
 
 Order = Ticker
 
-# None (all stocks), Top Gainers, Top Losers, New High, New Low, Most Volatile, Most Active, Unusual Volume, Overbought, Oversold, Downgrades, Upgrades, Earnings Before, Earnings After, Recent Insider Buying, Recent Insider Selling, Major News, Horizontal S/R, TL Resistance, TL Support, Wedge Up, Wedge Down, Triangle Ascending, Triangle Descending, Wedge, Channel Up, Channel Down, Channel, Double Top, Double Bottom, Multiple Top, Multiple Bottom, Head & Shoulders, Head & Shoulders Inverse
+# None (all stocks), Top Gainers, Top Losers, New High, New Low, Most Volatile, Most Active, Unusual Volume, Overbought,
+# Oversold, Downgrades, Upgrades, Earnings Before, Earnings After, Recent Insider Buying, Recent Insider Selling, Major News,
+# Horizontal S/R, TL Resistance, TL Support, Wedge Up, Wedge Down, Triangle Ascending, Triangle Descending, Wedge, Channel Up,
+# Channel Down, Channel, Double Top, Double Bottom, Multiple Top, Multiple Bottom, Head & Shoulders, Head & Shoulders Inverse
+
 Signal = Top Gainers
 
 ```
 
-A new preset file should contain all four categories, even if no parameters are added.  The example below is a minimalist example of how it should be structured.  This preset is called, `djia_components`
+A new preset file should contain all four categories, even if no parameters are added.  The example below is a minimalist example of how it should be structured.  This preset is called, `djia_components`.
 
 ```console
 # Author of preset: OpenBB
@@ -114,7 +121,7 @@ set djia_components
 
 With a preset selected, select the type of data to return by entering one of the six commands listed at the top of this guide.  Each command returns a different set of columns which can be sorted by adding the optional `-s` argument, and selecting a choice populated by autocomplete.  The results will display as a table.
 
-![Stocks Screener](screener1.png)
+![Stocks Screener](https://user-images.githubusercontent.com/85772166/229921157-8297665a-1b88-4f4e-aeb1-91c1bb9aba7c.png)
 
 ## Examples
 
@@ -185,7 +192,7 @@ This preset contains no parameters other than the signal.
 
 A series of presets are included that filter the S&P 500 constituents by sector.  There are no parameters, so these presets simply return the compenents for comparison.
 
-![S&P 500](screener2.png)
+![S&P 500](https://user-images.githubusercontent.com/85772166/229921343-605d0fbe-645f-4c69-83a9-a0034bc5c00e.png)
 
 ```console
 /stocks/scr/set -p sp500_financial_sector/performance
@@ -193,7 +200,7 @@ A series of presets are included that filter the S&P 500 constituents by sector.
 
 Columns can also be sorted, filtered, or rearranged from within the tables.
 
-![Screener Output](screener3.png)
+![Screener Output](https://user-images.githubusercontent.com/85772166/229921470-ac5d9d9e-8489-45aa-9cc2-f0d8a156b172.png)
 
 Changes made to an existing preset will be reflected immediately, restarting is only necessary when adding a new file.  The preset Financial Sector preset can be modified to filter only those companies with a Price-to-Book ratio of under 1.
 
@@ -217,13 +224,15 @@ P/B = Under 1
 
 ```
 
-Open presets in any simple text editor, add the desired parameters, save the file, then run the command again.  At the time of publication, twelve results were narrowed down from sixty-eight.
+Open presets in any simple text editor, add the desired parameters, save the file, then run the command again.  At the time of publication, twelve results were narrowed down from sixty-eight.  All available parameters and settings are listed in the text file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt).
 
-![Financial Sector P/B Under 1](screener4.png)
+![Financial Sector P/B Under 1](https://user-images.githubusercontent.com/85772166/229921644-ca14f08a-95f2-4ac3-8da3-49bbe4af3be4.png)
 
 ### CA
 
 The tickers from the results of the last screen are stored in memory and can be taken into the [Comparison Analysis menu](https://docs.openbb.co/terminal/usage/intros/stocks/comparison) to undergo further scrutiny.
+
+![Screener Results](https://user-images.githubusercontent.com/85772166/229921889-3ce97436-a768-4a74-b312-e6070459e2a9.png)
 
 ```console
 set -p buffett_like
@@ -233,4 +242,4 @@ ca
 hcorr
 ```
 
-![Correlation Matrix of Results](screener6.png)
+![Correlation Matrix of Results](https://user-images.githubusercontent.com/85772166/229921977-fd31ff4c-d782-46fb-ba56-922cde5df8f0.png)
