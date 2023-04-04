@@ -6,7 +6,6 @@ from typing import Dict
 from openbb_terminal.core.sources.utils import extend, flatten
 
 
-# instead of assigning to SourcesModel we should just update the sources_dict
 def read_sources(path: Path) -> Dict:
     """Read sources from file.
 
