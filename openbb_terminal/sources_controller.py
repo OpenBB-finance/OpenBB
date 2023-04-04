@@ -16,7 +16,7 @@ from openbb_terminal.core.session.current_user import (
     is_local,
     set_sources,
 )
-from openbb_terminal.core.session.hub_model import upload_config
+from openbb_terminal.core.session.hub_model import upload_user_field
 from openbb_terminal.core.session.sources_handler import write_sources
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -156,12 +156,12 @@ class SourcesController(BaseController):
                         ),
                     )
                 else:
-                    upload_config(
-                        key=ns_parser.cmd,
-                        value=sources_dict[ns_parser.cmd],
-                        type_="sources",
+                    upload_user_field(
+                        key="features_sources",
+                        value=sources_dict,
                         auth_header=get_current_user().profile.get_auth_header(),
                     )
+                    console.print("")
                 console.print(
                     f"Default data source for '{ns_parser.cmd}' set to "
                     f"'{ns_parser.source}'.\n"

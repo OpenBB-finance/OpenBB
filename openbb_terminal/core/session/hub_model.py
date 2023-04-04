@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Literal, Optional
+from typing import Any, Dict, Literal, Optional
 
 import requests
 
@@ -232,66 +232,6 @@ def fetch_user_configs(
         return None
 
 
-def upload_config(
-    key: str,
-    value: str,
-    type_: Literal["keys", "settings", "sources", "terminal_style"],
-    auth_header: str,
-    base_url: str = BASE_URL,
-    timeout: int = TIMEOUT,
-) -> Optional[requests.Response]:
-    """Patch user configurations to the server.
-
-    Parameters
-    ----------
-    key : str
-        The key to patch.
-    value : str
-        The value to patch.
-    type_ : Literal["keys", "settings", "sources", "terminal_style"]
-        The type of the patch.
-    auth_header : str
-        The authorization header, e.g. "Bearer <token>".
-    base_url : str
-        The base url, by default BASE_URL
-    timeout : int
-        The timeout, by default TIMEOUT
-
-    Returns
-    -------
-    Optional[requests.Response]
-        The response from the patch request.
-    """
-    if type_ not in ["keys", "settings", "sources", "terminal_style"]:
-        console.print("[red]\nInvalid patch type.[/red]")
-        return None
-
-    data = {"key": f"features_{type_}.{key}", "value": value}
-
-    try:
-        console.print("Sending to OpenBB hub...")
-        response = requests.patch(
-            url=base_url + "terminal/user",
-            headers={"Authorization": auth_header},
-            json=data,
-            timeout=timeout,
-        )
-        if response.status_code == 200:
-            console.print("[green]Saved remotely.[/green]")
-        else:
-            console.print("[red]Failed to save remotely.[/red]")
-        return response
-    except requests.exceptions.ConnectionError:
-        console.print(f"\n{CONNECTION_ERROR_MSG}")
-        return None
-    except requests.exceptions.Timeout:
-        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
-        return None
-    except Exception:
-        console.print("[red]Failed to save remotely.[/red]")
-        return None
-
-
 def clear_user_configs(
     auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
@@ -333,6 +273,118 @@ def clear_user_configs(
         return None
     except Exception:
         console.print("[red]Failed to clear data.[/red]")
+        return None
+
+
+def upload_user_field(
+    key: str,
+    value: Any,
+    auth_header: str,
+    base_url: str = BASE_URL,
+    timeout: int = TIMEOUT,
+) -> Optional[requests.Response]:
+    """Send user field to the server.
+
+    Parameters
+    ----------
+    key : str
+        The key to put, e.g. 'features_settings', 'features_keys', 'features_sources'.
+    value : Any
+        The value to put.
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the put request.
+    """
+    data: Dict[str, dict] = {key: value}
+    try:
+        console.print("Sending to OpenBB hub...")
+        response = requests.put(
+            url=base_url + "user",
+            headers={"Authorization": auth_header},
+            json=data,
+            timeout=timeout,
+        )
+        if response.status_code == 200:
+            console.print("[green]Saved remotely.[/green]")
+        else:
+            console.print("[red]Failed to save remotely.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to save remotely.[/red]")
+        return None
+
+
+def upload_config(
+    key: str,
+    value: str,
+    type_: Literal["keys", "settings", "terminal_style"],
+    auth_header: str,
+    base_url: str = BASE_URL,
+    timeout: int = TIMEOUT,
+) -> Optional[requests.Response]:
+    """Patch user configurations to the server.
+
+    Parameters
+    ----------
+    key : str
+        The key to patch.
+    value : str
+        The value to patch.
+    type_ : Literal["keys", "settings", "terminal_style"]
+        The type of the patch.
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the patch request.
+    """
+    if type_ not in ["keys", "settings", "terminal_style"]:
+        console.print("[red]\nInvalid patch type.[/red]")
+        return None
+
+    data = {"key": f"features_{type_}.{key}", "value": value}
+
+    try:
+        console.print("Sending to OpenBB hub...")
+        response = requests.patch(
+            url=base_url + "terminal/user",
+            headers={"Authorization": auth_header},
+            json=data,
+            timeout=timeout,
+        )
+        if response.status_code == 200:
+            console.print("[green]Saved remotely.[/green]")
+        else:
+            console.print("[red]Failed to save remotely.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to save remotely.[/red]")
         return None
 
 
