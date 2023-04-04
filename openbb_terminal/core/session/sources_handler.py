@@ -3,8 +3,7 @@ import os
 from pathlib import Path
 from typing import Dict
 
-from openbb_terminal.core.models.sources_model import flatten
-from openbb_terminal.core.sources.utils import extend_sources_dict
+from openbb_terminal.core.sources.utils import extend_sources_dict, flatten
 
 
 # instead of assigning to SourcesModel we should just update the sources_dict
