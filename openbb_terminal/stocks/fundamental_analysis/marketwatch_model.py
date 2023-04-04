@@ -33,7 +33,10 @@ def get_sec_filings(symbol: str, limit: int = 20) -> pd.DataFrame:
     base_url = f"https://api.nasdaq.com/api/company/{symbol}/sec-filings"
     arguments = f"?limit={limit}&sortColumn=filed&sortOrder=desc&IsQuoteMedia=true"
     response = request(base_url + arguments)
-    data = response.json()["data"]["rows"]
+    try:
+        data = response.json()["data"]["rows"]
+    except KeyError:
+        return pd.DataFrame()
     final_df = pd.DataFrame(data)
     pd.set_option("display.max_colwidth", None)
     try:
