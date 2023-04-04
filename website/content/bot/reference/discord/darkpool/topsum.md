@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # topsum
 
-Top Total Block & Dark Pool data.
+This command allows the user to retrieve total block and dark pool data summary. It sums all darkpool prints and gives a table of the largest by symbol as well as a graph for comparison.
 
 ### Usage
 

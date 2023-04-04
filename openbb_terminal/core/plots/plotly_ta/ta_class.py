@@ -13,6 +13,7 @@ from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
 from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.rich_config import console
 
 PLUGINS_PATH = Path(__file__).parent / "plugins"
@@ -219,9 +220,10 @@ class PlotlyTA(PltTA):
     def _locate_plugins() -> None:
         """Locate all the plugins in the plugins folder"""
         path = REPOSITORY_DIRECTORY if hasattr(sys, "frozen") else Path(os.getcwd())
+        current_system = get_current_system()
 
         # This is for debugging purposes
-        if os.environ.get("DEBUG_MODE", "False").lower() == "true":
+        if current_system.DEBUG_MODE:
             console.print(f"[bold green]Loading plugins from {path}[/]")
             console.print("[bold green]Plugins found:[/]")
 
@@ -229,7 +231,7 @@ class PlotlyTA(PltTA):
             python_path = plugin.relative_to(path).with_suffix("")
 
             # This is for debugging purposes
-            if os.environ.get("DEBUG_MODE", "False").lower() == "true":
+            if current_system.DEBUG_MODE:
                 console.print(f"    [bold red]{plugin.name}[/]")
                 console.print(f"        [bold yellow]{python_path}[/]")
                 console.print(f"        [bold bright_cyan]{__package__}[/]")

@@ -1,5 +1,5 @@
 import dataclasses as dc
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 from pydantic.dataclasses import dataclass
 
@@ -19,7 +19,7 @@ class BaseModel:
         return f"{self.__class__.__name__}(\n{dataclass_repr[:-2]}\n)"
 
     @classmethod
-    def get_fields(cls) -> dict[str, Any]:
+    def get_fields(cls) -> Dict[str, Any]:
         """Get dict of fields."""
         return cls.__dataclass_fields__  # type: ignore
 
@@ -29,7 +29,7 @@ class BaseModel:
             return getattr(self, field)
         return None
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> Dict[str, Any]:
         """Convert model to dict."""
         return dc.asdict(self)  # type: ignore
 

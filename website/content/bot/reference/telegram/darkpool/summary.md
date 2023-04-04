@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # summary
 
-Summary of all prints by % of MarketCap
+This command retrieves a summary of all the prints by percentage of MarketCap over the last x days, sorted by MarketCap. The summary includes the total number of prints and their total percentage of MarketCap, as well as the float and short percentage.
 
 ### Usage
 

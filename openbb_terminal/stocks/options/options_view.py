@@ -8,6 +8,7 @@ from typing import Optional, Tuple
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.core.plots.backend import plots_backend
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
@@ -49,24 +50,40 @@ def print_raw(
     puts_only: bool = False,
     export: str = "",
 ):
-    if not puts_only:
-        calls = calls.copy().drop(columns=["optionType"])
-        print_rich_table(
-            calls,
-            headers=list(calls.columns),
+    current_user = get_current_user()
+    enable_interactive = (
+        current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
+    )
+
+    if enable_interactive:
+        table_title = f"{title} - Calls & Puts"
+        data = pd.concat([calls, puts])
+
+        if calls_only or puts_only:
+            options_type = "call" if calls_only else "put"
+            data = data[data["optionType"] == options_type].drop(columns=["optionType"])
+            table_title = f"{title} - {options_type.title()}s"
+
+        return print_rich_table(
+            data,
+            headers=list(data.columns),
             show_index=False,
-            title=f"{title} - Calls",
+            title=table_title,
             export=bool(export),
         )
-    if not calls_only:
-        puts = puts.copy().drop(columns=["optionType"])
-        print_rich_table(
-            puts,
-            headers=list(puts.columns),
-            show_index=False,
-            title=f"{title} - Puts",
-            export=bool(export),
-        )
+
+    for opt_type, only in zip(["call", "put"], [puts_only, calls_only]):
+        if not only:
+            data = (calls if opt_type == "call" else puts).drop(columns=["optionType"])
+            print_rich_table(
+                data,
+                headers=list(data.columns),
+                show_index=False,
+                title=f"{title} - {opt_type.title()}s",
+                export=bool(export),
+            )
+
+    return None
 
 
 @log_start_end(log=logger)

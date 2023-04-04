@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # chart
 
-Charts NFT Collection Data
+This command allows the user to retrieve the NFT Collection Data related to the specified slug. The chart will show the floor price over time and sales count.
 
 ### Usage
 

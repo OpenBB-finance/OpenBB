@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # heatchart
 
-Daily Market Heat Chart - 15m Delayed
+This command allows the user to retrieve a Daily Market Heat Chart (15 minute delayed). The heat chart shows a graphical representation of the performance of the market by sector for that day, with different colors indicating different levels of performance.
 
 ### Usage
 
@@ -19,8 +19,6 @@ Daily Market Heat Chart - 15m Delayed
 ## Parameters
 
 This command has no parameters
-
-
 
 ---
 
