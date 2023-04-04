@@ -309,9 +309,6 @@ class StocksController(model.StocksRoot):
         """Stocks Screener Submodule
 
         Attributes:
-            `arktrades`: Gets a dataframe of ARK trades for ticker\n
-            `historical`: View historical price of stocks that meet preset\n
-            `historical_chart`: View historical price of stocks that meet preset\n
             `screener_data`: Screener Overview\n
             `screener_data_chart`: Screener one of the following: overview, valuation, financial, ownership, performance, technical.\n
         """

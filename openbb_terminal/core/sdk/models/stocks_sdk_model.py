@@ -536,9 +536,6 @@ class StocksScreener(Category):
     """Screener Module.
 
     Attributes:
-        `arktrades`: Gets a dataframe of ARK trades for ticker\n
-        `historical`: View historical price of stocks that meet preset\n
-        `historical_chart`: View historical price of stocks that meet preset\n
         `screener_data`: Screener Overview\n
         `screener_data_chart`: Screener one of the following: overview, valuation, financial, ownership, performance, technical.\n
     """
@@ -547,9 +544,6 @@ class StocksScreener(Category):
 
     def __init__(self):
         super().__init__()
-        self.arktrades = lib.stocks_screener_ark_model.get_ark_trades_by_ticker
-        self.historical = lib.stocks_screener_yahoofinance_model.historical
-        self.historical_chart = lib.stocks_screener_yahoofinance_view.historical
         self.screener_data = lib.stocks_screener_finviz_model.get_screener_data
         self.screener_data_chart = lib.stocks_screener_finviz_view.screener
 

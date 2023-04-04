@@ -399,10 +399,6 @@ from openbb_terminal.stocks.options.screen import (
 from openbb_terminal.stocks.screener import (
     finviz_model as stocks_screener_finviz_model,
     finviz_view as stocks_screener_finviz_view,
-    yahoofinance_model as stocks_screener_yahoofinance_model,
-    yahoofinance_view as stocks_screener_yahoofinance_view,
-    ark_model as stocks_screener_ark_model,
-    ark_view as stocks_screener_ark_view,
 )
 
 # Stocks - Technical Analysis
