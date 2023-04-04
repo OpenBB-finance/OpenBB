@@ -1,7 +1,6 @@
 # pylint: disable=R0902
 import importlib
 import inspect
-import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
@@ -219,7 +218,11 @@ class PlotlyTA(PltTA):
     @staticmethod
     def _locate_plugins() -> None:
         """Locate all the plugins in the plugins folder"""
-        path = REPOSITORY_DIRECTORY if hasattr(sys, "frozen") else Path(os.getcwd())
+        path = (
+            Path(sys.executable).parent
+            if hasattr(sys, "frozen")
+            else REPOSITORY_DIRECTORY
+        )
         current_system = get_current_system()
 
         # This is for debugging purposes
