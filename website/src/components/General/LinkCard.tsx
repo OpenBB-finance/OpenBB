@@ -8,6 +8,7 @@ import AppleIcon from "../Icons/Apple";
 import SourceIcon from "../Icons/Source";
 import DiscordIcon from "../Icons/Discord";
 import TelegramIcon from "../Icons/Telegram";
+import PipIcon from "../Icons/PipIcon";
 
 interface CardProps {
   title: string;
@@ -15,7 +16,7 @@ interface CardProps {
   className?: string;
   type?: "terminal" | "sdk" | "bot";
   url: string;
-  platform?: "windows" | "macos" | "source" | "docker" | "discord" | "telegram";
+  platform?: "windows" | "macos" | "source" | "docker" | "discord" | "telegram" | "pypi";
 }
 
 export default function Card({
@@ -59,6 +60,9 @@ export default function Card({
         )}
         {platform === "source" && (
           <SourceIcon className="w-4 h-4" />
+        )}
+        {platform === "pypi" && (
+          <PipIcon className="w-4 h-4" />
         )}
         {platform === "docker" && (
           <DockerIcon className="w-4 h-4" />

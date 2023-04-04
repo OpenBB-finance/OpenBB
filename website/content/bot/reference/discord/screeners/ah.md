@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # ah
 
-Displays After-Hours stocks according to chosen screener.
+This command allows the user to retrieve After-Hours stock movers according to a chosen screener.
 
 ### Usage
 

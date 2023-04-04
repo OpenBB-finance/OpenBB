@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # stats
 
-Bot Stats
+This command allows the user to retrieve the current number of servers the bot is in.
 
 ### Usage
 

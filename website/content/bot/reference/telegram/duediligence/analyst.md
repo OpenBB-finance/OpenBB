@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # analyst
 
-Displays analyst recommendations.
+This command allows the user to retrieve analyst recommendations for a given stock ticker.
 
 ### Usage
 
