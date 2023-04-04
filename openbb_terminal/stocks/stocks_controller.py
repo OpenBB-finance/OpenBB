@@ -559,7 +559,9 @@ class StocksController(StockBaseController):
                 if ns_parser.source == "UltimaInsights":
                     query = str(self.ticker).upper()
                     if query not in ultima_newsmonitor_view.supported_terms():
-                        console.print("[red]Ticker not supported by Ultima Insights News Monitor[/red]")
+                        console.print(
+                            "[red]Ticker not supported by Ultima Insights News Monitor[/red]"
+                        )
                         feedparser_view.display_news(
                             term=query,
                             sources=ns_parser.sources,

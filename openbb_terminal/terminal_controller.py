@@ -245,7 +245,9 @@ class TerminalController(BaseController):
         if news_parser:
             query = " ".join(news_parser.term).upper()
             if query not in ultima_newsmonitor_view.supported_terms():
-                console.print("[red]Ticker not supported by Ultima Insights News Monitor[/red]")
+                console.print(
+                    "[red]Ticker not supported by Ultima Insights News Monitor[/red]"
+                )
                 feedparser_view.display_news(
                     term=query,
                     sources=news_parser.sources,

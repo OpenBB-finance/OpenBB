@@ -44,8 +44,8 @@ def display_news(
         console.print(f"[red]Unsupported ticker: {term}[/red]")
         return
     company_info = ultima_newsmonitor_model.get_company_info(term)
-    if 'companyShortName' in company_info:
-        company_name = company_info['companyShortName']
+    if "companyShortName" in company_info:
+        company_name = company_info["companyShortName"]
     else:
         company_name = term
     # TODO: calling them all together does not work with feedparser
@@ -85,7 +85,9 @@ def display_news(
             f"[purple]relevancy score: {round(row['relevancyScore'], 2) if row['relevancyScore'] < 5 else 5}/5 Stars[/purple]"
         )
         console.print(row["articleURL"] + "\n")
-    console.print("[red]To report any issues, please visit https://beta.ultimainsights.ai/my-account/support[/red]\n")
+    console.print(
+        "[red]To report any issues, please visit https://beta.ultimainsights.ai/my-account/support[/red]\n"
+    )
     console.print()
 
     export_data(

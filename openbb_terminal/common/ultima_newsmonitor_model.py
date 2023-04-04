@@ -22,9 +22,7 @@ base_url = "https://api.ultimainsights.ai/v1"
 
 @log_start_end(log=logger)
 @check_api_key(["API_ULTIMAINSIGHTS_KEY"])
-def get_news(
-    term: str = "", sort: str = "articlePublishedDate"
-) -> pd.DataFrame:
+def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame:
     """Get news for a given term and source. [Source: Ultima Insights News Monitor]
 
     Parameters
@@ -64,9 +62,13 @@ def get_news(
             term = term.upper()
             term = term.strip()
             if term in supported_terms():
-                data = request(f"{base_url}/getNewsArticles/{term}", headers=auth_header)
+                data = request(
+                    f"{base_url}/getNewsArticles/{term}", headers=auth_header
+                )
             else:
-                console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
+                console.print(
+                    "[red]Ticker not supported. Unable to retrieve data\n[/red]"
+                )
                 break
         else:
             console.print("[red]No term specified. Unable to retrieve data\n[/red]")
@@ -105,8 +107,12 @@ def get_news(
     )
     df = df[df["relevancyScore"] < 5]
     df = df[df["relevancyScore"] > 3.5]
-    df["riskElaboratedDescription"] = df["riskElaboratedDescription"].str.replace("\n", "")
-    df['riskElaboratedDescription'] = df['riskElaboratedDescription'].str.replace('\n', '')
+    df["riskElaboratedDescription"] = df["riskElaboratedDescription"].str.replace(
+        "\n", ""
+    )
+    df["riskElaboratedDescription"] = df["riskElaboratedDescription"].str.replace(
+        "\n", ""
+    )
     df["articlePublishedDate"] = pd.to_datetime(df["articlePublishedDate"])
     df = df.sort_values(by=[sort], ascending=False)
     return df
@@ -160,7 +166,7 @@ def get_company_info(ticker: str) -> dict:
     }
 
     if ticker in supported_terms():
-        data = request(f'{base_url}/getCompanyInfo/{ticker}', headers=auth_header)
+        data = request(f"{base_url}/getCompanyInfo/{ticker}", headers=auth_header)
         return data.json()
     else:
         console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
