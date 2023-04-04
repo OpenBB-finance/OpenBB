@@ -1252,6 +1252,7 @@ def get_flair() -> str:
     """Get a flair icon."""
     available_flairs = {
         ":openbb": "(🦋)",
+        ":bug": "(🐛)",
         ":rocket": "(🚀)",
         ":diamond": "(💎)",
         ":stars": "(✨)",
