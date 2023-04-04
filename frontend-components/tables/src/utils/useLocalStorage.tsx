@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function useLocalStorage(key: string, initialValue: any) {
+export default function useLocalStorage(key: string, initialValue: any, validateFn?: (value: any) => any) {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
@@ -11,7 +11,9 @@ export default function useLocalStorage(key: string, initialValue: any) {
       // Get from local storage by key
       const item = window.localStorage.getItem(key);
       // Parse stored json or if none return initialValue
-      return item ? JSON.parse(item) : initialValue;
+      return item ?
+        validateFn ? validateFn(JSON.parse(item)) :
+          JSON.parse(item) : initialValue;
     } catch (error) {
       // If error also return initialValue
       console.log(error);

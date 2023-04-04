@@ -82,7 +82,7 @@ load -h
 Prints the dialogue on the screen:
 
 ```console
-usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [--exchange] [--performance] [-h] [--export EXPORT]
+usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [--performance] [-h] [--export EXPORT]
             [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--source {YahooFinance,AlphaVantage,Polygon,EODHD,Intrinio}]
 
 Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market
@@ -101,7 +101,6 @@ optional arguments:
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
-  --exchange            Show exchange information. (default: False)
   --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
