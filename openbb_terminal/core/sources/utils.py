@@ -1,6 +1,6 @@
 from collections.abc import MutableMapping
 from functools import reduce
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 
 def nested_dict(test_str, sep, value) -> Dict:
@@ -111,7 +111,7 @@ def flatten(d, parent_key="", sep="/") -> Dict[str, Any]:
     Dict[str, Any]
         The flattened dictionary.
     """
-    items = []
+    items: List[Tuple[str, List[str]]] = []
     for k, v in d.items():
         new_key = parent_key + sep + k if parent_key else k
         if isinstance(v, MutableMapping):
