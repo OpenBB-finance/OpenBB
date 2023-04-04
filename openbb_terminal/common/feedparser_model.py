@@ -16,8 +16,8 @@ def get_news(
     term: str = "",
     sources: str = "",
     sort: str = "published",
-    display_message: bool = True,
     limit: int = 10,
+    display_message: bool = True,
 ) -> pd.DataFrame:
     """Get news for a given term and source. [Source: Feedparser]
 
@@ -29,10 +29,10 @@ def get_news(
         sources to exclusively show news from (separated by commas)
     sort: str
         the column to sort by
-    display_message: bool
-        whether to display a message to the user
     limit : int
         number of articles to display
+    display_message: bool
+        whether to display a message to the user
 
     Returns
     -------
