@@ -255,6 +255,8 @@ def screener(
         return list(df_screen["Ticker"].values)
 
     console.print(
-        "Error: The preset selected did not return results. This might be a temporary error that is resolved by running the command again.  If no results continue to be returned, check the preset and expand the parameters."
+        "Error: The preset selected did not return results."
+        "This might be a temporary error that is resolved by running the command again."
+        "If no results continue to be returned, check the preset and expand the parameters."
     )
     return []

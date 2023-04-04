@@ -153,7 +153,7 @@ class ScreenerController(BaseController):
         if ns_parser:
             if ns_parser.preset and ns_parser.preset in finviz_model.d_signals:
                 console.print(
-                    "This is preset contains no parameters other than the signal.\n"
+                    "This preset contains no parameters other than the signal.\n"
                 )
                 return
             screener_view.display_presets(ns_parser.preset)
