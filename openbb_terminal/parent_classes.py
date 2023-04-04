@@ -1172,13 +1172,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             dest="weekly",
         )
         parser.add_argument(
-            "--exchange",
-            dest="exchange",
-            action="store_true",
-            default=False,
-            help="Show exchange information.",
-        )
-        parser.add_argument(
             "--performance",
             dest="performance",
             action="store_true",
@@ -1225,11 +1218,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 or (not is_df and not df_stock_candidate)
             ):
                 self.stock = df_stock_candidate
-                if ns_parser.exchange:
-                    self.add_info = stocks_helper.additional_info_about_ticker(
-                        ns_parser.ticker
-                    )
-                    console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
                     and not ns_parser.weekly
