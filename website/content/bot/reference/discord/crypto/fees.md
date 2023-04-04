@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # fees
 
-Fees on a certain date of top crypto protocols
+This will provide the user with the fee rate of the top crypto protocols on a specified date, allowing the user to compare different protocols' fees and make an informed decision.
 
 ### Usage
 

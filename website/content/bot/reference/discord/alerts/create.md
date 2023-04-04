@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # create
 
-Create an alert with conditions for a symbol
+This command creates an alert for a given symbol (ex. BTCUSD) that will notify the user when the price is equal to or above the user defined price.
 
 ### Usage
 

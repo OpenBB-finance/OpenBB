@@ -6,27 +6,27 @@ import ReferenceCard from "@site/src/components/General/ReferenceCard";
 
 <ReferenceCard
     title="day"
-    description="Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem"
+    description="This command retrieves the most recent flow for a stock with the specified ticker symbol."
     url="/bot/reference/telegram/flow/flow/day"
 />
 <ReferenceCard
     title="open"
-    description="Returns the opening flow for a stock. (volume > open interest on the order) /flow open"
+    description="This command allows the user to retrieve the Top 20 flows by premium for a stock with the "Opening" condition"
     url="/bot/reference/telegram/flow/flow/open"
 />
 <ReferenceCard
     title="prem"
-    description="Returns a chart of premium for the day"
+    description="This command allows the user to retrieve a chart displaying the sum of premium for call/put options for a particular ticker on a daily basis."
     url="/bot/reference/telegram/flow/flow/prem"
 />
 <ReferenceCard
     title="unu"
-    description="Returns the unusual flow for a stock (high ratio of volume to oi). /flow unu"
+    description="This command allows users to retrieve Unusual Options Trades over $100,000 premium and Total Volume exceeding Open Interest."
     url="/bot/reference/telegram/flow/flow/unu"
 />
 <ReferenceCard
     title="wk"
-    description="Returns the weekly flow for a stock (options expiring that Friday). /flow wk"
+    description="This command allows the user to retrieve the Top 20 flow by Premium for a stock with an option contact expiring that week."
     url="/bot/reference/telegram/flow/flow/wk"
 />
 </ul>

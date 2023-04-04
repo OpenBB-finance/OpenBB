@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # list
 
-List all autopost webhook feeds in this channel.
+This command allows users to view all webhook feeds associated with a particular channel that have been set up for automatic posting. It produces a list of all webhooks that have been configured to post content to the channel automatically, as well as information such as when they are scheduled.
 
 ### Usage
 
