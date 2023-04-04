@@ -151,12 +151,11 @@ class ScreenerController(BaseController):
             other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.preset:
-                if ns_parser.preset in finviz_model.d_signals:
-                    console.print(
-                        "This is preset contains no parameters other than the signal.\n"
-                    )
-                    return
+            if ns_parser.preset and ns_parser.preset in finviz_model.d_signals:
+                console.print(
+                    "This is preset contains no parameters other than the signal.\n"
+                )
+                return
             screener_view.display_presets(ns_parser.preset)
 
     @log_start_end(log=logger)
