@@ -233,12 +233,14 @@ def fetch_user_configs(
 
 
 def clear_user_configs(
-    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+    config: str, auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """Clear user configurations to the server.
 
     Parameters
     ----------
+    config : str
+        The config to clear.
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
     base_url : str
@@ -251,7 +253,7 @@ def clear_user_configs(
     Optional[requests.Response]
         The response from the put request.
     """
-    data: Dict[str, dict] = {"features_keys": {}}
+    data: Dict[str, dict] = {config: {}}
 
     try:
         response = requests.put(
