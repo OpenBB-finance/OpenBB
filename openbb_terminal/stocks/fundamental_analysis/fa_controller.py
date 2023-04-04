@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 import argparse
 import logging
-from datetime import datetime
+from datetime import date, datetime
 from typing import List, Optional
 
 from pandas.core.frame import DataFrame
@@ -32,6 +32,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     finviz_view,
     fmp_view,
     market_watch_view,
+    marketwatch_model,
     marketwatch_view,
     polygon_view,
     seeking_alpha_view,
@@ -2019,6 +2020,24 @@ class FundamentalAnalysisController(StockBaseController):
             default=20,
             help="number of latest SEC filings.",
         )
+        parser.add_argument(
+            "-y",
+            "--year",
+            action="store",
+            dest="year",
+            type=check_positive,
+            default=date.today().year,
+            help="year of SEC filings.",
+        )
+        parser.add_argument(
+            "-f",
+            "--form",
+            action="store",
+            dest="form",
+            type=str,
+            help="form group of SEC filings.",
+            choices=marketwatch_model.FORM_GROUP.keys(),
+        )
 
         parser.add_argument(
             "-p",
@@ -2051,6 +2070,8 @@ class FundamentalAnalysisController(StockBaseController):
                     sheet_name=" ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name
                     else None,
+                    year=ns_parser.year,
+                    form_group=ns_parser.form,
                 )
             if ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_filings(
