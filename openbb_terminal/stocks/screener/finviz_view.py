@@ -127,7 +127,7 @@ d_cols_to_sort = {
 def screener(
     loaded_preset: str = "top_gainers",
     data_type: str = "overview",
-    limit: int = 10,
+    limit: int = -1,
     ascend: bool = False,
     sortby: str = "",
     export: str = "",
@@ -159,7 +159,7 @@ def screener(
         df_screen = get_screener_data(
             preset_loaded=loaded_preset,
             data_type=data_type,
-            limit=10,
+            limit=limit,
             ascend=ascend,
         )
 
@@ -252,7 +252,7 @@ def screener(
             sheet_name,
         )
 
-        return list(df_screen.head(n=limit)["Ticker"].values)
+        return list(df_screen["Ticker"].values)
 
     console.print(
         "The preset selected did not return a sufficient number of tickers. Two or more tickers are needed."

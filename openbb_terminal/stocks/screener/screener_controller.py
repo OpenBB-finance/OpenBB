@@ -165,7 +165,7 @@ class ScreenerController(BaseController):
                 if ns_parser.preset in finviz_model.d_signals:
                     console.print("This is a Finviz preset.\n")
                     return
-                ns_parser.preset += ".ini"
+                #ns_parser.preset += ".ini"
             screener_view.display_presets(ns_parser.preset)
 
     @log_start_end(log=logger)
@@ -191,7 +191,7 @@ class ScreenerController(BaseController):
             other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.preset = ns_parser.preset + ".ini"
+            self.preset = ns_parser.preset
 
     @log_start_end(log=logger)
     def call_historical(self, other_args: List[str]):
@@ -284,8 +284,8 @@ class ScreenerController(BaseController):
             "--limit",
             action="store",
             dest="limit",
-            type=check_positive,
-            default=10,
+            type=int,
+            default=0,
             help="Limit of stocks to print",
         )
         parser.add_argument(
@@ -307,7 +307,7 @@ class ScreenerController(BaseController):
             type=str.lower,
             dest="sort",
             metavar="SORT",
-            default="Ticker",
+            default="marketcap",
             help="Sort elements of the table.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -362,8 +362,8 @@ class ScreenerController(BaseController):
             "--limit",
             action="store",
             dest="limit",
-            type=check_positive,
-            default=10,
+            type=int,
+            default=0,
             help="Limit of stocks to print",
         )
         parser.add_argument(
@@ -382,7 +382,7 @@ class ScreenerController(BaseController):
             "-s",
             "--sort",
             dest="sort",
-            default="Ticker",
+            default="marketcap",
             choices=screener_helper.finviz_choices("valuation"),
             type=str.lower,
             metavar="SORT",
@@ -439,8 +439,8 @@ class ScreenerController(BaseController):
             "--limit",
             action="store",
             dest="limit",
-            type=check_positive,
-            default=10,
+            type=int,
+            default=0,
             help="Limit of stocks to print",
         )
         parser.add_argument(
@@ -462,7 +462,7 @@ class ScreenerController(BaseController):
             type=str.lower,
             dest="sort",
             metavar="SORT",
-            default="Ticker",
+            default="marketcap",
             help="Sort elements of the table.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -516,8 +516,8 @@ class ScreenerController(BaseController):
             "--limit",
             action="store",
             dest="limit",
-            type=check_positive,
-            default=10,
+            type=int,
+            default=0,
             help="Limit of stocks to print",
         )
         parser.add_argument(
@@ -537,7 +537,7 @@ class ScreenerController(BaseController):
             "--sort",
             dest="sort",
             metavar="SORT",
-            default="Ticker",
+            default="marketcap",
             choices=screener_helper.finviz_choices("ownership"),
             type=str.lower,
             help="Sort elements of the table.",
@@ -593,8 +593,8 @@ class ScreenerController(BaseController):
             "--limit",
             action="store",
             dest="limit",
-            type=check_positive,
-            default=10,
+            type=int,
+            default=0,
             help="Limit of stocks to print",
         )
         parser.add_argument(
@@ -615,7 +615,7 @@ class ScreenerController(BaseController):
             choices=screener_helper.finviz_choices("performance"),
             type=str.lower,
             dest="sort",
-            default="Ticker",
+            default="perfytd",
             metavar="SORTBY",
             help="Sort elements of the table.",
         )
@@ -670,8 +670,8 @@ class ScreenerController(BaseController):
             "--limit",
             action="store",
             dest="limit",
-            type=check_positive,
-            default=10,
+            type=int,
+            default=0,
             help="Limit of stocks to print",
         )
         parser.add_argument(
@@ -692,7 +692,7 @@ class ScreenerController(BaseController):
             choices=screener_helper.finviz_choices("technical"),
             type=str.lower,
             dest="sort",
-            default="Ticker",
+            default="rsi",
             help="Sort elements of the table.",
         )
         if other_args and "-" not in other_args[0][0]:
