@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # senate
 
-Displays recent senate trades for all tickers or for a specific ticker
+This command allows a user to view the recent trades of senate members for a specific ticker.
 
 ### Usage
 

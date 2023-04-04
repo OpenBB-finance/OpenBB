@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # delete
 
-Delete an active alert you have set
+This command allows the user to delete an active alert they have set.
 
 ### Usage
 

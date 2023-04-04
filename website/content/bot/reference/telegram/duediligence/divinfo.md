@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # divinfo
 
-Displays Dividend information for a stock.
+This command retrieves dividend information for a given stock. The data includes dividend rate, yield, and ex-div date.
 
 ### Usage
 

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # chart
 
-Charts top DeFi protocols
+This command will retrieve a chart of the top DeFi protocols by market capitalization. It will provide a visual representation of the relative size of each protocol, as well as an overview of the total DeFi market size. This will enable users to get a better understanding of the current DeFi landscape and identify which protocols are leading the way.
 
 ### Usage
 
