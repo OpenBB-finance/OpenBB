@@ -57,6 +57,7 @@ def test_menu_without_queue_completion(mocker):
 
     assert result_menu == ["help"]
 
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
