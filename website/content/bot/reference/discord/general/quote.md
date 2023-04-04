@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # quote
 
-Display quote stats for a stock, 52 week high/low, market cap/float, and 200/50 day MA
+This command allows the user to retrieve display quote stats for a stock - including the 52 week high/low, market cap/float, and 200/50 day moving averages. The command allows you to quickly and easily access the requested quote stats for the given stock.
 
 ### Usage
 

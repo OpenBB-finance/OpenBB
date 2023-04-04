@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # ytd
 
-Displays Period Performance for a stock.
+This command allows the user to retrieve the stock's year-to-date performance for a particular ticker symbol. It displays the stock's performance over various periods of time, from 5 days to 5 years.
 
 ### Usage
 

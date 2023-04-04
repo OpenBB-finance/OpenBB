@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # allprints
 
-Last 15 Combination of Dark Pool and Blocks.
+This command retrieves the Last 15 Combination of Dark Pool and Blocks for a given ticker symbol. This can be used to view the most recent reported trades that involve Dark Pool and Blocks in the stock market. The results of this command will show the date, time, price, and volume of the trades.
 
 ### Usage
 

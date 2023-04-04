@@ -61,6 +61,9 @@ export default function Card({
         {platform === "source" && (
           <SourceIcon className="w-4 h-4" />
         )}
+        {platform === "pypi" && (
+          <PipIcon className="w-4 h-4" />
+        )}
         {platform === "docker" && (
           <DockerIcon className="w-4 h-4" />
         )}

@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # opstats
 
-Displays Options Statistics for a stock.
+This command allows the user to quickly and easily retrieve various option information (volatility, IV rank, put/call ratio, etc.) for a specific ticker symbol.
 
 ### Usage
 

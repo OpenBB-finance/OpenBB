@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # revrepo
 
-Displays Reverse Repo.
+This command allows the user to retrieve Reverse Repo data for a default period of 35 days. This data includes information such as the total amount of Reverse Repo, the number of parties, the average, and difference.
 
 ### Usage
 

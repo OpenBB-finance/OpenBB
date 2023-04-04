@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # unu
 
-Unusual Options Trades over 100k Prem. - Vol  OI
+This command allows users to retrieve Unusual Options Trades over $100,000 premium and Total Volume exceeding Open Interest. This data can be used to identify potential opportunities in the options market allowing users to quickly and easily identify potential unusual activity.
 
 ### Usage
 
