@@ -1,10 +1,8 @@
 # IMPORTATION STANDARD
 
 import os
-from datetime import datetime
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
