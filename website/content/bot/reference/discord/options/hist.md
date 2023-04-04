@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # hist
 
-Displays Options Price History in a chart.
+This command allows the user to retrieve the historical price of options for the given parameters of a ticker, expiry, strike , option type, and interval for the past x days in a chart format.
 
 ### Usage
 
