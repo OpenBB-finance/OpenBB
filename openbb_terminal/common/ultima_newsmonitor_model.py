@@ -167,6 +167,5 @@ def get_company_info(ticker: str) -> dict:
     if ticker in supported_terms():
         data = request(f"{base_url}/getCompanyInfo/{ticker}", headers=auth_header)
         return data.json()
-    else:
-        console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
-        return {}
+    console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
+    return {}
