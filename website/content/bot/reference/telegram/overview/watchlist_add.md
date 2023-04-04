@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # watchlist_add
 
-Adds a ticker to your watchlist.
+This command allows the user to add a stock or stocks to their watchlist.
 
 ### Usage
 

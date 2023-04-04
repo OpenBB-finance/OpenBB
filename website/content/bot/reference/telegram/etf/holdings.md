@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # etf holdings
 
-ETF Commands `/etf tops`, `/etf holdings`
+This command returns the holdings for an ETF sorted by percent of ETF.
 
 ### Usage
 

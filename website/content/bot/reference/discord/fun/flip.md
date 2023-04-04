@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # flip
 
-Flip a coin for your witcher
+This command allows the user to simulate a coin flip displaying either a 'Heads' or 'Tails'.
 
 ### Usage
 

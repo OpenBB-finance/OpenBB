@@ -270,11 +270,11 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
-        """Process quote command."""
+        """Process tob command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="quote",
+            prog="tob",
             description="Get top of book for loaded ticker from selected exchange",
         )
         parser.add_argument(
@@ -549,7 +549,7 @@ class StocksController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=3
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
             if ns_parser.ticker:

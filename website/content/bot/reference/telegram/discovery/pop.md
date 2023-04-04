@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # pop
 
-Displays Top 15 Tickers in the last hour or today. /pop 1hr or /pop 1d
+This command retrieves the top 15 tickers for the day or hour based on popularity on the OpenBB Bot across all our platforms. It allows users to get an overview of the most popular stocks in the market within the last 24 hours (1d) or 1 Hour (1hr).
 
 ### Usage
 

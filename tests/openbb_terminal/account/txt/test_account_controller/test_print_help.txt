@@ -1,7 +1,4 @@
-[info]You are already logged in.[/info]
 Cloud storage of keys:
-    sync               Turn the keys synchronization on/off
-    pull               Pull keys from cloud
     clear              Clear keys from cloud
 
 Cloud storage of routines:

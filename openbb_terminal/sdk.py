@@ -24,7 +24,7 @@ from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-cfg.setup_config_terminal()
+cfg.setup_config_terminal(is_sdk=True)
 
 logger = logging.getLogger(__name__)
 cfg.theme.applyMPLstyle()
@@ -600,11 +600,11 @@ class SDKLogger:
     @staticmethod
     def __initialize_logging() -> None:
         # pylint: disable=C0415
-        from openbb_terminal.config_terminal import setup_logging_sub_app
+        from openbb_terminal.core.session.current_system import set_system_variable
         from openbb_terminal.core.log.generation.settings_logger import log_all_settings
         from openbb_terminal.loggers import setup_logging
 
-        setup_logging_sub_app(sub_app="sdk")
+        set_system_variable("LOGGING_SUB_APP", "sdk")
         setup_logging()
         log_all_settings()
 

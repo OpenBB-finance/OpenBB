@@ -1,9 +1,6 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
-import json
-import os
-from pathlib import Path
 from typing import Iterable, Optional, Tuple, Union
 
 import i18n
@@ -12,9 +9,6 @@ from rich.console import Console, Theme
 from rich.progress import track
 from rich.text import Text
 
-from openbb_terminal.core.config.paths import (
-    USER_DATA_SOURCES_DEFAULT_FILE,
-)
 from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
@@ -72,21 +66,7 @@ def get_ordered_list_sources(command_path: str):
     """
     current_user = get_current_user()
     try:
-        # Loading in both source files: default sources and user sources
-        user_data_source = Path(current_user.preferences.PREFERRED_DATA_SOURCE_FILE)
-
-        # Opening default sources file from the repository root
-        with open(str(USER_DATA_SOURCES_DEFAULT_FILE)) as json_file:
-            json_doc = json.load(json_file)
-
-        # If the user has added sources to their own sources file in OpenBBUserData, then use that
-        if (
-            not os.getenv("TEST_MODE")
-            and user_data_source.exists()
-            and user_data_source.stat().st_size > 0
-        ):
-            with open(str(user_data_source)) as json_file:
-                json_doc = json.load(json_file)
+        json_doc = current_user.sources.sources_dict
 
         # We are going to iterate through each command as if it is broken up by period characters (.)
         path_objects = command_path.split("/")[1:]
@@ -309,7 +289,7 @@ class ConsoleAndPanel:
         self.reload_console()
         current_user = get_current_user()
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
-            if not os.getenv("TEST_MODE"):
+            if not get_current_system().TEST_MODE:
                 if current_user.preferences.ENABLE_RICH_PANEL:
                     if current_user.preferences.SHOW_VERSION:
                         version = get_current_system().VERSION
@@ -330,7 +310,7 @@ class ConsoleAndPanel:
             else:
                 print(self.filter_rich_tags(kwargs["text"]))
         else:
-            if not os.getenv("TEST_MODE"):
+            if not get_current_system().TEST_MODE:
                 self.__console.print(*args, **kwargs)
             else:
                 print(*args, **kwargs)
