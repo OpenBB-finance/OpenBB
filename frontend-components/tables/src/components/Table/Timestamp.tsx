@@ -40,7 +40,7 @@ export default function Timestamp() {
           </clipPath>
         </defs>
       </svg>
-      <span>
+      <span className="whitespace-nowrap">
         {minutesPassed > 0 ? `${minutesPassed} minutes ago` : "Just now"}
       </span>
     </div>
