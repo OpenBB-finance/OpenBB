@@ -330,4 +330,10 @@ def get_quote(symbol: str) -> pd.DataFrame:
             df_fa.loc["Earnings announcement"][
                 0
             ] = f"{earning_announcement.date()} {earning_announcement.time()}"
+        # Check if there is a valid timestamp and convert it to a readable format
+        if "Timestamp" in df_fa.index and df_fa.loc["Timestamp"][0]:
+            df_fa.loc["Timestamp"][0] = datetime.fromtimestamp(
+                df_fa.loc["Timestamp"][0]
+            ).strftime("%Y-%m-%d %H:%M:%S")
+
     return df_fa
