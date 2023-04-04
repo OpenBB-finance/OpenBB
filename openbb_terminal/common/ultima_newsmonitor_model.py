@@ -68,10 +68,10 @@ def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame
                 console.print(
                     "[red]Ticker not supported. Unable to retrieve data\n[/red]"
                 )
-                break
+                return pd.DataFrame()
         else:
             console.print("[red]No term specified. Unable to retrieve data\n[/red]")
-            break
+            return pd.DataFrame()
 
         if (
             hasattr(data, "status") and data.status_code == 200

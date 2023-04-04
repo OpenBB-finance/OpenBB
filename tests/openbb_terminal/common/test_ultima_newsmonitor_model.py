@@ -14,17 +14,17 @@ from openbb_terminal.common.ultima_newsmonitor_model import (
 # @pytest.mark.default_cassette("test_get_news.yaml")
 # @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "term, sources",
+    "term",
     [
-        ("", ""),
-        ("AAPL", ""),
-        ("TSLA", ""),
-        ("FCX", ""),
-        ("asdf$#", ""),
+        (""),
+        ("AAPL"),
+        ("TSLA"),
+        ("FCX"),
+        ("asdf$#"),
     ],
 )
-def test_get_news(term, sources, recorder):
-    df = get_news(term=term, sources=sources)
+def test_get_news(term, recorder):
+    df = get_news(term=term)
     recorder.capture(df)
 
 
