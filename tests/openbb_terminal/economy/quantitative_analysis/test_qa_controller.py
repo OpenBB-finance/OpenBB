@@ -253,3 +253,11 @@ def test_call_raw():
 
     assert result is None
     assert controller.queue == []
+
+
+def test_call_bw():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_bw([])
+
+    assert result is None
+    assert controller.queue == []
