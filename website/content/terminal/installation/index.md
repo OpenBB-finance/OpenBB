@@ -44,7 +44,6 @@ import LinkCard from "@site/src/components/General/LinkCard";
 	title="PyPI"
 	description="Install the OpenBB Terminal via Pip"
     url="/terminal/installation/pypi"
-
     platform = "pypi"
 />
 <LinkCard

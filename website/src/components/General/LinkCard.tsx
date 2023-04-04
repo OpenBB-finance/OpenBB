@@ -8,7 +8,7 @@ import AppleIcon from "../Icons/Apple";
 import SourceIcon from "../Icons/Source";
 import DiscordIcon from "../Icons/Discord";
 import TelegramIcon from "../Icons/Telegram";
-import PypiIcon from "../Icons/Pypi";
+import PipIcon from "../Icons/PipIcon";
 
 interface CardProps {
   title: string;
@@ -72,9 +72,6 @@ export default function Card({
         )}
         {platform === "telegram" && (
           <TelegramIcon className="w-4 h-4" />
-        )}
-        {platform === "pypi" && (
-          <PypiIcon className="w-4 h-4" />
         )}
         {title}
         </p>
