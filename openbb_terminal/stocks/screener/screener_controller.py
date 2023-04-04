@@ -90,7 +90,7 @@ class ScreenerController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        self.preset = "top_gainers.ini"
+        self.preset = "top_gainers"
         self.screen_tickers: List = list()
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
@@ -163,9 +163,8 @@ class ScreenerController(BaseController):
         if ns_parser:
             if ns_parser.preset:
                 if ns_parser.preset in finviz_model.d_signals:
-                    console.print("This is a Finviz preset.\n")
+                    console.print("This is preset contains no parameters other than the signal.\n")
                     return
-                #ns_parser.preset += ".ini"
             screener_view.display_presets(ns_parser.preset)
 
     @log_start_end(log=logger)
