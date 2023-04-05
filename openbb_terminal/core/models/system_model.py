@@ -1,5 +1,4 @@
 import platform
-import sys
 from typing import Literal
 
 from pydantic.dataclasses import dataclass
