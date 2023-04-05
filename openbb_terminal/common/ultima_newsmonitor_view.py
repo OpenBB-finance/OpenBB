@@ -59,18 +59,19 @@ def display_news(
         company_name, sources="cnbc", sort="published", display_message=False
     )
     breaking_news = pd.concat([bbg, wsj, reuters, cnbc])
-    breaking_news = breaking_news.sort_values(by="Date", ascending=False)
-    b_n = []
-    for _, row in breaking_news.iterrows():
-        if pd.to_datetime(row["Date"]).tz_convert(None) > pd.to_datetime("today"):
-            b_n.append(row)
-    breaking_news = pd.DataFrame(b_n)
     if len(breaking_news) > 0:
-        console.print("Uncategorized Breaking News (Bloomberg, Reuters, WSJ, CNBC):")
-        for _, row in breaking_news.head(limit).iterrows():
-            console.print(f"> {row['Date']} - {row['Description']}")
-            console.print(row["URL"] + "\n")
-        console.print("------------------------")
+        breaking_news = breaking_news.sort_values(by="Date", ascending=False)
+        b_n = []
+        for _, row in breaking_news.iterrows():
+            if pd.to_datetime(row["Date"]).tz_convert(None) > pd.to_datetime("today"):
+                b_n.append(row)
+        breaking_news = pd.DataFrame(b_n)
+        if len(breaking_news) > 0:
+            console.print("Uncategorized Breaking News (Bloomberg, Reuters, WSJ, CNBC):")
+            for _, row in breaking_news.head(limit).iterrows():
+                console.print(f"> {row['Date']} - {row['Description']}")
+                console.print(row["URL"] + "\n")
+            console.print("------------------------")
 
     articles = ultima_newsmonitor_model.get_news(term, sort)
     articles = articles.head(limit).sort_values(by="relevancyScore", ascending=False)

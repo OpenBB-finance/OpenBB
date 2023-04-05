@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://api.ultimainsights.ai/v1/supportedTickers
   response:
@@ -58,7 +58,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 04 Apr 2023 23:16:43 GMT
+      - Wed, 05 Apr 2023 00:54:39 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -78,7 +78,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
+      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1
     method: GET
     uri: https://api.ultimainsights.ai/v1/getNewsArticles/TSLA
   response:
@@ -890,7 +890,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 04 Apr 2023 23:16:44 GMT
+      - Wed, 05 Apr 2023 00:54:39 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
