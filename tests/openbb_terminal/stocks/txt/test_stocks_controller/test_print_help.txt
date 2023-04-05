@@ -7,7 +7,7 @@ Stock:
     tob                view top of book for loaded ticker (US exchanges only)          [CBOE]
     candle             view a candle chart for a specific stock ticker
     codes              FIGI, SIK and SIC codes codes                                   [Polygon]
-    news               latest news of the company                                      [Feedparser, NewsApi]
+    news               latest news of the company                                      [UltimaInsights, Feedparser, NewsApi]
 
 >   th                 trading hours,                check open markets
 >   options            options menu,                 chains, open interest, greeks, parity

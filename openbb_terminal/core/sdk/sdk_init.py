@@ -46,6 +46,8 @@ from openbb_terminal.common import (
     common_model,
     feedparser_model as common_feedparser_model,
     feedparser_view as common_feedparser_view,
+    ultima_newsmonitor_model as common_ultima_newsmonitor_model,
+    ultima_newsmonitor_view as common_ultima_newsmonitor_view,
     newsapi_model as common_newsapi_model,
     newsapi_view as common_newsapi_view,
 )
