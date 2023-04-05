@@ -14,6 +14,7 @@
       "Polygon"
     ],
     "news": [
+      "UltimaInsights",
       "Feedparser",
       "NewsApi"
     ],
@@ -185,6 +186,7 @@
         "SeekingAlpha"
       ],
       "cnews": [
+        "UltimaInsights",
         "SeekingAlpha"
       ],
       "lowfloat": [
