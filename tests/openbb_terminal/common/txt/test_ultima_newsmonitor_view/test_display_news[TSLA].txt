@@ -1,21 +1,4 @@
 
-Uncategorized Breaking News (Bloomberg, Reuters, WSJ, CNBC):
-> 2023-04-04 22:00:35+00:00 - How Tesla (TSLA), Elon Musk Are Helping Australia Quit Coal Power - Bloomberg
-https://news.google.com/rss/articles/CBMicWh0dHBzOi8vd3d3LmJsb29tYmVyZy5jb20vbmV3cy9mZWF0dXJlcy8yMDIzLTA0LTA0L2hvdy10ZXNsYS10c2xhLWVsb24tbXVzay1hcmUtaGVscGluZy1hdXN0cmFsaWEtcXVpdC1jb2FsLXBvd2Vy0gEA?oc=5
-
-> 2023-04-04 20:31:00+00:00 - Tesla to warn of data privacy risk from car security cameras in Germany - Reuters.com
-https://news.google.com/rss/articles/CBMie2h0dHBzOi8vd3d3LnJldXRlcnMuY29tL2J1c2luZXNzL2F1dG9zLXRyYW5zcG9ydGF0aW9uL3Rlc2xhLXdhcm4tZGF0YS1wcml2YWN5LXJpc2stY2FyLXNlY3VyaXR5LWNhbWVyYXMtZ2VybWFueS0yMDIzLTA0LTA0L9IBAA?oc=5
-
-> 2023-04-04 16:32:20+00:00 - GM overtakes Ford as second-best seller of EVs in U.S. but still trails Tesla by a wide margin - CNBC
-https://news.google.com/rss/articles/CBMiWGh0dHBzOi8vd3d3LmNuYmMuY29tLzIwMjMvMDQvMDQvZ20tb3ZlcnRha2VzLWZvcmQtaW4tdXMtZXYtc2FsZXMtc3RpbGwtdHJhaWxzLXRlc2xhLmh0bWzSAVxodHRwczovL3d3dy5jbmJjLmNvbS9hbXAvMjAyMy8wNC8wNC9nbS1vdmVydGFrZXMtZm9yZC1pbi11cy1ldi1zYWxlcy1zdGlsbC10cmFpbHMtdGVzbGEuaHRtbA?oc=5
-
-> 2023-04-04 12:30:00+00:00 - Tesla delivers 88869 China-made EVs in March - CPCA - Reuters.com
-https://news.google.com/rss/articles/CBMicGh0dHBzOi8vd3d3LnJldXRlcnMuY29tL2J1c2luZXNzL2F1dG9zLXRyYW5zcG9ydGF0aW9uL3Rlc2xhLWRlbGl2ZXJzLTg4ODY5LWNoaW5hLW1hZGUtZXZzLW1hcmNoLWNwY2EtMjAyMy0wNC0wNC_SAQA?oc=5
-
-> 2023-04-04 12:05:39+00:00 - Stocks making the biggest moves premarket: Etsy, Boeing, Virgin Orbit and more - CNBC
-https://news.google.com/rss/articles/CBMiaWh0dHBzOi8vd3d3LmNuYmMuY29tLzIwMjMvMDQvMDQvc3RvY2tzLW1ha2luZy10aGUtYmlnZ2VzdC1tb3Zlcy1wcmVtYXJrZXQtZXRzeS1ib2VpbmctdGVzbGEtYW5kLW1vcmUuaHRtbNIBbWh0dHBzOi8vd3d3LmNuYmMuY29tL2FtcC8yMDIzLzA0LzA0L3N0b2Nrcy1tYWtpbmctdGhlLWJpZ2dlc3QtbW92ZXMtcHJlbWFya2V0LWV0c3ktYm9laW5nLXRlc2xhLWFuZC1tb3JlLmh0bWw?oc=5
-
-------------------------
 > 2023-03-31 18:47:15 - By building and operating any CATL-linked plant themselves, ... Moscow's revenue but not disrupt supply -> [green]Supply Chain Risk[/green] ([3mTesla, Inc. faces Supply Chain Risk due to its reliance on suppliers for components and materials. Unexpected changes in business conditions, materials pricing, labor issues, wars, trade policies, natural disasters, health epidemics, trade and shipping disruptions, port congestions and other factors could affect these suppliers' ability to deliver components or remain solvent and operational, leading to production delays, idle manufacturing facilities, product design changes, loss of access to technology and tools, difficulty in meeting customer contracts, and increased costs.[0m) -> [purple]relevancy score: 4.16/5 Stars[/purple]
 https://www.tbsnews.net/world/us-know-its-chinas-clean-tech-world-now-609350
 
