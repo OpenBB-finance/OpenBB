@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # 8ball
 
-Ask 8 ball a question.
+This command allows the user to ask the 8-ball a question and receive an answer. The question must end in a question mark.
 
 ### Usage
 

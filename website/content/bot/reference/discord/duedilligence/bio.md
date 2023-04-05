@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # bio
 
-Displays a Stock's Company Info.
+This command retrieves a stock's company information and displays it to the user. It takes a stock ticker as an argument and returns information such as the company's name, description, sector, industry, CEO, and more.
 
 ### Usage
 

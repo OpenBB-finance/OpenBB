@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # flow open
 
-Returns the opening flow for a stock. (volume > open interest on the order) /flow open
+This command allows the user to retrieve the Top 20 flows by premium for a stock with the "Opening" condition - Volume exceeding Open Interest on the trade.
 
 ### Usage
 

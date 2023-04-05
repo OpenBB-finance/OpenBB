@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # etf tops
 
-ETF Commands `/etf tops`, `/etf holdings`
+This command returns the top ETFs for the day - sorted by gainers, losers, or active.
 
 ### Usage
 

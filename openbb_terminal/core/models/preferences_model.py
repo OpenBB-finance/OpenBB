@@ -76,7 +76,7 @@ class PreferencesModel(BaseModel):
     # GENERAL
     PREVIOUS_USE: bool = False
     TIMEZONE: str = "America/New_York"
-    FLAIR: str = ":openbb"
+    FLAIR: str = ":bug"
     USE_LANGUAGE: str = "en"
     REQUEST_TIMEOUT: PositiveInt = 5
     MONITOR: NonNegativeInt = 0

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # topvol
 
-Top 15 Highest options volume.
+This command allows the user to retrieve the Top 15 Highest stock options volumes by adding the call and put volume together. This data can be used to identify the most liquid options for trading.
 
 ### Usage
 

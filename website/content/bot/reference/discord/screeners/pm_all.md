@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # pm_all
 
-Displays all available pre-market screeners
+This command allows the user to retrieve all available pre-market screeners.
 
 ### Usage
 
@@ -19,7 +19,6 @@ Displays all available pre-market screeners
 ## Parameters
 
 This command has no parameters
-
 
 
 ---

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # prem
 
-Returns a chart with sum of premium per day by call/put
+This command allows the user to retrieve a chart displaying the sum of premium for call/put options for a particular ticker on a daily basis. This chart will help users quickly and easily visualize the changing premium amounts over time.
 
 ### Usage
 

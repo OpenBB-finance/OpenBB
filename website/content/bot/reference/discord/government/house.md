@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # house
 
-Displays recent house trades for all tickers or a specific ticker.
+This command allows the user to retrieve recent house trades for a specific ticker.
 
 ### Usage
 
