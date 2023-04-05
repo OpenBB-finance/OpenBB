@@ -43,9 +43,6 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-import logging
-import sys
-
 logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
