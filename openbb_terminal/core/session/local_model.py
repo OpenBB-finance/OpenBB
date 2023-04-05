@@ -10,6 +10,7 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
+    get_env_dict,
     set_credential,
     set_preference,
     set_sources,
@@ -113,6 +114,14 @@ def remove_cli_history_file(file_path: Path = HIST_FILE_PATH) -> bool:
             "\nPlease delete this file manually![/bold red]"
         )
         return False
+
+
+def update_flair():
+    """Update the flair."""
+    if "FLAIR" not in get_env_dict():
+        MAX_FLAIR_LEN = 20
+        flair = "[" + get_current_user().profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
+        set_preference("FLAIR", flair)
 
 
 def apply_configs(configs: dict):
