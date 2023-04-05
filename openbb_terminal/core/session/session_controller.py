@@ -50,9 +50,7 @@ def get_user_input() -> Tuple[str, str, bool]:
         is_password=True,
     )
     save_str = s.prompt(message="> Remember me? (y/n): ", is_password=False).lower()
-    save = False
-    if save_str == "y":
-        save = True
+    save = True if save_str == "y" else False
 
     return email, password, save
 
