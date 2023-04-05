@@ -13,7 +13,11 @@ from openbb_terminal.rich_config import console
 
 
 def get_news(
-    term: str = "", sources: str = "", sort: str = "published", limit: int = 10
+    term: str = "",
+    sources: str = "",
+    sort: str = "published",
+    limit: int = 10,
+    display_message: bool = True,
 ) -> pd.DataFrame:
     """Get news for a given term and source. [Source: Feedparser]
 
@@ -27,6 +31,8 @@ def get_news(
         the column to sort by
     limit : int
         number of articles to display
+    display_message: bool
+        whether to display a message to the user
 
     Returns
     -------
@@ -45,6 +51,8 @@ def get_news(
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
     have_data = False
+    if display_message:
+        console.print("[yellow]Fetching data. Please be patient\n[/yellow]")
     n = 0
 
     while not have_data:
@@ -68,7 +76,7 @@ def get_news(
             elif n == 60:  # Breaking if 60 successful requests return no data
                 console.print("[red]Timeout occurred. Please try again\n[/red]")
                 break
-            n = n + 1
+            n += 1
 
         elif hasattr(data, "status") and data.status != 200:  # If data request failed
             console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
