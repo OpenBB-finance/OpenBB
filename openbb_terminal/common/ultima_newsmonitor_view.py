@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import time
 from typing import Optional
 
 import pandas as pd
@@ -61,11 +62,11 @@ def display_news(
     breaking_news = pd.concat([bbg, wsj, reuters, cnbc])
     if len(breaking_news) > 0:
         breaking_news = breaking_news.sort_values(by="Date", ascending=False)
-        b_n = []
-        for _, row in breaking_news.iterrows():
-            if pd.to_datetime(row["Date"]).tz_convert(None) > pd.to_datetime("today"):
-                b_n.append(row)
-        breaking_news = pd.DataFrame(b_n)
+        breaking_news["DateNorm"] = (
+            pd.to_datetime(breaking_news["Date"]).dt.tz_convert(None).dt.normalize()
+        )
+        today = pd.to_datetime("today").normalize()
+        breaking_news = breaking_news[breaking_news["DateNorm"] == today]
         if len(breaking_news) > 0:
             console.print(
                 "Uncategorized Breaking News (Bloomberg, Reuters, WSJ, CNBC):"
