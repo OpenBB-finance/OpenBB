@@ -160,7 +160,7 @@ jobs:
 
 # Job to build the MacOS Intel version of the Terminal===================================
   Intel-MacOs-Build:
-    name: MacOS Build
+    name: Intel MacOS Build
     runs-on: [self-hosted, macos, x64]
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
