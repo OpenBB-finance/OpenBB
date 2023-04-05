@@ -31,7 +31,6 @@ from openbb_terminal.stocks.fundamental_analysis import (
     finnhub_view,
     finviz_view,
     fmp_view,
-    market_watch_view,
     marketwatch_view,
     polygon_view,
     seeking_alpha_view,
@@ -1748,7 +1747,7 @@ class FundamentalAnalysisController(StockBaseController):
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
 
-            market_watch_view.display_sean_seah_warnings(
+            marketwatch_view.display_sean_seah_warnings(
                 symbol=self.ticker, debug=ns_parser.b_debug
             )
 
