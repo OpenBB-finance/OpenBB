@@ -75,7 +75,7 @@ def merge_dicts(list_of_dicts: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 
 def extend(d: Dict[str, str], sep: str = "/") -> Dict[str, Any]:
-    """Extend a dictionary with nested dictionaries.
+    """Extend a dictionary to nested dictionaries.
 
     Parameters
     ----------
