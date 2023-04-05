@@ -56,10 +56,10 @@ In case you are looking to change the default source al together, you can do so 
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── OpenBB Terminal (https://openbb.co) ─╯
 ```
 
-For example, if you would like to change the default data provider from the `income` command from the `stocks/fa` menu you can first run the command `get` following by `stocks_load`. This returns the following:
+For example, if you would like to change the default data provider from the `income` command from the `stocks/fa` menu you can first run the command `get --cmd stocks/fa/income`. This returns the following:
 
 ```
-(🦋) /sources/ $ get stocks_fa_income
+(🦋) /sources/ $ get --cmd stocks/fa/income
 
 Default   : FinancialModelingPrep
 Available : FinancialModelingPrep, Polygon, AlphaVantage, EODHD, YahooFinance
@@ -69,11 +69,11 @@ Then, with `set` you can change the default data provider. For example, we can c
 the following:
 
 ```
-(🦋) /sources/ $ set stocks_fa_income Polygon
+(🦋) /sources/ $ set --cmd stocks/fa/income --source Polygon
 
-The data source was specified successfully.
+Default data source for 'stocks/fa/income' set to 'Polygon'.
 
-(🦋) /sources/ $ get stocks_fa_income
+(🦋) /sources/ $ get --cmd stocks/fa/income
 
 Default   : Polygon
 Available : Polygon, FinancialModelingPrep, AlphaVantage, EODHD, YahooFinance
