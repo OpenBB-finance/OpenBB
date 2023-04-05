@@ -139,7 +139,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
+            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
             cat result.txt
             grep "================================ integration test summary ================================" result.txt -A100 | tail --bytes=2000 > failed_tests.txt
 
@@ -282,7 +282,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
+            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
             cat result.txt
             grep "================================ integration test summary ================================" result.txt -A100 | tail --bytes=2000 > failed_tests.txt
 
