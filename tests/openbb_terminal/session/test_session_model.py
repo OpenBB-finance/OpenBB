@@ -64,6 +64,7 @@ def test_login_no_response(mocker):
     path = "openbb_terminal.core.session.session_model."
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
+    mock_update_flair = mocker.patch(path + "Local.update_flair")
 
     mock_fetch_user_configs.return_value = None
 
@@ -71,12 +72,14 @@ def test_login_no_response(mocker):
 
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
+    mock_update_flair.assert_not_called()
 
 
 def test_login_fail_response(mocker):
     path = "openbb_terminal.core.session.session_model."
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
+    mock_update_flair = mocker.patch(path + "Local.update_flair")
 
     response = Response()
     response.status_code = 400
@@ -86,12 +89,14 @@ def test_login_fail_response(mocker):
 
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
+    mock_update_flair.assert_not_called()
 
 
 def test_login_success_response(mocker):
     path = "openbb_terminal.core.session.session_model."
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
+    mock_update_flair = mocker.patch(path + "Local.update_flair")
 
     response = Response()
     response.status_code = 200
@@ -104,6 +109,7 @@ def test_login_success_response(mocker):
 
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_called_once()
+    mock_update_flair.assert_called_once()
 
 
 @pytest.mark.parametrize(
