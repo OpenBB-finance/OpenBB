@@ -52,7 +52,7 @@ class SourcesController(BaseController):
         Overrides the parent class function to handle github org/repo path convention.
         See `BaseController.parse_input()` for details.
         """
-        cmd_filter = r"((set\ --cmd |set\ -c |get\ --cmd |get\ -c ).*?("
+        cmd_filter = r"((set\ *--cmd\ *|set\ *-c\ * |get\ *--cmd\ *|get\ *-c\ *).*?("
         for cmd in get_current_user().sources.sources_dict:
             cmd = cmd.replace("/", r"\/")
             cmd_filter += f"{cmd}|"
