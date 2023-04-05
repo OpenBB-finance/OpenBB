@@ -1,4 +1,5 @@
 # IMPORTS STANDARD
+import sys
 from typing import Any, Dict, Optional
 
 # IMPORTS THIRDPARTY
@@ -11,18 +12,23 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
 )
 
+DEFAULT_ORDER = [
+    SETTINGS_ENV_FILE,
+    PACKAGE_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+]
+
 
 def read_env() -> Dict[str, Any]:
     __env_dict: Dict[str, Optional[str]] = {}
+    local_order = DEFAULT_ORDER.copy()
 
-    if SETTINGS_ENV_FILE.exists():
-        __env_dict.update(**dotenv_values(SETTINGS_ENV_FILE))
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        local_order.reverse()
 
-    if PACKAGE_ENV_FILE.exists():
-        __env_dict.update(**dotenv_values(PACKAGE_ENV_FILE))
-
-    if REPOSITORY_ENV_FILE.exists():
-        __env_dict.update(**dotenv_values(REPOSITORY_ENV_FILE))
+    for env_file in local_order:
+        if env_file.exists():
+            __env_dict.update(**dotenv_values(env_file))
 
     __env_dict_filtered = {
         k[len("OPENBBB_") - 1 :]: v

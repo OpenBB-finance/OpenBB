@@ -6,7 +6,6 @@ from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
-    USER_DATA_SOURCES_DEFAULT_FILE,
 )
 from openbb_terminal.core.models import BaseModel
 
@@ -76,7 +75,7 @@ class PreferencesModel(BaseModel):
     # GENERAL
     PREVIOUS_USE: bool = False
     TIMEZONE: str = "America/New_York"
-    FLAIR: str = ":openbb"
+    FLAIR: str = ":bug"
     USE_LANGUAGE: str = "en"
     REQUEST_TIMEOUT: PositiveInt = 5
     MONITOR: NonNegativeInt = 0
@@ -88,9 +87,9 @@ class PreferencesModel(BaseModel):
     THEME: Literal["dark", "light"] = "dark"
 
     # PATHS
-    PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
     GUESS_EASTER_EGG_FILE: str = os.getcwd() + os.path.sep + "guess_game.json"
     USER_DATA_DIRECTORY = HOME_DIRECTORY / "OpenBBUserData"
+    USER_DATA_SOURCES_FILE: str = str(USER_DATA_DIRECTORY / "sources" / "sources.json")
     USER_EXPORTS_DIRECTORY = USER_DATA_DIRECTORY / "exports"
     USER_CUSTOM_IMPORTS_DIRECTORY = USER_DATA_DIRECTORY / "custom_imports"
     USER_PORTFOLIO_DATA_DIRECTORY = USER_DATA_DIRECTORY / "portfolio"

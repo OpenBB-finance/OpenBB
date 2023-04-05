@@ -11,6 +11,7 @@ class StocksRoot(Category):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
+        `news`: Get news for a given term and source. [Source: Feedparser]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -23,6 +24,7 @@ class StocksRoot(Category):
         super().__init__()
         self.candle = lib.stocks_helper.display_candle
         self.load = lib.stocks_helper.load
+        self.news = lib.common_ultima_newsmonitor_model.get_news
         self.process_candle = lib.stocks_helper.process_candle
         self.quote = lib.stocks_model.get_quote
         self.search = lib.stocks_helper.search
