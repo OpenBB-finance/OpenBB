@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import time
 from typing import Optional
 
 import pandas as pd
