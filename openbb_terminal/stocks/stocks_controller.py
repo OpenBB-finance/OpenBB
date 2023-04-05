@@ -547,7 +547,7 @@ class StocksController(StockBaseController):
             help="Show news only from the sources specified (e.g bloomberg,reuters)",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
+            other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
@@ -556,28 +556,7 @@ class StocksController(StockBaseController):
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
             if self.ticker:
-                if ns_parser.source == "UltimaInsights":
-                    query = str(self.ticker).upper()
-                    if query not in ultima_newsmonitor_view.supported_terms():
-                        console.print(
-                            "[red]Ticker not supported by Ultima Insights News Monitor[/red]"
-                        )
-                        feedparser_view.display_news(
-                            term=query,
-                            sources=ns_parser.sources,
-                            limit=ns_parser.limit,
-                            export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
-                        )
-                    else:
-                        ultima_newsmonitor_view.display_news(
-                            term=query,
-                            sources=ns_parser.sources,
-                            limit=ns_parser.limit,
-                            export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
-                        )
-                elif ns_parser.source == "NewsApi":
+                if ns_parser.source == "NewsApi":
                     newsapi_view.display_news(
                         query=self.ticker,
                         limit=ns_parser.limit,
@@ -595,6 +574,20 @@ class StocksController(StockBaseController):
                         if ns_parser.sheet_name
                         else None,
                     )
+                elif ns_parser.source == "UltimaInsights":
+                    query = str(self.ticker).upper()
+                    if query not in ultima_newsmonitor_view.supported_terms():
+                        console.print(
+                            "[red]Ticker not supported by Ultima Insights News Monitor[/red]"
+                        )
+                    else:
+                        ultima_newsmonitor_view.display_news(
+                            term=query,
+                            sources=ns_parser.sources,
+                            limit=ns_parser.limit,
+                            export=ns_parser.export,
+                            sheet_name=ns_parser.sheet_name,
+                        )
             else:
                 console.print("Use 'load <ticker>' prior to this command!")
 
