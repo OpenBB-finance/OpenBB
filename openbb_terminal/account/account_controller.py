@@ -172,7 +172,8 @@ class AccountController(BaseController):
                 console.print("")
                 if i.lower() in ["y", "yes"]:
                     Hub.clear_user_configs(
-                        auth_header=get_current_user().profile.get_auth_header()
+                        config="features_keys",
+                        auth_header=get_current_user().profile.get_auth_header(),
                     )
                 else:
                     console.print("[info]Aborted.[/info]")
