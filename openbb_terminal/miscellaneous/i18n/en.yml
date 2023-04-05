@@ -26,6 +26,8 @@ en:
   account/show: Shows the current Personal Access Token
   account/revoke: Revoke the Personal Access Token
   account/_info_: Cloud storage of keys
+  account/sync: Turn the keys synchronization on/off
+  account/pull: Pull keys from cloud
   account/clear: Clear keys from cloud
   account/_routines_: Cloud storage of routines
   account/list: List available routines
@@ -68,8 +70,8 @@ en:
   settings/_cmds_: Change settings
   settings/colors: set your own terminal colors
   settings/_colors: Colors
-  settings/theme: set plots and tables theme
-  settings/_theme: Theme
+  settings/plotstyle: set your own plot style
+  settings/_plotstyle: Plot style
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used
@@ -777,6 +779,7 @@ en:
   economy/performance: performance of sectors, industry, country
   economy/spectrum: spectrum of sectors, industry, country
   economy/eval: create new series by performing operations on loaded data
+  economy/gimme: search for commands using Natural Language
   economy/forecast: forecast techniques; rnn, nbeats, transformer, block rnn
   economy/qa: Open quantitative analysis menu with stored data
   economy/qa/pick: pick new series from stored economy data

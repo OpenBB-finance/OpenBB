@@ -1,0 +1,184 @@
+usage:macro [-p PARAMETERS] [-c COUNTRIES] [-t {,TPOP,TOYA,TUSD,TPGP,TNOR}]             [--show {parameters,countries,transform}] [-s START_DATE]             [-e END_DATE]             [--convert {ALL,ARS,AUD,EUR,AZN,BDT,BYR,EUR,BTN,BAM,BWP,BRL,BGN,KHR,XAF,CAD,CLP,CNY,COP,HRK,EUR,CZK,DKK,DOP,EGP,EUR,EUR,EUR,EUR,EUR,EUR,HNL,HKD,HUF,INR,IDR,IRR,EUR,ILS,EUR,JPY,KZT,LAK,EUR,LBP,EUR,EUR,MKD,MYR,EUR,MXN,MNT,EUR,NZD,NGN,NOK,OMR,PKR,PAB,PYG,PEN,PHP,PLN,EUR,QAR,RON,RUB,SAR,RSD,SGD,EUR,EUR,ZAR,KRW,EUR,SEK,CHF,TWD,THB,TND,TRY,UAH,AED,GBP,USD,UZS,VEF,VND}]             [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]             [--raw]  Get a broad selection of macro data from one or multiple countries. This includes Gross Domestic Product (RGDP & GDP) and the underlying components, Treasury Yields (Y10YD & M3YD), Employment figures (URATE, EMP, AC0I0 and EMRATIO), Government components (e.g. GBAL & GREV), Consumer and Producer Indices (CPI & PPI) and a variety of other indicators. [Source: EconDB]  optional arguments:   -p PARAMETERS, --parameters PARAMETERS                         Abbreviation(s) of the Macro Economic data (default:                         CPI)   -c COUNTRIES, --countries COUNTRIES                         The country or countries you wish to show data for                         (default: united_states)   -t {,TPOP,TOYA,TUSD,TPGP,TNOR}, --transform {,TPOP,TOYA,TUSD,TPGP,TNOR}                         The transformation to apply to the data (default: )   --show {parameters,countries,transform}                         Show parameters and what they represent using                         'parameters' or countries and their currencies using                         'countries' (default: None)   -s START_DATE, --start START_DATE                         The start date of the data (format: YEAR-MONTH-DAY,                         i.e. 2010-12-31) (default: None)   -e END_DATE, --end END_DATE                         The end date of the data (format: YEAR-MONTH-DAY, i.e.                         2021-06-20) (default: None)   --convert {ALL,ARS,AUD,EUR,AZN,BDT,BYR,EUR,BTN,BAM,BWP,BRL,BGN,KHR,XAF,CAD,CLP,CNY,COP,HRK,EUR,CZK,DKK,DOP,EGP,EUR,EUR,EUR,EUR,EUR,EUR,HNL,HKD,HUF,INR,IDR,IRR,EUR,ILS,EUR,JPY,KZT,LAK,EUR,LBP,EUR,EUR,MKD,MYR,EUR,MXN,MNT,EUR,NZD,NGN,NOK,OMR,PKR,PAB,PYG,PEN,PHP,PLN,EUR,QAR,RON,RUB,SAR,RSD,SGD,EUR,EUR,ZAR,KRW,EUR,SEK,CHF,TWD,THB,TND,TRY,UAH,AED,GBP,USD,UZS,VEF,VND}                         Convert the currency of the chosen country to a                         specified currency. To find the currency symbols use '                         --show countries' (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)  For more information and examples, use 'about macro' to access the related guide.
+
+This is mapping for "macro" command with available countries and their currency.
+Albania: ALL,
+Argentina: ARS,
+Australia: AUD,
+Austria: EUR,
+Azerbaijan: AZN,
+Bangladesh: BDT,
+Belarus: BYR,
+Belgium: EUR,
+Bhutan: BTN,
+Bosnia_and_Herzegovina: BAM,
+Botswana: BWP,
+Brazil: BRL,
+Bulgaria: BGN,
+Cambodia: KHR,
+Cameroon: XAF,
+Canada: CAD,
+Chile: CLP,
+China: CNY,
+Colombia: COP,
+Croatia: HRK,
+Cyprus: EUR,
+Czechia: CZK,
+Denmark: DKK,
+Dominican_Republic: DOP,
+Egypt: EGP,
+Estonia: EUR,
+European_Union: EUR,
+Finland: EUR,
+France: EUR,
+Germany: EUR,
+Greece: EUR,
+Honduras: HNL,
+Hong Kong: HKD,
+Hungary: HUF,
+India: INR,
+Indonesia: IDR,
+Iran: IRR,
+Ireland: EUR,
+Israel: ILS,
+Italy: EUR,
+Japan: JPY,
+Kazakhstan: KZT,
+Laos: LAK,
+Latvia: EUR,
+Lebanon: LBP,
+Lithuania: EUR,
+Luxembourg: EUR,
+Macedonia: MKD,
+Malaysia: MYR,
+Malta: EUR,
+Mexico: MXN,
+Mongolia: MNT,
+Netherlands: EUR,
+New_Zealand: NZD,
+Nigeria: NGN,
+Norway: NOK,
+Oman: OMR,
+Pakistan: PKR,
+Panama: PAB,
+Paraguay: PYG,
+Peru: PEN,
+Philippines: PHP,
+Poland: PLN,
+Portugal: EUR,
+Qatar: QAR,
+Romania: RON,
+Russia: RUB,
+Saudi_Arabia: SAR,
+Serbia: RSD,
+Singapore: SGD,
+Slovakia: EUR,
+Slovenia: EUR,
+South_Africa: ZAR,
+South_Korea: KRW,
+Spain: EUR,
+Sweden: SEK,
+Switzerland: CHF,
+Taiwan: TWD,
+Thailand: THB,
+Tunisia: TND,
+Turkey: TRY,
+Ukraine: UAH,
+United_Arab_Emirates: AED,
+United_Kingdom: GBP,
+United_States: USD,
+Uzbekistan: UZS,
+Venezuela: VEF,
+Vietnam: VND,
+
+This is mapping for "macro" command with possible transform methods.
+: No transformation,
+TPOP: Total percentage change on period,
+TOYA: Total percentage since 1 year ago,
+TUSD: Level USD,
+TPGP: Percentage of GDP,
+TNOR: Start = 100,
+
+This is mapping for "macro" command with possible items to query from EconDB:
+RGDP: Real gross domestic product
+Period: Quarterly
+Description: Inflation-adjusted measure that reflects the value of all goods and services produced by an economy in a given year (chain-linked series).
+RPRC: Real private consumption
+Period: Quarterly
+Description: All purchases made by consumers adjusted by inflation (chain-linked series).
+RPUC: Real public consumption
+Period: Quarterly
+Description: All purchases made by the government adjusted by inflation (chain-linked series).
+RGFCF: Real gross fixed capital formation
+Period: Quarterly
+Description: The acquisition of produced assets adjusted by inflation (chain-linked series).
+REXP: Real exports of goods and services
+Period: Quarterly
+Description: Transactions in goods and services from residents to non-residents adjusted for inflation (chain-linked series)
+RIMP: Real imports of goods and services
+Period: Quarterly
+Description: Transactions in goods and services to residents from non-residents adjusted for inflation (chain-linked series)
+GDP: Gross domestic product
+Period: Quarterly
+Description: Measure that reflects the value of all goods and services produced by an economy in a given year (chain-linked series).
+PRC: Private consumption
+Period: Quarterly
+Description: All purchases made by consumers (chain-linked series).
+PUC: Public consumption
+Period: Quarterly
+Description: All purchases made by the government (chain-linked series)
+GFCF: Gross fixed capital formation
+Period: Quarterly
+Description: The acquisition of produced assets (chain-linked series).
+EXP: Exports of goods and services
+Period: Quarterly
+Description: Transactions in goods and services from residents to non-residents (chain-linked series)
+IMP: Imports of goods and services
+Period: Quarterly
+Description: Transactions in goods and services to residents from non-residents (chain-linked series)
+CPI: Consumer price index
+Period: Monthly
+Description: Purchasing power defined with base 2015 for Europe with varying bases for others. See: https://www.econdb.com/main-indicators
+PPI: Producer price index
+Period: Monthly
+Description: Change in selling prices with base 2015 for Europe with varying bases for others. See: https://www.econdb.com/main-indicators
+CORE: Core consumer price index
+Period: Monthly
+Description: Purchasing power excluding food and energy defined with base 2015 for Europe with varying bases for others. See: https://www.econdb.com/main-indicators
+URATE: Unemployment
+Period: Monthly
+Description: Monthly average % of the working-age population that is unemployed.
+EMP: Employment
+Period: Quarterly
+Description: The employed population within a country (in thousands).
+ACOIO: Active population
+Period: Quarterly
+Description: The active population, unemployed and employed, in thousands.
+EMRATIO: Employment to working age population
+Period: Quarterly
+Description: Unlike the unemployment rate, the employment-to-population ratio includes unemployed people not looking for jobs.
+RETA: Retail trade
+Period: Monthly
+Description: Turnover of sales in wholesale and retail trade
+CONF: Consumer confidence index
+Period: Monthly
+Description: Measures how optimistic or pessimistic consumers are regarding their expected financial situation.
+IP: Industrial production
+Period: Monthly
+Description: Measures monthly changes in the price-adjusted output of industry.
+CP: Construction production
+Period: Monthly
+Description: Measures monthly changes in the price-adjusted output of construction.
+GBAL: Government balance
+Period: Quarterly
+Description: The government balance (or EMU balance) is the overall difference between government revenues and spending.
+GREV: General government total revenue
+Period: Quarterly
+Description: The total amount of revenues collected by governments is determined by past and current political decisions
+
+
+Example:
+macro
+macro --parameters CPI --countries Argentina
+macro --parameters POP,PRC,EMP -c France,Germany,Spain
+macro --parameters RGDP --transform TPO
+macro -p PPI

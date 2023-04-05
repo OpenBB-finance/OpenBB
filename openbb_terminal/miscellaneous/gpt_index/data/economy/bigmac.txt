@@ -1,0 +1,69 @@
+usage:bigmac [--codes] [-c COUNTRIES] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw]  Get historical Big Mac Index [Nasdaq Data Link]  optional arguments:   --codes               Flag to show all country codes (default: False)   -c COUNTRIES, --countries COUNTRIES                         Country codes to get data for. (default: USA)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)  For more information and examples, use 'about bigmac' to access the related guide.
+
+List of available countries and country code:
+
+       Country Code
+       Vietnam  VNM
+     Argentina  ARG
+     Australia  AUS
+        Brazil  BRA
+       Britain  GBR
+        Canada  CAN
+         Chile  CHL
+         China  CHN
+      Colombia  COL
+    Costa Rica  CRI
+Czech Republic  CZE
+       Denmark  DNK
+         Egypt  EGY
+     Euro area  EUR
+     Hong Kong  HKG
+       Hungary  HUN
+         India  IND
+     Indonesia  IDN
+        Israel  ISR
+         Japan  JPN
+     Lithuania  LTU
+      Malaysia  MYS
+        Mexico  MEX
+   New Zealand  NZL
+        Norway  NOR
+      Pakistan  PAK
+          Peru  PER
+   Philippines  PHL
+        Poland  POL
+        Russia  RUS
+  Saudi Arabia  SAU
+     Singapore  SIN
+  South Africa  ZAF
+   South Korea  KOR
+     Sri Lanka  LKA
+        Sweden  SWE
+   Switzerland  CHE
+        Taiwan  ROC
+      Thailand  THA
+        Turkey  TUR
+           UAE  UAE
+       Ukraine  UKR
+ United States  USA
+       Uruguay  URY
+     Venezuela  VEN
+       Austria  AUT
+       Belgium  BEL
+       Estonia  EST
+       Finland  FIN
+        France  FRA
+       Germany  DEU
+        Greece  GRC
+       Ireland  IRL
+         Italy  ITA
+   Netherlands  NLD
+      Portugal  PRT
+         Spain  ESP
+        Latvia  LVA 
+        
+Example:
+bigmac
+bigmac -c AUS,USA,GBR
+bigmac --countries BRA
+

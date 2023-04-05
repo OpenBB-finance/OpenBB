@@ -1182,3 +1182,31 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             self.status_dict["databento"] = keys_model.set_databento_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
+
+    @log_start_end(log=logger)
+    def call_openai(self, other_args: List[str]):
+        """Process openai command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="openai",
+            description="Set OpenAI API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, https://openai.com")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["openai"] = keys_model.set_openai_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )

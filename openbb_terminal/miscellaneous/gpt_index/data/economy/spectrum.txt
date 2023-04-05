@@ -1,0 +1,7 @@
+usage:spectrum                [-g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}]                [-h] [--export EXPORT]  View group (sectors, industry or country) spectrum data. [Source: Finviz]  optional arguments:   -g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}, --group {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}                         Data group (sector, industry or country) (default:                         sector)   -h, --help            show this help message (default: False)   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )  For more information and examples, use 'about spectrum' to access the related guide
+
+Example:
+spectrum
+spectrum --group basic_materials
+spectrum --group country
+spectrum -g capitalization

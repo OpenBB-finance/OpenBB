@@ -22,6 +22,7 @@ from coinmarketcapapi import CoinMarketCapAPI
 from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
+import openai
 
 from openbb_terminal.core.models.credentials_model import LOCAL_CREDENTIALS
 from openbb_terminal.core.session.current_user import (
@@ -85,6 +86,7 @@ API_DICT: Dict = {
     "tokenterminal": "TOKEN_TERMINAL",
     "shroom": "SHROOM",
     "stocksera": "STOCKSERA",
+    "openai": "OPENAI",
 }
 
 # sorting api key section by name
@@ -260,13 +262,14 @@ def handle_credential(name: str, value: str, persist: bool = False):
         Write to .env file. By default, False.
     """
     current_user = get_current_user()
+    sync_enabled = current_user.preferences.SYNC_ENABLED
     local_user = is_local()
 
     set_credential(name, value)
 
     if local_user and persist:
         write_to_dotenv("OPENBB_" + name, value)
-    elif not local_user and name not in LOCAL_CREDENTIALS:
+    elif not local_user and sync_enabled and name not in LOCAL_CREDENTIALS:
         upload_config(
             key=name,
             value=str(value),
@@ -2777,6 +2780,88 @@ def check_databento_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("DataBento key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+# Set OpenAI key
+def set_openai_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set OpenAI key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.openai(key="example_key")
+    """
+
+    handle_credential("API_OPENAI_KEY", key, persist)
+    return check_openai_key(show_output)
+
+
+def check_openai_key(show_output: bool = False) -> str:
+    """Check OpenAI key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    if show_output:
+        console.print("Checking status...")
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_OPENAI_KEY == "REPLACE_ME":
+        logger.info("OpenAI key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        # Set the endpoint URL and data to be sent
+        data = {
+            "prompt": "Hello, Open AI!",
+        }
+
+        # Make the API call and print the response
+        try:
+            openai.api_key = current_user.credentials.API_OPENAI_KEY
+            # Make the API call and print the response
+            openai.Completion.create(engine="davinci", prompt=data["prompt"])
+            status = KeyStatus.DEFINED_TEST_PASSED
+            logger.info("OpenAI key defined, test passed")
+
+        except openai.error.AuthenticationError:
+            # Handle authentication errors
+            logger.warning("OpenAI key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+
+        except openai.error.APIError as e:
+            # Handle other API errors
+            logger.warning("OpenAI key defined, test inclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:

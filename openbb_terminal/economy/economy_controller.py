@@ -14,6 +14,7 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from dateutil.relativedelta import relativedelta
+from prompt_toolkit import PromptSession
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -45,6 +46,7 @@ from openbb_terminal.helper_funcs import (
     parse_and_split_input,
     print_rich_table,
     valid_date,
+    query_LLM,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -83,6 +85,7 @@ class EconomyController(BaseController):
         "bigmac",
         "events",
         "edebt",
+        "gimme",
     ]
 
     CHOICES_MENUS = [
@@ -345,7 +348,10 @@ class EconomyController(BaseController):
         mt.add_cmd("eval")
         mt.add_cmd("plot")
         mt.add_raw("\n")
+        mt.add_menu("gimme")
+        mt.add_raw("\n")
         mt.add_menu("qa")
+
         console.print(text=mt.menu_text, menu="Economy")
 
     @log_start_end(log=logger)
@@ -1389,13 +1395,8 @@ class EconomyController(BaseController):
                 query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(search_query=query)
 
-                if isinstance(df_search, pd.DataFrame) and not df_search.empty:
-                    fred_view.notes(
-                        search_query=query,
-                        limit=ns_parser.limit,
-                        export=ns_parser.export,
-                        sheet_name=ns_parser.sheet_name,
-                    )
+                if not df_search.empty:
+                    fred_view.notes(search_query=query, limit=ns_parser.limit)
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
@@ -1436,7 +1437,7 @@ class EconomyController(BaseController):
                     get_data=True,
                 )
 
-                if isinstance(df, pd.DataFrame) and not df.empty:
+                if not df.empty:
                     for series_id, data in detail.items():
                         self.FRED_TITLES[
                             series_id
@@ -1453,7 +1454,7 @@ class EconomyController(BaseController):
                     if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
-                elif not ns_parser.export and not ns_parser.raw:
+                else:
                     console.print("[red]No data found for the given Series ID[/red]")
 
             elif not parameters and ns_parser.raw:
@@ -2535,3 +2536,37 @@ class EconomyController(BaseController):
             console.print(
                 "[red]Please load a dataset before moving to the qa menu[/red]\n"
             )
+
+    def call_gimme(self, other_args: List[str]) -> None:
+        """Accept user input as a string and return the most appropriate Terminal command"""
+        self.save_class()
+        argparse.ArgumentParser(
+            add_help=False,
+            prog="gimme",
+            description="Accept input as a string and return the most appropriate Terminal command",
+        )
+
+        an_input = (
+            session.prompt("GIVE ME / $ ") if isinstance(session, PromptSession) else ""
+        )
+
+        if an_input:
+            console.print("Search for the command...")
+            response = query_LLM(an_input)
+
+            console.print("\n")
+            console.print(f"Suggested command: [green]{response}[/green]")
+
+            # Ask the user if they want to run the suggested command
+            console.print("\n")
+
+            if "I don't know" not in response:
+                run_command = input("Would you like to run this command? (y/n): ")
+
+                # Run the command if the user agrees
+                if run_command.lower() == "y":
+                    try:
+                        console.print("Executing the command...")
+                        self.queue.append(response)
+                    except NameError:
+                        console.print("Command execution canceled.")

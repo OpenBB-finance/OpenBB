@@ -1,0 +1,27 @@
+usage:fred [-p PARAMETER] [-s START_DATE] [-e END_DATE] [-q QUERY [QUERY ...]]            [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]            [--raw] [-l LIMIT]  Query the FRED database and plot data based on the Series ID. [Source: FRED]  optional arguments:   -p PARAMETER, --parameter PARAMETER                         Series ID of the Macro Economic data from FRED                         (default: )   -s START_DATE, --start START_DATE                         Starting date (YYYY-MM-DD) of data (default: None)   -e END_DATE, --end END_DATE                         Ending date (YYYY-MM-DD) of data (default: None)   -q QUERY [QUERY ...], --query QUERY [QUERY ...]                         Query the FRED database to obtain Series IDs given the                         query search term. (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)   -l LIMIT, --limit LIMIT                         Number of entries to show in data. (default: 100)  For more information and examples, use 'about fred' to access the related guide.
+
+This is the mapping that contains an ID mapping for real yield curve series with their corresponding duration.
+5Year: DFII5
+7Year: DFII7
+10Year: DFII10
+20Year: DFII20
+30Year: DFII30
+
+This is the mapping that contains an ID mapping for nominal yield curve series with their corresponding duration.
+1Month: DGS1MO
+3Month: DGS3MO
+6Month: DGS6MO
+1Year: DGS1
+2Year: DGS2
+3Year: DGS3
+5Year: DGS5
+7Year: DGS7
+10Year: DGS10
+20Year: DGS20
+30Year: DGS30
+
+
+Example:
+fred
+fred --parameter DGS2
+fred -p DGS10
