@@ -107,7 +107,7 @@ class SourcesController(BaseController):
             else:
                 console.print(
                     f"[param]Default   :[/param] {cmd_defaults[0]}\n"
-                    f"[param]Available :[/param] {', '.join(cmd_defaults)}\n"
+                    f"[param]Available :[/param] {', '.join(cmd_defaults)}"
                 )
 
     @log_start_end(log=logger)
