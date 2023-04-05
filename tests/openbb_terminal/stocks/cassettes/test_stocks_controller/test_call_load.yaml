@@ -12,10 +12,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?interval=1d&range=1d
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1678222804,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":187.71,"chartPreviousClose":193.81,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1678285800,"start":1678266000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1678309200,"start":1678285800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1678323600,"start":1678309200,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1678199400],"indicators":{"quote":[{"close":[187.7100067138672],"low":[186.10000610351562],"open":[191.3800048828125],"high":[194.1999969482422],"volume":[147668400]}],"adjclose":[{"adjclose":[187.7100067138672]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1680638404,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":192.58,"chartPreviousClose":194.77,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1680595200,"end":1680615000,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1680615000,"end":1680638400,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1680638400,"end":1680652800,"gmtoffset":-14400}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1680638404],"indicators":{"quote":[{"open":[197.32000732421875],"volume":[126463845],"low":[190.32000732421875],"close":[192.5800018310547],"high":[198.74459838867188]}],"adjclose":[{"adjclose":[192.5800018310547]}]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -33,25 +33,25 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '944'
+      - '946'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 08 Mar 2023 14:01:12 GMT
+      - Wed, 05 Apr 2023 01:11:18 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '3'
       x-request-id:
-      - 77bbf842-6047-4887-a216-484ab7478ffb
+      - 8832d6fc-b871-447d-88f2-0276f7ce2098
       x-yahoo-request-id:
-      - 0kijp8hi0h598
+      - 5131ckpi2piln
       y-rid:
-      - 0kijp8hi0h598
+      - 5131ckpi2piln
     status:
       code: 200
       message: OK
@@ -68,10 +68,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1678222804,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":187.71,"chartPreviousClose":308.973,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1678266000,"end":1678285800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1678285800,"end":1678309200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1678309200,"end":1678323600,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639751400],"indicators":{"quote":[{"volume":[100437300],"high":[320.2200012207031],"low":[303.0133361816406],"open":[304.92333984375],"close":[310.8566589355469]}],"adjclose":[{"adjclose":[310.8566589355469]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1680638404,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":192.58,"chartPreviousClose":308.973,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1680615000,"start":1680595200,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1680638400,"start":1680615000,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1680652800,"start":1680638400,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639751400],"indicators":{"quote":[{"open":[304.92333984375],"low":[303.0133361816406],"close":[310.8566589355469],"volume":[100437300],"high":[320.2200012207031]}],"adjclose":[{"adjclose":[310.8566589355469]}]}}],"error":null}}'
     headers:
       Age:
-      - '32'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -93,21 +93,21 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 08 Mar 2023 14:01:12 GMT
+      - Wed, 05 Apr 2023 01:11:19 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '4'
       x-request-id:
-      - 4a126bf2-cf50-439e-8861-e3b7df9fb38c
+      - fd5d9424-25c8-4b21-b1c9-b15aafc798b8
       x-yahoo-request-id:
-      - d5sktipi0h5a8
+      - a1ufpo5i2piln
       y-rid:
-      - d5sktipi0h5a8
+      - a1ufpo5i2piln
     status:
       code: 200
       message: OK
