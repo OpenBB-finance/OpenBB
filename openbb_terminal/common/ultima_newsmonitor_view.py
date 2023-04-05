@@ -67,7 +67,9 @@ def display_news(
                 b_n.append(row)
         breaking_news = pd.DataFrame(b_n)
         if len(breaking_news) > 0:
-            console.print("Uncategorized Breaking News (Bloomberg, Reuters, WSJ, CNBC):")
+            console.print(
+                "Uncategorized Breaking News (Bloomberg, Reuters, WSJ, CNBC):"
+            )
             for _, row in breaking_news.head(limit).iterrows():
                 console.print(f"> {row['Date']} - {row['Description']}")
                 console.print(row["URL"] + "\n")
