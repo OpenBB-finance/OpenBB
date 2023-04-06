@@ -171,7 +171,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        is_key = ns_parser and ns_parser.key
+        is_key = bool(ns_parser and ns_parser.key)
 
         if is_key:
             if ns_parser.key in self.API_LIST:
