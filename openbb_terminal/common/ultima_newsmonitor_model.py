@@ -51,7 +51,7 @@ def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
     current_user = get_current_user()
-    if "current_user.credentials.API_ULTIMA_KEY" == NO_API_KEY:
+    if current_user.credentials.API_ULTIMA_KEY == NO_API_KEY:
         auth_header = None
     else:
         auth_header = {
