@@ -175,9 +175,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if is_key:
             if ns_parser.key in self.API_LIST:
-                self.status_dict[ns_parser.key] = self.get_check_keys_function(
-                    ns_parser.key
-                )()
+                try:
+                    self.status_dict[ns_parser.key] = self.get_check_keys_function(
+                        ns_parser.key
+                    )()
+                except Exception:
+                    self.status_dict[ns_parser.key] = str(
+                        keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE
+                    )
             else:
                 console.print(f"[red]Key `{ns_parser.key}` is not a valid key.[/red]")
                 return
