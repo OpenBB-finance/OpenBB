@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Callable
 
 from openbb_terminal import (
     keys_model,
@@ -38,7 +38,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     API_DICT = keys_model.API_DICT
     API_LIST = list(API_DICT.keys())
-    CHOICES_COMMANDS: List[str] = ["mykeys"] + API_LIST
+    CHOICES_COMMANDS: List[str] = ["mykeys", "status"] + API_LIST
     PATH = "/keys/"
     status_dict: Dict = {}
 
@@ -56,17 +56,20 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    def check_keys_status(self) -> None:
+    def get_check_keys_function(self, key: str) -> Callable:
+        """Get check `key` function from keys_model"""
+        return getattr(keys_model, f"check_{key}_key")
+
+    def check_keys_status(self, force: bool = False) -> None:
         """Check keys status"""
-        for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
-            try:
-                self.status_dict[api] = getattr(
-                    keys_model, "check_" + str(api) + "_key"
-                )()
-            except Exception:
-                self.status_dict[api] = str(
-                    keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE
-                )
+        if not self.status_dict or force:
+            for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
+                try:
+                    self.status_dict[api] = self.get_check_keys_function(api)()
+                except Exception:
+                    self.status_dict[api] = str(
+                        keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE
+                    )
 
     def print_help(self):
         """Print help"""
@@ -82,6 +85,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         mt.add_info("_keys_")
         mt.add_raw("\n")
         mt.add_cmd("mykeys")
+        mt.add_cmd("status")
         mt.add_raw("\n")
         mt.add_info("_status_")
 
@@ -136,6 +140,53 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 if ns_parser.sheet_name
                 else None,
             )
+
+    @log_start_end(log=logger)
+    def call_status(self, other_args: List[str]):
+        """Display current keys status with the option to force the check"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="status",
+            description="Display current keys status with the option to force to check keys status again.",
+        )
+        parser.add_argument(
+            "-f",
+            "--force",
+            type=bool,
+            dest="force",
+            help="Force the status to reevaluate for all keys.",
+            default=False,
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="Force the status to reevaluate for a specific key.",
+            default=None,
+        )
+        if other_args and "-f" in other_args[0]:
+            other_args.insert(1, "True")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            if ns_parser.key:
+                if ns_parser.key in self.API_LIST:
+                    self.status_dict[ns_parser.key] = self.get_check_keys_function(
+                        ns_parser.key
+                    )()
+                else:
+                    console.print(
+                        f"[red]Key `{ns_parser.key}` is not a valid key.[/red]"
+                    )
+                    return
+
+            self.check_keys_status(force=ns_parser.force)
+            self.print_help()
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
