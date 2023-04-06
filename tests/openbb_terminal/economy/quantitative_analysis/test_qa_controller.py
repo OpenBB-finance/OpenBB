@@ -23,16 +23,18 @@ MOCK_CPI = pd.DataFrame.from_dict(
             1: "1947-02-01",
             2: "1947-03-01",
             3: "1947-04-01",
+            4: "1947-05-01",
         },
         "CPI": {
             0: 21.48,
             1: 21.62,
             2: 22.0,
             3: 22.0,
+            4: 21.95,
         },
     }
 )
-MOCK_CPI['date'] = pd.to_datetime(MOCK_CPI['date'])
+MOCK_CPI["date"] = pd.to_datetime(MOCK_CPI["date"])
 MOCK_CPI = MOCK_CPI.set_index("date")
 
 
@@ -248,10 +250,59 @@ def test_call_line():
     assert controller.queue == []
 
 
-# @pytest.mark.record_verify_screen
+@pytest.mark.record_verify_screen
 def test_call_raw():
     controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
     result = controller.call_raw([])
+
+    assert result is None
+    assert controller.queue == []
+
+
+@pytest.mark.record_verify_screen
+def test_call_unitroot():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_unitroot([])
+
+    assert result is None
+    assert controller.queue == []
+
+
+def test_call_hist():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_hist([])
+
+    assert result is None
+    assert controller.queue == []
+
+
+def test_call_cdf():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_cdf([])
+
+    assert result is None
+    assert controller.queue == []
+
+
+def test_call_qqplot():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_qqplot([])
+
+    assert result is None
+    assert controller.queue == []
+
+
+def test_call_rolling():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_rolling([])
+
+    assert result is None
+    assert controller.queue == []
+
+
+def test_call_cusum():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_cusum([])
 
     assert result is None
     assert controller.queue == []
