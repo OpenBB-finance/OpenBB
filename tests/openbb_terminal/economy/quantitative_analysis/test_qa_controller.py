@@ -32,6 +32,8 @@ MOCK_CPI = pd.DataFrame.from_dict(
         },
     }
 )
+MOCK_CPI['date'] = pd.to_datetime(MOCK_CPI['date'])
+MOCK_CPI = MOCK_CPI.set_index("date")
 
 
 MOCK_OBJ = {}
