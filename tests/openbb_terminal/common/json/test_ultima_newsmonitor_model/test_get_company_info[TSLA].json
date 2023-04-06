@@ -1,1 +1,13 @@
-{"companyShortName": "Tesla", "companyFullName": "Tesla, Inc.", "risks": ["Competition Risk", "Regulatory Risk", "Technology Risk", "Financial Risk", "Supply Chain Risk"], "primary_industry": "Auto Manufacturers", "primary_sector": "Consumer Cyclical"}
+{
+    "companyShortName": "Tesla",
+    "companyFullName": "Tesla, Inc.",
+    "risks": [
+        "Competition Risk",
+        "Regulatory Risk",
+        "Technology Risk",
+        "Financial Risk",
+        "Supply Chain Risk"
+    ],
+    "primary_industry": "Auto Manufacturers",
+    "primary_sector": "Consumer Cyclical"
+}

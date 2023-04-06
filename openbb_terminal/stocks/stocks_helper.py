@@ -1,7 +1,8 @@
 """Main helper."""
 __docformat__ = "numpy"
-# pylint: disable=too-many-lines, unsupported-assignment-operation
-# pylint: disable=no-member, too-many-branches, too-many-arguments
+
+# pylint: disable=unsupported-assignment-operation,C0302
+# pylint: disable=no-member,too-many-branches,too-many-arguments
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=consider-using-dict-items
 
@@ -27,18 +28,16 @@ from openbb_terminal.helper_funcs import print_rich_table, request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
-from openbb_terminal.stocks.stock_statics import (
-    BALANCE_PLOT,  # noqa: F401
-    BALANCE_PLOT_CHOICES,  # noqa: F401
-    CANDLE_SORT,  # noqa: F401
-    CASH_PLOT,  # noqa: F401
-    CASH_PLOT_CHOICES,  # noqa: F401
-    INCOME_PLOT,  # noqa: F401
-    INCOME_PLOT_CHOICES,  # noqa: F401
-    INTERVALS,  # noqa: F401
-    SOURCES,  # noqa: F401
-    market_coverage_suffix,
-)
+from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import BALANCE_PLOT_CHOICES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CASH_PLOT_CHOICES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INCOME_PLOT_CHOICES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
+from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import market_coverage_suffix
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_eodhd,

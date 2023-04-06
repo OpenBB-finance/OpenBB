@@ -337,6 +337,9 @@ def main() -> bool:
             )
             return False
 
+    # Sort reference_cards
+    reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
+
     # Generate root "_category_.json" file
     with open(content_path / "_category_.json", "w", **wopen_kwargs) as f:  # type: ignore
         f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))
