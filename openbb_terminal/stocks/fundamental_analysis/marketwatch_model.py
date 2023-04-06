@@ -5,6 +5,7 @@ import logging
 from typing import Optional
 
 import pandas as pd
+from requests.exceptions import ReadTimeout
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import request
@@ -62,7 +63,10 @@ def get_sec_filings(
         arguments = f"{arguments}&Year={year}"
     elif year:
         console.print("Year will be ignored if form_group is not specified")
-    response = request(base_url + arguments)
+    try:
+        response = request(base_url + arguments)
+    except ReadTimeout:
+        return pd.DataFrame()
     try:
         data = response.json()["data"]["rows"]
     except KeyError:
