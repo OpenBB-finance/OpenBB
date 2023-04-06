@@ -500,7 +500,7 @@ class PlotlyTA(PltTA):
 
         # We remove xaxis labels from all but bottom subplot, and we make sure
         # they all match the bottom one
-        xbottom = f"y{subplot_row}"
+        xbottom = f"y{subplot_row + 1}"
         for xa in figure.select_xaxes():
             if subplot_row == 2:
                 xa.showticklabels = True
