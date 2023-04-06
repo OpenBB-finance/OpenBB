@@ -10,11 +10,11 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
+    get_env_dict,
     set_credential,
     set_preference,
     set_sources,
 )
-from openbb_terminal.core.sources.utils import generate_sources_dict
 from openbb_terminal.rich_config import console
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
@@ -111,6 +111,14 @@ def remove_cli_history_file(file_path: Path = HIST_FILE_PATH) -> bool:
             "\nPlease delete this file manually![/bold red]"
         )
         return False
+
+
+def update_flair():
+    """Update the flair."""
+    if "FLAIR" not in get_env_dict():
+        MAX_FLAIR_LEN = 20
+        flair = "[" + get_current_user().profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
+        set_preference("FLAIR", flair)
 
 
 def apply_configs(configs: dict):
@@ -222,12 +230,7 @@ def set_sources_from_hub(configs: dict):
     if configs:
         sources = configs.get("features_sources", {}) or {}
         if sources:
-            try:
-                sources_dict = generate_sources_dict(sources)
-                set_sources(sources_dict)
-            except Exception:
-                console.print("[red]Failed to set sources.[/red]")
-                return
+            set_sources(sources)
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:

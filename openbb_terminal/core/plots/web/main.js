@@ -78,8 +78,8 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     modeBarButtons: [
       [
         {
-          name: "Download Data (Ctrl+S)",
-          icon: Plotly.Icons.disk,
+          name: "Download CSV (Ctrl+S)",
+          icon: ICONS.downloadCsv,
           click: function (gd) {
             loadingOverlay("Saving CSV");
             setTimeout(function () {
@@ -98,8 +98,8 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         //   },
         // },
         {
-          name: "Download Plot",
-          icon: Plotly.Icons.camera,
+          name: "Save Chart as Image",
+          icon: ICONS.downloadImage,
           click: function () {
             loadingOverlay("Saving Image");
             hideModebar();

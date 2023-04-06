@@ -28,7 +28,7 @@ from openbb_terminal.account.account_model import (
     get_login_called,
     set_login_called,
 )
-from openbb_terminal.common import feedparser_view
+from openbb_terminal.common import feedparser_view, ultima_newsmonitor_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -244,13 +244,26 @@ class TerminalController(BaseController):
             parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
         if news_parser:
-            feedparser_view.display_news(
-                term=" ".join(news_parser.term),
-                sources=news_parser.sources,
-                limit=news_parser.limit,
-                export=news_parser.export,
-                sheet_name=news_parser.sheet_name,
-            )
+            query = " ".join(news_parser.term).upper()
+            if query not in ultima_newsmonitor_view.supported_terms():
+                console.print(
+                    "[red]Ticker not supported by Ultima Insights News Monitor[/red]"
+                )
+                feedparser_view.display_news(
+                    term=query,
+                    sources=news_parser.sources,
+                    limit=news_parser.limit,
+                    export=news_parser.export,
+                    sheet_name=news_parser.sheet_name,
+                )
+            else:
+                ultima_newsmonitor_view.display_news(
+                    term=query,
+                    sources=news_parser.sources,
+                    limit=news_parser.limit,
+                    export=news_parser.export,
+                    sheet_name=news_parser.sheet_name,
+                )
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
