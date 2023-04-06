@@ -1,6 +1,6 @@
 from collections.abc import MutableMapping
 from functools import reduce
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 
 def nested_dict(test_str, sep, value) -> Dict:
@@ -10,7 +10,7 @@ def nested_dict(test_str, sep, value) -> Dict:
     return {key: nested_dict(val, sep, value)}
 
 
-def get_list_of_dicts(d: Dict[str, str]) -> List[Dict[str, Any]]:
+def get_list_of_dicts(d: Dict[str, str], sep: str) -> List[Dict[str, Any]]:
     """Get list of dictionaries from a dictionary.
 
     Parameters
@@ -25,7 +25,7 @@ def get_list_of_dicts(d: Dict[str, str]) -> List[Dict[str, Any]]:
     """
     list_of_dicts = []
     for k, v in d.items():
-        list_of_dicts.append(nested_dict(k, "/", v.replace(" ", "").split(",")))
+        list_of_dicts.append(nested_dict(k, sep, v))
     return list_of_dicts
 
 
@@ -74,17 +74,48 @@ def merge_dicts(list_of_dicts: List[Dict[str, Any]]) -> Dict[str, Any]:
     return result
 
 
-def generate_sources_dict(sources: Dict[str, str]) -> Dict[str, Any]:
-    """Generate a dictionary of sources.
+def extend(d: Dict[str, str], sep: str = "/") -> Dict[str, Any]:
+    """Extend a dictionary to nested dictionaries.
 
     Parameters
     ----------
-    sources : Dict[str, str]
-        The sources dictionary.
+    d : Dict[str, str]
+        The dictionary to extend.
+    sep : str, optional
+        The separator to use, by default "/"
 
     Returns
     -------
     Dict[str, Any]
-        The sources dictionary.
+        The extended dictionary.
     """
-    return merge_dicts(get_list_of_dicts(sources))
+    return merge_dicts(get_list_of_dicts(d, sep))
+
+
+def flatten(d, parent_key="", sep="/") -> Dict[str, Any]:
+    """Flatten a dictionary.
+
+    Source: https://stackoverflow.com/questions/6027558/flatten-nested-dictionaries-compressing-keys
+
+    Parameters
+    ----------
+    d : Dict
+        The dictionary to flatten.
+    parent_key : str, optional
+        The parent key, by default ""
+    sep : str, optional
+        The separator to use, by default "/"
+
+    Returns
+    -------
+    Dict[str, Any]
+        The flattened dictionary.
+    """
+    items: List[Tuple[str, List[str]]] = []
+    for k, v in d.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, MutableMapping):
+            items.extend(flatten(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)

@@ -12,14 +12,13 @@ from openbb_terminal.base_helpers import (
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     ProfileModel,
+    SourcesModel,
     UserModel,
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    get_env_dict,
     set_current_user,
     set_default_user,
-    set_preference,
 )
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.loggers import setup_logging
@@ -79,12 +78,17 @@ def login(session: dict) -> LoginStatus:
     session : dict
         The session info.
     """
-    # create a new user
+    # Create a new user:
+    #   credentials: stored in hub, so we set default here
+    #   profile: stored in hub, so we set default here
+    #   preferences: stored locally, so we use the current user preferences
+    #   sources: stored in hub, so we set default here
+
     hub_user = UserModel(  # type: ignore
         credentials=CredentialsModel(),
         profile=ProfileModel(),
         preferences=get_current_user().preferences,
-        sources=get_current_user().sources,
+        sources=SourcesModel(),
     )
     response = Hub.fetch_user_configs(session)
     if response is not None:
@@ -94,10 +98,7 @@ def login(session: dict) -> LoginStatus:
             hub_user.profile.load_user_info(session, email)
             set_current_user(hub_user)
             Local.apply_configs(configs=configs)
-            if "FLAIR" not in get_env_dict():
-                MAX_FLAIR_LEN = 20
-                flair = "[" + hub_user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
-                set_preference("FLAIR", flair)
+            Local.update_flair()
             return LoginStatus.SUCCESS
         if response.status_code == 401:
             return LoginStatus.UNAUTHORIZED
