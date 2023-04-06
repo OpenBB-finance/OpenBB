@@ -173,7 +173,6 @@ class StocksDiscovery(Category):
         self.arkord = lib.stocks_disc_ark_model.get_ark_orders
         self.asc = lib.stocks_disc_yahoofinance_model.get_asc
         self.dividends = lib.stocks_disc_nasdaq_model.get_dividend_cal
-        self.filings = lib.stocks_fa_fmp_model.get_filings
         self.fipo = lib.stocks_disc_finnhub_model.get_future_ipo
         self.gainers = lib.stocks_disc_yahoofinance_model.get_gainers
         self.gtech = lib.stocks_disc_yahoofinance_model.get_gtech
