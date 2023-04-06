@@ -1,53 +1,53 @@
-Fiscal Date Ending                                          2017                 2018                 2019                 2020                 2021
+Fiscal Date Ending                                          2018                 2019                 2020                 2021                 2022
 Reported Currency                                            USD                  USD                  USD                  USD                  USD
 Cik                                                   0001413329           0001413329           0001413329           0001413329           0001413329
-Filling Date                                 2018-02-13 00:00:00  2019-02-07 00:00:00  2020-02-07 00:00:00  2021-02-09 00:00:00  2022-02-11 00:00:00
-Accepted Date                                2018-02-13 08:07:16  2019-02-07 15:09:20  2020-02-07 06:47:13  2021-02-09 16:20:37  2022-02-11 08:29:22
-Calendar Year                                2017-01-01 00:00:00  2018-01-01 00:00:00  2019-01-01 00:00:00  2020-01-01 00:00:00  2021-01-01 00:00:00
+Filling Date                                 2019-02-07 00:00:00  2020-02-07 00:00:00  2021-02-09 00:00:00  2022-02-11 00:00:00  2023-02-10 00:00:00
+Accepted Date                                2019-02-07 15:09:20  2020-02-07 06:47:13  2021-02-09 16:20:37  2022-02-11 08:29:22  2023-02-10 08:20:35
+Calendar Year                                2018-01-01 00:00:00  2019-01-01 00:00:00  2020-01-01 00:00:00  2021-01-01 00:00:00  2022-01-01 00:00:00
 Period                                                        FY                   FY                   FY                   FY                   FY
-Net Income                                               6.035 B              7.911 B              7.185 B              8.056 B              9.109 B
-Depreciation And Amortization                              875 M                989 M                964 M                981 M                998 M
-Deferred Income Taxes                                     -501 M               -100 M               -141 M               -143 M                -17 M
+Net Income                                               7.911 B              7.185 B              8.056 B              9.710 B              9.527 B
+Depreciation And Amortization                              989 M                964 M                981 M                998 M              1.189 B
+Deferred Income Taxes                                     -100 M               -141 M               -143 M                -17 M               -234 M
 Stock Based Compensation                                       0                    0                    0                    0                    0
-Change In Working Capital                                1.879 B                164 M                755 M                128 M              1.367 B
-Change In Receivables                                      -92 M                 53 M               -331 M                    0                    0
-Inventory                                                  730 M               -613 M               -548 M               -165 M                549 M
-Accounts Payable                                           425 M                -51 M                451 M                406 M                653 M
-Other Working Capital                                      816 M                775 M              1.183 B               -139 M                363 M
-Other Non Cash Items                                       624 M                514 M              1.327 B                790 M                510 M
-Net Cash Provided By Operating Activities                8.912 B              9.478 B             10.090 B              9.812 B             11.967 B
-Investments In Property Plant And Equipment             -1.548 B             -1.436 B               -852 M                    0                    0
-Acquisitions Net                                               0                    0             -1.346 B                -47 M             -2.145 B
+Change In Working Capital                                  164 M                755 M                128 M              1.367 B                162 M
+Change In Receivables                                       53 M               -331 M                    0                    0                    0
+Inventory                                                 -613 M               -548 M               -165 M                549 M             -1.287 B
+Accounts Payable                                           -51 M                451 M                406 M                653 M                719 M
+Other Working Capital                                      775 M              1.183 B               -139 M                363 M              1.601 B
+Other Non Cash Items                                       514 M              1.327 B                790 M                -69 M                252 M
+Net Cash Provided By Operating Activities                9.478 B             10.090 B              9.812 B             11.967 B             10.803 B
+Investments In Property Plant And Equipment             -1.436 B               -852 M                    0                    0                    0
+Acquisitions Net                                               0             -1.346 B                -47 M             -2.145 B            -13.996 B
 Purchases Of Investments                                       0                    0                    0                    0                    0
 Sales Maturities Of Investments                                0                    0                    0                    0                    0
-Other Investing Activities                              -1.466 B                438 M                387 M             -1.107 B               -213 M
-Cash Flow From Investment                               -3.014 B               -998 M             -1.811 B             -1.154 B             -2.358 B
-Debt Repayment                                          -4.312 B             -2.484 B             -5.351 B             -4.114 B             -3.042 B
+Other Investing Activities                                 438 M                387 M             -1.107 B                 69 M               -890 M
+Cash Flow From Investment                                 -998 M             -1.811 B             -1.154 B             -2.358 B            -15.679 B
+Debt Repayment                                          -2.484 B             -5.351 B             -4.114 B             -3.042 B             -7.519 B
 Common Stock Issued                                            0                    0                    0                    0                    0
-Common Stock Repurchased                                       0                    0                    0                    0               -775 M
-Dividends Paid                                          -6.520 B             -6.885 B             -7.161 B             -7.364 B             -7.580 B
-Other Financing Activities                               8.063 B               -282 M              4.451 B              2.982 B               -580 M
-Cash Flow From Financing                                -2.769 B             -9.651 B             -8.061 B             -8.496 B            -11.977 B
-Change In Exchange Rate                                  1.079 B               -685 M                 27 M                258 M               -417 M
-Net Change In Cash                                       4.208 B             -1.856 B                245 M                420 M             -2.785 B
-Cash At End Of Period                                    8.447 B              6.620 B              6.865 B              7.285 B              4.500 B
-Cash At Beginning Of Period                              4.239 B              8.476 B              6.620 B              6.865 B              7.285 B
-Operating Cash Flow                                      8.912 B              9.478 B             10.090 B              9.812 B             11.967 B
-Capital Expenditure                                     -1.548 B             -1.436 B               -852 M               -602 M               -748 M
-Free Cash Flow                                           7.364 B              8.042 B              9.238 B              9.210 B             11.219 B
+Common Stock Repurchased                                       0                    0                    0               -775 M               -209 M
+Dividends Paid                                          -6.885 B             -7.161 B             -7.364 B             -7.580 B             -7.812 B
+Other Financing Activities                                -282 M              4.451 B              2.982 B               -580 M             -2.349 B
+Cash Flow From Financing                                -9.651 B             -8.061 B             -8.496 B            -11.977 B              3.806 B
+Change In Exchange Rate                                   -685 M                 27 M                258 M               -417 M               -213 M
+Net Change In Cash                                      -1.856 B                245 M                420 M            -11.977 B              3.806 B
+Cash At End Of Period                                    6.620 B              6.865 B              7.285 B              4.500 B              3.217 B
+Cash At Beginning Of Period                              8.476 B              6.620 B              6.865 B              7.285 B              4.500 B
+Operating Cash Flow                                      9.478 B             10.090 B              9.812 B             11.967 B             10.803 B
+Capital Expenditure                                     -1.436 B               -852 M               -602 M               -748 M             -1.077 B
+Free Cash Flow                                           8.042 B              9.238 B              9.210 B             11.219 B              9.726 B
                                                                                                            Final Link
 Fiscal Date Ending                                                                                                   
-2017                https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/pm123117form10kwrapinclfsm.htm
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/pm123118form10kwrapinclfsm.htm
 2019                    https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/pm123119form10kwrapinc.htm
 2020                               https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/pm-20201231.htm
 2021                               https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm
+2022                               https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/pm-20221231.htm
 
                                                                                                                  Link
 Fiscal Date Ending                                                                                                   
-2017                https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/0001413329-18-000007-index.htm
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/0001413329-19-000007-index.htm
 2019                https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/0001413329-20-000007-index.htm
 2020                https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/0001413329-21-000007-index.htm
 2021                https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm
+2022                https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/0001413329-23-000025-index.htm
 

@@ -42,6 +42,7 @@ def display_trading_pairs(
         headers=list(df.columns),
         show_index=False,
         title="Available Pairs for Trading",
+        export=bool(export),
     )
 
     export_data(

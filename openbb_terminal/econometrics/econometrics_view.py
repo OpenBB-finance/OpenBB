@@ -3,24 +3,19 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Dict, List, Optional, Union
+from typing import Dict, Optional, Union
 
-import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
-from matplotlib.units import ConversionError
-from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.econometrics import econometrics_model
 from openbb_terminal.econometrics.econometrics_helpers import get_ending
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
@@ -56,6 +51,7 @@ def show_options(
                 headers=list(data_values.columns),
                 show_index=False,
                 title=f"Options for dataset: '{dataset}'",
+                export=bool(export),
             )
 
             export_data(
@@ -72,8 +68,8 @@ def display_plot(
     data: Union[pd.Series, pd.DataFrame, Dict[str, pd.DataFrame]],
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plot data from a dataset
 
     Parameters
@@ -84,9 +80,11 @@ def display_plot(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
-    external_axes:Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
+    fig = OpenBBFigure()
+
     if isinstance(data, pd.Series):
         data = {data.name: data}
     elif isinstance(data, pd.DataFrame):
@@ -100,37 +98,42 @@ def display_plot(
             )
             del data[dataset_col]
 
+    if not fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "plot",
+            sheet_name,
+        )
+
     # Check that there's at least a valid dataframe
     if data:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
-
         for dataset_col in data:
             try:
-                if isinstance(data[dataset_col], pd.Series):
-                    ax.plot(data[dataset_col].index, data[dataset_col].values)
-                elif isinstance(data[dataset_col], pd.DataFrame):
-                    ax.plot(data[dataset_col])
+                if isinstance(data[dataset_col], (pd.Series, pd.DataFrame)):
+                    fig.add_scatter(
+                        x=data[dataset_col].index,
+                        y=data[dataset_col].values,
+                        name=dataset_col,
+                    )
 
-            except ConversionError:
+            except ValueError:
                 print(f"Could not convert column: {dataset_col}")
             except TypeError:
                 print(f"Could not convert column: {dataset_col}")
 
-        theme.style_primary_axis(ax)
-        if external_axes is None:
-            theme.visualize_output()
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "plot",
+                sheet_name=sheet_name,
+                figure=fig,
+            )
 
-        ax.legend(list(data.keys()))
+        return fig.show(external=external_axes)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "plot",
-        sheet_name,
-    )
+    return None
 
 
 @log_start_end(log=logger)
@@ -141,7 +144,7 @@ def display_norm(
     plot: bool = True,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Determine the normality of a timeseries.
 
@@ -159,10 +162,12 @@ def display_norm(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data.
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-    if data.dtype not in [int, float]:
+    fig = OpenBBFigure()
+
+    if data.dtype not in [int, float, np.float64, np.int64]:
         console.print(
             f"The column type must be numeric. The provided column type is {data.dtype}. "
             f"Consider using the command 'type' to change this.\n"
@@ -176,24 +181,9 @@ def display_norm(
             headers=list(results.columns),
             show_index=True,
             title=f"Normality test{ending}",
+            export=bool(export),
         )
-
-        if plot:
-            if external_axes is None:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            else:
-                ax = external_axes[0]
-
-            ax.hist(data, bins=100)
-
-            ax.set_title(f"Histogram{ending}")
-
-            theme.style_primary_axis(ax)
-
-            if external_axes is None:
-                theme.visualize_output()
-
-        if export:
+        if not fig.is_image_export(export):
             export_data(
                 export,
                 os.path.dirname(os.path.abspath(__file__)),
@@ -201,8 +191,27 @@ def display_norm(
                 results,
                 sheet_name,
             )
-        else:
-            console.print()
+
+        if plot or fig.is_image_export(export):
+            fig.set_title(f"Histogram{ending}", wrap=True, wrap_width=55)
+
+            fig.add_histogram(x=data, name="Histogram", nbinsx=100)
+
+            fig.update_layout(margin=dict(t=65))
+
+            if fig.is_image_export(export):
+                export_data(
+                    export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{column}_{dataset}_norm",
+                    results,
+                    sheet_name,
+                    fig,
+                )
+
+            return fig.show(external=external_axes)
+
+    return None
 
 
 @log_start_end(log=logger)
@@ -234,7 +243,7 @@ def display_root(
     export: str
         Format to export data.
     """
-    if data.dtype not in [int, float]:
+    if data.dtype not in [int, float, np.float64, np.int64]:
         console.print(
             f"The column type must be numeric. The provided "
             f"type is {data.dtype}. Consider using the command 'type' to change this.\n"
@@ -248,6 +257,7 @@ def display_root(
             headers=list(results.columns),
             show_index=True,
             title=f"Unitroot {ending}",
+            export=bool(export),
         )
 
         export_data(
@@ -283,12 +293,12 @@ def display_granger(
     export : str
         Format to export data
     """
-    if dependent_series.dtype not in [int, float]:
+    if dependent_series.dtype not in [int, float, np.float64, np.int64]:
         console.print(
             f"The time series {dependent_series.name} needs to be numeric but is type "
             f"{dependent_series.dtype}. Consider using the command 'type' to change this."
         )
-    elif independent_series.dtype not in [int, float]:
+    elif independent_series.dtype not in [int, float, np.float64, np.int64]:
         console.print(
             f"The time series {independent_series.name} needs to be numeric but is type "
             f"{independent_series.dtype}. Consider using the command 'type' to change this."
@@ -303,6 +313,7 @@ def display_granger(
             headers=list(granger_df.columns),
             show_index=True,
             title=f"Granger Causality Test [Y: {dependent_series.name} | X: {independent_series.name} | Lags: {lags}]",
+            export=bool(export),
         )
 
         result_ftest = round(granger_df.loc["params_ftest"]["P-value"], 3)
@@ -335,7 +346,7 @@ def display_cointegration_test(
     plot: bool = True,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Estimates long-run and short-run cointegration relationship for series y and x and apply
     the two-step Engle & Granger test for cointegration.
@@ -364,12 +375,14 @@ def display_cointegration_test(
         Whether you wish to plot the z-values of all pairs.
     export : str
         Format to export data
-    external_axes:Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     if len(datasets) < 2:
-        console.print("[red]Co-integration requires at least two time series.[/red]")
-        return
+        return console.print(
+            "[red]Co-integration requires at least two time series.[/red]"
+        )
+    fig = OpenBBFigure().set_title("Error correction terms")
 
     df: pd.DataFrame = econometrics_model.get_coint_df(*datasets)
 
@@ -386,27 +399,10 @@ def display_cointegration_test(
         show_index=True,
         index_name="Pairs",
         title="Cointegration Tests",
+        export=bool(export),
     )
 
-    if plot:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
-
-        z_values = econometrics_model.get_coint_df(*datasets, return_z=True)
-
-        for pair, values in z_values.items():
-            ax.plot(values, label=pair)
-
-        ax.legend()
-        ax.set_title("Error correction terms")
-
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
-
+    if not fig.is_image_export(export):
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -414,3 +410,22 @@ def display_cointegration_test(
             df,
             sheet_name,
         )
+    if plot or fig.is_image_export(export):
+        z_values = econometrics_model.get_coint_df(*datasets, return_z=True)
+
+        for pair, values in z_values.items():
+            fig.add_scatter(x=values.index, y=values, name=pair, mode="lines")
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "coint",
+                df,
+                sheet_name,
+                fig,
+            )
+
+        return fig.show(external=external_axes)
+
+    return None

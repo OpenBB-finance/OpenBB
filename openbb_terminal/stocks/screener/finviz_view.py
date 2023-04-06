@@ -236,10 +236,12 @@ def screener(
             )
 
         print_rich_table(
-            df_screen.head(n=limit),
+            df_screen,
             headers=list(df_screen.columns),
             show_index=False,
             title="Finviz Screener",
+            export=bool(export),
+            limit=limit,
         )
 
         export_data(

@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import print_rich_table
@@ -85,7 +85,7 @@ class HedgeController(BaseController):
         self.put_index_choices = range(len(self.puts))
         self.greeks: Dict = {"Portfolio": {}, "Option A": {}, "Option B": {}}
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
@@ -93,7 +93,11 @@ class HedgeController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if self.options and session and obbff.USE_PROMPT_TOOLKIT:
+        if (
+            self.options
+            and session
+            and get_current_user().preferences.USE_PROMPT_TOOLKIT
+        ):
             self.choices["rmv"] = {c: None for c in ["Option A", "Option B"]}
             self.choices["rmv"]["--all"] = {}
             self.choices["rmv"]["-a"] = "--all"

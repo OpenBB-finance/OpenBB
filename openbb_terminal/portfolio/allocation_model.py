@@ -77,6 +77,16 @@ def get_assets_allocation(
     benchmark_assets_allocation = stockanalysis_model.get_etf_holdings(
         benchmark_ticker
     ).reset_index()
+    if benchmark_assets_allocation.empty:  # if not an etf or no data is available
+        benchmark_assets_allocation = pd.DataFrame(
+            data={
+                "symbol": [benchmark_ticker],
+                "Name": [benchmark_ticker],
+                "% Of Etf": ["100%"],
+                "Shares": [1],
+            },
+            index=[0],
+        )
     benchmark_assets_allocation.rename(
         columns={"symbol": "Symbol", "% Of Etf": "Benchmark"}, inplace=True
     )

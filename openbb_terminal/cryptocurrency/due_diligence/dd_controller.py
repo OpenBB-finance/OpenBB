@@ -7,7 +7,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_model,
@@ -136,7 +136,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if not df_mt.empty:
             self.messari_timeseries = df_mt.index.to_list()
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             choices["ob"].update({c: {} for c in self.ccxt_exchanges})
@@ -1442,6 +1442,7 @@ class DueDiligenceController(CryptoBaseController):
                 dev_activity=ns_parser.dev,
                 start_date=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
                 end_date=ns_parser.end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

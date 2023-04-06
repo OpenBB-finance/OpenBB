@@ -31,6 +31,7 @@ class FixedincomeRoot(Category):
         `treasury`: Gets interest rates data from selected countries (3 month and 10 year)\n
         `usrates`: Plot various treasury rates from the United States\n
         `ycrv`: Gets yield curve data from FRED.\n
+        `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
     """
 
     _location_path = "fixedincome"
@@ -59,3 +60,4 @@ class FixedincomeRoot(Category):
         self.treasury = lib.fixedincome_oecd_model.get_treasury
         self.usrates = lib.fixedincome_fred_model.get_usrates
         self.ycrv = lib.fixedincome_fred_model.get_yield_curve
+        self.ycrv_chart = lib.fixedincome_fred_view.display_yield_curve

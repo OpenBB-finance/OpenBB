@@ -2,8 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
+import sys
+import time
 from datetime import datetime, timedelta
+from functools import partial
+from multiprocessing import Pool, cpu_count
 from typing import Tuple
+from urllib.error import HTTPError
 
 import pandas as pd
 
@@ -30,19 +35,31 @@ def get_series_data(
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
     """
-    start_date = start_date[0:4] + start_date[4:7] + start_date[8:9]
-    end_date = end_date[0:4] + end_date[4:7] + end_date[8:9]
-
-    df = pd.read_csv(
-        f"https://sdw.ecb.europa.eu/quickviewexport.do?trans=N&start={start_date}&end={end_date}&SERIES_KEY={series_id}&type=csv",
-        header=5,
-        usecols=[0, 1],
-        index_col=0,
-        parse_dates=True,
+    start_date = start_date.replace("-", "")
+    end_date = end_date.replace("-", "")
+    url = (
+        "https://sdw.ecb.europa.eu/quickviewexport.do?trans=N"
+        f"&start={start_date}&end={end_date}&SERIES_KEY={series_id}&type=csv"
     )
-    df = df.iloc[::-1]
+    time.sleep(0.5)
 
-    return df
+    def _get_data(max_retries: int = 5):
+        try:
+            df = pd.read_csv(
+                url, header=5, usecols=[0, 1], index_col=0, parse_dates=True
+            )
+            df = df.iloc[::-1]
+            return df
+        except KeyboardInterrupt as interrupt:
+            raise interrupt
+        except (HTTPError, Exception):
+            max_retries -= 1
+            if max_retries == 0:
+                return pd.DataFrame()
+            time.sleep(0.5)
+            return _get_data(max_retries=max_retries)
+
+    return _get_data()
 
 
 @log_start_end(log=logger)
@@ -120,7 +137,7 @@ def get_ecb_yield_curve(
             for m in range(1, 12)
             if (y != 0 or m >= 3)
         ]
-        series_id.append(f"{type}30Y")
+        series_id.append(f"{yield_type}30Y")
         labels = [
             f"{y}Year{m}Month" if y != 0 else f"{m}Month"
             for y in range(0, 30)
@@ -154,14 +171,39 @@ def get_ecb_yield_curve(
         date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
     try:
-        for i in optional_rich_track(
-            range(len(series_id)), desc="Obtaining yield curve data"
-        ):
-            temp = get_series_data(series_id[i], date, date)
-            temp.columns = [labels[i]]
-            df = pd.concat([df, temp], axis=1)
-    except KeyboardInterrupt:
-        console.print("Data collection was canceled.")
+        if detailed and not hasattr(sys, "frozen"):
+            with Pool(cpu_count() - 1) as pool:
+                # To be able to use optional_rich_track with multiprocessing,
+                # we need to use imap_unordered
+
+                results = optional_rich_track(
+                    pool.imap_unordered(
+                        partial(get_series_data, start_date=date, end_date=date),
+                        series_id,
+                    ),
+                    total=len(series_id),
+                    desc="Obtaining yield curve data",
+                )
+                for i, result in enumerate(results):
+                    if isinstance(result, pd.DataFrame) and result.empty:
+                        console.print(f"\n[red]No data for {series_id[i]}[/red]")
+                        # we remove the corresponding index from the list of years
+                        years.pop(i)
+                        continue
+
+                    result.columns = [labels[i]]
+                    df = pd.concat([df, result], axis=1)
+
+        else:
+            for i in optional_rich_track(
+                range(len(series_id)), desc="Obtaining yield curve data"
+            ):
+                temp = get_series_data(series_id[i], date, date)
+                temp.columns = [labels[i]]
+                df = pd.concat([df, temp], axis=1)
+
+    except (Exception, KeyboardInterrupt):
+        console.print("\n[yellow]Data collection was canceled.[/yellow]")
         return pd.DataFrame(), date
 
     if df.empty:
@@ -190,11 +232,7 @@ def get_ecb_yield_curve(
             return pd.DataFrame(), date_of_yield
         rates = pd.DataFrame(series.values.T, columns=["Rate"])
 
-    rates.insert(
-        0,
-        "Maturity",
-        years,
-    )
+    rates.insert(0, "Maturity", years)
 
     if return_date:
         return rates, date_of_yield

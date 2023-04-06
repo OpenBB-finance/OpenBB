@@ -1,35 +1,28 @@
 """ FRED view """
 __docformat__ = "numpy"
 
+# IMPORTATION STANDARD
 import logging
 import os
-import pathlib
-from itertools import cycle
+from pathlib import Path
 from typing import Dict, List, Optional
 
+# IMPORTATION THIRDPARTY
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.fixedincome import fred_model
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=too-many-arguments,inconsistent-return-statements,dangerous-default-value
-# pylint: disable=C0302
+# pylint: disable=C0302,R0913,W0102
 
-ice_bofa_path = pathlib.Path(__file__).parent / "ice_bofa_indices.xlsx"
-commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
-spot_rates_path = pathlib.Path(__file__).parent / "corporate_spot_rates.xlsx"
+ice_bofa_path = (Path(__file__).parent / "ice_bofa_indices.csv").resolve()
+commercial_paper_path = (Path(__file__).parent / "commercial_paper.csv").resolve()
+spot_rates_path = (Path(__file__).parent / "corporate_spot_rates.csv").resolve()
 
 ID_TO_NAME_ESTR = {
     "ECBESTRVOLWGTTRMDMNRT": "Euro Short-Term Rate: Volume-Weighted Trimmed Mean Rate",
@@ -188,13 +181,13 @@ def plot_estr(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Euro Short-Term Rate (ESTR)
 
     Parameters
     ----------
-    series_id: str
+    parameter: str
         FRED ID of ESTR data to plot, options: ['ECBESTRVOLWGTTRMDMNRT',
         'ECBESTRTOTVOL', 'ECBESTRNUMTRANS', 'ECBESTRRT75THPCTVOL',
         'ECBESTRNUMACTBANKS', 'ECBESTRSHRVOL5LRGACTBNK', 'ECBESTRRT25THPCTVOL']
@@ -206,41 +199,24 @@ def plot_estr(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = fred_model.get_estr(parameter, start_date, end_date)
     series_id = fred_model.ESTR_PARAMETER_TO_ECB_ID[parameter]
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
 
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
+    ylabel_dict = {
+        "ECBESTRTOTVOL": "Millions in EUR",
+        "ECBESTRNUMACTBANKS": "Number of Banks",
+        "ECBESTRNUMTRANS": "Number of Transactions",
+    }
+
+    fig = OpenBBFigure(yaxis_title=ylabel_dict.get(series_id, "Yield (%)"))
+    fig.set_title(ID_TO_NAME_ESTR[series_id])
+
+    fig.add_scatter(
+        x=df.index, y=df[series_id], mode="lines", name=series_id, line_width=2
     )
-    ax.set_title(ID_TO_NAME_ESTR[series_id], fontsize=15)
-    theme.style_primary_axis(ax)
-
-    if series_id == "ECBESTRTOTVOL":
-        ylabel = "Millions in EUR"
-    elif series_id == "ECBESTRNUMACTBANKS":
-        ylabel = "Number of Banks"
-    elif series_id == "ECBESTRNUMTRANS":
-        ylabel = "Number of Transactions"
-    else:
-        ylabel = "Yield (%)"
-
-    ax.set_ylabel(ylabel)
-
-    if external_axes is None:
-        theme.visualize_output()
 
     if export:
         if series_id not in ["ECBESTRTOTVOL", "ECBESTRNUMACTBANKS", "ECBESTRNUMTRANS"]:
@@ -255,7 +231,10 @@ def plot_estr(
             series_id,
             df_transformed,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -266,13 +245,13 @@ def plot_sofr(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Secured Overnight Financing Rate (SOFR)
 
     Parameters
     ----------
-    series_id: str
+    parameter: str
         FRED ID of SOFR data to plot, options: ['SOFR', 'SOFR30DAYAVG', 'SOFR90DAYAVG', 'SOFR180DAYAVG', 'SOFRINDEX']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
@@ -282,8 +261,8 @@ def plot_sofr(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = fred_model.SOFR_PARAMETER_TO_FRED_ID[parameter]
 
@@ -291,27 +270,14 @@ def plot_sofr(
         parameter=parameter, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
+    fig = OpenBBFigure(
+        yaxis_title="Yield (%)"
+        if series_id != "SOFRINDEX"
+        else "Index [Base = 04-2018]"
     )
-    ax.set_title(ID_TO_NAME_SOFR[series_id], fontsize=15)
-    ax.set_ylabel("Yield (%)" if series_id != "SOFRINDEX" else "Index [Base = 04-2018]")
+    fig.set_title(ID_TO_NAME_SOFR[series_id])
 
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df[series_id], mode="lines", name=series_id)
 
     if export:
         if series_id != "SOFRINDEX":
@@ -326,7 +292,10 @@ def plot_sofr(
             series_id,
             df_transformed,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -337,13 +306,13 @@ def plot_sonia(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Sterling Overnight Index Average (SONIA)
 
     Parameters
     ----------
-    series_id: str
+    parameter: str
         FRED ID of SONIA data to plot, options: ['IUDSOIA', 'IUDZOS2',
         'IUDZLS6', 'IUDZLS7', 'IUDZLS8', 'IUDZLS9', 'IUDZLT2']
     start_date: Optional[str]
@@ -352,8 +321,8 @@ def plot_sonia(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = fred_model.SONIA_PARAMETER_TO_FRED_ID[parameter]
 
@@ -361,34 +330,15 @@ def plot_sonia(
         parameter=parameter, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    ylabel_dict = {
+        "IUDZLT2": "Millions of GDP",
+        "IUDZOS2": "Index [Base = 04-2018]",
+    }
 
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
+    fig = OpenBBFigure(yaxis_title=ylabel_dict.get(series_id, "Yield (%)"))
+    fig.set_title(ID_TO_NAME_SONIA[series_id])
 
-    if series_id == "IUDZLT2":
-        ylabel = "Millions of GDP"
-    elif series_id == "IUDZOS2":
-        ylabel = "Index [Base = 04-2018]"
-    else:
-        ylabel = "Yield (%)"
-
-    ax.set_title(ID_TO_NAME_SONIA[series_id], fontsize=15)
-    ax.set_ylabel(ylabel)
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df[series_id], mode="lines", name=series_id)
 
     if export:
         if series_id not in ["IUDZOS2", "IUDZLT2"]:
@@ -403,7 +353,10 @@ def plot_sonia(
             series_id,
             df_transformed,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -414,13 +367,13 @@ def plot_ameribor(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot American Interbank Offered Rate (AMERIBOR)
 
     Parameters
     ----------
-    series_id: str
+    parameter: str
         FRED ID of AMERIBOR data to plot, options: ['AMERIBOR', 'AMBOR30T',
         'AMBOR90T', 'AMBOR1W', 'AMBOR1M', 'AMBOR3M', 'AMBOR6M', 'AMBOR1Y',
         'AMBOR2Y', 'AMBOR30', 'AMBOR90']
@@ -430,8 +383,8 @@ def plot_ameribor(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = fred_model.AMERIBOR_PARAMETER_TO_FRED_ID[parameter]
 
@@ -439,29 +392,12 @@ def plot_ameribor(
         parameter=parameter, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
+    fig = OpenBBFigure(
+        yaxis_title="Index" if series_id in ["AMBOR30T", "AMBOR90T"] else "Yield (%)"
     )
+    fig.set_title(ID_TO_NAME_AMERIBOR[series_id])
 
-    ylabel = "Index" if series_id in ["AMBOR30T", "AMBOR90T"] else "Yield (%)"
-
-    ax.set_title(ID_TO_NAME_AMERIBOR[series_id], fontsize=15)
-    ax.set_ylabel(ylabel)
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df[series_id], mode="lines", name=series_id)
 
     if export:
         if series_id not in ["AMBOR30T", "AMBOR90T"]:
@@ -476,7 +412,10 @@ def plot_ameribor(
             series_id,
             df_transformed,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -486,7 +425,7 @@ def plot_fftr(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Federal Funds Target Range.
 
@@ -502,8 +441,8 @@ def plot_fftr(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_upper = fred_model.get_series_data(
         series_id="DFEDTARU", start_date=start_date, end_date=end_date
@@ -513,25 +452,11 @@ def plot_fftr(
     )
     df = pd.DataFrame([df_upper, df_lower]).transpose()
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
+    fig.set_title("Federal Funds Target Range")
 
-    ax.plot(
-        df.index,
-        df.values,
-    )
-    ax.set_title("Federal Funds Target Range")
-    ax.legend(["Upper limit", "Lower limit"])
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    for series in df.columns:
+        fig.add_scatter(x=df.index, y=df[series], name=series)
 
     export_data(
         export,
@@ -539,7 +464,10 @@ def plot_fftr(
         "fftr",
         pd.DataFrame(df, columns=["FFTR"]) / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -554,7 +482,8 @@ def plot_fed(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Effective Federal Funds Rate.
 
@@ -564,7 +493,7 @@ def plot_fed(
 
     Parameters
     ----------
-    series_id: str
+    parameter: str
         FRED ID of EFFER data to plot, options: ['EFFR', 'EFFRVOL', 'EFFR1', 'EFFR25', 'EFFR75', 'EFFR99']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
@@ -582,8 +511,8 @@ def plot_fed(
         Export data to csv or excel file
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = fred_model.FED_PARAMETER_TO_FRED_ID[parameter]
 
@@ -599,64 +528,41 @@ def plot_fed(
             )
             series_id = "OBFR"
 
+    fig = OpenBBFigure()
+
     if quantiles or target and not overnight:
-        data_series = [series_id if series_id != "EFFRVOL" else "EFFR"]
         series_id = series_id if series_id != "EFFRVOL" else "EFFR"
 
         df = fred_model.get_fed(
             parameter, start_date, end_date, overnight, quantiles, target
         )
 
-        # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
-
-        colors = cycle(theme.get_colors())
         for column in df.columns:
-            ax.plot(
-                df[column],
-                linewidth=3 if column == series_id else 1,
-                color=next(colors),
+            fig.add_scatter(
+                x=df.index,
+                y=df[column],
+                name=column,
+                line_width=3 if column == series_id else 1.3,
+                mode="lines",
             )
-        ax.set_title(ID_TO_NAME_FED[series_id])
-        ax.legend(data_series)
-        ax.set_ylabel("Yield (%)")
-        theme.style_primary_axis(ax)
+        fig.set_title(ID_TO_NAME_FED[series_id])
+        fig.set_yaxis_title("Yield (%)")
 
-        if external_axes is None:
-            theme.visualize_output()
     else:
         df = fred_model.get_fed(
             parameter, start_date, end_date, overnight, quantiles, target
         )
-        # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
-        colors = cycle(theme.get_colors())
-        ax.plot(
-            df.index,
-            df.values,
-            linewidth=2,
-            color=next(colors),
+
+        fig.add_scatter(
+            x=df.index, y=df[series_id], name=series_id, line_width=2.5, mode="lines"
         )
-        ax.set_title(ID_TO_NAME_FED[series_id])
-        ax.set_ylabel(
+        fig.set_yaxis_title(
             "Yield (%)"
             if series_id not in ["EFFRVOL", "OBFRVOL"]
             else "Billions in USD"
         )
-        theme.style_primary_axis(ax)
 
-        if external_axes is None:
-            theme.visualize_output()
+        fig.set_title(ID_TO_NAME_FED[series_id])
 
     if export or raw:
         if not quantiles and not target:
@@ -669,12 +575,16 @@ def plot_fed(
             df_transformed = df / 100
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df_transformed = df_transformed.sort_index(ascending=False)
         print_rich_table(
-            df_transformed.iloc[-10:],
+            df_transformed,
             headers=list(df_transformed.columns),
             show_index=True,
             title=ID_TO_NAME_FED[series_id],
             floatfmt=".3f",
+            export=bool(export),
+            limit=limit,
         )
 
     if export:
@@ -684,7 +594,10 @@ def plot_fed(
             series_id,
             df_transformed,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -694,7 +607,7 @@ def plot_iorb(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Interest Rate on Reserve Balances.
 
@@ -706,31 +619,15 @@ def plot_iorb(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = fred_model.get_iorb(start_date=start_date, end_date=end_date)
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
+    fig.set_title("Interest Rate on Reserve Balances")
 
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title("Interest Rate on Reserve Balances")
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df["IORB"], name="IORB", line_width=2, mode="lines")
 
     export_data(
         export,
@@ -738,7 +635,10 @@ def plot_iorb(
         "iorb",
         pd.DataFrame(df, columns=["IORB"]) / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -748,7 +648,7 @@ def plot_projection(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot the Federal Reserve's projection of the federal funds rate.
 
@@ -762,38 +662,31 @@ def plot_projection(
         Show raw data
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data_series_df = fred_model.get_projection(long_run=long_run)
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
+    fig.set_title(
+        f"FOMC {'Long Run ' if long_run else ''}Summary of Economic Projections\n"
+        "for the Federal Funds Rate"
+    )
 
     for legend, df in data_series_df.items():
-        ax.plot(
-            df.index,
-            df.values,
-            linestyle="dashed" if legend != "Median" else "solid",
-            linewidth=1 if legend != "Median" else 2,
-            label=legend,
+        fig.add_scatter(
+            x=df.index,
+            y=df.values,
+            name=legend,
+            line_width=1.3 if legend != "Median" else 2,
+            line_dash="dash" if legend != "Median" else "solid",
+            mode="lines",
         )
 
-    ax.set_title(
-        f"FOMC {'Long Run ' if long_run else ''}Summary of Economic Projections\nfor the Federal Funds Rate"
+    fig.update_layout(
+        legend=dict(x=0.01, y=0.01, xanchor="left", yanchor="bottom"),
+        xaxis=dict(tickformat="%Y-%m-%d"),
     )
-    ax.legend(prop={"size": 8}, loc="lower left")
-    ax.set_ylabel("Yield (%)")
-
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
 
     if raw:
         print_rich_table(
@@ -802,6 +695,7 @@ def plot_projection(
             show_index=True,
             title=f"FOMC {'Long Run ' if long_run else ''}Summary of "
             "Economic Projections for the Federal Funds Rate",
+            export=bool(export),
         )
 
     export_data(
@@ -810,7 +704,10 @@ def plot_projection(
         "projection",
         data_series_df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -821,13 +718,13 @@ def plot_dwpcr(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Discount Window Primary Credit Rate.
 
     Parameters
     ----------
-    series_id: str
+    parameter: str
         FRED ID of DWPCR data to plot, options: ['MPCREDIT', 'RIFSRPF02ND', 'WPCREDIT', 'DPCREDIT', 'RIFSRPF02NA']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
@@ -835,8 +732,8 @@ def plot_dwpcr(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = fred_model.DWPCR_PARAMETER_TO_FRED_ID[parameter]
 
@@ -844,28 +741,10 @@ def plot_dwpcr(
         parameter=parameter, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure()
+    fig.set_title(f"Discount Window Primary Credit Rate {ID_TO_NAME_DWPCR[series_id]}")
 
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(
-        "Discount Window Primary Credit Rate " + ID_TO_NAME_DWPCR[series_id],
-        fontsize=10,
-    )
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df[series_id], name=series_id, mode="lines")
 
     export_data(
         export,
@@ -873,7 +752,10 @@ def plot_dwpcr(
         series_id,
         pd.DataFrame(df, columns=[series_id]) / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -885,14 +767,15 @@ def plot_ecb(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot the key ECB interest rates.
 
     The Governing Council of the ECB sets the key interest rates for the euro area:
 
     - The interest rate on the main refinancing operations (MRO), which provide
-     the bulk of liquidity to the banking system.
+    the bulk of liquidity to the banking system.
     - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
     - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
@@ -906,52 +789,39 @@ def plot_ecb(
         The ability to decide what interest rate to plot
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = fred_model.get_ecb(
         interest_type=interest_type, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-
-    for series in df:
-        ax.plot(
-            df.index,
-            df[series],
-            color=next(colors, "#FCED00"),
-            label=series.title(),
-        )
-
     title = (
         f"ECB {interest_type.title()} Rate for Euro Area"
         if interest_type
         else "ECB Interest Rates for Euro Area"
     )
-    ax.set_title(title)
-    ax.legend(loc="lower left")
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig = OpenBBFigure()
+    fig.set_title(title)
+
+    for series in df:
+        fig.add_scatter(x=df.index, y=df[series], name=series.title(), mode="lines")
+
+    fig.update_layout(legend=dict(x=0.01, y=0.01, xanchor="left", yanchor="bottom"))
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             headers=list(df.columns),
             show_index=True,
             title=title,
             floatfmt=".3f",
+            export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -960,7 +830,10 @@ def plot_ecb(
         "ecbdfr",
         pd.DataFrame(df, columns=["ECBDFR"]) / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -971,7 +844,7 @@ def plot_tmc(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity data.
 
@@ -981,7 +854,7 @@ def plot_tmc(
 
     Parameters
     ----------
-    series_id: str
+    parameter: str
         FRED ID of TMC data to plot, options: ['T10Y3M', 'T10Y3M']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
@@ -989,8 +862,8 @@ def plot_tmc(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = fred_model.TMC_PARAMETER_TO_FRED_ID[parameter]
 
@@ -998,32 +871,13 @@ def plot_tmc(
         parameter=parameter, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(
-        "10-Year Treasury Constant Maturity Minus "
-        + ID_TO_NAME_TMC[series_id]
-        + " Treasury Constant Maturity",
-        fontsize=10,
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
+    fig.set_title(
+        f"10-Year Treasury Constant Maturity Minus {ID_TO_NAME_TMC[series_id]}"
+        "  Treasury Constant Maturity"
     )
 
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df[series_id], name=series_id, mode="lines")
 
     export_data(
         export,
@@ -1031,7 +885,10 @@ def plot_tmc(
         series_id,
         pd.DataFrame(df, columns=[series_id]) / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -1042,7 +899,7 @@ def plot_ffrmc(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Selected Treasury Constant Maturity Minus Federal Funds Rate data.
 
@@ -1060,36 +917,19 @@ def plot_ffrmc(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = fred_model.FFRMC_PARAMETER_TO_FRED_ID[parameter]
 
     df = fred_model.get_ffrmc(parameter, start_date, end_date)
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
+    fig = OpenBBFigure()
+    fig.set_title(
+        f"{ID_TO_NAME_FFRMC[series_id]} Treasury Constant Maturity Minus Federal Funds Rate"
     )
-    ax.set_title(
-        ID_TO_NAME_FFRMC[series_id]
-        + " Treasury Constant Maturity Minus Federal Funds Rate",
-        fontsize=10,
-    )
-    theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df[series_id], name=series_id, mode="lines")
 
     export_data(
         export,
@@ -1097,7 +937,10 @@ def plot_ffrmc(
         series_id,
         pd.DataFrame(df, columns=[series_id]) / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -1108,7 +951,7 @@ def display_yield_curve(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Display yield curve based on US Treasury rates for a specified date.
 
@@ -1141,24 +984,14 @@ def display_yield_curve(
     """
     rates, date_of_yield = fred_model.get_yield_curve(date, True, inflation_adjusted)
     if rates.empty:
-        console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
-        return
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+        return console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
 
-    ax.plot(rates["Maturity"], rates["Rate"], "-o")
-    ax.set_xlabel("Maturity")
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        ax.set_title(
-            f"US {'Real' if inflation_adjusted else 'Nominal'} Yield Curve for {date_of_yield} "
-        )
-        theme.visualize_output()
+    fig = OpenBBFigure(xaxis_title="Maturity", yaxis_title="Yield (%)")
+    fig.set_title(
+        f"US {'Real' if inflation_adjusted else 'Nominal'} Yield Curve for {date_of_yield} "
+    )
+
+    fig.add_scatter(x=rates["Maturity"], y=rates["Rate"], name="Yield")
 
     if raw:
         print_rich_table(
@@ -1167,6 +1000,7 @@ def display_yield_curve(
             show_index=False,
             title=f"United States {'Real' if inflation_adjusted else 'Nominal'} Yield Curve for {date_of_yield}",
             floatfmt=".3f",
+            export=bool(export),
         )
 
     export_data(
@@ -1175,7 +1009,10 @@ def display_yield_curve(
         "ycrv",
         rates.set_index("Maturity") / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -1188,7 +1025,8 @@ def plot_usrates(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot various treasury rates from the United States
 
@@ -1222,52 +1060,38 @@ def plot_usrates(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = fred_model.USARATES_TO_FRED_ID[maturity][parameter]
     df = fred_model.get_usrates(
         parameter=parameter, maturity=maturity, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    title_dict = {
+        "tbills": "Treasury Bill Secondary Market Rate, Discount Basis",
+        "cmn": "Treasury Constant Maturity Nominal Market Yield",
+        "tips": "Yields on Treasury inflation protected securities (TIPS)"
+        " adjusted to constant maturities",
+    }
+    title = f"{maturity.replace('_', ' ').title()} {title_dict.get(parameter, '')}"
 
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
+    fig.set_title(title)
 
-    if parameter == "tbill":
-        title = f"{maturity.replace('_', ' ').title()} Treasury Bill Secondary Market Rate, Discount Basis"
-    elif parameter == "cmn":
-        title = f"{maturity.replace('_', ' ').title()} Treasury Constant Maturity Nominal Market Yield"
-    elif parameter == "tips":
-        title = (
-            f"{maturity.replace('_', ' ').title()} Yields on Treasury inflation protected "
-            "securities (TIPS) adjusted to constant maturities"
-        )
-
-    ax.set_title(title, fontsize=15)
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df[series_id], name="Yield")
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = pd.DataFrame(df, columns=[parameter])
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            pd.DataFrame(df, columns=[parameter]).iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
+            export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -1276,7 +1100,10 @@ def plot_usrates(
         series_id,
         pd.DataFrame(df, columns=[parameter]) / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -1287,7 +1114,7 @@ def plot_tbffr(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Selected Treasury Bill Minus Federal Funds Rate data.
 
@@ -1301,8 +1128,8 @@ def plot_tbffr(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = fred_model.TBFFR_PARAMETER_TO_FRED_ID[parameter]
 
@@ -1310,28 +1137,12 @@ def plot_tbffr(
         parameter=parameter, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
+    fig.set_title(
+        f"{ID_TO_NAME_TBFFR[series_id]} Treasury Bill Minus Federal Funds Rate"
     )
-    ax.set_title(
-        ID_TO_NAME_TBFFR[series_id] + " Treasury Bill Minus Federal Funds Rate"
-    )
-    theme.style_primary_axis(ax)
 
-    ax.set_ylabel("Yield (%)")
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df[series_id], name="Yield")
 
     export_data(
         export,
@@ -1339,7 +1150,10 @@ def plot_tbffr(
         series_id,
         pd.DataFrame(df, columns=["TBFFR"]) / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -1356,7 +1170,8 @@ def plot_icebofa(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot ICE BofA US Corporate Bond Index data.
 
@@ -1381,15 +1196,15 @@ def plot_icebofa(
         Export data to csv or excel file
     sheet_name: str
         Name of the sheet to export to
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     if data_type == "total_return":
         units = "index"
     elif data_type in ["yield", "yield_to_worst", "spread"]:
         units = "percent"
 
-    series = pd.read_excel(ice_bofa_path)
+    series = pd.read_csv(ice_bofa_path)
 
     if options:
         return print_rich_table(
@@ -1402,7 +1217,8 @@ def plot_icebofa(
                     if data_type != "spread"
                     else ["spread"]
                 )
-            ]
+            ],
+            export=bool(export),
         )
 
     df = fred_model.get_icebofa(
@@ -1413,44 +1229,26 @@ def plot_icebofa(
         start_date=start_date,
         end_date=end_date,
     )
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    title = "ICE BofA Bond Benchmark Indices" if len(df.columns) > 1 else df.columns[0]
 
-    colors = cycle(theme.get_colors())
+    fig = OpenBBFigure(yaxis_title="Yield (%)" if units == "percent" else "Index")
+    fig.set_title(title)
 
     for column in df.columns:
-        ax.plot(
-            df.index,
-            df[column].values,
-            color=next(colors, "#FCED00"),
-            label=column,
+        fig.add_scatter(
+            x=df.index, y=df[column].values, name=column, showlegend=len(df.columns) > 1
         )
 
-    if len(df.columns) > 1:
-        title = "ICE BofA Bond Benchmark Indices"
-        ax.set_title(title, fontsize=15)
-        ax.legend(prop={"size": 8})
-    else:
-        title = df.columns[0]
-        ax.set_title(title, fontsize=10)
-
-    ax.set_ylabel("Yield (%)" if units == "percent" else "Index")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
+            export=bool(export),
+            limit=limit,
         )
 
     if description:
@@ -1464,7 +1262,10 @@ def plot_icebofa(
         "ICEBOFA",
         df / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -1477,10 +1278,10 @@ def plot_moody(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Moody Corporate Bond Index data
-
     Parameters
     ----------
     data_type: str
@@ -1497,8 +1298,8 @@ def plot_moody(
         Export data to csv or excel file
     sheet_name: str
         Name of the sheet to export to
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     name = fred_model.MOODY_TO_OPTIONS["Type"][data_type][
         spread if spread else "index"
@@ -1508,35 +1309,22 @@ def plot_moody(
         data_type=data_type, spread=spread, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
+    fig.set_title(name)
 
-    colors = cycle(theme.get_colors())
-
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-
-    ax.set_title(name, fontsize=10)
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    for series in df.columns:
+        fig.add_scatter(x=df.index, y=df[series], name=series)
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=name,
             show_index=True,
             floatfmt=".3f",
+            export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -1545,7 +1333,10 @@ def plot_moody(
         "MOODY",
         df / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -1561,7 +1352,8 @@ def plot_cp(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Commercial Paper
 
@@ -1585,8 +1377,8 @@ def plot_cp(
         Export data to csv or excel file
     sheet_name: str
         Name of the sheet to export to
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     if grade == "a2_p2" and category != "non_financial":
         console.print(
@@ -1595,10 +1387,12 @@ def plot_cp(
         )
         category = "non_financial"
 
-    series = pd.read_excel(commercial_paper_path)
+    series = pd.read_csv(commercial_paper_path)
 
     if options:
-        return print_rich_table(series.drop(["Description", "FRED Series ID"], axis=1))
+        return print_rich_table(
+            series.drop(["Description", "FRED Series ID"], axis=1), export=bool(export)
+        )
 
     df = fred_model.get_cp(
         maturity=maturity,
@@ -1607,45 +1401,26 @@ def plot_cp(
         start_date=start_date,
         end_date=end_date,
     )
+    title = "Commercial Paper Interest Rates" if len(df.columns) > 1 else df.columns[0]
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
+    fig.set_title(title)
 
     for column in df.columns:
-        ax.plot(
-            df.index,
-            df[column].values,
-            color=next(colors, "#FCED00"),
-            label=column,
+        fig.add_scatter(
+            x=df.index, y=df[column].values, name=column, showlegend=len(df.columns) > 1
         )
 
-    if len(df.columns) > 1:
-        title = "Commercial Paper Interest Rates"
-        ax.set_title(title, fontsize=15)
-        ax.legend(prop={"size": 8})
-    else:
-        title = df.columns[0]
-        ax.set_title(title, fontsize=10)
-
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
+            export=bool(export),
+            limit=limit,
         )
 
     if description:
@@ -1659,7 +1434,10 @@ def plot_cp(
         "CP",
         df / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -1673,9 +1451,11 @@ def plot_spot(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
+    limit: int = 10,
 ):
-    """
+    """Plot Spot Rates for a given maturity
+
     The spot rate for any maturity is the yield on a bond that provides
     a single payment at that maturity. This is a zero coupon bond. Because each
     spot rate pertains to a single cashflow, it is the relevant interest rate
@@ -1699,52 +1479,38 @@ def plot_spot(
         Export data to csv or excel file
     sheet_name: str
         Name of the sheet to export to
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-    series = pd.read_excel(spot_rates_path)
+    series = pd.read_csv(spot_rates_path)
     df = fred_model.get_spot(
         maturity=maturity, category=category, start_date=start_date, end_date=end_date
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    title = (
+        "High Quality Market (HQM) Corporate Bond Rates"
+        if len(df.columns) > 1
+        else df.columns[0]
+    )
 
-    colors = cycle(theme.get_colors())
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
+    fig.set_title(title)
 
     for column in df.columns:
-        ax.plot(
-            df.index,
-            df[column].values,
-            color=next(colors, "#FCED00"),
-            label=column,
+        fig.add_scatter(
+            x=df.index, y=df[column].values, name=column, showlegend=len(df.columns) > 1
         )
 
-    if len(df.columns) > 1:
-        title = "High Quality Market (HQM) Corporate Bond Rates"
-        ax.set_title(title, fontsize=15)
-        ax.legend(prop={"size": 8})
-    else:
-        title = df.columns[0]
-        ax.set_title(title, fontsize=10)
-
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
+            export=bool(export),
+            limit=limit,
         )
 
     if description:
@@ -1758,7 +1524,10 @@ def plot_spot(
         "SPOT",
         df / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -1769,9 +1538,10 @@ def plot_hqm(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
-    """
+    """Plot the HQM yield curve
+
     The HQM yield curve represents the high quality corporate bond market, i.e.,
     corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These
     terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve
@@ -1789,33 +1559,18 @@ def plot_hqm(
         Export data to csv or excel file
     sheet_name: str
         Name of the sheet to export to
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data_types = ["spot", "par"] if par else ["spot"]
 
     df, date_of_yield = fred_model.get_hqm(date=date, par=par)
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+
+    fig = OpenBBFigure(xaxis_title="Maturity", yaxis_title="Yield (%)")
+    fig.set_title(f"Spot{'and Par' if par else ''} Yield Curve for {date_of_yield}")
 
     for types in data_types:
-        ax.plot(df.index, df[types], label=f"{types.title()} Yield")
-
-    ax.set_title(f"Spot{'and Par' if par else ''} Yield Curve for {date_of_yield}")
-    ax.set_xlabel("Maturity")
-    ax.set_ylabel("Yield (%)")
-
-    if par:
-        ax.legend()
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+        fig.add_scatter(x=df.index, y=df[types], name=f"{types.title()} Yield")
 
     if raw:
         print_rich_table(
@@ -1825,6 +1580,7 @@ def plot_hqm(
             index_name="Maturity",
             title=f"Spot {'and Par' if par else ''} Yield Curve for {date_of_yield}",
             floatfmt=".3f",
+            export=bool(export),
         )
 
     export_data(
@@ -1833,4 +1589,7 @@ def plot_hqm(
         "cycrv",
         df / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

@@ -13,10 +13,7 @@ from openbb_terminal.stocks.options import calculator_view
     "sell",
     [True, False],
 )
-def test_view_calculator(mocker, sell):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_view_calculator(sell):
     calculator_view.view_calculator(
         strike=10,
         premium=2,

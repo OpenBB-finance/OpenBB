@@ -23,17 +23,24 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich import panel
 
-from openbb_terminal import feature_flags as obbff
+import openbb_terminal.config_terminal as cfg
+from openbb_terminal.account.account_model import (
+    get_login_called,
+    set_login_called,
+)
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
-    USER_DATA_DIRECTORY,
-    USER_ENV_FILE,
-    USER_ROUTINES_DIRECTORY,
+    SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
+from openbb_terminal.core.session import session_controller
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    set_preference,
+)
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -41,16 +48,14 @@ from openbb_terminal.helper_funcs import (
     parse_and_split_input,
     update_news_from_tweet_to_be_displayed,
 )
-from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.session import session_controller
-from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
+    first_time_user,
     is_auth_enabled,
     is_installer,
     is_reset,
@@ -67,7 +72,7 @@ from openbb_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-env_file = str(USER_ENV_FILE)
+env_file = str(SETTINGS_ENV_FILE)
 
 if is_installer():
     # Necessary for installer so that it can locate the correct certificates for
@@ -139,7 +144,9 @@ class TerminalController(BaseController):
         """Update runtime choices."""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
+            for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
+                "*.openbb"
+            )
         }
 
         self.ROUTINE_CHOICES = {}
@@ -153,7 +160,7 @@ class TerminalController(BaseController):
         self.ROUTINE_CHOICES["--help"] = None
         self.ROUTINE_CHOICES["--h"] = None
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["support"] = self.SUPPORT_CHOICES
             choices["exe"] = self.ROUTINE_CHOICES
@@ -249,6 +256,8 @@ class TerminalController(BaseController):
         import json
         import random
 
+        current_user = get_current_user()
+
         if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
             parser_exe = argparse.ArgumentParser(
                 add_help=False,
@@ -274,7 +283,7 @@ class TerminalController(BaseController):
                     self.GUESS_TOTAL_TRIES = ns_parser_guess.limit
 
         try:
-            with open(obbff.GUESS_EASTER_EGG_FILE) as f:
+            with open(current_user.preferences.GUESS_EASTER_EGG_FILE) as f:
                 # Load the file as a JSON document
                 json_doc = json.load(f)
 
@@ -350,7 +359,7 @@ class TerminalController(BaseController):
         except Exception as e:
             console.print(
                 f"[red]Failed to load guess game from file: "
-                f"{obbff.GUESS_EASTER_EGG_FILE}[/red]"
+                f"{current_user.preferences.GUESS_EASTER_EGG_FILE}[/red]"
             )
             console.print(f"[red]{e}[/red]")
 
@@ -373,9 +382,6 @@ class TerminalController(BaseController):
         """Process account command."""
         from openbb_terminal.account.account_controller import AccountController
 
-        if User.is_guest():
-            User.print_guest_message()
-            return
         self.queue = self.load_class(AccountController, self.queue)
 
     def call_keys(self, _):
@@ -434,17 +440,11 @@ class TerminalController(BaseController):
 
     def call_dashboards(self, _):
         """Process dashboards command."""
-        if not is_installer():
-            from openbb_terminal.dashboards.dashboards_controller import (
-                DashboardsController,
-            )
+        from openbb_terminal.dashboards.dashboards_controller import (
+            DashboardsController,
+        )
 
-            self.queue = self.load_class(DashboardsController, self.queue)
-        else:
-            console.print("This feature is coming soon.")
-            console.print(
-                "Use the source code and an Anaconda environment if you are familiar with Python."
-            )
+        self.queue = self.load_class(DashboardsController, self.queue)
 
     def call_alternative(self, _):
         """Process alternative command."""
@@ -832,13 +832,15 @@ class TerminalController(BaseController):
                         console.print(
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
-                    obbff.EXPORT_FOLDER_PATH = export_path
+                    set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
                     self.queue = self.queue[1:]
 
 
 # pylint: disable=global-statement
 def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
+
+    current_user = get_current_user()
 
     log_terminal(test_mode=test_mode)
 
@@ -874,7 +876,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
             console.print(
                 f"[green]Folder '{export_path}' successfully created.[/green]"
             )
-        obbff.EXPORT_FOLDER_PATH = export_path
+        set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
 
     bootup()
     if not jobs_cmds:
@@ -891,7 +893,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         check_for_updates()
 
     while ret_code:
-        if obbff.ENABLE_QUICK_EXIT:
+        if current_user.preferences.ENABLE_QUICK_EXIT:
             console.print("Quick exit enabled")
             break
 
@@ -914,9 +916,9 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         else:
             try:
                 # Get input from user using auto-completion
-                if session and obbff.USE_PROMPT_TOOLKIT:
+                if session and current_user.preferences.USE_PROMPT_TOOLKIT:
                     # Check if tweet news is enabled
-                    if obbff.TOOLBAR_TWEET_NEWS:
+                    if current_user.preferences.TOOLBAR_TWEET_NEWS:
                         news_tweet = update_news_from_tweet_to_be_displayed()
 
                         # Check if there is a valid tweet news to be displayed
@@ -935,7 +937,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
                         else:
                             # Check if toolbar hint was enabled
-                            if obbff.TOOLBAR_HINT:
+                            if current_user.preferences.TOOLBAR_HINT:
                                 an_input = session.prompt(
                                     f"{get_flair()} / $ ",
                                     completer=t_controller.completer,
@@ -962,7 +964,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                                 )
 
                     # Check if toolbar hint was enabled
-                    elif obbff.TOOLBAR_HINT:
+                    elif current_user.preferences.TOOLBAR_HINT:
                         an_input = session.prompt(
                             f"{get_flair()} / $ ",
                             completer=t_controller.completer,
@@ -1000,7 +1002,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 break
 
         try:
-            if an_input == "logout" and is_auth_enabled():
+            if an_input in "login" and get_login_called() and is_auth_enabled():
                 break
 
             # Process the input command
@@ -1012,10 +1014,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
             # Check if the user wants to reset application
             if an_input in ("r", "reset") or t_controller.update_success:
-                ret_code = reset(t_controller.queue if t_controller.queue else [])
-                if ret_code != 0:
-                    print_goodbye()
-                    break
+                reset(t_controller.queue if t_controller.queue else [])
+                break
 
         except SystemExit:
             logger.exception(
@@ -1048,7 +1048,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if an_input == "logout" and is_auth_enabled():
+    if an_input in "login" and get_login_called() and is_auth_enabled():
+        set_login_called(False)
         return session_controller.main()
 
 
@@ -1181,7 +1182,9 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
 
 def run_routine(file: str, routines_args=List[str]):
     """Execute command routine from .openbb file."""
-    user_routine_path = USER_DATA_DIRECTORY / "routines" / file
+    user_routine_path = (
+        get_current_user().preferences.USER_DATA_DIRECTORY / "routines" / file
+    )
     default_routine_path = MISCELLANEOUS_DIRECTORY / "routines" / file
 
     if user_routine_path.exists():
@@ -1219,10 +1222,13 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
     if kwargs["module"] == "ipykernel_launcher":
+        bootup()
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:
         os.environ["DEBUG_MODE"] = "true"
+
+    cfg.start_plot_backend()
 
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
         run_routine(file=path_list[0], routines_args=routines_args)

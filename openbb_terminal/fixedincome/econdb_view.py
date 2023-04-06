@@ -3,21 +3,14 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from itertools import cycle
-from typing import List, Optional
+from typing import Optional
 
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.fixedincome import econdb_model
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +37,7 @@ def plot_cmn(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Treasury Constant Maturity Nominal Market Yield.
 
@@ -70,8 +63,8 @@ def plot_cmn(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = econdb_model.get_treasuries(
         instruments=["nominal"],
@@ -81,34 +74,24 @@ def plot_cmn(
         end_date=end_date,
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(
+    fig = OpenBBFigure()
+    fig.set_title(
         f"{maturity.replace('-', ' ')} Treasury Constant Maturity Nominal Market Yield [Percent]"
     )
-    theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df.index, y=df.values, name=maturity.replace("_", " "), mode="lines"
+    )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"cmn, {maturity}",
         pd.DataFrame(df, columns=[maturity]) / 100,
+        figure=fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -118,7 +101,7 @@ def plot_tips(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Yields on Treasury inflation protected securities (TIPS) adjusted to constant maturities.
 
@@ -143,8 +126,8 @@ def plot_tips(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = econdb_model.get_treasuries(
         instruments=["inflation"],
@@ -154,35 +137,25 @@ def plot_tips(
         end_date=end_date,
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(
+    fig = OpenBBFigure()
+    fig.set_title(
         f"{maturity.replace('-', ' ')} Yields on Treasury inflation protected securities (TIPS) adjusted to "
         f"constant maturities [Percent]"
     )
-    theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df.index, y=df.values, name=maturity.replace("_", " "), mode="lines"
+    )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"tips, {maturity}",
         pd.DataFrame(df, columns=[maturity]) / 100,
+        figure=fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -192,7 +165,7 @@ def plot_tbill(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot the Treasury Bill Secondary Market Rate.
 
@@ -211,8 +184,8 @@ def plot_tbill(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = econdb_model.get_treasuries(
         instruments=["secondary"],
@@ -222,31 +195,21 @@ def plot_tbill(
         end_date=end_date,
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(
+    fig = OpenBBFigure()
+    fig.set_title(
         f"{maturity.replace('-', ' ')} Treasury Bill Secondary Market Rate, Discount Basis [Percent]"
     )
-    theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df.index, y=df.values, name=maturity.replace("_", " "), mode="lines"
+    )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"tbill, {maturity}",
         pd.DataFrame(df, columns=[maturity]) / 100,
+        figure=fig,
     )
+
+    return fig.show(external=external_axes)

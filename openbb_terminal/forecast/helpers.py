@@ -5,7 +5,6 @@ import os
 from datetime import datetime, time, timedelta
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from darts import TimeSeries
@@ -13,21 +12,16 @@ from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.explainability.shap_explainer import ShapExplainer
 from darts.metrics import mape, mse, rmse, smape
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
-from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from shap import Explanation
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
 
-from openbb_terminal import rich_config
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal import OpenBBFigure, rich_config, theme
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -68,30 +62,20 @@ def plot_data_predictions(
     forecast_data,
     n_loops,
     time_str: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots data predictions for the different ML techniques
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    ax.plot(
-        data.index,
-        data.values,
-        "-o",
-        ms=2,
-        label="Real data",
+    fig = OpenBBFigure()
+    fig.add_scatter(
+        x=data.index,
+        y=data.values,
+        mode="lines+markers",
+        line=dict(color=theme.up_color),
+        name="Real data",
     )
     for i in range(len(y_valid) - 1):
         if scaler:
@@ -100,26 +84,20 @@ def plot_data_predictions(
         else:
             y_pred = preds[i].ravel()
             y_act = y_valid[i].ravel()
-        ax.plot(
-            y_dates_valid[i],
-            y_pred,
-            color=theme.down_color,
+
+        fig.add_scatter(
+            x=y_dates_valid[i],
+            y=y_pred,
+            mode="lines",
+            line=dict(color=theme.down_color),
+            name="Predictions",
         )
-        ax.fill_between(
-            y_dates_valid[i],
-            y_pred,
-            y_act,
-            where=(y_pred < y_act),
-            color=theme.down_color,
-            alpha=0.2,
-        )
-        ax.fill_between(
-            y_dates_valid[i],
-            y_pred,
-            y_act,
-            where=(y_pred > y_act),
-            color=theme.up_color,
-            alpha=0.2,
+        fig.add_scatter(
+            x=y_dates_valid[i],
+            y=y_act,
+            mode="lines",
+            line=dict(color=theme.up_color),
+            name="Actual",
         )
 
     # Leave this out of the loop so that the legend doesn't get overpopulated with "Predictions"
@@ -129,72 +107,90 @@ def plot_data_predictions(
     else:
         final_pred = preds[-1].reshape(-1, 1).ravel()
         final_valid = y_valid[-1].reshape(-1, 1).ravel()
-    ax.plot(
-        y_dates_valid[-1],
-        final_pred,
-        color=theme.down_color,
-        label="Predictions",
+
+    fig.add_scatter(
+        x=y_dates_valid[-1],
+        y=final_pred,
+        mode="lines",
+        line=dict(color=theme.down_color),
+        name="Predictions",
     )
-    ax.fill_between(
-        y_dates_valid[-1],
-        final_pred,
-        final_valid,
-        alpha=0.2,
+    fig.add_scatter(
+        x=y_dates_valid[-1],
+        y=final_valid,
+        mode="lines",
+        line=dict(color=theme.up_color),
+        name="Actual",
     )
 
-    _, _, ymin, ymax = plt.axis()
-    ax.vlines(
-        forecast_data.index[0],
-        ymin,
-        ymax,
-        linestyle="--",
+    fig.add_vline(
+        x=forecast_data.index[0], line=dict(width=1, dash="dash", color="white")
     )
     if n_loops == 1:
-        ax.plot(
-            forecast_data.index,
-            forecast_data.values,
-            "-o",
-            label="Forecast",
+        fig.add_scatter(
+            x=forecast_data.index,
+            y=forecast_data.values,
+            mode="lines",
+            line=dict(color=theme.up_color),
+            name="Forecast",
         )
+
     else:
-        ax.plot(
-            forecast_data.index,
-            forecast_data.median(axis=1).values,
-            "-o",
-            label="Forecast",
+        fig.add_scatter(
+            x=forecast_data.index,
+            y=forecast_data.median(axis=1).values,
+            mode="lines",
+            line=dict(color=theme.up_color),
+            name="Forecast",
         )
-        ax.fill_between(
-            forecast_data.index,
-            forecast_data.quantile(0.25, axis=1).values,
-            forecast_data.quantile(0.75, axis=1).values,
-            alpha=0.3,
+        fig.add_scatter(
+            x=forecast_data.index,
+            y=forecast_data.quantile(0.25, axis=1).values,
+            mode="lines",
+            line=dict(color=theme.up_color),
+            name="Forecast",
         )
+
+    ymin, ymax = fig.layout.yaxis.range
     # Subtracting 1 day only for daily data.  For now if not daily, then start line on last point
     if (not time_str or time_str == "1D") and isinstance(
         forecast_data.index[0], datetime
     ):
-        ax.axvspan(
-            forecast_data.index[0] - timedelta(days=1),
-            forecast_data.index[-1],
-            alpha=0.2,
+        fig.add_shape(
+            type="rect",
+            x0=forecast_data.index[0] - timedelta(days=1),
+            y0=ymin,
+            x1=forecast_data.index[-1],
+            y1=ymax,
+            fillcolor=theme.up_color,
+            opacity=0.2,
+            layer="below",
+            line_width=0,
         )
-        ax.set_xlim(data.index[0], forecast_data.index[-1] + timedelta(days=1))
+        fig.update_xaxes(
+            range=[data.index[0], forecast_data.index[-1] + timedelta(days=1)]
+        )
 
     else:
-        ax.axvspan(
-            forecast_data.index[0],
-            forecast_data.index[-1],
-            alpha=0.2,
+        fig.add_shape(
+            type="rect",
+            x0=forecast_data.index[0],
+            y0=ymin,
+            x1=forecast_data.index[-1],
+            y1=ymax,
+            fillcolor=theme.up_color,
+            opacity=0.2,
+            layer="below",
+            line_width=0,
         )
-        ax.set_xlim(data.index[0], forecast_data.index[-1])
-    ax.set_title(title)
-    ax.legend()
-    ax.set_ylabel("Value")
+        fig.update_xaxes(range=[data.index[0], forecast_data.index[-1]])
 
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.update_layout(
+        title=title,
+        xaxis_title="Date",
+        yaxis_title="Price",
+    )
+    return fig.show(external=external_axes)
 
 
 def prepare_scale_train_valid_test(
@@ -259,40 +255,14 @@ def prepare_scale_train_valid_test(
             console.print(
                 "Cannot train enough input days to predict with loaded dataframe\n"
             )
-            return (
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                True,
-            )
+            return (None * 11, True)  # type: ignore
     if s_start_date:
         data = data[data.index >= s_start_date]
         if n_input_days + n_predict_days > data.shape[0]:
             console.print(
                 "Cannot train enough input days to predict with loaded dataframe\n"
             )
-            return (
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                None,
-                True,
-            )
+            return (None * 11, True)  # type: ignore
 
     test_data = data.iloc[-n_input_days:]
     train_data = data.iloc[:-n_input_days]
@@ -372,12 +342,14 @@ def lambda_price_prediction_color(val: float) -> str:
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
+
     if rich_config.USE_COLOR:
         df_pred = pd.DataFrame(df_pred)
         df_pred.columns = ["pred"]
-        df_pred["pred"] = df_pred["pred"].apply(
-            lambda x: lambda_price_prediction_color(x)
-        )
+        if not get_current_user().preferences.USE_INTERACTIVE_DF:
+            df_pred["pred"] = df_pred["pred"].apply(
+                lambda x: lambda_price_prediction_color(x)
+            )
     if check_dates(df_pred.index.to_series()):
         df_pred.index = df_pred.index.date
     print_rich_table(
@@ -454,6 +426,163 @@ def get_pl_kwargs(
     return pl_trainer_kwargs
 
 
+@log_start_end(log=logger)
+def plot_predicted(
+    predicted_values: type[TimeSeries],
+    fig: OpenBBFigure,
+    central_quantile: Union[float, str] = 0.5,
+    low_quantile: Optional[float] = 0.05,
+    high_quantile: Optional[float] = 0.95,
+    label: Optional[Union[str, List[str]]] = "",
+):
+    """Plots the predicted_values time series on the given figure.
+
+    Parameters
+    ----------
+    predicted_values: TimeSeries
+        The predicted values TimeSeries.
+    fig: OpenBBFigure
+        The figure to plot on.
+    central_quantile: float or str
+        The quantile (between 0 and 1) to plot as a "central" value, if the series is stochastic (i.e., if
+        it has multiple samples). This will be applied on each component separately (i.e., to display quantiles
+        of the components' marginal distributions). For instance, setting `central_quantile=0.5` will plot the
+        median of each component. `central_quantile` can also be set to 'mean'.
+    low_quantile: float
+        The quantile to use for the lower bound of the plotted confidence interval. Similar to `central_quantile`,
+        this is applied to each component separately (i.e., displaying marginal distributions). No confidence
+        interval is shown if `confidence_low_quantile` is None (default 0.05).
+    high_quantile: float
+        The quantile to use for the upper bound of the plotted confidence interval. Similar to `central_quantile`,
+        this is applied to each component separately (i.e., displaying marginal distributions). No confidence
+        interval is shown if `high_quantile` is None (default 0.95).
+    label: str or list of str
+        A prefix that will appear in front of each component of the TimeSeries or a list of string of
+        length the number of components in the plotted TimeSeries (default "").
+    """
+
+    if central_quantile != "mean" and not (
+        isinstance(central_quantile, float) and 0.0 <= central_quantile <= 1.0
+    ):
+        raise ValueError(
+            'central_quantile must be either "mean", or a float between 0 and 1.'
+        )
+
+    if (
+        high_quantile is not None
+        and low_quantile is not None
+        and not (0.0 <= low_quantile <= 1.0 and 0.0 <= high_quantile <= 1.0)
+    ):
+        raise ValueError(
+            "confidence interval low and high quantiles must be between 0 and 1."
+        )
+
+    if predicted_values.n_components > 10:
+        logger.warning(
+            "Number of components is larger than 10 (%s). Plotting only the first 10 components.",
+            predicted_values.n_components,
+        )
+
+    if not isinstance(label, str) and isinstance(label, list):
+        if not (
+            len(label) == predicted_values.n_components
+            or (predicted_values.n_components > 10 and len(label) >= 10)
+        ):
+            console.print(
+                "The label argument should have the same length as the number of plotted components "
+                f"({min(predicted_values.n_components, 10)}), only {len(label)} labels were provided"
+            )
+    else:
+        pass
+
+    # pylint: disable=protected-access
+    for i, c in enumerate(predicted_values._xa.component[:10]):
+        comp_name = str(c.values)
+        comp = predicted_values._xa.sel(component=c)
+
+        if comp.sample.size > 1:
+            if central_quantile == "mean":
+                central_series = comp.mean(dim="sample")
+            else:
+                central_series = comp.quantile(q=central_quantile, dim="sample")
+        else:
+            central_series = comp.mean(dim="sample")
+
+        if isinstance(label, list):
+            label_to_use = label[i]
+        else:
+            label_to_use = (
+                (f"{label}" + (f"_{i}" if len(predicted_values.components) > 1 else ""))
+                if label != ""
+                else comp_name
+            )
+
+        if central_series.shape[0] > 1:
+            for col in central_series.coords:
+                if isinstance(central_series.coords[col].values[0], np.datetime64):
+                    central_series = central_series.rename({col: "date"})
+                    break
+
+            fig.add_scatter(
+                x=central_series.date,
+                y=central_series.values,
+                mode="lines",
+                name=label_to_use,
+                line=dict(width=2, color=theme.up_color),
+            )
+
+        elif central_series.shape[0] == 1:
+            fig.add_scatter(
+                x=[predicted_values.start_time()],
+                y=[central_series.values[0]],
+                mode="markers",
+                name=label_to_use,
+            )
+
+        # Optionally show confidence intervals
+        if (
+            comp.sample.size > 1
+            and low_quantile is not None
+            and high_quantile is not None
+        ):
+            low_series = comp.quantile(q=low_quantile, dim="sample")
+            high_series = comp.quantile(q=high_quantile, dim="sample")
+            if low_series.shape[0] > 1:
+                # plotly fill
+                fig.add_scatter(
+                    x=predicted_values.time_index,
+                    y=high_series,
+                    name=f"High Confidence Interval ({high_quantile * 100}%)",
+                    mode="lines",
+                    line_width=0,
+                    opacity=0.2,
+                    showlegend=False,
+                )
+                fig.add_scatter(
+                    x=predicted_values.time_index,
+                    y=low_series,
+                    name=f"Low Confidence Interval ({low_quantile * 100}%)",
+                    fill="tonexty",
+                    mode="lines",
+                    fillcolor=theme.up_color_transparent.replace("0.50", "0.35"),
+                    line_width=0,
+                    opacity=0.2,
+                    showlegend=False,
+                )
+
+            else:
+                fig.add_scatter(
+                    x=[predicted_values.start_time(), predicted_values.start_time()],
+                    y=[low_series.values[0], high_series.values[0]],
+                    mode="lines",
+                    name=label_to_use,
+                    line_color=theme.up_color,
+                )
+
+    return fig
+
+
+@log_start_end(log=logger)
 def plot_forecast(
     name: str,
     target_col: str,
@@ -475,27 +604,38 @@ def plot_forecast(
     naive: bool = False,
     export_pred_raw: bool = False,
     metric: str = "mape",
-    external_axes: Optional[List[plt.axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     quant_kwargs = {}
     if low_quantile:
         quant_kwargs["low_quantile"] = low_quantile
     if high_quantile:
         quant_kwargs["high_quantile"] = high_quantile
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
 
-    # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
     naive_fcast: type[TimeSeries] = ticker_series.shift(1)
     if forecast_only:
         ticker_series = ticker_series.drop_before(historical_fcast.start_time())
-    ticker_series.plot(label=target_col, ax=ax)
-    historical_fcast.plot(
-        label=f"Backtest {forecast_horizon}-Steps ahead forecast",
-        ax=ax,
-        **quant_kwargs,
+
+    fig = OpenBBFigure(yaxis_title=target_col, xaxis_title="Date")
+    fig.set_title(
+        f"{name} for <{ticker_name}> for next [{n_predict}]"
+        f" days ({metric.upper()}={precision:.2f}%)"
+    )
+
+    fig.add_scatter(
+        y=list(ticker_series.univariate_values()),
+        x=list(ticker_series.time_index),
+        name="Actual",
+        line_color="gold",
+        mode="lines",
+    )
+
+    fig.add_scatter(
+        y=list(historical_fcast.univariate_values()),
+        x=list(historical_fcast.time_index),
+        name=f"Backtest {forecast_horizon}-Steps ahead forecast",
+        line_color="red",
+        mode="lines",
     )
 
     if naive:
@@ -512,25 +652,28 @@ def plot_forecast(
         elif metric == "smape":
             naive_precision = smape(ticker_series, naive_fcast)
 
-        naive_fcast.plot(
-            label=f"Naive+1: {naive_precision:.2f}%",
-            ax=ax,
-            **quant_kwargs,
+        fig.add_scatter(
+            y=list(naive_fcast.univariate_values()),
+            x=list(naive_fcast.time_index),
+            name=f"Naive+1: {naive_precision:.2f}%",
+            line_color="green",
+            mode="lines",
         )
 
     pred_label = f"{name} Forecast"
     if past_covariates:
         pred_label += " w/ past covs"
-    predicted_values.plot(label=pred_label, **quant_kwargs, color="#00AAFF")
-    ax.set_title(
-        f"{name} for <{ticker_name}> for next [{n_predict}] days ({metric.upper()}={precision:.2f}%)"
-    )
-    ax.set_ylabel(target_col)
-    ax.set_xlabel("Date")
-    theme.style_primary_axis(ax)
 
-    if not external_axes:
-        theme.visualize_output()
+    fig = plot_predicted(predicted_values, fig, label=pred_label, **quant_kwargs)
+
+    fig.update_layout(title=dict(x=0.5, xanchor="center", yanchor="top"))
+    fig.update_xaxes(
+        range=[
+            ticker_series.start_time(),
+            ticker_series.end_time() + timedelta(days=30 + n_predict),
+        ],
+        autorange=False,
+    )
 
     if probabilistic:
         numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
@@ -546,7 +689,8 @@ def plot_forecast(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         name,
-        sheet_name,
+        sheet_name=sheet_name,
+        figure=fig,
     )
 
     # user wants to export only raw predictions
@@ -573,13 +717,213 @@ def plot_forecast(
             sheet_name,
         )
 
+    return fig.show(external=external_axes)
 
+
+@log_start_end(log=logger)
+def plotly_shap_scatter_plot(
+    shap_values: Explanation,
+    features: Optional[Union[pd.DataFrame, list, np.ndarray]] = None,
+    feature_names: Optional[Union[List[str], np.ndarray]] = None,
+    max_display: Optional[int] = None,
+) -> OpenBBFigure:
+    """Generate a shap values summary plot where features are ranked from
+    highest mean absolute shap value to lowest, with point clouds shown
+    for each feature.
+
+    Parameters:
+    -----------
+    shap_exp: Explanation
+        The shap values for the model.
+    features : Optional[Union[pd.DataFrame, list, np.ndarray]]
+        Matrix of feature values (# samples x # features) or a feature_names list as shorthand
+    feature_names : Optional[List[str]]
+        Names of the features (length # features)
+    max_display: Optional[int]
+        The maximum number of features to display. Defaults to 20.
+
+    Returns:
+    --------
+    OpenBBFigure
+        The shap values summary plot.
+    """
+    if max_display is None:
+        max_display = 20
+
+    shap_exp = shap_values
+    shap_values = shap_exp.values
+    if features is None:
+        features = shap_exp.data
+    if feature_names is None:
+        feature_names = shap_exp.feature_names
+
+    idx2cat = None
+    # convert from a DataFrame or other types
+    if isinstance(features, pd.DataFrame):
+        if feature_names is None:
+            feature_names = features.columns
+        # feature index to category flag
+        idx2cat = features.dtypes.astype(str).isin(["object", "category"]).tolist()
+        features = features.values
+    elif isinstance(features, list):
+        if feature_names is None:
+            feature_names = features
+        features = None
+    elif (features is not None) and len(features.shape) == 1 and feature_names is None:
+        feature_names = features
+        features = None
+
+    num_features = shap_values.shape[1]
+
+    if feature_names is None:
+        feature_names = np.array([f"Feature {i}" for i in range(num_features)])
+
+    feature_order = np.argsort(np.sum(np.abs(shap_values), axis=0))
+    feature_order = feature_order[-min(max_display, len(feature_order)) :]
+
+    fig = OpenBBFigure.create_subplots(
+        1, 2, specs=[[{}, {}]], column_widths=[0.01, 0.99], horizontal_spacing=0
+    )
+    fig.set_xaxis_title("SHAP value (impact on model output)")
+
+    for pos, i in enumerate(feature_order):
+        pos += 2
+        shaps = shap_values[:, i]
+        values = None if features is None else features[:, i]
+        inds = np.arange(len(shaps))
+        np.random.shuffle(inds)
+        if values is not None:
+            values = values[inds]
+        shaps = shaps[inds]
+
+        colored_feature = True
+        try:
+            if idx2cat is not None and idx2cat[i]:  # check categorical feature
+                colored_feature = False
+            else:
+                values = np.array(
+                    values, dtype=np.float64
+                )  # make sure this can be numeric
+        except Exception:
+            colored_feature = False
+
+        N = len(shaps)
+        nbins = 100
+        quant = np.round(
+            nbins * (shaps - np.min(shaps)) / (np.max(shaps) - np.min(shaps) + 1e-8)
+        )
+        inds = np.argsort(quant + np.random.randn(N) * 1e-6)
+        layer = 0
+        last_bin = -1
+
+        ys = np.zeros(N)
+        for ind in inds:
+            if quant[ind] != last_bin:
+                layer = 0
+            ys[ind] = np.ceil(layer / 2) * ((layer % 2) * 2 - 1)
+            layer += 1
+            last_bin = quant[ind]
+        ys *= 0.9 * (0.4 / np.max(ys + 1))
+
+        if features is not None and colored_feature:
+            # trim the color range, but prevent the color range from collapsing
+            vmin = np.nanpercentile(values, 5)
+            vmax = np.nanpercentile(values, 95)
+            if vmin == vmax:
+                vmin = np.nanpercentile(values, 1)
+                vmax = np.nanpercentile(values, 99)
+                if vmin == vmax:
+                    vmin = np.min(values)
+                    vmax = np.max(values)
+
+            # fixes rare numerical precision issues
+            vmin = min(vmin, vmax)
+
+            # plot the nan values in the interaction feature as grey
+            nan_mask = np.isnan(values)
+            fig.add_scattergl(
+                x=shaps[nan_mask],
+                y=pos + ys[nan_mask],
+                mode="markers",
+                marker=dict(
+                    color="#777777",
+                    cmin=vmin,
+                    cmax=vmax,
+                    size=10,
+                ),
+                hoverinfo="none",
+                showlegend=False,
+                row=1,
+                col=2,
+            )
+            # plot the non-nan values colored by the trimmed feature value
+            cvals = values[np.invert(nan_mask)].astype(np.float64)
+            cvals_imp = cvals.copy()
+            cvals_imp[np.isnan(cvals)] = (vmin + vmax) / 2.0
+            cvals[cvals_imp > vmax] = vmax
+            cvals[cvals_imp < vmin] = vmin
+
+            fig.add_scattergl(
+                x=shaps[np.invert(nan_mask)],
+                y=pos + ys[np.invert(nan_mask)],
+                mode="markers",
+                marker=dict(
+                    color=cvals,
+                    colorscale="Bluered",
+                    showscale=bool(pos == 2),
+                    colorbar=dict(
+                        x=-0.05,
+                        thickness=10,
+                        xpad=0,
+                        thicknessmode="pixels",
+                        title=dict(
+                            text="Feature Value",
+                            side="right",
+                            font=dict(size=12),
+                        ),
+                        tickmode="array",
+                        tickvals=[vmin, vmax],
+                        ticktext=["Low", "High"],
+                        tickfont=dict(size=12),
+                        ticklabelposition="outside left",
+                        borderwidth=0,
+                    ),
+                    cmin=vmin,
+                    cmax=vmax,
+                    size=10,
+                ),
+                hoverinfo="none",
+                name=feature_names[i],
+                showlegend=False,
+                row=1,
+                col=2,
+            )
+
+    display_columns = [feature_names[i] for i in feature_order]
+    fig.update_yaxes(
+        position=0,
+        tickmode="array",
+        ticktext=display_columns,
+        tickvals=np.arange(2, len(display_columns) + 2),
+        automargin=False,
+        range=[1.5, len(display_columns) + 1.5],
+    )
+    fig.update_layout(
+        margin=dict(r=190, l=20),
+        height=100 + len(display_columns) * 50,
+    )
+
+    return fig
+
+
+@log_start_end(log=logger)
 def plot_explainability(
     model: type[GlobalForecastingModel],
-    explainability_raw=False,
+    explainability_raw: bool = False,
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.axes]] = None,
-):
+    export: str = "",
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """
     Plot explainability of the model
 
@@ -589,20 +933,30 @@ def plot_explainability(
         The model to plot explainability for
     explainability_raw: bool
         Whether to plot raw explainability or not
-        external_axes: Optional[List[plt.axes]]
-        Optional list of axes to plot on
-
-    Returns
-    -------
-    None
+    sheet_name: Optional[str]
+        Optionally specify the name of the sheet the data is exported to.
+    export: (str, optional)
+        Export data to csv, jpg, png, or pdf. Defaults to "".
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
 
     shap_explain = ShapExplainer(model)
-    shap_explain.summary_plot(horizons=1)
+
+    # pylint: disable=W0212
+    horizons, target_components = shap_explain._check_horizons_and_targets(1, None)
+
+    foreground_X_sampled = shap_explain.explainers.background_X
+
+    shaps_ = shap_explain.explainers.shap_explanations(
+        foreground_X_sampled, horizons, target_components
+    )
+    for t in target_components:
+        for h in horizons:
+            fig = plotly_shap_scatter_plot(shaps_[h][t], foreground_X_sampled)
+            fig.set_title(f"Target: `{t}` - Horizon: t+{h}")
+            fig.add_vline(x=0, line_width=1.5, line_color="white", opacity=0.7)
+
     if explainability_raw:
         console.print("\n")
         console.print("[green]Exporting Raw Explainability DataFrame[/green]")
@@ -615,21 +969,19 @@ def plot_explainability(
             sheet_name,
         )
 
-    ax.yaxis.set_label_position("left")
-    ax.yaxis.tick_left()
+    fig.cmd_xshift = -20
+    if fig.is_image_export(export):
+        name, ext = export.split(".") if "." in export else (None, None)
+        if name and ext:
+            export = f"{name}_explainability.{ext}"
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "explainability",
+            figure=fig,
+        )
 
-    # change the colour of the y axis tick labels
-    for t in ax.get_yticklabels():
-        t.set_color("white")
-
-    # change the colour of the x axis tick labels
-    for t in ax.get_xticklabels():
-        t.set_color("white")
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    return fig.show(external=external_axes)
 
 
 def dt_format(x) -> str:
@@ -714,6 +1066,7 @@ def fit_model(
     model.fit(**fit_kwargs)
 
 
+@log_start_end(log=logger)
 def get_prediction(
     model_name: str,
     probabilistic: bool,
@@ -821,6 +1174,7 @@ def check_parser_input(parser: argparse.ArgumentParser, datasets, *args) -> bool
     return True
 
 
+@log_start_end(log=logger)
 def plot_residuals(
     model: type[GlobalForecastingModel],
     past_covariates: Optional[str],
@@ -829,6 +1183,8 @@ def plot_residuals(
     num_bins: int = 20,
     default_formatting: bool = False,
 ):
+    del default_formatting
+
     if past_covariates:
         console.print(
             "[red]Cannot calculate and plot residuals if there are past covariates.[/red]"
@@ -840,18 +1196,39 @@ def plot_residuals(
         my_stopper = early_stopper(5, "val_loss")
         pl_trainer_kwargs = {"callbacks": [my_stopper], "accelerator": "cpu"}
         model.trainer_params = pl_trainer_kwargs
-        residuals = model.residuals(
+        residuals: TimeSeries = model.residuals(
             series=series,
             forecast_horizon=forecast_horizon,
             retrain=False,
             verbose=True,
         )
-        plot_residuals_analysis(
-            residuals=residuals,
-            num_bins=num_bins,
-            fill_nan=True,
-            default_formatting=default_formatting,
+
+        residuals._assert_univariate()  # pylint: disable=protected-access
+
+        fig = OpenBBFigure.create_subplots(
+            rows=2,
+            cols=2,
+            shared_xaxes=False,
+            subplot_titles=("Residuals Values", "ACF", "Distribution"),
+            specs=[
+                [{"colspan": 2}, None],  # type: ignore
+                [{"type": "scatter"}, {"type": "histogram"}],
+            ],
         )
+        fig.set_xaxis_title("date", row=1, col=1)
+        fig.set_yaxis_title("value", row=1, col=1)
+        fig.set_xaxis_title("lag", row=2, col=1)
+        fig.set_yaxis_title("ACF value", row=2, col=1)
+        fig.set_xaxis_title("value", row=2, col=2)
+        fig.set_yaxis_title("count", row=2, col=2)
+
+        df_res = residuals.pd_dataframe()
+        fig.add_scatter(x=df_res.index, y=df_res["close"], name="close", row=1, col=1)
+        fig.add_corr_plot(residuals.univariate_values(), row=2, col=1)
+        fig.add_histplot(residuals, row=2, col=2, bins=num_bins, forecast=True)
+        fig.update_traces(showlegend=False)
+        fig.update_layout(hovermode="closest")
+        fig.show()
 
 
 def check_data_length(

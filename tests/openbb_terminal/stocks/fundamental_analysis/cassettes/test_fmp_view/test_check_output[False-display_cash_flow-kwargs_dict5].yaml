@@ -10,23 +10,43 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/cash-flow-statement/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
+      string: "[\n  {\n    \"date\": \"2022-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2023-02-10\",\n
+        \   \"acceptedDate\": \"2023-02-10 08:20:35\",\n    \"calendarYear\": \"2022\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 9527000000,\n    \"depreciationAndAmortization\":
+        1189000000,\n    \"deferredIncomeTax\": -234000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 162000000,\n    \"accountsReceivables\":
+        0,\n    \"inventory\": -1287000000,\n    \"accountsPayables\": 719000000,\n
+        \   \"otherWorkingCapital\": 1601000000,\n    \"otherNonCashItems\": 252000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 10803000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        0,\n    \"acquisitionsNet\": -13996000000,\n    \"purchasesOfInvestments\":
+        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -890000000,\n    \"netCashUsedForInvestingActivites\": -15679000000,\n    \"debtRepayment\":
+        -7519000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
+        -209000000,\n    \"dividendsPaid\": -7812000000,\n    \"otherFinancingActivites\":
+        -2349000000,\n    \"netCashUsedProvidedByFinancingActivities\": 3806000000,\n
+        \   \"effectOfForexChangesOnCash\": -213000000,\n    \"netChangeInCash\":
+        3806000000,\n    \"cashAtEndOfPeriod\": 3217000000,\n    \"cashAtBeginningOfPeriod\":
+        4500000000,\n    \"operatingCashFlow\": 10803000000,\n    \"capitalExpenditure\":
+        -1077000000,\n    \"freeCashFlow\": 9726000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/0001413329-23-000025-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/pm-20221231.htm\"\n
+        \ },\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2022-02-11\",\n
         \   \"acceptedDate\": \"2022-02-11 08:29:22\",\n    \"calendarYear\": \"2021\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 9109000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 9710000000,\n    \"depreciationAndAmortization\":
         998000000,\n    \"deferredIncomeTax\": -17000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 1367000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": 549000000,\n    \"accountsPayables\": 653000000,\n
-        \   \"otherWorkingCapital\": 363000000,\n    \"otherNonCashItems\": 510000000,\n
+        \   \"otherWorkingCapital\": 363000000,\n    \"otherNonCashItems\": -69000000,\n
         \   \"netCashProvidedByOperatingActivities\": 11967000000,\n    \"investmentsInPropertyPlantAndEquipment\":
         0,\n    \"acquisitionsNet\": -2145000000,\n    \"purchasesOfInvestments\":
         0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        -213000000,\n    \"netCashUsedForInvestingActivites\": -2358000000,\n    \"debtRepayment\":
+        69000000,\n    \"netCashUsedForInvestingActivites\": -2358000000,\n    \"debtRepayment\":
         -3042000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         -775000000,\n    \"dividendsPaid\": -7580000000,\n    \"otherFinancingActivites\":
         -580000000,\n    \"netCashUsedProvidedByFinancingActivities\": -11977000000,\n
         \   \"effectOfForexChangesOnCash\": -417000000,\n    \"netChangeInCash\":
-        -2785000000,\n    \"cashAtEndOfPeriod\": 4500000000,\n    \"cashAtBeginningOfPeriod\":
+        -11977000000,\n    \"cashAtEndOfPeriod\": 4500000000,\n    \"cashAtBeginningOfPeriod\":
         7285000000,\n    \"operatingCashFlow\": 11967000000,\n    \"capitalExpenditure\":
         -748000000,\n    \"freeCashFlow\": 11219000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm\"\n
@@ -378,13 +398,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '28505'
+      - '30135'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 03 Feb 2023 13:54:49 GMT
+      - Tue, 07 Mar 2023 17:08:46 GMT
       ETag:
-      - W/"6f59-SRRvwpu6IE/eCBPBmk3si4BXtxE"
+      - W/"75b7-WgWMx6yP1zFZWeWdPEMX/vvnLmI"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

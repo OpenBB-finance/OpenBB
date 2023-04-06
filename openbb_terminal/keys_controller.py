@@ -8,10 +8,10 @@ import logging
 from typing import Dict, List, Optional
 
 from openbb_terminal import (
-    feature_flags as obbff,
     keys_model,
     keys_view,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -43,7 +43,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     ):
         """Constructor"""
         super().__init__(queue)
-        if menu_usage and session and obbff.USE_PROMPT_TOOLKIT:
+        if menu_usage and session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -53,14 +53,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_keys_status(self) -> None:
         """Check keys status"""
         for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
-            if api == "openbb":
-                self.status_dict[api] = getattr(
-                    keys_model, "check_" + str(api) + "_personal_access_token"
-                )()
-            else:
-                self.status_dict[api] = getattr(
-                    keys_model, "check_" + str(api) + "_key"
-                )()
+            self.status_dict[api] = getattr(keys_model, "check_" + str(api) + "_key")()
 
     def print_help(self):
         """Print help"""
@@ -1165,33 +1158,5 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["databento"] = keys_model.set_databento_key(
-                key=ns_parser.key, persist=True, show_output=True
-            )
-
-    @log_start_end(log=logger)
-    def call_openbb(self, other_args: List[str]):
-        """Process openbb command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="openbb",
-            description="Set OpenBB Personal Access Token. ",
-        )
-        parser.add_argument(
-            "-k",
-            "--key",
-            type=str,
-            dest="key",
-            help="key",
-        )
-        if not other_args:
-            console.print("For your Personal Access Token, visit: https://openbb.co/")
-            return
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-k")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.status_dict["openbb"] = keys_model.set_openbb_personal_access_token(
                 key=ns_parser.key, persist=True, show_output=True
             )

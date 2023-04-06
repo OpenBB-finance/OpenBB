@@ -36,4 +36,79 @@ interactions:
     status:
       code: 400
       message: Bad Request
+- request:
+    body: "--90c8600832670e4c926e4b97997ca344\r\nContent-Disposition: form-data; name=\"key\"\r\n\r\ngst-app/logs/7dfe280a-4d58-4847-9621-04090c2f2739/gst_1675881500.log\r\n--90c8600832670e4c926e4b97997ca344\r\nContent-Disposition:
+      form-data; name=\"x-amz-algorithm\"\r\n\r\nAWS4-HMAC-SHA256\r\n--90c8600832670e4c926e4b97997ca344\r\nContent-Disposition:
+      form-data; name=\"x-amz-credential\"\r\n\r\nASIAWJBK4EZQA7DAI3GW/20230209/us-east-2/s3/aws4_request\r\n--90c8600832670e4c926e4b97997ca344\r\nContent-Disposition:
+      form-data; name=\"x-amz-date\"\r\n\r\n20230209T194314Z\r\n--90c8600832670e4c926e4b97997ca344\r\nContent-Disposition:
+      form-data; name=\"x-amz-security-token\"\r\n\r\nIQoJb3JpZ2luX2VjEAsaCXVzLWVhc3QtMiJIMEYCIQD+GIvsV7LSR8EU318Sc4WrjuHYQ0wrDfgJkXa3HDYTywIhAPk3e1yTcdMBFweTJ/O8gr9BRo3WhJltGQ4zMWWng4yXKosDCJX//////////wEQABoMNDMxNzM0MTM4NDY0IgzpKBm3IbUPo28RbZAq3wLBgqPEWpkJNSu054241NbJx+1O5u6W8La2uG4EhwS09kFkO37G1wsPVrMdeirU6HpFLqhewqp9sOmo8LVh5csUjtA/Z1ogQ8C05+o4t2bmN2QEm+gTEd69BkrOsw5dIioxh2jY6Drs8fVdkx/dxuEBEruKgRhb462LyWJ52fmRmo3q147VLIo+IKsdJQCkBqwOE46qtLjOAsa8GilCumhlnI9m9r69c0dHmwANP2YFByM6sH9ZQwUhNGX6PYaFYwsel9nXA8M+8iA2/a0eFofB7VJ9Ih+lSSbXO/D3SYkmXcCYyNiVqtPoLw66AP8A508E5i4vVwWvLalKnPfJskSPH5aMrAZNfsVgWTFSFC/66EGk6AFXbbo3avBieoMGfdw5NCPXNnfhf04/bSahIZo7XOOIXUNJbGlImRqXfOLDj0ItqJaB9KQGpHUqhaHrlsNCxn1vbssFVqkl4wElejMwuZGVnwY6nQGpIakgKNqA17j8d6vK40gOu34EhvLLsuu28re5r9aLILbK25awWsbh0aKCdyS62ebFW8soyuXvyGs0g/I7o6tgFNBxPxD69ZP3HoF1PqsLh7gq5YmmoFJgrATnvCbbFTeR8DuiBjmg2zKAIJgs0zDUkfgYB4+U6LhKd68huOnG6DgNcQr49or3XQGFPH8cx5g94EUH7W1tYqBgWgzZ\r\n--90c8600832670e4c926e4b97997ca344\r\nContent-Disposition:
+      form-data; name=\"policy\"\r\n\r\neyJleHBpcmF0aW9uIjogIjIwMjMtMDItMDlUMTk6NDg6MTRaIiwgImNvbmRpdGlvbnMiOiBbeyJidWNrZXQiOiAiZ3N0LWxvZ2dpbmcifSwgeyJrZXkiOiAiZ3N0LWFwcC9sb2dzLzdkZmUyODBhLTRkNTgtNDg0Ny05NjIxLTA0MDkwYzJmMjczOS9nc3RfMTY3NTg4MTUwMC5sb2cifSwgeyJ4LWFtei1hbGdvcml0aG0iOiAiQVdTNC1ITUFDLVNIQTI1NiJ9LCB7IngtYW16LWNyZWRlbnRpYWwiOiAiQVNJQVdKQks0RVpRQTdEQUkzR1cvMjAyMzAyMDkvdXMtZWFzdC0yL3MzL2F3czRfcmVxdWVzdCJ9LCB7IngtYW16LWRhdGUiOiAiMjAyMzAyMDlUMTk0MzE0WiJ9LCB7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIklRb0piM0pwWjJsdVgyVmpFQXNhQ1hWekxXVmhjM1F0TWlKSU1FWUNJUUQrR0l2c1Y3TFNSOEVVMzE4U2M0V3JqdUhZUTB3ckRmZ0prWGEzSERZVHl3SWhBUGszZTF5VGNkTUJGd2VUSi9POGdyOUJSbzNXaEpsdEdRNHpNV1duZzR5WEtvc0RDSlgvLy8vLy8vLy8vd0VRQUJvTU5ETXhOek0wTVRNNE5EWTBJZ3pwS0JtM0liVVBvMjhSYlpBcTN3TEJncVBFV3BrSk5TdTA1NDI0MU5iSngrMU81dTZXOExhMnVHNEVod1MwOWtGa08zN0cxd3NQVnJNZGVpclU2SHBGTHFoZXdxcDlzT21vOExWaDVjc1VqdEEvWjFvZ1E4QzA1K280dDJibU4yUUVtK2dURWQ2OUJrck9zdzVkSWlveGgyalk2RHJzOGZWZGt4L2R4dUVCRXJ1S2dSaGI0NjJMeVdKNTJmbVJtbzNxMTQ3VkxJbytJS3NkSlFDa0Jxd09FNDZxdExqT0FzYThHaWxDdW1obG5JOW05cjY5YzBkSG13QU5QMllGQnlNNnNIOVpRd1VoTkdYNlBZYUZZd3NlbDluWEE4TSs4aUEyL2EwZUZvZkI3Vko5SWgrbFNTYlhPL0QzU1lrbVhjQ1l5TmlWcXRQb0x3NjZBUDhBNTA4RTVpNHZWd1d2TGFsS25QZkpza1NQSDVhTXJBWk5mc1ZnV1RGU0ZDLzY2RUdrNkFGWGJibzNhdkJpZW9NR2ZkdzVOQ1BYTm5maGYwNC9iU2FoSVpvN1hPT0lYVU5KYkdsSW1ScVhmT0xEajBJdHFKYUI5S1FHcEhVcWhhSHJsc05DeG4xdmJzc0ZWcWtsNHdFbGVqTXd1WkdWbndZNm5RR3BJYWtnS05xQTE3ajhkNnZLNDBnT3UzNEVodkxMc3V1MjhyZTVyOWFMSUxiSzI1YXdXc2JoMGFLQ2R5UzYyZWJGVzhzb3l1WHZ5R3MwZy9JN282dGdGTkJ4UHhENjlaUDNIb0YxUHFzTGg3Z3E1WW1tb0ZKZ3JBVG52Q2JiRlRlUjhEdWlCam1nMnpLQUlKZ3MwekRVa2ZnWUI0K1U2TGhLZDY4aHVPbkc2RGdOY1FyNDlvcjNYUUdGUEg4Y3g1Zzk0RVVIN1cxdFlxQmdXZ3paIn1dfQ==\r\n--90c8600832670e4c926e4b97997ca344\r\nContent-Disposition:
+      form-data; name=\"x-amz-signature\"\r\n\r\n0529c0e1295a96a0f71e8a52b10e03ee142ddbd838c84cc2a45b8d04ee6fc2c4\r\n--90c8600832670e4c926e4b97997ca344\r\nContent-Disposition:
+      form-data; name=\"file\"; filename=\"gst_1675881500.log\"\r\n\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.terminal_controller|terminal|820|INPUT:
+      /crypto/ov\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.terminal_controller.TerminalController|switch|0|START\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.parent_classes|log_queue|280|QUEUE:
+      {'path': '/', 'queue': 'crypto/ov'}\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.parent_classes|switch|0|END\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.terminal_controller.TerminalController|switch|0|START\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.parent_classes|log_cmd_and_queue|307|CMD:
+      {\"path\": \"/\", \"known_cmd\": \"crypto\", \"other_args\": \"\", \"input\":
+      \"crypto\"}\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.parent_classes|log_queue|280|QUEUE:
+      {'path': '/', 'queue': 'ov'}\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.cryptocurrency.crypto_controller.CryptoController|switch|0|START\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.parent_classes|log_cmd_and_queue|307|CMD:
+      {\"path\": \"/crypto/\", \"known_cmd\": \"ov\", \"other_args\": \"\", \"input\":
+      \"ov\"}\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.cryptocurrency.crypto_controller.CryptoController|call_ov|0|START\r\nX|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.terminal_helper|reset|355|Exception:
+      keyword argument repeated: row_heights (pycoingecko_view.py, line 509) MOCKING_BREAKLINE
+      Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\terminal_helper.py\",
+      line 352, in reset\\n    main(debug, [\"/\".join(queue) if len(queue) > 0 else
+      \"\"], module=\"\")  # type: ignore\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\terminal_controller.py\",
+      line 1145, in main\\n    terminal(argv_cmds)\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\terminal_controller.py\",
+      line 926, in terminal\\n    t_controller.queue = t_controller.switch(an_input)\\n
+      \ File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\decorators.py\",
+      line 65, in wrapper\\n    value = func(*args, **kwargs)\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\parent_classes.py\",
+      line 366, in switch\\n    getattr(\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\terminal_controller.py\",
+      line 389, in call_crypto\\n    self.queue = self.load_class(CryptoController,
+      self.queue)\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\parent_classes.py\",
+      line 223, in load_class\\n    return class_ins(*args, **kwargs).menu()\\n  File
+      \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\parent_classes.py\",
+      line 913, in menu\\n    self.queue = self.switch(an_input)\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\decorators.py\",
+      line 65, in wrapper\\n    value = func(*args, **kwargs)\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\parent_classes.py\",
+      line 366, in switch\\n    getattr(\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\decorators.py\",
+      line 65, in wrapper\\n    value = func(*args, **kwargs)\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\cryptocurrency\\\\crypto_controller.py\",
+      line 354, in call_ov\\n    from openbb_terminal.cryptocurrency.overview.overview_controller
+      import (\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\cryptocurrency\\\\overview\\\\overview_controller.py\",
+      line 15, in <module>\\n    from openbb_terminal.cryptocurrency.overview import
+      (\\n  File \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\cryptocurrency\\\\overview\\\\pycoingecko_view.py\",
+      line 509\\n    row_heights=[0.7],\\n    ^^^^^^^^^^^^^^^^^\\nSyntaxError: keyword
+      argument repeated: row_heights'\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675881500|NA|2023-02-08T13:38:20-0500|openbb_terminal.terminal_helper|print_goodbye|81|END\r\n\r\n--90c8600832670e4c926e4b97997ca344--\r\n"
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '8363'
+      Content-Type:
+      - multipart/form-data; boundary=90c8600832670e4c926e4b97997ca344
+      User-Agent:
+      - python-requests/2.28.2
+    method: POST
+    uri: https://gst-logging.s3.amazonaws.com/
+  response:
+    body:
+      string: ''
+    headers:
+      Date:
+      - Thu, 09 Feb 2023 19:43:16 GMT
+      ETag:
+      - '"832b9138676b2ee8e8d87d62e2c09b51"'
+      Location:
+      - https://gst-logging.s3.amazonaws.com/gst-app%2Flogs%2F7dfe280a-4d58-4847-9621-04090c2f2739%2Fgst_1675881500.log
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - mwii19xrJju8rwTA3pfHRCEsG/v5mU8Wgl7rJMxf7ShCpS3Is7vycCyjURPJ0SyhP4b0EjZWLpc=
+      x-amz-request-id:
+      - 6AM3B5A2GDBNK3Z7
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 204
+      message: No Content
 version: 1

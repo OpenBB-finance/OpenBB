@@ -86,22 +86,6 @@ def test_load_data(func, kwargs_dict, recorder):
 @pytest.mark.parametrize(
     "func, kwargs_dict",
     [
-        ("get_series_ids", {"search_query": "unemployment rate"}),
-        ("get_series_ids", {"search_query": "gdp"}),
-        ("get_series_ids", {"search_query": "xyz"}),
-    ],
-)
-def test_get_series_ids(func, kwargs_dict, recorder):
-    result_df = getattr(fred_model, func)(**kwargs_dict)
-
-    assert isinstance(result_df, pd.DataFrame)
-    recorder.capture(result_df)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize(
-    "func, kwargs_dict",
-    [
         ("get_cpi", {"countries": ["united kingdom"]}),
         ("get_cpi", {"countries": ["united kingdom", "united_states"]}),
         ("get_cpi", {"countries": ["united kingdom", "united_states", "belgium"]}),

@@ -59,6 +59,7 @@ def display_valuation(
         show_index=False,
         headers=list(df_group.columns),
         title="Group Valuation Data",
+        export=bool(export),
     )
 
     export_data(
@@ -101,6 +102,7 @@ def display_performance(
         show_index=False,
         headers=df_group.columns,
         title="Group Performance Data",
+        export=bool(export),
     )
 
     export_data(
@@ -170,6 +172,7 @@ def display_future(
         show_index=True,
         headers=["prevClose", "last", "change (%)"],
         title="Future Table [Source: FinViz]",
+        export=bool(export),
     )
 
     export_data(

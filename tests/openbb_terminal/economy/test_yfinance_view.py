@@ -45,7 +45,6 @@ def test_show_indices(
         return yf_download(*args, **kwargs)
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     result_df = yfinance_view.show_indices(
         indices, interval, start_date, end_date, column, returns, store
     )
@@ -79,7 +78,6 @@ def test_show_indices_returns(
         return yf_download(*args, **kwargs)
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     result_df = yfinance_view.show_indices(
         indices, interval, start_date, end_date, column, returns, store
     )

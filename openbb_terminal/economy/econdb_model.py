@@ -743,6 +743,8 @@ def get_aggregated_macro_data(
     else:
         denomination_string = f" [in {denomination}]" if denomination != "Units" else ""
 
+    df_rounded = df_rounded.dropna()
+
     return (df_rounded, units, denomination_string)
 
 

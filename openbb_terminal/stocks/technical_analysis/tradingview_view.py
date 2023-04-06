@@ -64,4 +64,5 @@ def print_recommendation(
         headers=list(recom.columns),
         title="Ticker Recommendation",
         show_index=True,
+        export=bool(export),
     )

@@ -8,8 +8,8 @@ from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -97,7 +97,7 @@ class QaController(StockBaseController):
         self.interval = interval
         self.target = "returns" if not stock.empty else ""
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -114,40 +114,42 @@ class QaController(StockBaseController):
 
         mt = MenuText("stocks/qa/")
         mt.add_cmd("load")
-        mt.add_cmd("pick")
+        mt.add_cmd("pick", not self.stock.empty)
         mt.add_raw("\n")
-        mt.add_param("_ticker", stock_str)
+        mt.add_param(
+            "_ticker", stock_str if not self.stock.empty else "No ticker loaded"
+        )
         mt.add_param("_target", self.target)
         mt.add_raw("\n")
         mt.add_info("_statistics_")
-        mt.add_cmd("summary")
-        mt.add_cmd("normality")
-        mt.add_cmd("unitroot")
+        mt.add_cmd("summary", not self.stock.empty)
+        mt.add_cmd("normality", not self.stock.empty)
+        mt.add_cmd("unitroot", not self.stock.empty)
         mt.add_info("_plots_")
-        mt.add_cmd("line")
-        mt.add_cmd("hist")
-        mt.add_cmd("cdf")
-        mt.add_cmd("bw")
-        mt.add_cmd("acf")
-        mt.add_cmd("qqplot")
+        mt.add_cmd("line", not self.stock.empty)
+        mt.add_cmd("hist", not self.stock.empty)
+        mt.add_cmd("cdf", not self.stock.empty)
+        mt.add_cmd("bw", not self.stock.empty)
+        mt.add_cmd("acf", not self.stock.empty)
+        mt.add_cmd("qqplot", not self.stock.empty)
         mt.add_info("_rolling_metrics_")
-        mt.add_cmd("rolling")
-        mt.add_cmd("spread")
-        mt.add_cmd("quantile")
-        mt.add_cmd("skew")
-        mt.add_cmd("kurtosis")
+        mt.add_cmd("rolling", not self.stock.empty)
+        mt.add_cmd("spread", not self.stock.empty)
+        mt.add_cmd("quantile", not self.stock.empty)
+        mt.add_cmd("skew", not self.stock.empty)
+        mt.add_cmd("kurtosis", not self.stock.empty)
         mt.add_info("_risk_")
-        mt.add_cmd("var")
-        mt.add_cmd("es")
-        mt.add_cmd("sh")
-        mt.add_cmd("so")
-        mt.add_cmd("om")
+        mt.add_cmd("var", not self.stock.empty)
+        mt.add_cmd("es", not self.stock.empty)
+        mt.add_cmd("sh", not self.stock.empty)
+        mt.add_cmd("so", not self.stock.empty)
+        mt.add_cmd("om", not self.stock.empty)
         mt.add_info("_other_")
-        mt.add_cmd("raw")
-        mt.add_cmd("decompose")
-        mt.add_cmd("cusum")
-        mt.add_cmd("capm")
-        mt.add_cmd("beta")
+        mt.add_cmd("raw", not self.stock.empty)
+        mt.add_cmd("decompose", not self.stock.empty)
+        mt.add_cmd("cusum", not self.stock.empty)
+        mt.add_cmd("capm", not self.stock.empty)
+        mt.add_cmd("beta", not self.stock.empty)
         console.print(text=mt.menu_text, menu="Stocks - Quantitative Analysis")
 
     def custom_reset(self):
@@ -314,6 +316,7 @@ class QaController(StockBaseController):
                 log_y=ns_parser.log,
                 markers_lines=ns_parser.ml,
                 markers_scatter=ns_parser.ms,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

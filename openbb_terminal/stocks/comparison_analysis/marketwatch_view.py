@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import List, Optional
 
 from openbb_terminal import rich_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -59,7 +60,7 @@ def display_income_comparison(
         sheet_name,
     )
 
-    if rich_config.USE_COLOR:
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df_financials_compared = df_financials_compared.applymap(
             lambda_financials_colored_values
         )
@@ -73,6 +74,7 @@ def display_income_comparison(
         headers=list(df_financials_compared.columns),
         show_index=True,
         title="Income Data",
+        export=bool(export),
     )
 
 
@@ -116,7 +118,7 @@ def display_balance_comparison(
         sheet_name,
     )
 
-    if rich_config.USE_COLOR:
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df_financials_compared = df_financials_compared.applymap(
             lambda_financials_colored_values
         )
@@ -130,6 +132,7 @@ def display_balance_comparison(
         headers=list(df_financials_compared.columns),
         show_index=True,
         title="Company Comparison",
+        export=bool(export),
     )
 
 
@@ -173,7 +176,7 @@ def display_cashflow_comparison(
         sheet_name,
     )
 
-    if rich_config.USE_COLOR:
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df_financials_compared = df_financials_compared.applymap(
             lambda_financials_colored_values
         )
@@ -187,4 +190,5 @@ def display_cashflow_comparison(
         headers=list(df_financials_compared.columns),
         show_index=True,
         title="Cashflow Comparison",
+        export=bool(export),
     )

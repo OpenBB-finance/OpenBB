@@ -26,9 +26,6 @@ def vcr_config():
     [True, False],
 )
 def test_insider_activity(mocker, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     yf_download = stocks_helper.yf.download
 
     def mock_yf_download(*args, **kwargs):

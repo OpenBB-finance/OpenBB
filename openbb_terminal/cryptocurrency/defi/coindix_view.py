@@ -74,10 +74,12 @@ def display_defi_vaults(
         df.drop("Link", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Top DeFi Vaults",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

@@ -4,13 +4,13 @@ __docformat__ = "numpy"
 import argparse
 import datetime
 import logging
-from typing import List, Optional
+from pathlib import Path
+from typing import Dict, List, Optional, Union
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    USER_PRESETS_DIRECTORY,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -37,8 +37,6 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=E1121
 
-PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "screener"
-
 
 class ScreenerController(BaseController):
     """Screener Controller class"""
@@ -57,20 +55,31 @@ class ScreenerController(BaseController):
         "technical",
         "arktrades",
     ]
-
-    PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
-    preset_choices = {
-        filepath.name.replace(".ini", ""): filepath
-        for filepath in PRESETS_PATH.iterdir()
-        if filepath.suffix == ".ini"
-    }
-    preset_choices.update(
-        {
-            filepath.name.replace(".ini", ""): filepath
-            for filepath in PRESETS_PATH_DEFAULT.iterdir()
-            if filepath.suffix == ".ini"
-        }
+    PRESETS_PATH = (
+        get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"
     )
+    PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
+
+    preset_choices: Dict[str, Union[str, Path]] = {}
+
+    if PRESETS_PATH.exists():
+        preset_choices.update(
+            {
+                filepath.name.strip(".ini"): filepath
+                for filepath in PRESETS_PATH.iterdir()
+                if filepath.suffix == ".ini"
+            }
+        )
+
+    if PRESETS_PATH_DEFAULT.exists():
+        preset_choices.update(
+            {
+                filepath.name.strip(".ini"): filepath
+                for filepath in PRESETS_PATH_DEFAULT.iterdir()
+                if filepath.suffix == ".ini"
+            }
+        )
+
     preset_choices.update(finviz_model.d_signals)
 
     historical_candle_choices = ["o", "h", "l", "c", "a"]
@@ -84,7 +93,7 @@ class ScreenerController(BaseController):
         self.preset = "top_gainers.ini"
         self.screen_tickers: List = list()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 

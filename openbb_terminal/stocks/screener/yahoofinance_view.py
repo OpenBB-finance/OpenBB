@@ -3,25 +3,15 @@ __docformat__ = "numpy"
 import datetime
 import logging
 import os
-from typing import List, Optional
+from typing import List, Optional, Tuple, Union
 
-import matplotlib.pyplot as plt
-from pandas.plotting import register_matplotlib_converters
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import yahoofinance_model
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
@@ -35,8 +25,8 @@ def historical(
     normalize: bool = True,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> List[str]:
+    external_axes: bool = False,
+) -> Union[List[str], Tuple[List[str], OpenBBFigure]]:
     """View historical price of stocks that meet preset
 
     Parameters
@@ -53,8 +43,8 @@ def historical(
         Boolean to normalize all stock prices using MinMax
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -69,34 +59,25 @@ def historical(
         return []
 
     if l_stocks:
-        # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return []
-
-        df_screener.plot(ax=ax)
+        fig = OpenBBFigure(
+            xaxis_title="Date",
+            yaxis_title=f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}",
+        )
 
         if limit_random_stocks:
-            ax.set_title(
+            fig.set_title(
                 f"Screener Historical Price with {preset_loaded}\non 10 random stocks"
             )
         else:
-            ax.set_title(f"Screener Historical Price with {preset_loaded}")
+            fig.set_title(f"Screener Historical Price with {preset_loaded}")
 
-        ax.set_ylabel(
-            f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}"
-        )
-        ax.legend()
-        # ensures that the historical data starts from same datapoint
-        ax.set_xlim([df_screener.index[0], df_screener.index[-1]])
-
-        theme.style_primary_axis(ax)
-
-        if not external_axes:
-            theme.visualize_output()
+        for column in df_screener.columns:
+            fig.add_scatter(
+                x=df_screener.index,
+                y=df_screener[column],
+                mode="lines",
+                name=column,
+            )
 
         export_data(
             export,
@@ -104,7 +85,12 @@ def historical(
             "historical",
             df_screener,
             sheet_name,
+            fig,
         )
+        fig.show(external=external_axes)
+
+        if external_axes:
+            return l_stocks, fig
 
         return l_stocks
 

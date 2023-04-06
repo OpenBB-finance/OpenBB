@@ -13,26 +13,18 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, Iterable, List, Optional, Union
 
 import financedatabase as fd
-import matplotlib.pyplot as plt
-import mplfinance as mpf
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import pytz
 import yfinance as yf
-from matplotlib.lines import Line2D
-from matplotlib.ticker import LogLocator, ScalarFormatter
-from plotly.subplots import make_subplots
+from pandas.tseries.holiday import USFederalHolidayCalendar
 from requests.exceptions import ReadTimeout
 from scipy import stats
 
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.helper_funcs import (
-    lambda_long_number_format_y_axis,
-    plot_autoscale,
-    print_rich_table,
-    request,
-)
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.helper_funcs import print_rich_table, request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
@@ -59,7 +51,6 @@ from openbb_terminal.stocks.stocks_model import (
 from . import databento_model
 
 logger = logging.getLogger(__name__)
-
 
 exch_file_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
@@ -102,6 +93,24 @@ def check_datetime(
     return error_catch
 
 
+def get_holidays(
+    start: Optional[Union[datetime, str]] = None,
+    end: Optional[Union[datetime, str]] = None,
+) -> List[datetime]:
+    """Get holidays between start and end dates.
+
+    Parameters
+    ----------
+    start : Optional[Union[datetime, str]], optional
+        Start date, by default None
+    end : Optional[Union[datetime, str]], optional
+        End date, by default None
+    """
+    start = check_datetime(start)
+    end = check_datetime(end, start=False)
+    return USFederalHolidayCalendar().holidays(start=start, end=end)
+
+
 def search(
     query: str = "",
     country: str = "",
@@ -127,7 +136,7 @@ def search(
     exchange_country: str
         Search by exchange country to find stock matching
     all_exchanges: bool
-       Whether to search all exchanges, without this option only the United States market is searched
+        Whether to search all exchanges, without this option only the United States market is searched
     limit : int
         The limit of companies shown.
 
@@ -231,10 +240,11 @@ def search(
     df = df.iloc[df.isnull().sum(axis=1).mul(1).argsort()]
 
     print_rich_table(
-        df.iloc[:limit] if limit else df,
+        df,
         show_index=True,
         headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
         title=title,
+        limit=limit,
     )
 
     return df
@@ -392,7 +402,9 @@ def load(
             if df_stock_candidate.empty:
                 return pd.DataFrame()
 
-            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            df_stock_candidate.index = pd.to_datetime(
+                df_stock_candidate.index, utc=True
+            )
 
             s_start = (
                 pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
@@ -410,7 +422,7 @@ def load(
                 f"https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{interval}/minute/{start_date.strftime('%Y-%m-%d')}"
                 f"/{end_date.strftime('%Y-%m-%d')}"
-                f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+                f"?adjusted=true&sort=desc&limit=49999&apiKey={get_current_user().credentials.API_POLYGON_KEY}"
             )
             r = request(request_url)
             if r.status_code != 200:
@@ -458,6 +470,10 @@ def load(
                 pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
             )
             s_interval = f"{interval}min"
+
+        if not prepost:
+            df_stock_candidate = df_stock_candidate.between_time("9:30", "16:00")
+
         int_string = "Intraday"
 
     s_intraday = (f"Intraday {interval}min", int_string)[interval == 1440]
@@ -465,8 +481,10 @@ def load(
     if verbose:
         console.print(
             f"Loading {s_intraday} data for {symbol.upper()} "
-            f"with starting period {s_start.strftime('%Y-%m-%d')}.",
+            f"with starting period {s_start.strftime('%Y-%m-%d')}."
         )
+
+    df_stock_candidate.name = symbol.upper()
 
     return df_stock_candidate
 
@@ -474,8 +492,6 @@ def load(
 def display_candle(
     symbol: str,
     data: Optional[pd.DataFrame] = None,
-    use_matplotlib: bool = True,
-    intraday: bool = False,
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",
@@ -486,10 +502,10 @@ def display_candle(
     source: str = "YahooFinance",
     weekly: bool = False,
     monthly: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     raw: bool = False,
     yscale: str = "linear",
-):
+) -> Union[None, OpenBBFigure]:
     """Show candle plot of loaded ticker.
 
     [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
@@ -500,19 +516,11 @@ def display_candle(
         Ticker name
     data: pd.DataFrame
         Stock dataframe
-    use_matplotlib: bool
-        Flag to use matplotlib instead of interactive plotly chart
-    intraday: bool
-        Flag for intraday data for plotly range breaks
     add_trend: bool
         Flag to add high and low trends to chart
     ma: Tuple[int]
         Moving averages to add to the candle
-    asset_type_: str
-        String to include in title
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
-    asset_type_: str
+    asset_type: str
         String to include in title
     start_date: str or datetime, optional
         Start date to get data from with. - datetime or string format (YYYY-MM-DD)
@@ -528,6 +536,8 @@ def display_candle(
         Flag to get weekly data
     monthly: bool
         Flag to get monthly data
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     raw : bool, optional
         Flag to display raw data, by default False
     yscale: str
@@ -575,244 +585,27 @@ def display_candle(
         data = find_trendline(data, "OC_High", "high")
         data = find_trendline(data, "OC_Low", "low")
 
-    if not raw:
-        if use_matplotlib:
-            ap0 = []
-            if add_trend:
-                if "OC_High_trend" in data.columns:
-                    ap0.append(
-                        mpf.make_addplot(
-                            data["OC_High_trend"],
-                            color=cfg.theme.up_color,
-                            secondary_y=False,
-                        ),
-                    )
-
-                if "OC_Low_trend" in data.columns:
-                    ap0.append(
-                        mpf.make_addplot(
-                            data["OC_Low_trend"],
-                            color=cfg.theme.down_color,
-                            secondary_y=False,
-                        ),
-                    )
-
-            candle_chart_kwargs = {
-                "type": "candle",
-                "style": cfg.theme.mpf_style,
-                "volume": True,
-                "addplot": ap0,
-                "xrotation": cfg.theme.xticks_rotation,
-                "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-                "update_width_config": {
-                    "candle_linewidth": 0.6,
-                    "candle_width": 0.8,
-                    "volume_linewidth": 0.8,
-                    "volume_width": 0.8,
-                },
-                "warn_too_much_data": 10000,
-                "yscale": yscale,
-            }
-
-            kwargs = {"mav": ma} if ma else {}
-
-            if external_axes is None:
-                candle_chart_kwargs["returnfig"] = True
-                candle_chart_kwargs["figratio"] = (10, 7)
-                candle_chart_kwargs["figscale"] = 1.10
-                candle_chart_kwargs["figsize"] = plot_autoscale()
-                candle_chart_kwargs["warn_too_much_data"] = 100_000
-
-                fig, ax = mpf.plot(data, **candle_chart_kwargs, **kwargs)
-                lambda_long_number_format_y_axis(data, "Volume", ax)
-
-                fig.suptitle(
-                    f"{asset_type} {symbol}",
-                    x=0.055,
-                    y=0.965,
-                    horizontalalignment="left",
-                )
-
-                if ma:
-                    # Manually construct the chart legend
-                    colors = [cfg.theme.get_colors()[i] for i, _ in enumerate(ma)]
-                    lines = [Line2D([0], [0], color=c) for c in colors]
-                    labels = ["MA " + str(label) for label in ma]
-                    ax[0].legend(lines, labels)
-
-                if yscale == "log":
-                    ax[0].yaxis.set_major_formatter(ScalarFormatter())
-                    ax[0].yaxis.set_major_locator(
-                        LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
-                    )
-                    ax[0].ticklabel_format(style="plain", axis="y")
-
-                cfg.theme.visualize_output(force_tight_layout=False)
-            else:
-                if len(external_axes) != 2:
-                    logger.error("Expected list of one axis item.")
-                    console.print("[red]Expected list of 2 axis items.\n[/red]")
-                    return pd.DataFrame()
-                ax1, ax2 = external_axes
-                candle_chart_kwargs["ax"] = ax1
-                candle_chart_kwargs["volume"] = ax2
-                mpf.plot(data, **candle_chart_kwargs)
-
-        else:
-            fig = make_subplots(
-                rows=2,
-                cols=1,
-                shared_xaxes=True,
-                vertical_spacing=0.06,
-                subplot_titles=(f"{symbol}", "Volume"),
-                row_width=[0.2, 0.7],
-            )
-            fig.add_trace(
-                go.Candlestick(
-                    x=data.index,
-                    open=data.Open,
-                    high=data.High,
-                    low=data.Low,
-                    close=data.Close,
-                    name="OHLC",
-                ),
-                row=1,
-                col=1,
-            )
-            if ma:
-                plotly_colors = [
-                    "black",
-                    "teal",
-                    "blue",
-                    "purple",
-                    "orange",
-                    "gray",
-                    "deepskyblue",
-                ]
-                for idx, ma_val in enumerate(ma):
-                    temp = data["Adj Close"].copy()
-                    temp[f"ma{ma_val}"] = data["Adj Close"].rolling(ma_val).mean()
-                    temp = temp.dropna()
-                    fig.add_trace(
-                        go.Scatter(
-                            x=temp.index,
-                            y=temp[f"ma{ma_val}"],
-                            name=f"MA{ma_val}",
-                            mode="lines",
-                            line=go.scatter.Line(
-                                color=plotly_colors[np.mod(idx, len(plotly_colors))]
-                            ),
-                        ),
-                        row=1,
-                        col=1,
-                    )
-
-            if add_trend:
-                if "OC_High_trend" in data.columns:
-                    fig.add_trace(
-                        go.Scatter(
-                            x=data.index,
-                            y=data["OC_High_trend"],
-                            name="High Trend",
-                            mode="lines",
-                            line=go.scatter.Line(color="green"),
-                        ),
-                        row=1,
-                        col=1,
-                    )
-                if "OC_Low_trend" in data.columns:
-                    fig.add_trace(
-                        go.Scatter(
-                            x=data.index,
-                            y=data["OC_Low_trend"],
-                            name="Low Trend",
-                            mode="lines",
-                            line=go.scatter.Line(color="red"),
-                        ),
-                        row=1,
-                        col=1,
-                    )
-
-            colors = [
-                "red" if row.Open < row["Adj Close"] else "green"
-                for _, row in data.iterrows()
-            ]
-            fig.add_trace(
-                go.Bar(
-                    x=data.index,
-                    y=data.Volume,
-                    name="Volume",
-                    marker_color=colors,
-                ),
-                row=2,
-                col=1,
-            )
-            fig.update_layout(
-                yaxis_title="Stock Price ($)",
-                xaxis=dict(
-                    rangeselector=dict(
-                        buttons=list(
-                            [
-                                dict(
-                                    count=1,
-                                    label="1m",
-                                    step="month",
-                                    stepmode="backward",
-                                ),
-                                dict(
-                                    count=3,
-                                    label="3m",
-                                    step="month",
-                                    stepmode="backward",
-                                ),
-                                dict(
-                                    count=1, label="YTD", step="year", stepmode="todate"
-                                ),
-                                dict(
-                                    count=1,
-                                    label="1y",
-                                    step="year",
-                                    stepmode="backward",
-                                ),
-                                dict(step="all"),
-                            ]
-                        )
-                    ),
-                    rangeslider=dict(visible=False),
-                    type="date",
-                ),
-            )
-
-            fig.update_layout(
-                updatemenus=[
-                    dict(
-                        buttons=[
-                            dict(
-                                label="linear",
-                                method="relayout",
-                                args=[{"yaxis.type": "linear"}],
-                            ),
-                            dict(
-                                label="log",
-                                method="relayout",
-                                args=[{"yaxis.type": "log"}],
-                            ),
-                        ]
-                    )
-                ]
-            )
-
-            if intraday:
-                fig.update_xaxes(
-                    rangebreaks=[
-                        dict(bounds=["sat", "mon"]),
-                        dict(bounds=[20, 9], pattern="hour"),
-                    ]
-                )
-
-            fig.show(config=dict({"scrollZoom": True}))
-    else:
+    if raw:
         return data
+
+    kwargs = {}
+    if ma:
+        kwargs["rma"] = dict(length=ma)
+
+    if data.index[-2].date() == data.index[-1].date():
+        interval = int((data.index[1] - data.index[0]).seconds / 60)
+
+    data.name = f"{asset_type} {symbol}"
+
+    fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
+
+    if add_trend:
+        fig.add_trend(data, secondary_y=True)
+
+    fig.update_layout(yaxis2=dict(title="Stock Price ($)", type=yscale))
+    fig.add_logscale_menus("yaxis2")
+
+    return fig.show(external=external_axes)
 
 
 def process_candle(data: pd.DataFrame) -> pd.DataFrame:
@@ -869,10 +662,7 @@ def find_trendline(
     for iteration in [3, 4, 5, 6, 7]:
         df_temp = df_data.copy()
         while len(df_temp) > iteration:
-            reg = stats.linregress(
-                x=df_temp["date_id"],
-                y=df_temp[y_key],
-            )
+            reg = stats.linregress(x=df_temp["date_id"], y=df_temp[y_key])
 
             if high_low == "high":
                 df_temp = df_temp.loc[
@@ -889,10 +679,7 @@ def find_trendline(
     if len(df_temp) == 1:
         return df_data
 
-    reg = stats.linregress(
-        x=df_temp["date_id"],
-        y=df_temp[y_key],
-    )
+    reg = stats.linregress(x=df_temp["date_id"], y=df_temp[y_key])
 
     df_data[f"{y_key}_trend"] = reg[0] * df_data["date_id"] + reg[1]
 
@@ -980,7 +767,14 @@ def load_custom(file_path: str) -> pd.DataFrame:
         console.print("[red]File path does not exist.[/red]\n")
         return pd.DataFrame()
 
-    df = pd.read_csv(file_path)
+    if file_path.endswith(".csv"):
+        df = pd.read_csv(file_path)
+    elif file_path.endswith(".xlsx"):
+        df = pd.read_excel(file_path)
+    else:
+        console.print("[red]File type not supported.[/red]\n")
+        return pd.DataFrame()
+
     console.print(f"Loaded data has columns: {', '.join(df.columns.to_list())}\n")
 
     # Nasdaq specific
@@ -1076,8 +870,14 @@ def show_codes_polygon(ticker: str):
     ticker: str
         Stock ticker
     """
-    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={cfg.API_POLYGON_KEY}"
-    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+
+    current_user = get_current_user()
+
+    link = (
+        f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey="
+        f"{current_user.credentials.API_POLYGON_KEY}"
+    )
+    if current_user.credentials.API_POLYGON_KEY == "REPLACE_ME":
         console.print("[red]Polygon API key missing[/red]\n")
         return
     r = request(link)
@@ -1091,10 +891,16 @@ def show_codes_polygon(ticker: str):
     r_json = r_json["results"]
     cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
     vals = [r_json[col] for col in cols]
-    polygon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    polygon_df = pd.DataFrame(
+        {"codes": [c.upper() for c in cols], "values": vals},
+        columns=["codes", "values"],
+    )
     polygon_df.codes = polygon_df.codes.apply(lambda x: x.replace("_", " "))
     print_rich_table(
-        polygon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+        polygon_df,
+        show_index=False,
+        headers=["code", "value"],
+        title=f"{ticker.upper()} Codes",
     )
 
 
@@ -1142,7 +948,7 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
         command_options = BALANCE_PLOT
     else:
         command_options = INCOME_PLOT
-    options = list(command_options[source].values())
+    options = list(command_options.get(source, {}).values())
 
     incorrect_columns = []
     for column in plot:

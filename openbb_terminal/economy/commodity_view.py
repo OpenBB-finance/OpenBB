@@ -2,6 +2,7 @@ import logging
 import os
 from typing import Optional
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import commodity_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -38,14 +39,17 @@ def display_debt(export: str = "", sheet_name: Optional[str] = None, limit: int 
     """
     debt_df = commodity_model.get_debt()
 
-    for col in ["Debt", "Per Capita"]:
-        debt_df[col] = debt_df[col].apply(lambda x: format_large_numbers(x))
+    if not get_current_user().preferences.USE_INTERACTIVE_DF:
+        for col in ["Debt", "Per Capita"]:
+            debt_df[col] = debt_df[col].apply(lambda x: format_large_numbers(x))
 
     print_rich_table(
-        debt_df[:limit],
+        debt_df,
         show_index=False,
         headers=debt_df.columns,
         title="External Debt (USD)",
+        export=bool(export),
+        limit=limit,
     )
     if export:
         export_data(

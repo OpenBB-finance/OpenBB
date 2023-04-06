@@ -40,10 +40,12 @@ def show_top_mover(
         return
 
     print_rich_table(
-        data.iloc[:limit],
+        data,
         show_index=False,
         headers=list(data.columns),
         title="ETF Movers",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

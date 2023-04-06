@@ -30,9 +30,6 @@ def test_display_simple_ema(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
     end = datetime.strptime("2020-12-02", "%Y-%m-%d")
@@ -56,9 +53,6 @@ def test_display_emacross(mocker):
         return yf_download(*args, **kwargs)
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
-
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
@@ -85,9 +79,6 @@ def test_display_rsi_strategy(mocker):
         return yf_download(*args, **kwargs)
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
-
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")

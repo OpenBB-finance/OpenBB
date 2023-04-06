@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from openbb_terminal.core.config import paths
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     OPTIMIZATION_PARAMETERS,
@@ -38,7 +39,9 @@ def load_data_files() -> Dict[str, Path]:
         The dictionary of filenames and their paths
     """
     default_path = paths.MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
-    custom_exports = paths.USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
+    custom_exports = (
+        get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
+    )
     data_files = {}
     for directory in [default_path, custom_exports]:
         for file_type in ["xlsx", "ini"]:

@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  ._input {
+    @apply w-full text-xs px-2 py-1 bg-grey-900 h-[36px] border-[1.5px] border-grey-700 rounded  text-white focus:text-white focus:border-white active:border-white focus:ring-0 hover:border-white disabled:border-grey-600 font-normal;
+  }
+  ._btn-common {
+    @apply whitespace-nowrap inline-flex w-full items-center justify-center gap-2 rounded py-2 px-6 text-center !no-underline transition duration-150 ease-out md:w-fit;
+  }
+  ._btn {
+    @apply _btn-common text-sm bg-grey-800 text-white hover:bg-grey-600 dark:bg-grey-100 dark:text-grey-800 dark:hover:bg-white focus:outline focus:outline-2 focus:outline-grey-500 dark:active:bg-grey-200 dark:hover:active:text-grey-900 disabled:bg-grey-300 disabled:text-grey-500 active:disabled:bg-grey-300 active:disabled:text-grey-500;
+  }
+  ._btn-secondary {
+    @apply _btn-common border border-grey-300 text-grey-300 outline-offset-0 hover:border-white hover:text-white focus:outline focus:outline-2 focus:outline-grey-500 active:border-white active:bg-grey-800 active:text-white disabled:border-grey-500 disabled:bg-transparent disabled:text-grey-500;
+  }
+  ._btn-tertiary {
+    @apply _btn-common bg-grey-900 text-grey-50 hover:bg-grey-800 hover:text-white focus:bg-grey-900 focus:outline focus:outline-2 focus:outline-grey-500 active:bg-grey-700 active:text-white disabled:bg-grey-500 disabled:text-grey-700;
+  }
+  ._icon-btn {
+    @apply _btn-common bg-grey-900 text-grey-50 hover:bg-grey-800 hover:text-white focus:bg-grey-900 focus:outline focus:outline-2 focus:outline-grey-500 active:bg-grey-700 active:text-white disabled:bg-grey-500 disabled:text-grey-700;
+  }
+  ._hyper-link {
+    @apply underline text-blue-300 hover:text-blue-400 active:text-blue-500 disabled:text-grey-600;
+  }
+}
+
+._header {
+  background: #062d48;
+  background: linear-gradient(
+    90deg,
+    #062d48,
+    #0b3054 15%,
+    #0e386c 45%,
+    #0b203d 64%,
+    #06101a 82%,
+    #060709
+  );
+}
+
+body {
+  font-family: "Fira Code", monospace;
+  background-color: black;
+}
+
+/*table tbody {
+  display: block;
+  max-height: 300px;
+  overflow-y: scroll;
+}*/
+
+table thead,
+table tfoot,
+table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.resizer {
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+tr {
+  width: fit-content;
+}
+
+.resizer.isResizing {
+  background: white;
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .resizer {
+    opacity: 0;
+  }
+
+  *:hover > .resizer {
+    opacity: 1;
+  }
+}

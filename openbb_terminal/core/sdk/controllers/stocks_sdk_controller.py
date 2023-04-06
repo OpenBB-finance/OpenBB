@@ -37,7 +37,7 @@ class StocksController(model.StocksRoot):
         Attributes:
             `bullbear`: Gets bullbear sentiment for ticker [Source: stocktwits].\n
             `cnews`: Get news from a company. [Source: Finnhub]\n
-            `getdd`: Gets due diligence posts from list of subreddits [Source: reddit].\n
+            `getdd`: Get due diligence posts from list of subreddits [Source: reddit].\n
             `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
             `headlines_chart`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
             `infer`: Load tweets from twitter API and analyzes using VADER.\n
@@ -47,7 +47,7 @@ class StocksController(model.StocksRoot):
             `messages`: Get last messages for a given ticker [Source: stocktwits].\n
             `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
             `queries`: Get related queries from google api [Source: google].\n
-            `redditsent`: Finds posts related to a specific search term in Reddit.\n
+            `redditsent`: Find posts related to a specific search term in Reddit.\n
             `regions`: Get interest by region from google api [Source: google].\n
             `regions_chart`: Plots bars of regions based on stock's interest. [Source: Google].\n
             `rise`: Get top rising related queries with this stock's query [Source: google].\n
@@ -55,12 +55,10 @@ class StocksController(model.StocksRoot):
             `sentiment_chart`: Plots sentiments from symbol\n
             `snews`: Get headlines sentiment using VADER model over time. [Source: Finnhub]\n
             `snews_chart`: Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]\n
-            `spac`: Get posts containing SPAC from top subreddits [Source: reddit].\n
             `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
             `stalker`: Gets messages from given user [Source: stocktwits].\n
             `text_sent`: Find the sentiment of a post and related comments.\n
             `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
-            `watchlist`: Get reddit users watchlists [Source: reddit].\n
             `wsb`: Get wsb posts [Source: reddit].\n
         """
 

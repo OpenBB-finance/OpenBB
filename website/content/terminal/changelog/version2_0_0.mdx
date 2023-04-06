@@ -1,0 +1,38 @@
+---
+title: Version 2.0.0
+version: "2.0.0"
+date: 2022-11-29
+description: Version 2.0.0
+sidebar_position: 8
+---
+
+## Major Release Notes
+
+- OpenBB SDK
+   - OpenBB Terminal available through `pip install openbb`
+   - Full dependency chains for toolkits can be obtained through
+      - `pip install openbb[optimization]`
+      - `pip install openbb[forecast]`
+      - `pip install openbb[all]`
+   - OpenBB Forecasting Menu
+      - Load terminal data or bring in your own data.  Integration with u8 darts library
+      - Custom tuning of models in the terminal
+   - Automated Reports
+      - Can now run automated reports installer versions
+
+## Minor Release Notes
+- General bug fixing
+   - DCF for US equities
+   - Updated events calendar
+- General UI/UX enhancements
+   - Multiple auto complete options
+   - API Keys saved between installer updates
+   - Data source menu for selecting default sources
+   - Short how-to intro on initial launch
+- Due to [investing.com](http://investing.com/) api changes, we have deprecated the funds menu for mutual fund data for the time being
+- Updated Portfolio Allocation function
+- Futures menu utilizing yahoo finance
+- Automated Docker Build
+   - Can build docker image locally with 2 commands
+- Internationalization
+   - Add a translation into your native language

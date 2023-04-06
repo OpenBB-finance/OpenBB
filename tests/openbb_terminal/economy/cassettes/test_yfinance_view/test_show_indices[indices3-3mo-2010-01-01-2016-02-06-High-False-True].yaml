@@ -43,7 +43,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sat, 25 Feb 2023 13:17:01 GMT
+      - Wed, 08 Mar 2023 15:32:50 GMT
       server:
       - ATS
       vary:
@@ -51,13 +51,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '3'
       x-request-id:
-      - d8638293-5e3b-4502-9c87-08296fe19074
+      - 9e5cd367-5017-49e1-9588-65a646abc390
       x-yahoo-request-id:
-      - 54rl535hvk2id
+      - b7av6ddi0hal2
       y-rid:
-      - 54rl535hvk2id
+      - b7av6ddi0hal2
     status:
       code: 404
       message: Not Found

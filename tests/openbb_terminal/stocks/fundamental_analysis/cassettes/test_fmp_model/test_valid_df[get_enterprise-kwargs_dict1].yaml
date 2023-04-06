@@ -10,10 +10,17 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/enterprise-values/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2021-12-31\",\n    \"stockPrice\":
-        103.5199966,\n    \"numberOfShares\": 1557000000,\n    \"marketCapitalization\":
-        161180634706.2,\n    \"minusCashAndCashEquivalents\": 4496000000,\n    \"addTotalDebt\":
-        27806000000,\n    \"enterpriseValue\": 184490634706.2\n  },\n  {\n    \"symbol\":
+      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2022-12-31\",\n    \"stockPrice\":
+        103.83,\n    \"numberOfShares\": 1557000000,\n    \"marketCapitalization\":
+        161663310000,\n    \"minusCashAndCashEquivalents\": 3207000000,\n    \"addTotalDebt\":
+        43123000000,\n    \"enterpriseValue\": 201579310000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2022-09-30\",\n    \"stockPrice\": 92.5299988,\n
+        \   \"numberOfShares\": 0,\n    \"marketCapitalization\": 0,\n    \"minusCashAndCashEquivalents\":
+        5368000000,\n    \"addTotalDebt\": 24580000000,\n    \"enterpriseValue\":
+        19212000000\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2021-12-31\",\n
+        \   \"stockPrice\": 103.5199966,\n    \"numberOfShares\": 1558000000,\n    \"marketCapitalization\":
+        161284154702.8,\n    \"minusCashAndCashEquivalents\": 4496000000,\n    \"addTotalDebt\":
+        27806000000,\n    \"enterpriseValue\": 184594154702.8\n  },\n  {\n    \"symbol\":
         \"PM\",\n    \"date\": \"2020-12-31\",\n    \"stockPrice\": 79.6500015,\n
         \   \"numberOfShares\": 1557000000,\n    \"marketCapitalization\": 124015052335.5,\n
         \   \"minusCashAndCashEquivalents\": 7280000000,\n    \"addTotalDebt\": 31536000000,\n
@@ -77,13 +84,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '3945'
+      - '4474'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 03 Feb 2023 13:54:20 GMT
+      - Tue, 07 Mar 2023 17:09:11 GMT
       ETag:
-      - W/"f69-GTFvufLRjphfdfpD/GH4haRe/Sg"
+      - W/"117a-pnWpP1iblLh3xBbpIxvyqkWL/xQ"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

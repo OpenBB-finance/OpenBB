@@ -46,6 +46,7 @@ def display_forward_rates(
         headers=forward_rates.columns,
         title=f"Forward rates for {from_symbol}/{to_symbol}",
         floatfmt=".4f",
+        export=bool(export),
     )
 
     export_data(

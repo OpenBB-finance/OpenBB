@@ -34,8 +34,36 @@ const config = {
       {
         redirects: [
           {
-            from: "/terminal/guides/intros/forecasting",
-            to: "/terminal/guides/intros/forecast",
+            from: "/terminal/usage/intros/forecasting",
+            to: "/terminal/usage/intros/forecast",
+          },
+          {
+            from: "/terminal/quickstart/api-keys",
+            to: "/terminal/usage/guides/api-keys",
+          },
+          {
+            from: "/terminal/guides/advanced/data",
+            to: "/terminal/usage/guides/data",
+          },
+          {
+            from: "/terminal/guides/advanced/scripts-and-routines",
+            to: "/terminal/usage/guides/scripts-and-routines",
+          },
+          {
+            from: "/terminal/guides/basics",
+            to: "/terminal/usage/basics",
+          },
+          {
+            from: "/terminal/guides/intros/portfolio",
+            to: "/terminal/usage/intros/portfolio",
+          },
+          {
+            from: "/terminal/quickstart/installation",
+            to: "/terminal/installation",
+          },
+          {
+            from: "/sdk/quickstart/installation",
+            to: "/sdk/installation",
           },
         ],
       },
@@ -51,7 +79,7 @@ const config = {
         },
       };
     },
-    [
+    /*[
       "@docusaurus/plugin-content-docs",
       {
         id: "sdk",
@@ -62,6 +90,17 @@ const config = {
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "bot",
+        path: "content/bot",
+        routeBasePath: "bot",
+        editUrl:
+          "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+        sidebarPath: require.resolve("./sidebars.js"),
+      },
+    ],*/
   ],
   presets: [
     [
@@ -72,8 +111,8 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
             "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
-          routeBasePath: "terminal",
-          path: "content/terminal",
+          routeBasePath: "/",
+          path: "content",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -90,6 +129,7 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      // TODO - Jose can you make this so we get lighter color on main view - like bot docs
       colorMode: {
         defaultMode: "dark",
         disableSwitch: false,

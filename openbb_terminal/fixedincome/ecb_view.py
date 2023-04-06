@@ -1,24 +1,18 @@
 """ ECB view """
 __docformat__ = "numpy"
 
+# IMPORTATION STANDARD
 import logging
 import os
-from itertools import cycle
-from typing import List, Optional
+from typing import Optional
 
+# IMPORTATION THIRDPARTY
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.fixedincome import ecb_model
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -53,7 +47,7 @@ def plot_estr(
     end_date: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot Euro Short-Term Rate (ESTR)
 
@@ -69,8 +63,8 @@ def plot_estr(
         End date, formatted YYYY-MM-DD
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series_id = ESTR_PARAMETER_TO_ECB_ID.get(parameter, "")
 
@@ -78,25 +72,10 @@ def plot_estr(
         series_id, start_date if start_date else "", end_date if end_date else ""
     )
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure()
+    fig.set_title(ID_TO_NAME[series_id])
 
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(ID_TO_NAME[series_id])
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df.values, name=series_id, mode="lines")
 
     if export:
         if "[Percent]" in ID_TO_NAME[series_id]:
@@ -111,7 +90,10 @@ def plot_estr(
             series_id,
             df_transformed,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -120,7 +102,7 @@ def display_ecb_yield_curve(
     yield_type: str = "spot_rate",
     detailed: bool = False,
     any_rating: bool = True,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
@@ -153,8 +135,8 @@ def display_ecb_yield_curve(
         If True, returns detailed data. Note that this is very slow.
     aaa_only: bool
         If True, it only returns rates for AAA rated bonds. If False, it returns rates for all bonds
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     raw : bool
         Output only raw data
     export : str
@@ -164,26 +146,15 @@ def display_ecb_yield_curve(
         date, yield_type, True, detailed, any_rating
     )
     if rates.empty:
-        console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
-        return
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+        return console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
 
-    ax.plot(rates["Maturity"], rates["Rate"], "-o")
-    ax.set_xlabel("Maturity")
-    ax.set_ylabel("Rate (%)")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        ax.set_title(
-            f"Euro Area{' AAA Bonds' if not any_rating else ' All Bonds'} {yield_type.replace('_', ' ').title()} "
-            f"Yield Curve for {date_of_yield}",
-            fontsize=15,
-        )
-        theme.visualize_output()
+    fig = OpenBBFigure(xaxis_title="Maturity", yaxis_title="Rate (%)")
+    fig.set_title(
+        f"Euro Area{' AAA Bonds' if not any_rating else ' All Bonds'} {yield_type.replace('_', ' ').title()} "
+        f"Yield Curve for {date_of_yield}",
+    )
+
+    fig.add_scatter(x=rates["Maturity"], y=rates["Rate"], name="Yield")
 
     if raw:
         print_rich_table(
@@ -193,6 +164,7 @@ def display_ecb_yield_curve(
             title=f"Euro Area{' AAA Bonds' if not any_rating else ' All Bonds'} {yield_type.replace('_', ' ').title()} "
             f"Yield Curve for {date_of_yield}",
             floatfmt=".3f",
+            export=bool(export),
         )
 
     export_data(
@@ -201,4 +173,7 @@ def display_ecb_yield_curve(
         "ecbycrv",
         rates / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

@@ -19,11 +19,8 @@ Expiry:
 [unvl]    vsurf              show 3D volatility surface[/unvl]                                      [YahooFinance]
 [unvl]    grhist             plot option greek history[/unvl]                                       [Syncretism, Intrinio]
 [unvl]    plot               plot variables provided by the user[/unvl]                             [YahooFinance]
-[unvl]    parity             shows whether options are above or below expected price[/unvl]         [YahooFinance]
-[unvl]    binom              shows the value of an option using binomial options pricing[/unvl]     [YahooFinance]
 [unvl]    greeks             shows the greeks for a given option[/unvl]                             [YahooFinance]
 [unvl]    eodchain           gets option chain at a specific date[/unvl]                            [Intrinio]
 
-[unvl]>   pricing            shows options pricing and risk neutral valuation[/unvl]
 [unvl]>   hedge              shows portfolio weights in order to neutralise delta[/unvl]
 

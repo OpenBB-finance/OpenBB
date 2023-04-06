@@ -24,10 +24,7 @@ def vcr_config():
     "nyse",
     [True, False],
 )
-def test_short_interest(mocker, nyse, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_short_interest(nyse, raw):
     quandl_view.short_interest(
         symbol="PM",
         nyse=nyse,

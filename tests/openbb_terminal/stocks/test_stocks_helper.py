@@ -1,11 +1,16 @@
 # IMPORTATION STANDARD
+
 import os
 from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
-from openbb_terminal import helper_funcs
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks import stocks_helper, stocks_view
@@ -39,8 +44,11 @@ def test_quote():
     [True, False],
 )
 def test_search(mocker, use_tab):
-    mocker.patch.object(
-        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
+    preferences = PreferencesModel(USE_TABULATE_DF=use_tab)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     stocks_helper.search(
         query="microsoft",
@@ -127,16 +135,7 @@ def test_load_custom_output_wrong_path(path):
 
 @pytest.mark.default_cassette("test_display_candle")
 @pytest.mark.vcr
-@pytest.mark.parametrize(
-    "use_matplotlib",
-    [True, False],
-)
-def test_display_candle(mocker, use_matplotlib):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
-    mocker.patch("plotly.basedatatypes.BaseFigure.show")
-
+def test_display_candle():
     # LOAD DATA
     ticker = "GME"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
@@ -158,10 +157,7 @@ def test_display_candle(mocker, use_matplotlib):
 
     # DISPLAY CANDLE
     s_ticker = "GME"
-    intraday = False
     stocks_helper.display_candle(
         symbol=s_ticker,
         data=df_stock,
-        use_matplotlib=use_matplotlib,
-        intraday=intraday,
     )

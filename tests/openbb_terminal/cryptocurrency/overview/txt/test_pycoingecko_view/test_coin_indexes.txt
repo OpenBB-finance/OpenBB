@@ -1,16 +1,251 @@
-     Rank         Name          Id                    Market         Last MultiAsset
-81     82        .BADA        BADA       BitMEX (Derivative)      0.44890      False
-49     50       .BADAT       BADAT       BitMEX (Derivative)      0.44883      False
-202   203       .BDOGE       BDOGE       BitMEX (Derivative)      0.05855      False
-8       9       .BEOST       BEOST       BitMEX (Derivative)      1.22222      False
-50     51      .BLINKT      BLINKT       BitMEX (Derivative)      6.87930       None
-125   126        .BOPT        BOPT       BitMEX (Derivative)      0.94240       None
-201   202        .BSOL        BSOL       BitMEX (Derivative)     31.78000       None
-102   103       .BTRXT       BTRXT       BitMEX (Derivative)      0.05965      False
-235   236        .BXBT        BXBT       BitMEX (Derivative)  18938.98000      False
-126   127        .BXRP        BXRP       BitMEX (Derivative)      0.42355       None
-56     57  .DEDYDXUSDT  DEDYDXUSDT  Delta Exchange (Futures)      1.23500       None
-210   211   .DEEOSUSDT   DEEOSUSDT  Delta Exchange (Futures)      1.22200       None
-35     36  .DEKAVAUSDT  DEKAVAUSDT  Delta Exchange (Futures)      1.49300       None
-208   209    .KGALUSDT    KGALUSDT            KuCoin Futures      2.54830      False
-32     33    .KYFIUSDT    KYFIUSDT            KuCoin Futures   8254.20000       None
+     Rank                                 Name                       Id                         Market          Last MultiAsset
+81     82                                .BADA                     BADA            BitMEX (Derivative)      0.448900      False
+49     50                               .BADAT                    BADAT            BitMEX (Derivative)      0.448830      False
+202   203                               .BDOGE                    BDOGE            BitMEX (Derivative)      0.058550      False
+8       9                               .BEOST                    BEOST            BitMEX (Derivative)      1.222220      False
+50     51                              .BLINKT                   BLINKT            BitMEX (Derivative)      6.879300       None
+125   126                                .BOPT                     BOPT            BitMEX (Derivative)      0.942400       None
+201   202                                .BSOL                     BSOL            BitMEX (Derivative)     31.780000       None
+102   103                               .BTRXT                    BTRXT            BitMEX (Derivative)      0.059650      False
+235   236                                .BXBT                     BXBT            BitMEX (Derivative)  18938.980000      False
+126   127                                .BXRP                     BXRP            BitMEX (Derivative)      0.423550       None
+56     57                          .DEDYDXUSDT               DEDYDXUSDT       Delta Exchange (Futures)      1.235000       None
+210   211                           .DEEOSUSDT                DEEOSUSDT       Delta Exchange (Futures)      1.222000       None
+35     36                          .DEKAVAUSDT               DEKAVAUSDT       Delta Exchange (Futures)      1.493000       None
+208   209                            .KGALUSDT                 KGALUSDT                 KuCoin Futures      2.548300      False
+32     33                            .KYFIUSDT                 KYFIUSDT                 KuCoin Futures   8254.200000       None
+195   196                               Amazon                  AMZNPRE              FTX (Derivatives)   2456.900000       None
+88     89     AscendEX  (BitMax) (Futures) EOS                      EOS   AscendEX  (BitMax) (Futures)      1.221550      False
+111   112    AscendEX  (BitMax) (Futures) IOST                     IOST   AscendEX  (BitMax) (Futures)      0.012018       None
+10     11                    BTCC Futures AVAX                     AVAX                   BTCC Futures     17.178800      False
+47     48                     BTCC Futures BCH                      BCH                   BTCC Futures    112.140000      False
+246   247                     BTCC Futures FIL                      FIL                   BTCC Futures      5.466000      False
+2       3                    BTCC Futures LINK                     LINK                   BTCC Futures      6.882000      False
+151   152                  BTCEX (Futures) BTC                      BTC                BTCEX (Futures)  18937.100000       None
+179   180                  BTCEX (Futures) DOT                      DOT                BTCEX (Futures)      6.347000      False
+78     79                  BTCEX (Futures) ETH                      ETH                BTCEX (Futures)   1279.100000       None
+141   142                  BTCEX (Futures) GAL                      GAL                BTCEX (Futures)      2.548000      False
+100   101                 BTCEX (Futures) LINK                     LINK                BTCEX (Futures)      6.880000       None
+123   124                BTCEX (Futures) MATIC                    MATIC                BTCEX (Futures)      0.740900       None
+140   141                  BTCEX (Futures) TRX                      TRX                BTCEX (Futures)      0.059650      False
+73     74                             Balancer                      BAL              FTX (Derivatives)      5.285411       None
+229   230                 Bibox (Futures) ATOM                     ATOM                Bibox (Futures)      1.206000       None
+189   190                  Bibox (Futures) AXS                      AXS                Bibox (Futures)      0.110000       None
+239   240                  Bibox (Futures) BCH                      BCH                Bibox (Futures)     54.723812      False
+198   199                  Bibox (Futures) BSV                      BSV                Bibox (Futures)     13.407576       None
+199   200                 Bibox (Futures) DASH                     DASH                Bibox (Futures)     13.407576       None
+219   220                  Bibox (Futures) EOS                      EOS                Bibox (Futures)      4.476000      False
+194   195                  Bibox (Futures) ETC                      ETC                Bibox (Futures)      0.000000       None
+186   187                 Bibox (Futures) LINK                     LINK                Bibox (Futures)      0.110000       None
+218   219                  Bibox (Futures) NEO                      NEO                Bibox (Futures)      4.476000       None
+238   239                  Bibox (Futures) SOL                      SOL                Bibox (Futures)     54.723812       None
+227   228                Bibox (Futures) SUSHI                    SUSHI                Bibox (Futures)      1.206000       None
+240   241                  Bibox (Futures) UNI                      UNI                Bibox (Futures)     54.723812      False
+188   189                  Bibox (Futures) XRP                      XRP                Bibox (Futures)      0.110000       None
+92     93                   BigONE Futures DOT                      DOT                 BigONE Futures      6.345000       None
+66     67                   BigONE Futures UNI                      UNI                 BigONE Futures      5.756600       None
+84     85            Binance (Futures) 1000XEC                  1000XEC              Binance (Futures)      0.038640      False
+57     58                Binance (Futures) DOT                      DOT              Binance (Futures)      6.343043       None
+58     59                Binance (Futures) ICX                      ICX              Binance (Futures)      0.236534       None
+206   207               Binance (Futures) IOST                     IOST              Binance (Futures)      0.012017       None
+34     35                Binance (Futures) SKL                      SKL              Binance (Futures)      0.038354       None
+67     68                Bit.com (Futures) BTC                      BTC              Bit.com (Futures)  18942.905000      False
+200   201                Bit.com (Futures) ETC                      ETC              Bit.com (Futures)     32.740619       None
+42     43                Bit.com (Futures) FTM                      FTM              Bit.com (Futures)      0.280270      False
+15     16                Bit.com (Futures) GMT                      GMT              Bit.com (Futures)      0.679391      False
+161   162                Bit.com (Futures) MKR                      MKR              Bit.com (Futures)    799.713333      False
+225   226                Bit.com (Futures) ZEC                      ZEC              Bit.com (Futures)     60.905032      False
+150   151                              Bitcoin                      BTC              FTX (Derivatives)  19540.764286      False
+97     98                         Bitcoin Cash                      BCH              FTX (Derivatives)    112.250000      False
+59     60               Bitfinex (Futures) ALG                      ALG             Bitfinex (Futures)      0.353822      False
+37     38              Bitfinex (Futures) DOGE                     DOGE             Bitfinex (Futures)      0.058535       None
+60     61               Bitfinex (Futures) ETH                      ETH             Bitfinex (Futures)   1278.792500      False
+86     87               Bitfinex (Futures) FIL                      FIL             Bitfinex (Futures)      5.471275      False
+212   213               Bitfinex (Futures) ICP                      ICP             Bitfinex (Futures)      6.084775       None
+36     37               Bitfinex (Futures) KNC                      KNC             Bitfinex (Futures)      1.241290       None
+131   132               Bitfinex (Futures) LTC                      LTC             Bitfinex (Futures)     52.842500      False
+110   111              Bitfinex (Futures) NEAR                     NEAR             Bitfinex (Futures)      3.805600       None
+87     88               Bitfinex (Futures) ZEC                      ZEC             Bitfinex (Futures)     54.735998       None
+53     54               Bitforex (Futures) BTC                      BTC             Bitforex (Futures)  18945.010000      False
+134   135                   Bitget Futures BTC                      BTC                 Bitget Futures  18945.497461      False
+115   116                 Bitget Futures MATIC                    MATIC                 Bitget Futures      0.740008       None
+214   215                  Bitmart Futures AXS                      AXS                Bitmart Futures     12.136901       None
+112   113                  Bitmart Futures CHZ                      CHZ                Bitmart Futures      0.243166       None
+174   175                 Bitmart Futures DYDX                     DYDX                Bitmart Futures      1.235278      False
+113   114                  Bitmart Futures ETH                      ETH                Bitmart Futures   1278.976987       None
+215   216                 Bitmart Futures NEAR                     NEAR                Bitmart Futures      3.805207       None
+63     64                  Bitmart Futures VET                      VET                Bitmart Futures      0.022385       None
+162   163                 Bitrue (Futures) ANT                      ANT               Bitrue (Futures)      1.655000       None
+46     47                 Bitrue (Futures) BEL                      BEL               Bitrue (Futures)      0.562000      False
+11     12                 Bitrue (Futures) GMT                      GMT               Bitrue (Futures)      0.617600      False
+48     49                Bitrue (Futures) NEAR                     NEAR               Bitrue (Futures)      3.805000      False
+22     23                 Bitrue (Futures) XLM                      XLM               Bitrue (Futures)      0.115700       None
+5       6                 Bitrue (Futures) ZRX                      ZRX               Bitrue (Futures)      0.270000      False
+85     86                  Bybit (Futures) BCH                      BCH                Bybit (Futures)    112.180000       None
+207   208                 Bybit (Futures) EGLD                     EGLD                Bybit (Futures)     47.120000       None
+130   131                  Bybit (Futures) FTM                      FTM                Bybit (Futures)      0.229000      False
+209   210                  Bybit (Futures) SOL                      SOL                Bybit (Futures)     31.733000      False
+33     34                  Bybit (Futures) UNI                      UNI                Bybit (Futures)      5.747000      False
+180   181                  Bybit (Futures) XEM                      XEM                Bybit (Futures)      0.040000       None
+183   184                  Bybit (Futures) YFI                      YFI                Bybit (Futures)   8253.000000       None
+187   188              CME Bitcoin Futures BTC                      BTC                      CME Group      0.110000      False
+75     76                            Chainlink                     LINK              FTX (Derivatives)      6.881591      False
+118   119                               Chiliz                      CHZ              FTX (Derivatives)      0.243151       None
+45     46                               Coin98                      C98              FTX (Derivatives)      0.373338       None
+164   165                CoinEx (Futures) ATOM                     ATOM               CoinEx (Futures)     14.062200       None
+152   153                 CoinEx (Futures) BNB                      BNB               CoinEx (Futures)    266.640000      False
+1       2                 CoinEx (Futures) BTC                      BTC               CoinEx (Futures)  18950.510000       None
+157   158                 CoinEx (Futures) EOS                      EOS               CoinEx (Futures)      1.218600      False
+80     81                 CoinEx (Futures) ETH                      ETH               CoinEx (Futures)   1279.940000      False
+16     17                CoinEx (Futures) ROSE                     ROSE               CoinEx (Futures)      0.057176      False
+165   166                CoinEx (Futures) SCRT                     SCRT               CoinEx (Futures)      0.972600       None
+156   157               CoinEx (Futures) SUSHI                    SUSHI               CoinEx (Futures)      1.065600      False
+154   155                 CoinEx (Futures) SXP                      SXP               CoinEx (Futures)      0.332300      False
+17     18                 CoinEx (Futures) UNI                      UNI               CoinEx (Futures)      5.718700      False
+18     19                 CoinEx (Futures) ZRX                      ZRX               CoinEx (Futures)      0.269566      False
+192   193            CoinFLEX (Futures) BCHABC                   BCHABC             CoinFLEX (Futures)      0.000000       None
+168   169               CoinFLEX (Futures) BTC                      BTC             CoinFLEX (Futures)  18937.000000       None
+224   225                 CoinFLEX (Futures) D                        D             CoinFLEX (Futures)      4.476000      False
+184   185               CoinFLEX (Futures) DFN                      DFN             CoinFLEX (Futures)   8253.000000       None
+153   154              CoinTiger (Futures) GAL                      GAL            CoinTiger (Futures)      2.560546      False
+163   164              CoinTiger (Futures) SKL                      SKL            CoinTiger (Futures)      0.038325       None
+120   121                       Compound Token                     COMP              FTX (Derivatives)     54.690521       None
+71     72  Crypto.com Exchange (Futures) ALPHA                    ALPHA  Crypto.com Exchange (Futures)      0.107190      False
+72     73  Crypto.com Exchange (Futures) BOSON                    BOSON  Crypto.com Exchange (Futures)      0.225400      False
+95     96   Crypto.com Exchange (Futures) COTI                     COTI  Crypto.com Exchange (Futures)      0.097236       None
+96     97  Crypto.com Exchange (Futures) MATIC                    MATIC  Crypto.com Exchange (Futures)      0.741120       None
+119   120                           DeFi Index                     DEFI              FTX (Derivatives)   2524.463457       True
+6       7           Deepcoin (Derivatives) C98                      C98         Deepcoin (Derivatives)      0.373393       None
+7       8           Deepcoin (Derivatives) CHZ                      CHZ         Deepcoin (Derivatives)      0.242670       None
+13     14          Deepcoin (Derivatives) COMP                     COMP         Deepcoin (Derivatives)     54.733974      False
+12     13           Deepcoin (Derivatives) GMT                      GMT         Deepcoin (Derivatives)      0.617467      False
+241   242                   Delta Exchange ADA                      ADA       Delta Exchange (Futures)      0.000005       None
+242   243                   Delta Exchange BCH                      BCH       Delta Exchange (Futures)    315.526644       None
+143   144                         Deribit ALGO                     ALGO                        Deribit      0.353500       None
+9      10                          Deribit ETH                      ETH                        Deribit   1279.130000      False
+14     15                         Deribit LINK                     LINK                        Deribit      6.883100      False
+137   138                             Dogecoin                     DOGE              FTX (Derivatives)      0.058538      False
+74     75                                  EOS                      EOS              FTX (Derivatives)      1.222233      False
+243   244                               ETHG20                   ETHG20                 BTSE (Futures)    223.409277       None
+228   229                             FMex ETH                      ETH                           FMex      1.206000       None
+21     22                                  FTT                      FTT              FTX (Derivatives)     23.060638      False
+221   222              GMO Japan (Futures) BCH                      BCH            GMO Japan (Futures)      4.476000      False
+220   221              GMO Japan (Futures) BTC                      BTC            GMO Japan (Futures)      4.476000      False
+222   223              GMO Japan (Futures) ETH                      ETH            GMO Japan (Futures)      4.476000      False
+223   224              GMO Japan (Futures) XRP                      XRP            GMO Japan (Futures)      4.476000      False
+106   107               Gate.io (Futures) ARPA                     ARPA              Gate.io (Futures)      0.033251       None
+19     20                Gate.io (Futures) BCH                      BCH              Gate.io (Futures)    112.210000      False
+236   237                Gate.io (Futures) C98                      C98              Gate.io (Futures)      0.373023       None
+25     26               Gate.io (Futures) COTI                     COTI              Gate.io (Futures)      0.097103       None
+103   104                Gate.io (Futures) CRU                      CRU              Gate.io (Futures)      0.700600      False
+166   167               Gate.io (Futures) FLUX                     FLUX              Gate.io (Futures)      0.948860      False
+105   106               Gate.io (Futures) KAVA                     KAVA              Gate.io (Futures)      1.491200       None
+247   248                Gate.io (Futures) KSM                      KSM              Gate.io (Futures)     41.359300       None
+144   145               Gate.io (Futures) SERO                     SERO              Gate.io (Futures)      0.073940       None
+23     24              Gate.io (Futures) WAVES                    WAVES              Gate.io (Futures)      3.980600      False
+51     52                Gate.io (Futures) XLM                      XLM              Gate.io (Futures)      0.115741      False
+158   159                Gate.io (Futures) ZEC                      ZEC              Gate.io (Futures)     54.730000      False
+107   108                Gate.io (Futures) ZEN                      ZEN              Gate.io (Futures)     13.810300       None
+101   102                 Helix (Futures) ATOM                     ATOM                Helix (Futures)     14.169900      False
+142   143                  Helix (Futures) BTC                      BTC                Helix (Futures)  18935.960000       None
+79     80                  Helix (Futures) ETH                      ETH                Helix (Futures)   1278.990000       None
+124   125                  Helix (Futures) INJ                      INJ                Helix (Futures)      1.513150       None
+226   227                 Helix (Futures) OSMO                     OSMO                Helix (Futures)      1.206000       None
+38     39                            Hopex ETH                      ETH                          Hopex   1279.110000       None
+61     62                          Hopex MATIC                    MATIC                          Hopex      0.740400      False
+82     83                    Huobi Futures BNB                      BNB                  Huobi Futures    266.767501      False
+181   182                    Huobi Futures BTC                      BTC                  Huobi Futures  18940.485000       None
+237   238                   Huobi Futures COMP                     COMP                  Huobi Futures     54.723812       None
+167   168                    Huobi Futures CRV                      CRV                  Huobi Futures      0.906632       None
+248   249                    Huobi Futures LTC                      LTC                  Huobi Futures     52.840321       None
+27     28                   Huobi Futures SHIB                     SHIB                  Huobi Futures      0.000011       None
+52     53                    Huobi Futures SRM                      SRM                  Huobi Futures      0.758725       None
+203   204                  Huobi Futures THETA                    THETA                  Huobi Futures      1.072281       None
+182   183                    Huobi Futures VET                      VET                  Huobi Futures      0.022397       None
+249   250                    Huobi Futures VRA                      VRA                  Huobi Futures      0.004008       None
+26     27                    Huobi Futures XTZ                      XTZ                  Huobi Futures      1.464156       None
+24     25                      Kraken Futures            KrakenFutures-               Kraken (Futures)     74.860000      False
+155   156             Kraken Futures rr_bchusd  KrakenFutures-rr_bchusd               Kraken (Futures)    112.100000      False
+104   105             Kraken Futures rr_xrpusd  KrakenFutures-rr_xrpusd               Kraken (Futures)      0.423200      False
+191   192          MEXC Global (Futures) ATLAS                    ATLAS          MEXC Global (Futures)      4.543600       None
+41     42            MEXC Global (Futures) BNB                      BNB          MEXC Global (Futures)    266.810000       None
+147   148           MEXC Global (Futures) DUSK                     DUSK          MEXC Global (Futures)      0.112600       None
+64     65            MEXC Global (Futures) HNT                      HNT          MEXC Global (Futures)      4.813000       None
+216   217             MEXC Global (Futures) HT                       HT          MEXC Global (Futures)      4.476000      False
+133   134          MEXC Global (Futures) JASMY                    JASMY          MEXC Global (Futures)      0.007167       None
+44     45           MEXC Global (Futures) NEAR                     NEAR          MEXC Global (Futures)      3.804400      False
+114   115           MEXC Global (Futures) SAND                     SAND          MEXC Global (Futures)      0.839930      False
+43     44            MEXC Global (Futures) TRB                      TRB          MEXC Global (Futures)     13.970000       None
+65     66            MEXC Global (Futures) XMR                      XMR          MEXC Global (Futures)    138.970000       None
+91     92            MEXC Global (Futures) YFI                      YFI          MEXC Global (Futures)   8253.500000       None
+196   197                      MyCoinStory SUN                      SUN                            MCS     13.407576       None
+76     77                                 NEAR                     NEAR              FTX (Derivatives)      3.808207       None
+99    100                                  OKB                      OKB              FTX (Derivatives)     14.901096      False
+204   205                    OKX (Futures) APE                      APE                  OKX (Futures)      5.770100      False
+108   109                   OKX (Futures) BICO                     BICO                  OKX (Futures)      0.429700       None
+127   128                    OKX (Futures) BSV                      BSV                  OKX (Futures)     48.990000       None
+31     32                    OKX (Futures) BTC                      BTC                  OKX (Futures)  18942.000000      False
+146   147                    OKX (Futures) CHZ                      CHZ                  OKX (Futures)      0.243060      False
+171   172                    OKX (Futures) CRO                      CRO                  OKX (Futures)      0.105010      False
+83     84                   OKX (Futures) DASH                     DASH                  OKX (Futures)     41.100000       None
+128   129                   OKX (Futures) DOGE                     DOGE                  OKX (Futures)      0.058560      False
+29     30                   OKX (Futures) EGLD                     EGLD                  OKX (Futures)     47.160000       None
+109   110                    OKX (Futures) EOS                      EOS                  OKX (Futures)      1.222400      False
+172   173                    OKX (Futures) ETC                      ETC                  OKX (Futures)     28.557000       None
+173   174                   OKX (Futures) GALA                     GALA                  OKX (Futures)      0.042040      False
+169   170                    OKX (Futures) GMT                      GMT                  OKX (Futures)      0.618000      False
+55     56                   OKX (Futures) IOST                     IOST                  OKX (Futures)      0.012021       None
+30     31                   OKX (Futures) MANA                     MANA                  OKX (Futures)      0.705000      False
+129   130                   OKX (Futures) NEAR                     NEAR                  OKX (Futures)      3.804700       None
+28     29                    OKX (Futures) NYM                      NYM                  OKX (Futures)      0.294600       None
+170   171                    OKX (Futures) OMG                      OMG                  OKX (Futures)      1.726300       None
+145   146                    OKX (Futures) ONT                      ONT                  OKX (Futures)      0.220000      False
+54     55                   OKX (Futures) QTUM                     QTUM                  OKX (Futures)      2.836100       None
+160   161                    OKX (Futures) UMA                      UMA                  OKX (Futures)      2.365000       None
+159   160                    OKX (Futures) YGG                      YGG                  OKX (Futures)      0.376700       None
+205   206                    OKX (Futures) ZEC                      ZEC                  OKX (Futures)     54.700000       None
+178   179                          OMG Network                      OMG              FTX (Derivatives)      1.728116      False
+121   122                             Optimism                       OP              FTX (Derivatives)      0.943819       None
+185   186               Perpetual Protocol ZIL                      ZIL             Perpetual Protocol      0.110000       None
+39     40                 Phemex (Futures) ADA                      ADA               Phemex (Futures)      0.448700      False
+40     41                 Phemex (Futures) APE                      APE               Phemex (Futures)      5.765500      False
+132   133                 Phemex (Futures) CRV                      CRV               Phemex (Futures)      0.906500      False
+90     91                 Phemex (Futures) ICP                      ICP               Phemex (Futures)      6.086000       None
+213   214               Phemex (Futures) OCEAN                    OCEAN               Phemex (Futures)      0.153300       None
+89     90                Phemex (Futures) RUNE                     RUNE               Phemex (Futures)      1.608700      False
+211   212           Phemex (Futures) U1000DENT                U1000DENT               Phemex (Futures)      0.934000      False
+62     63                 Phemex (Futures) XRP                      XRP               Phemex (Futures)      0.423300       None
+175   176                 Poloniex Futures ETH                      ETH               Poloniex Futures   1278.590000       None
+231   232                        Prime XBT ADA                      ADA                      Prime XBT      1.206000      False
+233   234                        Prime XBT AXS                      AXS                      Prime XBT      1.206000       None
+217   218                        Prime XBT COV                      COV                      Prime XBT      4.476000       None
+230   231                        Prime XBT EOS                      EOS                      Prime XBT      1.206000      False
+245   246                       Prime XBT LINK                     LINK                      Prime XBT    223.409277       None
+244   245                        Prime XBT LTC                      LTC                      Prime XBT    223.409277      False
+197   198                        Prime XBT UNI                      UNI                      Prime XBT     13.407576      False
+193   194                       Prime XBT USDC                     USDC                      Prime XBT      0.000000       None
+232   233                       Prime XBT USDT                     USDT                      Prime XBT      1.206000       None
+98     99                        Privacy Index                     PRIV              FTX (Derivatives)    911.341019       True
+77     78                       Shitcoin Index                     SHIT              FTX (Derivatives)   2358.426900       True
+149   150                               Solana                      SOL              FTX (Derivatives)     31.795556       None
+122   123                                  TRX                      TRX              FTX (Derivatives)      0.059664      False
+139   140                        Uniswap Index                  UNISWAP              FTX (Derivatives)  13869.314587       None
+138   139               Uniswap Protocol Token                      UNI              FTX (Derivatives)      5.754254       None
+4       5            WOO Network (Futures) ADA                      ADA          WOO Network (Futures)      0.448523      False
+3       4          WOO Network (Futures) SUSHI                    SUSHI          WOO Network (Futures)      1.065130      False
+177   178                                Waves                    WAVES              FTX (Derivatives)      3.982429       None
+20     21                 ZB (Derivatives) FIL                      FIL               ZB (Derivatives)      8.390000      False
+0       1              ZB (Derivatives) PEOPLE                   PEOPLE               ZB (Derivatives)      0.029730      False
+190   191                      ZBG Futures BSV                      BSV                    ZBG Futures      0.110000       None
+234   235             dYdX Perpetual (L1) WETH                     WETH            dYdX Perpetual (L1)      1.206000       None
+68     69                  dYdX Perpetual AAVE                     AAVE                 dYdX Perpetual     74.950000       None
+69     70                  dYdX Perpetual ATOM                     ATOM                 dYdX Perpetual     14.162000       None
+176   177                   dYdX Perpetual BCH                      BCH                 dYdX Perpetual    112.230000      False
+93     94                  dYdX Perpetual COMP                     COMP                 dYdX Perpetual     54.695500      False
+135   136                   dYdX Perpetual CRV                      CRV                 dYdX Perpetual      0.906500       None
+70     71                   dYdX Perpetual DOT                      DOT                 dYdX Perpetual      6.346800      False
+94     95                   dYdX Perpetual ETC                      ETC                 dYdX Perpetual     28.526900       None
+148   149                   dYdX Perpetual FIL                      FIL                 dYdX Perpetual      5.474000      False
+116   117                  dYdX Perpetual LINK                     LINK                 dYdX Perpetual      6.880900       None
+136   137                   dYdX Perpetual LTC                      LTC                 dYdX Perpetual     52.853800      False
+117   118                   dYdX Perpetual ZEC                      ZEC                 dYdX Perpetual     54.709500       None

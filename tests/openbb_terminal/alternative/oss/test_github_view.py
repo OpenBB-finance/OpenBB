@@ -23,9 +23,6 @@ def test_display_star_history(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.alternative.oss.github_view.export_data")
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     github_view.display_star_history(repo="openbb-finance/openbbterminal")
 
 
@@ -34,9 +31,6 @@ def test_display_star_history(mocker):
 def test_display_top_repos(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.alternative.oss.github_view.export_data")
-
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     github_view.display_top_repos(sortby="stars", categories="", limit=10)
 

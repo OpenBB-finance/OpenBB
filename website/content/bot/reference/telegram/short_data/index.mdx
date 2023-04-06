@@ -1,0 +1,32 @@
+# short_data
+
+import ReferenceCard from "@site/src/components/General/ReferenceCard";
+
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+
+<ReferenceCard
+    title="borrowed"
+    description="Displays history of borrowed shares available and fee."
+    url="/bot/reference/telegram/short_data/borrowed"
+/>
+<ReferenceCard
+    title="hsi"
+    description="Show top high short interest stocks of over 20% ratio."
+    url="/bot/reference/telegram/short_data/hsi"
+/>
+<ReferenceCard
+    title="shortrate"
+    description="Display Short shares spot borrow rate sourced from Interactive Brokers"
+    url="/bot/reference/telegram/short_data/shortrate"
+/>
+<ReferenceCard
+    title="shortvol"
+    description="Graph of 30 day history of short volume vs vol."
+    url="/bot/reference/telegram/short_data/shortvol"
+/>
+<ReferenceCard
+    title="topshortvol"
+    description="Top 15 Short Interest Stocks per Finra"
+    url="/bot/reference/telegram/short_data/topshortvol"
+/>
+</ul>

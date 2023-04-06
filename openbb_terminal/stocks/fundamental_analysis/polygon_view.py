@@ -4,15 +4,11 @@ import logging
 import os
 from typing import Optional
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.stocks import stocks_helper
@@ -54,6 +50,8 @@ def display_fundamentals(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     fundamentals = polygon_model.get_financials(symbol, statement, quarterly, ratios)
     title_str = {
         "balance": "Balance Sheet",
@@ -89,23 +87,30 @@ def display_fundamentals(
         fundamentals_plot_data = fundamentals_plot_data.transpose()
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            fundamentals_plot_data[plot[0]].plot()
+            fig.add_scatter(
+                x=fundamentals_plot_data.index,
+                y=fundamentals_plot_data[plot[0]],
+                name=plot[0].replace("_", " "),
+            )
             title = (
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
                 else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
+            fig.set_title(title)
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].plot(fundamentals_plot_data[plot[i]])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.add_scatter(
+                    x=fundamentals_plot_data.index,
+                    y=fundamentals_plot_data[plot[i]],
+                    name=plot[i].replace("_", " "),
+                    row=i + 1,
+                    col=1,
+                )
+                fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
+
+        fig.show(external=fig.is_image_export(export))
     else:
         # Snake case to english
         fundamentals.index = fundamentals.index.to_series().apply(
@@ -120,6 +125,7 @@ def display_fundamentals(
             title=f"{symbol} {title_str}"
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} {title_str}",
+            export=bool(export),
         )
 
     export_data(
@@ -128,4 +134,5 @@ def display_fundamentals(
         statement,
         fundamentals,
         sheet_name,
+        fig,
     )

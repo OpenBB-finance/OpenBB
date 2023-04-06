@@ -8,7 +8,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.futures import databento_view, yfinance_model, yfinance_view
@@ -58,7 +58,7 @@ class FuturesController(BaseController):
         self.all_exchanges = yfinance_model.FUTURES_DATA["Exchange"].unique().tolist()
         self.all_categories = yfinance_model.FUTURES_DATA["Category"].unique().tolist()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
 
             self.choices["historical"].update({c: None for c in self.all_tickers})

@@ -3,21 +3,16 @@ import logging
 import os
 
 # IMPORTATION THIRDPARTY
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
+from openbb_terminal import OpenBBFigure
+
 # IMPORTATION INTERNAL
-import openbb_terminal.config_plot as cfp
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.op_helpers import (
     calculate_max_pain,
@@ -52,6 +47,7 @@ def print_raw(
     title: str,
     calls_only: bool = False,
     puts_only: bool = False,
+    export: str = "",
 ):
     if not puts_only:
         calls = calls.copy().drop(columns=["optionType"])
@@ -60,6 +56,7 @@ def print_raw(
             headers=list(calls.columns),
             show_index=False,
             title=f"{title} - Calls",
+            export=bool(export),
         )
     if not calls_only:
         puts = puts.copy().drop(columns=["optionType"])
@@ -68,6 +65,7 @@ def print_raw(
             headers=list(puts.columns),
             show_index=False,
             title=f"{title} - Puts",
+            export=bool(export),
         )
 
 
@@ -84,7 +82,7 @@ def plot_vol(
     raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot volume
 
@@ -110,8 +108,8 @@ def plot_vol(
         Format to export file
     sheet_name: str
         Optionally specify the name of the sheet to export to
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
 
     Examples
@@ -129,45 +127,29 @@ def plot_vol(
     calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
-
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    if not puts_only:
-        ax.plot(
-            calls.strike,
-            calls["volume"] / 1000,
-            ls="-",
-            marker="o",
-            label="Calls",
-        )
-    if not calls_only:
-        ax.plot(
-            puts.strike,
-            puts["volume"] / 1000,
-            ls="-",
-            marker="o",
-            label="Puts",
-        )
-
-    ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
-    ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Volume (1k) ")
-    ax.set_xlim(min_strike, max_strike)
-    ax.legend(loc="best", fontsize="x-small")
     title = f"Volume for {symbol.upper()} expiring {expiry}"
-    ax.set_title(title)
-
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
 
     if raw:
-        print_raw(calls, puts, title, calls_only, puts_only)
+        print_raw(calls, puts, title, calls_only, puts_only, export=export)
+
+    fig = OpenBBFigure(
+        xaxis=dict(title="Strike Price", range=[min_strike, max_strike]),
+        yaxis_title="Volume [1k]",
+    )
+    fig.set_title(title)
+
+    if not puts_only:
+        call_v = calls.set_index("strike")["volume"] / 1000
+        fig.add_scatter(
+            x=call_v.index, y=call_v.values, mode="lines+markers", name="Calls"
+        )
+    if not calls_only:
+        put_v = puts.set_index("strike")["volume"] / 1000
+        fig.add_scatter(
+            x=put_v.index, y=put_v.values, mode="lines+markers", name="Puts"
+        )
+
+    fig.add_vline(x=current_price, line_dash="dash", line_width=2, name="Current Price")
 
     export_data(
         export,
@@ -175,7 +157,10 @@ def plot_vol(
         f"vol_{symbol}_{expiry}",
         chain,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -191,7 +176,7 @@ def plot_oi(
     raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot open interest
 
@@ -217,8 +202,8 @@ def plot_oi(
         Format to export file
     sheet_name: str
         Optionally specify the name of the sheet to export to
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -236,46 +221,38 @@ def plot_oi(
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
     max_pain = get_max_pain(calls, puts)
-
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    if not puts_only:
-        ax.plot(
-            calls.strike,
-            calls["openInterest"] / 1000,
-            ls="-",
-            marker="o",
-            label="Calls",
-        )
-    if not calls_only:
-        ax.plot(
-            puts.strike,
-            puts["openInterest"] / 1000,
-            ls="-",
-            marker="o",
-            label="Puts",
-        )
-
-    ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
-    ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
-    ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Open Interest (1k) ")
-    ax.set_xlim(min_strike, max_strike)
-    ax.legend(loc="best", fontsize="x-small")
     title = f"Open Interest for {symbol.upper()} expiring {expiry}"
-    ax.set_title(title)
-
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
 
     if raw:
-        print_raw(calls, puts, title, calls_only, puts_only)
+        print_raw(calls, puts, title, calls_only, puts_only, export=export)
+
+    fig = OpenBBFigure(
+        xaxis=dict(title="Strike Price", range=[min_strike, max_strike]),
+        yaxis_title="Open Interest (1k) ",
+    )
+    fig.set_title(title)
+
+    if not puts_only:
+        call_oi = calls.set_index("strike")["openInterest"] / 1000
+        fig.add_scatter(
+            x=call_oi.index, y=call_oi.values, mode="lines+markers", name="Calls"
+        )
+    if not calls_only:
+        put_oi = puts.set_index("strike")["openInterest"] / 1000
+        fig.add_scatter(
+            x=put_oi.index, y=put_oi.values, mode="lines+markers", name="Puts"
+        )
+
+    fig.add_vline_legend(
+        x=current_price,
+        name="Current Price",
+        line=dict(dash="dash", width=2, color="grey"),
+    )
+    fig.add_vline_legend(
+        x=max_pain,
+        name=f"Max Pain: {max_pain}",
+        line=dict(dash="dash", width=2, color="white"),
+    )
 
     export_data(
         export,
@@ -283,7 +260,10 @@ def plot_oi(
         f"oi_{symbol}_{expiry}",
         chain,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -297,7 +277,7 @@ def plot_voi(
     raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot volume and open interest
 
@@ -319,8 +299,8 @@ def plot_voi(
         Format for exporting data
     sheet_name: str
         Optionally specify the name of the sheet to export to
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -334,10 +314,12 @@ def plot_voi(
             expiry="2023-07-21",
         )
     """
+    get_current_user()
     calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
     max_pain = get_max_pain(calls, puts)
+    title = f"Volume and Open Interest for {symbol.upper()} expiring {expiry}"
 
     option_chain = pd.merge(
         calls[["volume", "strike", "openInterest"]],
@@ -361,57 +343,50 @@ def plot_voi(
         option_chain[["openInterest_call", "volume_call"]] / 1000
     )
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Volume", xaxis_title="Strike Price")
+    fig.set_title(title)
 
-    ax.bar(
-        option_chain.strike,
-        option_chain.openInterest_call,
-        color="green",
-        label="Calls: OI",
+    fig.add_bar(
+        x=option_chain.strike,
+        y=option_chain.openInterest_call,
+        name="Calls: Open Interest",
+        marker_color="lightgreen",
     )
-    ax.bar(
-        option_chain.strike,
-        option_chain.volume_call,
-        color="lightgreen",
-        label="Calls: Vol",
+    fig.add_bar(
+        x=option_chain.strike,
+        y=option_chain.volume_call,
+        name="Calls: Volume",
+        marker_color="green",
+    )
+    fig.add_bar(
+        x=option_chain.strike,
+        y=option_chain.openInterest_put,
+        name="Puts: Open Interest",
+        marker_color="pink",
+    )
+    fig.add_bar(
+        x=option_chain.strike,
+        y=option_chain.volume_put,
+        name="Puts: Volume",
+        marker_color="red",
+    )
+    fig.add_vline_legend(
+        x=current_price,
+        name="Current stock price",
+        line=dict(dash="dash", width=2, color="white"),
+    )
+    fig.add_vline_legend(
+        x=max_pain,
+        name=f"Max pain = {max_pain}",
+        line=dict(dash="dash", width=2, color="red"),
     )
 
-    ax.bar(
-        option_chain.strike,
-        option_chain.openInterest_put,
-        color="red",
-        label="Puts: OI",
+    fig.update_layout(
+        barmode="relative", hovermode="y unified", xaxis_range=[min_strike, max_strike]
     )
-    ax.bar(
-        option_chain.strike,
-        option_chain.volume_put,
-        color="pink",
-        label="Puts: Vol",
-    )
-
-    ax.axvline(
-        current_price, lw=2, ls="--", label=f"Current Price: {current_price}", alpha=0.7
-    )
-    ax.axvline(max_pain, lw=2, ls="--", label=f"Max Pain: {max_pain:.2f}", alpha=0.7)
-    ax.set_xlabel("Strike Price")
-    ax.set_ylabel("Volume or OI (1k)")
-    ax.set_yticklabels([f"{x:,.0f}".replace("-", "") for x in ax.get_yticks().tolist()])
-    ax.set_xlim(min_strike, max_strike)
-    ax.legend(loc="best", fontsize="xx-small")
-    title = f"Volume and Open Interest for {symbol.upper()} expiring {expiry}"
-    ax.set_title(title)
-
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
 
     if raw:
-        print_raw(calls, puts, title)
+        print_raw(calls, puts, title, export=export)
 
     export_data(
         export,
@@ -419,7 +394,10 @@ def plot_voi(
         f"voi_{symbol}_{expiry}",
         chain,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -499,7 +477,7 @@ def display_chains(
         else:
             console.print("Greeks currently not supported without IV.")
 
-    print_raw(calls, puts, "Option chain", calls_only, puts_only)
+    print_raw(calls, puts, "Option chain", calls_only, puts_only, export=export)
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "chain", chain, sheet_name

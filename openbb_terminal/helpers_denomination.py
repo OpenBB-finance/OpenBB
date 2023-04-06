@@ -36,11 +36,17 @@ def transform(
         df: pd.DataFrame, source: DENOMINATION, target: DENOMINATION
     ) -> pd.DataFrame:
         multiplier = get_denominations()[source] / get_denominations()[target]
-        df = df.astype(float)
+
+        df[df.select_dtypes(include=["number"]).columns] = df.select_dtypes(
+            include=["number"]
+        ).apply(pd.to_numeric, downcast="float")
+
         return df.apply(
             lambda series: series
             if skipPredicate is not None and skipPredicate(series)
-            else series * multiplier,
+            else series * multiplier
+            if isinstance(series, (float, int))
+            else series,
             axis,
         )
 

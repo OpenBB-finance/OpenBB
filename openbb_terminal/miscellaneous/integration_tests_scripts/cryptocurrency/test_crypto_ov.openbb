@@ -90,6 +90,7 @@ wfpe -c ${crypto_full=ethereum}
 altindex
 altindex --period 30 --since 2020-10-25 --until 2021-12-01
 
+btcrb
 
 # ch
 ch
@@ -102,5 +103,7 @@ cr -t borrow --limit 1
 cr --cryptocurrrencies ZRX
 cr --platforms Compound
 cr --cryptocurrrencies ZRX --platforms Compound
+
+fun --metric market_cap
 
 exit

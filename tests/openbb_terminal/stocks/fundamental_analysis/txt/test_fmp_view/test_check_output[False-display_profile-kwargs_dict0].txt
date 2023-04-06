@@ -1,12 +1,12 @@
                                                   0
 symbol                                           PM
-price                                        103.51
-beta                                       0.712591
-volAvg                                      4902222
-mktCap                                 160461208625
+price                                          98.5
+beta                                       0.709205
+volAvg                                      4480064
+mktCap                                 152697656576
 lastDiv                                        5.04
-range                                  82.85-112.48
-changes                                       -1.88
+range                                  82.85-109.81
+changes                                        -1.6
 companyName        Philip Morris International Inc.
 currency                                        USD
 cik                                      0001413329

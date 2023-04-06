@@ -9,12 +9,13 @@ from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
+    lower_str,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -61,7 +62,7 @@ class FundController(BaseController):
         self.end_date = ""
         self.start_date = ""
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             choices["country"].update({c: {} for c in self.fund_countries})
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -79,7 +80,7 @@ class FundController(BaseController):
         mt = MenuText("funds/")
         mt.add_cmd("country")
         mt.add_raw("\n")
-        mt.add_param("_country", self.country.title())
+        mt.add_param("_country", self.country)
         mt.add_raw("\n")
         mt.add_cmd("search")
         mt.add_cmd("load")
@@ -181,29 +182,26 @@ class FundController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="country",
-            description="Set a country for funds",
+            description="Set a country for funds.",
         )
         parser.add_argument(
             "-n",
             "--name",
-            type=str,
+            type=lower_str,
             choices=self.fund_countries,
             dest="name",
             help="country to select",
-            default="",
+            default="united_states",
+            metavar="NAME",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            country_candidate = ns_parser.name
-            if country_candidate.lower() in self.fund_countries:
+            country_candidate = ns_parser.name.lower()
+            if country_candidate in self.fund_countries:
                 self.country = country_candidate
-                console.print(f"{country_candidate.title()} selected.")
-            else:
-                console.print(
-                    f'" {country_candidate.title()} " not a valid country to select.'
-                )
+                console.print(f"'{country_candidate}' selected.")
 
         return self.queue
 

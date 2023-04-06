@@ -7,7 +7,7 @@ import logging
 import os
 from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
 from openbb_terminal.cryptocurrency.crypto_views import find
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
@@ -86,7 +86,7 @@ class CryptoController(CryptoBaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             choices["load"] = {
@@ -290,15 +290,7 @@ class CryptoController(CryptoBaseController):
             if not self.symbol:
                 console.print("No coin loaded. First use `load {symbol}`\n")
                 return
-            export_data(
-                ns_parser.export,
-                os.path.join(os.path.dirname(os.path.abspath(__file__))),
-                f"{self.symbol}",
-                self.current_df,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-            )
-
-            plot_chart(
+            figure = plot_chart(
                 exchange=self.exchange,
                 source=self.source,
                 to_symbol=self.symbol,
@@ -306,6 +298,15 @@ class CryptoController(CryptoBaseController):
                 prices_df=self.current_df,
                 interval=self.current_interval,
                 yscale="log" if ns_parser.logy else "linear",
+                external_axes=ns_parser.is_image,
+            )
+            export_data(
+                ns_parser.export,
+                os.path.join(os.path.dirname(os.path.abspath(__file__))),
+                f"{self.symbol}",
+                self.current_df,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                figure=figure,
             )
 
     @log_start_end(log=logger)

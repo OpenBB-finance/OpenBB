@@ -9,7 +9,7 @@ import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 def load_stock_intrinio(
     symbol: str, start_date: datetime, end_date: datetime
 ) -> pd.DataFrame:
-    intrinio.ApiClient().set_api_key(cfg.API_INTRINIO_KEY)
+    intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)
     api = intrinio.SecurityApi()
     stock = api.get_security_stock_prices(
         symbol.upper(),
@@ -67,7 +67,10 @@ def load_stock_av(
     interval_min: str = "1min",
 ) -> pd.DataFrame:
     try:
-        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+        ts = TimeSeries(
+            key=get_current_user().credentials.API_KEY_ALPHAVANTAGE,
+            output_format="pandas",
+        )
         if interval == "Minute":
             df_stock_candidate: pd.DataFrame = ts.get_intraday(
                 symbol=symbol, interval=interval_min
@@ -178,7 +181,7 @@ def load_stock_eodhd(
         f"{start_date.strftime('%Y-%m-%d')}&"
         f"to={end_date.strftime('%Y-%m-%d')}&"
         f"period={int_}&"
-        f"api_token={cfg.API_EODHD_KEY}&"
+        f"api_token={get_current_user().credentials.API_EODHD_KEY}&"
         f"fmt=json&"
         f"order=d"
     )
@@ -234,7 +237,7 @@ def load_stock_polygon(
         f"https://api.polygon.io/v2/aggs/ticker/"
         f"{symbol.upper()}/range/1/{timespan}/"
         f"{start_date.strftime('%Y-%m-%d')}/{end_date.strftime('%Y-%m-%d')}?adjusted=true"
-        f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+        f"&sort=desc&limit=49999&apiKey={get_current_user().credentials.API_POLYGON_KEY}"
     )
     r = request(request_url)
     if r.status_code != 200:
@@ -287,7 +290,9 @@ def get_quote(symbol: str) -> pd.DataFrame:
     df_fa = pd.DataFrame()
 
     try:
-        df_fa = fa.quote(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa = fa.quote(
+            symbol, get_current_user().credentials.API_KEY_FINANCIALMODELINGPREP
+        )
     # Invalid API Keys
     except ValueError:
         console.print("[red]Invalid API Key[/red]\n")

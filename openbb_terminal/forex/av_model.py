@@ -7,7 +7,7 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_timezone, request
 from openbb_terminal.rich_config import console
@@ -72,7 +72,7 @@ def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict[str, Any
         "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE"
         + f"&from_currency={from_symbol}"
         + f"&to_currency={to_symbol}"
-        + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        + f"&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     )
 
     response = request(url)
@@ -127,7 +127,7 @@ def get_historical(
     d_res = {"i": "FX_INTRADAY", "d": "FX_DAILY", "w": "FX_WEEKLY", "m": "FX_MONTHLY"}
 
     url = f"https://www.alphavantage.co/query?function={d_res[resolution]}&from_symbol={from_symbol}"
-    url += f"&to_symbol={to_symbol}&outputsize=full&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url += f"&to_symbol={to_symbol}&outputsize=full&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     if resolution == "i":
         url += f"&interval={interval}min"
 

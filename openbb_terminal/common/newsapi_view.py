@@ -45,7 +45,7 @@ def display_news(
     tables = newsapi_model.get_news(query, limit, start_date, show_newest, sources)
     if tables:
         for table in tables:
-            print_rich_table(table[0], title=table[1]["title"])
+            print_rich_table(table[0], title=table[1]["title"], export=bool(export))
 
     export_data(
         export,

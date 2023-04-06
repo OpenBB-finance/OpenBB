@@ -19,7 +19,7 @@ from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 
-# pylint: disable=C0302,too-many-arguments
+# pylint: disable=C0302,too-many-arguments,too-many-boolean-expressions
 
 
 logger = logging.getLogger(__name__)
@@ -83,22 +83,41 @@ class CreateExcelFA:
             "CF": self.get_data("CF", self.starts["CF"], False),
         }
 
+        df_not_created = (
+            (not isinstance(self.df["BS"], pd.DataFrame) and not self.df["BS"])
+            and (not isinstance(self.df["IS"], pd.DataFrame) and not self.df["IS"])
+            and (not isinstance(self.df["CF"], pd.DataFrame) and not self.df["CF"])
+        )
         equities_database = fd.Equities()
-        self.data: Dict[str, Any] = {
-            "now": datetime.now().strftime("%Y-%m-%d"),
-            "info": {
-                "country": equities_database.data.loc[self.info["symbol"]]["country"],
-                "sector": equities_database.data.loc[self.info["symbol"]]["sector"],
-                "industry_group": equities_database.data.loc[self.info["symbol"]][
-                    "industry_group"
-                ],
-                "industry": equities_database.data.loc[self.info["symbol"]]["industry"],
-                "beta": beta,
-            },
-            "t_bill": get_rf(),
-            "r_ff": dcf_model.get_fama_coe(self.info["symbol"]),
-            "f_info": yf.Ticker(symbol).fast_info,
-        }
+        self.data: Dict[str, Any] = (
+            {
+                "now": datetime.now().strftime("%Y-%m-%d"),
+                "info": {
+                    "country": equities_database.data.loc[self.info["symbol"]][
+                        "country"
+                    ],
+                    "sector": equities_database.data.loc[self.info["symbol"]]["sector"],
+                    "industry_group": equities_database.data.loc[self.info["symbol"]][
+                        "industry_group"
+                    ],
+                    "industry": equities_database.data.loc[self.info["symbol"]][
+                        "industry"
+                    ],
+                    "beta": beta,
+                },
+                "t_bill": get_rf(),
+                "r_ff": dcf_model.get_fama_coe(self.info["symbol"]),
+                "f_info": yf.Ticker(symbol).fast_info,
+            }
+            if not df_not_created
+            else {}
+        )
+
+        if df_not_created:
+            console.print(
+                "It was not possible to create a DCF for this company.\n"
+                "Please consider that non US-listed companies are not supported."
+            )
 
     @log_start_end(log=logger)
     def create_workbook(self):
@@ -139,9 +158,12 @@ class CreateExcelFA:
 
     @log_start_end(log=logger)
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
-        df, rounding, _ = dcf_model.create_dataframe(self.info["symbol"], statement)
+        symbol = self.info["symbol"]
+        df, rounding, _ = dcf_model.create_dataframe(symbol, statement)
         if df.empty:
-            raise ValueError("Could not generate a dataframe for the ticker symbol")
+            raise ValueError(
+                f"Could not generate a dataframe for the ticker `{symbol}` and statement `{statement}`."
+            )
         self.info["rounding"] = rounding
         if not self.info["len_data"]:
             self.info["len_data"] = len(df.columns)

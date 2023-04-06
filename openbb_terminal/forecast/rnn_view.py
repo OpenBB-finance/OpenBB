@@ -3,9 +3,8 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
@@ -43,7 +42,7 @@ def display_rnn_forecast(
     naive: bool = False,
     export_pred_raw: bool = False,
     metric: str = "mape",
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Display RNN forecast
 
@@ -99,13 +98,13 @@ def display_rnn_forecast(
         Whether to export the raw predictions. Defaults to False.
     metric: str
         The metric to use for the forecast. Defaults to "mape".
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):
-        return
+        return None
     (
         ticker_series,
         historical_fcast,
@@ -132,11 +131,11 @@ def display_rnn_forecast(
         metric=metric,
     )
     if ticker_series == []:
-        return
+        return None
 
     past_covariates = None
     probabilistic = True
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name="RNN",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -161,3 +160,5 @@ def display_rnn_forecast(
         helpers.plot_residuals(
             _model, past_covariates, ticker_series, forecast_horizon=forecast_horizon
         )
+
+    return fig

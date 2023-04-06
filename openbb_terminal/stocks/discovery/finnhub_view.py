@@ -36,10 +36,12 @@ def past_ipo(
 
     if not df_past_ipo.empty:
         print_rich_table(
-            df_past_ipo.head(limit),
+            df_past_ipo,
             headers=list(df_past_ipo.columns),
             show_index=False,
             title="IPO Dates",
+            export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -78,10 +80,12 @@ def future_ipo(
 
     if not df_future_ipo.empty:
         print_rich_table(
-            df_future_ipo.head(limit),
+            df_future_ipo,
             headers=list(df_future_ipo.columns),
             show_index=False,
             title="Future IPO Dates",
+            export=bool(export),
+            limit=limit,
         )
 
     export_data(

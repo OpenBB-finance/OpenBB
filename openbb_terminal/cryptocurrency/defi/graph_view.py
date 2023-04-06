@@ -5,6 +5,8 @@ import logging
 import os
 from typing import Optional
 
+from openbb_terminal import rich_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
@@ -53,15 +55,18 @@ def display_uni_tokens(
 
     df = df.sort_values(by=sortby, ascending=ascend)
 
-    df[["totalLiquidity", "tradeVolumeUSD"]] = df[
-        ["totalLiquidity", "tradeVolumeUSD"]
-    ].applymap(lambda x: lambda_very_long_number_formatter(x))
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
+        df[["totalLiquidity", "tradeVolumeUSD"]] = df[
+            ["totalLiquidity", "tradeVolumeUSD"]
+        ].applymap(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="UniSwarp DEX Trade-able Tokens",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -93,6 +98,7 @@ def display_uni_stats(export: str = "", sheet_name: Optional[str] = None) -> Non
         headers=list(df.columns),
         show_index=False,
         title="Uniswap DEX Base Statistics",
+        export=bool(export),
     )
 
     export_data(
@@ -159,10 +165,12 @@ def display_recently_added(
     )
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Latest Added Pairs on Uniswap DEX",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -212,10 +220,12 @@ def display_uni_pools(
     df_data = df.copy()
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Uniswap Pools",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -254,7 +264,11 @@ def display_last_uni_swaps(
     df = graph_model.get_last_uni_swaps(limit=limit, sortby=sortby, ascend=ascend)
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Last Uniswap Swaps"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Last Uniswap Swaps",
+        export=bool(export),
     )
 
     export_data(

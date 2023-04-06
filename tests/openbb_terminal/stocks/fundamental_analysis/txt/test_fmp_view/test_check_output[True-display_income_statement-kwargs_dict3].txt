@@ -1,51 +1,51 @@
-Fiscal Date Ending                                  2017                 2018                 2019                 2020                 2021
+Fiscal Date Ending                                  2018                 2019                 2020                 2021                 2022
 Reported Currency                                    USD                  USD                  USD                  USD                  USD
 Cik                                           0001413329           0001413329           0001413329           0001413329           0001413329
-Filling Date                         2018-02-13 00:00:00  2019-02-07 00:00:00  2020-02-07 00:00:00  2021-02-09 00:00:00  2022-02-11 00:00:00
-Accepted Date                        2018-02-13 08:07:16  2019-02-07 15:09:20  2020-02-07 06:47:13  2021-02-09 16:20:37  2022-02-11 08:29:22
-Calendar Year                        2017-01-01 00:00:00  2018-01-01 00:00:00  2019-01-01 00:00:00  2020-01-01 00:00:00  2021-01-01 00:00:00
+Filling Date                         2019-02-07 00:00:00  2020-02-07 00:00:00  2021-02-09 00:00:00  2022-02-11 00:00:00  2023-02-10 00:00:00
+Accepted Date                        2019-02-07 15:09:20  2020-02-07 06:47:13  2021-02-09 16:20:37  2022-02-11 08:29:22  2023-02-10 08:20:35
+Calendar Year                        2018-01-01 00:00:00  2019-01-01 00:00:00  2020-01-01 00:00:00  2021-01-01 00:00:00  2022-01-01 00:00:00
 Period                                                FY                   FY                   FY                   FY                   FY
-Revenue                                         28.748 B             29.625 B             29.805 B             28.694 B             31.405 B
-Cost Of Revenue                                 10.432 B             10.758 B             10.513 B              9.569 B             10.030 B
-Gross Profit                                    18.316 B             18.867 B             19.292 B             19.125 B             21.375 B
-Gross Profit Ratio                                 0.637                0.637                0.647                0.667                0.681
+Revenue                                         29.625 B             29.805 B             28.694 B             31.405 B             31.762 B
+Cost Of Revenue                                 10.758 B             10.513 B              9.569 B             10.030 B             11.402 B
+Gross Profit                                    18.867 B             19.292 B             19.125 B             21.375 B             20.360 B
+Gross Profit Ratio                                 0.637                0.647                0.667                0.681                0.641
 Research And Development Expenses                      0                    0                    0                    0                    0
-General And Administrative Expenses              6.725 B              7.449 B              8.784 B                 97 M                115 M
-Selling And Marketing Expenses                         0                    0                    0              7.384 B              8.304 B
-Selling General And Administrative               6.725 B              7.449 B              8.784 B              7.481 B              8.419 B
-Other Expenses                                      88 M                 82 M                 66 M                 73 M                 96 M
-Operating Expenses                               6.813 B              7.531 B              8.850 B              7.554 B              8.515 B
-Costs And Expenses                              17.245 B             18.289 B             19.363 B             17.123 B             18.545 B
-Interest Income                                    182 M                190 M                226 M                110 M                109 M
-Interest Expense                                 1.096 B                855 M                796 M                728 M                737 M
-Depreciation And Amortization                      875 M                989 M                964 M                981 M                998 M
-Ebitda                                          12.313 B             12.200 B             11.238 B             12.142 B             13.515 B
-Ebitda Ratio                                       0.428                0.412                0.377                0.423                0.430
-Operating Income                                11.503 B             11.377 B             10.531 B             11.668 B             12.975 B
-Operating Income Ratio                             0.400                0.384                0.353                0.407                0.413
-Non Operating Income Loss                         -914 M               -706 M               -659 M               -715 M               -743 M
-Income Before Tax                               10.589 B             10.671 B              9.872 B             10.953 B             12.232 B
-Income Before Tax Ratio                            0.368                0.360                0.331                0.382                0.389
-Income Tax Expense                               4.307 B              2.445 B              2.293 B              2.377 B              2.671 B
-Net Income                                       6.035 B              7.911 B              7.185 B              8.056 B              9.109 B
-Net Income Ratio                                   0.210                0.267                0.241                0.281                0.290
-Basic Earnings Per Share                           3.880                5.080                4.610                5.160                5.850
-Diluted Earnings Per Share                         3.880                5.080                4.610                5.160                5.850
-Basic Average Shares                             1.552 B              1.555 B              1.555 B              1.557 B              1.557 B
-Diluted Average Shares                           1.553 B              1.555 B              1.556 B              1.558 B              1.557 B
+General And Administrative Expenses              7.449 B              8.784 B                 97 M              8.419 B              8.138 B
+Selling And Marketing Expenses                         0                    0              7.384 B              8.304 B                    0
+Selling General And Administrative               7.449 B              8.784 B              7.481 B              8.419 B              8.138 B
+Other Expenses                                      82 M                 66 M                 73 M                    0                    0
+Operating Expenses                               7.531 B              8.850 B              7.554 B              8.515 B              8.138 B
+Costs And Expenses                              18.289 B             19.363 B             17.123 B             18.545 B             19.540 B
+Interest Income                                    190 M                226 M                110 M                109 M                180 M
+Interest Expense                                   855 M                796 M                728 M                737 M                768 M
+Depreciation And Amortization                      989 M                964 M                981 M                998 M              1.189 B
+Ebitda                                          12.200 B             11.238 B             12.142 B             13.967 B             13.591 B
+Ebitda Ratio                                       0.412                0.377                0.423                0.445                0.428
+Operating Income                                11.377 B             10.531 B             11.668 B             12.860 B             12.222 B
+Operating Income Ratio                             0.384                0.353                0.407                0.389                0.366
+Non Operating Income Loss                         -706 M               -659 M               -715 M                    0                    0
+Income Before Tax                               10.671 B              9.872 B             10.953 B             12.232 B             11.634 B
+Income Before Tax Ratio                            0.360                0.331                0.382                0.389                0.366
+Income Tax Expense                               2.445 B              2.293 B              2.377 B              2.671 B              2.244 B
+Net Income                                       7.911 B              7.185 B              8.056 B              9.109 B              9.048 B
+Net Income Ratio                                   0.267                0.241                0.281                0.290                0.285
+Basic Earnings Per Share                           5.080                4.610                5.160                5.830                5.810
+Diluted Earnings Per Share                         5.080                4.610                5.160                5.830                5.810
+Basic Average Shares                             1.555 B              1.555 B              1.557 B              1.558 B              1.557 B
+Diluted Average Shares                           1.555 B              1.556 B              1.558 B              1.559 B              1.557 B
                                                                                                            Final Link
 Fiscal Date Ending                                                                                                   
-2017                https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/pm123117form10kwrapinclfsm.htm
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/pm123118form10kwrapinclfsm.htm
 2019                    https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/pm123119form10kwrapinc.htm
 2020                               https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/pm-20201231.htm
 2021                               https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm
+2022                               https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/pm-20221231.htm
 
                                                                                                                  Link
 Fiscal Date Ending                                                                                                   
-2017                https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/0001413329-18-000007-index.htm
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/0001413329-19-000007-index.htm
 2019                https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/0001413329-20-000007-index.htm
 2020                https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/0001413329-21-000007-index.htm
 2021                https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm
+2022                https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/0001413329-23-000025-index.htm
 

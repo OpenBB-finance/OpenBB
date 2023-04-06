@@ -42,10 +42,12 @@ def display_etf_by_name(
     table_data = data[["name", "family", "category_group", "category"]]
 
     print_rich_table(
-        table_data.iloc[:limit],
+        table_data,
         show_index=True,
         headers=["Name", "Family", "Category Group", "Category"],
         title="ETFs",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -86,10 +88,12 @@ def display_etf_by_description(
     table_data = data[["name", "family", "category_group", "category"]]
 
     print_rich_table(
-        table_data.iloc[:limit],
+        table_data,
         show_index=True,
         headers=["Name", "Family", "Category Group", "Category"],
         title="ETFs",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -130,10 +134,12 @@ def display_etf_by_category(
     table_data = data[["name", "family", "category_group", "category"]]
 
     print_rich_table(
-        table_data.iloc[:limit],
+        table_data,
         show_index=True,
         headers=["Name", "Family", "Category Group", "Category"],
         title="ETFs by Category",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

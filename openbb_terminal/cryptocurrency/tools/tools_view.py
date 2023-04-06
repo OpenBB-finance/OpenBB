@@ -47,6 +47,7 @@ def display_apy(
             headers=list(df.columns),
             show_index=False,
             title="APR/APY Calculator",
+            export=bool(export),
         )
 
     export_data(
@@ -102,6 +103,7 @@ def display_il(
             headers=list(df.columns),
             show_index=False,
             title="Impermanent Loss Calculator",
+            export=bool(export),
         )
 
     export_data(

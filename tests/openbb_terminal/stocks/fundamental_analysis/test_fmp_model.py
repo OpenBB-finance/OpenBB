@@ -36,7 +36,7 @@ def test_get_score():
         ),
         (
             "get_enterprise",
-            {"symbol": "PM", "limit": 5, "quarterly": False},
+            {"symbol": "PM", "quarterly": False},
         ),
         (
             "get_dcf",

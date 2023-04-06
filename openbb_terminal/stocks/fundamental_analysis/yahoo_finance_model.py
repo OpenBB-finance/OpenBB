@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import re
 import ssl
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional, Tuple
 from urllib.request import Request, urlopen
 
@@ -197,6 +197,7 @@ def get_dividends(symbol: str) -> pd.DataFrame:
 def get_mktcap(
     symbol: str,
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> Tuple[pd.DataFrame, str]:
     """Get market cap over time for ticker. [Source: Yahoo Finance]
 
@@ -214,13 +215,20 @@ def get_mktcap(
     str:
         Currency of ticker
     """
-
     if start_date is None:
-        start_date = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d")
+        # Set data far in the past to ensure all data is returned
+        start_date = "1900-01-01"
+    if end_date is None:
+        end_date = datetime.now()  # type: ignore
 
     currency = ""
     df_data = yf.download(
-        symbol, start=start_date, progress=False, threads=False, ignore_tz=True
+        symbol,
+        start=start_date,
+        end=end_date,
+        progress=False,
+        threads=False,
+        ignore_tz=True,
     )
     if not df_data.empty:
         data = yf.Ticker(symbol).fast_info
@@ -404,7 +412,11 @@ def get_earnings_history(symbol: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_currency(symbol) -> str:
     """Quick helper to get currency for financial statements"""
-    ticker_info = yf.Ticker(symbol).info
+    try:
+        ticker_info = yf.Ticker(symbol).info
+    except Exception:
+        return "Not Specified"
+
     if "financialCurrency" in ticker_info:
         return ticker_info["financialCurrency"]
     return "Not Specified"

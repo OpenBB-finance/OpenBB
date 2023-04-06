@@ -6,7 +6,7 @@ import logging
 import pandas as pd
 from tradingview_ta import TA_Handler
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import request
 
@@ -76,7 +76,11 @@ def get_tradingview_recommendation(
     """
 
     if not exchange:
-        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        current_user = get_current_user()
+        s_req = (
+            f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&"
+            f"apikey={current_user.credentials.API_KEY_ALPHAVANTAGE}"
+        )
         result = request(s_req, stream=True)
         data = result.json()
         if not data:

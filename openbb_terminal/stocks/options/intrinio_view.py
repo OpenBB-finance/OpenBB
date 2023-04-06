@@ -3,19 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional, Union
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
-import mplfinance as mpf
-
-from openbb_terminal import config_plot as cfp
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
-    lambda_long_number_format_y_axis,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
@@ -36,8 +29,8 @@ def display_historical(
     chain_id: Optional[str] = None,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plot historical option prices
 
     Parameters
@@ -58,59 +51,47 @@ def display_historical(
         Format of export file
     sheet_name: str
         Optionally specify the name of the sheet to export to
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is ex"""
-
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
+    """
+    op_type = ["Call", "Put"][put]
     if chain_id is not None:
         df_hist = intrinio_model.get_historical_options(chain_id)
-        title = f"{chain_id} Historical"
     else:
         chain_id = f"{symbol}{''.join(expiry[2:].split('-'))}{'P' if put else 'C'}{str(int(1000*strike)).zfill(8)}"
         df_hist = intrinio_model.get_historical_options(chain_id)
-        title = f"{symbol} {expiry} {strike} {['Call', 'Put'][put]} Historical"
 
     if raw:
         print_rich_table(
             df_hist,
             headers=[x.title() for x in df_hist.columns],
             title="Historical Option Prices",
+            export=bool(export),
         )
 
-    candle_chart_kwargs = {
-        "type": "candle",
-        "style": theme.mpf_style,
-        "volume": True,
-        "xrotation": theme.xticks_rotation,
-        "scale_padding": {"left": 0.3, "right": 1.2, "top": 0.8, "bottom": 0.8},
-        "update_width_config": {
-            "candle_linewidth": 0.6,
-            "candle_width": 0.8,
-            "volume_linewidth": 0.8,
-            "volume_width": 0.8,
-        },
-        "datetime_format": "%Y-%b-%d",
-    }
-    if external_axes is None:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, ax = mpf.plot(df_hist, **candle_chart_kwargs)
-        fig.suptitle(
-            title,
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
-        lambda_long_number_format_y_axis(df_hist, "volume", ax)
-        theme.visualize_output(force_tight_layout=False)
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-        candle_chart_kwargs["ax"] = ax1
-        candle_chart_kwargs["volume"] = ax2
-        mpf.plot(df_hist, **candle_chart_kwargs)
-    else:
-        return
+    df_hist.columns = [x.title() for x in df_hist.columns]
+
+    fig = OpenBBFigure.create_subplots(
+        rows=1,
+        cols=1,
+        specs=[[{"secondary_y": True}]],
+        vertical_spacing=0.03,
+        subplot_titles=[f"{symbol} {strike} {op_type}"],
+    )
+
+    fig.add_candlestick(
+        open=df_hist["Open"],
+        high=df_hist["High"],
+        low=df_hist["Low"],
+        close=df_hist["Close"],
+        x=df_hist.index,
+        name=f"{symbol} OHLC",
+        row=1,
+        col=1,
+        secondary_y=True,
+    )
+    fig.add_inchart_volume(df_hist)
+    fig.hide_holidays()
 
     if export:
         export_data(
@@ -119,7 +100,10 @@ def display_historical(
             "hist",
             df_hist,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -134,8 +118,8 @@ def view_historical_greeks(
     limit: Union[int, str] = 20,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plots historical greeks for a given option. [Source: Syncretism]
 
     Parameters
@@ -160,8 +144,8 @@ def view_historical_greeks(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if chain_id:
@@ -173,7 +157,7 @@ def view_historical_greeks(
         title = f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
 
     if df.empty:
-        return
+        return None
 
     df = df.rename(columns={"impliedVolatility": "iv", "close": "price"})
 
@@ -181,48 +165,60 @@ def view_historical_greeks(
         try:
             limit = int(limit)
         except ValueError:
-            console.print(
+            return console.print(
                 f"[red]Could not convert limit of {limit} to a number.[/red]\n"
             )
-            return
+
     if raw:
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.tail(limit),
+            df,
             headers=list(df.columns),
             title="Historical Greeks",
             show_index=True,
+            export=bool(export),
+            limit=limit,
         )
 
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    if greek.lower() not in df.columns:
+        return console.print(f"[red]Could not find greek {greek} in data.[/red]\n")
 
-    try:
-        greek_df = df[greek.lower()]
-    except KeyError:
-        console.print(f"[red]Could not find greek {greek} in data.[/red]\n")
-        return
-    im1 = ax.plot(df.index, greek_df, label=greek.title(), color=theme.up_color)
-    ax.set_ylabel(greek)
-    ax1 = ax.twinx()
-    im2 = ax1.plot(df.index, df.price, label="Stock Price", color=theme.down_color)
-    ax1.set_ylabel(f"{symbol} Price")
-    ax.set_title(title)
-    if df.empty:
-        console.print("[red]Data from API is not valid.[/red]\n")
-        return
-    ax.set_xlim(df.index[0], df.index[-1])
-    ims = im1 + im2
-    labels = [lab.get_label() for lab in ims]
+    fig = OpenBBFigure.create_subplots(
+        shared_xaxes=True,
+        specs=[[{"secondary_y": True}]],
+        vertical_spacing=0.03,
+        horizontal_spacing=0.1,
+    )
+    fig.set_title(title)
 
-    ax.legend(ims, labels, loc=0)
-    theme.style_twin_axes(ax, ax1)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df.index,
+        y=df.price.values,
+        name="Stock Price",
+        line=dict(color=theme.down_color),
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        x=df.index,
+        y=df[greek.lower()].values,
+        name=greek.title(),
+        line=dict(color=theme.up_color),
+        yaxis="y2",
+        secondary_y=True,
+    )
+    fig.update_layout(
+        yaxis2=dict(
+            side="left",
+            title=greek,
+            anchor="x",
+            overlaying="y",
+        ),
+        yaxis=dict(
+            title=f"{symbol} Price",
+            side="right",
+        ),
+    )
+    fig.hide_holidays()
 
     export_data(
         export,
@@ -230,4 +226,7 @@ def view_historical_greeks(
         "grhist",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

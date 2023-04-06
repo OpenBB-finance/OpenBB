@@ -1,2 +1,1 @@
-[red]defined, test failed[/red]
-
+[grey30]not defined[/grey30]

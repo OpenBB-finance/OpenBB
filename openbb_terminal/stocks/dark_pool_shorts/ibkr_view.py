@@ -29,16 +29,17 @@ def display_cost_to_borrow(
     df = ibkr_model.get_cost_to_borrow().head(limit)
 
     if df.empty:
-        console.print("No data found.")
-    else:
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=False,
-            title="Highest Cost to Borrow",
-        )
+        return console.print("No data found.")
 
-    export_data(
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Highest Cost to Borrow",
+        export=bool(export),
+    )
+
+    return export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cost_to_borrow",

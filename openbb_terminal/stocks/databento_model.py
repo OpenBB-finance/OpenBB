@@ -1,13 +1,17 @@
 __docformat__ = "numpy"
+
+# IMPORTATION STANDARD
 import logging
 from datetime import datetime, timedelta
 from io import StringIO
 
+# IMPORTATION THIRDPARTY
 import pandas as pd
 import requests
 from pydantic import BaseModel
 
-from openbb_terminal import config_terminal as cfg
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
@@ -49,7 +53,9 @@ class DataBento(BaseModel):
             "stype_in": "smart",
             "stype_out": "product_id",
         }
-        auth = requests.auth.HTTPBasicAuth(cfg.API_DATABENTO_KEY, "")
+        auth = requests.auth.HTTPBasicAuth(
+            get_current_user().credentials.API_DATABENTO_KEY, ""
+        )
         # This seems to only work for futures? Assume the user is entering correct stock ticker
         if self.exchange == "XNAS.ITCH":
             return True
@@ -87,7 +93,9 @@ class DataBento(BaseModel):
             "stype_in": self.stype,
             "encoding": "csv",
         }
-        auth = requests.auth.HTTPBasicAuth(cfg.API_DATABENTO_KEY, "")
+        auth = requests.auth.HTTPBasicAuth(
+            get_current_user().credentials.API_DATABENTO_KEY, ""
+        )
         data = self.process_request(base_url, params, auth)
         if data.empty:
             console.print(f"No data found for symbol `{self.symbol}`.")

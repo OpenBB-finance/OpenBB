@@ -45,12 +45,14 @@ def display_rsp(
             headers=list(rsp_stock.columns),
             show_index=False,
             title="Relative Strength Percentile of Stock (relative to SPY)",
+            export=bool(export),
         )
         print_rich_table(
             rsp_industry,
             headers=list(rsp_industry.columns),
             show_index=False,
             title="Relative Strength Percentile of Industry the ticker is part of",
+            export=bool(export),
         )
         if tickers_show:
             print_rich_table(

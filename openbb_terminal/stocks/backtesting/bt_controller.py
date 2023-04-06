@@ -8,7 +8,7 @@ from typing import List, Optional
 import matplotlib as mpl
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -55,7 +55,7 @@ class BacktestingController(StockBaseController):
 
         self.ticker = ticker
         self.stock = stock
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -63,15 +63,16 @@ class BacktestingController(StockBaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/bt/")
+        mt.add_raw("")
+        mt.add_param("_ticker", self.ticker.upper() or "No Ticker Loaded")
         mt.add_raw("\n")
-        mt.add_param("_ticker", self.ticker.upper())
         mt.add_cmd("load")
         mt.add_raw("\n")
-        mt.add_cmd("whatif")
+        mt.add_cmd("whatif", self.ticker)
         mt.add_raw("\n")
-        mt.add_cmd("ema")
-        mt.add_cmd("emacross")
-        mt.add_cmd("rsi")
+        mt.add_cmd("ema", self.ticker)
+        mt.add_cmd("emacross", self.ticker)
+        mt.add_cmd("rsi", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks - Backtesting")
 
     def custom_reset(self):

@@ -12,7 +12,7 @@ from darts.models import BlockRNNModel
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from darts.utils.likelihood_models import GaussianLikelihood
 
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
@@ -143,7 +143,7 @@ def get_brnn_data(
         save_checkpoints=save_checkpoints,
         likelihood=GaussianLikelihood(),
         log_tensorboard=True,
-        work_dir=USER_FORECAST_MODELS_DIRECTORY,
+        work_dir=get_current_user().preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
@@ -159,10 +159,13 @@ def get_brnn_data(
     best_model = BlockRNNModel.load_from_checkpoint(
         model_name=model_save_name,
         best=True,
-        work_dir=USER_FORECAST_MODELS_DIRECTORY,
+        work_dir=get_current_user().preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
-    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
+    helpers.print_tensorboard_logs(
+        model_save_name,
+        str(get_current_user().preferences.USER_FORECAST_MODELS_DIRECTORY),
+    )
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(

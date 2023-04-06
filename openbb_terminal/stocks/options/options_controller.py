@@ -8,8 +8,7 @@ from typing import List, Optional
 
 import pandas as pd
 
-import openbb_terminal.config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -44,7 +43,6 @@ from openbb_terminal.stocks.options.options_view import (
     plot_voi,
     plot_vol,
 )
-from openbb_terminal.stocks.options.pricing import pricing_controller
 from openbb_terminal.stocks.options.screen import (
     screener_controller,
     syncretism_model,
@@ -81,8 +79,6 @@ class OptionsController(BaseController):
         "grhist",
         "unu",
         "plot",
-        "parity",
-        "binom",
         "vsurf",
         "greeks",
         "eodchain",
@@ -126,13 +122,14 @@ class OptionsController(BaseController):
         self,
         ticker: str,
         queue: Optional[List[str]] = None,
+        expiration: Optional[str] = None,
     ):
         """Constructor"""
         super().__init__(queue)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
-        self.selected_date = ""
+        self.selected_date = expiration if expiration else ""
         self.chain: pd.DataFrame = pd.DataFrame()
         self.full_chain: pd.DataFrame = pd.DataFrame()
 
@@ -141,7 +138,9 @@ class OptionsController(BaseController):
         self.source = ""
 
         if ticker:
-            if cfg.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
+            if (
+                get_current_user().credentials.API_TRADIER_TOKEN == "REPLACE_ME"
+            ):  # nosec
                 console.print("Loaded expiry dates from Yahoo Finance")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
@@ -156,7 +155,7 @@ class OptionsController(BaseController):
 
         self.default_chain = get_ordered_list_sources(f"{self.PATH}chains")[0]
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             # This menu contains dynamic choices that may change during runtime
@@ -218,11 +217,15 @@ class OptionsController(BaseController):
                 self.current_price = yfinance_model.get_last_price(self.ticker)
 
     def set_expiry_dates(self):
-        self.expiry_dates = self.full_chain.expiration.unique().tolist() or []
+        if self.full_chain.empty:
+            self.expiry_dates = []
+            console.print("[red]The ticker provided could not be found[/red]\n")
+        else:
+            self.expiry_dates = self.full_chain.expiration.unique().tolist() or []
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             if not self.chain.empty:
                 strike = set(self.chain["strike"])
 
@@ -230,8 +233,6 @@ class OptionsController(BaseController):
                 self.choices["grhist"]["-s"] = "--strike"
                 self.choices["grhist"]["--strike"] = {str(c): {} for c in strike}
                 self.choices["grhist"]["-s"] = "--strike"
-                self.choices["binom"]["--strike"] = {str(c): {} for c in strike}
-                self.choices["binom"]["-s"] = "--strike"
 
                 self.choices["chains"]["--display"] = {
                     str(c): {} for c in self.chain.columns
@@ -282,12 +283,9 @@ class OptionsController(BaseController):
         mt.add_cmd("vsurf", self.ticker and self.selected_date)
         mt.add_cmd("grhist", self.ticker and self.selected_date)
         mt.add_cmd("plot", self.ticker and self.selected_date)
-        mt.add_cmd("parity", self.ticker and self.selected_date)
-        mt.add_cmd("binom", self.ticker and self.selected_date)
         mt.add_cmd("greeks", self.ticker and self.selected_date)
         mt.add_cmd("eodchain", self.ticker and self.selected_date)
         mt.add_raw("\n")
-        mt.add_menu("pricing", self.ticker and self.selected_date)
         mt.add_menu("hedge", self.ticker and self.selected_date)
         console.print(text=mt.menu_text, menu="Stocks - Options")
 
@@ -844,7 +842,8 @@ class OptionsController(BaseController):
                 )
 
             if (
-                ns_parser.source == "Tradier" and cfg.API_TRADIER_TOKEN != "REPLACE_ME"
+                ns_parser.source == "Tradier"
+                and get_current_user().credentials.API_TRADIER_TOKEN != "REPLACE_ME"
             ):  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,
@@ -1411,162 +1410,6 @@ class OptionsController(BaseController):
                     maxi=ns_parser.max,
                     show_all=ns_parser.all,
                 )
-
-    @log_start_end(log=logger)
-    def call_parity(self, other_args: List[str]):
-        """Process parity command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="parity",
-            description="Shows whether options are over or under valued",
-        )
-        parser.add_argument(
-            "-p",
-            "--put",
-            action="store_true",
-            default=False,
-            dest="put",
-            help="Shows puts instead of calls",
-        )
-        parser.add_argument(
-            "-a",
-            "--ask",
-            action="store_true",
-            default=False,
-            dest="ask",
-            help="Use ask price instead of lastPrice",
-        )
-        parser.add_argument(
-            "-m",
-            "--min",
-            type=float,
-            default=None,
-            dest="mini",
-            help="Minimum strike price shown",
-        )
-        parser.add_argument(
-            "-M",
-            "--max",
-            type=float,
-            default=None,
-            dest="maxi",
-            help="Maximum strike price shown",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if self.ticker:
-                if self.selected_date:
-                    yfinance_view.show_parity(
-                        self.ticker,
-                        self.selected_date,
-                        ns_parser.put,
-                        ns_parser.ask,
-                        ns_parser.mini,
-                        ns_parser.maxi,
-                        ns_parser.export,
-                    )
-                else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`")
-            else:
-                console.print("No ticker loaded. First use `load <ticker>`")
-
-    @log_start_end(log=logger)
-    def call_binom(self, other_args: List[str]):
-        """Process binom command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="binom",
-            description="Gives the option value using binomial option valuation",
-        )
-        parser.add_argument(
-            "-s",
-            "--strike",
-            type=float,
-            default=0,
-            dest="strike",
-            help="Strike price for option shown",
-        )
-        parser.add_argument(
-            "-p",
-            "--put",
-            action="store_true",
-            default=False,
-            dest="put",
-            help="Value a put instead of a call",
-        )
-        parser.add_argument(
-            "-e",
-            "--european",
-            action="store_true",
-            default=False,
-            dest="europe",
-            help="Value a European option instead of an American one",
-        )
-        parser.add_argument(
-            "-x",
-            "--xlsx",
-            action="store_true",
-            default=False,
-            dest="export",
-            help="Export an excel spreadsheet with binomial pricing data",
-        )
-        parser.add_argument(
-            "--plot",
-            action="store_true",
-            default=False,
-            dest="plot",
-            help="Plot expected ending values",
-        )
-        parser.add_argument(
-            "-v",
-            "--volatility",
-            type=float,
-            default=None,
-            dest="volatility",
-            help="Underlying asset annualized volatility.  Historical volatility used if not supplied.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-s")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if self.ticker:
-                if self.selected_date:
-                    yfinance_view.show_binom(
-                        self.ticker,
-                        self.selected_date,
-                        ns_parser.strike,
-                        ns_parser.put,
-                        ns_parser.europe,
-                        ns_parser.export,
-                        ns_parser.plot,
-                        ns_parser.volatility,
-                    )
-                else:
-                    console.print("No expiry loaded. First use `exp {expiry date}`")
-            else:
-                console.print("No ticker loaded. First use `load <ticker>`")
-
-    @log_start_end(log=logger)
-    def call_pricing(self, _):
-        """Process pricing command"""
-        if self.ticker:
-            if self.selected_date:
-                self.queue = self.load_class(
-                    pricing_controller.PricingController,
-                    self.ticker,
-                    self.selected_date,
-                    self.prices,
-                    self.queue,
-                )
-            else:
-                console.print("No expiry loaded. First use `exp {expiry date}`")
-
-        else:
-            console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_hedge(self, _):

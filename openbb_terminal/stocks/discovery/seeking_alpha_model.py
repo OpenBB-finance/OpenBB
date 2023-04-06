@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, List
+from datetime import date, timedelta
+from typing import Dict, List, Optional
 
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -36,41 +37,57 @@ def get_earnings_html(url_next_earnings: str) -> str:
     return earnings_html
 
 
+def get_filters(date_str: str) -> str:
+    text = f"?filter[selected_date]={date_str}&filter[with_rating]=false&filter[currency]=USD"
+    return text
+
+
 @log_start_end(log=logger)
-def get_next_earnings(limit: int = 10) -> DataFrame:
+def get_next_earnings(limit: int = 10, start: Optional[date] = None) -> DataFrame:
     """Returns a DataFrame with upcoming earnings
 
     Parameters
     ----------
     limit : int
         Number of pages
+    date: Optional[date]
+        Date to start from
 
     Returns
     -------
     DataFrame
         Upcoming earnings DataFrame
     """
-    earnings = []
-    url_next_earnings = "https://seekingalpha.com/earnings/earnings-calendar"
+    if start is None:
+        start = date.today()
+    base_url = "https://seekingalpha.com/api/v3/earnings_calendar/tickers"
+    df_earnings = pd.DataFrame()
 
-    for idx in range(0, limit):
-        text_soup_earnings = BeautifulSoup(
-            get_earnings_html(url_next_earnings),
-            "lxml",
-        )
+    for _ in range(0, limit):
+        date_str = start.strftime("%Y-%m-%d")
+        response = request(base_url + get_filters(date_str), timeout=10)
+        json = response.json()
+        try:
+            data = json["data"]
+            cleaned_data = [x["attributes"] for x in data]
+            temp_df = pd.DataFrame.from_records(cleaned_data)
+            temp_df = temp_df.drop(columns=["sector_id"])
+            temp_df["Date"] = start
+            df_earnings = pd.concat(
+                [df_earnings, temp_df], join="outer", ignore_index=True
+            )
+            start = start + timedelta(days=1)
+        except KeyError:
+            pass
 
-        for stock_rows in text_soup_earnings.findAll("tr", {"data-exchange": "NASDAQ"}):
-            stocks = [a_stock.text for a_stock in stock_rows.contents[:3]]
-            earnings.append(stocks)
-
-        url_next_earnings = (
-            f"https://seekingalpha.com/earnings/earnings-calendar/{idx+1}"
-        )
-
-    df_earnings = pd.DataFrame(earnings, columns=["Ticker", "Name", "Date"])
-    df_earnings["Date"] = pd.to_datetime(df_earnings["Date"])
-    df_earnings = df_earnings.set_index("Date")
-
+    df_earnings = df_earnings.rename(
+        columns={
+            "slug": "Ticker",
+            "name": "Name",
+            "release_time": "Release Time",
+            "exchange": "Exchange",
+        }
+    )
     return df_earnings
 
 

@@ -11,8 +11,8 @@ from typing import Dict, List, Optional
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import USER_DATA_SOURCES_DEFAULT_FILE
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -46,7 +46,7 @@ class SourcesController(BaseController):
         self.commands_with_sources: Dict[str, List[str]] = {}
         self.load_sources_json()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["get"] = {c: None for c in list(self.commands_with_sources.keys())}
             choices["set"] = {c: None for c in list(self.commands_with_sources.keys())}
@@ -59,7 +59,9 @@ class SourcesController(BaseController):
         """Load the .json file"""
         # Loading in both source files: default sources and user sources
         default_data_source = USER_DATA_SOURCES_DEFAULT_FILE
-        user_data_source = Path(obbff.PREFERRED_DATA_SOURCE_FILE)
+        user_data_source = Path(
+            get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE
+        )
 
         # Opening default sources file from the repository root
         with open(str(default_data_source)) as json_file:
@@ -225,7 +227,9 @@ class SourcesController(BaseController):
 
             if success:
                 try:
-                    with open(obbff.PREFERRED_DATA_SOURCE_FILE, "w") as f:
+                    with open(
+                        get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE, "w"
+                    ) as f:
                         json.dump(self.json_doc, f, indent=4)
                     console.print(
                         "[green]The data source was specified successfully.\n[/green]"
@@ -257,7 +261,7 @@ class SourcesController(BaseController):
                 except Exception as e:
                     console.print(
                         f"[red]Failed to write preferred data sources to file: "
-                        f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
+                        f"{get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
                     )
                     console.print(f"[red]{e}[/red]")
             else:

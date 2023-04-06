@@ -3,11 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import autoces_model, helpers
 
@@ -32,8 +32,8 @@ def display_autoces_forecast(
     end_date: Optional[datetime] = None,
     naive: bool = False,
     export_pred_raw: bool = False,
-    external_axes: Optional[List[plt.axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display Automatic Complex Exponential Smoothing Model
 
     Parameters
@@ -68,12 +68,12 @@ def display_autoces_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
-    external_axes:Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):
-        return
+        return None
 
     (
         ticker_series,
@@ -91,10 +91,10 @@ def display_autoces_forecast(
     )
 
     if ticker_series == []:
-        return
+        return None
 
     probabilistic = False
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name="AutoCES",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -118,3 +118,5 @@ def display_autoces_forecast(
         helpers.plot_residuals(
             _model, None, ticker_series, forecast_horizon=forecast_horizon
         )
+
+    return fig

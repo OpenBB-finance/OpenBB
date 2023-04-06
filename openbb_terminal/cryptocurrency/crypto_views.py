@@ -42,7 +42,11 @@ def find(
 
     if not df.empty:
         print_rich_table(
-            df, headers=list(df.columns), show_index=False, title="Similar Coins"
+            df,
+            headers=list(df.columns),
+            show_index=False,
+            title="Similar Coins",
+            export=bool(export),
         )
 
         export_data(

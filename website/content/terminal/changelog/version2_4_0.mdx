@@ -1,0 +1,78 @@
+---
+title: Version 2.4.0
+version: "2.4.0"
+date: 2023-02-14
+description: Version 2.4.0
+sidebar_position: 3
+---
+
+## What's new
+We have quite a few things added in the last few weeks
+- New realestate menu under alternative for looking at UK housing data
+- Mutual fund menu (funds) restored with a new source
+- The dd stock submenu has been improved and merged into the stocks/fa menu
+- Intrinio has been added as a source for stocks and stock options
+- New algolia search engine on the docs
+- Dependencies have been updated and resolved
+- General enhancements and bug fixes
+
+## What's changed
+- Report rendering can't handle save path for users that have a period (.) in username (#4235) @tys203831
+- Fixes bad yFinance candles with auto_adjust=True (#4231) @deeleeramone
+- Hotfix/Splashscreen Staying up on Windows installer (#4232) @tehcoderer
+- Block logout command if no auth enabled (#4233) @montezdesousa
+- Set guest by default and put authentication behind environment variable (#4197) @montezdesousa
+- Fix generate_portfolio SDK usage example (#4216) @northern-64bit
+- Changed poetry version for docker build (#4229) @luqmanbello
+- Feature/general improvements (#4213) @jmaslek
+- Sunset some dependencies (#4215) @jmaslek
+- Fix wrongly formatted values on `stocks/fa/cash` (#4211) @hjoaquim
+- Return a dataframe from stocks search, removed export to file system (#3923) (#4193) @joey-walker
+- Adds algolia to docs (#4208) @jose-donato
+- Hotfix/sdk-trailmaps `portfolio.po` deprecated functions, fix `stocks.disc.filings`, `stocks.fa.sec_fmp` (#4210) @tehcoderer
+- Adding intrinio and cleaning up options a bit more (#4127) @jmaslek
+- Update PR Template and Contributing guidelines (#4194) @jmaslek
+- [FEAT] Nightly Build slack Notifications (#4188) @luqmanbello
+- Feature/some cleaning (#4170) @hjoaquim
+- Updating poetry to v1.3.2 and dependencies (#4076) @aia
+- Cleanse functionality from relying on `yfinance` (#4176) @JerBouma
+- Feature/dependency grooming (#4166) @piiq
+- Restores numeric values (#4183) @hjoaquim
+- Fix some account bugs (#4190) @montezdesousa
+- Add merge group to allow for merge queue (#4191) @jmaslek
+- [FEAT] Additional metrics for evaluating forecasting (RMSE+ MSE) (#4178) @martinb-bb
+- Hotfix/banner spaced (#4189) @tehcoderer
+- Point register to dev (#4184) @montezdesousa
+- Tests : mocking yfinance tzcache (#4187) @Chavithra
+- Terminal authentication + keys/settings/routines (#4015) @montezdesousa
+- Routine remote storage (#4143) @montezdesousa
+- [Snyk] Upgrade tailwindcss-radix from 2.6.2 to 2.7.0 (#4177) @snyk-bot
+- Fixing smaller issues and moving a few things around (#4155) @JerBouma
+- Adjust timezone for AV when interval < 1d (#4158) @hjoaquim
+- Update the documentation so the importance of API keys is more clear (#4172) @JerBouma
+- Remove legacy macro endpoints with no country parameter (#4173) @montezdesousa
+- Fix crypto/disc/top sort (#4167) @montezdesousa
+- Showing `portfolio` portfolios after optimizing in `po` now works, cash comment removed from `portfolio` docs and Parameter file info added (#4149) @JerBouma
+- Fix portfolio optimization Ticker.info bug (#4145) @montezdesousa
+- Remove duplicate `ruff` selection of `pycodestyle` warnings (`W`) (#4156) @andyhuynh3
+- [Snyk] Upgrade @radix-ui/react-popover from 1.0.2 to 1.0.3 (#4165) @jmaslek
+- Removed Pyupgrade From CI (#4160) @colin99d
+- Removing timezone on export xlsx (#4163) @hjoaquim
+- Retire legacy Jupyter Lab extensions (#4146) @piiq
+- Refractor `stocks/fa` by incorporating `stocks/dd` and making the menu less reliant on Yahoo Finance (#4055) @JerBouma
+- Fix portfolio/summary command (issue #3960) (#3964) @northern-64bit
+- Fix load a benchmark that isn't in the list of limited choices + yf.Ticker().info bugs (#4079) @montezdesousa
+- [Snyk] Upgrade tailwindcss-radix from 2.6.1 to 2.6.2 (#4148) @snyk-bot
+- Fix portfolio engine assigning close values to the wrong tickers (#4147) @JerBouma
+- Fix integration test debug mode flag (#4133) @montezdesousa
+- Feature/add isort linter (#4114) @colin99d
+- [Snyk] Fix for 2 vulnerabilities (#4129) @snyk-bot
+- Change integration tests environment variables + add option (#4126) @montezdesousa
+- Fix `economy/macro --transform` (#4125) @JerBouma
+- Feature/mstarpy (#4068) @Mael-J
+- Adding CMD Flags to Docs Generation (#4123) @tehcoderer
+- New functionality for UK Sold house price data (#3969) @kulbinderdio
+- Automate Publishing to Pypi (#4115) @luqmanbello
+- Update labels and release drafter (#4116) @jmaslek
+- Improve website readme (#4099) @hjoaquim
+- Merge release into develop (#4109) @jmaslek

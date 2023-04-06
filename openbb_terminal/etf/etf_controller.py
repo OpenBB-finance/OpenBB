@@ -9,9 +9,9 @@ from typing import List, Optional
 
 import yfinance as yf
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import (
@@ -85,7 +85,7 @@ class ETFController(BaseController):
         self.etf_holdings: List = list()
         self.TRY_RELOAD = True
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -259,7 +259,6 @@ class ETFController(BaseController):
 
             console.print(
                 f"Loading Daily data for {self.etf_name} with starting period {ns_parser.start.strftime('%Y-%m-%d')}.",
-                "\n",
             )
 
     @log_start_end(log=logger)
@@ -461,6 +460,7 @@ class ETFController(BaseController):
             raw=True,
         )
         if ns_parser:
+            figure = None
             if not self.etf_name:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
                 return
@@ -493,14 +493,13 @@ class ETFController(BaseController):
                                 "greater than 1.[/red]\n"
                             )
 
-                stocks_helper.display_candle(
+                figure = stocks_helper.display_candle(
                     symbol=self.etf_name,
                     data=data,
-                    use_matplotlib=ns_parser.plotly,
-                    intraday=False,
                     add_trend=ns_parser.trendlines,
                     ma=mov_avgs,
                     asset_type="ETF",
+                    external_axes=True,
                 )
 
             export_data(
@@ -509,7 +508,10 @@ class ETFController(BaseController):
                 f"{self.etf_name}",
                 self.etf_data,
                 ns_parser.sheet_name,
+                figure=figure,
             )
+            if figure:
+                figure.show()  # type: ignore
 
     @log_start_end(log=logger)
     def call_weights(self, other_args: List[str]):

@@ -22,7 +22,4 @@ def test_display_rossindex(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.alternative.oss.runa_view.export_data")
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     runa_view.display_rossindex()

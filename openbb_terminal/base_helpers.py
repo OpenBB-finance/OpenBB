@@ -1,8 +1,6 @@
 # This is for helpers that do NOT import any OpenBB Modules
-import importlib
 import logging
 import os
-import sys
 from typing import Any, Callable, List, Literal, Optional
 
 from dotenv import load_dotenv
@@ -11,7 +9,7 @@ from rich.console import Console
 from openbb_terminal.core.config.paths import (
     PACKAGE_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    USER_ENV_FILE,
+    SETTINGS_ENV_FILE,
 )
 
 console = Console()
@@ -97,7 +95,7 @@ def strtobool(val):
     return output
 
 
-def load_dotenv_and_reload_configs():
+def load_env_files():
     """
     Loads the dotenv files in the following order:
     1. Repository .env file
@@ -112,30 +110,7 @@ def load_dotenv_and_reload_configs():
     """
     load_dotenv(REPOSITORY_ENV_FILE, override=True)
     load_dotenv(PACKAGE_ENV_FILE, override=True)
-    load_dotenv(USER_ENV_FILE, override=True)
-
-    reload_openbb_config_modules()
-
-
-def reload_openbb_config_modules():
-    """Reloads openbb config modules"""
-
-    reload_modules(
-        to_reload=[
-            "openbb_terminal.config_plot",
-            "openbb_terminal.config_terminal",
-            "openbb_terminal.feature_flags",
-            "openbb_terminal.core.config",
-        ]
-    )
-
-
-def reload_modules(to_reload: List[str]):
-    """Reloads modules"""
-    modules = sys.modules.copy()
-    for module in modules:
-        if module in to_reload:
-            importlib.reload(sys.modules[module])
+    load_dotenv(SETTINGS_ENV_FILE, override=True)
 
 
 def remove_log_handlers():

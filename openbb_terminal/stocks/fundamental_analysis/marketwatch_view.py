@@ -31,10 +31,12 @@ def sec_filings(
     """
     df_financials = marketwatch_model.get_sec_filings(symbol)
     print_rich_table(
-        df_financials.head(limit),
+        df_financials,
         headers=list(df_financials.columns),
         show_index=True,
         title="SEC Filings",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

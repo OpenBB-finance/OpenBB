@@ -7,7 +7,7 @@ from typing import Dict
 from urllib.error import HTTPError
 from urllib.request import urlopen
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
@@ -32,7 +32,8 @@ def get_etf_sector_weightings(name: str) -> Dict:
     """
     try:
         response = urlopen(
-            f"https://financialmodelingprep.com/api/v3/etf-sector-weightings/{name}?apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+            "https://financialmodelingprep.com/api/v3/etf-sector-weightings/"
+            f"{name}?apikey={get_current_user().credentials.API_KEY_FINANCIALMODELINGPREP}"
         )
         data = json.loads(response.read().decode("utf-8"))
     except HTTPError:

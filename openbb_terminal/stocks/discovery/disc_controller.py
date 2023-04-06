@@ -3,10 +3,10 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from datetime import datetime
+from datetime import date, datetime
 from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -119,7 +119,7 @@ class DiscoveryController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -659,7 +659,7 @@ class DiscoveryController(BaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=10,
             help="Limit of upcoming earnings release dates to display.",
         )
         parser.add_argument(
@@ -668,8 +668,16 @@ class DiscoveryController(BaseController):
             action="store",
             dest="n_pages",
             type=check_positive,
-            default=10,
+            default=1,
             help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start  date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=date.today(),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -680,6 +688,7 @@ class DiscoveryController(BaseController):
             seeking_alpha_view.upcoming_earning_release_dates(
                 num_pages=ns_parser.n_pages,
                 limit=ns_parser.limit,
+                start_date=ns_parser.start_date,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
@@ -790,7 +799,7 @@ class DiscoveryController(BaseController):
             action="store",
             dest="s_type",
             choices=self.cnews_type_choices,
-            default="Top-News",
+            default="top-news",
             help="number of news to display",
         )
         parser.add_argument(

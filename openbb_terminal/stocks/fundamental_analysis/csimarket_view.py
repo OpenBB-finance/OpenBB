@@ -30,16 +30,18 @@ def suppliers(
     limit: int
         The maximum number of rows to show
     """
-    tickers = csimarket_model.get_suppliers(symbol, limit=limit)
+    tickers = csimarket_model.get_suppliers(symbol)
+
     if tickers.empty:
         console.print("No suppliers found.\n")
     else:
-        console.print(f"List of suppliers: {', '.join(tickers)}\n")
         print_rich_table(
             tickers,
             headers=list(tickers.columns),
             show_index=True,
             title=f"Suppliers for {symbol.upper()}",
+            export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -66,11 +68,15 @@ def customers(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     if tickers.empty:
         console.print("No customers found.\n")
     else:
+        # Table is a bit weird so need to change the columns header
+        tickers.columns = tickers.iloc[1]
+        tickers = tickers.iloc[2:]
         print_rich_table(
             tickers,
             headers=list(tickers.columns),
             show_index=True,
             title=f"Customers for {symbol.upper()}",
+            export=bool(export),
         )
 
     export_data(

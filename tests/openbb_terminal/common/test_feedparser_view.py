@@ -14,7 +14,4 @@ def test_display_news(term, mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.common.feedparser_view.export_data")
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     display_news(term=term)

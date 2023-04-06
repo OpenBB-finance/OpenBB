@@ -10,7 +10,58 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/balance-sheet-statement/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
+      string: "[\n  {\n    \"date\": \"2022-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2023-02-10\",\n
+        \   \"acceptedDate\": \"2023-02-10 08:20:35\",\n    \"calendarYear\": \"2022\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 3207000000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 3207000000,\n    \"netReceivables\":
+        4756000000,\n    \"inventory\": 9886000000,\n    \"otherCurrentAssets\": 1770000000,\n
+        \   \"totalCurrentAssets\": 19619000000,\n    \"propertyPlantEquipmentNet\":
+        6710000000,\n    \"goodwill\": 19655000000,\n    \"intangibleAssets\": 6732000000,\n
+        \   \"goodwillAndIntangibleAssets\": 26387000000,\n    \"longTermInvestments\":
+        4431000000,\n    \"taxAssets\": 603000000,\n    \"otherNonCurrentAssets\":
+        3931000000,\n    \"totalNonCurrentAssets\": 42062000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 61681000000,\n    \"accountPayables\": 4076000000,\n
+        \   \"shortTermDebt\": 8248000000,\n    \"taxPayables\": 8480000000,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 19088000000,\n    \"totalCurrentLiabilities\":
+        27336000000,\n    \"longTermDebt\": 34875000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 1956000000,\n    \"otherNonCurrentLiabilities\":
+        3825000000,\n    \"totalNonCurrentLiabilities\": 40656000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 67992000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        34289000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -9559000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        -8957000000,\n    \"totalEquity\": -8957000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        67992000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        67992000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 43123000000,\n
+        \   \"netDebt\": 39916000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/0001413329-23-000025-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/pm-20221231.htm\"\n
+        \ },\n  {\n    \"date\": \"2022-09-30\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2022-10-27\",\n
+        \   \"acceptedDate\": \"2022-10-27 08:17:59\",\n    \"calendarYear\": \"2022\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 5368000000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 5368000000,\n    \"netReceivables\":
+        0,\n    \"inventory\": 0,\n    \"otherCurrentAssets\": 0,\n    \"totalCurrentAssets\":
+        5368000000,\n    \"propertyPlantEquipmentNet\": 5610000000,\n    \"goodwill\":
+        6127000000,\n    \"intangibleAssets\": 2224000000,\n    \"goodwillAndIntangibleAssets\":
+        8351000000,\n    \"longTermInvestments\": 4087000000,\n    \"taxAssets\":
+        0,\n    \"otherNonCurrentAssets\": 0,\n    \"totalNonCurrentAssets\": 18048000000,\n
+        \   \"otherAssets\": 17301000000,\n    \"totalAssets\": 40717000000,\n    \"accountPayables\":
+        0,\n    \"shortTermDebt\": 2818000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 0,\n    \"totalCurrentLiabilities\":
+        2818000000,\n    \"longTermDebt\": 21762000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 923000000,\n    \"otherNonCurrentLiabilities\":
+        22617000000,\n    \"totalNonCurrentLiabilities\": 45302000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 48120000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        0,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 0,\n    \"othertotalStockholdersEquity\":
+        0,\n    \"totalStockholdersEquity\": -9137000000,\n    \"totalEquity\": -9137000000,\n
+        \   \"totalLiabilitiesAndStockholdersEquity\": 38983000000,\n    \"minorityInterest\":
+        0,\n    \"totalLiabilitiesAndTotalEquity\": 38983000000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 24580000000,\n    \"netDebt\": 19212000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000114/0001413329-22-000114-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000114/pm-20220930.htm\"\n
+        \ },\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2022-02-11\",\n
         \   \"acceptedDate\": \"2022-02-11 08:29:22\",\n    \"calendarYear\": \"2021\",\n
         \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 4496000000,\n    \"shortTermInvestments\":
@@ -23,17 +74,17 @@ interactions:
         2549000000,\n    \"totalNonCurrentAssets\": 23573000000,\n    \"otherAssets\":
         0,\n    \"totalAssets\": 41290000000,\n    \"accountPayables\": 3331000000,\n
         \   \"shortTermDebt\": 3023000000,\n    \"taxPayables\": 7349000000,\n    \"deferredRevenue\":
-        0,\n    \"otherCurrentLiabilities\": 5552000000,\n    \"totalCurrentLiabilities\":
+        0,\n    \"otherCurrentLiabilities\": 16232000000,\n    \"totalCurrentLiabilities\":
         19255000000,\n    \"longTermDebt\": 24783000000,\n    \"deferredRevenueNonCurrent\":
         0,\n    \"deferredTaxLiabilitiesNonCurrent\": 726000000,\n    \"otherNonCurrentLiabilities\":
         4734000000,\n    \"totalNonCurrentLiabilities\": 30243000000,\n    \"otherLiabilities\":
         0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 49498000000,\n
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         33082000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -9577000000,\n
-        \   \"othertotalStockholdersEquity\": -33611000000,\n    \"totalStockholdersEquity\":
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
         -10106000000,\n    \"totalEquity\": -10106000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        39392000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        39392000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 27806000000,\n
+        49498000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        49498000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 27806000000,\n
         \   \"netDebt\": 23310000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm\"\n
         \ },\n  {\n    \"date\": \"2020-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -476,13 +527,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '36420'
+      - '40478'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 03 Feb 2023 13:54:39 GMT
+      - Tue, 07 Mar 2023 17:08:37 GMT
       ETag:
-      - W/"8e44-sWEkn1iG4BreHwtPkeeo4xbwl44"
+      - W/"9e1e-Epa6BAZgAYXgsPxNZuNLZ4YHwl8"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

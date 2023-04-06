@@ -187,7 +187,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
             try:
                 log_sender.join(timeout=3)
             except Exception:
-                pass
+                pass  # noqa
 
         super().close()
 

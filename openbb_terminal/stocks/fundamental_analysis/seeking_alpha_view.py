@@ -32,6 +32,7 @@ def display_eps_estimates(
             headers=list(eps_estimates.columns),
             show_index=False,
             title=f"{symbol.upper()} EPS History and Estimations",
+            export=bool(export),
         )
 
         export_data(
@@ -66,6 +67,7 @@ def display_rev_estimates(
             headers=list(rev_estimates.columns),
             show_index=False,
             title=f"{symbol.upper()} Revenue History and Estimations",
+            export=bool(export),
         )
 
         export_data(

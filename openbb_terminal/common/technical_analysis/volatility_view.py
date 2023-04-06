@@ -3,20 +3,16 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.common.technical_analysis import ta_helpers, volatility_model
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    reindex_dates,
 )
 
 logger = logging.getLogger(__name__)
@@ -33,8 +29,8 @@ def display_bbands(
     mamode: str = "sma",
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots bollinger bands
 
     Parameters
@@ -51,64 +47,31 @@ def display_bbands(
         Method of calculating average
     export : str
         Format of export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-    df_ta = volatility_model.bbands(data, window, n_std, mamode)
-    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
-    plot_data = reindex_dates(plot_data)
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    close_col = ta_helpers.check_columns(data, high=False, low=False)
-    if close_col is None:
-        return
-    ax.plot(
-        plot_data.index,
-        plot_data[close_col].values,
-    )
-    ax.plot(
-        plot_data.index,
-        plot_data[df_ta.columns[0]].values,
-        theme.down_color,
-        linewidth=0.7,
-    )
-    ax.plot(plot_data.index, plot_data[df_ta.columns[1]].values, ls="--", linewidth=0.7)
-    ax.plot(
-        plot_data.index,
-        plot_data[df_ta.columns[2]].values,
-        theme.up_color,
-        linewidth=0.7,
-    )
-    ax.set_title(f"{symbol} Bollinger Bands")
-    ax.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax.set_ylabel("Share Price ($)")
-    ax.legend([symbol, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
-    ax.fill_between(
-        df_ta.index, df_ta.iloc[:, 0].values, df_ta.iloc[:, 2].values, alpha=0.1
-    )
-    theme.style_primary_axis(
-        ax,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+    ta = PlotlyTA()
+    fig = ta.plot(
+        data,
+        dict(bbands=dict(length=window, scalar=n_std, mamode=mamode)),
+        f"{symbol.upper()} Bollinger Bands",
+        False,
+        volume=False,
     )
 
-    if external_axes is None:
-        theme.visualize_output()
+    if ta_helpers.check_columns(data, high=False, low=False) is None:
+        return None
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "bbands",
-        df_ta,
+        ta.df_ta,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -119,8 +82,8 @@ def display_donchian(
     lower_length: int = 20,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots donchian channels
 
     Parameters
@@ -135,64 +98,31 @@ def display_donchian(
         Length of window to calculate lower channel
     export : str
         Format of export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-    df_ta = volatility_model.donchian(data, upper_length, lower_length)
-    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
-    plot_data = reindex_dates(plot_data)
-
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    close_col = ta_helpers.check_columns(data)
-    if close_col is None:
-        return
-    ax.plot(plot_data.index, plot_data[close_col].values)
-    ax.plot(
-        plot_data.index,
-        plot_data[df_ta.columns[0]].values,
-        linewidth=0.7,
-        label="Upper",
-    )
-    ax.plot(plot_data.index, plot_data[df_ta.columns[1]].values, linewidth=0.7, ls="--")
-    ax.plot(
-        plot_data.index,
-        plot_data[df_ta.columns[2]].values,
-        linewidth=0.7,
-        label="Lower",
-    )
-    ax.fill_between(
-        plot_data.index,
-        plot_data[df_ta.columns[0]].values,
-        plot_data[df_ta.columns[2]].values,
-        alpha=0.1,
-    )
-    ax.set_title(f"{symbol} donchian")
-    ax.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax.set_ylabel("Price ($)")
-    ax.legend([symbol, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
-    theme.style_primary_axis(
-        ax,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+    ta = PlotlyTA()
+    fig = ta.plot(
+        data,
+        dict(donchian=dict(upper_length=upper_length, lower_length=lower_length)),
+        f"{symbol.upper()} Donchian Channels",
+        False,
+        volume=False,
     )
 
-    if external_axes is None:
-        theme.visualize_output()
+    if ta_helpers.check_columns(data) is None:
+        return None
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "donchian",
-        df_ta,
+        ta.df_ta,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -205,8 +135,8 @@ def view_kc(
     symbol: str = "",
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots Keltner Channels Indicator
 
     Parameters
@@ -228,70 +158,31 @@ def view_kc(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-    df_ta = volatility_model.kc(
+    ta = PlotlyTA()
+    fig = ta.plot(
         data,
-        window,
-        scalar,
-        mamode,
-        offset,
-    )
-    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
-    plot_data = reindex_dates(plot_data)
-
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    close_col = ta_helpers.check_columns(data)
-    if close_col is None:
-        return
-    ax.plot(plot_data.index, plot_data[close_col].values)
-    ax.plot(
-        plot_data.index,
-        plot_data[df_ta.columns[0]].values,
-        linewidth=0.7,
-        label="Upper",
-    )
-    ax.plot(plot_data.index, plot_data[df_ta.columns[1]].values, linewidth=0.7, ls="--")
-    ax.plot(
-        plot_data.index,
-        plot_data[df_ta.columns[2]].values,
-        linewidth=0.7,
-        label="Lower",
-    )
-    ax.fill_between(
-        plot_data.index,
-        plot_data[df_ta.columns[0]].values,
-        plot_data[df_ta.columns[2]].values,
-        alpha=0.1,
-    )
-    ax.set_title(f"{symbol} Keltner Channels")
-    ax.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax.set_ylabel("Price")
-    ax.legend([symbol, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
-    theme.style_primary_axis(
-        ax,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+        dict(kc=dict(length=window, scalar=scalar, mamode=mamode, offset=offset)),
+        f"{symbol.upper()} Keltner Channels",
+        False,
+        volume=False,
     )
 
-    if external_axes is None:
-        theme.visualize_output()
+    if ta_helpers.check_columns(data) is None:
+        return None
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "kc",
-        df_ta,
+        ta.df_ta,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -303,8 +194,8 @@ def display_atr(
     offset: int = 0,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots ATR
 
     Parameters
@@ -317,55 +208,31 @@ def display_atr(
         Length of window to calculate upper channel
     export : str
         Format of export file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-    df_ta = volatility_model.atr(data, window=window, mamode=mamode, offset=offset)
-
-    # This plot has 2 axes
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
-        )
-        (ax1, ax2) = axes
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-    else:
-        return
-
-    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
-    plot_data = reindex_dates(plot_data)
-
-    ax1.plot(plot_data.index, plot_data.iloc[:, 1].values, color=theme.get_colors()[0])
-    ax1.set_title(f"{symbol} ATR")
-    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax1.set_ylabel("Share Price ($)")
-    theme.style_primary_axis(
-        ax=ax1,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
+    ta = PlotlyTA()
+    fig = ta.plot(
+        data,
+        dict(atr=dict(length=window, mamode=mamode, offset=offset)),
+        f"{symbol.upper()} Average True Range",
+        False,
+        volume=False,
     )
 
-    ax2.plot(
-        plot_data.index, plot_data[df_ta.columns[0]].values, color=theme.get_colors()[1]
-    )
-    ax2.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax2.set_ylabel("ATR")
-    theme.style_primary_axis(
-        ax=ax2,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
-    )
-    if external_axes is None:
-        theme.visualize_output()
+    if ta_helpers.check_columns(data) is None:
+        return None
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "atr",
-        df_ta,
+        ta.df_ta,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -378,7 +245,8 @@ def display_cones(
     is_crypto: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots the realized volatility quantiles for the loaded ticker.
     The model used to calculate the volatility is selectable.
 
@@ -421,6 +289,8 @@ def display_cones(
         Format of export file
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -441,44 +311,38 @@ def display_cones(
     )
     lower_q_label = str(int(lower_q * 100))
     upper_q_label = str(int(upper_q * 100))
-    if not df_ta.empty:
-        plt.figure(figsize=[14, 7])
-        plt.autoscale(enable=True, axis="both", tight=True)
-        plt.plot(df_ta.index, df_ta.Min, "-o", linewidth=1, label="Min")
-        plt.plot(df_ta.index, df_ta.Max, "-o", linewidth=1, label="Max")
-        plt.plot(df_ta.index, df_ta.Median, "-o", linewidth=1, label="Median")
-        plt.plot(
-            df_ta.index,
-            df_ta["Upper " f"{upper_q_label}" "%"],
-            "-o",
-            linewidth=1,
-            label="Upper " f"{upper_q_label}" "%",
-        )
-        plt.plot(
-            df_ta.index,
-            df_ta["Lower " f"{lower_q_label}" "%"],
-            "-o",
-            linewidth=1,
-            label="Lower " f"{lower_q_label}" "%",
-        )
-        plt.plot(df_ta.index, df_ta.Realized, "o-.", linewidth=1, label="Realized")
-        plt.xlabel(xlabel="Window of Time (in days)", labelpad=20, y=0)
-        plt.title(
-            label=f"{symbol}" " - Realized Volatility Cones - " f"{model}" " Model",
-            loc="center",
-            y=1.0,
-        )
-        plt.legend(loc="best", ncol=6, fontsize="x-small")
-        plt.tick_params(axis="y", which="both", labelleft=False, labelright=True)
-        plt.xticks(df_ta.index)
-        plt.tight_layout(pad=2.0)
 
-        theme.visualize_output()
+    if df_ta.empty:
+        return None
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
-            "cones",
-            df_ta,
-            sheet_name,
-        )
+    fig = OpenBBFigure(xaxis_title="Window of Time (in days)")
+    fig.set_title(f"{symbol} - Realized Volatility Cones - {model} Model", x=0.5)
+
+    fig.add_scatter(x=df_ta.index, y=df_ta.Min, name="Min")
+    fig.add_scatter(x=df_ta.index, y=df_ta.Max, name="Max")
+    fig.add_scatter(x=df_ta.index, y=df_ta.Median, name="Median")
+    fig.add_scatter(
+        x=df_ta.index,
+        y=df_ta["Upper " f"{upper_q_label}" "%"],
+        name="Upper " f"{upper_q_label}" "%",
+    )
+    fig.add_scatter(
+        x=df_ta.index,
+        y=df_ta["Lower " f"{lower_q_label}" "%"],
+        name="Lower " f"{lower_q_label}" "%",
+    )
+    fig.add_scatter(x=df_ta.index, y=df_ta.Realized, name="Realized")
+
+    fig.update_xaxes(tickmode="array", tickvals=df_ta.index, ticktext=df_ta.index)
+    fig.horizontal_legend(x=1, y=1, yanchor="top")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "cones",
+        df_ta,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=external_axes)

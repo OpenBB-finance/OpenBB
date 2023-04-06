@@ -1,4 +1,4 @@
-import React, { cloneElement, useEffect } from "react";
+import React, { cloneElement } from "react";
 import clsx from "clsx";
 import {
   useScrollPositionBlocker,
@@ -7,52 +7,12 @@ import {
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import styles from "./styles.module.css";
 import { useLocation } from "@docusaurus/router";
-import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
-
-function getOSName() {
-  const userAgent = ExecutionEnvironment.canUseDOM ? navigator.userAgent : "";
-  if (userAgent.indexOf("Windows") > -1) {
-    return "Windows";
-  } else if (userAgent.indexOf("Mac") > -1) {
-    return "Mac";
-  } else if (userAgent.indexOf("X11") > -1) {
-    return "UNIX";
-  } else if (userAgent.indexOf("Linux") > -1) {
-    return "Linux";
-  } else {
-    return "Other";
-  }
-}
-
-function getQueryVariable(query, variable) {
-  // substring query
-  const vars = query.substring(1).split("&");
-  for (let i = 0; i < vars.length; i++) {
-    let pair = vars[i].split("=");
-    if (decodeURIComponent(pair[0]) == variable) {
-      return decodeURIComponent(pair[1]);
-    }
-  }
-  return null;
-}
-
-function getInstallationTabType() {
-  const osName = getOSName();
-  if (osName === "Windows") {
-    return "windows";
-  } else if (osName === "Mac") {
-    return "mac";
-  } else if (osName === "Linux" || osName === "UNIX") {
-    return "python";
-  }
-  return "windows";
-}
 
 function TabList({ className, block, selectedValue, selectValue, tabValues }) {
   const tabRefs = [];
   const { blockElementScrollPositionUntilNextRender } =
     useScrollPositionBlocker();
-  const { pathname, search } = useLocation();
+  const { pathname } = useLocation();
 
   const handleTabChange = (event) => {
     const newTab = event.currentTarget;
@@ -63,22 +23,6 @@ function TabList({ className, block, selectedValue, selectValue, tabValues }) {
       selectValue(newTabValue);
     }
   };
-
-  if (ExecutionEnvironment.canUseDOM) {
-    useEffect(() => {
-      if (pathname.startsWith("/terminal/quickstart/installation")) {
-        const value = getQueryVariable(search, "tab");
-        const osTabValue = getInstallationTabType();
-        selectValue(
-          value
-            ? ["mac", "windows", "python", "docker"].includes(value)
-              ? value
-              : osTabValue
-            : osTabValue
-        );
-      }
-    }, []);
-  }
 
   const handleKeydown = (event) => {
     let focusElement = null;

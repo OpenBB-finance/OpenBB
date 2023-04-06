@@ -60,8 +60,6 @@ def get_insider_activity(symbol: str) -> pd.DataFrame:
     )
 
     df_insider["Date"] = pd.to_datetime(df_insider["Date"])
-    df_insider = df_insider.set_index("Date")
-    df_insider = df_insider.sort_index(ascending=True)
 
     l_names = list()
     for s_name in text_soup_market_business_insider.findAll(
@@ -69,5 +67,6 @@ def get_insider_activity(symbol: str) -> pd.DataFrame:
     ):
         l_names.append(s_name.text.strip())
     df_insider["Insider"] = l_names
-
+    df_insider = df_insider.set_index("Date")
+    df_insider = df_insider.sort_index(ascending=True)
     return df_insider

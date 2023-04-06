@@ -5,7 +5,7 @@ from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request, str_date_to_timestamp
 from openbb_terminal.rich_config import console
@@ -213,7 +213,7 @@ def get_close_price(
     url = api_url + "market/price_usd_close"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
         "s": str(ts_start_date),
@@ -278,7 +278,7 @@ def get_non_zero_addresses(
     url = api_url + "addresses/non_zero_count"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
         "s": str(ts_start_date),
@@ -343,7 +343,7 @@ def get_active_addresses(
     url = api_url + "addresses/active_count"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": interval,
         "s": str(ts_start_date),
@@ -408,7 +408,7 @@ def get_hashrate(
     url2 = api_url + "market/price_usd_close"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": interval,
         "s": str(ts_start_date),
@@ -497,7 +497,7 @@ def get_exchange_balances(
     url3 = api_url + "market/price_usd_close"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
         "e": exchange,
@@ -586,7 +586,7 @@ def get_exchange_net_position_change(
     url = api_url + "distribution/exchange_net_position_change"
 
     parameters = {
-        "api_key": cfg.API_GLASSNODE_KEY,
+        "api_key": get_current_user().credentials.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
         "e": exchange,

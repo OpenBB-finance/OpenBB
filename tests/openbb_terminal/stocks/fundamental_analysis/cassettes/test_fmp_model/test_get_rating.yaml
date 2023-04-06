@@ -10,7 +10,103 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/historical-rating/TSLA?apikey=MOCK_API_KEY
   response:
     body:
-      string: "[\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-02\",\n
+      string: "[\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-03-03\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-28\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-27\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-24\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-14\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-13\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-10\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-09\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-08\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-07\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-06\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-03\",\n
+        \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
+        \"Neutral\",\n    \"ratingDetailsROAScore\": 3,\n    \"ratingDetailsROARecommendation\":
+        \"Neutral\",\n    \"ratingDetailsDEScore\": 4,\n    \"ratingDetailsDERecommendation\":
+        \"Buy\",\n    \"ratingDetailsPEScore\": 5,\n    \"ratingDetailsPERecommendation\":
+        \"Strong Buy\",\n    \"ratingDetailsPBScore\": 5,\n    \"ratingDetailsPBRecommendation\":
+        \"Strong Buy\"\n  },\n  {\n    \"symbol\": \"TSLA\",\n    \"date\": \"2023-02-02\",\n
         \   \"rating\": \"A+\",\n    \"ratingScore\": 5,\n    \"ratingRecommendation\":
         \"Strong Buy\",\n    \"ratingDetailsDCFScore\": 5,\n    \"ratingDetailsDCFRecommendation\":
         \"Strong Buy\",\n    \"ratingDetailsROEScore\": 3,\n    \"ratingDetailsROERecommendation\":
@@ -24754,13 +24850,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '1920682'
+      - '1928182'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 03 Feb 2023 13:54:31 GMT
+      - Tue, 07 Mar 2023 17:09:20 GMT
       ETag:
-      - W/"1d4eaa-4V0FzxsxJIyR0OMOolWkziW+IaU"
+      - W/"1d6bf6-qWUM4wGw04tBDKHlo8Oq7Pd1lS0"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

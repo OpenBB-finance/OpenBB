@@ -5,10 +5,7 @@ import argparse
 import logging
 from typing import List, Optional, Union
 
-from openbb_terminal import (
-    config_terminal as cfg,
-    feature_flags as obbff,
-)
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import av_model, forex_helper
@@ -21,7 +18,7 @@ from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
-account = cfg.OANDA_ACCOUNT
+account = get_current_user().credentials.OANDA_ACCOUNT
 
 
 class OandaController(BaseController):
@@ -56,7 +53,7 @@ class OandaController(BaseController):
         self.source = "Oanda"
         self.instrument: Union[str, None] = None
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             # TODO: We currently use the Alpha Vantage currency list for autocompletion
             # This leads to messages like `USD_EUR is not a valid instrument.`

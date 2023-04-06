@@ -5,12 +5,11 @@ __docformat__ = "numpy"
 import logging
 from typing import List, Optional, Set
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.brokers.ally import ally_controller
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_controller
 from openbb_terminal.portfolio.brokers.degiro import degiro_controller
 from openbb_terminal.portfolio.brokers.robinhood import robinhood_controller
@@ -34,7 +33,7 @@ class BrokersController(BaseController):
         self.broker_list: Set = set()
         self.merged_holdings = None
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -42,7 +41,6 @@ class BrokersController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("portfolio/bro/")
-        mt.add_menu("ally")
         mt.add_menu("degiro")
         mt.add_menu("rh")
         mt.add_menu("cb")
@@ -52,11 +50,6 @@ class BrokersController(BaseController):
     def call_degiro(self, _):
         """Process degiro command."""
         self.queue = self.load_class(degiro_controller.DegiroController, self.queue)
-
-    @log_start_end(log=logger)
-    def call_ally(self, _):
-        """Process ally command."""
-        self.queue = self.load_class(ally_controller.AllyController, self.queue)
 
     @log_start_end(log=logger)
     def call_rh(self, _):

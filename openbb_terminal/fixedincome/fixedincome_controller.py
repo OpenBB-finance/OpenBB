@@ -1,15 +1,18 @@
 """ Futures Controller """
 __docformat__ = "numpy"
 
-# pylint:disable=too-many-lines
+# pylint:disable=C0302
 
+# IMPORTATION STANDARD
 import argparse
 import logging
 from typing import List, Optional
 
+# IMPORTATION THIRDPARTY
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.fixedincome import (
@@ -68,16 +71,16 @@ class FixedIncomeController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
 
             # These values need to work with multi options which
             # is why they are defined here
             self.choices["treasury"]["--short"] = {
-                c: None for c in oecd_model.COUNTRY_TO_CODE
+                c: None for c in oecd_model.COUNTRY_TO_CODE_SHORT
             }
             self.choices["treasury"]["--long"] = {
-                c: None for c in oecd_model.COUNTRY_TO_CODE
+                c: None for c in oecd_model.COUNTRY_TO_CODE_LONG
             }
 
             self.choices["spot"]["--maturity"] = {

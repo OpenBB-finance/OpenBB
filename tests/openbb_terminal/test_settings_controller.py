@@ -1,5 +1,14 @@
+# IMPORTATION STANDARD
+
+
+# IMPORTATION THIRDPARTY
 import pytest
 
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.settings_controller import SettingsController
 
 # pylint: disable=W0621
@@ -7,18 +16,18 @@ from openbb_terminal.settings_controller import SettingsController
 
 @pytest.fixture()
 def controller(mocker):
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        "openbb_terminal.settings_controller.obbff.USE_PROMPT_TOOLKIT",
-        True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
+
+    mocker.patch(
+        target="openbb_terminal.settings_controller.set_preference",
+    )
+
     mocker.patch("openbb_terminal.settings_controller.session", True)
-    mocker.patch("openbb_terminal.settings_controller.SettingsController.set_cfg_plot")
-    mocker.patch(
-        "openbb_terminal.settings_controller.SettingsController.set_path_config"
-    )
-    mocker.patch(
-        "openbb_terminal.settings_controller.obbff_ctrl.FeatureFlagsController.set_feature_flag"
-    )
     return SettingsController()
 
 

@@ -48,10 +48,12 @@ def display_options(
     if calls_only:
         data = data[data.Type == "Call"]
     print_rich_table(
-        data[:limit],
+        data,
         headers=list(data.columns),
         show_index=False,
         title=f"Last Updated: {last_update} (EST)",
+        export=bool(export),
+        limit=limit,
     )
 
     if export:

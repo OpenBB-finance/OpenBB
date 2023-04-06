@@ -28,7 +28,6 @@ sub_names = {
     "po": "Portfolio Optimization",
     "qa": "Quantitative Analysis",
     "screener": "Screener",
-    "sia": "Sector Industry Analysis",
     "ta": "Technical Analysis",
     "th": "Trading Hours",
     "fa": "Fundamental Analysis",
@@ -46,22 +45,23 @@ class SDKLogger:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not cfg.LOGGING_SUPPRESS:
+        if not get_current_system().LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
     def __initialize_logging() -> None:
         # pylint: disable=C0415
+        from openbb_terminal.config_terminal import setup_logging_sub_app
         from openbb_terminal.core.log.generation.settings_logger import log_all_settings
         from openbb_terminal.loggers import setup_logging
 
-        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging_sub_app(sub_app="sdk")
         setup_logging()
         log_all_settings()
 
     @staticmethod
     def _try_to_login(sdk: "OpenBBSDK"):
-        if User.is_guest() and is_auth_enabled():
+        if is_local() and is_auth_enabled():
             try:
                 sdk.login()
             except Exception:
@@ -241,7 +241,7 @@ class BuildCategoryModelClasses:
         if module:
             f.write("    def __init__(self):\r        super().__init__()\r")
         elif sdk_root:
-            f.write("    __version__ = obbff.VERSION\r\r")
+            f.write("    __version__ = get_current_system().VERSION\r\r")
             f.write("    def __init__(self):\r        SDKLogger()\r")
 
     def write_class_attributes(
@@ -536,7 +536,7 @@ class BuildCategoryModelClasses:
         subprocess.check_call(["black", "openbb_terminal"])  # nosec: B603, B607
 
 
-def generate_sdk(sort: bool = False) -> None:
+def generate_sdk(sort: bool = False) -> bool:
     """Generate the SDK.
 
     Parameters
@@ -545,11 +545,15 @@ def generate_sdk(sort: bool = False) -> None:
         Whether to sort the CSVs, by default False
     """
     trailmaps = get_trailmaps(sort)
+    try:
+        console.print("[yellow]Generating SDK...[/]")
+        BuildCategoryModelClasses(trailmaps).build()
+        console.print("[green]SDK Generated Successfully.[/]")
+    except Exception as e:
+        console.print(f"[red]Error generating SDK: {e}[/]")
+        return False
 
-    console.print("[yellow]Generating SDK...[/]")
-    BuildCategoryModelClasses(trailmaps).build()
-    console.print("[green]SDK Generated Successfully.[/]")
-    return
+    return True
 
 
 if __name__ == "__main__":
