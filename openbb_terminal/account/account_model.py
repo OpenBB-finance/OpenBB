@@ -1,10 +1,10 @@
+import os
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
@@ -34,96 +34,6 @@ def set_login_called(value: bool):
     __login_called = value
 
 
-def get_diff(configs: dict) -> dict:
-    """Show the diff between the local and remote configs.
-
-    Parameters
-    ----------
-    configs : dict
-        The configs.
-
-    Returns
-    -------
-    dict
-        The diff.
-    """
-    KEYS = "features_keys"
-    configs_diff: Dict[str, Dict[str, Any]] = {KEYS: {}}
-
-    diff_keys = get_diff_keys(configs.get(KEYS, {}))
-    if diff_keys:
-        console.print("[info]Keys:[/info]")
-        for k, v in diff_keys.items():
-            configs_diff[KEYS][k] = v[1]
-            console.print(f"  [menu]{k}[/menu]: {v[0]} -> {v[1]}")
-
-    if not configs_diff[KEYS]:
-        configs_diff.pop(KEYS)
-
-    return configs_diff
-
-
-def get_diff_keys(keys: dict) -> dict:
-    """Get the diff between the local and remote keys.
-
-    Parameters
-    ----------
-    configs : dict
-        The configs.
-
-    Returns
-    -------
-    dict
-        The diff.
-    """
-    current_user = get_current_user()
-    diff = {}
-    if keys:
-        for k, v in sorted(keys.items()):
-            if hasattr(current_user.credentials, k):
-                old, new = get_var_diff(current_user.credentials, k, v)
-                if new is not None:
-                    diff[k] = (old, new)
-
-    return diff
-
-
-def get_var_diff(obj, name, value) -> Tuple[Any, Any]:
-    """Set attribute in object.
-
-    Parameters
-    ----------
-    obj : object
-        The object.
-    name : str
-        The attribute name.
-    value : str
-        The attribute value.
-
-    Returns
-    -------
-    Tuple[Any, Any]
-        The old and new values.
-    """
-    current_value = getattr(obj, name)
-
-    if str(value).lower() in ["true", "false"]:
-        cast_value = strtobool(value)
-    elif isinstance(getattr(obj, name), int):
-        cast_value = int(value)
-    elif isinstance(getattr(obj, name), float):
-        cast_value = float(value)
-    elif isinstance(getattr(obj, name), Path):
-        cast_value = Path(value)
-    else:
-        cast_value = value
-
-    if current_value != cast_value:
-        return current_value, cast_value
-
-    return None, None
-
-
 def get_routines_info(response) -> Tuple[pd.DataFrame, int, int]:
     """Get the routines list.
 
@@ -150,3 +60,79 @@ def get_routines_info(response) -> Tuple[pd.DataFrame, int, int]:
             df.index = np.arange(1, len(df) + 1)
 
     return df, page, pages
+
+
+def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
+    """Read the routine.
+
+    Returns
+    -------
+    file_name : str
+        The routine.
+    folder : Optional[Path]
+        The routines folder.
+    """
+
+    current_user = get_current_user()
+    if folder is None:
+        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
+
+    try:
+        user_folder = folder / "hub"
+        file_path = (
+            user_folder / file_name
+            if os.path.exists(user_folder / file_name)
+            else folder / file_name
+        )
+
+        with open(file_path) as f:
+            routine = "".join(f.readlines())
+        return routine
+    except Exception:
+        console.print("[red]Failed to find routine.[/red]")
+        return None
+
+
+def save_routine(
+    file_name: str,
+    routine: str,
+    folder: Optional[Path] = None,
+    force: bool = False,
+) -> Union[Optional[Path], str]:
+    """Save the routine.
+
+    Parameters
+    ----------
+    file_name : str
+        The routine.
+    routine : str
+        The routine.
+    folder : Path
+        The routines folder.
+    force : bool
+        Force the save.
+
+    Returns
+    -------
+    Optional[Path, str]
+        The path to the routine or None.
+    """
+
+    current_user = get_current_user()
+    if folder is None:
+        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
+
+    try:
+        user_folder = folder / "hub"
+        if not os.path.exists(user_folder):
+            os.makedirs(user_folder)
+
+        file_path = user_folder / file_name
+        if os.path.exists(file_path) and not force:
+            return "File already exists"
+        with open(file_path, "w") as f:
+            f.write(routine)
+        return user_folder / file_name
+    except Exception:
+        console.print("[red]\nFailed to save routine.[/red]")
+        return None

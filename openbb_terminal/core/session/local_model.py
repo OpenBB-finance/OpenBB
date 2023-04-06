@@ -1,7 +1,7 @@
 import json
 import os
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional
 
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
@@ -231,80 +231,3 @@ def set_sources_from_hub(configs: dict):
         sources = configs.get("features_sources", {}) or {}
         if sources:
             set_sources(sources)
-
-
-def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
-    """Get the routine.
-
-    Returns
-    -------
-    file_name : str
-        The routine.
-    folder : Optional[Path]
-        The routines folder.
-    """
-
-    current_user = get_current_user()
-    if folder is None:
-        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
-
-    try:
-        user_folder = folder / current_user.profile.get_uuid()
-        file_path = (
-            user_folder / file_name
-            if os.path.exists(user_folder / file_name)
-            else folder / file_name
-        )
-
-        with open(file_path) as f:
-            routine = "".join(f.readlines())
-        return routine
-    except Exception:
-        console.print("[red]Failed to find routine.[/red]")
-        return None
-
-
-def save_routine(
-    file_name: str,
-    routine: str,
-    folder: Optional[Path] = None,
-    force: bool = False,
-) -> Union[Optional[Path], str]:
-    """Save the routine.
-
-    Parameters
-    ----------
-    file_name : str
-        The routine.
-    routine : str
-        The routine.
-    folder : Path
-        The routines folder.
-    force : bool
-        Force the save.
-
-    Returns
-    -------
-    Optional[Path, str]
-        The path to the routine or None.
-    """
-
-    current_user = get_current_user()
-    if folder is None:
-        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
-
-    try:
-        uuid = current_user.profile.get_uuid()
-        user_folder = folder / uuid
-        if not os.path.exists(user_folder):
-            os.makedirs(user_folder)
-
-        file_path = user_folder / file_name
-        if os.path.exists(file_path) and not force:
-            return "File already exists"
-        with open(file_path, "w") as f:
-            f.write(routine)
-        return user_folder / file_name
-    except Exception:
-        console.print("[red]\nFailed to save routine.[/red]")
-        return None
