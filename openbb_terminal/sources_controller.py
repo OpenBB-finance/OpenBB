@@ -91,7 +91,7 @@ class SourcesController(BaseController):
             action="store",
             dest="cmd",
             choices=list(get_current_user().sources.sources_dict.keys()),
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             help="Command that we want to check the available data sources and the default one.",
             metavar="COMMAND",
         )
@@ -141,7 +141,13 @@ class SourcesController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        if "-s" not in other_args and "--source" not in other_args:
+
+        if (
+            other_args
+            and len(other_args) >= 2
+            and "-s" not in other_args
+            and "--source" not in other_args
+        ):
             other_args.insert(2, "-s")
 
         ns_parser = self.parse_simple_args(parser, other_args)
