@@ -8,7 +8,6 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     SETTINGS_DIRECTORY,
 )
-from openbb_terminal.core.models.sources_model import SourcesModel
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     get_env_dict,
@@ -231,9 +230,7 @@ def set_sources_from_hub(configs: dict):
     if configs:
         sources = configs.get("features_sources", {}) or {}
         if sources:
-            default_sources = SourcesModel().sources_dict
-            default_sources.update(sources)
-            set_sources(default_sources)
+            set_sources(sources)
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
