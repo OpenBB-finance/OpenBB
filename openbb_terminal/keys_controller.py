@@ -123,7 +123,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             description="Display current keys.",
         )
         parser.add_argument(
-            "-s", "--show", type=bool, dest="show", help="show", default=False
+            "-s",
+            "--show",
+            type=bool,
+            dest="show",
+            help="See keys in raw text instead of the default protected display.",
+            default=False,
         )
         if other_args and "-s" in other_args[0]:
             other_args.insert(1, "True")
