@@ -38,7 +38,7 @@ from openbb_terminal.stocks.stock_statics import (
     INCOME_PLOT_CHOICES,  # noqa: F401
     INTERVALS,  # noqa: F401
     SOURCES,  # noqa: F401
-    market_coverage_suffix,
+    market_coverage_suffix,  # noqa: F401
 )
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
