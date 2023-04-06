@@ -174,7 +174,6 @@ class StocksDiscovery(Category):
         self.asc = lib.stocks_disc_yahoofinance_model.get_asc
         self.dividends = lib.stocks_disc_nasdaq_model.get_dividend_cal
         self.filings = lib.stocks_fa_fmp_model.get_filings
-        self.filings_chart = lib.stocks_disc_fmp_view.display_filings
         self.fipo = lib.stocks_disc_finnhub_model.get_future_ipo
         self.gainers = lib.stocks_disc_yahoofinance_model.get_gainers
         self.gtech = lib.stocks_disc_yahoofinance_model.get_gtech
@@ -335,7 +334,6 @@ class StocksFundamentalAnalysis(Category):
         self.score = lib.stocks_fa_fmp_model.get_score
         self.sec = lib.stocks_fa_marketwatch_model.get_sec_filings
         self.sec_fmp = lib.stocks_fa_fmp_model.get_filings
-        self.sec_fmp_chart = lib.stocks_fa_fmp_view.display_filings
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
         self.splits = lib.stocks_fa_yahoo_finance_model.get_splits
