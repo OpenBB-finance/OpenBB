@@ -332,7 +332,6 @@ class StocksFundamentalAnalysis(Category):
         self.rot_chart = lib.stocks_fa_finnhub_view.rating_over_time
         self.score = lib.stocks_fa_fmp_model.get_score
         self.sec = lib.stocks_fa_marketwatch_model.get_sec_filings
-        self.sec_fmp = lib.stocks_fa_fmp_model.get_filings
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
         self.splits = lib.stocks_fa_yahoo_finance_model.get_splits
