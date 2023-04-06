@@ -1,6 +1,7 @@
 """Options Functions For OpenBB SDK"""
 
 import logging
+import re
 from datetime import datetime, timedelta
 from typing import Optional, Union
 
@@ -87,7 +88,7 @@ def get_option_current_price(
     symbol : str
         Symbol to get chain for
     source : str, optional
-        Source to get data from, by default "Nasdaq"
+        Source to get data from ("Tradier", "Nasdaq", "YahooFinance"), by default "Nasdaq"
 
     Returns
     -------
@@ -99,13 +100,13 @@ def get_option_current_price(
     >>> from openbb_terminal.sdk import openbb
     >>> aapl_price = openbb.stocks.options.price("AAPL", source="Nasdaq")
     """
-
-    if source == "Tradier":
+    source = re.sub(r"\s+", "", source.lower())
+    if source == "tradier":
         last_price = tradier_model.get_last_price(symbol)
         return last_price if last_price else 0.0
-    if source == "Nasdaq":
+    if source == "nasdaq":
         return nasdaq_model.get_last_price(symbol)
-    if source == "YahooFinance":
+    if source == "yahoofinance":
         return yfinance_model.get_last_price(symbol)
     logger.info("Invalid Source")
     return 0.0
