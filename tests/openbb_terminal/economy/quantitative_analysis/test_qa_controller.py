@@ -314,3 +314,20 @@ def test_call_bw():
 
     assert result is None
     assert controller.queue == []
+
+
+@pytest.mark.parametrize(
+    "func",
+    ["call_unitroot"],
+)
+def test_call_func_no_parser(mocker, func):
+    mocker.patch(
+        "openbb_terminal.economy.quantitative_analysis.qa_controller.QaController.parse_known_args_and_warn",
+        return_value=None,
+    )
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+
+    func_result = getattr(controller, func)(other_args=list())
+    assert func_result is None
+    assert controller.queue == []
+    controller.parse_known_args_and_warn.assert_called_once()
