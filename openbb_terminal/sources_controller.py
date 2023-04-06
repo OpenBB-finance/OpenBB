@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # IMPORTATION STANDARD
 import argparse
 import logging
+import os
 from pathlib import Path
 from typing import List, Optional
 
@@ -41,10 +42,19 @@ class SourcesController(BaseController):
     def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
-
+        self.source = "Default"
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(self.choices)
+
+    def update_print_help(self):
+        """Update print help"""
+        sources_file = get_current_user().preferences.USER_DATA_SOURCES_FILE
+        if is_local():
+            if Path(sources_file).exists() and os.stat(sources_file).st_size > 0:
+                self.source = sources_file
+        else:
+            self.source = SOURCES_URL
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
@@ -64,12 +74,7 @@ class SourcesController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("sources/")
-        mt.add_param(
-            "_source",
-            get_current_user().preferences.USER_DATA_SOURCES_FILE
-            if is_local()
-            else SOURCES_URL,
-        )
+        mt.add_param("_source", self.source)
         mt.add_raw("\n")
         mt.add_info("_info_")
         mt.add_cmd("get")
@@ -110,6 +115,7 @@ class SourcesController(BaseController):
                     f"[param]Default   :[/param] {cmd_defaults[0]}\n"
                     f"[param]Available :[/param] {', '.join(cmd_defaults)}"
                 )
+        self.update_print_help()
 
     @log_start_end(log=logger)
     def call_set(self, other_args):
@@ -182,3 +188,4 @@ class SourcesController(BaseController):
                     f"'{ns_parser.cmd}' command.[/red]\n"
                     f"[param]\nAvailable :[/param] {', '.join(sources_dict[ns_parser.cmd])}\n"
                 )
+        self.update_print_help()
