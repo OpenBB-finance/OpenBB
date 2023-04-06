@@ -4,7 +4,8 @@ sidebar_position: 1
 description: How to get started with OpenBB Bot
 keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,]
 ---
-import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord;
+
+import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord";
 
 ## Discord - First Time Setup
 
