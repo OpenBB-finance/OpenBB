@@ -13,6 +13,7 @@ import random
 import re
 import sys
 import urllib.parse
+import webbrowser
 from datetime import (
     date as d,
     datetime,
@@ -1706,7 +1707,7 @@ def prefill_form(ticket_type, menu, path, command, message):
 
     url_params = urllib.parse.urlencode(params)
 
-    plots_backend().send_url(form_url + url_params)
+    webbrowser.open(form_url + url_params)
 
 
 def get_closing_price(ticker, days):

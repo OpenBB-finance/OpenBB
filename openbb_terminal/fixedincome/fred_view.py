@@ -1156,6 +1156,9 @@ def plot_usrates(
         parameter=parameter, maturity=maturity, start_date=start_date, end_date=end_date
     )
 
+    if df.empty:
+        return console.print(f"[red]No data found for {parameter} {maturity}[/red]\n")
+
     title_dict = {
         "tbills": "Treasury Bill Secondary Market Rate, Discount Basis",
         "cmn": "Treasury Constant Maturity Nominal Market Yield",
@@ -1224,6 +1227,11 @@ def plot_tbffr(
     df = fred_model.get_tbffr(
         parameter=parameter, start_date=start_date, end_date=end_date
     )
+
+    if df.empty:
+        return console.print(
+            f"[red]No data found for {ID_TO_NAME_TBFFR[series_id]}[/red]"
+        )
 
     fig = OpenBBFigure(yaxis_title="Yield (%)")
     fig.set_title(
@@ -1317,6 +1325,10 @@ def plot_icebofa(
         start_date=start_date,
         end_date=end_date,
     )
+
+    if df.empty:
+        return console.print()
+
     title = (
         ""
         if df.empty
@@ -1405,6 +1417,9 @@ def plot_moody(
     df = fred_model.get_moody(
         data_type=data_type, spread=spread, start_date=start_date, end_date=end_date
     )
+
+    if df.empty:
+        return console.print(f"[bold red]No data found for {name}[/bold red]")
 
     fig = OpenBBFigure(yaxis_title="Yield (%)")
     fig.set_title(name)
@@ -1498,6 +1513,10 @@ def plot_cp(
         start_date=start_date,
         end_date=end_date,
     )
+
+    if df.empty:
+        return console.print()
+
     title = "Commercial Paper Interest Rates" if len(df.columns) > 1 else df.columns[0]
 
     fig = OpenBBFigure(yaxis_title="Yield (%)")
@@ -1584,6 +1603,11 @@ def plot_spot(
         maturity=maturity, category=category, start_date=start_date, end_date=end_date
     )
 
+    if df.empty:
+        return console.print(
+            f"[bold red]No data found for maturity {maturity} and category {category}[/bold red]"
+        )
+
     title = (
         "High Quality Market (HQM) Corporate Bond Rates"
         if len(df.columns) > 1
@@ -1662,6 +1686,9 @@ def plot_hqm(
     data_types = ["spot", "par"] if par else ["spot"]
 
     df, date_of_yield = fred_model.get_hqm(date=date, par=par)
+
+    if df.empty:
+        return console.print()
 
     fig = OpenBBFigure(xaxis_title="Maturity", yaxis_title="Yield (%)")
     fig.set_title(f"Spot{'and Par' if par else ''} Yield Curve for {date_of_yield}")
