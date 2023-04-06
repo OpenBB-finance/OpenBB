@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List, Optional, Callable
+from typing import Callable, Dict, List, Optional
 
 from openbb_terminal import (
     keys_model,
