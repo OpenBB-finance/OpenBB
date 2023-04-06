@@ -34,6 +34,7 @@ def test_supported_terms(recorder):
     recorder.capture(r)
 
 
+@pytest.mark.skip(reason="This cassette has to be recorded with api key")
 # @pytest.mark.default_cassette("test_get_company_info.yaml")
 # @pytest.mark.vcr
 @pytest.mark.parametrize(
