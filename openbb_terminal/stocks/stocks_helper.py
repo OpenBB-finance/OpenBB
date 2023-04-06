@@ -1,8 +1,8 @@
 """Main helper."""
 __docformat__ = "numpy"
 
-# pylint: disable=unsupported-assignment-operation, too-many-lines
-# pylint: disable=no-member, too-many-branches, too-many-arguments
+# pylint: disable=unsupported-assignment-operation,C0302
+# pylint: disable=no-member,too-many-branches,too-many-arguments
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=consider-using-dict-items
 
