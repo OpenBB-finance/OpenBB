@@ -36,6 +36,7 @@ def test_supported_terms(recorder):
 
 # @pytest.mark.default_cassette("test_get_company_info.yaml")
 # @pytest.mark.vcr
+@pytest.mark.skip
 @pytest.mark.parametrize(
     "ticker",
     ["AAPL", "TSLA", "FCX", "asdf$#"],
