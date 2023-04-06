@@ -6,8 +6,8 @@ from pathlib import Path
 from unittest.mock import mock_open, patch
 
 import pytest
-from openbb_terminal.core.config.paths import SESSION_FILE_PATH
 
+from openbb_terminal.core.config.paths import SESSION_FILE_PATH
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,

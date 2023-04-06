@@ -5,6 +5,7 @@ import json
 
 import pytest
 from requests import Response
+
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
 
 # IMPORTATION INTERNAL
