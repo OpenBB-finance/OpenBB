@@ -1,6 +1,7 @@
 """Main helper."""
 __docformat__ = "numpy"
 
+# pylint: disable=too-many-lines, unsupported-assignment-operation
 # pylint: disable=unsupported-assignment-operation, too-many-lines
 # pylint: disable=no-member, too-many-branches, too-many-arguments
 # pylint: disable=inconsistent-return-statements
@@ -38,7 +39,7 @@ from openbb_terminal.stocks.stock_statics import (
     INCOME_PLOT_CHOICES,  # noqa: F401
     INTERVALS,  # noqa: F401
     SOURCES,  # noqa: F401
-    market_coverage_suffix,  # noqa: F401
+    market_coverage_suffix,
 )
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
