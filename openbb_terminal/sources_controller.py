@@ -42,7 +42,7 @@ class SourcesController(BaseController):
     def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
-        self.source = "Default"
+        self.source = "default"
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(self.choices)
