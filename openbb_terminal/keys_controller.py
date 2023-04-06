@@ -41,6 +41,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     CHOICES_COMMANDS: List[str] = ["mykeys", "status"] + API_LIST
     PATH = "/keys/"
     status_dict: Dict = {}
+    help_status_text: str = ""
 
     def __init__(
         self,
@@ -60,9 +61,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """Get check `key` function from keys_model"""
         return getattr(keys_model, f"check_{key}_key")
 
-    def check_keys_status(self, force: bool = False) -> None:
+    def check_keys_status(self, reevaluate: bool = False) -> None:
         """Check keys status"""
-        if not self.status_dict or force:
+        if not self.status_dict or reevaluate:
             for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
                 try:
                     self.status_dict[api] = self.get_check_keys_function(api)()
@@ -71,9 +72,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                         keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE
                     )
 
-    def print_help(self):
+    def print_help(self, update_status: bool = False, reevaluate: bool = False):
         """Print help"""
-        self.check_keys_status()
+        self.check_keys_status(reevaluate=reevaluate)
         mt = MenuText("keys/")
         mt.add_param(
             "_source",
@@ -89,29 +90,28 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         mt.add_raw("\n")
         mt.add_info("_status_")
 
-        for cmd_name, status_msg in self.status_dict.items():
-            api_name = self.API_DICT[cmd_name]
+        status_color_map = {
+            keys_model.KeyStatus.DEFINED_TEST_PASSED.value: "green",
+            keys_model.KeyStatus.DEFINED_TEST_FAILED.value: "red",
+            keys_model.KeyStatus.DEFINED_NOT_TESTED.value: "yellow",
+            keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE.value: "yellow",
+            keys_model.KeyStatus.NOT_DEFINED.value: "grey30",
+        }
 
-            c = "grey30"
-            if status_msg == str(keys_model.KeyStatus.DEFINED_TEST_PASSED):
-                c = "green"
-            elif status_msg == str(keys_model.KeyStatus.DEFINED_TEST_FAILED):
-                c = "red"
-            elif status_msg == str(keys_model.KeyStatus.DEFINED_NOT_TESTED):
-                c = "yellow"
-            elif status_msg == str(keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE):
-                c = "yellow"
-            elif status_msg == str(keys_model.KeyStatus.NOT_DEFINED):
-                c = "grey30"
+        if not self.help_status_text or update_status:
+            for cmd_name, status_msg in self.status_dict.items():
+                api_name = self.API_DICT[cmd_name]
 
-            if status_msg is None:
-                status_msg = str(keys_model.KeyStatus.NOT_DEFINED)
-            mt.add_raw(
-                f"    [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
-                f" [{c}] {api_name} {(25 - len(api_name)) * ' '} {translate(status_msg)} [/{c}]\n"
-            )
+                c = status_color_map.get(status_msg, "grey30")
+                status_msg = status_msg or keys_model.KeyStatus.NOT_DEFINED.value
 
-        console.print(text=mt.menu_text, menu="Keys")
+                mt.add_raw(
+                    f"    [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
+                    f" [{c}] {api_name} {(25 - len(api_name)) * ' '} {translate(status_msg)} [/{c}]\n"
+                )
+            self.help_status_text = mt.menu_text
+
+        console.print(text=self.help_status_text, menu="Keys")
 
     @log_start_end(log=logger)
     def call_mykeys(self, other_args: List[str]):
@@ -182,8 +182,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 console.print(f"[red]Key `{ns_parser.key}` is not a valid key.[/red]")
                 return
 
-        self.check_keys_status(force=not is_key)
-        self.print_help()
+        self.print_help(update_status=True, reevaluate=not is_key)
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
