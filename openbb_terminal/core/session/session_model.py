@@ -9,6 +9,7 @@ import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import (
     remove_log_handlers,
 )
+from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     ProfileModel,
@@ -134,10 +135,13 @@ def logout(
     if not r or r.status_code != 200:
         success = False
 
-    if not Local.remove_session_file():
+    if not Local.remove(SESSION_FILE_PATH):
         success = False
 
-    if not Local.remove_cli_history_file():
+    if not Local.remove(HIST_FILE_PATH):
+        success = False
+
+    if not Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub"):
         success = False
 
     remove_log_handlers()

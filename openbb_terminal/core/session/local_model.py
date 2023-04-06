@@ -1,12 +1,12 @@
 import json
 import os
+import shutil
 from pathlib import Path
 from typing import List, Optional
 
 from openbb_terminal.core.config.paths import (
-    HIST_FILE_PATH,
     MISCELLANEOUS_DIRECTORY,
-    SETTINGS_DIRECTORY,
+    SESSION_FILE_PATH,
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -16,8 +16,6 @@ from openbb_terminal.core.session.current_user import (
     set_sources,
 )
 from openbb_terminal.rich_config import console
-
-SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
 
 def save_session(data: dict, file_path: Path = SESSION_FILE_PATH):
@@ -59,12 +57,12 @@ def get_session(file_path: Path = SESSION_FILE_PATH) -> dict:
     return {}
 
 
-def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
-    """Remove the session file.
+def remove(path: Path) -> bool:
+    """Remove path.
 
     Parameters
     ----------
-    file_path : Path
+    path : Path
         The file path.
 
     Returns
@@ -74,41 +72,15 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
     """
 
     try:
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-            return True
+        if os.path.isfile(path):
+            os.remove(path)
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
         return True
     except Exception:
         console.print(
-            f"\n[bold red]Failed to remove {file_path}"
-            "\nPlease delete this file manually![/bold red]"
-        )
-        return False
-
-
-def remove_cli_history_file(file_path: Path = HIST_FILE_PATH) -> bool:
-    """Remove the cli history file.
-
-    Parameters
-    ----------
-    file_path : Path
-        The file path.
-
-    Returns
-    -------
-    bool
-        The status of the removal.
-    """
-
-    try:
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-            return True
-        return True
-    except Exception:
-        console.print(
-            f"\n[bold red]Failed to remove {file_path}"
-            "\nPlease delete this file manually![/bold red]"
+            f"\n[bold red]Failed to remove {path}"
+            "\nPlease delete this manually![/bold red]"
         )
         return False
 
