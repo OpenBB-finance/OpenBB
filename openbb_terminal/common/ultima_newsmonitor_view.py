@@ -77,7 +77,7 @@ def display_news(
 
     articles = ultima_newsmonitor_model.get_news(term, sort)
     articles = articles.head(limit).sort_values(by="relevancyScore", ascending=False)
-    # console.print(f"News Powered by [purple]ULTIMA INSIGHTS[/purple].\nFor more info: https://www.ultimainsights.ai\n")
+    # console.print(f"News Powered by [purple]Ultima Insights[/purple].\nFor more info: https://www.ultimainsights.ai\n")
     for _, row in articles.iterrows():
         console.print(
             f"> {row['articlePublishedDate']} - {row['articleHeadline']} -> [green]{row['riskCategory']}[/green] "

@@ -1,4 +1,4 @@
-""" Ultima Insights News Monitor Model """
+""" Ultima News Monitor Model """
 __docformat__ = "numpy"
 
 import logging
@@ -9,18 +9,21 @@ import certifi
 import pandas as pd
 
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.decorators import log_start_end
+
+# from openbb_terminal.decorators import check_api_key
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
-base_url = "https://api.ultimainsights.ai/v1"
+BASE_URL = "https://api.ultimainsights.ai/v1"
+NO_API_KEY = "REPLACE_ME"
 
 
 @log_start_end(log=logger)
-@check_api_key(["API_ULTIMAINSIGHTS_KEY"])
+# @check_api_key(["API_ULTIMA_KEY"])
 def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame:
     """Get news for a given term and source. [Source: Ultima Insights News Monitor]
 
@@ -48,9 +51,12 @@ def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
     current_user = get_current_user()
-    auth_header = {
-        "Authorization": f"Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}"
-    }
+    if "current_user.credentials.API_ULTIMA_KEY" == NO_API_KEY:
+        auth_header = None
+    else:
+        auth_header = {
+            "Authorization": f"Bearer {current_user.credentials.API_ULTIMA_KEY}"
+        }
 
     have_data = False
     limit = 0
@@ -61,9 +67,12 @@ def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame
             term = term.upper()
             term = term.strip()
             if term in supported_terms():
-                data = request(
-                    f"{base_url}/getNewsArticles/{term}", headers=auth_header
-                )
+                if auth_header:
+                    data = request(
+                        f"{BASE_URL}/getNewsArticles/{term}", headers=auth_header
+                    )
+                else:
+                    data = request(f"{BASE_URL}/getNewsArticles/{term}")
             else:
                 console.print(
                     "[red]Ticker not supported. Unable to retrieve data\n[/red]"
@@ -83,6 +92,13 @@ def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame
                 break
             limit = limit + 1
 
+        elif (
+            hasattr(data, "status") and data.status_code == 429
+        ):  # If data request failed
+            console.print(
+                "[red]Too many requests. Please get an API Key from https://www.ultimainsights.ai/[/red]"
+            )
+            break
         elif (
             hasattr(data, "status") and data.status_code != 200
         ):  # If data request failed
@@ -118,8 +134,9 @@ def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame
 
 
 @log_start_end(log=logger)
+# @check_api_key(["API_ULTIMA_KEY"])
 def supported_terms() -> list:
-    """Get supported terms for news. [Source: Ultima Insights]
+    """Get supported terms for news. [Source: Ultima]
 
     Returns
     -------
@@ -133,12 +150,11 @@ def supported_terms() -> list:
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
     os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     os.environ["SSL_CERT_FILE"] = certifi.where()
-    data = request(f"{base_url}/supportedTickers")
+    data = request(f"{BASE_URL}/supportedTickers")
     return list(data.json())
 
 
 @log_start_end(log=logger)
-@check_api_key(["API_ULTIMAINSIGHTS_KEY"])
 def get_company_info(ticker: str) -> dict:
     """Get company info for a given ticker. [Source: Ultima Insights]
 
@@ -159,13 +175,8 @@ def get_company_info(ticker: str) -> dict:
     os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
-    current_user = get_current_user()
-    auth_header = {
-        "Authorization": f"Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}"
-    }
-
     if ticker in supported_terms():
-        data = request(f"{base_url}/getCompanyInfo/{ticker}", headers=auth_header)
+        data = request(f"{BASE_URL}/getCompanyInfo/{ticker}")
         return data.json()
     console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
     return {}

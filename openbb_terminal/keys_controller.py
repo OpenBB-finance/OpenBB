@@ -1184,12 +1184,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             )
 
     @log_start_end(log=logger)
-    def call_ultimainsights(self, other_args: List[str]):
+    def call_ultima(self, other_args: List[str]):
         """Process ultima command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ultimainsights",
+            prog="ultima",
             description="Set Ultima Insights API key.",
         )
         parser.add_argument(
@@ -1207,6 +1207,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.status_dict["ultimainsights"] = keys_model.set_ultimainsights_key(
+            self.status_dict["ultima"] = keys_model.set_ultima_key(
                 key=ns_parser.key, persist=True, show_output=True
             )

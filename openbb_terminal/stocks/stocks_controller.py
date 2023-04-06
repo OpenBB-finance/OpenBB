@@ -556,7 +556,7 @@ class StocksController(StockBaseController):
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
             if self.ticker:
-                if ns_parser.source == "UltimaInsights":
+                if str(ns_parser.source).lower() == "ultima":
                     query = str(self.ticker).upper()
                     if query not in ultima_newsmonitor_view.supported_terms():
                         console.print(
