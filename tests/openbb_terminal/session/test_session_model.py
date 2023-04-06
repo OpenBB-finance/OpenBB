@@ -131,7 +131,7 @@ def test_logout_user(mocker, guest):
 
     auth_header = "Bearer test_token"
     token = "test_token"
-    session_model.logout(auth_header, token, guest)
+    session_model.logout(auth_header, token)
 
     if not guest:
         mock_delete_session.assert_called_once_with(auth_header, token)

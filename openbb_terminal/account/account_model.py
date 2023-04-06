@@ -65,6 +65,13 @@ def get_routines_info(response) -> Tuple[pd.DataFrame, int, int]:
 def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
     """Read the routine.
 
+    Parameters
+    ----------
+    file_name : str
+        The routine.
+    folder : Optional[Path]
+        The routines folder.
+
     Returns
     -------
     file_name : str
