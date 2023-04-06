@@ -231,9 +231,9 @@ def set_sources_from_hub(configs: dict):
     if configs:
         sources = configs.get("features_sources", {}) or {}
         if sources:
-            sources_model = SourcesModel()
-            sources_model.update(sources)
-            set_sources(sources_model.sources_dict)
+            default_sources = SourcesModel().sources_dict
+            default_sources.update(sources)
+            set_sources(default_sources)
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
