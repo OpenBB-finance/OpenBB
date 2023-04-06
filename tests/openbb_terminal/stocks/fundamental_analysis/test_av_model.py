@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+from pandas import DataFrame, Series
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import av_model
@@ -75,3 +76,111 @@ def test_get_dupont(recorder):
     result_df = av_model.get_dupont(symbol="TSLA")
 
     recorder.capture(result_df)
+
+
+@pytest.mark.record_http
+def test_get_overview(record):
+    result_df = av_model.get_overview(symbol="TSLA")
+    record.add_verify(result_df)
+
+    assert isinstance(result_df, DataFrame)
+    assert not result_df.empty
+
+
+@pytest.mark.record_http
+def test_get_key_metrics(record):
+    result_df = av_model.get_key_metrics(symbol="TSLA")
+    record.add_verify(result_df)
+
+    assert isinstance(result_df, DataFrame)
+    assert not result_df.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, kwargs",
+    [
+        ("TSLA", {}),
+    ],
+)
+def test_get_income_statements(record, symbol, kwargs):
+    result_df = av_model.get_income_statements(symbol=symbol, **kwargs)
+    record.add_verify(result_df)
+
+    assert isinstance(result_df, DataFrame)
+    assert not result_df.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, kwargs",
+    [
+        ("TSLA", {}),
+    ],
+)
+def test_get_balance_sheet(record, symbol, kwargs):
+    result_df = av_model.get_balance_sheet(symbol=symbol, **kwargs)
+    record.add_verify(result_df)
+
+    assert isinstance(result_df, DataFrame)
+    assert not result_df.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, kwargs",
+    [
+        ("TSLA", {}),
+    ],
+)
+def test_get_cash_flow(record, symbol, kwargs):
+    result_df = av_model.get_cash_flow(symbol=symbol, **kwargs)
+    record.add_verify(result_df)
+
+    assert isinstance(result_df, DataFrame)
+    assert not result_df.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, quarterly",
+    [
+        ("TSLA", False),
+    ],
+)
+def test_get_earnings(record, symbol, quarterly):
+    result_df = av_model.get_earnings(symbol=symbol, quarterly=quarterly)
+    record.add_verify(result_df)
+
+    assert isinstance(result_df, DataFrame)
+
+
+def test_df_values():
+    df = DataFrame(
+        {
+            "a": [1, 2, 3, 4, 5],
+            "b": [6, 7, 8, 9, 10],
+            "c": [11, 12, 13, 14, 15],
+        }
+    )
+    assert av_model.df_values(df, "a") == [1, 2, 3, 4, 5]
+    assert av_model.df_values(df, "b", index=1) == [7, 8]
+    assert av_model.df_values(df, "c", index=2, length=3) == [13, 14, 15]
+
+
+def test_replace_df():
+    series = Series([1, 2, 3, 4, 5])
+    av_model.replace_df(name="a", row=series)
+
+
+def test_color_mscore():
+    result = av_model.color_mscore(1)
+    assert isinstance(result, str)
+    assert result == "[red]1.00[/red]"
+
+
+def test_color_zscore_mckee():
+    result = av_model.color_zscore_mckee(1)
+    assert isinstance(result, str)
+    assert result == "[green]1.00[/green]"

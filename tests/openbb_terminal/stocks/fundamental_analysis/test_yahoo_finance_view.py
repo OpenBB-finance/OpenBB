@@ -57,3 +57,80 @@ def test_call_func_empty_df(func, mocker, mocked_func):
         return_value=pd.DataFrame(),
     )
     getattr(yahoo_finance_view, func)(symbol="PM")
+
+
+@pytest.mark.record_http
+@pytest.mark.record_verify_screen
+@pytest.mark.parametrize(
+    "symbol, kwargs",
+    [
+        ("TSLA", {}),
+    ],
+)
+def test_display_shareholders(symbol, kwargs):
+    yahoo_finance_view.display_shareholders(symbol=symbol, **kwargs)
+
+
+@pytest.mark.record_http
+@pytest.mark.record_verify_screen
+@pytest.mark.parametrize(
+    "symbol, kwargs",
+    [
+        ("TSLA", {}),
+    ],
+)
+def test_display_dividends(symbol, kwargs):
+    yahoo_finance_view.display_dividends(symbol=symbol, **kwargs)
+
+
+@pytest.mark.record_http
+@pytest.mark.record_verify_screen
+@pytest.mark.parametrize(
+    "symbol, kwargs",
+    [
+        ("TSLA", {}),
+    ],
+)
+def test_display_splits(symbol, kwargs):
+    yahoo_finance_view.display_splits(symbol=symbol, **kwargs)
+
+
+@pytest.mark.record_http
+@pytest.mark.record_verify_screen
+@pytest.mark.parametrize(
+    "symbol, start_date, end_date, kwargs",
+    [
+        ("TSLA", "2021-01-01", "2021-02-01", {}),
+    ],
+)
+def test_display_mktcap(symbol, start_date, end_date, kwargs):
+    yahoo_finance_view.display_mktcap(
+        symbol=symbol, start_date=start_date, end_date=end_date, **kwargs
+    )
+
+
+@pytest.mark.record_http
+@pytest.mark.record_verify_screen
+@pytest.mark.parametrize(
+    "symbol, statement, kwargs",
+    [
+        ("TSLA", "cash-flow", {}),
+        ("TSLA", "financials", {}),
+    ],
+)
+def test_display_fundamentals(symbol, statement, kwargs):
+    yahoo_finance_view.display_fundamentals(
+        symbol=symbol, statement=statement, **kwargs
+    )
+
+
+@pytest.mark.record_http
+@pytest.mark.record_verify_screen
+@pytest.mark.parametrize(
+    "symbol, limit, kwargs",
+    [
+        ("TSLA", 10, {}),
+    ],
+)
+def test_display_earnings(symbol, limit, kwargs):
+    yahoo_finance_view.display_earnings(symbol=symbol, limit=limit, **kwargs)
