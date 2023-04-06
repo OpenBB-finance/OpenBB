@@ -12,10 +12,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?interval=1d&range=1d
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1680638404,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":192.58,"chartPreviousClose":194.77,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1680595200,"end":1680615000,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1680615000,"end":1680638400,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1680638400,"end":1680652800,"gmtoffset":-14400}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1680638404],"indicators":{"quote":[{"open":[197.32000732421875],"volume":[126463845],"low":[190.32000732421875],"close":[192.5800018310547],"high":[198.74459838867188]}],"adjclose":[{"adjclose":[192.5800018310547]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1680803183,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":185.37,"chartPreviousClose":185.52,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1680768000,"end":1680787800,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1680787800,"end":1680811200,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1680811200,"end":1680825600,"gmtoffset":-14400}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1680803183],"indicators":{"quote":[{"volume":[94276533],"close":[185.3699951171875],"high":[186.38999938964844],"low":[179.74000549316406],"open":[183.0800018310547]}],"adjclose":[{"adjclose":[185.3699951171875]}]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -33,25 +33,25 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '946'
+      - '944'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 05 Apr 2023 01:11:18 GMT
+      - Thu, 06 Apr 2023 17:46:25 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '3'
       x-request-id:
-      - 8832d6fc-b871-447d-88f2-0276f7ce2098
+      - 83a00d38-8bd6-4190-a7ae-7245f8bee24d
       x-yahoo-request-id:
-      - 5131ckpi2piln
+      - 1dcjoiti2u1bh
       y-rid:
-      - 5131ckpi2piln
+      - 1dcjoiti2u1bh
     status:
       code: 200
       message: OK
@@ -68,7 +68,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1680638404,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":192.58,"chartPreviousClose":308.973,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1680615000,"start":1680595200,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1680638400,"start":1680615000,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1680652800,"start":1680638400,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639751400],"indicators":{"quote":[{"open":[304.92333984375],"low":[303.0133361816406],"close":[310.8566589355469],"volume":[100437300],"high":[320.2200012207031]}],"adjclose":[{"adjclose":[310.8566589355469]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1680803183,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":185.37,"chartPreviousClose":308.973,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1680787800,"start":1680768000,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1680811200,"start":1680787800,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1680825600,"start":1680811200,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639751400],"indicators":{"quote":[{"volume":[100437300],"low":[303.0133361816406],"open":[304.92333984375],"high":[320.2200012207031],"close":[310.8566589355469]}],"adjclose":[{"adjclose":[310.8566589355469]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -93,7 +93,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 05 Apr 2023 01:11:19 GMT
+      - Thu, 06 Apr 2023 17:46:25 GMT
       server:
       - ATS
       vary:
@@ -101,13 +101,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '4'
+      - '3'
       x-request-id:
-      - fd5d9424-25c8-4b21-b1c9-b15aafc798b8
+      - dc0e75af-2a2c-43fc-a14c-b5169d1c7061
       x-yahoo-request-id:
-      - a1ufpo5i2piln
+      - 61tp0a1i2u1bh
       y-rid:
-      - a1ufpo5i2piln
+      - 61tp0a1i2u1bh
     status:
       code: 200
       message: OK
