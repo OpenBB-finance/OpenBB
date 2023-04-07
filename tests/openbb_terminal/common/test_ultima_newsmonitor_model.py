@@ -28,14 +28,14 @@ def test_get_news(term, recorder):
 
 
 # @pytest.mark.default_cassette("test_supported_terms.yaml")
-# @pytest.mark.vcr
+@pytest.mark.vcr
 def test_supported_terms(recorder):
     r = supported_terms()
     recorder.capture(r)
 
 
 # @pytest.mark.default_cassette("test_get_company_info.yaml")
-# @pytest.mark.vcr
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "ticker",
     ["AAPL", "TSLA", "FCX", "asdf$#"],
