@@ -186,7 +186,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             else:
                 console.print(f"[red]Key `{ns_parser.key}` is not a valid key.[/red]")
                 return
-                
+
         if "-h" not in other_args and "--help" not in other_args:
             self.print_help(update_status=True, reevaluate=not is_key)
 
