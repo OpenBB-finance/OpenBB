@@ -34,7 +34,7 @@ def get_debt() -> pd.DataFrame:
     """
     url = "https://en.wikipedia.org/wiki/List_of_countries_by_external_debt"
     response = request(url, headers={"User-Agent": get_user_agent()})
-    df = pd.read_html(response.text)[0]
+    df = pd.read_html(response.text)[1]
     df = df.rename(
         columns={
             "Country/Region": "Country",

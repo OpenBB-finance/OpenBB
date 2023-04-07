@@ -5,14 +5,9 @@ description: How to get started with OpenBB Bot
 keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,]
 ---
 
-import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord";
-
 ## Discord - First Time Setup
 
-<AddBotDialogDiscord
-/>
-
-After clicking on the "Add bot to Discord" button, A pop-up window will open, asking you to log in to your Discord account and allow the bot access.
+A pop-up window will open, asking you to log in to your Discord account and allow the bot access.
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/discord_step_1.png" alt="discord bot setup step 1" width="40%" height="40%" />
 
