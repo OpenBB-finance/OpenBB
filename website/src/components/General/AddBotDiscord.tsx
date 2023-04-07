@@ -1,20 +1,12 @@
 import DiscordIcon from "../Icons/Discord";
-import TelegramIcon from "../Icons/Telegram";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import InfoIcon from "../Icons/Info";
 import React, { useState } from "react";
 
-export default function AddBotDialog() {
+
+export default function AddBotDialogDiscord() {
   return (
         <div className="mt-10 flex flex-col justify-center items-center gap-6">
-          <a
-            href="https://openbb.co/bot-telegram"
-            target="_blank"
-            className="_btn h-[38px] gap-3 text-xs !bg-[#20A0E1] !hover:bg-[#1D90CB] active:bg-[#1A80B4] text-white hover:text-white"
-            rel="noopener noreferrer"
-          >
-            <TelegramIcon /> Add bot to Telegram
-          </a>
           <div className="relative w-full md:w-auto">
             <a
               href="https://openbb.co/bot-discord"
