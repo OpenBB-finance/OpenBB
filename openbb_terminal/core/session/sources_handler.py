@@ -48,6 +48,51 @@ def write_sources(sources: Dict, path: Path):
         print(f"\nFailed to write data sources file: {path}\n{e}\n")
 
 
+def merge_sources(incoming: Dict, allowed: Dict):
+    """Update sources dict if command and sources allowed.
+
+    Parameters
+    ----------
+    incoming : Dict
+        Dictionary with incoming sources
+    allowed : Dict
+        Dictionary with allowed sources
+
+    Returns
+    -------
+    Dict
+        Updated sources
+    """
+    sources_dict = allowed.copy()
+
+    for cmd_path, incoming_sources in incoming.items():
+        if cmd_path in allowed:
+            allowed_sources = allowed[cmd_path]
+            filtered_incoming = [s for s in incoming_sources if s in allowed_sources]
+            remaining = [s for s in allowed_sources if s not in incoming_sources]
+            sources_dict[cmd_path] = filtered_incoming + remaining
+    return sources_dict
+
+
+def load_file_to_model(path: Path) -> SourcesModel:
+    """Load sources model from file.
+
+    Parameters
+    ----------
+    path : Path
+        Path to file
+
+    Returns
+    -------
+    SourcesModel
+        Sources model
+    """
+    sources_dict = merge_sources(
+        incoming=read_sources(path), allowed=SourcesModel().ALLOWED
+    )
+    return SourcesModel(sources_dict=sources_dict)
+
+
 def get_updated_hub_sources(configs: Dict) -> Dict:
     """Update hub sources if new source or command path available.
 
@@ -66,8 +111,6 @@ def get_updated_hub_sources(configs: Dict) -> Dict:
     if configs:
         incoming = configs.get("features_sources", {}) or {}
         if incoming:
-            s = SourcesModel()
-            s.update_sources_dict(incoming)
-            return s.sources_dict
+            return merge_sources(incoming=incoming, allowed=SourcesModel().ALLOWED)
         return {}
     return {}
