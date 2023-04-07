@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1
+      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://api.ultimainsights.ai/v1/supportedTickers
   response:
@@ -58,7 +58,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Fri, 07 Apr 2023 02:54:42 GMT
+      - Fri, 07 Apr 2023 02:54:43 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -78,26 +78,32 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0
+      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0
     method: GET
-    uri: https://api.ultimainsights.ai/v1/getNewsArticles/FCX
+    uri: https://api.ultimainsights.ai/v1/getCompanyInfo/TSLA
   response:
     body:
-      string: "{\n  \"message\": \"Invalid Authorization Header\"\n}\n"
+      string: !!binary |
+        H4sIAAAAAAAEA1WOQQrCMBBFrxKyLh7AnRQKLnTRdiciQ4zt4GRSJskiiHc3AVtx+9+b/+eljXcL
+        cB5mL/EMzuq90qMNBLpRK+wS0R9r1JHNrhqC4RnKzUW3pchGjOhZ9SWttLdTIohe8haN1szsyU+/
+        qEMGNgi0SUNaFsqqnQG/ZdfStgg6kHxDvqcQJddXDyl6dQJODzAxiZVQd1czWFPGq9d6DslZUW02
+        hAZIvz9vLrrF/AAAAA==
     headers:
       Access-Control-Allow-Origin:
       - '*'
       Connection:
       - keep-alive
-      Content-Length:
-      - '48'
+      Content-Encoding:
+      - gzip
       Content-Type:
-      - application/json
+      - text/html; charset=utf-8
       Date:
-      - Fri, 07 Apr 2023 02:54:42 GMT
+      - Fri, 07 Apr 2023 02:54:43 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
     status:
-      code: 401
-      message: UNAUTHORIZED
+      code: 200
+      message: OK
 version: 1
