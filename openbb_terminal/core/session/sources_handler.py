@@ -66,15 +66,8 @@ def get_updated_hub_sources(configs: Dict) -> Dict:
     if configs:
         incoming = configs.get("features_sources", {}) or {}
         if incoming:
-            updated_dict = incoming.copy()
-            for cmd_path, allowed_sources in SourcesModel().ALLOWED.items():
-                if cmd_path in incoming:
-                    new_sources = [
-                        s for s in allowed_sources if s not in incoming[cmd_path]
-                    ]
-                    updated_dict[cmd_path].extend(new_sources)
-                else:
-                    updated_dict[cmd_path] = allowed_sources
-            return updated_dict
+            s = SourcesModel()
+            s.update_sources_dict(incoming)
+            return s.sources_dict
         return {}
     return {}
