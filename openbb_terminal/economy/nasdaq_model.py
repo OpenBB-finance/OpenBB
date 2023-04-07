@@ -17,7 +17,10 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-NASDAQ_COUNTRY_CODES_PATH = pathlib.Path(__file__).parent / "datasets" / "NASDAQ_CountryCodes.csv"
+NASDAQ_COUNTRY_CODES_PATH = (
+    pathlib.Path(__file__).parent / "datasets" / "NASDAQ_CountryCodes.csv"
+)
+
 
 @log_start_end(log=logger)
 def get_economic_calendar(
@@ -117,11 +120,7 @@ def get_economic_calendar(
 @log_start_end(log=logger)
 def check_country_code_type(list_of_codes: str) -> List[str]:
     """Check that codes are valid for NASDAQ API"""
-    nasdaq_codes = list(
-        pd.read_csv(NASDAQ_COUNTRY_CODES_PATH)[
-            "Code"
-        ]
-    )
+    nasdaq_codes = list(pd.read_csv(NASDAQ_COUNTRY_CODES_PATH)["Code"])
     valid_codes = [
         code.upper()
         for code in list_of_codes.split(",")
