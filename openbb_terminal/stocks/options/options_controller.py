@@ -652,7 +652,7 @@ class OptionsController(BaseController):
             "--ticker",
             action="store",
             dest="ticker",
-            required="-h" not in other_args,
+            # required="-h" not in other_args,
             help="Stock ticker",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -1457,7 +1457,7 @@ class OptionsController(BaseController):
             type=valid_date,
             dest="date",
             help="Date to get option chain for.  Format YYYY-MM-DD",
-            required="-h" not in other_args,
+            # required="-h" not in other_args,
         )
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
