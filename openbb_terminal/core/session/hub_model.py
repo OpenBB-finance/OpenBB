@@ -1,6 +1,4 @@
-from contextlib import nullcontext
 import json
-import time
 from typing import Any, Dict, Literal, Optional
 
 import requests
@@ -13,7 +11,6 @@ from openbb_terminal.core.session.constants import (
 )
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.rich_config import console
-from openbb_terminal.terminal_helper import suppress_stdout
 
 
 def create_session(
