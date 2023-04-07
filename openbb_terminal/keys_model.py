@@ -49,8 +49,9 @@ logger = logging.getLogger(__name__)
 # This format is used by the KeysController and get_keys_info().
 # E.g. tokenterminal -> set_tokenterminal_key & check_tokenterminal_key
 #
-# Don't forget to add the set function to api.py endpoints dictionary.
-# E.g.  "keys.tokenterminal": {"model": "openbb_terminal.keys_model.set_tokenterminal_key"},
+# Don't forget to add it to the SDK.
+# E.g. `keys.av,keys_model.set_av_key`
+# For more info, please refer to the CONTRIBUTING.md file.
 
 API_DICT: Dict = {
     "av": "ALPHA_VANTAGE",
