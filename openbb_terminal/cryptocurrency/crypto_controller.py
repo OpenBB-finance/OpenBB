@@ -240,7 +240,7 @@ class CryptoController(CryptoBaseController):
         parser.add_argument(
             "-s",
             "--symbol",
-            required="-h" not in other_args,
+            # required="-h" not in other_args,
             type=str,
             dest="symbol",
             help="Symbol of coin to load data for, ~100 symbols are available",
@@ -474,7 +474,7 @@ class CryptoController(CryptoBaseController):
             "--coin",
             help="Symbol Name or Id of Coin",
             dest="coin",
-            required="-h" not in other_args,
+            # required="-h" not in other_args,
             type=str,
         )
         parser.add_argument(
