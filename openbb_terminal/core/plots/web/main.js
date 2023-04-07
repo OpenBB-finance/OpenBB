@@ -138,7 +138,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         "drawrect",
         "eraseshape",
       ],
-      ["zoomIn2d", "zoomOut2d", "resetScale2d", "zoom2d", "pan2d"],
+      ["zoomIn2d", "zoomOut2d", "autoScale2d", "zoom2d", "pan2d"],
       [
         {
           name: "Add Text (Ctrl+T)",
@@ -297,6 +297,11 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     button.style.border = "transparent";
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
+
+  // We change the Autoscale button to a Home button and change the title to Reset Axes
+  globals.barButtons["Reset Axes"] = globals.barButtons["Autoscale"];
+  globals.barButtons["Autoscale"].getElementsByTagName("path")[0].setAttribute("d", Plotly.Icons.home.path);
+  globals.barButtons["Autoscale"].setAttribute("data-title", "Reset Axes");
 
   if (globals.CHART_DIV.layout.yaxis.type != undefined) {
     if (globals.CHART_DIV.layout.yaxis.type == "log" && !globals.logYaxis) {
