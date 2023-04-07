@@ -7,6 +7,7 @@ import SDKLetteringLogo from "@site/src/components/Icons/SDKLetteringLogo";
 import BotLetteringLogo from "@site/src/components/Icons/BotLetteringLogo";
 
 function getLogo(type) {
+  /*
   switch (type) {
     case "terminal":
       return <TerminalLetteringLogo />;
@@ -16,7 +17,8 @@ function getLogo(type) {
       return <BotLetteringLogo />;
     default:
       return <LetteringLogo className="text-white" />;
-  }
+  }*/
+  return <LetteringLogo className="text-white" />;
 }
 
 export default function NavbarLogo() {
