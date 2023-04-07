@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # opening
 
-This command allows the user to retrieve the Top 20 flows by premium for a stock with the "Opening" condition - Volume exceeding Open Interest on the trade.
+This command allows the user to retrieve the Top 20 flows by premium for a stock with the Opening condition - Volume exceeding Open Interest on the trade.
 
 ### Usage
 
