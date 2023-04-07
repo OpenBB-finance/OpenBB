@@ -287,6 +287,9 @@ def main() -> bool:
             )
             return False
 
+    # Sort reference_cards
+    reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
+
     with open(content_path / "index.mdx", "w", **kwargs) as f:  # type: ignore
         fname = "OpenBB SDK Reference"
         rel_path = content_path.relative_to(content_path)

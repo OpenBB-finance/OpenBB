@@ -36,14 +36,14 @@ import LinkCard from "@site/src/components/General/LinkCard";
 />
 <LinkCard
 	title="Source"
-	description="Install the OpenBB Terminal via Python"
+	description="Install the OpenBB Terminal via source code"
     url="/terminal/installation/source"
     platform = "source"
 />
 <LinkCard
-	title="Pypi"
-	description="Installing the OpenBB Terminal via Pip"
-    url="/terminal/installation/Pypi"
+	title="PyPI"
+	description="Install the OpenBB Terminal via Pip"
+    url="/terminal/installation/pypi"
     platform = "pypi"
 />
 <LinkCard
