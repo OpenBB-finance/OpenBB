@@ -331,3 +331,29 @@ def test_call_func_no_parser(mocker, func):
     assert func_result is None
     assert controller.queue == []
     controller.parse_known_args_and_warn.assert_called_once()
+
+
+def test_call_pick():
+    controller = qa_controller.QaController(all_economy_data=MOCK_OBJ, queue=None)
+    result = controller.call_pick([])
+
+    assert result is None
+    assert controller.queue == []
+
+
+@pytest.mark.parametrize(
+    "func",
+    ["call_normality", "call_spread", "call_kurtosis", "call_quantile"],
+)
+def test_call_func(func):
+    mock_cpi = MOCK_CPI
+    while len(mock_cpi) < 20:
+        mock_cpi = mock_cpi.append(mock_cpi.iloc[-1])
+
+    mock_obj = {}
+    mock_obj["united_states_CPI"] = mock_cpi
+    controller = qa_controller.QaController(all_economy_data=mock_obj, queue=None)
+    result = getattr(controller, func)([])
+
+    assert result is None
+    assert controller.queue == []
