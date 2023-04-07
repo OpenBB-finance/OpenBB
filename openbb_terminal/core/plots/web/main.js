@@ -298,7 +298,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
 
-  // We change the Autoscale button to a Home button and change the title to Reset Axes
+  // We change the Plotly default Autoscale button icon and title to Reset Axes
   globals.barButtons["Reset Axes"] = globals.barButtons["Autoscale"];
   globals.barButtons["Autoscale"].getElementsByTagName("path")[0].setAttribute("d", Plotly.Icons.home.path);
   globals.barButtons["Autoscale"].setAttribute("data-title", "Reset Axes");
