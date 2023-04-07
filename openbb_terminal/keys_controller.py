@@ -186,8 +186,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             else:
                 console.print(f"[red]Key `{ns_parser.key}` is not a valid key.[/red]")
                 return
-
-        self.print_help(update_status=True, reevaluate=not is_key)
+                
+        if "-h" not in other_args and "--help" not in other_args:
+            self.print_help(update_status=True, reevaluate=not is_key)
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
