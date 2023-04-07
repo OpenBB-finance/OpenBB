@@ -3,6 +3,9 @@ Uncategorized Breaking News (Bloomberg, Reuters, WSJ, CNBC):
 > 2023-04-06 23:00:00+00:00 - Tesla nominates co-founder JB Straubel to board - Reuters
 https://news.google.com/rss/articles/CBMic2h0dHBzOi8vd3d3LnJldXRlcnMuY29tL2J1c2luZXNzL2F1dG9zLXRyYW5zcG9ydGF0aW9uL3Rlc2xhLWxheXMtb3V0LWZpdmUtcHJvcG9zYWxzLWFubnVhbC1wcm94eS1maWxpbmctMjAyMy0wNC0wNi_SAQA?oc=5
 
+> 2023-04-06 22:36:32+00:00 - Tesla Puts Stricter Cap on Musk's Borrowing With Pledged Shares - Bloomberg
+https://news.google.com/rss/articles/CBMic2h0dHBzOi8vd3d3LmJsb29tYmVyZy5jb20vbmV3cy9hcnRpY2xlcy8yMDIzLTA0LTA2L3Rlc2xhLWFsdGVycy1zaGFyZS1wbGVkZ2UtcG9saWN5LXdpdGgtY2FwLW9uLWVsb24tbXVzay1ib3Jyb3dpbmfSAQA?oc=5
+
 > 2023-04-06 21:47:00+00:00 - Special Report: Tesla workers shared sensitive images recorded by customer cars - Reuters
 https://news.google.com/rss/articles/CBMibmh0dHBzOi8vd3d3LnJldXRlcnMuY29tL3RlY2hub2xvZ3kvdGVzbGEtd29ya2Vycy1zaGFyZWQtc2Vuc2l0aXZlLWltYWdlcy1yZWNvcmRlZC1ieS1jdXN0b21lci1jYXJzLTIwMjMtMDQtMDYv0gEA?oc=5
 
@@ -11,9 +14,6 @@ https://news.google.com/rss/articles/CBMic2h0dHBzOi8vd3d3LmJsb29tYmVyZy5jb20vbmV
 
 > 2023-04-06 20:33:00+00:00 - Tesla to use iron-based batteries in Semi electric trucks and affordable electric car - Reuters
 https://news.google.com/rss/articles/CBMijQFodHRwczovL3d3dy5yZXV0ZXJzLmNvbS9idXNpbmVzcy9hdXRvcy10cmFuc3BvcnRhdGlvbi90ZXNsYS11c2UtaXJvbi1iYXNlZC1iYXR0ZXJpZXMtc2VtaS1lbGVjdHJpYy10cnVja3MtYWZmb3JkYWJsZS1lbGVjdHJpYy1jYXItMjAyMy0wNC0wNi_SAQA?oc=5
-
-> 2023-04-06 12:29:48+00:00 - Wake Up Call: Tesla Litigation Team Eyes Attack on Short Sellers - Bloomberg Law
-https://news.google.com/rss/articles/CBMic2h0dHBzOi8vbmV3cy5ibG9vbWJlcmdsYXcuY29tL2J1c2luZXNzLWFuZC1wcmFjdGljZS93YWtlLXVwLWNhbGwtdGVzbGEtbGl0aWdhdGlvbi10ZWFtLWV5ZXMtYXR0YWNrLW9uLXNob3J0LXNlbGxlcnPSAQA?oc=5
 
 ------------------------
 > 2023-04-06 13:22:17 - Honda Motor announces changes, Tsutsumu Otani appointed MD, CEO Honda Motorcycle ... General Manager at Shanghai Branch, Honda Motor (China) Investment Co. -> [green]Competition Risk[/green] ([3mTesla faces competition risk from traditional automakers and other electric vehicle manufacturers, which can lead to decreased market share, pricing power, and profitability. Additionally, Tesla must compete for access to battery cells, raw materials, personnel, charging facilities, incentives from the government, and equity-based awards and benefits, which can lead to increased research and development costs and volatility in the cost of oil, gasoline, and energy. Tesla must also maintain public credibility and confidence in its long-term business prospects in order to succeed, as any negative perceptions may harm its business. Furthermore, Tesla may be unable to effectively grow, or manage the compliance, residual value, financing and credit risks related to, its various financing programs.[0m) -> [purple]relevancy score: 4.87/5 Stars[/purple]
