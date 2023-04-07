@@ -20,7 +20,7 @@ __env_dict = read_env()
 __credentials = load_dict_to_model(__env_dict, CredentialsModel)  # type: ignore
 __preferences = load_dict_to_model(__env_dict, PreferencesModel)
 __sources = SourcesModel()  # type: ignore
-__sources.update(read_sources(Path(__preferences.USER_DATA_SOURCES_FILE)))
+__sources.update_sources_dict(read_sources(Path(__preferences.USER_DATA_SOURCES_FILE)))
 
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
@@ -65,7 +65,7 @@ def set_default_user():
     credentials = load_dict_to_model(env_dict, CredentialsModel)
     preferences = load_dict_to_model(env_dict, PreferencesModel)
     sources = SourcesModel()
-    sources.update(read_sources(Path(preferences.USER_DATA_SOURCES_FILE)))
+    sources.update_sources_dict(read_sources(Path(preferences.USER_DATA_SOURCES_FILE)))
     profile = ProfileModel()
     default_user = UserModel(  # type: ignore
         credentials=credentials,
