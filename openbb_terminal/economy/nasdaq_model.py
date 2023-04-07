@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
 import pathlib
 from datetime import datetime as dt
 from typing import List, Optional, Union
