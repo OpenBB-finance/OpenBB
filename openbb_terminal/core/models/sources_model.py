@@ -33,19 +33,19 @@ def read_default_sources() -> Dict:
 class SourcesModel(BaseModel):
     """Model for sources."""
 
-    DEFAULT: Dict = Field(
-        default_factory=lambda: read_default_sources(), allow_mutation=False
-    )
-    sources_dict: Dict = Field(default_factory=lambda: read_default_sources())
+    ALLOWED: Dict = Field(default_factory=lambda: read_default_sources())
+    sources_dict: Dict = ALLOWED
 
     def __repr__(self):
         return super().__repr__()
 
-    def update_sources_dict(self, other: Dict):
-        """Update sources dict if command in defaults and source in source list defaults."""
-        for cmd_path, source_list in other.items():
-            if cmd_path in self.DEFAULT:
-                available_sources = [
-                    v for v in source_list if v in self.DEFAULT[cmd_path]
-                ] + [v for v in self.DEFAULT[cmd_path] if v not in source_list]
-                self.sources_dict[cmd_path] = available_sources
+    def update_sources_dict(self, incoming: Dict):
+        """Update sources dict if command and sources allowed."""
+        for cmd_path, incoming_sources in incoming.items():
+            allowed_sources = self.ALLOWED.get(cmd_path, None)
+            if allowed_sources:
+                filtered_incoming = [
+                    s for s in incoming_sources if s in allowed_sources
+                ]
+                remaining = [s for s in allowed_sources if s not in incoming_sources]
+                self.sources_dict[cmd_path] = filtered_incoming + remaining
