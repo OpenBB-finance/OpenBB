@@ -542,12 +542,16 @@ def check_indicators(string: str) -> List[str]:
         [c.name.replace("plot_", "") for c in ta_cls if c.name != "plot_ma"]
         + ta_cls.ma_mode
     )
+    choices_print = (
+        f"{'`, `'.join(choices[:10])}`\n    `{'`, `'.join(choices[10:20])}"
+        f"`\n    `{'`, `'.join(choices[20:])}"
+    )
 
     strings = string.split(",")
     for s in strings:
         if s not in choices:
             raise argparse.ArgumentTypeError(
-                f"\nInvalid choice: {s}, choose from \n    (`{'`, `'.join(choices)}`)",
+                f"\nInvalid choice: {s}, choose from \n    `{choices_print}`",
             )
     return strings
 
@@ -558,12 +562,14 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
     indicators_dict: dict = {}
 
     regex = re.compile(r"([a-zA-Z]+)\[([0-9.,]*)\]")
-    matches = regex.findall(args)
+    no_params_regex = re.compile(r"([a-zA-Z]+)")
 
-    if not matches:
-        indicators = check_indicators(args)
-        args = "[],".join(indicators) + "[]"
-        matches = regex.findall(args)
+    matches = regex.findall(args)
+    no_params_matches = no_params_regex.findall(args)
+
+    for match in no_params_matches:
+        if match not in [m[0] for m in matches]:
+            matches.append((match, ""))
 
     if _help:
         console.print(
@@ -583,6 +589,7 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
 
     pop_keys = ["close", "high", "low", "open", "open_", "volume", "talib", "return"]
     if matches:
+        check_indicators(",".join([m[0] for m in matches]))
         for match in matches:
             indicator, args = match
 
