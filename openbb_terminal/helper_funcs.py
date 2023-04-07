@@ -567,8 +567,9 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
     matches = regex.findall(args)
     no_params_matches = no_params_regex.findall(args)
 
+    indicators = [m[0] for m in matches]
     for match in no_params_matches:
-        if match not in [m[0] for m in matches]:
+        if match not in indicators:
             matches.append((match, ""))
 
     if _help:
