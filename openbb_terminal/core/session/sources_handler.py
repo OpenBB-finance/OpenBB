@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from typing import Dict
 
+from openbb_terminal.core.models.sources_model import SourcesModel
 from openbb_terminal.core.sources.utils import extend, flatten
 
 
@@ -47,7 +48,7 @@ def write_sources(sources: Dict, path: Path):
         print(f"\nFailed to write data sources file: {path}\n{e}\n")
 
 
-def update_hub_sources(default: Dict, hub: Dict) -> Dict:
+def get_updated_hub_sources(configs: Dict) -> Dict:
     """Update hub sources if new source or command path available.
 
     Parameters
@@ -62,17 +63,18 @@ def update_hub_sources(default: Dict, hub: Dict) -> Dict:
     Dict
         Updated hub sources
     """
-    updated_hub = hub.copy()
-
-    # Add new sources
-    for cmd_path, source_list in hub.items():
-        if cmd_path in default:
-            new_source_list = [v for v in default[cmd_path] if v not in source_list]
-            updated_hub[cmd_path].extend(new_source_list)
-
-    # Add new command paths
-    for cmd_path, source_list in default.items():
-        if cmd_path not in hub:
-            updated_hub[cmd_path] = source_list
-
-    return updated_hub
+    if configs:
+        incoming = configs.get("features_sources", {}) or {}
+        if incoming:
+            updated_dict = incoming.copy()
+            for cmd_path, allowed_sources in SourcesModel().ALLOWED.items():
+                if cmd_path in incoming:
+                    new_sources = [
+                        s for s in allowed_sources if s not in incoming[cmd_path]
+                    ]
+                    updated_dict[cmd_path].extend(new_sources)
+                else:
+                    updated_dict[cmd_path] = allowed_sources
+            return updated_dict
+        return {}
+    return {}

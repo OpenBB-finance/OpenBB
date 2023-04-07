@@ -278,6 +278,11 @@ def clear_user_configs(
         return None
 
 
+async def async_upload_user_field(**kwargs):
+    # Add contextmanager to suppress_stdout here
+    upload_user_field(**kwargs)
+
+
 def upload_user_field(
     key: str,
     value: Any,
@@ -305,7 +310,9 @@ def upload_user_field(
     Optional[requests.Response]
         The response from the put request.
     """
+
     data: Dict[str, dict] = {key: value}
+
     try:
         console.print("Sending to OpenBB hub...")
         response = requests.put(

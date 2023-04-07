@@ -42,8 +42,8 @@ class SourcesModel(BaseModel):
     def update_sources_dict(self, incoming: Dict):
         """Update sources dict if command and sources allowed."""
         for cmd_path, incoming_sources in incoming.items():
-            allowed_sources = self.ALLOWED.get(cmd_path, None)
-            if allowed_sources:
+            if cmd_path in self.ALLOWED:
+                allowed_sources = self.ALLOWED[cmd_path]
                 filtered_incoming = [
                     s for s in incoming_sources if s in allowed_sources
                 ]
