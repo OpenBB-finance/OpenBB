@@ -5,7 +5,7 @@ description: How to get started with OpenBB Bot
 keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,]
 ---
 
-Currently we support [Discord](Installation/discord) and [Telegram](Installation/telegram) for the OpenBB Bot. More integrations are under way.
+Currently we support [Discord](installation/discord) and [Telegram](installation/telegram) for the OpenBB Bot. More integrations are under way.
 
 In order to use OpenBB Bot in one of these chatting applications you need to either:
 <div>
