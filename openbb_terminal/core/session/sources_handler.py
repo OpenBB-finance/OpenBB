@@ -90,7 +90,7 @@ def load_file_to_model(path: Path) -> SourcesModel:
     sources_dict = merge_sources(
         incoming=read_sources(path), allowed=SourcesModel().ALLOWED
     )
-    return SourcesModel(sources_dict=sources_dict)
+    return SourcesModel(sources_dict=sources_dict)  # type: ignore
 
 
 def get_updated_hub_sources(configs: Dict) -> Dict:
