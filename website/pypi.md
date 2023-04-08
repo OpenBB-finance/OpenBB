@@ -22,7 +22,7 @@ The command below provides access to the core functionalities behind the [OpenBB
 pip install openbb
 ```
 
-If you wish to utilize our **Portfolio Optimization** or **Machine Learning / Artificial Intelligence** toolkits, please see instructions [here](https://docs.openbb.co/sdk/quickstart/installation).
+If you wish to utilize our **Portfolio Optimization** or **Machine Learning / Artificial Intelligence** toolkits, please see instructions [here](https://docs.openbb.co/sdk/installation).
 
 ## Usage
 
@@ -48,8 +48,3 @@ Access raw financial data from any data source that you are interested. The open
 For most of the functionalities, adding `_chart` to the function will allow you to visualize the output directly from a Jupyter Notebook. Not only speeding up the time it takes to create a plot for the data you are interested in, but making building custom reports much faster.
 
 ![Economy Treasury Chart](https://user-images.githubusercontent.com/25267873/218906112-b2272d43-11fc-4ec1-9a8f-b2d8e2ed7dc1.png)
-
-
-### NOTES
-
-The OpenBB SDK isn't yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the SDK. We are working on a solution to this problem and will update this section once it is resolved.
