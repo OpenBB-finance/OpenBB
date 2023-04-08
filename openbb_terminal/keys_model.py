@@ -2891,8 +2891,7 @@ def set_companieshouse_key(
         )
     """
 
-    set_key("OPENBB_API_COMPANIESHOUSE_KEY", key, persist)
-
+    handle_credential("OPENBB_API_COMPANIESHOUSE_KEY", key, persist)
     return check_companieshouse_key(show_output)
 
 
@@ -2910,13 +2909,15 @@ def check_companieshouse_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_COMPANIESHOUSE_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+    
+    if current_user.credentials.API_COMPANIESHOUSE_KEY == "REPLACE_ME":
         logger.info("Companies House key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
             "https://api.company-information.service.gov.uk/company/00000118",
-            auth=(f"{cfg.API_COMPANIESHOUSE_KEY}", ""),
+            auth=(f"{current_user.credentials.API_COMPANIESHOUSE_KEY}", ""),
         )
         if r.status_code in [403, 401, 429]:
             logger.warning("Companies House key defined, test failed")

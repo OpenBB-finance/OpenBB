@@ -267,7 +267,8 @@ class CompaniesHouseController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="signifcontrol",
-            description="Select the company number and transaction ID to retrieve filling history for. [Source: UK Companies House]",
+            description="Select the company number and transaction ID to retrieve filling history for. \
+            [Source: UK Companies House]",
         )
 
         parser.add_argument(
