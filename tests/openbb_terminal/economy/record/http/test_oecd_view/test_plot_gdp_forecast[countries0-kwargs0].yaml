@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - stats.oecd.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.TOT.AGRWTH.A/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod=2024-01-01&endPeriod=2025-12-31
+  response:
+    body:
+      string: "\uFEFF\"LOCATION\",\"INDICATOR\",\"SUBJECT\",\"MEASURE\",\"FREQUENCY\",\"TIME\",\"Value\",\"Flag
+        Codes\"\r\n\"AUS\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.64857354331907,\r\n\"AUT\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.1592410302056,\r\n\"BEL\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.14039675907335,\r\n\"CAN\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.3344908045969,\r\n\"CZE\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.4052801172829,\r\n\"DNK\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.12643324845604,\r\n\"FIN\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.05284882345317,\r\n\"FRA\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.18765795526344,\r\n\"DEU\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.48713752959221,\r\n\"GRC\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.6185059726204,\r\n\"HUN\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.12216249253446,\r\n\"ISL\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.32283501269817,\r\n\"IRL\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",3.265906217481,\r\n\"ITA\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",0.993701744124388,\r\n\"JPN\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",0.85200725926583,\r\n\"KOR\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.93108505248076,\r\n\"LUX\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.10536133098282,\r\n\"MEX\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.12599151971584,\r\n\"NLD\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.14395466352404,\r\n\"NZL\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.19402631069863,\r\n\"NOR\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.55656915749137,\r\n\"POL\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.40009798422326,\r\n\"PRT\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.15647438420105,\r\n\"SVK\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.13649386331578,\r\n\"ESP\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.67894408532109,\r\n\"SWE\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.87162518017132,\r\n\"CHE\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.38894521858517,\r\n\"TUR\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",3.44554638468012,\r\n\"GBR\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",0.210065345641271,\r\n\"USA\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.03212417873473,\r\n\"BRA\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.41315349809392,\r\n\"CHL\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.55950515751499,\r\n\"CHN\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",4.13021234519608,\r\n\"EST\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",3.21400065570377,\r\n\"IND\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",6.86970828690429,\r\n\"IDN\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",5.14388043426539,\r\n\"ISR\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",3.43230800231615,\r\n\"RUS\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",-0.213189093530266,\r\n\"SVN\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.99178777999335,\r\n\"ZAF\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.63770848482298,\r\n\"WLD\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.73085090851012,\r\n\"OECD\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.41768873333208,\r\n\"COL\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.70839471204483,\r\n\"LVA\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.30268312041408,\r\n\"LTU\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.02031665015739,\r\n\"CRI\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",3.69048409577793,\r\n\"ARG\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.83068808427927,\r\n\"EA17\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.4033493274782,\r\n\"BGR\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",3.13308143476051,\r\n\"ROU\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.75930673303606,\r\n\"NMEC\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",3.83444076266132,\r\n\"DAE\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",3.52381765038809,\r\n\"HRV\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",1.48579608233459,\r\n\"PER\",\"REALGDPFORECAST\",\"TOT\",\"AGRWTH\",\"A\",\"2024\",2.93409093727341,\r\n"
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST,GET,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - close
+      Content-Disposition:
+      - attachment;filename=DP_LIVE_02042023191912457.csv
+      Content-Type:
+      - text/csv
+      Date:
+      - Sun, 02 Apr 2023 17:19:11 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1
