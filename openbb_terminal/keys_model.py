@@ -2910,7 +2910,7 @@ def check_companieshouse_key(show_output: bool = False) -> str:
     """
 
     current_user = get_current_user()
-    
+
     if current_user.credentials.API_COMPANIESHOUSE_KEY == "REPLACE_ME":
         logger.info("Companies House key not defined")
         status = KeyStatus.NOT_DEFINED
