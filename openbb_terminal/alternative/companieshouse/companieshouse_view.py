@@ -29,10 +29,7 @@ def display_search(search_str: str, limit: int, export: str = "") -> None:
 
     if results.empty or len(results) == 0:
         console.print(
-            "[red]"
-            + "No data loaded.\n"
-            + "Try different search string."
-            + "[/red]\n"
+            "[red]" + "No data loaded.\n" + "Try different search string." + "[/red]\n"
         )
         return
 
@@ -49,7 +46,6 @@ def display_search(search_str: str, limit: int, export: str = "") -> None:
         "results",
         results,
     )
-
 
 
 @log_start_end(log=logger)
@@ -111,9 +107,10 @@ def display_officers(company_number: str, export: str = "") -> None:
     )
 
 
-
 @log_start_end(log=logger)
-def display_persons_with_significant_control(company_number: str, export: str = "") -> None:
+def display_persons_with_significant_control(
+    company_number: str, export: str = ""
+) -> None:
     """Display company officers results.
 
     Parameters
@@ -138,7 +135,6 @@ def display_persons_with_significant_control(company_number: str, export: str = 
         "results",
         results,
     )
-    
 
 
 @log_start_end(log=logger)
@@ -160,7 +156,6 @@ def display_filings(company_number: str, export: str = "") -> None:
         title=f"[bold]{company_number}[/bold]",
         export=bool(export),
     )
-    
 
     export_data(
         export,
@@ -168,9 +163,11 @@ def display_filings(company_number: str, export: str = "") -> None:
         "results",
         results,
     )
-    
 
-def download_filing_document(company_number: str, transactionID: str, export: str = "") -> None:
+
+def download_filing_document(
+    company_number: str, transactionID: str, export: str = ""
+) -> None:
     """Display company's filing history.
 
     Parameters
@@ -178,16 +175,10 @@ def download_filing_document(company_number: str, transactionID: str, export: st
     company_number : str
         company_number to retrieve filing history for
 
-    transactionID : str 
+    transactionID : str
         transaction id for filing
 
     """
     results = companieshouse_model.get_filing_document(company_number, transactionID)
 
-    console.print(
-        "[green]"
-        + results
-        + "[/green]\n"
-    )
-        
-
+    console.print("[green]" + results + "[/green]\n")
