@@ -27,7 +27,9 @@ def test_get_officers():
 
 @pytest.mark.record_http
 def test_get_persons_with_significant_control():
-    assert len(companieshouse_model.get_persons_with_significant_control("03625633")) > 0
+    assert (
+        len(companieshouse_model.get_persons_with_significant_control("03625633")) > 0
+    )
 
 
 @pytest.mark.record_http

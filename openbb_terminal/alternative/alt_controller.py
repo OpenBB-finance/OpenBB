@@ -22,7 +22,7 @@ class AlternativeDataController(BaseController):
     """Alternative Controller class"""
 
     CHOICES_COMMANDS: List[str] = ["hn"]
-    CHOICES_MENUS = ["covid", "oss", "realestate","companieshouse"]
+    CHOICES_MENUS = ["covid", "oss", "realestate", "companieshouse"]
     PATH = "/alternative/"
     CHOICES_GENERATION = True
 
@@ -96,7 +96,6 @@ class AlternativeDataController(BaseController):
 
         self.queue = self.load_class(RealEstateController, self.queue)
 
-    
     @log_start_end(log=logger)
     def call_companieshouse(self, _):
         """Process companieshouse command."""
