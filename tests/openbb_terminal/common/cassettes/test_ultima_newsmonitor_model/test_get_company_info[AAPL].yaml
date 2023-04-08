@@ -78,26 +78,32 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
     method: GET
-    uri: https://api.ultimainsights.ai/v1/getNewsArticles/FCX
+    uri: https://api.ultimainsights.ai/v1/getCompanyInfo/AAPL
   response:
     body:
-      string: "{\n  \"message\": \"Invalid Authorization Header\"\n}\n"
+      string: !!binary |
+        H4sIAAAAAAAEA1WOTQoCMQyFr1K6Fg/gToYRBBFRdyJSY5gJtk1J20UR724LzqDLvJ8v76WBXTC+
+        nEaWtDcO9UrpdQgW9UJN5iZb++eprYdlCwjFZ6yVi+4qBxMlYq+OVW3uDgdj56srd5SIkIVSmdUe
+        2LMjmIUD20qBn+Ip1z1FdaOhL/ta4UHIGSk38o8ck5Q2vGMfs0NRvUVIwp4gtiFTtn5PLC15Rhg9
+        Wx6Kfn8AP5uMAQUBAAA=
     headers:
       Access-Control-Allow-Origin:
       - '*'
       Connection:
       - keep-alive
-      Content-Length:
-      - '48'
+      Content-Encoding:
+      - gzip
       Content-Type:
-      - application/json
+      - text/html; charset=utf-8
       Date:
-      - Fri, 07 Apr 2023 02:54:42 GMT
+      - Fri, 07 Apr 2023 02:54:43 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
     status:
-      code: 401
-      message: UNAUTHORIZED
+      code: 200
+      message: OK
 version: 1
