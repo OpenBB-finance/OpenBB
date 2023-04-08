@@ -547,7 +547,7 @@ class StocksController(StockBaseController):
             help="Show news only from the sources specified (e.g bloomberg,reuters)",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
+            other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
@@ -556,7 +556,15 @@ class StocksController(StockBaseController):
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
             if self.ticker:
-                if ns_parser.source == "UltimaInsights":
+                if ns_parser.source == "NewsApi":
+                    newsapi_view.display_news(
+                        query=self.ticker,
+                        limit=ns_parser.limit,
+                        start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                        show_newest=ns_parser.n_oldest,
+                        sources=ns_parser.sources,
+                    )
+                elif str(ns_parser.source).lower() == "ultima":
                     query = str(self.ticker).upper()
                     if query not in ultima_newsmonitor_view.supported_terms():
                         console.print(
@@ -577,14 +585,6 @@ class StocksController(StockBaseController):
                             export=ns_parser.export,
                             sheet_name=ns_parser.sheet_name,
                         )
-                elif ns_parser.source == "NewsApi":
-                    newsapi_view.display_news(
-                        query=self.ticker,
-                        limit=ns_parser.limit,
-                        start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                        show_newest=ns_parser.n_oldest,
-                        sources=ns_parser.sources,
-                    )
                 elif ns_parser.source == "Feedparser":
                     feedparser_view.display_news(
                         term=self.ticker,
