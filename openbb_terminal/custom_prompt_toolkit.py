@@ -47,7 +47,7 @@ class WordCompleter(Completer):
         ignore_case: bool = False,
         display_dict: Optional[Mapping[str, AnyFormattedText]] = None,
         meta_dict: Optional[Mapping[str, AnyFormattedText]] = None,
-        WORD: bool = False,
+        WORD: bool = True,
         sentence: bool = False,
         match_middle: bool = False,
         pattern: Optional[Pattern[str]] = None,

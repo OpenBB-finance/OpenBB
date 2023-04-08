@@ -1,159 +1,156 @@
 # IMPORTATION STANDARD
 
-from pathlib import Path
-from unittest.mock import patch
 
 # IMPORTATION THIRDPARTY
-from openbb_terminal.account import account_model
+import json
+from unittest.mock import mock_open
+
+import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.credentials_model import CredentialsModel
-from openbb_terminal.core.session.current_user import (
-    copy_user,
+from openbb_terminal.account.account_model import read_routine, save_routine
+from openbb_terminal.core.models.user_model import (
+    CredentialsModel,
+    PreferencesModel,
+    ProfileModel,
+    SourcesModel,
+    UserModel,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 
 
-def test_get_var_diff():
-    class TestObj:  # pylint: disable=too-few-public-methods
-        attr_str = "string"
-        attr_int = 10
-        attr_float = 3.14
-        attr_path = Path("/tmp/test")  # noqa: S108
-        attr_bool = True
-
-    obj = TestObj()
-
-    # Test string attribute
-    result = account_model.get_var_diff(obj, "attr_str", "new string")
-    assert result == ("string", "new string")
-
-    # Test int attribute
-    result = account_model.get_var_diff(obj, "attr_int", "20")
-    assert result == (10, 20)
-
-    # Test float attribute
-    result = account_model.get_var_diff(obj, "attr_float", "6.28")
-    assert result == (3.14, 6.28)
-
-    # Test path attribute
-    result = account_model.get_var_diff(obj, "attr_path", "/tmp/new_test")  # noqa: S108
-    assert result == (Path("/tmp/test"), Path("/tmp/new_test"))  # noqa: S108
-
-    # Test bool attribute
-    result = account_model.get_var_diff(obj, "attr_bool", "false")
-    assert result == (True, False)
-
-
-def test_get_diff_keys(mocker):
-    credentials = CredentialsModel(
-        **{
-            "API_KEY_ALPHAVANTAGE": "key1",
-            "API_KEY_FINANCIALMODELINGPREP": "key2",
-            "API_KEY_QUANDL": "key3",
-        }
+@pytest.fixture(name="test_user")
+def fixture_test_user():
+    return UserModel(
+        credentials=CredentialsModel(),
+        preferences=PreferencesModel(),
+        profile=ProfileModel(),
+        sources=SourcesModel(),
     )
-    mock_current_user = copy_user(credentials=credentials)
+
+
+@pytest.mark.parametrize(
+    "exists",
+    [
+        False,
+        True,
+    ],
+)
+def test_read_routine(mocker, exists: bool, test_user):
+    file_name = "test_routine.openbb"
+    routine = "do something"
+    current_user = get_current_user()
+    path = "openbb_terminal.account.account_model"
+
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.__current_user",
-        new=mock_current_user,
+        target=path + ".get_current_user",
+        return_value=test_user,
     )
 
-    new_credentials = {
-        "API_KEY_ALPHAVANTAGE": "new_key1",
-        "API_KEY_FINANCIALMODELINGPREP": "new_key2",
-        "API_KEY_QUANDL": "new_key3",
-    }
-
-    diff = account_model.get_diff_keys(new_credentials)
-    assert diff == {
-        "API_KEY_ALPHAVANTAGE": ("key1", "new_key1"),
-        "API_KEY_FINANCIALMODELINGPREP": ("key2", "new_key2"),
-        "API_KEY_QUANDL": ("key3", "new_key3"),
-    }
-
-
-def test_get_diff_keys_empty_keys(mocker):
-    credentials = CredentialsModel(
-        **{
-            "API_KEY_ALPHAVANTAGE": "key1",
-            "API_KEY_FINANCIALMODELINGPREP": "key2",
-            "API_KEY_QUANDL": "key3",
-        }
+    exists_mock = mocker.patch(path + ".os.path.exists", return_value=exists)
+    open_mock = mocker.patch(
+        path + ".open",
+        mock_open(read_data=json.dumps(routine)),
     )
-    mock_current_user = copy_user(credentials=credentials)
+
+    assert read_routine(file_name=file_name) == json.dumps(routine)
+
+    exists_mock.assert_called_with(
+        current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
+    )
+    if exists:
+        open_mock.assert_called_with(
+            current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
+        )
+    else:
+        open_mock.assert_called_with(
+            current_user.preferences.USER_ROUTINES_DIRECTORY / file_name
+        )
+
+
+def test_read_routine_exception(mocker, test_user):
+    file_name = "test_routine.openbb"
+    current_user = get_current_user()
+    path = "openbb_terminal.account.account_model"
+
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.__current_user",
-        new=mock_current_user,
+        target=path + ".get_current_user",
+        return_value=test_user,
+    )
+    exists_mock = mocker.patch(path + ".os.path.exists")
+    open_mock = mocker.patch(
+        path + ".open",
+        side_effect=Exception("test exception"),
     )
 
-    new_credentials = {}
+    assert read_routine(file_name=file_name) is None
 
-    diff = account_model.get_diff_keys(new_credentials)
-    assert not diff and isinstance(diff, dict)
-
-
-def test_get_diff_keys_same_keys(mocker):
-    credentials = CredentialsModel(
-        **{
-            "API_KEY_ALPHAVANTAGE": "key1",
-            "API_KEY_FINANCIALMODELINGPREP": "key2",
-            "API_KEY_QUANDL": "key3",
-        }
+    exists_mock.assert_called_with(
+        current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
     )
-    mock_current_user = copy_user(credentials=credentials)
+    open_mock.assert_called_with(
+        current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
+    )
+
+
+@pytest.mark.parametrize(
+    "exists",
+    [
+        False,
+        True,
+    ],
+)
+def test_save_routine(mocker, exists: bool, test_user):
+    file_name = "test_routine.openbb"
+    routine = "do something"
+    current_user = get_current_user()
+    path = "openbb_terminal.account.account_model"
+
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.__current_user",
-        new=mock_current_user,
+        target=path + ".get_current_user",
+        return_value=test_user,
     )
 
-    new_credentials = {
-        "API_KEY_ALPHAVANTAGE": "key1",
-        "API_KEY_FINANCIALMODELINGPREP": "key2",
-        "API_KEY_QUANDL": "key3",
-    }
-
-    diff = account_model.get_diff_keys(new_credentials)
-
-    assert not diff and isinstance(diff, dict)
-
-
-def test_get_diff_keys_new_keys(mocker):
-    credentials = CredentialsModel(
-        **{
-            "API_KEY_ALPHAVANTAGE": "key1",
-            "API_KEY_FINANCIALMODELINGPREP": "key2",
-        }
+    exists_mock = mocker.patch(path + ".os.path.exists", return_value=exists)
+    makedirs_mock = mocker.patch(path + ".os.makedirs")
+    open_mock = mocker.patch(
+        path + ".open",
     )
-    mock_current_user = copy_user(credentials=credentials)
+
+    result = save_routine(file_name=file_name, routine=routine)
+
+    if exists:
+        assert result == "File already exists"
+        makedirs_mock.assert_not_called()
+    else:
+        assert (
+            result
+            == current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
+        )
+        makedirs_mock.assert_called_once()
+        open_mock.assert_called_with(
+            current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name, "w"
+        )
+
+    assert exists_mock.call_count == 2
+
+
+def test_save_routine_exception(mocker, test_user):
+    file_name = "test_routine.openbb"
+    routine = "do something"
+    path = "openbb_terminal.account.account_model"
+
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.__current_user",
-        new=mock_current_user,
+        target=path + ".get_current_user",
+        return_value=test_user,
     )
 
-    new_credentials = {
-        "API_KEY_ALPHAVANTAGE": "key1",
-        "API_KEY_FINANCIALMODELINGPREP": "key2",
-        "NEW_CREDENTIAL": "new",
-    }
+    mocker.patch(path + ".os.path.exists", return_value=False)
+    mocker.patch(path + ".os.makedirs")
+    mocker.patch(
+        path + ".open",
+        side_effect=Exception("test exception"),
+    )
 
-    diff = account_model.get_diff_keys(new_credentials)
-    assert not diff and isinstance(diff, dict)
-
-
-def test_get_diff():
-    configs = {
-        "features_settings": {"setting1": "value1"},
-        "features_keys": {"key1": "value1"},
-    }
-    expected = {
-        "features_keys": {"key1": "value1"},
-    }
-
-    with patch(
-        "openbb_terminal.account.account_model.get_diff_keys"
-    ) as mock_get_diff_keys:
-        mock_get_diff_keys.return_value = {"key1": ("old_value", "value1")}
-
-        result = account_model.get_diff(configs)
-
-    assert result == expected
+    result = save_routine(file_name=file_name, routine=routine)
+    assert result is None
