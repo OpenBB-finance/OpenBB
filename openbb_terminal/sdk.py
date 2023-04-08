@@ -400,7 +400,7 @@ class OpenBBSDK:
             `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
             `twitter`: Set Twitter key\n
-            `ultimainsights`: Set Ultima Insights key\n
+            `ultima`: Set Ultima Insights key\n
             `walert`: Set Walert key\n
         """
 
