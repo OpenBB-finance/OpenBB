@@ -5,7 +5,6 @@ import argparse
 import logging
 from typing import List, Optional
 
-# from openbb_terminal import feature_flags as obbff
 from openbb_terminal.alternative.companieshouse import companieshouse_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.menu import session

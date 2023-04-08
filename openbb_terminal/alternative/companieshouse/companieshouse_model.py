@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-import pandas as pd
 import requests
+import pandas as pd
 
 from openbb_terminal.core.session.constants import (
     TIMEOUT,
@@ -219,7 +219,7 @@ def get_filing_document(company_number: str, transactionID: str) -> str:
         "document_metadata"
     ):
         url = returned_data.get("links").get("document_metadata") + "/content"
-        response = requests.get(url, auth=auth, headers={"Accept": "application/pdf"})
+        response = requests.get(url, auth=auth, headers={"Accept": "application/pdf"}, timeout=TIMEOUT)
         with open(
             f"{get_current_user().preferences.USER_COMPANIES_HOUSE_DIRECTORY}/{transactionID}.pdf",
             "wb",
