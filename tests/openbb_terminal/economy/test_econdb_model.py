@@ -80,3 +80,21 @@ def test_get_treasury_maturities(recorder):
     result_df = econdb_model.get_treasury_maturities()
 
     recorder.capture(result_df)
+
+
+def test_get_macro_countries():
+    result_dict = econdb_model.get_macro_countries()
+
+    assert isinstance(result_dict, dict)
+
+
+def test_macro_parameters():
+    result_dict = econdb_model.get_macro_parameters()
+
+    assert isinstance(result_dict, dict)
+
+
+def test_macro_transform():
+    result_dict = econdb_model.get_macro_transform()
+
+    assert isinstance(result_dict, dict)
