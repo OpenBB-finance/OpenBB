@@ -929,6 +929,7 @@ en:
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
   alternative/realestate: Real Estate menu,           sold prices, HPIs
+  alternative/companieshouse: Companies House menu,       UK company information
   alternative/covid/slopes: get countries with highest slope in cases
   alternative/covid/country: select country for data
   alternative/covid/_country: Country
@@ -948,6 +949,7 @@ en:
   alternative/realestate/_enddate: End Date <YYYY-MM-DD>
   alternative/realestate/regionstats: retrieve UK sold house price stats by region
   alternative/realestate/_region: Region
+  alternative/companieshouse/search: search for companies by name
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset
