@@ -104,6 +104,7 @@ class AltRealestate(Category):
             lib.alt_realestate_landRegistry_model.get_towns_sold_prices
         )
 
+
 class AltCompaniesHouse(Category):
     """CompaniesHouse Module.
 
@@ -120,10 +121,17 @@ class AltCompaniesHouse(Category):
 
     def __init__(self):
         super().__init__()
-        self.get_search_results = lib.alt_companieshouse_companieshouse_model.get_search_results
-        self.get_company_info = lib.alt_companieshouse_companieshouse_model.get_company_info
+        self.get_search_results = (
+            lib.alt_companieshouse_companieshouse_model.get_search_results
+        )
+        self.get_company_info = (
+            lib.alt_companieshouse_companieshouse_model.get_company_info
+        )
         self.get_officers = lib.alt_companieshouse_companieshouse_model.get_officers
-        self.get_persons_with_significant_control = lib.alt_companieshouse_companieshouse_model.get_persons_with_significant_control
+        self.get_persons_with_significant_control = (
+            lib.alt_companieshouse_companieshouse_model.get_persons_with_significant_control
+        )
         self.get_filings = lib.alt_companieshouse_companieshouse_model.get_filings
-        self.get_filing_document = lib.alt_companieshouse_companieshouse_model.get_filing_document
-
+        self.get_filing_document = (
+            lib.alt_companieshouse_companieshouse_model.get_filing_document
+        )
