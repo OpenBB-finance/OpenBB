@@ -67,7 +67,6 @@ class AltController(model.AltRoot):
         """
 
         return model.AltRealestate()
-    
 
     @property
     def companieshouse(self):
