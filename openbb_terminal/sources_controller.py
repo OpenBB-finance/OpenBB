@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # IMPORTATION STANDARD
 import argparse
 import logging
+import os
 from pathlib import Path
 from typing import List, Optional
 
@@ -41,10 +42,19 @@ class SourcesController(BaseController):
     def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
-
+        self.source = "default"
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(self.choices)
+
+    def update_print_help(self):
+        """Update print help"""
+        sources_file = get_current_user().preferences.USER_DATA_SOURCES_FILE
+        if is_local():
+            if Path(sources_file).exists() and os.stat(sources_file).st_size > 0:
+                self.source = sources_file
+        else:
+            self.source = SOURCES_URL
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
@@ -52,23 +62,19 @@ class SourcesController(BaseController):
         Overrides the parent class function to handle github org/repo path convention.
         See `BaseController.parse_input()` for details.
         """
-        cmd_filter = r"((set\ --cmd |set\ -c |get\ --cmd |get\ -c ).*?("
+        cmd_filter = r"((set\s+--cmd\s+|set\s+-c\s+|set\s+|get\s+--cmd\s+|get\s+-c\s+|get\s+).*?("
         for cmd in get_current_user().sources.sources_dict:
             cmd = cmd.replace("/", r"\/")
             cmd_filter += f"{cmd}|"
         cmd_filter += ")*)"
+
         commands = parse_and_split_input(an_input=an_input, custom_filters=[cmd_filter])
         return commands
 
     def print_help(self):
         """Print help"""
         mt = MenuText("sources/")
-        mt.add_param(
-            "_source",
-            get_current_user().preferences.USER_DATA_SOURCES_FILE
-            if is_local()
-            else SOURCES_URL,
-        )
+        mt.add_param("_source", self.source)
         mt.add_raw("\n")
         mt.add_info("_info_")
         mt.add_cmd("get")
@@ -90,7 +96,7 @@ class SourcesController(BaseController):
             action="store",
             dest="cmd",
             choices=list(get_current_user().sources.sources_dict.keys()),
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             help="Command that we want to check the available data sources and the default one.",
             metavar="COMMAND",
         )
@@ -109,6 +115,7 @@ class SourcesController(BaseController):
                     f"[param]Default   :[/param] {cmd_defaults[0]}\n"
                     f"[param]Available :[/param] {', '.join(cmd_defaults)}"
                 )
+        self.update_print_help()
 
     @log_start_end(log=logger)
     def call_set(self, other_args):
@@ -140,6 +147,15 @@ class SourcesController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
+
+        if (
+            other_args
+            and len(other_args) >= 2
+            and "-s" not in other_args
+            and "--source" not in other_args
+        ):
+            other_args.insert(2, "-s")
+
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             sources_dict = get_current_user().sources.sources_dict
@@ -172,3 +188,4 @@ class SourcesController(BaseController):
                     f"'{ns_parser.cmd}' command.[/red]\n"
                     f"[param]\nAvailable :[/param] {', '.join(sources_dict[ns_parser.cmd])}\n"
                 )
+        self.update_print_help()

@@ -77,18 +77,16 @@ def display_news(
 
     articles = ultima_newsmonitor_model.get_news(term, sort)
     articles = articles.head(limit).sort_values(by="relevancyScore", ascending=False)
-    # console.print(f"News Powered by [purple]ULTIMA INSIGHTS[/purple].\nFor more info: https://www.ultimainsights.ai\n")
+    # console.print(f"News Powered by [purple]Ultima Insights[/purple].\nFor more info: https://www.ultimainsights.ai\n")
     for _, row in articles.iterrows():
         console.print(
-            f"> {row['articlePublishedDate']} - {row['articleHeadline']} -> [green]{row['riskCategory']}[/green] "
-            f"(\x1B[3m{row['riskElaboratedDescription']}\x1B[0m) -> "
-            f"[purple]relevancy score: {round(row['relevancyScore'], 2) if row['relevancyScore'] < 5 else 5}"
-            f"/5 Stars[/purple]"
+            f"> {row['articlePublishedDate']} - {row['articleHeadline']}\n"
+            f"[purple]Relevancy score: {round(row['relevancyScore'], 2) if row['relevancyScore'] < 5 else 5}"
+            f"/5 Stars[/purple]\n[green]{row['riskCategory']}[/green] "
+            f"(\x1B[3m{row['riskElaboratedDescription']}\x1B[0m)"
         )
-        console.print(row["articleURL"] + "\n")
-    console.print(
-        "[red]To report any issues, please visit https://beta.ultimainsights.ai/my-account/support[/red]\n"
-    )
+        console.print(f"Read more: {row['articleURL']}\n")
+    # console.print("[purple]To report any issues, please visit https://beta.ultimainsights.ai/my-account/support[/purple]\n")
     console.print()
 
     export_data(
