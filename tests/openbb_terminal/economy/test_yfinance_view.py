@@ -49,7 +49,6 @@ def test_show_indices(
     )
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "indices, interval, start_date, end_date, column, returns, store",
