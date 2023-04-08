@@ -1,11 +1,13 @@
 """  UK Companies House Model """
 __docformat__ = "numpy"
 
-import io
 import logging
 import pandas as pd
 import requests
 
+from openbb_terminal.core.session.constants import (
+    TIMEOUT,
+)
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.core.session.current_user import get_current_user
 
@@ -45,6 +47,7 @@ def get_search_results(searchStr: str, limit: int = 20) -> pd.DataFrame:
         + searchStr
         + f"&items_per_page={limit}",
         auth=auth,
+        timeout=TIMEOUT,
     )
     returned_data = r.json()
     company_data = []
@@ -60,8 +63,6 @@ def get_search_results(searchStr: str, limit: int = 20) -> pd.DataFrame:
     df = pd.DataFrame(company_data)
     return df
 
-    # r = requests.get('https://api.company-information.service.gov.uk/company/'+'13952122', auth=(API_KEY, ''))
-
 
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
@@ -72,6 +73,7 @@ def get_company_info(company_number: str) -> pd.DataFrame:
     r = requests.get(
         f"https://api.company-information.service.gov.uk/company/{company_number}",
         auth=auth,
+        timeout=TIMEOUT,
     )
 
     returned_data = r.json()
@@ -120,6 +122,7 @@ def get_officers(company_number: str) -> pd.DataFrame:
     r = requests.get(
         f"https://api.company-information.service.gov.uk/company/{company_number}/officers",
         auth=auth,
+        timeout=TIMEOUT,
     )
     returned_data = r.json()
 
@@ -148,6 +151,7 @@ def get_persons_with_significant_control(company_number: str) -> pd.DataFrame:
     r = requests.get(
         f"https://api.company-information.service.gov.uk/company/{company_number}/persons-with-significant-control",
         auth=auth,
+        timeout=TIMEOUT,
     )
     returned_data = r.json()
 
@@ -176,6 +180,7 @@ def get_filings(company_number: str) -> pd.DataFrame:
     r = requests.get(
         f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history",
         auth=auth,
+        timeout=TIMEOUT,
     )
     returned_data = r.json()
 
@@ -206,6 +211,7 @@ def get_filing_document(company_number: str, transactionID: str) -> str:
     r = requests.get(
         f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history/{transactionID}",
         auth=auth,
+        timeout=TIMEOUT,
     )
     returned_data = r.json()
 
