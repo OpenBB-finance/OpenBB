@@ -224,6 +224,6 @@ def get_filing_document(company_number: str, transactionID: str) -> bytes:
             url, auth=auth, headers={"Accept": "application/pdf"}, timeout=TIMEOUT
         )
 
-        return response.content
+        return bytes(response.content)
     else:
         return ""
