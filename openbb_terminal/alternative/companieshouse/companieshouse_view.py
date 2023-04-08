@@ -8,6 +8,7 @@ from openbb_terminal.alternative.companieshouse import companieshouse_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.session.current_user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -181,4 +182,13 @@ def download_filing_document(
     """
     results = companieshouse_model.get_filing_document(company_number, transactionID)
 
-    console.print("[green]" + results + "[/green]\n")
+    if len(results) > 0:
+        with open(
+            f"{get_current_user().preferences.USER_COMPANIES_HOUSE_DIRECTORY}/{transactionID}.pdf",
+            "wb",
+        ) as f:
+            f.write(results)
+
+        console.print(f"[green] File {transactionID}.pdf downloaded [/green]\n")
+    else:
+        console.print("[red]" + "Document not found" + "[/red]\n")

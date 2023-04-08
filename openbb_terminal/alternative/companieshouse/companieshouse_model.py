@@ -223,12 +223,7 @@ def get_filing_document(company_number: str, transactionID: str) -> str:
         response = requests.get(
             url, auth=auth, headers={"Accept": "application/pdf"}, timeout=TIMEOUT
         )
-        with open(
-            f"{get_current_user().preferences.USER_COMPANIES_HOUSE_DIRECTORY}/{transactionID}.pdf",
-            "wb",
-        ) as f:
-            f.write(response.content)
 
-        return f"File {transactionID}.pdf downloaded"
+        return response.content
     else:
-        return "File not available for download"
+        return ""

@@ -58,6 +58,7 @@ class OpenBBSDK:
             `covid`: Covid Module
             `oss`: Oss Module
             `realestate`: Realestate Module
+            `companieshouse`: CompaniesHouse Module
 
         Attributes:
             `hn`: Get top stories from HackerNews.\n
