@@ -9,6 +9,7 @@ import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import (
     remove_log_handlers,
 )
+from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     ProfileModel,
@@ -109,7 +110,6 @@ def login(session: dict) -> LoginStatus:
 def logout(
     auth_header: Optional[str] = None,
     token: Optional[str] = None,
-    guest: bool = True,
     cls: bool = False,
 ):
     """Logout and clear session.
@@ -121,27 +121,27 @@ def logout(
     token : str, optional
         The token to delete.
         In the terminal we want to delete the current session, so we use the user own token.
-    guest : bool
-        True if the user is guest, False otherwise.
     cls : bool
         Clear the screen.
     """
     if cls:
         system_clear()
 
+    if not auth_header or not token:
+        return
+
     success = True
-    if not guest:
-        if not auth_header or not token:
-            return
+    r = Hub.delete_session(auth_header, token)
+    if not r or r.status_code != 200:
+        success = False
 
-        r = Hub.delete_session(auth_header, token)
-        if not r or r.status_code != 200:
-            success = False
+    if not Local.remove(SESSION_FILE_PATH):
+        success = False
 
-        if not Local.remove_session_file():
-            success = False
+    if not Local.remove(HIST_FILE_PATH):
+        success = False
 
-    if not Local.remove_cli_history_file():
+    if not Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub"):
         success = False
 
     remove_log_handlers()
