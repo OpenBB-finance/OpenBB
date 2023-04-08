@@ -188,7 +188,7 @@ class CompaniesHouseController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="signifcontrol",
-            description="Select the company number to retrieve persons with signifcant control of company. \
+            description="Select the company number to retrieve persons with significant control of company. \
             [Source: UK Companies House]",
         )
         parser.add_argument(
