@@ -1264,7 +1264,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 key=ns_parser.key, persist=True, show_output=True
             )
 
-    
     @log_start_end(log=logger)
     def call_companieshouse(self, other_args: List[str]):
         """Process companies house command"""
