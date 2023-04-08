@@ -205,7 +205,7 @@ def get_filings(company_number: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
-def get_filing_document(company_number: str, transactionID: str) -> str:
+def get_filing_document(company_number: str, transactionID: str) -> bytes:
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
