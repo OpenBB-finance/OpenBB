@@ -1264,7 +1264,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 key=ns_parser.key, persist=True, show_output=True
             )
 
-
     @log_start_end(log=logger)
     def call_openbb(self, other_args: List[str]):
         """Process openbb command"""
@@ -1293,7 +1292,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 key=ns_parser.key, persist=True, show_output=True
             )
 
-
     @log_start_end(log=logger)
     def call_companieshouse(self, other_args: List[str]):
         """Process companies house command"""
@@ -1311,7 +1309,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://developer.company-information.service.gov.uk/overview")
+            console.print(
+                "For your API Key, visit: https://developer.company-information.service.gov.uk/overview"
+            )
             return
 
         if other_args and "-" not in other_args[0][0]:
@@ -1321,4 +1321,3 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             self.status_dict["companieshouse"] = keys_model.set_companieshouse_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-
