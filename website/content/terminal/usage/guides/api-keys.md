@@ -808,7 +808,7 @@ Go to: https://ultimainsights.ai/
 Click on, "Get Started", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://beta.ultimainsights.ai/my-account/generate-api-key) and click "Generate Key". Copy the API key to the clipboard, and enter this key into the OpenBB Terminal with:
 
 ```console
-/keys/ultimainsights REPLACE_WITH_KEY
+/keys/ultima REPLACE_WITH_KEY
 ```
 
 </details>
