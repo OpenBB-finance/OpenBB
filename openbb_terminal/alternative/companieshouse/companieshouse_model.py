@@ -2,14 +2,15 @@
 __docformat__ = "numpy"
 
 import logging
-import requests
+
 import pandas as pd
+import requests
 
 from openbb_terminal.core.session.constants import (
     TIMEOUT,
 )
-from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import check_api_key, log_start_end
 
 logger = logging.getLogger(__name__)
 
