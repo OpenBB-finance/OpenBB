@@ -308,7 +308,7 @@ def test_call_logout(mocker, test_user):
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
 
@@ -437,7 +437,7 @@ def test_call_clear(mocker, input_value, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
     mock_input = mocker.patch(
@@ -464,7 +464,7 @@ def test_call_list(mocker, test_user):
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
 
@@ -490,12 +490,12 @@ def test_call_upload(mocker, test_user):
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
 
-    mock_get_routine = mocker.patch(
-        target=f"{path_controller}.Local.get_routine",
+    mock_read_routine = mocker.patch(
+        target=f"{path_controller}.read_routine",
         return_value="do something",
     )
     mock_upload_routine = mocker.patch(
@@ -513,7 +513,7 @@ def test_call_upload(mocker, test_user):
         ]
     )
 
-    mock_get_routine.assert_called_once_with(file_name="script1.openbb")
+    mock_read_routine.assert_called_once_with(file_name="script1.openbb")
     mock_upload_routine.assert_called_once_with(
         auth_header="Bearer 123",
         name="script1",
@@ -528,7 +528,7 @@ def test_call_download(mocker, test_user):
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
 
@@ -547,7 +547,7 @@ def test_call_download(mocker, test_user):
     )
     mock_download_routine.return_value = response
     mock_save_routine = mocker.patch(
-        target=f"{path_controller}.Local.save_routine",
+        target=f"{path_controller}.save_routine",
         return_value="path_to_file",
     )
 
@@ -616,7 +616,7 @@ def test_call_generate(mocker, monkeypatch, test_user):
     ).encode("utf-8")
 
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
 
@@ -648,7 +648,7 @@ def test_call_show(mocker, test_user):
     ).encode("utf-8")
 
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
 
@@ -665,7 +665,7 @@ def test_call_revoke(mocker, monkeypatch, test_user):
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
 

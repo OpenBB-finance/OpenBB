@@ -14,7 +14,6 @@ from openbb_terminal.core.models.user_model import (
     UserModel,
 )
 from openbb_terminal.core.session import sdk_session
-from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.core.session.session_model import LoginStatus
 
 TEST_SESSION = {
@@ -237,7 +236,6 @@ def test_logout(mocker, test_user):
         mock_logout.assert_called_once_with(
             auth_header=test_user.profile.get_auth_header(),
             token=test_user.profile.get_token(),
-            guest=is_local(),
         )
 
 
