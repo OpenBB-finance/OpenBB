@@ -1264,34 +1264,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 key=ns_parser.key, persist=True, show_output=True
             )
 
-    @log_start_end(log=logger)
-    def call_openbb(self, other_args: List[str]):
-        """Process openbb command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="openbb",
-            description="Set OpenBB Personal Access Token. ",
-        )
-        parser.add_argument(
-            "-k",
-            "--key",
-            type=str,
-            dest="key",
-            help="key",
-        )
-        if not other_args:
-            console.print("For your Personal Access Token, visit: https://openbb.co/")
-            return
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-k")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.status_dict["openbb"] = keys_model.set_openbb_personal_access_token(
-                key=ns_parser.key, persist=True, show_output=True
-            )
-
+    
     @log_start_end(log=logger)
     def call_companieshouse(self, other_args: List[str]):
         """Process companies house command"""
