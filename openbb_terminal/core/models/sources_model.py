@@ -29,14 +29,27 @@ def read_default_sources() -> Dict:
         return {}
 
 
+__allowed = read_default_sources()
+
+
+def get_allowed_sources() -> Dict:
+    """Get allowed sources.
+
+    Returns
+    -------
+    Dict
+        Dictionary with sources
+    """
+    return __allowed
+
+
 @dataclass(config=dict(validate_assignment=True))
 class SourcesModel(BaseModel):
     """Model for sources."""
 
-    allowed: Dict[str, List[str]] = Field(
-        default_factory=lambda: read_default_sources(),
+    user_choices: Dict[str, List[str]] = Field(
+        default_factory=lambda: get_allowed_sources(),
     )
-    user_choices: Dict[str, List[str]] = allowed
 
     def __repr__(self):
         return super().__repr__()

@@ -8,7 +8,7 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     SESSION_FILE_PATH,
 )
-from openbb_terminal.core.models.sources_model import SourcesModel
+from openbb_terminal.core.models.sources_model import get_allowed_sources
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     get_env_dict,
@@ -205,6 +205,6 @@ def set_sources_from_hub(configs: dict):
         incoming = configs.get("features_sources", {}) or {}
         if incoming:
             user_choices = merge_sources(
-                incoming=incoming, allowed=SourcesModel().allowed
+                incoming=incoming, allowed=get_allowed_sources()
             )
             set_sources(user_choices)

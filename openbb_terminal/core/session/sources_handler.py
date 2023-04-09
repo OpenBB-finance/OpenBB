@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from typing import Dict
 
-from openbb_terminal.core.models.sources_model import SourcesModel
+from openbb_terminal.core.models.sources_model import SourcesModel, get_allowed_sources
 from openbb_terminal.core.sources.utils import extend, flatten
 
 
@@ -88,7 +88,7 @@ def load_file_to_model(path: Path) -> SourcesModel:
         Sources model
     """
     user_choices = merge_sources(
-        incoming=read_sources(path), allowed=SourcesModel().allowed
+        incoming=read_sources(path), allowed=get_allowed_sources()
     )
     return SourcesModel(user_choices=user_choices)  # type: ignore
 
@@ -111,6 +111,6 @@ def get_updated_hub_sources(configs: Dict) -> Dict:
     if configs:
         incoming = configs.get("features_sources", {}) or {}
         if incoming:
-            return merge_sources(incoming=incoming, allowed=SourcesModel().allowed)
+            return merge_sources(incoming=incoming, allowed=get_allowed_sources())
         return {}
     return {}
