@@ -132,15 +132,15 @@ def set_credential(name: str, value: str):
     set_current_user(updated_user)
 
 
-def set_sources(user_choices: Dict):
+def set_sources(choices: Dict):
     """Set sources
 
     Parameters
     ----------
-    user_choices : Dict
+    choices : Dict
         Sources dict
     """
     current_user = get_current_user()
-    updated_sources = dataclasses.replace(current_user.sources, user_choices=user_choices)  # type: ignore
+    updated_sources = dataclasses.replace(current_user.sources, choices=choices)  # type: ignore
     updated_user = dataclasses.replace(current_user, sources=updated_sources)  # type: ignore
     set_current_user(updated_user)

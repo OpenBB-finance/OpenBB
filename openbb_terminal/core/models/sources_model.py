@@ -47,7 +47,7 @@ def get_allowed_sources() -> Dict:
 class SourcesModel(BaseModel):
     """Model for sources."""
 
-    user_choices: Dict[str, List[str]] = Field(
+    choices: Dict[str, List[str]] = Field(
         default_factory=lambda: get_allowed_sources(),
     )
 

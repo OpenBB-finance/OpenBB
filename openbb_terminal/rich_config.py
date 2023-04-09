@@ -63,7 +63,7 @@ def get_ordered_list_sources(command_path: str) -> List:
         The list of sources for the given command.
     """
     command_path = command_path[1:] if command_path.startswith("/") else command_path
-    return get_current_user().sources.user_choices.get(command_path, [])
+    return get_current_user().sources.choices.get(command_path, [])
 
 
 class MenuText:

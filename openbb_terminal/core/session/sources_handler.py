@@ -63,15 +63,15 @@ def merge_sources(incoming: Dict, allowed: Dict):
     Dict
         Updated sources
     """
-    user_choices = allowed.copy()
+    choices = allowed.copy()
 
     for cmd_path, incoming_sources in incoming.items():
         if cmd_path in allowed:
             allowed_sources = allowed[cmd_path]
             filtered_incoming = [s for s in incoming_sources if s in allowed_sources]
             remaining = [s for s in allowed_sources if s not in incoming_sources]
-            user_choices[cmd_path] = filtered_incoming + remaining
-    return user_choices
+            choices[cmd_path] = filtered_incoming + remaining
+    return choices
 
 
 def load_file_to_model(path: Path) -> SourcesModel:
@@ -87,10 +87,8 @@ def load_file_to_model(path: Path) -> SourcesModel:
     SourcesModel
         Sources model
     """
-    user_choices = merge_sources(
-        incoming=read_sources(path), allowed=get_allowed_sources()
-    )
-    return SourcesModel(user_choices=user_choices)  # type: ignore
+    choices = merge_sources(incoming=read_sources(path), allowed=get_allowed_sources())
+    return SourcesModel(choices=choices)  # type: ignore
 
 
 def get_updated_hub_sources(configs: Dict) -> Dict:
