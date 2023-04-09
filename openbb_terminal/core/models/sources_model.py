@@ -33,13 +33,10 @@ def read_default_sources() -> Dict:
 class SourcesModel(BaseModel):
     """Model for sources."""
 
-    ALLOWED: Dict[str, List[str]] = Field(
+    allowed: Dict[str, List[str]] = Field(
         default_factory=lambda: read_default_sources(),
     )
-    available_sources: Dict[str, List[str]] = ALLOWED
+    user_choices: Dict[str, List[str]] = allowed
 
     def __repr__(self):
         return super().__repr__()
-
-    def get_allowed(self):
-        return self.ALLOWED

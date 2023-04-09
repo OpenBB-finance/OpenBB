@@ -202,9 +202,9 @@ def set_sources_from_hub(configs: dict):
         The configurations.
     """
     if configs:
-        sources = configs.get("features_sources", {}) or {}
-        if sources:
-            available_sources = merge_sources(
-                incoming=sources, allowed=SourcesModel().get_allowed()
+        incoming = configs.get("features_sources", {}) or {}
+        if incoming:
+            user_choices = merge_sources(
+                incoming=incoming, allowed=SourcesModel().allowed
             )
-            set_sources(available_sources)
+            set_sources(user_choices)
