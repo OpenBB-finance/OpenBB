@@ -341,9 +341,9 @@ def get_market_cap(symbol) -> float:
     market_cap = fmp_model.get_enterprise(symbol)
 
     if not market_cap.empty:
-        latest_year = market_cap.columns[0]
+        latest_year = market_cap.index[-1]
 
-        value = market_cap[latest_year].loc["Market capitalization"]
+        value = market_cap.loc[latest_year]["Market capitalization"]
 
         if "M" in value:
             updated_value = float(value.split(" M")[0]) * 1000000

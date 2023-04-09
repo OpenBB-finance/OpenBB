@@ -17,9 +17,10 @@ from openbb_terminal.core.session.sources_handler import read_sources
 from openbb_terminal.core.session.utils import load_dict_to_model
 
 __env_dict = read_env()
-__credentials = load_dict_to_model(__env_dict, CredentialsModel)
+__credentials = load_dict_to_model(__env_dict, CredentialsModel)  # type: ignore
 __preferences = load_dict_to_model(__env_dict, PreferencesModel)
-__sources = SourcesModel(sources_dict=read_sources(Path(__preferences.PREFERRED_DATA_SOURCE_FILE)))  # type: ignore
+__sources = SourcesModel()  # type: ignore
+__sources.update(read_sources(Path(__preferences.USER_DATA_SOURCES_FILE)))
 
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
@@ -63,22 +64,21 @@ def set_default_user():
     env_dict = read_env()
     credentials = load_dict_to_model(env_dict, CredentialsModel)
     preferences = load_dict_to_model(env_dict, PreferencesModel)
-    sources = SourcesModel(
-        sources_dict=read_sources(Path(preferences.PREFERRED_DATA_SOURCE_FILE))
-    )
+    sources = SourcesModel()
+    sources.update(read_sources(Path(preferences.USER_DATA_SOURCES_FILE)))
     profile = ProfileModel()
-    local_user = UserModel(  # type: ignore
+    default_user = UserModel(  # type: ignore
         credentials=credentials,
         preferences=preferences,
         profile=profile,
         sources=sources,
     )
-    set_current_user(local_user)
+    set_current_user(default_user)
 
 
 def copy_user(
     sources: Optional[SourcesModel] = None,
-    credentials: Optional[CredentialsModel] = None,
+    credentials: Optional[CredentialsModel] = None,  # type: ignore
     preferences: Optional[PreferencesModel] = None,
     profile: Optional[ProfileModel] = None,
     user: Optional[UserModel] = None,

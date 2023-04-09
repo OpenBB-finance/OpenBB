@@ -89,7 +89,6 @@ def logout():
     session_model.logout(
         auth_header=current_user.profile.get_auth_header(),
         token=current_user.profile.token,
-        guest=is_local(),
     )
 
 
