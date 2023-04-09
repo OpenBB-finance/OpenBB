@@ -27,7 +27,7 @@ def read_sources(path: Path) -> Dict:
         return {}
     except Exception as e:
         print(f"\nFailed to read data sources file: {path}\n{e}\n")
-        print("Using OpenBB defaults.")
+        print("Falling back to OpenBB default sources.")
         return {}
 
 
