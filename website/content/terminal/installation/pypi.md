@@ -157,7 +157,7 @@ sudo apt install libwebkit2gtk-4.0-dev
 <summary>Arch Linux / Manjaro</summary>
 
 ```shell
-sudo pacman -S webkit2gtk-4.0
+sudo pacman -S webkit2gtk
 ```
 
 </details>
@@ -166,7 +166,7 @@ sudo pacman -S webkit2gtk-4.0
 <summary>Fedora</summary>
 
 ```shell
-sudo dnf install gtk3-devel webkit2gtk4.0-devel
+sudo dnf install gtk3-devel webkit2gtk3-devel
 ```
 
 </details>
@@ -222,6 +222,10 @@ Install all available toolkits at once with:
 ```shell
 pip install "openbb[all]" --no-cache-dir
 ```
+
+:::info
+The `pip install openbb` isn't yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK. We are working on a solution to this problem and will update this section once it is resolved.
+:::
 
 ## Verify Installation
 
