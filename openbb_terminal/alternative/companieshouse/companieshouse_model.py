@@ -226,4 +226,4 @@ def get_filing_document(company_number: str, transactionID: str) -> bytes:
 
         return bytes(response.content)
     else:
-        return bytes("")
+        return bytes()
