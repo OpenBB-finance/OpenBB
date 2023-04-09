@@ -204,7 +204,7 @@ def set_sources_from_hub(configs: dict):
     if configs:
         sources = configs.get("features_sources", {}) or {}
         if sources:
-            sources_dict = merge_sources(
-                incoming=sources, allowed=SourcesModel().ALLOWED
+            available_sources = merge_sources(
+                incoming=sources, allowed=SourcesModel().get_allowed()
             )
-            set_sources(sources_dict)
+            set_sources(available_sources)

@@ -63,7 +63,7 @@ class SourcesController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         cmd_filter = r"((set\s+--cmd\s+|set\s+-c\s+|set\s+|get\s+--cmd\s+|get\s+-c\s+|get\s+).*?("
-        for cmd in get_current_user().sources.sources_dict:
+        for cmd in get_current_user().sources.available_sources:
             cmd = cmd.replace("/", r"\/")
             cmd_filter += f"{cmd}|"
         cmd_filter += ")*)"
@@ -95,7 +95,7 @@ class SourcesController(BaseController):
             "--cmd",
             action="store",
             dest="cmd",
-            choices=list(get_current_user().sources.sources_dict.keys()),
+            choices=list(get_current_user().sources.available_sources.keys()),
             required="-h" not in other_args and "--help" not in other_args,
             help="Command that we want to check the available data sources and the default one.",
             metavar="COMMAND",
@@ -104,8 +104,8 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            sources_dict = get_current_user().sources.sources_dict
-            cmd_defaults = sources_dict.get(ns_parser.cmd, None)
+            available_sources = get_current_user().sources.available_sources
+            cmd_defaults = available_sources.get(ns_parser.cmd, None)
             if cmd_defaults is None:
                 console.print(f"[red]'{ns_parser.cmd}' is not a valid command.[/red]\n")
             elif len(cmd_defaults) == 0:
@@ -131,7 +131,7 @@ class SourcesController(BaseController):
             "--cmd",
             action="store",
             dest="cmd",
-            choices=list(get_current_user().sources.sources_dict.keys()),
+            choices=list(get_current_user().sources.available_sources.keys()),
             required="-h" not in other_args and "--help" not in other_args,
             help="Command that we to select the default data source.",
             metavar="COMMAND",
@@ -158,15 +158,15 @@ class SourcesController(BaseController):
 
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            sources_dict = get_current_user().sources.sources_dict
-            if ns_parser.source in sources_dict[ns_parser.cmd]:
-                sources_dict[ns_parser.cmd].remove(ns_parser.source)
-                sources_dict[ns_parser.cmd].insert(0, ns_parser.source)
-                set_sources(sources_dict)
+            available_sources = get_current_user().sources.available_sources
+            if ns_parser.source in available_sources[ns_parser.cmd]:
+                available_sources[ns_parser.cmd].remove(ns_parser.source)
+                available_sources[ns_parser.cmd].insert(0, ns_parser.source)
+                set_sources(available_sources)
 
                 if is_local():
                     write_sources(
-                        sources=sources_dict,
+                        sources=available_sources,
                         path=Path(
                             get_current_user().preferences.USER_DATA_SOURCES_FILE
                         ),
@@ -174,7 +174,7 @@ class SourcesController(BaseController):
                 else:
                     upload_user_field(
                         key="features_sources",
-                        value=sources_dict,
+                        value=available_sources,
                         auth_header=get_current_user().profile.get_auth_header(),
                     )
                     console.print("")
@@ -186,6 +186,6 @@ class SourcesController(BaseController):
                 console.print(
                     f"[red]'{ns_parser.source}' is not a valid data source for "
                     f"'{ns_parser.cmd}' command.[/red]\n"
-                    f"[param]\nAvailable :[/param] {', '.join(sources_dict[ns_parser.cmd])}\n"
+                    f"[param]\nAvailable :[/param] {', '.join(available_sources[ns_parser.cmd])}\n"
                 )
         self.update_print_help()
