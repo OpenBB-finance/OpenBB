@@ -1301,7 +1301,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             help="Coin to get. Must be coin symbol (e.g., btc, eth)",
             dest="coin",
             type=str,
-            # required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
 
         parser.add_argument(
