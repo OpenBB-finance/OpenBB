@@ -42,11 +42,12 @@ Use your best judgment, and feel free to propose changes to this document in a p
   - [Important functions and classes](#important-functions-and-classes)
     - [Base controller class](#base-controller-class)
   - [Default Data Sources](#default-data-sources)
-    - [Export Data](#export-data)
-    - [Queue and pipeline](#queue-and-pipeline)
-    - [Auto Completer](#auto-completer)
-    - [Logging](#logging)
-    - [Internationalization](#internationalization)
+  - [Export Data](#export-data)
+  - [Queue and pipeline](#queue-and-pipeline)
+  - [Auto Completer](#auto-completer)
+  - [Logging](#logging)
+  - [Internationalization](#internationalization)
+  - [Settings](#settings)
   - [Write Code and Commit](#write-code-and-commit)
     - [Pre Commit Hooks](#pre-commit-hooks)
     - [Coding](#coding)
@@ -1171,33 +1172,14 @@ It is important to keep a coherent UI/UX throughout the terminal. These are the 
 
 OpenBB Terminal currently has over 100 different data sources. Most of these require an API key that allows access to some free tier features from the data provider, but also paid ones.
 
-When a new API data source is added to the platform, it must be added through [credentials_model.py](/openbb_terminal/credentials_model.py) under the section that resonates the most with its functionality, from: `Data providers`, `Socials` or `Brokers`.
+When a new API data source is added to the platform, it must be added through [credentials_model.py](/openbb_terminal/core/models/credentials_model.py).
 
-Example (a section from [credentials_model.py](/openbb_terminal/credentials_model.py)):
+In order to do that, you'll simply need to choose from one the following files:
 
-```python
-# Data providers
-API_DATABENTO_KEY = "REPLACE_ME"
-API_KEY_ALPHAVANTAGE: str = "REPLACE_ME"
-API_KEY_FINANCIALMODELINGPREP: str = "REPLACE_ME"
+1. [local_credentials.json](openbb_terminal/miscellaneous/models/local_credentials.json) --> credentials that should only be stored locally and not pushed to the [OpenBB Hub](https://my.openbb.co/) like brokerage keys or other very sensitive or personal to the user.
+2. [hub_credentials.json](openbb_terminal/miscellaneous/models/hub_credentials.json) --> credentials that should be stored in the [OpenBB Hub](https://my.openbb.co/) like API keys to access your favorite providers.
 
-...
-
-# Socials
-API_GITHUB_KEY: str = "REPLACE_ME"
-API_REDDIT_CLIENT_ID: str = "REPLACE_ME"
-API_REDDIT_CLIENT_SECRET: str = "REPLACE_ME"
-
-...
-
-# Brokers or data providers with brokerage services
-RH_USERNAME: str = "REPLACE_ME"
-RH_PASSWORD: str = "REPLACE_ME"
-DG_USERNAME: str = "REPLACE_ME"
-
-...
-
-```
+> Note: By differentiating between local and hub credentials, we can ensure that the user's credentials are not pushed to the [OpenBB Hub](https://my.openbb.co/) and are only stored locally. This does not mean that the credentials are not secure in the OpenBB Hub, but rather that the user can choose to store them locally if they wish.
 
 ### Setting and checking API key
 
@@ -1324,40 +1306,31 @@ Worthy methods to mention are:
 
 ## Default Data Sources
 
-The document [data_sources_default.json](/data_sources_default.json) contains all data sources that the terminal has access to and specifies the data source utilized by default for each command.
+The document [openbb_default.json](openbb_terminal/miscellaneous/sources/openbb_default.json) contains all data sources that the terminal has access to and specifies the data source utilized by default for each command.
 
 The convention is as follows:
 
 ```python
 {
-    "stocks": {
-        "search": ["FinanceDatabase"],
-        "quote": ["YahooFinance"],
-        "candle": [],
-        "load": [
-            "YahooFinance",
-            "AlphaVantage",
-            "Polygon",
-            "EODHD"
-        ],
-        "options": {
-            "unu": ["FDScanner"],
-            "calc": [],
-            "screen": {
-                "view": ["Syncretism"],
-                "set": [],
-                "scr": ["Syncretism"]
-            },
-             "load": [
-                "YahooFinance",
-                "Tradier",
-                "Nasdaq"
-            ],
-            "exp": [
-                "YahooFinance",
-                "Tradier",
-                "Nasdaq"
-            ],
+  "stocks": {
+    "search": [
+      "FinanceDatabase"
+    ],
+    "quote": [
+      "FinancialModelingPrep"
+    ],
+    "tob": [
+      "CBOE"
+    ],
+    "candle": [],
+    "codes": [
+      "Polygon"
+    ],
+    "news": [
+      "Feedparser",
+      "NewsApi",
+      "Ultima"
+    ],
             ...
 ```
 
@@ -1370,7 +1343,9 @@ The way to interpret this file is by following the path to a data source, e.g.
 - `stoks/options/unu` relies on `FDScanner`.
 - `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
 
-### Export Data
+> Note: The default data sources can be changed directly in the [OpenBB Hub](https://my.openbb.co/) by the user and automatically synchronized with the terminal on login.
+
+## Export Data
 
 In the `_view.py` files it is common having at the end of each function `export_data` being called. This typically looks like:
 
@@ -1408,7 +1383,7 @@ Note that these files are saved on a location based on the environment variable:
 
 The default location is the `exports` folder and the data will be stored with the same organization of the terminal. But, if the user specifies the name of the file, then that will be dropped onto the folder as is with the datetime attached.
 
-### Queue and pipeline
+## Queue and pipeline
 
 The variable `self.queue` contains a list of all actions to be run on the platform. That is the reason why this variable is always passed as an argument to a new controller class and received back.
 
@@ -1434,7 +1409,7 @@ And the user goes into the `stocks` menu and runs `load AAPL`. Then the queue is
 
 At that point the user goes into the `dps` menu and runs the command `psi` with the argument `-l 90` therefore displaying price vs short interest of the past 90 days.
 
-### Auto Completer
+## Auto Completer
 
 In order to help users with a powerful autocomplete, we have implemented our own (which can be found [here](/openbb_terminal/custom_prompt_toolkit.py)).
 
@@ -1513,7 +1488,7 @@ This method should only be called when the user's state changes leads to the aut
 
 In this case, this method is called as soon as the user successfully loads a new ticker since the options expiry dates vary based on the ticker. Note that the completer is recreated from it.
 
-### Logging
+## Logging
 
 A logging system is used to help tracking errors inside the OpenBBTerminal.
 
@@ -1559,7 +1534,7 @@ def your_function() -> pd.DataFrame:
 >
 > **Disclaimer**: all the user paths, names, IPs, credentials and other sensitive information are anonymized, [take a look at how we do it](/openbb_terminal/core/log/generation/formatter_with_exceptions.py).
 
-### Internationalization
+## Internationalization
 
 WORK IN PROGRESS - The menu can be internationalised BUT we do not support yet help commands`-h` internationalization.
 
@@ -1588,6 +1563,46 @@ This is the convention in use for creating a new key/value pair:
 - `stocks/SEARCH_query` - Under `stocks` context, `query` description when inquiring about `search` command with `search -h`
 - `stocks/_ticker` - Under `stocks` context, `_ticker` is used as a key of a parameter, and the displayed parameter description is given as value
 - `crypto/dd/_tokenomics_` - Under `crypto` context and under `dd` menu, `_tokenomics_` is used as a key of an additional information, and the displayed information is given as value
+
+## Settings
+
+The majority of the settings used in the OpenBB Terminal are handled using [Pydantic Dataclasses](https://docs.pydantic.dev/usage/dataclasses/).
+Some examples are:
+
+1. [SystemModel](openbb_terminal/core/models/system_model.py)
+2. [UserModel](openbb_terminal/core/models/user_model.py)
+3. [CredentialsModel](openbb_terminal/core/models/credentials_model.py)
+4. ...
+
+This means that the settings are pretty much validated and documented automatically, as well as centralized in a single place.
+This allows us to develop faster, efficiantly and with predictability.
+Depending on your use case you'll most likely need to interact with these dataclasses or expand them with new settings.
+
+**Disclaimer**: avoid at all costs to use the `os.environ` or `os.getenv` methods to retrieve settings. Settings should be retrieved using the appropriate methods from the respective class.
+
+Here is an example of **accessing** a setting:
+
+```python
+
+from openbb_terminal.core.session.current_system import get_current_system
+
+system = get_current_system()
+system = get_current_system()
+print(system.VERSION)
+
+# 3.0.0rc1
+
+```
+
+And here is an example of **changing** a setting:
+
+```python
+
+from openbb_terminal.core.session.current_system import get_current_system
+
+set_system_variable("TEST_MODE", True)
+
+```
 
 ## Write Code and Commit
 
