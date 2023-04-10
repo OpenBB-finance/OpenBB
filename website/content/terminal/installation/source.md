@@ -215,7 +215,7 @@ build/conda/cleanup_artifacts.sh
 On Windows do this by running this script (copy and paste the launch code):
 
 ```shell
-build/conda/cleanup_artifacts.bat
+build\conda\cleanup_artifacts.bat
 ```
 
 :::
