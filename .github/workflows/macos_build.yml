@@ -60,6 +60,7 @@ jobs:
       - name: Install Dependencies
         shell: bash
         run: |
+          conda activate obb
           pip list
           build/conda/cleanup_artifacts.sh
           poetry install -E all -E installer
