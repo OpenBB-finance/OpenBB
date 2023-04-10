@@ -46,7 +46,7 @@ class OpenBBSDK:
         SDKLogger()
         self.login = lib.sdk_session.login
         self.logout = lib.sdk_session.logout
-        self.news = lib.common_ultima_newsmonitor_model.get_news
+        self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
         SDKLogger._try_to_login(self)
 
