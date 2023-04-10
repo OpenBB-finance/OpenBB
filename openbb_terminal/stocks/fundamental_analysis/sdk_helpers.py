@@ -22,7 +22,7 @@ def get_overview(symbol: str, source: str = "YahooFinance"):
         Symbol to get overview for
     source : str, optional
         Data source for overview, by default "YahooFinance"
-        Sources: YahooFinance, AlphaVantage, FinancialModelingPrep
+        Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Finviz
 
     Returns
     -------
