@@ -1,5 +1,5 @@
 import json
-from typing import Dict
+from typing import Dict, List
 
 from pydantic.dataclasses import Field, dataclass
 
@@ -29,15 +29,27 @@ def read_default_sources() -> Dict:
         return {}
 
 
+__allowed = read_default_sources()
+
+
+def get_allowed_sources() -> Dict:
+    """Get allowed sources.
+
+    Returns
+    -------
+    Dict
+        Dictionary with sources
+    """
+    return __allowed
+
+
 @dataclass(config=dict(validate_assignment=True))
 class SourcesModel(BaseModel):
     """Model for sources."""
 
-    sources_dict: Dict = Field(default_factory=lambda: read_default_sources())
+    choices: Dict[str, List[str]] = Field(
+        default_factory=lambda: get_allowed_sources(),
+    )
 
     def __repr__(self):
         return super().__repr__()
-
-    def update(self, other: Dict):
-        """Update sources dict."""
-        self.sources_dict.update(other)
