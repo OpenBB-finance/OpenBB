@@ -87,23 +87,24 @@ class TerminalStyle:
         self.load_style(plt_style)
         self.apply_console_style(console_style)
 
-    def apply_console_style(self, style: Optional[str] = "") -> None:
+    def apply_console_style(self, style: Optional[str] = None) -> None:
         """Apply the style to the console."""
 
-        if style in self.console_styles_available:
-            json_path: Optional[Path] = self.console_styles_available[style]
-        else:
-            self.load_available_styles()
+        if style:
             if style in self.console_styles_available:
-                json_path = self.console_styles_available[style]
+                json_path: Optional[Path] = self.console_styles_available[style]
             else:
-                console.print("\nInvalid console style. Using default.")
-                json_path = self.console_styles_available.get("dark", None)
+                self.load_available_styles()
+                if style in self.console_styles_available:
+                    json_path = self.console_styles_available[style]
+                else:
+                    console.print(f"\nInvalid console style '{style}', using default.")
+                    json_path = self.console_styles_available.get("dark", None)
 
-        if json_path:
-            self.console_style = self.load_json_style(json_path)
-        else:
-            console.print("Error loading default.")
+            if json_path:
+                self.console_style = self.load_json_style(json_path)
+            else:
+                console.print("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""

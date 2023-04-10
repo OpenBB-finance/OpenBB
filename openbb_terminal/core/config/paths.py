@@ -22,3 +22,6 @@ STYLES_DIRECTORY_REPO = MISCELLANEOUS_DIRECTORY / "styles"
 
 # sources
 DATA_SOURCES_DEFAULT_FILE = MISCELLANEOUS_DIRECTORY / "sources" / "openbb_default.json"
+
+# session
+SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
