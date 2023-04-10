@@ -53,7 +53,7 @@ jobs:
           show-channel-urls: true
           channel-priority: flexible
           environment-file: build/conda/conda-3-9-env.yaml
-          activate-environment: build_env
+          activate-environment: obb
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
 
