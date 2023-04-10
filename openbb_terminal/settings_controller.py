@@ -292,6 +292,7 @@ class SettingsController(BaseController):
                     type_="settings",
                     auth_header=get_current_user().profile.get_auth_header(),
                 )
+                console.print("")
             console.print("Colors updated.")
 
     @log_start_end(log=logger)
@@ -327,7 +328,8 @@ class SettingsController(BaseController):
                     type_="terminal_style",
                     auth_header=get_current_user().profile.get_auth_header(),
                 )
-            console.print("Theme updated.")
+                console.print("")
+            console.print("Theme updated.\n")
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
