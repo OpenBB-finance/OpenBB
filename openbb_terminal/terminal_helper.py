@@ -137,62 +137,62 @@ def open_openbb_documentation(
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
     if path == "/" and command is None:
-        path = "/guides?path=/usage/basics"
+        path = "/usage?path=/usage/basics"
         command = ""
     elif "keys" in path:
-        path = "/guides?path=/usage/guides/api-keys"
+        path = "/usage?path=/usage/guides/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/guides?path=/usage/guides/customizing-the-terminal"
+        path = "/usage?path=/usage/guides/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/guides?path=/usage/guides/customizing-the-terminal#using-the-feature-flags-menu"
+        path = "/usage?path=/usage/guides/customizing-the-terminal#using-the-feature-flags-menu"
         command = ""
     elif "sources" in path:
-        path = "/guides?path=/usage/guides/changing-sources"
+        path = "/usage?path=/usage/guides/changing-sources"
         command = ""
     elif "account" in path:
-        path = "/guides?path=/usage/guides/basics"
+        path = "/usage?path=/usage/guides/basics"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
             if command in ["settings", "featflags"]:
-                path = "/guides?path=/usage/guides/customizing-the-terminal"
+                path = "/usage?path=/usage/guides/customizing-the-terminal"
                 command = ""
             else:
                 path = f"/reference?path={path}"
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
-                path = f"/guides?path=/usage/intros/common/{menu}"
+                path = f"/usage?path=/usage/intros/common/{menu}"
             elif command == "forecast":
                 command = ""
-                path = "/guides?path=/usage/intros/forecast"
+                path = "/usage?path=/usage/intros/forecast"
             else:
-                path = f"/guides?path=/usage/intros/{path}"
+                path = f"/usage?path=/usage/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
             path = (
-                f"/guides?path=/usage/intros/common/{menu}"
+                f"/usage?path=/usage/intros/common/{menu}"
                 if menu in ["ta", "ba", "qa"]
-                else f"/guides?path=/usage/intros/{path}"
+                else f"/usage?path=/usage/intros/{path}"
             )
 
     if command:
         if command == "keys":
-            path = "/guides?path=/usage/guides/api-keys"
+            path = "/usage?path=/usage/guides/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/guides?path=/usage/guides/customizing-the-terminal"
+            path = "/usage?path=/usage/guides/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/guides?path=/usage/guides/changing-sources"
+            path = "/usage?path=/usage/guides/changing-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/guides?path=/usage/guides/scripts-and-routines"
+            path = "/usage?path=/usage/guides/scripts-and-routines"
             command = ""
         elif command == "sources":
-            path = "/guides?path=/usage/guides/changing-sources"
+            path = "/usage?path=/usage/guides/changing-sources"
             command = ""
         elif command in [
             "intro",
@@ -207,7 +207,7 @@ def open_openbb_documentation(
             path = "/guides"
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/guides?path=/usage/intros/common/{command}"
+            path = f"/usage?path=/usage/intros/common/{command}"
             command = ""
 
         path += command
