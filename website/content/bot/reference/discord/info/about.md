@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # about
 
-About OpenBB Terminal
+This command will provide users with a comprehensive overview of OpenBB Bot and links to our social media pages.
 
 ### Usage
 

@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Literal, Optional
+from typing import Any, Dict, Literal, Optional
 
 import requests
 
@@ -120,7 +120,7 @@ def delete_session(
         console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
-        console.print("[red]Failed to delete server session.[/red]")
+        console.print("[bold red]Failed to delete server session.[/bold red]")
         return None
 
 
@@ -232,10 +232,113 @@ def fetch_user_configs(
         return None
 
 
+def clear_user_configs(
+    config: str, auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+) -> Optional[requests.Response]:
+    """Clear user configurations to the server.
+
+    Parameters
+    ----------
+    config : str
+        The config to clear.
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the put request.
+    """
+    data: Dict[str, dict] = {config: {}}
+
+    try:
+        response = requests.put(
+            url=base_url + "user",
+            headers={"Authorization": auth_header},
+            json=data,
+            timeout=timeout,
+        )
+        if response.status_code == 200:
+            console.print("[green]Cleared data.[/green]")
+        else:
+            console.print("[red]Failed to clear data.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to clear data.[/red]")
+        return None
+
+
+def upload_user_field(
+    key: str,
+    value: Any,
+    auth_header: str,
+    base_url: str = BASE_URL,
+    timeout: int = TIMEOUT,
+    silent: bool = False,
+) -> Optional[requests.Response]:
+    """Send user field to the server.
+
+    Parameters
+    ----------
+    key : str
+        The key to put, e.g. 'features_settings', 'features_keys', 'features_sources'.
+    value : Any
+        The value to put.
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+    silent : bool
+        Whether to print the status, by default False
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the put request.
+    """
+    try:
+        console_print = console.print if not silent else lambda *args, **kwargs: None
+        data: Dict[str, dict] = {key: value}
+
+        console_print("Sending to OpenBB hub...")
+        response = requests.put(
+            url=base_url + "user",
+            headers={"Authorization": auth_header},
+            json=data,
+            timeout=timeout,
+        )
+        if response.status_code == 200:
+            console_print("[green]Saved remotely.[/green]")
+        else:
+            console_print("[red]Failed to save remotely.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console_print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console_print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console_print("[red]Failed to save remotely.[/red]")
+        return None
+
+
 def upload_config(
     key: str,
     value: str,
-    type_: Literal["keys", "settings", "sources"],
+    type_: Literal["keys", "settings", "terminal_style"],
     auth_header: str,
     base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
@@ -248,7 +351,7 @@ def upload_config(
         The key to patch.
     value : str
         The value to patch.
-    type_ : Literal["keys", "settings", "sources"]
+    type_ : Literal["keys", "settings", "terminal_style"]
         The type of the patch.
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
@@ -262,7 +365,7 @@ def upload_config(
     Optional[requests.Response]
         The response from the patch request.
     """
-    if type_ not in ["keys", "settings", "sources"]:
+    if type_ not in ["keys", "settings", "terminal_style"]:
         console.print("[red]\nInvalid patch type.[/red]")
         return None
 
@@ -289,50 +392,6 @@ def upload_config(
         return None
     except Exception:
         console.print("[red]Failed to save remotely.[/red]")
-        return None
-
-
-def clear_user_configs(
-    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
-) -> Optional[requests.Response]:
-    """Clear user configurations to the server.
-
-    Parameters
-    ----------
-    auth_header : str
-        The authorization header, e.g. "Bearer <token>".
-    base_url : str
-        The base url, by default BASE_URL
-    timeout : int
-        The timeout, by default TIMEOUT
-
-    Returns
-    -------
-    Optional[requests.Response]
-        The response from the put request.
-    """
-    data: Dict[str, dict] = {"features_keys": {}}
-
-    try:
-        response = requests.put(
-            url=base_url + "user",
-            headers={"Authorization": auth_header},
-            json=data,
-            timeout=timeout,
-        )
-        if response.status_code == 200:
-            console.print("[green]Cleared data.[/green]")
-        else:
-            console.print("[red]Failed to clear data.[/red]")
-        return response
-    except requests.exceptions.ConnectionError:
-        console.print(f"\n{CONNECTION_ERROR_MSG}")
-        return None
-    except requests.exceptions.Timeout:
-        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
-        return None
-    except Exception:
-        console.print("[red]Failed to clear data.[/red]")
         return None
 
 
@@ -620,7 +679,9 @@ def get_personal_access_token(
     try:
         response = requests.get(url=url, headers=headers, timeout=timeout)
 
-        if response.status_code != 200:
+        if response.status_code == 404:
+            console.print("[red]No personal access token found.[/red]")
+        elif response.status_code != 200:
             console.print("[red]Failed to get personal access token.[/red]")
 
         return response

@@ -1,26 +1,20 @@
 import argparse
-import json
 import logging
-import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
 from openbb_terminal.account.account_model import (
-    get_diff,
     get_routines_info,
+    read_routine,
+    save_routine,
     set_login_called,
 )
 from openbb_terminal.account.account_view import display_routines_list
-from openbb_terminal.core.session import (
-    hub_model as Hub,
-    local_model as Local,
-)
+from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
-    set_preference,
 )
-from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -39,8 +33,6 @@ class AccountController(BaseController):
     CHOICES_COMMANDS = [
         "login",
         "logout",
-        "sync",
-        "pull",
         "clear",
         "list",
         "upload",
@@ -79,28 +71,17 @@ class AccountController(BaseController):
     def get_routines(self):
         """Get routines"""
         current_user = get_current_user()
-        routines = {
+        return {
             filepath.name: filepath
-            for filepath in current_user.preferences.USER_ROUTINES_DIRECTORY.glob(
+            for filepath in current_user.preferences.USER_ROUTINES_DIRECTORY.rglob(
                 "*.openbb"
             )
         }
-        user_folder = (
-            current_user.preferences.USER_ROUTINES_DIRECTORY
-            / get_current_user().profile.get_uuid()
-        )
-        if os.path.exists(user_folder):
-            routines.update(
-                {filepath.name: filepath for filepath in user_folder.rglob("*.openbb")}
-            )
-        return routines
 
     def print_help(self):
         """Print help"""
         mt = MenuText("account/", 100)
         mt.add_info("_info_")
-        mt.add_cmd("sync")
-        mt.add_cmd("pull")
         mt.add_cmd("clear")
         mt.add_raw("\n")
         mt.add_info("_routines_")
@@ -154,91 +135,9 @@ class AccountController(BaseController):
                 logout(
                     auth_header=current_user.profile.get_auth_header(),
                     token=current_user.profile.get_token(),
-                    guest=is_local(),
                     cls=True,
                 )
                 self.print_help()
-
-    @log_start_end(log=logger)
-    def call_sync(self, other_args: List[str]):
-        """Sync"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sync",
-            description="Turn on/off the automatic sending of configurations when changed.",
-        )
-        parser.add_argument(
-            "--on",
-            dest="sync",
-            help="Turn on sync",
-            action="store_true",
-        )
-        parser.add_argument(
-            "--off",
-            dest="sync",
-            help="Turn on sync",
-            action="store_false",
-        )
-        parser.set_defaults(sync=None)
-
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local() and "-h" not in other_args and "--help" not in other_args:
-            print_guest_block_msg()
-        else:
-            if ns_parser:
-                if ns_parser.sync is None:
-                    sync = (
-                        "ON"
-                        if get_current_user().preferences.SYNC_ENABLED is True
-                        else "OFF"
-                    )
-                    console.print(f"sync is {sync}, use --on or --off to change.")
-                else:
-                    set_preference(
-                        name="SYNC_ENABLED",
-                        value=ns_parser.sync,
-                    )
-                    current_user = get_current_user()
-                    write_to_dotenv(
-                        "OPENBB_SYNC_ENABLED",
-                        str(current_user.preferences.SYNC_ENABLED),
-                    )
-                    sync = (
-                        "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
-                    )
-                    console.print(f"[info]sync:[/info] {sync}")
-
-    @log_start_end(log=logger)
-    def call_pull(self, other_args: List[str]):
-        """Pull data"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pull",
-            description="Pull and apply stored configurations from the cloud.",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local() and "-h" not in other_args and "--help" not in other_args:
-            print_guest_block_msg()
-        else:
-            if ns_parser:
-                current_user = get_current_user()
-                response = Hub.fetch_user_configs(current_user.profile.get_session())
-                if response:
-                    configs_diff = get_diff(configs=json.loads(response.content))
-                    if configs_diff:
-                        i = console.input(
-                            "\nDo you want to load the configurations above? (y/n): "
-                        )
-                        console.print("")
-                        if i.lower() in ["y", "yes"]:
-                            Local.set_credentials_from_hub(configs=configs_diff)
-                            console.print("[info]Done.[/info]")
-                        else:
-                            console.print("[info]Aborted.[/info]")
-                    else:
-                        console.print("[info]No changes to apply.[/info]")
 
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
@@ -261,7 +160,8 @@ class AccountController(BaseController):
                 console.print("")
                 if i.lower() in ["y", "yes"]:
                     Hub.clear_user_configs(
-                        auth_header=get_current_user().profile.get_auth_header()
+                        config="features_keys",
+                        auth_header=get_current_user().profile.get_auth_header(),
                     )
                 else:
                     console.print("[info]Aborted.[/info]")
@@ -352,7 +252,7 @@ class AccountController(BaseController):
             print_guest_block_msg()
         else:
             if ns_parser:
-                routine = Local.get_routine(file_name=" ".join(ns_parser.file))
+                routine = read_routine(file_name=" ".join(ns_parser.file))
                 if routine:
                     description = " ".join(ns_parser.description)
 
@@ -439,7 +339,7 @@ class AccountController(BaseController):
                         script = data.get("script", "")
                         if script:
                             file_name = f"{name}.openbb"
-                            file_path = Local.save_routine(
+                            file_path = save_routine(
                                 file_name=file_name,
                                 routine=script,
                             )
@@ -450,7 +350,7 @@ class AccountController(BaseController):
                                 )
                                 console.print("")
                                 if i.lower() in ["y", "yes"]:
-                                    file_path = Local.save_routine(
+                                    file_path = save_routine(
                                         file_name=file_name,
                                         routine=script,
                                         force=True,

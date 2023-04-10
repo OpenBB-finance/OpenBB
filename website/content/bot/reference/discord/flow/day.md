@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # day
 
-Returns the most recent flow for a stock.
+This command retrieves the most recent flow for a stock with the specified ticker symbol. The command will return the most up-to-date flow data for that stock over $25,000.
 
 ### Usage
 

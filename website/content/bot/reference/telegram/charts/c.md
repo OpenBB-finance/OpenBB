@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # c
 
-Chart for the crypto pair provided Default: 15m
+This command will retrieve a candlestick chart for the crypto coin provided. The interval provided must be a valid time interval (default 15 minutes). The chart will be displayed to the user and will contain information such as the opening and closing prices, the high and low, the volume, and any other relevant information.
 
 ### Usage
 

@@ -24,7 +24,7 @@ TY_TO_ID = {
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_ty(
-    maturity: str = "3_month",
+    maturity: str = "5_year",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",

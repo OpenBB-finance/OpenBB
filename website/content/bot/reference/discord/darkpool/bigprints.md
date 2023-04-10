@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # bigprints
 
-Combination of Dark Pool and Blocks - Largest over x amount of days.
+This command will retrieve the largest combination of dark pool and block trades over a specified amount of days. It will provide a comprehensive view of the biggest dark pool and block trades over the specified number of days and give the user an idea of the market activity over that period.
 
 ### Usage
 

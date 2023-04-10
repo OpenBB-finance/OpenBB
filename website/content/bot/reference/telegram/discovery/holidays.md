@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # holidays
 
-Displays Upcoming Market Holidays.
+This command allows the user to retrieve a list of upcoming market holidays. The command will return a list of holidays, including their respective dates, along with any other pertinent details, such as whether they are national holidays or not. This command is suitable for any user who needs to stay up to date with upcoming holidays.
 
 ### Usage
 
@@ -19,8 +19,6 @@ Displays Upcoming Market Holidays.
 ## Parameters
 
 This command has no parameters
-
-
 
 ---
 

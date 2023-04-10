@@ -1,8 +1,7 @@
 """Main helper."""
 __docformat__ = "numpy"
-
-# pylint: disable=unsupported-assignment-operation,too-many-lines
-# pylint: disable=no-member,too-many-branches,too-many-arguments
+# pylint: disable=too-many-lines, unsupported-assignment-operation
+# pylint: disable=no-member, too-many-branches, too-many-arguments
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=consider-using-dict-items
 
@@ -663,7 +662,6 @@ def display_candle(
         fig.add_trend(data, secondary_y=True)
 
     fig.update_layout(yaxis2=dict(title="Stock Price ($)", type=yscale))
-    fig.add_logscale_menus("yaxis2")
 
     return fig.show(external=external_axes)
 

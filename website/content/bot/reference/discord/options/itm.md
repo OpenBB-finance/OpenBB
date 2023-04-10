@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # itm
 
-Displays In-the-Money options by expiry for a stock.
+This command allows the user to retrieve a list of In-the-Money options for the stock ticker symbol sorted by expiry date. The command compares the amount of Calls and Puts In-the-Money vs Out-the-Money and gives a total.
 
 ### Usage
 

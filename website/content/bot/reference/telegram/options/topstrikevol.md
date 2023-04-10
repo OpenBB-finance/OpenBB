@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # topstrikevol
 
-Displays Options Strike Volume can add EXP date for bigger breakdown
+This command allows the user to retrieve the top option strike by volume for a given security with the ability to add an expiration date for a more detailed breakdown.
 
 ### Usage
 

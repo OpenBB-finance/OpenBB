@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import textwrap
 from datetime import datetime
 from typing import Dict, Optional, Union
 
@@ -22,9 +23,6 @@ from openbb_terminal.rich_config import console
 
 # pylint: disable=R0913,C0302
 logger = logging.getLogger(__name__)
-
-
-# TODO: Test OpenBBFigure conversion
 
 
 @log_start_end(log=logger)
@@ -313,11 +311,19 @@ def display_redditsent(
     console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
 
     if graphic:
+        df["Title"] = df["Title"].apply(
+            lambda x: "<br>".join(textwrap.wrap(str(x), 50))
+        )
         fig = OpenBBFigure(
             title=f"Sentiment Score of {symbol}",
             xaxis_title="Sentiment Score",
         )
-        fig.add_bar(x=polarity_scores)
+        fig.add_bar(
+            x=polarity_scores,
+            customdata=df["Title"],
+            hovertemplate="%{customdata}<extra></extra>",
+        )
+        fig.update_layout(hovermode="y")
 
         # remove y ticks of graph object because number based index doesn't make sense here
         fig.layout.yaxis.tickvals = []

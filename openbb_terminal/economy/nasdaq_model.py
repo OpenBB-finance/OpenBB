@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
+import pathlib
 from datetime import datetime as dt
 from typing import List, Optional, Union
 
@@ -15,6 +15,10 @@ from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+NASDAQ_COUNTRY_CODES_PATH = (
+    pathlib.Path(__file__).parent / "datasets" / "NASDAQ_CountryCodes.csv"
+)
 
 
 @log_start_end(log=logger)
@@ -115,11 +119,7 @@ def get_economic_calendar(
 @log_start_end(log=logger)
 def check_country_code_type(list_of_codes: str) -> List[str]:
     """Check that codes are valid for NASDAQ API"""
-    nasdaq_codes = list(
-        pd.read_csv(os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"))[
-            "Code"
-        ]
-    )
+    nasdaq_codes = list(pd.read_csv(NASDAQ_COUNTRY_CODES_PATH)["Code"])
     valid_codes = [
         code.upper()
         for code in list_of_codes.split(",")
@@ -140,7 +140,7 @@ def get_country_codes() -> List[str]:
     List[str]
         List of ISO-3 letter country codes.
     """
-    file = os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv")
+    file = NASDAQ_COUNTRY_CODES_PATH
     codes = pd.read_csv(file, index_col=0)
     return codes
 
@@ -154,7 +154,7 @@ def get_country_names() -> List[str]:
     List[str]
         List of country names.
     """
-    file = os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv")
+    file = NASDAQ_COUNTRY_CODES_PATH
     df = pd.read_csv(file, index_col=0)
     countries = df["Country"]
     countries_list = [x.lower().replace(" ", "_") for x in countries]

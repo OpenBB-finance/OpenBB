@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # hsi
 
-Show top high short interest stocks of over 20% ratio.
+This command retrieves the top high short interest stocks over a 20% ratio. This information can let an investor identify possible short squeeze potential.
 
 ### Usage
 
