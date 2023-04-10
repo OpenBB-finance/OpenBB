@@ -187,14 +187,6 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
     if "report_name" in parameters_dict:
         parameters_dict.pop("report_name")
 
-    # Remove extra quotes from report parameter for proper rendering
-    if "symbol" in parameters_dict:  # For all reports except portfolio
-        parameters_dict["symbol"] = parameters_dict["symbol"].replace('"', "")
-    elif "transactions" in parameters_dict:  # For portfolio report
-        parameters_dict["transactions"] = parameters_dict["transactions"].replace(
-            '"', ""
-        )
-
     return parameters_dict
 
 
