@@ -53,7 +53,7 @@ jobs:
           pip install git+https://github.com/nteract/papermill.git@main
           pip list
           PyInstaller build/pyinstaller/terminal.spec --clean
-        shell: bash
+        shell: bash -l {0}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
