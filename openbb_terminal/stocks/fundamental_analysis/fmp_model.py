@@ -692,8 +692,9 @@ def get_filings(pages: int = 1) -> pd.DataFrame:
 
     Examples
     --------
-    df = openbb.stocks.filings()
-    df = openbb.stocks.filings(pages=30)
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.fa.sec_fmp()
+    >>> df = openbb.stocks.fa.sec_fmp(pages=30)
     """
     current_user = get_current_user()
     temp = []

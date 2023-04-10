@@ -35,11 +35,6 @@ def display_filings(
         Show all from today
     export: str = ""
         Export data as csv, json, or xlsx
-
-    Examples
-    --------
-    openbb.stocks.display_filings()
-    openbb.stocks.display_filings(today = True, export = "csv")
     """
     filings = fmp_model.get_filings(pages)
     if today is True:
