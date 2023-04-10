@@ -84,7 +84,6 @@ def test_display_dividends(symbol, kwargs):
 
 
 @pytest.mark.record_http
-@pytest.mark.record_verify_screen
 @pytest.mark.parametrize(
     "symbol, kwargs",
     [

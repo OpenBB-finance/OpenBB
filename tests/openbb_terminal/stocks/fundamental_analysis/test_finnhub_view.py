@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+from pandas import DataFrame
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import finnhub_view
@@ -60,4 +61,21 @@ def test_rating_over_time_invalid_token():
         limit=10,
         raw=False,
         export=None,
+    )
+
+
+def test_plot_rating_over_time():
+    finnhub_view.plot_rating_over_time(
+        data=DataFrame(
+            {
+                "period": ["2021-01-01", "2021-02-01"],
+                "strongSell": [1, 2],
+                "sell": [3, 4],
+                "hold": [5, 6],
+                "buy": [7, 8],
+                "strongBuy": [9, 10],
+            }
+        ),
+        symbol="TSLA",
+        external_axes=False,
     )

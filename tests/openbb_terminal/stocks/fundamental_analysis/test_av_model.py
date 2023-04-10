@@ -127,7 +127,6 @@ def test_get_balance_sheet(record, symbol, kwargs):
 
 
 @pytest.mark.record_http
-@pytest.mark.record_http
 @pytest.mark.parametrize(
     "symbol, kwargs",
     [
@@ -184,3 +183,20 @@ def test_color_zscore_mckee():
     result = av_model.color_zscore_mckee(1)
     assert isinstance(result, str)
     assert result == "[green]1.00[/green]"
+
+
+@pytest.mark.parametrize(
+    "json_response",
+    [
+        {
+            "Information": "Thank you for using Alpha Vantage!\
+            This is a premium endpoint. You may subscribe to "
+            "any of the premium plans at https://www.alphavantage.co/premium/\
+            to instantly unlock all premium endpoints"
+        },
+        {},
+    ],
+)
+def test_check_premium_key(json_response):
+    result = av_model.check_premium_key(json_response)
+    assert isinstance(result, bool)
