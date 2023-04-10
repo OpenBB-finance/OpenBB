@@ -78,8 +78,8 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     modeBarButtons: [
       [
         {
-          name: "Download Data (Ctrl+S)",
-          icon: Plotly.Icons.disk,
+          name: "Download CSV (Ctrl+Shift+S)",
+          icon: ICONS.downloadCsv,
           click: function (gd) {
             loadingOverlay("Saving CSV");
             setTimeout(function () {
@@ -90,18 +90,11 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             }, 1000);
           },
         },
-        // {
-        //   name: "Upload Image (Ctrl+U)",
-        //   icon: Plotly.Icons.uploadImage,
-        //   click: function (gd) {
-        //     downloadImage();
-        //   },
-        // },
         {
-          name: "Download Plot",
-          icon: Plotly.Icons.camera,
+          name: "Download PNG (Ctrl+S)",
+          icon: ICONS.downloadImage,
           click: function () {
-            loadingOverlay("Saving Image");
+            loadingOverlay("Saving PNG");
             hideModebar();
             non_blocking(function () {
               downloadImage(globals.filename, "png");
@@ -114,6 +107,13 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             }, 2)();
           },
         },
+        // {
+        //   name: "Upload Image (Ctrl+U)",
+        //   icon: Plotly.Icons.uploadImage,
+        //   click: function (gd) {
+        //     downloadImage();
+        //   },
+        // },
       ],
       [
         {
@@ -138,8 +138,17 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         "drawrect",
         "eraseshape",
       ],
-      ["zoomIn2d", "zoomOut2d", "resetScale2d", "zoom2d", "pan2d"],
       [
+        {
+          name: "Overlay chart from CSV (Ctrl+O)",
+          icon: ICONS.plotCsv,
+          click: function () {
+            // We make sure to close any other popup that might be open
+            // before opening the CSV popup
+            closePopup();
+            openPopup("popup_csv");
+          },
+        },
         {
           name: "Add Text (Ctrl+T)",
           icon: ICONS.addText,
@@ -154,16 +163,13 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             openPopup("popup_title");
           },
         },
-        {
-          name: "Plot CSV (Ctrl+Shift+C)",
-          icon: ICONS.plotCsv,
-          click: function () {
-            // We make sure to close any other popup that might be open
-            // before opening the CSV popup
-            closePopup();
-            openPopup("popup_csv");
-          },
-        },
+      ],
+      [
+        "hoverClosestCartesian",
+        "hoverCompareCartesian",
+        "toggleSpikelines",
+      ],
+      [
         {
           name: "Auto Scale (Ctrl+Shift+A)",
           icon: Plotly.Icons.autoscale,
@@ -191,9 +197,11 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             button_pressed(title, active);
           },
         },
-        "hoverClosestCartesian",
-        "hoverCompareCartesian",
-        "toggleSpikelines",
+        "zoomIn2d",
+        "zoomOut2d",
+        "autoScale2d",
+        "zoom2d",
+        "pan2d",
       ],
     ],
   };
@@ -219,6 +227,9 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       pad: 2,
     };
   }
+
+  // RIP: Juan hated it so had to remove it
+  // graphs.layout.xaxis.tickangle = -20;
 
   graphs.layout.autosize = true;
   // We set the height and width to undefined, so that plotly.js can
@@ -298,6 +309,11 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
 
+  // We change the Plotly default Autoscale button icon and title to Reset Axes
+  globals.barButtons["Reset Axes"] = globals.barButtons["Autoscale"];
+  globals.barButtons["Autoscale"].getElementsByTagName("path")[0].setAttribute("d", Plotly.Icons.home.path);
+  globals.barButtons["Autoscale"].setAttribute("data-title", "Reset Axes");
+
   if (globals.CHART_DIV.layout.yaxis.type != undefined) {
     if (globals.CHART_DIV.layout.yaxis.type == "log" && !globals.logYaxis) {
       console.log("yaxis.type changed to log");
@@ -351,23 +367,29 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       e.preventDefault();
       hideModebar();
     }
-    if (e.ctrlKey && e.key.toLowerCase() == "t") {
-      openPopup("popup_text");
+
+    if (e.ctrlKey) {
+      if (e.shiftKey && e.key.toLowerCase() == "t") {
+        openPopup("popup_title");
+      }
+      else if (e.key.toLowerCase() == "t") {
+        openPopup("popup_text");
+      }
+      else if (e.key.toLowerCase() == "e") {
+        changeColor();
+      }
+      else if (e.shiftKey && e.key.toLowerCase() == "s") {
+        downloadData(globals.CHART_DIV);
+      }
+      else if (e.key.toLowerCase() == "s") {
+        downloadImage(globals.filename, "png");
+      }
+      else if (e.key.toLowerCase() == "o") {
+        e.preventDefault();
+        openPopup("popup_csv");
+      }
     }
-    if (e.ctrlKey && e.key.toLowerCase() == "e") {
-      changeColor();
-    }
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "t") {
-      openPopup("popup_title");
-    }
-    if (e.ctrlKey && e.key.toLowerCase() == "s") {
-      downloadData(globals.CHART_DIV);
-    }
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "c") {
-      e.preventDefault();
-      openPopup("popup_csv");
-    }
-    if (e.key == "Escape") {
+    else if (e.key == "Escape") {
       closePopup();
     }
   });

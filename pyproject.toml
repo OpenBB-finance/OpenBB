@@ -7,7 +7,7 @@ authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
-include = ["terminal.py"]
+include = ["terminal.py", "openbb_terminal/.env"]
 readme = "website/pypi.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
