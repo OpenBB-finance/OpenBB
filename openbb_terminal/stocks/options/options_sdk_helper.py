@@ -156,7 +156,7 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
     if (output := None) is None:
         logger.info("Invalid Source or Symbol")
         console.print("Invalid Source or Symbol")
-        return pd.DataFrame()
+        return []
 
     return output
 
