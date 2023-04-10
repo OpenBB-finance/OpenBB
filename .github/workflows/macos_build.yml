@@ -203,6 +203,8 @@ jobs:
           pip list
           build/conda/cleanup_artifacts.sh
           poetry install -E all -E installer
+          pip uninstall papermill -y
+          pip install git+https://github.com/nteract/papermill.git@main
           pip list
 
       - name: Build Bundle
