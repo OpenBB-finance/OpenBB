@@ -173,9 +173,7 @@ class OptionsController(BaseController):
 
         custom_filters = [sort_filter]
 
-        return parse_and_split_input(
-            an_input=an_input, custom_filters=custom_filters
-        )
+        return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
     def set_option_chain(self):
         df = pd.DataFrame()
@@ -201,7 +199,7 @@ class OptionsController(BaseController):
         self.full_chain = df.copy(deep=True)
         self.chain = self.full_chain.copy(deep=True)
 
-        console.print("Loaded option chain from", self.source)
+        console.print(f"Loaded option chain from {self.source}\n")
 
     def set_current_price(self):
         if not self.chain.empty:
