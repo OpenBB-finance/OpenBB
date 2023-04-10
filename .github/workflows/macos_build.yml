@@ -47,20 +47,22 @@ jobs:
           show-channel-urls: true
           channel-priority: flexible
           environment-file: build/conda/conda-3-9-env.yaml
-          activate-environment: build_env
+          activate-environment: obb
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
 
       - name: Install Dependencies
+        shell: bash -l {0}
         run: |
+          conda info
           pip list
-          python -m pip install -r requirements-full.txt
-          pip install -e .
+          build/conda/cleanup_artifacts.sh
+          poetry install -E all -E installer
           pip list
 
       - name: Build Bundle
         run: build/pyinstaller/build4mac.sh
-        shell: bash
+        shell: bash -l {0}
 
       - name: Creating Application Keychain
         env:
@@ -95,7 +97,7 @@ jobs:
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
           build/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1
           mv build/pyinstaller/macOS/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminal.pkg
-        shell: bash
+        shell: bash -l {0}
 
       - name: Deleting Previous Keychain
         run: |
@@ -190,20 +192,22 @@ jobs:
           show-channel-urls: true
           channel-priority: flexible
           environment-file: build/conda/conda-3-9-env.yaml
-          activate-environment: build_env
+          activate-environment: obb
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
 
       - name: Install Dependencies
+        shell: bash -l {0}
         run: |
+          conda info
           pip list
-          python -m pip install -r requirements-full.txt
-          pip install -e .
+          build/conda/cleanup_artifacts.sh
+          poetry install -E all -E installer
           pip list
 
       - name: Build Bundle
         run: build/pyinstaller/build4mac.sh
-        shell: bash
+        shell: bash -l {0}
 
       - name: Creating Application Keychain
         env:
@@ -238,7 +242,7 @@ jobs:
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
           build/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1
           mv build/pyinstaller/macOS/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminal.pkg
-        shell: bash
+        shell: bash -l {0}
 
       - name: Deleting Previous Keychain
         run: |
