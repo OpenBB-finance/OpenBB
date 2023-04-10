@@ -58,6 +58,7 @@ jobs:
           use-only-tar-bz2: true # Needed for caching some reason
 
       - name: Install Dependencies
+        shell: bash
         run: |
           pip list
           build/conda/cleanup_artifacts.sh
