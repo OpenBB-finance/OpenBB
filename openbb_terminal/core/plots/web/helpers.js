@@ -368,9 +368,10 @@ function button_pressed(title, active = false) {
   let button = globals.barButtons[title];
 
   if (!active) {
-    button.style.border = "1px solid rgba(255, 0, 0, 0.7)";
+    button.style.border = "1px solid rgba(0, 151, 222, 1.0)";
     button.style.borderRadius = "5px";
-    button.style.boxShadow = "0 0 5px rgba(255, 0, 0, 0.7)";
+    button.style.borderpadding = "5px";
+    button.style.boxShadow = "0 0 5px rgba(0, 151, 222, 1.0)";
   } else {
     button.style.border = "transparent";
     button.style.boxShadow = "none";
