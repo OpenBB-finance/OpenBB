@@ -181,8 +181,8 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
         key, value = line.split("=")
         key = key.strip()
         value = value.strip()
-        # Add key-value pair to dictionary
-        parameters_dict[key] = value
+        # Add key-value pair to dictionary and remove quotes
+        parameters_dict[key] = value.replace('"', "")
 
     if "report_name" in parameters_dict:
         parameters_dict.pop("report_name")
