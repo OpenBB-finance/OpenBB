@@ -6,7 +6,7 @@ import pandas as pd
 import requests
 import streamlit as st
 
-from openbb_terminal import OpenBBFigure, theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.dashboards.stream import streamlit_helpers as st_helpers
 

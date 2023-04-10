@@ -7,8 +7,8 @@ import pandas as pd
 import streamlit as st
 import yfinance as yf
 
-from openbb_terminal import OpenBBFigure
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.dashboards.stream import streamlit_helpers as st_helpers
 
