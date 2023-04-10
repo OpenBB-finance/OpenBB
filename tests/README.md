@@ -260,7 +260,7 @@ Important notes to go through:
 1. Use `@pytest.mark.record_stdout` to capture `sdtout`.
    1. Recorded stdout is saved as fixtures in a txt file
    2. If your view function only plots a chart, and does not output anything in `sdtout`, you can skip unit testing your `view.py`
-   3. Make sure to mock `visualize_output` method.
+   3. Make sure to mock `visualize_output` whenever possible.
       1. Inside `visualize_output`, we use `ion` to enable interactive mode. However, under Windows, having `ion` enabled would make tests fail to run. Hence, you should always mock `visualize_output`, and hence `ion`
 
 
