@@ -38,7 +38,7 @@ class Chart:
                 if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
                     kwargs.update({"period": "max"})
                 else:
-                    kwargs.update({"start": start, "end": end})
+                    kwargs.update({"start": start, "end": end})  # type: ignore
 
                 self.df = yf.download(
                     tickers, interval=interval, progress=False, **kwargs

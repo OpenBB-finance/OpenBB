@@ -206,7 +206,7 @@ class DashboardsController(BaseController):
             if not streamlit_warning:
                 return
 
-            process_check = self.check_processes(False)
+            process_check = self.check_processes()
             response = "n"
             if not ns_parser.input and not process_check:
                 response = console.input(

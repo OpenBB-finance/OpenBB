@@ -176,12 +176,8 @@ def stock_data(
             else:
                 s_start_dt = datetime.utcnow() - timedelta(days=59)
                 s_date_start = s_start_dt.strftime("%Y-%m-%d")
-                start = (
-                    s_date_start
-                    if s_start_dt.date() > start
-                    else start.strftime("%Y-%m-%d")
-                )
-                kwargs.update({"start": start, "end": end + timedelta(days=1)})
+                start = s_date_start if s_start_dt.date() > start else start  # type: ignore
+                kwargs.update({"start": start, "end": end + timedelta(days=1)})  # type: ignore
 
             df: pd.DataFrame = yf.download(
                 tickers,

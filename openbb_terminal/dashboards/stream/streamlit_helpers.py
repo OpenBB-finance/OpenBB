@@ -64,13 +64,13 @@ def has_parameter(func: Callable[..., Any], parameter: str) -> bool:
     return parameter in parameters
 
 
-def load_state(name: str, default: Any):
+def load_state(name: str, default: Any) -> Any:
     if name not in st.session_state:
         st.session_state[name] = default
     return st.session_state[name]
 
 
-def load_widget_options(default: Any, page: str):
+def load_widget_options(default: Any, page: str) -> Any:
     name = "widget_options"
     if name not in st.session_state:
         st.session_state[name] = default

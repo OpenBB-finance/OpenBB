@@ -54,9 +54,9 @@ st_helpers.set_css()
 
 class FinraShortData:
     def __init__(self, days_slider=30, count_slider=10):
-        self.df: pd.DataFrame = st_helpers.load_state("df", pd.DataFrame())
-        self.days_slider: int = st_helpers.load_state("days_slider", days_slider)
-        self.count_slider: int = st_helpers.load_state("count_slider", count_slider)
+        self.df = st_helpers.load_state("df", pd.DataFrame())
+        self.days_slider = st_helpers.load_state("days_slider", days_slider)
+        self.count_slider = st_helpers.load_state("count_slider", count_slider)
         self.ticker_button = None
         self.load_button = None
         self.show_button = None

@@ -252,7 +252,7 @@ class Handler:
                 else:
                     kwargs.update({"start": start, "end": end + timedelta(days=1)})
 
-                df: pd.DataFrame = yf.download(
+                df: pd.DataFrame = yf.download(  # type: ignore
                     tickers,
                     interval=interval,
                     progress=False,
