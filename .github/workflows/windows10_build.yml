@@ -46,8 +46,8 @@ jobs:
         run: |
           conda info
           pip list
-          pip install rapidfuzz
-          build\conda\cleanup_artifacts.bat
+          pip install rapidfuzz==2.13.7
+          build\\conda\\cleanup_artifacts.bat
           poetry install -E all -E installer
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
