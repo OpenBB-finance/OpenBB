@@ -256,9 +256,9 @@ class DashboardsController(BaseController):
                     f"\n\nType: streamlit run '{file}'\ninto a terminal to run."
                 )
 
-            if self.check_processes(is_voila=False):
+            if self.check_processes():
                 plots_backend().send_url(
-                    url=self.check_processes(False, name),
+                    url=self.check_processes(name),
                     title=f"{filename.title()} Dashboard",
                 )
 
