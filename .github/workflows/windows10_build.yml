@@ -28,23 +28,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Python & Create OpenBB Environment
-        uses: actions/setup-python@v4
+      # Set up miniconda using the environment yaml file within the repo
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2.2.0
         with:
-          python-version: '3.9'
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge,defaults
+          show-channel-urls: true
+          channel-priority: flexible
+          environment-file: build/conda/conda-3-9-env.yaml
+          activate-environment: obb
+          auto-activate-base: false
+          use-only-tar-bz2: true # Needed for caching some reason
 
       - name: Create and start virtual environment
         run: |
-          python -m venv venv
-          source venv/Scripts/activate
-          python -m pip install --upgrade pip
-          python -m pip install setuptools==64.0.2 wheel
-          python -m pip install charset_normalizer==2.1.1
-          python -m pip install -r requirements-full.txt
-          python -m pip uninstall papermill -y
-          python -m pip install git+https://github.com/nteract/papermill.git@main
-          python -m PyInstaller build/pyinstaller/terminal.spec --clean
-
+          conda info
+          pip list
+          pip install rapidfuzz
+          build\conda\cleanup_artifacts.bat
+          poetry install -E all -E installer
+          pip list
         shell: bash
 
       - name: Upload Artifact
@@ -100,7 +105,7 @@ jobs:
           dist\OpenBBTerminal\OpenBBTerminal.exe -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
           cat result.txt
           Select-String "================================ integration test summary ================================" result.txt -Context 0,100 | Select-Object -Last 2000 | Out-File failed_tests.txt
-          
+
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
         with:
