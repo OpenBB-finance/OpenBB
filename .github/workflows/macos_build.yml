@@ -68,7 +68,7 @@ jobs:
 
       - name: Build Bundle
         run: build/pyinstaller/build4mac.sh
-        shell: bash
+        shell: bash -l {0}
 
       - name: Creating Application Keychain
         env:
@@ -103,7 +103,7 @@ jobs:
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
           build/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1
           mv build/pyinstaller/macOS/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminal.pkg
-        shell: bash
+        shell: bash -l {0}
 
       - name: Deleting Previous Keychain
         run: |
