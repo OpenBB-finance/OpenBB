@@ -92,7 +92,7 @@ class Handler:
         default_opts = {
             key: [] for key in ["target_widget", "column_widget", "past_covs_widget"]
         }
-        st_helpers.load_state("widget_options", default_opts)
+        st_helpers.load_widget_options(default_opts, "Forecasting")
 
         self.feature_model = None
         self.feature_target = None

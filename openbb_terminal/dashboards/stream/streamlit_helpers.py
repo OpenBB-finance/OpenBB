@@ -70,6 +70,17 @@ def load_state(name: str, default: Any):
     return st.session_state[name]
 
 
+def load_widget_options(default: Any, page: str):
+    name = "widget_options"
+    if name not in st.session_state:
+        st.session_state[name] = default
+    elif st.session_state[name].get("page", "") != page:
+        st.session_state[name] = default
+
+    st.session_state[name]["page"] = page
+    return st.session_state[name]
+
+
 def save_state(name: str, value: Any):
     st.session_state[name] = value
 

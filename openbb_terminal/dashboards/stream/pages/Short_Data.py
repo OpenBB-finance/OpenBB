@@ -55,8 +55,6 @@ st_helpers.set_css()
 class FinraShortData:
     def __init__(self, days_slider=30, count_slider=10):
         self.df: pd.DataFrame = st_helpers.load_state("df", pd.DataFrame())
-        self.fig: OpenBBFigure = st_helpers.load_state("fig", None)
-        self.fig2: OpenBBFigure = st_helpers.load_state("fig2", None)
         self.days_slider: int = st_helpers.load_state("days_slider", days_slider)
         self.count_slider: int = st_helpers.load_state("count_slider", count_slider)
         self.ticker_button = None
@@ -118,22 +116,22 @@ class FinraShortData:
                 .sort_values(by="ShortVolume", ascending=False)
                 .head(self.count_slider)[::-1]
             )
-            self.fig = OpenBBFigure()
-            self.fig.add_bar(
+            fig = OpenBBFigure()
+            fig.add_bar(
                 x=temp.TotalVolume,
                 y=temp.index,
                 orientation="h",
                 name="Total Volume",
                 marker_color=theme.up_color,
             )
-            self.fig.add_bar(
+            fig.add_bar(
                 x=temp.ShortVolume,
                 y=temp.index,
                 orientation="h",
                 name="Short Volume",
                 marker_color=theme.down_color,
             )
-            self.fig.update_layout(
+            fig.update_layout(
                 title=f"Top {self.count_slider} Short Volume in Last {self.days_slider} Days",
                 margin=dict(l=5),
                 xaxis_title="Volume",
@@ -149,37 +147,37 @@ class FinraShortData:
                     x=1,
                 ),
             )
-            self.fig.show(external=True)
+            fig.show(external=True)
             with output1:
-                st.plotly_chart(self.fig, use_container_width=True)
+                st.plotly_chart(fig, use_container_width=True)
 
     def ticker_plot(self):
         stock_data = self.df.copy().loc[
             self.df.Symbol == self.stock_input.upper(),
             ["Date", "ShortVolume", "TotalVolume"],
         ]
-        self.fig2 = OpenBBFigure()
-        self.fig2.add_scatter(
+        fig2 = OpenBBFigure()
+        fig2.add_scatter(
             x=stock_data.Date,
             y=stock_data.TotalVolume,
             name="Total Volume",
             marker_color=theme.up_color,
         )
-        self.fig2.add_scatter(
+        fig2.add_scatter(
             x=stock_data.Date,
             y=stock_data.ShortVolume,
             name="Short Volume",
             marker_color=theme.down_color,
         )
-        self.fig2.update_layout(
+        fig2.update_layout(
             title=f"Stock Volume and Short Volume for {self.stock_input.upper()}",
             margin=dict(l=5),
             xaxis_title="Date",
             yaxis_title="Volume",
         )
-        self.fig2.show(external=True)
+        fig2.show(external=True)
         with output2:
-            st.plotly_chart(self.fig2)
+            st.plotly_chart(fig2)
 
     def build_app(self):
         with TICKER:

@@ -136,7 +136,7 @@ class Chart:
             "tickers_widget": TICKERS,
             "cat_widget": CATEGORIES,
         }
-        st_helpers.load_state("widget_options", default_opts)
+        st_helpers.load_widget_options(default_opts, "Futures")
 
     def create_stock(self, chart_type, contracts, ticker):
         if not ticker:
