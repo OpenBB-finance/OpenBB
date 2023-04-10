@@ -72,6 +72,7 @@ def test_supported_terms(mocker):
     terms = supported_terms()
     assert terms == list(MOCK_REQUEST_RESPONSE.keys())
 
+
 @pytest.mark.parametrize(
     "ticker, response",
     [
