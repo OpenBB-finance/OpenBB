@@ -58,9 +58,9 @@ jobs:
           use-only-tar-bz2: true # Needed for caching some reason
 
       - name: Install Dependencies
-        shell: bash
+        shell: bash -l {0}
         run: |
-          conda activate obb
+          conda info
           pip list
           build/conda/cleanup_artifacts.sh
           poetry install -E all -E installer
