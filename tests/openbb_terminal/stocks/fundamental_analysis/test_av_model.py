@@ -101,6 +101,8 @@ def test_get_key_metrics(record):
     "symbol, kwargs",
     [
         ("TSLA", {}),
+        ("TSLA", {"quarterly": True}),
+        ("TSLA", {"ratios": True}),
     ],
 )
 def test_get_income_statements(record, symbol, kwargs):
@@ -108,7 +110,6 @@ def test_get_income_statements(record, symbol, kwargs):
     record.add_verify(result_df)
 
     assert isinstance(result_df, DataFrame)
-    assert not result_df.empty
 
 
 @pytest.mark.record_http

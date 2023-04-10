@@ -16,13 +16,16 @@ def vcr_config():
 
 @pytest.mark.record_http
 @pytest.mark.parametrize(
-    "symbol, statement",
+    "symbol, statement, ratios",
     [
-        ("TSLA", "balance"),
-        ("TSLA", "income"),
-        ("TSLA", "cash"),
+        ("TSLA", "balance", False),
+        ("TSLA", "income", False),
+        ("TSLA", "cash", False),
+        ("TSLA", "balance", True),
+        ("TSLA", "income", True),
+        ("TSLA", "cash", True),
     ],
 )
-def test_get_financials(symbol, statement):
+def test_get_financials(symbol, statement, ratios):
     """Test get_financials."""
-    eodhd_model.get_financials(symbol=symbol, statement=statement)
+    eodhd_model.get_financials(symbol=symbol, statement=statement, ratios=ratios)

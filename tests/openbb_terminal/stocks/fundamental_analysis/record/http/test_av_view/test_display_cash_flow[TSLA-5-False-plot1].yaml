@@ -1,0 +1,93 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=CASH_FLOW&symbol=TSLA
+  response:
+    body:
+      string: !!binary |
+        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
+        BBer/e3gJPA///4HAAD//wMAxTgpjMqWAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b5dafcf6e56b018-BEG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Mon, 10 Apr 2023 20:19:47 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie, Origin
+      Via:
+      - 1.1 vegur
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
