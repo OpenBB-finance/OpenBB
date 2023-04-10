@@ -679,7 +679,9 @@ def get_personal_access_token(
     try:
         response = requests.get(url=url, headers=headers, timeout=timeout)
 
-        if response.status_code != 200:
+        if response.status_code == 404:
+            console.print("[red]No personal access token found.[/red]")
+        elif response.status_code != 200:
             console.print("[red]Failed to get personal access token.[/red]")
 
         return response
