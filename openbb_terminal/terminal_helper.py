@@ -69,7 +69,7 @@ def print_goodbye():
 
     console.print(
         "Join us           : [cmds]https://openbb.co/discord[/cmds]\n"
-        "Follow us         : [cmds]https://twitter.com/openbb_finance[/cmds]\n"
+        "Follow us         : [cmds]https://openbb.co/twitter[/cmds]\n"
         "Ask support       : [cmds]https://openbb.co/support[/cmds]\n"
         "Request a feature : [cmds]https://openbb.co/request-a-feature[/cmds]\n"
     )
@@ -129,7 +129,10 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://my.openbb.dev/app/terminal", command=None, arg_type=""
+    path,
+    url="https://my.openbb.dev/app/terminal",
+    command=None,
+    arg_type="",
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
