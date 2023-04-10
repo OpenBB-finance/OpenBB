@@ -60,3 +60,36 @@ def test_get_economic_calendar_bad_country_name(recorder):
     )
 
     recorder.capture(result_df)
+
+
+@pytest.mark.record_http
+def test_get_big_mac_indices():
+    result_df = nasdaq_model.get_big_mac_indices()
+
+    assert isinstance(result_df, pd.DataFrame)
+    assert not result_df.empty
+
+
+def test_get_big_mac_indices_bad_response(mocker):
+    # MOCK GET
+    attrs = {"status_code": 400}
+    mock_response = mocker.Mock(**attrs)
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
+
+    result_df = nasdaq_model.get_big_mac_indices()
+
+    assert isinstance(result_df, pd.DataFrame)
+    assert result_df.empty
+
+
+def test_get_country_names():
+    result_list = nasdaq_model.get_country_names()
+
+    assert isinstance(result_list, list)
+
+
+def test_get_country_codes():
+    nasdaq_model.get_country_codes()
