@@ -87,8 +87,9 @@ jobs:
         shell: bash -l {0}
         run: |
           conda info
-          pip install --requirement requirements-full.txt
+          build\conda\cleanup_artifacts.bat
           pip install docstring_parser
+          poetry install -E all -E installer
 
       - name: List installed packages (Bash)
         shell: bash -l {0}

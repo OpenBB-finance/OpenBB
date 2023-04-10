@@ -60,8 +60,8 @@ jobs:
       - name: Install Dependencies
         run: |
           pip list
-          python -m pip install -r requirements-full.txt
-          pip install -e .
+          build/conda/cleanup_artifacts.sh
+          poetry install -E all -E installer
           pip list
 
       - name: Build Bundle
