@@ -23,17 +23,19 @@ def display_filings(
     export: str = "",
     sheet_name: Optional[str] = None,
 ) -> None:
-    """Display recent forms submitted to the SEC
+    """Display recent forms submitted to the SEC.
+
     Parameters
     ----------
     pages: int = 1
-        The range of most-rececnt pages to get entries from (1000 per page, max 30 pages)
+        The range of most-recent pages to get entries from (1000 per page, max 30 pages)
     limit: int = 5
         Limit the number of entries to display (default: 5)
     today: bool = False
         Show all from today
     export: str = ""
         Export data as csv, json, or xlsx
+
     Examples
     --------
     openbb.stocks.display_filings()

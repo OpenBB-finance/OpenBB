@@ -677,25 +677,22 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = False) -> pd.Dat
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_filings(
-    pages: int = 1,
-) -> pd.DataFrame:
-    """Get SEC Filings RSS feed, disseminated by FMP
+def get_filings(pages: int = 1) -> pd.DataFrame:
+    """Get SEC Filings RSS feed disseminated by FMP.
 
     Parameters
     ----------
-    pages: range = 1
-        The range of most-rececnt pages to get entries from (1000 per page; maximum of 30 pages)
+    pages : int, optional
+        The range of most-recent pages to get entries from (1000 per page; maximum of 30 pages)
 
     Returns
     -------
-    df: pd.DataFrame
-        Dataframe of results
+    pd.DataFrame
+        Dataframe of SEC filings
 
     Examples
     --------
     df = openbb.stocks.filings()
-
     df = openbb.stocks.filings(pages=30)
     """
     current_user = get_current_user()
