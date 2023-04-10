@@ -44,12 +44,11 @@ class HiddenPrints:
         sys.stdout = self._original_stdout
 
 
-def format_plotly(fig: OpenBBFigure, title, y_title):
-    fig.update_yaxes(title=y_title)
+def format_plotly(fig: OpenBBFigure):
+    fig.update_yaxes(title="Price")
     fig.update_xaxes(title="Date")
     fig.update_layout(
         margin=dict(l=0, r=10, t=10, b=10),
-        title=dict(text=title, y=0.98, x=0.5),
         autosize=False,
         width=900,
         height=500,
@@ -185,7 +184,7 @@ class Chart:
                 y.append(value["data"]["Adj Close"].iloc[-1])
             create_line(visual="line", x=x, y=y, name="Future Curve", fig=fig)
 
-        format_plotly(fig, title=f"{ticker.split(':')[0]}", y_title="Price")
+        format_plotly(fig)
         fig.show(external=True)
         st.plotly_chart(
             fig,
