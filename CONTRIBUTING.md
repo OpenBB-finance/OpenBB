@@ -485,7 +485,7 @@ A thorough introduction on the usage of unit tests and integration tests in Open
 
 [Unit Test README](tests/README.md)
 
-[Integration Test README](scripts/README.md)
+[Integration Test README](openbb_terminal/miscellaneous/integration_tests_scripts/README.MD)
 
 Any new features that do not contain unit tests will not be accepted.
 
