@@ -223,6 +223,10 @@ Install all available toolkits at once with:
 pip install "openbb[all]" --no-cache-dir
 ```
 
+:::info
+The `pip install openbb` isn't yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK. We are working on a solution to this problem and will update this section once it is resolved.
+:::
+
 ## Verify Installation
 
 Once this installation process is completed, the terminal is launched by running:
