@@ -1,3 +1,4 @@
+from threading import Thread
 from typing import Any, Type, TypeVar
 
 from pydantic import ValidationError
@@ -41,3 +42,17 @@ def load_dict_to_model(dictionary: dict, model: Type[T]) -> T:
     except Exception:
         print(f"Error loading {model_name}, using defaults.")
         return model()  # type: ignore
+
+
+def run_thread(target, kwargs):
+    """Run a thread.
+
+    Parameters
+    ----------
+    target : function
+        The target function.
+    args : tuple
+        The arguments.
+    """
+    thread = Thread(target=target, kwargs=kwargs)
+    thread.start()

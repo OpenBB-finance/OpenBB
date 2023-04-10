@@ -165,7 +165,7 @@ class CryptoController(CryptoBaseController):
             help="Coin to compare with",
             dest="vs",
             type=str,
-            # required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             default=None,
         )
         parser.add_argument(
@@ -187,11 +187,9 @@ class CryptoController(CryptoBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--vs")
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
+        ):
             if self.symbol:
                 num_args = 0
                 for arg in vars(ns_parser):
@@ -240,7 +238,7 @@ class CryptoController(CryptoBaseController):
         parser.add_argument(
             "-s",
             "--symbol",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             type=str,
             dest="symbol",
             help="Symbol of coin to load data for, ~100 symbols are available",
@@ -250,9 +248,7 @@ class CryptoController(CryptoBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
             upper_symbol = ns_parser.symbol.upper()
             if "-USD" not in ns_parser.symbol:
                 upper_symbol += "-USD"
@@ -283,10 +279,9 @@ class CryptoController(CryptoBaseController):
             dest="logy",
         )
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
+        ):
             if not self.symbol:
                 console.print("No coin loaded. First use `load {symbol}`\n")
                 return
@@ -385,11 +380,9 @@ class CryptoController(CryptoBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
+        ):
             finbrain_crypto_view.display_crypto_sentiment_analysis(
                 symbol=ns_parser.coin, export=ns_parser.export
             )
@@ -474,7 +467,7 @@ class CryptoController(CryptoBaseController):
             "--coin",
             help="Symbol Name or Id of Coin",
             dest="coin",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             type=str,
         )
         parser.add_argument(
