@@ -13,14 +13,13 @@ from openbb_terminal.core.models import (
     UserModel,
 )
 from openbb_terminal.core.session.env_handler import read_env
-from openbb_terminal.core.session.sources_handler import read_sources
+from openbb_terminal.core.session.sources_handler import load_file_to_model
 from openbb_terminal.core.session.utils import load_dict_to_model
 
 __env_dict = read_env()
 __credentials = load_dict_to_model(__env_dict, CredentialsModel)  # type: ignore
 __preferences = load_dict_to_model(__env_dict, PreferencesModel)
-__sources = SourcesModel()  # type: ignore
-__sources.update(read_sources(Path(__preferences.USER_DATA_SOURCES_FILE)))
+__sources = load_file_to_model(Path(__preferences.USER_DATA_SOURCES_FILE))
 
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
@@ -64,8 +63,7 @@ def set_default_user():
     env_dict = read_env()
     credentials = load_dict_to_model(env_dict, CredentialsModel)
     preferences = load_dict_to_model(env_dict, PreferencesModel)
-    sources = SourcesModel()
-    sources.update(read_sources(Path(preferences.USER_DATA_SOURCES_FILE)))
+    sources = load_file_to_model(Path(__preferences.USER_DATA_SOURCES_FILE))
     profile = ProfileModel()
     default_user = UserModel(  # type: ignore
         credentials=credentials,
@@ -134,15 +132,15 @@ def set_credential(name: str, value: str):
     set_current_user(updated_user)
 
 
-def set_sources(sources_dict: Dict):
+def set_sources(choices: Dict):
     """Set sources
 
     Parameters
     ----------
-    sources_dict : Dict
+    choices : Dict
         Sources dict
     """
     current_user = get_current_user()
-    updated_sources = dataclasses.replace(current_user.sources, sources_dict=sources_dict)  # type: ignore
+    updated_sources = dataclasses.replace(current_user.sources, choices=choices)  # type: ignore
     updated_user = dataclasses.replace(current_user, sources=updated_sources)  # type: ignore
     set_current_user(updated_user)
