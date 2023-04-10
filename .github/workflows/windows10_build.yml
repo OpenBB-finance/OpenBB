@@ -47,6 +47,7 @@ jobs:
           conda info
           pip list
           pip install rapidfuzz==2.13.7
+          pip install virtualenv==20.7.2
           build\\conda\\cleanup_artifacts.bat
           poetry install -E all -E installer
           pip uninstall papermill -y
