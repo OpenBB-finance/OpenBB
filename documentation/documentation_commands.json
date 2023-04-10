@@ -1,101 +1,14 @@
 {
-    "about": [
-        "CONTRIBUTING.md",
-        "README.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/alternative.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "support": [
-        "CONTRIBUTING.md",
-        "README.md",
-        "website/content/sdk/faqs/index.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
     "update": [
         "CONTRIBUTING.md",
         "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/index.md",
-        "website/content/sdk/faqs/installation_updates.md",
         "website/content/sdk/faqs/developer_issues.md",
-        "website/content/terminal/usage/guides/data.md",
         "website/content/terminal/usage/intros/economy.md"
     ],
     "news": [
         "CONTRIBUTING.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md"
-    ],
-    "keys": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/changing-sources.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/forex.md"
-    ],
-    "sources": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/alternative.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/changing-sources.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/forex.md"
-    ],
-    "settings": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
         "website/content/terminal/usage/guides/api-keys.md",
         "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "record": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md"
-    ],
-    "generate": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md"
     ],
     "show": [
         "CONTRIBUTING.md",
@@ -104,43 +17,20 @@
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
         "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forex.md",
         "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/forex.md",
         "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "clear": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/guides/api-keys.md"
     ],
     "list": [
         "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/sdk/usage/intros/economy.md"
     ],
     "download": [
         "CONTRIBUTING.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/terminal/usage/guides/data.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
     "status": [
@@ -162,95 +52,27 @@
     ],
     "get": [
         "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/forex.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/sdk/usage/intros/quantitative-analysis.md"
     ],
     "set": [
         "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/sdk/usage/guides/api-keys.md"
     ],
     "cls": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "rich": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "version": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/installation_updates.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "backend": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "width": [
-        "CONTRIBUTING.md",
-        "README.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forex.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "CONTRIBUTING.md"
     ],
     "source": [
         "CONTRIBUTING.md",
-        "README.md",
         "openbb_terminal/SDK_README.md",
         "website/content/sdk/faqs/data_sources.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
         "website/content/terminal/usage/basics/index.md",
         "website/content/terminal/usage/guides/data.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/economy.md",
         "website/content/sdk/usage/guides/changing-sources.md",
-        "website/content/sdk/usage/guides/api-keys.md",
         "website/content/sdk/usage/intros/forex.md"
     ],
     "stocks": [
@@ -263,25 +85,17 @@
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
         "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/etf.md",
         "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/basics/index.md",
         "website/content/sdk/usage/guides/changing-sources.md",
         "website/content/sdk/usage/guides/api-keys.md",
         "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
         "website/content/sdk/usage/intros/ta.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "crypto": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/ta.md"
+        "CONTRIBUTING.md"
     ],
     "economy": [
         "CONTRIBUTING.md",
@@ -293,68 +107,35 @@
     ],
     "forex": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/futures.md",
         "website/content/terminal/usage/intros/forex.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
         "website/content/sdk/usage/intros/forex.md"
     ],
     "search": [
         "CONTRIBUTING.md",
         "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
         "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/api-keys.md",
         "website/content/terminal/usage/intros/futures.md",
         "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/alternative.md"
-    ],
-    "curve": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "econometrics": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/econometrics.md"
+        "website/content/sdk/usage/intros/futures.md"
     ],
     "forecast": [
         "CONTRIBUTING.md",
         "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forex.md",
         "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "portfolio": [
         "CONTRIBUTING.md",
         "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/general_operation.md",
         "website/content/terminal/usage/guides/data.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/intros/etf.md"
+        "website/content/sdk/usage/guides/data.md"
     ],
     "load": [
         "CONTRIBUTING.md",
         "openbb_terminal/SDK_README.md",
         "website/content/sdk/faqs/data_sources.md",
-        "website/content/sdk/faqs/general_operation.md",
         "website/content/terminal/usage/basics/index.md",
         "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/terminal/usage/intros/etf.md",
         "website/content/terminal/usage/intros/forex.md",
@@ -362,7 +143,6 @@
         "website/content/sdk/usage/basics/index.md",
         "website/content/sdk/usage/guides/changing-sources.md",
         "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/etf.md",
         "website/content/sdk/usage/intros/ta.md",
         "website/content/sdk/usage/intros/forex.md",
         "website/content/sdk/usage/intros/forecast.md"
@@ -370,8 +150,7 @@
     "quote": [
         "CONTRIBUTING.md",
         "website/content/terminal/usage/intros/forex.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/forex.md"
+        "website/content/sdk/usage/guides/api-keys.md"
     ],
     "candle": [
         "CONTRIBUTING.md",
@@ -379,22 +158,14 @@
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/intros/etf.md",
         "website/content/terminal/usage/intros/forex.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/forex.md"
+        "website/content/sdk/usage/basics/index.md"
     ],
     "options": [
         "CONTRIBUTING.md",
-        "README.md",
-        "website/content/terminal/usage/basics/index.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/api-keys.md",
         "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/econometrics.md"
+        "website/content/sdk/usage/intros/fixedincome.md"
     ],
     "dps": [
         "CONTRIBUTING.md",
@@ -406,27 +177,19 @@
     ],
     "fa": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
         "website/content/terminal/usage/guides/api-keys.md",
         "website/content/sdk/usage/guides/changing-sources.md"
     ],
     "ta": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/basics/index.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/terminal/usage/intros/forex.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/alternative.md",
         "website/content/sdk/usage/intros/ta.md",
         "website/content/sdk/usage/intros/forex.md"
     ],
     "qa": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forex.md",
         "website/content/sdk/usage/intros/quantitative-analysis.md"
     ],
@@ -438,24 +201,16 @@
     ],
     "screen": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/guides/api-keys.md",
         "website/content/sdk/usage/intros/etf.md"
     ],
     "exp": [
         "CONTRIBUTING.md"
     ],
     "info": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/usage/intros/alternative.md"
+        "CONTRIBUTING.md"
     ],
     "hist": [
-        "CONTRIBUTING.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
+        "CONTRIBUTING.md"
     ],
     "grhist": [
         "CONTRIBUTING.md"
@@ -464,46 +219,22 @@
         "CONTRIBUTING.md",
         "openbb_terminal/SDK_README.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/etf.md",
         "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "view": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/basics/index.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
     "add": [
         "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forex.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "symbol": [
         "CONTRIBUTING.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/terminal/usage/intros/futures.md",
         "website/content/sdk/usage/basics/index.md",
         "website/content/sdk/usage/guides/changing-sources.md",
         "website/content/sdk/usage/intros/futures.md",
@@ -511,76 +242,16 @@
         "website/content/sdk/usage/intros/quantitative-analysis.md",
         "website/content/sdk/usage/intros/ta.md"
     ],
-    "open": [
-        "CONTRIBUTING.md",
-        "README.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "all": [
-        "CONTRIBUTING.md",
-        "README.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/installation_updates.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/forex.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "select": [
-        "CONTRIBUTING.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/changing-sources.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
     "country": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
         "website/content/sdk/usage/intros/alternative.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
     "period": [
         "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
         "website/content/terminal/usage/basics/index.md",
         "website/content/terminal/usage/intros/etf.md",
         "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "shorted": [
@@ -589,165 +260,41 @@
     "psi": [
         "CONTRIBUTING.md"
     ],
-    "financial": [
-        "CONTRIBUTING.md",
-        "README.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/alternative.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/chart-styling.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "technical": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
     "contracts": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/futures.md"
+        "CONTRIBUTING.md"
     ],
     "ticker": [
         "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/sdk/faqs/general_operation.md",
         "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/economy.md",
         "website/content/sdk/usage/intros/ta.md",
         "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "sentiment": [
-        "CONTRIBUTING.md",
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "messages": [
-        "CONTRIBUTING.md"
-    ],
-    "interest": [
-        "CONTRIBUTING.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "rating": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
     ],
     "rot": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/api-keys.md"
-    ],
-    "supplier": [
         "CONTRIBUTING.md"
     ],
-    "analysis": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
     "pt": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md"
-    ],
-    "line": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
+        "CONTRIBUTING.md"
     ],
     "rolling": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/forex.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "so": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/terminal/usage/intros/forecast.md"
     ],
     "raw": [
         "CONTRIBUTING.md",
         "website/content/sdk/faqs/installation_updates.md",
-        "website/content/sdk/faqs/data_sources.md",
         "website/content/terminal/usage/basics/index.md",
         "website/content/terminal/usage/guides/changing-sources.md",
         "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "find": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/alternative.md"
+        "website/content/terminal/usage/intros/etf.md"
     ],
     "price": [
         "CONTRIBUTING.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
         "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/economy.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "dd": [
@@ -756,69 +303,7 @@
     ],
     "top": [
         "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "categories": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "hold": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/economy.md"
-    ],
-    "pairs": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/forex.md"
-    ],
-    "fun": [
-        "CONTRIBUTING.md"
-    ],
-    "tokens": [
-        "CONTRIBUTING.md"
-    ],
-    "dev": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/econometrics.md"
-    ],
-    "change": [
-        "CONTRIBUTING.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forex.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/changing-sources.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "basic": [
-        "CONTRIBUTING.md",
-        "README.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/sdk/usage/intros/alternative.md"
     ],
     "events": [
         "CONTRIBUTING.md",
@@ -828,10 +313,6 @@
     "mt": [
         "CONTRIBUTING.md"
     ],
-    "team": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md"
-    ],
     "holdings": [
         "CONTRIBUTING.md",
         "website/content/terminal/usage/guides/data.md",
@@ -839,15 +320,6 @@
         "website/content/sdk/usage/basics/index.md",
         "website/content/sdk/usage/guides/data.md",
         "website/content/sdk/usage/intros/etf.md"
-    ],
-    "map": [
-        "CONTRIBUTING.md"
-    ],
-    "ycrv": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/economy.md"
     ],
     "fwd": [
         "CONTRIBUTING.md",
@@ -857,43 +329,24 @@
     "oanda": [
         "CONTRIBUTING.md",
         "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/forex.md",
         "website/content/sdk/usage/guides/api-keys.md",
         "website/content/sdk/usage/intros/forex.md"
     ],
     "calendar": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/api-keys.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/api-keys.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
     "from": [
         "CONTRIBUTING.md",
         "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/index.md",
-        "website/content/sdk/faqs/installation_updates.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/data_sources.md",
         "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
         "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/etf.md",
         "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/data.md",
         "website/content/sdk/usage/guides/chart-styling.md",
-        "website/content/sdk/usage/guides/changing-sources.md",
         "website/content/sdk/usage/guides/api-keys.md",
         "website/content/sdk/usage/intros/fixedincome.md",
         "website/content/sdk/usage/intros/econometrics.md",
@@ -901,61 +354,22 @@
         "website/content/sdk/usage/intros/alternative.md",
         "website/content/sdk/usage/intros/etf.md",
         "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/ta.md",
         "website/content/sdk/usage/intros/forex.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "to": [
         "CONTRIBUTING.md",
-        "README.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/index.md",
-        "website/content/sdk/faqs/installation_updates.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
         "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/alternative.md",
-        "website/content/terminal/usage/intros/etf.md",
         "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forex.md",
         "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/changing-sources.md",
         "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
         "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/etf.md",
         "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forex.md",
         "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "order": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/alternative.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "tr": [
-        "CONTRIBUTING.md"
     ],
     "export": [
         "CONTRIBUTING.md",
@@ -963,257 +377,56 @@
         "website/content/terminal/usage/guides/data.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
         "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/etf.md",
         "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/chart-styling.md",
-        "website/content/sdk/usage/intros/etf.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "type": [
         "CONTRIBUTING.md",
-        "README.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/index.md",
-        "website/content/sdk/faqs/installation_updates.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/changing-sources.md",
         "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "clean": [
-        "CONTRIBUTING.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "root": [
-        "CONTRIBUTING.md",
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "panel": [
-        "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/econometrics.md"
-    ],
-    "create": [
-        "CONTRIBUTING.md",
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/econometrics.md"
+        "website/content/sdk/usage/intros/economy.md"
     ],
     "file": [
         "CONTRIBUTING.md",
+        "website/content/terminal/usage/basics/index.md",
+        "website/content/terminal/usage/guides/scripts-and-routines.md",
+        "website/content/terminal/usage/intros/econometrics.md"
+    ],
+    "support": [
+        "README.md"
+    ],
+    "keys": [
         "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/futures.md",
+        "website/content/terminal/usage/guides/api-keys.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "run": [
-        "CONTRIBUTING.md",
-        "website/content/sdk/faqs/installation_updates.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "color": [
-        "README.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "alternative": [
-        "README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/alternative.md",
         "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/alternative.md"
-    ],
-    "closed": [
-        "README.md"
-    ],
-    "active": [
-        "README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md"
-    ],
-    "industry": [
-        "README.md",
-        "website/content/terminal/usage/intros/economy.md",
         "website/content/sdk/usage/intros/economy.md"
-    ],
-    "growth": [
-        "README.md",
-        "website/content/terminal/usage/intros/economy.md"
-    ],
-    "metrics": [
-        "README.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "summary": [
-        "README.md",
-        "website/content/sdk/faqs/installation_updates.md",
-        "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/sdk/faqs/bugs_support_feedback.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "markets": [
-        "README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md"
-    ],
-    "platforms": [
-        "README.md"
-    ],
-    "web": [
-        "README.md",
-        "openbb_terminal/SDK_README.md"
-    ],
-    "social": [
-        "README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "twitter": [
-        "README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "links": [
-        "README.md"
-    ],
-    "history": [
-        "README.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/alternative.md"
-    ],
-    "upload": [
-        "openbb_terminal/SDK_README.md"
     ],
     "mykeys": [
         "openbb_terminal/SDK_README.md",
         "website/content/terminal/usage/guides/api-keys.md",
         "website/content/sdk/usage/guides/api-keys.md"
     ],
-    "tab": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "theme": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/sdk/usage/guides/chart-styling.md"
-    ],
     "dpi": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
+        "openbb_terminal/SDK_README.md"
     ],
-    "funds": [
+    "all": [
         "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
+        "website/content/sdk/faqs/installation_updates.md",
         "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "historical": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/general_operation.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/terminal/usage/intros/forex.md",
+        "website/content/terminal/usage/intros/econometrics.md",
+        "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/forex.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "dashboards": [
-        "openbb_terminal/SDK_README.md"
-    ],
-    "exchange": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "heatmap": [
-        "openbb_terminal/SDK_README.md"
+        "website/content/sdk/usage/basics/index.md",
+        "website/content/sdk/usage/intros/fixedincome.md",
+        "website/content/sdk/usage/intros/econometrics.md",
+        "website/content/sdk/usage/intros/economy.md"
     ],
     "dpotc": [
         "openbb_terminal/SDK_README.md"
@@ -1223,19 +436,14 @@
         "website/content/terminal/usage/guides/api-keys.md",
         "website/content/sdk/usage/guides/api-keys.md"
     ],
-    "tools": [
+    "categories": [
         "openbb_terminal/SDK_README.md",
-        "website/content/sdk/faqs/installation_updates.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/sdk/usage/intros/alternative.md",
+        "website/content/sdk/usage/intros/etf.md"
     ],
     "weights": [
         "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/etf.md"
+        "website/content/terminal/usage/intros/etf.md"
     ],
     "index": [
         "openbb_terminal/SDK_README.md",
@@ -1243,36 +451,18 @@
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/terminal/usage/intros/economy.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/alternative.md",
         "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/sdk/usage/intros/economy.md"
     ],
     "fed": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "spot": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "orderbook": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/sdk/usage/guides/data.md"
-    ],
-    "modify": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/econometrics.md"
+        "openbb_terminal/SDK_README.md"
     ],
     "po": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "create": [
         "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/data.md"
+        "website/content/terminal/usage/guides/scripts-and-routines.md"
     ],
     "maxsharpe": [
         "openbb_terminal/SDK_README.md"
@@ -1283,44 +473,12 @@
     "hrp": [
         "openbb_terminal/SDK_README.md"
     ],
-    "save": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/intros/forecast.md"
-    ],
-    "forecasting": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "correlation": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "reports": [
-        "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "bt": [
-        "website/content/sdk/faqs/installation_updates.md"
-    ],
     "sh": [
-        "website/content/sdk/faqs/installation_updates.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
+        "website/content/sdk/faqs/installation_updates.md"
     ],
     "global": [
         "website/content/sdk/faqs/developer_issues.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/economy.md"
+        "website/content/sdk/usage/guides/api-keys.md"
     ],
     "rm": [
         "website/content/sdk/faqs/developer_issues.md"
@@ -1329,252 +487,95 @@
         "website/content/sdk/faqs/developer_issues.md",
         "website/content/terminal/usage/intros/econometrics.md"
     ],
-    "prices": [
-        "website/content/sdk/faqs/data_sources.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "account": [
-        "website/content/sdk/faqs/import_errors.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/forex.md"
-    ],
-    "wiki": [
-        "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/api-keys.md",
+    "clean": [
+        "website/content/sdk/faqs/developer_issues.md",
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
-    "colors": [
+    "exchange": [
+        "website/content/sdk/faqs/data_sources.md",
+        "website/content/terminal/usage/basics/index.md"
+    ],
+    "about": [
         "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
+        "website/content/terminal/usage/guides/scripts-and-routines.md",
+        "website/content/terminal/usage/guides/changing-sources.md"
+    ],
+    "select": [
+        "website/content/terminal/usage/basics/index.md",
+        "website/content/terminal/usage/guides/changing-sources.md",
+        "website/content/terminal/usage/intros/forecast.md"
     ],
     "performance": [
         "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/intros/alternative.md",
         "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/intros/etf.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
-    "yahoo": [
+    "analysis": [
         "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/intros/economy.md"
+        "website/content/terminal/usage/guides/scripts-and-routines.md",
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "yahoo": [
+        "website/content/terminal/usage/basics/index.md"
     ],
     "market": [
         "website/content/terminal/usage/basics/index.md",
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/api-keys.md",
         "website/content/terminal/usage/intros/etf.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forex.md",
-        "website/content/sdk/usage/guides/data.md",
-        "website/content/sdk/usage/guides/chart-styling.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/forex.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/terminal/usage/intros/economy.md"
     ],
-    "userdata": [
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "income": [
-        "website/content/terminal/usage/guides/data.md",
+    "save": [
+        "website/content/terminal/usage/basics/index.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/guides/changing-sources.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
+        "website/content/terminal/usage/intros/forecast.md"
     ],
-    "balance": [
-        "website/content/terminal/usage/guides/data.md",
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "cash": [
-        "website/content/terminal/usage/guides/data.md"
+    "record": [
+        "website/content/terminal/usage/guides/scripts-and-routines.md"
     ],
     "stop": [
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/terminal/usage/guides/scripts-and-routines.md"
     ],
     "exe": [
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/intros/econometrics.md"
+        "website/content/terminal/usage/guides/scripts-and-routines.md"
     ],
-    "interactive": [
+    "historical": [
         "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
+        "website/content/sdk/usage/intros/futures.md",
+        "website/content/sdk/usage/intros/forecast.md"
     ],
     "ca": [
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/sdk/usage/basics/index.md",
         "website/content/sdk/usage/intros/etf.md"
     ],
-    "epsfc": [
-        "website/content/terminal/usage/guides/scripts-and-routines.md"
-    ],
-    "est": [
-        "website/content/terminal/usage/guides/scripts-and-routines.md"
-    ],
-    "fib": [
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/sdk/usage/intros/ta.md"
-    ],
     "cpi": [
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "macro": [
-        "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/economy.md"
+        "website/content/terminal/usage/guides/scripts-and-routines.md"
     ],
     "treasury": [
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/economy.md"
+        "website/content/sdk/usage/intros/fixedincome.md"
+    ],
+    "run": [
+        "website/content/terminal/usage/guides/scripts-and-routines.md",
+        "website/content/terminal/usage/intros/forecast.md"
+    ],
+    "sources": [
+        "website/content/terminal/usage/guides/changing-sources.md"
+    ],
+    "income": [
+        "website/content/terminal/usage/guides/changing-sources.md"
     ],
     "ratios": [
         "website/content/terminal/usage/guides/changing-sources.md"
     ],
-    "featflags": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "retryload": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "promptkit": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "thoughts": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "reporthtml": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "exithelp": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "rcontext": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "richpanel": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "ion": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "watermark": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "cmdloc": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "overwrite": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "tbhint": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "autoscaling": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "dt": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "flair": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "lang": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "tz": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "height": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "pheight": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "pwidth": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "monitor": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "tbnews": [
-        "website/content/terminal/usage/guides/customizing-the-terminal.md"
-    ],
-    "login": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "futures": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "hedge": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/forex.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/forex.md"
-    ],
-    "pick": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "trending": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "volume": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "beta": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "address": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "compare": [
-        "website/content/terminal/usage/guides/api-keys.md",
+    "change": [
+        "website/content/terminal/usage/guides/changing-sources.md",
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md"
+        "website/content/terminal/usage/intros/economy.md",
+        "website/content/sdk/usage/guides/api-keys.md"
     ],
     "fred": [
         "website/content/terminal/usage/guides/api-keys.md",
@@ -1582,32 +583,9 @@
         "website/content/sdk/usage/guides/api-keys.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
-    "rates": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/terminal/usage/intros/futures.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/terminal/usage/intros/forex.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/futures.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/forex.md"
-    ],
     "degiro": [
         "website/content/terminal/usage/guides/api-keys.md",
         "website/content/sdk/usage/guides/api-keys.md"
-    ],
-    "indicators": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/guides/api-keys.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forecast.md"
     ],
     "fixedincome": [
         "website/content/terminal/usage/intros/fixedincome.md",
@@ -1615,46 +593,13 @@
     ],
     "spread": [
         "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md",
         "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "estr": [
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "sofr": [
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "sonia": [
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
     ],
     "ameribor": [
         "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/sdk/usage/intros/fixedincome.md"
     ],
-    "projection": [
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
     "ecb": [
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "ecbycrv": [
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "icebofa": [
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "moody": [
-        "website/content/terminal/usage/intros/fixedincome.md",
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "hqm": [
         "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/sdk/usage/intros/fixedincome.md"
     ],
@@ -1666,39 +611,42 @@
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
-    "stats": [
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/alternative.md"
-    ],
-    "multi": [
+    "econometrics": [
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/econometrics.md"
     ],
-    "normality": [
+    "stats": [
+        "website/content/terminal/usage/intros/econometrics.md"
+    ],
+    "interest": [
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
+        "website/content/terminal/usage/intros/economy.md"
+    ],
+    "multi": [
+        "website/content/terminal/usage/intros/econometrics.md"
+    ],
+    "normality": [
+        "website/content/terminal/usage/intros/econometrics.md"
     ],
     "unitroot": [
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/quantitative-analysis.md"
     ],
+    "so": [
+        "website/content/terminal/usage/intros/econometrics.md"
+    ],
     "fp": [
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/econometrics.md"
+        "website/content/terminal/usage/intros/econometrics.md"
     ],
     "desc": [
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/terminal/usage/intros/forecast.md"
     ],
-    "cases": [
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/alternative.md"
+    "compare": [
+        "website/content/terminal/usage/intros/econometrics.md"
     ],
     "combine": [
         "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
@@ -1716,9 +664,15 @@
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/econometrics.md"
     ],
-    "dwat": [
+    "root": [
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/econometrics.md"
+    ],
+    "panel": [
+        "website/content/terminal/usage/intros/econometrics.md"
+    ],
+    "dwat": [
+        "website/content/terminal/usage/intros/econometrics.md"
     ],
     "bgod": [
         "website/content/terminal/usage/intros/econometrics.md",
@@ -1729,44 +683,25 @@
         "website/content/sdk/usage/intros/econometrics.md"
     ],
     "granger": [
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/econometrics.md"
+        "website/content/terminal/usage/intros/econometrics.md"
     ],
     "coint": [
-        "website/content/terminal/usage/intros/econometrics.md",
-        "website/content/sdk/usage/intros/econometrics.md"
+        "website/content/terminal/usage/intros/econometrics.md"
     ],
-    "filings": [
-        "website/content/terminal/usage/intros/alternative.md"
+    "curve": [
+        "website/content/terminal/usage/intros/futures.md",
+        "website/content/terminal/usage/intros/economy.md",
+        "website/content/sdk/usage/intros/futures.md"
     ],
     "etf": [
         "website/content/terminal/usage/intros/etf.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "disc": [
-        "website/content/terminal/usage/intros/etf.md",
         "website/content/sdk/usage/intros/etf.md"
     ],
-    "gainers": [
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/etf.md"
-    ],
-    "losers": [
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/etf.md"
-    ],
-    "overview": [
-        "website/content/terminal/usage/intros/etf.md",
+    "futures": [
         "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/intros/alternative.md",
-        "website/content/sdk/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "lookup": [
-        "website/content/terminal/usage/intros/etf.md",
-        "website/content/sdk/usage/intros/etf.md"
+        "website/content/sdk/usage/basics/index.md",
+        "website/content/sdk/usage/intros/futures.md"
     ],
     "gov": [
         "website/content/terminal/usage/intros/economy.md"
@@ -1775,46 +710,47 @@
         "website/content/terminal/usage/intros/economy.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
+    "overview": [
+        "website/content/terminal/usage/intros/economy.md"
+    ],
     "ownership": [
         "website/content/terminal/usage/intros/economy.md"
     ],
-    "gdp": [
+    "hold": [
+        "website/content/terminal/usage/intros/economy.md"
+    ],
+    "macro": [
         "website/content/terminal/usage/intros/economy.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
-    "decompose": [
-        "website/content/terminal/usage/intros/forex.md",
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
+    "rates": [
+        "website/content/terminal/usage/intros/economy.md",
+        "website/content/terminal/usage/intros/forex.md"
     ],
-    "holidays": [
+    "open": [
         "website/content/terminal/usage/intros/forecast.md"
     ],
-    "sales": [
+    "volume": [
         "website/content/terminal/usage/intros/forecast.md"
     ],
-    "corr": [
+    "forecasting": [
         "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "mom": [
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/terminal/usage/intros/forecast.md"
     ],
     "expo": [
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/terminal/usage/intros/forecast.md"
     ],
     "rnn": [
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/terminal/usage/intros/forecast.md"
     ],
     "brnn": [
-        "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/intros/forecast.md"
+        "website/content/terminal/usage/intros/forecast.md"
     ],
     "valuation": [
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/economy.md"
+        "website/content/sdk/usage/basics/index.md"
     ],
     "filter": [
         "website/content/sdk/usage/basics/index.md",
@@ -1824,33 +760,25 @@
         "website/content/sdk/usage/basics/index.md",
         "website/content/sdk/usage/intros/ta.md"
     ],
-    "ex": [
-        "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/intros/etf.md"
+    "account": [
+        "website/content/sdk/usage/guides/api-keys.md"
     ],
-    "iorb": [
+    "projection": [
         "website/content/sdk/usage/intros/fixedincome.md"
     ],
-    "dwpcr": [
+    "icebofa": [
         "website/content/sdk/usage/intros/fixedincome.md"
     ],
-    "usrates": [
+    "hqm": [
         "website/content/sdk/usage/intros/fixedincome.md"
     ],
-    "cp": [
-        "website/content/sdk/usage/intros/fixedincome.md"
+    "summary": [
+        "website/content/sdk/usage/intros/econometrics.md",
+        "website/content/sdk/usage/intros/alternative.md",
+        "website/content/sdk/usage/intros/quantitative-analysis.md"
     ],
-    "tmc": [
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "ffrmc": [
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "tbffr": [
-        "website/content/sdk/usage/intros/fixedincome.md"
-    ],
-    "ov": [
-        "website/content/sdk/usage/intros/alternative.md"
+    "correlation": [
+        "website/content/sdk/usage/intros/econometrics.md"
     ],
     "covid": [
         "website/content/sdk/usage/intros/alternative.md"
@@ -1861,201 +789,57 @@
     "slopes": [
         "website/content/sdk/usage/intros/alternative.md"
     ],
-    "deaths": [
-        "website/content/sdk/usage/intros/alternative.md"
-    ],
-    "decliners": [
+    "disc": [
         "website/content/sdk/usage/intros/etf.md"
     ],
-    "equity": [
+    "gainers": [
+        "website/content/sdk/usage/intros/etf.md"
+    ],
+    "active": [
+        "website/content/sdk/usage/intros/etf.md"
+    ],
+    "decliners": [
         "website/content/sdk/usage/intros/etf.md"
     ],
     "movers": [
         "website/content/sdk/usage/intros/etf.md"
     ],
-    "regions": [
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "indexes": [
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "bigmac": [
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "rtps": [
-        "website/content/sdk/usage/intros/economy.md"
-    ],
-    "cdf": [
+    "order": [
         "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "bw": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "acf": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "qqplot": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "quantile": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "skew": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "kurtosis": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "var": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "es": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md",
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "om": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "cusum": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "capm": [
-        "website/content/sdk/usage/intros/quantitative-analysis.md"
-    ],
-    "ema": [
-        "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forecast.md"
     ],
     "rsi": [
         "website/content/sdk/usage/intros/ta.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
-    "sma": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "wma": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "hma": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "zlma": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "vwap": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "cci": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "macd": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "stoch": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "fisher": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "cg": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "clenow": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "demark": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "adx": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "aroon": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "bbands": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "kc": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
     "atr": [
         "website/content/sdk/usage/intros/ta.md",
-        "website/content/sdk/usage/intros/forex.md",
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "ad": [
-        "website/content/sdk/usage/intros/ta.md"
-    ],
-    "adosc": [
-        "website/content/sdk/usage/intros/ta.md"
+        "website/content/sdk/usage/intros/forex.md"
     ],
     "obv": [
         "website/content/sdk/usage/intros/ta.md"
     ],
-    "holders": [
-        "website/content/sdk/usage/intros/forex.md"
+    "es": [
+        "website/content/sdk/usage/intros/ta.md"
     ],
     "metric": [
         "website/content/sdk/usage/intros/forecast.md"
     ],
-    "score": [
+    "ema": [
         "website/content/sdk/usage/intros/forecast.md"
     ],
-    "season": [
+    "prices": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "corr": [
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "equal": [
         "website/content/sdk/usage/intros/forecast.md"
     ],
+    "indicators": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
     "sto": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "roc": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "delta": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "signal": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "autoselect": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "autoces": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "autoets": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "rwd": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "theta": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "linregr": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "regr": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "nbeats": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "seasonalnaive": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "tcn": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "trans": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "tft": [
-        "website/content/sdk/usage/intros/forecast.md"
-    ],
-    "nhits": [
         "website/content/sdk/usage/intros/forecast.md"
     ]
 }

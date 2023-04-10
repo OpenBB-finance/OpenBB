@@ -56,22 +56,46 @@ def get_sdk_command_list(trail_map: Path) -> list:
     return df["trail"].tolist()
 
 
-def find_commands_in_files(files: list, commands: list) -> dict:
+def get_content_from_md_file(file_path: str, code_blocks_only: bool) -> str:
+    def get_code_blocks_from_md_file(file_path: str) -> str:
+        code_blocks = ""
+        with open(file_path) as f:
+            md = f.read()
+
+            # find fenced code blocks using regular expression
+            fenced_blocks = re.findall(r"```(?:\w+\n)?([\s\S]*?)```", md)
+
+            # find backtick code blocks using regular expression
+            backtick_blocks = re.findall(r"`{3}[\s\S]*?`{3}|`[^`\n]+`", md)
+
+            code_blocks = fenced_blocks + backtick_blocks
+            code_blocks = "".join(code_blocks).replace("\n", "").replace("`", "")
+        return code_blocks
+
+    if code_blocks_only:
+        return get_code_blocks_from_md_file(file_path)
+
+    with open(file_path) as f:
+        return f.read()
+
+
+def find_commands_in_files(
+    files: list, commands: list, code_blocks_only: bool = True
+) -> dict:
     found_commands = defaultdict(list)
 
     for file_path in files:
-        with open(file_path) as file:
-            file_contents = file.read()
+        file_contents = get_content_from_md_file(file_path, code_blocks_only)
 
-            for command in commands:
-                # pattern to match whole words only
-                pattern = rf"\b{re.escape(command)}\b"
-                matches = re.finditer(pattern, file_contents)
+        for command in commands:
+            # pattern to match whole words only
+            pattern = rf"\b{re.escape(command)}\b"
+            matches = re.finditer(pattern, file_contents)
 
-                for _ in matches:
-                    found_commands.setdefault(command, [])
-                    if file_path not in found_commands[command]:
-                        found_commands[command].append(file_path)
+            for _ in matches:
+                found_commands.setdefault(command, [])
+                if file_path not in found_commands[command]:
+                    found_commands[command].append(file_path)
 
     return found_commands
 
@@ -83,8 +107,12 @@ if __name__ == "__main__":
         cmd for trail_map in trail_maps for cmd in get_sdk_command_list(trail_map)
     ]
 
-    terminal_commands = find_commands_in_files(files=md_files, commands=cmds)
-    sdk_commands = find_commands_in_files(files=md_files, commands=cmds_sdk)
+    terminal_commands = find_commands_in_files(
+        files=md_files, commands=cmds, code_blocks_only=True
+    )
+    sdk_commands = find_commands_in_files(
+        files=md_files, commands=cmds_sdk, code_blocks_only=True
+    )
 
     with open("documentation/documentation_commands.json", "w") as fp:
         json.dump(terminal_commands, fp, indent=4)
