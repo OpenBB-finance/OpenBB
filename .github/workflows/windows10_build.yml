@@ -49,7 +49,10 @@ jobs:
           pip install rapidfuzz
           build\conda\cleanup_artifacts.bat
           poetry install -E all -E installer
+          pip uninstall papermill -y
+          pip install git+https://github.com/nteract/papermill.git@main
           pip list
+          PyInstaller build/pyinstaller/terminal.spec --clean
         shell: bash
 
       - name: Upload Artifact
