@@ -4,10 +4,14 @@ sidebar_position: 1
 description: How to get started with OpenBB Bot
 keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,]
 ---
+import AddBotDialogTelegram from "@site/src/components/General/AddBotTelegram";
 
-## Telegram - First Time Setup
+## Telegram Server - First Time Setup
 
-After clicking on the Add to Telegram button it should open a chat with our OpenBB Bot.
+<AddBotDialogTelegram
+/>
+
+After clicking on the "Add bot to Telegram" button it should open a chat with our OpenBB Bot.
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/telegram_step_1.png" alt="telegram bot setup step 1" width="40%" height="40%" />
 

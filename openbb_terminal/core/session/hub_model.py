@@ -284,6 +284,7 @@ def upload_user_field(
     auth_header: str,
     base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
+    silent: bool = False,
 ) -> Optional[requests.Response]:
     """Send user field to the server.
 
@@ -299,15 +300,19 @@ def upload_user_field(
         The base url, by default BASE_URL
     timeout : int
         The timeout, by default TIMEOUT
+    silent : bool
+        Whether to print the status, by default False
 
     Returns
     -------
     Optional[requests.Response]
         The response from the put request.
     """
-    data: Dict[str, dict] = {key: value}
     try:
-        console.print("Sending to OpenBB hub...")
+        console_print = console.print if not silent else lambda *args, **kwargs: None
+        data: Dict[str, dict] = {key: value}
+
+        console_print("Sending to OpenBB hub...")
         response = requests.put(
             url=base_url + "user",
             headers={"Authorization": auth_header},
@@ -315,18 +320,18 @@ def upload_user_field(
             timeout=timeout,
         )
         if response.status_code == 200:
-            console.print("[green]Saved remotely.[/green]")
+            console_print("[green]Saved remotely.[/green]")
         else:
-            console.print("[red]Failed to save remotely.[/red]")
+            console_print("[red]Failed to save remotely.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        console_print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        console_print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
-        console.print("[red]Failed to save remotely.[/red]")
+        console_print("[red]Failed to save remotely.[/red]")
         return None
 
 
@@ -674,7 +679,9 @@ def get_personal_access_token(
     try:
         response = requests.get(url=url, headers=headers, timeout=timeout)
 
-        if response.status_code != 200:
+        if response.status_code == 404:
+            console.print("[red]No personal access token found.[/red]")
+        elif response.status_code != 200:
             console.print("[red]Failed to get personal access token.[/red]")
 
         return response

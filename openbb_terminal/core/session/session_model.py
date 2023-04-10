@@ -9,6 +9,7 @@ import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import (
     remove_log_handlers,
 )
+from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     ProfileModel,
@@ -20,6 +21,8 @@ from openbb_terminal.core.session.current_user import (
     set_current_user,
     set_default_user,
 )
+from openbb_terminal.core.session.sources_handler import get_updated_hub_sources
+from openbb_terminal.core.session.utils import run_thread
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.rich_config import console
@@ -99,6 +102,19 @@ def login(session: dict) -> LoginStatus:
             set_current_user(hub_user)
             Local.apply_configs(configs=configs)
             Local.update_flair()
+
+            # Update user sources in backend
+            updated_sources = get_updated_hub_sources(configs)
+            if updated_sources:
+                run_thread(
+                    Hub.upload_user_field,
+                    {
+                        "key": "features_sources",
+                        "value": updated_sources,
+                        "auth_header": get_current_user().profile.get_auth_header(),
+                        "silent": True,
+                    },
+                )
             return LoginStatus.SUCCESS
         if response.status_code == 401:
             return LoginStatus.UNAUTHORIZED
@@ -109,7 +125,6 @@ def login(session: dict) -> LoginStatus:
 def logout(
     auth_header: Optional[str] = None,
     token: Optional[str] = None,
-    guest: bool = True,
     cls: bool = False,
 ):
     """Logout and clear session.
@@ -121,27 +136,27 @@ def logout(
     token : str, optional
         The token to delete.
         In the terminal we want to delete the current session, so we use the user own token.
-    guest : bool
-        True if the user is guest, False otherwise.
     cls : bool
         Clear the screen.
     """
     if cls:
         system_clear()
 
+    if not auth_header or not token:
+        return
+
     success = True
-    if not guest:
-        if not auth_header or not token:
-            return
+    r = Hub.delete_session(auth_header, token)
+    if not r or r.status_code != 200:
+        success = False
 
-        r = Hub.delete_session(auth_header, token)
-        if not r or r.status_code != 200:
-            success = False
+    if not Local.remove(SESSION_FILE_PATH):
+        success = False
 
-        if not Local.remove_session_file():
-            success = False
+    if not Local.remove(HIST_FILE_PATH):
+        success = False
 
-    if not Local.remove_cli_history_file():
+    if not Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub"):
         success = False
 
     remove_log_handlers()
