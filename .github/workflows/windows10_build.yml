@@ -52,6 +52,7 @@ jobs:
       - name: remove bad files from conda env
         run: |
           conda activate obb
+          pip list
           build\conda\cleanup_artifacts.bat
         shell: cmd
 
