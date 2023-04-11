@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # sectorsflow
 
-Summary of all flow by % of MarketCap by Sector
+This command retrieves a summary of all flows by MarketCap percentage per sector over the past x days.
 
 ### Usage
 

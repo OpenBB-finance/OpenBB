@@ -6,6 +6,30 @@ let globals = {
   cmd_src_idx: null,
 };
 
+function loadingOverlay(message) {
+  const loading = document.getElementById("loading");
+  const loading_text = document.getElementById("loading_text");
+
+  loading_text.innerHTML = message;
+  loading.classList.add("show");
+
+  let is_loaded = setInterval(function () {
+    if (loading.classList.contains("show")) {
+      clearInterval(is_loaded);
+    }
+  }, 10);
+}
+
+const non_blocking = (func, delay) => {
+  let timeout;
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), delay);
+  };
+};
+
 function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   // Main function that plots the graphs and initializes the bar menus
   globals.CHART_DIV = chartdiv;
@@ -16,15 +40,22 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   console.log("plotly_figure", plotly_figure);
   let graphs = plotly_figure;
 
-  const loader = document.getElementById("loader");
-  const saving = document.getElementById("saving");
+  const loading = document.getElementById("loading");
 
   // We add the event listeners for csv file/type changes
   globals.CSV_DIV.querySelector("#csv_file").addEventListener(
     "change",
     function () {
       console.log("file changed");
-      checkFile(globals.CSV_DIV);
+      loadingOverlay("Loading CSV");
+      setTimeout(function () {
+        non_blocking(function () {
+          checkFile(globals.CSV_DIV);
+        }, 2)();
+        setTimeout(function () {
+          loading.classList.remove("show");
+        }, 200);
+      }, 1000);
     }
   );
   globals.CSV_DIV.querySelector("#csv_trace_type").addEventListener(
@@ -34,17 +65,8 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       checkFile(globals.CSV_DIV, true);
     }
   );
-  globals.filename = openbbFilename(graphs);
 
-  const non_blocking = (func, delay) => {
-    let timeout;
-    return function () {
-      const context = this;
-      const args = arguments;
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), delay);
-    };
-  };
+  globals.filename = openbbFilename(graphs);
 
   // Sets the config with the custom buttons
   CONFIG = {
@@ -56,23 +78,33 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     modeBarButtons: [
       [
         {
-          name: "Download Data (Ctrl+S)",
-          icon: Plotly.Icons.disk,
+          name: "Download CSV (Ctrl+Shift+S)",
+          icon: ICONS.downloadCsv,
           click: function (gd) {
-            let saved_csv = document.createElement("div");
-            saved_csv.innerHTML = "Saved CSV";
-            saved_csv.classList.add("saving");
-            saved_csv.classList.add("show");
-            document.body.appendChild(saved_csv);
+            loadingOverlay("Saving CSV");
             setTimeout(function () {
               downloadData(gd);
             }, 500);
             setTimeout(function () {
-              saved_csv.classList.remove("show");
-              setTimeout(function () {
-                document.body.removeChild(saved_csv);
-              }, 500);
+              loading.classList.remove("show");
             }, 1000);
+          },
+        },
+        {
+          name: "Download PNG (Ctrl+S)",
+          icon: ICONS.downloadImage,
+          click: function () {
+            loadingOverlay("Saving PNG");
+            hideModebar();
+            non_blocking(function () {
+              downloadImage(globals.filename, "png");
+              setTimeout(function () {
+                setTimeout(function () {
+                  loading.classList.remove("show");
+                  hideModebar();
+                }, 50);
+              }, 25);
+            }, 2)();
           },
         },
         // {
@@ -82,25 +114,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         //     downloadImage();
         //   },
         // },
-        {
-          name: "Download Plot",
-          icon: Plotly.Icons.camera,
-          click: function () {
-            saving.classList.add("show");
-            loader.classList.add("show");
-            hideModebar();
-            non_blocking(function () {
-              downloadImage();
-              setTimeout(function () {
-                setTimeout(function () {
-                  saving.classList.remove("show");
-                  loader.classList.remove("show");
-                  hideModebar();
-                }, 50);
-              }, 25);
-            }, 2)();
-          },
-        },
       ],
       [
         {
@@ -125,8 +138,17 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         "drawrect",
         "eraseshape",
       ],
-      ["zoomIn2d", "zoomOut2d", "resetScale2d", "zoom2d", "pan2d"],
       [
+        {
+          name: "Overlay chart from CSV (Ctrl+O)",
+          icon: ICONS.plotCsv,
+          click: function () {
+            // We make sure to close any other popup that might be open
+            // before opening the CSV popup
+            closePopup();
+            openPopup("popup_csv");
+          },
+        },
         {
           name: "Add Text (Ctrl+T)",
           icon: ICONS.addText,
@@ -141,16 +163,13 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             openPopup("popup_title");
           },
         },
-        {
-          name: "Plot CSV (Ctrl+Shift+C)",
-          icon: ICONS.plotCsv,
-          click: function () {
-            // We make sure to close any other popup that might be open
-            // before opening the CSV popup
-            closePopup();
-            openPopup("popup_csv");
-          },
-        },
+      ],
+      [
+        "hoverClosestCartesian",
+        "hoverCompareCartesian",
+        "toggleSpikelines",
+      ],
+      [
         {
           name: "Auto Scale (Ctrl+Shift+A)",
           icon: Plotly.Icons.autoscale,
@@ -178,9 +197,11 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             button_pressed(title, active);
           },
         },
-        "hoverClosestCartesian",
-        "hoverCompareCartesian",
-        "toggleSpikelines",
+        "zoomIn2d",
+        "zoomOut2d",
+        "autoScale2d",
+        "zoom2d",
+        "pan2d",
       ],
     ],
   };
@@ -206,6 +227,9 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       pad: 2,
     };
   }
+
+  // RIP: Juan hated it so had to remove it
+  // graphs.layout.xaxis.tickangle = -20;
 
   graphs.layout.autosize = true;
   // We set the height and width to undefined, so that plotly.js can
@@ -259,10 +283,12 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   // We check for the dark mode
   if (graphs.layout.template.layout.mapbox.style == "dark") {
     document.body.style.backgroundColor = "#000000";
+    document.getElementById("openbb_footer").style.color = "#000000";
     graphs.layout.template.layout.paper_bgcolor = "#000000";
     graphs.layout.template.layout.plot_bgcolor = "#000000";
   } else {
     document.body.style.backgroundColor = "#FFFFFF";
+    document.getElementById("openbb_footer").style.color = "#FFFFFF";
   }
 
   // We set the plot config and plot the chart
@@ -283,9 +309,10 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
 
-  // We check if the chart is a 3D mesh to make sure to adjust the
-  // window close interval if exporting plot to image
-  let is_3dmesh = false;
+  // We change the Plotly default Autoscale button icon and title to Reset Axes
+  globals.barButtons["Reset Axes"] = globals.barButtons["Autoscale"];
+  globals.barButtons["Autoscale"].getElementsByTagName("path")[0].setAttribute("d", Plotly.Icons.home.path);
+  globals.barButtons["Autoscale"].setAttribute("data-title", "Reset Axes");
 
   if (globals.CHART_DIV.layout.yaxis.type != undefined) {
     if (globals.CHART_DIV.layout.yaxis.type == "log" && !globals.logYaxis) {
@@ -314,8 +341,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       };
       Plotly.update(globals.CHART_DIV, layout_update);
     }
-  } else {
-    is_3dmesh = true;
   }
 
   if (window.plotly_figure.layout.template.layout.mapbox.style === "light") {
@@ -342,23 +367,29 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       e.preventDefault();
       hideModebar();
     }
-    if (e.ctrlKey && e.key.toLowerCase() == "t") {
-      openPopup("popup_text");
+
+    if (e.ctrlKey) {
+      if (e.shiftKey && e.key.toLowerCase() == "t") {
+        openPopup("popup_title");
+      }
+      else if (e.key.toLowerCase() == "t") {
+        openPopup("popup_text");
+      }
+      else if (e.key.toLowerCase() == "e") {
+        changeColor();
+      }
+      else if (e.shiftKey && e.key.toLowerCase() == "s") {
+        downloadData(globals.CHART_DIV);
+      }
+      else if (e.key.toLowerCase() == "s") {
+        downloadImage(globals.filename, "png");
+      }
+      else if (e.key.toLowerCase() == "o") {
+        e.preventDefault();
+        openPopup("popup_csv");
+      }
     }
-    if (e.ctrlKey && e.key.toLowerCase() == "e") {
-      changeColor();
-    }
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "t") {
-      openPopup("popup_title");
-    }
-    if (e.ctrlKey && e.key.toLowerCase() == "s") {
-      downloadData(globals.CHART_DIV);
-    }
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "c") {
-      e.preventDefault();
-      openPopup("popup_csv");
-    }
-    if (e.key == "Escape") {
+    else if (e.key == "Escape") {
       closePopup();
     }
   });
@@ -377,24 +408,15 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
 
   // We check to see if window.save_png is defined and true
   if (window.save_image != undefined && window.export_image) {
-    // if is_3dmesh is true, we set the close_interval to 1000
-    let close_interval = is_3dmesh ? 1000 : 500;
-
     // We get the extension of the file and check if it is valid
     let filename = window.export_image.split("/").pop();
     const extension = filename.split(".").pop().replace("jpg", "jpeg");
 
-    if (["jpeg", "png", "svg"].includes(extension)) {
-      // We run Plotly.downloadImage to save the chart as an image
-      Plotly.downloadImage(globals.CHART_DIV, {
-        format: extension,
-        width: globals.CHART_DIV.clientWidth,
-        height: globals.CHART_DIV.clientHeight,
-        filename: filename.split(".")[0],
-      });
+    if (["jpeg", "png", "svg", "pdf"].includes(extension)) {
+      hideModebar();
+      non_blocking(function () {
+        downloadImage(filename.split(".")[0], extension);
+      }, 2)();
     }
-    setTimeout(function () {
-      window.close();
-    }, close_interval);
   }
 }

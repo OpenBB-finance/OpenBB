@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # est
 
-Displays earning estimates.
+This command allows the user to retrieve earning estimates for a given stock symbol. This can be used as a helpful tool for investors to get an idea of how a stock may perform in terms of earnings.
 
 ### Usage
 

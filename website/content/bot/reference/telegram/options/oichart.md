@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # oichart
 
-Charts Total Open Interest by Strike Price.
+This command allows users to retrieve a chart of Total Open Interest by Strike Price for the given ticker symbol. This chart provides a visual representation of the open interest on various strike prices for the given ticker symbol, where the size of each point on the graph reflects the amount of open interest. This can be used to analyze the open interest on various strike prices and make informed decisions about the underlying security.
 
 ### Usage
 

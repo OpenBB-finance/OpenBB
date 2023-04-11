@@ -707,8 +707,6 @@ class BaseController(metaclass=ABCMeta):
             if not local_user:
                 console.print(f"[info]email:[/info] {current_user.profile.email}")
                 console.print(f"[info]uuid:[/info] {current_user.profile.uuid}")
-                sync = "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
-                console.print(f"[info]sync:[/info] {sync}")
             else:
                 print_guest_block_msg()
 
@@ -1174,13 +1172,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             dest="weekly",
         )
         parser.add_argument(
-            "--exchange",
-            dest="exchange",
-            action="store_true",
-            default=False,
-            help="Show exchange information.",
-        )
-        parser.add_argument(
             "--performance",
             dest="performance",
             action="store_true",
@@ -1227,11 +1218,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 or (not is_df and not df_stock_candidate)
             ):
                 self.stock = df_stock_candidate
-                if ns_parser.exchange:
-                    self.add_info = stocks_helper.additional_info_about_ticker(
-                        ns_parser.ticker
-                    )
-                    console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
                     and not ns_parser.weekly
@@ -1315,7 +1301,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             help="Coin to get. Must be coin symbol (e.g., btc, eth)",
             dest="coin",
             type=str,
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
 
         parser.add_argument(

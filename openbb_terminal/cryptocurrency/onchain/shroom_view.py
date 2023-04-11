@@ -48,11 +48,7 @@ def display_query(
         print_rich_table(df, limit=limit)
 
         export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "query",
-            df,
-            sheet_name,
+            export, os.path.dirname(os.path.abspath(__file__)), "query", df, sheet_name
         )
 
 

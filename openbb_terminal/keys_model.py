@@ -23,6 +23,7 @@ from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
 
+from openbb_terminal.core.models.credentials_model import LOCAL_CREDENTIALS
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -48,8 +49,9 @@ logger = logging.getLogger(__name__)
 # This format is used by the KeysController and get_keys_info().
 # E.g. tokenterminal -> set_tokenterminal_key & check_tokenterminal_key
 #
-# Don't forget to add the set function to api.py endpoints dictionary.
-# E.g.  "keys.tokenterminal": {"model": "openbb_terminal.keys_model.set_tokenterminal_key"},
+# Don't forget to add it to the SDK.
+# E.g. `keys.av,keys_model.set_av_key`
+# For more info, please refer to the CONTRIBUTING.md file.
 
 API_DICT: Dict = {
     "av": "ALPHA_VANTAGE",
@@ -58,6 +60,7 @@ API_DICT: Dict = {
     "polygon": "POLYGON",
     "intrinio": "INTRINIO",
     "databento": "DATABENTO",
+    "ultima": "ULTIMA",
     "fred": "FRED",
     "news": "NEWSAPI",
     "tradier": "TRADIER",
@@ -89,31 +92,15 @@ API_DICT: Dict = {
 # sorting api key section by name
 API_DICT = dict(sorted(API_DICT.items()))
 
-LOCAL_KEYS = [
-    "RH_USERNAME",
-    "RH_PASSWORD",
-    "DG_USERNAME",
-    "DG_PASSWORD",
-    "DG_TOTP_SECRET",
-    "OANDA_ACCOUNT_TYPE",
-    "OANDA_ACCOUNT",
-    "OANDA_TOKEN",
-    "API_BINANCE_KEY",
-    "API_BINANCE_SECRET",
-    "API_COINBASE_KEY",
-    "API_COINBASE_SECRET",
-    "API_COINBASE_PASS_PHRASE",
-]
-
 
 class KeyStatus(str, Enum):
     """Class to handle status messages and colors"""
 
-    DEFINED_TEST_FAILED = "defined, test failed"
-    NOT_DEFINED = "not defined"
-    DEFINED_TEST_PASSED = "defined, test passed"
-    DEFINED_TEST_INCONCLUSIVE = "defined, test inconclusive"
-    DEFINED_NOT_TESTED = "defined, not tested"
+    DEFINED_TEST_FAILED = "Defined, test failed"
+    NOT_DEFINED = "Not defined"
+    DEFINED_TEST_PASSED = "Defined, test passed"
+    DEFINED_TEST_INCONCLUSIVE = "Defined, test inconclusive"
+    DEFINED_NOT_TESTED = "Defined, not tested"
 
     def __str__(self):
         return self.value
@@ -275,14 +262,13 @@ def handle_credential(name: str, value: str, persist: bool = False):
         Write to .env file. By default, False.
     """
     current_user = get_current_user()
-    sync_enabled = current_user.preferences.SYNC_ENABLED
     local_user = is_local()
 
     set_credential(name, value)
 
     if local_user and persist:
         write_to_dotenv("OPENBB_" + name, value)
-    elif not local_user and sync_enabled and name not in LOCAL_KEYS:
+    elif not local_user and name not in LOCAL_CREDENTIALS:
         upload_config(
             key=name,
             value=str(value),
@@ -333,6 +319,9 @@ def check_av_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -399,6 +388,9 @@ def check_fmp_key(show_output: bool = False) -> str:
     -------
     status: str
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -472,6 +464,9 @@ def check_quandl_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if (
@@ -537,6 +532,9 @@ def check_polygon_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -607,6 +605,9 @@ def check_fred_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_FRED_KEY == "REPLACE_ME":
@@ -675,6 +676,9 @@ def check_news_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
@@ -742,6 +746,9 @@ def check_tradier_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -815,6 +822,9 @@ def check_cmc_key(show_output: bool = False) -> str:
     status: str
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_CMC_KEY == "REPLACE_ME":
@@ -879,6 +889,9 @@ def check_finnhub_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -975,6 +988,9 @@ def check_reddit_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     reddit_keys = [
@@ -1049,6 +1065,7 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False)
     """
 
     handle_credential("API_BITQUERY_KEY", key, persist)
+
     return check_bitquery_key(show_output)
 
 
@@ -1065,6 +1082,9 @@ def check_bitquery_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1102,6 +1122,8 @@ def check_bitquery_key(show_output: bool = False) -> str:
 
 
 def set_twitter_key(
+    key: str,
+    secret: str,
     access_token: str,
     persist: bool = False,
     show_output: bool = False,
@@ -1137,7 +1159,8 @@ def set_twitter_key(
             access_token="example_access_token"
         )
     """
-
+    handle_credential("API_TWITTER_KEY", key, persist)
+    handle_credential("API_TWITTER_SECRET_KEY", secret, persist)
     handle_credential("API_TWITTER_BEARER_TOKEN", access_token, persist)
 
     return check_twitter_key(show_output)
@@ -1156,6 +1179,9 @@ def check_twitter_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
     if current_user.credentials.API_TWITTER_BEARER_TOKEN == "REPLACE_ME":
@@ -1225,7 +1251,6 @@ def set_rh_key(
             password="example_password"
         )
     """
-
     handle_credential("RH_USERNAME", username, persist)
     handle_credential("RH_PASSWORD", password, persist)
 
@@ -1245,6 +1270,9 @@ def check_rh_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1323,6 +1351,9 @@ def check_degiro_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1422,6 +1453,9 @@ def check_oanda_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     oanda_keys = [
@@ -1507,6 +1541,9 @@ def check_binance_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1595,6 +1632,9 @@ def check_coinbase_key(show_output: bool = False) -> str:
     status: str
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if "REPLACE_ME" in [
@@ -1670,6 +1710,9 @@ def check_walert_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_WHALE_ALERT_KEY == "REPLACE_ME":
@@ -1742,6 +1785,9 @@ def check_glassnode_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -1818,6 +1864,9 @@ def check_coinglass_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_COINGLASS_KEY == "REPLACE_ME":
@@ -1889,6 +1938,9 @@ def check_cpanic_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
@@ -1958,6 +2010,9 @@ def check_ethplorer_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2036,6 +2091,9 @@ def check_smartstake_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2122,6 +2180,9 @@ def check_github_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if (
@@ -2182,6 +2243,9 @@ def check_messari_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2253,6 +2317,9 @@ def check_eodhd_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_EODHD_KEY == "REPLACE_ME":  # nosec
@@ -2321,6 +2388,9 @@ def check_santiment_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2402,6 +2472,9 @@ def check_shroom_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_SHROOM_KEY == "REPLACE_ME":
@@ -2477,6 +2550,9 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
@@ -2542,6 +2618,9 @@ def check_stocksera_key(show_output: bool = False):
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_STOCKSERA_KEY == "REPLACE_ME":
@@ -2605,6 +2684,9 @@ def check_intrinio_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
+    if show_output:
+        console.print("Checking status...")
 
     current_user = get_current_user()
 
@@ -2676,6 +2758,9 @@ def check_databento_key(show_output: bool = False) -> str:
         Status of key set
     """
 
+    if show_output:
+        console.print("Checking status...")
+
     current_user = get_current_user()
 
     if current_user.credentials.API_DATABENTO_KEY == "REPLACE_ME":
@@ -2694,6 +2779,77 @@ def check_databento_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("DataBento key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+def set_ultima_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Ultima Insights key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.ultima(key="example_key")
+    """
+
+    handle_credential("API_ULTIMA_KEY", key, persist)
+    return check_ultima_key(show_output)
+
+
+def check_ultima_key(show_output: bool = False) -> str:
+    """Check Ultima Insights key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_ULTIMA_KEY == "REPLACE_ME":
+        logger.info("Ultima Insights key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        r = request(
+            "https://api.ultimainsights.ai/v1/checkAPIKey",
+            headers={
+                "Authorization": f"Bearer {current_user.credentials.API_ULTIMA_KEY}"
+            },
+        )
+        if r.status_code in [403, 401, 429]:
+            logger.warning("Ultima Insights key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            logger.info("Ultima Insights key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("Ultima Insights key defined, test inconclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:

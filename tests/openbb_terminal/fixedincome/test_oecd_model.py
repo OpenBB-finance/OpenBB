@@ -1,7 +1,7 @@
 from datetime import datetime
 
-import pandas as pd
 import pytest
+from pandas import DataFrame
 
 from openbb_terminal.fixedincome import oecd_model
 
@@ -16,5 +16,5 @@ def test_get_interest_rates(recorder, data):
         start_date=datetime.strptime("2022-01-01", "%Y-%m-%d"),
         end_date=datetime.strptime("2022-01-31", "%Y-%m-%d"),
     )
-    assert isinstance(data, pd.DataFrame)
+    assert isinstance(data, DataFrame)
     recorder.capture(data)

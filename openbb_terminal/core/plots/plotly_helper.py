@@ -33,6 +33,7 @@ from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_INCREASING_COLORWAY,
     PLT_TBL_ROW_COLORS,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
@@ -84,31 +85,31 @@ class TerminalStyle:
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
-        self.load_style(plt_style)
         self.apply_console_style(console_style)
 
-    def apply_console_style(self, style: Optional[str] = "") -> None:
+    def apply_console_style(self, style: Optional[str] = None) -> None:
         """Apply the style to the console."""
 
-        if style in self.console_styles_available:
-            json_path: Optional[Path] = self.console_styles_available[style]
-        else:
-            self.load_available_styles()
+        if style:
             if style in self.console_styles_available:
-                json_path = self.console_styles_available[style]
+                json_path: Optional[Path] = self.console_styles_available[style]
             else:
-                console.print("\nInvalid console style. Using default.")
-                json_path = self.console_styles_available.get("dark", None)
+                self.load_available_styles()
+                if style in self.console_styles_available:
+                    json_path = self.console_styles_available[style]
+                else:
+                    console.print(f"\nInvalid console style '{style}', using default.")
+                    json_path = self.console_styles_available.get("dark", None)
 
-        if json_path:
-            self.console_style = self.load_json_style(json_path)
-        else:
-            console.print("Error loading default.")
+            if json_path:
+                self.console_style = self.load_json_style(json_path)
+            else:
+                console.print("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
         if not style:
-            style = get_current_user().preferences.PLOT_STYLE
+            style = get_current_user().preferences.THEME
 
         if style != self.plt_style:
             self.load_style(style)
@@ -243,7 +244,7 @@ class TerminalStyle:
 
 
 theme = TerminalStyle(
-    get_current_user().preferences.PLOT_STYLE, get_current_user().preferences.RICH_STYLE
+    get_current_user().preferences.THEME, get_current_user().preferences.RICH_STYLE
 )
 theme.apply_style()
 
@@ -838,7 +839,7 @@ class OpenBBFigure(go.Figure):
 
     @staticmethod
     def chart_volume_scaling(
-        df_volume: pd.DataFrame, range_x: int = 7
+        df_volume: pd.DataFrame, volume_ticks_x: int = 7
     ) -> Dict[str, list]:
         """Takes df_volume and returns volume_ticks, tickvals for chart volume scaling
 
@@ -846,7 +847,7 @@ class OpenBBFigure(go.Figure):
         ----------
         df_volume : pd.DataFrame
             Dataframe of volume (e.g. df_volume = df["Volume"])
-        range_x : int, optional
+        volume_ticks_x : int, optional
             Number to multiply volume, by default 7
 
         Returns
@@ -871,7 +872,7 @@ class OpenBBFigure(go.Figure):
             floor(first_val * 3),
             floor(first_val * 4),
         ]
-        volume_range = [0, floor(volume_ticks * range_x)]
+        volume_range = [0, floor(volume_ticks * volume_ticks_x)]
 
         return {"range": volume_range, "ticks": tickvals}
 
@@ -882,6 +883,7 @@ class OpenBBFigure(go.Figure):
         volume_col: Optional[str] = "Volume",
         row: Optional[int] = 1,
         col: Optional[int] = 1,
+        volume_ticks_x: int = 7,
     ) -> None:
         """Add in-chart volume to a subplot.
 
@@ -897,11 +899,13 @@ class OpenBBFigure(go.Figure):
             Row number, by default 2
         col : `int`, optional
             Column number, by default 1
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
         """
         colors = np.where(
             df_stock.Open < df_stock[close_col], theme.up_color, theme.down_color
         )
-        vol_scale = self.chart_volume_scaling(df_stock[volume_col])
+        vol_scale = self.chart_volume_scaling(df_stock[volume_col], volume_ticks_x)
         self.add_bar(
             x=df_stock.index,
             y=df_stock[volume_col],
@@ -913,7 +917,7 @@ class OpenBBFigure(go.Figure):
             opacity=0.5,
             secondary_y=False,
         )
-        ticksize = 14 - (self.subplots_kwargs["rows"] // 2)
+        ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
             yaxis=dict(
                 fixedrange=True,
@@ -1073,7 +1077,7 @@ class OpenBBFigure(go.Figure):
             except Exception:
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
-                if strtobool(os.environ.get("DEBUG_MODE", False)):
+                if get_current_system().DEBUG_MODE:
                     console.print_exception()
 
                 # We check if any figures were initialized before the backend failed
@@ -1090,7 +1094,9 @@ class OpenBBFigure(go.Figure):
             legend=dict(
                 tracegroupgap=height / 4.5,
                 groupclick="toggleitem",
-                orientation="v",
+                orientation="v"
+                if not self.layout.legend.orientation
+                else self.layout.legend.orientation,
             ),
             barmode="overlay",
             bargap=0,
@@ -1525,7 +1531,7 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=85, t=60, pad=0)
+            dict(l=80, r=60, b=90, t=40, pad=0)
             if not self._has_secondary_y
             else dict(l=60, r=50, b=85, t=40, pad=0)
         )
@@ -1540,8 +1546,8 @@ class OpenBBFigure(go.Figure):
 
         if not plots_backend().isatty:
             org_margin = self.layout.margin
-            margin = dict(l=40, r=60, b=80, t=50, pad=0)
-            for key, max_val in zip(["l", "r", "b", "t"], [60, 50, 80, 40]):
+            margin = dict(l=40, r=60, b=80, t=50)
+            for key, max_val in zip(["l", "r", "b", "t"], [60, 50, 80, 50]):
                 org = org_margin[key] or 0
                 if (org + margin[key]) > max_val:
                     self.layout.margin[key] = max_val
@@ -1555,7 +1561,8 @@ class OpenBBFigure(go.Figure):
         if (
             not plots_backend().isatty
             or not get_current_user().preferences.PLOT_ENABLE_PYWRY
-            or self._export_image
+            or isinstance(self._export_image, Path)
+            and self._export_image.suffix in [".svg", ".pdf"]
         ):
             self.add_annotation(
                 yref="paper",
@@ -1593,7 +1600,11 @@ class OpenBBFigure(go.Figure):
                 self.layout.margin["l"] += 20
 
             if (yaxis2 and yaxis2.side == "left") or yaxis.side == "left":
-                title = yaxis.title.text if not yaxis2 else yaxis2.title.text
+                title = (
+                    yaxis.title.text
+                    if not yaxis2 or yaxis2.side != "left"
+                    else yaxis2.title.text
+                )
                 xshift = -110 if not title else -135
                 self.layout.margin["l"] += 60
 

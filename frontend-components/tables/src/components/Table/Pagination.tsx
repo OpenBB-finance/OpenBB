@@ -1,8 +1,21 @@
 import clsx from "clsx";
-import { useState } from "react";
-import { DEFAULT_ROWS_PER_PAGE } from ".";
-import useLocalStorage from "../../utils/useLocalStorage";
 import Select from "../Select";
+import { DEFAULT_ROWS_PER_PAGE } from ".";
+
+export function validatePageSize(
+  pageSize: any
+) {
+  if (typeof pageSize !== "number") {
+    if (typeof pageSize === "string" && pageSize.includes("All")) {
+      return pageSize
+    }
+    return DEFAULT_ROWS_PER_PAGE
+  }
+  if (pageSize < 1) {
+    return DEFAULT_ROWS_PER_PAGE
+  }
+  return pageSize
+}
 
 export default function Pagination({
   table,
@@ -20,9 +33,11 @@ export default function Pagination({
       <Select
         value={currentPage}
         onChange={(value) => {
-          setCurrentPage(value);
-          if (value === `All (${totalRows})`) table.setPageSize(totalRows);
-          else table.setPageSize(value);
+          const newValue = validatePageSize(value)
+          console.log(newValue)
+          setCurrentPage(newValue);
+          if (newValue.toString().includes("All")) table.setPageSize(totalRows);
+          else table.setPageSize(newValue);
         }}
         labelType="row"
         label="Rows per page"

@@ -1,7 +1,6 @@
 # pylint: disable=R0902
 import importlib
 import inspect
-import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
@@ -13,6 +12,7 @@ from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
 from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.rich_config import console
 
 PLUGINS_PATH = Path(__file__).parent / "plugins"
@@ -133,6 +133,7 @@ class PlotlyTA(PltTA):
     def subplots(self, value: List[str]):
         self.__subplots__ = value
 
+    # pylint: disable=R0913
     def __plot__(
         self,
         df_stock: Union[pd.DataFrame, pd.Series],
@@ -142,6 +143,7 @@ class PlotlyTA(PltTA):
         volume: bool = True,
         prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
+        volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
         if isinstance(df_stock, pd.Series):
@@ -163,7 +165,9 @@ class PlotlyTA(PltTA):
 
         self.prepost = prepost
 
-        return self.plot_fig(fig=fig, symbol=symbol, candles=candles)
+        return self.plot_fig(
+            fig=fig, symbol=symbol, candles=candles, volume_ticks_x=volume_ticks_x
+        )
 
     @staticmethod
     def plot(
@@ -174,6 +178,7 @@ class PlotlyTA(PltTA):
         volume: bool = True,
         prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
+        volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """Plot a chart with the given indicators.
 
@@ -200,21 +205,28 @@ class PlotlyTA(PltTA):
             Plot pre and post market data, by default False
         fig : OpenBBFigure, optional
             Plotly figure to plot on, by default None
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
         """
         if indicators is None and PLOTLY_TA is not None:
             indicators = PLOTLY_TA.indicators
 
         return PlotlyTA().__plot__(
-            df_stock, indicators, symbol, candles, volume, prepost, fig
+            df_stock, indicators, symbol, candles, volume, prepost, fig, volume_ticks_x
         )
 
     @staticmethod
     def _locate_plugins() -> None:
         """Locate all the plugins in the plugins folder"""
-        path = REPOSITORY_DIRECTORY if hasattr(sys, "frozen") else Path(os.getcwd())
+        path = (
+            Path(sys.executable).parent
+            if hasattr(sys, "frozen")
+            else REPOSITORY_DIRECTORY
+        )
+        current_system = get_current_system()
 
         # This is for debugging purposes
-        if os.environ.get("DEBUG_MODE", "False").lower() == "true":
+        if current_system.DEBUG_MODE:
             console.print(f"[bold green]Loading plugins from {path}[/]")
             console.print("[bold green]Plugins found:[/]")
 
@@ -222,7 +234,7 @@ class PlotlyTA(PltTA):
             python_path = plugin.relative_to(path).with_suffix("")
 
             # This is for debugging purposes
-            if os.environ.get("DEBUG_MODE", "False").lower() == "true":
+            if current_system.DEBUG_MODE:
                 console.print(f"    [bold red]{plugin.name}[/]")
                 console.print(f"        [bold yellow]{python_path}[/]")
                 console.print(f"        [bold bright_cyan]{__package__}[/]")
@@ -387,6 +399,7 @@ class PlotlyTA(PltTA):
         fig: Optional[OpenBBFigure] = None,
         symbol: str = "",
         candles: bool = True,
+        volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """Plot indicators on plotly figure
 
@@ -398,6 +411,8 @@ class PlotlyTA(PltTA):
             Symbol to plot, by default uses the dataframe.name attribute if available or ""
         candles : bool, optional
             Plot a candlestick chart, by default True (if False, plots a line chart)
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
 
         Returns
         -------
@@ -418,7 +433,7 @@ class PlotlyTA(PltTA):
         subplot_row, fig_new = 2, {}
         inchart_index, ma_done = 0, False
 
-        figure = self.process_fig(figure)
+        figure = self.process_fig(figure, volume_ticks_x)
 
         # Aroon indicator is always plotted first since it has 2 subplot rows
         plot_indicators = sorted(
@@ -480,13 +495,16 @@ class PlotlyTA(PltTA):
         figure.update_layout(showlegend=False)
         figure.hide_holidays(self.prepost)
 
+        if not self.show_volume:
+            figure.update_layout(margin=dict(l=20))
+
         # We remove xaxis labels from all but bottom subplot, and we make sure
         # they all match the bottom one
-        xbottom = f"y{subplot_row}"
-        for xa in figure.select_xaxes():
-            if subplot_row == 2:
+        xbottom = f"y{subplot_row+1}"
+        xaxes = list(figure.select_xaxes())
+        for xa in xaxes:
+            if xa == xaxes[-1]:
                 xa.showticklabels = True
-                break
             if not xa.showticklabels and xa.anchor != xbottom:
                 xa.showticklabels = False
             if xa.anchor != xbottom:
@@ -494,13 +512,15 @@ class PlotlyTA(PltTA):
 
         return figure
 
-    def process_fig(self, fig: OpenBBFigure) -> OpenBBFigure:
+    def process_fig(self, fig: OpenBBFigure, volume_ticks_x: int = 7) -> OpenBBFigure:
         """Process plotly figure before plotting indicators
 
         Parameters
         ----------
         fig : OpenBBFigure
             Plotly figure to process
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
 
         Returns
         -------
@@ -550,6 +570,8 @@ class PlotlyTA(PltTA):
             new_subplot.layout.update({layout: fig.layout[layout]})
 
         if self.show_volume:
-            new_subplot.add_inchart_volume(self.df_stock, self.close_column)
+            new_subplot.add_inchart_volume(
+                self.df_stock, self.close_column, volume_ticks_x=volume_ticks_x
+            )
 
         return new_subplot

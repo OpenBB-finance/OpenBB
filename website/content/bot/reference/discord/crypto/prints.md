@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # prints
 
-Last 15 Crypto Prints over last 24hrs.
+This command allows the user to retrieve the Last 15 Crypto Prints over the last 24 hours for the specified coin. The command will provide information on the price, volume, size, and other metrics associated with the prints.
 
 ### Usage
 

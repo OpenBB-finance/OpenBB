@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # futures
 
-Displays Futures.
+This command allows the user to retrieve futures prices on the stock market.
 
 ### Usage
 

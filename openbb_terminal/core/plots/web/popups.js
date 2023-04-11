@@ -1,39 +1,26 @@
 function get_popup(data = null, popup_id = null) {
   let popup = null;
   popup_id = popup_id.replace("popup_", "");
+  const style =
+    "padding: 5px 2px 2px 5px !important; margin: 2px 0 !important;";
 
   if (popup_id == "title") {
-    data = globals.CHART_DIV.layout;
-    let use_xaxis = data.xaxis ? "xaxis" : "xaxis2";
-    let use_yaxis = data.yaxis ? "yaxis" : "yaxis2";
-
     let title = globals.title;
-    let xaxis =
-      "title" in data[use_xaxis] && "text" in data[use_xaxis].title
-        ? data[use_xaxis].title.text
-        : "";
-    let yaxis =
-      "title" in data[use_yaxis] && "text" in data[use_yaxis].title
-        ? data[use_yaxis].title.text
-        : "";
+    data = globals.CHART_DIV.layout;
+    let yaxes = Object.keys(data).filter((k) => k.startsWith("yaxis"));
+    let xaxes = Object.keys(data).filter((k) => k.startsWith("xaxis"));
 
     globals.TITLE_DIV.innerHTML = `
         <div style="display:flex; flex-direction: column; gap: 6px;">
             <div>
             <label for="title_text">Title:</label>
             <textarea
-              id="title_text" style="width: 100%; max-width: 100%;
+              id="title_text" style="${style} width: 100%; max-width: 100%;
               max-height: 200px; margin-top: 8px;" rows="2" cols="20"
-              value="${title}"></textarea>
+              value="${title}">${title}</textarea>
             </div>
-            <div>
-            <label for="title_xaxis">X axis:</label>
-            <input id="title_xaxis" type="text" value="${xaxis}"></input>
-            </div>
-            <div>
-            <label for="title_yaxis">Y axis:</label>
-            <input id="title_yaxis" type="text" value="${yaxis}"></input>
-            </div>
+            <div id="xaxis_div"></div>
+            <div id="yaxis_div"></div>
         </div>
 
         <div style="float: right; margin-top: 20px;">
@@ -42,12 +29,49 @@ function get_popup(data = null, popup_id = null) {
         </div>
         `;
 
+    // if there are multiple titles we create an input for each
+    let yaxis_div = "";
+    for (let i = 0; i < yaxes.length; i++) {
+      if (data[yaxes[i]]?.title?.text != undefined) {
+        let title = data[yaxes[i]].title.text;
+        yaxis_div += `
+            <div style="margin-top: 10px;">
+            <label for="title_${yaxes[i]}">Y axis ${i + 1}:</label>
+            <input id="title_${
+              yaxes[i]
+            }" style="${style}" type="text" value="${title}"></input>
+            </div>
+            `;
+      }
+    }
+    if (yaxis_div != "") {
+      globals.TITLE_DIV.querySelector("#yaxis_div").innerHTML = yaxis_div;
+    }
+
+    let xaxis_div = "";
+    for (let i = 0; i < xaxes.length; i++) {
+      if (data[xaxes[i]]?.title?.text != undefined) {
+        let title = data[xaxes[i]].title.text;
+        xaxis_div += `
+            <div style="margin-top: 10px;">
+            <label for="title_${xaxes[i]}">X axis ${i + 1}:</label>
+            <input id="title_${
+              xaxes[i]
+            }" style="${style}" type="text" value="${title}"></input>
+            </div>
+            `;
+      }
+    }
+    if (xaxis_div != "") {
+      globals.TITLE_DIV.querySelector("#xaxis_div").innerHTML = xaxis_div;
+    }
+
     // when opening the popup, we make sure to focus on the title input
     globals.TITLE_DIV.style.display = "inline-block";
     globals.TITLE_DIV.querySelector("#title_text").focus();
     popup = globals.TITLE_DIV;
   } else if (popup_id == "text") {
-    let has_annotation = false;
+    let has_annotation = data == undefined ? false : true;
     if (data == undefined) {
       data = {
         text: "",
@@ -57,8 +81,6 @@ function get_popup(data = null, popup_id = null) {
         },
         bordercolor: "#822661",
       };
-    } else {
-      has_annotation = true;
     }
 
     // we replace <br> with \n so that the textarea can display the text properly
@@ -75,9 +97,9 @@ function get_popup(data = null, popup_id = null) {
     <div style="margin-bottom: 20px;">
         <label for="popup_textarea"><b>Text:</b>
         <div id="popup_textarea_warning" class="popup_warning">Text is required</div></label><br>
-        <textarea id="addtext_textarea" style="width: 100%; max-width: 100%; max-height: 200px; margin-top: 8px;" rows="4" cols="50" value="${
-          data.text
-        }"
+        <textarea id="addtext_textarea" style="${style}
+          width: 100%; max-width: 100%; max-height: 200px;
+          margin-top: 8px;" rows="4" cols="50" value="${data.text}"
             placeholder="Enter text here">${data.text}</textarea><br>
         </div>
         <div style="display:flex;justify-content: space-between;">
@@ -98,9 +120,9 @@ function get_popup(data = null, popup_id = null) {
         <div style="display:flex;justify-content: space-between;">
         <div>
             <label for="addtext_size"><b>Font size:</b></label>
-            <input style="width: 45px;" type="number" id="addtext_size" value="${
-              data.font.size
-            }"></input>
+            <input style="${style} width: 45px;" type="number" id="addtext_size" value="${
+      data.font.size
+    }"></input>
         </div>
         <div>
             <label for="addtext_above"><b>Position (Above):</b></label>
@@ -154,7 +176,8 @@ function get_popup(data = null, popup_id = null) {
       class="_btn"
       href="https://twitter.com/intent/tweet?text=Check this chart from @openbb_finance - ${data.url}"
       >Share</a>
-      <button onclick="navigator.clipboard.writeText('${data.url}')" style="margin-top: 10px;" class="_btn">Copy to clipboard</button>
+      <button onclick="navigator.clipboard.writeText('${data.url}')" style="margin-top: 10px;"
+        class="_btn">Copy to clipboard</button>
       </div>
       </div>
       `;
@@ -178,11 +201,34 @@ function get_popup_data(popup_id = null) {
   let data = null;
 
   if (popup_id == "title") {
-    data = {
-      title: globals.TITLE_DIV.querySelector("#title_text").value,
-      xaxis: globals.TITLE_DIV.querySelector("#title_xaxis").value,
-      yaxis: globals.TITLE_DIV.querySelector("#title_yaxis").value,
-    };
+    data = { title: globals.TITLE_DIV.querySelector("#title_text").value };
+
+    let xaxis_div = globals.TITLE_DIV.querySelector("#xaxis_div");
+    let yaxis_div = globals.TITLE_DIV.querySelector("#yaxis_div");
+    console.log("xaxis_div: ", xaxis_div, "yaxis_div: ", yaxis_div);
+
+    if (xaxis_div != null) {
+      // We query all inputs that start with 'title_xaxis'
+      let xaxis_inputs = xaxis_div.querySelectorAll(
+        "input[id^=title_xaxis], select[id^=title_xaxis]"
+      );
+      xaxis_inputs.forEach(function (input) {
+        let xaxis_id = input.id.replace("title_", "");
+        data[xaxis_id] = input.value;
+      });
+    }
+
+    if (yaxis_div != null) {
+      // We query all inputs that start with 'title_yaxis'
+      let yaxis_inputs = yaxis_div.querySelectorAll(
+        "input[id^=title_yaxis], select[id^=title_yaxis]"
+      );
+      yaxis_inputs.forEach(function (input) {
+        let yaxis_id = input.id.replace("title_", "");
+        data[yaxis_id] = input.value;
+      });
+    }
+    console.log("Title data:", data);
   } else if (popup_id == "text") {
     data = {
       text: globals.TEXT_DIV.querySelector("#addtext_textarea").value,
@@ -201,7 +247,7 @@ function get_popup_data(popup_id = null) {
 
     // we replace \n with <br> so that line breaks are displayed properly on the graph
     data.text = data.text.replace(/\n/g, "<br>");
-    console.log(data);
+    console.log("Text data:", data);
   } else if (popup_id == "csv") {
     let trace_type = globals.CSV_DIV.querySelector("#csv_trace_type").value;
     if (trace_type == "candlestick") {
@@ -217,7 +263,7 @@ function get_popup_data(popup_id = null) {
           ? true
           : false,
       };
-    } else {
+    } else if (trace_type == "scatter") {
       data = {
         x: globals.CSV_DIV.querySelector("#csv_x").value,
         y: globals.CSV_DIV.querySelector("#csv_y").value,
@@ -230,14 +276,43 @@ function get_popup_data(popup_id = null) {
           ? true
           : false,
       };
-      console.log(data);
+    } else if (trace_type == "bar") {
+      let orientation = globals.CSV_DIV.querySelector("#csv_bar_horizontal")
+        .checked
+        ? "h"
+        : "v";
+      data = {
+        x: globals.CSV_DIV.querySelector("#csv_x").value,
+        y: globals.CSV_DIV.querySelector("#csv_y").value,
+        color: globals.CSV_DIV.querySelector("#csv_color").value,
+        same_yaxis: globals.CSV_DIV.querySelector("#csv_same_yaxis").checked
+          ? true
+          : false,
+        orientation: orientation,
+      };
     }
-    data.name = globals.CSV_DIV.querySelector("#csv_name").value;
-    data.file = globals.CSV_DIV.querySelector("#csv_file");
     data.trace_type = trace_type;
+    data.name = globals.CSV_DIV.querySelector("#csv_name").value;
+    console.log("CSV data:", data);
+    data.file = globals.CSV_DIV.querySelector("#csv_file");
   }
   return data;
 }
+
+const trace_defaults = {
+  overlaying: "y",
+  side: "left",
+  tickfont: { size: 12 },
+  tickpadding: 5,
+  showgrid: false,
+  showline: false,
+  showticklabels: true,
+  showlegend: true,
+  zeroline: false,
+  anchor: "x",
+  type: "linear",
+  autorange: true,
+};
 
 function on_submit(popup_id, on_annotation = null) {
   // popup_id is either 'title', 'text', or 'csv' (for now)
@@ -260,6 +335,7 @@ function on_submit(popup_id, on_annotation = null) {
       }
 
       gd.on("plotly_clickannotation", function (eventData) {
+        console.log("plotly_clickannotation", eventData);
         let annotation = eventData.annotation;
         openPopup("popup_text");
         get_popup(annotation, (popup_id = "text"));
@@ -276,6 +352,7 @@ function on_submit(popup_id, on_annotation = null) {
       });
 
       let clickHandler = function (eventData) {
+        console.log("plotly_click", eventData);
         let x = eventData.points[0].x;
         let yaxis = eventData.points[0].fullData.yaxis;
         let y = 0;
@@ -312,13 +389,20 @@ function on_submit(popup_id, on_annotation = null) {
       return;
     }
   } else if (popup_id == "title") {
-    let yaxis = gd.layout.yaxis ? "yaxis" : "yaxis2";
-    let xaxis = gd.layout.xaxis ? "xaxis" : "xaxis2";
     document.getElementById("title").innerHTML = popup_data.title;
-    let to_update = { title: popup_data.title };
-    to_update[xaxis + ".title"] = popup_data.xaxis;
-    to_update[yaxis + ".title"] = popup_data.yaxis;
-    to_update[yaxis + ".type"] = "linear";
+
+    let to_update = {};
+
+    Object.keys(popup_data).forEach(function (key) {
+      if (key != "title") {
+        to_update[key + ".title"] = popup_data[key];
+      }
+      if (key.includes("yaxis")) {
+        to_update[key + ".type"] = "linear";
+      }
+    });
+
+    console.log(to_update);
 
     Plotly.update(gd, {}, to_update);
   } else if (popup_id == "csv") {
@@ -355,7 +439,25 @@ function on_submit(popup_id, on_annotation = null) {
           }
         });
 
+        // We check how many yaxis have ticklabels on the left
+        let left_yaxis_ticks = Object.keys(gd.layout)
+          .filter((k) => k.startsWith("yaxis"))
+          .map((k) => gd.layout[k])
+          .filter(
+            (yaxis) =>
+              yaxis.side == "left" &&
+              (yaxis.overlaying == "y" ||
+                (yaxis.fixedrange != undefined && yaxis.fixedrange == true))
+          ).length;
+
+        // Multiply by 5 to get the xshift for cmd source text
+        let add_xshift = Math.min(left_yaxis_ticks * 5, 30);
+
+        // We set showlegend's to true
         main_trace.showlegend = true;
+        gd.layout.showlegend = true;
+
+        // Just in case xaxis/yaxis is not defined
         if (main_trace.xaxis == undefined) {
           main_trace.xaxis = "x";
         }
@@ -363,8 +465,12 @@ function on_submit(popup_id, on_annotation = null) {
           main_trace.yaxis = "y";
         }
 
+        // Set the yaxis id
         let yaxis_id = main_trace.yaxis;
         let yaxis;
+
+        // If we want to plot on a secondary yaxis
+        // we get the number of yaxis and add 1 to it
         if (popup_data.same_yaxis == false) {
           let yaxes = Object.keys(gd.layout)
             .filter((k) => k.startsWith("yaxis"))
@@ -373,6 +479,9 @@ function on_submit(popup_id, on_annotation = null) {
           yaxis = `y${yaxes.length + 1}`;
           yaxis_id = `yaxis${yaxes.length + 1}`;
           console.log(`yaxis: ${yaxis} ${yaxis_id}`);
+
+          // If percent change is true we set the yaxis id
+          // in the globals so we can use it later
           if (
             globals.csv_yaxis_id == null &&
             popup_data.percent_change == true
@@ -381,10 +490,35 @@ function on_submit(popup_id, on_annotation = null) {
             globals.csv_yaxis = yaxis;
           }
         } else {
+          // Plot on the same yaxis
           yaxis = main_trace.yaxis.replace("yaxis", "y");
-          yaxis_id = main_trace.yaxis;
         }
 
+        // We get the yaxis ticksuffix
+        let ticksuffix = left_yaxis_ticks > 0 ? "     " : "";
+        if (globals.percent_yaxis_added || globals.added_traces.length > 0) {
+          ticksuffix = "       ".repeat(left_yaxis_ticks);
+        }
+
+        // Bar trace
+        if (popup_data.trace_type == "bar") {
+          trace = {
+            x: data.map(function (row) {
+              return row[popup_data.x];
+            }),
+            y: data.map(function (row) {
+              return row[popup_data.y];
+            }),
+            type: popup_data.trace_type,
+            name: popup_data.name,
+            marker: { color: popup_data.color, opacity: 0.7 },
+            orientation: popup_data.orientation,
+            showlegend: true,
+            yaxis: yaxis,
+          };
+        }
+
+        // Candlestick trace
         if (popup_data.trace_type == "candlestick") {
           trace = {
             x: data.map(function (row) {
@@ -409,9 +543,11 @@ function on_submit(popup_id, on_annotation = null) {
             showlegend: true,
             yaxis: yaxis,
           };
-        } else {
-          gd.layout.showlegend = true;
+        }
 
+        // Scatter trace
+        if (popup_data.trace_type == "scatter") {
+          // We get the first non null value
           orginal_data = data;
           let non_null = data.findIndex(
             (x) => x[popup_data.y] != null && x[popup_data.y] != 0
@@ -446,18 +582,15 @@ function on_submit(popup_id, on_annotation = null) {
             yaxis: popup_data.percent_change ? globals.csv_yaxis : yaxis,
           };
 
+          // For the percent change we add a new yaxis
+          // if it doesn't exist
           if (
             !globals.percent_yaxis_added &&
             popup_data.percent_change == true &&
             popup_data.same_yaxis == false
           ) {
-            let ticksuffix =
-              gd.data.length > 1
-                ? "      ".repeat(globals.added_traces.length + 1)
-                : "";
             gd.layout[yaxis_id] = {
-              overlaying: "y",
-              side: "left",
+              ...trace_defaults,
               title: {
                 text: "% Change",
                 font: {
@@ -465,38 +598,27 @@ function on_submit(popup_id, on_annotation = null) {
                 },
                 standoff: 0,
               },
-              tickfont: { size: 14 },
               ticksuffix: ticksuffix,
               tickformat: ".0%",
-              tickpadding: 5,
-              showgrid: false,
-              showlegend: true,
-              showline: false,
-              showticklabels: true,
-              zeroline: false,
-              anchor: "x",
-              type: "linear",
-              autorange: true,
             };
             globals.percent_yaxis_added = true;
             if (globals.cmd_src_idx != null) {
-              gd.layout.annotations[globals.cmd_src_idx].xshift -=
-                gd.data.length > 1 ? 40 : 35;
-              gd.layout.margin.l += gd.data.length > 1 ? 50 : 45;
+              let xshift = gd.layout.annotations[globals.cmd_src_idx].xshift;
+              xshift -= left_yaxis_ticks > 0 ? 50 + add_xshift : 35;
+
+              // just in case we have a lot of yaxis
+              xshift += xshift < -320 ? 10 + 2 * left_yaxis_ticks : 0;
+
+              gd.layout.annotations[globals.cmd_src_idx].xshift = xshift;
+              gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 + add_xshift : 45;
             }
           }
         }
 
+        // New yaxis and not percent change
         if (!popup_data.percent_change && popup_data.same_yaxis == false) {
-          let ticksuffix = gd.data.length > 1 ? "     " : "";
-          if (globals.percent_yaxis_added || globals.added_traces.length > 0) {
-            ticksuffix = "      ".repeat(globals.added_traces.length + 1);
-          }
-
-          console.log(`data.length: ${gd.data.length}`);
           gd.layout[yaxis_id] = {
-            overlaying: "y",
-            side: "left",
+            ...trace_defaults,
             title: {
               text: popup_data.name,
               font: {
@@ -504,25 +626,21 @@ function on_submit(popup_id, on_annotation = null) {
               },
               standoff: 0,
             },
-            tickfont: { size: 14 },
             ticksuffix: ticksuffix,
-            tickpadding: 5,
-            showgrid: false,
-            showline: false,
-            showticklabels: true,
-            showlegend: true,
-            zeroline: false,
-            anchor: "x",
-            type: "linear",
-            autorange: true,
+            layer: "below traces",
           };
           if (globals.cmd_src_idx != null) {
-            gd.layout.annotations[globals.cmd_src_idx].xshift -=
-              globals.added_traces.length > 1 ? 45 : 35;
-            gd.layout.margin.l += globals.added_traces.length > 1 ? 50 : 45;
+            let xshift = gd.layout.annotations[globals.cmd_src_idx].xshift;
+            xshift -= left_yaxis_ticks > 0 ? 40 + add_xshift : 40;
+
+            // just in case we have a lot of yaxis
+            xshift += xshift < -320 ? 10 + 2 * left_yaxis_ticks : 0;
+
+            gd.layout.annotations[globals.cmd_src_idx].xshift = xshift;
+            gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 : 45;
           }
         }
-        console.log(trace);
+        console.log("trace: ", trace);
 
         globals.added_traces.push(trace.name);
 
@@ -536,7 +654,7 @@ function on_submit(popup_id, on_annotation = null) {
         // We empty the fields and innerHTML after the plot is made
         globals.CSV_DIV.querySelector("#csv_colors").innerHTML = "";
         globals.CSV_DIV.querySelector("#csv_columns").innerHTML = "";
-        globals.CSV_DIV.querySelector("#csv_scatter_options").style.display =
+        globals.CSV_DIV.querySelector("#csv_plot_yaxis_options").style.display =
           "none";
 
         globals.CSV_DIV.querySelectorAll("input").forEach(function (input) {

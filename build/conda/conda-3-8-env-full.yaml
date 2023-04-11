@@ -1,9 +1,0 @@
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - python=3.8
-  - pip
-  - conda-forge::lightgbm=3.3.3
-  - pip:
-    - poetry==1.3.2

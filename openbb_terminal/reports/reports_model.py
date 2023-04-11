@@ -5,12 +5,12 @@ import logging
 
 # pylint: disable=R1732, R0912
 import os
-from ast import literal_eval
 from datetime import datetime
 from pathlib import Path
 from threading import Thread
 from typing import Any, Dict, List, Union
 
+import nbformat
 import pandas as pd
 import papermill as pm
 from ipykernel.kernelapp import IPKernelApp
@@ -85,6 +85,7 @@ REPORT_CHOICES = {
         "--symbol": {c: None for c in STOCKS_TICKERS + ETF_TICKERS},
     },
 }
+TARGET_TAG = "parameters"
 
 
 @log_start_end(log=logger)
@@ -157,43 +158,34 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
 
     input_path = add_ipynb_extension(input_path)
 
-    with open(input_path, encoding="utf-8") as file:
-        notebook_content = file.read()
+    with open(input_path) as f:
+        nb = nbformat.read(f, as_version=nbformat.NO_CONVERT)
 
-    # Look for the metadata cell to understand if there are parameters required by the report
-    metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
+    target_tag = TARGET_TAG
 
-    # Locate position of the data of interest and get parameters
-    if notebook_content.find(metadata_cell) >= 0:
-        position = notebook_content.find(metadata_cell)
-    else:
-        return {}
+    cell_lines = []
+    for cell in nb.cells:
+        # Filter cells by tag
+        if target_tag in cell.metadata.get("tags", []):
+            # Split cell source into separate lines
+            lines = cell.source.split("\n")
+            # Remove empty and commented lines
+            lines = [
+                line for line in lines if line.strip() and not line.startswith("#")
+            ]
+            cell_lines.extend(lines)
 
-    metadata = notebook_content[position:]  # noqa: E203
-    cell_start = 'source": '
-    cell_end = "]"
-    start_position = metadata.find(cell_start)
-    params = metadata[
-        start_position : metadata.find(cell_end, start_position) + 1  # noqa: E203
-    ]
+    parameters_dict = {}
+    for line in cell_lines:
+        # Extract key and value from each line
+        key, value = line.split("=")
+        key = key.strip()
+        value = value.strip()
+        # Add key-value pair to dictionary and remove quotes
+        parameters_dict[key] = value.replace('"', "")
 
-    # Make sure that the parameters provided are relevant
-    if "parameters" in notebook_content:
-        parameters_names = [
-            param.split("=")[0][:-1]
-            for param in literal_eval(params.strip('source": '))
-            if param[0] not in ["#", "\n"]
-        ]
-        parameters_values = [
-            param.split("=")[1][2:-2]
-            for param in literal_eval(params.strip('source": '))
-            if param[0] not in ["#", "\n"]
-        ]
-
-    if "report_name" in parameters_names:
-        parameters_names.remove("report_name")
-
-    parameters_dict = dict(zip(parameters_names, parameters_values))
+    if "report_name" in parameters_dict:
+        parameters_dict.pop("report_name")
 
     return parameters_dict
 

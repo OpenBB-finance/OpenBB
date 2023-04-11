@@ -87,7 +87,7 @@ d_signals = {
 def get_screener_data(
     preset_loaded: str = "top_gainers",
     data_type: str = "overview",
-    limit: int = 10,
+    limit: int = -1,
     ascend: bool = False,
 ):
     """Screener Overview

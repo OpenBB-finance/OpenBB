@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # watchlist_remove
 
-Removes a ticker from your watchlist.
+This command allows the user to remove a stock from their watchlist.
 
 ### Usage
 

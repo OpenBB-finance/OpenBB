@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # screener
 
-Displays stock screener results according to chosen signal.
+This command allows the user to retrieve stock screener results according to the chosen technical signal.
 
 ### Usage
 

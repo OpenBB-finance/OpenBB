@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # compfees
 
-Get protocol fees over time
+This command allows users to retrieve the Protocol fees over time for the given project.
 
 ### Usage
 
