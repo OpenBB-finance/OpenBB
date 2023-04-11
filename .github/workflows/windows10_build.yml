@@ -46,10 +46,16 @@ jobs:
         run: |
           conda info
           pip list
-          pip install rapidfuzz==2.15.1
-          pip install numpy==1.23.5
           pip install virtualenv==20.7.2
-          build\\conda\\cleanup_artifacts.bat
+        shell: bash -l {0}
+
+      - name: remove bad files from conda env
+        run: |
+          build\conda\cleanup_artifacts.bat
+        shell: cmd
+
+      - name: Set up poetry and build pyinstaller
+        run: |
           poetry install -E all -E installer
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
