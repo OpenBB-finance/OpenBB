@@ -228,12 +228,12 @@ class AccountController(BaseController):
             print_guest_block_msg()
         else:
             if ns_parser:
-                user_response = Hub.list_routines(
+                response = Hub.list_routines(
                     auth_header=get_current_user().profile.get_auth_header(),
                     page=ns_parser.page,
                     size=ns_parser.size,
                 )
-                df, page, pages = get_routines_info(user_response)
+                df, page, pages = get_routines_info(response)
                 if not df.empty:
                     self.REMOTE_CHOICES += list(df["name"])
                     self.update_runtime_choices()
