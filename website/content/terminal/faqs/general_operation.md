@@ -34,7 +34,7 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 
 <details><summary>Why does a specific menu or command not exist?</summary>
 
-It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://docs.openbb.co/terminal/quickstart/installation) to download the most recent release.
+It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://my.openbb.dev/app/sdk/installation) to download the most recent release.
 
 Do note that it is also possible that the menu or command has been deprecated. If this is oversight, please reach out to us [here](https://openbb.co/support).
 
@@ -42,7 +42,7 @@ Do note that it is also possible that the menu or command has been deprecated. I
 
 <details><summary>Charts do not display on Linux/WSL or Docker installation.</summary>
 
-Check that X-11, or similar, is installed, open, and configured. Follow the instructions pertaining to the system here: [https://docs.openbb.co/terminal/quickstart/installation#3-configuring-your-x-server-to-show-plots](https://docs.openbb.co/terminal/quickstart/installation#3-configuring-your-x-server-to-show-plots)
+Check that X-11, or similar, is installed, open, and configured. Follow the instructions pertaining to the system here: [https://docs.openbb.co/terminal/installation/docker](https://docs.openbb.co/terminal/installation/docker)
 
 </details>
 

@@ -33,17 +33,17 @@ jobs:
       - name: Trigger M1 & Intel MacOs Build
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: macos_build.yml
+          workflow: macos-build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
 
   trigger-docker-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger docker Build
+      - name: Trigger Docker Build
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: docker.yml
+          workflow: docker-build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
   
   trigger-pypi-build:
