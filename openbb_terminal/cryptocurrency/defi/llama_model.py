@@ -45,7 +45,7 @@ def get_chains() -> pd.DataFrame:
         raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
     try:
         df = pd.DataFrame(response.json())
-        df.replace({float(np.nan): None}, inplace=True)
+        df.fillna(value=None, inplace=True)
         df = df.set_index("name")
     except Exception as e:
         logger.exception("Wrong response type: %s", str(e))

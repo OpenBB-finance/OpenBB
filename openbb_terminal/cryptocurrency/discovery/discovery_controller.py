@@ -109,15 +109,14 @@ class DiscoveryController(BaseController):
         )
 
         parser.add_argument(
-            "-mc",
-            "--marketcap",
+            "--mc",
             action="store_true",
             dest="marketcap",
             default=False,
             help="Include the market cap rank",
         )
         parser.add_argument(
-            "-tvl",
+            "--tvl",
             action="store_true",
             dest="tvl",
             default=False,

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.discovery import cryptostats_model
 from openbb_terminal.decorators import log_start_end
@@ -20,6 +21,7 @@ def display_fees(
     limit: int = 15,
     sortby: str = "",
     ascend: bool = True,
+    sheet_name: Optional[str] = None,
     export: str = "",
 ) -> None:
     """Display crypto with most fees paid [Source: CryptoStats]
@@ -62,8 +64,5 @@ def display_fees(
     )
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "fees",
-        df,
+        export, os.path.dirname(os.path.abspath(__file__)), "fees", df, sheet_name
     )
