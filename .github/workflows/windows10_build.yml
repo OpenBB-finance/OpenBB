@@ -54,7 +54,6 @@ jobs:
           conda activate obb
           pip list
           build\conda\cleanup_artifacts.bat
-        shell: cmd
 
       - name: Set up poetry and build pyinstaller
         run: |
