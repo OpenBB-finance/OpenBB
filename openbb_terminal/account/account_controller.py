@@ -5,14 +5,14 @@ from typing import Dict, List, Optional
 
 from openbb_terminal.account.account_model import (
     get_default_routines_info,
-    get_routines_info,
+    get_personal_routines_info,
     read_routine,
     save_routine,
     set_login_called,
 )
 from openbb_terminal.account.account_view import (
-    display_default_routines_list,
-    display_routines_list,
+    display_default_routines,
+    display_personal_routines,
 )
 from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import (
@@ -233,16 +233,16 @@ class AccountController(BaseController):
                     page=ns_parser.page,
                     size=ns_parser.size,
                 )
-                df, page, pages = get_routines_info(response)
+                df, page, pages = get_personal_routines_info(response)
                 if not df.empty:
                     self.REMOTE_CHOICES += list(df["name"])
                     self.update_runtime_choices()
-                    display_routines_list(df, page, pages)
+                    display_personal_routines(df, page, pages)
                 else:
                     console.print("[red]No routines found.[/red]")
 
                 df = get_default_routines_info(self.DEFAULT_ROUTINES)
-                display_default_routines_list(df)
+                display_default_routines(df)
 
     @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):

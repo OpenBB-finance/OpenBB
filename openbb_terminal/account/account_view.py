@@ -3,8 +3,8 @@ import pandas as pd
 from openbb_terminal.helper_funcs import print_rich_table
 
 
-def display_routines_list(df: pd.DataFrame, page: int, pages: int):
-    """Display the routines list.
+def display_personal_routines(df: pd.DataFrame, page: int, pages: int):
+    """Display the routines.
 
     Parameters
     ----------
@@ -29,8 +29,8 @@ def display_routines_list(df: pd.DataFrame, page: int, pages: int):
         )
 
 
-def display_default_routines_list(df: pd.DataFrame):
-    """Display the default routines list.
+def display_default_routines(df: pd.DataFrame):
+    """Display the default routines.
 
     Parameters
     ----------

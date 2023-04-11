@@ -55,7 +55,7 @@ def get_default_routines_info(routines: List[Dict[str, str]]) -> pd.DataFrame:
     return df
 
 
-def get_routines_info(response) -> Tuple[pd.DataFrame, int, int]:
+def get_personal_routines_info(response) -> Tuple[pd.DataFrame, int, int]:
     """Get the routines list.
 
     Parameters
