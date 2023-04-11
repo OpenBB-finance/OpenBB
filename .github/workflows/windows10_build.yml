@@ -28,41 +28,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Set up miniconda using the environment yaml file within the repo
-      - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2.2.0
+      - name: Set up Python & Create OpenBB Environment
+        uses: actions/setup-python@v4
         with:
-          miniconda-version: "latest"
-          auto-update-conda: true
-          channels: conda-forge,defaults
-          show-channel-urls: true
-          channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env.yaml
-          activate-environment: obb
-          auto-activate-base: false
-          use-only-tar-bz2: true # Needed for caching some reason
+          python-version: '3.9'
 
       - name: Create and start virtual environment
         run: |
-          conda info
-          pip list
-          pip install virtualenv==20.7.2
-        shell: bash -l {0}
-
-      - name: remove bad files from conda env
-        run: |
-          conda activate obb
-          pip list
-          build\conda\cleanup_artifacts.bat
-
-      - name: Set up poetry and build pyinstaller
-        run: |
-          poetry install -E all -E installer
-          pip uninstall papermill -y
-          pip install git+https://github.com/nteract/papermill.git@main
-          pip list
-          PyInstaller build/pyinstaller/terminal.spec --clean
-        shell: bash -l {0}
+          python -m venv venv
+          source venv/Scripts/activate
+          python -m pip install --upgrade pip
+          python -m pip install setuptools==64.0.2 wheel
+          python -m pip install -r requirements-full.txt
+          python -m pip uninstall papermill -y
+          python -m pip install git+https://github.com/nteract/papermill.git@main
+          python -m PyInstaller build/pyinstaller/terminal.spec --clean
+        shell: bash
 
       - name: zip the file
         run: |
