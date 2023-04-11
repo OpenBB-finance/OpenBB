@@ -703,7 +703,7 @@ def test_list_routines(auth_header, page, size, base_url, timeout, status_code):
         assert (
             kwargs["url"]
             == base_url
-            + f"terminal/script?fields=name%2Cdescription&page={page}&size={size}"
+            + f"terminal/script?fields=name%2Cdescription%2Cversion%2Cupdated_date&page={page}&size={size}"
         )
         assert kwargs["headers"] == {"Authorization": auth_header}
         assert kwargs["timeout"] == timeout

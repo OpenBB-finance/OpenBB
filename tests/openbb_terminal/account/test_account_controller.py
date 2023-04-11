@@ -70,6 +70,14 @@ def vcr_config():
     }
 
 
+@pytest.fixture(autouse=True)
+def fetch_routines(mocker):
+    path_controller = "openbb_terminal.account.account_controller"
+    mocker.patch(
+        target=f"{path_controller}.AccountController.fetch_default_routines",
+    )
+
+
 @pytest.fixture(name="test_user")
 def fixture_test_user(mocker):
     mocker.patch(
@@ -187,11 +195,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help(mocker, test_user):
-    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
+    controller = account_controller.AccountController(queue=None)
     controller.print_help()
 
 
