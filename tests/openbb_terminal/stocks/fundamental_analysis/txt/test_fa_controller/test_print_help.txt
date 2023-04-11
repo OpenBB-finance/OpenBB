@@ -19,7 +19,7 @@ Management and Ownership:
     customer           list of customers of the company                                [CSIMarket]
 
 Financial Statements:
-    income             income statements of the company                                [FinancialModelingPrep, Polygon, AlphaVantage, EODHD, YahooFinance]
+    income             income statements of the company                                [Polygon, FinancialModelingPrep, AlphaVantage, EODHD, YahooFinance]
     balance            balance sheet statements of the company                         [FinancialModelingPrep, Polygon, AlphaVantage, EODHD, YahooFinance]
     cash               cash flow statements of the company                             [FinancialModelingPrep, Polygon, AlphaVantage, EODHD, YahooFinance]
     growth             growth of financial statement items and ratios                  [FinancialModelingPrep]
