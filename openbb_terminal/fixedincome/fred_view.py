@@ -1086,7 +1086,7 @@ def plot_usrates(
 
     if raw:
         # was a -iloc so we need to flip the index as we use head
-        df = pd.DataFrame(df, columns=[parameter])
+        df = pd.DataFrame(df, columns=[series_id])
         df = df.sort_index(ascending=False)
         print_rich_table(
             df,
@@ -1101,7 +1101,7 @@ def plot_usrates(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[parameter]) / 100,
+        pd.DataFrame(df, columns=[series_id]) / 100,
         sheet_name,
         fig,
     )
