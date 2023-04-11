@@ -77,10 +77,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: OpenBB-Windows10-ENV
-          path: release.zip
+          path: .
 
       - name: unzip artifact for deployment
-        run: Expand-Archive release.zip -DestinationPath .
+        run: Expand-Archive release.zip -DestinationPath dist
         shell: pwsh
 
       - name: Move Files into App Folder
