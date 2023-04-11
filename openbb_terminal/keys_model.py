@@ -49,8 +49,9 @@ logger = logging.getLogger(__name__)
 # This format is used by the KeysController and get_keys_info().
 # E.g. tokenterminal -> set_tokenterminal_key & check_tokenterminal_key
 #
-# Don't forget to add the set function to api.py endpoints dictionary.
-# E.g.  "keys.tokenterminal": {"model": "openbb_terminal.keys_model.set_tokenterminal_key"},
+# Don't forget to add it to the SDK.
+# E.g. `keys.av,keys_model.set_av_key`
+# For more info, please refer to the CONTRIBUTING.md file.
 
 API_DICT: Dict = {
     "av": "ALPHA_VANTAGE",
@@ -59,6 +60,7 @@ API_DICT: Dict = {
     "polygon": "POLYGON",
     "intrinio": "INTRINIO",
     "databento": "DATABENTO",
+    "ultima": "ULTIMA",
     "fred": "FRED",
     "news": "NEWSAPI",
     "tradier": "TRADIER",
@@ -2777,6 +2779,77 @@ def check_databento_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("DataBento key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+def set_ultima_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Ultima Insights key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.ultima(key="example_key")
+    """
+
+    handle_credential("API_ULTIMA_KEY", key, persist)
+    return check_ultima_key(show_output)
+
+
+def check_ultima_key(show_output: bool = False) -> str:
+    """Check Ultima Insights key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_ULTIMA_KEY == "REPLACE_ME":
+        logger.info("Ultima Insights key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        r = request(
+            "https://api.ultimainsights.ai/v1/checkAPIKey",
+            headers={
+                "Authorization": f"Bearer {current_user.credentials.API_ULTIMA_KEY}"
+            },
+        )
+        if r.status_code in [403, 401, 429]:
+            logger.warning("Ultima Insights key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            logger.info("Ultima Insights key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("Ultima Insights key defined, test inconclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:

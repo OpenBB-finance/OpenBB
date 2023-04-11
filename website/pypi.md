@@ -22,7 +22,7 @@ The command below provides access to the core functionalities behind the [OpenBB
 pip install openbb
 ```
 
-If you wish to utilize our **Portfolio Optimization** or **Machine Learning / Artificial Intelligence** toolkits, please see instructions [here](https://docs.openbb.co/sdk/quickstart/installation).
+If you wish to utilize our **Portfolio Optimization** or **Machine Learning / Artificial Intelligence** toolkits, please see instructions [here](https://docs.openbb.co/sdk/installation).
 
 ## Usage
 

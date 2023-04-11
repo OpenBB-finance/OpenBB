@@ -15,7 +15,8 @@
     ],
     "news": [
       "Feedparser",
-      "NewsApi"
+      "NewsApi",
+      "Ultima"
     ],
     "load": [
       "YahooFinance",

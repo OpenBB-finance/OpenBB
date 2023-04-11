@@ -457,14 +457,14 @@ def test_clear_user_configs_success():
         "openbb_terminal.core.session.hub_model.requests.put",
         return_value=mock_response,
     ) as requests_put_mock:
-        result = hub_model.clear_user_configs("auth_header")
+        result = hub_model.clear_user_configs("config", "auth_header")
 
         assert result.status_code == mock_response.status_code
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}}
+        assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -476,14 +476,14 @@ def test_clear_user_configs_failure():
         "openbb_terminal.core.session.hub_model.requests.put",
         return_value=mock_response,
     ) as requests_put_mock:
-        result = hub_model.clear_user_configs("auth_header")
+        result = hub_model.clear_user_configs("config", "auth_header")
 
         assert result.status_code == mock_response.status_code
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}}
+        assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -492,14 +492,14 @@ def test_clear_user_configs_timeout():
         "openbb_terminal.core.session.hub_model.requests.put",
         side_effect=requests.exceptions.Timeout,
     ) as requests_put_mock:
-        result = hub_model.clear_user_configs("auth_header")
+        result = hub_model.clear_user_configs("config", "auth_header")
 
         assert result is None
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}}
+        assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -508,14 +508,14 @@ def test_clear_user_configs_connection_error():
         "openbb_terminal.core.session.hub_model.requests.put"
     ) as requests_put_mock:
         requests_put_mock.side_effect = requests.exceptions.ConnectionError()
-        result = hub_model.clear_user_configs("auth_header")
+        result = hub_model.clear_user_configs("config", "auth_header")
 
         assert result is None
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}}
+        assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -523,14 +523,14 @@ def test_clear_user_configs_exception():
     with patch(
         "openbb_terminal.core.session.hub_model.requests.put", side_effect=Exception
     ) as requests_put_mock:
-        result = hub_model.clear_user_configs("auth_header")
+        result = hub_model.clear_user_configs("config", "auth_header")
 
         assert result is None
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}}
+        assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 

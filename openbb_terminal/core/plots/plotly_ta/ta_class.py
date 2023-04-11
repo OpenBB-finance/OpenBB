@@ -1,7 +1,6 @@
 # pylint: disable=R0902
 import importlib
 import inspect
-import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
@@ -219,7 +218,11 @@ class PlotlyTA(PltTA):
     @staticmethod
     def _locate_plugins() -> None:
         """Locate all the plugins in the plugins folder"""
-        path = REPOSITORY_DIRECTORY if hasattr(sys, "frozen") else Path(os.getcwd())
+        path = (
+            Path(sys.executable).parent
+            if hasattr(sys, "frozen")
+            else REPOSITORY_DIRECTORY
+        )
         current_system = get_current_system()
 
         # This is for debugging purposes
@@ -497,11 +500,11 @@ class PlotlyTA(PltTA):
 
         # We remove xaxis labels from all but bottom subplot, and we make sure
         # they all match the bottom one
-        xbottom = f"y{subplot_row}"
-        for xa in figure.select_xaxes():
-            if subplot_row == 2:
+        xbottom = f"y{subplot_row+1}"
+        xaxes = list(figure.select_xaxes())
+        for xa in xaxes:
+            if xa == xaxes[-1]:
                 xa.showticklabels = True
-                break
             if not xa.showticklabels and xa.anchor != xbottom:
                 xa.showticklabels = False
             if xa.anchor != xbottom:

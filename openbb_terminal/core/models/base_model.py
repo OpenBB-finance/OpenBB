@@ -11,7 +11,7 @@ class BaseModel:
     def __repr__(self) -> str:
         """Return string representation of model."""
         dataclass_repr = ""
-        for key, value in self.__dict__.items():
+        for key, value in sorted(self.__dict__.items()):
             if key.startswith("_"):
                 continue
             dataclass_repr += f"    {key}='{value}', \n"

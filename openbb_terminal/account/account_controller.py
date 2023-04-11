@@ -1,18 +1,16 @@
 import argparse
 import logging
-import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
 from openbb_terminal.account.account_model import (
     get_routines_info,
+    read_routine,
+    save_routine,
     set_login_called,
 )
 from openbb_terminal.account.account_view import display_routines_list
-from openbb_terminal.core.session import (
-    hub_model as Hub,
-    local_model as Local,
-)
+from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -73,21 +71,12 @@ class AccountController(BaseController):
     def get_routines(self):
         """Get routines"""
         current_user = get_current_user()
-        routines = {
+        return {
             filepath.name: filepath
-            for filepath in current_user.preferences.USER_ROUTINES_DIRECTORY.glob(
+            for filepath in current_user.preferences.USER_ROUTINES_DIRECTORY.rglob(
                 "*.openbb"
             )
         }
-        user_folder = (
-            current_user.preferences.USER_ROUTINES_DIRECTORY
-            / get_current_user().profile.get_uuid()
-        )
-        if os.path.exists(user_folder):
-            routines.update(
-                {filepath.name: filepath for filepath in user_folder.rglob("*.openbb")}
-            )
-        return routines
 
     def print_help(self):
         """Print help"""
@@ -146,7 +135,6 @@ class AccountController(BaseController):
                 logout(
                     auth_header=current_user.profile.get_auth_header(),
                     token=current_user.profile.get_token(),
-                    guest=is_local(),
                     cls=True,
                 )
                 self.print_help()
@@ -172,7 +160,8 @@ class AccountController(BaseController):
                 console.print("")
                 if i.lower() in ["y", "yes"]:
                     Hub.clear_user_configs(
-                        auth_header=get_current_user().profile.get_auth_header()
+                        config="features_keys",
+                        auth_header=get_current_user().profile.get_auth_header(),
                     )
                 else:
                     console.print("[info]Aborted.[/info]")
@@ -263,7 +252,7 @@ class AccountController(BaseController):
             print_guest_block_msg()
         else:
             if ns_parser:
-                routine = Local.get_routine(file_name=" ".join(ns_parser.file))
+                routine = read_routine(file_name=" ".join(ns_parser.file))
                 if routine:
                     description = " ".join(ns_parser.description)
 
@@ -350,7 +339,7 @@ class AccountController(BaseController):
                         script = data.get("script", "")
                         if script:
                             file_name = f"{name}.openbb"
-                            file_path = Local.save_routine(
+                            file_path = save_routine(
                                 file_name=file_name,
                                 routine=script,
                             )
@@ -361,7 +350,7 @@ class AccountController(BaseController):
                                 )
                                 console.print("")
                                 if i.lower() in ["y", "yes"]:
-                                    file_path = Local.save_routine(
+                                    file_path = save_routine(
                                         file_name=file_name,
                                         routine=script,
                                         force=True,

@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - stats.oecd.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGEXP.TOT.PC_GDP.A/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod=2019-01-01&endPeriod=2021-12-31
+  response:
+    body:
+      string: "\uFEFF\"LOCATION\",\"INDICATOR\",\"SUBJECT\",\"MEASURE\",\"FREQUENCY\",\"TIME\",\"Value\",\"Flag
+        Codes\"\r\n\"AUT\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",48.6085967216922,\r\n\"AUT\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",56.8016615890176,\r\n\"BEL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",51.8551118260924,\r\n\"BEL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",58.9013938524177,\r\n\"BEL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",55.4919695264851,\r\n\"CZE\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",41.0539034978515,\r\n\"CZE\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",47.218779880861,\r\n\"CZE\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",46.5136951016064,\r\n\"DNK\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",49.6677815860473,\r\n\"DNK\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",53.536109597429,\r\n\"DNK\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",50.8037824697248,\r\n\"FIN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",53.3419773365908,\r\n\"FIN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",57.1875078768936,\r\n\"FIN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",55.632951653944,\r\n\"FRA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",55.3520112732218,\r\n\"FRA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",61.4962157033918,\r\n\"FRA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",59.0464118486767,\r\n\"DEU\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",44.9907867536551,\r\n\"DEU\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",50.4081716552682,\r\n\"DEU\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",51.2528354272229,\r\n\"GRC\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",47.8191509478284,\r\n\"GRC\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",59.6913345535773,\r\n\"GRC\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",57.4477644809249,\r\n\"HUN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",46.053643113883,\r\n\"HUN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",51.0830071611429,\r\n\"HUN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",48.4183719418293,\r\n\"ISL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",43.323366269126,\r\n\"ISL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",50.8410228336566,\r\n\"ISL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",49.2338666318099,\r\n\"IRL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",24.2526564106501,\r\n\"IRL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",27.3451145494445,\r\n\"IRL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",24.8225103512021,\r\n\"ITA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",48.4713620944776,\r\n\"ITA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",56.8157197058884,\r\n\"ITA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",55.3388950166617,\r\n\"JPN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",38.9410278488963,\r\n\"JPN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",47.1522906331203,\r\n\"JPN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",44.4634517536427,\r\n\"KOR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",33.8711376228431,\r\n\"KOR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",38.132117760867,\r\n\"LUX\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",43.1292969710192,\r\n\"LUX\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",46.7314892871268,\r\n\"LUX\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",42.8884265734014,\r\n\"NLD\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",42.1242105392624,\r\n\"NLD\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",47.831343452224,\r\n\"NLD\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",46.6012966569978,\r\n\"NOR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",51.5524413747894,\r\n\"NOR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",58.4808111895412,\r\n\"NOR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",49.1061309810371,\r\n\"POL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",41.8758693497727,\r\n\"POL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",48.2473931329973,\r\n\"POL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",44.2112801015874,\r\n\"PRT\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",42.451000029761,\r\n\"PRT\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",49.2438768564906,\r\n\"PRT\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",47.8093040419106,\r\n\"SVK\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",40.5294791687745,\r\n\"SVK\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",44.7651842625833,\r\n\"SVK\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",46.3408329067916,\r\n\"ESP\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",42.2839424397818,\r\n\"ESP\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",51.9478277514358,\r\n\"ESP\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",50.616733590644,\r\n\"SWE\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",49.1359249083941,\r\n\"SWE\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",52.0699258395987,\r\n\"SWE\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",49.4104949798976,\r\n\"CHE\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",33.2390189049783,\r\n\"CHE\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",38.3991785139141,\r\n\"GBR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",40.7991518745075,\r\n\"GBR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",52.3973333257489,\r\n\"GBR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",48.4061639135142,\r\n\"USA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",38.453032639857,\r\n\"USA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",47.3115551435357,\r\n\"USA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",44.9326415378956,\r\n\"EST\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",39.38846906701,\r\n\"EST\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",44.869862924544,\r\n\"EST\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",41.4712553534017,\r\n\"ISR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",39.1502478373854,\r\n\"ISR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",45.397211258932,\r\n\"ISR\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",40.8474055407831,\r\n\"SVN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",43.1784955297933,\r\n\"SVN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",51.159823944033,\r\n\"SVN\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",49.2932817787653,\r\n\"AUS\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",44.1645773037342,\r\n\"AUS\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",46.2792350963916,\r\n\"LVA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",38.150250768898,\r\n\"LVA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",42.1524428315862,\r\n\"LVA\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",43.9643966200994,\r\n\"COL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",33.0224098831396,\r\n\"COL\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",37.2100660946673,\r\n\"CRI\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",34.2720764587726,\r\n\"LTU\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2019\",34.7381864646641,\r\n\"LTU\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",42.6771921468714,\r\n\"LTU\",\"GGEXP\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",37.5000122202973,\r\n"
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST,GET,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - close
+      Content-Disposition:
+      - attachment;filename=DP_LIVE_02042023191916051.csv
+      Content-Type:
+      - text/csv
+      Date:
+      - Sun, 02 Apr 2023 17:19:15 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

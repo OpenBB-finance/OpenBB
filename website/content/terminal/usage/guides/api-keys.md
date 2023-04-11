@@ -794,6 +794,25 @@ Click on, "Open Account", to start the sign-up process. After the account has be
 
 </details>
 
+### Ultima Insights
+
+> Ultima Insights' News Monitor is a platform that harnesses the power of GPT + LLMs to help deliver better, more relevant news to investors. We help find the news & tell you why it's important before it's on the front page of Bloomberg.
+
+<details>
+<summary>Instructions</summary>
+
+Go to: https://ultimainsights.ai/
+
+![Ultima Insights](https://user-images.githubusercontent.com/1911913/229215125-e3419788-eef3-4389-a3bd-5c08f3333347.png)
+
+Click on, "Get Started", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://beta.ultimainsights.ai/my-account/generate-api-key) and click "Generate Key". Copy the API key to the clipboard, and enter this key into the OpenBB Terminal with:
+
+```console
+/keys/ultima REPLACE_WITH_KEY
+```
+
+</details>
+
 ### Whale Alert
 
 > Whale Alert continuously collects and analyzes billions of blockchain transactions and related-off chain data from hundreds of reliable sources and converts it into an easy to use standardized format. Our world-class analytics and custom high speed database solutions process transactions the moment they are made, resulting in the largest and most up-to-date blockchain dataset in the world.

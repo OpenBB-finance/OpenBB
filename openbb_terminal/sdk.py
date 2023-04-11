@@ -46,7 +46,7 @@ class OpenBBSDK:
         SDKLogger()
         self.login = lib.sdk_session.login
         self.logout = lib.sdk_session.logout
-        self.news = lib.common_feedparser_model.get_news
+        self.news = lib.common_ultima_newsmonitor_model.get_news
         self.whoami = lib.sdk_session.whoami
         SDKLogger._try_to_login(self)
 
@@ -400,6 +400,7 @@ class OpenBBSDK:
             `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
             `twitter`: Set Twitter key\n
+            `ultima`: Set Ultima Insights key\n
             `walert`: Set Walert key\n
         """
 
@@ -515,6 +516,7 @@ class OpenBBSDK:
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
+            `news`: Get news for a given term and source. [Source: Feedparser]\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Gets ticker quote from FMP\n
             `search`: Search selected query for tickers.\n

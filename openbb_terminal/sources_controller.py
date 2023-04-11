@@ -3,10 +3,10 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import argparse
-import json
 import logging
+import os
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from openbb_terminal.core.session.constants import SOURCES_URL
 
@@ -17,25 +17,16 @@ from openbb_terminal.core.session.current_user import (
     is_local,
     set_sources,
 )
-from openbb_terminal.core.session.hub_model import upload_config
+from openbb_terminal.core.session.hub_model import upload_user_field
+from openbb_terminal.core.session.sources_handler import write_sources
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
 
-# pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
-# pylint:disable=import-outside-toplevel
-
 logger = logging.getLogger(__name__)
-
-
-def unique(sequence):
-    seen = set()
-    return [x for x in sequence if not (x in seen or seen.add(x))]
-
-
-# TODO: This menu needs to be refactored
 
 
 class SourcesController(BaseController):
@@ -46,78 +37,48 @@ class SourcesController(BaseController):
         "set",
     ]
     PATH = "/sources/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
-
-        self.commands_with_sources: Dict[str, List[str]] = {}
-        self.json_doc: dict = {}
-        self.update_json_doc()
-
+        self.source = "default"
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["get"] = {c: None for c in list(self.commands_with_sources.keys())}
-            choices["set"] = {c: None for c in list(self.commands_with_sources.keys())}
-            for cmd in list(self.commands_with_sources.keys()):
-                choices["set"][cmd] = {c: None for c in self.commands_with_sources[cmd]}
+            self.choices: dict = self.choices_default
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
-    def update_json_doc(self):
-        """Update the json doc. If local, read from file."""
+    def update_print_help(self):
+        """Update print help"""
+        sources_file = get_current_user().preferences.USER_DATA_SOURCES_FILE
         if is_local():
-            try:
-                sources_path = Path(
-                    get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE
-                )
-                with open(sources_path) as file:
-                    sources_dict = json.load(file)
-            except Exception as e:
-                msg = (
-                    f"Failed to read sources file {sources_path}, set a valid file"
-                    " to use this menu."
-                )
-                raise Exception(msg) from e
+            if Path(sources_file).exists() and os.stat(sources_file).st_size > 0:
+                self.source = sources_file
+        else:
+            self.source = SOURCES_URL
 
-            set_sources(sources_dict)
-        self.json_doc = get_current_user().sources.sources_dict
-        self.generate_commands_with_sources()
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
 
-    def generate_commands_with_sources(self):
-        """Generate choices"""
-        for context in self.json_doc:
-            for menu in self.json_doc[context]:
-                if isinstance(self.json_doc[context][menu], Dict):
-                    for submenu in self.json_doc[context][menu]:
-                        if isinstance(self.json_doc[context][menu][submenu], Dict):
-                            for subsubmenu in self.json_doc[context][menu][submenu]:
-                                self.commands_with_sources[
-                                    f"{context}_{menu}_{submenu}_{subsubmenu}"
-                                ] = self.json_doc[context][menu][submenu][subsubmenu]
-                        else:
-                            self.commands_with_sources[
-                                f"{context}_{menu}_{submenu}"
-                            ] = self.json_doc[context][menu][submenu]
-                else:
-                    self.commands_with_sources[f"{context}_{menu}"] = self.json_doc[
-                        context
-                    ][menu]
+        Overrides the parent class function to handle github org/repo path convention.
+        See `BaseController.parse_input()` for details.
+        """
+        cmd_filter = r"((set\s+--cmd\s+|set\s+-c\s+|set\s+|get\s+--cmd\s+|get\s+-c\s+|get\s+).*?("
+        for cmd in get_current_user().sources.choices:
+            cmd = cmd.replace("/", r"\/")
+            cmd_filter += f"{cmd}|"
+        cmd_filter += ")*)"
+
+        commands = parse_and_split_input(an_input=an_input, custom_filters=[cmd_filter])
+        return commands
 
     def print_help(self):
         """Print help"""
         mt = MenuText("sources/")
-        mt.add_param(
-            "_source",
-            get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE
-            if is_local()
-            else SOURCES_URL,
-        )
+        mt.add_param("_source", self.source)
         mt.add_raw("\n")
         mt.add_info("_info_")
         mt.add_cmd("get")
         mt.add_cmd("set")
-
         console.print(text=mt.menu_text, menu="Data Sources")
 
     @log_start_end(log=logger)
@@ -127,15 +88,15 @@ class SourcesController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="get",
-            description="Get sources associated with a command and the one selected by default, using 'get <command>'.",
+            description="Get sources associated with a command and the one selected by default.",
         )
         parser.add_argument(
             "-c",
             "--cmd",
             action="store",
             dest="cmd",
-            choices=list(self.commands_with_sources.keys()),
-            required="-h" not in other_args,
+            choices=list(get_current_user().sources.choices.keys()),
+            required="-h" not in other_args and "--help" not in other_args,
             help="Command that we want to check the available data sources and the default one.",
             metavar="COMMAND",
         )
@@ -143,25 +104,19 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.update_json_doc()
-            try:
-                the_item = self.commands_with_sources[ns_parser.cmd]
-            except KeyError:
-                console.print(
-                    [f"[red]'{ns_parser.cmd}' is not a valid command.[/red]\n"]
-                )
-                return
-            if the_item:
-                console.print(
-                    f"\n[param]Default   :[/param] {self.commands_with_sources[ns_parser.cmd][0]}"
-                )
-                console.print(
-                    f"[param]Available :[/param] {', '.join(self.commands_with_sources[ns_parser.cmd])}\n"
-                )
-            else:
+            choices = get_current_user().sources.choices
+            cmd_defaults = choices.get(ns_parser.cmd, None)
+            if cmd_defaults is None:
+                console.print(f"[red]'{ns_parser.cmd}' is not a valid command.[/red]\n")
+            elif len(cmd_defaults) == 0:
                 console.print("This command has no data sources available.\n")
+            else:
+                console.print(
+                    f"[param]Default   :[/param] {cmd_defaults[0]}\n"
+                    f"[param]Available :[/param] {', '.join(cmd_defaults)}"
+                )
+        self.update_print_help()
 
-    # pylint: disable=R0912
     @log_start_end(log=logger)
     def call_set(self, other_args):
         """Process set command"""
@@ -176,7 +131,8 @@ class SourcesController(BaseController):
             "--cmd",
             action="store",
             dest="cmd",
-            choices=list(self.commands_with_sources.keys()),
+            choices=list(get_current_user().sources.choices.keys()),
+            required="-h" not in other_args and "--help" not in other_args,
             help="Command that we to select the default data source.",
             metavar="COMMAND",
         )
@@ -186,123 +142,50 @@ class SourcesController(BaseController):
             action="store",
             dest="source",
             type=str,
+            required="-h" not in other_args and "--help" not in other_args,
             help="Data source to use by default on specified command.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-            if "-s" not in other_args and "--source" not in other_args:
-                other_args.insert(2, "-s")
+
+        if (
+            other_args
+            and len(other_args) >= 2
+            and "-s" not in other_args
+            and "--source" not in other_args
+        ):
+            other_args.insert(2, "-s")
+
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.update_json_doc()
+            choices = get_current_user().sources.choices
+            if ns_parser.source in choices[ns_parser.cmd]:
+                choices[ns_parser.cmd].remove(ns_parser.source)
+                choices[ns_parser.cmd].insert(0, ns_parser.source)
+                set_sources(choices)
 
-            success, valid_sources = self.update_dict_and_valid_sources(ns_parser)
-
-            if success:
-                set_sources(self.json_doc)
                 if is_local():
-                    try:
-                        self.write_json()
-                        self.update_dictionary()
-                        console.print(
-                            "[green]The data source was specified successfully.\n[/green]"
-                        )
-                    except Exception as e:
-                        console.print(
-                            f"[red]Failed to write preferred data sources to file: "
-                            f"{get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
-                        )
-                        console.print(f"[red]{e}[/red]")
+                    write_sources(
+                        sources=choices,
+                        path=Path(
+                            get_current_user().preferences.USER_DATA_SOURCES_FILE
+                        ),
+                    )
                 else:
-                    key = str(ns_parser.cmd).replace("_", "/")
-                    valid = self.commands_with_sources[ns_parser.cmd]
-                    valid.remove(ns_parser.source)
-                    valid.insert(0, ns_parser.source)
-                    value = ", ".join(valid)
-                    upload_config(
-                        key=key,
-                        value=value,
-                        type_="sources",
+                    upload_user_field(
+                        key="features_sources",
+                        value=choices,
                         auth_header=get_current_user().profile.get_auth_header(),
                     )
+                    console.print("")
+                console.print(
+                    f"Default data source for '{ns_parser.cmd}' set to "
+                    f"'{ns_parser.source}'.\n"
+                )
             else:
                 console.print(
-                    f"[red]The data source selected is not valid, select one from: {', '.join(valid_sources)}.\n[/red]"
+                    f"[red]'{ns_parser.source}' is not a valid data source for "
+                    f"'{ns_parser.cmd}' command.[/red]\n"
+                    f"[param]\nAvailable :[/param] {', '.join(choices[ns_parser.cmd])}\n"
                 )
-
-    def update_dict_and_valid_sources(self, ns_parser):
-        """Update dictionary and valid sources"""
-        menus = ns_parser.cmd.split("_")
-        num_menus = len(menus)
-        valid_sources = list()
-        success = True
-
-        # TODO: Change this to be recursive and handle any number of menus
-
-        # Update dictionary
-        if num_menus == 1:
-            if ns_parser.source not in self.json_doc[menus[0]]:
-                success = False
-                valid_sources = self.json_doc[menus[0]]
-            else:
-                self.json_doc[menus[0]] = unique(
-                    [ns_parser.source] + self.json_doc[menus[0]]
-                )
-        elif num_menus == 2:
-            if ns_parser.source not in self.json_doc[menus[0]][menus[1]]:
-                success = False
-                valid_sources = self.json_doc[menus[0]][menus[1]]
-            else:
-                self.json_doc[menus[0]][menus[1]] = unique(
-                    [ns_parser.source] + self.json_doc[menus[0]][menus[1]]
-                )
-        elif num_menus == 3:
-            if ns_parser.source not in self.json_doc[menus[0]][menus[1]][menus[2]]:
-                success = False
-                valid_sources = self.json_doc[menus[0]][menus[1]][menus[2]]
-            else:
-                self.json_doc[menus[0]][menus[1]][menus[2]] = unique(
-                    [ns_parser.source] + self.json_doc[menus[0]][menus[1]][menus[2]]
-                )
-        elif num_menus == 4:
-            if (
-                ns_parser.source
-                not in self.json_doc[menus[0]][menus[1]][menus[2]][menus[3]]
-            ):
-                success = False
-                valid_sources = self.json_doc[menus[0]][menus[1]][menus[2]][menus[3]]
-            else:
-                self.json_doc[menus[0]][menus[1]][menus[2]][menus[3]] = unique(
-                    [ns_parser.source]
-                    + self.json_doc[menus[0]][menus[1]][menus[2]][menus[3]]
-                )
-
-        return success, valid_sources
-
-    def write_json(self):
-        """Write json to file"""
-        with open(
-            get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE,
-            "w",
-        ) as f:
-            json.dump(self.json_doc, f, indent=4)
-
-    def update_dictionary(self):
-        """Update dictionary with new data sources"""
-        for context in self.json_doc:
-            for menu in self.json_doc[context]:
-                if isinstance(self.json_doc[context][menu], Dict):
-                    for submenu in self.json_doc[context][menu]:
-                        if isinstance(self.json_doc[context][menu][submenu], Dict):
-                            for subsubmenu in self.json_doc[context][menu][submenu]:
-                                self.commands_with_sources[
-                                    f"{context}_{menu}_{submenu}_{subsubmenu}"
-                                ] = self.json_doc[context][menu][submenu][subsubmenu]
-                        else:
-                            self.commands_with_sources[
-                                f"{context}_{menu}_{submenu}"
-                            ] = self.json_doc[context][menu][submenu]
-                else:
-                    self.commands_with_sources[f"{context}_{menu}"] = self.json_doc[
-                        context
-                    ][menu]
+        self.update_print_help()
