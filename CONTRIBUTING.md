@@ -518,9 +518,19 @@ Any new features that do not contain unit tests will not be accepted.
 
 ### Open a Pull Request
 
+For starters, you should ensure that you branch is up to date with the `develop` branch. To do that, one can run the following commands:
+
+```bash
+git fetch upstream
+git checkout develop
+git merge upstream/develop
+```
+
+After that, you can create a new branch for your feature. E.g. `git checkout -b feature/AmazingFeature`.
+
 Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`.
 
-> Note that we follow gitflow naming convention, so your branch name should be prefixed with `feature/` or `hotfix/` depending on the type of work you are doing.
+> Note that we follow gitflow naming convention, so your branch name should be prefixed with `feature/` or `hotfix/` depending on the type of work you are doing. To learn more, please refer to [Branch Naming Conventions](#branch-naming-conventions).
 
 A user may create a **Draft Pull Request** when there is the intention to discuss implementation with the team.
 
