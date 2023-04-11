@@ -1,11 +1,12 @@
 import React from "react";
-import LetteringLogo from "@site/src/components/Icons/LetteringLogo";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import DarkBlueRadialGradient from "../components/Icons/RadialGradients/DarkBlue";
 import RubyRedRadialGradient from "../components/Icons/RadialGradients/RubyRed";
+import { useIFrameContext } from "@site/src/theme/Root";
 
 export default function NotFound() {
+  const { isIFrame } = useIFrameContext();
   return (
     <Layout title="404 | OpenBB Docs">
       <div className="flex flex-col items-center justify-center my-auto p-10 relative overflow-hidden min-h-[60vh] 2xl:min-h-[70vh]">
@@ -13,7 +14,7 @@ export default function NotFound() {
         <RubyRedRadialGradient className="absolute opacity-40 -right-[1000px] w-[1600px] h-[1600px] lg:-right-[1000px] lg:opacity-40 -top-20 xl:-top-60 xl:-right-[800px] 2xl:opacity-50" />
 
         <img
-          src="img/404.png"
+          src="/img/404.png"
           className="shadow-none"
           width={612}
           height={271}
@@ -29,7 +30,10 @@ export default function NotFound() {
             If you think something is broken, please report a problem.
           </p>
           <div className="flex flex-col md:flex-row gap-6 mt-10 justify-center w-full">
-            <Link to="/" className="_btn">
+            <Link
+              to={isIFrame ? "/terminal/usage/basics" : "/"}
+              className="_btn"
+            >
               Return Home
             </Link>
             <a

@@ -11,7 +11,7 @@ class StocksRoot(Category):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -326,7 +326,9 @@ class StocksFundamentalAnalysis(Category):
         self.overview = lib.stocks_fa_av_model.get_overview
         self.profile = lib.stocks_fa_fmp_model.get_profile
         self.pt = lib.stocks_fa_business_insider_model.get_price_target_from_analysts
-        self.pt_chart = lib.stocks_fa_business_insider_view.price_target_from_analysts
+        self.pt_chart = (
+            lib.stocks_fa_business_insider_view.display_price_target_from_analysts
+        )
         self.rating = lib.stocks_fa_fmp_model.get_rating
         self.ratios = lib.stocks_fa_fmp_model.get_key_ratios
         self.revfc = lib.stocks_fa_seeking_alpha_model.get_estimates_rev
