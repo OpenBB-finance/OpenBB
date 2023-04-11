@@ -301,7 +301,7 @@ class OpenBBFigure(go.Figure):
         self._feature_flags_applied = False
         self._exported = False
         self._cmd_xshift = 0
-        self._bar_width = 0.2
+        self._bar_width = 0.15
         self._export_image: Optional[Union[Path, str]] = ""
 
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
@@ -914,7 +914,7 @@ class OpenBBFigure(go.Figure):
             yaxis="y2",
             row=row,
             col=col,
-            opacity=0.5,
+            opacity=0.7,
             secondary_y=False,
         )
         ticksize = 13 - (self.subplots_kwargs["rows"] // 2)

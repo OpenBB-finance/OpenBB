@@ -1,7 +1,9 @@
 let globals = {
   dark_mode: false,
   modebarHidden: false,
+  volume: {},
   added_traces: [],
+  old_nticks: {},
   csv_yaxis_id: null,
   cmd_src_idx: null,
 };
@@ -398,6 +400,83 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     });
   }
 
+  // We find all xaxis that have showticklabels set to true
+  let XAXIS = Object.keys(globals.CHART_DIV.layout)
+    .filter((x) => x.startsWith("xaxis"))
+    .filter((x) => globals.CHART_DIV.layout[x].showticklabels);
+
+  let TRACES = globals.CHART_DIV.data.filter((trace) =>
+    trace?.name?.startsWith("Volume")
+  );
+
+  window.addEventListener("resize", function () {
+    // We check to see if the window.innerWidth is smaller than 900px
+    let layout_update = {};
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let tick_size =
+      height > 420 && width < 920 ? 9 : height > 420 && width < 500 ? 10 : 8;
+
+    if (width < 920) {
+      // We hide the modebar and set the number of ticks to 5
+      TRACES.forEach((trace) => {
+        if (trace.type == "bar") {
+          trace.opacity = 1;
+          trace.marker.line.width = 0.09;
+          if (globals.volume.yaxis == undefined) {
+            globals.volume.yaxis = "yaxis" + trace.yaxis.replace("y", "");
+            layout_update[globals.volume.yaxis + ".tickfont.size"] = tick_size;
+
+            globals.volume.tickfont =
+              globals.CHART_DIV.layout[globals.volume.yaxis].tickfont;
+
+            globals.CHART_DIV.layout.margin.l -= 40;
+          }
+        }
+      });
+
+      XAXIS.forEach((x) => {
+        if (globals.old_nticks?.[x] == undefined) {
+          layout_update[x + ".nticks"] = 6;
+          globals.old_nticks[x] = globals.CHART_DIV.layout[x].nticks || 10;
+        }
+      });
+
+      modebar.style.display = "none";
+      globals.modebarHidden = true;
+    } else if (globals.modebarHidden) {
+      // We show the modebar
+      modebar.style.display = "flex";
+      globals.modebarHidden = false;
+
+      if (globals.old_nticks != undefined) {
+        XAXIS.forEach((x) => {
+          if (globals.old_nticks[x] != undefined) {
+            layout_update[x + ".nticks"] = globals.old_nticks[x];
+            globals.old_nticks[x] = undefined;
+          }
+        });
+      }
+
+      if (globals.volume.yaxis != undefined) {
+        TRACES.forEach((trace) => {
+          if (trace.type == "bar") {
+            trace.opacity = 0.5;
+            trace.marker.line.width = 0.2;
+            layout_update[globals.volume.yaxis + ".tickfont.size"] =
+              globals.volume.tickfont.size + 3;
+            globals.CHART_DIV.layout.margin.l += 40;
+            globals.volume.yaxis = undefined;
+          }
+        });
+      }
+    }
+
+    if (Object.keys(layout_update).length > 0) {
+      Plotly.relayout(globals.CHART_DIV, layout_update);
+    }
+  });
+
   // We check to see if window.save_png is defined and true
   if (window.save_image != undefined && window.export_image) {
     // We get the extension of the file and check if it is valid
@@ -411,17 +490,4 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       }, 2)();
     }
   }
-
-  window.addEventListener("resize", function () {
-    // We check to see if the window is smaller than 675px
-    if (window.innerWidth < 675) {
-      // We hide the modebar
-      modebar.style.display = "none";
-      globals.modebarHidden = true;
-    } else if (globals.modebarHidden) {
-      // We show the modebar
-      modebar.style.display = "flex";
-      globals.modebarHidden = false;
-    }
-  });
 }
