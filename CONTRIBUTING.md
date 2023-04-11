@@ -1442,6 +1442,24 @@ At that point the user goes into the `dps` menu and runs the command `psi` with 
 
 In order to help users with a powerful autocomplete, we have implemented our own (which can be found [here](/openbb_terminal/custom_prompt_toolkit.py)).
 
+The queue, discussed in the previous section [Queue and pipeline](#queue-and-pipeline), is expected to link together with the autocompletion in order to provide the user with the available options for each command.
+Here is an example of how it will look like:
+
+```bash
+2023 Apr 11, 11:41 (🦋) /stocks/dps/ $ psi
+                                            --nyse
+                                            --help
+                                            -h
+                                            --export
+                                            --raw
+                                            --limit
+                                            -l
+                                            --source
+```
+
+> Where `nyse`, `help`, `h`, `export`, `raw`, `limit`, `l` and `source` are the available options for the `psi` command.
+> Those are selectable using the arrow keys and the `tab` key.
+
 The list of options for each command is automatically generated, if you're interested take a look at its implementation [here](/openbb_terminal/core/completer/choices.py).
 
 To leverage this functionality, you need to add the following line to the top of the desired controller:
