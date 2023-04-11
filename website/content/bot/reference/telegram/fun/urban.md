@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # urban
 
-Searches on the Urban Dictionary.
+This command allows the user to search for a definition of a word on Urban Dictionary.
 
 ### Usage
 

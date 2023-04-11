@@ -13,7 +13,7 @@ import { useVirtual } from "react-virtual";
 import Select from "../Select";
 import { formatNumberMagnitude, fuzzyFilter, isEqual } from "../../utils/utils";
 import DraggableColumnHeader from "./ColumnHeader";
-import Pagination from "./Pagination";
+import Pagination, { validatePageSize } from "./Pagination";
 import Export from "./Export";
 import Timestamp from "./Timestamp";
 import FilterColumns from "./FilterColumns";
@@ -33,8 +33,8 @@ function getCellWidth(row, column) {
     const indexLabel = row.hasOwnProperty("index")
       ? "index"
       : row.hasOwnProperty("Index")
-      ? "Index"
-      : null;
+        ? "Index"
+        : null;
     const indexValue = indexLabel ? row[indexLabel] : null;
     const value = row[column];
     const valueType = typeof value;
@@ -94,18 +94,29 @@ function getCellWidth(row, column) {
   }
 }
 
-export default function Table({ data, columns, title }: any) {  // source = ""
-  const [colorTheme, setTheme] = useDarkMode();
+export default function Table({
+  data,
+  columns,
+  title,
+  initialTheme,
+}: {
+  data: any[];
+  columns: any[];
+  title: string;
+  initialTheme: "light" | "dark";
+}) {
+  const [colorTheme, setTheme] = useDarkMode(initialTheme);
   const [darkMode, setDarkMode] = useState(
-    colorTheme === "light" ? true : false
+    colorTheme === "dark" ? true : false
   );
-  const toggleDarkMode = (checked) => {
+  const toggleDarkMode = (checked: boolean) => {
     setTheme(colorTheme);
     setDarkMode(checked);
   };
   const [currentPage, setCurrentPage] = useLocalStorage(
     "rowsPerPage",
-    DEFAULT_ROWS_PER_PAGE
+    DEFAULT_ROWS_PER_PAGE,
+    validatePageSize
   );
   const [advanced, setAdvanced] = useLocalStorage("advanced", false);
   const [colors, setColors] = useLocalStorage("colors", false);
@@ -122,7 +133,7 @@ export default function Table({ data, columns, title }: any) {  // source = ""
   );
 
   const getColumnWidth = (rows, accessor, headerText) => {
-    const maxWidth = 400;
+    const maxWidth = 200;
     const magicSpacing = 12;
     const cellLength = Math.max(
       ...rows.map((row) => getCellWidth(row, accessor)),
@@ -143,25 +154,20 @@ export default function Table({ data, columns, title }: any) {  // source = ""
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
-            ? "Index"
-            : null;
+              ? "Index"
+              : columns[0]
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
           const probablyDate =
-            column.toLowerCase().includes("date") ||
+            (column.toLowerCase().includes("date") || column.toLowerCase().includes("timestamp")) ||
             column.toLowerCase() === "index" ||
             (indexValue &&
               typeof indexValue == "string" &&
               (indexValue.toLowerCase().includes("date") ||
-                indexValue.toLowerCase().includes("day") ||
                 indexValue.toLowerCase().includes("time") ||
                 indexValue.toLowerCase().includes("timestamp") ||
-                indexValue.toLowerCase().includes("year") ||
-                indexValue.toLowerCase().includes("month") ||
-                indexValue.toLowerCase().includes("week") ||
-                indexValue.toLowerCase().includes("hour") ||
-                indexValue.toLowerCase().includes("minute")));
+                indexValue.toLowerCase().includes("year")));
 
           const probablyLink =
             valueType === "string" && value.startsWith("http");
@@ -181,6 +187,12 @@ export default function Table({ data, columns, title }: any) {  // source = ""
           if (probablyDate) {
             if (typeof value === "string") {
               return <p>{value}</p>;
+            }
+
+            if (typeof value === "number") {
+              if (value < 1000000000000) {
+                return <p>{value}</p>
+              }
             }
 
             try {
@@ -247,6 +259,8 @@ export default function Table({ data, columns, title }: any) {  // source = ""
     return !isEqual(currentOrder, defaultOrder);
   }, [columnOrder, rtColumns]);
 
+  console.log(validatePageSize(currentPage))
+
   const table = useReactTable({
     data,
     columns: rtColumns,
@@ -269,7 +283,7 @@ export default function Table({ data, columns, title }: any) {  // source = ""
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: currentPage,
+        pageSize: typeof currentPage === "string" ? currentPage.includes("All") ? data.length : parseInt(currentPage) : currentPage,
       },
     },
   });
@@ -372,7 +386,7 @@ export default function Table({ data, columns, title }: any) {  // source = ""
                   toggleDarkMode(!darkMode);
                 }}
               >
-                {darkMode ? (
+                {!darkMode ? (
                   <MoonIcon className="w-4 h-4" />
                 ) : (
                   <SunIcon className="w-4 h-4" />
@@ -477,9 +491,9 @@ export default function Table({ data, columns, title }: any) {  // source = ""
                 style={{
                   fontSize: `${Number(fontSize) * 100}%`,
                 }}
-                /*style={{
-        width: table.getCenterTotalSize(),
-      }}*/
+              /*style={{
+      width: table.getCenterTotalSize(),
+    }}*/
               >
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (
@@ -518,7 +532,7 @@ export default function Table({ data, columns, title }: any) {  // source = ""
                             <td
                               key={cell.id}
                               className={clsx(
-                                "whitespace-nowrap overflow-auto p-4",
+                                "whitespace-normal p-4 text-black dark:text-white",
                                 {
                                   "bg-grey-100 dark:bg-grey-850": idx % 2 === 0,
                                   "bg-grey-200 dark:bg-[#202020]":
@@ -553,14 +567,17 @@ export default function Table({ data, columns, title }: any) {  // source = ""
                           <th
                             key={header.id}
                             colSpan={header.colSpan}
-                            className="text-grey-500 bg-grey-100 dark:bg-grey-850 font-normal text-left text-sm h-10"
+                            className="text-grey-500 bg-grey-100 dark:bg-grey-850 font-normal text-left text-sm h-10 p-4"
+                            style={{
+                              width: header.getSize(),
+                            }}
                           >
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.footer,
-                                  header.getContext()
-                                )}
+                                header.column.columnDef.footer,
+                                header.getContext()
+                              )}
                           </th>
                         ))}
                       </tr>
@@ -571,7 +588,7 @@ export default function Table({ data, columns, title }: any) {  // source = ""
             </div>
           </div>
         </div>
-        <div className="fixed bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full flex gap-10 justify-between py-4 px-6">
+        <div className="max-h-[68px] overflow-x-auto fixed bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full flex gap-10 justify-between py-4 px-6">
           <Export columns={columns} data={data} />
           <div className="flex items-center gap-10">
             <Pagination

@@ -13,6 +13,7 @@ import random
 import re
 import sys
 import urllib.parse
+import webbrowser
 from datetime import (
     date as d,
     datetime,
@@ -49,6 +50,7 @@ from openbb_terminal import (
 )
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user, set_preference
@@ -350,8 +352,14 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
+        theme = current_user.preferences.THEME
+        table_theme = "white" if theme == "light" else theme
+
         plots_backend().send_table(
-            df_table=df_outgoing, title=title, source=source  # type: ignore
+            df_table=df_outgoing,
+            title=title,
+            source=source,  # type: ignore
+            theme=table_theme,
         )
         return
 
@@ -534,12 +542,16 @@ def check_indicators(string: str) -> List[str]:
         [c.name.replace("plot_", "") for c in ta_cls if c.name != "plot_ma"]
         + ta_cls.ma_mode
     )
+    choices_print = (
+        f"{'`, `'.join(choices[:10])}`\n    `{'`, `'.join(choices[10:20])}"
+        f"`\n    `{'`, `'.join(choices[20:])}"
+    )
 
     strings = string.split(",")
     for s in strings:
         if s not in choices:
             raise argparse.ArgumentTypeError(
-                f"\nInvalid choice: {s}, choose from \n    (`{'`, `'.join(choices)}`)",
+                f"\nInvalid choice: {s}, choose from \n    `{choices_print}`",
             )
     return strings
 
@@ -550,12 +562,15 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
     indicators_dict: dict = {}
 
     regex = re.compile(r"([a-zA-Z]+)\[([0-9.,]*)\]")
-    matches = regex.findall(args)
+    no_params_regex = re.compile(r"([a-zA-Z]+)")
 
-    if not matches:
-        indicators = check_indicators(args)
-        args = "[],".join(indicators) + "[]"
-        matches = regex.findall(args)
+    matches = regex.findall(args)
+    no_params_matches = no_params_regex.findall(args)
+
+    indicators = [m[0] for m in matches]
+    for match in no_params_matches:
+        if match not in indicators:
+            matches.append((match, ""))
 
     if _help:
         console.print(
@@ -575,6 +590,7 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
 
     pop_keys = ["close", "high", "low", "open", "open_", "volume", "talib", "return"]
     if matches:
+        check_indicators(",".join([m[0] for m in matches]))
         for match in matches:
             indicator, args = match
 
@@ -1197,6 +1213,7 @@ def get_flair() -> str:
     """Get a flair icon."""
     available_flairs = {
         ":openbb": "(🦋)",
+        ":bug": "(🐛)",
         ":rocket": "(🚀)",
         ":diamond": "(💎)",
         ":stars": "(✨)",
@@ -1445,7 +1462,7 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     current_user = get_current_user()
     if current_user.preferences.FILE_OVERWRITE:
         return False, True
-    if os.environ.get("TEST_MODE") == "True":
+    if get_current_system().TEST_MODE:
         return False, True
     if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
@@ -1650,7 +1667,7 @@ def prefill_form(ticket_type, menu, path, command, message):
 
     url_params = urllib.parse.urlencode(params)
 
-    plots_backend().send_url(form_url + url_params)
+    webbrowser.open(form_url + url_params)
 
 
 def get_closing_price(ticker, days):
@@ -1943,12 +1960,12 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
 
 
 @lru_cache
-def load_json(path: str) -> Dict[str, str]:
+def load_json(path: Path) -> Dict[str, str]:
     """Load a dictionary from a json file path.
 
     Parameter
     ----------
-    path : str
+    path : Path
         The path for the json file
 
     Returns
@@ -1962,7 +1979,7 @@ def load_json(path: str) -> Dict[str, str]:
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
-            f"{get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
+            f"{get_current_user().preferences.USER_DATA_SOURCES_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
         return {}

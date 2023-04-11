@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # contracts
 
-Displays Top 15 Government contracts by amount for all tickers or for a specific ticker.
+This command will allow the user to retrieve the top 15 government contracts by amount for a specific ticker.
 
 ### Usage
 

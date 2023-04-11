@@ -33,6 +33,7 @@ from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_INCREASING_COLORWAY,
     PLT_TBL_ROW_COLORS,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
@@ -84,31 +85,31 @@ class TerminalStyle:
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
-        self.load_style(plt_style)
         self.apply_console_style(console_style)
 
-    def apply_console_style(self, style: Optional[str] = "") -> None:
+    def apply_console_style(self, style: Optional[str] = None) -> None:
         """Apply the style to the console."""
 
-        if style in self.console_styles_available:
-            json_path: Optional[Path] = self.console_styles_available[style]
-        else:
-            self.load_available_styles()
+        if style:
             if style in self.console_styles_available:
-                json_path = self.console_styles_available[style]
+                json_path: Optional[Path] = self.console_styles_available[style]
             else:
-                console.print("\nInvalid console style. Using default.")
-                json_path = self.console_styles_available.get("dark", None)
+                self.load_available_styles()
+                if style in self.console_styles_available:
+                    json_path = self.console_styles_available[style]
+                else:
+                    console.print(f"\nInvalid console style '{style}', using default.")
+                    json_path = self.console_styles_available.get("dark", None)
 
-        if json_path:
-            self.console_style = self.load_json_style(json_path)
-        else:
-            console.print("Error loading default.")
+            if json_path:
+                self.console_style = self.load_json_style(json_path)
+            else:
+                console.print("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
         if not style:
-            style = get_current_user().preferences.PLOT_STYLE
+            style = get_current_user().preferences.THEME
 
         if style != self.plt_style:
             self.load_style(style)
@@ -243,7 +244,7 @@ class TerminalStyle:
 
 
 theme = TerminalStyle(
-    get_current_user().preferences.PLOT_STYLE, get_current_user().preferences.RICH_STYLE
+    get_current_user().preferences.THEME, get_current_user().preferences.RICH_STYLE
 )
 theme.apply_style()
 
@@ -1076,7 +1077,7 @@ class OpenBBFigure(go.Figure):
             except Exception:
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
-                if strtobool(os.environ.get("DEBUG_MODE", False)):
+                if get_current_system().DEBUG_MODE:
                     console.print_exception()
 
                 # We check if any figures were initialized before the backend failed
@@ -1093,7 +1094,9 @@ class OpenBBFigure(go.Figure):
             legend=dict(
                 tracegroupgap=height / 4.5,
                 groupclick="toggleitem",
-                orientation="v",
+                orientation="v"
+                if not self.layout.legend.orientation
+                else self.layout.legend.orientation,
             ),
             barmode="overlay",
             bargap=0,
@@ -1528,7 +1531,7 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=85, t=40, pad=0)
+            dict(l=80, r=60, b=90, t=40, pad=0)
             if not self._has_secondary_y
             else dict(l=60, r=50, b=85, t=40, pad=0)
         )
@@ -1597,7 +1600,11 @@ class OpenBBFigure(go.Figure):
                 self.layout.margin["l"] += 20
 
             if (yaxis2 and yaxis2.side == "left") or yaxis.side == "left":
-                title = yaxis.title.text if not yaxis2 else yaxis2.title.text
+                title = (
+                    yaxis.title.text
+                    if not yaxis2 or yaxis2.side != "left"
+                    else yaxis2.title.text
+                )
                 xshift = -110 if not title else -135
                 self.layout.margin["l"] += 60
 

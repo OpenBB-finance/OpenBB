@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # flowsum
 
-Graph Total Premium of a stock. /flowsum, /flowsum wk, /flowsum exp, /flowsum top
+This command allows the user to retrieve the total premium of the given stock ticker for the current trading day. We categorize the calls and puts by where the trade occurred on the bid/ask. For example, Above Ask, means the trade happened over the current Ask price.
 
 ### Usage
 

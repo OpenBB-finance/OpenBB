@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # cc
 
-Intraday 5m chart for the ticker provided
+This command allows the user to retrieve an intraday 5 minute chart for a given ticker, /c5m also has the same effect. This chart will display the candlestick chart for the day. It will provide a visual representation of the stock's performance over the current day. This command is useful for performing technical analysis and tracking short-term price movements.
 
 ### Usage
 

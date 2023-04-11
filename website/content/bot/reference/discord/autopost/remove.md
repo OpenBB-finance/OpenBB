@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # remove
 
-Remove an autopost webhook feed from this channel.
+This command allows the user to remove an autopost webhook feed from the channel. When executed, it will remove the feed from the channel and prevent any further autoposts from being sent.
 
 ### Usage
 

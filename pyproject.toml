@@ -7,7 +7,7 @@ authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
-include = ["terminal.py"]
+include = ["terminal.py", "openbb_terminal/.env"]
 readme = "website/pypi.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
@@ -103,7 +103,7 @@ mstarpy = "^0.0.4"
 packaging = ">=22.0"
 rapidfuzz = "^2.13.7"
 streamlit = "^1.17.0"
-pywry = "^0.4.3"
+pywry = "^0.4.5"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built

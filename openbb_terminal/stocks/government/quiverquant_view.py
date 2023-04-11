@@ -281,7 +281,7 @@ def display_last_contracts(
     )
 
     df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d").dt.date
-    df = df.groupby("Date").sum().div(1000)
+    df = df.groupby("Date").sum(True).div(1000)
 
     fig = OpenBBFigure(yaxis_title="Amount ($1k)", xaxis_title="Date")
     fig.set_title("Total amount of government contracts given")

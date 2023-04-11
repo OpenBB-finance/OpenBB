@@ -157,7 +157,7 @@ sudo apt install libwebkit2gtk-4.0-dev
 <summary>Arch Linux / Manjaro</summary>
 
 ```shell
-sudo pacman -S webkit2gtk-4.0
+sudo pacman -S webkit2gtk
 ```
 
 </details>
@@ -166,7 +166,7 @@ sudo pacman -S webkit2gtk-4.0
 <summary>Fedora</summary>
 
 ```shell
-sudo dnf install gtk3-devel webkit2gtk4.0-devel
+sudo dnf install gtk3-devel webkit2gtk3-devel
 ```
 
 </details>
@@ -215,7 +215,7 @@ build/conda/cleanup_artifacts.sh
 On Windows do this by running this script (copy and paste the launch code):
 
 ```shell
-build/conda/cleanup_artifacts.bat
+build\conda\cleanup_artifacts.bat
 ```
 
 :::

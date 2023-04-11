@@ -69,7 +69,7 @@ def print_goodbye():
 
     console.print(
         "Join us           : [cmds]https://openbb.co/discord[/cmds]\n"
-        "Follow us         : [cmds]https://twitter.com/openbb_finance[/cmds]\n"
+        "Follow us         : [cmds]https://openbb.co/twitter[/cmds]\n"
         "Ask support       : [cmds]https://openbb.co/support[/cmds]\n"
         "Request a feature : [cmds]https://openbb.co/request-a-feature[/cmds]\n"
     )
@@ -129,60 +129,70 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://my.openbb.dev/app/terminal", command=None, arg_type=""
+    path,
+    url="https://my.openbb.dev/app/terminal",
+    command=None,
+    arg_type="",
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
     if path == "/" and command is None:
-        path = "/guides"
+        path = "/usage?path=/usage/basics"
         command = ""
     elif "keys" in path:
-        path = "/usage?full=1&path=/guides/api-keys"
+        path = "/usage?path=/usage/guides/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/usage?path=/guides/customizing-the-terminal"
+        path = "/usage?path=/usage/guides/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/usage?path=/guides/customizing-the-terminal"
+        path = "/usage?path=/usage/guides/customizing-the-terminal#using-the-feature-flags-menu"
         command = ""
     elif "sources" in path:
-        path = "/usage?path=/guides/changing-sources"
+        path = "/usage?path=/usage/guides/changing-sources"
         command = ""
-    elif "params" in path:
-        path = "/usage?path=/intros/portfolio/po"
+    elif "account" in path:
+        path = "/usage?path=/usage/guides/basics"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
-            path = f"/reference?path={path}"
+            if command in ["settings", "featflags"]:
+                path = "/usage?path=/usage/guides/customizing-the-terminal"
+                command = ""
+            else:
+                path = f"/reference?path={path}"
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
-                path = f"/usage?path=/intros/common/{menu}"
+                path = f"/usage?path=/usage/intros/common/{menu}"
             elif command == "forecast":
                 command = ""
-                path = "/usage?path=/intros/forecast"
+                path = "/usage?path=/usage/intros/forecast"
             else:
-                path = f"/usage?path=/intros/{path}"
+                path = f"/usage?path=/usage/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
             path = (
-                f"/usage?path=/intros/common/{menu}"
+                f"/usage?path=/usage/intros/common/{menu}"
                 if menu in ["ta", "ba", "qa"]
-                else f"/usage?path=/intros/{path}"
+                else f"/usage?path=/usage/intros/{path}"
             )
 
     if command:
         if command == "keys":
-            path = "/usage?full=1&path=/guides/api-keys"
+            path = "/usage?path=/usage/guides/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/usage?path=/guides/customizing-the-terminal"
+            path = "/usage?path=/usage/guides/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/usage?path=/guides/changing-sources"
+            path = "/usage?path=/usage/guides/changing-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/usage?path=/guides/scripts-and-routines"
+            path = "/usage?path=/usage/guides/scripts-and-routines"
+            command = ""
+        elif command == "sources":
+            path = "/usage?path=/usage/guides/changing-sources"
             command = ""
         elif command in [
             "intro",
@@ -192,11 +202,12 @@ def open_openbb_documentation(
             "update",
             "wiki",
             "news",
+            "account",
         ]:
             path = "/guides"
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/guides?path=/intros/common/{command}"
+            path = f"/usage?path=/usage/intros/common/{command}"
             command = ""
 
         path += command
@@ -236,7 +247,7 @@ def is_auth_enabled() -> bool:
         If authentication is enabled
     """
     # TODO: This function is a temporary way to block authentication
-    return str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+    return get_current_system().ENABLE_AUTHENTICATION
 
 
 def print_guest_block_msg():
@@ -355,7 +366,7 @@ def reset(queue: Optional[List[str]] = None):
     logger.info("resetting")
     plt.close("all")
     plots_backend().close(reset=True)
-    debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
+    debug = get_current_system().DEBUG_MODE
 
     # we clear all openbb_terminal modules from sys.modules
     try:
@@ -365,10 +376,14 @@ def reset(queue: Optional[List[str]] = None):
                 del sys.modules[module]
 
         # pylint: disable=import-outside-toplevel
+        # we run the terminal again
+        from openbb_terminal.core.session import session_controller
         from openbb_terminal.terminal_controller import main
 
-        # we run the terminal again
-        main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+        if is_local():
+            main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+        else:
+            session_controller.main()
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))

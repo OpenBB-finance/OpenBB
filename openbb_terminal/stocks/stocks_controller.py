@@ -9,7 +9,11 @@ from typing import List, Optional
 
 import financedatabase as fd
 
-from openbb_terminal.common import feedparser_view, newsapi_view
+from openbb_terminal.common import (
+    feedparser_view,
+    newsapi_view,
+    ultima_newsmonitor_view,
+)
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -266,11 +270,11 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
-        """Process quote command."""
+        """Process tob command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="quote",
+            prog="tob",
             description="Get top of book for loaded ticker from selected exchange",
         )
         parser.add_argument(
@@ -543,9 +547,9 @@ class StocksController(StockBaseController):
             help="Show news only from the sources specified (e.g bloomberg,reuters)",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
+            other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=3
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
             if ns_parser.ticker:
@@ -560,6 +564,27 @@ class StocksController(StockBaseController):
                         show_newest=ns_parser.n_oldest,
                         sources=ns_parser.sources,
                     )
+                elif str(ns_parser.source).lower() == "ultima":
+                    query = str(self.ticker).upper()
+                    if query not in ultima_newsmonitor_view.supported_terms():
+                        console.print(
+                            "[red]Ticker not supported by Ultima Insights News Monitor[/red]"
+                        )
+                        feedparser_view.display_news(
+                            term=query,
+                            sources=ns_parser.sources,
+                            limit=ns_parser.limit,
+                            export=ns_parser.export,
+                            sheet_name=ns_parser.sheet_name,
+                        )
+                    else:
+                        ultima_newsmonitor_view.display_news(
+                            term=query,
+                            sources=ns_parser.sources,
+                            limit=ns_parser.limit,
+                            export=ns_parser.export,
+                            sheet_name=ns_parser.sheet_name,
+                        )
                 elif ns_parser.source == "Feedparser":
                     feedparser_view.display_news(
                         term=self.ticker,

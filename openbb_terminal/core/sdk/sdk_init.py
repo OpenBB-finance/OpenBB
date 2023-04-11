@@ -46,6 +46,8 @@ from openbb_terminal.common import (
     common_model,
     feedparser_model as common_feedparser_model,
     feedparser_view as common_feedparser_view,
+    ultima_newsmonitor_model as common_ultima_newsmonitor_model,
+    ultima_newsmonitor_view as common_ultima_newsmonitor_view,
     newsapi_model as common_newsapi_model,
     newsapi_view as common_newsapi_view,
 )
@@ -401,10 +403,6 @@ from openbb_terminal.stocks.options.screen import (
 from openbb_terminal.stocks.screener import (
     finviz_model as stocks_screener_finviz_model,
     finviz_view as stocks_screener_finviz_view,
-    yahoofinance_model as stocks_screener_yahoofinance_model,
-    yahoofinance_view as stocks_screener_yahoofinance_view,
-    ark_model as stocks_screener_ark_model,
-    ark_view as stocks_screener_ark_view,
 )
 
 # Stocks - Technical Analysis
