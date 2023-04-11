@@ -61,8 +61,10 @@ def read_yaml_file(path: Path) -> dict:
 def get_command_list(en_dict: dict) -> list:
     """
     Extract a list of commands from a dictionary.
-    The function looks for keys in the "en" dictionary of `en_dict` that do not start with an underscore ("_").
-    If a key contains a forward slash ("/"), the part of the key after the last slash is considered to be a potential command.
+    The function looks for keys in the "en" dictionary of `en_dict` that do not start
+    with an underscore ("_").
+    If a key contains a forward slash ("/"), the part of the key after the last slash
+    is considered to be a potential command.
     If this potential command also starts with an underscore, it is ignored.
 
     Parameters
@@ -107,7 +109,8 @@ def get_command_list(en_dict: dict) -> list:
 def get_sdk_command_list(trail_map: Path) -> list:
     """
     Extract a list of commands from a CSV file.
-    The function reads the CSV file at the specified path into a pandas DataFrame and extracts the "trail" column as a list of commands.
+    The function reads the CSV file at the specified path into a pandas DataFrame and
+    extracts the "trail" column as a list of commands.
 
     Parameters
     ----------
@@ -127,17 +130,21 @@ def get_content_from_md_file(file_path: str, code_blocks_only: bool) -> str:
     """
     Read a Markdown file and return its content, optionally including only code blocks.
 
-    If `code_blocks_only` is True, the function finds all fenced code blocks (using regular expression),
-    and all backtick code blocks in the Markdown file and concatenates them into a single string.
+    If `code_blocks_only` is True, the function finds all fenced code blocks
+    (using regular expression),
+    and all backtick code blocks in the Markdown file and concatenates them into a
+    single string.
     The backtick code blocks can be either inline or multiline.
-    If `code_blocks_only` is False, the function returns the full contents of the Markdown file as a string.
+    If `code_blocks_only` is False, the function returns the full contents of the
+    Markdown file as a string.
 
     Parameters
     ----------
     file_path : str
         The path to the Markdown file.
     code_blocks_only : bool
-        If True, return only the code blocks found in the Markdown file. If False, return the full contents of the Markdown file. By default, False.
+        If True, return only the code blocks found in the Markdown file.
+        If False, return the full contents of the Markdown file. By default, False.
 
     Returns
     -------
@@ -179,11 +186,15 @@ def find_commands_in_files(
     files: list, commands: list, code_blocks_only: bool = True
 ) -> dict:
     """
-    Search for specified commands in the content of Markdown files and return a dictionary of the files where each command was found.
+    Search for specified commands in the content of Markdown files and return a
+    dictionary of the files where each command was found.
 
-    The function reads the contents of each Markdown file in `files`, and for each `command` in `commands`, searches for occurrences of the command within the file contents.
+    The function reads the contents of each Markdown file in `files`, and for each
+    `command` in `commands`, searches for occurrences of the command within the file
+    contents.
     The search is performed using regular expression to match whole words only.
-    If `code_blocks_only` is True, the function searches only within fenced code blocks and backtick code blocks in the Markdown files.
+    If `code_blocks_only` is True, the function searches only within fenced code blocks
+    and backtick code blocks in the Markdown files.
 
 
     Parameters
@@ -200,7 +211,8 @@ def find_commands_in_files(
     Returns
     -------
     dict
-        A dictionary where each key is a command that was found in one or more files, and the value is a list of file paths where the command was found.
+        A dictionary where each key is a command that was found in one or more files,
+        and the value is a list of file paths where the command was found.
 
     Examples
     --------
@@ -239,9 +251,11 @@ def handle_export(
     extension : Literal["json", "csv"]
         The extension type of the file to be exported. Can only be "json" or "csv".
     found_commands : dict
-        The dictionary containing the commands found in the Markdown files and their corresponding file paths.
+        The dictionary containing the commands found in the Markdown files and their
+        corresponding file paths.
     found_commands_sdk : dict
-        The dictionary containing the SDK commands found in the Markdown files and their corresponding file paths.
+        The dictionary containing the SDK commands found in the Markdown files and their
+        corresponding file paths.
     """
 
     def export_to_json(path: Path, commands: dict):
@@ -281,7 +295,8 @@ def generate_documentation_commands(
     export_extension : Literal["json", "csv"]
         The file extension of the export file. Valid values are "json" and "csv".
     code_blocks_only : bool
-        If True, only code blocks from the Markdown files will be searched for documentation commands.
+        If True, only code blocks from the Markdown files will be searched for
+        documentation commands.
         If False, the entire contents of the Markdown files will be searched.
     """
     en_file_as_dict = read_yaml_file(path=EN_FILE)
