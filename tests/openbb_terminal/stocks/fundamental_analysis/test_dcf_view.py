@@ -36,7 +36,7 @@ def test_create_xls():
             assert item in items_cf
 
 
-@pytest.mark.skip(reason="Feature broken?")
+@pytest.mark.record_http
 def test_create_workbook(mocker):
     excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False, beta=1)
 
@@ -56,3 +56,90 @@ def test_create_workbook(mocker):
     )
 
     excel.create_workbook()
+
+
+@pytest.mark.record_http
+def test_add_estimates(mocker):
+    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False, beta=1)
+
+    # MOCK ADD ESTIMATES
+    mocker.patch(
+        target="openbb_terminal.stocks.fundamental_analysis.dcf_view.CreateExcelFA.add_estimates"
+    )
+
+    excel.add_estimates()
+
+
+@pytest.mark.record_http
+def test_create_dcf(mocker):
+    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False, beta=1)
+
+    # MOCK ADD DCF
+    mocker.patch(
+        target="openbb_terminal.stocks.fundamental_analysis.dcf_view.CreateExcelFA.create_dcf"
+    )
+
+    excel.create_dcf()
+
+
+@pytest.mark.record_http
+def test_run_audit(mocker):
+    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=True, beta=1)
+
+    # MOCK ADD DCF
+    mocker.patch(
+        target="openbb_terminal.stocks.fundamental_analysis.dcf_view.CreateExcelFA.run_audit"
+    )
+
+    excel.run_audit()
+
+
+@pytest.mark.record_http
+def test_get_growth(mocker):
+    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False, beta=1)
+
+    # MOCK GET GROWTH
+    mocker.patch(
+        target="openbb_terminal.stocks.fundamental_analysis.dcf_view.CreateExcelFA.get_growth"
+    )
+
+    excel.get_growth(x_ind=1, y_ind=1)
+
+
+@pytest.mark.record_http
+def test_get_sum(mocker):
+    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False, beta=1)
+
+    # MOCK GET SUM
+    mocker.patch(
+        target="openbb_terminal.stocks.fundamental_analysis.dcf_view.CreateExcelFA.get_sum"
+    )
+
+    excel.get_sum("Gross Profit", "Revenue", [], ["Cost of Revenue"])
+
+
+@pytest.mark.record_http
+def test_custom_exp(mocker):
+    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False, beta=1)
+
+    # MOCK CUSTOM EXP
+    mocker.patch(
+        target="openbb_terminal.stocks.fundamental_analysis.dcf_view.CreateExcelFA.custom_exp"
+    )
+
+    excel.custom_exp(
+        "Preferred Dividends",
+        "Preferred Dividends are not important in a DCF so we do not attempt to predict them.",
+    )
+
+
+@pytest.mark.record_http
+def test_add_ratios(mocker):
+    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False, beta=1)
+
+    # MOCK ADD RATIOS
+    mocker.patch(
+        target="openbb_terminal.stocks.fundamental_analysis.dcf_view.CreateExcelFA.add_ratios"
+    )
+
+    excel.add_ratios()

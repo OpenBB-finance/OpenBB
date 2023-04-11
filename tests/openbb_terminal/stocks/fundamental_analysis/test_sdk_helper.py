@@ -13,6 +13,7 @@ def vcr_config():
         "filter_query_parameters": [
             ("apikey", "MOCK_API_KEY"),
             ("apiKey", "MOCK_API_KEY"),
+            ("api_token", "MOCK_API_KEY"),
         ],
     }
 
@@ -30,6 +31,37 @@ def vcr_config():
 def test_get_income_statement(symbol, source, kwargs):
     """Test the get_income_statement function."""
     df = sdk_helpers.get_income_statement(symbol, source=source, **kwargs)
+    assert isinstance(df, DataFrame)
+    assert not df.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, source, func, kwargs",
+    [
+        ("AAPL", "EODHD", "get_income_statement", {}),
+        ("AAPL", "EODHD", "get_balance_sheet", {}),
+        ("AAPL", "EODHD", "get_cash_flow", {}),
+    ],
+)
+def test_eodhd_premium(symbol, source, func, kwargs):
+    """Test the get_income_statement function."""
+    df = getattr(sdk_helpers, func)(symbol, source=source, **kwargs)
+    assert isinstance(df, DataFrame)
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, source, quarterly, func",
+    [
+        ("AAPL", "YahooFinance", True, "get_income_statement"),
+        ("AAPL", "YahooFinance", True, "get_balance_sheet"),
+        ("AAPL", "YahooFinance", True, "get_cash_flow"),
+    ],
+)
+def test_yahoo_finance_no_quarterly(symbol, source, quarterly, func):
+    """Test the get_income_statement function."""
+    df = getattr(sdk_helpers, func)(symbol, source=source, quarterly=quarterly)
     assert isinstance(df, DataFrame)
     assert not df.empty
 

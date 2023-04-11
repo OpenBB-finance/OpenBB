@@ -624,16 +624,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "sheet_name": None,
             },
         ),
-        (
-            "call_mktcap",
-            "csimarket_view.market_cap",
-            [],
-            {
-                "symbol": "TSLA",
-                "export": "",
-                "sheet_name": None,
-            },
-        ),
     ],
 )
 def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
