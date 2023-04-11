@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0
     method: GET
     uri: https://api.llama.fi/protocols
   response:
@@ -11570,7 +11570,7 @@ interactions:
       CF-Cache-Status:
       - HIT
       CF-RAY:
-      - 7b6370e82dc7da8a-LIS
+      - 7b6372b6de0e03ea-LIS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -11578,7 +11578,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 11 Apr 2023 13:05:25 GMT
+      - Tue, 11 Apr 2023 13:06:39 GMT
       Last-Modified:
       - Tue, 11 Apr 2023 12:21:48 GMT
       Server:
@@ -11592,7 +11592,7 @@ interactions:
       access-control-allow-origin:
       - '*'
       age:
-      - '2617'
+      - '2691'
       expires:
       - Tue, 11 Apr 2023 13:20:02 GMT
       via:
@@ -11622,7 +11622,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
     method: GET
     uri: https://api.llama.fi/protocols
   response:
@@ -23183,7 +23183,7 @@ interactions:
       CF-Cache-Status:
       - HIT
       CF-RAY:
-      - 7b6370ee8d2248a9-LIS
+      - 7b6372bc6dd494ee-LIS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -23191,7 +23191,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 11 Apr 2023 13:05:26 GMT
+      - Tue, 11 Apr 2023 13:06:40 GMT
       Last-Modified:
       - Tue, 11 Apr 2023 12:21:48 GMT
       Server:
@@ -23205,7 +23205,7 @@ interactions:
       access-control-allow-origin:
       - '*'
       age:
-      - '2618'
+      - '2692'
       expires:
       - Tue, 11 Apr 2023 13:20:02 GMT
       via:

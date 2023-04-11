@@ -70,7 +70,6 @@ def test_display_defi_protocols():
     )
 
 
-@pytest.mark.vcr(before_record_response=gzip_data)
 @pytest.mark.record_stdout
 def test_display_defi_tvl(mocker):
     # MOCK EXPORT_DATA
@@ -89,7 +88,6 @@ def test_display_grouped_defi_protocols(mocker):
 
 
 @pytest.mark.linux
-@pytest.mark.vcr(before_record_response=gzip_data)
 @pytest.mark.record_stdout
 def test_display_historical_tvl(mocker):
     # MOCK EXPORT_DATA
