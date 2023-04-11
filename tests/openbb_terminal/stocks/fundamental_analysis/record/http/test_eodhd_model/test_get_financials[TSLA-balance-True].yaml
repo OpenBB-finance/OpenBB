@@ -9,12 +9,14 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://eodhistoricaldata.com/api/fundamentals/TSLA?api_token=MOCK_API_KEY&filter=Financials%3A%3Abalance%3A%3Ayearly
   response:
     body:
-      string: You exceeded your daily API requests limit.  Please contact support@eodhistoricaldata.com
+      string: !!binary |
+        H4sIAAAAAAAAAzXMMQqAMAwF0Kv8A4gHcHLQWa8Q2oiF2JQkRby9ODi+5W1VHqzbgkxBIBG9OeNQ
+        w2HM6M7mI3Zhch6QtAalgHaD99bUAsF0Tb9m1nwWD7WSSL5zTHq9gzlNx2UAAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -26,21 +28,25 @@ interactions:
       - max-age=0, no-cache
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 10 Apr 2023 19:42:18 GMT
+      - Tue, 11 Apr 2023 19:01:58 GMT
       Server:
       - nginx/1.19.10
       Transfer-Encoding:
       - chunked
+      Vary:
+      - Accept-Encoding
       X-Page-Speed:
       - 1.13.35.2-0
       X-RateLimit-Limit:
       - '2000'
       X-RateLimit-Remaining:
-      - '1996'
+      - '1999'
     status:
-      code: 402
-      message: Payment Required
+      code: 403
+      message: Forbidden
 version: 1

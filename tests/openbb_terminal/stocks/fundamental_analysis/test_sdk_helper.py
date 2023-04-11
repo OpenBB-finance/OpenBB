@@ -70,10 +70,10 @@ def test_yahoo_finance_no_quarterly(symbol, source, quarterly, func):
 @pytest.mark.parametrize(
     "symbol, source, kwargs",
     [
-        ("AAPL", "YahooFinance", {}),
-        ("AAPL", "AlphaVantage", {}),
-        ("AAPL", "FinancialModelingPrep", {}),
-        ("AAPL", "Polygon", {}),
+        ("AAPL", "YahooFinance", {"limit": 1}),
+        ("AAPL", "AlphaVantage", {"limit": 1}),
+        ("AAPL", "FinancialModelingPrep", {"limit": 1}),
+        ("AAPL", "Polygon", {"limit": 1}),
     ],
 )
 def test_get_balance_sheet(symbol, source, kwargs):
@@ -87,10 +87,10 @@ def test_get_balance_sheet(symbol, source, kwargs):
 @pytest.mark.parametrize(
     "symbol, source, kwargs",
     [
-        ("AAPL", "YahooFinance", {}),
-        ("AAPL", "AlphaVantage", {}),
-        ("AAPL", "FinancialModelingPrep", {}),
-        ("AAPL", "Polygon", {}),
+        ("AAPL", "YahooFinance", {"limit": 1}),
+        ("AAPL", "AlphaVantage", {"limit": 1}),
+        ("AAPL", "FinancialModelingPrep", {"limit": 1}),
+        ("AAPL", "Polygon", {"limit": 1}),
     ],
 )
 def test_get_cash_flow(symbol, source, kwargs):

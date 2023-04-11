@@ -31,8 +31,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 64849000000,\n    \"retainedEarnings\":
         -3068000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -11109000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        50672000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 352755000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 50672000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        50672000000,\n    \"totalEquity\": 50672000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        352755000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         352755000000,\n    \"totalInvestments\": 145463000000,\n    \"totalDebt\":
         120069000000,\n    \"netDebt\": 96423000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019322000108/0000320193-22-000108-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019322000108/aapl-20220924.htm\"\n
@@ -56,8 +56,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 57365000000,\n    \"retainedEarnings\":
         5562000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 163000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        63090000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 351002000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 63090000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        63090000000,\n    \"totalEquity\": 63090000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        351002000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         351002000000,\n    \"totalInvestments\": 155576000000,\n    \"totalDebt\":
         124719000000,\n    \"netDebt\": 89779000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019321000105/0000320193-21-000105-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019321000105/aapl-20210925.htm\"\n
@@ -81,8 +81,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 50779000000,\n    \"retainedEarnings\":
         14966000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -406000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        65339000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 323888000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 65339000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        65339000000,\n    \"totalEquity\": 65339000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        323888000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         323888000000,\n    \"totalInvestments\": 153814000000,\n    \"totalDebt\":
         112436000000,\n    \"netDebt\": 74420000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019320000096/0000320193-20-000096-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019320000096/aapl-20200926.htm\"\n
@@ -106,8 +106,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 45174000000,\n    \"retainedEarnings\":
         45898000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -584000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        90488000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 338516000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 90488000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        90488000000,\n    \"totalEquity\": 90488000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        338516000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         338516000000,\n    \"totalInvestments\": 157054000000,\n    \"totalDebt\":
         108047000000,\n    \"netDebt\": 59203000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019319000119/0000320193-19-000119-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019319000119/a10-k20199282019.htm\"\n
@@ -131,8 +131,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 40201000000,\n    \"retainedEarnings\":
         70400000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -3454000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        107147000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 365725000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 107147000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        107147000000,\n    \"totalEquity\": 107147000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        365725000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         365725000000,\n    \"totalInvestments\": 211187000000,\n    \"totalDebt\":
         114483000000,\n    \"netDebt\": 88570000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019318000145/0000320193-18-000145-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019318000145/a10-k20189292018.htm\"\n
@@ -157,8 +157,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 35867000000,\n    \"retainedEarnings\":
         98330000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -150000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        134047000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 375319000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 134047000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        134047000000,\n    \"totalEquity\": 134047000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        375319000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         375319000000,\n    \"totalInvestments\": 248606000000,\n    \"totalDebt\":
         115680000000,\n    \"netDebt\": 95391000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019317000070/0000320193-17-000070-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019317000070/a10-k20179302017.htm\"\n
@@ -183,8 +183,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 31251000000,\n    \"retainedEarnings\":
         96364000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 634000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        128249000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 321686000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 128249000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        128249000000,\n    \"totalEquity\": 128249000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        321686000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         321686000000,\n    \"totalInvestments\": 217101000000,\n    \"totalDebt\":
         87032000000,\n    \"netDebt\": 66548000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000162828016020309/0001628280-16-020309-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000162828016020309/a201610-k9242016.htm\"\n
@@ -209,8 +209,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 27416000000,\n    \"retainedEarnings\":
         92284000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -345000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        119355000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 290479000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 119355000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        119355000000,\n    \"totalEquity\": 119355000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        290479000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         290479000000,\n    \"totalInvestments\": 184546000000,\n    \"totalDebt\":
         64462000000,\n    \"netDebt\": 43342000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312515356351/0001193125-15-356351-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312515356351/d17062d10k.htm\"\n
@@ -235,8 +235,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 23313000000,\n    \"retainedEarnings\":
         87152000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 1082000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        111547000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 231839000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 111547000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        111547000000,\n    \"totalEquity\": 111547000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        231839000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         231839000000,\n    \"totalInvestments\": 141395000000,\n    \"totalDebt\":
         35295000000,\n    \"netDebt\": 21451000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312514383437/0001193125-14-383437-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312514383437/d783162d10k.htm\"\n
@@ -261,8 +261,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 19764000000,\n    \"retainedEarnings\":
         104256000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -471000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        123549000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 207000000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 123549000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        123549000000,\n    \"totalEquity\": 123549000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        207000000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         207000000000,\n    \"totalInvestments\": 132502000000,\n    \"totalDebt\":
         16960000000,\n    \"netDebt\": 2701000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312513416534/0001193125-13-416534-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312513416534/d590790d10k.htm\"\n
@@ -287,8 +287,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 16422000000,\n    \"retainedEarnings\":
         101289000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 499000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        118210000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 176064000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 118210000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        118210000000,\n    \"totalEquity\": 118210000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        176064000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         176064000000,\n    \"totalInvestments\": 110505000000,\n    \"totalDebt\":
         0,\n    \"netDebt\": -10746000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312512444068/0001193125-12-444068-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312512444068/d411355d10k.htm\"\n
@@ -313,8 +313,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 13331000000,\n    \"retainedEarnings\":
         62841000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 443000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        76615000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 116371000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 76615000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        76615000000,\n    \"totalEquity\": 76615000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        116371000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         116371000000,\n    \"totalInvestments\": 71755000000,\n    \"totalDebt\":
         0,\n    \"netDebt\": -9815000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312511282113/0001193125-11-282113-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312511282113/d220209d10k.htm\"\n
@@ -339,8 +339,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 10668000000,\n    \"retainedEarnings\":
         37169000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -46000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        47791000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 75183000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 47791000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        47791000000,\n    \"totalEquity\": 47791000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        75183000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         75183000000,\n    \"totalInvestments\": 39750000000,\n    \"totalDebt\": 0,\n
         \   \"netDebt\": -11261000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312510238044/0001193125-10-238044-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312510238044/d10k.htm\"\n
@@ -365,8 +365,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 8210000000,\n    \"retainedEarnings\":
         19538000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 84000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        27832000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 53851000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 27832000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        27832000000,\n    \"totalEquity\": 27832000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        53851000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         53851000000,\n    \"totalInvestments\": 28729000000,\n    \"totalDebt\": 0,\n
         \   \"netDebt\": -5263000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312509214859/0001193125-09-214859-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312509214859/d10k.htm\"\n
@@ -391,8 +391,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 7177000000,\n    \"retainedEarnings\":
         13845000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 8000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        21030000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 39572000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 21030000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        21030000000,\n    \"totalEquity\": 21030000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        39572000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         39572000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
         -11875000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312508224958/0001193125-08-224958-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312508224958/d10k.htm\"\n
@@ -417,8 +417,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 5368000000,\n    \"retainedEarnings\":
         9101000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 63000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        14532000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 25347000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 14532000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        14532000000,\n    \"totalEquity\": 14532000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        25347000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         25347000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
         -9352000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746907009340/0001047469-07-009340-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746907009340/a2181030z10-k.htm\"\n
@@ -442,8 +442,8 @@ interactions:
         0,\n    \"totalLiabilities\": 7221000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         4355000000,\n    \"retainedEarnings\": 5607000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         22000000,\n    \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        9984000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 17205000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 9984000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        9984000000,\n    \"totalEquity\": 9984000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        17205000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         17205000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
         -6392000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465906084288/a06-25759_210k.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465906084288/a06-25759_210k.htm\"\n
@@ -467,8 +467,8 @@ interactions:
         0,\n    \"totalLiabilities\": 4085000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         3521000000,\n    \"retainedEarnings\": 4005000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         0,\n    \"othertotalStockholdersEquity\": -60000000,\n    \"totalStockholdersEquity\":
-        7466000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 11551000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 7466000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        7466000000,\n    \"totalEquity\": 7466000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        11551000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         11551000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
         -3491000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465905058421/a05-20674_110k.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465905058421/a05-20674_110k.htm\"\n
@@ -492,8 +492,8 @@ interactions:
         0,\n    \"totalLiabilities\": 2974000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         2514000000,\n    \"retainedEarnings\": 2670000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -15000000,\n    \"othertotalStockholdersEquity\": -93000000,\n    \"totalStockholdersEquity\":
-        5076000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 8050000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 5076000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        5076000000,\n    \"totalEquity\": 5076000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        8050000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         8050000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
         -2969000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746904035975/a2147337z10-k.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746904035975/a2147337z10-k.htm\"\n
@@ -518,8 +518,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 1926000000,\n    \"retainedEarnings\":
         2394000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -35000000,\n
         \   \"othertotalStockholdersEquity\": -62000000,\n    \"totalStockholdersEquity\":
-        4223000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 6815000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 4223000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        4223000000,\n    \"totalEquity\": 4223000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6815000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         6815000000,\n    \"totalInvestments\": 1175000000,\n    \"totalDebt\": 304000000,\n
         \   \"netDebt\": -3092000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746903041604/a2124888z10-k.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746903041604/a2124888z10-k.htm\"\n
@@ -543,8 +543,8 @@ interactions:
         0,\n    \"totalLiabilities\": 2203000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         1826000000,\n    \"retainedEarnings\": 2325000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -56000000,\n    \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        4095000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 6298000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 4095000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        4095000000,\n    \"totalEquity\": 4095000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6298000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         6298000000,\n    \"totalInvestments\": 2124000000,\n    \"totalDebt\": 316000000,\n
         \   \"netDebt\": -1936000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746902007674/0001047469-02-007674-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746902007674/a2096490z10-k.htm\"\n
@@ -569,8 +569,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 1693000000,\n    \"retainedEarnings\":
         2260000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -33000000,\n
         \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
-        3920000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 6021000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 3920000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        3920000000,\n    \"totalEquity\": 3920000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6021000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         6021000000,\n    \"totalInvestments\": 2154000000,\n    \"totalDebt\": 317000000,\n
         \   \"netDebt\": -1993000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205701544436/a2066171z10-k405.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205701544436/a2066171z10-k405.htm\"\n
@@ -594,8 +594,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 1502000000,\n    \"retainedEarnings\":
         2285000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -387000000,\n
         \   \"othertotalStockholdersEquity\": 707000000,\n    \"totalStockholdersEquity\":
-        4107000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 6803000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 4107000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        4107000000,\n    \"totalEquity\": 4107000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6803000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         6803000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 300000000,\n
         \   \"netDebt\": -891000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205700053623/0000912057-00-053623-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205700053623/a2032880z10-k.txt\"\n
@@ -619,15 +619,15 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 1349000000,\n    \"retainedEarnings\":
         1499000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 106000000,\n
         \   \"othertotalStockholdersEquity\": 150000000,\n    \"totalStockholdersEquity\":
-        3104000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 5161000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 3104000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        3104000000,\n    \"totalEquity\": 3104000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        5161000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         5161000000,\n    \"totalInvestments\": 2239000000,\n    \"totalDebt\": 300000000,\n
         \   \"netDebt\": -1026000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205799010244/0000912057-99-010244-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000912057-99-010244.txt\"\n
         \ },\n  {\n    \"date\": \"1998-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1998-09-25\",\n
-        \   \"acceptedDate\": \"1998-09-25\",\n    \"calendarYear\": \"1998\",\n    \"period\":
-        \"FY\",\n    \"cashAndCashEquivalents\": 1481000000,\n    \"shortTermInvestments\":
+        \   \"acceptedDate\": \"1998-09-24 20:00:00\",\n    \"calendarYear\": \"1998\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1481000000,\n    \"shortTermInvestments\":
         819000000,\n    \"cashAndShortTermInvestments\": 2300000000,\n    \"netReceivables\":
         955000000,\n    \"inventory\": 78000000,\n    \"otherCurrentAssets\": 365000000,\n
         \   \"totalCurrentAssets\": 3698000000,\n    \"propertyPlantEquipmentNet\":
@@ -644,8 +644,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 633000000,\n    \"retainedEarnings\":
         898000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -39000000,\n
         \   \"othertotalStockholdersEquity\": 150000000,\n    \"totalStockholdersEquity\":
-        1642000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 4289000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 1642000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        1642000000,\n    \"totalEquity\": 1642000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        4289000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         4289000000,\n    \"totalInvestments\": 819000000,\n    \"totalDebt\": 954000000,\n
         \   \"netDebt\": -527000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
         \ },\n  {\n    \"date\": \"1997-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
@@ -668,8 +668,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 498000000,\n    \"retainedEarnings\":
         589000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -74000000,\n
         \   \"othertotalStockholdersEquity\": 187000000,\n    \"totalStockholdersEquity\":
-        1200000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 4233000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 1200000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        1200000000,\n    \"totalEquity\": 1200000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        4233000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         4233000000,\n    \"totalInvestments\": 229000000,\n    \"totalDebt\": 976000000,\n
         \   \"netDebt\": -254000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746997006960/0001047469-97-006960-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0001047469-97-006960.txt\"\n
@@ -693,8 +693,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 439000000,\n    \"retainedEarnings\":
         1634000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -30000000,\n
         \   \"othertotalStockholdersEquity\": 15000000,\n    \"totalStockholdersEquity\":
-        2058000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 5364000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 2058000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        2058000000,\n    \"totalEquity\": 2058000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        5364000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         5364000000,\n    \"totalInvestments\": 193000000,\n    \"totalDebt\": 1135000000,\n
         \   \"netDebt\": -417000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019396000023/0000320193-96-000023-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-96-000023.txt\"\n
@@ -718,8 +718,8 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 398000000,\n    \"retainedEarnings\":
         2464000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 78000000,\n
         \   \"othertotalStockholdersEquity\": -39000000,\n    \"totalStockholdersEquity\":
-        2901000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 6231000000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 2901000000,\n    \"totalLiabilitiesAndTotalEquity\":
+        2901000000,\n    \"totalEquity\": 2901000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6231000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         6231000000,\n    \"totalInvestments\": 196000000,\n    \"totalDebt\": 764000000,\n
         \   \"netDebt\": 8000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019395000016/0000320193-95-000016-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-95-000016.txt\"\n
@@ -743,15 +743,15 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 297929000,\n    \"retainedEarnings\":
         2096206000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -785088000,\n
         \   \"othertotalStockholdersEquity\": 774254000,\n    \"totalStockholdersEquity\":
-        2383301000,\n    \"totalLiabilitiesAndStockholdersEquity\": 5302746000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 2383301000,\n    \"totalLiabilitiesAndTotalEquity\":
+        2383301000,\n    \"totalEquity\": 2383301000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        5302746000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         5302746000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 596200000,\n
         \   \"netDebt\": -607288000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019394000016/0000320193-94-000016-index.html\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-94-000016.txt\"\n
         \ },\n  {\n    \"date\": \"1993-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1993-09-30\",\n
-        \   \"acceptedDate\": \"1993-09-30\",\n    \"calendarYear\": \"1993\",\n    \"period\":
-        \"FY\",\n    \"cashAndCashEquivalents\": 676400000,\n    \"shortTermInvestments\":
+        \   \"acceptedDate\": \"1993-09-29 20:00:00\",\n    \"calendarYear\": \"1993\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 676400000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 676400000,\n    \"netReceivables\":
         1381900000,\n    \"inventory\": 1506600000,\n    \"otherCurrentAssets\": 773500000,\n
         \   \"totalCurrentAssets\": 4338400000,\n    \"propertyPlantEquipmentNet\":
@@ -768,14 +768,14 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         1842600000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -753100000,\n
         \   \"othertotalStockholdersEquity\": 936900000,\n    \"totalStockholdersEquity\":
-        2026400000,\n    \"totalLiabilitiesAndStockholdersEquity\": 5171400000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 2026400000,\n    \"totalLiabilitiesAndTotalEquity\":
+        2026400000,\n    \"totalEquity\": 2026400000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        5171400000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         5171400000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 823200000,\n
         \   \"netDebt\": 146800000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
         \ },\n  {\n    \"date\": \"1992-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1992-09-30\",\n
-        \   \"acceptedDate\": \"1992-09-30\",\n    \"calendarYear\": \"1992\",\n    \"period\":
-        \"FY\",\n    \"cashAndCashEquivalents\": 498600000,\n    \"shortTermInvestments\":
+        \   \"acceptedDate\": \"1992-09-29 20:00:00\",\n    \"calendarYear\": \"1992\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 498600000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 498600000,\n    \"netReceivables\":
         1087200000,\n    \"inventory\": 580100000,\n    \"otherCurrentAssets\": 1392500000,\n
         \   \"totalCurrentAssets\": 3558400000,\n    \"propertyPlantEquipmentNet\":
@@ -792,14 +792,14 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         1904500000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -673400000,\n
         \   \"othertotalStockholdersEquity\": 956300000,\n    \"totalStockholdersEquity\":
-        2187400000,\n    \"totalLiabilitiesAndStockholdersEquity\": 4223700000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 2187400000,\n    \"totalLiabilitiesAndTotalEquity\":
+        2187400000,\n    \"totalEquity\": 2187400000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        4223700000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         4223700000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 184500000,\n
         \   \"netDebt\": -314100000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
         \ },\n  {\n    \"date\": \"1991-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1991-09-30\",\n
-        \   \"acceptedDate\": \"1991-09-30\",\n    \"calendarYear\": \"1991\",\n    \"period\":
-        \"FY\",\n    \"cashAndCashEquivalents\": 604100000,\n    \"shortTermInvestments\":
+        \   \"acceptedDate\": \"1991-09-29 20:00:00\",\n    \"calendarYear\": \"1991\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 604100000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 604100000,\n    \"netReceivables\":
         907200000,\n    \"inventory\": 671700000,\n    \"otherCurrentAssets\": 680600000,\n
         \   \"totalCurrentAssets\": 2863600000,\n    \"propertyPlantEquipmentNet\":
@@ -816,14 +816,14 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         1492000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -588000000,\n
         \   \"othertotalStockholdersEquity\": 862700000,\n    \"totalStockholdersEquity\":
-        1766700000,\n    \"totalLiabilitiesAndStockholdersEquity\": 3493600000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 1766700000,\n    \"totalLiabilitiesAndTotalEquity\":
+        1766700000,\n    \"totalEquity\": 1766700000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        3493600000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         3493600000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 148600000,\n
         \   \"netDebt\": -455500000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
         \ },\n  {\n    \"date\": \"1990-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1990-09-30\",\n
-        \   \"acceptedDate\": \"1990-09-30\",\n    \"calendarYear\": \"1990\",\n    \"period\":
-        \"FY\",\n    \"cashAndCashEquivalents\": 374700000,\n    \"shortTermInvestments\":
+        \   \"acceptedDate\": \"1990-09-29 20:00:00\",\n    \"calendarYear\": \"1990\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 374700000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 374700000,\n    \"netReceivables\":
         761900000,\n    \"inventory\": 355500000,\n    \"otherCurrentAssets\": 911200000,\n
         \   \"totalCurrentAssets\": 2403300000,\n    \"propertyPlantEquipmentNet\":
@@ -840,14 +840,14 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         1312200000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -446700000,\n
         \   \"othertotalStockholdersEquity\": 581300000,\n    \"totalStockholdersEquity\":
-        1446800000,\n    \"totalLiabilitiesAndStockholdersEquity\": 2975700000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 1446800000,\n    \"totalLiabilitiesAndTotalEquity\":
+        1446800000,\n    \"totalEquity\": 1446800000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        2975700000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         2975700000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 122600000,\n
         \   \"netDebt\": -252100000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
         \ },\n  {\n    \"date\": \"1989-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1989-09-30\",\n
-        \   \"acceptedDate\": \"1989-09-30\",\n    \"calendarYear\": \"1989\",\n    \"period\":
-        \"FY\",\n    \"cashAndCashEquivalents\": 438300000,\n    \"shortTermInvestments\":
+        \   \"acceptedDate\": \"1989-09-29 20:00:00\",\n    \"calendarYear\": \"1989\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 438300000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 438300000,\n    \"netReceivables\":
         792800000,\n    \"inventory\": 475400000,\n    \"otherCurrentAssets\": 587900000,\n
         \   \"totalCurrentAssets\": 2294400000,\n    \"propertyPlantEquipmentNet\":
@@ -864,14 +864,14 @@ interactions:
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         1175900000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -309100000,\n
         \   \"othertotalStockholdersEquity\": 618900000,\n    \"totalStockholdersEquity\":
-        1485700000,\n    \"totalLiabilitiesAndStockholdersEquity\": 2743900000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 1485700000,\n    \"totalLiabilitiesAndTotalEquity\":
+        1485700000,\n    \"totalEquity\": 1485700000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        2743900000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         2743900000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 56800000,\n
         \   \"netDebt\": -381500000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
         \ },\n  {\n    \"date\": \"1988-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1988-09-30\",\n
-        \   \"acceptedDate\": \"1988-09-30\",\n    \"calendarYear\": \"1988\",\n    \"period\":
-        \"FY\",\n    \"cashAndCashEquivalents\": 545700000,\n    \"shortTermInvestments\":
+        \   \"acceptedDate\": \"1988-09-29 20:00:00\",\n    \"calendarYear\": \"1988\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 545700000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 545700000,\n    \"netReceivables\":
         638800000,\n    \"inventory\": 461500000,\n    \"otherCurrentAssets\": 137000000,\n
         \   \"totalCurrentAssets\": 1783000000,\n    \"propertyPlantEquipmentNet\":
@@ -887,14 +887,14 @@ interactions:
         0,\n    \"totalLiabilities\": 1078700000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         0,\n    \"retainedEarnings\": 776500000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -213000000,\n    \"othertotalStockholdersEquity\": 439900000,\n    \"totalStockholdersEquity\":
-        1003400000,\n    \"totalLiabilitiesAndStockholdersEquity\": 2082100000,\n
-        \   \"minorityInterest\": 0,\n    \"totalEquity\": 1003400000,\n    \"totalLiabilitiesAndTotalEquity\":
+        1003400000,\n    \"totalEquity\": 1003400000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        2082100000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         2082100000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 315000000,\n
         \   \"netDebt\": -230700000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
         \ },\n  {\n    \"date\": \"1987-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1987-09-30\",\n
-        \   \"acceptedDate\": \"1987-09-30\",\n    \"calendarYear\": \"1987\",\n    \"period\":
-        \"FY\",\n    \"cashAndCashEquivalents\": 565100000,\n    \"shortTermInvestments\":
+        \   \"acceptedDate\": \"1987-09-29 20:00:00\",\n    \"calendarYear\": \"1987\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 565100000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 565100000,\n    \"netReceivables\":
         405600000,\n    \"inventory\": 225800000,\n    \"otherCurrentAssets\": 110900000,\n
         \   \"totalCurrentAssets\": 1307400000,\n    \"propertyPlantEquipmentNet\":
@@ -910,14 +910,14 @@ interactions:
         0,\n    \"totalLiabilities\": 641400000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         0,\n    \"retainedEarnings\": 573100000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -158700000,\n    \"othertotalStockholdersEquity\": 422100000,\n    \"totalStockholdersEquity\":
-        836500000,\n    \"totalLiabilitiesAndStockholdersEquity\": 1477900000,\n    \"minorityInterest\":
-        0,\n    \"totalEquity\": 836500000,\n    \"totalLiabilitiesAndTotalEquity\":
+        836500000,\n    \"totalEquity\": 836500000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        1477900000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         1477900000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
         -565100000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  },\n  {\n    \"date\":
         \"1986-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\": \"USD\",\n
         \   \"cik\": \"0000320193\",\n    \"fillingDate\": \"1986-09-30\",\n    \"acceptedDate\":
-        \"1986-09-30\",\n    \"calendarYear\": \"1986\",\n    \"period\": \"FY\",\n
-        \   \"cashAndCashEquivalents\": 576200000,\n    \"shortTermInvestments\":
+        \"1986-09-29 20:00:00\",\n    \"calendarYear\": \"1986\",\n    \"period\":
+        \"FY\",\n    \"cashAndCashEquivalents\": 576200000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 576200000,\n    \"netReceivables\":
         263100000,\n    \"inventory\": 108700000,\n    \"otherCurrentAssets\": 92900000,\n
         \   \"totalCurrentAssets\": 1040900000,\n    \"propertyPlantEquipmentNet\":
@@ -933,14 +933,14 @@ interactions:
         0,\n    \"totalLiabilities\": 466000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         0,\n    \"retainedEarnings\": 474300000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -114700000,\n    \"othertotalStockholdersEquity\": 334500000,\n    \"totalStockholdersEquity\":
-        694100000,\n    \"totalLiabilitiesAndStockholdersEquity\": 1160100000,\n    \"minorityInterest\":
-        0,\n    \"totalEquity\": 694100000,\n    \"totalLiabilitiesAndTotalEquity\":
+        694100000,\n    \"totalEquity\": 694100000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        1160100000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         1160100000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
         -576200000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  },\n  {\n    \"date\":
         \"1985-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\": \"USD\",\n
         \   \"cik\": \"0000320193\",\n    \"fillingDate\": \"1985-09-30\",\n    \"acceptedDate\":
-        \"1985-09-30\",\n    \"calendarYear\": \"1985\",\n    \"period\": \"FY\",\n
-        \   \"cashAndCashEquivalents\": 337000000,\n    \"shortTermInvestments\":
+        \"1985-09-29 20:00:00\",\n    \"calendarYear\": \"1985\",\n    \"period\":
+        \"FY\",\n    \"cashAndCashEquivalents\": 337000000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 337000000,\n    \"netReceivables\":
         220200000,\n    \"inventory\": 167000000,\n    \"otherCurrentAssets\": 97900000,\n
         \   \"totalCurrentAssets\": 822100000,\n    \"propertyPlantEquipmentNet\":
@@ -956,8 +956,8 @@ interactions:
         0,\n    \"totalLiabilities\": 385700000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         0,\n    \"retainedEarnings\": 320300000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -85200000,\n    \"othertotalStockholdersEquity\": 315400000,\n    \"totalStockholdersEquity\":
-        550500000,\n    \"totalLiabilitiesAndStockholdersEquity\": 936200000,\n    \"minorityInterest\":
-        0,\n    \"totalEquity\": 550500000,\n    \"totalLiabilitiesAndTotalEquity\":
+        550500000,\n    \"totalEquity\": 550500000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        936200000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         936200000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
         -337000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  }\n]"
     headers:
@@ -975,13 +975,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '75705'
+      - '75795'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 14:44:14 GMT
+      - Tue, 11 Apr 2023 19:14:02 GMT
       ETag:
-      - W/"127b9-G3bB/s+37CaT30iQqU0+qn0GZro"
+      - W/"12813-eXHaig19XZ8txB67SYcQ/0wtq/A"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

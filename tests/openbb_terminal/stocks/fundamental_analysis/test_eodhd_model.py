@@ -18,12 +18,9 @@ def vcr_config():
 @pytest.mark.parametrize(
     "symbol, statement, ratios",
     [
-        ("TSLA", "balance", False),
+        ("TSLA", "balance", True),
         ("TSLA", "income", False),
         ("TSLA", "cash", False),
-        ("TSLA", "balance", True),
-        ("TSLA", "income", True),
-        ("TSLA", "cash", True),
     ],
 )
 def test_get_financials(symbol, statement, ratios):

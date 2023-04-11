@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
+      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://eodhistoricaldata.com/api/fundamentals/TSLA?api_token=MOCK_API_KEY&filter=Financials%3A%3Acash%3A%3Ayearly
   response:
@@ -29,7 +29,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 10 Apr 2023 19:42:17 GMT
+      - Tue, 11 Apr 2023 19:02:03 GMT
       Server:
       - nginx/1.19.10
       Transfer-Encoding:

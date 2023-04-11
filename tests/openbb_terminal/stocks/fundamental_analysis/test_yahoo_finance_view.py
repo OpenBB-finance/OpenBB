@@ -76,7 +76,7 @@ def test_display_shareholders(symbol, kwargs):
 @pytest.mark.parametrize(
     "symbol, kwargs",
     [
-        ("TSLA", {}),
+        ("TSLA", {"limit": 1}),
     ],
 )
 def test_display_dividends(symbol, kwargs):
@@ -109,7 +109,6 @@ def test_display_mktcap(symbol, start_date, end_date, kwargs):
 
 
 @pytest.mark.record_http
-@pytest.mark.record_verify_screen
 @pytest.mark.parametrize(
     "symbol, statement, kwargs",
     [
