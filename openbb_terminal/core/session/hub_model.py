@@ -581,7 +581,7 @@ def list_routines(
     Optional[requests.Response]
         The response from the get request.
     """
-    fields = "name%2Cdescription"
+    fields = "name%2Cdescription%2Cversion"
 
     try:
         response = requests.get(
@@ -600,6 +600,38 @@ def list_routines(
         return None
     except Exception:
         console.print("[red]Failed to list your routines.[/red]")
+        return None
+
+
+def get_default_routines(timeout: int = TIMEOUT):
+    """Get the default routines from CMS.
+
+    Parameters
+    ----------
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the get request.
+    """
+    try:
+        response = requests.get(
+            url="https://tffo1zc1.directus.app/items/Routines",
+            timeout=timeout,
+        )
+        if response.status_code != 200:
+            console.print("[red]Failed to get default routines.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to get default routines.[/red]")
         return None
 
 

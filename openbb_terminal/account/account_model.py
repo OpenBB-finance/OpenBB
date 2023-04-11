@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -32,6 +32,27 @@ def set_login_called(value: bool):
     """
     global __login_called  # pylint: disable=global-statement
     __login_called = value
+
+
+def get_default_routines_info(routines: List[Dict[str, str]]) -> pd.DataFrame:
+    """Get the routines list.
+
+    Parameters
+    ----------
+    response : requests.Response
+        The response.
+
+    Returns
+    -------
+    Tuple[pd.DataFrame, int, int]
+        The routines list, the current page and the total number of pages.
+    """
+    df = pd.DataFrame()
+    if routines:
+        df = pd.DataFrame(routines)
+        df = df[["name", "description", "version"]]
+        df.index = np.arange(1, len(df) + 1)
+    return df
 
 
 def get_routines_info(response) -> Tuple[pd.DataFrame, int, int]:

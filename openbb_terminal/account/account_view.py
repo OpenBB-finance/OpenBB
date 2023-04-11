@@ -15,14 +15,33 @@ def display_routines_list(df: pd.DataFrame, page: int, pages: int):
     pages : int
         The total number of pages.
     """
-    title = f"Available routines - page {page}"
+    title = f"User routines - page {page}"
     if pages:
         title += f" of {pages}"
 
-    print_rich_table(
-        df=df,
-        title=title,
-        headers=["Name", "Description"],
-        show_index=True,
-        index_name="#",
-    )
+    if all(c in df.columns for c in ["name", "description", "version"]):
+        print_rich_table(
+            df=df,
+            title=title,
+            headers=["Name", "Description", "Version"],
+            show_index=True,
+            index_name="#",
+        )
+
+
+def display_default_routines_list(df: pd.DataFrame):
+    """Display the default routines list.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The default routines list.
+    """
+    if all(c in df.columns for c in ["name", "description", "version"]):
+        print_rich_table(
+            df=df,
+            title="Default routines",
+            headers=["Name", "Description", "Version"],
+            show_index=True,
+            index_name="#",
+        )
