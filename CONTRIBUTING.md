@@ -165,46 +165,51 @@ Note:
 2. If the model requires an API key, make sure to handle the error and output relevant message.
 3. If the data provider is not yet supported, you'll most likely need to do some extra steps in order to add it to the `keys` menu.  See [this section](#external-api-keys) for more details.
 
-In the example below, you can see that we explicitly handle 4 important error types:
+Some of the most common error messages are:
 
+- Error in the request (HTTP error)
 - Invalid API Keys
 - API Keys not authorized for Premium feature
 - Empty return payload
 - Invalid arguments (Optional)
 
-It's not always possible to distinguish error types using status_code. So depending on the API provider, you can use either error messages or exception.
+In the example below, you can see that we explicitly handle some of them.
+It's not always possible to distinguish error types using `status_code`. So depending on the API provider, you can use either error messages or exceptions.
 
 ```python
-def get_economy_calendar_events() -> pd.DataFrame:
-    """Get economic calendar events
+@log_start_end(log=logger)
+@check_api_key(["API_NEWS_TOKEN"])
+def get_news(
+    query: str,
+    limit: int = 10,
+    start_date: Optional[str] = None,
+    show_newest: bool = True,
+    sources: str = "",
+) -> pd.DataFrame:
 
-    Returns
-    -------
-    pd.DataFrame
-        Get dataframe with economic calendar events
-    """
-    current_user = get_current_user()
-    response = request(
-        f"https://finnhub.io/api/v1/calendar/economic?token={current_user.credentials.API_FINNHUB_KEY}"
-    )
+    ...
 
-    df = pd.DataFrame()
+    link += f"&apiKey={get_current_user().credentials.API_NEWS_TOKEN}"
+    response = request(link)
+    articles = {}
 
     if response.status_code == 200:
-        d_data = response.json()
-        if "economicCalendar" in d_data:
-            df = pd.DataFrame(d_data["economicCalendar"])
-        else:
-            console.print("No latest economy calendar events found\n")
+        response_json = response.json()
+        articles = (response_json["articles"] if show_newest else response_json["articles"][::-1])
+
+    elif response.status_code == 426:
+        console.print(f"Error in request: {response.json()['message']}", "\n")
     elif response.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
-    elif response.status_code == 403:
-        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
+    elif response.status_code == 429:
+        console.print("[red]Exceeded number of calls per minute[/red]\n")
     else:
-        console.print(f"Error in request: {response.json()['error']}", "\n")
+        console.print(f"Error in request: {response.json()['message']}", "\n")
 
-    return df
+    ...
 ```
+
+> Click [here](openbb_terminal/common/newsapi_model.py) to see the example in detail.
 
 ### Data source
 
