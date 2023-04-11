@@ -53,6 +53,18 @@ def get_filings_analysis(symbol: str) -> pd.DataFrame:
         map(resultGroupMapper("Risk factors"), response_dict[0]["rf_highlights"]),
         columns=["Group", "Good", "Sentence"],
     )
+
+    if risk.empty:
+        response_dict_rf = [x for x in response_dict if x["rf_highlights"] != []]
+        if response_dict_rf != []:
+            risk = pd.DataFrame(
+                map(
+                    resultGroupMapper("Risk factors"),
+                    response_dict_rf[0]["rf_highlights"],
+                ),
+                columns=["Group", "Good", "Sentence"],
+            )
+
     analysis = pd.DataFrame(
         map(
             resultGroupMapper("Discussion and Analysis"),
