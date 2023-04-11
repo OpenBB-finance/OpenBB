@@ -24,7 +24,7 @@ from prompt_toolkit.styles import Style
 from rich import panel
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.account.account_model import (
+from openbb_terminal.account.account_controller import (
     get_login_called,
     set_login_called,
 )

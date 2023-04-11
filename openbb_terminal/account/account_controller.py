@@ -3,13 +3,6 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from openbb_terminal.account.account_model import (
-    get_default_routines_info,
-    get_personal_routines_info,
-    read_routine,
-    save_routine,
-    set_login_called,
-)
 from openbb_terminal.account.account_view import (
     display_default_routines,
     display_personal_routines,
@@ -18,6 +11,12 @@ from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
+)
+from openbb_terminal.core.session.routines_handler import (
+    get_default_routines_info,
+    get_personal_routines_info,
+    read_routine,
+    save_routine,
 )
 from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -29,6 +28,32 @@ from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.terminal_helper import print_guest_block_msg
 
 logger = logging.getLogger(__name__)
+
+
+__login_called = False
+
+
+def get_login_called():
+    """Get the login/logout called flag.
+
+    Returns
+    -------
+    bool
+        The login/logout called flag.
+    """
+    return __login_called
+
+
+def set_login_called(value: bool):
+    """Set the login/logout called flag.
+
+    Parameters
+    ----------
+    value : bool
+        The login/logout called flag.
+    """
+    global __login_called  # pylint: disable=global-statement
+    __login_called = value
 
 
 class AccountController(BaseController):
@@ -105,7 +130,7 @@ class AccountController(BaseController):
             The default routines
         """
         response = Hub.get_default_routines()
-        if response.status_code == 200:
+        if response and response.status_code == 200:
             d = response.json()
             return d.get("data", [])
         return []
