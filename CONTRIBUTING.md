@@ -220,7 +220,9 @@ Now that we have added the model function getting, we need to specify that this 
       "pt": ["BusinessInsider", "FinancialModelingPrep"],
 ```
 
-If you are adding a new function with a new data source, make a new value in the file.
+If you are adding a new function with a new data source, make a new value in the file.  If the data source requires an
+API key, please refer to the guide below for adding them.  Instructions for obtaining the new api key
+should be included in the file `OpenBBTerminal/website/content/terminal/usage/guides/api-keys.md`.
 
 ### View
 
@@ -478,7 +480,7 @@ In order to add a command to the SDK, follow these steps:
 
     In this file, the trail represents the path to the function to be called. The model represents the import alias we gave to the `_model` file. The view represents the import alias we gave to the `_view` file.
 
-3. Add your new function to this structure. In the below example of the `pt` function, our trail would be `stocks.fa.pt`.
+3. Add your new function to this structure. In the below example of the `pt` function, our trail would be `stocks.fa.pt`.  Our naming convention is such that the data source should not be included in the trail. In this example, calling a new function `pt_fmp` would not be allowed. For functions with multiple sources, there should be a single `pt` function that takes in the source as an argument.In the following example, we will stick with showing how the business_insider was initially added to the sdk.
 
     The model is the import alias to the `_model` function that was written:
 
