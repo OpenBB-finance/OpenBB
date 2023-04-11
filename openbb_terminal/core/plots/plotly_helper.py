@@ -1267,19 +1267,20 @@ class OpenBBFigure(go.Figure):
 
             # We get the dates that are missing
             dt_missing_days = list(
-                set(dt_bdays.strftime("%Y-%m-%d"))
-                - set(df_data.index.strftime("%Y-%m-%d"))
+                set(dt_bdays.strftime("%Y-%m-%d 09:30:00"))
+                - set(df_data.index.strftime("%Y-%m-%d 09:30:00"))
             )
+            dt_missing_days = pd.to_datetime(dt_missing_days)
 
-            rangebreaks = [dict(values=dt_missing_days), dict(bounds=["sat", "mon"])]
+            rangebreaks = [dict(bounds=["sat", "mon"]), dict(values=dt_missing_days)]
 
             # We add a rangebreak if the first and second time are not the same
             # since daily data will have the same time (00:00)
             if df_data.index[-1].time() != df_data.index[-2].time():
                 if prepost:
-                    rangebreaks.append(dict(bounds=[20.00, 4.00], pattern="hour"))
+                    rangebreaks.insert(0, dict(bounds=[20, 4], pattern="hour"))
                 else:
-                    rangebreaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
+                    rangebreaks.insert(0, dict(bounds=[16, 9.5], pattern="hour"))
 
         self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
 

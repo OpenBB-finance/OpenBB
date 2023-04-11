@@ -164,11 +164,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           },
         },
       ],
-      [
-        "hoverClosestCartesian",
-        "hoverCompareCartesian",
-        "toggleSpikelines",
-      ],
+      ["hoverClosestCartesian", "hoverCompareCartesian", "toggleSpikelines"],
       [
         {
           name: "Auto Scale (Ctrl+Shift+A)",
@@ -311,7 +307,9 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
 
   // We change the Plotly default Autoscale button icon and title to Reset Axes
   globals.barButtons["Reset Axes"] = globals.barButtons["Autoscale"];
-  globals.barButtons["Autoscale"].getElementsByTagName("path")[0].setAttribute("d", Plotly.Icons.home.path);
+  globals.barButtons["Autoscale"]
+    .getElementsByTagName("path")[0]
+    .setAttribute("d", Plotly.Icons.home.path);
   globals.barButtons["Autoscale"].setAttribute("data-title", "Reset Axes");
 
   if (globals.CHART_DIV.layout.yaxis.type != undefined) {
@@ -371,25 +369,19 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     if (e.ctrlKey) {
       if (e.shiftKey && e.key.toLowerCase() == "t") {
         openPopup("popup_title");
-      }
-      else if (e.key.toLowerCase() == "t") {
+      } else if (e.key.toLowerCase() == "t") {
         openPopup("popup_text");
-      }
-      else if (e.key.toLowerCase() == "e") {
+      } else if (e.key.toLowerCase() == "e") {
         changeColor();
-      }
-      else if (e.shiftKey && e.key.toLowerCase() == "s") {
+      } else if (e.shiftKey && e.key.toLowerCase() == "s") {
         downloadData(globals.CHART_DIV);
-      }
-      else if (e.key.toLowerCase() == "s") {
+      } else if (e.key.toLowerCase() == "s") {
         downloadImage(globals.filename, "png");
-      }
-      else if (e.key.toLowerCase() == "o") {
+      } else if (e.key.toLowerCase() == "o") {
         e.preventDefault();
         openPopup("popup_csv");
       }
-    }
-    else if (e.key == "Escape") {
+    } else if (e.key == "Escape") {
       closePopup();
     }
   });
@@ -419,4 +411,17 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       }, 2)();
     }
   }
+
+  window.addEventListener("resize", function () {
+    // We check to see if the window is smaller than 675px
+    if (window.innerWidth < 675) {
+      // We hide the modebar
+      modebar.style.display = "none";
+      globals.modebarHidden = true;
+    } else if (globals.modebarHidden) {
+      // We show the modebar
+      modebar.style.display = "flex";
+      globals.modebarHidden = false;
+    }
+  });
 }
