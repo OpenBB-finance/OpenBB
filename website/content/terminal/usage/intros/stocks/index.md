@@ -61,7 +61,7 @@ optional arguments:
 For more information and examples, use 'about news' to access the related guide.
 ```
 
-The first step in many workflows will be to load a stock symbol with historical data. The amount, granularity, and market coverage will vary by source. Users can elect to subscribe to any of the data sources accordingly. While no API keys are required to get started using the Terminal, acquiring these credentials at the free level will enhance the user experience with additional functionality. Refer to the [API keys guide](https://docs.openbb.co/terminal/quickstart/api-keys) for links to obtain each.
+The first step in many workflows will be to load a stock symbol with historical data. The amount, granularity, and market coverage will vary by source. Users can elect to subscribe to any of the data sources accordingly. While no API keys are required to get started using the Terminal, acquiring these credentials at the free level will enhance the user experience with additional functionality. Refer to the [API keys guide](https://docs.openbb.co/terminal/usage/guides/api-keys) for links to obtain each.
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218974442-563cb216-623f-4f98-b2e1-9f1bb0e1a199.png"></img>
 
