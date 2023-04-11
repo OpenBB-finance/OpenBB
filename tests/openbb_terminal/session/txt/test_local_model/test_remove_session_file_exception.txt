@@ -1,2 +1,0 @@
-
-[red]Failed to remove login file.[/red]

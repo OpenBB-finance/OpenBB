@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # list
 
-List all of your active alerts
+This command allows the user to view a list of all their active alerts. It displays each alert along with its symbol, description, and threshold, giving the user an overview of their active alerts at a glance.
 
 ### Usage
 

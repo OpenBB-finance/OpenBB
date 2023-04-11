@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # earnings
 
-Earnings that are expected to occur in the next business days. (Sorted by market cap)
+This command allows the user to retrieve the expected earnings for the given business day. The displayed earnings will include company ticker, expected time, sector, and float of the company. This information can be used to help the user make informed decisions about their investments.
 
 ### Usage
 

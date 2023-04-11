@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # table
 
-Get top DeFi protocols
+This command allows the user to view a table of the top DeFi protocols and their associated information, such as the total value locked, 24 hour volume, and price. The table is sorted in descending order, with the top DeFi protocols at the top.
 
 ### Usage
 

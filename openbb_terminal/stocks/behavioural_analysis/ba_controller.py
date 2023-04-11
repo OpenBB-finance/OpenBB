@@ -373,7 +373,7 @@ class BehaviouralAnalysisController(StockBaseController):
             "--display",
             action="store_true",
             dest="display",
-            default=True,
+            default=False,
             help="Print table of sentiment values",
         )
         if other_args and "-" not in other_args[0][0]:

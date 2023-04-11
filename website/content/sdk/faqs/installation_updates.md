@@ -92,3 +92,13 @@ softwareupdate --install-rosetta
 Refer to this issue on the Conda [GitHub](https://github.com/conda/conda/issues/10723) page.
 
 </details>
+
+<details><summary>Error: Library not loaded: '/usr/local/opt/libomp/lib/libomp.dylib'</summary>
+
+This error is resolved by installing libomp from Homebrew:
+
+```console
+brew install libomp
+```
+
+</details>

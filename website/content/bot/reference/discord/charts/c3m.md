@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # c3m
 
-Shows an intraday 3m chart for the ticker provided.
+This command allows users to retrieve a 3-minute intraday chart for the given ticker. This chart will display the candlestick chart for the day. It will provide a visual representation of the stock's performance over the current day, making it helpful for short-term investors.
 
 ### Usage
 

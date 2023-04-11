@@ -26,17 +26,16 @@ en:
   account/show: Shows the current Personal Access Token
   account/revoke: Revoke the Personal Access Token
   account/_info_: Cloud storage of keys
-  account/sync: Turn the keys synchronization on/off
-  account/pull: Pull keys from cloud
   account/clear: Clear keys from cloud
   account/_routines_: Cloud storage of routines
   account/list: List available routines
   account/upload: Upload routine
   account/download: Download routine
-  account/delete: Delete routine
+  account/delete: Delete routine stored in cloud
   keys/_source: Source
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   keys/mykeys: get your defined keys
+  keys/status: reevaluate keys status
   keys/_status_: Status
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
@@ -70,8 +69,8 @@ en:
   settings/_cmds_: Change settings
   settings/colors: set your own terminal colors
   settings/_colors: Colors
-  settings/plotstyle: set your own plot style
-  settings/_plotstyle: Plot style
+  settings/theme: set plots and tables theme
+  settings/_theme: Theme
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used
@@ -251,14 +250,12 @@ en:
   stocks/scr/view: view available presets (defaults and customs)
   stocks/scr/set: set one of the available presets
   stocks/scr/_preset: Preset
-  stocks/scr/historical: view historical price
   stocks/scr/overview: overview (e.g. Sector, Industry, Market Cap, Volume)
   stocks/scr/valuation: valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
   stocks/scr/financial: financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
   stocks/scr/ownership: ownership (e.g. Float, Insider Own, Short Ratio)
   stocks/scr/performance: performance (e.g. Perf Week, Perf YTD, Volatility M)
   stocks/scr/technical: technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
-  stocks/scr/arktrades: get ARK trades for a chosen ticker
   stocks/scr/_screened_tickers: Last screened tickers
   stocks/scr/ca: take these to comparison analysis menu
   stocks/ins/view: view available presets
