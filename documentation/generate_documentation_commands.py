@@ -34,6 +34,23 @@ EXPORT_FILE_PATH_SDK = "documentation/documentation_commands_sdk"
 
 
 def read_yaml_file(path: Path) -> dict:
+    """Read a YAML file and return its contents as a dictionary.
+
+    Parameters
+    ----------
+    path : Path
+        The path to the YAML file.
+
+    Returns
+    -------
+    dict
+        A dictionary containing the contents of the YAML file.
+
+    Raises
+    ------
+    yaml.YAMLError
+        If the YAML file could not be read or parsed, this exception is raised.
+    """
     with open(path) as stream:
         try:
             return yaml.safe_load(stream)
@@ -42,6 +59,37 @@ def read_yaml_file(path: Path) -> dict:
 
 
 def get_command_list(en_dict: dict) -> list:
+    """
+    Extract a list of commands from a dictionary.
+    The function looks for keys in the "en" dictionary of `en_dict` that do not start with an underscore ("_").
+    If a key contains a forward slash ("/"), the part of the key after the last slash is considered to be a potential command.
+    If this potential command also starts with an underscore, it is ignored.
+
+    Parameters
+    ----------
+    en_dict : dict
+        A dictionary containing commands as keys.
+        The values of the dictionary are not used.
+
+    Returns
+    -------
+    list
+        A list of commands extracted from the dictionary.
+
+    Examples
+    --------
+    ```
+    en_dict = {
+        "en": {
+            "run_command": "Execute a command.",
+            "run_command/cmd_option": "Execute a command with an option.",
+            "_helper": "A helper command that should be ignored."
+        }
+    }
+    command_list = get_command_list(en_dict)
+    # command_list == ["run_command", "cmd_option"]
+    ```
+    """
     commands = []
     for key in en_dict["en"]:
         if key.startswith("_"):
@@ -57,11 +105,54 @@ def get_command_list(en_dict: dict) -> list:
 
 
 def get_sdk_command_list(trail_map: Path) -> list:
+    """
+    Extract a list of commands from a CSV file.
+    The function reads the CSV file at the specified path into a pandas DataFrame and extracts the "trail" column as a list of commands.
+
+    Parameters
+    ----------
+    trail_map : Path
+        A path to the CSV file containing the trail map.
+
+    Returns
+    -------
+    list
+        A list of commands extracted from the CSV file.
+    """
     df = pd.read_csv(trail_map)
     return df["trail"].tolist()
 
 
 def get_content_from_md_file(file_path: str, code_blocks_only: bool) -> str:
+    """
+    Read a Markdown file and return its content, optionally including only code blocks.
+
+    If `code_blocks_only` is True, the function finds all fenced code blocks (using regular expression),
+    and all backtick code blocks in the Markdown file and concatenates them into a single string.
+    The backtick code blocks can be either inline or multiline.
+    If `code_blocks_only` is False, the function returns the full contents of the Markdown file as a string.
+
+    Parameters
+    ----------
+    file_path : str
+        The path to the Markdown file.
+    code_blocks_only : bool
+        If True, return only the code blocks found in the Markdown file. If False, return the full contents of the Markdown file. By default, False.
+
+    Returns
+    -------
+    str
+        The contents of the Markdown file as a string.
+
+    Examples
+    --------
+    ```
+    file_path = "example.md"
+    full_content = get_content_from_md_file(file_path, False)
+    code_blocks = get_content_from_md_file(file_path, True)
+    ```
+    """
+
     def get_code_blocks_from_md_file(file_path: str) -> str:
         code_blocks = ""
         with open(file_path) as f:
@@ -87,6 +178,38 @@ def get_content_from_md_file(file_path: str, code_blocks_only: bool) -> str:
 def find_commands_in_files(
     files: list, commands: list, code_blocks_only: bool = True
 ) -> dict:
+    """
+    Search for specified commands in the content of Markdown files and return a dictionary of the files where each command was found.
+
+    The function reads the contents of each Markdown file in `files`, and for each `command` in `commands`, searches for occurrences of the command within the file contents.
+    The search is performed using regular expression to match whole words only.
+    If `code_blocks_only` is True, the function searches only within fenced code blocks and backtick code blocks in the Markdown files.
+
+
+    Parameters
+    ----------
+    files : list
+        A list of file paths to the Markdown files to search.
+    commands : list
+        A list of commands to search for.
+    code_blocks_only : bool, optional
+        If True, search only within code blocks in the Markdown files.
+        If False, search within the full contents of the Markdown files.
+        By default, True.
+
+    Returns
+    -------
+    dict
+        A dictionary where each key is a command that was found in one or more files, and the value is a list of file paths where the command was found.
+
+    Examples
+    --------
+    ```
+    files = ["file1.md", "file2.md", "file3.md"]
+    commands = ["command1", "command2", "command3"]
+    results = find_commands_in_files(files, commands)
+    ```
+    """
     found_commands = defaultdict(list)
 
     for file_path in files:
@@ -108,6 +231,19 @@ def find_commands_in_files(
 def handle_export(
     extension: Literal["json", "csv"], found_commands: dict, found_commands_sdk: dict
 ):
+    """
+    Handle exporting the found commands into a file.
+
+    Parameters
+    ----------
+    extension : Literal["json", "csv"]
+        The extension type of the file to be exported. Can only be "json" or "csv".
+    found_commands : dict
+        The dictionary containing the commands found in the Markdown files and their corresponding file paths.
+    found_commands_sdk : dict
+        The dictionary containing the SDK commands found in the Markdown files and their corresponding file paths.
+    """
+
     def export_to_json(path: Path, commands: dict):
         with open(path, "w") as fp:
             json.dump(commands, fp, indent=4)
@@ -137,6 +273,17 @@ def handle_export(
 def generate_documentation_commands(
     export_extension: Literal["json", "csv"], code_blocks_only: bool
 ):
+    """
+    Generate documentation commands based on commands in Markdown files.
+
+    Parameters
+    ----------
+    export_extension : Literal["json", "csv"]
+        The file extension of the export file. Valid values are "json" and "csv".
+    code_blocks_only : bool
+        If True, only code blocks from the Markdown files will be searched for documentation commands.
+        If False, the entire contents of the Markdown files will be searched.
+    """
     en_file_as_dict = read_yaml_file(path=EN_FILE)
     cmds = get_command_list(en_dict=en_file_as_dict)
     cmds_sdk = [
@@ -161,7 +308,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="generate_documentation_commands",
-        description="Generate a list of commands found in the documentation",
+        description="Generate documentation commands based on commands in Markdown files.",
     )
     parser.add_argument(
         "-e",
@@ -177,7 +324,7 @@ if __name__ == "__main__":
         dest="code_blocks_only",
         default=True,
         action="store_true",
-        help="Only search for commands in code blocks",
+        help="Search only within code blocks in the Markdown files",
     )
     args = parser.parse_args()
 
