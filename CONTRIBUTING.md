@@ -10,7 +10,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
   - [Adding a new command](#adding-a-new-command)
     - [Select Feature](#select-feature)
     - [Model](#model)
-    - [Data source](#data-source)
+    - [Data sources](#data-sources)
     - [View](#view)
     - [Controller](#controller)
     - [Add SDK endpoint](#add-sdk-endpoint)
@@ -211,9 +211,9 @@ def get_news(
 
 > Click [here](openbb_terminal/common/newsapi_model.py) to see the example in detail.
 
-### Data source
+### Data sources
 
-Now that we have added the model function getting, we need to specify that this is an available data source.  To do so, we edit the `openbb_terminal/miscellaneous/data_sources_default.json` file.  This file, described below, uses a dictionary structure to identify available sources.  Since we are adding FMP to `stocks/fa/pt`, we find that entry and append it:
+Now that we have added the model function getting, we need to specify that this is an available data source.  To do so, we edit the `openbb_terminal/miscellaneous/sources/openbb_default.json` file.  This file, described below, uses a dictionary structure to identify available sources.  Since we are adding FMP to `stocks/fa/pt`, we find that entry and append it:
 
 ```json
     "fa": {
