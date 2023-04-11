@@ -15,7 +15,7 @@ def display_routines_list(df: pd.DataFrame, page: int, pages: int):
     pages : int
         The total number of pages.
     """
-    title = f"User routines - page {page}"
+    title = f"Personal routines - page {page}"
     if pages:
         title += f" of {pages}"
 
