@@ -80,7 +80,7 @@ jobs:
           path: .
 
       - name: unzip artifact for deployment
-        run: Expand-Archive release.zip -DestinationPath dist
+        run: Expand-Archive release.zip -DestinationPath .
         shell: pwsh
 
       - name: Move Files into App Folder
