@@ -43,11 +43,13 @@ jobs:
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
           python -m PyInstaller build/pyinstaller/terminal.spec --clean
+          pwd
         shell: bash
 
       - name: zip the file
         run: |
-          Compress-Archive * release.zip
+          Get-Location
+          Compress-Archive dist release.zip
         shell: pwsh
 
       - name: Upload Artifact
