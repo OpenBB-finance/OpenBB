@@ -1,19 +1,59 @@
 # 1. OpenBB Terminal Unit Testing
 
-This document is an extension of the OpenBB Terminal contributing guidelines.
+This document is an annex of the OpenBB Terminal Contributing Guidelines.
 
-It aims to provide necessary information in order to:
+It provide the necessary information to build, run and maintain Unit Tests for OpenBB Terminal.
 
-- Run `unit tests`
-- Build `unit tests`
-- Fix failed existing `unit tests`
-- Maintain `unit tests`
+## 1.1. Unit Tests
 
-Table of contents:
+Unit Tests are early filters, having them working doesn't mean the function works.
+
+But it means the function will work with the most common use cases : the tested ones.
+
+## 1.2. Rules
+
+Here are few rules to follow when you write Unit Tests for OpenBB Terminal.
+
+These rules are these to avoiding having one Contributor work negatively impact another Contributor.
+
+Thus keeping a good Contributor experience.
+
+**TIMEBOX**
+
+Unit Tests mustn't be an impediment to feature building.
+
+The following elements should be timeboxed:
+- Building time
+- Execution time
+
+**BUILDING**
+
+Try to cover:
+- the most common cases function parameters.
+- check if the return type is correct 
+
+Only if times allow and it's convenient enough, we can:
+- go deeper on function parameters : testing more cases
+- have a thorough check of the returned variable
+
+**EXECUTION**
+
+We must be able to execute Unit Tests often, so they need to be fast to run.
+
+Slow Unit Tests will discourage Developers to run tests, thus negatively impact all the Unit Tests.
+
+If an Unit Test if not fast enough, either:
+- Refactor it
+- Disable it by default and mark them as `slow`
+- Remote it
+
+## 1.3. Table of contents
 
 - [1. OpenBB Terminal Unit Testing](#1-openbb-terminal-unit-testing)
-  - [1.1. Why having unit tests?](#11-why-having-unit-tests)
-  - [2. Run `unit tests`](#2-run-unit-tests)
+  - [1.1. Unit Tests](#11-unit-tests)
+  - [1.2. Rules](#12-rules)
+  - [1.3. Table of contents](#13-table-of-contents)
+- [2. Run `unit tests`](#2-run-unit-tests)
   - [2.1. How to install tests dependencies?](#21-how-to-install-tests-dependencies)
     - [2.2. How to run `tests`:](#22-how-to-run-tests)
       - [By `module`](#by-module)
@@ -22,7 +62,7 @@ Table of contents:
   - [2.3. How to skip tests](#23-how-to-skip-tests)
     - [Skipping a specific test](#skipping-a-specific-test)
     - [Skipping the entire test module](#skipping-the-entire-test-module)
-  - [3. How to build `unit tests`](#3-how-to-build-unit-tests)
+- [3. How to build `unit tests`](#3-how-to-build-unit-tests)
     - [3.1. Model Tests](#31-model-tests)
     - [3.2. View Tests](#32-view-tests)
     - [3.3. Controller Tests](#33-controller-tests)
@@ -49,7 +89,7 @@ Table of contents:
     - [3.11. How to handle `dev-dependencies` ?](#311-how-to-handle-dev-dependencies-)
       - [UPDATE PYPROJECT](#update-pyproject)
       - [EXPORT REQUIREMENTS](#export-requirements)
-  - [4. Maintain `unit tests`](#4-maintain-unit-tests)
+- [4. Maintain `unit tests`](#4-maintain-unit-tests)
     - [4.1. What's the PR process?](#41-whats-the-pr-process)
       - [4.1.1 Find right place](#411-find-right-place)
       - [4.1.2 Verify coverage is above 90%](#412-verify-coverage-is-above-90)
@@ -61,24 +101,7 @@ Table of contents:
       - [MANUALLY](#manually)
       - [PRE-COMMIT](#pre-commit)
 
-## 1.1. Why having unit tests?
 
-`Unit tests` serve as a safety net for developers, enabling them to make changes to the codebase with confidence. Writing tests that are easy to run helps developers to make changes quickly and with minimal risk of introducing new bugs. Additionally, having tests available reduces the likelihood of bugs making it into production and breaking other parts of the codebase.
-
-To achieve these benefits, `unit tests` should be:
-
-- Easy to write
-- Fast to run
-
-This helps to ensure that the codebase remains maintainable and that new features can be added with minimal risk of breaking existing functionality, also ensures that the code is fully tested and that any bugs are caught early in the development process, when they are easier and cheaper to fix.
-
-**FAST TO WRITE.**
-
-The `unit tests` are designed to test a single functionality for its correctness of input and corresponding output. They are useful for ensuring that low-level implementation details are rock solid and that bugs are caught early in the development process.
-
-**FAST TO RUN.**
-
-Tests can be slow at times, due to the need to connect with external services. This can be sending a HTTP request or connecting to a database. We can speed this up by using mocks. If for a specific case, this is not possible, make sure to decorate it as `slow` using the `pytest.mark` decorator.
 
 ## 2. Run `unit tests`
 
@@ -353,29 +376,7 @@ When adding a new feature to an existing menu, there should already be a `test_*
 
 It is not uncommon that your new feature or bug fixes break the existing code. Understanding a few concepts can help you navigate and fix most common cases.
 
-Before continuing this section, please have a look at our [FIXTURES](FIXTURES.md) documentation.
-
-TL;DR:
-
-You can run unit tests under a few mode:
-
-- `--rewrite-expected` will re-generate the fixtures (csv, json and txt files) if there's detected change.
-- `--record-mode` will impact both the cassette (yaml) and fixtures (csv, json, txt files)
-    1. `--record-mode=none` : searches for existing cassette / fixtures. If there's none, an exception will be thrown.
-    2. `--record-mode=once` : creates new fixtures and cassette if they did not exist. If there are already fixtures or cassette, it will take the existing one.
-    3. `--record-mode=rewrite` : this rewrites both the cassette and fixtures, even if they already exist.
-
-#### Scenario 1: Update Fixtures
-
-Let's say you just updated the code in `_model.py` file, which then altered the recorded output. You can update the fixture files by running the tests with `--rewrite-expected` argument. This would update the fixtures with latest changes.
-
-Example: `pytest openbb_terminal.cryptocurrency.defi.defi_controller --rewrite-expected`
-
-#### Scenario 2: Update both Fixtures and Cassettes
-
-If you want to update existing cassettes and fixtures, use the argument `--record-mode=rewrite` when running tests.
-
-As existing cassettes and fixtures will be overwritten (if there's any), make sure that you check both, and that they yield expected output.
+Before continuing this section, please have a look at our [pytest-recorder-documentation](https://github.com/OpenBB-finance/pytest_recorder/blob/main/README.md).
 
 ### 3.5. How to `mock`?
 
