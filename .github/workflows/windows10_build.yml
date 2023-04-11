@@ -46,7 +46,7 @@ jobs:
         run: |
           conda info
           pip list
-          pip install rapidfuzz==2.13.7
+          pip install rapidfuzz==2.15.1
           pip install virtualenv==20.7.2
           build\\conda\\cleanup_artifacts.bat
           poetry install -E all -E installer
@@ -56,11 +56,16 @@ jobs:
           PyInstaller build/pyinstaller/terminal.spec --clean
         shell: bash -l {0}
 
+      - name: zip the file
+        run: |
+          Compress-Archive * release.zip
+        shell: pwsh
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: OpenBB-Windows10-ENV
-          path: dist
+          path: release.zip
 
 
   Build-Exe:
@@ -81,7 +86,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: OpenBB-Windows10-ENV
-          path: dist
+          path: release.zip
+
+      - name: unzip artifact for deployment
+        run: Expand-Archive release.zip -DestinationPath .
+        shell: pwsh
 
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
