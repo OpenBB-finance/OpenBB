@@ -303,15 +303,27 @@ Now that we have the model and views, it is time to add to the controller.
 3. Add command and source to `print_help()`.
 
    ```python
-   def print_help(self):
-        """Print help"""
-        mt = MenuText("stocks/dps/")
+    def print_help(self):
+        """Print help."""
+        mt = MenuText("stocks/fa/")
         mt.add_cmd("load")
         mt.add_raw("\n")
-        mt.add_cmd("shorted")
+        mt.add_param("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_info("_company_overview")
+        mt.add_cmd("mktcap")
+        mt.add_cmd("overview")
+        mt.add_cmd("divs", not self.suffix)
+
+        ...
+
+        mt.add_cmd("pt")
+        mt.add_cmd("dcf")
+        mt.add_cmd("dcfc")
+        console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
    ```
 
-4. If there is a condition to display or not the command, this is something that can be leveraged through this `add_cmd` method, e.g. `mt.add_cmd("shorted", self.ticker_is_loaded)`.
+4. If there is a condition to display or not the command, this is something that can be leveraged through the `add_cmd` method, e.g. `mt.add_cmd("divs", not self.suffix)`.
 
 5. Add command description to file `i18n/en.yml`. Use the path and command name as key, e.g. `stocks/fa/pt` and the value as description. Please fill in other languages if this is something that you know.
 
