@@ -560,7 +560,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_pt",
-            "business_insider_view.price_target_from_analysts",
+            "business_insider_view.display_price_target_from_analysts",
             ["--limit=10"],
             {
                 "symbol": "TSLA",
@@ -574,7 +574,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_est",
-            "business_insider_view.estimates",
+            "business_insider_view.display_estimates",
             [],
             {
                 "symbol": "TSLA",
