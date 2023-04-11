@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SHROOM_KEY"])
 def display_query(
     query: str,
-    raw: bool = False,
+    sheet_name: Optional[str] = None,
     limit: int = 10,
     export: str = "",
 ):
@@ -45,16 +45,14 @@ def display_query(
     if df.empty:
         console.print("[red]No data found.[/red]")
     elif not df.empty:
-        if raw:
-            console.print(df)
-        else:
-            print_rich_table(df.head(limit))
+        print_rich_table(df, limit=limit)
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "query",
             df,
+            sheet_name,
         )
 
 
