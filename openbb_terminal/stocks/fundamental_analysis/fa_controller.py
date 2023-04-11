@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 import argparse
 import logging
-from datetime import date, datetime
+from datetime import datetime
 from typing import List, Optional
 
 from pandas.core.frame import DataFrame
@@ -2026,7 +2026,7 @@ class FundamentalAnalysisController(StockBaseController):
             action="store",
             dest="year",
             type=check_positive,
-            default=date.today().year,
+            default=None,
             help="year of SEC filings.",
         )
         parser.add_argument(

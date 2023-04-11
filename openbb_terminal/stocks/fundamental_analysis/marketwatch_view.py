@@ -42,7 +42,9 @@ def sec_filings(
         The form type to filter for:
         Choose from: annual, quarterly, proxies, insiders, 8-K, registrations, comments
     """
-    df_financials = marketwatch_model.get_sec_filings(symbol, limit, year, form_group)
+    df_financials = marketwatch_model.get_sec_filings(
+        symbol.upper(), limit, year, form_group
+    )
     if not isinstance(df_financials, pd.DataFrame) or df_financials.empty:
         console.print(f"No data found for {symbol}")
         return
