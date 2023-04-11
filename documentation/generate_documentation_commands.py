@@ -1,3 +1,4 @@
+import argparse
 import glob
 import json
 import re
@@ -133,7 +134,9 @@ def handle_export(
         )
 
 
-if __name__ == "__main__":
+def generate_documentation_commands(
+    export_extension: Literal["json", "csv"], code_blocks_only: bool
+):
     en_file_as_dict = read_yaml_file(path=EN_FILE)
     cmds = get_command_list(en_dict=en_file_as_dict)
     cmds_sdk = [
@@ -141,14 +144,43 @@ if __name__ == "__main__":
     ]
 
     terminal_commands = find_commands_in_files(
-        files=MD_FILES, commands=cmds, code_blocks_only=True
+        files=MD_FILES, commands=cmds, code_blocks_only=code_blocks_only
     )
     sdk_commands = find_commands_in_files(
-        files=MD_FILES, commands=cmds_sdk, code_blocks_only=True
+        files=MD_FILES, commands=cmds_sdk, code_blocks_only=code_blocks_only
     )
 
     handle_export(
-        extension="csv",
+        extension=export_extension,
         found_commands=terminal_commands,
         found_commands_sdk=sdk_commands,
+    )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="generate_documentation_commands",
+        description="Generate a list of commands found in the documentation",
+    )
+    parser.add_argument(
+        "-e",
+        "--export",
+        dest="export_extension",
+        default="csv",
+        choices=["json", "csv"],
+        help="Export the list of commands to a json or csv file",
+    )
+    parser.add_argument(
+        "-c",
+        "--code-blocks-only",
+        dest="code_blocks_only",
+        default=True,
+        action="store_true",
+        help="Only search for commands in code blocks",
+    )
+    args = parser.parse_args()
+
+    generate_documentation_commands(
+        export_extension=args.export_extension, code_blocks_only=args.code_blocks_only
     )
