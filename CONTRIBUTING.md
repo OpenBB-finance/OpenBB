@@ -374,7 +374,7 @@ Our new function will be:
                 self.custom_load_wrapper([self.ticker])
 
             if ns_parser.source == "BusinessInsider":
-                business_insider_view.price_target_from_analysts(
+                business_insider_view.display_price_target_from_analysts(
                     symbol=self.ticker,
                     data=self.stock,
                     start_date=self.start,
