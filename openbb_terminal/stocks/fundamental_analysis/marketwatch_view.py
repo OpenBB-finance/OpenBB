@@ -43,7 +43,7 @@ def sec_filings(
         Choose from: annual, quarterly, proxies, insiders, 8-K, registrations, comments
     """
     df_financials = marketwatch_model.get_sec_filings(
-        symbol.upper(), limit, year, form_group
+        symbol.upper().replace("-", "."), limit, year, form_group
     )
     if not isinstance(df_financials, pd.DataFrame) or df_financials.empty:
         console.print(f"No data found for {symbol}")
