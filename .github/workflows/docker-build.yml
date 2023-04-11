@@ -9,7 +9,6 @@ jobs:
       OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.repository }}
       OPENBB_LOGGING_APP_NAME: "gst_docker"
 
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
