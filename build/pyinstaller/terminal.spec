@@ -24,7 +24,13 @@ build_type = (
 venv_path = Path(sys.executable).parent.parent.resolve()
 
 # Check if we are running in a conda environment
-pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+if is_darwin:
+    pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+else:
+    if "site-packages" in list(venv_path.iterdir()):
+        pathex = str(venv_path / "site-packages")
+    else:
+        pathex = str(venv_path / "lib" / "site-packages")
 
 
 # Removing unused ARM64 binary
