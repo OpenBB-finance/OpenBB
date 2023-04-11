@@ -50,7 +50,7 @@ def get_default_routines_info(routines: List[Dict[str, str]]) -> pd.DataFrame:
     df = pd.DataFrame()
     if routines:
         df = pd.DataFrame(routines)
-        df = df[["name", "description", "version"]]
+        df = df[["name", "description", "version", "date_updated"]]
         df.index = np.arange(1, len(df) + 1)
     return df
 

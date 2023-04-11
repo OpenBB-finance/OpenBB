@@ -581,7 +581,7 @@ def list_routines(
     Optional[requests.Response]
         The response from the get request.
     """
-    fields = "name%2Cdescription%2Cversion"
+    fields = "name%2Cdescription%2Cversion%2Cupdated_date"
 
     try:
         response = requests.get(

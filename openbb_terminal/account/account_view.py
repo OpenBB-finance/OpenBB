@@ -19,11 +19,14 @@ def display_personal_routines(df: pd.DataFrame, page: int, pages: int):
     if pages:
         title += f" of {pages}"
 
-    if all(c in df.columns for c in ["name", "description", "version"]):
+    if all(c in df.columns for c in ["name", "description", "version", "updated_date"]):
+        df["updated_date"] = pd.to_datetime(df["updated_date"])
+        df["updated_date"] = df["updated_date"].dt.strftime("%Y-%m-%d %H:%M:%S")
+        df.replace(to_replace=[None], value="-", inplace=True)
         print_rich_table(
             df=df,
             title=title,
-            headers=["Name", "Description", "Version"],
+            headers=["Name", "Description", "Version", "Last update"],
             show_index=True,
             index_name="#",
         )
@@ -37,11 +40,14 @@ def display_default_routines(df: pd.DataFrame):
     df : pd.DataFrame
         The default routines list.
     """
-    if all(c in df.columns for c in ["name", "description", "version"]):
+    if all(c in df.columns for c in ["name", "description", "version", "date_updated"]):
+        df["date_updated"] = pd.to_datetime(df["date_updated"])
+        df["date_updated"] = df["date_updated"].dt.strftime("%Y-%m-%d %H:%M:%S")
+        df.replace(to_replace=[None], value="-", inplace=True)
         print_rich_table(
             df=df,
             title="Default routines",
-            headers=["Name", "Description", "Version"],
+            headers=["Name", "Description", "Version", "Last update"],
             show_index=True,
             index_name="#",
         )
