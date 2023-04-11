@@ -448,7 +448,7 @@ def call_fa(self, _):
 
 The **import only occurs inside this menu call**, this is so that the loading time only happens here and not at the terminal startup. This is to avoid slow loading times for users that are not interested in `stocks/fa` menu.
 
-In addition, note the `self.load_class` which allows to not create a new `FundamentalAnalysisController` instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
+In addition, note the `self.load_class` which allows to not create a new `FundamentalAnalysisController` instance but re-load the previous created one. Unless the arguments `self.ticker`, `self.start` or `self.stock` have changed since. The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
 
 ### Add SDK endpoint
 
@@ -471,20 +471,30 @@ In order to add a command to the SDK, follow these steps:
     trail,model,view
     stocks.fa.analyst,stocks_fa_finviz_model.get_analyst_data,
     stocks.fa.rot,stocks_fa_finnhub_model.get_rating_over_time,stocks_fa_finnhub_view.rating_over_time
+
+    ...
+
     ```
 
     In this file, the trail represents the path to the function to be called. The model represents the import alias we gave to the `_model` file. The view represents the import alias we gave to the `_view` file.
 
-3. Add your new function to this structure.  In our example of the `shorted` function, our trail would be `stocks.dps.shorted`.
-The model is the import alias to the `_model` function that was written: `stocks_dps_yahoofinance_model.get_most_shorted`.
-The view is the import alias to the `_view` function that was written: `stocks_dps_yahoofinance_view.display_most_shorted`.
-The added line of the file should look like this:
+3. Add your new function to this structure. In the below example of the `pt` function, our trail would be `stocks.fa.pt`.
+
+    The model is the import alias to the `_model` function that was written:
+
+    - `stocks_fa_business_insider_model.get_price_target_from_analysts`
+
+    The view is the import alias to the `_view` function that was written:
+
+    - `stocks_fa_business_insider_view.display_price_target_from_analysts`
+
+    The added line of the file should look like this:
 
     ```csv
-    stocks.dps.shorted,stocks_dps_yahoofinance_model.get_most_shorted,stocks_dps_yahoofinance_view.display_most_shorted
+    stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.display_price_target_from_analysts
     ```
 
-4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/core/sdk/controllers/` and `openbb_terminal/core/sdk/models/` class files.
+1. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/core/sdk/controllers/` and `openbb_terminal/core/sdk/models/` class files.
 
     To sort the `trail_map.csv` file and generate the SDK files, run the following command
 
