@@ -57,7 +57,7 @@ jobs:
         shell: bash -l {0}
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: OpenBB-Windows10-ENV
           path: dist
