@@ -1264,11 +1264,12 @@ class OpenBBFigure(go.Figure):
         else:
             # We get the missing days excluding weekends
             dt_bdays = pd.bdate_range(start=dt_start, end=dt_end, normalize=True)
+            time_string = "09:30:00" if not prepost else "04:00:00"
 
             # We get the dates that are missing
             dt_missing_days = list(
-                set(dt_bdays.strftime("%Y-%m-%d 09:30:00"))
-                - set(df_data.index.strftime("%Y-%m-%d 09:30:00"))
+                set(dt_bdays.strftime(f"%Y-%m-%d {time_string}"))
+                - set(df_data.index.strftime(f"%Y-%m-%d {time_string}"))
             )
             dt_missing_days = pd.to_datetime(dt_missing_days)
 
