@@ -54,5 +54,5 @@ def run_thread(target, kwargs):
     args : tuple
         The arguments.
     """
-    thread = Thread(target=target, kwargs=kwargs)
+    thread = Thread(target=target, kwargs=kwargs, daemon=True)
     thread.start()

@@ -556,6 +556,7 @@ def delete_routine(
 
 def list_routines(
     auth_header: str,
+    fields: str = "name%2Cdescription%2Cversion%2Cupdated_date",
     page: int = 1,
     size: int = 10,
     base_url=BASE_URL,
@@ -581,8 +582,6 @@ def list_routines(
     Optional[requests.Response]
         The response from the get request.
     """
-    fields = "name%2Cdescription%2Cversion%2Cupdated_date"
-
     try:
         response = requests.get(
             headers={"Authorization": auth_header},

@@ -21,6 +21,7 @@ from openbb_terminal.core.session.current_user import (
     set_current_user,
     set_default_user,
 )
+from openbb_terminal.core.session.routines_handler import download_and_save_routines
 from openbb_terminal.core.session.sources_handler import get_updated_hub_sources
 from openbb_terminal.core.session.utils import run_thread
 from openbb_terminal.helper_funcs import system_clear
@@ -100,10 +101,8 @@ def login(session: dict) -> LoginStatus:
             email = configs.get("email", "")
             hub_user.profile.load_user_info(session, email)
             set_current_user(hub_user)
-            Local.apply_configs(configs=configs)
-            Local.update_flair()
 
-            # Update user sources in backend
+            auth_header = hub_user.profile.get_auth_header()
             updated_sources = get_updated_hub_sources(configs)
             if updated_sources:
                 run_thread(
@@ -111,10 +110,15 @@ def login(session: dict) -> LoginStatus:
                     {
                         "key": "features_sources",
                         "value": updated_sources,
-                        "auth_header": get_current_user().profile.get_auth_header(),
+                        "auth_header": auth_header,
                         "silent": True,
                     },
                 )
+            run_thread(download_and_save_routines, {"auth_header": auth_header})
+
+            Local.apply_configs(configs)
+            Local.update_flair(get_current_user().profile.username)
+
             return LoginStatus.SUCCESS
         if response.status_code == 401:
             return LoginStatus.UNAUTHORIZED
