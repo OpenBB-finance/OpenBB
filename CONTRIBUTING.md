@@ -1380,9 +1380,10 @@ In the `_view.py` files it is common having at the end of each function `export_
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "contracts",
-        df_contracts,
-        figure=fig_contracts,
+        "pt",
+        df_analyst_data,
+        sheet_name,
+        fig,
     )
 ```
 
@@ -1395,9 +1396,10 @@ Let's go into each of these arguments:
 - `os.path.dirname(os.path.abspath(__file__))` corresponds to the directory path
   - This is important when `export folder` selected is the default because the data gets stored based on where it is called.
   - If this is called from a `common` folder, we can use `os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks")` insteaad
-- `"contracts"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
-- `df_contracts` corresponds to the dataframe with data.
-- `figure=fig_contracts` corresponds to the figure to be exported as an image or pdf.
+- `"pt"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
+- `df_analyst_data` corresponds to the dataframe with data.
+- `sheet_name` corresponds to the name of the sheet in the excel file.
+- `fig` corresponds to the figure to be exported as an image or pdf.
 
 If `export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES` in `parse_known_args_and_warn`, valid examples are:
 
