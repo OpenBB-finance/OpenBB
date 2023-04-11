@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+from pandas import DataFrame
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
@@ -51,12 +52,29 @@ def test_get_mktcap(recorder):
     recorder.capture_list(result_list)
 
 
-@pytest.mark.vcr
+@pytest.mark.record_http
 @pytest.mark.parametrize(
-    "ticker, statement",
-    [("ABBV", "cash-flow"), ("ABBV", "financials"), ("ABBV", "balance-sheet")],
+    "ticker, statement, ratios",
+    [
+        ("ABBV", "cash-flow", False),
+        ("ABBV", "financials", False),
+        ("ABBV", "balance-sheet", True),
+    ],
 )
-def test_get_financials(ticker, statement, recorder):
-    df = yahoo_finance_model.get_financials(symbol=ticker, statement=statement)
+def test_get_financials(ticker, statement, ratios, record):
+    df = yahoo_finance_model.get_financials(
+        symbol=ticker, statement=statement, ratios=ratios
+    )
 
-    recorder.capture(df)
+    record.add_verify(df)
+    assert isinstance(df, DataFrame)
+    assert not df.empty
+
+
+@pytest.mark.skip(reason="Yahoo Finance API is not working")
+@pytest.mark.record_http
+def test_get_calendar_earnings():
+    df = yahoo_finance_model.get_calendar_earnings(symbol="AAPL")
+
+    assert isinstance(df, DataFrame)
+    assert not df.empty

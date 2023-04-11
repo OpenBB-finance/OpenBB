@@ -130,16 +130,15 @@ def test_get_dcf(symbol, limit, quarterly):
 
 @pytest.mark.record_http
 @pytest.mark.parametrize(
-    "symbol, limit, quarterly",
-    [
-        ("PM", 5, False),
-    ],
+    "symbol, limit, quarterly, ratios",
+    [("PM", 5, False, False), ("TSLA", 5, False, True)],
 )
-def test_get_income(symbol, limit, quarterly):
+def test_get_income(symbol, limit, quarterly, ratios):
     result = fmp_model.get_income(
         symbol=symbol,
         limit=limit,
         quarterly=quarterly,
+        ratios=ratios,
     )
     assert isinstance(result, pd.DataFrame)
     assert not result.empty
@@ -147,16 +146,17 @@ def test_get_income(symbol, limit, quarterly):
 
 @pytest.mark.record_http
 @pytest.mark.parametrize(
-    "symbol, limit, quarterly",
+    "symbol, limit, quarterly, ratios",
     [
-        ("PM", 5, False),
+        ("PM", 5, False, False),
     ],
 )
-def test_get_balance(symbol, limit, quarterly):
+def test_get_balance(symbol, limit, quarterly, ratios):
     result = fmp_model.get_balance(
         symbol=symbol,
         limit=limit,
         quarterly=quarterly,
+        ratios=ratios,
     )
     assert isinstance(result, pd.DataFrame)
     assert not result.empty
@@ -164,16 +164,17 @@ def test_get_balance(symbol, limit, quarterly):
 
 @pytest.mark.record_http
 @pytest.mark.parametrize(
-    "symbol, limit, quarterly",
+    "symbol, limit, quarterly, ratios",
     [
-        ("PM", 5, False),
+        ("PM", 5, False, False),
     ],
 )
-def test_get_cash(symbol, limit, quarterly):
+def test_get_cash(symbol, limit, quarterly, ratios):
     result = fmp_model.get_cash(
         symbol=symbol,
         limit=limit,
         quarterly=quarterly,
+        ratios=ratios,
     )
     assert isinstance(result, pd.DataFrame)
     assert not result.empty

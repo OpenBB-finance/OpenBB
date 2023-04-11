@@ -115,6 +115,7 @@ def test_display_mktcap(symbol, start_date, end_date, kwargs):
     [
         ("TSLA", "cash-flow", {}),
         ("TSLA", "financials", {}),
+        ("TSLA", "financials", {"plot": ["total_revenue"]}),
     ],
 )
 def test_display_fundamentals(symbol, statement, kwargs):

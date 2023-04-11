@@ -79,3 +79,14 @@ def test_plot_rating_over_time():
         symbol="TSLA",
         external_axes=False,
     )
+
+
+@pytest.mark.http_record
+@pytest.mark.record_verify_screen
+def test_rating_over_time_raw():
+    finnhub_view.rating_over_time(
+        symbol="TSLA",
+        limit=10,
+        raw=True,
+        export=None,
+    )

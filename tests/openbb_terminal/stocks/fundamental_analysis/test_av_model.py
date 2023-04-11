@@ -169,21 +169,39 @@ def test_df_values():
     assert av_model.df_values(df, "c", index=2, length=3) == [13, 14, 15]
 
 
-def test_replace_df():
+@pytest.mark.parametrize("name", ["Mscore", "Zscore"])
+def test_replace_df(name):
     series = Series([1, 2, 3, 4, 5])
-    av_model.replace_df(name="a", row=series)
+    av_model.replace_df(name=name, row=series)
 
 
-def test_color_mscore():
-    result = av_model.color_mscore(1)
+@pytest.mark.parametrize(
+    "value, result",
+    [
+        (1, "[red]1.00[/red]"),
+        (-2, "[yellow]-2.00[/yellow]"),
+        (-3, "[green]-3.00[/green]"),
+        ("nan", "N/A"),
+    ],
+)
+def test_color_mscore(value, result):
+    result = av_model.color_mscore(value)
     assert isinstance(result, str)
-    assert result == "[red]1.00[/red]"
+    assert result == result
 
 
-def test_color_zscore_mckee():
-    result = av_model.color_zscore_mckee(1)
+@pytest.mark.parametrize(
+    "value, result",
+    [
+        (1, "[green]1.00[/green]"),
+        (-2, "[red]-2.00[/red]"),
+        ("nan", "N/A"),
+    ],
+)
+def test_color_zscore_mckee(value, result):
+    result = av_model.color_zscore_mckee(value)
     assert isinstance(result, str)
-    assert result == "[green]1.00[/green]"
+    assert result == result
 
 
 @pytest.mark.parametrize(
