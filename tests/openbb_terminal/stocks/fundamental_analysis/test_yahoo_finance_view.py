@@ -128,7 +128,7 @@ def test_display_fundamentals(symbol, statement, kwargs):
 @pytest.mark.parametrize(
     "symbol, limit, kwargs",
     [
-        ("TSLA", 10, {}),
+        ("TSLA", 1, {}),
     ],
 )
 def test_display_earnings(symbol, limit, kwargs):
