@@ -27,7 +27,7 @@ Financial Statements:
     ratios             extensive set of ratios over time                               [FinancialModelingPrep]
     dupont             detailed breakdown for Return on Equity (RoE)                   [AlphaVantage]
     fraud              key fraud ratios including M-score, Z-score and McKee           [AlphaVantage]
-    sec                obtain recent SEC filings of the company                        [MarketWatch, FinancialModelingPrep]
+    sec                obtain recent SEC filings of the company                        [Nasdaq]
     analysis           analyse SEC filings with the help of machine learning           [Elect]
 
 Future Expectations:
