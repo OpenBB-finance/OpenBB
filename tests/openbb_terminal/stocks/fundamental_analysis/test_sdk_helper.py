@@ -1,7 +1,7 @@
 """Test the SDK helper functions."""
 
 import pytest
-from pandas import DataFrame
+from pandas import DataFrame, to_datetime
 
 from openbb_terminal.stocks.fundamental_analysis import sdk_helpers
 
@@ -22,7 +22,6 @@ def vcr_config():
 @pytest.mark.parametrize(
     "symbol, source, kwargs",
     [
-        ("AAPL", "YahooFinance", {}),
         ("AAPL", "AlphaVantage", {}),
         ("AAPL", "FinancialModelingPrep", {}),
         ("AAPL", "Polygon", {}),
@@ -50,30 +49,30 @@ def test_eodhd_premium(symbol, source, func, kwargs):
     assert isinstance(df, DataFrame)
 
 
-@pytest.mark.record_http
 @pytest.mark.parametrize(
-    "symbol, source, quarterly, func",
+    "func",
     [
-        ("AAPL", "YahooFinance", True, "get_income_statement"),
-        ("AAPL", "YahooFinance", True, "get_balance_sheet"),
-        ("AAPL", "YahooFinance", True, "get_cash_flow"),
+        "get_income_statement",
+        "get_balance_sheet",
+        "get_cash_flow",
     ],
 )
-def test_yahoo_finance_no_quarterly(symbol, source, quarterly, func):
-    """Test the get_income_statement function."""
-    df = getattr(sdk_helpers, func)(symbol, source=source, quarterly=quarterly)
-    assert isinstance(df, DataFrame)
-    assert not df.empty
+def test_yahoo_finance_no_quarterly_mock(mocker, func):
+    mocker.patch(
+        "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_financials",
+        return_value=DataFrame(),
+    )
+    getattr(sdk_helpers, func)("AAPL", source="YahooFinance", quarterly=True)
 
 
 @pytest.mark.record_http
 @pytest.mark.parametrize(
     "symbol, source, kwargs",
     [
-        ("AAPL", "YahooFinance", {"limit": 1}),
         ("AAPL", "AlphaVantage", {"limit": 1}),
         ("AAPL", "FinancialModelingPrep", {"limit": 1}),
         ("AAPL", "Polygon", {"limit": 1}),
+        ("AAPL", "YahooFinance", {"limit": 1}),
     ],
 )
 def test_get_balance_sheet(symbol, source, kwargs):
@@ -87,10 +86,10 @@ def test_get_balance_sheet(symbol, source, kwargs):
 @pytest.mark.parametrize(
     "symbol, source, kwargs",
     [
-        ("AAPL", "YahooFinance", {"limit": 1}),
         ("AAPL", "AlphaVantage", {"limit": 1}),
         ("AAPL", "FinancialModelingPrep", {"limit": 1}),
         ("AAPL", "Polygon", {"limit": 1}),
+        ("AAPL", "YahooFinance", {"limit": 1}),
     ],
 )
 def test_get_cash_flow(symbol, source, kwargs):
@@ -104,8 +103,8 @@ def test_get_cash_flow(symbol, source, kwargs):
 @pytest.mark.parametrize(
     "symbol, source, quarterly",
     [
-        ("AAPL", "YahooFinance", False),
         ("AAPL", "AlphaVantage", False),
+        ("AAPL", "YahooFinance", False),
     ],
 )
 def test_earnings(symbol, source, quarterly):
@@ -113,3 +112,55 @@ def test_earnings(symbol, source, quarterly):
     df = sdk_helpers.earnings(symbol, source=source, quarterly=quarterly)
     assert isinstance(df, DataFrame)
     assert not df.empty
+
+
+def test_yahoo_finance_earnings_mocked(mocker):
+    mocker.patch(
+        "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_earnings_history",
+        return_value=DataFrame(),
+    )
+    sdk_helpers.earnings("AAPL", source="YahooFinance", quarterly=True)
+
+
+def test_yahoo_finance_income_statement_mocked(mocker):
+    mocker.patch(
+        "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_financials",
+        return_value=DataFrame(),
+    )
+    sdk_helpers.get_income_statement("AAPL", source="YahooFinance", quarterly=True)
+
+
+def test_yahoo_finance_balance_sheet_mocked(mocker):
+    mocker.patch(
+        "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_financials",
+        return_value=DataFrame(),
+    )
+    sdk_helpers.get_balance_sheet("AAPL", source="YahooFinance", quarterly=True)
+
+
+def test_yahoo_finance_cash_flow_mocked(mocker):
+    mocker.patch(
+        "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_financials",
+        return_value=DataFrame(
+            data=[
+                [
+                    2,
+                    29,
+                ],
+                [
+                    2,
+                    6,
+                ],
+                [
+                    4,
+                    11,
+                ],
+            ],
+            index=to_datetime(["2021-01-01", "2021-01-01", "2021-01-01"]),
+            columns=[
+                "Inventory",
+                "Accounts payable",
+            ],
+        ).T,
+    )
+    sdk_helpers.get_cash_flow("AAPL", source="YahooFinance", quarterly=True)
