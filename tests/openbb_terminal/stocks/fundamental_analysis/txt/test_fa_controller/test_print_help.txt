@@ -38,4 +38,3 @@ Future Expectations:
     pt                 price targets over time                                         [BusinessInsider, FinancialModelingPrep]
     dcf                advanced Excel customizable discounted cash flow                [StockAnalysis]
     dcfc               determine the (historical) discounted cash flow                 [FinancialModelingPrep]
-

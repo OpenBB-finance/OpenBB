@@ -1805,7 +1805,7 @@ class FundamentalAnalysisController(StockBaseController):
                 return
 
             if ns_parser.source == "BusinessInsider":
-                business_insider_view.price_target_from_analysts(
+                business_insider_view.display_price_target_from_analysts(
                     symbol=self.ticker,
                     data=self.stock,
                     start_date=self.start,
@@ -1862,7 +1862,7 @@ class FundamentalAnalysisController(StockBaseController):
                 console.print(no_ticker_message)
                 return
 
-            business_insider_view.estimates(
+            business_insider_view.display_estimates(
                 symbol=self.ticker,
                 estimate=ns_parser.estimate,
                 export=ns_parser.export,
