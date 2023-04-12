@@ -520,9 +520,9 @@ class TerminalController(BaseController):
 
         if not other_args:
             console.print(
-                "[red]Provide a path to the routine you wish to execute. For an example, please use "
+                "[info]Provide a path to the routine you wish to execute. For an example, please use "
                 "`exe --example` and for documentation and to learn how create your own script "
-                "type `about exe`.\n[/red]"
+                "type `about exe`.\n[/info]"
             )
             return
         parser = argparse.ArgumentParser(
