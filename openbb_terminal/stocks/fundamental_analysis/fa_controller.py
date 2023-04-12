@@ -1637,15 +1637,22 @@ class FundamentalAnalysisController(StockBaseController):
                 return
 
             if self.ticker:
-                dcf = dcf_view.CreateExcelFA(
-                    symbol=self.ticker,
-                    beta=ns_parser.beta,
-                    audit=ns_parser.audit,
-                    ratios=ns_parser.ratios,
-                    len_pred=ns_parser.prediction,
-                    max_similars=ns_parser.similar,
-                    growth=ns_parser.growth,
-                )
+                try:
+                    dcf = dcf_view.CreateExcelFA(
+                        symbol=self.ticker,
+                        beta=ns_parser.beta,
+                        audit=ns_parser.audit,
+                        ratios=ns_parser.ratios,
+                        len_pred=ns_parser.prediction,
+                        max_similars=ns_parser.similar,
+                        growth=ns_parser.growth,
+                    )
+                except Exception:
+                    console.print(
+                        "[red]Could not properly create the DCF, please make sure you are"
+                        " using a valid, US listed ticker."
+                    )
+                    return
                 if dcf and dcf.data:
                     dcf.create_workbook()
             else:
