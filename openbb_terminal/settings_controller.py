@@ -31,6 +31,7 @@ from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
+    AVAILABLE_FLAIRS,
     check_positive,
     get_flair,
     get_user_timezone_or_invalid,
@@ -50,17 +51,11 @@ class SettingsController(BaseController):
     """Settings Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
-        "autoscaling",
-        "backend",
         "colors",
-        "dpi",
         "dt",
         "flair",
         "height",
         "lang",
-        "monitor",
-        "pheight",
-        "pwidth",
         "tbnews",
         "theme",
         "tweetnews",
@@ -90,6 +85,9 @@ class SettingsController(BaseController):
             choices: dict = self.choices_default
             choices["tz"] = {c: None for c in pytz.all_timezones}
             choices["lang"] = {c: None for c in self.languages_available}
+            choices["flair"]["--emoji"] = {c: None for c in AVAILABLE_FLAIRS}
+            choices["flair"]["-e"] = "--emoji"
+
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -165,39 +163,11 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_timezone", get_user_timezone_or_invalid())
         mt.add_raw("\n")
-        mt.add_setting("autoscaling", current_user.preferences.USE_PLOT_AUTOSCALING)
-        if current_user.preferences.USE_PLOT_AUTOSCALING:
-            mt.add_cmd("pheight")
-            mt.add_cmd("pwidth")
-            mt.add_raw("\n")
-            mt.add_param(
-                "_plot_height_pct",
-                current_user.preferences.PLOT_HEIGHT_PERCENTAGE,
-                16,
-            )
-            mt.add_param(
-                "_plot_width_pct",
-                current_user.preferences.PLOT_WIDTH_PERCENTAGE,
-                16,
-            )
-        else:
-            mt.add_cmd("height")
-            mt.add_cmd("width")
-            mt.add_raw("\n")
-            mt.add_param("_plot_height", current_user.preferences.PLOT_HEIGHT, 12)
-            mt.add_param("_plot_width", current_user.preferences.PLOT_WIDTH, 12)
+        mt.add_cmd("height")
+        mt.add_cmd("width")
         mt.add_raw("\n")
-        mt.add_cmd("dpi")
-        mt.add_raw("\n")
-        mt.add_param("_dpi", current_user.preferences.PLOT_DPI)
-        mt.add_raw("\n")
-        mt.add_cmd("backend")
-        mt.add_raw("\n")
-        mt.add_param("_backend", current_user.preferences.PLOT_BACKEND)
-        mt.add_raw("\n")
-        mt.add_cmd("monitor")
-        mt.add_raw("\n")
-        mt.add_param("_monitor", current_user.preferences.MONITOR)
+        mt.add_param("_plot_height", current_user.preferences.PLOT_PYWRY_HEIGHT, 12)
+        mt.add_param("_plot_width", current_user.preferences.PLOT_PYWRY_WIDTH, 12)
         mt.add_raw("\n")
         if is_local():
             mt.add_cmd("source")
@@ -360,45 +330,6 @@ class SettingsController(BaseController):
                 console.print("[red]Couldn't find the sources file![/red]")
 
     @log_start_end(log=logger)
-    def call_autoscaling(self, other_args: List[str]):
-        """Process autoscaling command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="autoscaling",
-            description="Set the use of autoscaling in the plots",
-        )
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference(
-                "USE_PLOT_AUTOSCALING",
-                not get_current_user().preferences.USE_PLOT_AUTOSCALING,
-            )
-
-    @log_start_end(log=logger)
-    def call_dpi(self, other_args: List[str]):
-        """Process dpi command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dpi",
-            description="Dots per inch.",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=int,
-            dest="value",
-            help="value",
-            required="-h" not in other_args,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser and ns_parser.value:
-            self.set_and_save_preference("PLOT_DPI", ns_parser.value)
-
-    @log_start_end(log=logger)
     def call_height(self, other_args: List[str]):
         """Process height command"""
         parser = argparse.ArgumentParser(
@@ -419,7 +350,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.set_and_save_preference("PLOT_HEIGHT", ns_parser.value)
+            self.set_and_save_preference("PLOT_PYWRY_HEIGHT", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_width(self, other_args: List[str]):
@@ -442,95 +373,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.set_and_save_preference("PLOT_WIDTH", ns_parser.value)
-
-    @log_start_end(log=logger)
-    def call_pheight(self, other_args: List[str]):
-        """Process pheight command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pheight",
-            description="select plot height percentage (autoscaling enabled)",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=float,
-            dest="value",
-            help="value",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference("PLOT_HEIGHT_PERCENTAGE", ns_parser.value)
-
-    @log_start_end(log=logger)
-    def call_pwidth(self, other_args: List[str]):
-        """Process pwidth command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pwidth",
-            description="select plot width percentage (autoscaling enabled)",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=float,
-            dest="value",
-            help="value",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference("PLOT_WIDTH_PERCENTAGE", ns_parser.value)
-
-    @log_start_end(log=logger)
-    def call_monitor(self, other_args: List[str]):
-        """Process pwidth command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pwidth",
-            description="choose which monitor to scale: 0-primary, 1-secondary (autoscaling enabled)",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=int,
-            dest="value",
-            help="value",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference("MONITOR", ns_parser.value)
-
-    @log_start_end(log=logger)
-    def call_backend(self, other_args: List[str]):
-        """Process backend command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="backend",
-            description="Backend to use for plotting",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=str,
-            dest="value",
-            help="value",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference("BACKEND", ns_parser.value)
+            self.set_and_save_preference("PLOT_PYWRY_WIDTH", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):

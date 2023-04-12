@@ -222,8 +222,8 @@ class FundamentalAnalysisController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="mgmt",
             description="""
-                Print management team. Namely: Name, Title, Information from google and
-                (potentially) Insider Activity page. [Source: Business Insider]
+                Print management team. Namely: Name, Title, and Information from google
+                [Source: Business Insider]
             """,
         )
         parser.add_argument(
