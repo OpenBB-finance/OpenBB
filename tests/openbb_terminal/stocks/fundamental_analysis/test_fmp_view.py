@@ -4,10 +4,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import (
-    PreferencesModel,
-    copy_user,
-)
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.stocks.fundamental_analysis import fmp_view
 
 
@@ -92,3 +89,63 @@ def test_check_output(func, kwargs_dict, mocker, use_tab):
 @pytest.mark.record_stdout
 def test_rating():
     fmp_view.rating(symbol="TSLA", limit=5, export=None)
+
+
+@pytest.mark.record_http
+def test_display_profile():
+    fmp_view.display_profile(symbol="PM")
+
+
+@pytest.mark.record_http
+@pytest.mark.record_verify_screen
+def test_display_enterprise():
+    fmp_view.display_enterprise(
+        symbol="PM", start_date="2019-01-01", end_date="2020-01-01", quarterly=False
+    )
+
+
+@pytest.mark.record_http
+def test_display_discounted_cash_flow():
+    fmp_view.display_discounted_cash_flow(symbol="PM", limit=5, quarterly=False)
+
+
+@pytest.mark.record_http
+def test_display_income_statement():
+    fmp_view.display_income_statement(symbol="PM", limit=5, quarterly=False)
+
+
+@pytest.mark.record_http
+def test_display_balance_sheet():
+    fmp_view.display_balance_sheet(symbol="PM", limit=5, quarterly=False)
+
+
+@pytest.mark.record_http
+def test_display_cash_flow():
+    fmp_view.display_cash_flow(symbol="PM", limit=5, quarterly=False)
+
+
+@pytest.mark.record_http
+def test_display_key_metrics():
+    fmp_view.display_key_metrics(symbol="PM", limit=5, quarterly=False)
+
+
+@pytest.mark.record_http
+def test_display_financial_ratios():
+    fmp_view.display_financial_ratios(symbol="PM", limit=5, quarterly=False)
+
+
+@pytest.mark.record_http
+def test_display_financial_statement_growth():
+    fmp_view.display_financial_statement_growth(symbol="PM", limit=5, quarterly=False)
+
+
+@pytest.mark.parametrize("value", ["buy", "sell"])
+def test_add_color(value):
+    result = fmp_view.add_color(value=value)
+    assert isinstance(result, str)
+    assert result
+
+
+@pytest.mark.record_http
+def test_display_price_targets():
+    fmp_view.display_price_targets(symbol="TSLA")

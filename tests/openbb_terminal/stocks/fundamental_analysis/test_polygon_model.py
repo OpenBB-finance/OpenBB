@@ -1,5 +1,6 @@
 # IMPORTATION THIRDPARTY
 import pytest
+from pandas import DataFrame
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import polygon_model
@@ -47,3 +48,24 @@ def test_check_bad_ticker(recorder):
     result_df = polygon_model.get_financials("THIS_IS_NOT_A_TICKER", "income", False)
     recorder.capture(result_df)
     assert result_df.empty is True
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, statement, quarterly, ratios",
+    [
+        ("AAPL", "balance", True, False),
+        ("AAPL", "balance", False, False),
+        ("AAPL", "income", False, False),
+        ("AAPL", "cash", False, False),
+    ],
+)
+def test_get_financials(symbol, statement, quarterly, ratios):
+    result = polygon_model.get_financials(symbol, statement, quarterly, ratios)
+    assert isinstance(result, DataFrame)
+
+
+@pytest.mark.record_http
+def test_get_financials_no_statement():
+    result = polygon_model.get_financials("AAPL", "bad_statement")
+    assert result.empty is True
