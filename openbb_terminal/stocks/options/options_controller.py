@@ -153,7 +153,7 @@ class OptionsController(BaseController):
         else:
             self.expiry_dates = []
 
-        self.default_chain = get_ordered_list_sources(f"{self.PATH}chains")[0]
+        self.default_chain = get_ordered_list_sources(f"{self.PATH}load")[0]
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default

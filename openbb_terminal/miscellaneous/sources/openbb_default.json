@@ -72,27 +72,6 @@
       "info": [
         "Barchart"
       ],
-      "chains": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq",
-        "Intrinio"
-      ],
-      "oi": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq"
-      ],
-      "vol": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq"
-      ],
-      "voi": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq"
-      ],
       "hist": [
         "ChartExchange",
         "Tradier",
