@@ -42,6 +42,10 @@
   !define MUI_ABORTWARNING
   !define MUI_WELCOMEPAGE_TITLE "${SLUG} Setup"
   !define UninstId "OpenBBTerminal" ; You might want to use a GUID here
+  !define MUI_FINISHPAGE_RUN
+  !define MUI_FINISHPAGE_RUN_NOTCHECKED
+  !define MUI_FINISHPAGE_RUN_TEXT "Start OpenBB Terminal"
+  !define MUI_FINISHPAGE_RUN_FUNCTION "StartOpenBB"
 
 ;--------------------------------
 ; Pages
@@ -83,6 +87,12 @@ Var STR_CONTAINS_VAR_2
 Var STR_CONTAINS_VAR_3
 Var STR_CONTAINS_VAR_4
 Var STR_RETURN_VAR
+
+
+Function StartOpenBB
+  Exec "$InstDir\OpenBBTerminal.exe"
+FunctionEnd
+
 
 Function StrContains
   Exch $STR_NEEDLE
