@@ -106,11 +106,10 @@ def login(session: dict) -> LoginStatus:
             set_current_user(hub_user)
 
             auth_header = hub_user.profile.get_auth_header()
+            run_thread(download_and_save_routines, {"auth_header": auth_header})
             run_thread(
                 update_backend_sources, {"auth_header": auth_header, "configs": configs}
             )
-            run_thread(download_and_save_routines, {"auth_header": auth_header})
-
             Local.apply_configs(configs)
             Local.update_flair(get_current_user().profile.username)
 
@@ -119,6 +118,23 @@ def login(session: dict) -> LoginStatus:
             return LoginStatus.UNAUTHORIZED
         return LoginStatus.FAILED
     return LoginStatus.NO_RESPONSE
+
+
+def download_and_save_routines(auth_header: str, silent: bool = True):
+    """Download and save routines.
+
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    silent : bool
+        Whether to silence the console output, by default True
+    """
+    routines = download_routines(auth_header=auth_header, silent=silent)
+    for name, content in routines.items():
+        save_routine(
+            file_name=f"{name}.openbb", routine=content, force=True, silent=silent
+        )
 
 
 def update_backend_sources(auth_header, configs, silent: bool = True):
@@ -146,23 +162,6 @@ def update_backend_sources(auth_header, configs, silent: bool = True):
             )
     except Exception:
         console_print("[red]Failed to update backend sources.[/red]")
-
-
-def download_and_save_routines(auth_header: str, silent: bool = True):
-    """Download and save routines.
-
-    Parameters
-    ----------
-    auth_header : str
-        The authorization header, e.g. "Bearer <token>".
-    silent : bool
-        Whether to silence the console output, by default True
-    """
-    routines = download_routines(auth_header=auth_header, silent=silent)
-    for name, content in routines.items():
-        save_routine(
-            file_name=f"{name}.openbb", routine=content, force=True, silent=silent
-        )
 
 
 def logout(
