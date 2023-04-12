@@ -1,6 +1,7 @@
 import pandas as pd
 
 from openbb_terminal.helper_funcs import print_rich_table
+from openbb_terminal.rich_config import console
 
 
 def display_personal_routines(df: pd.DataFrame, page: int, pages: int):
@@ -15,21 +16,23 @@ def display_personal_routines(df: pd.DataFrame, page: int, pages: int):
     pages : int
         The total number of pages.
     """
-    title = f"Personal routines - page {page}"
-    if pages:
-        title += f" of {pages}"
+    try:
+        title = f"Personal routines - page {page}"
+        if pages:
+            title += f" of {pages}"
 
-    if all(c in df.columns for c in ["name", "description", "version", "updated_date"]):
-        df["updated_date"] = pd.to_datetime(df["updated_date"])
-        df["updated_date"] = df["updated_date"].dt.strftime("%Y-%m-%d %H:%M:%S")
-        df.replace(to_replace=[None], value="-", inplace=True)
-        print_rich_table(
-            df=df,
-            title=title,
-            headers=["Name", "Description", "Version", "Last update"],
-            show_index=True,
-            index_name="#",
-        )
+            df["updated_date"] = pd.to_datetime(df["updated_date"])
+            df["updated_date"] = df["updated_date"].dt.strftime("%Y-%m-%d %H:%M:%S")
+            df.replace(to_replace=[None], value="-", inplace=True)
+            print_rich_table(
+                df=df,
+                title=title,
+                headers=["Name", "Description", "Version", "Last update"],
+                show_index=True,
+                index_name="#",
+            )
+    except Exception:
+        console.print("Failed to display personal routines.")
 
 
 def display_default_routines(df: pd.DataFrame):
@@ -40,7 +43,7 @@ def display_default_routines(df: pd.DataFrame):
     df : pd.DataFrame
         The default routines list.
     """
-    if all(c in df.columns for c in ["name", "description", "version", "date_updated"]):
+    try:
         df["date_updated"] = pd.to_datetime(df["date_updated"])
         df["date_updated"] = df["date_updated"].dt.strftime("%Y-%m-%d %H:%M:%S")
         df.replace(to_replace=[None], value="-", inplace=True)
@@ -51,3 +54,5 @@ def display_default_routines(df: pd.DataFrame):
             show_index=True,
             index_name="#",
         )
+    except Exception:
+        console.print("Failed to display default routines.")
