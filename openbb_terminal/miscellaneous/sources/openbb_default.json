@@ -66,38 +66,11 @@
         "Nasdaq",
         "Intrinio"
       ],
-      "exp": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq",
-        "Intrinio"
-      ],
       "pcr": [
         "AlphaQuery"
       ],
       "info": [
         "Barchart"
-      ],
-      "chains": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq",
-        "Intrinio"
-      ],
-      "oi": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq"
-      ],
-      "vol": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq"
-      ],
-      "voi": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq"
       ],
       "hist": [
         "ChartExchange",
