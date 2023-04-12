@@ -68,7 +68,7 @@ def display_management(symbol: str, export: str = "", sheet_name: Optional[str] 
 
 # pylint: disable=R0913
 @log_start_end(log=logger)
-def price_target_from_analysts(
+def display_price_target_from_analysts(
     symbol: str,
     data: Optional[DataFrame] = None,
     start_date: Optional[str] = None,
@@ -192,7 +192,7 @@ def price_target_from_analysts(
 
 
 @log_start_end(log=logger)
-def estimates(
+def display_estimates(
     symbol: str, estimate: str, export: str = "", sheet_name: Optional[str] = None
 ):
     """Display analysts' estimates for a given ticker. [Source: Business Insider]
