@@ -160,6 +160,7 @@ class Backend(PyWry):
             Path to export image to, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
+        # pylint: disable=C0415
         from openbb_terminal.helper_funcs import command_location
 
         fig.layout.height += 69
