@@ -173,6 +173,8 @@ class CryptoController(model.CryptoRoot):
             `coins_for_given_exchange`: Helper method to get all coins available on binance exchange [Source: CoinGecko]\n
             `cpsearch`: Search CoinPaprika. [Source: CoinPaprika]\n
             `cpsearch_chart`: Prints table showing Search over CoinPaprika. [Source: CoinPaprika]\n
+            `fees`: Show cryptos with most fees. [Source: CryptoStats]\n
+            `fees_chart`: Display crypto with most fees paid [Source: CryptoStats]\n
             `gainers`: Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
             `gainers_chart`: Prints table showing Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
             `losers`: Shows Largest Losers - coins which lose the most in given period. [Source: CoinGecko]\n

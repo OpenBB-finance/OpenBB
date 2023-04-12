@@ -91,6 +91,7 @@ crypto.disc.coin_list,crypto_disc_pycoingecko_model.get_coin_list,
 crypto.disc.coins,crypto_disc_pycoingecko_model.get_coins,crypto_disc_pycoingecko_view.display_coins
 crypto.disc.coins_for_given_exchange,crypto_disc_pycoingecko_model.get_coins_for_given_exchange,
 crypto.disc.cpsearch,crypto_disc_coinpaprika_model.get_search_results,crypto_disc_coinpaprika_view.display_search_results
+crypto.disc.fees,crypto_disc_cryptostats_model.get_fees,crypto_disc_cryptostats_view.display_fees
 crypto.disc.gainers,crypto_disc_pycoingecko_model.get_gainers,crypto_disc_pycoingecko_view.display_gainers
 crypto.disc.losers,crypto_disc_pycoingecko_model.get_losers,crypto_disc_pycoingecko_view.display_losers
 crypto.disc.top_coins,crypto_disc_sdk_helpers.top_coins,
@@ -267,12 +268,12 @@ forex.oanda.positionbook,forex_oanda_model.positionbook_plot_data_request,forex_
 forex.oanda.price,forex_oanda_model.fx_price_request,forex_oanda_view.get_fx_price
 forex.oanda.summary,forex_oanda_model.account_summary_request,forex_oanda_view.get_account_summary
 forex.quote,forex_sdk_helpers.quote,
+funds.carbon,funds_mstarpy_model.load_carbon_metrics,
+funds.exclusion,funds_mstarpy_model.load_exclusion_policy,
+funds.historical,funds_mstarpy_model.get_historical,funds_mstarpy_view.display_historical
+funds.holdings,funds_mstarpy_model.load_holdings,
 funds.load,funds_mstarpy_model.load_funds,
 funds.search,funds_mstarpy_model.search_funds,
-funds.holdings,funds_mstarpy_model.load_holdings,
-funds.exclusion,funds_mstarpy_model.load_exclusion_policy,
-funds.carbon,funds_mstarpy_model.load_carbon_metrics,
-funds.historical,funds_mstarpy_model.get_historical,funds_mstarpy_view.display_historical
 funds.sector,funds_mstarpy_model.get_sector,funds_mstarpy_view.display_sector
 futures.curve,futures_yfinance_model.get_curve_futures,futures_yfinance_view.display_curve
 futures.historical,futures_sdk_model.get_historical,futures_yfinance_view.display_historical
@@ -506,6 +507,7 @@ stocks.ins.lpsb,stocks_insider_sdk_helper.lpsb,
 stocks.ins.print_insider_data,stocks_insider_openinsider_model.get_print_insider_data,stocks_insider_openinsider_view.print_insider_data
 stocks.ins.stats,stocks_insider_sdk_helper.stats,
 stocks.load,stocks_helper.load,
+stocks.news,common_ultima_newsmonitor_model.get_news,
 stocks.options.chains,stocks_options_sdk_helper.get_full_option_chain,
 stocks.options.dte,stocks_options_yfinance_model.get_dte,
 stocks.options.eodchain,stocks_options_intrinio_model.get_full_chain_eod,
@@ -525,7 +527,6 @@ stocks.options.unu,stocks_options_fdscanner_model.unusual_options,stocks_options
 stocks.options.voi,stocks_options_view.plot_voi,
 stocks.options.vol,stocks_options_view.plot_vol,
 stocks.options.vsurf,stocks_options_yfinance_model.get_iv_surface,stocks_options_yfinance_view.display_vol_surface
-stocks.news,common_ultima_newsmonitor_model.get_news,
 stocks.process_candle,stocks_helper.process_candle,
 stocks.qa.beta,stocks_qa_beta_model.beta_model,stocks_qa_beta_view.beta_view
 stocks.qa.capm,stocks_qa_factors_model.capm_information,
