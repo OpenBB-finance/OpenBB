@@ -27,7 +27,7 @@ Financial Statements:
 [unvl]    ratios             extensive set of ratios over time[/unvl]                               [FinancialModelingPrep]
 [unvl]    dupont             detailed breakdown for Return on Equity (RoE)[/unvl]                   [AlphaVantage]
 [unvl]    fraud              key fraud ratios including M-score, Z-score and McKee[/unvl]           [AlphaVantage]
-[unvl]    sec                obtain recent SEC filings of the company[/unvl]                        [MarketWatch, FinancialModelingPrep]
+[unvl]    sec                obtain recent SEC filings of the company[/unvl]                        [Nasdaq]
 [unvl]    analysis           analyse SEC filings with the help of machine learning[/unvl]           [Elect]
 
 Future Expectations:
