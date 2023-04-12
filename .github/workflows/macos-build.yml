@@ -18,7 +18,7 @@ concurrency:
 jobs:
   M1-MacOs-Build:
     name: M1 MacOS Build
-    runs-on: macos-latest
+    runs-on: [self-hosted, macos, ARM64]
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
