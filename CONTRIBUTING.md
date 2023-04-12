@@ -482,11 +482,11 @@ In order to add a command to the SDK, follow these steps:
 
     The model is the import alias to the `_model` function that was written:
 
-    - `stocks_fa_business_insider_model.get_price_target_from_analysts`
+    `stocks_fa_business_insider_model.get_price_target_from_analysts`
 
     The view is the import alias to the `_view` function that was written:
 
-    - `stocks_fa_business_insider_view.display_price_target_from_analysts`
+    `stocks_fa_business_insider_view.display_price_target_from_analysts`
 
     The added line of the file should look like this:
 
