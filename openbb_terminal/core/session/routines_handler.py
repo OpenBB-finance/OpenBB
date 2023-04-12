@@ -10,7 +10,7 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
 
-def download_routines(auth_header: str, silent: bool = True) -> Dict[str, str]:
+def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
     """Download a routine from the server.
 
     Parameters
@@ -52,23 +52,6 @@ def download_routines(auth_header: str, silent: bool = True) -> Dict[str, str]:
                 routines_dict[name] = routine.get("script", "")
 
     return routines_dict
-
-
-def download_and_save_routines(auth_header: str, silent: bool = True):
-    """Download and save routines.
-
-    Parameters
-    ----------
-    auth_header : str
-        The authorization header, e.g. "Bearer <token>".
-    silent : bool
-        Whether to silence the console output, by default False
-    """
-    routines = download_routines(auth_header=auth_header, silent=silent)
-    for name, content in routines.items():
-        save_routine(
-            file_name=f"{name}.openbb", routine=content, force=True, silent=silent
-        )
 
 
 def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
