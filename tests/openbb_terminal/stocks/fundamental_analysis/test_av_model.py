@@ -185,9 +185,9 @@ def test_replace_df(name):
     ],
 )
 def test_color_mscore(value, result):
-    result = av_model.color_mscore(value)
+    response = av_model.color_mscore(value)
     assert isinstance(result, str)
-    assert result == result
+    assert response == result
 
 
 @pytest.mark.parametrize(
@@ -199,9 +199,9 @@ def test_color_mscore(value, result):
     ],
 )
 def test_color_zscore_mckee(value, result):
-    result = av_model.color_zscore_mckee(value)
+    response = av_model.color_zscore_mckee(value)
     assert isinstance(result, str)
-    assert result == result
+    assert response == result
 
 
 @pytest.mark.parametrize(
