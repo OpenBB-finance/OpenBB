@@ -79,3 +79,155 @@ def test_get_rating(recorder):
     result_df = fmp_model.get_rating(symbol="TSLA")
 
     recorder.capture(result_df)
+
+
+@pytest.mark.record_http
+def test_get_profile():
+    result = fmp_model.get_profile(symbol="PM")
+    assert isinstance(result, pd.DataFrame)
+    assert not result.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, start_date, end_date, quarterly",
+    [
+        ("PM", "2020-01-01", "2020-12-31", False),
+    ],
+)
+def test_get_enterprise(record, symbol, start_date, end_date, quarterly):
+    result = fmp_model.get_enterprise(
+        symbol=symbol,
+        start_date=start_date,
+        end_date=end_date,
+        quarterly=quarterly,
+    )
+    record.add_verify(result)
+    assert isinstance(result, pd.DataFrame)
+    assert not result.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, limit, quarterly",
+    [
+        ("PM", 5, False),
+    ],
+)
+def test_get_dcf(symbol, limit, quarterly):
+    result = fmp_model.get_dcf(
+        symbol=symbol,
+        limit=limit,
+        quarterly=quarterly,
+    )
+    assert isinstance(result, pd.DataFrame)
+    assert not result.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, limit, quarterly, ratios",
+    [("PM", 5, False, False), ("TSLA", 5, False, True)],
+)
+def test_get_income(symbol, limit, quarterly, ratios):
+    result = fmp_model.get_income(
+        symbol=symbol,
+        limit=limit,
+        quarterly=quarterly,
+        ratios=ratios,
+    )
+    assert isinstance(result, pd.DataFrame)
+    assert not result.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, limit, quarterly, ratios",
+    [
+        ("PM", 5, False, False),
+    ],
+)
+def test_get_balance(symbol, limit, quarterly, ratios):
+    result = fmp_model.get_balance(
+        symbol=symbol,
+        limit=limit,
+        quarterly=quarterly,
+        ratios=ratios,
+    )
+    assert isinstance(result, pd.DataFrame)
+    assert not result.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, limit, quarterly, ratios",
+    [
+        ("PM", 5, False, False),
+    ],
+)
+def test_get_cash(symbol, limit, quarterly, ratios):
+    result = fmp_model.get_cash(
+        symbol=symbol,
+        limit=limit,
+        quarterly=quarterly,
+        ratios=ratios,
+    )
+    assert isinstance(result, pd.DataFrame)
+    assert not result.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, limit, quarterly",
+    [
+        ("PM", 5, False),
+    ],
+)
+def test_get_key_metrics(symbol, limit, quarterly):
+    result = fmp_model.get_key_metrics(
+        symbol=symbol,
+        limit=limit,
+        quarterly=quarterly,
+    )
+    assert isinstance(result, pd.DataFrame)
+    assert not result.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, limit, quarterly",
+    [
+        ("PM", 5, False),
+    ],
+)
+def test_key_ratios(symbol, limit, quarterly):
+    result = fmp_model.get_key_ratios(
+        symbol=symbol,
+        limit=limit,
+        quarterly=quarterly,
+    )
+    assert isinstance(result, pd.DataFrame)
+    assert not result.empty
+
+
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "symbol, limit, quarterly",
+    [
+        ("PM", 5, False),
+    ],
+)
+def test_get_financial_growth(symbol, limit, quarterly):
+    result = fmp_model.get_financial_growth(
+        symbol=symbol,
+        limit=limit,
+        quarterly=quarterly,
+    )
+    assert isinstance(result, pd.DataFrame)
+    assert not result.empty
+
+
+@pytest.mark.record_http
+def test_get_price_targets():
+    result = fmp_model.get_price_targets(symbol="TSLA")
+    assert isinstance(result, pd.DataFrame)

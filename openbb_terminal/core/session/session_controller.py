@@ -11,6 +11,7 @@ from openbb_terminal.core.session.session_model import (
     login,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.terminal_helper import bootup
 
 
 def display_welcome_message():
@@ -62,6 +63,8 @@ def prompt(welcome=True):
     welcome : bool, optional
         Display welcome message, by default True
     """
+    bootup()
+
     if welcome:
         display_welcome_message()
 
