@@ -261,13 +261,13 @@ class TerminalController(BaseController):
         current_user = get_current_user()
 
         if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
-            parser_exe = argparse.ArgumentParser(
+            parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                 prog="guess",
                 description="Guess command to achieve task successfully.",
             )
-            parser_exe.add_argument(
+            parser.add_argument(
                 "-l",
                 "--limit",
                 type=check_positive,
@@ -277,7 +277,7 @@ class TerminalController(BaseController):
             )
             if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "-l")
-                ns_parser_guess = self.parse_simple_args(parser_exe, other_args)
+                ns_parser_guess = self.parse_simple_args(parser, other_args)
 
                 if self.GUESS_TOTAL_TRIES == 0:
                     self.GUESS_NUMBER_TRIES_LEFT = ns_parser_guess.limit
@@ -525,26 +525,7 @@ class TerminalController(BaseController):
                 "type `about exe`.\n[/red]"
             )
             return
-
-        full_input = " ".join(other_args)
-        other_args_processed = (
-            full_input.split(" ") if " " in full_input else [full_input]
-        )
-        self.queue = []
-
-        path_routine = ""
-        args = list()
-        for idx, path_dir in enumerate(other_args_processed):
-            if path_dir in ("-i", "--input"):
-                args = [path_routine[1:]] + other_args_processed[idx:]
-                break
-            if path_dir not in ("--file"):
-                path_routine += f"/{path_dir}"
-
-        if not args:
-            args = [path_routine[1:]]
-
-        parser_exe = argparse.ArgumentParser(
+        parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
@@ -552,20 +533,25 @@ class TerminalController(BaseController):
             "`exe --example` and for documentation and to learn how create your own script "
             "type `about exe`.",
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "--file",
             help="The path or .openbb file to run.",
-            dest="path",
-            default=None,
+            dest="file",
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and "-e" not in other_args
+            and "--example" not in other_args,
+            type=str,
+            nargs="+",
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "-i",
             "--input",
             help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
             dest="routine_args",
             type=lambda s: [str(item) for item in s.split(",")],
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "-e",
             "--example",
             help="Run an example script to understand how routines can be used.",
@@ -573,25 +559,23 @@ class TerminalController(BaseController):
             action="store_true",
             default=False,
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--file")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if not args[0]:
-            return console.print("[red]Please select an .openbb routine file.[/red]\n")
-
-        if args and "-" not in args[0][0]:
-            args.insert(0, "--file")
-        ns_parser_exe = self.parse_simple_args(parser_exe, args)
-        if ns_parser_exe and (ns_parser_exe.path or ns_parser_exe.example):
-            if ns_parser_exe.example:
+        if ns_parser:
+            if ns_parser.example:
                 path = MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
                 console.print(
                     "[green]Executing an example, please type `about exe` "
                     "to learn how to create your own script.[/green]\n"
                 )
                 time.sleep(3)
-            elif ns_parser_exe.path in self.ROUTINE_CHOICES["--file"]:
-                path = self.ROUTINE_FILES[ns_parser_exe.path]
+            elif ns_parser.file:
+                file_path = " ".join(ns_parser.file)
+                path = self.ROUTINE_FILES.get(file_path, Path(file_path))
             else:
-                path = ns_parser_exe.path
+                return
 
             with open(path) as fp:
                 raw_lines = [
@@ -610,8 +594,8 @@ class TerminalController(BaseController):
                     # Check if dynamic parameter exists in script
                     if "$ARGV" in rawline:
                         # Check if user has provided inputs through -i or --input
-                        if ns_parser_exe.routine_args:
-                            for i, arg in enumerate(ns_parser_exe.routine_args):
+                        if ns_parser.routine_args:
+                            for i, arg in enumerate(ns_parser.routine_args):
                                 # Check what is the location of the ARGV to be replaced
                                 if f"$ARGV[{i}]" in templine:
                                     templine = templine.replace(f"$ARGV[{i}]", arg)
