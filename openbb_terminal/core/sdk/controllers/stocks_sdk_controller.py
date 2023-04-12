@@ -24,7 +24,7 @@ class StocksController(model.StocksRoot):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -310,9 +310,6 @@ class StocksController(model.StocksRoot):
         """Stocks Screener Submodule
 
         Attributes:
-            `arktrades`: Gets a dataframe of ARK trades for ticker\n
-            `historical`: View historical price of stocks that meet preset\n
-            `historical_chart`: View historical price of stocks that meet preset\n
             `screener_data`: Screener Overview\n
             `screener_data_chart`: Screener one of the following: overview, valuation, financial, ownership, performance, technical.\n
         """

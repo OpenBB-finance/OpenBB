@@ -14,9 +14,9 @@
       "Polygon"
     ],
     "news": [
-      "UltimaInsights",
       "Feedparser",
-      "NewsApi"
+      "NewsApi",
+      "Ultima"
     ],
     "load": [
       "YahooFinance",
@@ -186,7 +186,6 @@
         "SeekingAlpha"
       ],
       "cnews": [
-        "UltimaInsights",
         "SeekingAlpha"
       ],
       "lowfloat": [
@@ -667,8 +666,7 @@
         "AlphaVantage"
       ],
       "sec": [
-        "MarketWatch",
-        "FinancialModelingPrep"
+        "Nasdaq"
       ],
       "analysis": [
         "Elect"

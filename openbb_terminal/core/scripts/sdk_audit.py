@@ -7,6 +7,8 @@ from typing import Callable, List, Tuple
 
 import pandas as pd
 
+from openbb_terminal.core.config.paths import MAP_PATH
+
 try:
     import darts  # pylint: disable=W0611 # noqa: F401
 
@@ -65,7 +67,7 @@ def all_view_models() -> List[Path]:
     return [Path(x) for x in clean_list]
 
 
-def get_sdk(file_path: str = "miscellaneous/library/trail_map.csv") -> pd.DataFrame:
+def get_sdk(file_path: Path = MAP_PATH) -> pd.DataFrame:
     """Reads the CSV that generates the sdk and converts it to a dataframe
 
     Parameters

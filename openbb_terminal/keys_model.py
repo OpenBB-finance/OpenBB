@@ -7,6 +7,7 @@ import contextlib
 import io
 import logging
 import sys
+from datetime import date
 from enum import Enum
 from typing import Dict, List, Union
 
@@ -60,7 +61,7 @@ API_DICT: Dict = {
     "polygon": "POLYGON",
     "intrinio": "INTRINIO",
     "databento": "DATABENTO",
-    "ultimainsights": "ULTIMAINSIGHTS",
+    "ultima": "ULTIMA",
     "fred": "FRED",
     "news": "NEWSAPI",
     "tradier": "TRADIER",
@@ -542,9 +543,10 @@ def check_polygon_key(show_output: bool = False) -> str:
         logger.info("Polygon key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
+        check_date = date(date.today().year, date.today().month, 1).isoformat()
         r = request(
-            "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
-            f"?apiKey={current_user.credentials.API_POLYGON_KEY}"
+            f"https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/{check_date}"
+            f"/{check_date}?apiKey={current_user.credentials.API_POLYGON_KEY}"
         )
         if r.status_code in [403, 401]:
             logger.warning("Polygon key defined, test failed")
@@ -2787,9 +2789,7 @@ def check_databento_key(show_output: bool = False) -> str:
     return str(status)
 
 
-def set_ultimainsights_key(
-    key: str, persist: bool = False, show_output: bool = False
-) -> str:
+def set_ultima_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Ultima Insights key
 
     Parameters
@@ -2811,14 +2811,14 @@ def set_ultimainsights_key(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.ultima_insights(key="example_key")
+    >>> openbb.keys.ultima(key="example_key")
     """
 
-    handle_credential("API_ULTIMAINSIGHTS_KEY", key, persist)
-    return check_ultimainsights_key(show_output)
+    handle_credential("API_ULTIMA_KEY", key, persist)
+    return check_ultima_key(show_output)
 
 
-def check_ultimainsights_key(show_output: bool = False) -> str:
+def check_ultima_key(show_output: bool = False) -> str:
     """Check Ultima Insights key
 
     Parameters
@@ -2834,14 +2834,14 @@ def check_ultimainsights_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_ULTIMAINSIGHTS_KEY == "REPLACE_ME":
+    if current_user.credentials.API_ULTIMA_KEY == "REPLACE_ME":
         logger.info("Ultima Insights key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
             "https://api.ultimainsights.ai/v1/checkAPIKey",
             headers={
-                "Authorization": f"Bearer {current_user.credentials.API_ULTIMAINSIGHTS_KEY}"
+                "Authorization": f"Bearer {current_user.credentials.API_ULTIMA_KEY}"
             },
         )
         if r.status_code in [403, 401, 429]:
