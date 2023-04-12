@@ -35,7 +35,7 @@ jobs:
 
       - name: Create and start virtual environment
         run: |
-          python -m venv venv
+          python -m venv venv --upgrade-deps
           source venv/Scripts/activate
           python -m pip install setuptools==64.0.2 wheel
           python -m pip install -r requirements-full.txt
