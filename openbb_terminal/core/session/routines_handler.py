@@ -11,7 +11,7 @@ from openbb_terminal.rich_config import console
 
 
 def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
-    """Download a routine from the server.
+    """Download default and personal routines.
 
     Parameters
     ----------
@@ -36,6 +36,7 @@ def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
             if name:
                 routines_dict[name] = routine.get("script", "")
 
+    # Number of routines downloaded is limited to 100
     response = Hub.list_routines(
         auth_header=auth_header,
         fields=["name", "script"],
