@@ -10,7 +10,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
   - [Adding a new command](#adding-a-new-command)
     - [Select Feature](#select-feature)
     - [Model](#model)
-    - [Data source](#data-source)
+    - [Data sources](#data-sources)
     - [View](#view)
     - [Controller](#controller)
     - [Add SDK endpoint](#add-sdk-endpoint)
@@ -42,11 +42,12 @@ Use your best judgment, and feel free to propose changes to this document in a p
   - [Important functions and classes](#important-functions-and-classes)
     - [Base controller class](#base-controller-class)
   - [Default Data Sources](#default-data-sources)
-    - [Export Data](#export-data)
-    - [Queue and pipeline](#queue-and-pipeline)
-    - [Auto Completer](#auto-completer)
-    - [Logging](#logging)
-    - [Internationalization](#internationalization)
+  - [Export Data](#export-data)
+  - [Queue and pipeline](#queue-and-pipeline)
+  - [Auto Completer](#auto-completer)
+  - [Logging](#logging)
+  - [Internationalization](#internationalization)
+  - [Settings](#settings)
   - [Write Code and Commit](#write-code-and-commit)
     - [Pre Commit Hooks](#pre-commit-hooks)
     - [Coding](#coding)
@@ -164,57 +165,64 @@ Note:
 2. If the model requires an API key, make sure to handle the error and output relevant message.
 3. If the data provider is not yet supported, you'll most likely need to do some extra steps in order to add it to the `keys` menu.  See [this section](#external-api-keys) for more details.
 
-In the example below, you can see that we explicitly handle 4 important error types:
+Some of the most common error messages are:
 
+- Error in the request (HTTP error)
 - Invalid API Keys
 - API Keys not authorized for Premium feature
 - Empty return payload
 - Invalid arguments (Optional)
 
-It's not always possible to distinguish error types using status_code. So depending on the API provider, you can use either error messages or exception.
+In the example below, you can see that we explicitly handle some of them.
+It's not always possible to distinguish error types using `status_code`. So depending on the API provider, you can use either error messages or exceptions.
 
 ```python
-def get_economy_calendar_events() -> pd.DataFrame:
-    """Get economic calendar events
+@log_start_end(log=logger)
+@check_api_key(["API_NEWS_TOKEN"])
+def get_news(
+    query: str,
+    limit: int = 10,
+    start_date: Optional[str] = None,
+    show_newest: bool = True,
+    sources: str = "",
+) -> pd.DataFrame:
 
-    Returns
-    -------
-    pd.DataFrame
-        Get dataframe with economic calendar events
-    """
-    current_user = get_current_user()
-    response = request(
-        f"https://finnhub.io/api/v1/calendar/economic?token={current_user.credentials.API_FINNHUB_KEY}"
-    )
+    ...
 
-    df = pd.DataFrame()
+    link += f"&apiKey={get_current_user().credentials.API_NEWS_TOKEN}"
+    response = request(link)
+    articles = {}
 
     if response.status_code == 200:
-        d_data = response.json()
-        if "economicCalendar" in d_data:
-            df = pd.DataFrame(d_data["economicCalendar"])
-        else:
-            console.print("No latest economy calendar events found\n")
+        response_json = response.json()
+        articles = (response_json["articles"] if show_newest else response_json["articles"][::-1])
+
+    elif response.status_code == 426:
+        console.print(f"Error in request: {response.json()['message']}", "\n")
     elif response.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
-    elif response.status_code == 403:
-        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
+    elif response.status_code == 429:
+        console.print("[red]Exceeded number of calls per minute[/red]\n")
     else:
-        console.print(f"Error in request: {response.json()['error']}", "\n")
+        console.print(f"Error in request: {response.json()['message']}", "\n")
 
-    return df
+    ...
 ```
 
-### Data source
+> Click [here](openbb_terminal/common/newsapi_model.py) to see the example in detail.
 
-Now that we have added the model function getting, we need to specify that this is an available data source.  To do so, we edit the `openbb_terminal/miscellaneous/data_sources_default.json` file.  This file, described below, uses a dictionary structure to identify available sources.  Since we are adding FMP to `stocks/fa/pt`, we find that entry and append it:
+### Data sources
+
+Now that we have added the model function getting, we need to specify that this is an available data source.  To do so, we edit the `openbb_terminal/miscellaneous/sources/openbb_default.json` file.  This file, described below, uses a dictionary structure to identify available sources.  Since we are adding FMP to `stocks/fa/pt`, we find that entry and append it:
 
 ```json
     "fa": {
       "pt": ["BusinessInsider", "FinancialModelingPrep"],
 ```
 
-If you are adding a new function with a new data source, make a new value in the file.
+If you are adding a new function with a new data source, make a new value in the file.  If the data source requires an
+API key, please refer to the guide below for adding them.  Instructions for obtaining the new api key
+should be included in the file `OpenBBTerminal/website/content/terminal/usage/guides/api-keys.md`.
 
 ### View
 
@@ -297,15 +305,27 @@ Now that we have the model and views, it is time to add to the controller.
 3. Add command and source to `print_help()`.
 
    ```python
-   def print_help(self):
-        """Print help"""
-        mt = MenuText("stocks/dps/")
+    def print_help(self):
+        """Print help."""
+        mt = MenuText("stocks/fa/")
         mt.add_cmd("load")
         mt.add_raw("\n")
-        mt.add_cmd("shorted")
+        mt.add_param("_ticker", self.ticker.upper())
+        mt.add_raw("\n")
+        mt.add_info("_company_overview")
+        mt.add_cmd("mktcap")
+        mt.add_cmd("overview")
+        mt.add_cmd("divs", not self.suffix)
+
+        ...
+
+        mt.add_cmd("pt")
+        mt.add_cmd("dcf")
+        mt.add_cmd("dcfc")
+        console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
    ```
 
-4. If there is a condition to display or not the command, this is something that can be leveraged through this `add_cmd` method, e.g. `mt.add_cmd("shorted", self.ticker_is_loaded)`.
+4. If there is a condition to display or not the command, this is something that can be leveraged through the `add_cmd` method, e.g. `mt.add_cmd("divs", not self.suffix)`.
 
 5. Add command description to file `i18n/en.yml`. Use the path and command name as key, e.g. `stocks/fa/pt` and the value as description. Please fill in other languages if this is something that you know.
 
@@ -356,7 +376,7 @@ Our new function will be:
                 self.custom_load_wrapper([self.ticker])
 
             if ns_parser.source == "BusinessInsider":
-                business_insider_view.price_target_from_analysts(
+                business_insider_view.display_price_target_from_analysts(
                     symbol=self.ticker,
                     data=self.stock,
                     start_date=self.start,
@@ -430,7 +450,7 @@ def call_fa(self, _):
 
 The **import only occurs inside this menu call**, this is so that the loading time only happens here and not at the terminal startup. This is to avoid slow loading times for users that are not interested in `stocks/fa` menu.
 
-In addition, note the `self.load_class` which allows to not create a new DarkPoolShortsController instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
+In addition, note the `self.load_class` which allows to not create a new `FundamentalAnalysisController` instance but re-load the previous created one. Unless the arguments `self.ticker`, `self.start` or `self.stock` have changed since. The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
 
 ### Add SDK endpoint
 
@@ -453,17 +473,31 @@ In order to add a command to the SDK, follow these steps:
     trail,model,view
     stocks.fa.analyst,stocks_fa_finviz_model.get_analyst_data,
     stocks.fa.rot,stocks_fa_finnhub_model.get_rating_over_time,stocks_fa_finnhub_view.rating_over_time
+
+    ...
+
     ```
 
     In this file, the trail represents the path to the function to be called. The model represents the import alias we gave to the `_model` file. The view represents the import alias we gave to the `_view` file.
 
-3. Add your new function to this structure.  In our example of the `shorted` function, our trail would be `stocks.dps.shorted`.
-The model is the import alias to the `_model` function that was written: `stocks_dps_yahoofinance_model.get_most_shorted`.
-The view is the import alias to the `_view` function that was written: `stocks_dps_yahoofinance_view.display_most_shorted`.
-The added line of the file should look like this:
+3. Add your new function to this structure. In the below example of the `pt` function, our trail would be `stocks.fa.pt`.
+
+    Our naming convention is such that the data source should not be included in the trail. In this example, calling a new function `pt_fmp` would not be allowed.
+    For functions with multiple sources, there should be a single `pt` function that takes in the source as an argument.
+    In the following example, we will stick with showing how the business_insider was initially added to the sdk.
+
+    The model is the import alias to the `_model` function that was written:
+
+    - `stocks_fa_business_insider_model.get_price_target_from_analysts`
+
+    The view is the import alias to the `_view` function that was written:
+
+    - `stocks_fa_business_insider_view.display_price_target_from_analysts`
+
+    The added line of the file should look like this:
 
     ```csv
-    stocks.dps.shorted,stocks_dps_yahoofinance_model.get_most_shorted,stocks_dps_yahoofinance_view.display_most_shorted
+    stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.display_price_target_from_analysts
     ```
 
 4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/core/sdk/controllers/` and `openbb_terminal/core/sdk/models/` class files.
@@ -484,15 +518,25 @@ A thorough introduction on the usage of unit tests and integration tests in Open
 
 [Unit Test README](tests/README.md)
 
-[Integration Test README](scripts/README.md)
+[Integration Test README](openbb_terminal/miscellaneous/integration_tests_scripts/README.MD)
 
 Any new features that do not contain unit tests will not be accepted.
 
 ### Open a Pull Request
 
+For starters, you should ensure that you branch is up to date with the `develop` branch. To do that, one can run the following commands:
+
+```bash
+git fetch upstream
+git checkout develop
+git merge upstream/develop
+```
+
+After that, you can create a new branch for your feature. E.g. `git checkout -b feature/AmazingFeature`.
+
 Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`.
 
-> Note that we follow gitflow naming convention, so your branch name should be prefixed with `feature/` or `hotfix/` depending on the type of work you are doing.
+> Note that we follow gitflow naming convention, so your branch name should be prefixed with `feature/` or `hotfix/` depending on the type of work you are doing. To learn more, please refer to [Branch Naming Conventions](#branch-naming-conventions).
 
 A user may create a **Draft Pull Request** when there is the intention to discuss implementation with the team.
 
@@ -550,11 +594,6 @@ If there are sub-categories, the layout will be: `/<context>/<category>/<sub-cat
 ```text
 openbb_terminal/stocks/stocks_controller.py
                       /stocks_helper.py
-                      /due_diligence/dd_controller.py
-                                    /marketwatch_view.py
-                                    /marketwatch_model.py
-                                    /finviz_view.py
-                                    /finviz_model.py
                       /technical_analysis/ta_controller.py
                                          /tradingview_view.py
                                          /tradingview_model.py
@@ -574,11 +613,6 @@ With:
 | :---------- | :-------------------- | :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `stocks/`   |                       | `stocks_controller.py` | Manages **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data, or, more importantly, redirecting to the selected _category_.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `stocks/`   |                       | `stocks_helper.py`     | Helper to `stocks` menu. This file is meant to hold generic purpose  `stocks` functionalities.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `stocks/`   | `due_diligence/`      | `dd_controller.py`     | Manages **due_diligence** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data.
-| `stocks/`   | `due_diligence/`      | `marketwatch_view.py`  | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot.
-| `stocks/`   | `due_diligence/`      | `marketwatch_model.py` | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `marketwatch_view.py` and will return data to be processed in either a string, dictionary or dataframe format.                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `stocks/`   | `due_diligence/`      | `finviz_view.py`       | This file contains functions that rely on **Finviz** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `stocks/`   | `due_diligence/`      | `finviz_model.py`      | This file contains functions that rely on **Finviz** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `finviz_view.py` and will return data to be processed in either a string, dictionary or dataframe format.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `stocks/`   | `technical_analysis/` | `ta_controller.py`     | Manages **technical_analysis** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data.
 | `stocks/`   | `technical_analysis/` | `tradingview_view.py`  | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `ta_controller.py` using the arguments given by the user and will output either a string, table or plot.                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `stocks/`   | `technical_analysis/` | `tradingview_model.py` | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `tradingview_view.py` and will return data to be processed in either a string, dictionary or dataframe format.                                                                                                                                                                                                                                                                                                                                                                                                                         |
@@ -1171,33 +1205,14 @@ It is important to keep a coherent UI/UX throughout the terminal. These are the 
 
 OpenBB Terminal currently has over 100 different data sources. Most of these require an API key that allows access to some free tier features from the data provider, but also paid ones.
 
-When a new API data source is added to the platform, it must be added through [credentials_model.py](/openbb_terminal/credentials_model.py) under the section that resonates the most with its functionality, from: `Data providers`, `Socials` or `Brokers`.
+When a new API data source is added to the platform, it must be added through [credentials_model.py](/openbb_terminal/core/models/credentials_model.py).
 
-Example (a section from [credentials_model.py](/openbb_terminal/credentials_model.py)):
+In order to do that, you'll simply need to choose from one the following files:
 
-```python
-# Data providers
-API_DATABENTO_KEY = "REPLACE_ME"
-API_KEY_ALPHAVANTAGE: str = "REPLACE_ME"
-API_KEY_FINANCIALMODELINGPREP: str = "REPLACE_ME"
+1. [local_credentials.json](openbb_terminal/miscellaneous/models/local_credentials.json) --> credentials that should only be stored locally and not pushed to the [OpenBB Hub](https://my.openbb.co/) like brokerage keys or other very sensitive or personal to the user.
+2. [hub_credentials.json](openbb_terminal/miscellaneous/models/hub_credentials.json) --> credentials that should be stored in the [OpenBB Hub](https://my.openbb.co/) like API keys to access your favorite providers.
 
-...
-
-# Socials
-API_GITHUB_KEY: str = "REPLACE_ME"
-API_REDDIT_CLIENT_ID: str = "REPLACE_ME"
-API_REDDIT_CLIENT_SECRET: str = "REPLACE_ME"
-
-...
-
-# Brokers or data providers with brokerage services
-RH_USERNAME: str = "REPLACE_ME"
-RH_PASSWORD: str = "REPLACE_ME"
-DG_USERNAME: str = "REPLACE_ME"
-
-...
-
-```
+> Note: By differentiating between local and hub credentials, we can ensure that the user's credentials are not pushed to the [OpenBB Hub](https://my.openbb.co/) and are only stored locally. This does not mean that the credentials are not secure in the OpenBB Hub, but rather that the user can choose to store them locally if they wish.
 
 ### Setting and checking API key
 
@@ -1324,40 +1339,31 @@ Worthy methods to mention are:
 
 ## Default Data Sources
 
-The document [data_sources_default.json](/data_sources_default.json) contains all data sources that the terminal has access to and specifies the data source utilized by default for each command.
+The document [openbb_default.json](openbb_terminal/miscellaneous/sources/openbb_default.json) contains all data sources that the terminal has access to and specifies the data source utilized by default for each command.
 
 The convention is as follows:
 
 ```python
 {
-    "stocks": {
-        "search": ["FinanceDatabase"],
-        "quote": ["YahooFinance"],
-        "candle": [],
-        "load": [
-            "YahooFinance",
-            "AlphaVantage",
-            "Polygon",
-            "EODHD"
-        ],
-        "options": {
-            "unu": ["FDScanner"],
-            "calc": [],
-            "screen": {
-                "view": ["Syncretism"],
-                "set": [],
-                "scr": ["Syncretism"]
-            },
-             "load": [
-                "YahooFinance",
-                "Tradier",
-                "Nasdaq"
-            ],
-            "exp": [
-                "YahooFinance",
-                "Tradier",
-                "Nasdaq"
-            ],
+  "stocks": {
+    "search": [
+      "FinanceDatabase"
+    ],
+    "quote": [
+      "FinancialModelingPrep"
+    ],
+    "tob": [
+      "CBOE"
+    ],
+    "candle": [],
+    "codes": [
+      "Polygon"
+    ],
+    "news": [
+      "Feedparser",
+      "NewsApi",
+      "Ultima"
+    ],
             ...
 ```
 
@@ -1370,7 +1376,9 @@ The way to interpret this file is by following the path to a data source, e.g.
 - `stoks/options/unu` relies on `FDScanner`.
 - `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
 
-### Export Data
+> Note: The default data sources can be changed directly in the [OpenBB Hub](https://my.openbb.co/) by the user and automatically synchronized with the terminal on login.
+
+## Export Data
 
 In the `_view.py` files it is common having at the end of each function `export_data` being called. This typically looks like:
 
@@ -1378,9 +1386,10 @@ In the `_view.py` files it is common having at the end of each function `export_
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "contracts",
-        df_contracts,
-        figure=fig_contracts,
+        "pt",
+        df_analyst_data,
+        sheet_name,
+        fig,
     )
 ```
 
@@ -1393,9 +1402,10 @@ Let's go into each of these arguments:
 - `os.path.dirname(os.path.abspath(__file__))` corresponds to the directory path
   - This is important when `export folder` selected is the default because the data gets stored based on where it is called.
   - If this is called from a `common` folder, we can use `os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks")` insteaad
-- `"contracts"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
-- `df_contracts` corresponds to the dataframe with data.
-- `figure=fig_contracts` corresponds to the figure to be exported as an image or pdf.
+- `"pt"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
+- `df_analyst_data` corresponds to the dataframe with data.
+- `sheet_name` corresponds to the name of the sheet in the excel file.
+- `fig` corresponds to the figure to be exported as an image or pdf.
 
 If `export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES` in `parse_known_args_and_warn`, valid examples are:
 
@@ -1408,7 +1418,7 @@ Note that these files are saved on a location based on the environment variable:
 
 The default location is the `exports` folder and the data will be stored with the same organization of the terminal. But, if the user specifies the name of the file, then that will be dropped onto the folder as is with the datetime attached.
 
-### Queue and pipeline
+## Queue and pipeline
 
 The variable `self.queue` contains a list of all actions to be run on the platform. That is the reason why this variable is always passed as an argument to a new controller class and received back.
 
@@ -1434,9 +1444,27 @@ And the user goes into the `stocks` menu and runs `load AAPL`. Then the queue is
 
 At that point the user goes into the `dps` menu and runs the command `psi` with the argument `-l 90` therefore displaying price vs short interest of the past 90 days.
 
-### Auto Completer
+## Auto Completer
 
 In order to help users with a powerful autocomplete, we have implemented our own (which can be found [here](/openbb_terminal/custom_prompt_toolkit.py)).
+
+The queue, discussed in the previous section [Queue and pipeline](#queue-and-pipeline), is expected to link together with the autocompletion in order to provide the user with the available options for each command.
+Here is an example of how it will look like:
+
+```bash
+2023 Apr 11, 11:41 (🦋) /stocks/dps/ $ psi
+                                            --nyse
+                                            --help
+                                            -h
+                                            --export
+                                            --raw
+                                            --limit
+                                            -l
+                                            --source
+```
+
+> Where `nyse`, `help`, `h`, `export`, `raw`, `limit`, `l` and `source` are the available options for the `psi` command.
+> Those are selectable using the arrow keys and the `tab` key.
 
 The list of options for each command is automatically generated, if you're interested take a look at its implementation [here](/openbb_terminal/core/completer/choices.py).
 
@@ -1513,7 +1541,7 @@ This method should only be called when the user's state changes leads to the aut
 
 In this case, this method is called as soon as the user successfully loads a new ticker since the options expiry dates vary based on the ticker. Note that the completer is recreated from it.
 
-### Logging
+## Logging
 
 A logging system is used to help tracking errors inside the OpenBBTerminal.
 
@@ -1559,7 +1587,7 @@ def your_function() -> pd.DataFrame:
 >
 > **Disclaimer**: all the user paths, names, IPs, credentials and other sensitive information are anonymized, [take a look at how we do it](/openbb_terminal/core/log/generation/formatter_with_exceptions.py).
 
-### Internationalization
+## Internationalization
 
 WORK IN PROGRESS - The menu can be internationalised BUT we do not support yet help commands`-h` internationalization.
 
@@ -1588,6 +1616,46 @@ This is the convention in use for creating a new key/value pair:
 - `stocks/SEARCH_query` - Under `stocks` context, `query` description when inquiring about `search` command with `search -h`
 - `stocks/_ticker` - Under `stocks` context, `_ticker` is used as a key of a parameter, and the displayed parameter description is given as value
 - `crypto/dd/_tokenomics_` - Under `crypto` context and under `dd` menu, `_tokenomics_` is used as a key of an additional information, and the displayed information is given as value
+
+## Settings
+
+The majority of the settings used in the OpenBB Terminal are handled using [Pydantic Dataclasses](https://docs.pydantic.dev/usage/dataclasses/).
+Some examples are:
+
+1. [SystemModel](openbb_terminal/core/models/system_model.py)
+2. [UserModel](openbb_terminal/core/models/user_model.py)
+3. [CredentialsModel](openbb_terminal/core/models/credentials_model.py)
+4. ...
+
+This means that the settings are pretty much validated and documented automatically, as well as centralized in a single place.
+This allows us to develop faster, efficiantly and with predictability.
+Depending on your use case you'll most likely need to interact with these dataclasses or expand them with new settings.
+
+**Disclaimer**: avoid at all costs to use the `os.environ` or `os.getenv` methods to retrieve settings. Settings should be retrieved using the appropriate methods from the respective class.
+
+Here is an example of **accessing** a setting:
+
+```python
+
+from openbb_terminal.core.session.current_system import get_current_system
+
+system = get_current_system()
+system = get_current_system()
+print(system.VERSION)
+
+# 3.0.0rc1
+
+```
+
+And here is an example of **changing** a setting:
+
+```python
+
+from openbb_terminal.core.session.current_system import get_current_system
+
+set_system_variable("TEST_MODE", True)
+
+```
 
 ## Write Code and Commit
 
