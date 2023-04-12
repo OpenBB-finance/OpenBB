@@ -193,22 +193,38 @@
             .format(date)
             .replace(/:\d\d /, " ");
 
+          let filename = "";
+          let extension = "";
+          if (window.export_image != undefined) {
+            filename = window.export_image.split("/").pop();
+            extension = filename.split(".").pop().replace("jpg", "jpeg");
+          }
+
           if (window.plotly_figure.layout.annotations != undefined) {
             window.plotly_figure.layout.annotations.forEach(function (
               annotation
             ) {
-              if (annotation.text != undefined) {
+              if (
+                annotation.text != undefined &&
+                !["svg", "pdf"].includes(extension)
+              ) {
                 if (annotation.text[0] == "/") {
                   cmd_src = annotation.text;
                   annotation.text = "";
-                  window.plotly_figure.layout.margin.l = 70;
-                  if (cmd_src == "/stocks/candle") {
-                    window.plotly_figure.layout.margin.r -= 40;
+                  let margin = window.plotly_figure.layout.margin;
+                  if (margin.t != undefined && margin.t > 40) {
+                    margin.t = 40;
                   }
+                  margin.l = 70;
+                  if (cmd_src == "/stocks/candle") {
+                    margin.r -= 40;
+                  }
+                  window.plotly_figure.layout.margin = margin;
                 }
               }
             });
           }
+
           document
             .querySelector('meta[name="color-scheme"]')
             .setAttribute(
@@ -216,13 +232,17 @@
               window.plotly_figure.layout.template.layout.mapbox.style
             );
 
-          document.getElementById("date").innerHTML = formattedDate;
-          document.getElementById("title").innerHTML =
+          let title =
             window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";
 
-          document.getElementById(
-            "title"
-          ).innerHTML += `<br /><span style="font-size: 14px; font-weight: 400;">${cmd_src}</span>`;
+          if (title.length > 50) {
+            document.getElementById("title").style.fontSize = "12px";
+          }
+
+          let style = "font-size: 12px; font-weight: 400; color: gray;";
+          document.getElementById("date").innerHTML =
+            formattedDate + `<br /><span style="${style}">${cmd_src}</span>`;
+          document.getElementById("title").innerHTML = title;
 
           CHART_DIV = document.getElementById("openbb_chart");
           CSV_DIV = document.getElementById("popup_csv");

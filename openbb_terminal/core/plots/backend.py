@@ -160,22 +160,8 @@ class Backend(PyWry):
             Path to export image to, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
-        title = "Plots"
+        from openbb_terminal.helper_funcs import command_location
 
-        # We check if figure is a subplot and has a title annotation
-        if not fig.layout.title.text and fig._has_subplots():  # pylint: disable=W0212
-            for annotation in fig.select_annotations(
-                selector=dict(xref="paper", yref="paper")
-            ):
-                # Subplots always set the first annotation as the title
-                # so we break after the first one
-                if annotation.text:
-                    title = annotation.text
-                break
-
-        title = re.sub(
-            r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else title
-        )
         fig.layout.height += 69
 
         if export_image and isinstance(export_image, str):
@@ -187,7 +173,7 @@ class Backend(PyWry):
                     "html_path": self.get_plotly_html(),
                     "json_data": json.loads(fig.to_json()),
                     "export_image": str(export_image),
-                    **self.get_kwargs(title),
+                    **self.get_kwargs(command_location),
                 }
             )
         )
