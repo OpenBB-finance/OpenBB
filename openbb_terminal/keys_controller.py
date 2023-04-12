@@ -76,12 +76,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         str
             Source priority string.
         """
-        local_order = get_reading_order()
-        source = ""
-        for env_file in reversed(local_order):
-            source += f"{env_file}\n        "
-        source = source.strip()
-        return source if is_local() else f"{KEYS_URL}\n        {source}"
+        reading_order = get_reading_order()
+        hierarchy = "\n        ".join(list(map(str, reversed(reading_order))))
+        return hierarchy if is_local() else f"{KEYS_URL}\n        {hierarchy}"
 
     def print_help(self, update_status: bool = False, reevaluate: bool = False):
         """Print help"""
