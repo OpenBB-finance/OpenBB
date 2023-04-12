@@ -46,9 +46,24 @@ CONFIGS = {
 
 ROUTINES = {
     "items": [
-        {"name": "scrip1", "description": "abc"},
-        {"name": "script2", "description": "def"},
-        {"name": "script3", "description": "ghi"},
+        {
+            "name": "scrip1",
+            "description": "abc",
+            "version": "0.0.0",
+            "updated_date": "2021-01-01",
+        },
+        {
+            "name": "script2",
+            "description": "def",
+            "version": "0.0.1",
+            "updated_date": "2022-01-01",
+        },
+        {
+            "name": "script3",
+            "description": "ghi",
+            "version": "0.0.2",
+            "updated_date": "2023-01-01",
+        },
     ],
     "total": 3,
     "page": 1,
@@ -75,6 +90,7 @@ def fetch_routines(mocker):
     path_controller = "openbb_terminal.account.account_controller"
     mocker.patch(
         target=f"{path_controller}.AccountController.fetch_default_routines",
+        return_value=[],
     )
 
 
