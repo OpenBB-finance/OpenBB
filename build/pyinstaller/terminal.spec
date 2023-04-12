@@ -1,7 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-  # noqa
 import os
 import shutil
-import curl_cffi
 import subprocess
 import sys
 from pathlib import Path
@@ -78,10 +77,6 @@ if is_win:
     added_files.extend(
         [
             (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
-            (
-                os.path.join(f"{os.path.dirname(curl_cffi.__file__)}.libs"),
-                "curl_cffi.libs/",
-            ),
             (str(pathex / "frozendict/version.py"), "frozendict"),
         ]
     )
@@ -117,8 +112,6 @@ hidden_imports = [
     "streamlit",
     "pytrends",
     "pytrends.request",
-    "curl_cffi.libs",
-    "curl_cffi",
     "pyarrow.vendored",
 ]
 
@@ -210,7 +203,7 @@ exe_kwargs = dict(
     codesign_identity=None,
     entitlements_file=None,
     icon=exe_icon,
-    version='version.rc'
+    version="version.rc",
 )
 
 
