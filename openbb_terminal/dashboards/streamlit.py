@@ -22,6 +22,9 @@ def main():
         "server.port": port,
         "server.headless": True,
         "global.developmentMode": False,
+        "server.enableCORS": False,
+        "server.enableXsrfProtection": False,
+        "browser.serverAddress": "localhost",
     }
 
     streamlit.web.bootstrap.load_config_options(flag_options=flag_options)

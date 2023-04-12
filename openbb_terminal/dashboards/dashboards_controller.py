@@ -233,7 +233,7 @@ class DashboardsController(BaseController):
                     daemon=True,
                 )
                 thread.start()
-                time.sleep(3)
+                time.sleep(6 if sys.platform == "darwin" else 3)
 
                 if not self.processes[-1].is_running():
                     self.processes.remove(self.processes[-1])
