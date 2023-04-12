@@ -356,7 +356,6 @@ def test_fetch_user_configs_exception():
 @pytest.mark.parametrize(
     "key, value, type_, auth_header",
     [
-        ("key", "value", "keys", "auth_header"),
         ("key", "value", "settings", "auth_header"),
     ],
 )
@@ -387,14 +386,14 @@ def test_upload_config_failure():
         "openbb_terminal.core.session.hub_model.requests.patch",
         return_value=mock_response,
     ) as requests_patch_mock:
-        result = hub_model.upload_config("key", "value", "keys", "auth_header")
+        result = hub_model.upload_config("key", "value", "settings", "auth_header")
 
         assert result.status_code == mock_response.status_code
         requests_patch_mock.assert_called_once()
         _, kwargs = requests_patch_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"key": "features_keys.key", "value": "value"}
+        assert kwargs["json"] == {"key": "features_settings.key", "value": "value"}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -404,14 +403,14 @@ def test_upload_config_connection_error():
     ) as requests_patch_mock:
         requests_patch_mock.side_effect = requests.exceptions.ConnectionError()
 
-        result = hub_model.upload_config("key", "value", "keys", "auth_header")
+        result = hub_model.upload_config("key", "value", "settings", "auth_header")
 
         assert result is None
         requests_patch_mock.assert_called_once()
         _, kwargs = requests_patch_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"key": "features_keys.key", "value": "value"}
+        assert kwargs["json"] == {"key": "features_settings.key", "value": "value"}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -421,14 +420,14 @@ def test_upload_config_timeout():
     ) as requests_patch_mock:
         requests_patch_mock.side_effect = requests.exceptions.Timeout()
 
-        result = hub_model.upload_config("key", "value", "keys", "auth_header")
+        result = hub_model.upload_config("key", "value", "settings", "auth_header")
 
         assert result is None
         requests_patch_mock.assert_called_once()
         _, kwargs = requests_patch_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"key": "features_keys.key", "value": "value"}
+        assert kwargs["json"] == {"key": "features_settings.key", "value": "value"}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -438,14 +437,14 @@ def test_upload_config_exception():
     ) as requests_patch_mock:
         requests_patch_mock.side_effect = Exception()
 
-        result = hub_model.upload_config("key", "value", "keys", "auth_header")
+        result = hub_model.upload_config("key", "value", "settings", "auth_header")
 
         assert result is None
         requests_patch_mock.assert_called_once()
         _, kwargs = requests_patch_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"key": "features_keys.key", "value": "value"}
+        assert kwargs["json"] == {"key": "features_settings.key", "value": "value"}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
