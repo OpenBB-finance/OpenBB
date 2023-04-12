@@ -83,30 +83,14 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           name: "Download CSV (Ctrl+Shift+S)",
           icon: ICONS.downloadCsv,
           click: function (gd) {
-            loadingOverlay("Saving CSV");
-            setTimeout(function () {
-              downloadData(gd);
-            }, 500);
-            setTimeout(function () {
-              loading.classList.remove("show");
-            }, 1000);
+            downloadCsvButton(gd);
           },
         },
         {
           name: "Download PNG (Ctrl+S)",
           icon: ICONS.downloadImage,
           click: function () {
-            loadingOverlay("Saving PNG");
-            hideModebar();
-            non_blocking(function () {
-              downloadImage(globals.filename, "png");
-              setTimeout(function () {
-                setTimeout(function () {
-                  loading.classList.remove("show");
-                  hideModebar();
-                }, 50);
-              }, 25);
-            }, 2)();
+            downloadImageButton();
           },
         },
         // {
@@ -172,27 +156,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           name: "Auto Scale (Ctrl+Shift+A)",
           icon: Plotly.Icons.autoscale,
           click: function () {
-            // We need to check if the button is active or not
-            let title = "Auto Scale (Ctrl+Shift+A)";
-            let button = globals.barButtons[title];
-            let active = true;
-            if (button.style.border == "transparent") {
-              active = false;
-              globals.CHART_DIV.on(
-                "plotly_relayout",
-                non_blocking(function (eventdata) {
-                  if (eventdata["xaxis.range[0]"] == undefined) {
-                    return;
-                  }
-                  autoScaling(eventdata, globals.CHART_DIV);
-                }, 100)
-              );
-            } else {
-              // If the button isn't active, we remove the listener so
-              // the graphs don't autoscale anymore
-              globals.CHART_DIV.removeAllListeners("plotly_relayout");
-            }
-            button_pressed(title, active);
+            autoscaleButton();
           },
         },
         "zoomIn2d",
@@ -361,6 +325,54 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     }
   }
 
+  function autoscaleButton() {
+    // We need to check if the button is active or not
+    let title = "Auto Scale (Ctrl+Shift+A)";
+    let button = globals.barButtons[title];
+    let active = true;
+    if (button.style.border == "transparent") {
+      active = false;
+      globals.CHART_DIV.on(
+        "plotly_relayout",
+        non_blocking(function (eventdata) {
+          if (eventdata["xaxis.range[0]"] == undefined) {
+            return;
+          }
+          autoScaling(eventdata, globals.CHART_DIV);
+        }, 100)
+      );
+    } else {
+      // If the button isn't active, we remove the listener so
+      // the graphs don't autoscale anymore
+      globals.CHART_DIV.removeAllListeners("plotly_relayout");
+    }
+    button_pressed(title, active);
+  }
+
+  function downloadImageButton() {
+    loadingOverlay("Saving PNG");
+    hideModebar();
+    non_blocking(function () {
+      downloadImage(globals.filename, "png");
+      setTimeout(function () {
+        setTimeout(function () {
+          loading.classList.remove("show");
+          hideModebar();
+        }, 50);
+      }, 25);
+    }, 2)();
+  }
+
+  function downloadCsvButton(gd) {
+    loadingOverlay("Saving CSV");
+    setTimeout(function () {
+      downloadData(gd);
+    }, 500);
+    setTimeout(function () {
+      loading.classList.remove("show");
+    }, 1000);
+  }
+
   // We setup keyboard shortcuts custom to OpenBB
   window.document.addEventListener("keydown", function (e) {
     if (e.key.toLowerCase() == "h" && (e.ctrlKey || e.metaKey)) {
@@ -376,12 +388,17 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       } else if (e.key.toLowerCase() == "e") {
         changeColor();
       } else if (e.shiftKey && e.key.toLowerCase() == "s") {
-        downloadData(globals.CHART_DIV);
+        e.preventDefault();
+        downloadCsvButton(globals.CHART_DIV);
       } else if (e.key.toLowerCase() == "s") {
-        downloadImage(globals.filename, "png");
+        e.preventDefault();
+        downloadImageButton();
       } else if (e.key.toLowerCase() == "o") {
         e.preventDefault();
         openPopup("popup_csv");
+      } else if (e.shiftKey && e.key.toLowerCase() == "a") {
+        e.preventDefault();
+        autoscaleButton();
       }
     } else if (e.key == "Escape") {
       closePopup();

@@ -1263,13 +1263,16 @@ class OpenBBFigure(go.Figure):
             rangebreaks = [dict(values=dt_missing_days)]
         else:
             # We get the missing days excluding weekends
+            is_daily = df_data.index[-1].time() == df_data.index[-2].time()
             dt_bdays = pd.bdate_range(start=dt_start, end=dt_end, normalize=True)
-            time_string = "09:30:00" if not prepost else "04:00:00"
+            time_string = (
+                (" 09:30:00" if not prepost else " 04:00:00") if not is_daily else ""
+            )
 
             # We get the dates that are missing
             dt_missing_days = list(
-                set(dt_bdays.strftime(f"%Y-%m-%d {time_string}"))
-                - set(df_data.index.strftime(f"%Y-%m-%d {time_string}"))
+                set(dt_bdays.strftime(f"%Y-%m-%d{time_string}"))
+                - set(df_data.index.strftime(f"%Y-%m-%d{time_string}"))
             )
             dt_missing_days = pd.to_datetime(dt_missing_days)
 
@@ -1277,7 +1280,7 @@ class OpenBBFigure(go.Figure):
 
             # We add a rangebreak if the first and second time are not the same
             # since daily data will have the same time (00:00)
-            if df_data.index[-1].time() != df_data.index[-2].time():
+            if not is_daily:
                 if prepost:
                     rangebreaks.insert(0, dict(bounds=[20, 4], pattern="hour"))
                 else:
