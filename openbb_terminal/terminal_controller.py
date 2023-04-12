@@ -567,8 +567,8 @@ class TerminalController(BaseController):
             if ns_parser.example:
                 path = MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
                 console.print(
-                    "[green]Executing an example, please type `about exe` "
-                    "to learn how to create your own script.[/green]\n"
+                    "[info]Executing an example, please type `about exe` "
+                    "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
             elif ns_parser.file:
