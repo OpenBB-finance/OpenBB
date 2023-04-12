@@ -37,7 +37,7 @@ if not !conda_prefix! == %CONDA_DEFAULT_ENV% (
 )
 
 :: Remove build artifacts
-set site_packages_dir=!path!\lib\site-packages
+set site_packages_dir=!path!\Lib\site-packages
 cd !site_packages_dir!
 echo !site_packages_dir!
 @REM For /r %%~1f IN (direct_url.json) do Echo "%~1f"
