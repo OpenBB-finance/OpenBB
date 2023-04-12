@@ -62,18 +62,6 @@ def test_call_func_empty_df(func, mocker, mocked_func):
         getattr(yahoo_finance_view, func)(symbol="PM")
 
 
-# @pytest.mark.record_http
-# @pytest.mark.record_verify_screen
-# @pytest.mark.parametrize(
-#     "symbol, kwargs",
-#     [
-#         ("TSLA", {}),
-#     ],
-# )
-# def test_display_shareholders(symbol, kwargs):
-#     yahoo_finance_view.display_shareholders(symbol=symbol, **kwargs)
-
-
 @pytest.mark.record_verify_screen
 @pytest.mark.parametrize(
     "func, mocked_func",
@@ -94,18 +82,6 @@ def test_display_shareholders(func, mocker, mocked_func):
         ),
     )
     getattr(yahoo_finance_view, func)(symbol="PM")
-
-
-# @pytest.mark.record_http
-# @pytest.mark.record_verify_screen
-# @pytest.mark.parametrize(
-#     "symbol, kwargs",
-#     [
-#         ("TSLA", {"limit": 1}),
-#     ],
-# )
-# def test_display_dividends(symbol, kwargs):
-#     yahoo_finance_view.display_dividends(symbol=symbol, **kwargs)
 
 
 @pytest.mark.record_verify_screen
@@ -131,17 +107,6 @@ def test_display_dividends(func, mocker, mocked_func):
     getattr(yahoo_finance_view, func)(symbol="MSFT", limit=1)
 
 
-# @pytest.mark.record_http
-# @pytest.mark.parametrize(
-#     "symbol, kwargs",
-#     [
-#         ("TSLA", {}),
-#     ],
-# )
-# def test_display_splits(symbol, kwargs):
-#     yahoo_finance_view.display_splits(symbol=symbol, **kwargs)
-
-
 @pytest.mark.record_verify_screen
 @pytest.mark.parametrize(
     "func, mocked_func",
@@ -165,92 +130,250 @@ def test_display_splits(func, mocker, mocked_func):
     getattr(yahoo_finance_view, func)(symbol="TSLA")
 
 
-# @pytest.mark.record_http
-# @pytest.mark.record_verify_screen
-# @pytest.mark.parametrize(
-#     "symbol, start_date, end_date, kwargs",
-#     [
-#         ("TSLA", "2021-01-01", "2021-02-01", {}),
-#     ],
-# )
-# def test_display_mktcap(symbol, start_date, end_date, kwargs):
-#     yahoo_finance_view.display_mktcap(
-#         symbol=symbol, start_date=start_date, end_date=end_date, **kwargs
-#     )
-
-
-# @pytest.mark.record_verify_screen
-# @pytest.mark.parametrize(
-#     "func, mocked_func",
-#     [
-#         ("display_mktcap", "get_mktcap"),
-#     ],
-# )
-# def test_display_mktcap(func, mocker, mocked_func):
-#     mocker.patch(
-#         "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model."
-#         + mocked_func,
-#         return_value=pd.DataFrame(
-#             data=[
-#                 [1, 2],
-#                 [2, 3],
-#                 [3, 4],
-#             ],
-#             index=pd.to_datetime(["2021-01-01", "2021-02-01", "2021-03-01"]),
-#         ),
-#     )
-#     getattr(yahoo_finance_view, func)(
-#         symbol="TSLA", start_date="2021-01-01", end_date="2021-03-01"
-#     )
-
-
-# @pytest.mark.record_http
-# @pytest.mark.parametrize(
-#     "symbol, statement, kwargs",
-#     [
-#         ("TSLA", "cash-flow", {}),
-#         ("TSLA", "financials", {}),
-#         ("TSLA", "financials", {"plot": ["total_revenue"]}),
-#     ],
-# )
-# def test_display_fundamentals(symbol, statement, kwargs):
-#     yahoo_finance_view.display_fundamentals(
-#         symbol=symbol, statement=statement, **kwargs
-#     )
-
-
 @pytest.mark.record_verify_screen
 @pytest.mark.parametrize(
-    "func, mocked_func, args",
+    "func, mocked_func",
     [
-        ("display_fundamentals", "get_financials", ("TSLA", "cash-flow")),
-        ("display_fundamentals", "get_financials", ("TSLA", "financials")),
-        (
-            "display_fundamentals",
-            "get_financials",
-            ("TSLA", "financials", ["total_revenue"]),
-        ),
+        ("display_mktcap", "get_mktcap"),
     ],
 )
-def test_display_fundamentals(func, mocker, mocked_func, args):
+def test_display_mktcap(func, mocker, mocked_func):
     mocker.patch(
         "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model."
         + mocked_func,
-        return_value=pd.DataFrame(),
+        return_value=(
+            pd.Series(
+                data=[7.709558e11, 7.765971e11, 7.986450e11],
+                index=pd.to_datetime(["2021-01-04", "2021-01-05", "2021-01-06"]),
+            ),
+            "USD",
+        ),
     )
-    getattr(yahoo_finance_view, func)(*args)
+
+    getattr(yahoo_finance_view, func)(
+        symbol="TSLA", start_date="2021-01-01", end_date="2021-01-07"
+    )
 
 
-# @pytest.mark.record_http
-# @pytest.mark.record_verify_screen
-# @pytest.mark.parametrize(
-#     "symbol, limit, kwargs",
-#     [
-#         ("TSLA", 1, {}),
-#     ],
-# )
-# def test_display_earnings(symbol, limit, kwargs):
-#     yahoo_finance_view.display_earnings(symbol=symbol, limit=limit, **kwargs)
+@pytest.mark.record_verify_screen
+def test_display_fundamentals_balance_sheet(mocker):
+    mocker.patch(
+        "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model."
+        + "get_financials",
+        return_value=pd.DataFrame(
+            data=[
+                [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    26,
+                    27,
+                    29,
+                    30,
+                ],
+                [
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    27,
+                    28,
+                    29,
+                    30,
+                    31,
+                ],
+                [
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    27,
+                    28,
+                    29,
+                    30,
+                    31,
+                    32,
+                ],
+            ],
+            index=pd.to_datetime(["2021-01-01", "2021-01-01", "2021-01-01"]),
+            columns=[
+                "Cash and cash equivalents",
+                "Other short-term investments",
+                "Total cash",
+                "Net receivables",
+                "Inventory",
+                "Other current assets",
+                "Total current assets",
+                "Gross property, plant and equipment",
+                "Accumulated depreciation",
+                "Net property, plant and equipment",
+                # "Goodwill",
+                # "Intangible assets",
+                "Other long-term assets",
+                "Total non-current assets",
+                "Total assets",
+                "Current debt",
+                "Accounts payable",
+                # "Accrued liabilities",
+                "Deferred revenues",
+                "Other current liabilities",
+                "Total current liabilities",
+                "Long-term debt",
+                "Deferred tax liabilities",
+                "Deferred revenues",
+                "Other long-term liabilities",
+                "Total non-current liabilities",
+                "Total liabilities",
+                "Common stock",
+                "Retained earnings",
+                "Accumulated other comprehensive income",
+                "Total stockholders' equity",
+                "Total liabilities and stockholders' equity",
+            ],
+        ).T,
+    )
+    yahoo_finance_view.display_fundamentals(
+        symbol="TSLA", statement="balance-sheet", ratios=True
+    )
+
+
+@pytest.mark.record_verify_screen
+def test_display_fundamentals_cash_flow(mocker):
+    mocker.patch(
+        "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model."
+        + "get_financials",
+        return_value=pd.DataFrame(
+            data=[
+                [
+                    2,
+                    29,
+                ],
+                [
+                    2,
+                    6,
+                ],
+                [
+                    4,
+                    11,
+                ],
+            ],
+            index=pd.to_datetime(["2021-01-01", "2021-01-01", "2021-01-01"]),
+            columns=[
+                "Inventory",
+                "Accounts payable",
+            ],
+        ).T,
+    )
+    yahoo_finance_view.display_fundamentals(
+        symbol="TSLA", statement="cash-flow", plot=["Inventory"]
+    )
+
+
+@pytest.mark.record_verify_screen
+def test_display_fundamentals_financials(mocker):
+    mocker.patch(
+        "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model."
+        + "get_financials",
+        return_value=pd.DataFrame(
+            data=[
+                [
+                    24,
+                    22,
+                    23,
+                    34,
+                    23,
+                    5,
+                ],
+                [
+                    23,
+                    22,
+                    23,
+                    34,
+                    12,
+                    5,
+                ],
+                [
+                    14,
+                    22,
+                    23,
+                    23,
+                    15,
+                    3,
+                ],
+            ],
+            index=pd.to_datetime(["2021-01-01", "2021-01-01", "2021-01-01"]),
+            columns=[
+                "Total Revenue",
+                "Cost Of Revenue",
+                "Gross Profit",
+                "Interest Expense",
+                "Income before tax",
+                "Income tax expense",
+            ],
+        ).T,
+    )
+    yahoo_finance_view.display_fundamentals(symbol="TSLA", statement="financials")
 
 
 @pytest.mark.record_verify_screen

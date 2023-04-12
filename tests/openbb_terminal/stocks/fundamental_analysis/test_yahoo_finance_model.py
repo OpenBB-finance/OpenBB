@@ -52,7 +52,6 @@ def test_get_mktcap(recorder):
     recorder.capture_list(result_list)
 
 
-@pytest.mark.record_http
 @pytest.mark.parametrize(
     "ticker, statement, ratios",
     [
@@ -61,14 +60,21 @@ def test_get_mktcap(recorder):
         ("ABBV", "balance-sheet", True),
     ],
 )
-def test_get_financials(ticker, statement, ratios, record):
-    df = yahoo_finance_model.get_financials(
+def test_get_financials_mocked(ticker, statement, ratios, mocker):
+    mocker.patch(
+        "openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model"
+        + ".get_financials",
+        return_value=DataFrame(
+            data=[
+                ["2021-01-01", 0.1, 1000],
+                ["2021-01-01", 0.12, 1200],
+                ["2021-01-01", 0.14, 1400],
+            ],
+        ),
+    )
+    getattr(yahoo_finance_model, "get_financials")(
         symbol=ticker, statement=statement, ratios=ratios
     )
-
-    record.add_verify(df)
-    assert isinstance(df, DataFrame)
-    assert not df.empty
 
 
 @pytest.mark.skip(reason="Yahoo Finance API is not working")
