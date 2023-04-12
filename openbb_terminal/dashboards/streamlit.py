@@ -8,9 +8,7 @@ from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 
 
 def main():
-    parent_path = (
-        Path(sys.executable).parent if hasattr(sys, "frozen") else REPOSITORY_DIRECTORY
-    )
+    parent_path = sys._MEIPASS if hasattr(sys, "frozen") else REPOSITORY_DIRECTORY
     filepath = Path(__file__).parent / "stream" / "Forecasting.py"
     file = filepath.relative_to(parent_path).as_posix()
 

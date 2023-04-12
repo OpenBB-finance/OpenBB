@@ -52,9 +52,7 @@ class DashboardsController(BaseController):
         super().__init__(queue)
         self.processes: List[psutil.Process] = []
         self.parent_path = (
-            Path(sys.executable).parent
-            if hasattr(sys, "frozen")
-            else REPOSITORY_DIRECTORY
+            sys._MEIPASS if hasattr(sys, "frozen") else REPOSITORY_DIRECTORY  # type: ignore
         )
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
@@ -218,7 +216,8 @@ class DashboardsController(BaseController):
                         stderr=STDOUT,
                         stdin=PIPE,
                         env=os.environ,
-                        cwd=os.getcwd(),
+                        cwd=self.parent_path,
+                        shell=sys.platform == "darwin",
                     )
                 )
                 atexit.register(self.kill_processes)
