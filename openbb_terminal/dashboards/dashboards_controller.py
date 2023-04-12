@@ -191,7 +191,7 @@ class DashboardsController(BaseController):
             cmd = (
                 [sys.executable, "-m", ".".join(python_path.parts)]
                 if not hasattr(sys, "frozen")
-                else [sys.executable, "streamlit"]
+                else [sys.executable, "--streamlit"]
             )
 
             folder = "stream" if name == "Forecasting" else "stream/pages"

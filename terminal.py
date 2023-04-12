@@ -17,7 +17,7 @@ def main():
     sent_args = sys.argv[1:]
     cfg.setup_config_terminal()
 
-    if "streamlit" in sent_args:
+    if "--streamlit" in sent_args:
         from openbb_terminal.dashboards import streamlit
 
         hide_splashscreen()
