@@ -51,8 +51,9 @@ class DashboardsController(BaseController):
         """Construct controller."""
         super().__init__(queue)
         self.processes: List[psutil.Process] = []
+        # pylint: disable=E1101,W0212
         self.parent_path = (
-            sys._MEIPASS if hasattr(sys, "frozen") else REPOSITORY_DIRECTORY  # type: ignore
+            Path(sys._MEIPASS) if hasattr(sys, "frozen") else REPOSITORY_DIRECTORY  # type: ignore
         )
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:

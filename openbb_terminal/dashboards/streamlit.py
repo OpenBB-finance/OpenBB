@@ -8,7 +8,8 @@ from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 
 
 def main():
-    parent_path = sys._MEIPASS if hasattr(sys, "frozen") else REPOSITORY_DIRECTORY
+    # pylint: disable=E1101,W0212
+    parent_path = Path(sys._MEIPASS) if hasattr(sys, "frozen") else REPOSITORY_DIRECTORY  # type: ignore
     filepath = Path(__file__).parent / "stream" / "Forecasting.py"
     file = filepath.relative_to(parent_path).as_posix()
 
