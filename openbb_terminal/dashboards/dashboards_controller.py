@@ -67,7 +67,7 @@ class DashboardsController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("dashboards/")
-        mt.add_raw("\nStreamlit Apps:\n")
+        mt.add_raw("Streamlit Apps:\n")
         mt.add_cmd("stocks")
         mt.add_cmd("chains")
         mt.add_cmd("correlation")
@@ -217,7 +217,7 @@ class DashboardsController(BaseController):
                         stderr=STDOUT,
                         stdin=PIPE,
                         env=os.environ,
-                        cwd=self.parent_path,
+                        cwd=str(self.parent_path),
                         shell=sys.platform == "darwin",
                     )
                 )
