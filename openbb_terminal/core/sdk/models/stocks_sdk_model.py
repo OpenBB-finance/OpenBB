@@ -11,7 +11,7 @@ class StocksRoot(Category):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -173,7 +173,6 @@ class StocksDiscovery(Category):
         self.arkord = lib.stocks_disc_ark_model.get_ark_orders
         self.asc = lib.stocks_disc_yahoofinance_model.get_asc
         self.dividends = lib.stocks_disc_nasdaq_model.get_dividend_cal
-        self.filings = lib.stocks_fa_fmp_model.get_filings
         self.fipo = lib.stocks_disc_finnhub_model.get_future_ipo
         self.gainers = lib.stocks_disc_yahoofinance_model.get_gainers
         self.gtech = lib.stocks_disc_yahoofinance_model.get_gtech
@@ -319,7 +318,9 @@ class StocksFundamentalAnalysis(Category):
         self.news = lib.stocks_fa_finviz_model.get_news
         self.overview = lib.stocks_fa_sdk_helpers.get_overview
         self.pt = lib.stocks_fa_business_insider_model.get_price_target_from_analysts
-        self.pt_chart = lib.stocks_fa_business_insider_view.price_target_from_analysts
+        self.pt_chart = (
+            lib.stocks_fa_business_insider_view.display_price_target_from_analysts
+        )
         self.rating = lib.stocks_fa_fmp_model.get_rating
         self.ratios = lib.stocks_fa_fmp_model.get_key_ratios
         self.revfc = lib.stocks_fa_seeking_alpha_model.get_estimates_rev
@@ -327,8 +328,6 @@ class StocksFundamentalAnalysis(Category):
         self.rot_chart = lib.stocks_fa_finnhub_view.rating_over_time
         self.score = lib.stocks_fa_fmp_model.get_score
         self.sec = lib.stocks_fa_marketwatch_model.get_sec_filings
-        self.sec_fmp = lib.stocks_fa_fmp_model.get_filings
-        self.sec_fmp_chart = lib.stocks_fa_fmp_view.display_filings
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
         self.splits = lib.stocks_fa_yahoo_finance_model.get_splits

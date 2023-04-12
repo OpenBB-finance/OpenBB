@@ -322,7 +322,6 @@ from openbb_terminal.stocks.dark_pool_shorts import (
 from openbb_terminal.stocks.discovery import (
     ark_model as stocks_disc_ark_model,
     finnhub_model as stocks_disc_finnhub_model,
-    fmp_view as stocks_disc_fmp_view,
     nasdaq_model as stocks_disc_nasdaq_model,
     seeking_alpha_model as stocks_disc_seeking_alpha_model,
     shortinterest_model as stocks_disc_shortinterest_model,
@@ -499,7 +498,7 @@ FORECASTING_TOOLKIT_WARNING = (
     "[yellow]"
     "Forecasting Toolkit is disabled. "
     "To use the Forecasting features please install the toolkit following the "
-    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "instructions here: https://my.openbb.dev/app/sdk/installation"
     "\n"
     "[/yellow]"
 )
@@ -507,7 +506,7 @@ OPTIMIZATION_TOOLKIT_WARNING = (
     "[yellow]"
     "Portfolio Optimization Toolkit is disabled. "
     "To use the Optimization features please install the toolkit following the "
-    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "instructions here: https://my.openbb.dev/app/sdk/installation"
     "\n"
     "[/yellow]"
 )
