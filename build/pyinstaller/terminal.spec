@@ -71,6 +71,7 @@ added_files = [
     (str(pathex / "blib2to3/PatternGrammar.txt"), "blib2to3"),
     (str(pathex / "streamlit"), "streamlit"),
     (str(pathex / "altair"), "altair"),
+    (str(pathex / "pyarrow"), "pyarrow"),
 ]
 
 if is_win:
@@ -112,7 +113,7 @@ hidden_imports = [
     "streamlit",
     "pytrends",
     "pytrends.request",
-    "pyarrow.vendored",
+    "pyarrow",
 ]
 
 
