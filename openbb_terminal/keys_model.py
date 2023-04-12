@@ -9,6 +9,7 @@ import logging
 import sys
 from enum import Enum
 from typing import Dict, List, Union
+from datetime import date
 
 import binance
 import oandapyV20.endpoints.pricing
@@ -542,8 +543,9 @@ def check_polygon_key(show_output: bool = False) -> str:
         logger.info("Polygon key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
+        check_date = date(date.today().year, date.today().month, 1).isoformat()
         r = request(
-            "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
+            f"https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/{check_date}/{check_date}"
             f"?apiKey={current_user.credentials.API_POLYGON_KEY}"
         )
         if r.status_code in [403, 401]:
