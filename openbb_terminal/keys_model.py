@@ -7,9 +7,9 @@ import contextlib
 import io
 import logging
 import sys
+from datetime import date
 from enum import Enum
 from typing import Dict, List, Union
-from datetime import date
 
 import binance
 import oandapyV20.endpoints.pricing
