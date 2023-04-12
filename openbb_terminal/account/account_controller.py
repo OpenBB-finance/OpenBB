@@ -155,7 +155,7 @@ class AccountController(BaseController):
             if ns_parser:
                 i = console.input(
                     "[bold red]This action is irreversible![/bold red]\n"
-                    "Are you sure you want to permanently delete your keys? (y/n): "
+                    "Are you sure you want to permanently delete your keys from OpenBB hub? (y/n): "
                 )
                 console.print("")
                 if i.lower() in ["y", "yes"]:
