@@ -615,6 +615,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "limit": 10,
                 "export": "",
                 "sheet_name": None,
+                "year": None,
+                "form_group": None,
             },
         ),
         (
