@@ -1643,7 +1643,7 @@ system = get_current_system()
 system = get_current_system()
 print(system.VERSION)
 
-# 3.0.0rc1
+# 3.0.0rc2
 
 ```
 
