@@ -1257,38 +1257,40 @@ def lett_to_num(word: str) -> str:
     return word
 
 
+AVAILABLE_FLAIRS = {
+    ":openbb": "(🦋)",
+    ":bug": "(🐛)",
+    ":rocket": "(🚀)",
+    ":diamond": "(💎)",
+    ":stars": "(✨)",
+    ":baseball": "(⚾)",
+    ":boat": "(⛵)",
+    ":phone": "(☎)",
+    ":mercury": "(☿)",
+    ":hidden": "",
+    ":sun": "(☼)",
+    ":moon": "(☾)",
+    ":nuke": "(☢)",
+    ":hazard": "(☣)",
+    ":tunder": "(☈)",
+    ":king": "(♔)",
+    ":queen": "(♕)",
+    ":knight": "(♘)",
+    ":recycle": "(♻)",
+    ":scales": "(⚖)",
+    ":ball": "(⚽)",
+    ":golf": "(⛳)",
+    ":piece": "(☮)",
+    ":yy": "(☯)",
+}
+
+
 def get_flair() -> str:
     """Get a flair icon."""
-    available_flairs = {
-        ":openbb": "(🦋)",
-        ":bug": "(🐛)",
-        ":rocket": "(🚀)",
-        ":diamond": "(💎)",
-        ":stars": "(✨)",
-        ":baseball": "(⚾)",
-        ":boat": "(⛵)",
-        ":phone": "(☎)",
-        ":mercury": "(☿)",
-        ":hidden": "",
-        ":sun": "(☼)",
-        ":moon": "(☾)",
-        ":nuke": "(☢)",
-        ":hazard": "(☣)",
-        ":tunder": "(☈)",
-        ":king": "(♔)",
-        ":queen": "(♕)",
-        ":knight": "(♘)",
-        ":recycle": "(♻)",
-        ":scales": "(⚖)",
-        ":ball": "(⚽)",
-        ":golf": "(⛳)",
-        ":piece": "(☮)",
-        ":yy": "(☯)",
-    }
 
     current_user = get_current_user()  # pylint: disable=redefined-outer-name
     current_flair = str(current_user.preferences.FLAIR)
-    flair = available_flairs.get(current_flair, current_flair)
+    flair = AVAILABLE_FLAIRS.get(current_flair, current_flair)
 
     if (
         current_user.preferences.USE_DATETIME

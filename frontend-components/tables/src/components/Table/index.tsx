@@ -180,7 +180,7 @@ export default function Table({
                 target="_blank"
                 rel="noreferrer"
               >
-                {value}
+                {value.length > 25 ? value.substring(0, 25) + "..." : value}
               </a>
             );
           }
