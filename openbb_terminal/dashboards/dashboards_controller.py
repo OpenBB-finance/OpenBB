@@ -19,10 +19,6 @@ import psutil
 
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.session.current_system import (
-    get_current_system,
-    set_system_variable,
-)
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -202,10 +198,6 @@ class DashboardsController(BaseController):
             filepath = Path(__file__).parent / folder / f"{name}.py"
             file = filepath.relative_to(self.parent_path).as_posix()
 
-            streamlit_warning = is_streamlit_activated()
-            if not streamlit_warning:
-                return
-
             process_check = self.check_processes()
             response = "n"
             if not ns_parser.input and not process_check:
@@ -247,8 +239,8 @@ class DashboardsController(BaseController):
                     self.processes.remove(self.processes[-1])
                     console.print(
                         "[red]Error: streamlit server failed to start.[/]\n"
-                        "It might need to be activated or updated. Try running:\n"
-                        "[green] streamlit activate[/] or [green]pip install streamlit --upgrade[/]"
+                        "It might need to be updated. Try running:\n"
+                        "[green]pip install streamlit --upgrade[/]"
                     )
                     return
             elif response.lower() == "n":
@@ -261,56 +253,6 @@ class DashboardsController(BaseController):
                     url=self.check_processes(name),
                     title=f"{filename.title()} Dashboard",
                 )
-
-
-def is_streamlit_activated() -> bool:
-    """Check if streamlit is activated."""
-
-    def _declined():
-        console.print(
-            "\n[green]You will need to activate streamlit before running this command.[/]\n"
-            "[yellow]Type: streamlit activate into a terminal to activate it.[/]"
-        )
-        return False
-
-    def _disable_warning():
-        set_system_variable("DISABLE_STREAMLIT_WARNING", True)
-
-    if get_current_system().DISABLE_STREAMLIT_WARNING:
-        return True
-
-    run_activate = console.input(
-        "\n[yellow]If you have not ran streamlit before, you will need to "
-        "activate it first.\n[/]"
-        "[green]If you have already activated streamlit, you can press enter to continue.\n"
-        "Otherwise, would like us to activate streamlit for you. Y/n?[/]"
-    ).lower()
-    if run_activate not in ["y", ""]:
-        return _declined()
-
-    if not run_activate:
-        _disable_warning()
-        return True
-
-    try:
-        console.print("\n[green]Activating streamlit. This may take a few seconds.[/]")
-        activate = os.system("streamlit activate")  # nosec: B605 B607
-        if activate == 0:
-            _disable_warning()
-            return True
-
-        already_activated = console.input(
-            "\n[yellow]Was streamlit already activated? Y/n?[/]"
-        ).lower()
-        if already_activated == "y":
-            _disable_warning()
-            return True
-        return _declined()
-
-    except Exception as err:
-        console.print(f"Error: {err}")
-
-    return _declined()
 
 
 def non_blocking_streamlit(process: psutil.Popen) -> None:
