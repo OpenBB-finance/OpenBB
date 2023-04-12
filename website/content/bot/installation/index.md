@@ -5,6 +5,9 @@ description: How to get started with OpenBB Bot
 keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,]
 ---
 
+import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord";
+import AddBotDialogTelegram from "@site/src/components/General/AddBotTelegram";
+
 Currently we support [Discord](installation/discord) and [Telegram](installation/telegram) for the OpenBB Bot. More integrations are under way.
 
 In order to use OpenBB Bot in one of these chatting applications you need to either:
@@ -28,3 +31,7 @@ By using the [Linked Platforms page](https://my.openbb.co/app/bot/linked-platfor
 Over 1.5 Million commands have been run on the OpenBB Bot. Join the community and start using OpenBB Bot today!
 
 Check our user metrics in our [Open page](https://openbb.co/open).
+
+<AddBotDialogDiscord />
+
+<AddBotDialogTelegram />
