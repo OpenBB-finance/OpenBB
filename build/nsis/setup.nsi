@@ -14,7 +14,7 @@
   !define SLUG "${NAME} v${VERSION}"
 
 ;--------------------------------
-; Info for launcher.exe
+; Info for Installer.exe
   VIProductVersion 3.0.0.0
   VIAddVersionKey ProductName "OpenBB Terminal"
   VIAddVersionKey Comments "An installer for OpenBB Terminal. For additional details, visit OpenBB.co"
