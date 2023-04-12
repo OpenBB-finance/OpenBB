@@ -81,7 +81,7 @@ def login(session: dict) -> LoginStatus:
         The session info.
     """
     # Create a new user:
-    #   credentials: stored in hub, but we fallback to local
+    #   credentials: stored in hub, but we fallback to local (.env)
     #   profile: stored in hub, so we set default here
     #   preferences: stored locally, so we use the current user preferences
     #   sources: stored in hub, so we set default here
