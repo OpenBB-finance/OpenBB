@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
+import requests
 from pytrends.request import TrendReq
 
 from openbb_terminal.decorators import log_start_end
@@ -27,7 +28,8 @@ def get_mentions(symbol: str) -> pd.DataFrame:
         Dataframe of interest over time
     """
     try:
-        pytrend = TrendReq()
+        # pytrend = TrendReq()
+        pytrend = _fetch_data()
         pytrend.build_payload(kw_list=[symbol])
         return pytrend.interest_over_time()
 
@@ -56,7 +58,8 @@ def get_regions(symbol: str) -> pd.DataFrame:
     """
 
     try:
-        pytrend = TrendReq()
+        # pytrend = TrendReq()
+        pytrend = _fetch_data()
         pytrend.build_payload(kw_list=[symbol])
         return pytrend.interest_by_region().sort_values([symbol], ascending=False)
 
@@ -86,11 +89,12 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
         Dataframe of related queries
     """
     try:
-        pytrend = TrendReq()
+        # pytrend = TrendReq()
+        pytrend = _fetch_data()
         pytrend.build_payload(kw_list=[symbol])
         df = pytrend.related_queries()
         df = df[symbol]["top"].head(limit)
-        df["value"] = df["value"].apply(lambda x: str(x) + "%")
+        df["value"] = df["value"].apply(lambda x: f"{str(x)}%")
         return df
 
     except Exception as e:
@@ -119,7 +123,8 @@ def get_rise(symbol: str, limit: int = 10) -> pd.DataFrame:
         Dataframe containing rising related queries
     """
     try:
-        pytrend = TrendReq()
+        # pytrend = TrendReq()
+        pytrend = _fetch_data()
         pytrend.build_payload(kw_list=[symbol])
         df = pytrend.related_queries()
         df = df[symbol]["rising"].head(limit)
@@ -132,3 +137,28 @@ def get_rise(symbol: str, limit: int = 10) -> pd.DataFrame:
             console.print(f"[red]{str(e)}[/red]\n")
 
         return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+def _fetch_data() -> TrendReq:
+    """Fetch data from pytrends api. [Source: google trends].
+
+    Creates a requests session and fetches the cookie from the
+    google trends website. This cookie is then used to create a
+    TrendReq object.
+
+    Returns
+    -------
+    TrendReq
+        TrendReq object
+    """
+    session = requests.Session()
+    session.get("https://trends.google.com")
+    cookies_map = session.cookies.get_dict()
+    nid_cookie = cookies_map["NID"]
+    return TrendReq(
+        hl="en-US",
+        tz=360,
+        retries=3,
+        requests_args={"headers": {"Cookie": f"NID={nid_cookie}"}},
+    )

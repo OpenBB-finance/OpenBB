@@ -661,7 +661,7 @@ def display_candle(
     if add_trend:
         fig.add_trend(data, secondary_y=True)
 
-    fig.update_layout(yaxis2=dict(title="Stock Price ($)", type=yscale))
+    fig.update_layout(yaxis2=dict(type=yscale))
 
     return fig.show(external=external_axes)
 

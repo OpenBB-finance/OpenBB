@@ -13,13 +13,24 @@ def vcr_config():
     }
 
 
-@pytest.mark.record_stdout
-@pytest.mark.vcr
+@pytest.mark.record_http
 @pytest.mark.parametrize(
-    "financial, quarterly",
-    [("income", True), ("income", False), ("balance", True), ("balance", False)],
+    "financial, quarterly, ratios, plot",
+    [
+        ("income", True, False, False),
+        ("income", False, False, False),
+        ("balance", False, False, False),
+        ("cash", True, False, False),
+        ("cash", False, False, False),
+    ],
 )
-def test_display_fundamentals(financial, quarterly):
+def test_display_fundamentals(financial, quarterly, ratios, plot):
     polygon_view.display_fundamentals(
-        symbol="AAPL", statement=financial, limit=2, quarterly=quarterly, export=""
+        symbol="AAPL",
+        statement=financial,
+        limit=2,
+        quarterly=quarterly,
+        ratios=ratios,
+        plot=plot,
+        export="",
     )

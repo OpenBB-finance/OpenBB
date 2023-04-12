@@ -1344,4 +1344,8 @@ video {
   ._header p {
     font-size: 1.0rem !important;
   }
+
+  ._header span {
+    font-size: 0.9rem !important;
+  }
 }

@@ -52,6 +52,7 @@ build/terminal
 build/nsis/app
 DMG/*
 *.dmg
+*.sh
 
 # User stylesheets
 openbb_terminal/miscellaneous/styles/user/hub.richstyle.json
