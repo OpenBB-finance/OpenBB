@@ -15,14 +15,14 @@
 
 ;--------------------------------
 ; Info for launcher.exe
-VIProductVersion 3.0.0rc1
-VIAddVersionKey ProductName "OpenBB Terminal"
-VIAddVersionKey Comments "An installer for OpenBB Terminal. For additional details, visit OpenBB.co"
-VIAddVersionKey CompanyName OpenBB.co
-VIAddVersionKey FileDescription "OpenBB Terminal Program"
-VIAddVersionKey FileVersion 3.0.0rc1
-VIAddVersionKey ProductVersion 3.0.0rc1
-VIAddVersionKey InternalName "OpenBB Terminal"
+  VIProductVersion 3.0.0.0
+  VIAddVersionKey ProductName "OpenBB Terminal"
+  VIAddVersionKey Comments "An installer for OpenBB Terminal. For additional details, visit OpenBB.co"
+  VIAddVersionKey CompanyName OpenBB.co
+  VIAddVersionKey FileDescription "OpenBB Terminal Program"
+  VIAddVersionKey FileVersion 3.0.0.0
+  VIAddVersionKey ProductVersion 3.0.0.0
+  VIAddVersionKey InternalName "OpenBB Terminal"
 
 ;--------------------------------
 ; General
