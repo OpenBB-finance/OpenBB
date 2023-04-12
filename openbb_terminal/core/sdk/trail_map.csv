@@ -411,7 +411,6 @@ stocks.disc.active,stocks_disc_yahoofinance_model.get_active,
 stocks.disc.arkord,stocks_disc_ark_model.get_ark_orders,
 stocks.disc.asc,stocks_disc_yahoofinance_model.get_asc,
 stocks.disc.dividends,stocks_disc_nasdaq_model.get_dividend_cal,
-stocks.disc.filings,stocks_fa_fmp_model.get_filings,stocks_disc_fmp_view.display_filings
 stocks.disc.fipo,stocks_disc_finnhub_model.get_future_ipo,
 stocks.disc.gainers,stocks_disc_yahoofinance_model.get_gainers,
 stocks.disc.gtech,stocks_disc_yahoofinance_model.get_gtech,
@@ -473,7 +472,6 @@ stocks.fa.revfc,stocks_fa_seeking_alpha_model.get_estimates_rev,
 stocks.fa.rot,stocks_fa_finnhub_model.get_rating_over_time,stocks_fa_finnhub_view.rating_over_time
 stocks.fa.score,stocks_fa_fmp_model.get_score,
 stocks.fa.sec,stocks_fa_marketwatch_model.get_sec_filings,
-stocks.fa.sec_fmp,stocks_fa_fmp_model.get_filings,stocks_fa_fmp_view.display_filings
 stocks.fa.shrs,stocks_fa_yahoo_finance_model.get_shareholders,
 stocks.fa.similar_dfs,stocks_fa_dcf_model.get_similar_dfs,
 stocks.fa.splits,stocks_fa_yahoo_finance_model.get_splits,stocks_fa_yahoo_finance_view.display_splits
