@@ -7,6 +7,7 @@ import contextlib
 import io
 import logging
 import sys
+from datetime import date
 from enum import Enum
 from typing import Dict, List, Union
 
@@ -542,9 +543,10 @@ def check_polygon_key(show_output: bool = False) -> str:
         logger.info("Polygon key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
+        check_date = date(date.today().year, date.today().month, 1).isoformat()
         r = request(
-            "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
-            f"?apiKey={current_user.credentials.API_POLYGON_KEY}"
+            f"https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/{check_date}"
+            f"/{check_date}?apiKey={current_user.credentials.API_POLYGON_KEY}"
         )
         if r.status_code in [403, 401]:
             logger.warning("Polygon key defined, test failed")
