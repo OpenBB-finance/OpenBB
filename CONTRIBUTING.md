@@ -220,7 +220,9 @@ Now that we have added the model function getting, we need to specify that this 
       "pt": ["BusinessInsider", "FinancialModelingPrep"],
 ```
 
-If you are adding a new function with a new data source, make a new value in the file.
+If you are adding a new function with a new data source, make a new value in the file.  If the data source requires an
+API key, please refer to the guide below for adding them.  Instructions for obtaining the new api key
+should be included in the file `OpenBBTerminal/website/content/terminal/usage/guides/api-keys.md`.
 
 ### View
 
@@ -480,6 +482,10 @@ In order to add a command to the SDK, follow these steps:
 
 3. Add your new function to this structure. In the below example of the `pt` function, our trail would be `stocks.fa.pt`.
 
+Our naming convention is such that the data source should not be included in the trail. In this example, calling a new function `pt_fmp` would not be allowed.
+For functions with multiple sources, there should be a single `pt` function that takes in the source as an argument.
+In the following example, we will stick with showing how the business_insider was initially added to the sdk.
+
     The model is the import alias to the `_model` function that was written:
 
     `stocks_fa_business_insider_model.get_price_target_from_analysts`
@@ -494,7 +500,7 @@ In order to add a command to the SDK, follow these steps:
     stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.display_price_target_from_analysts
     ```
 
-4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/core/sdk/controllers/` and `openbb_terminal/core/sdk/models/` class files.
+1. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/core/sdk/controllers/` and `openbb_terminal/core/sdk/models/` class files.
 
     To sort the `trail_map.csv` file and generate the SDK files, run the following command
 
