@@ -1,3 +1,0 @@
-class UserPreferences:
-    # ...
-    PROMPT_TEXT: str = "$ "
