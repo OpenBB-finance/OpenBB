@@ -7,6 +7,7 @@ from openbb_terminal.core.session.constants import (
     BASE_URL,
     CONNECTION_ERROR_MSG,
     CONNECTION_TIMEOUT_MSG,
+    DEFAULT_ROUTINES_URL,
     TIMEOUT,
 )
 from openbb_terminal.core.session.current_system import get_current_system
@@ -612,7 +613,9 @@ def list_routines(
         return None
 
 
-def get_default_routines(timeout: int = TIMEOUT, silent: bool = False):
+def get_default_routines(
+    url: str = DEFAULT_ROUTINES_URL, timeout: int = TIMEOUT, silent: bool = False
+):
     """Get the default routines from CMS.
 
     Parameters
@@ -630,7 +633,7 @@ def get_default_routines(timeout: int = TIMEOUT, silent: bool = False):
     console_print = console.print if not silent else lambda *args, **kwargs: None
     try:
         response = requests.get(
-            url="https://tffo1zc1.directus.app/items/Routines",
+            url=url,
             timeout=timeout,
         )
         if response.status_code != 200:
