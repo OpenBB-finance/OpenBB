@@ -482,9 +482,9 @@ In order to add a command to the SDK, follow these steps:
 
 3. Add your new function to this structure. In the below example of the `pt` function, our trail would be `stocks.fa.pt`.
 
-Our naming convention is such that the data source should not be included in the trail. In this example, calling a new function `pt_fmp` would not be allowed.
-For functions with multiple sources, there should be a single `pt` function that takes in the source as an argument.
-In the following example, we will stick with showing how the business_insider was initially added to the sdk.
+    Our naming convention is such that the data source should not be included in the trail. In this example, calling a new function `pt_fmp` would not be allowed.
+    For functions with multiple sources, there should be a single `pt` function that takes in the source as an argument.
+    In the following example, we will stick with showing how the business_insider was initially added to the sdk.
 
     The model is the import alias to the `_model` function that was written:
 
