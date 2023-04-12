@@ -726,7 +726,6 @@ class OptionsController(BaseController):
                     self.selected_date = expiry_date
 
                 if self.selected_date:
-                    self.source = ns_parser.source
                     self.chain = self.full_chain[
                         self.full_chain["expiration"] == self.selected_date
                     ]
