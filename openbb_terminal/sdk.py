@@ -36,7 +36,7 @@ class OpenBBSDK:
     Attributes:
         `login`: Login and load user info.\n
         `logout`: Logout and clear session.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `whoami`: Display user info.\n
     """
 
