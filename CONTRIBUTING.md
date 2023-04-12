@@ -488,11 +488,11 @@ In order to add a command to the SDK, follow these steps:
 
     The model is the import alias to the `_model` function that was written:
 
-    `stocks_fa_business_insider_model.get_price_target_from_analysts`
+    - `stocks_fa_business_insider_model.get_price_target_from_analysts`
 
     The view is the import alias to the `_view` function that was written:
 
-    `stocks_fa_business_insider_view.display_price_target_from_analysts`
+    - `stocks_fa_business_insider_view.display_price_target_from_analysts`
 
     The added line of the file should look like this:
 
@@ -500,7 +500,7 @@ In order to add a command to the SDK, follow these steps:
     stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.display_price_target_from_analysts
     ```
 
-1. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/core/sdk/controllers/` and `openbb_terminal/core/sdk/models/` class files.
+4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/core/sdk/controllers/` and `openbb_terminal/core/sdk/models/` class files.
 
     To sort the `trail_map.csv` file and generate the SDK files, run the following command
 
