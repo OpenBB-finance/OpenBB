@@ -17,5 +17,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_get_rating_over_time(recorder):
-    result_df = marketwatch_model.get_sec_filings(symbol="TSLA")
+    result_df = marketwatch_model.get_sec_filings(
+        symbol="TSLA", year=2020, form_group="annual"
+    )
     recorder.capture(result_df)
