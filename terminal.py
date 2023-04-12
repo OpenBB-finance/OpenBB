@@ -7,7 +7,16 @@ import openbb_terminal.config_terminal as cfg
 import openbb_terminal.core.session.current_system as syst  # noqa: F401
 import openbb_terminal.core.session.current_user as user  # noqa: F401
 from openbb_terminal.terminal_helper import is_auth_enabled, is_installer
+from openbb_terminal.core.config.user_preferences import get_local_user
 
+# ...
+
+@staticmethod
+def get_prompt() -> str:
+    user = get_local_user()
+    prompt_text = user.preferences.PROMPT_TEXT
+    # ... add other customizations to the prompt here if desired ...
+    return prompt_text + " "
 
 def main():
     sent_args = sys.argv[1:]
