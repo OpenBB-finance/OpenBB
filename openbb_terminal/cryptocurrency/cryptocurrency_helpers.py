@@ -506,7 +506,7 @@ def load(
     exchange: str = "binance",
     to_symbol: str = "usd",
     end_date: Optional[Union[datetime, Union[str, None]]] = None,
-    source: str = "CoinGecko",
+    source: str = "YahooFinance",
 ) -> pd.DataFrame:
     """
     Load crypto currency to get data for
