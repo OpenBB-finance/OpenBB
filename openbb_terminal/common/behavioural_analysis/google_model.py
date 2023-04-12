@@ -160,7 +160,5 @@ def _fetch_data() -> TrendReq:
         hl="en-US",
         tz=360,
         retries=3,
-        requests_args={
-            "headers": {"Cookie": f"NID={nid_cookie}"}
-        }
+        requests_args={"headers": {"Cookie": f"NID={nid_cookie}"}},
     )
