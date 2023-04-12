@@ -153,14 +153,14 @@ def _fetch_data() -> TrendReq:
         TrendReq object
     """
     session = requests.Session()
-    session.get('https://trends.google.com')
+    session.get("https://trends.google.com")
     cookies_map = session.cookies.get_dict()
-    nid_cookie = cookies_map['NID']
+    nid_cookie = cookies_map["NID"]
     return TrendReq(
-        hl='en-US',
+        hl="en-US",
         tz=360,
         retries=3,
         requests_args={
-            'headers': {'Cookie': f'NID={nid_cookie}'}
+            "headers": {"Cookie": f"NID={nid_cookie}"}
         }
     )
