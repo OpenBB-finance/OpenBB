@@ -11,7 +11,7 @@ The FA module provides programmatic access to the commands from within the OpenB
 - Financial Modeling Prep
 - Polygon
 
-View [this page](https://docs.openbb.co/terminal/quickstart/api-keys) for a list of all API sources used across the platform.
+View [this page](https://docs.openbb.co/terminal/usage/guides/api-keys) for a list of all API sources used across the platform.
 
 ## How to Use
 
