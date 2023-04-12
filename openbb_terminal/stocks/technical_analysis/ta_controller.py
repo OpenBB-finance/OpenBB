@@ -86,6 +86,7 @@ class TechnicalAnalysisController(StockBaseController):
         "atr",
         "multi",
         "cones",
+        "view",
     ]
     PATH = "/stocks/ta/"
     CHOICES_GENERATION = True
@@ -130,15 +131,15 @@ class TechnicalAnalysisController(StockBaseController):
             stock_str = f"{s_intraday} {self.ticker}"
 
         mt = MenuText("stocks/ta/", 90)
+        mt.add_cmd("load")
+        mt.add_raw("\n")
         mt.add_param(
             "_ticker", stock_str if not self.stock.empty else "No ticker loaded"
         )
         mt.add_raw("\n")
-        mt.add_cmd("load")
-        mt.add_raw("\n")
-        mt.add_cmd("recom")
-        mt.add_cmd("summary")
-        mt.add_cmd("view")
+        mt.add_cmd("recom", not self.stock.empty)
+        mt.add_cmd("summary", not self.stock.empty)
+        mt.add_cmd("view", not self.stock.empty)
         mt.add_raw("\n")
         mt.add_info("_overlap_")
         mt.add_cmd("ema", not self.stock.empty)
