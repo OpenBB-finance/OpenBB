@@ -38,19 +38,24 @@ jobs:
           python -m venv venv
           source venv/Scripts/activate
           python -m pip install setuptools==64.0.2 wheel
-          python -m pip install charset_normalizer==2.1.1
           python -m pip install -r requirements-full.txt
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
           python -m PyInstaller build/pyinstaller/terminal.spec --clean
-
+          pwd
         shell: bash
+
+      - name: zip the file
+        run: |
+          Get-Location
+          Compress-Archive dist release.zip
+        shell: pwsh
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: OpenBB-Windows10-ENV
-          path: dist
+          path: release.zip
 
 
   Build-Exe:
@@ -68,10 +73,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: OpenBB-Windows10-ENV
-          path: dist
+          path: .
+
+      - name: unzip artifact for deployment
+        run: Expand-Archive release.zip -DestinationPath .
+        shell: pwsh
 
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
@@ -99,7 +108,7 @@ jobs:
           dist\OpenBBTerminal\OpenBBTerminal.exe -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
           cat result.txt
           Select-String "================================ integration test summary ================================" result.txt -Context 0,100 | Select-Object -Last 2000 | Out-File failed_tests.txt
-          
+
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
         with:

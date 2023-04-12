@@ -210,6 +210,7 @@ exe_kwargs = dict(
     codesign_identity=None,
     entitlements_file=None,
     icon=exe_icon,
+    version='version.rc'
 )
 
 
