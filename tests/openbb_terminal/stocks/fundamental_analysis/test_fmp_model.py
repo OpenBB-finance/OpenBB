@@ -66,10 +66,6 @@ def test_get_score():
             "get_financial_growth",
             {"symbol": "PM", "limit": 5, "quarterly": False},
         ),
-        (
-            "get_filings",
-            {},
-        ),
     ],
 )
 @pytest.mark.record_stdout
@@ -227,13 +223,6 @@ def test_get_financial_growth(symbol, limit, quarterly):
         limit=limit,
         quarterly=quarterly,
     )
-    assert isinstance(result, pd.DataFrame)
-    assert not result.empty
-
-
-@pytest.mark.record_http
-def test_get_fillings():
-    result = fmp_model.get_filings()
     assert isinstance(result, pd.DataFrame)
     assert not result.empty
 

@@ -1,0 +1,301 @@
+{
+    "news": [
+        "CONTRIBUTING.md",
+        "website/content/terminal/usage/guides/api-keys.md",
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "stocks.dps.shorted": [
+        "CONTRIBUTING.md"
+    ],
+    "stocks.fa.analyst": [
+        "CONTRIBUTING.md"
+    ],
+    "stocks.fa.rot": [
+        "CONTRIBUTING.md"
+    ],
+    "economy.available_indices": [
+        "openbb_terminal/SDK_README.md",
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "economy.index": [
+        "openbb_terminal/SDK_README.md",
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "keys.fmp": [
+        "openbb_terminal/SDK_README.md",
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.get_keys_info": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "keys.mykeys": [
+        "openbb_terminal/SDK_README.md",
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.reddit": [
+        "openbb_terminal/SDK_README.md",
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.set_keys": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "stocks.dps.dpotc": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "stocks.load": [
+        "openbb_terminal/SDK_README.md",
+        "website/content/sdk/faqs/data_sources.md",
+        "website/content/sdk/usage/basics/index.md",
+        "website/content/sdk/usage/guides/changing-sources.md",
+        "website/content/sdk/usage/intros/ta.md",
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "stocks.search": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "portfolio.po.hrp": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "portfolio.po.load": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "portfolio.po.maxsharpe": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "portfolio.po.minrisk": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "portfolio.po.plot": [
+        "openbb_terminal/SDK_README.md"
+    ],
+    "economy.events": [
+        "website/content/sdk/usage/basics/index.md",
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "etf.holdings": [
+        "website/content/sdk/usage/basics/index.md",
+        "website/content/sdk/usage/intros/etf.md"
+    ],
+    "stocks.ca.screener": [
+        "website/content/sdk/usage/basics/index.md",
+        "website/content/sdk/usage/intros/etf.md"
+    ],
+    "stocks.candle": [
+        "website/content/sdk/usage/basics/index.md"
+    ],
+    "ta.donchian": [
+        "website/content/sdk/usage/basics/index.md",
+        "website/content/sdk/usage/intros/ta.md"
+    ],
+    "keys.av": [
+        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "keys.binance": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.bitquery": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.cmc": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.coinbase": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.coinglass": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.cpanic": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.databento": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.degiro": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.eodhd": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.finnhub": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.fred": [
+        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "keys.github": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.glassnode": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.messari": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.news": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.oanda": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.polygon": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.quandl": [
+        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "keys.santiment": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.shroom": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.stocksera": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.tokenterminal": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.tradier": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "keys.walert": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "stocks.quote": [
+        "website/content/sdk/usage/guides/api-keys.md"
+    ],
+    "fixedincome.ameribor": [
+        "website/content/sdk/usage/intros/fixedincome.md"
+    ],
+    "fixedincome.ecb": [
+        "website/content/sdk/usage/intros/fixedincome.md"
+    ],
+    "fixedincome.hqm": [
+        "website/content/sdk/usage/intros/fixedincome.md"
+    ],
+    "fixedincome.icebofa": [
+        "website/content/sdk/usage/intros/fixedincome.md"
+    ],
+    "fixedincome.icespread": [
+        "website/content/sdk/usage/intros/fixedincome.md"
+    ],
+    "fixedincome.projection": [
+        "website/content/sdk/usage/intros/fixedincome.md"
+    ],
+    "fixedincome.treasury": [
+        "website/content/sdk/usage/intros/fixedincome.md"
+    ],
+    "econometrics.bgod": [
+        "website/content/sdk/usage/intros/econometrics.md"
+    ],
+    "econometrics.bpag": [
+        "website/content/sdk/usage/intros/econometrics.md"
+    ],
+    "econometrics.load": [
+        "website/content/sdk/usage/intros/econometrics.md"
+    ],
+    "econometrics.norm": [
+        "website/content/sdk/usage/intros/econometrics.md"
+    ],
+    "econometrics.ols": [
+        "website/content/sdk/usage/intros/econometrics.md"
+    ],
+    "econometrics.re": [
+        "website/content/sdk/usage/intros/econometrics.md"
+    ],
+    "econometrics.root": [
+        "website/content/sdk/usage/intros/econometrics.md"
+    ],
+    "futures.curve": [
+        "website/content/sdk/usage/intros/futures.md"
+    ],
+    "futures.historical": [
+        "website/content/sdk/usage/intros/futures.md"
+    ],
+    "futures.search": [
+        "website/content/sdk/usage/intros/futures.md"
+    ],
+    "alt.covid.global_deaths": [
+        "website/content/sdk/usage/intros/alternative.md"
+    ],
+    "alt.covid.slopes": [
+        "website/content/sdk/usage/intros/alternative.md"
+    ],
+    "alt.oss.summary": [
+        "website/content/sdk/usage/intros/alternative.md"
+    ],
+    "alt.oss.top": [
+        "website/content/sdk/usage/intros/alternative.md"
+    ],
+    "etf.disc.mover": [
+        "website/content/sdk/usage/intros/etf.md"
+    ],
+    "etf.etf_by_category": [
+        "website/content/sdk/usage/intros/etf.md"
+    ],
+    "economy.macro": [
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "economy.macro_countries": [
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "economy.macro_parameters": [
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "economy.performance": [
+        "website/content/sdk/usage/intros/economy.md"
+    ],
+    "qa.spread": [
+        "website/content/sdk/usage/intros/quantitative-analysis.md"
+    ],
+    "qa.summary": [
+        "website/content/sdk/usage/intros/quantitative-analysis.md"
+    ],
+    "qa.unitroot": [
+        "website/content/sdk/usage/intros/quantitative-analysis.md"
+    ],
+    "ta.atr": [
+        "website/content/sdk/usage/intros/ta.md",
+        "website/content/sdk/usage/intros/forex.md"
+    ],
+    "ta.obv": [
+        "website/content/sdk/usage/intros/ta.md"
+    ],
+    "ta.rsi": [
+        "website/content/sdk/usage/intros/ta.md"
+    ],
+    "forex.fwd": [
+        "website/content/sdk/usage/intros/forex.md"
+    ],
+    "forex.load": [
+        "website/content/sdk/usage/intros/forex.md"
+    ],
+    "forecast.combine": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "forecast.corr": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "forecast.delete": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "forecast.ema": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "forecast.plot": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "forecast.rename": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "forecast.rsi": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ],
+    "forecast.sto": [
+        "website/content/sdk/usage/intros/forecast.md"
+    ]
+}

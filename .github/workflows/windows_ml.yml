@@ -18,7 +18,7 @@ on:
         description: "Test scenario tags"
 jobs:
   windows-conda:
-    name: Windows-latest, Conda-latest,  Python 3.9
+    name: Windows-latest, Conda-latest, Python 3.9
     runs-on: windows-latest
     steps:
       - name: Set git to use LF
@@ -54,7 +54,7 @@ jobs:
           show-channel-urls: true
           channel-priority: flexible
           environment-file: build/conda/conda-3-9-env.yaml
-          activate-environment: testing
+          activate-environment: obb
           # Needed for caching
           use-only-tar-bz2: true
 
@@ -87,8 +87,9 @@ jobs:
         shell: bash -l {0}
         run: |
           conda info
-          pip install --requirement requirements-full.txt
+          build\conda\cleanup_artifacts.bat
           pip install docstring_parser
+          poetry install -E all -E installer
 
       - name: List installed packages (Bash)
         shell: bash -l {0}

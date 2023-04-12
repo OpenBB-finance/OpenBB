@@ -31,6 +31,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     finnhub_view,
     finviz_view,
     fmp_view,
+    marketwatch_model,
     marketwatch_view,
     polygon_view,
     seeking_alpha_view,
@@ -2018,14 +2019,23 @@ class FundamentalAnalysisController(StockBaseController):
             default=20,
             help="number of latest SEC filings.",
         )
-
         parser.add_argument(
-            "-p",
-            "--pages",
-            dest="pages",
+            "-y",
+            "--year",
+            action="store",
+            dest="year",
             type=check_positive,
-            default=5,
-            help="number of pages of SEC filings to search through, only relevant for FinancialModellingPrep.",
+            default=None,
+            help="year of SEC filings.",
+        )
+        parser.add_argument(
+            "-f",
+            "--form",
+            action="store",
+            dest="form",
+            type=str,
+            help="form group of SEC filings.",
+            choices=marketwatch_model.FORM_GROUP.keys(),
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -2042,25 +2052,16 @@ class FundamentalAnalysisController(StockBaseController):
                 console.print(no_ticker_message)
                 return
 
-            if ns_parser.source == "MarketWatch":
-                marketwatch_view.sec_filings(
-                    symbol=ns_parser.ticker,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            if ns_parser.source == "FinancialModelingPrep":
-                fmp_view.display_filings(
-                    ns_parser.ticker,
-                    ns_parser.pages,
-                    ns_parser.limit,
-                    ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+            marketwatch_view.sec_filings(
+                symbol=ns_parser.ticker,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+                year=ns_parser.year,
+                form_group=ns_parser.form,
+            )
 
     @log_start_end(log=logger)
     def call_supplier(self, other_args: List[str]):

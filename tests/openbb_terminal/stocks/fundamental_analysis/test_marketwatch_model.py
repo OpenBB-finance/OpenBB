@@ -47,7 +47,23 @@ def test_get_sean_seah_warnings(symbol, debug):
 
 
 @pytest.mark.record_http
-def test_get_sec_filings():
-    result_df = marketwatch_model.get_sec_filings(symbol="TSLA")
+@pytest.mark.parametrize(
+    "symbol, limit, year, form_group",
+    [
+        ("TSLA", 5, 2020, "annual"),
+    ],
+)
+def test_get_sec_filings(symbol, limit, year, form_group):
+    result_df = marketwatch_model.get_sec_filings(
+        symbol=symbol, limit=limit, year=year, form_group=form_group
+    )
     assert isinstance(result_df, DataFrame)
     assert not result_df.empty
+
+
+@pytest.mark.vcr
+def test_get_rating_over_time(recorder):
+    result_df = marketwatch_model.get_sec_filings(
+        symbol="TSLA", year=2020, form_group="annual"
+    )
+    recorder.capture(result_df)

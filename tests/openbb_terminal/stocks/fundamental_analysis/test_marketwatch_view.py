@@ -22,6 +22,14 @@ def test_display_sean_seah_warnings():
 
 
 @pytest.mark.record_http
-def test_sec_filings():
-    marketwatch_view.sec_filings("TSLA")
+@pytest.mark.parametrize(
+    "symbol, limit, year, form_group",
+    [
+        ("TSLA", 5, 2020, "annual"),
+    ],
+)
+def test_sec_filings(symbol, limit, year, form_group):
+    marketwatch_view.sec_filings(
+        symbol=symbol, limit=limit, year=year, form_group=form_group
+    )
     assert True

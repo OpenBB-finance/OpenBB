@@ -25,3 +25,8 @@ DATA_SOURCES_DEFAULT_FILE = MISCELLANEOUS_DIRECTORY / "sources" / "openbb_defaul
 
 # session
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
+
+# sdk trail map paths
+MAP_PATH = PACKAGE_DIRECTORY / "core/sdk" / "trail_map.csv"
+MAP_FORECASTING_PATH = PACKAGE_DIRECTORY / "core/sdk" / "trail_map_forecasting.csv"
+MAP_OPTIMIZATION_PATH = PACKAGE_DIRECTORY / "core/sdk" / "trail_map_optimization.csv"
