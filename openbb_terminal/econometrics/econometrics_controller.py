@@ -850,11 +850,19 @@ class EconometricsController(BaseController):
             if ns_parser.name:
                 if "." in ns_parser.name:
                     dataset, column = ns_parser.name.split(".")
+                    # Determine date type and accordingly assign date format
+                    if column.lower() == "year":
+                        date_format = "%Y"
+                    elif column.lower() == "month":
+                        date_format = "%m"
+                    elif column.lower() == ["date", "period"]:
+                        date_format = "%Y-%m-%d"
+
                     if ns_parser.format:
                         if ns_parser.format == "date":
                             self.datasets[dataset][column] = pd.to_datetime(
-                                self.datasets[dataset][column].values,
-                            )
+                                self.datasets[dataset][column],
+                            ).dt.strftime(date_format)
                         else:
                             self.datasets[dataset][column] = self.datasets[dataset][
                                 column
