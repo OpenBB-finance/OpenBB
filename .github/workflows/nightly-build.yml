@@ -52,5 +52,5 @@ jobs:
       - name: Trigger PyPI Build
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: nightly-pypi.yml
+          workflow: pypi-nightly.yml
           token: ${{ secrets.GITHUB_TOKEN }}
