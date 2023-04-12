@@ -114,7 +114,9 @@ def login(session: dict) -> LoginStatus:
                         "silent": True,
                     },
                 )
-            run_thread(download_and_save_routines, {"auth_header": auth_header})
+            run_thread(
+                download_and_save_routines, {"auth_header": auth_header, "silent": True}
+            )
 
             Local.apply_configs(configs)
             Local.update_flair(get_current_user().profile.username)

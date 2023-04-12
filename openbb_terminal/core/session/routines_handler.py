@@ -10,15 +10,15 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
 
-def download_routines(
-    auth_header: str,
-) -> Dict[str, str]:
+def download_routines(auth_header: str, silent: bool = True) -> Dict[str, str]:
     """Download a routine from the server.
 
     Parameters
     ----------
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
+    silent : bool
+        Whether to silence the console output, by default False
 
     Returns
     -------
@@ -27,8 +27,22 @@ def download_routines(
     """
     routines_dict = {}
 
-    fields = "name%2Cscript"
-    response = Hub.list_routines(auth_header, fields=fields, page=1, size=100)
+    response = Hub.get_default_routines(silent=silent)
+    if response and response.status_code == 200:
+        content = response.json()
+        data = content.get("data", [])
+        for routine in data:
+            name = routine.get("name", "")
+            if name:
+                routines_dict[name] = routine.get("script", "")
+
+    response = Hub.list_routines(
+        auth_header=auth_header,
+        fields=["name", "script"],
+        page=1,
+        size=100,
+        silent=silent,
+    )
     if response and response.status_code == 200:
         content = response.json()
         items = content.get("items", [])
@@ -37,28 +51,24 @@ def download_routines(
             if name:
                 routines_dict[name] = routine.get("script", "")
 
-    response = Hub.get_default_routines()
-    if response and response.status_code == 200:
-        content = response.json()
-        data = content.get("data", [])
-        for routine in data:
-            name = routine.get("name", "")
-            if name:
-                routines_dict[name] = routine.get("script", "")
     return routines_dict
 
 
-def download_and_save_routines(auth_header: str):
+def download_and_save_routines(auth_header: str, silent: bool = True):
     """Download and save routines.
 
     Parameters
     ----------
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
+    silent : bool
+        Whether to silence the console output, by default False
     """
-    routines = download_routines(auth_header)
+    routines = download_routines(auth_header=auth_header, silent=silent)
     for name, content in routines.items():
-        save_routine(file_name=f"{name}.openbb", routine=content, force=True)
+        save_routine(
+            file_name=f"{name}.openbb", routine=content, force=True, silent=silent
+        )
 
 
 def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
@@ -104,6 +114,7 @@ def save_routine(
     routine: str,
     folder: Optional[Path] = None,
     force: bool = False,
+    silent: bool = False,
 ) -> Union[Optional[Path], str]:
     """Save the routine.
 
@@ -117,12 +128,15 @@ def save_routine(
         The routines folder.
     force : bool
         Force the save.
+    silent : bool
+        Whether to silence the console output, by default False
 
     Returns
     -------
     Optional[Path, str]
         The path to the routine or None.
     """
+    console_print = console.print if not silent else lambda *args, **kwargs: None
 
     current_user = get_current_user()
     if folder is None:
@@ -140,7 +154,7 @@ def save_routine(
             f.write(routine)
         return user_folder / file_name
     except Exception:
-        console.print("[red]\nFailed to save routine.[/red]")
+        console_print("[red]\nFailed to save routine.[/red]")
         return None
 
 
