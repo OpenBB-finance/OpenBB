@@ -218,7 +218,6 @@ class DashboardsController(BaseController):
                         stdin=PIPE,
                         env=os.environ,
                         cwd=str(self.parent_path),
-                        shell=sys.platform == "darwin",
                     )
                 )
                 atexit.register(self.kill_processes)
