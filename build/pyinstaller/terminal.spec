@@ -238,6 +238,8 @@ if is_win:
     )
     exe_args += [splash, splash.binaries]
 
+if is_darwin:
+    exe_kwargs["argv_emulation"] = True
 
 exe = EXE(*exe_args, **exe_kwargs)
 pywry_collect_args = [
