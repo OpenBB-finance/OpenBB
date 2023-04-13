@@ -234,6 +234,48 @@ function uploadImage() {
     });
 }
 
+const openbb_watermark = {
+  yref: "paper",
+  xref: "paper",
+  x: 1,
+  y: 0,
+  text: "OpenBB Terminal",
+  font_size: 17,
+  font_color: "gray",
+  opacity: 0.5,
+  xanchor: "right",
+  yanchor: "bottom",
+  yshift: -80,
+  xshift: 40,
+};
+
+async function setWatermarks(margin, old_index, init = false) {
+  if (init) {
+    globals.CHART_DIV.layout.annotations.push(openbb_watermark);
+    if (globals.cmd_idx && globals.cmd_src) {
+      globals.CHART_DIV.layout.annotations[globals.cmd_idx].text =
+        globals.cmd_src;
+    }
+
+    Plotly.relayout(globals.CHART_DIV, {
+      "title.text": globals.title,
+      margin: globals.old_margin,
+    });
+  }
+
+  if (!init) {
+    if (globals.cmd_idx && globals.cmd_src) {
+      globals.CHART_DIV.layout.annotations[globals.cmd_idx].text = "";
+    }
+    globals.CHART_DIV.layout.annotations.splice(old_index, 1);
+
+    Plotly.relayout(globals.CHART_DIV, {
+      "title.text": "",
+      margin: margin,
+    });
+  }
+}
+
 async function downloadImage(filename, extension, writable = undefined) {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
@@ -247,6 +289,11 @@ async function downloadImage(filename, extension, writable = undefined) {
     // } else if (extension == "svg") {
     //   imageDownload = domtoimage.toSvg;
   } else if (["svg", "pdf"].includes(extension)) {
+    const margin = globals.CHART_DIV.layout.margin;
+    const old_index = globals.CHART_DIV.layout.annotations.length;
+
+    await setWatermarks(margin, old_index, true);
+
     if (window.showSaveFilePicker && writable) {
       await Plotly.toImage(globals.CHART_DIV, {
         format: "svg",
@@ -265,11 +312,15 @@ async function downloadImage(filename, extension, writable = undefined) {
         filename: filename,
       });
     }
+
+    await setWatermarks(margin, old_index, false);
+
     return;
   } else {
     console.log("Invalid extension");
     return;
   }
+
   imageDownload(document.getElementById("openbb_container"))
     .then(async function (dataUrl) {
       if (window.showSaveFilePicker && writable) {

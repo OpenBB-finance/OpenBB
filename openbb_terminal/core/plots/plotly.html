@@ -226,9 +226,13 @@
                 !["svg", "pdf"].includes(extension)
               ) {
                 if (annotation.text[0] == "/") {
-                  cmd_src = annotation.text;
+                  globals.cmd_src = annotation.text;
+                  globals.cmd_idx =
+                    window.plotly_figure.layout.annotations.indexOf(annotation);
                   annotation.text = "";
+
                   let margin = window.plotly_figure.layout.margin;
+                  globals.old_margin = { ...margin };
                   if (margin.t != undefined && margin.t > 40) {
                     margin.t = 40;
                   }
@@ -236,7 +240,6 @@
                   if (cmd_src == "/stocks/candle") {
                     margin.r -= 40;
                   }
-                  window.plotly_figure.layout.margin = margin;
                 }
               }
             });
@@ -251,6 +254,8 @@
 
           let title =
             window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";
+
+          globals.title = title;
 
           if (title.length > 50) {
             document.getElementById("title").style.fontSize = "12px";
