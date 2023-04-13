@@ -99,6 +99,8 @@ class StocksController(model.StocksRoot):
             `arkord`: Returns ARK orders in a Dataframe\n
             `asc`: Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.\n
             `dividends`: Gets dividend calendar for given date.  Date represents Ex-Dividend Date\n
+            `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
+            `filings_chart`: Display recent forms submitted to the SEC\n
             `fipo`: Future IPOs dates. [Source: Finnhub]\n
             `gainers`: Get top gainers. [Source: Yahoo Finance]\n
             `gtech`: Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]\n

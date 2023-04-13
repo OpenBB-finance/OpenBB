@@ -411,6 +411,7 @@ stocks.disc.active,stocks_disc_yahoofinance_model.get_active,
 stocks.disc.arkord,stocks_disc_ark_model.get_ark_orders,
 stocks.disc.asc,stocks_disc_yahoofinance_model.get_asc,
 stocks.disc.dividends,stocks_disc_nasdaq_model.get_dividend_cal,
+stocks.disc.filings,stocks_fa_fmp_model.get_filings,stocks_disc_fmp_view.display_filings
 stocks.disc.fipo,stocks_disc_finnhub_model.get_future_ipo,
 stocks.disc.gainers,stocks_disc_yahoofinance_model.get_gainers,
 stocks.disc.gtech,stocks_disc_yahoofinance_model.get_gtech,
