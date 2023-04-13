@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # flow
 
-Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
+This command retrieves the most recent flow for a stock with the specified ticker symbol. The command will return the most up-to-date flow data for that stock over $25,000.
 
 ### Usage
 

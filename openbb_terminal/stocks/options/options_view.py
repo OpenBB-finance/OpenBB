@@ -8,6 +8,7 @@ from typing import Optional, Tuple
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.core.plots.backend import plots_backend
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
@@ -32,8 +33,8 @@ def get_calls_and_puts(chain: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]
 
 
 def get_max_pain(calls: pd.DataFrame, puts: pd.DataFrame) -> float:
-    call_oi = calls.set_index("strike")["openInterest"] / 1000
-    put_oi = puts.set_index("strike")["openInterest"] / 1000
+    call_oi = calls.set_index("strike")["openInterest"]
+    put_oi = puts.set_index("strike")["openInterest"]
     df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
     df_opt = df_opt.rename(
         columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
@@ -49,24 +50,40 @@ def print_raw(
     puts_only: bool = False,
     export: str = "",
 ):
-    if not puts_only:
-        calls = calls.copy().drop(columns=["optionType"])
-        print_rich_table(
-            calls,
-            headers=list(calls.columns),
+    current_user = get_current_user()
+    enable_interactive = (
+        current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
+    )
+
+    if enable_interactive:
+        table_title = f"{title} - Calls & Puts"
+        data = pd.concat([calls, puts])
+
+        if calls_only or puts_only:
+            options_type = "call" if calls_only else "put"
+            data = data[data["optionType"] == options_type].drop(columns=["optionType"])
+            table_title = f"{title} - {options_type.title()}s"
+
+        return print_rich_table(
+            data,
+            headers=list(data.columns),
             show_index=False,
-            title=f"{title} - Calls",
+            title=table_title,
             export=bool(export),
         )
-    if not calls_only:
-        puts = puts.copy().drop(columns=["optionType"])
-        print_rich_table(
-            puts,
-            headers=list(puts.columns),
-            show_index=False,
-            title=f"{title} - Puts",
-            export=bool(export),
-        )
+
+    for opt_type, only in zip(["call", "put"], [puts_only, calls_only]):
+        if not only:
+            data = (calls if opt_type == "call" else puts).drop(columns=["optionType"])
+            print_rich_table(
+                data,
+                headers=list(data.columns),
+                show_index=False,
+                title=f"{title} - {opt_type.title()}s",
+                export=bool(export),
+            )
+
+    return None
 
 
 @log_start_end(log=logger)
@@ -134,17 +151,17 @@ def plot_vol(
 
     fig = OpenBBFigure(
         xaxis=dict(title="Strike Price", range=[min_strike, max_strike]),
-        yaxis_title="Volume [1k]",
+        yaxis_title="Volume",
     )
     fig.set_title(title)
 
     if not puts_only:
-        call_v = calls.set_index("strike")["volume"] / 1000
+        call_v = calls.set_index("strike")["volume"]
         fig.add_scatter(
             x=call_v.index, y=call_v.values, mode="lines+markers", name="Calls"
         )
     if not calls_only:
-        put_v = puts.set_index("strike")["volume"] / 1000
+        put_v = puts.set_index("strike")["volume"]
         fig.add_scatter(
             x=put_v.index, y=put_v.values, mode="lines+markers", name="Puts"
         )
@@ -228,17 +245,17 @@ def plot_oi(
 
     fig = OpenBBFigure(
         xaxis=dict(title="Strike Price", range=[min_strike, max_strike]),
-        yaxis_title="Open Interest (1k) ",
+        yaxis_title="Open Interest",
     )
     fig.set_title(title)
 
     if not puts_only:
-        call_oi = calls.set_index("strike")["openInterest"] / 1000
+        call_oi = calls.set_index("strike")["openInterest"]
         fig.add_scatter(
             x=call_oi.index, y=call_oi.values, mode="lines+markers", name="Calls"
         )
     if not calls_only:
-        put_oi = puts.set_index("strike")["openInterest"] / 1000
+        put_oi = puts.set_index("strike")["openInterest"]
         fig.add_scatter(
             x=put_oi.index, y=put_oi.values, mode="lines+markers", name="Puts"
         )
@@ -337,11 +354,11 @@ def plot_voi(
     )
 
     option_chain[["openInterest_put", "volume_put"]] = (
-        option_chain[["openInterest_put", "volume_put"]] * -1 / 1000
+        option_chain[["openInterest_put", "volume_put"]] * -1
     )
-    option_chain[["openInterest_call", "volume_call"]] = (
-        option_chain[["openInterest_call", "volume_call"]] / 1000
-    )
+    option_chain[["openInterest_call", "volume_call"]] = option_chain[
+        ["openInterest_call", "volume_call"]
+    ]
 
     fig = OpenBBFigure(yaxis_title="Volume", xaxis_title="Strike Price")
     fig.set_title(title)

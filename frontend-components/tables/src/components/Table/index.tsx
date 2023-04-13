@@ -13,13 +13,15 @@ import { useVirtual } from "react-virtual";
 import Select from "../Select";
 import { formatNumberMagnitude, fuzzyFilter, isEqual } from "../../utils/utils";
 import DraggableColumnHeader from "./ColumnHeader";
-import Pagination from "./Pagination";
+import Pagination, { validatePageSize } from "./Pagination";
 import Export from "./Export";
 import Timestamp from "./Timestamp";
 import FilterColumns from "./FilterColumns";
 import xss from "xss";
 import useLocalStorage from "../../utils/useLocalStorage";
 import Toast from "../Toast";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import useDarkMode from "../../utils/useDarkMode";
 
 const date = new Date();
 
@@ -31,8 +33,8 @@ function getCellWidth(row, column) {
     const indexLabel = row.hasOwnProperty("index")
       ? "index"
       : row.hasOwnProperty("Index")
-      ? "Index"
-      : null;
+        ? "Index"
+        : null;
     const indexValue = indexLabel ? row[indexLabel] : null;
     const value = row[column];
     const valueType = typeof value;
@@ -92,7 +94,30 @@ function getCellWidth(row, column) {
   }
 }
 
-export default function Table({ data, columns, title, source = "" }: any) {
+export default function Table({
+  data,
+  columns,
+  title,
+  initialTheme,
+}: {
+  data: any[];
+  columns: any[];
+  title: string;
+  initialTheme: "light" | "dark";
+}) {
+  const [colorTheme, setTheme] = useDarkMode(initialTheme);
+  const [darkMode, setDarkMode] = useState(
+    colorTheme === "dark" ? true : false
+  );
+  const toggleDarkMode = (checked: boolean) => {
+    setTheme(colorTheme);
+    setDarkMode(checked);
+  };
+  const [currentPage, setCurrentPage] = useLocalStorage(
+    "rowsPerPage",
+    DEFAULT_ROWS_PER_PAGE,
+    validatePageSize
+  );
   const [advanced, setAdvanced] = useLocalStorage("advanced", false);
   const [colors, setColors] = useLocalStorage("colors", false);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -108,7 +133,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
   );
 
   const getColumnWidth = (rows, accessor, headerText) => {
-    const maxWidth = 400;
+    const maxWidth = 200;
     const magicSpacing = 12;
     const cellLength = Math.max(
       ...rows.map((row) => getCellWidth(row, accessor)),
@@ -129,25 +154,20 @@ export default function Table({ data, columns, title, source = "" }: any) {
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
-            ? "Index"
-            : null;
+              ? "Index"
+              : columns[0]
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
           const probablyDate =
-            column.toLowerCase().includes("date") ||
+            (column.toLowerCase().includes("date") || column.toLowerCase().includes("timestamp")) ||
             column.toLowerCase() === "index" ||
             (indexValue &&
               typeof indexValue == "string" &&
               (indexValue.toLowerCase().includes("date") ||
-                indexValue.toLowerCase().includes("day") ||
                 indexValue.toLowerCase().includes("time") ||
                 indexValue.toLowerCase().includes("timestamp") ||
-                indexValue.toLowerCase().includes("year") ||
-                indexValue.toLowerCase().includes("month") ||
-                indexValue.toLowerCase().includes("week") ||
-                indexValue.toLowerCase().includes("hour") ||
-                indexValue.toLowerCase().includes("minute")));
+                indexValue.toLowerCase().includes("year")));
 
           const probablyLink =
             valueType === "string" && value.startsWith("http");
@@ -160,13 +180,19 @@ export default function Table({ data, columns, title, source = "" }: any) {
                 target="_blank"
                 rel="noreferrer"
               >
-                {value}
+                {value.length > 25 ? value.substring(0, 25) + "..." : value}
               </a>
             );
           }
           if (probablyDate) {
             if (typeof value === "string") {
               return <p>{value}</p>;
+            }
+
+            if (typeof value === "number") {
+              if (value < 1000000000000) {
+                return <p>{value}</p>
+              }
             }
 
             try {
@@ -197,7 +223,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
             return (
               <p
                 className={clsx("whitespace-nowrap", {
-                  "text-white": !colors,
+                  "text-black dark:text-white": !colors,
                   "text-[#16A34A]": value > 0 && colors,
                   "text-[#F87171]": value < 0 && colors,
                   "text-[#404040]": value === 0 && colors,
@@ -233,6 +259,8 @@ export default function Table({ data, columns, title, source = "" }: any) {
     return !isEqual(currentOrder, defaultOrder);
   }, [columnOrder, rtColumns]);
 
+  console.log(validatePageSize(currentPage))
+
   const table = useReactTable({
     data,
     columns: rtColumns,
@@ -255,7 +283,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: DEFAULT_ROWS_PER_PAGE,
+        pageSize: typeof currentPage === "string" ? currentPage.includes("All") ? data.length : parseInt(currentPage) : currentPage,
       },
     },
   });
@@ -314,7 +342,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
         ref={tableContainerRef}
         className={clsx("overflow-x-hidden h-screen")}
       >
-        <div className="bg-grey-900/70 backdrop-filter backdrop-blur flex gap-2 px-6 items-center justify-between pt-4 ">
+        <div className="bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur flex gap-2 px-6 items-center justify-between pt-4 ">
           <div className="flex gap-10 items-center">
             <div className="flex gap-[14px]">
               <input
@@ -347,12 +375,23 @@ export default function Table({ data, columns, title, source = "" }: any) {
           </div>
 
           {advanced && (
-            <div className="flex gap-10 items-end">
+            <div className="flex gap-10 items-center">
               {needsReorder && (
                 <button onClick={() => resetOrder()} className="_btn h-9">
                   Reset Order
                 </button>
               )}
+              <button
+                onClick={() => {
+                  toggleDarkMode(!darkMode);
+                }}
+              >
+                {!darkMode ? (
+                  <MoonIcon className="w-4 h-4" />
+                ) : (
+                  <SunIcon className="w-4 h-4" />
+                )}
+              </button>
               <Select
                 labelType="row"
                 value={fontSize}
@@ -403,11 +442,11 @@ export default function Table({ data, columns, title, source = "" }: any) {
           <div className="absolute -inset-0.5 bg-gradient-to-r rounded-md blur-md from-[#072e49]/30 via-[#0d345f]/30 to-[#0d3362]/30"></div>
           <div
             className={
-              "border border-grey-200/60 bg-grey-900 rounded overflow-hidden relative z-20"
+              "border border-grey-500/60 dark:border-grey-200/60 bg-white dark:bg-grey-900 rounded overflow-hidden relative z-20"
             }
           >
             <div
-              className="_header gap-4 py-2 text-center text-xs flex items-center justify-between px-4"
+              className="_header relative gap-4 py-2 text-center text-xs flex items-center justify-between px-4 text-white"
               style={{
                 fontSize: `${Number(fontSize) * 100}%`,
               }}
@@ -426,13 +465,11 @@ export default function Table({ data, columns, title, source = "" }: any) {
                   ></path>
                 </svg>
               </div>
-              <p className="font-bold w-1/3">
+              <p className="font-bold w-1/3 flex flex-col gap-0.5 items-center">
                 {title}
-                {source && (
-                  <span className="font-normal text-xs">
-                    {` [Data from ${source}]`}
-                  </span>
-                )}
+                {/* {source && (
+                  <span className="font-normal text-[10px]">{`[${source}]`}</span>
+                )} */}
               </p>
               <p className="w-1/3 text-right text-xs">
                 {new Intl.DateTimeFormat("en-GB", {
@@ -442,6 +479,11 @@ export default function Table({ data, columns, title, source = "" }: any) {
                   .format(date)
                   .replace(/:\d\d /, " ")}
               </p>
+              {/* {source && typeof source === "string" && source.includes("*") && (
+                <p className="text-[8px] absolute bottom-0 right-4">
+                  *not affiliated
+                </p>
+              )} */}
             </div>
             <div className="overflow-x-auto">
               <table
@@ -449,9 +491,9 @@ export default function Table({ data, columns, title, source = "" }: any) {
                 style={{
                   fontSize: `${Number(fontSize) * 100}%`,
                 }}
-                /*style={{
-        width: table.getCenterTotalSize(),
-      }}*/
+              /*style={{
+      width: table.getCenterTotalSize(),
+    }}*/
               >
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (
@@ -490,10 +532,11 @@ export default function Table({ data, columns, title, source = "" }: any) {
                             <td
                               key={cell.id}
                               className={clsx(
-                                "whitespace-nowrap overflow-auto p-4",
+                                "whitespace-normal p-4 text-black dark:text-white",
                                 {
-                                  "bg-grey-850": idx % 2 === 0,
-                                  "bg-[#202020]": idx % 2 === 1,
+                                  "bg-grey-100 dark:bg-grey-850": idx % 2 === 0,
+                                  "bg-grey-200 dark:bg-[#202020]":
+                                    idx % 2 === 1,
                                 }
                               )}
                               style={{
@@ -524,14 +567,17 @@ export default function Table({ data, columns, title, source = "" }: any) {
                           <th
                             key={header.id}
                             colSpan={header.colSpan}
-                            className="text-grey-500 bg-grey-850 font-normal text-left text-sm h-10"
+                            className="text-grey-500 bg-grey-100 dark:bg-grey-850 font-normal text-left text-sm h-10 p-4"
+                            style={{
+                              width: header.getSize(),
+                            }}
                           >
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.footer,
-                                  header.getContext()
-                                )}
+                                header.column.columnDef.footer,
+                                header.getContext()
+                              )}
                           </th>
                         ))}
                       </tr>
@@ -542,10 +588,14 @@ export default function Table({ data, columns, title, source = "" }: any) {
             </div>
           </div>
         </div>
-        <div className="fixed bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full flex gap-10 justify-between py-4 px-6">
+        <div className="max-h-[68px] overflow-x-auto fixed bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full flex gap-10 justify-between py-4 px-6">
           <Export columns={columns} data={data} />
           <div className="flex items-center gap-10">
-            <Pagination table={table} />
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              table={table}
+            />
             <Timestamp />
           </div>
           {/*

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # stats
 
-Displays Options Statistics for a stock.
+This command allows the user to retrieve Options Statistics for a stock with the given ticker symbol. This includes information such as Open Interest, Volume, Implied Volatility, and Earnings move data.
 
 ### Usage
 

@@ -52,6 +52,7 @@ build/terminal
 build/nsis/app
 DMG/*
 *.dmg
+*.sh
 
 # User stylesheets
 styles/user
@@ -71,4 +72,3 @@ cache/
 
 # lightning logs
 lightning_logs/
-

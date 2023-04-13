@@ -1,12 +1,8 @@
-api-version: reviewpad.com/v3.x
-
 groups:
   - name: ignored-patterns
     spec: '["*.lock","*.csv","*.yaml","*.txt"]'
 
 rules:
-  - name: changes-configuration
-    spec: $hasFileName("pyproject.toml") || $hasFileName("poetry.lock")
   - name: changes-requirements
     spec: $hasFileName("requirements.txt") && $hasFileName("requirements-full.txt")
 
@@ -51,6 +47,18 @@ workflows:
     description: Verify pull request dependency changes
     always-run: true
     if:
-      - rule: $rule("changes-configuration") && !$rule("changes-requirements")
+      - rule: '!$isDraft() && $hasFileName("poetry.lock") && !$rule("changes-requirements")'
         extra-actions:
-          - $review("REQUEST_CHANGES", "The dependency tree has been changed. Please update requirements.txt and requirements-full.txt")
+          - $review("REQUEST_CHANGES", "The `poetry.lock` file has been changed. Please update both `requirements.txt` and `requirements-full.txt` files")
+      - rule: '!$isDraft() && $hasFileName("pyproject.toml") && !$rule("changes-requirements")'
+        extra-actions:
+          - $warn("The `pyproject.toml` file has been changed. Please make sure that the files `requirements.txt` and `requirements-full.txt` do not need to be updated")
+  - name: EOF
+    description: Verify files EOF
+    always-run: true
+    if:
+      # By default, Reviewpad splits each file in the patch using the line feed character (\n or LF). 
+      # This means that if a file has a carriage return character (\r) at the end, it indicates that the file has CRLF line endings instead.
+      - rule: $hasCodePattern("\r$$")
+        extra-actions:
+          - $warn("It looks like you have files with `CRLF` line endings. Please make sure that all files have `LF` line endings")

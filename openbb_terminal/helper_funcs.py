@@ -13,6 +13,7 @@ import random
 import re
 import sys
 import urllib.parse
+import webbrowser
 from datetime import (
     date as d,
     datetime,
@@ -49,9 +50,10 @@ from openbb_terminal import (
 )
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user, set_preference
 from openbb_terminal.rich_config import console
 
 try:
@@ -68,9 +70,10 @@ try:
         # A test to ensure that the Twitter API key is correct,
         # otherwise we disable the Toolbar with Tweet News
         twitter_api.get_user(screen_name="openbb_finance")
-except tweepy.errors.Unauthorized:
+except Exception as exc:
     # Set toolbar tweet news to False because the Twitter API is not set up correctly
-    get_current_user().preferences.TOOLBAR_TWEET_NEWS = False
+    set_preference("TOOLBAR_TWEET_NEWS", False)
+    console.print(f"Error enabling tweet news: {exc}")
 
 
 logger = logging.getLogger(__name__)
@@ -167,7 +170,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
-    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb|.ipynb)"
+    known_extensions = r"(\.(xlsx|csv|xls|tsv|json|yaml|ini|openbb|ipynb))"
     unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
 
     # Add custom expressions to handle edge cases of individual controllers
@@ -349,8 +352,14 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
+        theme = current_user.preferences.THEME
+        table_theme = "white" if theme == "light" else theme
+
         plots_backend().send_table(
-            df_table=df_outgoing, title=title, source=source  # type: ignore
+            df_table=df_outgoing,
+            title=title,
+            source=source,  # type: ignore
+            theme=table_theme,
         )
         return
 
@@ -533,12 +542,16 @@ def check_indicators(string: str) -> List[str]:
         [c.name.replace("plot_", "") for c in ta_cls if c.name != "plot_ma"]
         + ta_cls.ma_mode
     )
+    choices_print = (
+        f"{'`, `'.join(choices[:10])}`\n    `{'`, `'.join(choices[10:20])}"
+        f"`\n    `{'`, `'.join(choices[20:])}"
+    )
 
     strings = string.split(",")
     for s in strings:
         if s not in choices:
             raise argparse.ArgumentTypeError(
-                f"\nInvalid choice: {s}, choose from \n    (`{'`, `'.join(choices)}`)",
+                f"\nInvalid choice: {s}, choose from \n    `{choices_print}`",
             )
     return strings
 
@@ -549,12 +562,15 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
     indicators_dict: dict = {}
 
     regex = re.compile(r"([a-zA-Z]+)\[([0-9.,]*)\]")
-    matches = regex.findall(args)
+    no_params_regex = re.compile(r"([a-zA-Z]+)")
 
-    if not matches:
-        indicators = check_indicators(args)
-        args = "[],".join(indicators) + "[]"
-        matches = regex.findall(args)
+    matches = regex.findall(args)
+    no_params_matches = no_params_regex.findall(args)
+
+    indicators = [m[0] for m in matches]
+    for match in no_params_matches:
+        if match not in indicators:
+            matches.append((match, ""))
 
     if _help:
         console.print(
@@ -574,6 +590,7 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
 
     pop_keys = ["close", "high", "low", "open", "open_", "volume", "talib", "return"]
     if matches:
+        check_indicators(",".join([m[0] for m in matches]))
         for match in matches:
             indicator, args = match
 
@@ -1192,37 +1209,40 @@ def lett_to_num(word: str) -> str:
     return word
 
 
+AVAILABLE_FLAIRS = {
+    ":openbb": "(🦋)",
+    ":bug": "(🐛)",
+    ":rocket": "(🚀)",
+    ":diamond": "(💎)",
+    ":stars": "(✨)",
+    ":baseball": "(⚾)",
+    ":boat": "(⛵)",
+    ":phone": "(☎)",
+    ":mercury": "(☿)",
+    ":hidden": "",
+    ":sun": "(☼)",
+    ":moon": "(☾)",
+    ":nuke": "(☢)",
+    ":hazard": "(☣)",
+    ":tunder": "(☈)",
+    ":king": "(♔)",
+    ":queen": "(♕)",
+    ":knight": "(♘)",
+    ":recycle": "(♻)",
+    ":scales": "(⚖)",
+    ":ball": "(⚽)",
+    ":golf": "(⛳)",
+    ":piece": "(☮)",
+    ":yy": "(☯)",
+}
+
+
 def get_flair() -> str:
     """Get a flair icon."""
-    available_flairs = {
-        ":openbb": "(🦋)",
-        ":rocket": "(🚀)",
-        ":diamond": "(💎)",
-        ":stars": "(✨)",
-        ":baseball": "(⚾)",
-        ":boat": "(⛵)",
-        ":phone": "(☎)",
-        ":mercury": "(☿)",
-        ":hidden": "",
-        ":sun": "(☼)",
-        ":moon": "(☾)",
-        ":nuke": "(☢)",
-        ":hazard": "(☣)",
-        ":tunder": "(☈)",
-        ":king": "(♔)",
-        ":queen": "(♕)",
-        ":knight": "(♘)",
-        ":recycle": "(♻)",
-        ":scales": "(⚖)",
-        ":ball": "(⚽)",
-        ":golf": "(⛳)",
-        ":piece": "(☮)",
-        ":yy": "(☯)",
-    }
 
     current_user = get_current_user()  # pylint: disable=redefined-outer-name
     current_flair = str(current_user.preferences.FLAIR)
-    flair = available_flairs.get(current_flair, current_flair)
+    flair = AVAILABLE_FLAIRS.get(current_flair, current_flair)
 
     if (
         current_user.preferences.USE_DATETIME
@@ -1444,7 +1464,7 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     current_user = get_current_user()
     if current_user.preferences.FILE_OVERWRITE:
         return False, True
-    if os.environ.get("TEST_MODE") == "True":
+    if get_current_system().TEST_MODE:
         return False, True
     if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
@@ -1649,7 +1669,7 @@ def prefill_form(ticket_type, menu, path, command, message):
 
     url_params = urllib.parse.urlencode(params)
 
-    plots_backend().send_url(form_url + url_params)
+    webbrowser.open(form_url + url_params)
 
 
 def get_closing_price(ticker, days):
@@ -1820,7 +1840,7 @@ def search_wikipedia(expression: str) -> None:
         response_json = json.loads(response.text)
         res = {
             "title": response_json["title"],
-            "url": f"[blue]{response_json['content_urls']['desktop']['page']}[/blue]",
+            "url": f"{response_json['content_urls']['desktop']['page']}",
             "summary": response_json["extract"],
         }
     else:
@@ -1856,8 +1876,8 @@ def screenshot() -> None:
         else:
             console.print("No plots found.\n")
 
-    except Exception as e:
-        console.print(f"Cannot reach window - {e}\n")
+    except Exception as err:
+        console.print(f"Cannot reach window - {err}\n")
 
 
 def screenshot_to_canvas(shot, plot_exists: bool = False):
@@ -1942,12 +1962,12 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
 
 
 @lru_cache
-def load_json(path: str) -> Dict[str, str]:
+def load_json(path: Path) -> Dict[str, str]:
     """Load a dictionary from a json file path.
 
     Parameter
     ----------
-    path : str
+    path : Path
         The path for the json file
 
     Returns
@@ -1961,7 +1981,7 @@ def load_json(path: str) -> Dict[str, str]:
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
-            f"{get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
+            f"{get_current_user().preferences.USER_DATA_SOURCES_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
         return {}
@@ -2085,8 +2105,8 @@ def update_news_from_tweet_to_be_displayed() -> str:
                         url = f"https://twitter.com/x/status/{last_tweet.id_str}"
 
             # In case the handle provided doesn't exist, we skip it
-            except (tweepy.errors.NotFound, tweepy.errors.Unauthorized):
-                pass
+            except Exception as e:
+                console.print(f"Error enabling tweet news: {handle} - {e}\n")
 
         if last_tweet_dt and news_tweet_to_use:
             tweet_hr = f"{last_tweet_dt.hour}"

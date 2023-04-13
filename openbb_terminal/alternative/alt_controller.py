@@ -54,14 +54,14 @@ class AlternativeDataController(BaseController):
 
     @log_start_end(log=logger)
     def call_oss(self, _):
-        """Process oss command"""
+        """Process oss command."""
         from openbb_terminal.alternative.oss.oss_controller import OSSController
 
         self.queue = self.load_class(OSSController, self.queue)
 
     @log_start_end(log=logger)
     def call_hn(self, other_args: List[str]):
-        """Process hn command"""
+        """Process hn command."""
 
         parser = argparse.ArgumentParser(
             add_help=False,

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # customer
 
-Displays customers of the company.
+This command allows the user to display customers of the company using the given symbol.
 
 ### Usage
 

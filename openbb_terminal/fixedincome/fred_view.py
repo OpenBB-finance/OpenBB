@@ -1068,6 +1068,9 @@ def plot_usrates(
         parameter=parameter, maturity=maturity, start_date=start_date, end_date=end_date
     )
 
+    if df.empty:
+        return console.print(f"[red]No data found for {parameter} {maturity}[/red]\n")
+
     title_dict = {
         "tbills": "Treasury Bill Secondary Market Rate, Discount Basis",
         "cmn": "Treasury Constant Maturity Nominal Market Yield",
@@ -1083,7 +1086,7 @@ def plot_usrates(
 
     if raw:
         # was a -iloc so we need to flip the index as we use head
-        df = pd.DataFrame(df, columns=[parameter])
+        df = pd.DataFrame(df, columns=[series_id])
         df = df.sort_index(ascending=False)
         print_rich_table(
             df,
@@ -1098,7 +1101,7 @@ def plot_usrates(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[parameter]) / 100,
+        pd.DataFrame(df, columns=[series_id]) / 100,
         sheet_name,
         fig,
     )
@@ -1136,6 +1139,11 @@ def plot_tbffr(
     df = fred_model.get_tbffr(
         parameter=parameter, start_date=start_date, end_date=end_date
     )
+
+    if df.empty:
+        return console.print(
+            f"[red]No data found for {ID_TO_NAME_TBFFR[series_id]}[/red]"
+        )
 
     fig = OpenBBFigure(yaxis_title="Yield (%)")
     fig.set_title(
@@ -1229,7 +1237,17 @@ def plot_icebofa(
         start_date=start_date,
         end_date=end_date,
     )
-    title = "ICE BofA Bond Benchmark Indices" if len(df.columns) > 1 else df.columns[0]
+
+    if df.empty:
+        return console.print()
+
+    title = (
+        ""
+        if df.empty
+        else "ICE BofA Bond Benchmark Indices"
+        if len(df.columns) > 1
+        else df.columns[0]
+    )
 
     fig = OpenBBFigure(yaxis_title="Yield (%)" if units == "percent" else "Index")
     fig.set_title(title)
@@ -1251,8 +1269,11 @@ def plot_icebofa(
             limit=limit,
         )
 
-    if description:
-        for title, description_text in series[["Title", "Description"]].values:
+    if description and title:
+        for index_title in df.columns:
+            description_text = series[series["Title"] == index_title][
+                "Description"
+            ].values[0]
             console.print(f"\n[bold]{title}[/bold]")
             console.print(description_text)
 
@@ -1308,6 +1329,9 @@ def plot_moody(
     df = fred_model.get_moody(
         data_type=data_type, spread=spread, start_date=start_date, end_date=end_date
     )
+
+    if df.empty:
+        return console.print(f"[bold red]No data found for {name}[/bold red]")
 
     fig = OpenBBFigure(yaxis_title="Yield (%)")
     fig.set_title(name)
@@ -1401,6 +1425,10 @@ def plot_cp(
         start_date=start_date,
         end_date=end_date,
     )
+
+    if df.empty:
+        return console.print()
+
     title = "Commercial Paper Interest Rates" if len(df.columns) > 1 else df.columns[0]
 
     fig = OpenBBFigure(yaxis_title="Yield (%)")
@@ -1487,6 +1515,11 @@ def plot_spot(
         maturity=maturity, category=category, start_date=start_date, end_date=end_date
     )
 
+    if df.empty:
+        return console.print(
+            f"[bold red]No data found for maturity {maturity} and category {category}[/bold red]"
+        )
+
     title = (
         "High Quality Market (HQM) Corporate Bond Rates"
         if len(df.columns) > 1
@@ -1565,6 +1598,9 @@ def plot_hqm(
     data_types = ["spot", "par"] if par else ["spot"]
 
     df, date_of_yield = fred_model.get_hqm(date=date, par=par)
+
+    if df.empty:
+        return console.print()
 
     fig = OpenBBFigure(xaxis_title="Maturity", yaxis_title="Yield (%)")
     fig.set_title(f"Spot{'and Par' if par else ''} Yield Curve for {date_of_yield}")

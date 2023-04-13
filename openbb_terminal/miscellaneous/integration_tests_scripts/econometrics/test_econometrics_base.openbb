@@ -5,11 +5,15 @@ econometrics
 load nile
 desc nile
 load nile -a nile_2
+eval double_volume = volume * 2
+lag -v custom.double -l 5
 combine nile -c nile_2.volume
 load -f 20221008_221605_dataset.xlsx
 rename -d 20221008_221605_dataset -o population -n pop
 load -e
 load -f wage_panel -a wp
+corr -d wp
+season wp.hours
 add -n wp.after_1990 -b wp.year -s > -c 1990
 add -n wp.after_1985 -b wp.year -s > -c 1985
 show -n wp -s year -l 20

@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # support
 
-Send support ticket!
+This command allows the user to send a support ticket directly to our team.
 
 ### Usage
 

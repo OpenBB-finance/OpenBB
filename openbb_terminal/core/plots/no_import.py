@@ -5,6 +5,7 @@ import dotenv
 
 from openbb_terminal.base_helpers import console
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 
 pywry_missing = """
@@ -21,11 +22,11 @@ Pywry uses gtk-rs and its related libraries for window creation and Wry also nee
 To activate interactive plots/tables in pywry window, please make sure the following packages are installed:
 
 [yellow]Arch Linux / Manjaro:[/]
-[green]sudo pacman -S webkit2gtk-4.0[/]\n
+[green]sudo pacman -S webkit2gtk[/]\n
 [yellow]Debian / Ubuntu:[/]
 [green]sudo apt install libwebkit2gtk-4.0-dev[/]\n
 [yellow]Fedora / CentOS / AlmaLinux:[/]
-[green]sudo dnf install gtk3-devel webkit2gtk4.0-devel[/]\r
+[green]sudo dnf install gtk3-devel webkit2gtk3-devel[/]\r
 """
 
 
@@ -64,7 +65,10 @@ class DummyBackend:
         # we inform the user the required packages to install and revert
         # plotly default behaviour to open in browser.
         # We do this only once.
-        if current_user.preferences.PLOT_ENABLE_PYWRY:
+        if (
+            current_user.preferences.PLOT_ENABLE_PYWRY
+            and get_current_system().LOGGING_SUB_APP != "sdk"
+        ):
             console.print(pywry_missing)
             if console.input(
                 "If you prefer to continue without interactive plots/tables, "

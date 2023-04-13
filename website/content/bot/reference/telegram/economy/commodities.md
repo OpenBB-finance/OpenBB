@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # commodities
 
-Futures and commodities overview.
+This command allows users to quickly and easily retrieve an overview of Futures and commodities. It provides the last price and change for the day.
 
 ### Usage
 

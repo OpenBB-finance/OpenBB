@@ -24,7 +24,7 @@ from prompt_toolkit.styles import Style
 from rich import panel
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.account.account_model import (
+from openbb_terminal.account.account_controller import (
     get_login_called,
     set_login_called,
 )
@@ -37,6 +37,7 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_preference,
@@ -243,8 +244,9 @@ class TerminalController(BaseController):
             parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
         if news_parser:
+            query = " ".join(news_parser.term)
             feedparser_view.display_news(
-                term=" ".join(news_parser.term),
+                term=query,
                 sources=news_parser.sources,
                 limit=news_parser.limit,
                 export=news_parser.export,
@@ -259,13 +261,13 @@ class TerminalController(BaseController):
         current_user = get_current_user()
 
         if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
-            parser_exe = argparse.ArgumentParser(
+            parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                 prog="guess",
                 description="Guess command to achieve task successfully.",
             )
-            parser_exe.add_argument(
+            parser.add_argument(
                 "-l",
                 "--limit",
                 type=check_positive,
@@ -275,7 +277,7 @@ class TerminalController(BaseController):
             )
             if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "-l")
-                ns_parser_guess = self.parse_simple_args(parser_exe, other_args)
+                ns_parser_guess = self.parse_simple_args(parser, other_args)
 
                 if self.GUESS_TOTAL_TRIES == 0:
                     self.GUESS_NUMBER_TRIES_LEFT = ns_parser_guess.limit
@@ -500,180 +502,16 @@ class TerminalController(BaseController):
 
     def call_intro(self, _):
         """Process intro command."""
-        console.print(panel.Panel("[purple]Welcome to the OpenBB Terminal.[/purple]"))
-        console.print(
-            "\nThe following walkthrough will guide you towards making the most out of the OpenBB Terminal.\n\n"
-            "Press Enter to continue or 'q' followed by Enter to exit."
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
+        import json
 
-        console.print(panel.Panel("[purple]#1 - Commands vs menu.[/purple]"))
-        console.print(
-            "\nMenus are a collection of 'commands' and 'sub-menus'.\n"
-            "You can identify them through their distinct color and a '>' at the beginning of the line\n\n"
-            "For instance:\n"
-            "[menu]>   stocks             access historical pricing data, options, sector [/menu]"
-            "[menu]and industry, and overall due diligence [/menu]\n\n\n"
-            "Commands are expected to return data either as a chart or table.\n"
-            "You can identify them through their distinct color\n\n"
-            "For instance:\n"
-            "[cmds]>   news               display news articles based on term and data sources [/cmds]"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
+        intro: dict = json.load((Path(__file__).parent / "intro.json").open())
 
-        console.print(panel.Panel("[purple]#2 - Using commands[/purple]"))
-        console.print(
-            "\nCommands throughout the terminal can have additional arguments.\n\n"
-            "Let's say that in the current menu, you want to have more information about the command 'news'. \n\n"
-            "You can either see the available arguments in the terminal, using: [param]news -h[/param]\n\n",
-            "or you can find out more about it with an output example on the browser, using: [param]about news[/param]",
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#3 - Setting API Keys[/purple]"))
-        console.print(
-            "\nThe OpenBB Terminal does not own any of the data you have access to.\n\n"
-            "Instead, we provide the infrastructure to access over 100 different data sources "
-            "from a single location.\n\n"
-            "Thus, it is necessary for each user to set their own API keys for the various third party sources\n\n"
-            "You can find more about this on the '[param]keys[/param]' menu.\n\n"
-            "For many commands, there are multiple data sources that can be selected.\n\n"
-            "The help menu shows the data sources supported by each command.\n\n"
-            "For instance:\n"
-            "[cmds]    load               load a specific stock ticker and additional info for analysis   [/cmds]"
-            "[src][YahooFinance, AlphaVantage, Polygon, EODHD] [/src]\n\n"
-            "The user can go into the '[param]sources[/param]' menu and select their preferred default data source."
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(
-            panel.Panel("[purple]#4 - Symbol dependent menus and commands[/purple]")
-        )
-        console.print(
-            "\nThroughout the terminal, you will see commands and menus greyed out.\n\n"
-            "These menus or commands cannot be accessed until an object is loaded.\n\n"
-            "Let's take as an example the '[param]stocks[/param]' menu.\n\n"
-            "You will see that the command '[param]disc[/param]' is available as its goal is to discover new tickers:\n"
-            "[menu]>   stocks             access historical pricing data, options, sector [/menu]\n\n"
-            "On the other hand, '[param]fa[/param]' menu (fundamental analysis) requires a ticker to be loaded.\n\n"
-            "And therefore, appears as:\n"
-            "[dim]>   fa                 fundamental analysis of loaded ticker [/dim]\n\n"
-            "Once a ticker is loaded with: [param]load TSLA[/param]\n\n"
-            "The '[param]fa[/param]' menu will be available as:\n"
-            "[menu]>   fa                 fundamental analysis of loaded ticker [/menu]"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#5 - Terminal Navigation[/purple]"))
-        console.print(
-            "\nThe terminal has a tree like structure, where menus branch off into new menus.\n\n"
-            "The users current location is displayed before the text prompt.\n\n"
-            "For instance, if the user is inside the menu disc which is inside stocks, the following prompt "
-            "will appear: \n2022 Oct 18, 21:53 (🦋) [param]/stocks/disc/[/param] $\n\n"
-            "If the user wants to go back to the menu above, all they need to do is type '[param]q[/param]'.\n\n"
-            "If the user wants to go back to the home of the terminal, they can type '[param]/[/param]' instead.\n\n"
-            "Note: Always type '[param]h[/param]' to know what commands are available in each menu"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#6 - Command Pipeline[/purple]"))
-        console.print(
-            "\nThe terminal offers the capability of allowing users to speed up their "
-            "navigation and command execution."
-            "\n\nTherefore, typing the following prompt is valid:\n"
-            "2022 Oct 18, 21:53 (🦋) / $ [param]stocks/load TSLA/dd/pt[/param]\n\n"
-            "In this example, the terminal - in a single action - will go into '[param]stocks[/param]' menu, "
-            "run command '[param]load[/param]' with '[param]TSLA[/param]' as input, \n"
-            "go into sub-menu '[param]dd[/param]' (due diligence) and run the command "
-            "'[param]pt[/param]' (price target)."
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#6 - OpenBB Scripts[/purple]"))
-        console.print(
-            "\nThe command pipeline capability is great, but the user experience wasn't great copy-pasting large "
-            "lists of commands.\n\n"
-            "We allow the user to create a text file of the form:\n\n"
-            "[param]FOLDER_PATH/my_script.openbb[/param]\n"
-            "stocks\nload TSLA\ndd\npt\n\n"
-            "which can be run through the '[param]exe[/param]' command in the home menu, with:\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script.openbb[/param]\n\n"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(
-            panel.Panel("[purple]#7 - OpenBB Scripts with Arguments[/purple]")
-        )
-        console.print(
-            "\nThe user can create a script that includes arguments for the commands.\n\n"
-            "Example:\n\n"
-            "[param]FOLDER_PATH/my_script_with_variable_input.openbb[/param]\n"
-            "stocks\n# this is a comment\nload $ARGV[0]\ndd\npt\nq\nload $ARGV[1]\ncandle\n\n"
-            "and then, if this script is run with:\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script_with_variable_input.openbb "
-            "-i AAPL,MSFT[/param]\n\n"
-            "This means that the [param]pt[/param] will run on [param]AAPL[/param] while "
-            "[param]candle[/param] on [param]MSFT[/param]"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#8 - OpenBB Script Generation/purple]"))
-        console.print(
-            "\n"
-            "To make it easier for users to create scripts, we have created a "
-            "command that 'records' user commands "
-            "directly into a script.\n\n"
-            "From the home menu, the user can run:\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]record[/param]\n\n"
-            "and then perform your typical investment research workflow before entering\n\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]stop[/param]\n\n"
-            "After stopping, the script will be saved to the 'scripts' folder."
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#9 - Terminal Customization[/purple]"))
-        console.print(
-            "\nUsers should explore the [param]settings[/param] and [param]featflags[/param] menus "
-            "to configure their terminal.\n\n"
-            "The fact that our terminal is fully open source allows users to be able to customize "
-            "anything they want.\n\n"
-            "If you are interested in contributing to the project, please check:\n"
-            "[param]https://github.com/OpenBB-finance/OpenBBTerminal[/param]"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#10 - Support[/purple]"))
-        console.print(
-            "\n"
-            "We are nothing without our community, hence we put a lot of effort in being here for you.\n\n"
-            "If you find any bug that you wish to report to improve the terminal you can do so with:\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]support CMD[/param]\n\n"
-            "which should open a form in your browser where you can report the bug in said 'CMD'.\n\n"
-            "If you want to know more, or have any further question. Please join us on Discord:\n"
-            "[param]https://openbb.co/discord[/param]"
-        )
+        for prompt in intro.get("prompts", []):
+            console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
+            console.print("".join(prompt["content"]))
+            if input("") == "q":
+                break
+            console.print("\n")
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""
@@ -682,31 +520,12 @@ class TerminalController(BaseController):
 
         if not other_args:
             console.print(
-                "[red]Provide a path to the routine you wish to execute. For an example, please use "
+                "[info]Provide a path to the routine you wish to execute. For an example, please use "
                 "`exe --example` and for documentation and to learn how create your own script "
-                "type `about exe`.\n[/red]"
+                "type `about exe`.\n[/info]"
             )
             return
-
-        full_input = " ".join(other_args)
-        other_args_processed = (
-            full_input.split(" ") if " " in full_input else [full_input]
-        )
-        self.queue = []
-
-        path_routine = ""
-        args = list()
-        for idx, path_dir in enumerate(other_args_processed):
-            if path_dir in ("-i", "--input"):
-                args = [path_routine[1:]] + other_args_processed[idx:]
-                break
-            if path_dir not in ("--file"):
-                path_routine += f"/{path_dir}"
-
-        if not args:
-            args = [path_routine[1:]]
-
-        parser_exe = argparse.ArgumentParser(
+        parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
@@ -714,20 +533,25 @@ class TerminalController(BaseController):
             "`exe --example` and for documentation and to learn how create your own script "
             "type `about exe`.",
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "--file",
             help="The path or .openbb file to run.",
-            dest="path",
-            default=None,
+            dest="file",
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and "-e" not in other_args
+            and "--example" not in other_args,
+            type=str,
+            nargs="+",
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "-i",
             "--input",
             help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
             dest="routine_args",
             type=lambda s: [str(item) for item in s.split(",")],
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "-e",
             "--example",
             help="Run an example script to understand how routines can be used.",
@@ -735,25 +559,23 @@ class TerminalController(BaseController):
             action="store_true",
             default=False,
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--file")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if not args[0]:
-            return console.print("[red]Please select an .openbb routine file.[/red]\n")
-
-        if args and "-" not in args[0][0]:
-            args.insert(0, "--file")
-        ns_parser_exe = self.parse_simple_args(parser_exe, args)
-        if ns_parser_exe and (ns_parser_exe.path or ns_parser_exe.example):
-            if ns_parser_exe.example:
+        if ns_parser:
+            if ns_parser.example:
                 path = MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
                 console.print(
-                    "[green]Executing an example, please type `about exe` "
-                    "to learn how to create your own script.[/green]\n"
+                    "[info]Executing an example, please type `about exe` "
+                    "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
-            elif ns_parser_exe.path in self.ROUTINE_CHOICES["--file"]:
-                path = self.ROUTINE_FILES[ns_parser_exe.path]
+            elif ns_parser.file:
+                file_path = " ".join(ns_parser.file)
+                path = self.ROUTINE_FILES.get(file_path, Path(file_path))
             else:
-                path = ns_parser_exe.path
+                return
 
             with open(path) as fp:
                 raw_lines = [
@@ -772,8 +594,8 @@ class TerminalController(BaseController):
                     # Check if dynamic parameter exists in script
                     if "$ARGV" in rawline:
                         # Check if user has provided inputs through -i or --input
-                        if ns_parser_exe.routine_args:
-                            for i, arg in enumerate(ns_parser_exe.routine_args):
+                        if ns_parser.routine_args:
+                            for i, arg in enumerate(ns_parser.routine_args):
                                 # Check what is the location of the ARGV to be replaced
                                 if f"$ARGV[{i}]" in templine:
                                     templine = templine.replace(f"$ARGV[{i}]", arg)
@@ -1226,7 +1048,7 @@ def main(
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:
-        os.environ["DEBUG_MODE"] = "true"
+        set_system_variable("DEBUG_MODE", True)
 
     cfg.start_plot_backend()
 

@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # cw
 
-Weekly candlestick chart for the ticker/coin provided.
+This command allows the user to retrieve a weekly candlestick chart for the ticker/coin provided. The chart displays the opening and closing prices, the high and low prices, and the trading volume for the week for the specified ticker/coin.
 
 ### Usage
 

@@ -37,34 +37,6 @@ const config = {
             from: "/terminal/usage/intros/forecasting",
             to: "/terminal/usage/intros/forecast",
           },
-          {
-            from: "/terminal/quickstart/api-keys",
-            to: "/terminal/usage/guides/api-keys",
-          },
-          {
-            from: "/terminal/guides/advanced/data",
-            to: "/terminal/usage/guides/data",
-          },
-          {
-            from: "/terminal/guides/advanced/scripts-and-routines",
-            to: "/terminal/usage/guides/scripts-and-routines",
-          },
-          {
-            from: "/terminal/guides/basics",
-            to: "/terminal/usage/basics",
-          },
-          {
-            from: "/terminal/guides/intros/portfolio",
-            to: "/terminal/usage/intros/portfolio",
-          },
-          {
-            from: "/terminal/quickstart/installation",
-            to: "/terminal/installation",
-          },
-          {
-            from: "/sdk/quickstart/installation",
-            to: "/sdk/installation",
-          },
         ],
       },
     ],

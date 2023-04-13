@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # ah
 
-Displays all available screeners. /scr all, /scr pm, /scr ah
+This command allows the user to retrieve After-Hours stock movers according to a chosen screener.
 
 ### Usage
 

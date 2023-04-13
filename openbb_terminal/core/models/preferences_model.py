@@ -1,16 +1,15 @@
 import os
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
-    USER_DATA_SOURCES_DEFAULT_FILE,
 )
 from openbb_terminal.core.models import BaseModel
 
-# pylint: disable=too-many-instance-attributes, disable=no-member
+# pylint: disable=too-many-instance-attributes, disable=no-member, useless-parent-delegation
 
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
@@ -39,7 +38,6 @@ class PreferencesModel(BaseModel):
     PLOT_PYWRY_HEIGHT: PositiveInt = 762
 
     # FEATURE FLAGS
-    SYNC_ENABLED: bool = True
     FILE_OVERWRITE: bool = False
     SHOW_VERSION: bool = True
     RETRY_WITH_LOAD: bool = False
@@ -77,7 +75,7 @@ class PreferencesModel(BaseModel):
     # GENERAL
     PREVIOUS_USE: bool = False
     TIMEZONE: str = "America/New_York"
-    FLAIR: str = ":openbb"
+    FLAIR: str = ":bug"
     USE_LANGUAGE: str = "en"
     REQUEST_TIMEOUT: PositiveInt = 5
     MONITOR: NonNegativeInt = 0
@@ -86,12 +84,12 @@ class PreferencesModel(BaseModel):
     MPL_STYLE: str = "dark"
     PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
-    PLOT_STYLE: str = "dark"
+    THEME: Literal["dark", "light"] = "dark"
 
     # PATHS
-    PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
     GUESS_EASTER_EGG_FILE: str = os.getcwd() + os.path.sep + "guess_game.json"
     USER_DATA_DIRECTORY = HOME_DIRECTORY / "OpenBBUserData"
+    USER_DATA_SOURCES_FILE: str = str(USER_DATA_DIRECTORY / "sources" / "sources.json")
     USER_EXPORTS_DIRECTORY = USER_DATA_DIRECTORY / "exports"
     USER_CUSTOM_IMPORTS_DIRECTORY = USER_DATA_DIRECTORY / "custom_imports"
     USER_PORTFOLIO_DATA_DIRECTORY = USER_DATA_DIRECTORY / "portfolio"
@@ -101,6 +99,7 @@ class PreferencesModel(BaseModel):
     USER_CUSTOM_REPORTS_DIRECTORY = USER_DATA_DIRECTORY / "reports" / "custom reports"
     USER_FORECAST_MODELS_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "forecast_models"
     USER_FORECAST_WHISPER_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "whisper"
+    USER_STYLES_DIRECTORY = USER_DATA_DIRECTORY / "styles"
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()

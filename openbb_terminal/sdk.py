@@ -24,7 +24,7 @@ from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-cfg.setup_config_terminal()
+cfg.setup_config_terminal(is_sdk=True)
 
 logger = logging.getLogger(__name__)
 cfg.theme.applyMPLstyle()
@@ -36,7 +36,7 @@ class OpenBBSDK:
     Attributes:
         `login`: Login and load user info.\n
         `logout`: Logout and clear session.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `whoami`: Display user info.\n
     """
 
@@ -331,6 +331,24 @@ class OpenBBSDK:
         return ctrl.ForexController()
 
     @property
+    def funds(self):
+        """Mutual Funds Submodule
+
+        Attributes:
+            `carbon`: Search mstarpy for carbon metrics\n
+            `exclusion`: Search mstarpy exclusion policy in esgData\n
+            `historical`: Get historical fund, category, index price\n
+            `historical_chart`: Display historical fund, category, index price\n
+            `holdings`: Search mstarpy for holdings\n
+            `load`: Search mstarpy for matching funds\n
+            `search`: Search mstarpy for matching funds\n
+            `sector`: Get fund, category, index sector breakdown\n
+            `sector_chart`: Display fund, category, index sector breakdown\n
+        """
+
+        return model.FundsRoot()
+
+    @property
     def futures(self):
         """Futures Submodule
 
@@ -382,6 +400,7 @@ class OpenBBSDK:
             `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
             `twitter`: Set Twitter key\n
+            `ultima`: Set Ultima Insights key\n
             `walert`: Set Walert key\n
         """
 
@@ -497,6 +516,7 @@ class OpenBBSDK:
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
+            `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Gets ticker quote from FMP\n
             `search`: Search selected query for tickers.\n
@@ -580,11 +600,11 @@ class SDKLogger:
     @staticmethod
     def __initialize_logging() -> None:
         # pylint: disable=C0415
-        from openbb_terminal.config_terminal import setup_logging_sub_app
+        from openbb_terminal.core.session.current_system import set_system_variable
         from openbb_terminal.core.log.generation.settings_logger import log_all_settings
         from openbb_terminal.loggers import setup_logging
 
-        setup_logging_sub_app(sub_app="sdk")
+        set_system_variable("LOGGING_SUB_APP", "sdk")
         setup_logging()
         log_all_settings()
 
