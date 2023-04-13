@@ -1,0 +1,89 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=EARNINGS&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b6c3992780db30f-BEG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Wed, 12 Apr 2023 14:40:31 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie, Origin
+      Via:
+      - 1.1 vegur
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
