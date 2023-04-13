@@ -12,7 +12,7 @@ import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord";
 <AddBotDialogDiscord
 />
 
-After clicking on the "Add bot to Discord" button, A pop-up window will open, asking you to log in to your Discord account and allow the bot access.
+After clicking on the "Add bot to Discord" button, a pop-up window will open, asking you to log in to your Discord account and allow the bot access.
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/discord_step_1.png" alt="discord bot setup step 1" width="40%" height="40%" />
 
