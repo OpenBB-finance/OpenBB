@@ -135,7 +135,8 @@ const DraggableColumnHeader: FC<{
   header: any;
   table: any;
   advanced: boolean;
-}> = ({ header, table, advanced }) => {
+  idx: number;
+}> = ({ header, table, advanced, idx }) => {
   const { getState, setColumnOrder } = table;
   const { columnOrder } = getState();
   const { column } = header;
@@ -162,7 +163,9 @@ const DraggableColumnHeader: FC<{
 
   return (
     <th
-      className="h-[70px] relative p-4"
+      className={clsx("h-[70px] p-4", {
+        //"left-0 z-50": idx === 0,
+      })}
       colSpan={header.colSpan}
       style={{ width: header.getSize(), opacity: isDragging ? 0.5 : 1 }}
       ref={dropRef}

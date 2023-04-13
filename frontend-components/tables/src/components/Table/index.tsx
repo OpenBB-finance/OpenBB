@@ -20,8 +20,9 @@ import FilterColumns from "./FilterColumns";
 import xss from "xss";
 import useLocalStorage from "../../utils/useLocalStorage";
 import Toast from "../Toast";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import useDarkMode from "../../utils/useDarkMode";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import CloseIcon from "../Icons/Close";
 
 const date = new Date();
 
@@ -94,6 +95,7 @@ function getCellWidth(row, column) {
   }
 }
 
+export const EXPORT_TYPES = ["csv", "xlsx", "png"];
 export default function Table({
   data,
   columns,
@@ -107,6 +109,7 @@ export default function Table({
   initialTheme: "light" | "dark";
   cmd?: string;
 }) {
+  const [type, setType] = useLocalStorage("exportType", EXPORT_TYPES[0]);
   const [colorTheme, setTheme] = useDarkMode(initialTheme);
   const [darkMode, setDarkMode] = useState(
     colorTheme === "dark" ? true : false
@@ -115,6 +118,7 @@ export default function Table({
     setTheme(colorTheme);
     setDarkMode(checked);
   };
+
   const [currentPage, setCurrentPage] = useLocalStorage(
     "rowsPerPage",
     DEFAULT_ROWS_PER_PAGE,
@@ -262,8 +266,6 @@ export default function Table({
     return !isEqual(currentOrder, defaultOrder);
   }, [columnOrder, rtColumns]);
 
-  console.log(validatePageSize(currentPage));
-
   const table = useReactTable({
     data,
     columns: rtColumns,
@@ -298,27 +300,6 @@ export default function Table({
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const { rows } = table.getRowModel();
-
-  // virtualization is making a visual bug where the rows keep switching the colors, disabling it for now
-
-  /*const rowVirtualizer = useVirtual({
-    parentRef: tableContainerRef,
-    size: rows.length,
-    overscan: 10,
-  });
-
- const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
-
- const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
-  const paddingBottom =
-    virtualRows.length > 0
-      ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
-      : 0;
-*/
-
-  // also disabling generating a chart for now, will come back to it later
-  //const [dialog, setDialog] = useState(null);
-
   const visibleColumns = table.getVisibleFlatColumns();
 
   return (
@@ -334,119 +315,11 @@ export default function Table({
         open={open}
         setOpen={setOpen}
       />
-
-      {/*dialog && (
-        <>
-          <div
-            onClick={() => setDialog(null)}
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-filter backdrop-blur-sm"
-          />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-grey-500">
-            <Chart values={dialog.values} />
-          </div>
-        </>
-      )*/}
       <div
         ref={tableContainerRef}
         className={clsx("overflow-x-hidden h-screen")}
       >
-        <div className="bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur flex gap-2 px-6 items-center justify-between pt-4 ">
-          <div className="flex gap-10 items-center">
-            <div className="flex gap-[14px]">
-              <input
-                id="advanced"
-                type="checkbox"
-                checked={advanced}
-                onChange={() => setAdvanced(!advanced)}
-              />
-              <label htmlFor="advanced">Advanced</label>
-            </div>
-            {advanced && (
-              <div className="flex gap-[14px]">
-                <input
-                  id="colors"
-                  type="checkbox"
-                  checked={colors}
-                  onChange={() => setColors(!colors)}
-                />
-                <label htmlFor="colors">Colors</label>
-              </div>
-            )}
-            {/*advanced && (
-              <DebouncedInput
-                id="search"
-                value={globalFilter ?? ""}
-                onChange={(value) => setGlobalFilter(String(value))}
-                placeholder="Search..."
-              />
-            )*/}
-          </div>
-
-          {advanced && (
-            <div className="flex gap-10 items-center">
-              {needsReorder && (
-                <button onClick={() => resetOrder()} className="_btn h-9">
-                  Reset Order
-                </button>
-              )}
-              <button
-                onClick={() => {
-                  toggleDarkMode(!darkMode);
-                }}
-              >
-                {!darkMode ? (
-                  <MoonIcon className="w-4 h-4" />
-                ) : (
-                  <SunIcon className="w-4 h-4" />
-                )}
-              </button>
-              <Select
-                labelType="row"
-                value={fontSize}
-                onChange={setFontSize}
-                label="Font size"
-                placeholder="Select font size"
-                groups={[
-                  {
-                    label: "Font size",
-                    items: [
-                      {
-                        label: "50%",
-                        value: "0.5",
-                      },
-                      {
-                        label: "75%",
-                        value: "0.75",
-                      },
-                      {
-                        label: "100%",
-                        value: "1",
-                      },
-                      {
-                        label: "125%",
-                        value: "1.25",
-                      },
-                      {
-                        label: "150%",
-                        value: "1.5",
-                      },
-                      {
-                        label: "175%",
-                        value: "1.75",
-                      },
-                      {
-                        label: "200%",
-                        value: "2",
-                      },
-                    ],
-                  },
-                ]}
-              />
-              <FilterColumns table={table} label="Filter" />
-            </div>
-          )}
-        </div>
-        <div className="relative p-6 mb-20" id="table">
+        <div className="relative p-4" id="table">
           <div className="absolute -inset-0.5 bg-gradient-to-r rounded-md blur-md from-[#072e49]/30 via-[#0d345f]/30 to-[#0d3362]/30"></div>
           <div
             className={
@@ -495,25 +368,20 @@ export default function Table({
                 </p>
               )} */}
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-auto max-h-[calc(100vh-160px)] smh:max-h-[calc(100vh-95px)]">
               <table
-                className="text-sm"
+                className="text-sm relative"
                 style={{
                   fontSize: `${Number(fontSize) * 100}%`,
                 }}
-                /*style={{
-      width: table.getCenterTotalSize(),
-    }}*/
               >
-                <thead>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <tr
-                      key={headerGroup.id}
-                      className={clsx("!h-10 text-left")}
-                    >
+                <thead className="sticky top-0 bg-white dark:bg-grey-900">
+                  {table.getHeaderGroups().map((headerGroup, idx) => (
+                    <tr key={headerGroup.id}>
                       {headerGroup.headers.map((header) => {
                         return (
                           <DraggableColumnHeader
+                            idx={idx}
                             advanced={advanced}
                             key={header.id}
                             header={header}
@@ -525,28 +393,23 @@ export default function Table({
                   ))}
                 </thead>
                 <tbody>
-                  {/*paddingTop > 0 && (
-                    <tr>
-                      <td style={{ height: `${paddingTop}px` }}></td>
-                    </tr>
-                  )*/}
                   {table.getRowModel().rows.map((row, idx) => {
-                    //const row = rows[virtualRow.index];
                     return (
                       <tr
                         key={row.id}
                         className="!h-[64px] border-b border-grey-400"
                       >
-                        {row.getVisibleCells().map((cell) => {
+                        {row.getVisibleCells().map((cell, idx2) => {
                           return (
                             <td
                               key={cell.id}
                               className={clsx(
                                 "whitespace-normal p-4 text-black dark:text-white",
                                 {
-                                  "bg-grey-100 dark:bg-grey-850": idx % 2 === 0,
-                                  "bg-grey-200 dark:bg-[#202020]":
+                                  "bg-white dark:bg-grey-850": idx % 2 === 0,
+                                  "bg-grey-100 dark:bg-[#202020]":
                                     idx % 2 === 1,
+                                  //"sticky left-0 z-10": idx2 === 0,
                                 }
                               )}
                               style={{
@@ -563,11 +426,6 @@ export default function Table({
                       </tr>
                     );
                   })}
-                  {/*paddingBottom > 0 && (
-                    <tr>
-                      <td style={{ height: `${paddingBottom}px` }} />
-                    </tr>
-                  )*/}
                 </tbody>
                 {rows.length > 30 && visibleColumns.length > 4 && (
                   <tfoot>
@@ -598,74 +456,161 @@ export default function Table({
             </div>
           </div>
         </div>
-        <div className="max-h-[68px] overflow-x-auto fixed bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full flex gap-10 justify-between py-4 px-6">
-          <Export columns={columns} data={data} />
+        <div className="smh:hidden flex max-h-[68px] overflow-x-auto bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full gap-10 justify-between py-4 px-4 text-sm">
           <div className="flex items-center gap-10">
-            <Pagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              table={table}
-            />
-            <Timestamp />
+            <DialogPrimitive.Root>
+              <DialogPrimitive.Trigger className="_btn">
+                Settings
+              </DialogPrimitive.Trigger>
+              <DialogPrimitive.Portal>
+                <DialogPrimitive.Overlay className="_modal-overlay" />
+                <DialogPrimitive.Content className="_modal">
+                  <DialogPrimitive.Close className="absolute top-[40px] right-[46px] text-grey-200 hover:text-white rounded-[4px] focus:outline focus:outline-2 focus:outline-grey-500">
+                    <CloseIcon className="w-6 h-6" />
+                  </DialogPrimitive.Close>
+                  <DialogPrimitive.Title className="uppercase font-bold tracking-widest">
+                    Settings
+                  </DialogPrimitive.Title>
+                  <div className="grid grid-cols-2 gap-4 mt-10 text-sm">
+                    {needsReorder && (
+                      <button onClick={() => resetOrder()} className="_btn h-9">
+                        Reset Order
+                      </button>
+                    )}
+                    <Select
+                      labelType="row"
+                      value={!darkMode ? "dark" : "light"}
+                      onChange={(value) => {
+                        toggleDarkMode(value !== "dark");
+                      }}
+                      label="Theme"
+                      placeholder="Select theme"
+                      groups={[
+                        {
+                          label: "Theme",
+                          items: [
+                            {
+                              label: "Dark",
+                              value: "dark",
+                            },
+                            {
+                              label: "Light",
+                              value: "light",
+                            },
+                          ],
+                        },
+                      ]}
+                    />
+                    <Select
+                      labelType="row"
+                      value={type}
+                      onChange={(value) => {
+                        setType(value);
+                      }}
+                      label="Export type"
+                      placeholder="Select export type"
+                      groups={[
+                        {
+                          label: "Export type",
+                          items: EXPORT_TYPES.map((type) => ({
+                            label: type,
+                            value: type,
+                          })),
+                        },
+                      ]}
+                    />
+                    <Select
+                      labelType="row"
+                      value={fontSize}
+                      onChange={setFontSize}
+                      label="Font size"
+                      placeholder="Select font size"
+                      groups={[
+                        {
+                          label: "Font size",
+                          items: [
+                            {
+                              label: "50%",
+                              value: "0.5",
+                            },
+                            {
+                              label: "75%",
+                              value: "0.75",
+                            },
+                            {
+                              label: "100%",
+                              value: "1",
+                            },
+                            {
+                              label: "125%",
+                              value: "1.25",
+                            },
+                            {
+                              label: "150%",
+                              value: "1.5",
+                            },
+                            {
+                              label: "175%",
+                              value: "1.75",
+                            },
+                            {
+                              label: "200%",
+                              value: "2",
+                            },
+                          ],
+                        },
+                      ]}
+                    />
+                    <FilterColumns table={table} label="Filter" />
+                    <div className="flex gap-2 items-center">
+                      <Select
+                        labelType="row"
+                        value={advanced ? "advanced" : "simple"}
+                        onChange={(value) => {
+                          setAdvanced(value === "advanced");
+                        }}
+                        label="Type"
+                        placeholder="Select type"
+                        groups={[
+                          {
+                            label: "Type",
+                            items: [
+                              {
+                                label: "Simple",
+                                value: "simple",
+                              },
+                              {
+                                label: "Advanced",
+                                value: "advanced",
+                              },
+                            ],
+                          },
+                        ]}
+                      />
+                    </div>
+                    <div className="flex gap-2 items-center">
+                      <label htmlFor="colors">Colors</label>
+                      <input
+                        id="colors"
+                        type="checkbox"
+                        checked={colors}
+                        onChange={() => setColors(!colors)}
+                      />
+                    </div>
+                  </div>
+                </DialogPrimitive.Content>
+              </DialogPrimitive.Portal>
+            </DialogPrimitive.Root>
+            <FilterColumns onlyIconTrigger table={table} label="" />
           </div>
-          {/*
-          <button
-            className="_btn"
-            onClick={() => {
-              const selectedRows = table.getSelectedRowModel().flatRows;
-              const values = selectedRows.map((row) =>
-                Object.values(row.original)
-              );
-              setDialog({
-                values,
-              });
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
-              />
-            </svg>
-            Generate chart
-          </button>*/}
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            table={table}
+          />
+          <Export setType={setType} type={type} columns={columns} data={data} />
         </div>
       </div>
     </>
   );
 }
-
-/* {
-              id: "select",
-              size: 1,
-              disableSortBy: true,
-              header: ({ table }) => (
-                <IndeterminateCheckbox
-                  {...{
-                    checked: table.getIsAllRowsSelected(),
-                    indeterminate: table.getIsSomeRowsSelected(),
-                    onChange: table.getToggleAllRowsSelectedHandler(),
-                  }}
-                />
-              ),
-              cell: ({ row }) => (
-                <div className="px-1">
-                  <IndeterminateCheckbox
-                    {...{
-                      checked: row.getIsSelected(),
-                      disabled: !row.getCanSelect(),
-                      indeterminate: row.getIsSomeSelected(),
-                      onChange: row.getToggleSelectedHandler(),
-                    }}
-                  />
-                </div>
-              ),
-            },*/
