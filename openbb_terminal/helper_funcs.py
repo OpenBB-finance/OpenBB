@@ -356,7 +356,7 @@ def print_rich_table(
             df_table=df_outgoing,
             title=title,
             source=source,  # type: ignore
-            theme=current_user.preferences.TABLE_THEME,
+            theme=current_user.preferences.TABLE_STYLE,
         )
         return
 

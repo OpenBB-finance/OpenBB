@@ -195,9 +195,9 @@ def set_chart_style_from_hub(configs: dict):
     if configs:
         terminal_style = configs.get("features_terminal_style", {}) or {}
         if terminal_style:
-            chart_table = terminal_style.get("chart", None)
-            if chart_table:
-                set_preference("CHART_THEME", chart_table)
+            chart_style = terminal_style.get("chart", None)
+            if chart_style:
+                set_preference("CHART_STYLE", chart_style)
 
 
 def set_table_style_from_hub(configs: dict):
@@ -211,9 +211,9 @@ def set_table_style_from_hub(configs: dict):
     if configs:
         terminal_style = configs.get("features_terminal_style", {}) or {}
         if terminal_style:
-            chart_table = terminal_style.get("table", None)
-            if chart_table:
-                set_preference("TABLE_THEME", chart_table)
+            table_style = terminal_style.get("table", None)
+            if table_style:
+                set_preference("TABLE_STYLE", table_style)
 
 
 def set_sources_from_hub(configs: dict):

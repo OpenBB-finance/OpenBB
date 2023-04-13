@@ -137,11 +137,11 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("chart")
         mt.add_raw("\n")
-        mt.add_param("_chart", current_user.preferences.CHART_THEME)
+        mt.add_param("_chart", current_user.preferences.CHART_STYLE)
         mt.add_raw("\n")
         mt.add_cmd("table")
         mt.add_raw("\n")
-        mt.add_param("_table", current_user.preferences.TABLE_THEME)
+        mt.add_param("_table", current_user.preferences.TABLE_STYLE)
         mt.add_raw("\n")
         mt.add_cmd("colors")
         mt.add_raw("\n")
@@ -294,9 +294,9 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.style:
             if is_local():
-                self.set_and_save_preference("CHART_THEME", ns_parser.style)
+                self.set_and_save_preference("CHART_STYLE", ns_parser.style)
             else:
-                set_preference("CHART_THEME", ns_parser.style)
+                set_preference("CHART_STYLE", ns_parser.style)
                 Hub.upload_config(
                     key="chart",
                     value=ns_parser.style,
@@ -330,9 +330,9 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.style:
             if is_local():
-                self.set_and_save_preference("TABLE_THEME", ns_parser.style)
+                self.set_and_save_preference("TABLE_STYLE", ns_parser.style)
             else:
-                set_preference("TABLE_THEME", ns_parser.style)
+                set_preference("TABLE_STYLE", ns_parser.style)
                 Hub.upload_config(
                     key="table",
                     value=ns_parser.style,
