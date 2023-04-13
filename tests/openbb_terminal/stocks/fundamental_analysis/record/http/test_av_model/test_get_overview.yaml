@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=OVERVIEW&symbol=TSLA
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3RU227bRhB9z1cMDLRNAJrgRaLlvjES4wixLUWkE/hxRY7JrZe77O5SLlv034td
+        3hQ75QuBOWd2bmfmn3cAABdpVx8Fu/gdLrL0Nr5wemusFOqsa9AAa1HXgkOqRf48Eu5JbbEMFSOw
+        5fkIbFDlkjaaCj7hjiG4QBUQDnGNkuaEAzLMtaQ5nLCiOUMgvICcoYE4yrKDXNQN4R0cicICKIc9
+        YQJipoUDa8Lok5CcEhdskN8U5K2UyDU0UhRtrhVQnrO2wDlUTqRy4Ei0RtmNYZQWkpQIT1LUUIka
+        QQsoJS0uVU4YOqAEIxIawpEpm2VvkEI8gaYMlQNEwQsyZv5CVyhBIiMaizkX64fyRHNULmw5BF7g
+        OX3uUJECdIVQ0bJCpUERhiZ9a2xYW15Sbl+YUh8raohSyEuUpjZQWNbItXIgJ41uJeUl+NEvYBI9
+        e6km8hk1vH+paF6NXVITXHVHSQv1wUYMwsl9CH45BX/ftBLZnM2H4WUXskqKtqyAagWqPSpaUCK7
+        odrE9t2xb44zLvCETDR9n4xSoCZ/CAmUK00YQ2mSGAZRCS1OgmlC83GGpfkTozpQndJYT9174NTM
+        IdVEm8afZ2DjMCVAcBxrZESWZgIlE0fCQLVNwyhKZfD/0c0Q0IEXqisI4eZ7dc6eaP1TVshm9u64
+        MuvtF7MqfuivIm85WpO/8orw0m7ZfZxu4q8T38o87wzykG4ms2i5loN12uQUcy2kMd7F9w+f4nX2
+        cNje34zwlhetGrzudtnuAN+Sz9v1bZLCr7CP0zS5v0kOsI4P8HG32SbpdCGKQqJSxi9ceh5sEkM7
+        JMkXOGwc2Me3O4hvs50D69iBh8nvEzVL9YhEJrww3hvMsT6iHAm3Zk76a0ukRpt34AXBpR9chv5I
+        ubMiW5OGasLo32Q8NpF3HS6CMFh6nje18eM228S2v1eL8Nrz/DNwnxyMs0GXoXt1NdtvJsB3g9UU
+        +aMQz98Ia+1U/IXrh9PdoydaIC/2KNOKSEvwXoOPFFnxA5LsU9tCdzEN/oAn5C2OD2XZne1C5HpT
+        sL0UT1TfEVlSW7jn+svFCO4auwm87PHB33P9aDWH0K3kO27PvJoZ/htG8mdLdTcxwuB1mgO08hdR
+        4HnBWXNvpFCqz3SswVstQ89+c2dYq7FI9unAOe/EIALWJURyykt1I8WLrh53j302y+j6DXVI6xUz
+        vAom4XLCOqUzs+d6L2nez/L62vWjkZNJQhnl5T55I41PQr4QWfRIsHJXwTwUmmMmUnO6rXqGiiI3
+        Wr7iGBnNAgvcxfRI8i0TQwm978I/h2Y1B9duNMsSNbFG17uajMvgO+LzZ1pWtq/RwvWufsRuxYtN
+        wPPdWeJLb0O6O3GivIxPaC5X3x/PnSUWeD8lBf7SDacYVr1q12qlCS8oL20afrTwXymg340N0f2t
+        ExznG/hT9N2//wEAAP//AwCezhNHvQgAAA==
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b39865f2df3b01b-BEG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Thu, 06 Apr 2023 11:00:03 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie, Origin
+      Via:
+      - 1.1 vegur
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
