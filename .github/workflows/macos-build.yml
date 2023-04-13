@@ -65,6 +65,64 @@ jobs:
         run: build/pyinstaller/build4mac.sh
         shell: bash -l {0}
 
+      - name: Creating Application Keychain
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
+          echo "Ensuring Keychain with same name does not exist"
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+          echo "Decoding certificate"
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+          echo "Creating Keychain"
+          security create-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Setting Default Keychain"
+          security default-keychain -s build.keychain
+          echo "Unlocking Keychain"
+          security unlock-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Importing Keychain"
+          security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          echo "Setting Partition List"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
+
+      - name: Create Signed Package
+        env:
+          APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_INSTALLER_KEYCHAIN_PWD: ${{ secrets.MACOS_INSTALLER_KEYCHAIN_PWD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: |
+          security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
+          build/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1
+          mv build/pyinstaller/macOS/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminal.pkg
+        shell: bash -l {0}
+
+      - name: Deleting Previous Keychain
+        run: |
+          echo "Deleting Previous Keychain to Clean Instance"
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+
+      - name: Clean up Build Artifacts
+        run: |
+          rm -rf build/terminal
+          rm -rf dist
+          rm -rf DMG
+
+      - name: Notorize DMG
+        env:
+          NOTARIZE_APPLE_ID: ${{ secrets.NOTARIZE_APPLE_ID }}
+          NOTARIZE_APPLE_PWD: ${{ secrets.NOTARIZE_APPLE_PWD }}
+          NOTARIZE_APPLE_TEAM_ID: ${{ secrets.NOTARIZE_APPLE_TEAM_ID }}
+        run: |
+          xcrun notarytool submit OpenBBTerminal.pkg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
+
+      - name: Staple
+        run: |
+          xcrun stapler staple OpenBBTerminal.pkg
+
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
