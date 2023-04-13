@@ -109,7 +109,7 @@ class TerminalStyle:
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
         if not style:
-            style = get_current_user().preferences.THEME
+            style = get_current_user().preferences.CHART_THEME
 
         if style != self.plt_style:
             self.load_style(style)
@@ -244,7 +244,8 @@ class TerminalStyle:
 
 
 theme = TerminalStyle(
-    get_current_user().preferences.THEME, get_current_user().preferences.RICH_STYLE
+    get_current_user().preferences.CHART_THEME,
+    get_current_user().preferences.RICH_STYLE,
 )
 theme.apply_style()
 

@@ -112,7 +112,8 @@ def apply_configs(configs: dict):
     set_credentials_from_hub(configs)
     set_preferences_from_hub(configs, fields=["RICH_STYLE"])
     set_rich_style_from_hub(configs)
-    set_chart_table_style_from_hub(configs)
+    set_chart_style_from_hub(configs)
+    set_table_style_from_hub(configs)
     set_sources_from_hub(configs)
 
 
@@ -182,8 +183,8 @@ def set_rich_style_from_hub(configs: dict):
                     console.print("[red]Failed to set rich style.[/red]")
 
 
-def set_chart_table_style_from_hub(configs: dict):
-    """Set chart and table style from hub.
+def set_chart_style_from_hub(configs: dict):
+    """Set chart style from hub.
 
     Parameters
     ----------
@@ -193,9 +194,25 @@ def set_chart_table_style_from_hub(configs: dict):
     if configs:
         terminal_style = configs.get("features_terminal_style", {}) or {}
         if terminal_style:
-            chart_table = terminal_style.get("chart_table", None)
+            chart_table = terminal_style.get("chart", None)
             if chart_table:
-                set_preference("THEME", chart_table)
+                set_preference("CHART_THEME", chart_table)
+
+
+def set_table_style_from_hub(configs: dict):
+    """Set table style from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        terminal_style = configs.get("features_terminal_style", {}) or {}
+        if terminal_style:
+            chart_table = terminal_style.get("table", None)
+            if chart_table:
+                set_preference("TABLE_THEME", chart_table)
 
 
 def set_sources_from_hub(configs: dict):
