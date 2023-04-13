@@ -405,9 +405,29 @@ function OpenBBMain(
   }
 
   async function downloadCsvButton(gd) {
+    let filename = globals.filename;
+    let writable;
+
+    if (window.showSaveFilePicker) {
+      const handle = await showSaveFilePicker({
+        suggestedName: `${filename}.csv`,
+        types: [
+          {
+            description: "CSV File",
+            accept: {
+              "image/csv": [".csv"],
+            },
+          },
+        ],
+        excludeAcceptAllOption: true,
+      });
+      writable = await handle.createWritable();
+      filename = handle.name;
+    }
+
     loadingOverlay("Saving CSV");
     setTimeout(async function () {
-      await downloadData(gd);
+      await downloadData(gd, filename, writable);
     }, 500);
     setTimeout(function () {
       loading.classList.remove("show");

@@ -248,12 +248,12 @@ async function downloadImage(filename, extension, writable = undefined) {
     //   imageDownload = domtoimage.toSvg;
   } else if (["svg", "pdf"].includes(extension)) {
     if (window.showSaveFilePicker && writable) {
-      blob = await Plotly.toImage(globals.CHART_DIV, {
+      await Plotly.toImage(globals.CHART_DIV, {
         format: "svg",
         height: globals.CHART_DIV.clientHeight,
         width: globals.CHART_DIV.clientWidth,
       }).then(async function (dataUrl) {
-        blob = await fetch(dataUrl).then((r) => r.blob());
+        const blob = await fetch(dataUrl).then((r) => r.blob());
         await writable.write(blob);
         await writable.close();
       });
@@ -273,7 +273,7 @@ async function downloadImage(filename, extension, writable = undefined) {
   imageDownload(document.getElementById("openbb_container"))
     .then(async function (dataUrl) {
       if (window.showSaveFilePicker && writable) {
-        blob = await fetch(dataUrl).then((r) => r.blob());
+        const blob = await fetch(dataUrl).then((r) => r.blob());
         await writable.write(blob);
         await writable.close();
       } else {
@@ -297,30 +297,10 @@ function downloadURI(uri, name) {
   document.body.removeChild(link);
 }
 
-async function downloadData(gd) {
+async function downloadData(gd, filename, writable = undefined) {
   let data = gd.data;
   let candlestick = false;
   let csv = undefined;
-
-  let filename = globals.filename;
-  let writable;
-
-  if (window.showSaveFilePicker) {
-    const handle = await showSaveFilePicker({
-      suggestedName: `${filename}.csv`,
-      types: [
-        {
-          description: "CSV File",
-          accept: {
-            "image/csv": [".csv"],
-          },
-        },
-      ],
-      excludeAcceptAllOption: true,
-    });
-    writable = await handle.createWritable();
-    filename = handle.name;
-  }
 
   data.forEach(function (trace) {
     // check if candlestick
@@ -401,7 +381,7 @@ async function downloadData(gd) {
     }
   }
 
-  let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   if (navigator.msSaveBlob) {
     // IE 10+
     navigator.msSaveBlob(blob, filename);
