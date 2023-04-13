@@ -4,7 +4,7 @@ from prompt_toolkit import PromptSession
 
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
-from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.constants import REGISTER_URL, SUPPORT_URL
 from openbb_terminal.core.session.session_model import (
     LoginStatus,
     create_session,
@@ -19,7 +19,7 @@ def display_welcome_message():
     with open(PACKAGE_DIRECTORY / "core" / "session" / "banner.txt") as f:
         console.print(f"[menu]{f.read()}[/menu]\n")
         console.print(f"Register     : [cmds]{REGISTER_URL}[/cmds]")
-        console.print("Ask support  : [cmds]https://openbb.co/support[/cmds]")
+        console.print(f"Ask support  : [cmds]{SUPPORT_URL}[/cmds]")
         console.print(
             "[yellow]\nWARNING: This is a pre-release version published for testing.[/yellow]"
             "[yellow]\nBeware that your account will be deleted without notice.[/yellow]"

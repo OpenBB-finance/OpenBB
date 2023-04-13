@@ -24,14 +24,11 @@ from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
 
-from openbb_terminal.core.models.credentials_model import LOCAL_CREDENTIALS
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    is_local,
     set_credential,
 )
 from openbb_terminal.core.session.env_handler import write_to_dotenv
-from openbb_terminal.core.session.hub_model import upload_config
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseApiException,
     CoinbaseProAuth,
@@ -251,7 +248,7 @@ def get_keys(show: bool = False) -> pd.DataFrame:
 
 
 def handle_credential(name: str, value: str, persist: bool = False):
-    """Handle credential
+    """Handle credential: set it for current user and optionally write to .env file.
 
     Parameters
     ----------
@@ -262,20 +259,9 @@ def handle_credential(name: str, value: str, persist: bool = False):
     persist: bool, optional
         Write to .env file. By default, False.
     """
-    current_user = get_current_user()
-    local_user = is_local()
-
     set_credential(name, value)
-
-    if local_user and persist:
+    if persist:
         write_to_dotenv("OPENBB_" + name, value)
-    elif not local_user and name not in LOCAL_CREDENTIALS:
-        upload_config(
-            key=name,
-            value=str(value),
-            type_="keys",
-            auth_header=current_user.profile.get_auth_header(),
-        )
 
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:

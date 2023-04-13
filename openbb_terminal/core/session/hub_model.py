@@ -338,7 +338,7 @@ def upload_user_field(
 def upload_config(
     key: str,
     value: str,
-    type_: Literal["keys", "settings", "terminal_style"],
+    type_: Literal["settings", "terminal_style"],
     auth_header: str,
     base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
@@ -351,7 +351,7 @@ def upload_config(
         The key to patch.
     value : str
         The value to patch.
-    type_ : Literal["keys", "settings", "terminal_style"]
+    type_ : Literal["settings", "terminal_style"]
         The type of the patch.
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
@@ -365,7 +365,7 @@ def upload_config(
     Optional[requests.Response]
         The response from the patch request.
     """
-    if type_ not in ["keys", "settings", "terminal_style"]:
+    if type_ not in ["settings", "terminal_style"]:
         console.print("[red]\nInvalid patch type.[/red]")
         return None
 
