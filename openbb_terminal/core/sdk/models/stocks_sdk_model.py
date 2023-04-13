@@ -147,8 +147,6 @@ class StocksDiscovery(Category):
         `arkord`: Returns ARK orders in a Dataframe\n
         `asc`: Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.\n
         `dividends`: Gets dividend calendar for given date.  Date represents Ex-Dividend Date\n
-        `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
-        `filings_chart`: Display recent forms submitted to the SEC\n
         `fipo`: Future IPOs dates. [Source: Finnhub]\n
         `gainers`: Get top gainers. [Source: Yahoo Finance]\n
         `gtech`: Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]\n
@@ -279,8 +277,6 @@ class StocksFundamentalAnalysis(Category):
         `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
         `score`: Gets value score from fmp\n
         `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
-        `sec_fmp`: Get SEC Filings RSS feed, disseminated by FMP\n
-        `sec_fmp_chart`: Display recent forms submitted to the SEC\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
         `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
@@ -324,7 +320,9 @@ class StocksFundamentalAnalysis(Category):
         self.overview = lib.stocks_fa_av_model.get_overview
         self.profile = lib.stocks_fa_fmp_model.get_profile
         self.pt = lib.stocks_fa_business_insider_model.get_price_target_from_analysts
-        self.pt_chart = lib.stocks_fa_business_insider_view.price_target_from_analysts
+        self.pt_chart = (
+            lib.stocks_fa_business_insider_view.display_price_target_from_analysts
+        )
         self.rating = lib.stocks_fa_fmp_model.get_rating
         self.ratios = lib.stocks_fa_fmp_model.get_key_ratios
         self.revfc = lib.stocks_fa_seeking_alpha_model.get_estimates_rev

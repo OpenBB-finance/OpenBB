@@ -45,7 +45,7 @@ jobs:
         with:
           workflow: docker-build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
-  
+
   trigger-pypi-build:
     runs-on: ubuntu-latest
     steps:

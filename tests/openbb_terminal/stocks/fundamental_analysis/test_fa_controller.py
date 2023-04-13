@@ -8,10 +8,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import (
-    PreferencesModel,
-    copy_user,
-)
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.stocks.fundamental_analysis import fa_controller
 
 
@@ -530,7 +527,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_warnings",
-            "market_watch_view.display_sean_seah_warnings",
+            "marketwatch_view.display_sean_seah_warnings",
             ["--debug"],
             {"symbol": "TSLA", "debug": True},
         ),
@@ -560,7 +557,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_pt",
-            "business_insider_view.price_target_from_analysts",
+            "business_insider_view.display_price_target_from_analysts",
             ["--limit=10"],
             {
                 "symbol": "TSLA",
@@ -574,7 +571,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_est",
-            "business_insider_view.estimates",
+            "business_insider_view.display_estimates",
             [],
             {
                 "symbol": "TSLA",

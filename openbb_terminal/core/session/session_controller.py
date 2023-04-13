@@ -4,13 +4,14 @@ from prompt_toolkit import PromptSession
 
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
-from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.constants import REGISTER_URL, SUPPORT_URL
 from openbb_terminal.core.session.session_model import (
     LoginStatus,
     create_session,
     login,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.terminal_helper import bootup
 
 
 def display_welcome_message():
@@ -18,7 +19,7 @@ def display_welcome_message():
     with open(PACKAGE_DIRECTORY / "core" / "session" / "banner.txt") as f:
         console.print(f"[menu]{f.read()}[/menu]\n")
         console.print(f"Register     : [cmds]{REGISTER_URL}[/cmds]")
-        console.print("Ask support  : [cmds]https://openbb.co/support[/cmds]")
+        console.print(f"Ask support  : [cmds]{SUPPORT_URL}[/cmds]")
         console.print(
             "[yellow]\nWARNING: This is a pre-release version published for testing.[/yellow]"
             "[yellow]\nBeware that your account will be deleted without notice.[/yellow]"
@@ -62,6 +63,8 @@ def prompt(welcome=True):
     welcome : bool, optional
         Display welcome message, by default True
     """
+    bootup()
+
     if welcome:
         display_welcome_message()
 
@@ -76,6 +79,7 @@ def prompt(welcome=True):
 
 def launch_terminal():
     """Launch terminal"""
+    # pylint: disable=import-outside-toplevel
     from openbb_terminal import terminal_controller
 
     terminal_controller.parse_args_and_run()
