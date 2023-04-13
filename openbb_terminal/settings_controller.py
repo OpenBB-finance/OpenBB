@@ -277,7 +277,7 @@ class SettingsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="theme",
-            description="Choose theme style.",
+            description="Choose chart style.",
         )
         parser.add_argument(
             "-s",
@@ -313,7 +313,7 @@ class SettingsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="theme",
-            description="Choose theme style.",
+            description="Choose table style.",
         )
         parser.add_argument(
             "-s",
