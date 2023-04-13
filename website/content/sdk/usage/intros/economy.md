@@ -156,7 +156,7 @@ This can also be displayed as a chart:
 openbb.economy.index_chart(indices = ['sp_energy_oil', 'sp_energy_equipment', 'sp_energy_ig'])
 ```
 
-![openbb.economy.index_chart](economy1.png "openbb.economy.index_chart")
+![openbb.economy.index_chart](https://user-images.githubusercontent.com/85772166/231894118-c3773acc-a40f-482d-838b-81118a011b0e.png "openbb.economy.index_chart")
 
 ### Performance
 
