@@ -118,7 +118,7 @@ jobs:
           NOTARIZE_APPLE_TEAM_ID: ${{ secrets.NOTARIZE_APPLE_TEAM_ID }}
         run: |
           xcrun notarytool submit OpenBBTerminal.pkg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
-      
+
       - name: Staple
         run: |
           xcrun stapler staple OpenBBTerminal.pkg
