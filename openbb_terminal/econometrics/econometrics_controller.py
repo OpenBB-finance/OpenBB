@@ -861,8 +861,8 @@ class EconometricsController(BaseController):
                     if ns_parser.format:
                         if ns_parser.format == "date":
                             self.datasets[dataset][column] = pd.to_datetime(
-                                self.datasets[dataset][column],
-                            ).dt.strftime(date_format)
+                                self.datasets[dataset][column], format=date_format
+                            )
                         else:
                             self.datasets[dataset][column] = self.datasets[dataset][
                                 column
