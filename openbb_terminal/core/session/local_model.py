@@ -108,7 +108,8 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    # Saving the RICH_STYLE state allows user to change the default from 'hub' style to some custom
+    # Saving the RICH_STYLE state allows user to change the default from 'hub' style to
+    # some custom .richstyle.json file
     set_credentials_from_hub(configs)
     set_preferences_from_hub(configs, fields=["RICH_STYLE"])
     set_rich_style_from_hub(configs)
