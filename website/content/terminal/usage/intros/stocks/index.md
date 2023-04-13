@@ -210,7 +210,7 @@ Loading Daily data for MSFT with starting period 2020-04-08.
 (🦋) /stocks/ $ candle
 ```
 
-![candle](stocks1.png)
+![stocks/candle](https://user-images.githubusercontent.com/85772166/231903835-a0157626-1329-4d5a-80a1-8d21b71adcb1.png)
 
 The help dialogue for the `candle` command shows how this chart can be supplemented with additional data; specifically, `-t` for trend, `--ma` for moving averages, and `--log` for a log scale.
 
@@ -247,14 +247,14 @@ options:
 For more information and examples, use 'about candle' to access the related guide.
 ```
 
-Be sure to adjust the values for moving averages to correspond with the interval of the data loaded. Below adds movings averages for one and five year periods (because data loaded is monthly), and changes the y-axis to a log-scale.
+Be sure to adjust the values for moving averages to correspond with the interval of the data loaded. Below adds movings averages for three and twelve month periods (because data loaded is monthly), and changes the y-axis to a log-scale.
 
 ```console
 load msft --start 1980-01-01 --monthly
-candle --ma 12,60 --log
+candle --ma 3,12 --log
 ```
 
-![candle moving average log](stocks2.png)
+![candle moving average log](https://user-images.githubusercontent.com/85772166/231904022-7da40eae-2389-4dfa-a619-f950fa8f2929.png)
 
 ### News
 
@@ -264,7 +264,7 @@ Get ticker-related news headlines by entering `news` after loading a ticker.
 news --source NewsApi
 ```
 
-![stocks/news](stocks3.png)
+![stocks/news](https://user-images.githubusercontent.com/85772166/231904057-235b93e2-12e6-45db-a4eb-f6c7c93e02ff.png)
 
 ### TOB
 
@@ -274,7 +274,7 @@ The `tob` function is the "Top of Book", and it returns data during market hours
 tob
 ```
 
-![stocks/tob](stocks4.png)
+![stocks/tob](https://user-images.githubusercontent.com/85772166/231904101-0df25e0e-631c-4a58-a449-e851df6fd4d8.png)
 
 ### Quote
 
@@ -284,7 +284,7 @@ Get the current market price and general performance metrics of the loaded ticke
 quote
 ```
 
-[stocks/quote](stocks5.png)
+![stocks/quote](https://user-images.githubusercontent.com/85772166/231904179-1908801d-ac8d-4bc2-aa08-e93507df1630.png)
 
 ### Codes
 
@@ -294,11 +294,11 @@ quote
 codes
 ```
 
-[stocks/codes](stocks6.png)
+![stocks/codes](https://user-images.githubusercontent.com/85772166/231904217-b477d719-389c-4678-ac04-266641ec7652.png)
 
 ### Search
 
-The `search` function provides a way to find stocks by name, region, sector, industry and exchange location. The results can be exported as a CSV, JSON, or XLSX file from the command line or directly from the table.
+The `search` function provides a way to find stocks by name, region, sector, industry and exchange location. The results can be exported as a CSV, JSON, or XLSX file from the command line or within the table.
 
 Return all Canadian banks with US listings with:
 
@@ -306,4 +306,4 @@ Return all Canadian banks with US listings with:
 search --country canada --industrygroup banks
 ```
 
-[stocks/search](stocks7.png)
+![stocks/search](https://user-images.githubusercontent.com/85772166/231904274-cc3ba608-280a-47f7-834a-98ba2f3de6c3.png)
