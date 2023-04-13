@@ -160,6 +160,23 @@
 
         <!-- Title Popup -->
         <div class="popup_content" id="popup_title"></div>
+
+        <!-- Download Popup -->
+        <div class="popup_content" id="popup_download">
+          <p>File saved to:</p>
+          <p id="download_path"></p>
+          <button class="_btn" id="openfile_button" style="margin-top: 20px">
+            Open File
+          </button>
+          <button class="_btn" id="openfolder_button">Open Folder</button>
+          <button
+            class="_btn-tertiary"
+            id="close_button"
+            onclick="closePopup()"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
 
@@ -248,12 +265,14 @@
           CSV_DIV = document.getElementById("popup_csv");
           TEXT_DIV = document.getElementById("popup_text");
           TITLE_DIV = document.getElementById("popup_title");
+          DOWNLOAD_DIV = document.getElementById("popup_download");
           OpenBBMain(
             window.plotly_figure,
             CHART_DIV,
             CSV_DIV,
             TEXT_DIV,
-            TITLE_DIV
+            TITLE_DIV,
+            DOWNLOAD_DIV
           );
         }
       }, 20);

@@ -32,12 +32,20 @@ const non_blocking = (func, delay) => {
   };
 };
 
-function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
+function OpenBBMain(
+  plotly_figure,
+  chartdiv,
+  csvdiv,
+  textdiv,
+  titlediv,
+  downloaddiv
+) {
   // Main function that plots the graphs and initializes the bar menus
   globals.CHART_DIV = chartdiv;
   globals.TITLE_DIV = titlediv;
   globals.TEXT_DIV = textdiv;
   globals.CSV_DIV = csvdiv;
+  globals.DOWNLOAD_DIV = downloaddiv;
   console.log("main.js loaded");
   console.log("plotly_figure", plotly_figure);
   let graphs = plotly_figure;
