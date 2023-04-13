@@ -24,6 +24,7 @@ class StocksController(model.StocksRoot):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -98,8 +99,6 @@ class StocksController(model.StocksRoot):
             `arkord`: Returns ARK orders in a Dataframe\n
             `asc`: Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.\n
             `dividends`: Gets dividend calendar for given date.  Date represents Ex-Dividend Date\n
-            `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
-            `filings_chart`: Display recent forms submitted to the SEC\n
             `fipo`: Future IPOs dates. [Source: Finnhub]\n
             `gainers`: Get top gainers. [Source: Yahoo Finance]\n
             `gtech`: Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]\n
@@ -189,8 +188,6 @@ class StocksController(model.StocksRoot):
             `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
             `score`: Gets value score from fmp\n
             `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
-            `sec_fmp`: Get SEC Filings RSS feed, disseminated by FMP\n
-            `sec_fmp_chart`: Display recent forms submitted to the SEC\n
             `shrs`: Get shareholders from yahoo\n
             `similar_dfs`: Get dataframes for similar companies\n
             `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
@@ -309,9 +306,6 @@ class StocksController(model.StocksRoot):
         """Stocks Screener Submodule
 
         Attributes:
-            `arktrades`: Gets a dataframe of ARK trades for ticker\n
-            `historical`: View historical price of stocks that meet preset\n
-            `historical_chart`: View historical price of stocks that meet preset\n
             `screener_data`: Screener Overview\n
             `screener_data_chart`: Screener one of the following: overview, valuation, financial, ownership, performance, technical.\n
         """

@@ -11,6 +11,7 @@ class StocksRoot(Category):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -23,6 +24,7 @@ class StocksRoot(Category):
         super().__init__()
         self.candle = lib.stocks_helper.display_candle
         self.load = lib.stocks_helper.load
+        self.news = lib.common_ultima_newsmonitor_model.get_news
         self.process_candle = lib.stocks_helper.process_candle
         self.quote = lib.stocks_model.get_quote
         self.search = lib.stocks_helper.search
@@ -145,8 +147,6 @@ class StocksDiscovery(Category):
         `arkord`: Returns ARK orders in a Dataframe\n
         `asc`: Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.\n
         `dividends`: Gets dividend calendar for given date.  Date represents Ex-Dividend Date\n
-        `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
-        `filings_chart`: Display recent forms submitted to the SEC\n
         `fipo`: Future IPOs dates. [Source: Finnhub]\n
         `gainers`: Get top gainers. [Source: Yahoo Finance]\n
         `gtech`: Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]\n
@@ -171,8 +171,6 @@ class StocksDiscovery(Category):
         self.arkord = lib.stocks_disc_ark_model.get_ark_orders
         self.asc = lib.stocks_disc_yahoofinance_model.get_asc
         self.dividends = lib.stocks_disc_nasdaq_model.get_dividend_cal
-        self.filings = lib.stocks_fa_fmp_model.get_filings
-        self.filings_chart = lib.stocks_disc_fmp_view.display_filings
         self.fipo = lib.stocks_disc_finnhub_model.get_future_ipo
         self.gainers = lib.stocks_disc_yahoofinance_model.get_gainers
         self.gtech = lib.stocks_disc_yahoofinance_model.get_gtech
@@ -279,8 +277,6 @@ class StocksFundamentalAnalysis(Category):
         `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
         `score`: Gets value score from fmp\n
         `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
-        `sec_fmp`: Get SEC Filings RSS feed, disseminated by FMP\n
-        `sec_fmp_chart`: Display recent forms submitted to the SEC\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
         `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
@@ -324,7 +320,9 @@ class StocksFundamentalAnalysis(Category):
         self.overview = lib.stocks_fa_av_model.get_overview
         self.profile = lib.stocks_fa_fmp_model.get_profile
         self.pt = lib.stocks_fa_business_insider_model.get_price_target_from_analysts
-        self.pt_chart = lib.stocks_fa_business_insider_view.price_target_from_analysts
+        self.pt_chart = (
+            lib.stocks_fa_business_insider_view.display_price_target_from_analysts
+        )
         self.rating = lib.stocks_fa_fmp_model.get_rating
         self.ratios = lib.stocks_fa_fmp_model.get_key_ratios
         self.revfc = lib.stocks_fa_seeking_alpha_model.get_estimates_rev
@@ -332,8 +330,6 @@ class StocksFundamentalAnalysis(Category):
         self.rot_chart = lib.stocks_fa_finnhub_view.rating_over_time
         self.score = lib.stocks_fa_fmp_model.get_score
         self.sec = lib.stocks_fa_marketwatch_model.get_sec_filings
-        self.sec_fmp = lib.stocks_fa_fmp_model.get_filings
-        self.sec_fmp_chart = lib.stocks_fa_fmp_view.display_filings
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
         self.splits = lib.stocks_fa_yahoo_finance_model.get_splits
@@ -536,9 +532,6 @@ class StocksScreener(Category):
     """Screener Module.
 
     Attributes:
-        `arktrades`: Gets a dataframe of ARK trades for ticker\n
-        `historical`: View historical price of stocks that meet preset\n
-        `historical_chart`: View historical price of stocks that meet preset\n
         `screener_data`: Screener Overview\n
         `screener_data_chart`: Screener one of the following: overview, valuation, financial, ownership, performance, technical.\n
     """
@@ -547,9 +540,6 @@ class StocksScreener(Category):
 
     def __init__(self):
         super().__init__()
-        self.arktrades = lib.stocks_screener_ark_model.get_ark_trades_by_ticker
-        self.historical = lib.stocks_screener_yahoofinance_model.historical
-        self.historical_chart = lib.stocks_screener_yahoofinance_view.historical
         self.screener_data = lib.stocks_screener_finviz_model.get_screener_data
         self.screener_data_chart = lib.stocks_screener_finviz_view.screener
 

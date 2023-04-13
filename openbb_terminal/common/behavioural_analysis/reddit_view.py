@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import textwrap
 from datetime import datetime
 from typing import Dict, Optional, Union
 
@@ -12,6 +13,9 @@ import praw
 
 from openbb_terminal import OpenBBFigure, rich_config
 from openbb_terminal.common.behavioural_analysis import reddit_model
+from openbb_terminal.common.behavioural_analysis.reddit_helpers import (
+    reddit_requirements,
+)
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -21,19 +25,8 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 
-# TODO: Test OpenBBFigure conversion
-
-
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def print_and_record_reddit_post(
     submissions_dict: Dict, submission: praw.models.reddit.submission.Submission
 ):
@@ -87,15 +80,7 @@ def print_and_record_reddit_post(
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def print_reddit_post(sub: tuple):
     """Print reddit submission.
 
@@ -131,15 +116,7 @@ def print_reddit_post(sub: tuple):
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def display_popular_tickers(
     limit: int = 10,
     post_limit: int = 50,
@@ -161,16 +138,16 @@ def display_popular_tickers(
         Format to export dataframe
     """
     popular_tickers_df = reddit_model.get_popular_tickers(limit, post_limit, subreddits)
-    if not popular_tickers_df.empty:
-        print_rich_table(
-            popular_tickers_df,
-            headers=list(popular_tickers_df.columns),
-            show_index=False,
-            title=f"The following TOP {limit} tickers have been mentioned",
-            export=bool(export),
-        )
-    else:
+    if popular_tickers_df.empty:
         console.print("No tickers found")
+        return
+    print_rich_table(
+        popular_tickers_df,
+        headers=list(popular_tickers_df.columns),
+        show_index=True,
+        title=f"The following TOP {limit} tickers have been mentioned",
+        export=bool(export),
+    )
 
     export_data(
         export,
@@ -182,15 +159,7 @@ def display_popular_tickers(
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def display_spac_community(limit: int = 10, popular: bool = False):
     """Print tickers mentioned in r/SPACs [Source: Reddit].
 
@@ -233,15 +202,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def display_wsb_community(limit: int = 10, new: bool = False):
     """Print WSB posts.
 
@@ -260,15 +221,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def display_due_diligence(
     limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
 ):
@@ -293,15 +246,7 @@ def display_due_diligence(
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def display_redditsent(
     symbol: str,
     sortby: str = "relevance",
@@ -366,11 +311,19 @@ def display_redditsent(
     console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
 
     if graphic:
+        df["Title"] = df["Title"].apply(
+            lambda x: "<br>".join(textwrap.wrap(str(x), 50))
+        )
         fig = OpenBBFigure(
             title=f"Sentiment Score of {symbol}",
             xaxis_title="Sentiment Score",
         )
-        fig.add_bar(x=polarity_scores)
+        fig.add_bar(
+            x=polarity_scores,
+            customdata=df["Title"],
+            hovertemplate="%{customdata}<extra></extra>",
+        )
+        fig.update_layout(hovermode="y")
 
         # remove y ticks of graph object because number based index doesn't make sense here
         fig.layout.yaxis.tickvals = []

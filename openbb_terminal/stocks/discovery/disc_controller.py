@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from datetime import date, datetime
+from datetime import datetime
 from typing import List, Optional
 
 from openbb_terminal.core.session.current_user import get_current_user
@@ -25,7 +25,6 @@ from openbb_terminal.stocks.discovery import (
     ark_view,
     finnhub_view,
     finviz_view,
-    fmp_view,
     nasdaq_view,
     seeking_alpha_view,
     shortinterest_view,
@@ -60,7 +59,6 @@ class DiscoveryController(BaseController):
         "rtat",
         "divcal",
         "heatmap",
-        "filings",
     ]
 
     arkord_sortby_choices = [
@@ -127,7 +125,6 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/disc/")
-        mt.add_cmd("filings", "FinancialModelingPrep")
         mt.add_cmd("pipo", "Finnhub")
         mt.add_cmd("fipo", "Finnhub")
         mt.add_cmd("gainers", "Yahoo Finance")
@@ -659,25 +656,16 @@ class DiscoveryController(BaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=10,
-            help="Limit of upcoming earnings release dates to display.",
-        )
-        parser.add_argument(
-            "-p",
-            "--pages",
-            action="store",
-            dest="n_pages",
-            type=check_positive,
-            default=1,
-            help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
+            default=5,
+            help="Limit of upcoming earnings release dates to look ahead.",
         )
         parser.add_argument(
             "-s",
             "--start",
             type=valid_date,
-            help="Start  date of data, in YYYY-MM-DD format",
+            help="Start  date of data, in YYYY-MM-DD format. Defaults to today.",
             dest="start_date",
-            default=date.today(),
+            default=datetime.today().strftime("%Y-%m-%d"),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -686,7 +674,6 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             seeking_alpha_view.upcoming_earning_release_dates(
-                num_pages=ns_parser.n_pages,
                 limit=ns_parser.limit,
                 start_date=ns_parser.start_date,
                 export=ns_parser.export,
@@ -922,43 +909,4 @@ class DiscoveryController(BaseController):
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_filings(self, other_args: List[str]) -> None:
-        """Process Filings command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="filings",
-            description="The most-recent filings submitted to the SEC",
-        )
-        parser.add_argument(
-            "-p",
-            "--pages",
-            dest="pages",
-            metavar="pages",
-            type=int,
-            default=1,
-            help="The number of pages to get data from (1000 entries/page; maximum 30 pages)",
-        )
-        parser.add_argument(
-            "-t",
-            "--today",
-            dest="today",
-            action="store_true",
-            default=False,
-            help="Show all filings from today",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            EXPORT_ONLY_RAW_DATA_ALLOWED,
-            limit=5,
-        )
-        if ns_parser:
-            fmp_view.display_filings(
-                ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
             )

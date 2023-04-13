@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "openbb"
-version = "3.0.0rc1"
+version = "3.0.0rc2"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
-include = ["terminal.py"]
+include = ["terminal.py", "openbb_terminal/.env"]
 readme = "website/pypi.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
@@ -29,7 +29,7 @@ yfinance = "^0.2.12"
 pmaw = "^3.0.0"
 praw = "^7.1.4"
 Quandl = "^3.6.0"
-pytrends = "^4.7.3"
+pytrends = "^4.9.1"
 matplotlib = "^3.3.3"
 plotly = "^5.0.0"
 prompt-toolkit = "^3.0.16"
@@ -63,7 +63,6 @@ openpyxl = "^3.0.9"
 pandas = "^1.5.0"
 pandas-market-calendars = "~3.2"
 ipympl = "^0.8.2"
-voila = ">=0.3.0"
 rich = "^12.6.0"
 dnspython = "^2.1.0"
 python-dotenv = "^0.19.2"
@@ -95,15 +94,14 @@ ipython = "8.11.0"
 protobuf = "3.20.1"
 pytorch-lightning = {version = "1.6.5", optional = true}
 u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
-lightgbm = {version = "3.3.3", optional = true}  # locked because this is the latest version available on conda intel mac
+lightgbm = {version = "3.3.5", optional = true}  # locked because this is the latest version available on conda intel mac
 docstring-parser = {version = "^0.15", optional = true}
 grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
-rapidfuzz = "^2.13.7"
-streamlit = "^1.17.0"
-pywry = "^0.4.0"
+streamlit = "^1.21.0"
+pywry = "^0.4.7"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built

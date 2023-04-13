@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # markets
 
-Displays markets overview.
+This command allows the user to retrieve a markets overview which provides a quick summary of current market conditions. The overview includes prices of the largest ETFs, with the amount of stocks current above and below the SMA 200/50 and Advancers / Decliners.
 
 ### Usage
 
@@ -19,7 +19,6 @@ Displays markets overview.
 ## Parameters
 
 This command has no parameters
-
 
 
 ---

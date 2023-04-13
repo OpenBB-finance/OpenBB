@@ -35,10 +35,10 @@ export default function FilterColumns({
         </DropdownMenuPrimitive.Label>
         <DropdownMenuPrimitive.Trigger
           onClick={() => setOpen(!open)}
-          className="bg-grey-900 whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center justify-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
+          className="bg-white dark:bg-grey-900 whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center justify-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
           aria-label={label}
         >
-          <span className="text-white">Filter columns</span>
+          <span>Filter columns</span>
           <ChevronDownIcon
             className={clsx({
               "transform rotate-180 duration-200 transition": open,
@@ -50,7 +50,7 @@ export default function FilterColumns({
         <DropdownMenuPrimitive.Content
           sideOffset={10}
           ref={ref}
-          className="z-50 bg-grey-900/80 backdrop-filter backdrop-blur flex flex-col gap-4 overflow-auto border-[1.5px] border-grey-700 rounded p-3 max-h-[500px]"
+          className="z-50 bg-white/80 dark:bg-grey-900/80 backdrop-filter backdrop-blur flex flex-col gap-4 overflow-auto border-[1.5px] border-grey-700 rounded p-3 max-h-[500px]  text-black dark:text-white"
         >
           <DropdownMenuPrimitive.Item>
             <label className="flex items-center gap-2">

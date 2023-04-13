@@ -6,8 +6,11 @@ import json
 import pytest
 from requests import Response
 
+from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session import session_model
+from openbb_terminal.core.session.current_user import get_current_user
 
 TEST_SESSION = {
     "access_token": "test_token",
@@ -60,38 +63,33 @@ def test_create_session(mocker, email, password, save):
         mock_save_session.assert_called_once_with(session)
 
 
-@pytest.mark.skip("Not working?")
 def test_login_no_response(mocker):
     path = "openbb_terminal.core.session.session_model."
-    mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
-    mock_reload_openbb_config_modules = mocker.patch(
-        path + "reload_openbb_config_modules"
-    )
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
-    mock_update_flair = mocker.patch(path + "update_flair")
+    mock_update_flair = mocker.patch(path + "Local.update_flair")
+    mock_get_updated_hub_sources = mocker.patch(
+        path + "get_updated_hub_sources", return_value={}
+    )
 
     mock_fetch_user_configs.return_value = None
 
     assert session_model.login(TEST_SESSION) == session_model.LoginStatus.NO_RESPONSE
 
-    mock_clear_openbb_env_vars.assert_called_once()
-    mock_reload_openbb_config_modules.assert_called_once()
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
     mock_update_flair.assert_not_called()
+    mock_get_updated_hub_sources.assert_not_called()
 
 
-@pytest.mark.skip("Not working?")
 def test_login_fail_response(mocker):
     path = "openbb_terminal.core.session.session_model."
-    mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
-    mock_reload_openbb_config_modules = mocker.patch(
-        path + "reload_openbb_config_modules"
-    )
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
-    mock_update_flair = mocker.patch(path + "update_flair")
+    mock_update_flair = mocker.patch(path + "Local.update_flair")
+    mock_get_updated_hub_sources = mocker.patch(
+        path + "get_updated_hub_sources", return_value={}
+    )
 
     response = Response()
     response.status_code = 400
@@ -99,23 +97,20 @@ def test_login_fail_response(mocker):
 
     assert session_model.login(TEST_SESSION) == session_model.LoginStatus.FAILED
 
-    mock_clear_openbb_env_vars.assert_called_once()
-    mock_reload_openbb_config_modules.assert_called_once()
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
     mock_update_flair.assert_not_called()
+    mock_get_updated_hub_sources.assert_not_called()
 
 
-@pytest.mark.skip("Not working?")
 def test_login_success_response(mocker):
     path = "openbb_terminal.core.session.session_model."
-    mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
-    mock_reload_openbb_config_modules = mocker.patch(
-        path + "reload_openbb_config_modules"
-    )
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
-    mock_update_flair = mocker.patch(path + "update_flair")
+    mock_update_flair = mocker.patch(path + "Local.update_flair")
+    mock_get_updated_hub_sources = mocker.patch(
+        path + "get_updated_hub_sources", return_value={}
+    )
 
     response = Response()
     response.status_code = 200
@@ -126,14 +121,12 @@ def test_login_success_response(mocker):
 
     assert session_model.login(TEST_SESSION) == session_model.LoginStatus.SUCCESS
 
-    mock_clear_openbb_env_vars.assert_called_once()
-    mock_reload_openbb_config_modules.assert_called_once()
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_called_once()
     mock_update_flair.assert_called_once()
+    mock_get_updated_hub_sources.assert_called_once()
 
 
-@pytest.mark.skip("Not working?")
 @pytest.mark.parametrize(
     "guest",
     [
@@ -144,22 +137,24 @@ def test_login_success_response(mocker):
 def test_logout_user(mocker, guest):
     path = "openbb_terminal.core.session.session_model."
     mock_delete_session = mocker.patch(path + "Hub.delete_session")
-    mock_remove_session_file = mocker.patch(path + "Local.remove_session_file")
-    mock_remove_cli_history_file = mocker.patch(path + "Local.remove_cli_history_file")
-    mock_reload_openbb_config_modules = mocker.patch(
-        path + "reload_openbb_config_modules"
-    )
-    mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
+    mock_remove = mocker.patch(path + "Local.remove")
+    mock_remove_log_handlers = mocker.patch(path + "remove_log_handlers")
+    mock_set_default_user = mocker.patch(path + "set_default_user")
+    mock_setup_logging = mocker.patch(path + "setup_logging")
     mock_plt_close = mocker.patch(path + "plt.close")
 
     auth_header = "Bearer test_token"
     token = "test_token"
-    session_model.logout(auth_header, token, guest)
+    session_model.logout(auth_header, token)
 
     if not guest:
         mock_delete_session.assert_called_once_with(auth_header, token)
-        mock_remove_session_file.assert_called_once()
-    mock_clear_openbb_env_vars.assert_called_once()
-    mock_reload_openbb_config_modules.assert_called_once()
-    mock_remove_cli_history_file.assert_called_once()
+        assert mock_remove.call_args_list[0] == mocker.call(SESSION_FILE_PATH)
+        assert mock_remove.call_args_list[1] == mocker.call(HIST_FILE_PATH)
+        assert mock_remove.call_args_list[2] == mocker.call(
+            get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub"
+        )
+    mock_remove_log_handlers.assert_called_once()
+    mock_set_default_user.assert_called_once()
+    mock_setup_logging.assert_called_once()
     mock_plt_close.assert_called_once()

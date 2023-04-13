@@ -1,19 +1,27 @@
 ---
 title: Discord
-sidebar_position: 1
+sidebar_position: 2
 description: TBD
 keywords: [discord, how to, explanation, openbb bot, openbb, guide, bot guide]
 ---
 
 ## Getting Started with Discord
 
-Now that you have added the bot to your discord you can get started with running commands.
+Now that you have added the bot to your Discord you can get started with running commands.
 
 If you're new to OpenBB Discord Bot, here's a quick guide to get you started.
 
 To use OpenBB, you need to use slash commands, which are special commands that start with a / symbol. To autoselect commands if you are on Desktop you can hit ```TAB```
 
-You can type / in the chat to see a list of available slash commands for OpenBB Bot. One of the most useful slash commands is /help, which shows you all the commands and how to use them. Some of the most popular commands are:
+<div className="flex justify-center h-full w-[800px] rounded-r-[4px]">
+  <img
+    className="h-full object-cover"
+    alt="gif describing step"
+    src="https://openbb-web-assets.s3.amazonaws.com/docusaurus-openbb-bot-walkthrough-gifs/page1.gif"
+  />
+</div>
+
+You can type / in the chat to see a list of available slash commands for OpenBB Bot. One of the most useful slash commands is ```/help```, which shows you all the commands and how to use them. Some of the most popular commands are:
 
 - ```/cd ticker: AMD``` Shows the daily chart for a given stock ticker.
 - ```/c3m ticker: AMD``` Shows the 3-month chart for a given stock ticker.

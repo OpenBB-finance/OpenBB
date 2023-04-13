@@ -1,14 +1,11 @@
-[info]You are already logged in.[/info]
-Cloud storage of keys, settings and feature flags:
-    sync               Turns the cloud synchronization on/off
-    pull               Pull data from cloud
-    clear              Clear data from cloud
+Cloud storage of keys:
+    clear              Clear keys from cloud
 
 Cloud storage of routines:
     list               List available routines
     upload             Upload routine
     download           Download routine
-    delete             Delete routine
+    delete             Delete routine stored in cloud
 
 OpenBB Personal Access Token:
     generate           Generate a Personal Access Token

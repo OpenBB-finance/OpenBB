@@ -28,7 +28,6 @@ CANDLE_SORT = [
 FOREX_SOURCES: Dict = {
     "YahooFinance": "YahooFinance",
     "AlphaVantage": "AlphaAdvantage",
-    "Oanda": "Oanda",
     "Polygon": "Polygon",
 }
 
@@ -272,7 +271,6 @@ def display_candle(
     if add_trend:
         fig.add_trend(data, secondary_y=has_volume)
 
-    fig.add_logscale_menus("yaxis2" if has_volume else "yaxis")
     fig.update_yaxes(type=yscale, row=1, col=1, nticks=20, secondary_y=has_volume)
 
     return fig.show(external=external_axes)

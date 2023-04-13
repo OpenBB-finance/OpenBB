@@ -3,11 +3,11 @@
 
 Stock: 
 
-    quote              view the current price for a specific stock ticker              [FinancialModelingPrep]
-    tob                view top of book for loaded ticker (US exchanges only)          [CBOE]
-    candle             view a candle chart for a specific stock ticker
-    codes              FIGI, SIK and SIC codes codes                                   [Polygon]
-    news               latest news of the company                                      [Feedparser, NewsApi]
+[unvl]    quote              view the current price for a specific stock ticker[/unvl]              [FinancialModelingPrep]
+[unvl]    tob                view top of book for loaded ticker (US exchanges only)[/unvl]          [CBOE]
+[unvl]    candle             view a candle chart for a specific stock ticker[/unvl]
+[unvl]    codes              FIGI, SIK and SIC codes codes[/unvl]                                   [Polygon]
+[unvl]    news               latest news of the company[/unvl]                                      [Feedparser, NewsApi, Ultima]
 
 >   th                 trading hours,                check open markets
 >   options            options menu,                 chains, open interest, greeks, parity

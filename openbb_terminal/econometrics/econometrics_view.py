@@ -137,6 +137,123 @@ def display_plot(
 
 
 @log_start_end(log=logger)
+def display_corr(
+    dataset: pd.DataFrame,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
+    """Plot correlation coefficients for dataset features
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset fore calculating correlation coefficients
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export image
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
+    """
+
+    fig = OpenBBFigure()
+
+    # correlation
+    correlation = econometrics_model.get_corr_df(dataset)
+    fig.add_heatmap(
+        z=correlation,
+        x=correlation.columns,
+        y=correlation.index,
+        zmin=correlation.values.min(),
+        zmax=1,
+        showscale=True,
+        text=correlation,
+        texttemplate="%{text:.2f}",
+        colorscale="electric",
+        colorbar=dict(
+            thickness=10,
+            thicknessmode="pixels",
+            x=1.2,
+            y=1,
+            xanchor="right",
+            yanchor="top",
+            xpad=10,
+        ),
+        xgap=1,
+        ygap=1,
+    )
+    fig.update_yaxes(autorange="reversed")
+    fig.update_layout(margin=dict(l=0, r=120, t=0, b=0), title="Correlation Matrix")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+        sheet_name=sheet_name,
+        figure=fig,
+    )
+    return fig.show(external=external_axes)
+
+
+@log_start_end(log=logger)
+def display_seasonality(
+    data: pd.DataFrame,
+    column: str = "close",
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    m: Optional[int] = None,
+    max_lag: int = 24,
+    alpha: float = 0.05,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
+    """Plot seasonality from a dataset
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The dataframe to plot
+    column: str
+        The column of the dataframe to analyze
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export image
+    m: Optional[int]
+        Optionally, a time lag to highlight on the plot. Default is none.
+    max_lag: int
+        The maximal lag order to consider. Default is 24.
+    alpha: float
+        The confidence interval to display. Default is 0.05.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
+    """
+
+    if data.empty:
+        return console.print("No data to plot")
+
+    series = data[column]
+
+    ending = get_ending(data.name, column)
+
+    fig = OpenBBFigure()
+    fig.set_title(f"Seasonality{ending}", wrap=True, wrap_width=55)
+    fig.add_corr_plot(series, m=m, max_lag=max_lag, alpha=alpha)
+    fig.update_xaxes(autorange=False, range=[-1, max_lag + 1])
+    fig.add_legend_label()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+        sheet_name=sheet_name,
+        figure=fig,
+    )
+
+    return fig.show(external=external_axes)
+
+
+@log_start_end(log=logger)
 def display_norm(
     data: pd.Series,
     dataset: str = "",

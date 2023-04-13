@@ -6,7 +6,7 @@ description: OpenBB Discord Command
 
 # yieldcurve
 
-Displays US Bonds yield curve
+This command allows the user to retrieve the US Bonds yield curve. The yield curve is a graph that plots the yields of different bonds with different maturities, providing an indication of the direction of interest rates.
 
 ### Usage
 

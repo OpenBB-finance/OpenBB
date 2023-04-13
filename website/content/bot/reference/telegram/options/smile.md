@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # smile
 
-Displays Options Volatility Smile.
+This command allows the user to retrieve the Options Volatility Smile for the given ticker and expiry. The Options Volatility Smile is a graphical representation of the implied volatility for a given option that can be used to gauge the market sentiment for a particular security.
 
 ### Usage
 

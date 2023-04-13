@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
+    method: GET
+    uri: https://eodhistoricaldata.com/api/fundamentals/PM?api_token=MOCK_API_KEY&filter=Financials%3A%3Aincome%3A%3Ayearly
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAzXMMQqAMAwF0Kv8A4gHcHLQWa8Q2oiF2JQkRby9ODi+5W1VHqzbgkxBIBG9OeNQ
+        w2HM6M7mI3Zhch6QtAalgHaD99bUAsF0Tb9m1nwWD7WSSL5zTHq9gzlNx2UAAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With
+      Access-Control-Allow-Methods:
+      - GET, POST, PUT, DELETE, OPTIONS
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Mon, 10 Apr 2023 10:19:35 GMT
+      Server:
+      - nginx/1.19.10
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Page-Speed:
+      - 1.13.35.2-0
+      X-RateLimit-Limit:
+      - '2000'
+      X-RateLimit-Remaining:
+      - '1999'
+    status:
+      code: 403
+      message: Forbidden
+version: 1

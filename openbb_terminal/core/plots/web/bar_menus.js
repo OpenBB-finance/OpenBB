@@ -193,7 +193,7 @@ function changeColor() {
   }
 }
 
-function downloadImage() {
+function uploadImage() {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
   Plotly.toImage(globals.CHART_DIV, {
@@ -232,6 +232,51 @@ function downloadImage() {
       console.log(err);
       loader.classList.remove("show");
     });
+}
+
+function downloadImage(filename, extension) {
+  const loader = document.getElementById("loader");
+  loader.classList.add("show");
+
+  let imageDownload = undefined;
+
+  if (extension == "png") {
+    imageDownload = domtoimage.toPng;
+  } else if (extension == "jpeg") {
+    imageDownload = domtoimage.toJpeg;
+    // } else if (extension == "svg") {
+    //   imageDownload = domtoimage.toSvg;
+  } else if (["svg", "pdf"].includes(extension)) {
+    Plotly.downloadImage(globals.CHART_DIV, {
+      format: "svg",
+      height: globals.CHART_DIV.clientHeight,
+      width: globals.CHART_DIV.clientWidth,
+      filename: filename,
+    });
+    return;
+  } else {
+    console.log("Invalid extension");
+    return;
+  }
+  imageDownload(document.getElementById("openbb_container"))
+    .then(function (dataUrl) {
+      downloadURI(dataUrl, filename + "." + extension);
+      loader.classList.remove("show");
+    })
+    .catch(function (error) {
+      console.error("oops, something went wrong!", error);
+      loader.classList.remove("show");
+      hideModebar();
+    });
+}
+
+function downloadURI(uri, name) {
+  let link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function downloadData(gd) {
@@ -318,7 +363,7 @@ function downloadData(gd) {
     }
   }
 
-  let filename = openbbFilename(gd, true);
+  let filename = globals.filename;
   let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   if (navigator.msSaveBlob) {
     // IE 10+
