@@ -79,6 +79,7 @@ def prompt(welcome=True):
 
 def launch_terminal():
     """Launch terminal"""
+    # pylint: disable=import-outside-toplevel
     from openbb_terminal import terminal_controller
 
     terminal_controller.parse_args_and_run()
