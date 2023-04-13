@@ -508,3 +508,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     }
   }
 }
+
+document.getElementById("theme").addEventListener("click", function () {
+  console.log(window);
+});

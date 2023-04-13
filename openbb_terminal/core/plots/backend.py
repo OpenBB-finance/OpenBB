@@ -174,6 +174,7 @@ class Backend(PyWry):
                     "html_path": self.get_plotly_html(),
                     "json_data": json.loads(fig.to_json()),
                     "export_image": str(export_image),
+                    "theme": get_current_user().preferences.THEME
                     **self.get_kwargs(command_location),
                 }
             )
