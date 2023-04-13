@@ -160,6 +160,23 @@
 
         <!-- Title Popup -->
         <div class="popup_content" id="popup_title"></div>
+
+        <!-- Download Popup -->
+        <div class="popup_content" id="popup_download">
+          <p>File saved to:</p>
+          <p id="download_path"></p>
+          <div style="float: right; margin-top: 20px">
+            <button class="_btn" id="openfile_button">Open File</button>
+            <button class="_btn" id="openfolder_button">Open Folder</button>
+            <button
+              class="_btn-tertiary"
+              id="close_button"
+              onclick="closePopup()"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -209,9 +226,13 @@
                 !["svg", "pdf"].includes(extension)
               ) {
                 if (annotation.text[0] == "/") {
-                  cmd_src = annotation.text;
+                  globals.cmd_src = annotation.text;
+                  globals.cmd_idx =
+                    window.plotly_figure.layout.annotations.indexOf(annotation);
                   annotation.text = "";
+
                   let margin = window.plotly_figure.layout.margin;
+                  globals.old_margin = { ...margin };
                   if (margin.t != undefined && margin.t > 40) {
                     margin.t = 40;
                   }
@@ -219,7 +240,6 @@
                   if (cmd_src == "/stocks/candle") {
                     margin.r -= 40;
                   }
-                  window.plotly_figure.layout.margin = margin;
                 }
               }
             });
@@ -235,6 +255,8 @@
           let title =
             window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";
 
+          globals.title = title;
+
           if (title.length > 50) {
             document.getElementById("title").style.fontSize = "12px";
           }
@@ -248,12 +270,14 @@
           CSV_DIV = document.getElementById("popup_csv");
           TEXT_DIV = document.getElementById("popup_text");
           TITLE_DIV = document.getElementById("popup_title");
+          DOWNLOAD_DIV = document.getElementById("popup_download");
           OpenBBMain(
             window.plotly_figure,
             CHART_DIV,
             CSV_DIV,
             TEXT_DIV,
-            TITLE_DIV
+            TITLE_DIV,
+            DOWNLOAD_DIV
           );
         }
       }, 20);
