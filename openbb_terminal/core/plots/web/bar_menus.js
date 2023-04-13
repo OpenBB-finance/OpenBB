@@ -234,7 +234,7 @@ function uploadImage() {
     });
 }
 
-function downloadImage(filename, extension) {
+async function downloadImage(filename, extension, writable = undefined) {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
 
@@ -247,20 +247,38 @@ function downloadImage(filename, extension) {
     // } else if (extension == "svg") {
     //   imageDownload = domtoimage.toSvg;
   } else if (["svg", "pdf"].includes(extension)) {
-    Plotly.downloadImage(globals.CHART_DIV, {
-      format: "svg",
-      height: globals.CHART_DIV.clientHeight,
-      width: globals.CHART_DIV.clientWidth,
-      filename: filename,
-    });
+    if (window.showSaveFilePicker && writable) {
+      blob = await Plotly.toImage(globals.CHART_DIV, {
+        format: "svg",
+        height: globals.CHART_DIV.clientHeight,
+        width: globals.CHART_DIV.clientWidth,
+      }).then(async function (dataUrl) {
+        blob = await fetch(dataUrl).then((r) => r.blob());
+        await writable.write(blob);
+        await writable.close();
+      });
+    } else {
+      Plotly.downloadImage(globals.CHART_DIV, {
+        format: "svg",
+        height: globals.CHART_DIV.clientHeight,
+        width: globals.CHART_DIV.clientWidth,
+        filename: filename,
+      });
+    }
     return;
   } else {
     console.log("Invalid extension");
     return;
   }
   imageDownload(document.getElementById("openbb_container"))
-    .then(function (dataUrl) {
-      downloadURI(dataUrl, filename + "." + extension);
+    .then(async function (dataUrl) {
+      if (window.showSaveFilePicker && writable) {
+        blob = await fetch(dataUrl).then((r) => r.blob());
+        await writable.write(blob);
+        await writable.close();
+      } else {
+        downloadURI(dataUrl, filename + "." + extension);
+      }
       loader.classList.remove("show");
     })
     .catch(function (error) {
@@ -279,10 +297,30 @@ function downloadURI(uri, name) {
   document.body.removeChild(link);
 }
 
-function downloadData(gd) {
+async function downloadData(gd) {
   let data = gd.data;
   let candlestick = false;
   let csv = undefined;
+
+  let filename = globals.filename;
+  let writable;
+
+  if (window.showSaveFilePicker) {
+    const handle = await showSaveFilePicker({
+      suggestedName: `${filename}.csv`,
+      types: [
+        {
+          description: "CSV File",
+          accept: {
+            "image/csv": [".csv"],
+          },
+        },
+      ],
+      excludeAcceptAllOption: true,
+    });
+    writable = await handle.createWritable();
+    filename = handle.name;
+  }
 
   data.forEach(function (trace) {
     // check if candlestick
@@ -363,23 +401,29 @@ function downloadData(gd) {
     }
   }
 
-  let filename = globals.filename;
   let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   if (navigator.msSaveBlob) {
     // IE 10+
     navigator.msSaveBlob(blob, filename);
   } else {
-    let link = window.document.createElement("a");
-    if (link.download !== undefined) {
-      // feature detection
-      // Browsers that support HTML5 download attribute
-      let url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", filename);
-      link.style.visibility = "hidden";
-      window.document.body.appendChild(link);
-      link.click();
-      window.document.body.removeChild(link);
+    // feature detection
+    // Browsers that support showSaveFilePicker or HTML5 download attribute
+    if (window.showSaveFilePicker && writable) {
+      await writable.write(blob);
+      await writable.close();
+    } else {
+      let link = window.document.createElement("a");
+      if (link.download !== undefined) {
+        // feature detection
+        // Browsers that support HTML5 download attribute
+        let url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = "hidden";
+        window.document.body.appendChild(link);
+        link.click();
+        window.document.body.removeChild(link);
+      }
     }
   }
 }

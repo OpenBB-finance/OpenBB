@@ -90,15 +90,15 @@ function OpenBBMain(
         {
           name: "Download CSV (Ctrl+Shift+S)",
           icon: ICONS.downloadCsv,
-          click: function (gd) {
-            downloadCsvButton(gd);
+          click: async function (gd) {
+            await downloadCsvButton(gd);
           },
         },
         {
           name: "Download PNG (Ctrl+S)",
           icon: ICONS.downloadImage,
-          click: function () {
-            downloadImageButton();
+          click: async function () {
+            await downloadImageButton();
           },
         },
         // {
@@ -357,11 +357,44 @@ function OpenBBMain(
     button_pressed(title, active);
   }
 
-  function downloadImageButton() {
-    loadingOverlay("Saving PNG");
+  async function downloadImageButton() {
+    let filename = globals.filename;
+    let ext = "png";
+    let writable;
+    if (window.showSaveFilePicker) {
+      const handle = await showSaveFilePicker({
+        suggestedName: `${filename}.${ext}`,
+        types: [
+          {
+            description: "PNG Image",
+            accept: {
+              "image/png": [".png"],
+            },
+          },
+          {
+            description: "JPEG Image",
+            accept: {
+              "image/jpeg": [".jpeg"],
+            },
+          },
+          {
+            description: "SVG Image",
+            accept: {
+              "image/svg+xml": [".svg"],
+            },
+          },
+        ],
+        excludeAcceptAllOption: true,
+      });
+      writable = await handle.createWritable();
+      filename = handle.name;
+      ext = handle.name.split(".").pop();
+    }
+
+    loadingOverlay(`Saving ${ext.toUpperCase()}`);
     hideModebar();
-    non_blocking(function () {
-      downloadImage(globals.filename, "png");
+    non_blocking(async function () {
+      await downloadImage(filename, ext, writable);
       setTimeout(function () {
         setTimeout(function () {
           loading.classList.remove("show");
@@ -371,10 +404,10 @@ function OpenBBMain(
     }, 2)();
   }
 
-  function downloadCsvButton(gd) {
+  async function downloadCsvButton(gd) {
     loadingOverlay("Saving CSV");
-    setTimeout(function () {
-      downloadData(gd);
+    setTimeout(async function () {
+      await downloadData(gd);
     }, 500);
     setTimeout(function () {
       loading.classList.remove("show");
