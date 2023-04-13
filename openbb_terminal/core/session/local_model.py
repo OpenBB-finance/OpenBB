@@ -16,9 +16,7 @@ from openbb_terminal.core.session.current_user import (
     set_preference,
     set_sources,
 )
-from openbb_terminal.core.session.credentials_handler import set_credential
-from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.sources_handler import merge_sources
 from openbb_terminal.rich_config import console
 
 

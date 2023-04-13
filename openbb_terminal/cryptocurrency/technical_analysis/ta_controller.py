@@ -43,10 +43,6 @@ def no_ticker_message():
     """Print message when no ticker is loaded"""
     console.print("[red]No data loaded. Use 'load' command to load a symbol[/red]")
 
-def no_ticker_message():
-    """Print message when no ticker is loaded"""
-    console.print("[red]No data loaded. Use 'load' command to load a symbol[/red]")
-
 
 class TechnicalAnalysisController(CryptoBaseController):
     """Technical Analysis Controller class"""

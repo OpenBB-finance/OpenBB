@@ -254,10 +254,6 @@ TBFFR_PARAMETER_TO_FRED_ID = {
     "6_month": "TB6SMFFM",
 }
 
-YIELD_CURVE_NOMINAL_RATES = [1 / 12, 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
-YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
-YIELD_CURVE_REAL_RATES = [5, 7, 10, 20, 30]
-YIELD_CURVE_PAR_RATES = [2, 5, 10, 30]
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -371,22 +367,6 @@ def get_yield_curve(
         date = datetime.now().strftime("%Y-%m-%d")
         start_date = (datetime.now() - timedelta(days=50)).strftime("%Y-%m-%d")
         get_last = True
-
-    if inflation_adjusted:
-        fred_series = YIELD_CURVE_SERIES_REAL
-        years = YIELD_CURVE_REAL_RATES
-    elif spot_or_par:
-        if spot_or_par == "spot":
-            years = YIELD_CURVE_SPOT_RATES  # type: ignore
-            fred_series = YIELD_CURVE_SERIES_CORPORATE_SPOT
-        elif spot_or_par == "par":
-            years = YIELD_CURVE_PAR_RATES
-            fred_series = YIELD_CURVE_SERIES_CORPORATE_PAR
-        else:
-            console.print("Please select either 'spot' or 'par' rates.")
-    else:
-        fred_series = YIELD_CURVE_SERIES_NOMINAL
-        years = YIELD_CURVE_NOMINAL_RATES  # type: ignore
 
     if inflation_adjusted:
         fred_series = YIELD_CURVE_SERIES_REAL

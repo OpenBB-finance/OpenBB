@@ -172,81 +172,6 @@ MOODY_TO_OPTIONS: Dict[str, Dict] = {
     "Spread": ["treasury", "fed_funds"],  # type: ignore
 }
 
-NAME_TO_ID_ECB = {"deposit": "ECBDFR", "lending": "ECBMLFR", "refinancing": "ECBMRRFR"}
-
-USARATES_TO_FRED_ID = {
-    "4_week": {"tbill": "DTB4WK"},
-    "1_month": {"cmn": "DGS1MO"},
-    "3_month": {"tbill": "TB3MS", "cmn": "DGS3MO"},
-    "6_month": {"tbill": "DTB6", "cmn": "DGS6MO"},
-    "1_year": {"tbill": "DTB1YR", "cmn": "DGS1"},
-    "2_year": {"cmn": "DGS2"},
-    "3_year": {"cmn": "DGS3"},
-    "5_year": {"tips": "DFII5", "cmn": "DGS5"},
-    "7_year": {"tips": "DFII7", "cmn": "DGS7"},
-    "10_year": {"tips": "DFII10", "cmn": "DGS10"},
-    "20_year": {"tips": "DFII20", "cmn": "DGS20"},
-    "30_year": {"tips": "DFII30", "cmn": "DGS30"},
-}
-
-ICE_BOFA_TO_OPTIONS = {
-    "Type": ["total_return", "yield", "yield_to_worst"],
-    "Category": ["all", "duration", "eur", "usd"],
-    "Area": ["asia", "emea", "eu", "ex_g10", "latin_america", "us"],
-    "Grade": [
-        "a",
-        "aa",
-        "aaa",
-        "b",
-        "bb",
-        "bbb",
-        "ccc",
-        "crossover",
-        "high_grade",
-        "high_yield",
-        "non_financial",
-        "non_sovereign",
-        "private_sector",
-        "public_sector",
-    ],
-}
-
-MOODY_TO_OPTIONS: Dict[str, Dict] = {
-    "Type": {
-        "aaa": {
-            "index": {
-                "id": "DAAA",
-                "name": "Moody's Seasoned Aaa Corporate Bond Yield",
-            },
-            "treasury": {
-                "id": "AAA10Y",
-                "name": "Moody's Seasoned Aaa Corporate Bond Yield Relative to Yield "
-                "on 10-Year Treasury Constant Maturity",
-            },
-            "fed_funds": {
-                "id": "AAAFF",
-                "name": "Moody's Seasoned Aaa Corporate Bond Minus Federal Funds Rate",
-            },
-        },
-        "baa": {
-            "index": {
-                "id": "DBAA",
-                "name": "Moody's Seasoned Baa Corporate Bond Yield",
-            },
-            "treasury": {
-                "id": "BAA10Y",
-                "name": "Moody's Seasoned Baa Corporate Bond Yield Relative "
-                "to Yield on 10-Year Treasury Constant Maturity",
-            },
-            "fed_funds": {
-                "id": "BAAFF",
-                "name": "Moody's Seasoned Baa Corporate Bond Minus Federal Funds Rate",
-            },
-        },
-    },
-    "Spread": ["treasury", "fed_funds"],  # type: ignore
-}
-
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -747,8 +672,6 @@ def plot_projection(
         f"FOMC {'Long Run ' if long_run else ''}Summary of Economic Projections\n"
         "for the Federal Funds Rate"
     )
-    ax.legend(prop={"size": 8}, loc="lower left")
-    ax.set_ylabel("Yield (%)")
 
     for legend, df in data_series_df.items():
         fig.add_scatter(
@@ -1111,17 +1034,6 @@ def plot_usrates(
     maturity of one year or less. Treasury bills are usually sold in denominations of $1,000. However, some can reach
     a maximum denomination of $5 million in non-competitive bids. These securities are widely regarded as low-risk
     and secure investments.
-
-    Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
-    yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to
-    its time to maturity, is based on the closing market bid yields on actively traded Treasury securities in the
-    over-the-counter market. These market yields are calculated from composites of quotations obtained by the Federal
-    Reserve Bank of New York. The constant maturity yield values are read from the yield curve at fixed maturities,
-    currently 1, 3, and 6 months and 1, 2, 3, 5, 7, 10, 20, and 30 years. This method provides a yield for a 10-year
-    maturity, for example, even if no outstanding security has exactly 10 years remaining to maturity. Similarly,
-    yields on inflation-indexed securities at “constant maturity” are interpolated from the daily yield curve for
-    Treasury inflation protected securities in the over-the-counter market. The inflation-indexed constant maturity
-    yields are read from this yield curve at fixed maturities, currently 5, 7, 10, 20, and 30 years.
 
     Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
     yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to

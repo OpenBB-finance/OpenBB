@@ -2595,7 +2595,7 @@ the source may make major data and structural revisions to the series and tables
 available in the Release Highlights (https://www.federalreserve.gov/apps/fof/FOFHighlight.aspx).  In
 the Financial Accounts, the source identifies each series by a string of patterned letters and
 numbers. For a detailed description, including how this series is constructed, see the series
-analyzer (https://www.federalreserve.gov/apps/fof/SeriesAnalyzer.aspx?s=FL614190005&t=) provided by
+analyzer (https://www.federalreserve.gov/apps/fof/SeriesAnalyzer.aspx?s=FL613063003&t=) provided by
 the source."
 492,BOGZ1FA613092003Q,2023-03-20,2023-03-20,"Finance Companies; U.S. Direct Investment Abroad
 (Market Value); Asset, Transactions",1946-10-01,2022-10-01,Quarterly,Q,Millions of Dollars,Mil. of $,Seasonally Adjusted Annual Rate,SAAR,2023-03-09 15:09:48-06,1,1,"Source ID: FA613092003.Q  For more information about the Flow of Funds tables, see the Financial
@@ -5501,7 +5501,7 @@ the source may make major data and structural revisions to the series and tables
 available in the Release Highlights (https://www.federalreserve.gov/apps/fof/FOFHighlight.aspx).  In
 the Financial Accounts, the source identifies each series by a string of patterned letters and
 numbers. For a detailed description, including how this series is constructed, see the series
-analyzer (https://www.federalreserve.gov/apps/fof/SeriesAnalyzer.aspx?s=FU613065200&t=) provided by
+analyzer (https://www.federalreserve.gov/apps/fof/SeriesAnalyzer.aspx?s=FA613093043&t=) provided by
 the source."
 860,BOGZ1FA613069500A,2023-03-20,2023-03-20,"Finance Companies; Nonfinancial Business Loans;
 Asset, Transactions",1946-01-01,2022-01-01,Annual,A,Millions of Dollars,Mil. of $,Seasonally Adjusted Annual Rate,SAAR,2023-03-15 09:04:46-05,1,1,"Source ID: FA613069500.A  For more information about the Flow of Funds tables, see the Financial
@@ -5609,7 +5609,7 @@ the source may make major data and structural revisions to the series and tables
 available in the Release Highlights (https://www.federalreserve.gov/apps/fof/FOFHighlight.aspx).  In
 the Financial Accounts, the source identifies each series by a string of patterned letters and
 numbers. For a detailed description, including how this series is constructed, see the series
-analyzer (https://www.federalreserve.gov/apps/fof/SeriesAnalyzer.aspx?s=FA613178005&t=) provided by
+analyzer (https://www.federalreserve.gov/apps/fof/SeriesAnalyzer.aspx?s=FA613093005&t=) provided by
 the source."
 879,BOGZ1FL613092305A,2023-03-20,2023-03-20,"Finance Companies; U.S. Direct Investment Abroad:
 Intercompany Debt (Market Value), Level",1945-01-01,2022-01-01,Annual,A,Millions of Dollars,Mil. of $,Not Seasonally Adjusted,NSA,2023-03-10 16:49:45-06,1,1,"Source ID: FL613092305.A  For more information about the Flow of Funds tables, see the Financial

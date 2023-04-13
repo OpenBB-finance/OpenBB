@@ -18,7 +18,7 @@ interactions:
       string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^GSPC","exchangeName":"SNP","instrumentType":"INDEX","firstTradeDate":-1325583000,"regularMarketTime":1678289564,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":3994.29,"chartPreviousClose":3986.37,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1678285800,"start":1678266000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1678309200,"start":1678285800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1678323600,"start":1678309200,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1678289564],"indicators":{"quote":[{"high":[3995.85009765625],"low":[3973.280029296875],"volume":[419206593],"close":[3994.2900390625],"open":[3987.550048828125]}],"adjclose":[{"adjclose":[3994.2900390625]}]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:

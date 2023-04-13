@@ -100,24 +100,6 @@ class AccountController(BaseController):
         mt.add_cmd("logout")
         self.update_runtime_choices()
         console.print(text=mt.menu_text, menu="Account")
-        self.update_runtime_choices()
-        console.print(text=mt.menu_text, menu="Account")
-
-    @log_start_end(log=logger)
-    def call_login(self, other_args: List[str]) -> None:
-        """Process login command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="login",
-            description="Login into new session.",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if not is_local() and "-h" not in other_args and "--help" not in other_args:
-            console.print("[info]You are already logged in.[/info]")
-        else:
-            if ns_parser:
-                set_login_called(True)
 
     @log_start_end(log=logger)
     def call_login(self, other_args: List[str]) -> None:

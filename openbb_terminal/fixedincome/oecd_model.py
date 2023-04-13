@@ -112,58 +112,6 @@ COUNTRY_TO_CODE_LONG = {
 }
 
 
-
-COUNTRY_TO_CODE_LONG = {
-    "australia": "AUS",
-    "austria": "AUT",
-    "belgium": "BEL",
-    "bulgaria": "BGR",
-    "brazil": "BRA",
-    "canada": "CAN",
-    "switzerland": "CHE",
-    "chile": "CHL",
-    "china": "CHN",
-    "colombia": "COL",
-    "costa_rica": "CRI",
-    "czech_republic": "CZE",
-    "germany": "DEU",
-    "denmark": "DNK",
-    "euro_area": "EA19",
-    "spain": "ESP",
-    "estonia": "EST",
-    "finland": "FIN",
-    "france": "FRA",
-    "united_kingdom": "GBR",
-    "greece": "GRC",
-    "croatia": "HRV",
-    "hungary": "HUN",
-    "indonesia": "IDN",
-    "india": "IND",
-    "ireland": "IRL",
-    "iceland": "ISL",
-    "israel": "ISR",
-    "italy": "ITA",
-    "japan": "JPN",
-    "korea": "KOR",
-    "lithuania": "LTU",
-    "luxembourg": "LUX",
-    "latvia": "LVA",
-    "mexico": "MEX",
-    "netherlands": "NLD",
-    "norway": "NOR",
-    "new_zealand": "NZL",
-    "poland": "POL",
-    "portugal": "PRT",
-    "romania": "ROU",
-    "russia": "RUS",
-    "slovak_republic": "SVK",
-    "slovenia": "SVN",
-    "sweden": "SWE",
-    "united_states": "USA",
-    "south_africa": "ZAF",
-}
-
-
 @log_start_end(log=logger)
 def get_interest_rate_data(
     data: str = "short",
@@ -293,9 +241,6 @@ def get_interest_rate_data(
     result.index = pd.to_datetime(result.index).date
     result.sort_index(inplace=True)
 
-    result.index = pd.to_datetime(result.index).date
-    result.sort_index(inplace=True)
-
     return result
 
 
@@ -338,34 +283,6 @@ def get_treasury(
     """
     df_short, df_long = pd.DataFrame(), pd.DataFrame()
 
-    Short-term interest rates are the rates at which short-term borrowings are effected between financial
-    institutions or the rate at which short-term government paper is issued or traded in the market. Short-term
-    interest rates are generally averages of daily rates, measured as a percentage. Short-term interest rates are
-    based on three-month money market rates where available. Typical standardised names are "money market rate" and
-    "treasury bill rate".
-
-    Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the
-    price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest
-    rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the
-    prices at which the government bonds are traded on financial markets, not the interest rates at which the loans
-    were issued. In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term
-    interest rates are one of the determinants of business investment. Low long-term interest rates encourage
-    investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of
-    economic growth.
-
-    Parameters
-    ----------
-    short_term: list
-        Countries you wish to plot the 3-month interest rate for
-    long_term: list
-        Countries you wish to plot the 10-year interest rate for
-    forecast: bool
-        If True, plot forecasts for short term interest rates
-    start_date: str
-        Start date of data, in YYYY-MM-DD format
-    end_date: str
-        End date of data, in YYYY-MM-DD format
-    """
     if short_term:
         df_short = get_interest_rate_data(
             f"short{'_forecast' if forecast else ''}",
