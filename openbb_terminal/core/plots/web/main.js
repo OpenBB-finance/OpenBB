@@ -38,6 +38,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   globals.TITLE_DIV = titlediv;
   globals.TEXT_DIV = textdiv;
   globals.CSV_DIV = csvdiv;
+  globals.dark_mode = plotly_figure.theme === "dark";
   console.log("main.js loaded");
   console.log("plotly_figure", plotly_figure);
   let graphs = plotly_figure;
@@ -147,6 +148,13 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           icon: ICONS.changeTitle,
           click: function () {
             openPopup("popup_title");
+          },
+        },
+        {
+          name: "Change Theme",
+          icon: ICONS.sunIcon,
+          click: function () {
+            changeTheme();
           },
         },
       ],
@@ -507,8 +515,13 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       }, 2)();
     }
   }
+  function changeTheme() {
+    globals.dark_mode = !globals.dark_mode;
+    Plotly.relayout(globals.CHART_DIV, {
+      template: globals.dark_mode
+        ? DARK_CHARTS_TEMPLATE
+        : LIGHT_CHARTS_TEMPLATE,
+    });
+    document.body.style.backgroundColor = globals.dark_mode ? "#000" : "#fff";
+  }
 }
-
-document.getElementById("theme").addEventListener("click", function () {
-  console.log(window);
-});

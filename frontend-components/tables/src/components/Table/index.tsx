@@ -33,8 +33,8 @@ function getCellWidth(row, column) {
     const indexLabel = row.hasOwnProperty("index")
       ? "index"
       : row.hasOwnProperty("Index")
-        ? "Index"
-        : null;
+      ? "Index"
+      : null;
     const indexValue = indexLabel ? row[indexLabel] : null;
     const value = row[column];
     const valueType = typeof value;
@@ -99,11 +99,13 @@ export default function Table({
   columns,
   title,
   initialTheme,
+  cmd = "",
 }: {
   data: any[];
   columns: any[];
   title: string;
   initialTheme: "light" | "dark";
+  cmd?: string;
 }) {
   const [colorTheme, setTheme] = useDarkMode(initialTheme);
   const [darkMode, setDarkMode] = useState(
@@ -154,13 +156,14 @@ export default function Table({
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
-              ? "Index"
-              : columns[0]
+            ? "Index"
+            : columns[0];
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
           const probablyDate =
-            (column.toLowerCase().includes("date") || column.toLowerCase().includes("timestamp")) ||
+            column.toLowerCase().includes("date") ||
+            column.toLowerCase().includes("timestamp") ||
             column.toLowerCase() === "index" ||
             (indexValue &&
               typeof indexValue == "string" &&
@@ -191,7 +194,7 @@ export default function Table({
 
             if (typeof value === "number") {
               if (value < 1000000000000) {
-                return <p>{value}</p>
+                return <p>{value}</p>;
               }
             }
 
@@ -259,7 +262,7 @@ export default function Table({
     return !isEqual(currentOrder, defaultOrder);
   }, [columnOrder, rtColumns]);
 
-  console.log(validatePageSize(currentPage))
+  console.log(validatePageSize(currentPage));
 
   const table = useReactTable({
     data,
@@ -283,7 +286,12 @@ export default function Table({
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: typeof currentPage === "string" ? currentPage.includes("All") ? data.length : parseInt(currentPage) : currentPage,
+        pageSize:
+          typeof currentPage === "string"
+            ? currentPage.includes("All")
+              ? data.length
+              : parseInt(currentPage)
+            : currentPage,
       },
     },
   });
@@ -478,6 +486,8 @@ export default function Table({
                 })
                   .format(date)
                   .replace(/:\d\d /, " ")}
+                <br />
+                <span className="text-grey-400">{cmd}</span>
               </p>
               {/* {source && typeof source === "string" && source.includes("*") && (
                 <p className="text-[8px] absolute bottom-0 right-4">
@@ -491,7 +501,7 @@ export default function Table({
                 style={{
                   fontSize: `${Number(fontSize) * 100}%`,
                 }}
-              /*style={{
+                /*style={{
       width: table.getCenterTotalSize(),
     }}*/
               >
@@ -575,9 +585,9 @@ export default function Table({
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                header.column.columnDef.footer,
-                                header.getContext()
-                              )}
+                                  header.column.columnDef.footer,
+                                  header.getContext()
+                                )}
                           </th>
                         ))}
                       </tr>
