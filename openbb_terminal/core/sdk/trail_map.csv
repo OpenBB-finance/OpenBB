@@ -462,7 +462,7 @@ stocks.fa.mgmt,stocks_fa_business_insider_model.get_management,
 stocks.fa.mktcap,stocks_fa_yahoo_finance_model.get_mktcap,stocks_fa_yahoo_finance_view.display_mktcap
 stocks.fa.news,stocks_fa_finviz_model.get_news,
 stocks.fa.overview,stocks_fa_sdk_helpers.get_overview,
-stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.price_target_from_analysts
+stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.display_price_target_from_analysts
 stocks.fa.rating,stocks_fa_fmp_model.get_rating,
 stocks.fa.ratios,stocks_fa_fmp_model.get_key_ratios,
 stocks.fa.revfc,stocks_fa_seeking_alpha_model.get_estimates_rev,
