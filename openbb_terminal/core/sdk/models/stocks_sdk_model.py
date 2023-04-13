@@ -273,7 +273,7 @@ class StocksFundamentalAnalysis(Category):
         `rot`: Get rating over time data. [Source: Finnhub]\n
         `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
         `score`: Gets value score from fmp\n
-        `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
+        `sec`: Get SEC filings for a given stock ticker. [Source: Nasdaq]\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
         `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
@@ -323,7 +323,7 @@ class StocksFundamentalAnalysis(Category):
         self.rot = lib.stocks_fa_finnhub_model.get_rating_over_time
         self.rot_chart = lib.stocks_fa_finnhub_view.rating_over_time
         self.score = lib.stocks_fa_fmp_model.get_score
-        self.sec = lib.stocks_fa_marketwatch_model.get_sec_filings
+        self.sec = lib.stocks_fa_nasdaq_model.get_sec_filings
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
         self.splits = lib.stocks_fa_yahoo_finance_model.get_splits

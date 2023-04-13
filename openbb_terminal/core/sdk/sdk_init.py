@@ -345,6 +345,8 @@ from openbb_terminal.stocks.fundamental_analysis import (
     fmp_view as stocks_fa_fmp_view,
     marketwatch_model as stocks_fa_marketwatch_model,
     marketwatch_view as stocks_fa_marketwatch_view,
+    nasdaq_model as stocks_fa_nasdaq_model,
+    nasdaq_view as stocks_fa_nasdaq_view,
     polygon_model as stocks_fa_polygon_model,
     polygon_view as stocks_fa_polygon_view,
     sdk_helpers as stocks_fa_sdk_helpers,

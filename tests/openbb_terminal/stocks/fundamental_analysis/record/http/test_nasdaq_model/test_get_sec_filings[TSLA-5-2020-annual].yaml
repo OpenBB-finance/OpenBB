@@ -40,33 +40,31 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 12 Apr 2023 15:44:59 GMT
+      - Thu, 13 Apr 2023 12:17:27 GMT
       Expires:
-      - Wed, 12 Apr 2023 15:44:59 GMT
+      - Thu, 13 Apr 2023 12:17:27 GMT
       Pragma:
       - no-cache
       Server:
       - Kestrel
       Set-Cookie:
-      - ak_bmsc=4B39E4B0EF78EEB60AC4A265296B123A~000000000000000000000000000000~YAAQl6wVAjsXzGKHAQAAsT4kdhNU6sPugxoP4POhrOrmkmKWAMlNRqRCFOksT/Z2xm56PKLvsiHjZdxMlL8cizFxPAssjLxOqMrgxArd+fIvreXHeSNwuNTFim05hjXSlGAR7VK2Y1kRgzupCK2IoEn6K9XnHtiw0QZrinWw/TGRlY9fOfi8LiXvt5GdBrShcNAA3LTJdMksyUtrLCFUTAAoTqcV+RmunV3JqqRxSZySXuRx4qVt4nRZ0x9Ikn+trfzTQ9nUuRw262wpPNznsciBssf4FQIiOPmF5M+0DmVe6UZ2GgSCaiKHaOXgBp7mPZqs+9dWpHN9p2hojYNh3+E6viraQ441Lr6o6TNL/bNznGK9TtWkHPojalw=;
-        Domain=.nasdaq.com; Path=/; Expires=Wed, 12 Apr 2023 17:44:58 GMT; Max-Age=7199;
+      - ak_bmsc=18777FC2E7BF583D8F9A83808DEC1349~000000000000000000000000000000~YAAQGFUQYA2tFnOHAQAAQZqMehPgRfq2G0Q6vKhMUwQKL0GhSiraVCPN4dS8NRgJYzux41+r/5yj3m4VTkP/e9wuFcfZtcX5avhzjSqnb/4Lu2xdMYl5IKDGSy0/gqZHPd0UCqZPCtQTxL16P/J2L4wxt5mL64RKZyGpOGI5m8YQ9VjiELmDlGvoGl3pP6IBld7Mw/GQ7aJKOGq3cFCHzt4IYHVR+tgndlkH/pObxzZ0iz708pQrHjUjpghajBmFPynIbAva3Vz3b2tyDg3SbXUdYVkxz1ddy8AtGxnZ5Hi6c0//FIZtNz4lw1p7Nt5z8TfEd1SsczOLytuSmHCBxPgbVEptEeX++JosbDW81leR2Jz7J/2vWYK4GFzTNw==;
+        Domain=.nasdaq.com; Path=/; Expires=Thu, 13 Apr 2023 14:17:27 GMT; Max-Age=7200;
         HttpOnly
       Strict-Transport-Security:
       - max-age=86400
       Vary:
       - Accept-Encoding
       X-EdgeConnect-MidMile-RTT:
-      - '15'
-      - '40'
+      - '30'
       X-EdgeConnect-Origin-MEX-Latency:
-      - '771'
-      - '771'
+      - '161'
       gid:
-      - '102'
+      - '103'
       lang:
       - en
       rid:
-      - ea89d36a-2d38-4db3-8235-19fb896070ee
+      - 0b0b0a2d-6606-418f-b470-99999c0f8004
       srctype:
       - default
     status:

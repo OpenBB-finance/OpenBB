@@ -468,7 +468,7 @@ stocks.fa.ratios,stocks_fa_fmp_model.get_key_ratios,
 stocks.fa.revfc,stocks_fa_seeking_alpha_model.get_estimates_rev,
 stocks.fa.rot,stocks_fa_finnhub_model.get_rating_over_time,stocks_fa_finnhub_view.rating_over_time
 stocks.fa.score,stocks_fa_fmp_model.get_score,
-stocks.fa.sec,stocks_fa_marketwatch_model.get_sec_filings,
+stocks.fa.sec,stocks_fa_nasdaq_model.get_sec_filings,
 stocks.fa.shrs,stocks_fa_yahoo_finance_model.get_shareholders,
 stocks.fa.similar_dfs,stocks_fa_dcf_model.get_similar_dfs,
 stocks.fa.splits,stocks_fa_yahoo_finance_model.get_splits,stocks_fa_yahoo_finance_view.display_splits
