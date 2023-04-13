@@ -1,1 +1,0 @@
-sync is ON, use --on or --off to change.
