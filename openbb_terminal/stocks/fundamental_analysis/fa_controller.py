@@ -1648,10 +1648,11 @@ class FundamentalAnalysisController(StockBaseController):
                         max_similars=ns_parser.similar,
                         growth=ns_parser.growth,
                     )
-                except Exception:
+                except Exception as e:
+                    logger.exception(e)
                     console.print(
                         "[red]Could not properly create the DCF, please make sure you are"
-                        " using a valid, US listed ticker."
+                        " using a valid, US listed ticker.[/red]"
                     )
                     return
                 if dcf and dcf.data:
