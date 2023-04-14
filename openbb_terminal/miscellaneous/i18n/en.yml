@@ -414,7 +414,6 @@ en:
   stocks/bt/load: load a specific stock ticker for analysis
   stocks/ta/_ticker: Ticker
   stocks/ta/load: load a specific stock ticker for analysis
-  stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
   stocks/ta/recom: recommendation based on technical indicators
   stocks/ta/_overlap_: Overlap
@@ -776,7 +775,6 @@ en:
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
-  economy/spectrum: spectrum of sectors, industry, country
   economy/eval: create new series by performing operations on loaded data
   economy/forecast: forecast techniques; rnn, nbeats, transformer, block rnn
   economy/qa: Open quantitative analysis menu with stored data
