@@ -234,7 +234,49 @@ function uploadImage() {
     });
 }
 
-function downloadImage(filename, extension) {
+const openbb_watermark = {
+  yref: "paper",
+  xref: "paper",
+  x: 1,
+  y: 0,
+  text: "OpenBB Terminal",
+  font_size: 17,
+  font_color: "gray",
+  opacity: 0.5,
+  xanchor: "right",
+  yanchor: "bottom",
+  yshift: -80,
+  xshift: 40,
+};
+
+async function setWatermarks(margin, old_index, init = false) {
+  if (init) {
+    globals.CHART_DIV.layout.annotations.push(openbb_watermark);
+    if (globals.cmd_idx && globals.cmd_src) {
+      globals.CHART_DIV.layout.annotations[globals.cmd_idx].text =
+        globals.cmd_src;
+    }
+
+    Plotly.relayout(globals.CHART_DIV, {
+      "title.text": globals.title,
+      margin: globals.old_margin,
+    });
+  }
+
+  if (!init) {
+    if (globals.cmd_idx && globals.cmd_src) {
+      globals.CHART_DIV.layout.annotations[globals.cmd_idx].text = "";
+    }
+    globals.CHART_DIV.layout.annotations.splice(old_index, 1);
+
+    Plotly.relayout(globals.CHART_DIV, {
+      "title.text": "",
+      margin: margin,
+    });
+  }
+}
+
+async function downloadImage(filename, extension, writable = undefined) {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
 
@@ -247,20 +289,47 @@ function downloadImage(filename, extension) {
     // } else if (extension == "svg") {
     //   imageDownload = domtoimage.toSvg;
   } else if (["svg", "pdf"].includes(extension)) {
-    Plotly.downloadImage(globals.CHART_DIV, {
-      format: "svg",
-      height: globals.CHART_DIV.clientHeight,
-      width: globals.CHART_DIV.clientWidth,
-      filename: filename,
-    });
+    const margin = globals.CHART_DIV.layout.margin;
+    const old_index = globals.CHART_DIV.layout.annotations.length;
+
+    await setWatermarks(margin, old_index, true);
+
+    if (window.showSaveFilePicker && writable) {
+      await Plotly.toImage(globals.CHART_DIV, {
+        format: "svg",
+        height: globals.CHART_DIV.clientHeight,
+        width: globals.CHART_DIV.clientWidth,
+      }).then(async function (dataUrl) {
+        const blob = await fetch(dataUrl).then((r) => r.blob());
+        await writable.write(blob);
+        await writable.close();
+      });
+    } else {
+      Plotly.downloadImage(globals.CHART_DIV, {
+        format: "svg",
+        height: globals.CHART_DIV.clientHeight,
+        width: globals.CHART_DIV.clientWidth,
+        filename: filename,
+      });
+    }
+
+    await setWatermarks(margin, old_index, false);
+
     return;
   } else {
     console.log("Invalid extension");
     return;
   }
+
   imageDownload(document.getElementById("openbb_container"))
-    .then(function (dataUrl) {
-      downloadURI(dataUrl, filename + "." + extension);
+    .then(async function (dataUrl) {
+      if (window.showSaveFilePicker && writable) {
+        const blob = await fetch(dataUrl).then((r) => r.blob());
+        await writable.write(blob);
+        await writable.close();
+      } else {
+        downloadURI(dataUrl, filename + "." + extension);
+      }
       loader.classList.remove("show");
     })
     .catch(function (error) {
@@ -279,7 +348,7 @@ function downloadURI(uri, name) {
   document.body.removeChild(link);
 }
 
-function downloadData(gd) {
+async function downloadData(gd, filename, writable = undefined) {
   let data = gd.data;
   let candlestick = false;
   let csv = undefined;
@@ -363,23 +432,29 @@ function downloadData(gd) {
     }
   }
 
-  let filename = globals.filename;
-  let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   if (navigator.msSaveBlob) {
     // IE 10+
     navigator.msSaveBlob(blob, filename);
   } else {
-    let link = window.document.createElement("a");
-    if (link.download !== undefined) {
-      // feature detection
-      // Browsers that support HTML5 download attribute
-      let url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", filename);
-      link.style.visibility = "hidden";
-      window.document.body.appendChild(link);
-      link.click();
-      window.document.body.removeChild(link);
+    // feature detection
+    // Browsers that support showSaveFilePicker or HTML5 download attribute
+    if (window.showSaveFilePicker && writable) {
+      await writable.write(blob);
+      await writable.close();
+    } else {
+      let link = window.document.createElement("a");
+      if (link.download !== undefined) {
+        // feature detection
+        // Browsers that support HTML5 download attribute
+        let url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = "hidden";
+        window.document.body.appendChild(link);
+        link.click();
+        window.document.body.removeChild(link);
+      }
     }
   }
 }

@@ -8,7 +8,6 @@ from unittest.mock import mock_open
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.account.account_model import read_routine, save_routine
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,
@@ -17,6 +16,7 @@ from openbb_terminal.core.models.user_model import (
     UserModel,
 )
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.routines_handler import read_routine, save_routine
 
 
 @pytest.fixture(name="test_user")
@@ -40,7 +40,7 @@ def test_read_routine(mocker, exists: bool, test_user):
     file_name = "test_routine.openbb"
     routine = "do something"
     current_user = get_current_user()
-    path = "openbb_terminal.account.account_model"
+    path = "openbb_terminal.core.session.routines_handler"
 
     mocker.patch(
         target=path + ".get_current_user",
@@ -71,7 +71,7 @@ def test_read_routine(mocker, exists: bool, test_user):
 def test_read_routine_exception(mocker, test_user):
     file_name = "test_routine.openbb"
     current_user = get_current_user()
-    path = "openbb_terminal.account.account_model"
+    path = "openbb_terminal.core.session.routines_handler"
 
     mocker.patch(
         target=path + ".get_current_user",
@@ -104,7 +104,7 @@ def test_save_routine(mocker, exists: bool, test_user):
     file_name = "test_routine.openbb"
     routine = "do something"
     current_user = get_current_user()
-    path = "openbb_terminal.account.account_model"
+    path = "openbb_terminal.core.session.routines_handler"
 
     mocker.patch(
         target=path + ".get_current_user",
@@ -138,7 +138,7 @@ def test_save_routine(mocker, exists: bool, test_user):
 def test_save_routine_exception(mocker, test_user):
     file_name = "test_routine.openbb"
     routine = "do something"
-    path = "openbb_terminal.account.account_model"
+    path = "openbb_terminal.core.session.routines_handler"
 
     mocker.patch(
         target=path + ".get_current_user",

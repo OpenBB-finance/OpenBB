@@ -84,7 +84,8 @@ class PreferencesModel(BaseModel):
     MPL_STYLE: str = "dark"
     PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
-    THEME: Literal["dark", "light"] = "dark"
+    CHART_STYLE: Literal["dark", "light"] = "dark"
+    TABLE_STYLE: Literal["dark", "light"] = "dark"
 
     # PATHS
     GUESS_EASTER_EGG_FILE: str = os.getcwd() + os.path.sep + "guess_game.json"
