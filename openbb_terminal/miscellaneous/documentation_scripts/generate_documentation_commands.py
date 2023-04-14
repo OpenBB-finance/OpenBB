@@ -29,8 +29,12 @@ MD_FILES.extend(glob.glob("website/content/sdk/usage/basics/*.md", recursive=Tru
 MD_FILES.extend(glob.glob("website/content/sdk/usage/guides/*.md", recursive=True))
 MD_FILES.extend(glob.glob("website/content/sdk/usage/intros/*.md", recursive=True))
 
-EXPORT_FILE_PATH = "openbb_terminal/miscellaneous/documentation_scripts/documentation_commands"
-EXPORT_FILE_PATH_SDK = "openbb_terminal/miscellaneous/documentation_scripts/documentation_commands_sdk"
+EXPORT_FILE_PATH = (
+    "openbb_terminal/miscellaneous/documentation_scripts/documentation_commands"
+)
+EXPORT_FILE_PATH_SDK = (
+    "openbb_terminal/miscellaneous/documentation_scripts/documentation_commands_sdk"
+)
 
 
 def read_yaml_file(path: Path) -> dict:
