@@ -199,7 +199,7 @@
       var interval = setInterval(function () {
         // Waits for OpenBBMain and plotly_figure to be defined before
         // calling OpenBBMain to avoid errors
-        let cmd_src = "";
+        globals.cmd_src = "";
         if (typeof OpenBBMain != "undefined" && window.plotly_figure) {
           clearInterval(interval);
           const date = new Date();
@@ -263,7 +263,7 @@
 
           let style = "font-size: 12px; font-weight: 400; color: gray;";
           document.getElementById("date").innerHTML =
-            formattedDate + `<br /><span style="${style}">${cmd_src}</span>`;
+            formattedDate + `<br /><span style="${style}">${globals.cmd_src}</span>`;
           document.getElementById("title").innerHTML = title;
 
           CHART_DIV = document.getElementById("openbb_chart");
