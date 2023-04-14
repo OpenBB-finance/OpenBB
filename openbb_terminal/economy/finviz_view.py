@@ -5,8 +5,6 @@ import logging
 import os
 from typing import Optional
 
-from PIL import Image
-
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import finviz_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -112,36 +110,6 @@ def display_performance(
         df_group,
         sheet_name,
     )
-
-
-@log_start_end(log=logger)
-def display_spectrum(
-    group: str = "sector", export: str = "", sheet_name: Optional[str] = None
-):
-    """Display finviz spectrum in system viewer [Source: Finviz]
-
-    Parameters
-    ----------
-    group: str
-        Group by category. Available groups can be accessed through get_groups().
-    sheet_name: str
-        Optionally specify the name of the sheet the data is exported to.
-    export: str
-        Format to export data
-    """
-    finviz_model.get_spectrum_data(group)
-
-    group = finviz_model.GROUPS[group]
-    img = Image.open(group + ".jpg")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "spectrum",
-        sheet_name,
-    )
-
-    img.show()
 
 
 @log_start_end(log=logger)

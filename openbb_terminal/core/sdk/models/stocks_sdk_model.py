@@ -554,8 +554,6 @@ class StocksTechnicalAnalysis(Category):
         `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
         `summary`: Get technical summary report provided by FinBrain's API\n
         `summary_chart`: Print technical summary report provided by FinBrain's API\n
-        `view`: Get finviz image for given ticker\n
-        `view_chart`: View finviz image for ticker\n
     """
 
     _location_path = "stocks.ta"
@@ -568,8 +566,6 @@ class StocksTechnicalAnalysis(Category):
         self.rsp_chart = lib.stocks_ta_rsp_view.display_rsp
         self.summary = lib.stocks_ta_finbrain_model.get_technical_summary_report
         self.summary_chart = lib.stocks_ta_finbrain_view.technical_summary_report
-        self.view = lib.stocks_ta_finviz_model.get_finviz_image
-        self.view_chart = lib.stocks_ta_finviz_view.view
 
 
 class StocksTradingHours(Category):
