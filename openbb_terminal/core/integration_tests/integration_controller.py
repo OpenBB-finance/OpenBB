@@ -717,7 +717,7 @@ def main():
     set_current_user(current_user)
 
     # system
-    set_system_variable("DEBUG_MODE", False)
+    set_system_variable("DEBUG_MODE", True)
     set_system_variable("LOG_COLLECT", False)
 
     # run integration tests
