@@ -315,7 +315,7 @@ def run_test(
         sources = user.get("sources", {})
         user_model = UserModel(
             profile=load_dict_to_model(profile, ProfileModel),
-            credentials=load_dict_to_model(credentials, CredentialsModel),
+            credentials=load_dict_to_model(credentials, CredentialsModel),  # type: ignore
             preferences=load_dict_to_model(preferences, PreferencesModel),
             sources=load_dict_to_model(sources, SourcesModel),
         )
