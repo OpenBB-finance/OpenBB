@@ -19,12 +19,14 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
-from openbb_terminal.core.models.credentials_model import CredentialsModel
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.models.profile_model import ProfileModel
-from openbb_terminal.core.models.sources_model import SourcesModel
-from openbb_terminal.core.models.system_model import SystemModel
-from openbb_terminal.core.models.user_model import UserModel
+from openbb_terminal.core.models import (
+    CredentialsModel,
+    PreferencesModel,
+    ProfileModel,
+    SourcesModel,
+    SystemModel,
+    UserModel,
+)
 from openbb_terminal.core.session.current_system import (
     get_current_system,
     set_current_system,
