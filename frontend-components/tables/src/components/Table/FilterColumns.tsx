@@ -32,14 +32,17 @@ export default function FilterColumns({
   return (
     <DropdownMenuPrimitive.Root open={open}>
       {onlyIconTrigger ? (
-        <DropdownMenuPrimitive.Trigger onClick={() => setOpen(!open)}>
+        <DropdownMenuPrimitive.Trigger
+          title="Filter columns"
+          onClick={() => setOpen(!open)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-7 h-7"
           >
             <path
               strokeLinecap="round"
@@ -55,7 +58,7 @@ export default function FilterColumns({
           </DropdownMenuPrimitive.Label>
           <DropdownMenuPrimitive.Trigger
             onClick={() => setOpen(!open)}
-            className="bg-white text-black dark:bg-grey-900 whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center justify-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
+            className="bg-white text-black dark:bg-grey-900 dark:text-white whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center justify-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
             aria-label={label}
           >
             <span>Filter columns</span>

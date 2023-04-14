@@ -42,7 +42,7 @@ const Select = ({
           {label}
         </SelectPrimitive.Label>
         <SelectPrimitive.Trigger
-          className="justify-between bg-white text-black dark:bg-grey-900 whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
+          className="justify-between bg-white text-black dark:text-white dark:bg-grey-900 whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
           aria-label={label}
         >
           <SelectPrimitive.Value placeholder={placeholder} />
