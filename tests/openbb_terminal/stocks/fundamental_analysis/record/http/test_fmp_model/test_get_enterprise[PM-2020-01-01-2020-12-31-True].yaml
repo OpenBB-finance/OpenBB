@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/enterprise-values/PM?apikey=MOCK_API_KEY&limit=0&period=quarter
+  response:
+    body:
+      string: "{\n  \"Error Message\": \"Special Endpoint : This endpoint is not available
+        under your current subscription please visit our subscription page to upgrade
+        your plan at https://site.financialmodelingprep.com/developer/docs/pricing\"\n}"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '227'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 11:06:23 GMT
+      ETag:
+      - W/"e3-T2CiDOhWx5bgsLpIQMXPJu5qPW8"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 403
+      message: Forbidden
+version: 1
