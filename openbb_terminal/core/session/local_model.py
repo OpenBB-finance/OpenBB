@@ -10,7 +10,6 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.models.sources_model import get_allowed_sources
 from openbb_terminal.core.session.current_user import (
-    get_current_user,
     get_env_dict,
     set_credential,
     set_preference,
@@ -87,11 +86,17 @@ def remove(path: Path) -> bool:
         return False
 
 
-def update_flair():
-    """Update the flair."""
+def update_flair(username: str):
+    """Update the flair.
+
+    Parameters
+    ----------
+    username : str
+        The username.
+    """
     if "FLAIR" not in get_env_dict():
         MAX_FLAIR_LEN = 20
-        flair = "[" + get_current_user().profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
+        flair = "[" + username[:MAX_FLAIR_LEN] + "]" + " 🦋"
         set_preference("FLAIR", flair)
 
 
