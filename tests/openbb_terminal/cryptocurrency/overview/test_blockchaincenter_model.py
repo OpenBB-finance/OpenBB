@@ -1,18 +1,19 @@
 import pytest
+from pandas import DataFrame
 
 from openbb_terminal.cryptocurrency.overview import blockchaincenter_model
 
 
-@pytest.mark.skip
-@pytest.mark.vcr
+@pytest.mark.record_http
 @pytest.mark.parametrize(
-    "days,since,until",
+    "period, start_date, end_date",
     [
-        (365, 1_601_596_800, 1_641_573_787),
-        (90, 1_601_596_800, 1_641_573_787),
-        (30, 1_601_596_800, 1_641_573_787),
+        (30, "2021-01-01", "2021-01-10"),
     ],
 )
-def test_get_altcoin_index(days, since, until, recorder):
-    df = blockchaincenter_model.get_altcoin_index(days, since, until)
-    recorder.capture(df)
+def test_get_altcoin_index(period, start_date, end_date):
+    df = blockchaincenter_model.get_altcoin_index(
+        period=period, start_date=start_date, end_date=end_date
+    )
+
+    assert isinstance(df, DataFrame)
