@@ -112,9 +112,9 @@ class EconometricsController(BaseController):
     def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
-        self.files: List[str] = list()
-        self.datasets: Dict[str, pd.DataFrame] = dict()
-        self.regression: Dict[Any[Dict, Any], Any] = dict()
+        self.files: List[str] = []
+        self.datasets: Dict[str, pd.DataFrame] = {}
+        self.regression: Dict[Any[Dict, Any], Any] = {}
 
         self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 
@@ -187,7 +187,7 @@ class EconometricsController(BaseController):
                 "season",
                 "lag",
             ]:
-                choices[feature] = dict()
+                choices[feature] = {}
 
             # Initialize this for regressions to be able to use -h flag
             choices["regressions"] = {}
@@ -361,9 +361,7 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
             # show examples from statsmodels
             if ns_parser.examples:
                 df = pd.DataFrame.from_dict(common_model.DATA_EXAMPLES, orient="index")
@@ -400,11 +398,10 @@ class EconometricsController(BaseController):
 
             if ns_parser.alias:
                 alias = ns_parser.alias
+            elif "." in ns_parser.file:
+                alias = ".".join(ns_parser.file.split(".")[:-1])
             else:
-                if "." in ns_parser.file:
-                    alias = ".".join(ns_parser.file.split(".")[:-1])
-                else:
-                    alias = ns_parser.file
+                alias = ns_parser.file
 
             # check if this dataset has been added already
             if alias in self.files:
@@ -459,11 +456,9 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, export_allowed=NO_EXPORT
-        )
-
-        if ns_parser:
+        ):
             if not ns_parser.name or ns_parser.name not in self.datasets:
                 console.print("Please enter a valid dataset.")
             else:
@@ -592,13 +587,11 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
-        )
-
-        if ns_parser:
+        ):
             dataset_names = (
-                list(self.datasets.keys()) if not ns_parser.name else [ns_parser.name]
+                [ns_parser.name] if ns_parser.name else list(self.datasets.keys())
             )
 
             for name in dataset_names:
@@ -654,11 +647,9 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
+        ):
             if "." in ns_parser.name:
                 dataset, col = ns_parser.name.split(".")
 
@@ -722,13 +713,11 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--dataset")
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_FIGURES_ALLOWED,
-        )
-
-        if ns_parser:
+        ):
             # check proper file name is provided
             if not ns_parser.target_dataset:
                 console.print("[red]Please enter valid dataset.\n[/red]")
@@ -844,17 +833,15 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(
+            parser, other_args, NO_EXPORT
+        ):
             if ns_parser.name:
                 if "." in ns_parser.name:
                     dataset, column = ns_parser.name.split(".")
                     # Determine date type and accordingly assign date format
                     if column.lower() == "year":
                         date_format = "%Y"
-                    elif column.lower() == "month":
-                        date_format = "%m"
                     elif column.lower() == ["date", "period"]:
                         date_format = "%Y-%m-%d"
 
@@ -941,20 +928,18 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(
+            parser, other_args, NO_EXPORT
+        ):
             name = ns_parser.name
-            index = ns_parser.index
-
-            if index:
+            if index := ns_parser.index:
                 values_found = (
                     [val.strip() for val in index.split(",")]
                     if "," in index
                     else [index]
                 )
 
-                columns = list()
+                columns = []
                 for value in values_found:
                     # check if the value is valid
                     if value in self.datasets[name].columns:
@@ -1051,10 +1036,9 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, NO_EXPORT, limit=5
-        )
-        if ns_parser:
+        ):
             self.datasets[ns_parser.name] = econometrics_model.clean(
                 self.datasets[ns_parser.name],
                 ns_parser.fill,
@@ -1111,9 +1095,9 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(
+            parser, other_args, NO_EXPORT
+        ):
             dataset, new_column = ns_parser.newdatasetcol.split(".")
             dataset2, existing_column = ns_parser.basedatasetcol.split(".")
 
@@ -1259,10 +1243,9 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
+        ):
             self.datasets = econometrics_helpers.create_new_entry(
                 self.datasets, " ".join(ns_parser.query)
             )
@@ -1288,9 +1271,9 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(
+            parser, other_args, NO_EXPORT
+        ):
             for option in ns_parser.delete:
                 dataset, column = option.split(".")
 
@@ -1336,9 +1319,9 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(
+            parser, other_args, NO_EXPORT
+        ):
             if ns_parser.dataset not in self.datasets:
                 console.print(
                     f"Not able to find the dataset {ns_parser.dataset}. Please choose one of "
@@ -1403,9 +1386,9 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(
+            parser, other_args, NO_EXPORT
+        ):
             dataset = ns_parser.dataset
             column_old = ns_parser.oldcol
             column_new = ns_parser.newcol
@@ -1467,10 +1450,9 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
+        ):
             if "," in ns_parser.dependent:
                 console.print(
                     "It appears you have selected multiple variables for the dependent variable. "
@@ -1546,18 +1528,17 @@ class EconometricsController(BaseController):
                     ", make sure to set a singular time index.\n"
                 )
 
-            if dataset in self.datasets:
-                if isinstance(self.datasets[dataset], pd.Series):
-                    data = self.datasets[dataset]
-                elif isinstance(self.datasets[dataset], pd.DataFrame):
-                    data = self.datasets[dataset][column]
-                else:
-                    return console.print(
-                        f"The type of {dataset} ({type(dataset)} is not an option."
-                    )
-            else:
+            if dataset not in self.datasets:
                 return console.print(f"Can not find {dataset}. Did you load the data?")
 
+            if isinstance(self.datasets[dataset], pd.Series):
+                data = self.datasets[dataset]
+            elif isinstance(self.datasets[dataset], pd.DataFrame):
+                data = self.datasets[dataset][column]
+            else:
+                return console.print(
+                    f"The type of {dataset} ({type(dataset)} is not an option."
+                )
             econometrics_view.display_norm(
                 data, dataset, column, ns_parser.plot, ns_parser.export
             )
@@ -1697,11 +1678,9 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
+        ):
             if "," in ns_parser.dependent:
                 console.print(
                     "It appears you have selected multiple variables for the dependent variable. "
@@ -1782,10 +1761,9 @@ class EconometricsController(BaseController):
             prog="compare",
             description="Compare results between all activated Panel regression models",
         )
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
+        ):
             regression_model.get_comparison(
                 self.regression,
                 ns_parser.export,
@@ -1815,10 +1793,9 @@ class EconometricsController(BaseController):
             action="store_true",
             default=False,
         )
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
+        ):
             if not self.regression["OLS"]["model"]:
                 console.print(
                     "Please perform an OLS regression before estimating the Durbin-Watson statistic.\n"
@@ -1857,11 +1834,9 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
+        ):
             if not self.regression["OLS"]["model"]:
                 console.print(
                     "Perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
@@ -1884,11 +1859,9 @@ class EconometricsController(BaseController):
             ),
         )
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
+        ):
             if not self.regression["OLS"]["model"]:
                 console.print(
                     "Perform an OLS regression before estimating the Breusch-Pagan statistic.\n"

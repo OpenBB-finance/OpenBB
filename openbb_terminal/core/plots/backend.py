@@ -268,7 +268,12 @@ class Backend(PyWry):
         # in case of a very small table we set a min width
         width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
 
-        json_data = json.loads(df_table.to_json(orient="split"))
+        if "year" in df_table.columns:
+            df_table["year"] = df_table["year"].astype(str)
+        elif "date" in df_table.columns:
+            df_table["date"] = df_table["date"].astype(str)
+
+        json_data = json.loads(df_table.to_json(orient="split", date_format="iso"))
         json_data.update(dict(title=title, source=source or "", theme=theme or "dark"))
 
         self.outgoing.append(
