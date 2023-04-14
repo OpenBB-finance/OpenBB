@@ -214,7 +214,7 @@ def view_historical_greeks(
             overlaying="y",
         ),
         yaxis=dict(
-            title=f"{symbol} Price",
+            title=f"{symbol} Option Premium",
             side="right",
         ),
     )
