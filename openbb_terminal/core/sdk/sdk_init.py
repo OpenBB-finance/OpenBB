@@ -322,6 +322,7 @@ from openbb_terminal.stocks.dark_pool_shorts import (
 from openbb_terminal.stocks.discovery import (
     ark_model as stocks_disc_ark_model,
     finnhub_model as stocks_disc_finnhub_model,
+    fmp_view as stocks_disc_fmp_view,
     nasdaq_model as stocks_disc_nasdaq_model,
     seeking_alpha_model as stocks_disc_seeking_alpha_model,
     shortinterest_model as stocks_disc_shortinterest_model,
