@@ -692,7 +692,7 @@ def parse_args_and_run():
     parser.add_argument(
         "-o",
         "--ordered",
-        help="Multiprocessing is not ordered by default. Use this flag to run the tests in order.",
+        help="Display results in test starting order.",
         dest="ordered",
         action="store_true",
         default=False,
@@ -715,11 +715,12 @@ def parse_args_and_run():
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
     if ns_parser.verbose and (
-        ns_parser.subprocesses is None or ns_parser.subprocesses > 0
+        ns_parser.subprocesses is None or ns_parser.subprocesses > 1
     ):
         console.print(
             "WARNING: verbose mode and multiprocessing are not compatible. "
-            "The output of the scripts is mixed up. Consider running with --subproc 0.\n",
+            "Several processes running simultaneously will mix the output of the "
+            "scripts in the screen. Consider running with --subproc 0.\n",
             style="yellow",
         )
 
