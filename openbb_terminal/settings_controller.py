@@ -51,13 +51,14 @@ class SettingsController(BaseController):
     """Settings Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
+        "chart",
         "colors",
         "dt",
         "flair",
         "height",
         "lang",
+        "table",
         "tbnews",
-        "theme",
         "tweetnews",
         "tz",
         "userdata",
@@ -134,9 +135,13 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_setting("dt", current_user.preferences.USE_DATETIME)
         mt.add_raw("\n")
-        mt.add_cmd("theme")
+        mt.add_cmd("chart")
         mt.add_raw("\n")
-        mt.add_param("_theme", current_user.preferences.THEME)
+        mt.add_param("_chart", current_user.preferences.CHART_STYLE)
+        mt.add_raw("\n")
+        mt.add_cmd("table")
+        mt.add_raw("\n")
+        mt.add_param("_table", current_user.preferences.TABLE_STYLE)
         mt.add_raw("\n")
         mt.add_cmd("colors")
         mt.add_raw("\n")
@@ -266,13 +271,13 @@ class SettingsController(BaseController):
             console.print("Colors updated.")
 
     @log_start_end(log=logger)
-    def call_theme(self, other_args: List[str]):
-        """Process theme command"""
+    def call_chart(self, other_args: List[str]):
+        """Process chart command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="theme",
-            description="Choose theme style.",
+            description="Choose chart style.",
         )
         parser.add_argument(
             "-s",
@@ -280,7 +285,7 @@ class SettingsController(BaseController):
             type=str,
             dest="style",
             choices=["dark", "light"],
-            help="Choose theme style. If you have a hub account you can change theme "
+            help="Choose chart style. If you have a hub account you can change theme "
             f"here {CHARTS_TABLES_URL}.",
             required="-h" not in other_args and "--help" not in other_args,
         )
@@ -289,17 +294,53 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.style:
             if is_local():
-                self.set_and_save_preference("THEME", ns_parser.style)
+                self.set_and_save_preference("CHART_STYLE", ns_parser.style)
             else:
-                set_preference("THEME", ns_parser.style)
+                set_preference("CHART_STYLE", ns_parser.style)
                 Hub.upload_config(
-                    key="chart_table",
+                    key="chart",
                     value=ns_parser.style,
                     type_="terminal_style",
                     auth_header=get_current_user().profile.get_auth_header(),
                 )
                 console.print("")
-            console.print("Theme updated.\n")
+            console.print("Chart theme updated.\n")
+
+    @log_start_end(log=logger)
+    def call_table(self, other_args: List[str]):
+        """Process theme command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="theme",
+            description="Choose table style.",
+        )
+        parser.add_argument(
+            "-s",
+            "--style",
+            type=str,
+            dest="style",
+            choices=["dark", "light"],
+            help="Choose table style. If you have a hub account you can change theme "
+            f"here {CHARTS_TABLES_URL}.",
+            required="-h" not in other_args and "--help" not in other_args,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser and ns_parser.style:
+            if is_local():
+                self.set_and_save_preference("TABLE_STYLE", ns_parser.style)
+            else:
+                set_preference("TABLE_STYLE", ns_parser.style)
+                Hub.upload_config(
+                    key="table",
+                    value=ns_parser.style,
+                    type_="terminal_style",
+                    auth_header=get_current_user().profile.get_auth_header(),
+                )
+                console.print("")
+            console.print("Table theme updated.\n")
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
