@@ -67,8 +67,8 @@ def plot_gdp(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     if units not in ["USD_CAP", "MLN_USD"]:
         return console.print(
@@ -157,8 +157,8 @@ def plot_real_gdp(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     if units not in ["PC_CHGPP", "PC_CHGPY", "IDX"]:
         return console.print(
@@ -251,8 +251,8 @@ def plot_gdp_forecast(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     if types not in ["real", "nominal"]:
         return console.print("Use either 'real' or 'nominal' for type")
@@ -365,8 +365,8 @@ def plot_cpi(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_cpi(
         countries, perspective, frequency, units, start_date, end_date
@@ -448,8 +448,8 @@ def plot_balance(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_balance(countries, start_date, end_date)
 
@@ -529,8 +529,8 @@ def plot_revenue(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     if units not in ["THND_USD_CAP", "PC_GDP"]:
         return console.print(
@@ -615,8 +615,8 @@ def plot_spending(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_spending(countries, perspective, units, start_date, end_date)
 
@@ -702,8 +702,8 @@ def plot_debt(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_debt(countries, start_date, end_date)
 
@@ -778,8 +778,8 @@ def plot_trust(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_trust(countries, start_date, end_date)
 
