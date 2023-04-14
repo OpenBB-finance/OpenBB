@@ -207,7 +207,6 @@ economy.revenue,economy_oecd_model.get_revenue,economy_oecd_view.plot_revenue
 economy.rgdp,economy_oecd_model.get_real_gdp,economy_oecd_view.plot_real_gdp
 economy.rtps,economy_alphavantage_model.get_sector_data,economy_alphavantage_view.realtime_performance_sector
 economy.search_index,economy_yfinance_model.get_search_indices,
-economy.spectrum,economy_finviz_view.display_spectrum,
 economy.spending,economy_oecd_model.get_spending,economy_oecd_view.plot_spending
 economy.treasury,economy_econdb_model.get_treasuries,economy_econdb_view.show_treasuries
 economy.treasury_maturities,economy_econdb_model.get_treasury_maturities,
@@ -536,7 +535,6 @@ stocks.search,stocks_helper.search,
 stocks.ta.recom,stocks_ta_tradingview_model.get_tradingview_recommendation,stocks_ta_tradingview_view.print_recommendation
 stocks.ta.rsp,stocks_ta_rsp_model.get_rsp,stocks_ta_rsp_view.display_rsp
 stocks.ta.summary,stocks_ta_finbrain_model.get_technical_summary_report,stocks_ta_finbrain_view.technical_summary_report
-stocks.ta.view,stocks_ta_finviz_model.get_finviz_image,stocks_ta_finviz_view.view
 stocks.th.all,stocks_th_bursa_model.get_all,stocks_th_bursa_view.display_all
 stocks.th.check_if_open,stocks_th_bursa_model.check_if_open,
 stocks.th.closed,stocks_th_bursa_model.get_closed,stocks_th_bursa_view.display_closed
