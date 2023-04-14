@@ -714,10 +714,13 @@ def main():
     current_user.preferences.USE_ION = True
     current_user.preferences.USE_PROMPT_TOOLKIT = False
     current_user.preferences.REMEMBER_CONTEXTS = False
+    current_user.preferences.PLOT_ENABLE_PYWRY = False
+    current_user.preferences.USE_INTERACTIVE_DF = False
     set_current_user(current_user)
 
     # system
-    set_system_variable("DEBUG_MODE", True)
+    os.environ["HEADLESS"] = "True"
+    set_system_variable("DEBUG_MODE", False)
     set_system_variable("LOG_COLLECT", False)
 
     # run integration tests
