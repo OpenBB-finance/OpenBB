@@ -3,7 +3,12 @@ import pytest
 from openbb_terminal.cryptocurrency.overview import blockchaincenter_view
 
 
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-def test_get_altcoin_index():
-    blockchaincenter_view.get_altcoin_index(365, "2010-01-01", "2022-11-10")
+@pytest.mark.record_http
+@pytest.mark.parametrize(
+    "period, start_date, end_date",
+    [
+        (30, "2021-01-01", "2021-01-10"),
+    ],
+)
+def test_display_altcoin_index(period, start_date, end_date):
+    blockchaincenter_view.display_altcoin_index(period, start_date, end_date)
