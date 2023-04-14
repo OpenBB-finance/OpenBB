@@ -175,7 +175,7 @@ def get_content_from_md_file(file_path: str, code_blocks_only: bool) -> str:
             # find backtick code blocks using regular expression
             backtick_blocks = re.findall(r"`{3}[\s\S]*?`{3}|`[^`\n]+`", md)
 
-            code_blocks = fenced_blocks + backtick_blocks
+            code_blocks = fenced_blocks + backtick_blocks  # type: ignore
             code_blocks = "".join(code_blocks).replace("\n", "").replace("`", "")
         return code_blocks
 
@@ -226,7 +226,7 @@ def find_commands_in_files(
     results = find_commands_in_files(files, commands)
     ```
     """
-    found_commands = defaultdict(list)
+    found_commands = defaultdict(list)  # type: ignore
 
     for file_path in files:
         file_contents = get_content_from_md_file(file_path, code_blocks_only)
@@ -276,15 +276,15 @@ def handle_export(
         df.to_csv(path, index=False)
 
     if extension == "json":
-        export_to_json(path=f"{EXPORT_FILE_PATH}.{extension}", commands=found_commands)
+        export_to_json(path=f"{EXPORT_FILE_PATH}.{extension}", commands=found_commands)  # type: ignore
         export_to_json(
-            path=f"{EXPORT_FILE_PATH_SDK}.{extension}", commands=found_commands_sdk
+            path=f"{EXPORT_FILE_PATH_SDK}.{extension}", commands=found_commands_sdk  # type: ignore
         )
 
     else:
-        export_to_csv(path=f"{EXPORT_FILE_PATH}.{extension}", commands=found_commands)
+        export_to_csv(path=f"{EXPORT_FILE_PATH}.{extension}", commands=found_commands)  # type: ignore
         export_to_csv(
-            path=f"{EXPORT_FILE_PATH_SDK}.{extension}", commands=found_commands_sdk
+            path=f"{EXPORT_FILE_PATH_SDK}.{extension}", commands=found_commands_sdk  # type: ignore
         )
 
 
