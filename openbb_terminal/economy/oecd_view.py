@@ -64,6 +64,14 @@ def plot_gdp(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -154,6 +162,14 @@ def plot_real_gdp(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -248,6 +264,14 @@ def plot_gdp_forecast(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -362,6 +386,14 @@ def plot_cpi(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -445,6 +477,14 @@ def plot_balance(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -526,6 +566,14 @@ def plot_revenue(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -612,6 +660,14 @@ def plot_spending(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -699,6 +755,14 @@ def plot_debt(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -775,6 +839,14 @@ def plot_trust(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
