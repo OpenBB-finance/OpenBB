@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import List, Literal, Optional, Union
+from typing import List, Optional, Union
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
@@ -120,7 +120,7 @@ def plot_gdp(
 @log_start_end(log=logger)
 def plot_real_gdp(
     countries: Optional[List[str]],
-    units: Literal["PC_CHGPP", "PC_CHGPY", "IDX"] = "PC_CHGPY",
+    units: str = "PC_CHGPY",
     start_date: str = "",
     end_date: str = "",
     raw: bool = False,
@@ -520,7 +520,7 @@ def plot_revenue(
     countries: list
         List of countries to get data for
     units: str
-        Units to get data in. Either 'PC_GDP' or 'THOUSAND_USD_PER_CAPITA'.
+        Units to get data in. Either 'PC_GDP' or 'THND_USD_CAP'.
         Default is Percentage of GDP.
     start_date: str
         Start date of data, in YYYY-MM-DD format
@@ -606,7 +606,7 @@ def plot_spending(
     countries: list
         List of countries to get data for
     units: str
-        Units to get data in. Either 'PC_GDP' or 'THOUSAND_USD_PER_CAPITA'.
+        Units to get data in. Either 'PC_GDP' or 'THND_USD_CAP'.
         Default is Percentage of GDP.
     start_date: str
         Start date of data, in YYYY-MM-DD format
