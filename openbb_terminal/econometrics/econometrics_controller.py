@@ -833,9 +833,7 @@ class EconometricsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        if ns_parser := self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT
-        ):
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args, NO_EXPORT):
             if ns_parser.name:
                 if "." in ns_parser.name:
                     dataset, column = ns_parser.name.split(".")
@@ -928,9 +926,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        if ns_parser := self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT
-        ):
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args, NO_EXPORT):
             name = ns_parser.name
             if index := ns_parser.index:
                 values_found = (
@@ -1095,9 +1091,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        if ns_parser := self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT
-        ):
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args, NO_EXPORT):
             dataset, new_column = ns_parser.newdatasetcol.split(".")
             dataset2, existing_column = ns_parser.basedatasetcol.split(".")
 
@@ -1271,9 +1265,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        if ns_parser := self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT
-        ):
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args, NO_EXPORT):
             for option in ns_parser.delete:
                 dataset, column = option.split(".")
 
@@ -1319,9 +1311,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        if ns_parser := self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT
-        ):
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args, NO_EXPORT):
             if ns_parser.dataset not in self.datasets:
                 console.print(
                     f"Not able to find the dataset {ns_parser.dataset}. Please choose one of "
@@ -1386,9 +1376,7 @@ class EconometricsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
-        if ns_parser := self.parse_known_args_and_warn(
-            parser, other_args, NO_EXPORT
-        ):
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args, NO_EXPORT):
             dataset = ns_parser.dataset
             column_old = ns_parser.oldcol
             column_new = ns_parser.newcol
