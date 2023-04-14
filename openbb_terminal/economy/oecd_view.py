@@ -193,7 +193,7 @@ def plot_real_gdp(
     kwargs: Dict[str, Any] = {"yaxis_title": YAXIS_TITLES[units]}
 
     if units == "PC_CHGPY":
-        kwargs["yaxis_title_font_size"] = 13
+        kwargs["yaxis_title_font_size"] = 14
 
     fig = OpenBBFigure(**kwargs)
 
