@@ -51,7 +51,6 @@ class EconomyRoot(Category):
         `rtps`: Get real-time performance sector data\n
         `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
         `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
-        `spectrum`: Display finviz spectrum in system viewer [Source: Finviz]\n
         `spending`: General government spending provides an indication of the size\n
         `spending_chart`: General government spending provides an indication of the size\n
         `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
@@ -109,7 +108,6 @@ class EconomyRoot(Category):
         self.rtps = lib.economy_alphavantage_model.get_sector_data
         self.rtps_chart = lib.economy_alphavantage_view.realtime_performance_sector
         self.search_index = lib.economy_yfinance_model.get_search_indices
-        self.spectrum = lib.economy_finviz_view.display_spectrum
         self.spending = lib.economy_oecd_model.get_spending
         self.spending_chart = lib.economy_oecd_view.plot_spending
         self.treasury = lib.economy_econdb_model.get_treasuries

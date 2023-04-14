@@ -504,7 +504,7 @@ class TerminalController(BaseController):
         """Process intro command."""
         import json
 
-        intro: dict = json.load((Path(__file__).parent / "intro.json").open())
+        intro: dict = json.load((Path(__file__).parent / "intro.json").open())  # type: ignore
 
         for prompt in intro.get("prompts", []):
             console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))

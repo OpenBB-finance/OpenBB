@@ -309,15 +309,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_view",
-            [],
-            "finviz_view.view",
-            [
-                "MOCK_TICKER",
-            ],
-            dict(),
-        ),
-        (
             "call_summary",
             [],
             "finbrain_view.technical_summary_report",

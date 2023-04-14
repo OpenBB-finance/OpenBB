@@ -714,6 +714,9 @@ def main():
     current_user.preferences.USE_ION = True
     current_user.preferences.USE_PROMPT_TOOLKIT = False
     current_user.preferences.REMEMBER_CONTEXTS = False
+    current_user.preferences.PLOT_ENABLE_PYWRY = False
+    current_user.preferences.USE_INTERACTIVE_DF = False
+    os.environ["HEADLESS"] = "True"
     set_current_user(current_user)
 
     # system

@@ -694,9 +694,6 @@
       ],
       "tv": [
         "TradingView"
-      ],
-      "view": [
-        "Finviz"
       ]
     },
     "qa": {
@@ -1188,9 +1185,6 @@
       "Finviz"
     ],
     "performance": [
-      "Finviz"
-    ],
-    "spectrum": [
       "Finviz"
     ],
     "gdp": [

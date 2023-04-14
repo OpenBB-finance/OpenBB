@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
@@ -16,16 +16,17 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=too-many-arguments, too-many-function-args
 
+
 YAXIS_TITLES = {
-    "THND_USD_CAP": "Thousands of USD per Capita",
-    "PC_GDP": "Percentage of GDP (%)",
-    "PC_CHGPP": "Previous Quarter (% Change)",
-    "PC_CHGPY": "Same Quarter of the Previous Year (% Change)",
-    "IDX": "Index (Base = 2015)",
     "AGRWTH": "Annual Growth Rate (%)",
+    "IDX": "Index (Base = 2015)",
     "IDX2015": "Index (Base = 2015)",
-    "USD_CAP": "US Dollars per Capita",
     "MLN_USD": "Millions of US Dollars",
+    "PC_CHGPY": "Same Quarter of the Previous Year (% Change)",
+    "PC_CHGPP": "Previous Quarter (% Change)",
+    "PC_GDP": "Percentage of GDP (%)",
+    "THND_USD_CAP": "Thousands of USD per Capita",
+    "USD_CAP": "US Dollars per Capita",
 }
 
 
@@ -189,7 +190,7 @@ def plot_real_gdp(
     if df.empty:
         return None
 
-    kwargs = {"yaxis_title": YAXIS_TITLES[units]}
+    kwargs: Dict[str, Any] = {"yaxis_title": YAXIS_TITLES[units]}
 
     if units == "PC_CHGPY":
         kwargs["yaxis_title_font_size"] = 13

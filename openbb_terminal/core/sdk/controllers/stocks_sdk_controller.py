@@ -323,8 +323,6 @@ class StocksController(model.StocksRoot):
             `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
             `summary`: Get technical summary report provided by FinBrain's API\n
             `summary_chart`: Print technical summary report provided by FinBrain's API\n
-            `view`: Get finviz image for given ticker\n
-            `view_chart`: View finviz image for ticker\n
         """
 
         return model.StocksTechnicalAnalysis()
