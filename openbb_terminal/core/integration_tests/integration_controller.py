@@ -451,9 +451,10 @@ def run_test_files(
                             run_test,
                             verbose=verbose,
                             special_arguments=special_arguments,
-                            # We pass user and system as dict because pickle cannot
+                            # We inject user and system as dict because pickle cannot
                             # serialize nested classes and the new process has to be
-                            # aware of the current user and system.
+                            # aware of the current user and system, otherwise it will
+                            # pick the defaults.
                             user=get_current_user().to_dict(),
                             system=get_current_system().to_dict(),
                         ),
