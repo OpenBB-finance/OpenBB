@@ -13,14 +13,25 @@ from multiprocessing import cpu_count
 from multiprocessing.pool import Pool
 from pathlib import Path
 from traceback import FrameSummary, extract_tb, format_list
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, TypeVar
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
-from openbb_terminal.core.session.current_system import set_system_variable
+from openbb_terminal.core.models.credentials_model import CredentialsModel
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.models.profile_model import ProfileModel
+from openbb_terminal.core.models.sources_model import SourcesModel
+from openbb_terminal.core.models.system_model import SystemModel
+from openbb_terminal.core.models.user_model import UserModel
+from openbb_terminal.core.session.current_system import (
+    get_current_system,
+    set_current_system,
+    set_system_variable,
+)
 from openbb_terminal.core.session.current_user import get_current_user, set_current_user
+from openbb_terminal.core.session.utils import load_dict_to_model
 from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_controller import (
@@ -277,6 +288,8 @@ def run_test(
     file: Path,
     verbose: bool = False,
     special_arguments: Optional[Dict[str, str]] = None,
+    user: Optional[Dict] = None,
+    system: Optional[Dict] = None,
 ) -> Tuple[str, Optional[Dict[str, Any]]]:
     """Run tests in a single process.
 
@@ -294,6 +307,23 @@ def run_test(
     Tuple[str, Optional[Dict[str, Any]]]
         The name of the file and the exception
     """
+
+    if user:
+        profile = user.get("profile", {})
+        credentials = user.get("credentials", {})
+        preferences = user.get("preferences", {})
+        sources = user.get("sources", {})
+        user_model = UserModel(
+            profile=load_dict_to_model(profile, ProfileModel),
+            credentials=load_dict_to_model(credentials, CredentialsModel),
+            preferences=load_dict_to_model(preferences, PreferencesModel),
+            sources=load_dict_to_model(sources, SourcesModel),
+        )
+        set_current_user(user_model)
+
+    if system:
+        set_current_system(load_dict_to_model(system, SystemModel))
+
     file_short_name = str(file).replace(str(SCRIPTS_DIRECTORY), "")[1:]
 
     try:
@@ -421,6 +451,11 @@ def run_test_files(
                             run_test,
                             verbose=verbose,
                             special_arguments=special_arguments,
+                            # We pass user and system as dict because pickle cannot
+                            # serialize nested classes and the new process has to be
+                            # aware of the current user and system.
+                            user=get_current_user().to_dict(),
+                            system=get_current_system().to_dict(),
                         ),
                         test_files,
                         chunksize=chunksize,
@@ -719,8 +754,8 @@ def main():
     set_current_user(current_user)
 
     # system
-    os.environ["HEADLESS"] = "True"
-    set_system_variable("DEBUG_MODE", False)
+    set_system_variable("HEADLESS", True)
+    set_system_variable("DEBUG_MODE", True)
     set_system_variable("LOG_COLLECT", False)
 
     # run integration tests
