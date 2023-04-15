@@ -63,8 +63,7 @@ def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
         lambda row: (
             datetime.strptime(row["expiration"], "%Y-%m-%d")
             - datetime.strptime(row["date"], "%Y-%m-%d")
-        ).days
-        / 365,
+        ).days,
         axis=1,
     )
     return chain_df
