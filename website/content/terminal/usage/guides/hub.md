@@ -35,7 +35,9 @@ Note: If you are inside the terminal and want to login or logout of your account
 
 ## API Keys
 
-### Uploading API Keys to the OpenBB Hub
+As it should be known by now. The OpenBB Terminal doesn't hold any data, we act as a middle layer between users and data providers. This means that we can focus on the product which attracts users, and data vendors are interested in turn to integrating their data sources as this can create a new revenue channel. The downside from this is that each user needs to manage their own API keys from each of the data providers that they are interested to leverage.
+
+### OpenBB Hub
 
 If you were already an OpenBB user before the OpenBB Terminal 3.0 you might have an `.env` file that contains all your API keys. If that is the case then you just need to drag and drop it in [this page](https://my.openbb.dev/app/terminal/api-keys).
 
@@ -43,7 +45,7 @@ If you were already an OpenBB user before the OpenBB Terminal 3.0 you might have
 
 Otherwise you'll need to follow the instructions by hovering on the ℹ️ for each data source of interest. The icon that follows will take you to the data vendor website to acquire the API key which then you can save on the Hub.
 
-### API Keys on the OpenBB Terminal
+### OpenBB Terminal
 
 Upon login, the OpenBB Terminal will pull the API keys associated with your account.
 
@@ -55,15 +57,41 @@ If the OpenBB Terminal is running and an API key is updated in the Hub you will 
 
 If you wish to delete your stored API keys from the OpenBB Hub, you can do so using the command: `/account/clear`. This action will bring up a confirmation prompt and **CANNOT BE UNDONE**.
 
-### Themes
+## Default Data Sources
 
-In the OpenBB Hub, you have the ability to change your preferred themes for your terminal, charts and tables.  When logged in, the terminal will pull a saved theme from your account.  For the terminal theme, this can be activated by using the command: `settings/colors --style hub`.  If you wish to change, you can pass one of `{light,dark,openbb}` to the `--style` flag.  To change the charting style, the `settings/theme` command can be run.
+For the same command, it often happens that there are multiple data vendors providing access to the same data. We want to empower our users to utilize their preferred data source, or the one they already have a commercial relationship with. Thus, users can select their default data sources for each command.
 
-### Default Data Sources
+### OpenBB Hub
 
-Your selected default data sources will automatically be synced to the terminal on login.
-These can still be adjusted in the `sources/` menu, but changes in your terminal will not be synced.
-Any changes on the Hub will require a restart of the terminal to take effect.
+In the OpenBB Hub, you can access [this page](https://my.openbb.dev/app/terminal/data-sources) which allows you to select the default data sources for all commands.
+
+<img width="1440" alt="Screenshot 2023-04-14 at 6 26 53 PM" src="https://user-images.githubusercontent.com/25267873/232176560-5bee773f-1b9a-4904-8f05-fcaf1342a81d.png">
+
+### OpenBB Terminal
+
+Upon login, the OpenBB Terminal will pull the default data sources associated with your account.
+
+If a user wants to adjust any data source directly from the terminal, this is possible by utilizing the `/sources` menu. For instance,
+
+<img width="476" alt="Screenshot 2023-04-14 at 6 39 29 PM" src="https://user-images.githubusercontent.com/25267873/232177024-445494b6-46f2-4a4f-a874-e93132204378.png">
+
+That change will be reflected on the OpenBB Hub when refreshing the page.
+
+Note that any changes on the OpenBB Hub will require a restart of the terminal to take effect.
+
+
+## Theme Styles
+
+In the OpenBB Hub, you have the ability to change your preferred themes for your terminal, charts and tables.
+
+When logged in, the terminal will pull a saved theme from your account.
+
+For the terminal theme, this can be activated by using the command: `settings/colors --style hub`.
+
+If you wish to change, you can pass one of `{light,dark,openbb}` to the `--style` flag.
+
+To change the charting style, the `settings/theme` command can be run.
+
 
 ### Routines
 
