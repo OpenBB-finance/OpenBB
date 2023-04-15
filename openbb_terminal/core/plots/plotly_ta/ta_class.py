@@ -357,6 +357,7 @@ class PlotlyTA(PltTA):
             1,
             shared_xaxes=True,
             vertical_spacing=0.06,
+            horizontal_spacing=0.01,
             row_width=[1],
             specs=[[{"secondary_y": True}]],
         )
@@ -482,12 +483,12 @@ class PlotlyTA(PltTA):
                 continue
 
         figure.update(fig_new)
-        figure.set_yaxis_title(
-            "Price ($)",
+        figure.update_yaxes(
             row=1,
             col=1,
             secondary_y=self.show_volume,
             nticks=15 if subplot_row < 3 else 10,
+            tickfont=dict(size=16),
         )
         figure.update_traces(
             selector=dict(type="scatter", mode="lines"), connectgaps=True

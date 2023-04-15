@@ -26,7 +26,7 @@ class SystemModel(BaseModel):
     PYTHON_VERSION: str = str(platform.python_version())
 
     # OpenBB section
-    VERSION = "3.0.0rc1"
+    VERSION = "3.0.0rc2"
 
     # Logging section
     LOGGING_APP_NAME: str = "gst"
@@ -50,6 +50,7 @@ class SystemModel(BaseModel):
     TEST_MODE: bool = False
     DEBUG_MODE: bool = False
     ENABLE_AUTHENTICATION: bool = True
+    HEADLESS: bool = False
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()

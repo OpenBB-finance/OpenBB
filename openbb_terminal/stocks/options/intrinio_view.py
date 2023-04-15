@@ -194,7 +194,7 @@ def view_historical_greeks(
     fig.add_scatter(
         x=df.index,
         y=df.price.values,
-        name="Stock Price",
+        name="Option Premium",
         line=dict(color=theme.down_color),
         secondary_y=False,
     )
@@ -214,7 +214,7 @@ def view_historical_greeks(
             overlaying="y",
         ),
         yaxis=dict(
-            title=f"{symbol} Price",
+            title=f"{symbol} Option Premium",
             side="right",
         ),
     )

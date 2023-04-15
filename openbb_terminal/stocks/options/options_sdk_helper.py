@@ -58,6 +58,7 @@ def get_full_option_chain(
     """
 
     source = re.sub(r"\s+", "", source.lower())
+    df = pd.DataFrame()
     if source == "tradier":
         df = tradier_model.get_full_option_chain(symbol)
 
@@ -70,7 +71,7 @@ def get_full_option_chain(
     elif source == "intrinio":
         df = intrinio_model.get_full_option_chain(symbol)
 
-    if (df := None) is None:
+    if not isinstance(df, pd.DataFrame) or df.empty:
         logger.info("Invalid Source or Symbol")
         console.print("Invalid Source or Symbol")
         return pd.DataFrame()
@@ -106,6 +107,7 @@ def get_option_current_price(
     """
 
     source = re.sub(r"\s+", "", source.lower())
+    output = None
     if source == "tradier":
         output = tradier_model.get_last_price(symbol)
     if source == "nasdaq":
@@ -113,7 +115,7 @@ def get_option_current_price(
     if source == "yahoofinance":
         output = yfinance_model.get_last_price(symbol)
 
-    if (output := None) is None:
+    if not output:
         logger.info("Invalid Source or Symbol")
         console.print("Invalid Source or Symbol")
         return 0.0
@@ -142,8 +144,8 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
     >>> from openbb_terminal.sdk import openbb
     >>> SPX_expirations = openbb.stocks.options.expirations("SPX", source = "Tradier")
     """
-
     source = re.sub(r"\s+", "", source.lower())
+    output = []
     if source == "tradier":
         output = tradier_model.option_expirations(symbol)
     if source == "yahoofinance":
@@ -153,10 +155,10 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
     if source == "intrinio":
         output = intrinio_model.get_expiration_dates(symbol)
 
-    if (output := None) is None:
+    if not output:
         logger.info("Invalid Source or Symbol")
         console.print("Invalid Source or Symbol")
-        return pd.DataFrame()
+        return []
 
     return output
 
@@ -200,6 +202,7 @@ def hist(
     """
 
     source = re.sub(r"\s+", "", source.lower())
+    output = pd.DataFrame()
     if source == "chartexchange":
         output = chartexchange_model.get_option_history(symbol, exp, call, strike)
     if source == "tradier":
@@ -208,7 +211,7 @@ def hist(
         occ_symbol = f"{symbol}{''.join(exp[2:].split('-'))}{'C' if call else 'P'}{str(int(1000*strike)).zfill(8)}"
         output = intrinio_model.get_historical_options(occ_symbol)
 
-    if (output := None) is None:
+    if not isinstance(output, pd.DataFrame) or output.empty:
         logger.info("No data found for symbol, check symbol and expiration date")
         console.print("No data found for symbol, check symbol and expiration date")
         return pd.DataFrame()

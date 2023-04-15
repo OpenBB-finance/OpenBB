@@ -46,7 +46,7 @@ class OpenBBSDK:
         SDKLogger()
         self.login = lib.sdk_session.login
         self.logout = lib.sdk_session.logout
-        self.news = lib.common_ultima_newsmonitor_model.get_news
+        self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
         SDKLogger._try_to_login(self)
 
@@ -174,7 +174,6 @@ class OpenBBSDK:
             `rtps`: Get real-time performance sector data\n
             `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
-            `spectrum`: Display finviz spectrum in system viewer [Source: Finviz]\n
             `spending`: General government spending provides an indication of the size\n
             `spending_chart`: General government spending provides an indication of the size\n
             `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
@@ -517,7 +516,7 @@ class OpenBBSDK:
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
-            `news`: Get news for a given term and source. [Source: Feedparser]\n
+            `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Gets ticker quote from FMP\n
             `search`: Search selected query for tickers.\n

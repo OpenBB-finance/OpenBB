@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/profile/PM?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"price\": 99.03,\n    \"beta\":
+        0.717292,\n    \"volAvg\": 4649235,\n    \"mktCap\": 153709416084,\n    \"lastDiv\":
+        5.08,\n    \"range\": \"82.85-109.81\",\n    \"changes\": 0.29,\n    \"companyName\":
+        \"Philip Morris International Inc.\",\n    \"currency\": \"USD\",\n    \"cik\":
+        \"0001413329\",\n    \"isin\": \"US7181721090\",\n    \"cusip\": \"718172109\",\n
+        \   \"exchange\": \"New York Stock Exchange\",\n    \"exchangeShortName\":
+        \"NYSE\",\n    \"industry\": \"Tobacco\",\n    \"website\": \"https://www.pmi.com\",\n
+        \   \"description\": \"Philip Morris International Inc. operates as a tobacco
+        company working to delivers a smoke-free future and evolving portfolio for
+        the long-term to include products outside of the tobacco and nicotine sector.
+        The company's product portfolio primarily consists of cigarettes and smoke-free
+        products, including heat-not-burn, vapor, and oral nicotine products that
+        are sold in markets outside the United States. The company offers its smoke-free
+        products under the HEETS, HEETS Creations, HEETS Dimensions, HEETS Marlboro,
+        HEETS FROM MARLBORO, Marlboro Dimensions, Marlboro HeatSticks, Parliament
+        HeatSticks, and TEREA brands, as well as the KT&G-licensed brands, Fiit, and
+        Miix. It also sells its products under the Marlboro, Parliament, Bond Street,
+        Chesterfield, L&M, Lark, and Philip Morris brands. In addition, the company
+        owns various cigarette brands, such as Dji Sam Soe, Sampoerna A, and Sampoerna
+        U in Indonesia; and Fortune and Jackpot in the Philippines. The company sells
+        its smoke-free products in 71 markets. Philip Morris International Inc. was
+        incorporated in 1987 and is headquartered in New York, New York.\",\n    \"ceo\":
+        \"Mr. Jacek  Olczak\",\n    \"sector\": \"Consumer Defensive\",\n    \"country\":
+        \"US\",\n    \"fullTimeEmployees\": \"79800\",\n    \"phone\": \"917 663 2000\",\n
+        \   \"address\": \"120 Park Avenue\",\n    \"city\": \"New York\",\n    \"state\":
+        \"NY\",\n    \"zip\": \"10017-5592\",\n    \"dcfDiff\": 3.97239,\n    \"dcf\":
+        99.7876,\n    \"image\": \"https://financialmodelingprep.com/image-stock/PM.png\",\n
+        \   \"ipoDate\": \"2008-03-17\",\n    \"defaultImage\": false,\n    \"isEtf\":
+        false,\n    \"isActivelyTrading\": true,\n    \"isAdr\": false,\n    \"isFund\":
+        false\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '2152'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 10 Apr 2023 10:50:01 GMT
+      ETag:
+      - W/"868-g5FSz2OfHAEbHH/H0JqSyTrhTE4"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

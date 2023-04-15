@@ -170,7 +170,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
-    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb|.ipynb)"
+    known_extensions = r"(\.(xlsx|csv|xls|tsv|json|yaml|ini|openbb|ipynb))"
     unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
 
     # Add custom expressions to handle edge cases of individual controllers
@@ -352,14 +352,11 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        theme = current_user.preferences.THEME
-        table_theme = "white" if theme == "light" else theme
-
         plots_backend().send_table(
             df_table=df_outgoing,
             title=title,
             source=source,  # type: ignore
-            theme=table_theme,
+            theme=current_user.preferences.TABLE_STYLE,
         )
         return
 
@@ -1209,38 +1206,40 @@ def lett_to_num(word: str) -> str:
     return word
 
 
+AVAILABLE_FLAIRS = {
+    ":openbb": "(🦋)",
+    ":bug": "(🐛)",
+    ":rocket": "(🚀)",
+    ":diamond": "(💎)",
+    ":stars": "(✨)",
+    ":baseball": "(⚾)",
+    ":boat": "(⛵)",
+    ":phone": "(☎)",
+    ":mercury": "(☿)",
+    ":hidden": "",
+    ":sun": "(☼)",
+    ":moon": "(☾)",
+    ":nuke": "(☢)",
+    ":hazard": "(☣)",
+    ":tunder": "(☈)",
+    ":king": "(♔)",
+    ":queen": "(♕)",
+    ":knight": "(♘)",
+    ":recycle": "(♻)",
+    ":scales": "(⚖)",
+    ":ball": "(⚽)",
+    ":golf": "(⛳)",
+    ":piece": "(☮)",
+    ":yy": "(☯)",
+}
+
+
 def get_flair() -> str:
     """Get a flair icon."""
-    available_flairs = {
-        ":openbb": "(🦋)",
-        ":bug": "(🐛)",
-        ":rocket": "(🚀)",
-        ":diamond": "(💎)",
-        ":stars": "(✨)",
-        ":baseball": "(⚾)",
-        ":boat": "(⛵)",
-        ":phone": "(☎)",
-        ":mercury": "(☿)",
-        ":hidden": "",
-        ":sun": "(☼)",
-        ":moon": "(☾)",
-        ":nuke": "(☢)",
-        ":hazard": "(☣)",
-        ":tunder": "(☈)",
-        ":king": "(♔)",
-        ":queen": "(♕)",
-        ":knight": "(♘)",
-        ":recycle": "(♻)",
-        ":scales": "(⚖)",
-        ":ball": "(⚽)",
-        ":golf": "(⛳)",
-        ":piece": "(☮)",
-        ":yy": "(☯)",
-    }
 
     current_user = get_current_user()  # pylint: disable=redefined-outer-name
     current_flair = str(current_user.preferences.FLAIR)
-    flair = available_flairs.get(current_flair, current_flair)
+    flair = AVAILABLE_FLAIRS.get(current_flair, current_flair)
 
     if (
         current_user.preferences.USE_DATETIME
@@ -1655,7 +1654,7 @@ def handle_error_code(requests_obj, error_code_map):
 
 def prefill_form(ticket_type, menu, path, command, message):
     """Pre-fill Google Form and open it in the browser."""
-    form_url = "https://openbb.co/support?"
+    form_url = "https://my.openbb.dev/app/terminal/support?"
 
     params = {
         "type": ticket_type,

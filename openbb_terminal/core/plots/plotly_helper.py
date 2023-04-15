@@ -1,7 +1,6 @@
 """Chart and style helpers for Plotly."""
 # pylint: disable=C0302,R0902,W3301
 import json
-import os
 import textwrap
 from datetime import datetime
 from math import floor
@@ -87,28 +86,29 @@ class TerminalStyle:
         self.load_style(plt_style)
         self.apply_console_style(console_style)
 
-    def apply_console_style(self, style: Optional[str] = "") -> None:
+    def apply_console_style(self, style: Optional[str] = None) -> None:
         """Apply the style to the console."""
 
-        if style in self.console_styles_available:
-            json_path: Optional[Path] = self.console_styles_available[style]
-        else:
-            self.load_available_styles()
+        if style:
             if style in self.console_styles_available:
-                json_path = self.console_styles_available[style]
+                json_path: Optional[Path] = self.console_styles_available[style]
             else:
-                console.print("\nInvalid console style. Using default.")
-                json_path = self.console_styles_available.get("dark", None)
+                self.load_available_styles()
+                if style in self.console_styles_available:
+                    json_path = self.console_styles_available[style]
+                else:
+                    console.print(f"\nInvalid console style '{style}', using default.")
+                    json_path = self.console_styles_available.get("dark", None)
 
-        if json_path:
-            self.console_style = self.load_json_style(json_path)
-        else:
-            console.print("Error loading default.")
+            if json_path:
+                self.console_style = self.load_json_style(json_path)
+            else:
+                console.print("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
         if not style:
-            style = get_current_user().preferences.THEME
+            style = get_current_user().preferences.CHART_STYLE
 
         if style != self.plt_style:
             self.load_style(style)
@@ -243,7 +243,8 @@ class TerminalStyle:
 
 
 theme = TerminalStyle(
-    get_current_user().preferences.THEME, get_current_user().preferences.RICH_STYLE
+    get_current_user().preferences.CHART_STYLE,
+    get_current_user().preferences.RICH_STYLE,
 )
 theme.apply_style()
 
@@ -300,7 +301,7 @@ class OpenBBFigure(go.Figure):
         self._feature_flags_applied = False
         self._exported = False
         self._cmd_xshift = 0
-        self._bar_width = 0.2
+        self._bar_width = 0.15
         self._export_image: Optional[Union[Path, str]] = ""
 
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
@@ -913,7 +914,7 @@ class OpenBBFigure(go.Figure):
             yaxis="y2",
             row=row,
             col=col,
-            opacity=0.5,
+            opacity=0.7,
             secondary_y=False,
         )
         ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
@@ -1060,7 +1061,7 @@ class OpenBBFigure(go.Figure):
             return self  # type: ignore
 
         # We check if in headless mode to return the JSON
-        if strtobool(os.environ.get("HEADLESS", False)):
+        if strtobool(get_current_system().HEADLESS):
             return self.to_json()
 
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
@@ -1262,23 +1263,28 @@ class OpenBBFigure(go.Figure):
             rangebreaks = [dict(values=dt_missing_days)]
         else:
             # We get the missing days excluding weekends
+            is_daily = df_data.index[-1].time() == df_data.index[-2].time()
             dt_bdays = pd.bdate_range(start=dt_start, end=dt_end, normalize=True)
+            time_string = (
+                (" 09:30:00" if not prepost else " 04:00:00") if not is_daily else ""
+            )
 
             # We get the dates that are missing
             dt_missing_days = list(
-                set(dt_bdays.strftime("%Y-%m-%d"))
-                - set(df_data.index.strftime("%Y-%m-%d"))
+                set(dt_bdays.strftime(f"%Y-%m-%d{time_string}"))
+                - set(df_data.index.strftime(f"%Y-%m-%d{time_string}"))
             )
+            dt_missing_days = pd.to_datetime(dt_missing_days)
 
-            rangebreaks = [dict(values=dt_missing_days), dict(bounds=["sat", "mon"])]
+            rangebreaks = [dict(bounds=["sat", "mon"]), dict(values=dt_missing_days)]
 
             # We add a rangebreak if the first and second time are not the same
             # since daily data will have the same time (00:00)
-            if df_data.index[-1].time() != df_data.index[-2].time():
+            if not is_daily:
                 if prepost:
-                    rangebreaks.append(dict(bounds=[20.00, 4.00], pattern="hour"))
+                    rangebreaks.insert(0, dict(bounds=[20, 4], pattern="hour"))
                 else:
-                    rangebreaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
+                    rangebreaks.insert(0, dict(bounds=[16, 9.5], pattern="hour"))
 
         self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
 
@@ -1530,9 +1536,9 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=90, t=40, pad=0)
-            if not self._has_secondary_y
-            else dict(l=60, r=50, b=85, t=40, pad=0)
+            dict(l=80, r=60, b=85, t=40, pad=0)
+            if not self._has_secondary_y or not self.has_subplots
+            else dict(l=60, r=50, b=95, t=40, pad=0)
         )
 
         # We adjust margins

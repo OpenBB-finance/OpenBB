@@ -225,8 +225,9 @@ body {
   border-radius: 8px;
 }
 
+
 .modebar-group:nth-of-type(1):after {
-  content: "Chart Tools";
+  content: "Panning Tools";
   height: fit-content;
   width: fit-content;
   position: absolute;
@@ -249,7 +250,7 @@ body {
 }
 
 .modebar-group:nth-of-type(2):after {
-  content: "Panning Tools";
+  content: "Indicator Tools";
   height: fit-content;
   width: fit-content;
   position: absolute;
@@ -272,7 +273,7 @@ body {
 }
 
 .modebar-group:nth-of-type(3):after {
-  content: "Drawing Tools";
+  content: "Chart Tools";
   height: fit-content;
   width: fit-content;
   position: absolute;
@@ -295,7 +296,7 @@ body {
 }
 
 .modebar-group:nth-of-type(4):after {
-  content: "Export Tools";
+  content: "Drawing Tools";
   height: fit-content;
   width: fit-content;
   position: absolute;
@@ -303,6 +304,29 @@ body {
 }
 
 .modebar-group:nth-of-type(4):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar-group:nth-of-type(5):after {
+  content: "Export Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(5):hover:after {
   padding: 10px;
   display: block;
   font-size: 10px;
@@ -1319,5 +1343,9 @@ video {
   }
   ._header p {
     font-size: 1.0rem !important;
+  }
+
+  ._header span {
+    font-size: 0.9rem !important;
   }
 }

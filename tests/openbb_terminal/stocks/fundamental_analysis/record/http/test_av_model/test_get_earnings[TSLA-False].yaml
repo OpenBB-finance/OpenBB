@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=EARNINGS&symbol=TSLA
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2yOsRKCMBAFe77iyQcADY2dpY1SOPY35CA3hASTiwzj+O+O2ljY7ha7jwIAylNQ
+        LvcoL5b8hC1kDCEiJ/EjDm6xhCt5pZF3OOeIpOQNRYNDd0RPzmGIfMvs+w2S0H5YwsIRs/isDPIG
+        bdP8CENbhc4xJcZdkiis6pL2db2ua0Xv6P3brPpQL5FnyXMNGT57a8jOwMnE0AClOLKCYGW0HP9s
+        VWXxfAEAAP//AwDOG3xz7AAAAA==
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b3986a62edfb01b-BEG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Thu, 06 Apr 2023 11:00:14 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie, Origin
+      Via:
+      - 1.1 vegur
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -221,7 +221,7 @@ def plot_estr(
     if export:
         if series_id not in ["ECBESTRTOTVOL", "ECBESTRNUMACTBANKS", "ECBESTRNUMTRANS"]:
             # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+            df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
 
@@ -282,7 +282,7 @@ def plot_sofr(
     if export:
         if series_id != "SOFRINDEX":
             # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+            df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
 
@@ -343,7 +343,7 @@ def plot_sonia(
     if export:
         if series_id not in ["IUDZOS2", "IUDZLT2"]:
             # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+            df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
 
@@ -402,7 +402,7 @@ def plot_ameribor(
     if export:
         if series_id not in ["AMBOR30T", "AMBOR90T"]:
             # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+            df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
 
@@ -462,7 +462,7 @@ def plot_fftr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "fftr",
-        pd.DataFrame(df, columns=["FFTR"]) / 100,
+        pd.DataFrame(df, columns=["FFTR"]),
         sheet_name,
         fig,
     )
@@ -568,11 +568,11 @@ def plot_fed(
         if not quantiles and not target:
             if series_id != "EFFRVOL":
                 # Check whether it is a percentage, relevant for exporting
-                df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+                df_transformed = pd.DataFrame(df, columns=[series_id])
             else:
                 df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
-            df_transformed = df / 100
+            df_transformed = df
 
     if raw:
         # was a -iloc so we need to flip the index as we use head
@@ -633,7 +633,7 @@ def plot_iorb(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "iorb",
-        pd.DataFrame(df, columns=["IORB"]) / 100,
+        pd.DataFrame(df, columns=["IORB"]),
         sheet_name,
         fig,
     )
@@ -750,7 +750,7 @@ def plot_dwpcr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[series_id]) / 100,
+        pd.DataFrame(df, columns=[series_id]),
         sheet_name,
         fig,
     )
@@ -828,7 +828,7 @@ def plot_ecb(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ecbdfr",
-        pd.DataFrame(df, columns=["ECBDFR"]) / 100,
+        pd.DataFrame(df, columns=["ECBDFR"]),
         sheet_name,
         fig,
     )
@@ -883,7 +883,7 @@ def plot_tmc(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[series_id]) / 100,
+        pd.DataFrame(df, columns=[series_id]),
         sheet_name,
         fig,
     )
@@ -935,7 +935,7 @@ def plot_ffrmc(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[series_id]) / 100,
+        pd.DataFrame(df, columns=[series_id]),
         sheet_name,
         fig,
     )
@@ -1007,7 +1007,7 @@ def display_yield_curve(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ycrv",
-        rates.set_index("Maturity") / 100,
+        rates.set_index("Maturity"),
         sheet_name,
         fig,
     )
@@ -1086,7 +1086,7 @@ def plot_usrates(
 
     if raw:
         # was a -iloc so we need to flip the index as we use head
-        df = pd.DataFrame(df, columns=[parameter])
+        df = pd.DataFrame(df, columns=[series_id])
         df = df.sort_index(ascending=False)
         print_rich_table(
             df,
@@ -1101,7 +1101,7 @@ def plot_usrates(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[parameter]) / 100,
+        pd.DataFrame(df, columns=[series_id]),
         sheet_name,
         fig,
     )
@@ -1156,7 +1156,7 @@ def plot_tbffr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=["TBFFR"]) / 100,
+        pd.DataFrame(df, columns=["TBFFR"]),
         sheet_name,
         fig,
     )
@@ -1281,7 +1281,7 @@ def plot_icebofa(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ICEBOFA",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
@@ -1355,7 +1355,7 @@ def plot_moody(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "MOODY",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
@@ -1460,7 +1460,7 @@ def plot_cp(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "CP",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
@@ -1555,7 +1555,7 @@ def plot_spot(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "SPOT",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
@@ -1623,7 +1623,7 @@ def plot_hqm(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cycrv",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
