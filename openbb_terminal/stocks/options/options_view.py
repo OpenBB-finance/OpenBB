@@ -70,6 +70,7 @@ def print_raw(
             show_index=False,
             title=table_title,
             export=bool(export),
+            floatfmt=".6f",
         )
 
     for opt_type, only in zip(["call", "put"], [puts_only, calls_only]):
@@ -81,6 +82,7 @@ def print_raw(
                 show_index=False,
                 title=f"{title} - {opt_type.title()}s",
                 export=bool(export),
+                floatfmt=".4f",
             )
 
     return None
