@@ -79,21 +79,47 @@ That change will be reflected on the OpenBB Hub when refreshing the page.
 
 Note that any changes on the OpenBB Hub will require a restart of the terminal to take effect.
 
-
 ## Theme Styles
 
-In the OpenBB Hub, you have the ability to change your preferred themes for your terminal, charts and tables.
+Theme styles correspond to the ability to change your terminal "skin" (i.e. colouring of the `menu`, `commands`, `data source`, `parameters`, `information` and `help`, the charts and tables style.
 
-When logged in, the terminal will pull a saved theme from your account.
+### OpenBB Hub
 
-For the terminal theme, this can be activated by using the command: `settings/colors --style hub`.
+In the OpenBB Hub, you have the ability to change your preferred themes for the terminal on [this page](https://my.openbb.dev/app/terminal/theme?index), 
 
-If you wish to change, you can pass one of `{light,dark,openbb}` to the `--style` flag.
+<img width="1427" alt="Screenshot 2023-04-14 at 6 51 50 PM" src="https://user-images.githubusercontent.com/25267873/232177511-d86edd57-fa2f-40a2-b05f-35cbb856bb94.png">
 
-To change the charting style, the `settings/theme` command can be run.
+and charts and tables on [this page](https://my.openbb.dev/app/terminal/theme/charts-tables),
 
+<img width="1421" alt="Screenshot 2023-04-14 at 6 56 46 PM" src="https://user-images.githubusercontent.com/25267873/232177692-89fd6784-dd8b-4cb2-a613-d51f6332e2da.png">
 
-### Routines
+### OpenBB Terminal
+
+Upon login, the OpenBB Terminal will pull the theme style associated with your account.
+
+The user is also allowed to manage these styles utilizing the `/settings/theme` and `/settings/colors` commands. While the first is easy to manage, the latter can be tricky as it involves moving a special file around - so OpenBB highly recommends managing this through the OpenBB Hub improved interface.
+
+The charts and tables take effect immediately, whereas for the terminal theme to take effect the terminal needs to be reset.
+
+## Script Routines
+
+These are text files with an `.openbb` extension that allow users to create workflows of sequence of commands. And allows to create parameters that can be modified outside the terminal. An example would be the file, "_example.openbb_" looking like:
+
+```text
+stocks
+
+load $ARGV[0]
+
+# depict chart
+candle
+```
+
+and then run on the terminal utilizing:
+```text
+/exe example.openbb -i MSFT
+```
+
+### OpenBB Hub
 
 When logged into your account on the OpenBB Terminal, your routines will be synced on login and automatically available for use.
 To see what routines are available from the Hub, you can use the `account/list` command, which will show the default OpenBB routines and your personal routines, such as:
