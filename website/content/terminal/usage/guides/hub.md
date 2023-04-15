@@ -164,10 +164,9 @@ The bottom of that page also allows to regenerate the PAT.
 In addition you can copy-paste the following section
 
 ```python
-openbb.login('didier.lopes@openbb.finance', '****')
+from openbb_terminal.sdk import openbb
+openbb.login(token = "<YOUR TOKEN HERE>")
 ```
-
-where **** corresponds to the OpenBB PAT.
 
 ### OpenBB Terminal
 
@@ -178,4 +177,16 @@ Once you have generated a token, an SDK session can be initiated anywhere utiliz
 ```python
 from openbb_terminal.sdk import openbb
 openbb.login(token = "<YOUR TOKEN HERE>")
+```
+
+Note that you can also access your account utilizing your credentials, e.g.
+
+```python
+openbb.login(email = 'didier.lopes@openbb.finance', password = '****')
+```
+
+in addition, if you want to store that information locally you can do so by setting this additional flag
+
+```python
+keep_session = True
 ```
