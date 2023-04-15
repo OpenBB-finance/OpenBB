@@ -110,7 +110,7 @@ stocks
 
 load $ARGV[0]
 
-# depict chart
+# depict candle chart
 candle
 ```
 
@@ -121,46 +121,39 @@ and then run on the terminal utilizing:
 
 ### OpenBB Hub
 
+The OpenBB Hub allows user to manage their own script routines to be run in the OpenBB Terminal. They can do so on [this page](https://my.openbb.dev/app/terminal/routines).
+
+<img width="1442" alt="Screenshot 2023-04-14 at 7 13 11 PM" src="https://user-images.githubusercontent.com/25267873/232178264-61f383ef-242f-48da-bd32-83fd013a094c.png">
+
+In addition, a few script routines will be distributed by the OpenBB Team on [this page](https://my.openbb.dev/app/terminal/routines/default). These come primarily from academic content that the team is releasing, but can serve as an example of what you can do.
+
+<img width="1443" alt="Screenshot 2023-04-14 at 7 17 44 PM" src="https://user-images.githubusercontent.com/25267873/232178430-1e870571-26b7-4513-9d14-5ef2e97090b2.png">
+
+Note that the "Download" button allows you to download the example file and share with co-workers / colleagues.
+
+### OpenBB Terminal
+
 When logged into your account on the OpenBB Terminal, your routines will be synced on login and automatically available for use.
-To see what routines are available from the Hub, you can use the `account/list` command, which will show the default OpenBB routines and your personal routines, such as:
 
-```console
-2023 Apr 13, 12:48 [jmaslek11] 🦋 /account/ $ list
+To see what routines are available from the Hub, you can use the command: `/account/list`, which will show the default OpenBB routines and your personal routines, e.g.
 
-                        Personal routines - page 1 of 1
-┏━━━┳━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┓
-┃ # ┃ Name ┃ Description                       ┃ Version ┃ Last update         ┃
-┡━━━╇━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━┩
-│ 1 │ test │ Load apple ticker and plot candle │ 3.0.0   │ 2023-04-13 16:50:28 │
-└───┴──────┴───────────────────────────────────┴─────────┴─────────────────────┘
+<img width="1582" alt="Screenshot 2023-04-14 at 7 22 14 PM" src="https://user-images.githubusercontent.com/25267873/232178585-71b9de95-707f-4374-91c8-83e6622f6829.png">
 
-                                                                      Default routines
-┏━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┓
-┃ # ┃ Name                              ┃ Description                                                                      ┃ Version ┃ Last update         ┃
-┡━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━┩
-│ 1 │ The Greek Government Debt Crisis  │ This routine script is related to the "OpenBB - The Greek Government Debt        │ 3.0.0   │ 2023-04-05 14:45:27 │
-│   │                                   │ Crisis" presentation and allows allows the Greek Debt Crisis to be analyzed      │         │                     │
-│   │                                   │ further in Excel.                                                                │         │                     │
-├───┼───────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────┼─────────┼─────────────────────┤
-│ 2 │ The Influence of the Central Bank │ This routine script is related to the "OpenBB - The Influence of the Central     │ 3.0.0   │ -                   │
-│   │                                   │ Bank" presentation and allows the Central Bank and Government dataset to be      │         │                     │
-│   │                                   │ analyzed further in Excel.                                                       │         │                     │
-├───┼───────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────┼─────────┼─────────────────────┤
-│ 3 │ Financial Due Diligence          │ This routine script is related to the "OpenBB - Performing Financial Due         │ 3.0.0   │ 2023-04-05 14:44:36 │
-│   │                                   │ Diligence" presentation and allows the exact same analysis to be performed as    │         │                     │
-│   │                                   │ done in this presentation for any company. This creates a highly detailed Excel  │         │                     │
-│   │                                   │ file as seen on the right.                                                       │         │                     │
-│   │                                   │                                                                                  │         │                     │
-│   │                                   │ This is not only relevant for competitive analysis but also if there is a need   │         │                     │
-│   │                                   │ to replicate the analysis for a different company, industry or sector.           │         │                     │
-└───┴───────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┴─────────┴─────────────────────┘
-```
+In order to run a routine, from the main menu one can run `exe --file` and the available routines will pop up as available auto completions. For instance,
 
-In order to run a routine, from the main menu one can run `exe --file` and the available routines will pop up as available auto completions.  If you wish to specify a specific routine to download locally, or to upload a locally created .openbb file, the commands `account/upload` and `account/download` can be used.  Your routines can also be deleted locally.  This will delete on the Hub as well.
+<img width="576" alt="Screenshot 2023-04-14 at 7 23 16 PM" src="https://user-images.githubusercontent.com/25267873/232178635-4626c686-dafb-40c0-911f-60a1d3f8fd13.png">
 
-### Personal Access Tokens
 
-In order to access your settings in the sdk, we allow you to use a personal access token.  This can either be generated in the Hub or in the terminal.  To generate a new token in the terminal, one can use the `account/generate` command.  This will delete any previously issued tokens.  Once you have generated a token, an SDK session can be initiated anywhere using
+If you wish to specify a specific routine to download locally, or to upload a locally created .openbb file, the commands `account/upload` and `account/download` can be used.
+
+Your routines can also be deleted locally, this will be synced with the OpenBB Hub.
+
+## Personal Access Tokens
+
+In order to access your settings in the OpenBB SDK, we allow you to use our OpenBB personal access token (PAT). 
+
+
+This can either be generated in the OpenBB Hub or in the OpenBB terminal.  To generate a new token in the terminal, one can use the `account/generate` command.  This will delete any previously issued tokens.  Once you have generated a token, an SDK session can be initiated anywhere using
 ```python
 from openbb_terminal.sdk import openbb
 openbb.login(token = "<YOUR TOKEN HERE>")
