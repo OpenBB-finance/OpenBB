@@ -62,22 +62,23 @@ def display_company_info(company_number: str, export: str = "") -> None:
     """
     results = companieshouse_model.get_company_info(company_number)
 
-    # print(results)
+    if len(results) > 0:
+        print_rich_table(
+            results,
+            show_index=False,
+            show_header=False,
+            title=f"[bold]{company_number}[/bold]",
+            export=bool(export),
+        )
 
-    print_rich_table(
-        results,
-        show_index=False,
-        show_header=False,
-        title=f"[bold]{company_number}[/bold]",
-        export=bool(export),
-    )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "results",
-        results,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "results",
+            results,
+        )
+    else:
+        console.print("[red]No Data Found[/red]")
 
 
 @log_start_end(log=logger)
@@ -93,19 +94,22 @@ def display_officers(company_number: str, export: str = "") -> None:
     """
     results = companieshouse_model.get_officers(company_number)
 
-    print_rich_table(
-        results,
-        show_index=False,
-        title=f"[bold]{company_number}[/bold]",
-        export=bool(export),
-    )
+    if len(results) > 0:
+        print_rich_table(
+            results,
+            show_index=False,
+            title=f"[bold]{company_number}[/bold]",
+            export=bool(export),
+        )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "results",
-        results,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "results",
+            results,
+        )
+    else:
+        console.print("[red]No Data Found[/red]")
 
 
 @log_start_end(log=logger)
@@ -123,19 +127,22 @@ def display_persons_with_significant_control(
     """
     results = companieshouse_model.get_persons_with_significant_control(company_number)
 
-    print_rich_table(
-        results,
-        show_index=False,
-        title=f"[bold]{company_number}[/bold]",
-        export=bool(export),
-    )
+    if len(results) > 0:
+        print_rich_table(
+            results,
+            show_index=False,
+            title=f"[bold]{company_number}[/bold]",
+            export=bool(export),
+        )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "results",
-        results,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "results",
+            results,
+        )
+    else:
+        console.print("[red]No Data Found[/red]")
 
 
 @log_start_end(log=logger)

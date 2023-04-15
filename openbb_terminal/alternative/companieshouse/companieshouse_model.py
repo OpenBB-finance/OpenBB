@@ -77,41 +77,49 @@ def get_company_info(company_number: str) -> pd.DataFrame:
         timeout=TIMEOUT,
     )
 
+    last_accounts = ""
     returned_data = r.json()
-    company = returned_data["company_name"]
-    last_accounts = returned_data["accounts"]["last_accounts"]
-    address = returned_data["registered_office_address"]
-    pretty_address = (
-        (address.get("address_line_1") or "")
-        + " ,"
-        + (address.get("address_line_2") or "")
-        + " ,"
-        + (address.get("locality") or "")
-        + " ,"
-        + (address.get("region") or "")
-        + " ,"
-        + (address.get("postal_code") or "")
-    )
+    if returned_data.get("company_name"):
+        company = returned_data["company_name"]
+        if returned_data.get("accounts"):
+            last_accounts = returned_data["accounts"]["last_accounts"]
+        address = returned_data["registered_office_address"]
+        pretty_address = (
+            (address.get("address_line_1") or "")
+            + " ,"
+            + (address.get("address_line_2") or "")
+            + " ,"
+            + (address.get("locality") or "")
+            + " ,"
+            + (address.get("region") or "")
+            + " ,"
+            + (address.get("postal_code") or "")
+        )
 
-    pretty_accounts = "Period Start On : " + (
-        last_accounts.get("period_start_on") or ""
-    ) + "\n" + "Type : " + (
-        last_accounts.get("type") or ""
-    ) + "\n" + "Made Up To : " + (
-        last_accounts.get("made_up_to") or ""
-    ) + "\n" "Period End On : " + (
-        last_accounts.get("period_end_on") or ""
-    )
+        if last_accounts:
+            pretty_accounts = "Period Start On : " + (
+                last_accounts.get("period_start_on") or ""
+            ) + "\n" + "Type : " + (
+                last_accounts.get("type") or ""
+            ) + "\n" + "Made Up To : " + (
+                last_accounts.get("made_up_to") or ""
+            ) + "\n" "Period End On : " + (
+                last_accounts.get("period_end_on") or ""
+            )
+        else:
+            pretty_accounts = "No data available"
 
-    data = pd.DataFrame(
-        [
-            ["Company", company],
-            ["Address", pretty_address],
-            ["Last Account", pretty_accounts],
-        ]
-    )
-    data.columns = ["Title", "Data"]
-    return data
+        data = pd.DataFrame(
+            [
+                ["Company", company],
+                ["Address", pretty_address],
+                ["Last Account", pretty_accounts],
+            ]
+        )
+        data.columns = ["Title", "Data"]
+        return data
+    else:
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -128,15 +136,16 @@ def get_officers(company_number: str) -> pd.DataFrame:
     returned_data = r.json()
 
     officers = []
-    for index, item in enumerate(returned_data["items"]):
-        officers.append(
-            {
-                "Officer Role": (item.get("officer_role") or " - "),
-                "Appointed On": (item.get("appointed_on") or " - "),
-                "Resigned On": (item.get("resigned_on") or " - "),
-                "Name": (item.get("name") or " - "),
-            }
-        )
+    if returned_data.get("items"):
+        for index, item in enumerate(returned_data["items"]):
+            officers.append(
+                {
+                    "Officer Role": (item.get("officer_role") or " - "),
+                    "Appointed On": (item.get("appointed_on") or " - "),
+                    "Resigned On": (item.get("resigned_on") or " - "),
+                    "Name": (item.get("name") or " - "),
+                }
+            )
 
     df = pd.DataFrame(officers)
 
@@ -157,15 +166,16 @@ def get_persons_with_significant_control(company_number: str) -> pd.DataFrame:
     returned_data = r.json()
 
     controllers = []
-    for index, item in enumerate(returned_data["items"]):
-        controllers.append(
-            {
-                "Kind": (item.get("kind") or " - "),
-                "Name": (item.get("name") or " - "),
-                "Natures of Control": (item.get("natures_of_control") or " - "),
-                "Notified On": (item.get("notified_on") or " - "),
-            }
-        )
+    if returned_data.get("items"):
+        for index, item in enumerate(returned_data["items"]):
+            controllers.append(
+                {
+                    "Kind": (item.get("kind") or " - "),
+                    "Name": (item.get("name") or " - "),
+                    "Natures of Control": (item.get("natures_of_control") or " - "),
+                    "Notified On": (item.get("notified_on") or " - "),
+                }
+            )
 
     df = pd.DataFrame(controllers)
 
