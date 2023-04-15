@@ -13,7 +13,6 @@ First you want to create an account on OpenBB Hub at: https://my.openbb.dev/.
 
 You'll need to register so the OpenBB Hub can know about you and save your data into our servers. This allows you to be able to boot up our products in multiple devices and keep the same settings, which improves a lot the user experience. The same goes for when a new version of the terminal is released.
 
-
 ## Login
 
 After you are registered on the OpenBB Hub, you can login onto it and benefit from all the advantages that come with it.
@@ -26,23 +25,35 @@ When OpenBB Terminal 3.0.0 (or greater) is launched, there will be a new welcome
 
 <img width="473" alt="Screenshot 2023-04-14 at 3 31 51 PM" src="https://user-images.githubusercontent.com/25267873/232165909-682c7301-237c-4a8a-b780-97c944adb625.png">
 
-Make sure to utilize the same credentials.
+The "_Remember me_" feature will save your session to the local machine, so that you do not need to login for the next 30 days. 
 
-The remember me option will save your session to the local machine, so that you do not need to login for the next 30 days.  If you are not registered, you can skip this by pressing `<ENTER>` and enter as a guest.
+If you are not registered, you can skip this by pressing `<ENTER>` and enter as a guest.
 
-If you are running the Terminal from source, this screen can either be reached by running
-```console
-python terminal.py --login
-```
-or by using the `account/login` function.
+If you have logged in successfully your terminal will display your username (e.g. `[didier.lopes]`) followed by the 🦋 flair whereas if you are in guest mode you'll see only the 🐛 flair.
 
-### API Keys
+Note: If you are inside the terminal and want to login or logout of your account you can utilize the `/account` menu in the terminal.
 
-If you have previously uploaded your API keys to the OpenBB Hub, they will be pulled from your account on login.  If you have previously used the OpenBB Terminal and set API keys, but have not put them in the Hub, we will load from the local environment.  Note that setting a key in the `keys` menu will **not** upload it to the Hub.
+## API Keys
 
-Note that if you have the terminal running and you update a key in the Hub, you will need to restart the terminal for the changes to take effect.
+### Uploading API Keys to the OpenBB Hub
 
-If you wish to delete your stored API keys from the hub, you can do so using the `account/clear` function.  Note that this action will bring up a confirmation prompt and **cannot be undone**.
+If you were already an OpenBB user before the OpenBB Terminal 3.0 you might have an `.env` file that contains all your API keys. If that is the case then you just need to drag and drop it in [this page](https://my.openbb.dev/app/terminal/api-keys).
+
+<img width="1441" alt="Screenshot 2023-04-14 at 6 14 55 PM" src="https://user-images.githubusercontent.com/25267873/232176162-b16296d4-0c08-408c-aaa4-f46a6bea1bf3.png">
+
+Otherwise you'll need to follow the instructions by hovering on the ℹ️ for each data source of interest. The icon that follows will take you to the data vendor website to acquire the API key which then you can save on the Hub.
+
+### API Keys on the OpenBB Terminal
+
+Upon login, the OpenBB Terminal will pull the API keys associated with your account.
+
+If you have not set them on the OpenBB Hub, by default they will be loaded from your local environment. However, an API key on the OpenBB Hub will take precedence over one on the user local environment.
+
+Important: Setting a key in the `keys` menu will **NOT** upload it to the OpenBB Hub. This is merely an option to allow the user to manage it's own local environment variables, but OpenBB recommends utilizing the OpenBB Hub for an improved user experience.
+
+If the OpenBB Terminal is running and an API key is updated in the Hub you will need to restart the terminal for the changes to take effect.
+
+If you wish to delete your stored API keys from the OpenBB Hub, you can do so using the command: `/account/clear`. This action will bring up a confirmation prompt and **CANNOT BE UNDONE**.
 
 ### Themes
 
