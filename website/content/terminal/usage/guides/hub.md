@@ -1,45 +1,34 @@
 ---
 title: Hub Synchronization
-sidebar_position:6
+sidebar_position: 6
 description: Walk-through of integrating the OpenBB Terminal with the OpenBB Hub
-keywords: [api, keys, api keys, data provider, data, free, openbb_terminal, openbbterminal,
-openbb_hub, hub, routines, synchronization, sync, hub sync, hub synchronization, hub sync]
+keywords: [api, keys, api keys, data provider, data, free, openbb_terminal, openbbterminal, openbb_hub, hub, routines, synchronization, sync, hub sync, hub synchronization, hub sync]
 ---
 
 This guide will walk you through the process of integrating the OpenBB Terminal with the OpenBB Hub.
-When OpenBB Terminal 3.0.0 (or greater) is launched, there will be a new welcome.
-On packaged applications, you will be greeted with the following
-```console
-  ___                   ____  ____    _____                   _             _
- / _ \ _ __   ___ _ __ | __ )| __ )  |_   _|__ _ __ _ __ ___ (_)_ __   __ _| |
-| | | | '_ \ / _ \ '_ \|  _ \|  _ \    | |/ _ \ '__| '_ ` _ \| | '_ \ / _` | |
-| |_| | |_) |  __/ | | | |_) | |_) |   | |  __/ |  | | | | | | | | | | (_| | |
- \___/| .__/ \___|_| |_|____/|____/    |_|\___|_|  |_| |_| |_|_|_| |_|\__,_|_|
-      |_|
-                                    @@@
-                                    @@@
-             @@@@@@@@@@@@@@@@@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@
-             @@@                 @@@   @@@                 @@@
-             @@@@@@@@@@@@@@@@@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@
-                                 @@@   @@@
-                %%%%%%%%%%%%%%%%%@@@   @@@%%%%%%%%%%%%%%%%%
-                @@@@@@@@@@@@@@@@@@@@   @@@@@@@@@@@@@@@@@@@@
-                @@@              @@@   @@@              @@@
-                @@@@@@@@@@@@@@@@@@@@   @@@@@@@@@@@@@@@@@@@@
 
-                Investment research for Everyone, Anywhere.
+## Registration
+
+First you want to create an account on OpenBB Hub at: https://my.openbb.dev/.
+
+You'll need to register so the OpenBB Hub can know about you and save your data into our servers. This allows you to be able to boot up our products in multiple devices and keep the same settings, which improves a lot the user experience. The same goes for when a new version of the terminal is released.
 
 
-Register     : https://my.openbb.co/register
-Ask support  : https://openbb.co/support
+## Login
 
-Please enter your credentials or press <ENTER> for guest mode:
-> Email: *****
-> Password: *****
-> Remember me? (y/n):
-```
+After you are registered on the OpenBB Hub, you can login onto it and benefit from all the advantages that come with it.
 
-If you are registered on the OpenBB Hub, you can enter your credentials here.  The remember me option will save your session to the local machine, so that you do not need to login for the next 30 days.  If you are not registered, you can skip this by pressing `<ENTER>`.
+The details that you use on this page will be the same ones that are going to be used on the OpenBB Terminal.
+
+<img width="1441" alt="Screenshot 2023-04-14 at 3 46 52 PM" src="https://user-images.githubusercontent.com/25267873/232166964-635ff0c0-0e09-4cc2-9f9f-078552cc41c1.png">
+
+When OpenBB Terminal 3.0.0 (or greater) is launched, there will be a new welcome message. On packaged applications, you will be greeted with the following:
+
+<img width="473" alt="Screenshot 2023-04-14 at 3 31 51 PM" src="https://user-images.githubusercontent.com/25267873/232165909-682c7301-237c-4a8a-b780-97c944adb625.png">
+
+Make sure to utilize the same credentials.
+
+The remember me option will save your session to the local machine, so that you do not need to login for the next 30 days.  If you are not registered, you can skip this by pressing `<ENTER>` and enter as a guest.
 
 If you are running the Terminal from source, this screen can either be reached by running
 ```console
