@@ -132,7 +132,7 @@ class OptionsController(BaseController):
         self.selected_date = expiration or ""
         self.chain: pd.DataFrame = pd.DataFrame()
         self.full_chain: pd.DataFrame = pd.DataFrame()
-
+        self.expiry_dates: List[str] = []
         self.current_price = 0.0
         # Keeps track of initial source of load so we can use correct commands later
         self.source = get_ordered_list_sources(f"{self.PATH}load")[0]
