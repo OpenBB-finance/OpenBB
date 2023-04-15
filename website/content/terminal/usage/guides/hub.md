@@ -170,7 +170,7 @@ openbb.login(token = "<YOUR TOKEN HERE>")
 
 ### OpenBB Terminal
 
-Althought the PAT is not meant to be used in the OpenBB Terminal, you can still manage it in the `/account` menu through the `generate` command. This will delete any previously issued tokens.
+Although the PAT is not meant to be used in the OpenBB Terminal, you can still manage it in the `/account` menu through the `generate` command. This will delete any previously issued tokens.
 
 Once you have generated a token, an SDK session can be initiated anywhere utilizing:
 
