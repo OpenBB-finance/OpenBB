@@ -77,12 +77,13 @@ def get_company_info(company_number: str) -> pd.DataFrame:
         timeout=TIMEOUT,
     )
 
-    last_accounts = ""
+    last_accounts = {}
     returned_data = r.json()
     if returned_data.get("company_name"):
         company = returned_data["company_name"]
         if returned_data.get("accounts"):
             last_accounts = returned_data["accounts"]["last_accounts"]
+            print(type(last_accounts))
         address = returned_data["registered_office_address"]
         pretty_address = (
             (address.get("address_line_1") or "")
