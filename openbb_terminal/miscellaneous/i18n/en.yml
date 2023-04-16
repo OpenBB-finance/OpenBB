@@ -951,7 +951,7 @@ en:
   alternative/companieshouse/load: retrieve basic company details by company registration number
   alternative/companieshouse/officers: retrieve company officies
   alternative/companieshouse/signifcontrol: retrieve those with significant control over the company
-  alternative/companieshouse/filings: retrieve list of all doocuments filied with Companies House
+  alternative/companieshouse/filings: retrieve list of all doocuments filed with Companies House
   alternative/companieshouse/filingdocument: download filed document
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
