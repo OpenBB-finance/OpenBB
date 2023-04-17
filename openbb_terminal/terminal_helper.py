@@ -377,7 +377,6 @@ def reset(queue: Optional[List[str]] = None):
             if parts[0] == "openbb_terminal":
                 if len(parts) > 2 and parts[1] == "core" and parts[2] == "session":
                     continue
-                print("deleting", module)
                 del sys.modules[module]
 
         # pylint: disable=import-outside-toplevel
