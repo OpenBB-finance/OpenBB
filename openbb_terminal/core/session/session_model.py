@@ -130,7 +130,7 @@ def download_and_save_routines(auth_header: str):
         The authorization header, e.g. "Bearer <token>".
     """
     try:
-        console.print("Downloading routines...")
+        console.print("\nDownloading routines...")
         routines = download_routines(auth_header=auth_header)
         for name, content in optional_rich_track(
             routines.items(), desc="Saving routines"
