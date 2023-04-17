@@ -597,7 +597,7 @@ def plot_fed(
             fig,
         )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -707,7 +707,7 @@ def plot_projection(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -833,7 +833,7 @@ def plot_ecb(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1012,7 +1012,7 @@ def display_yield_curve(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1106,7 +1106,7 @@ def plot_usrates(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1286,7 +1286,7 @@ def plot_icebofa(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1360,7 +1360,7 @@ def plot_moody(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1465,7 +1465,7 @@ def plot_cp(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1560,7 +1560,7 @@ def plot_spot(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1628,4 +1628,4 @@ def plot_hqm(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

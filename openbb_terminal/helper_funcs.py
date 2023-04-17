@@ -1592,6 +1592,8 @@ def export_data(
 
             console.print(f"Saved file: {saved_path}")
 
+        figure._exported = True  # pylint: disable=protected-access
+
 
 def get_rf() -> float:
     """Use the fiscaldata.gov API to get most recent T-Bill rate.

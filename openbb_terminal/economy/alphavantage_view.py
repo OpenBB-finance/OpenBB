@@ -133,7 +133,7 @@ def display_real_gdp(
         fig,
     )
     if raw:
-        print_rich_table(
+        return print_rich_table(
             gdp,
             headers=["Date", "GDP"],
             show_index=False,
@@ -192,7 +192,7 @@ def display_gdp_capita(
         fig,
     )
     if raw:
-        print_rich_table(
+        return print_rich_table(
             gdp,
             headers=["Date", "GDP"],
             show_index=False,
@@ -251,7 +251,7 @@ def display_inflation(
         fig,
     )
     if raw:
-        print_rich_table(
+        return print_rich_table(
             inf,
             headers=["Date", "Inflation"],
             show_index=False,
@@ -316,7 +316,7 @@ def display_cpi(
         fig,
     )
     if raw:
-        print_rich_table(
+        return print_rich_table(
             cpi,
             headers=["Date", "CPI"],
             show_index=False,
@@ -382,7 +382,7 @@ def display_treasury_yield(
         fig,
     )
     if raw:
-        print_rich_table(
+        return print_rich_table(
             yld,
             headers=["Date", "Yield"],
             title="Historical Treasury Yield",
@@ -444,7 +444,7 @@ def display_unemployment(
     )
 
     if raw:
-        print_rich_table(
+        return print_rich_table(
             un,
             headers=["Date", "GDP"],
             title="US Unemployment",
