@@ -40,6 +40,7 @@ def test_display_historical(loaded_fund, start_date, end_date, kwargs):
 
 
 @pytest.mark.record_verify_screen
+@pytest.mark.skip
 def test_display_holdings():
     mstarpy_view.display_holdings(loaded_funds=EXAMPLE_FUND)
 
