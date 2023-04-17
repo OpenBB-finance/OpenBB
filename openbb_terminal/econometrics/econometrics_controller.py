@@ -73,6 +73,7 @@ class EconometricsController(BaseController):
         "dwat",
         "bgod",
         "bpag",
+        "garch",
         "granger",
         "coint",
     ]
@@ -181,6 +182,7 @@ class EconometricsController(BaseController):
                 "plot",
                 "norm",
                 "root",
+                "garch",
                 "granger",
                 "coint",
                 "corr",
@@ -217,6 +219,7 @@ class EconometricsController(BaseController):
                 "ols",
                 "panel",
                 "delete",
+                "garch",
             ]:
                 self.choices[feature] = dataset_columns
             for feature in [
@@ -1889,6 +1892,102 @@ class EconometricsController(BaseController):
                 regression_view.display_bpag(
                     self.regression["OLS"]["model"], ns_parser.export
                 )
+
+    @log_start_end(log=logger)
+    def call_garch(self, other_args: List[str]):
+        """Process garch command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gach",
+            description="""Calculates annualized volatility forecasts based on GARCH.
+            GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for
+            instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
+        
+            GARCH(p, q):  = (1 - alpha - beta) sigma_l + SUM(alpha u_{t-1} ^ 2) + SUM(beta sigma_{t-1} ^ 2) [1]
+        
+            The GARCH-model assumes that the variance estimate consists of 3 components:
+            - sigma_l; the long term component, which is unrelated to the current market conditions
+            - u_t; the innovation/discovery through current market price changes
+            - simgma_t; the last estimate
+        
+            GARCH can be understood as a model, which allows to optimize these 3 variance components to the time series.
+            This is done assigning weights to variance components: (1 - alpha - beta) for sigma_l, alpha for u_t and
+            beta for sigma_t. [2]
+        
+            The weights can be estimated by iterating over different values of (1 - alpha - beta) sigma_l which we will call omega, alpha and beta, while
+            maximizing: SUM(-ln(v_i) - (u_i ^ 2) / v_i). With the constraints:
+            - alpha > 0
+            - beta > 0
+            - alpha + beta < 1
+            Note that there is no restriction on omega.
+        
+            Another method used for estimation is "variance targeting", where one first sets omega
+            equal to the variance of the time series. This method nearly as effective as the previously mentioned and is less
+            computationally effective.
+        
+            One can measure the fit of the time series to the GARCH method by using the Ljung-Box statistic. [3]
+        
+            See the sources below for reference and for greater detail.
+        
+            Sources:
+            [1] Generalized Autoregressive Conditional Heteroskedasticity, by Tim Bollerslev
+            [2] Finance Compact Plus Band 1, by Yvonne Seler Zimmerman and Heinz Zimmerman; ISBN: 978-3-907291-31-1
+            [3] Options, Futures & other Derivates, by John C. Hull; ISBN: 0-13-022444-8""",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            type=str,
+            choices=self.choices["garch"],
+            dest="column",
+            help="The column and name of the database you want to estimate volatility for",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-p",
+            help="The lag order of the symmetric innovation",
+            dest="p",
+            type=int,
+            default=1,
+        )
+        parser.add_argument(
+            "-o",
+            help="The lag order of the asymmetric innovation",
+            dest="o",
+            type=int,
+            default=0,
+        )
+        parser.add_argument(
+            "-q",
+            help="The lag order of lagged volatility or equivalent",
+            dest="q",
+            type=int,
+            default=1,
+        )
+        parser.add_argument(
+            "-m",
+            "--mean",
+            help="Choose mean model",
+            choices=["LS", "AR", "ARX", "HAR", "HARX", "constant", "zero"],
+            default="constant",
+            type=str,
+            dest="mean",
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            help="The length of the estimate",
+            dest="horizon",
+            type=int,
+            default=100,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            dataset, column = ns_parser.column.split(".")
+            econometrics_view.display_garch(self.datasets[dataset], column, ns_parser.p, ns_parser.o, ns_parser.q, ns_parser.mean, ns_parser.horizon)
 
     @log_start_end(log=logger)
     def call_granger(self, other_args: List[str]):

@@ -8,6 +8,8 @@ import warnings
 from itertools import combinations
 from typing import Any, Dict, Optional, Tuple, Union
 
+from arch import arch_model
+import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from scipy import stats
@@ -324,6 +326,65 @@ def get_coint_df(
         )
         return df
     return pd.DataFrame()
+
+
+def get_garch(data: pd.Series, p: int = 1, o: int = 0, q: int = 1, mean: str = "constant", horizon: int = 100):
+    """Calculates annualized volatility forecasts based on GARCH.
+
+    GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for
+    instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
+
+    GARCH(p, q):  = (1 - alpha - beta) sigma_l + SUM(alpha u_{t-1} ^ 2) + SUM(beta sigma_{t-1} ^ 2) [1]
+
+    The GARCH-model assumes that the variance estimate consists of 3 components:
+    - sigma_l; the long term component, which is unrelated to the current market conditions
+    - u_t; the innovation/discovery through current market price changes
+    - simgma_t; the last estimate
+
+    GARCH can be understood as a model, which allows to optimize these 3 variance components to the time series.
+    This is done assigning weights to variance components: (1 - alpha - beta) for sigma_l, alpha for u_t and
+    beta for sigma_t. [2]
+
+    The weights can be estimated by iterating over different values of (1 - alpha - beta) sigma_l which we will call omega, alpha and beta, while
+    maximizing: SUM(-ln(v_i) - (u_i ^ 2) / v_i). With the constraints:
+    - alpha > 0
+    - beta > 0
+    - alpha + beta < 1
+    Note that there is no restriction on omega.
+
+    Another method used for estimation is "variance targeting", where one first sets omega
+    equal to the variance of the time series. This method nearly as effective as the previously mentioned and is less
+    computationally effective.
+
+    One can measure the fit of the time series to the GARCH method by using the Ljung-Box statistic. [3]
+
+    See the sources below for reference and for greater detail.
+
+    Sources:
+    [1] Generalized Autoregressive Conditional Heteroskedasticity, by Tim Bollerslev
+    [2] Finance Compact Plus Band 1, by Yvonne Seler Zimmerman and Heinz Zimmerman; ISBN: 978-3-907291-31-1
+    [3] Options, Futures & other Derivates, by John C. Hull; ISBN: 0-13-022444-8
+
+    Parameters
+    ----------
+    data: pd.Series
+        The time series to estimate volatility from
+    p: int
+        Lag order of the symmetric innovation
+    o: int
+        Lag order of the asymmetric innovation
+    q: int
+        Lag order of lagged volatility or equivalent
+    mean: str
+        The name of the mean model
+    horizon: int
+        The horizon of the forecast
+    """
+    model = arch_model(100 * data.pct_change().dropna(), vol="GARCH", p=p, o=o, q=q, mean=mean)
+    model_fit = model.fit(disp="off")
+    pred = model_fit.forecast(horizon=horizon, reindex=False)
+
+    return pred.variance.values[-1, :] * np.sqrt(252), model_fit.params
 
 
 def get_engle_granger_two_step_cointegration_test(

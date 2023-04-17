@@ -387,6 +387,56 @@ def display_root(
 
 
 @log_start_end(log=logger)
+def display_garch(dataset: pd.DataFrame, column: str, p: int = 1, o: int = 0, q: int = 1, mean: str = "constant", horizon: int = 1, export: str = "", external_axes: bool = False) -> Union[OpenBBFigure, None]:
+    """Plots the annualized volatility forecasts based on GARCH
+
+    Parameters
+    ----------
+    dataset: pd.DataFrame
+        The dataframe to use
+    column: str
+        The column of the dataframe to use
+    p: int
+        Lag order of the symmetric innovation
+    o: int
+        Lag order of the asymmetric innovation
+    q: int
+        Lag order of lagged volatility or equivalent
+    mean: str
+        The name of the mean model
+    horizon: int
+        The horizon of the forecast
+    """
+    data = dataset[column]
+    result, garch_params = econometrics_model.get_garch(data, p, o, q, mean, horizon)
+
+    fig = OpenBBFigure()
+
+    fig.add_scatter(x=list(range(1, horizon+1)), y=result)
+    fig.set_title(f"{f'GARCH({p}, {o}, {q})' if o != 0 else f'GARCH({p}, {q})'} annualized volatility forecast")
+
+    if fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{column}_{dataset}_GARCH({p},{q})",
+            result,
+            figure=fig,
+        )
+
+    print_rich_table(
+        garch_params.to_frame(),
+        headers=["Values"],
+        show_index=True,
+        index_name="Parameters",
+        title=f"GARCH({p}, {o}, {q})" if o != 0 else f"GARCH({p}, {q})",
+        export=bool(export),
+    )
+
+    return fig.show(external=external_axes)
+
+
+@log_start_end(log=logger)
 def display_granger(
     dependent_series: pd.Series,
     independent_series: pd.Series,
