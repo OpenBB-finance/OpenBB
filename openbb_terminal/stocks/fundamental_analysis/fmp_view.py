@@ -199,7 +199,7 @@ def display_enterprise(
             sheet_name,
         )
 
-        return fig.show(external=external_axes)
+        return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
