@@ -345,7 +345,8 @@ class BaseController(metaclass=ABCMeta):
         """
         actions = self.parse_input(an_input)
 
-        console.print()
+        if an_input and an_input != "reset":
+            console.print()
 
         # Empty command
         if len(actions) == 0:
@@ -396,7 +397,13 @@ class BaseController(metaclass=ABCMeta):
 
         self.log_queue()
 
-        if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+        if (
+            an_input
+            and an_input != "reset"
+            and (
+                not self.queue or (self.queue and self.queue[0] not in ("quit", "help"))
+            )
+        ):
             console.print()
 
         return self.queue
