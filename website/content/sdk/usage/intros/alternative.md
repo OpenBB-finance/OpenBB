@@ -1,6 +1,6 @@
 ---
 title: Alternative
-keywords: [alternative data, alternative, data, alt, openbb terminal]
+keywords: [alternative data, alternative, data, alt, openbb terminal, sdk, how to, usage, oss, covid, examples]
 description: The Alternative module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated.
 ---
 

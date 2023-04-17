@@ -1,6 +1,6 @@
 ---
 title: Comparison Analysis
-keywords: [comparison, analysis, ca, menu, submenu, stocks, compare, correlation, similar, historical, hcorr, volume, income, balance, cashflow, sentiment, scorr, overview, valuation, financial, ownership, performance, technical, tsne, get --source Polygon, get --source Finnhub, get, set, add, rmv, Polygon, Finnhub, Finviz, Yahoo, yFinance, FinBrain, market, watch, openbb terminal]
+keywords: [comparison, analysis, ca, menu, submenu, stocks, compare, correlation, similar, historical, hcorr, volume, income, balance, cashflow, sentiment, scorr, overview, valuation, financial, ownership, performance, technical, tsne, get --source Polygon, get --source Finnhub, get, set, add, rmv, Polygon, Finnhub, Finviz, Yahoo, yFinance, FinBrain, market, watch, openbb terminal, sdk, how to, usage]
 description: The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the Stocks menu to use these features.
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Import Errors
 sidebar_position: 2
-description: Import Errors.
+description: Troubleshoot common issues with import errors in the OpenBB SDK.
 keywords:
   [
     installation,
@@ -16,7 +16,13 @@ keywords:
     macos,
     how to,
     explanation,
-    openbb terminal,
+    openbb sdk,
+    import error,
+    error,
+    ssl certificate,
+    proxy connection,
+    modulenotfounderror,
+    no module named,
   ]
 ---
 ## Import Errors

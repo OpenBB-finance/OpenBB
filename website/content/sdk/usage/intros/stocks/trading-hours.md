@@ -1,6 +1,6 @@
 ---
 title: Trading Hours
-keywords: [markets, trading, hours, stocks, time, global, world, location, open, close, exchange]
+keywords: [markets, trading, hours, stocks, time, global, world, location, open, close, exchange, how to, usage, examples]
 description: An Introduction to the Trading Hours menu, within the Stocks menu. This set of features displays the status of international markets.
 ---
 

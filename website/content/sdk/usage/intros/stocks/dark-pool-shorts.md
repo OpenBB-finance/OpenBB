@@ -1,6 +1,6 @@
 ---
 title: Dark Pools and Short Data
-keywords: [darkpools, dps, dark, pools, dp, short, shorts, naked, selling, sales, SEC, disclosure, ATS, OTC, OTCE, NMS, borrowed, shorted, ftd, fails-to-deliver, volume]
+keywords: [darkpools, dps, dark, pools, dp, short, shorts, naked, selling, sales, SEC, disclosure, ATS, OTC, OTCE, NMS, borrowed, shorted, ftd, fails-to-deliver, volume, how to, usage, examples, CTB, POS, spos, psi, hsi]
 description: The Introduction to Dark Pools & Short Data, within the Stocks menu, which explains how to use the menu and provides a brief explanation of the features.
 ---
 

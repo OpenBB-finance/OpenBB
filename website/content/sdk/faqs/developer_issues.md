@@ -1,7 +1,7 @@
 ---
 title: Developer Issues
 sidebar_position: 7
-description: Developer Issues.
+description: Help with issues commonly faced by developers.
 keywords:
   [
     installation,
@@ -16,7 +16,11 @@ keywords:
     macos,
     how to,
     explanation,
-    openbb terminal,
+    openbb sdk,
+    error,
+    branch,
+    VS Code,
+    .whl
   ]
 ---
 ## Developer Issues

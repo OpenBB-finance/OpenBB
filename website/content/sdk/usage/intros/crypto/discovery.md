@@ -1,6 +1,6 @@
 ---
 title: Discovery
-keywords: [cryptocurrency, discovery, nft, app, decentralized, coins]
+keywords: [cryptocurrency, discovery, nft, app, decentralized, coins, function, sub-module, openbb.crypto, openbb sdk, sdk, import statement, load, candles, find, active address, trades, coin_list, baas, trending, news]
 description: An Introduction to Cryptocurrency Discovery, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 

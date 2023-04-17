@@ -2,7 +2,7 @@
 title: Basics
 sidebar_position: 1
 description: The OpenBB SDK is a modern investment research platform for everyone. It is a Software Development Kit that allows you to access all the data and tools you need to make better investment decisions.
-keywords: [basics, installation, commands, menus, your own data, introduction, openbb terminal, explanation, basic usage, usage, how to, openbb sdk]
+keywords: [basics, installation, commands, menus, your own data, introduction, openbb sdk, explanation, basic usage, usage, how to, openbb terminal, importing, navigation, docstrings, function, charts, display]
 ---
 ### Importing the SDK
 

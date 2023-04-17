@@ -1,8 +1,8 @@
 ---
 title: Setting API Keys
 sidebar_position: 1
-description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address. Each key is entered into the OpenBB SDk from the `openbb.keys` module, using the syntax described below. The docstrings for each source will also display the expected inputs.
-keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, sdk]
+description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. Learn how to set, manage, and access data APIs for the OpenBB SDK.
+keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, sdk, alphavantage, bitquery, coinbase, databento, finnhub, FRED, github, glassnode, iex cloud, news API, robinhood, santiment, shroomdk, token terminal, tradier, twitter, whale alert]
 ---
 ## The Keys Module
 

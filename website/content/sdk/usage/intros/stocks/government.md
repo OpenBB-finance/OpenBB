@@ -1,6 +1,6 @@
 ---
 title: Government
-keywords: [government, house, senate, politician, lobby, lobbyist, contract, contractor, spending, budget, treasury, trading, buys, sells, ticker, tickers, companies, listing, exchange]
+keywords: [government, house, senate, politician, lobby, lobbyist, contract, contractor, spending, budget, treasury, trading, buys, sells, ticker, tickers, companies, listing, exchange, how to, usage, examples, import, statement, contracts, histcont, lobbying, lastcontracts, ]
 description: This guide introduces the Government submenu, within the Stocks menu, by briefly explaining the features and how to use them, showing examples in context.
 ---
 

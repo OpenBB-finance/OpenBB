@@ -16,7 +16,8 @@ keywords:
     macos,
     how to,
     explanation,
-    openbb terminal,
+    openbb sdk,
+    sdk
   ]
 ---
 ## Bugs, Support, and Feedback

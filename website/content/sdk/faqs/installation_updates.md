@@ -1,7 +1,7 @@
 ---
 title: Installation and Updates
 sidebar_position: 1
-description: Installation and Updates.
+description: Installation and Updates to the OpenBB SDK.
 keywords:
   [
     installation,
@@ -16,7 +16,13 @@ keywords:
     macos,
     how to,
     explanation,
-    openbb terminal,
+    openbb sdk,
+    pypi,
+    miniconda,
+    library,
+    C++,
+    library,
+    error
   ]
 ---
 ## Installation and Updates

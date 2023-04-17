@@ -1,7 +1,8 @@
 ---
 title: Chart Styling
 sidebar_position: 4
-keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbuserdata, where is data exported, market data, financial data, free, openbb sdk, chart, styling]
+description: Set your own custom chart styles in the OpenBB SDK.
+keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbuserdata, where is data exported, market data, financial data, free, openbb sdk, chart, styling, style, dark mode, light mode]
 ---
 
 Within the OpenBB SDK, you can customize your chart style. You can switch between `dark` and `light` easily using this block of code:

@@ -1,7 +1,7 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: Data Sources and Providers.
+description: Information about data sources and providers offered through the OpenBB SDK.
 keywords:
   [
     installation,
@@ -16,7 +16,11 @@ keywords:
     macos,
     how to,
     explanation,
-    openbb terminal,
+    openbb sdk,
+    data,
+    data provider,
+    india,
+    binance
   ]
 ---
 ## Data and Sources
