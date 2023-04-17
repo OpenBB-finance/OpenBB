@@ -46,10 +46,7 @@ def test_display_hist_fail():
 @pytest.mark.parametrize("external", [False, True])
 def test_display_cdf(external):
     fig = qa_view.display_cdf(df, "col2", "Data", "xlsx", None, external)
-    if external:
-        assert fig.__class__.__name__ == "OpenBBFigure"
-    else:
-        assert fig.__class__.__name__ == "MagicMock"
+    assert fig.__class__.__name__ == "OpenBBFigure"
 
 
 def test_display_cdf_fail():
