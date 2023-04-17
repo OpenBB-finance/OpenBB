@@ -828,7 +828,7 @@ def plot_ecb(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ecbdfr",
-        pd.DataFrame(df, columns=["ECBDFR"]),
+        pd.DataFrame(df, columns=df.columns),
         sheet_name,
         fig,
     )
