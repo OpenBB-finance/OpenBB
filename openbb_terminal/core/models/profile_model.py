@@ -14,7 +14,7 @@ class ProfileModel(BaseModel):
     uuid: str = ""
     email: str = ""
     username: str = ""
-    remember: bool = False
+    remember: bool = True
 
     def load_user_info(self, session: dict, email: str, remember: bool):
         """Load user info from login info.

@@ -21,6 +21,8 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
+import openbb_terminal.core.session.local_model as Local
+
 # IMPORTS INTERNAL
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.session.current_user import get_current_user, is_local
@@ -472,6 +474,9 @@ class BaseController(metaclass=ABCMeta):
         self.save_class()
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
+
+        if not get_current_user().profile.remember:
+            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
 
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
