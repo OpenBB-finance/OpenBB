@@ -1,7 +1,6 @@
 """Chart and style helpers for Plotly."""
 # pylint: disable=C0302,R0902,W3301
 import json
-import os
 import textwrap
 from datetime import datetime
 from math import floor
@@ -109,7 +108,7 @@ class TerminalStyle:
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
         if not style:
-            style = get_current_user().preferences.THEME
+            style = get_current_user().preferences.CHART_STYLE
 
         if style != self.plt_style:
             self.load_style(style)
@@ -244,7 +243,8 @@ class TerminalStyle:
 
 
 theme = TerminalStyle(
-    get_current_user().preferences.THEME, get_current_user().preferences.RICH_STYLE
+    get_current_user().preferences.CHART_STYLE,
+    get_current_user().preferences.RICH_STYLE,
 )
 theme.apply_style()
 
@@ -1061,7 +1061,7 @@ class OpenBBFigure(go.Figure):
             return self  # type: ignore
 
         # We check if in headless mode to return the JSON
-        if strtobool(os.environ.get("HEADLESS", False)):
+        if strtobool(get_current_system().HEADLESS):
             return self.to_json()
 
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
@@ -1536,8 +1536,8 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=105, t=40, pad=0)
-            if not self._has_secondary_y
+            dict(l=80, r=60, b=85, t=40, pad=0)
+            if not self._has_secondary_y or not self.has_subplots
             else dict(l=60, r=50, b=95, t=40, pad=0)
         )
 

@@ -1,7 +1,6 @@
 name: MacOS Build
 
 env:
-  OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
@@ -143,8 +142,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
-            cat result.txt
+            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb | tee result.txt
             grep "================================ integration test summary ================================" result.txt -A100 | tail --bytes=2000 > failed_tests.txt
 
       - name: Upload summary to Slack
@@ -290,8 +288,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
-            cat result.txt
+            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb | tee result.txt
             grep "================================ integration test summary ================================" result.txt -A100 | tail --bytes=2000 > failed_tests.txt
 
       - name: Upload summary to Slack
