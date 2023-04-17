@@ -76,13 +76,15 @@ def create_session_from_token(token: str, save: bool) -> Dict[Any, Any]:
     return session
 
 
-def login(session: dict) -> LoginStatus:
+def login(session: Dict, remember: bool = False) -> LoginStatus:
     """Login and load user info.
 
     Parameters
     ----------
     session : dict
         The session info.
+    remember : bool, optional
+        Remember the session, by default False
     """
     # Create a new user:
     #   credentials: stored in hub, but we fallback to local (.env)
@@ -101,7 +103,7 @@ def login(session: dict) -> LoginStatus:
         if response.status_code == 200:
             configs = json.loads(response.content)
             email = configs.get("email", "")
-            hub_user.profile.load_user_info(session, email)
+            hub_user.profile.load_user_info(session, email, remember)
             set_current_user(hub_user)
 
             auth_header = hub_user.profile.get_auth_header()
