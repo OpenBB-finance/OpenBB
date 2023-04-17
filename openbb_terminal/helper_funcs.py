@@ -352,14 +352,11 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        theme = current_user.preferences.THEME
-        table_theme = "white" if theme == "light" else theme
-
         plots_backend().send_table(
             df_table=df_outgoing,
             title=title,
             source=source,  # type: ignore
-            theme=table_theme,
+            theme=current_user.preferences.TABLE_STYLE,
         )
         return
 
@@ -1595,6 +1592,8 @@ def export_data(
 
             console.print(f"Saved file: {saved_path}")
 
+        figure._exported = True  # pylint: disable=protected-access
+
 
 def get_rf() -> float:
     """Use the fiscaldata.gov API to get most recent T-Bill rate.
@@ -1657,7 +1656,7 @@ def handle_error_code(requests_obj, error_code_map):
 
 def prefill_form(ticket_type, menu, path, command, message):
     """Pre-fill Google Form and open it in the browser."""
-    form_url = "https://openbb.co/support?"
+    form_url = "https://my.openbb.dev/app/terminal/support?"
 
     params = {
         "type": ticket_type,

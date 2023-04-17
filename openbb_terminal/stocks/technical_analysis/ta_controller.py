@@ -38,7 +38,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_view,
-    finviz_view,
     rsp_view,
     tradingview_model,
     tradingview_view,
@@ -86,7 +85,6 @@ class TechnicalAnalysisController(StockBaseController):
         "atr",
         "multi",
         "cones",
-        "view",
     ]
     PATH = "/stocks/ta/"
     CHOICES_GENERATION = True
@@ -139,7 +137,6 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_raw("\n")
         mt.add_cmd("recom", not self.stock.empty)
         mt.add_cmd("summary", not self.stock.empty)
-        mt.add_cmd("view", not self.stock.empty)
         mt.add_raw("\n")
         mt.add_info("_overlap_")
         mt.add_cmd("ema", not self.stock.empty)
@@ -181,25 +178,6 @@ class TechnicalAnalysisController(StockBaseController):
         if self.ticker:
             return ["stocks", f"load {self.ticker}", "ta"]
         return []
-
-    # SPECIFIC
-    @log_start_end(log=logger)
-    def call_view(self, other_args: List[str]):
-        """Process view command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="view",
-            description="""View historical price with trendlines. [Source: Finviz]""",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
-            if not self.ticker:
-                no_ticker_message()
-                return
-            finviz_view.view(self.ticker)
 
     @log_start_end(log=logger)
     def call_summary(self, other_args: List[str]):
