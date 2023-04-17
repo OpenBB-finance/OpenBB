@@ -106,7 +106,7 @@ def display_sentiment_compare(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -194,4 +194,4 @@ def display_sentiment_correlation(
         sheet_name,
         fig,
     )
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
