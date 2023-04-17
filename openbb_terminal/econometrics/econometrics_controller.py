@@ -1987,7 +1987,15 @@ class EconometricsController(BaseController):
         )
         if ns_parser:
             dataset, column = ns_parser.column.split(".")
-            econometrics_view.display_garch(self.datasets[dataset], column, ns_parser.p, ns_parser.o, ns_parser.q, ns_parser.mean, ns_parser.horizon)
+            econometrics_view.display_garch(
+                self.datasets[dataset],
+                column,
+                ns_parser.p,
+                ns_parser.o,
+                ns_parser.q,
+                ns_parser.mean,
+                ns_parser.horizon,
+            )
 
     @log_start_end(log=logger)
     def call_granger(self, other_args: List[str]):

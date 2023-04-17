@@ -387,7 +387,17 @@ def display_root(
 
 
 @log_start_end(log=logger)
-def display_garch(dataset: pd.DataFrame, column: str, p: int = 1, o: int = 0, q: int = 1, mean: str = "constant", horizon: int = 1, export: str = "", external_axes: bool = False) -> Union[OpenBBFigure, None]:
+def display_garch(
+    dataset: pd.DataFrame,
+    column: str,
+    p: int = 1,
+    o: int = 0,
+    q: int = 1,
+    mean: str = "constant",
+    horizon: int = 1,
+    export: str = "",
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots the annualized volatility forecasts based on GARCH
 
     Parameters
@@ -412,8 +422,10 @@ def display_garch(dataset: pd.DataFrame, column: str, p: int = 1, o: int = 0, q:
 
     fig = OpenBBFigure()
 
-    fig.add_scatter(x=list(range(1, horizon+1)), y=result)
-    fig.set_title(f"{f'GARCH({p}, {o}, {q})' if o != 0 else f'GARCH({p}, {q})'} annualized volatility forecast")
+    fig.add_scatter(x=list(range(1, horizon + 1)), y=result)
+    fig.set_title(
+        f"{f'GARCH({p}, {o}, {q})' if o != 0 else f'GARCH({p}, {q})'} annualized volatility forecast"
+    )
 
     if fig.is_image_export(export):
         export_data(

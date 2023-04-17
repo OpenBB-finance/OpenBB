@@ -328,7 +328,14 @@ def get_coint_df(
     return pd.DataFrame()
 
 
-def get_garch(data: pd.Series, p: int = 1, o: int = 0, q: int = 1, mean: str = "constant", horizon: int = 100):
+def get_garch(
+    data: pd.Series,
+    p: int = 1,
+    o: int = 0,
+    q: int = 1,
+    mean: str = "constant",
+    horizon: int = 100,
+):
     """Calculates annualized volatility forecasts based on GARCH.
 
     GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for
@@ -380,7 +387,9 @@ def get_garch(data: pd.Series, p: int = 1, o: int = 0, q: int = 1, mean: str = "
     horizon: int
         The horizon of the forecast
     """
-    model = arch_model(100 * data.pct_change().dropna(), vol="GARCH", p=p, o=o, q=q, mean=mean)
+    model = arch_model(
+        100 * data.pct_change().dropna(), vol="GARCH", p=p, o=o, q=q, mean=mean
+    )
     model_fit = model.fit(disp="off")
     pred = model_fit.forecast(horizon=horizon, reindex=False)
 
