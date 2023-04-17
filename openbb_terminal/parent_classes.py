@@ -475,7 +475,8 @@ class BaseController(metaclass=ABCMeta):
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
-        Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
+        if not is_local():
+            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
 
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
