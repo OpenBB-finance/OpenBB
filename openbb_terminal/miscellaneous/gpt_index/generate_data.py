@@ -6,6 +6,7 @@ from pathlib import Path
 import json
 
 TERMINAL_PATH = Path(__file__).parent.parent.parent.parent / "terminal.py"
+
 OPENBB_DATA_SOURCES_DEFAULT_FILE = (
     Path(__file__).parent.parent.parent
     / "miscellaneous"
@@ -17,12 +18,16 @@ GPT_DATA_FOLDER = (
     Path(__file__).parent.parent.parent / "miscellaneous" / "gpt_index" / "data"
 )
 
+with open(OPENBB_DATA_SOURCES_DEFAULT_FILE) as file:
+    default_sources = json.load(file)
+
 
 def get_argparse_help_text(command):
     output = ""
     try:
         openbb_terminal_command = f"python {TERMINAL_PATH}"
-        full_command = f"{openbb_terminal_command}" + ' "' + command + ' -h"'
+
+        full_command = f"{openbb_terminal_command}" + ' "' + command + ' -h"' + "/exit"
         output_text = subprocess.check_output(full_command, shell=True, text=True)
 
         # Specify the start and end phrases that indicate the argparse help text section
@@ -76,30 +81,24 @@ def filter_by_menu(paths, menu_name="economy"):
     return filtered_paths_list
 
 
-def main(menus=["economy"]):
-    with open(OPENBB_DATA_SOURCES_DEFAULT_FILE) as file:
-        default_sources = json.load(file)
-
+def main(menu="economy"):
     paths = generate_command_paths(default_sources)
 
-    for menu in menus:
-        menu_paths = filter_by_menu(paths, menu)
+    menu_paths = filter_by_menu(paths, menu)
 
-        help_text_docs = []
-        data_folder = f"{GPT_DATA_FOLDER}/{menu}"
-        if not os.path.exists(data_folder):
-            os.makedirs(data_folder)
+    data_folder = f"{GPT_DATA_FOLDER}/{menu}"
+    if not os.path.exists(data_folder):
+        os.makedirs(data_folder)
 
-        for command in menu_paths:
-            file_name = f"{command.split('/')[1]}.txt"
-            file_path = os.path.join(data_folder, file_name)
-            print(f"Writing help text for '{command}' to {file_path}")
+    for command in menu_paths:
+        file_name = f"{command.split('/')[1]}.txt"
+        file_path = os.path.join(data_folder, file_name)
+        print(f"Writing help text for '{command}' to {file_path}")
 
-            help_text = get_argparse_help_text(command)
-            help_text_docs.append(help_text)
+        help_text = get_argparse_help_text(command)
 
-            with open(file_path, "w") as f:
-                f.write(help_text)
+        with open(file_path, "w") as f:
+            f.write(help_text)
 
 
 if __name__ == "__main__":
