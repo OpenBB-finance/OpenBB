@@ -5,19 +5,19 @@ description: Walk-through of integrating the OpenBB Terminal with the OpenBB Hub
 keywords: [api, keys, api keys, data provider, data, free, openbb_terminal, openbbterminal, openbb_hub, hub, routines, synchronization, sync, hub sync, hub synchronization, hub sync]
 ---
 
-This guide will walk you through the process of integrating the OpenBB Terminal with the OpenBB Hub.
+This guide will walk you through the process of integrating the OpenBB Terminal with the OpenBB Hub to achieve optimal performance.
 
 ## Registration
 
-First you want to create an account on OpenBB Hub at: https://my.openbb.dev/.
+To get started, you'll need to create an account on the OpenBB Hub by visiting https://my.openbb.dev/. 
 
-You'll need to register so the OpenBB Hub can know about you and save your data into our servers. This allows you to be able to boot up our products in multiple devices and keep the same settings, which improves a lot the user experience. The same goes for when a new version of the terminal is released.
+By registering with the OpenBB Hub, you can easily access our products on multiple devices and maintain consistent settings for an improved user experience. This also enables you to receive updates for the terminal as soon as they become available.
 
 ## Login
 
-After you are registered on the OpenBB Hub, you can login onto it and benefit from all the advantages that come with it.
+Once you're successfully registered on the OpenBB Hub, you can log in to access all the benefits it has to offer.
 
-The details that you use on this page will be the same ones that are going to be used on the OpenBB Terminal.
+The login credentials you use on the OpenBB Hub will be the same ones you will use to access the OpenBB Terminal.
 
 <img width="1441" alt="Screenshot 2023-04-14 at 3 46 52 PM" src="https://user-images.githubusercontent.com/25267873/232166964-635ff0c0-0e09-4cc2-9f9f-078552cc41c1.png">
 
@@ -25,41 +25,41 @@ When OpenBB Terminal 3.0.0 (or greater) is launched, there will be a new welcome
 
 <img width="473" alt="Screenshot 2023-04-14 at 3 31 51 PM" src="https://user-images.githubusercontent.com/25267873/232165909-682c7301-237c-4a8a-b780-97c944adb625.png">
 
-The "_Remember me_" feature will save your session to the local machine, so that you do not need to login for the next 30 days. 
+The "Remember me" feature saves your session locally, eliminating the need to log in for 30 days.
 
-If you are not registered, you can skip this by pressing `<ENTER>` and enter as a guest.
+If you haven't registered, simply press <ENTER> to access the terminal as a guest without using this feature.
 
-If you have logged in successfully your terminal will display your username (e.g. `[didier.lopes]`) followed by the 🦋 flair whereas if you are in guest mode you'll see only the 🐛 flair.
+Once you have successfully logged in, your username (e.g. [didier.lopes]) along with a 🦋 flair will be displayed on the terminal. However, if you're in guest mode, only the 🐛 flair will be visible.
 
-Note: If you are inside the terminal and want to login or logout of your account you can utilize the `/account` menu in the terminal.
+Note: If you wish to log in or out of your account while inside the terminal, simply access the /account menu.
 
 ## API Keys
 
-As it should be known by now. The OpenBB Terminal doesn't hold any data, we act as a middle layer between users and data providers. This means that we can focus on the product which attracts users, and data vendors are interested in turn to integrating their data sources as this can create a new revenue channel. The downside from this is that each user needs to manage their own API keys from each of the data providers that they are interested to leverage.
+As you may already know, the OpenBB Terminal acts as a mediator between users and data providers and does not store any data. This enables us to focus on providing a superior product experience for users, while data vendors can integrate their data sources to create a new revenue channel. However, this does mean that each user must manage their own API keys for each data provider they wish to access.
 
 ### OpenBB Hub
 
-If you were already an OpenBB user before the OpenBB Terminal 3.0 you might have an `.env` file that contains all your API keys. If that is the case then you just need to drag and drop it in [this page](https://my.openbb.dev/app/terminal/api-keys).
+If you were an OpenBB user prior to the release of OpenBB Terminal 3.0, you may already have an .env file containing all your API keys. If this is the case, simply drag and drop the file onto [this page](https://my.openbb.dev/app/terminal/api-keys) to automatically save your keys.
 
 <img width="1441" alt="Screenshot 2023-04-14 at 6 14 55 PM" src="https://user-images.githubusercontent.com/25267873/232176162-b16296d4-0c08-408c-aaa4-f46a6bea1bf3.png">
 
-Otherwise you'll need to follow the instructions by hovering on the ℹ️ for each data source of interest. The icon that follows will take you to the data vendor website to acquire the API key which then you can save on the Hub.
+If you are a new user, you'll need to follow the instructions provided by hovering over the ℹ️ icon for each data source you're interested in. The icon will direct you to the data vendor's website to obtain the necessary API key, which can then be saved on the Hub for future use.
 
 ### OpenBB Terminal
 
-Upon login, the OpenBB Terminal will pull the API keys associated with your account.
+Upon logging in, the OpenBB Terminal will automatically retrieve the API keys associated with your account.
 
-If you have not set them on the OpenBB Hub, by default they will be loaded from your local environment. However, an API key on the OpenBB Hub will take precedence over one on the user local environment.
+If you have not saved them on the OpenBB Hub, they will be loaded from your local environment by default. However, if an API key is saved on the OpenBB Hub, it will take precedence over the local environment key.
 
-Important: Setting a key in the `keys` menu will **NOT** upload it to the OpenBB Hub. This is merely an option to allow the user to manage it's own local environment variables, but OpenBB recommends utilizing the OpenBB Hub for an improved user experience.
+Important: Note that setting a key in the `keys` menu will **NOT** upload it to the OpenBB Hub. This option is only intended for managing local environment variables. For a superior user experience, OpenBB highly recommends using the OpenBB Hub to manage your API keys.
 
-If the OpenBB Terminal is running and an API key is updated in the Hub you will need to restart the terminal for the changes to take effect.
+If an API key is updated in the Hub while the OpenBB Terminal is running, you will need to restart the terminal for the changes to take effect.
 
-If you wish to delete your stored API keys from the OpenBB Hub, you can do so using the command: `/account/clear`. This action will bring up a confirmation prompt and **CANNOT BE UNDONE**.
+To delete your saved API keys from the OpenBB Hub, use the `/account/clear` command. However, please note that this action **CANNOT BE UNDONE** and will prompt a confirmation prompt.
 
 ## Default Data Sources
 
-For the same command, it often happens that there are multiple data vendors providing access to the same data. We want to empower our users to utilize their preferred data source, or the one they already have a commercial relationship with. Thus, users can select their default data sources for each command.
+In many cases, there are multiple data vendors offering access to the same data for a given command. At OpenBB, we believe in empowering our users to choose their preferred data source, or the one with whom they already have a commercial relationship. Therefore, we offer the ability for users to select their default data sources for each command.
 
 ### OpenBB Hub
 
@@ -95,11 +95,11 @@ and charts and tables on [this page](https://my.openbb.dev/app/terminal/theme/ch
 
 ### OpenBB Terminal
 
-Upon login, the OpenBB Terminal will pull the theme style associated with your account.
+When you log in to the OpenBB Terminal, the platform automatically applies the theme style associated with your account.
 
-The user is also allowed to manage these styles utilizing the `/settings/theme` and `/settings/colors` commands. While the first is easy to manage, the latter can be tricky as it involves moving a special file around - so OpenBB highly recommends managing this through the OpenBB Hub improved interface.
+To further customize your experience, you can manage these styles using the `/settings/theme` and `/settings/colors` commands. While managing the theme is straightforward, managing colors can be more complex as it requires moving a special file around. For a smoother experience, we highly recommend managing colors through the improved interface on the OpenBB Hub.
 
-The charts and tables take effect immediately, whereas for the terminal theme to take effect the terminal needs to be reset.
+It's important to note that changes to charts and tables take effect immediately, while changes to the terminal theme require a reset to take effect.
 
 ## Script Routines
 
@@ -107,9 +107,7 @@ These are text files with an `.openbb` extension that allow users to create work
 
 ```text
 stocks
-
 load $ARGV[0]
-
 # depict candle chart
 candle
 ```
@@ -121,7 +119,7 @@ and then run on the terminal utilizing:
 
 ### OpenBB Hub
 
-The OpenBB Hub allows user to manage their own script routines to be run in the OpenBB Terminal. They can do so on [this page](https://my.openbb.dev/app/terminal/routines).
+The OpenBB Hub allows users to manage their own script routines to be run in the OpenBB Terminal. They can do so on [this page](https://my.openbb.dev/app/terminal/routines).
 
 <img width="1442" alt="Screenshot 2023-04-14 at 7 13 11 PM" src="https://user-images.githubusercontent.com/25267873/232178264-61f383ef-242f-48da-bd32-83fd013a094c.png">
 
@@ -133,25 +131,25 @@ Note that the "Download" button allows you to download the example file and shar
 
 ### OpenBB Terminal
 
-When logged into your account on the OpenBB Terminal, your routines will be synced on login and automatically available for use.
+Once you've logged in to your OpenBB Terminal account, your routines will automatically sync and become available for use.
 
-To see what routines are available from the Hub, you can use the command: `/account/list`, which will show the default OpenBB routines and your personal routines, e.g.
+To see the available routines from the Hub, use the `/account/list` command. This command will display both the default OpenBB routines and your personal routines, as shown in the image below:
 
 <img width="1582" alt="Screenshot 2023-04-14 at 7 22 14 PM" src="https://user-images.githubusercontent.com/25267873/232178585-71b9de95-707f-4374-91c8-83e6622f6829.png">
 
-In order to run a routine, from the main menu one can run `exe --file` and the available routines will pop up as available auto completions. For instance,
+To run a routine, select `exe --file` from the main menu and the available routines will pop up as auto-completions. For example:
 
 <img width="576" alt="Screenshot 2023-04-14 at 7 23 16 PM" src="https://user-images.githubusercontent.com/25267873/232178635-4626c686-dafb-40c0-911f-60a1d3f8fd13.png">
 
 
-If you wish to specify a specific routine to download locally, or to upload a locally created .openbb file, the commands `account/upload` and `account/download` can be used.
+If you'd like to download a specific routine or upload a locally created .openbb file file, you can use the `account/upload` and `account/download` commands.
 
-Your routines can also be deleted locally, this will be synced with the OpenBB Hub.
+You can also delete your locally stored routines, which will then be synced with the OpenBB Hub.
 
 
 ## Personal Access Tokens
 
-One of the additional reasons why it's useful setting up API Keys on the OpenBB Hub, it's that OpenBB generates a personal access token (PAT) that can be used whenever leveraging the OpenBB SDK which allows programmatic access to the data that powers the OpenBB Terminal. This way you use OpenBB PAT and no single individual API Key needs to be added.
+Setting up API keys on the OpenBB Hub has an additional benefit: it allows you to generate a personal access token (PAT) that can be used with the OpenBB SDK. With this token, you can programmatically access the data that powers the OpenBB Terminal, without the need to add individual API keys for each user.
 
 ### OpenBB Hub
 
@@ -185,7 +183,7 @@ Note that you can also access your account utilizing your credentials, e.g.
 openbb.login(email = 'didier.lopes@openbb.finance', password = '****')
 ```
 
-in addition, if you want to store that information locally you can do so by setting this additional flag
+in addition, if you want to store that information locally you can do so by setting this additional flag.
 
 ```python
 keep_session = True
