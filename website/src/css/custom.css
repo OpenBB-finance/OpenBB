@@ -445,3 +445,7 @@ details summary {
 [data-theme="dark"] #__docusaurus {
   background-color: #131313ff !important;
 }
+
+.main-wrapper main {
+  min-height: 1000px !important;
+}
