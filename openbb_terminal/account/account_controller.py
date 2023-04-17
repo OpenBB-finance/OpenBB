@@ -265,7 +265,9 @@ class AccountController(BaseController):
                     self.update_runtime_choices()
                     display_personal_routines(df, page, pages)
                 else:
-                    console.print("[red]No routines found. Displaying default routines instead.[/red]")
+                    console.print(
+                        "[red]No routines found. Displaying default routines instead.[/red]"
+                    )
                     console.print("")
                     df = get_default_routines_info(self.DEFAULT_ROUTINES)
                     display_default_routines(df)
