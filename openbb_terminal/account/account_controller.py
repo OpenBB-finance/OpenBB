@@ -260,6 +260,7 @@ class AccountController(BaseController):
                 )
                 df, page, pages = get_personal_routines_info(response)
                 if not df.empty:
+                    console.print("[info]Displaying personal routines.[/info]")
                     self.REMOTE_CHOICES += list(df["name"])
                     self.update_runtime_choices()
                     display_personal_routines(df, page, pages)
