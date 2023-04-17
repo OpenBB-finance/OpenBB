@@ -2,12 +2,15 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
+import json
 import logging
+import re
 import sys
 import time
 import uuid
 from pathlib import Path
-from typing import Optional
+from platform import platform, python_version
+from typing import Any, Dict, Optional
 
 # IMPORTATION THIRDPARTY
 try:
@@ -18,6 +21,7 @@ else:
     WITH_GIT = True
 
 # IMPORTATION INTERNAL
+from openbb_terminal.base_helpers import openbb_posthog
 from openbb_terminal.core.log.generation.directories import get_log_dir
 from openbb_terminal.core.log.generation.formatter_with_exceptions import (
     FormatterWithExceptions,
@@ -31,8 +35,13 @@ from openbb_terminal.core.log.generation.settings import (
     LogSettings,
     Settings,
 )
-from openbb_terminal.core.log.generation.user_logger import get_user_uuid
-from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.log.generation.user_logger import (
+    NO_USER_PLACEHOLDER,
+    get_user_uuid,
+)
+from openbb_terminal.core.session.current_system import (
+    get_current_system,
+)
 
 logger = logging.getLogger(__name__)
 current_system = get_current_system()
@@ -83,6 +92,95 @@ def get_commit_hash(use_env=True) -> str:
         commit_hash = "unknown-commit"
 
     return commit_hash
+
+
+class PosthogHandler(logging.Handler):
+    """Posthog Handler"""
+
+    def __init__(self, settings: Settings):
+        super().__init__()
+        self.settings = settings
+        self.app_settings = settings.app_settings
+        self.logged_in = False
+
+    def emit(self, record: logging.LogRecord):
+        try:
+            self.send(record=record)
+        except Exception:
+            self.handleError(record)
+
+    def log_to_dict(self, log_info: str) -> dict:
+        """Log to dict"""
+        log_regex = r"(KEYS|PREFERENCES|SYSTEM|CMD|QUEUE): (.*)"
+        log_dict = {}
+
+        for log in re.findall(log_regex, log_info):
+            log_dict[log[0]] = json.loads(log[1])
+
+        return log_dict
+
+    def send(self, record: logging.LogRecord):
+        """Send log record to Posthog"""
+
+        app_settings = self.app_settings
+
+        level_name = logging.getLevelName(record.levelno)
+        log_line = FormatterWithExceptions.filter_log_line(text=record.getMessage())
+
+        log_extra = self.extract_log_extra(record=record)
+        log_extra.update(dict(level=level_name, message=log_line))
+        event_name = f"log_{level_name.lower()}"
+
+        log_dict = self.log_to_dict(log_info=log_line)
+        if log_dict:
+            key = list(log_dict.keys())[0]
+            event_name = f"log_{key.lower()}"
+            log_extra = {**log_extra, **log_dict[key]}
+            log_extra.pop("message", None)
+
+        ignore_regex = r"^(START|END|INPUT:)"
+        if re.match(ignore_regex, log_line):
+            return
+
+        if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
+            self.logged_in = True
+            openbb_posthog.alias(app_settings.identifier, get_user_uuid())
+
+        log_extra.update({"$geoip_disable": True})
+        openbb_posthog.capture(
+            app_settings.identifier,
+            event_name,
+            properties=log_extra,
+        )
+
+    def extract_log_extra(self, record: logging.LogRecord) -> Dict[str, Any]:
+        """Extract log extra from record"""
+
+        log_extra = {
+            "appName": self.app_settings.name,
+            "appId": self.app_settings.identifier,
+            "sessionId": self.app_settings.session_id,
+            "commitHash": self.app_settings.commit_hash,
+            "platform": platform(),
+            "pythonVersion": python_version(),
+            "terminalVersion": current_system.VERSION,
+        }
+
+        if get_user_uuid() != NO_USER_PLACEHOLDER:
+            log_extra["userId"] = get_user_uuid()
+
+        if hasattr(record, "extra"):
+            log_extra = {**log_extra, **record.extra}
+
+        return log_extra
+
+
+def add_posthog_handler(settings: Settings):
+    app_settings = settings.app_settings
+    handler = PosthogHandler(settings=settings)
+    formatter = FormatterWithExceptions(app_settings=app_settings)
+    handler.setFormatter(formatter)
+    logging.getLogger().addHandler(handler)
 
 
 def add_stdout_handler(settings: Settings):
@@ -149,6 +247,7 @@ def setup_handlers(settings: Settings):
         FormatterWithExceptions.LOGPREFIXFORMAT.replace("|", "-"),
         FormatterWithExceptions.LOGFORMAT.replace("|", "-"),
     )
+    add_posthog_handler(settings=settings)
 
 
 def setup_logging(

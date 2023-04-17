@@ -299,10 +299,9 @@ class BaseController(metaclass=ABCMeta):
         if self.queue:
             joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
             if not self.contains_keys(joined_queue):
+                queue = {"path": self.PATH, "queue": joined_queue}
                 logger.info(
-                    "QUEUE: {'path': '%s', 'queue': '%s'}",
-                    self.PATH,
-                    joined_queue,
+                    "QUEUE: %s ", json.dumps(queue, default=str, ensure_ascii=False)
                 )
 
     def log_cmd_and_queue(
@@ -326,7 +325,7 @@ class BaseController(metaclass=ABCMeta):
                 "other_args": other_args_str,
                 "input": the_input,
             }
-            logger.info("CMD: %s", json.dumps(cmd))
+            logger.info("CMD: %s ", json.dumps(cmd))
 
         if the_input not in self.KEYS_MENU:
             self.log_queue()
