@@ -30,7 +30,6 @@ def get_strikes(
     return min_strike, max_strike
 
 
-@log_start_end(log=logger)
 def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     """Function to get the loss at the given expiry
 
@@ -86,7 +85,6 @@ def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     return max_pain
 
 
-@log_start_end(log=logger)
 def convert(orig: str, to: str) -> float:
     """Convert a string to a specific type of number
     Parameters

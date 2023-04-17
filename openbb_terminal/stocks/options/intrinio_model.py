@@ -39,7 +39,6 @@ columns_to_drop = [
 ]
 
 
-@log_start_end(log=logger)
 def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
     """Adds a column calculating the difference between expiration and the date data is from
 
