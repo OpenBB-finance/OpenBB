@@ -23,7 +23,7 @@ jobs:
         sed -i 's/name = ".*"/name = "openbb-nightly"/' pyproject.toml
         sed -i "3s/version = \"\(.*\)\"/version = \"\1.dev$(date +%Y%m%d)\"/" pyproject.toml
         head pyproject.toml
-        sed -i 's/pip install openbb/pip install openbb-nightly/g; s/from openbb_terminal.sdk import openbb/from openbb_terminal.sdk import openbb-nightly/g' ./website/pypi.md
+        sed -i 's/pip install openbb/pip install openbb-nightly/g; s/from openbb_terminal.sdk import openbb/from openbb_terminal.sdk import openbb/g' ./website/pypi.md
 
 
     - name: Install pypa/build

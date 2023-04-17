@@ -1,3 +1,4 @@
+    filings            the most-recent form submissions to the SEC                     [FinancialModelingPrep]
     pipo               past IPOs dates                                                 [Finnhub]
     fipo               future IPOs dates                                               [Finnhub]
     gainers            show latest top gainers                                         [YahooFinance]
