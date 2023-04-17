@@ -475,8 +475,7 @@ class BaseController(metaclass=ABCMeta):
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
-        if not get_current_user().profile.remember:
-            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
+        Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
 
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
