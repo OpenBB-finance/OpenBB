@@ -18,7 +18,7 @@ console = Console()
 menus = Literal["", "featflags", "settings"]
 
 openbb_posthog = Posthog(
-    os.environ.get("POSTHOG_API_KEY", ""),
+    "phc_8fP8xXi0ptWTlGAXOcMQnSFsul4lmLoxnwp9EiXQstO",
     host="https://app.posthog.com",
 )
 

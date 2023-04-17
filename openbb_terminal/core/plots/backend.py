@@ -168,11 +168,14 @@ class Backend(PyWry):
         if export_image and isinstance(export_image, str):
             export_image = Path(export_image).resolve()
 
+        data = json.loads(fig.to_json())
+        data.update({"user_id": get_current_system().LOGGING_APP_ID})
+
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_plotly_html(),
-                    "json_data": json.loads(fig.to_json()),
+                    "json_data": data,
                     "export_image": str(export_image),
                     **self.get_kwargs(command_location),
                 }

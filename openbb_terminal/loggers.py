@@ -41,6 +41,7 @@ from openbb_terminal.core.log.generation.user_logger import (
 )
 from openbb_terminal.core.session.current_system import (
     get_current_system,
+    set_current_system,
 )
 
 logger = logging.getLogger(__name__)
@@ -102,6 +103,8 @@ class PosthogHandler(logging.Handler):
         self.settings = settings
         self.app_settings = settings.app_settings
         self.logged_in = False
+        current_system.LOGGING_APP_ID = get_app_id()
+        set_current_system(current_system)
 
     def emit(self, record: logging.LogRecord):
         try:
@@ -144,7 +147,7 @@ class PosthogHandler(logging.Handler):
 
         if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
             self.logged_in = True
-            openbb_posthog.alias(app_settings.identifier, get_user_uuid())
+            openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
 
         log_extra.update({"$geoip_disable": True})
         openbb_posthog.capture(
