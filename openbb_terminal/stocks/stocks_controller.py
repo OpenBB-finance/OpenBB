@@ -77,8 +77,9 @@ class StocksController(StockBaseController):
         sector = stocks_options["sector"].tolist()
         industry_group = stocks_options["industry_group"].tolist()
         industry = stocks_options["industry"].tolist()
+        exchange = stocks_options["exchange"].tolist()
     except Exception:
-        country, sector, industry_group, industry = {}, {}, {}, {}
+        country, sector, industry_group, industry, exchange = {}, {}, {}, {}, {}
         console.print(
             "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command will not work. "
             "If other commands are failing please check your internet connection or communicate with your "
@@ -197,7 +198,7 @@ class StocksController(StockBaseController):
         )
         parser.add_argument(
             "-g",
-            "--industrygroup",
+            "--industry_group",
             default="",
             choices=stocks_helper.format_parse_choices(self.industry_group),
             type=str.lower,
@@ -219,15 +220,24 @@ class StocksController(StockBaseController):
             "-e",
             "--exchange",
             default="",
+            choices=stocks_helper.format_parse_choices(self.exchange),
+            type=str.lower,
+            metavar="exchange",
+            dest="exchange",
+            help="Search by a specific exchange to find stocks matching the criteria",
+        )
+        parser.add_argument(
+            "-ec",
+            "--exchange_country",
+            default="",
             choices=stocks_helper.format_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
             ),
             type=str.lower,
-            metavar="exchange",
+            metavar="exchange_country",
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
         )
-
         parser.add_argument(
             "-a",
             "--all-exchanges",
@@ -253,7 +263,10 @@ class StocksController(StockBaseController):
             industry_group = stocks_helper.map_parse_choices(self.industry_group)[
                 ns_parser.industry_group
             ]
-            exchange = stocks_helper.map_parse_choices(
+            exchange = stocks_helper.map_parse_choices(self.exchange)[
+                ns_parser.exchange
+            ]
+            exchange_country = stocks_helper.map_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
             )[ns_parser.exchange_country]
 
@@ -263,7 +276,8 @@ class StocksController(StockBaseController):
                 sector=sector,
                 industry_group=industry_group,
                 industry=industry,
-                exchange_country=exchange,
+                exchange=exchange,
+                exchange_country=exchange_country,
                 all_exchanges=ns_parser.all_exchanges,
                 limit=ns_parser.limit,
             )
