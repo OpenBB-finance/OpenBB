@@ -25,6 +25,7 @@ import openbb_terminal.core.session.local_model as Local
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.completer.choices import build_controller_choice_map
+from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -477,6 +478,8 @@ class BaseController(metaclass=ABCMeta):
 
         if not is_local():
             Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
+            if not get_current_user().profile.remember:
+                Local.remove(HIST_FILE_PATH)
 
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
