@@ -284,16 +284,17 @@ class EconometricsController(BaseController):
         mt.add_cmd("rename", self.files)
         mt.add_cmd("lag", self.files)
         mt.add_cmd("export", self.files)
-        mt.add_info("_tests_")
+        mt.add_info("time_series_")
         mt.add_cmd("norm", self.files)
-        mt.add_cmd("root", self.files)
-        mt.add_cmd("granger", self.files)
-        mt.add_cmd("coint", self.files)
-        mt.add_info("_regression_")
         mt.add_cmd("ols", self.files)
+        mt.add_cmd("granger", self.files)
+        mt.add_cmd("root", self.files)
+        mt.add_cmd("coint", self.files)
+        mt.add_cmd("garch", self.files)
+        mt.add_info("_panel_")
         mt.add_cmd("panel", self.files)
         mt.add_cmd("compare", self.files)
-        mt.add_info("_regression_tests_")
+        mt.add_info("_residuals_")
         mt.add_cmd("dwat", self.files and self.regression["OLS"]["model"])
         mt.add_cmd("bgod", self.files and self.regression["OLS"]["model"])
         mt.add_cmd("bpag", self.files and self.regression["OLS"]["model"])
@@ -1982,6 +1983,14 @@ class EconometricsController(BaseController):
             type=int,
             default=100,
         )
+        parser.add_argument(
+            "-d",
+            "--detailed",
+            help="Display the details about the parameter fit, for instance the confidence interval",
+            dest="detailed",
+            action="store_true",
+            default=False,
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1995,6 +2004,7 @@ class EconometricsController(BaseController):
                 ns_parser.q,
                 ns_parser.mean,
                 ns_parser.horizon,
+                ns_parser.detailed,
             )
 
     @log_start_end(log=logger)

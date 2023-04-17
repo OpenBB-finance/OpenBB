@@ -395,6 +395,7 @@ def display_garch(
     q: int = 1,
     mean: str = "constant",
     horizon: int = 1,
+    detailed: bool = False,
     export: str = "",
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
@@ -416,9 +417,15 @@ def display_garch(
         The name of the mean model
     horizon: int
         The horizon of the forecast
+    detailed: bool
+        Whether to display the details about the parameter fit, for instance the confidence interval
+    export: str
+        Format to export data
+    external_axes: bool
+        Whether to return the figure object or not, by default False
     """
     data = dataset[column]
-    result, garch_params = econometrics_model.get_garch(data, p, o, q, mean, horizon)
+    result, garch_fit = econometrics_model.get_garch(data, p, o, q, mean, horizon)
 
     fig = OpenBBFigure()
 
@@ -436,15 +443,17 @@ def display_garch(
             figure=fig,
         )
 
-    print_rich_table(
-        garch_params.to_frame(),
-        headers=["Values"],
-        show_index=True,
-        index_name="Parameters",
-        title=f"GARCH({p}, {o}, {q})" if o != 0 else f"GARCH({p}, {q})",
-        export=bool(export),
-    )
-
+    if not detailed:
+        print_rich_table(
+            garch_fit.params.to_frame(),
+            headers=["Values"],
+            show_index=True,
+            index_name="Parameters",
+            title=f"GARCH({p}, {o}, {q})" if o != 0 else f"GARCH({p}, {q})",
+            export=bool(export),
+        )
+    else:
+        console.print(garch_fit)
     return fig.show(external=external_axes)
 
 

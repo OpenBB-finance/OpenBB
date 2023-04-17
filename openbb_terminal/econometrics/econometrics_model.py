@@ -393,7 +393,7 @@ def get_garch(
     model_fit = model.fit(disp="off")
     pred = model_fit.forecast(horizon=horizon, reindex=False)
 
-    return pred.variance.values[-1, :] * np.sqrt(252), model_fit.params
+    return pred.variance.values[-1, :] * np.sqrt(252), model_fit
 
 
 def get_engle_granger_two_step_cointegration_test(
