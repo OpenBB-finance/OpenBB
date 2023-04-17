@@ -3,6 +3,7 @@ econometrics
 ## Exploration
 
 load nile
+garch -v nile.volume
 desc nile
 load nile -a nile_2
 eval double_volume = volume * 2
