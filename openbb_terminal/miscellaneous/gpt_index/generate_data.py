@@ -81,24 +81,25 @@ def filter_by_menu(paths, menu_name="economy"):
     return filtered_paths_list
 
 
-def main(menu="economy"):
+def main(menus=["etf", "forex"]):
     paths = generate_command_paths(default_sources)
 
-    menu_paths = filter_by_menu(paths, menu)
+    for menu in menus:
+        menu_paths = filter_by_menu(paths, menu)
 
-    data_folder = f"{GPT_DATA_FOLDER}/{menu}"
-    if not os.path.exists(data_folder):
-        os.makedirs(data_folder)
+        data_folder = f"{GPT_DATA_FOLDER}/{menu}"
+        if not os.path.exists(data_folder):
+            os.makedirs(data_folder)
 
-    for command in menu_paths:
-        file_name = f"{command.split('/')[1]}.txt"
-        file_path = os.path.join(data_folder, file_name)
-        print(f"Writing help text for '{command}' to {file_path}")
+        for command in menu_paths:
+            file_name = f"{command.split('/')[1]}.txt"
+            file_path = os.path.join(data_folder, file_name)
+            print(f"Writing help text for '{command}' to {file_path}")
 
-        help_text = get_argparse_help_text(command)
+            help_text = get_argparse_help_text(command)
 
-        with open(file_path, "w") as f:
-            f.write(help_text)
+            with open(file_path, "w") as f:
+                f.write(help_text)
 
 
 if __name__ == "__main__":
