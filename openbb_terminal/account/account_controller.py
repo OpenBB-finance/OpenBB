@@ -264,10 +264,10 @@ class AccountController(BaseController):
                     self.update_runtime_choices()
                     display_personal_routines(df, page, pages)
                 else:
-                    console.print("[red]No routines found.[/red]")
-                console.print("")
-                df = get_default_routines_info(self.DEFAULT_ROUTINES)
-                display_default_routines(df)
+                    console.print("[red]No routines found. Displaying default routines instead.[/red]")
+                    console.print("")
+                    df = get_default_routines_info(self.DEFAULT_ROUTINES)
+                    display_default_routines(df)
 
     @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):
