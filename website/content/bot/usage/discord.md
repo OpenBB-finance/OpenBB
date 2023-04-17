@@ -1,8 +1,8 @@
 ---
 title: Discord
 sidebar_position: 2
-description: TBD
-keywords: [discord, how to, explanation, openbb bot, openbb, guide, bot guide]
+description: Understand the basics for getting started and running the OpenBB Bot.
+keywords: [discord, how to, explanation, openbb bot, openbb, guide, bot guide, commands, community]
 ---
 
 ## Getting Started with Discord

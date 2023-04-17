@@ -1,7 +1,7 @@
 ---
 title: Individual
 sidebar_position: 3
-description: TBD
+description: Learn to customize your individual OpenBB Bot experience
 keywords: [discord, telegram, individual, customizing, customization, how to, explanation, openbb bot, openbb, guide, bot guide]
 ---
 ## Customizing your Individual Bot Experience

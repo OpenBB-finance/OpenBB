@@ -1,8 +1,8 @@
 ---
 title: Telegram
 sidebar_position: 3
-description: TBD
-keywords: [telegram, how to, explanation, openbb bot, openbb, guide, bot guide]
+description: Understand the basics for getting started and running the OpenBB Boton Telegram.
+keywords: [telegram, how to, explanation, openbb bot, openbb, guide, bot guide, commands, community]
 ---
 
 ## Getting Started with Telegram

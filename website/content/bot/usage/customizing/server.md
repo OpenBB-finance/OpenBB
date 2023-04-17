@@ -1,7 +1,7 @@
 ---
 title: Server
 sidebar_position: 3
-description: TBD
+description: Learn to customize your OpenBB Bot server experience.
 keywords: [discord, telegram, server, customizing, customization, how to, explanation, openbb bot, openbb, guide, bot guide]
 ---
 
