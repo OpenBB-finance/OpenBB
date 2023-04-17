@@ -28,7 +28,7 @@ from openbb_terminal.core.session.sources_handler import get_updated_hub_sources
 from openbb_terminal.core.session.utils import run_thread
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.loggers import setup_logging
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, optional_rich_track
 
 # pylint: disable=consider-using-f-string
 
@@ -107,7 +107,7 @@ def login(session: Dict, remember: bool = False) -> LoginStatus:
             set_current_user(hub_user)
 
             auth_header = hub_user.profile.get_auth_header()
-            run_thread(download_and_save_routines, {"auth_header": auth_header})
+            download_and_save_routines(auth_header)
             run_thread(
                 update_backend_sources, {"auth_header": auth_header, "configs": configs}
             )
@@ -121,21 +121,23 @@ def login(session: Dict, remember: bool = False) -> LoginStatus:
     return LoginStatus.NO_RESPONSE
 
 
-def download_and_save_routines(auth_header: str, silent: bool = True):
+def download_and_save_routines(auth_header: str):
     """Download and save routines.
 
     Parameters
     ----------
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
-    silent : bool
-        Whether to silence the console output, by default True
     """
-    routines = download_routines(auth_header=auth_header, silent=silent)
-    for name, content in routines.items():
-        save_routine(
-            file_name=f"{name}.openbb", routine=content, force=True, silent=silent
-        )
+    try:
+        console.print("Downloading routines...")
+        routines = download_routines(auth_header=auth_header)
+        for name, content in optional_rich_track(
+            routines.items(), desc="Saving routines"
+        ):
+            save_routine(file_name=f"{name}.openbb", routine=content, force=True)
+    except Exception:
+        console.print("[red]Failed to download and save routines.[/red]")
 
 
 def update_backend_sources(auth_header, configs, silent: bool = True):
