@@ -78,8 +78,6 @@ def orders_view(limit: int = 5, export: str = "", sheet_name: Optional[str] = No
     """
     order_header, df_orders = fidelity_model.get_orders()
 
-    pd.set_option("display.max_colwidth", None)
-
     if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df_orders["Buy / Sell Ratio"] = df_orders["Buy / Sell Ratio"].apply(
             lambda_buy_sell_ratio_color_red_green

@@ -74,7 +74,6 @@ def get_sec_filings(
     except KeyError:
         return pd.DataFrame()
     final_df = pd.DataFrame(data)
-    pd.set_option("display.max_colwidth", None)
     try:
         final_df["view"] = final_df["view"].apply(lambda x: x["htmlLink"])
     except KeyError:
