@@ -375,12 +375,8 @@ class TerminalStyle:
                 height=im.height,
             )
         else:
-            if current_user.preferences.USE_ION:
-                plt.ion()
-
             fig = None
             plt.show()
-
         return fig
 
 

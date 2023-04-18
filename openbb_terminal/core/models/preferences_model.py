@@ -48,7 +48,6 @@ class PreferencesModel(BaseModel):
     USE_COLOR: bool = True
     USE_DATETIME: bool = True
     # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
-    USE_ION: bool = True
     USE_WATERMARK: bool = True
     USE_CMD_LOCATION_FIGURE: bool = True
     USE_PROMPT_TOOLKIT: bool = True

@@ -92,7 +92,6 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("rcontext", current_user.preferences.REMEMBER_CONTEXTS)
         mt.add_setting("rich", current_user.preferences.ENABLE_RICH)
         mt.add_setting("richpanel", current_user.preferences.ENABLE_RICH_PANEL)
-        mt.add_setting("ion", current_user.preferences.USE_ION)
         mt.add_setting("watermark", current_user.preferences.USE_WATERMARK)
         mt.add_setting("cmdloc", current_user.preferences.USE_CMD_LOCATION_FIGURE)
         mt.add_setting("tbhint", current_user.preferences.TOOLBAR_HINT)
@@ -209,11 +208,6 @@ class FeatureFlagsController(BaseController):
             "ENABLE_RICH_PANEL",
             not get_current_user().preferences.ENABLE_RICH_PANEL,
         )
-
-    @log_start_end(log=logger)
-    def call_ion(self, _):
-        """Process ion command"""
-        set_and_save_preference("USE_ION", not get_current_user().preferences.USE_ION)
 
     @log_start_end(log=logger)
     def call_watermark(self, _):
