@@ -78,6 +78,6 @@ Step by step instructions:
 
 <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/223194653-a21966e2-cd55-44da-95eb-7c66811f629b.png"><img alt="run_the_terminal" src="https://user-images.githubusercontent.com/46355364/223194653-a21966e2-cd55-44da-95eb-7c66811f629b.png"></img></a></p>
 
-**Note:** During the first launch, a warning message may appear. Click, "Open".
+**Note:** During the first launch, a warning message may appear. Click, "Open". If you get a warning about opening apps from an unverified developer, please follow the instructions on <a href="https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac">this MacOS User Guide page</a> to proceed.
 
 <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/85772166/220201620-1c42bbd4-7509-41fc-8df8-389f34fde58a.png"><img alt="run_the_terminal" src="https://user-images.githubusercontent.com/85772166/220201620-1c42bbd4-7509-41fc-8df8-389f34fde58a.png"></img></a></p>
