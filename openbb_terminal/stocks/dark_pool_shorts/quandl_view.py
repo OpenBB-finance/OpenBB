@@ -155,4 +155,4 @@ def short_interest(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
