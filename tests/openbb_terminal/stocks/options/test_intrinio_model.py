@@ -65,7 +65,7 @@ def test_calculate_dte():
     )
     new_df = intrinio_model.calculate_dte(sample_df)
     assert "dte" in new_df.columns
-    assert new_df["dte"].tolist() == [1095 / 365, 0, 1 / 365, 61 / 365]
+    assert new_df["dte"].tolist() == [1095, 0, 1, 61]
     pd.testing.assert_frame_equal(new_df[sample_df.columns], new_df)
 
 

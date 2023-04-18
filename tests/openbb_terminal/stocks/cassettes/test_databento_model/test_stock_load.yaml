@@ -11,7 +11,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://hist.databento.com/v0/timeseries.stream?dataset=XNAS.ITCH&symbols=AAPL&schema=ohlcv-1d&start=2022-08-01&end=2022-12-01&stype_in=native&encoding=csv
+    uri: https://hist.databento.com/v0/timeseries.get_range?dataset=XNAS.ITCH&symbols=AAPL&schema=ohlcv-1d&start=2022-08-01&end=2022-12-01&stype_in=native&encoding=csv
   response:
     body:
       string: 'ts_event,publisher_id,product_id,open,high,low,close,volume
@@ -107,7 +107,7 @@ interactions:
         '
     headers:
       date:
-      - Tue, 21 Feb 2023 14:37:29 GMT
+      - Mon, 17 Apr 2023 18:16:03 GMT
       server:
       - uvicorn
       transfer-encoding:
