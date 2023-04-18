@@ -104,8 +104,6 @@ class PosthogHandler(logging.Handler):
         self.settings = settings
         self.app_settings = settings.app_settings
         self.logged_in = False
-        current_system.LOGGING_APP_ID = get_app_id()
-        set_current_system(current_system)
         atexit.register(openbb_posthog.shutdown)
 
     def emit(self, record: logging.LogRecord):
@@ -252,7 +250,9 @@ def setup_handlers(settings: Settings):
         FormatterWithExceptions.LOGPREFIXFORMAT.replace("|", "-"),
         FormatterWithExceptions.LOGFORMAT.replace("|", "-"),
     )
-    add_posthog_handler(settings=settings)
+
+    if not current_system.TEST_MODE and not current_system.LOGGING_SUPPRESS:
+        add_posthog_handler(settings=settings)
 
 
 def setup_logging(
@@ -268,6 +268,9 @@ def setup_logging(
     identifier = get_app_id()
     session_id = get_session_id()
     user_id = get_user_uuid()
+
+    current_system.LOGGING_APP_ID = identifier
+    set_current_system(current_system)
 
     # AWSSettings
     aws_access_key_id = current_system.LOGGING_AWS_ACCESS_KEY_ID
