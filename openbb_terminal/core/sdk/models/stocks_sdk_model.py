@@ -147,6 +147,8 @@ class StocksDiscovery(Category):
         `arkord`: Returns ARK orders in a Dataframe\n
         `asc`: Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.\n
         `dividends`: Gets dividend calendar for given date.  Date represents Ex-Dividend Date\n
+        `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
+        `filings_chart`: Display recent forms submitted to the SEC\n
         `fipo`: Future IPOs dates. [Source: Finnhub]\n
         `gainers`: Get top gainers. [Source: Yahoo Finance]\n
         `gtech`: Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]\n
@@ -275,6 +277,7 @@ class StocksFundamentalAnalysis(Category):
         `rot`: Get rating over time data. [Source: Finnhub]\n
         `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
         `score`: Gets value score from fmp\n
+        `sec`: Get SEC filings for a given stock ticker. [Source: Nasdaq]\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
         `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
