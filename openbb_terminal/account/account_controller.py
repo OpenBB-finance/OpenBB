@@ -233,6 +233,15 @@ class AccountController(BaseController):
             description="List routines available in the cloud.",
         )
         parser.add_argument(
+            "-t",
+            "--type",
+            type=str,
+            dest="type",
+            default="personal",
+            choices=["default", "personal"],
+            help="The type of routines to list.",
+        )
+        parser.add_argument(
             "-p",
             "--page",
             type=check_positive,
@@ -259,18 +268,21 @@ class AccountController(BaseController):
                     size=ns_parser.size,
                 )
                 df, page, pages = get_personal_routines_info(response)
-                if not df.empty:
-                    console.print("[info]Displaying personal routines.[/info]")
-                    self.REMOTE_CHOICES += list(df["name"])
-                    self.update_runtime_choices()
-                    display_personal_routines(df, page, pages)
-                else:
-                    console.print(
-                        "[red]No routines found. Displaying default routines instead.[/red]"
-                    )
-                    console.print("")
+
+                if ns_parser.type == "personal":
+                    if not df.empty:
+                        console.print("[info]Displaying personal routines.[/info]")
+                        self.REMOTE_CHOICES += list(df["name"])
+                        self.update_runtime_choices()
+                        display_personal_routines(df, page, pages)
+                    else:
+                        console.print("[red]No personal routines found.[/red]")
+                elif ns_parser.type == "default":
+                    console.print("[info]Displaying default routines.[/info]")
                     df = get_default_routines_info(self.DEFAULT_ROUTINES)
                     display_default_routines(df)
+                    
+                console.print("")
 
     @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):
