@@ -1,6 +1,6 @@
 ---
 title: Due Diligence
-keywords: [cryptocurrency, dd, due diligence, tokenomics, overview, bitcoin]
+keywords: [cryptocurrency, dd, due diligence, tokenomics, overview, bitcoin, how to, example, balance, fundraising, social media]
 description: An Introduction to Cryptocurrency Due Diligence, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 

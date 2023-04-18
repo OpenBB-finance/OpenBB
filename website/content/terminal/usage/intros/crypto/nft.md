@@ -1,6 +1,6 @@
 ---
 title: Non Fungible Token (NFT)
-keywords: [cryptocurrency, nft, Non Fungible Token, tokenomics, digital asset, art]
+keywords: [cryptocurrency, nft, Non Fungible Token, tokenomics, digital asset, art, how to, example, crypto]
 description: An Introduction to Non Fungible Token (NFT), within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Launching
 sidebar_position: 2
-description: Errors on launch.
+description: Help and troubleshooting when experiencing errors when launching the OpenBB Termainl.
 keywords:
   [
     installation,
@@ -17,6 +17,14 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    ssl,
+    certificate,
+    lauch,
+    invalid cpu,
+    fail to launch,
+    fontconfig,
+    linux,
+    ubuntu
   ]
 ---
 <details><summary>Mac: Invalid CPU Type - Terminal fails to launch.</summary>

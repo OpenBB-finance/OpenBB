@@ -17,6 +17,8 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    requirements,
+    windows 10
   ]
 ---
 import InstallerButton from "@site/src/components/General/InstallerButton";

@@ -1,7 +1,7 @@
 ---
 title: General Operation
 sidebar_position: 3
-description: General Operation and Troubleshooting.
+description: General operation and troubleshooting for the OpenBB Terminal.
 keywords:
   [
     installation,
@@ -17,6 +17,12 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    developer,
+    OS,
+    BranchCache,
+    Hyper-V,
+    VcXsrv,
+    code block
   ]
 ---
 Both Windows and MacOS provide a "developer mode", and enabling it may help to overcome system-related issues.

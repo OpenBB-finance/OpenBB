@@ -17,6 +17,14 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    pypi,
+    c++,
+    miniconda,
+    library,
+    arm,
+    library,
+    error,
+    raspberry pi
   ]
 ---
 

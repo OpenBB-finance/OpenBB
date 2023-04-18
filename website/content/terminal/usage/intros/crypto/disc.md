@@ -1,6 +1,6 @@
 ---
 title: Discovery
-keywords: [cryptocurrency, discovery, nft, app, decentralized, coins]
+keywords: [cryptocurrency, discovery, nft, app, decentralized, coins, how to, example, trending, gainers, losers]
 description: An Introduction to Cryptocurrency Discovery, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 

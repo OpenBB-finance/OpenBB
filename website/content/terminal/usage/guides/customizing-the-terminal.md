@@ -1,8 +1,8 @@
 ---
 sidebar_position: 5
 title: Customization
-description: To adjust the lay-out and settings of the OpenBB Terminal you can access the settings menu. This menu allows you to tweak how the terminal behaves. Next to that, to enable or disable certain functionalities of the terminal you can use the featflags menu.
-keywords: [settings, featflags, feature flags, lay-out, advanced, customizing, openbb terminal]
+description: Learn how to customize the look of your OpenBB Terminal. You can adjust the lay-out, settings, terminal behavior, and enable or disable certain functionalities.
+keywords: [settings, featflags, feature flags, lay-out, advanced, customizing, openbb terminal, layout, settings, colors, functionality, features]
 ---
 
 Since the code is open source you are able to adjust anything you like. However, to make it easy for you we have created a settings and featflags menu that include the most requested features that users like to have control over. 

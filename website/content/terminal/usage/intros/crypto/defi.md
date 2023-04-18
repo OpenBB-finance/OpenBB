@@ -1,6 +1,6 @@
 ---
 title: Decentralized Finance (DeFi)
-keywords: [cryptocurrency, defi, decentralized finance, crypto, dapps, uniswap, funding, luna, terra, blockchain]
+keywords: [cryptocurrency, defi, decentralized finance, crypto, dapps, uniswap, funding, luna, terra, blockchain, how to, example, tokens, stats, pairs, sreturn, terra, luna, lcsc]
 description: An Introduction to Cryptocurrency DeFi menu, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 

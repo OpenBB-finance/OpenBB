@@ -17,6 +17,8 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    docker,
+    download
   ]
 ---
 

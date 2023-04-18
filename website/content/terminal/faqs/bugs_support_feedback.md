@@ -1,7 +1,7 @@
 ---
 title: Bugs, Support and Feedback
 sidebar_position: 5
-description: Submit a bug report or support ticket.
+description: Submit a bug report or support ticket for the OpenBB Terminal
 keywords:
   [
     installation,
@@ -17,6 +17,11 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    bug,
+    support,
+    feedback,
+    report,
+    patch
   ]
 ---
 When an error is encountered, it is always a good idea to check the open issues on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues). There may be a workaround solution for the specific problem until a patch is released.

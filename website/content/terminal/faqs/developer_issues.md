@@ -1,7 +1,7 @@
 ---
 title: Developer Issues
 sidebar_position: 6
-description: Developer Issues.
+description: Help with issues commonly faced by developers.
 keywords:
   [
     installation,
@@ -17,6 +17,10 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    error,
+    branch,
+    VS Code,
+    .whl
   ]
 ---
 <details><summary>What branch on GitHub should pull requests be submitted to?</summary>

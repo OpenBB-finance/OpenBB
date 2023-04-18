@@ -1,7 +1,7 @@
 ---
 title: Installation
 sidebar_position: 1
-description: Choose your Installation type.
+description: Choose your Installation type based on your computer and configuration.
 keywords:
   [
     installation,
@@ -17,6 +17,11 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    os,
+    operating system,
+    docker,
+    pypi,
+    source
   ]
 ---
 

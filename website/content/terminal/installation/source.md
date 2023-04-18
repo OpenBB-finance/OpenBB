@@ -1,7 +1,7 @@
 ---
 title: Source
 sidebar_position: 3
-description: This section provides steps to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems.
+description: This section provides steps to install the OpenBB Terminal from source. This installation type supports Windows, macOS and Linux systems.
 keywords:
   [
     installation,
@@ -17,6 +17,14 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    pypi,
+    miniconda,
+    git,
+    c++,
+    rosetta2,
+    libomp,
+    vcxsrv,
+    gtk
   ]
 ---
 

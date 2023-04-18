@@ -17,6 +17,12 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    big sur,
+    intel,
+    intel-based,
+    apple silicon,
+    m1,
+    dmg file
   ]
 ---
 

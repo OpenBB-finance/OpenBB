@@ -1,6 +1,6 @@
 ---
 title: Onchain
-keywords: [cryptocurrency, onchain, hashrate, erc20, dexes, ethereum]
+keywords: [cryptocurrency, onchain, hashrate, erc20, dexes, ethereum, eth, pairs, confirmed transactions, btcct, ttcp, how to, example]
 description: An Introduction to Cryptocurrency Onchain, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 

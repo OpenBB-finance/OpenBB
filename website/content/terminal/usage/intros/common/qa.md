@@ -1,6 +1,6 @@
 ---
 title: Quantitative Analysis
-keywords: [quantitative, analysis, qa, q/a, daily, indicators, signals, average, summary, normality, line, hist, cdf, bw, acf, qqplot, rolling, spread, quantile, skew, kurtosis, var, es, sh, so, om, raw, decompose, cusum, capm, beta, histogram, auto-correlation, value, median, crypto, forex, fx, cryptocurrency, stocks]
+keywords: [quantitative, analysis, qa, q/a, daily, indicators, signals, average, summary, normality, line, hist, cdf, bw, acf, qqplot, rolling, spread, quantile, skew, kurtosis, var, es, sh, so, om, raw, decompose, cusum, capm, beta, histogram, auto-correlation, value, median, crypto, forex, fx, cryptocurrency, stocks, examples, how to]
 description: This guide introduces the Quantitative Analysis menu, which is common across many sections of the OpenBB Terminal, briefly describes the features, and provides examples in context.
 ---
 

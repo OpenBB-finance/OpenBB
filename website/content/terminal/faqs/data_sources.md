@@ -1,7 +1,7 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: Data Sources and Providers.
+description: Information about data sources and providers offered through the OpenBB Terminal.
 keywords:
   [
     installation,
@@ -17,6 +17,10 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    data,
+    data provider,
+    india,
+    binance
   ]
 ---
 ## Data and Sources
