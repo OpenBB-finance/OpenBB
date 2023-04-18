@@ -1,0 +1,112 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+    method: GET
+    uri: https://api.coingecko.com/api/v3/global
+  response:
+    body:
+      string: !!binary |
+        H4sIAB1GOWQAA3SXW3IbNxBF98LfqFBA49nejIovi4wkkkVRjuWU955zwVESVyX602AGQN++fbr5
+        52q3vq1XX/5crbe347f94/b6cbmdt+/X6/60Pe7fVl9SHDE9rN4v2/Pr8fT0eNyeeRofVufT0/mf
+        B8UfVvvTbr9b/s+5t4fV6/r6vL/xb0/5YXU739Yvj/dnj9v1Redubls+znmUmHMYrZVYnC/3t8Pq
+        S8upjO7WQvMSm/Z40fsp915HGtlSKHG0+rDabA+6a0xtjFo8B77MvL85bdg/xjJSj7mGHKu5s7A/
+        z+BqqTlm14ah8t/D6vuVi1lNKY9YW08tBXPj+csrHxhnarfhLAa+4krH0zMrPZVi3DLWGsqomZXd
+        +caC95F8WK8+Qs+Z4D6+Hnlesvnohbe9sFg6Kr/tFF3uw1OunrqH0vp4WK33O2mcMrcqeaALZ/P4
+        ShA2euzRWrWCzD3o9ffdPBg1krXOSogl88Fmpxtxz5HZt1QbLEm+Ax/UWEqKpVkuTSEQ9Ob1fy60
+        ub6Qn8q5NXJA9xKKItiu9UEfsZtnVCAT3Xl/e/jK8zQ8xz6MXKag27HwclEeWhwjes1GllvUlban
+        j9UXT61HBCRF5GEk8rP98ayYLedaO8IhRojG0btnFjymXGokguoelM/9+1V5i944tKVRR/BknPy0
+        uZ/stbkhVkG6bnxxeN5Na0TLo3krBBawFQvvBIFo5JqnrbUcR4gk9LjTGQHBsY212L3n6Lb/LWnx
+        RfUx3HrzWCx3DCUXHE/6KHpOqWpTUtiCAvn98iENOyH2mKpbSTVop+frH1rIXmvh6MJti0mr5z9k
+        D7Zq3X3Egbi5zHJ5vqq8cMYwDh3k0AIhvr5KRARNLVvkmMoLXJe9Xr+fWOJIi6P2mptuZez1+sFe
+        Fedn753SVOyR56cnPmgo4oUoVRvUEmeczs+zVAdqEaP1GENSRk4/uK1hzJS8pMGdQ22D+C4HMkJ4
+        ibQjfamNy6L7RVEAFLkkEV6lNANCXV44uSqnZKIRBQSBQ9f3zV1Y7lI8gpSEC7np21oRRI7Egpix
+        klfB5m1/v6nhgZ6iaISbef40zdxLVIXFiKNSiyzcDqJK5dY4vyF7tdApl9v1Q+xwfI5HENxiGCLf
+        PT/dUnYXf6h6ldf7+qCyLsVlswSzQB3vf9t/nWXniiupuAjCCO3biY2Am+7KIzd8Y+Pusx+KjsSR
+        Tw5GI+hIPr/Lm668kIrahYKqrb6vnxADFiSE7XCjtc5nWnhXaTclgPuT2VwyQW+OIvknq++oDlO+
+        9VwIv6x4k51+flL/2/nl/XX/N/Etkkv8oBRxqnldkG8kHwOVMGJrg20+md8yqSJeYRqflbwwv+Ct
+        Zh5V7BHHjIX5ZDf1KrsTuoT8ZD4HVm/0AkoHCg71qcl80cH0TVcn8umMCX34QB0a6uELKX0nPo2p
+        Jw6OPXhN2n/y3lNRnWHTYCit5jR53xB3dB42XKa8LrjHvqQ44pgIW0vzhfbG7uJbJkCuM5vW5D2E
+        6ZmsdCG2cEhfgO9JtKRDFbJ2V0K4b9QsFRVh3OioZAvuwYup92l/mldVaU7e/8eNJu55GbfzZ2PQ
+        d9NCe6GYGhkQNKCTUjlpTxtGC8oAoQ0zCS6T9tQkoC/whV6Zgwpqwh420soMXI2M7bIqZ9I+0bW5
+        Bs0Pf4XZfybsC/ESXSXDPWi7vuCevGerYqAHECNXT9pTatyqU/zkAd/bAnuanZoDlOoxmGaFBfam
+        9DYKn4GAWjBbWI/UlDM+Qm0aoHruxLyZnmCKNJHD2LJwXrMFgOpgFnYVuWVinsxwoUhThMFUUF4o
+        j/WpJEAlH+K6skAestgoRS0raNxIC+MTBkE7YIB40rsukEc7zSs0AJobPTQthE8yC+XFXj0Ts+wy
+        CW/0HeBfFAkDmQa7SXi2ZOShK8ZWK/hVS5iIB7zsA5gZxbiTxJ6E90Gvd2xKcmjQE+QCPFlhnIhG
+        85J9k1ruJDydbQw2UqmRuKK5YSIeolJs6FqmlYpUnZCXqpolgLL1kMsn43mXFWccBHcsfTIekmEK
+        pCUWOKKePhlPO2AWoxUWjqUZpwXxNGVyQ0fVZmzkn4ync5EFBgOgXQNkKAvk0yABA9YySTFPyEgT
+        8qYKIKyIKAxXtS+Qb+QfCZiuMDCfjYXx1GOke8AMxPBa5LAJePLG1EZWC708YLSF8GzpCoOJL6jW
+        VVUT8QwcFAloTECBFMliE/EqZ5KQ1d17V1f9ZPxC5zucw53Od8j/smKwtfz8nPI10T9e9tft/nRb
+        P/2D+sKAyQijWsW6Ls0n6clwnEM9NKfptvv4K15pVmXEYRLNUqQtRM+cZp3eyjSjMPxOUHWTADi4
+        ptHTI0z5G+nGdKamAIYIkXlXDN2tNasl9NWPCkb4jt9x+dtt3iuKGDRieiz9j5lDtDkrIFYySWRG
+        KHxIQ1KNrW/HrZYYtEEvxC4q3Oy/6rI9rE9P+3/J82jl8Dj5j/4EqZ8HWUTnlvq1xe8yfkutNa2T
+        UQ716j9//gUAAP//AwBp2a2bsA0AAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 7b7bedd75f8cb908-AMS
+      Cache-Control:
+      - public, max-age=120
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 14 Apr 2023 12:25:01 GMT
+      ETag:
+      - W/"99059b19c8ab358d81164e91baa29c75"
+      Expires:
+      - Fri, 14 Apr 2023 12:27:01 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=wzwiy4dIkn_DNrbNHs9k11qmaDI5jOy8Ef.6emzOw30-1681475101-0-Ad7Jy/sBCbFMo+zuhNWt+4SHcl4Nm480N0o33KZZLOI4bAb6z3GdZ6v7sL1kvvBee6bEFAcJA1/cJegXZsEHc7o=;
+        path=/; expires=Fri, 14-Apr-23 12:55:01 GMT; domain=.api.coingecko.com; HttpOnly;
+        Secure; SameSite=None
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - ba2339d2-6cf2-401e-9276-5b8711c2d2a5
+      X-Runtime:
+      - '0.005576'
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

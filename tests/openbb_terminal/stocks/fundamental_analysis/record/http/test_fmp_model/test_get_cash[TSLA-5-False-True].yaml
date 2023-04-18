@@ -1,0 +1,360 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/cash-flow-statement/TSLA?apikey=MOCK_API_KEY&limit=0&period=annual
+  response:
+    body:
+      string: "[\n  {\n    \"date\": \"2022-12-31\",\n    \"symbol\": \"TSLA\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\":
+        \"2023-01-31\",\n    \"acceptedDate\": \"2023-01-30 21:29:15\",\n    \"calendarYear\":
+        \"2022\",\n    \"period\": \"FY\",\n    \"netIncome\": 12587000000,\n    \"depreciationAndAmortization\":
+        3747000000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        1560000000,\n    \"changeInWorkingCapital\": -3908000000,\n    \"accountsReceivables\":
+        -1124000000,\n    \"inventory\": -6465000000,\n    \"accountsPayables\": 0,\n
+        \   \"otherWorkingCapital\": 1286000000,\n    \"otherNonCashItems\": 738000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 14724000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -7163000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -5835000000,\n    \"salesMaturitiesOfInvestments\": 22000000,\n    \"otherInvestingActivites\":
+        1003000000,\n    \"netCashUsedForInvestingActivites\": -11973000000,\n    \"debtRepayment\":
+        -3866000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 339000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": -3527000000,\n    \"effectOfForexChangesOnCash\":
+        -444000000,\n    \"netChangeInCash\": -1220000000,\n    \"cashAtEndOfPeriod\":
+        16924000000,\n    \"cashAtBeginningOfPeriod\": 18144000000,\n    \"operatingCashFlow\":
+        14724000000,\n    \"capitalExpenditure\": -7172000000,\n    \"freeCashFlow\":
+        7552000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000095017023001409/0000950170-23-001409-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000095017023001409/tsla-20221231.htm\"\n
+        \ },\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2022-02-07\",\n
+        \   \"acceptedDate\": \"2022-02-04 20:11:27\",\n    \"calendarYear\": \"2021\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 5644000000,\n    \"depreciationAndAmortization\":
+        2911000000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        2121000000,\n    \"changeInWorkingCapital\": 518000000,\n    \"accountsReceivables\":
+        -130000000,\n    \"inventory\": -1709000000,\n    \"accountsPayables\": 0,\n
+        \   \"otherWorkingCapital\": 979000000,\n    \"otherNonCashItems\": 303000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 11497000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -6514000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -132000000,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -1222000000,\n    \"netCashUsedForInvestingActivites\": -7868000000,\n    \"debtRepayment\":
+        -14615000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 9412000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": -5203000000,\n    \"effectOfForexChangesOnCash\":
+        -183000000,\n    \"netChangeInCash\": -1757000000,\n    \"cashAtEndOfPeriod\":
+        18144000000,\n    \"cashAtBeginningOfPeriod\": 19901000000,\n    \"operatingCashFlow\":
+        11497000000,\n    \"capitalExpenditure\": -8014000000,\n    \"freeCashFlow\":
+        3483000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000095017022000796/0000950170-22-000796-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000095017022000796/tsla-20211231.htm\"\n
+        \ },\n  {\n    \"date\": \"2020-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2021-02-08\",\n
+        \   \"acceptedDate\": \"2021-02-08 07:27:23\",\n    \"calendarYear\": \"2020\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 862000000,\n    \"depreciationAndAmortization\":
+        2322000000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        1734000000,\n    \"changeInWorkingCapital\": 184000000,\n    \"accountsReceivables\":
+        -652000000,\n    \"inventory\": -422000000,\n    \"accountsPayables\": 0,\n
+        \   \"otherWorkingCapital\": 328000000,\n    \"otherNonCashItems\": 841000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 5943000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -3232000000,\n    \"acquisitionsNet\": -13000000,\n    \"purchasesOfInvestments\":
+        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        113000000,\n    \"netCashUsedForInvestingActivites\": -3132000000,\n    \"debtRepayment\":
+        -12201000000,\n    \"commonStockIssued\": 12269000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 9905000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 9973000000,\n    \"effectOfForexChangesOnCash\":
+        334000000,\n    \"netChangeInCash\": 13118000000,\n    \"cashAtEndOfPeriod\":
+        19901000000,\n    \"cashAtBeginningOfPeriod\": 6783000000,\n    \"operatingCashFlow\":
+        5943000000,\n    \"capitalExpenditure\": -3242000000,\n    \"freeCashFlow\":
+        2701000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459021004599/0001564590-21-004599-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459021004599/tsla-10k_20201231.htm\"\n
+        \ },\n  {\n    \"date\": \"2019-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2020-02-13\",\n
+        \   \"acceptedDate\": \"2020-02-13 07:12:18\",\n    \"calendarYear\": \"2019\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -775000000,\n    \"depreciationAndAmortization\":
+        2154000000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        898000000,\n    \"changeInWorkingCapital\": -349000000,\n    \"accountsReceivables\":
+        -367000000,\n    \"inventory\": -429000000,\n    \"accountsPayables\": 0,\n
+        \   \"otherWorkingCapital\": 743000000,\n    \"otherNonCashItems\": 477000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 2405000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -1432000000,\n    \"acquisitionsNet\": -45000000,\n    \"purchasesOfInvestments\":
+        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        41000000,\n    \"netCashUsedForInvestingActivites\": -1436000000,\n    \"debtRepayment\":
+        -9871000000,\n    \"commonStockIssued\": 848000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 10552000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 1529000000,\n    \"effectOfForexChangesOnCash\":
+        8000000,\n    \"netChangeInCash\": 2506000000,\n    \"cashAtEndOfPeriod\":
+        6783000000,\n    \"cashAtBeginningOfPeriod\": 4277000000,\n    \"operatingCashFlow\":
+        2405000000,\n    \"capitalExpenditure\": -1437000000,\n    \"freeCashFlow\":
+        968000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459020004475/0001564590-20-004475-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459020004475/tsla-10k_20191231.htm\"\n
+        \ },\n  {\n    \"date\": \"2018-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2019-02-19\",\n
+        \   \"acceptedDate\": \"2019-02-19 06:10:16\",\n    \"calendarYear\": \"2018\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -1062582000,\n    \"depreciationAndAmortization\":
+        1901050000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        749024000,\n    \"changeInWorkingCapital\": 57951000,\n    \"accountsReceivables\":
+        -496732000,\n    \"inventory\": -1023264000,\n    \"accountsPayables\": 0,\n
+        \   \"otherWorkingCapital\": 102567000,\n    \"otherNonCashItems\": 452359000,\n
+        \   \"netCashProvidedByOperatingActivities\": 2097802000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -2319516000,\n    \"acquisitionsNet\": -17912000,\n    \"purchasesOfInvestments\":
+        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        0,\n    \"netCashUsedForInvestingActivites\": -2337428000,\n    \"debtRepayment\":
+        -6087029000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 6660784000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 573755000,\n    \"effectOfForexChangesOnCash\":
+        -22700000,\n    \"netChangeInCash\": 311429000,\n    \"cashAtEndOfPeriod\":
+        4276388000,\n    \"cashAtBeginningOfPeriod\": 3964959000,\n    \"operatingCashFlow\":
+        2097802000,\n    \"capitalExpenditure\": -2319516000,\n    \"freeCashFlow\":
+        -221714000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459019003165/0001564590-19-003165-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459019003165/tsla-10k_20181231.htm\"\n
+        \ },\n  {\n    \"date\": \"2017-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2018-02-23\",\n
+        \   \"acceptedDate\": \"2018-02-23 06:07:43\",\n    \"calendarYear\": \"2017\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -2240578000,\n    \"depreciationAndAmortization\":
+        1636003000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        466760000,\n    \"changeInWorkingCapital\": -496603000,\n    \"accountsReceivables\":
+        -24635000,\n    \"inventory\": -178850000,\n    \"accountsPayables\": 0,\n
+        \   \"otherWorkingCapital\": 623476000,\n    \"otherNonCashItems\": 573764000,\n
+        \   \"netCashProvidedByOperatingActivities\": -60654000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -4081354000,\n    \"acquisitionsNet\": -114523000,\n    \"purchasesOfInvestments\":
+        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -223090000,\n    \"netCashUsedForInvestingActivites\": -4418967000,\n    \"debtRepayment\":
+        -4263788000,\n    \"commonStockIssued\": 400175000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 8278477000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 4414864000,\n    \"effectOfForexChangesOnCash\":
+        39455000,\n    \"netChangeInCash\": -25302000,\n    \"cashAtEndOfPeriod\":
+        3367914000,\n    \"cashAtBeginningOfPeriod\": 3393216000,\n    \"operatingCashFlow\":
+        -60654000,\n    \"capitalExpenditure\": -4081354000,\n    \"freeCashFlow\":
+        -4142008000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459018002956/0001564590-18-002956-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459018002956/tsla-10k_20171231.htm\"\n
+        \ },\n  {\n    \"date\": \"2016-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2017-03-01\",\n
+        \   \"acceptedDate\": \"2017-03-01 16:54:21\",\n    \"calendarYear\": \"2016\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -773046000,\n    \"depreciationAndAmortization\":
+        947099000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        334225000,\n    \"changeInWorkingCapital\": -693861000,\n    \"accountsReceivables\":
+        -216565000,\n    \"inventory\": -2465703000,\n    \"accountsPayables\": 0,\n
+        \   \"otherWorkingCapital\": 774791000,\n    \"otherNonCashItems\": 61754000,\n
+        \   \"netCashProvidedByOperatingActivities\": -123829000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -1440471000,\n    \"acquisitionsNet\": 213523000,\n    \"purchasesOfInvestments\":
+        0,\n    \"salesMaturitiesOfInvestments\": 16667000,\n    \"otherInvestingActivites\":
+        -206149000,\n    \"netCashUsedForInvestingActivites\": -1416430000,\n    \"debtRepayment\":
+        -1904483000,\n    \"commonStockIssued\": 1701734000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 3946725000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 3743976000,\n    \"effectOfForexChangesOnCash\":
+        -7409000,\n    \"netChangeInCash\": 2196308000,\n    \"cashAtEndOfPeriod\":
+        3393216000,\n    \"cashAtBeginningOfPeriod\": 1196908000,\n    \"operatingCashFlow\":
+        -123829000,\n    \"capitalExpenditure\": -1440471000,\n    \"freeCashFlow\":
+        -1564300000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459017003118/0001564590-17-003118-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459017003118/tsla-10k_20161231.htm\"\n
+        \ },\n  {\n    \"date\": \"2015-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2016-02-24\",\n
+        \   \"acceptedDate\": \"2016-02-24 16:17:56\",\n    \"calendarYear\": \"2015\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -888663000,\n    \"depreciationAndAmortization\":
+        422590000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        197999000,\n    \"changeInWorkingCapital\": -493289000,\n    \"accountsReceivables\":
+        46267000,\n    \"inventory\": -1573860000,\n    \"accountsPayables\": 0,\n
+        \   \"otherWorkingCapital\": 358924000,\n    \"otherNonCashItems\": 236864000,\n
+        \   \"netCashProvidedByOperatingActivities\": -524499000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -1634850000,\n    \"acquisitionsNet\": -12260000,\n    \"purchasesOfInvestments\":
+        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -26441000,\n    \"netCashUsedForInvestingActivites\": -1673551000,\n    \"debtRepayment\":
+        -203780000,\n    \"commonStockIssued\": 750000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 977303000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 1523523000,\n    \"effectOfForexChangesOnCash\":
+        -34278000,\n    \"netChangeInCash\": -708805000,\n    \"cashAtEndOfPeriod\":
+        1196908000,\n    \"cashAtBeginningOfPeriod\": 1905713000,\n    \"operatingCashFlow\":
+        -524499000,\n    \"capitalExpenditure\": -1634850000,\n    \"freeCashFlow\":
+        -2159349000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459016013195/0001564590-16-013195-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459016013195/tsla-10k_20151231.htm\"\n
+        \ },\n  {\n    \"date\": \"2014-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2015-02-26\",\n
+        \   \"acceptedDate\": \"2015-02-26 17:13:26\",\n    \"calendarYear\": \"2014\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -294040000,\n    \"depreciationAndAmortization\":
+        231931000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        156496000,\n    \"changeInWorkingCapital\": -256825000,\n    \"accountsReceivables\":
+        -183658000,\n    \"inventory\": -1050264000,\n    \"accountsPayables\": 252781000,\n
+        \   \"otherWorkingCapital\": 315911000,\n    \"otherNonCashItems\": 105101000,\n
+        \   \"netCashProvidedByOperatingActivities\": -57337000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -969885000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -205841000,\n    \"salesMaturitiesOfInvestments\": 189131000,\n    \"otherInvestingActivites\":
+        -3849000,\n    \"netCashUsedForInvestingActivites\": -990444000,\n    \"debtRepayment\":
+        -11179000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 2154309000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 2143130000,\n    \"effectOfForexChangesOnCash\":
+        -35525000,\n    \"netChangeInCash\": 1059824000,\n    \"cashAtEndOfPeriod\":
+        1905713000,\n    \"cashAtBeginningOfPeriod\": 845889000,\n    \"operatingCashFlow\":
+        -57337000,\n    \"capitalExpenditure\": -969885000,\n    \"freeCashFlow\":
+        -1027222000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459015001031/0001564590-15-001031-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459015001031/tsla-10k_20141231.htm\"\n
+        \ },\n  {\n    \"date\": \"2013-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2014-02-26\",\n
+        \   \"acceptedDate\": \"2014-02-26 16:02:51\",\n    \"calendarYear\": \"2013\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -74014000,\n    \"depreciationAndAmortization\":
+        106083000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        80737000,\n    \"changeInWorkingCapital\": 124995000,\n    \"accountsReceivables\":
+        -21917000,\n    \"inventory\": -463270000,\n    \"accountsPayables\": -243000,\n
+        \   \"otherWorkingCapital\": 292396000,\n    \"otherNonCashItems\": 20193000,\n
+        \   \"netCashProvidedByOperatingActivities\": 257994000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -264224000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        14807000,\n    \"netCashUsedForInvestingActivites\": -249417000,\n    \"debtRepayment\":
+        -460762000,\n    \"commonStockIssued\": 415000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 681184000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 635422000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 643999000,\n    \"cashAtEndOfPeriod\": 845889000,\n
+        \   \"cashAtBeginningOfPeriod\": 201890000,\n    \"operatingCashFlow\": 257994000,\n
+        \   \"capitalExpenditure\": -264224000,\n    \"freeCashFlow\": -6230000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312514069681/0001193125-14-069681-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312514069681/d668062d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2012-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2013-03-07\",\n
+        \   \"acceptedDate\": \"2013-03-07 17:10:43\",\n    \"calendarYear\": \"2012\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -396213000,\n    \"depreciationAndAmortization\":
+        28825000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        50145000,\n    \"changeInWorkingCapital\": 42819000,\n    \"accountsReceivables\":
+        -17303000,\n    \"inventory\": -194726000,\n    \"accountsPayables\": 187821000,\n
+        \   \"otherWorkingCapital\": 46530000,\n    \"otherNonCashItems\": 8343000,\n
+        \   \"netCashProvidedByOperatingActivities\": -266081000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -239228000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -14992000,\n    \"salesMaturitiesOfInvestments\": 40000000,\n    \"otherInvestingActivites\":
+        7290000,\n    \"netCashUsedForInvestingActivites\": -206930000,\n    \"debtRepayment\":
+        -15542000,\n    \"commonStockIssued\": 221496000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 213681000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 419635000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": -53376000,\n    \"cashAtEndOfPeriod\": 201890000,\n
+        \   \"cashAtBeginningOfPeriod\": 255266000,\n    \"operatingCashFlow\": -266081000,\n
+        \   \"capitalExpenditure\": -239228000,\n    \"freeCashFlow\": -505309000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312513096241/0001193125-13-096241-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312513096241/d452995d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2011-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2012-02-27\",\n
+        \   \"acceptedDate\": \"2012-02-27 17:17:24\",\n    \"calendarYear\": \"2011\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -254411000,\n    \"depreciationAndAmortization\":
+        16919000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        29419000,\n    \"changeInWorkingCapital\": 88897000,\n    \"accountsReceivables\":
+        -2829000,\n    \"inventory\": -13638000,\n    \"accountsPayables\": 31859000,\n
+        \   \"otherWorkingCapital\": 61432000,\n    \"otherNonCashItems\": 4812000,\n
+        \   \"netCashProvidedByOperatingActivities\": -114364000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -197896000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -64952000,\n    \"salesMaturitiesOfInvestments\": 40000000,\n    \"otherInvestingActivites\":
+        46920000,\n    \"netCashUsedForInvestingActivites\": -175928000,\n    \"debtRepayment\":
+        -416000,\n    \"commonStockIssued\": 231468000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 214948000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 446000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 155708000,\n    \"cashAtEndOfPeriod\": 255266000,\n
+        \   \"cashAtBeginningOfPeriod\": 99558000,\n    \"operatingCashFlow\": -114364000,\n
+        \   \"capitalExpenditure\": -197896000,\n    \"freeCashFlow\": -312260000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312512081990/0001193125-12-081990-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312512081990/d279413d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2010-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2011-03-03\",\n
+        \   \"acceptedDate\": \"2011-03-03 14:47:36\",\n    \"calendarYear\": \"2010\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -154328000,\n    \"depreciationAndAmortization\":
+        10623000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
+        21156000,\n    \"changeInWorkingCapital\": -11175000,\n    \"accountsReceivables\":
+        -3222000,\n    \"inventory\": -20115000,\n    \"accountsPayables\": -212000,\n
+        \   \"otherWorkingCapital\": 4006000,\n    \"otherNonCashItems\": 5907000,\n
+        \   \"netCashProvidedByOperatingActivities\": -127817000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -40203000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": 0,\n
+        \   \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -140094000,\n    \"netCashUsedForInvestingActivites\": -180297000,\n    \"debtRepayment\":
+        -315000,\n    \"commonStockIssued\": 268842000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 69518000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 338045000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 29931000,\n    \"cashAtEndOfPeriod\": 99558000,\n
+        \   \"cashAtBeginningOfPeriod\": 69627000,\n    \"operatingCashFlow\": -127817000,\n
+        \   \"capitalExpenditure\": -40203000,\n    \"freeCashFlow\": -168020000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312511054847/0001193125-11-054847-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312511054847/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2009-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2009-12-31\",\n
+        \   \"acceptedDate\": \"2009-12-31\",\n    \"calendarYear\": \"2009\",\n    \"period\":
+        \"FY\",\n    \"netIncome\": -55740000,\n    \"depreciationAndAmortization\":
+        6940000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\": 1434000,\n
+        \   \"changeInWorkingCapital\": -37543000,\n    \"accountsReceivables\": -168000,\n
+        \   \"inventory\": -7925000,\n    \"accountsPayables\": 902000,\n    \"otherWorkingCapital\":
+        291000,\n    \"otherNonCashItems\": 4084000,\n    \"netCashProvidedByOperatingActivities\":
+        -80825000,\n    \"investmentsInPropertyPlantAndEquipment\": -11884000,\n    \"acquisitionsNet\":
+        0,\n    \"purchasesOfInvestments\": 0,\n    \"salesMaturitiesOfInvestments\":
+        0,\n    \"otherInvestingActivites\": -2360000,\n    \"netCashUsedForInvestingActivites\":
+        -14244000,\n    \"debtRepayment\": -322000,\n    \"commonStockIssued\": 0,\n
+        \   \"commonStockRepurchased\": 0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\":
+        155741000,\n    \"netCashUsedProvidedByFinancingActivities\": 155419000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": 60350000,\n
+        \   \"cashAtEndOfPeriod\": 69627000,\n    \"cashAtBeginningOfPeriod\": 9277000,\n
+        \   \"operatingCashFlow\": -80825000,\n    \"capitalExpenditure\": -11884000,\n
+        \   \"freeCashFlow\": -92709000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"2008-12-31\",\n    \"symbol\": \"TSLA\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\":
+        \"2008-12-31\",\n    \"acceptedDate\": \"2008-12-31\",\n    \"calendarYear\":
+        \"2008\",\n    \"period\": \"FY\",\n    \"netIncome\": -82782000,\n    \"depreciationAndAmortization\":
+        4157000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\": 437000,\n
+        \   \"changeInWorkingCapital\": 20529000,\n    \"accountsReceivables\": -3261000,\n
+        \   \"inventory\": -14542000,\n    \"accountsPayables\": 8815000,\n    \"otherWorkingCapital\":
+        5277000,\n    \"otherNonCashItems\": 5247000,\n    \"netCashProvidedByOperatingActivities\":
+        -52412000,\n    \"investmentsInPropertyPlantAndEquipment\": -9630000,\n    \"acquisitionsNet\":
+        0,\n    \"purchasesOfInvestments\": 0,\n    \"salesMaturitiesOfInvestments\":
+        0,\n    \"otherInvestingActivites\": -960000,\n    \"netCashUsedForInvestingActivites\":
+        -10590000,\n    \"debtRepayment\": -191000,\n    \"commonStockIssued\": 21000,\n
+        \   \"commonStockRepurchased\": 0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\":
+        55238000,\n    \"netCashUsedProvidedByFinancingActivities\": 55068000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": -7934000,\n    \"cashAtEndOfPeriod\": 9277000,\n
+        \   \"cashAtBeginningOfPeriod\": 17211000,\n    \"operatingCashFlow\": -52412000,\n
+        \   \"capitalExpenditure\": -9630000,\n    \"freeCashFlow\": -62042000,\n
+        \   \"link\": \"\",\n    \"finalLink\": \"\"\n  },\n  {\n    \"date\": \"2007-12-31\",\n
+        \   \"symbol\": \"TSLA\",\n    \"reportedCurrency\": \"USD\",\n    \"cik\":
+        \"0001318605\",\n    \"fillingDate\": \"2007-12-31\",\n    \"acceptedDate\":
+        \"2007-12-31\",\n    \"calendarYear\": \"2007\",\n    \"period\": \"FY\",\n
+        \   \"netIncome\": -78157000,\n    \"depreciationAndAmortization\": 2895000,\n
+        \   \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\": 198000,\n    \"changeInWorkingCapital\":
+        19210000,\n    \"accountsReceivables\": -59000,\n    \"inventory\": -2108000,\n
+        \   \"accountsPayables\": 523000,\n    \"otherWorkingCapital\": -64000,\n
+        \   \"otherNonCashItems\": 2385000,\n    \"netCashProvidedByOperatingActivities\":
+        -53469000,\n    \"investmentsInPropertyPlantAndEquipment\": -9802000,\n    \"acquisitionsNet\":
+        0,\n    \"purchasesOfInvestments\": 0,\n    \"salesMaturitiesOfInvestments\":
+        0,\n    \"otherInvestingActivites\": 40000,\n    \"netCashUsedForInvestingActivites\":
+        -9762000,\n    \"debtRepayment\": 0,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 45041000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 45041000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": -18190000,\n    \"cashAtEndOfPeriod\": 17211000,\n
+        \   \"cashAtBeginningOfPeriod\": 35401000,\n    \"operatingCashFlow\": -53469000,\n
+        \   \"capitalExpenditure\": -9802000,\n    \"freeCashFlow\": -63271000,\n
+        \   \"link\": \"\",\n    \"finalLink\": \"\"\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '25144'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 11:35:42 GMT
+      ETag:
+      - W/"6238-7j6jBasGgQ+tROZCO5ryrgPpv6A"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

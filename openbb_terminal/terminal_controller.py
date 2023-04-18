@@ -24,7 +24,7 @@ from prompt_toolkit.styles import Style
 from rich import panel
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.account.account_model import (
+from openbb_terminal.account.account_controller import (
     get_login_called,
     set_login_called,
 )
@@ -47,7 +47,6 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_and_split_input,
-    update_news_from_tweet_to_be_displayed,
 )
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
@@ -261,13 +260,13 @@ class TerminalController(BaseController):
         current_user = get_current_user()
 
         if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
-            parser_exe = argparse.ArgumentParser(
+            parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                 prog="guess",
                 description="Guess command to achieve task successfully.",
             )
-            parser_exe.add_argument(
+            parser.add_argument(
                 "-l",
                 "--limit",
                 type=check_positive,
@@ -277,7 +276,7 @@ class TerminalController(BaseController):
             )
             if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "-l")
-                ns_parser_guess = self.parse_simple_args(parser_exe, other_args)
+                ns_parser_guess = self.parse_simple_args(parser, other_args)
 
                 if self.GUESS_TOTAL_TRIES == 0:
                     self.GUESS_NUMBER_TRIES_LEFT = ns_parser_guess.limit
@@ -504,7 +503,7 @@ class TerminalController(BaseController):
         """Process intro command."""
         import json
 
-        intro: dict = json.load((Path(__file__).parent / "intro.json").open())
+        intro: dict = json.load((Path(__file__).parent / "intro.json").open())  # type: ignore
 
         for prompt in intro.get("prompts", []):
             console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
@@ -520,31 +519,12 @@ class TerminalController(BaseController):
 
         if not other_args:
             console.print(
-                "[red]Provide a path to the routine you wish to execute. For an example, please use "
+                "[info]Provide a path to the routine you wish to execute. For an example, please use "
                 "`exe --example` and for documentation and to learn how create your own script "
-                "type `about exe`.\n[/red]"
+                "type `about exe`.\n[/info]"
             )
             return
-
-        full_input = " ".join(other_args)
-        other_args_processed = (
-            full_input.split(" ") if " " in full_input else [full_input]
-        )
-        self.queue = []
-
-        path_routine = ""
-        args = list()
-        for idx, path_dir in enumerate(other_args_processed):
-            if path_dir in ("-i", "--input"):
-                args = [path_routine[1:]] + other_args_processed[idx:]
-                break
-            if path_dir not in ("--file"):
-                path_routine += f"/{path_dir}"
-
-        if not args:
-            args = [path_routine[1:]]
-
-        parser_exe = argparse.ArgumentParser(
+        parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
@@ -552,20 +532,25 @@ class TerminalController(BaseController):
             "`exe --example` and for documentation and to learn how create your own script "
             "type `about exe`.",
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "--file",
             help="The path or .openbb file to run.",
-            dest="path",
-            default=None,
+            dest="file",
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and "-e" not in other_args
+            and "--example" not in other_args,
+            type=str,
+            nargs="+",
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "-i",
             "--input",
             help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
             dest="routine_args",
             type=lambda s: [str(item) for item in s.split(",")],
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "-e",
             "--example",
             help="Run an example script to understand how routines can be used.",
@@ -573,25 +558,23 @@ class TerminalController(BaseController):
             action="store_true",
             default=False,
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--file")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if not args[0]:
-            return console.print("[red]Please select an .openbb routine file.[/red]\n")
-
-        if args and "-" not in args[0][0]:
-            args.insert(0, "--file")
-        ns_parser_exe = self.parse_simple_args(parser_exe, args)
-        if ns_parser_exe and (ns_parser_exe.path or ns_parser_exe.example):
-            if ns_parser_exe.example:
+        if ns_parser:
+            if ns_parser.example:
                 path = MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
                 console.print(
-                    "[green]Executing an example, please type `about exe` "
-                    "to learn how to create your own script.[/green]\n"
+                    "[info]Executing an example, please type `about exe` "
+                    "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
-            elif ns_parser_exe.path in self.ROUTINE_CHOICES["--file"]:
-                path = self.ROUTINE_FILES[ns_parser_exe.path]
+            elif ns_parser.file:
+                file_path = " ".join(ns_parser.file)
+                path = self.ROUTINE_FILES.get(file_path, Path(file_path))
             else:
-                path = ns_parser_exe.path
+                return
 
             with open(path) as fp:
                 raw_lines = [
@@ -610,8 +593,8 @@ class TerminalController(BaseController):
                     # Check if dynamic parameter exists in script
                     if "$ARGV" in rawline:
                         # Check if user has provided inputs through -i or --input
-                        if ns_parser_exe.routine_args:
-                            for i, arg in enumerate(ns_parser_exe.routine_args):
+                        if ns_parser.routine_args:
+                            for i, arg in enumerate(ns_parser.routine_args):
                                 # Check what is the location of the ARGV to be replaced
                                 if f"$ARGV[{i}]" in templine:
                                     templine = templine.replace(f"$ARGV[{i}]", arg)
@@ -755,54 +738,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
             try:
                 # Get input from user using auto-completion
                 if session and current_user.preferences.USE_PROMPT_TOOLKIT:
-                    # Check if tweet news is enabled
-                    if current_user.preferences.TOOLBAR_TWEET_NEWS:
-                        news_tweet = update_news_from_tweet_to_be_displayed()
-
-                        # Check if there is a valid tweet news to be displayed
-                        if news_tweet:
-                            an_input = session.prompt(
-                                f"{get_flair()} / $ ",
-                                completer=t_controller.completer,
-                                search_ignore_case=True,
-                                bottom_toolbar=HTML(news_tweet),
-                                style=Style.from_dict(
-                                    {
-                                        "bottom-toolbar": "#ffffff bg:#333333",
-                                    }
-                                ),
-                            )
-
-                        else:
-                            # Check if toolbar hint was enabled
-                            if current_user.preferences.TOOLBAR_HINT:
-                                an_input = session.prompt(
-                                    f"{get_flair()} / $ ",
-                                    completer=t_controller.completer,
-                                    search_ignore_case=True,
-                                    bottom_toolbar=HTML(
-                                        '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
-                                        '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu'
-                                        '    <style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
-                                        '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
-                                        "see usage and available options    "
-                                        '<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
-                                    ),
-                                    style=Style.from_dict(
-                                        {
-                                            "bottom-toolbar": "#ffffff bg:#333333",
-                                        }
-                                    ),
-                                )
-                            else:
-                                an_input = session.prompt(
-                                    f"{get_flair()} / $ ",
-                                    completer=t_controller.completer,
-                                    search_ignore_case=True,
-                                )
-
                     # Check if toolbar hint was enabled
-                    elif current_user.preferences.TOOLBAR_HINT:
+                    if current_user.preferences.TOOLBAR_HINT:
                         an_input = session.prompt(
                             f"{get_flair()} / $ ",
                             completer=t_controller.completer,

@@ -20,7 +20,6 @@ from openbb_terminal.core.session.current_user import (
 def test_terminal_quick_exit(mocker):
     preferences = PreferencesModel(
         ENABLE_QUICK_EXIT=True,
-        USE_ION=False,
         USE_PROMPT_TOOLKIT=True,
     )
     mock_current_user = copy_user(preferences=preferences)
@@ -40,7 +39,6 @@ def test_terminal_quick_exit(mocker):
 def test_terminal_quit(mocker):
     preferences = PreferencesModel(
         ENABLE_QUICK_EXIT=True,
-        USE_ION=False,
         USE_PROMPT_TOOLKIT=True,
     )
     mock_current_user = copy_user(preferences=preferences)

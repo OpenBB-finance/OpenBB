@@ -160,34 +160,25 @@ class Backend(PyWry):
             Path to export image to, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
-        title = "Plots"
+        # pylint: disable=C0415
+        from openbb_terminal.helper_funcs import command_location
 
-        # We check if figure is a subplot and has a title annotation
-        if not fig.layout.title.text and fig._has_subplots():  # pylint: disable=W0212
-            for annotation in fig.select_annotations(
-                selector=dict(xref="paper", yref="paper")
-            ):
-                # Subplots always set the first annotation as the title
-                # so we break after the first one
-                if annotation.text:
-                    title = annotation.text
-                break
-
-        title = re.sub(
-            r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else title
-        )
         fig.layout.height += 69
 
         if export_image and isinstance(export_image, str):
             export_image = Path(export_image).resolve()
 
+        json_data = json.loads(fig.to_json())
+
+        json_data.update({"theme": get_current_user().preferences.CHART_STYLE})
+
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_plotly_html(),
-                    "json_data": json.loads(fig.to_json()),
+                    "json_data": json_data,
                     "export_image": str(export_image),
-                    **self.get_kwargs(title),
+                    **self.get_kwargs(command_location),
                 }
             )
         )
@@ -268,8 +259,18 @@ class Backend(PyWry):
         # in case of a very small table we set a min width
         width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
 
+        # pylint: disable=C0415
+        from openbb_terminal.helper_funcs import command_location
+
         json_data = json.loads(df_table.to_json(orient="split"))
-        json_data.update(dict(title=title, source=source or "", theme=theme or "dark"))
+        json_data.update(
+            dict(
+                title=title,
+                source=source or "",
+                theme=theme or "dark",
+                command_location=command_location or "",
+            )
+        )
 
         self.outgoing.append(
             json.dumps(

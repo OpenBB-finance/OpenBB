@@ -69,8 +69,10 @@ en:
   settings/_cmds_: Change settings
   settings/colors: set your own terminal colors
   settings/_colors: Colors
-  settings/theme: set plots and tables theme
-  settings/_theme: Theme
+  settings/chart: set charts style
+  settings/_chart: Charts style
+  settings/table: set tables style
+  settings/_table: Tables style
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used
@@ -98,8 +100,6 @@ en:
   settings/_timezone: Timezone
   settings/source: specify data source file
   settings/_data_source: Data sources
-  settings/tbnews: displays tweets news in the bottom toolbar
-  settings/tweetnews: tweak tweet news parameters
   settings/_tbnu: Time (in seconds) between tweet news updates
   settings/_tatt: Twitter accounts to track
   settings/_nttli: Number of tweets to look into from each account
@@ -412,7 +412,6 @@ en:
   stocks/bt/load: load a specific stock ticker for analysis
   stocks/ta/_ticker: Ticker
   stocks/ta/load: load a specific stock ticker for analysis
-  stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
   stocks/ta/recom: recommendation based on technical indicators
   stocks/ta/_overlap_: Overlap
@@ -774,7 +773,6 @@ en:
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
-  economy/spectrum: spectrum of sectors, industry, country
   economy/eval: create new series by performing operations on loaded data
   economy/forecast: forecast techniques; rnn, nbeats, transformer, block rnn
   economy/qa: Open quantitative analysis menu with stored data

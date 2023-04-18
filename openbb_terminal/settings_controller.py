@@ -31,7 +31,7 @@ from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
-    check_positive,
+    AVAILABLE_FLAIRS,
     get_flair,
     get_user_timezone_or_invalid,
     parse_and_split_input,
@@ -50,20 +50,13 @@ class SettingsController(BaseController):
     """Settings Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
-        "autoscaling",
-        "backend",
+        "chart",
         "colors",
-        "dpi",
         "dt",
         "flair",
         "height",
         "lang",
-        "monitor",
-        "pheight",
-        "pwidth",
-        "tbnews",
-        "theme",
-        "tweetnews",
+        "table",
         "tz",
         "userdata",
         "width",
@@ -90,6 +83,9 @@ class SettingsController(BaseController):
             choices: dict = self.choices_default
             choices["tz"] = {c: None for c in pytz.all_timezones}
             choices["lang"] = {c: None for c in self.languages_available}
+            choices["flair"]["--emoji"] = {c: None for c in AVAILABLE_FLAIRS}
+            choices["flair"]["-e"] = "--emoji"
+
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -136,9 +132,13 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_setting("dt", current_user.preferences.USE_DATETIME)
         mt.add_raw("\n")
-        mt.add_cmd("theme")
+        mt.add_cmd("chart")
         mt.add_raw("\n")
-        mt.add_param("_theme", current_user.preferences.THEME)
+        mt.add_param("_chart", current_user.preferences.CHART_STYLE)
+        mt.add_raw("\n")
+        mt.add_cmd("table")
+        mt.add_raw("\n")
+        mt.add_param("_table", current_user.preferences.TABLE_STYLE)
         mt.add_raw("\n")
         mt.add_cmd("colors")
         mt.add_raw("\n")
@@ -165,39 +165,11 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_timezone", get_user_timezone_or_invalid())
         mt.add_raw("\n")
-        mt.add_setting("autoscaling", current_user.preferences.USE_PLOT_AUTOSCALING)
-        if current_user.preferences.USE_PLOT_AUTOSCALING:
-            mt.add_cmd("pheight")
-            mt.add_cmd("pwidth")
-            mt.add_raw("\n")
-            mt.add_param(
-                "_plot_height_pct",
-                current_user.preferences.PLOT_HEIGHT_PERCENTAGE,
-                16,
-            )
-            mt.add_param(
-                "_plot_width_pct",
-                current_user.preferences.PLOT_WIDTH_PERCENTAGE,
-                16,
-            )
-        else:
-            mt.add_cmd("height")
-            mt.add_cmd("width")
-            mt.add_raw("\n")
-            mt.add_param("_plot_height", current_user.preferences.PLOT_HEIGHT, 12)
-            mt.add_param("_plot_width", current_user.preferences.PLOT_WIDTH, 12)
+        mt.add_cmd("height")
+        mt.add_cmd("width")
         mt.add_raw("\n")
-        mt.add_cmd("dpi")
-        mt.add_raw("\n")
-        mt.add_param("_dpi", current_user.preferences.PLOT_DPI)
-        mt.add_raw("\n")
-        mt.add_cmd("backend")
-        mt.add_raw("\n")
-        mt.add_param("_backend", current_user.preferences.PLOT_BACKEND)
-        mt.add_raw("\n")
-        mt.add_cmd("monitor")
-        mt.add_raw("\n")
-        mt.add_param("_monitor", current_user.preferences.MONITOR)
+        mt.add_param("_plot_height", current_user.preferences.PLOT_PYWRY_HEIGHT, 12)
+        mt.add_param("_plot_width", current_user.preferences.PLOT_PYWRY_WIDTH, 12)
         mt.add_raw("\n")
         if is_local():
             mt.add_cmd("source")
@@ -207,23 +179,6 @@ class SettingsController(BaseController):
                 get_current_user().preferences.USER_DATA_SOURCES_FILE,
             )
             mt.add_raw("\n")
-        mt.add_setting("tbnews", current_user.preferences.TOOLBAR_TWEET_NEWS)
-        if current_user.preferences.TOOLBAR_TWEET_NEWS:
-            mt.add_raw("\n")
-            mt.add_cmd("tweetnews")
-            mt.add_raw("\n")
-            mt.add_param(
-                "_tbnu",
-                current_user.preferences.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES,
-            )
-            mt.add_param(
-                "_nttli",
-                current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
-            )
-            mt.add_param(
-                "_tatt", current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK
-            )
-            mt.add_param("_tk", current_user.preferences.TOOLBAR_TWEET_NEWS_KEYWORDS)
         console.print(text=mt.menu_text, menu="Settings")
 
     @staticmethod
@@ -296,13 +251,13 @@ class SettingsController(BaseController):
             console.print("Colors updated.")
 
     @log_start_end(log=logger)
-    def call_theme(self, other_args: List[str]):
-        """Process theme command"""
+    def call_chart(self, other_args: List[str]):
+        """Process chart command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="theme",
-            description="Choose theme style.",
+            description="Choose chart style.",
         )
         parser.add_argument(
             "-s",
@@ -310,7 +265,7 @@ class SettingsController(BaseController):
             type=str,
             dest="style",
             choices=["dark", "light"],
-            help="Choose theme style. If you have a hub account you can change theme "
+            help="Choose chart style. If you have a hub account you can change theme "
             f"here {CHARTS_TABLES_URL}.",
             required="-h" not in other_args and "--help" not in other_args,
         )
@@ -319,17 +274,53 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.style:
             if is_local():
-                self.set_and_save_preference("THEME", ns_parser.style)
+                self.set_and_save_preference("CHART_STYLE", ns_parser.style)
             else:
-                set_preference("THEME", ns_parser.style)
+                set_preference("CHART_STYLE", ns_parser.style)
                 Hub.upload_config(
-                    key="chart_table",
+                    key="chart",
                     value=ns_parser.style,
                     type_="terminal_style",
                     auth_header=get_current_user().profile.get_auth_header(),
                 )
                 console.print("")
-            console.print("Theme updated.\n")
+            console.print("Chart theme updated.\n")
+
+    @log_start_end(log=logger)
+    def call_table(self, other_args: List[str]):
+        """Process theme command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="theme",
+            description="Choose table style.",
+        )
+        parser.add_argument(
+            "-s",
+            "--style",
+            type=str,
+            dest="style",
+            choices=["dark", "light"],
+            help="Choose table style. If you have a hub account you can change theme "
+            f"here {CHARTS_TABLES_URL}.",
+            required="-h" not in other_args and "--help" not in other_args,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser and ns_parser.style:
+            if is_local():
+                self.set_and_save_preference("TABLE_STYLE", ns_parser.style)
+            else:
+                set_preference("TABLE_STYLE", ns_parser.style)
+                Hub.upload_config(
+                    key="table",
+                    value=ns_parser.style,
+                    type_="terminal_style",
+                    auth_header=get_current_user().profile.get_auth_header(),
+                )
+                console.print("")
+            console.print("Table theme updated.\n")
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
@@ -360,45 +351,6 @@ class SettingsController(BaseController):
                 console.print("[red]Couldn't find the sources file![/red]")
 
     @log_start_end(log=logger)
-    def call_autoscaling(self, other_args: List[str]):
-        """Process autoscaling command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="autoscaling",
-            description="Set the use of autoscaling in the plots",
-        )
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference(
-                "USE_PLOT_AUTOSCALING",
-                not get_current_user().preferences.USE_PLOT_AUTOSCALING,
-            )
-
-    @log_start_end(log=logger)
-    def call_dpi(self, other_args: List[str]):
-        """Process dpi command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dpi",
-            description="Dots per inch.",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=int,
-            dest="value",
-            help="value",
-            required="-h" not in other_args,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser and ns_parser.value:
-            self.set_and_save_preference("PLOT_DPI", ns_parser.value)
-
-    @log_start_end(log=logger)
     def call_height(self, other_args: List[str]):
         """Process height command"""
         parser = argparse.ArgumentParser(
@@ -419,7 +371,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.set_and_save_preference("PLOT_HEIGHT", ns_parser.value)
+            self.set_and_save_preference("PLOT_PYWRY_HEIGHT", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_width(self, other_args: List[str]):
@@ -442,95 +394,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.set_and_save_preference("PLOT_WIDTH", ns_parser.value)
-
-    @log_start_end(log=logger)
-    def call_pheight(self, other_args: List[str]):
-        """Process pheight command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pheight",
-            description="select plot height percentage (autoscaling enabled)",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=float,
-            dest="value",
-            help="value",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference("PLOT_HEIGHT_PERCENTAGE", ns_parser.value)
-
-    @log_start_end(log=logger)
-    def call_pwidth(self, other_args: List[str]):
-        """Process pwidth command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pwidth",
-            description="select plot width percentage (autoscaling enabled)",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=float,
-            dest="value",
-            help="value",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference("PLOT_WIDTH_PERCENTAGE", ns_parser.value)
-
-    @log_start_end(log=logger)
-    def call_monitor(self, other_args: List[str]):
-        """Process pwidth command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pwidth",
-            description="choose which monitor to scale: 0-primary, 1-secondary (autoscaling enabled)",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=int,
-            dest="value",
-            help="value",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference("MONITOR", ns_parser.value)
-
-    @log_start_end(log=logger)
-    def call_backend(self, other_args: List[str]):
-        """Process backend command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="backend",
-            description="Backend to use for plotting",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            type=str,
-            dest="value",
-            help="value",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference("BACKEND", ns_parser.value)
+            self.set_and_save_preference("PLOT_PYWRY_WIDTH", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):
@@ -697,92 +561,3 @@ class SettingsController(BaseController):
                         success_userdata = True
 
         console.print()
-
-    @log_start_end(log=logger)
-    def call_tbnews(self, other_args):
-        """Process tbnews command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tweetnews",
-            description="Tweak tweet news toolbal parameters",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            current_user = get_current_user()
-            if current_user.preferences.TOOLBAR_TWEET_NEWS:
-                console.print("Will take effect when running terminal next.")
-            self.set_and_save_preference(
-                "TOOLBAR_TWEET_NEWS",
-                not get_current_user().preferences.TOOLBAR_TWEET_NEWS,
-            )
-
-    @log_start_end(log=logger)
-    def call_tweetnews(self, other_args: List[str]):
-        """Process tweetnews command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tweetnews",
-            description="Tweak tweet news parameters",
-        )
-        parser.add_argument(
-            "-t",
-            "--time",
-            type=check_positive,
-            required=False,
-            dest="time",
-            help="Time (in seconds) between tweet news updates, e.g. 300",
-        )
-        parser.add_argument(
-            "-a",
-            "--accounts",
-            type=str,
-            required=False,
-            dest="accounts",
-            help="Twitter accounts to track news separated by commmas."
-            "For instance: 'WatcherGuru,unusual_whales,gurgavin'",
-        )
-        parser.add_argument(
-            "-k",
-            "--keywords",
-            type=str,
-            required=False,
-            dest="keywords",
-            nargs="+",
-            help="Keywords to look for, separated by commmas."
-            "For instance: 'Just In, Breaking'",
-        )
-        parser.add_argument(
-            "-n",
-            "--number",
-            type=check_positive,
-            required=False,
-            dest="number",
-            help="Number of tweets to look into from each account, e.g. 3",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if ns_parser.time:
-                self.set_and_save_preference(
-                    "TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
-                    str(ns_parser.time),
-                )
-
-            if ns_parser.number:
-                self.set_and_save_preference(
-                    "TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
-                    str(ns_parser.number),
-                )
-
-            if ns_parser.accounts:
-                self.set_and_save_preference(
-                    "TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
-                    str(ns_parser.accounts),
-                )
-
-            if ns_parser.keywords:
-                self.set_and_save_preference(
-                    "TOOLBAR_TWEET_NEWS_KEYWORDS",
-                    str(" ".join(ns_parser.keywords)),
-                )

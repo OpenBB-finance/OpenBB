@@ -66,38 +66,11 @@
         "Nasdaq",
         "Intrinio"
       ],
-      "exp": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq",
-        "Intrinio"
-      ],
       "pcr": [
         "AlphaQuery"
       ],
       "info": [
         "Barchart"
-      ],
-      "chains": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq",
-        "Intrinio"
-      ],
-      "oi": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq"
-      ],
-      "vol": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq"
-      ],
-      "voi": [
-        "YahooFinance",
-        "Tradier",
-        "Nasdaq"
       ],
       "hist": [
         "ChartExchange",
@@ -666,8 +639,7 @@
         "AlphaVantage"
       ],
       "sec": [
-        "MarketWatch",
-        "FinancialModelingPrep"
+        "Nasdaq"
       ],
       "analysis": [
         "Elect"
@@ -722,9 +694,6 @@
       ],
       "tv": [
         "TradingView"
-      ],
-      "view": [
-        "Finviz"
       ]
     },
     "qa": {
@@ -1216,9 +1185,6 @@
       "Finviz"
     ],
     "performance": [
-      "Finviz"
-    ],
-    "spectrum": [
       "Finviz"
     ],
     "gdp": [

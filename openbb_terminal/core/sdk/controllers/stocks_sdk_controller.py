@@ -24,7 +24,7 @@ class StocksController(model.StocksRoot):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -190,8 +190,6 @@ class StocksController(model.StocksRoot):
             `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
             `score`: Gets value score from fmp\n
             `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
-            `sec_fmp`: Get SEC Filings RSS feed, disseminated by FMP\n
-            `sec_fmp_chart`: Display recent forms submitted to the SEC\n
             `shrs`: Get shareholders from yahoo\n
             `similar_dfs`: Get dataframes for similar companies\n
             `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
@@ -327,8 +325,6 @@ class StocksController(model.StocksRoot):
             `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
             `summary`: Get technical summary report provided by FinBrain's API\n
             `summary_chart`: Print technical summary report provided by FinBrain's API\n
-            `view`: Get finviz image for given ticker\n
-            `view_chart`: View finviz image for ticker\n
         """
 
         return model.StocksTechnicalAnalysis()

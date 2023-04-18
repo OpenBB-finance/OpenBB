@@ -19,14 +19,25 @@ DEFAULT_ORDER = [
 ]
 
 
-def read_env() -> Dict[str, Any]:
-    __env_dict: Dict[str, Optional[str]] = {}
-    local_order = DEFAULT_ORDER.copy()
+def get_reading_order() -> list:
+    """Get order of .env files. If we are on frozen app, we reverse the order to
+    read the SETTINGS_ENV_FILE last.
 
+    Returns
+    -------
+    list
+        List of .env files.
+    """
+    local_order = DEFAULT_ORDER.copy()
     if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
         local_order.reverse()
+    return local_order
 
-    for env_file in local_order:
+
+def read_env() -> Dict[str, Any]:
+    __env_dict: Dict[str, Optional[str]] = {}
+
+    for env_file in get_reading_order():
         if env_file.exists():
             __env_dict.update(**dotenv_values(env_file))
 

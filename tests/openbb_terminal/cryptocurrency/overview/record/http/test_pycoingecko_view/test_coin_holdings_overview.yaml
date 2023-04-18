@@ -1,0 +1,97 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+    method: GET
+    uri: https://api.coingecko.com/api/v3/companies/public_treasury/bitcoin
+  response:
+    body:
+      string: !!binary |
+        H4sIABhGOWQAA5yYXY+iSBiF/wrhajdxDVXUJ3eIjrp+kBHa9GQzMTTWKGmbchE6MZP+71vM9gco
+        UPZ0vOhYJXnO66nzvuVPM5d5dNjs5WGbpLuT6QCKbIr6iGDWe118jg6F2BSnrelgm2K1AUHWt4HF
+        MO2ZT1H2KPJNHB03W/mUpFEaC9Ox+rxnxvLpGKWJUI/956eZRk9qwVwkcSaDPItysTsb0zTumz3z
+        dH56kAe1unSDofvVWQThyiwfUKR5dlbv3wVm75oVcsL52/ui3FqFtTnF1q+/ty1xkWVqW30TZwhj
+        DNVzjiKL1XK0Exv5Y/P/R07F8Xg4l4IIYC+9DxmRUrCXqTFMdonaaEzesBrUuCv3BjWWhVGrGPAq
+        pVOLxTklFFo6KRaqSvFkkj5EJ9FAbnj+dKlH5xWua3JqUx05pBRhZSesJ7cr5MG/RZSJNhMFX/Xk
+        zIK0lRxCfc0hoohAeEPN7WrNJ0VuMGORpArD8GR2rPKHwb2jNvzFavye28BPLcpa+Tu5AYOWKri+
+        4jaqcifPwhgcZPwY76MkrVJ765Ezma5HemjlU/Bb0FwdU0AsomUGuMK8HN37S1VkY55va2X+5juG
+        TTCvEf8dqcxqOp4UtDsFWHqnKHZbvfRGsapGWcuz2pe9x8w8HNaKHoyc9bfxSl90AO32qKQcUmWI
+        rmxhgBPKqZ6eVOjdR4XuBq7xRyBELoT6/88qvj933NmoTr/0m+gBbU8YlRycI9wZjco1nAD0OfyF
+        SPKiyjuZjR1gY1oDnsyaIhG18yKOtbGiIhUzeEO50UWSG57yyVYcylSslTr0FrMwcDwvnOtzEQO7
+        3ewM2bwLHmAG1AOYHh5W4c/HvciORfr43ksvNZRuNyb+sC7Ai9JoGzXlDO7wDLEpIXaXCouWX4I+
+        IGsq3O1zOQFtjUGSx+XXEYp4n8qD3Kk5yHDHVTnuIHQuju5w1KADdswFUJ0M/tEDGnRQZlvoloML
+        KjIG0/H4PXPc00nkp6s26y1Vnyo36sOnK3sg4ao30i4FNmEW0ad+TUGLnfqXfrq2U7MA3H4eiK05
+        zRQiRDH4nIDX6t/XHKMqPvS8Gq9718QL2nkZRexDTgMuIZAB+knHfJFZnonTqWU6UDPN2vnir8Ib
+        OhVpz57OBmvZAKIbUqeKHe7VPJNJWTaqcSaL2iA2mM2cwcr3ZzXocNLYXmErNCHayZ1Si6EbRoMq
+        +kJuhTE+yIeW28fcXzoLf1gfyO6amhVrN0t5h2K8q1MRaCEEtejVgUwc8yIVl/lSjsH9K88YQzeY
+        3DAIt0vo7LPKMgDrx4Kq0VcL/5r1rb2Wq/r2+psOBxxBCPQ2qY0weaau5YfG291iOh/pYWFH9Gmn
+        Xkr5rzb8CWK5k62/C/hj/4YAab8SYY4RR10hotaBPvpevr/8BwAA//8DAAnxy/Y8EQAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 7b7bedb82bb20a57-AMS
+      Cache-Control:
+      - public, max-age=120
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 14 Apr 2023 12:24:56 GMT
+      ETag:
+      - W/"a509d7f6aaf8e662a2e874da2511dacb"
+      Expires:
+      - Fri, 14 Apr 2023 12:26:56 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=ugBtzVg77G9_K_3FUtDELU47GI_PAYCYoGRwe_8uhIk-1681475096-0-AdmJtAH8/ZU+1yKJa+JQa/UP0HR1WVBXNAEKI8NNXCILOmGDzDM5W24lVaJIU11jJKBcUvzbnJRxqvYqwVB/QiA=;
+        path=/; expires=Fri, 14-Apr-23 12:54:56 GMT; domain=.api.coingecko.com; HttpOnly;
+        Secure; SameSite=None
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 654ecd37-2268-4ba0-9a9f-081368a6a8e6
+      X-Runtime:
+      - '0.014048'
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

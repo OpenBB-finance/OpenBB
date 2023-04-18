@@ -11,7 +11,6 @@ from openbb_terminal.base_helpers import (
 )
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
 from openbb_terminal.core.models.user_model import (
-    CredentialsModel,
     ProfileModel,
     SourcesModel,
     UserModel,
@@ -21,11 +20,15 @@ from openbb_terminal.core.session.current_user import (
     set_current_user,
     set_default_user,
 )
+from openbb_terminal.core.session.routines_handler import (
+    download_routines,
+    save_routine,
+)
 from openbb_terminal.core.session.sources_handler import get_updated_hub_sources
 from openbb_terminal.core.session.utils import run_thread
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.loggers import setup_logging
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, optional_rich_track
 
 # pylint: disable=consider-using-f-string
 
@@ -73,22 +76,24 @@ def create_session_from_token(token: str, save: bool) -> Dict[Any, Any]:
     return session
 
 
-def login(session: dict) -> LoginStatus:
+def login(session: Dict, remember: bool = False) -> LoginStatus:
     """Login and load user info.
 
     Parameters
     ----------
     session : dict
         The session info.
+    remember : bool, optional
+        Remember the session, by default False
     """
     # Create a new user:
-    #   credentials: stored in hub, so we set default here
+    #   credentials: stored in hub, but we fallback to local (.env)
     #   profile: stored in hub, so we set default here
     #   preferences: stored locally, so we use the current user preferences
     #   sources: stored in hub, so we set default here
 
     hub_user = UserModel(  # type: ignore
-        credentials=CredentialsModel(),
+        credentials=get_current_user().credentials,
         profile=ProfileModel(),
         preferences=get_current_user().preferences,
         sources=SourcesModel(),
@@ -98,28 +103,68 @@ def login(session: dict) -> LoginStatus:
         if response.status_code == 200:
             configs = json.loads(response.content)
             email = configs.get("email", "")
-            hub_user.profile.load_user_info(session, email)
+            hub_user.profile.load_user_info(session, email, remember)
             set_current_user(hub_user)
-            Local.apply_configs(configs=configs)
-            Local.update_flair()
 
-            # Update user sources in backend
-            updated_sources = get_updated_hub_sources(configs)
-            if updated_sources:
-                run_thread(
-                    Hub.upload_user_field,
-                    {
-                        "key": "features_sources",
-                        "value": updated_sources,
-                        "auth_header": get_current_user().profile.get_auth_header(),
-                        "silent": True,
-                    },
-                )
+            auth_header = hub_user.profile.get_auth_header()
+            download_and_save_routines(auth_header)
+            run_thread(
+                update_backend_sources, {"auth_header": auth_header, "configs": configs}
+            )
+            Local.apply_configs(configs)
+            Local.update_flair(get_current_user().profile.username)
+
             return LoginStatus.SUCCESS
         if response.status_code == 401:
             return LoginStatus.UNAUTHORIZED
         return LoginStatus.FAILED
     return LoginStatus.NO_RESPONSE
+
+
+def download_and_save_routines(auth_header: str):
+    """Download and save routines.
+
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    """
+    try:
+        console.print("\nDownloading routines...")
+        routines = download_routines(auth_header=auth_header)
+        for name, content in optional_rich_track(
+            routines.items(), desc="Saving routines"
+        ):
+            save_routine(file_name=f"{name}.openbb", routine=content, force=True)
+    except Exception:
+        console.print("[red]Failed to download and save routines.[/red]")
+
+
+def update_backend_sources(auth_header, configs, silent: bool = True):
+    """Update backend sources if new source or command path available.
+
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    configs : Dict
+        Dictionary with configs
+    silent : bool
+        Whether to silence the console output, by default True
+    """
+    console_print = console.print if not silent else lambda *args, **kwargs: None
+
+    try:
+        updated_sources = get_updated_hub_sources(configs)
+        if updated_sources:
+            Hub.upload_user_field(
+                key="features_sources",
+                value=updated_sources,
+                auth_header=auth_header,
+                silent=silent,
+            )
+    except Exception:
+        console_print("[red]Failed to update backend sources.[/red]")
 
 
 def logout(

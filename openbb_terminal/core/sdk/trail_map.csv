@@ -208,7 +208,6 @@ economy.revenue,economy_oecd_model.get_revenue,economy_oecd_view.plot_revenue
 economy.rgdp,economy_oecd_model.get_real_gdp,economy_oecd_view.plot_real_gdp
 economy.rtps,economy_alphavantage_model.get_sector_data,economy_alphavantage_view.realtime_performance_sector
 economy.search_index,economy_yfinance_model.get_search_indices,
-economy.spectrum,economy_finviz_view.display_spectrum,
 economy.spending,economy_oecd_model.get_spending,economy_oecd_view.plot_spending
 economy.treasury,economy_econdb_model.get_treasuries,economy_econdb_view.show_treasuries
 economy.treasury_maturities,economy_econdb_model.get_treasury_maturities,
@@ -268,12 +267,12 @@ forex.oanda.positionbook,forex_oanda_model.positionbook_plot_data_request,forex_
 forex.oanda.price,forex_oanda_model.fx_price_request,forex_oanda_view.get_fx_price
 forex.oanda.summary,forex_oanda_model.account_summary_request,forex_oanda_view.get_account_summary
 forex.quote,forex_sdk_helpers.quote,
+funds.carbon,funds_mstarpy_model.load_carbon_metrics,
+funds.exclusion,funds_mstarpy_model.load_exclusion_policy,
+funds.historical,funds_mstarpy_model.get_historical,funds_mstarpy_view.display_historical
+funds.holdings,funds_mstarpy_model.load_holdings,
 funds.load,funds_mstarpy_model.load_funds,
 funds.search,funds_mstarpy_model.search_funds,
-funds.holdings,funds_mstarpy_model.load_holdings,
-funds.exclusion,funds_mstarpy_model.load_exclusion_policy,
-funds.carbon,funds_mstarpy_model.load_carbon_metrics,
-funds.historical,funds_mstarpy_model.get_historical,funds_mstarpy_view.display_historical
 funds.sector,funds_mstarpy_model.get_sector,funds_mstarpy_view.display_sector
 futures.curve,futures_yfinance_model.get_curve_futures,futures_yfinance_view.display_curve
 futures.historical,futures_sdk_model.get_historical,futures_yfinance_view.display_historical
@@ -315,7 +314,7 @@ keys.ultima,keys_model.set_ultima_key,
 keys.walert,keys_model.set_walert_key,
 login,sdk_session.login,
 logout,sdk_session.logout,
-news,common_ultima_newsmonitor_model.get_news,
+news,common_feedparser_model.get_news,
 portfolio.alloc.assets,portfolio_model.get_assets_allocation,
 portfolio.alloc.countries,portfolio_model.get_countries_allocation,
 portfolio.alloc.regions,portfolio_model.get_regions_allocation,
@@ -467,14 +466,13 @@ stocks.fa.mktcap,stocks_fa_yahoo_finance_model.get_mktcap,stocks_fa_yahoo_financ
 stocks.fa.news,stocks_fa_finviz_model.get_news,
 stocks.fa.overview,stocks_fa_av_model.get_overview,
 stocks.fa.profile,stocks_fa_fmp_model.get_profile,
-stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.price_target_from_analysts
+stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.display_price_target_from_analysts
 stocks.fa.rating,stocks_fa_fmp_model.get_rating,
 stocks.fa.ratios,stocks_fa_fmp_model.get_key_ratios,
 stocks.fa.revfc,stocks_fa_seeking_alpha_model.get_estimates_rev,
 stocks.fa.rot,stocks_fa_finnhub_model.get_rating_over_time,stocks_fa_finnhub_view.rating_over_time
 stocks.fa.score,stocks_fa_fmp_model.get_score,
 stocks.fa.sec,stocks_fa_marketwatch_model.get_sec_filings,
-stocks.fa.sec_fmp,stocks_fa_fmp_model.get_filings,stocks_fa_fmp_view.display_filings
 stocks.fa.shrs,stocks_fa_yahoo_finance_model.get_shareholders,
 stocks.fa.similar_dfs,stocks_fa_dcf_model.get_similar_dfs,
 stocks.fa.splits,stocks_fa_yahoo_finance_model.get_splits,stocks_fa_yahoo_finance_view.display_splits
@@ -507,6 +505,7 @@ stocks.ins.lpsb,stocks_insider_sdk_helper.lpsb,
 stocks.ins.print_insider_data,stocks_insider_openinsider_model.get_print_insider_data,stocks_insider_openinsider_view.print_insider_data
 stocks.ins.stats,stocks_insider_sdk_helper.stats,
 stocks.load,stocks_helper.load,
+stocks.news,common_ultima_newsmonitor_model.get_news,
 stocks.options.chains,stocks_options_sdk_helper.get_full_option_chain,
 stocks.options.dte,stocks_options_yfinance_model.get_dte,
 stocks.options.eodchain,stocks_options_intrinio_model.get_full_chain_eod,
@@ -526,7 +525,6 @@ stocks.options.unu,stocks_options_fdscanner_model.unusual_options,stocks_options
 stocks.options.voi,stocks_options_view.plot_voi,
 stocks.options.vol,stocks_options_view.plot_vol,
 stocks.options.vsurf,stocks_options_yfinance_model.get_iv_surface,stocks_options_yfinance_view.display_vol_surface
-stocks.news,common_ultima_newsmonitor_model.get_news,
 stocks.process_candle,stocks_helper.process_candle,
 stocks.qa.beta,stocks_qa_beta_model.beta_model,stocks_qa_beta_view.beta_view
 stocks.qa.capm,stocks_qa_factors_model.capm_information,
@@ -538,7 +536,6 @@ stocks.search,stocks_helper.search,
 stocks.ta.recom,stocks_ta_tradingview_model.get_tradingview_recommendation,stocks_ta_tradingview_view.print_recommendation
 stocks.ta.rsp,stocks_ta_rsp_model.get_rsp,stocks_ta_rsp_view.display_rsp
 stocks.ta.summary,stocks_ta_finbrain_model.get_technical_summary_report,stocks_ta_finbrain_view.technical_summary_report
-stocks.ta.view,stocks_ta_finviz_model.get_finviz_image,stocks_ta_finviz_view.view
 stocks.th.all,stocks_th_bursa_model.get_all,stocks_th_bursa_view.display_all
 stocks.th.check_if_open,stocks_th_bursa_model.check_if_open,
 stocks.th.closed,stocks_th_bursa_model.get_closed,stocks_th_bursa_view.display_closed

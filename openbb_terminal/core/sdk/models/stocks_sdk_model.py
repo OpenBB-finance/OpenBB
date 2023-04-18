@@ -11,7 +11,7 @@ class StocksRoot(Category):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -281,8 +281,6 @@ class StocksFundamentalAnalysis(Category):
         `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
         `score`: Gets value score from fmp\n
         `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
-        `sec_fmp`: Get SEC Filings RSS feed, disseminated by FMP\n
-        `sec_fmp_chart`: Display recent forms submitted to the SEC\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
         `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
@@ -326,7 +324,9 @@ class StocksFundamentalAnalysis(Category):
         self.overview = lib.stocks_fa_av_model.get_overview
         self.profile = lib.stocks_fa_fmp_model.get_profile
         self.pt = lib.stocks_fa_business_insider_model.get_price_target_from_analysts
-        self.pt_chart = lib.stocks_fa_business_insider_view.price_target_from_analysts
+        self.pt_chart = (
+            lib.stocks_fa_business_insider_view.display_price_target_from_analysts
+        )
         self.rating = lib.stocks_fa_fmp_model.get_rating
         self.ratios = lib.stocks_fa_fmp_model.get_key_ratios
         self.revfc = lib.stocks_fa_seeking_alpha_model.get_estimates_rev
@@ -334,8 +334,6 @@ class StocksFundamentalAnalysis(Category):
         self.rot_chart = lib.stocks_fa_finnhub_view.rating_over_time
         self.score = lib.stocks_fa_fmp_model.get_score
         self.sec = lib.stocks_fa_marketwatch_model.get_sec_filings
-        self.sec_fmp = lib.stocks_fa_fmp_model.get_filings
-        self.sec_fmp_chart = lib.stocks_fa_fmp_view.display_filings
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
         self.splits = lib.stocks_fa_yahoo_finance_model.get_splits
@@ -560,8 +558,6 @@ class StocksTechnicalAnalysis(Category):
         `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
         `summary`: Get technical summary report provided by FinBrain's API\n
         `summary_chart`: Print technical summary report provided by FinBrain's API\n
-        `view`: Get finviz image for given ticker\n
-        `view_chart`: View finviz image for ticker\n
     """
 
     _location_path = "stocks.ta"
@@ -574,8 +570,6 @@ class StocksTechnicalAnalysis(Category):
         self.rsp_chart = lib.stocks_ta_rsp_view.display_rsp
         self.summary = lib.stocks_ta_finbrain_model.get_technical_summary_report
         self.summary_chart = lib.stocks_ta_finbrain_view.technical_summary_report
-        self.view = lib.stocks_ta_finviz_model.get_finviz_image
-        self.view_chart = lib.stocks_ta_finviz_view.view
 
 
 class StocksTradingHours(Category):
