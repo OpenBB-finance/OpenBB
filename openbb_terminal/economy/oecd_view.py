@@ -123,7 +123,7 @@ def plot_gdp(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -228,7 +228,7 @@ def plot_real_gdp(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -339,7 +339,7 @@ def plot_gdp_forecast(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -448,7 +448,7 @@ def plot_cpi(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -530,7 +530,7 @@ def plot_balance(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -625,7 +625,7 @@ def plot_revenue(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -727,7 +727,7 @@ def plot_spending(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -808,7 +808,7 @@ def plot_debt(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -892,4 +892,4 @@ def plot_trust(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
