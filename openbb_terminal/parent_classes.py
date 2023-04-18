@@ -21,8 +21,11 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
+import openbb_terminal.core.session.local_model as Local
+
 # IMPORTS INTERNAL
 from openbb_terminal.core.completer.choices import build_controller_choice_map
+from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -341,7 +344,8 @@ class BaseController(metaclass=ABCMeta):
         """
         actions = self.parse_input(an_input)
 
-        console.print()
+        if an_input and an_input != "reset":
+            console.print()
 
         # Empty command
         if len(actions) == 0:
@@ -392,7 +396,13 @@ class BaseController(metaclass=ABCMeta):
 
         self.log_queue()
 
-        if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+        if (
+            an_input
+            and an_input != "reset"
+            and (
+                not self.queue or (self.queue and self.queue[0] not in ("quit", "help"))
+            )
+        ):
             console.print()
 
         return self.queue
@@ -471,6 +481,11 @@ class BaseController(metaclass=ABCMeta):
         self.save_class()
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
+
+        if not is_local():
+            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
+            if not get_current_user().profile.remember:
+                Local.remove(HIST_FILE_PATH)
 
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
@@ -1059,7 +1074,11 @@ class BaseController(metaclass=ABCMeta):
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
-                    if not self.contains_keys(an_input):
+                    if not self.contains_keys(an_input) and an_input not in [
+                        "exit",
+                        "quit",
+                        "help",
+                    ]:
                         logger.warning("Replacing by %s", an_input)
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)

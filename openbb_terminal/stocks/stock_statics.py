@@ -119,6 +119,12 @@ INCOME_PLOT = {
         "interest_expense_operating": "income_tax_expense",
         "income_loss_before_equity_method_investments": "income_loss_before_equity_method_investments",
         "cost_of_revenue_goods": "cost_of_revenue_goods",
+        "noninterest_income": "noninterest_income",
+        "interest_income_expense_after_provision_for_losses": "interest_income_expense_after_provision_for_losses",
+        "interest_income_expense_operating_net": "interest_income_expense_operating_net",
+        "noninterest_expense": "noninterest_expense",
+        "interest_and_dividend_income_operating": "interest_and_dividend_income_operating",
+        "provision_for_loan_lease_and_other_losses": "provision_for_loan_lease_and_other_losses",
     },
     "YahooFinance": {
         "total_revenue": "total_revenue",
