@@ -5,11 +5,11 @@ description: Learn how to customize the look of your OpenBB Terminal. You can ad
 keywords: [settings, featflags, feature flags, lay-out, advanced, customizing, openbb terminal, layout, settings, colors, functionality, features]
 ---
 
-Since the code is open source you are able to adjust anything you like. However, to make it easy for you we have created a settings and featflags menu that include the most requested features that users like to have control over. 
+Since the code is open source you are able to adjust anything you like. However, to make it easy for you we have created a settings and featflags menu that include the most requested features that users like to have control over.
 
 ## Using the Settings Menu
 
-To adjust the lay-out and settings of the OpenBB Terminal you can access the `settings` menu. This menu allows you to tweak how the terminal behaves. 
+To adjust the lay-out and settings of the OpenBB Terminal you can access the `settings` menu. This menu allows you to tweak how the terminal behaves.
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/225057498-723a0310-da28-4079-8726-214618b5d5a2.png"></img>
 
@@ -32,7 +32,6 @@ This menu includes the following:
 - `backend` allows you to change the backend that is used for the graphs
 - `monitor` choose which monitors to scale the plot (graphs) to if applicable
 - `source` allows you to select a different source file in which the default data sources are written down
-- `tbnews` whether to include the Twitter news toolbar.
 
 ## Using the Feature Flags Menu
 

@@ -78,4 +78,4 @@ def display_historical(
         figure,
     )
 
-    return figure.show(external=external_axes)  # type: ignore
+    return figure.show(external=raw or external_axes)  # type: ignore
