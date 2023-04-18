@@ -198,7 +198,7 @@ class StocksController(StockBaseController):
         )
         parser.add_argument(
             "-g",
-            "--industry_group",
+            "--industry-group",
             default="",
             choices=stocks_helper.format_parse_choices(self.industry_group),
             type=str.lower,
@@ -227,8 +227,8 @@ class StocksController(StockBaseController):
             help="Search by a specific exchange to find stocks matching the criteria",
         )
         parser.add_argument(
-            "-ec",
-            "--exchange_country",
+            "-m",
+            "--exchange-country",
             default="",
             choices=stocks_helper.format_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
@@ -236,7 +236,7 @@ class StocksController(StockBaseController):
             type=str.lower,
             metavar="exchange_country",
             dest="exchange_country",
-            help="Search by a specific exchange country to find stocks matching the criteria",
+            help="Search by a specific country and all its exchanges to find stocks matching the criteria",
         )
         parser.add_argument(
             "-a",
