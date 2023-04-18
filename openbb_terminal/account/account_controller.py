@@ -281,7 +281,7 @@ class AccountController(BaseController):
                     console.print("[info]Displaying default routines.[/info]")
                     df = get_default_routines_info(self.DEFAULT_ROUTINES)
                     display_default_routines(df)
-                    
+
                 console.print("")
 
     @log_start_end(log=logger)
