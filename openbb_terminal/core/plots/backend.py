@@ -170,7 +170,7 @@ class Backend(PyWry):
 
         json_data = json.loads(fig.to_json())
 
-        json_data.update({"theme": get_current_user().preferences.CHART_THEME})
+        json_data.update({"theme": get_current_user().preferences.CHART_STYLE})
 
         self.outgoing.append(
             json.dumps(
