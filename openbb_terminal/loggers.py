@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
+import atexit
 import json
 import logging
 import re
@@ -105,6 +106,7 @@ class PosthogHandler(logging.Handler):
         self.logged_in = False
         current_system.LOGGING_APP_ID = get_app_id()
         set_current_system(current_system)
+        atexit.register(openbb_posthog.shutdown)
 
     def emit(self, record: logging.LogRecord):
         try:
