@@ -68,11 +68,3 @@ def test_call_rcontext(controller):
 
 def test_call_richpanel(controller):
     controller.call_richpanel(None)
-
-
-def test_call_watermark(controller):
-    controller.call_watermark(None)
-
-
-def test_call_cmdloc(controller):
-    controller.call_cmdloc(None)

@@ -50,7 +50,6 @@ class FeatureFlagsController(BaseController):
         "cls",
         "color",
         "watermark",
-        "cmdloc",
         "promptkit",
         "thoughts",
         "reporthtml",
@@ -89,8 +88,6 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("exithelp", current_user.preferences.ENABLE_EXIT_AUTO_HELP)
         mt.add_setting("rcontext", current_user.preferences.REMEMBER_CONTEXTS)
         mt.add_setting("richpanel", current_user.preferences.ENABLE_RICH_PANEL)
-        mt.add_setting("watermark", current_user.preferences.USE_WATERMARK)
-        mt.add_setting("cmdloc", current_user.preferences.USE_CMD_LOCATION_FIGURE)
         mt.add_setting("tbhint", current_user.preferences.TOOLBAR_HINT)
         mt.add_setting("overwrite", current_user.preferences.FILE_OVERWRITE)
         mt.add_setting("version", current_user.preferences.SHOW_VERSION)
@@ -197,21 +194,6 @@ class FeatureFlagsController(BaseController):
         set_and_save_preference(
             "ENABLE_RICH_PANEL",
             not get_current_user().preferences.ENABLE_RICH_PANEL,
-        )
-
-    @log_start_end(log=logger)
-    def call_watermark(self, _):
-        """Process watermark command"""
-        set_and_save_preference(
-            "USE_WATERMARK", not get_current_user().preferences.USE_WATERMARK
-        )
-
-    @log_start_end(log=logger)
-    def call_cmdloc(self, _):
-        """Process cmdloc command"""
-        set_and_save_preference(
-            "USE_CMD_LOCATION_FIGURE",
-            not get_current_user().preferences.USE_CMD_LOCATION_FIGURE,
         )
 
     @log_start_end(log=logger)
