@@ -45,7 +45,6 @@ class PreferencesModel(BaseModel):
     # Use interactive window to display dataframes with options to sort, filter, etc.
     USE_INTERACTIVE_DF: bool = True
     USE_CLEAR_AFTER_CMD: bool = False
-    USE_COLOR: bool = True
     USE_DATETIME: bool = True
     # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
     USE_PROMPT_TOOLKIT: bool = True

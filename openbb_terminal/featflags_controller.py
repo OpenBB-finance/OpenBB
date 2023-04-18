@@ -48,7 +48,6 @@ class FeatureFlagsController(BaseController):
         "tab",
         "interactive",
         "cls",
-        "color",
         "watermark",
         "promptkit",
         "thoughts",
@@ -81,7 +80,6 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("tab", current_user.preferences.USE_TABULATE_DF)
         mt.add_setting("interactive", current_user.preferences.USE_INTERACTIVE_DF)
         mt.add_setting("cls", current_user.preferences.USE_CLEAR_AFTER_CMD)
-        mt.add_setting("color", current_user.preferences.USE_COLOR)
         mt.add_setting("promptkit", current_user.preferences.USE_PROMPT_TOOLKIT)
         mt.add_setting("thoughts", current_user.preferences.ENABLE_THOUGHTS_DAY)
         mt.add_setting("reporthtml", current_user.preferences.OPEN_REPORT_AS_HTML)
@@ -132,13 +130,6 @@ class FeatureFlagsController(BaseController):
         set_and_save_preference(
             "USE_CLEAR_AFTER_CMD",
             not get_current_user().preferences.USE_CLEAR_AFTER_CMD,
-        )
-
-    @log_start_end(log=logger)
-    def call_color(self, _):
-        """Process color command"""
-        set_and_save_preference(
-            "USE_COLOR", not get_current_user().preferences.USE_COLOR
         )
 
     @log_start_end(log=logger)

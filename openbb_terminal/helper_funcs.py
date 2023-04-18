@@ -337,7 +337,7 @@ def print_rich_table(
         return
 
     df = df.copy() if not limit else df.copy().iloc[:limit]
-    if current_user.preferences.USE_COLOR and automatic_coloring:
+    if automatic_coloring:
         if columns_to_auto_color:
             for col in columns_to_auto_color:
                 # checks whether column exists

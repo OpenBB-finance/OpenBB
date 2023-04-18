@@ -42,10 +42,6 @@ def test_call_cls(controller):
     controller.call_cls(None)
 
 
-def test_call_color(controller):
-    controller.call_color(None)
-
-
 def test_call_promptkit(controller):
     controller.call_promptkit(None)
 
