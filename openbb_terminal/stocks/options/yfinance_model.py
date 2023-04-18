@@ -251,7 +251,6 @@ def get_closing(symbol: str) -> pd.Series:
     return tick.history(period="1y")["Close"]
 
 
-@log_start_end(log=logger)
 def get_dte(date_value: str) -> int:
     """Gets days to expiration from yfinance option date"""
     return (datetime.strptime(date_value, "%Y-%m-%d") - datetime.now()).days

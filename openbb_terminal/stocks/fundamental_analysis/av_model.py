@@ -487,7 +487,6 @@ def get_earnings(symbol: str, quarterly: bool = False) -> pd.DataFrame:
     return df_fa
 
 
-@log_start_end(log=logger)
 def df_values(
     df: pd.DataFrame, item: str, index: int = 0, length: int = 2
 ) -> List[int]:
