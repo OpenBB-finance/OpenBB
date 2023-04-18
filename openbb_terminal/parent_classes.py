@@ -1075,7 +1075,11 @@ class BaseController(metaclass=ABCMeta):
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
-                    if not self.contains_keys(an_input):
+                    if not self.contains_keys(an_input) and an_input not in [
+                        "exit",
+                        "quit",
+                        "help",
+                    ]:
                         logger.warning("Replacing by %s", an_input)
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
