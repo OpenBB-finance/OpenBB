@@ -1,7 +1,7 @@
 ---
 title: Cryptocurrency
 keywords: [crypto, web3, nft, blockchain, cryptocurrency, how to, example, sub-menu, menu]
-description: The Introduction to Cryptocurrency explains how to use the Cryptocurrency menu and provides a brief description of its sub-menus such as due dilligence, DeFi, discovery, NFTs, and Onchain.
+description: The Introduction to Cryptocurrency explains how to use the Cryptocurrency menu and provides a brief description of its sub-menus such as due diligence, DeFi, discovery, NFTs, and Onchain.
 ---
 
 The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/usage/intros/crypto/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/usage/intros/crypto/dd" target="_blank" rel="noreferrer noopener">dd</a>),

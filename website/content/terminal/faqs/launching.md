@@ -19,7 +19,7 @@ keywords:
     openbb terminal,
     ssl,
     certificate,
-    lauch,
+    launch,
     invalid cpu,
     fail to launch,
     fontconfig,

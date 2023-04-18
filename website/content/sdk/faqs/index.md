@@ -13,7 +13,7 @@ keywords:
     general operation,
     data sources,
     bug,
-    suport,
+    support,
     feedback,
     developer issues,
     issue,

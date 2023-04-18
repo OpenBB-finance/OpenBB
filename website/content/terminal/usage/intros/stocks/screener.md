@@ -1,6 +1,6 @@
 ---
 title: Stock Screener
-keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics, how to, example, components, S&P, preset, signal name, descriptoin]
+keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics, how to, example, components, S&P, preset, signal name, description]
 description: Learn the basics of the Stock Screener - a diverse tool for stock discovery.  Get to it from the `Stocks` menu by typing `scr` and then pressing `enter`.
 ---
 The Stock Screener is a diverse tool for discovering comapanies.  It is a great jumping point for narrowing the universe of stocks at the beginning of a research workflow.  Get to the screener from the `Stocks` menu by typing `scr`, and then pressing `enter`.  There are six categories of statistics to sort the defined criteria by.
