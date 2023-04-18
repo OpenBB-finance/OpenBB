@@ -32,12 +32,21 @@ const non_blocking = (func, delay) => {
   };
 };
 
-function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
+function OpenBBMain(
+  plotly_figure,
+  chartdiv,
+  csvdiv,
+  textdiv,
+  titlediv,
+  downloaddiv
+) {
   // Main function that plots the graphs and initializes the bar menus
   globals.CHART_DIV = chartdiv;
   globals.TITLE_DIV = titlediv;
   globals.TEXT_DIV = textdiv;
   globals.CSV_DIV = csvdiv;
+  globals.dark_mode = plotly_figure.theme === "dark";
+  globals.DOWNLOAD_DIV = downloaddiv;
   console.log("main.js loaded");
   console.log("plotly_figure", plotly_figure);
   let graphs = plotly_figure;
@@ -82,15 +91,15 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         {
           name: "Download CSV (Ctrl+Shift+S)",
           icon: ICONS.downloadCsv,
-          click: function (gd) {
-            downloadCsvButton(gd);
+          click: async function (gd) {
+            await downloadCsvButton(gd);
           },
         },
         {
           name: "Download PNG (Ctrl+S)",
           icon: ICONS.downloadImage,
-          click: function () {
-            downloadImageButton();
+          click: async function () {
+            await downloadImageButton();
           },
         },
         // {
@@ -147,6 +156,13 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           icon: ICONS.changeTitle,
           click: function () {
             openPopup("popup_title");
+          },
+        },
+        {
+          name: "Change Theme",
+          icon: ICONS.sunIcon,
+          click: function () {
+            changeTheme();
           },
         },
       ],
@@ -349,11 +365,44 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     button_pressed(title, active);
   }
 
-  function downloadImageButton() {
-    loadingOverlay("Saving PNG");
+  async function downloadImageButton() {
+    let filename = globals.filename;
+    let ext = "png";
+    let writable;
+    if (window.showSaveFilePicker) {
+      const handle = await showSaveFilePicker({
+        suggestedName: `${filename}.${ext}`,
+        types: [
+          {
+            description: "PNG Image",
+            accept: {
+              "image/png": [".png"],
+            },
+          },
+          {
+            description: "JPEG Image",
+            accept: {
+              "image/jpeg": [".jpeg"],
+            },
+          },
+          {
+            description: "SVG Image",
+            accept: {
+              "image/svg+xml": [".svg"],
+            },
+          },
+        ],
+        excludeAcceptAllOption: true,
+      });
+      writable = await handle.createWritable();
+      filename = handle.name;
+      ext = handle.name.split(".").pop();
+    }
+
+    loadingOverlay(`Saving ${ext.toUpperCase()}`);
     hideModebar();
-    non_blocking(function () {
-      downloadImage(globals.filename, "png");
+    non_blocking(async function () {
+      await downloadImage(filename, ext, writable);
       setTimeout(function () {
         setTimeout(function () {
           loading.classList.remove("show");
@@ -363,10 +412,30 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     }, 2)();
   }
 
-  function downloadCsvButton(gd) {
+  async function downloadCsvButton(gd) {
+    let filename = globals.filename;
+    let writable;
+
+    if (window.showSaveFilePicker) {
+      const handle = await showSaveFilePicker({
+        suggestedName: `${filename}.csv`,
+        types: [
+          {
+            description: "CSV File",
+            accept: {
+              "image/csv": [".csv"],
+            },
+          },
+        ],
+        excludeAcceptAllOption: true,
+      });
+      writable = await handle.createWritable();
+      filename = handle.name;
+    }
+
     loadingOverlay("Saving CSV");
-    setTimeout(function () {
-      downloadData(gd);
+    setTimeout(async function () {
+      await downloadData(gd, filename, writable);
     }, 500);
     setTimeout(function () {
       loading.classList.remove("show");
@@ -506,5 +575,14 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         downloadImage(filename.split(".")[0], extension);
       }, 2)();
     }
+  }
+  function changeTheme() {
+    globals.dark_mode = !globals.dark_mode;
+    Plotly.relayout(globals.CHART_DIV, {
+      template: globals.dark_mode
+        ? DARK_CHARTS_TEMPLATE
+        : LIGHT_CHARTS_TEMPLATE,
+    });
+    document.body.style.backgroundColor = globals.dark_mode ? "#000" : "#fff";
   }
 }

@@ -322,6 +322,7 @@ from openbb_terminal.stocks.dark_pool_shorts import (
 from openbb_terminal.stocks.discovery import (
     ark_model as stocks_disc_ark_model,
     finnhub_model as stocks_disc_finnhub_model,
+    fmp_view as stocks_disc_fmp_view,
     nasdaq_model as stocks_disc_nasdaq_model,
     seeking_alpha_model as stocks_disc_seeking_alpha_model,
     shortinterest_model as stocks_disc_shortinterest_model,
@@ -408,8 +409,6 @@ from openbb_terminal.stocks.screener import (
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_model as stocks_ta_finbrain_model,
     finbrain_view as stocks_ta_finbrain_view,
-    finviz_model as stocks_ta_finviz_model,
-    finviz_view as stocks_ta_finviz_view,
     rsp_model as stocks_ta_rsp_model,
     rsp_view as stocks_ta_rsp_view,
     tradingview_model as stocks_ta_tradingview_model,

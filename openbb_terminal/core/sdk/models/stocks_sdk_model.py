@@ -171,6 +171,8 @@ class StocksDiscovery(Category):
         self.arkord = lib.stocks_disc_ark_model.get_ark_orders
         self.asc = lib.stocks_disc_yahoofinance_model.get_asc
         self.dividends = lib.stocks_disc_nasdaq_model.get_dividend_cal
+        self.filings = lib.stocks_fa_fmp_model.get_filings
+        self.filings_chart = lib.stocks_disc_fmp_view.display_filings
         self.fipo = lib.stocks_disc_finnhub_model.get_future_ipo
         self.gainers = lib.stocks_disc_yahoofinance_model.get_gainers
         self.gtech = lib.stocks_disc_yahoofinance_model.get_gtech
@@ -273,7 +275,6 @@ class StocksFundamentalAnalysis(Category):
         `rot`: Get rating over time data. [Source: Finnhub]\n
         `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
         `score`: Gets value score from fmp\n
-        `sec`: Get SEC filings for a given stock ticker. [Source: Nasdaq]\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
         `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
@@ -548,8 +549,6 @@ class StocksTechnicalAnalysis(Category):
         `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
         `summary`: Get technical summary report provided by FinBrain's API\n
         `summary_chart`: Print technical summary report provided by FinBrain's API\n
-        `view`: Get finviz image for given ticker\n
-        `view_chart`: View finviz image for ticker\n
     """
 
     _location_path = "stocks.ta"
@@ -562,8 +561,6 @@ class StocksTechnicalAnalysis(Category):
         self.rsp_chart = lib.stocks_ta_rsp_view.display_rsp
         self.summary = lib.stocks_ta_finbrain_model.get_technical_summary_report
         self.summary_chart = lib.stocks_ta_finbrain_view.technical_summary_report
-        self.view = lib.stocks_ta_finviz_model.get_finviz_image
-        self.view_chart = lib.stocks_ta_finviz_view.view
 
 
 class StocksTradingHours(Category):

@@ -183,9 +183,35 @@ function get_popup(data = null, popup_id = null) {
       `;
     popup = globals.TEXT_DIV;
     console.log("upload");
+  } else if (popup_id == "download") {
+    popup = globals.DOWNLOAD_DIV;
+
+    popup.querySelector("#download_path").innerHTML = `
+    <textarea style="${style} width: 100%; max-width: 100%; max-height: 200px;
+    margin-top: 8px;" rows="4" cols="50" value="${data}"
+      placeholder="Enter text here">${data}</textarea><br>
+      `;
+
+    openfile_button = popup.querySelector("#openfile_button");
+    openfile_button.onclick = function () {
+      window.ipc.postMessage(`#OPEN:${data}`);
+    };
+
+    openfolder_button = popup.querySelector("#openfolder_button");
+    openfolder_button.onclick = function () {
+      folder_path = data.split("\\").slice(0, -1).join("\\");
+      window.ipc.postMessage(`#OPEN:${folder_path}`);
+    };
+
+    globals.DOWNLOAD_DIV.style.display = "inline-block";
   }
 
-  let popup_divs = [globals.TITLE_DIV, globals.TEXT_DIV, globals.CSV_DIV];
+  let popup_divs = [
+    globals.TITLE_DIV,
+    globals.TEXT_DIV,
+    globals.CSV_DIV,
+    globals.DOWNLOAD_DIV,
+  ];
   popup_divs.forEach(function (div) {
     if (div.id != popup.id) {
       div.style.display = "none";

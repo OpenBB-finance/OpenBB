@@ -13,7 +13,6 @@ from scipy.stats import binom
 from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_3DMESH_COLORSCALE,
-    PLT_3DMESH_HOVERLABEL,
     PLT_3DMESH_SCENE,
 )
 from openbb_terminal.decorators import log_start_end
@@ -329,7 +328,6 @@ def display_vol_surface(
     fig.update_layout(
         margin=dict(l=5, r=10, t=40, b=20),
         title_x=0.5,
-        hoverlabel=PLT_3DMESH_HOVERLABEL,
         scene_camera=dict(
             up=dict(x=0, y=0, z=2),
             center=dict(x=0, y=0, z=-0.3),

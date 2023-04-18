@@ -225,7 +225,7 @@ def test_login_no_args(
 
 
 def test_logout(mocker, test_user):
-    test_user.profile.load_user_info(TEST_SESSION, "testy@email.com")
+    test_user.profile.load_user_info(TEST_SESSION, "testy@email.com", False)
     mocker.patch(
         target="openbb_terminal.core.session.sdk_session.get_current_user",
         return_value=test_user,
@@ -253,6 +253,7 @@ def test_whoami(mocker, test_user):
             "uuid": "MOCK_UUID",
         },
         email="MOCK_EMAIL",
+        remember=False,
     )
     mocker.patch(
         target="openbb_terminal.core.session.sdk_session.get_current_user",

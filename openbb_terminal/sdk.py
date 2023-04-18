@@ -173,7 +173,6 @@ class OpenBBSDK:
             `rtps`: Get real-time performance sector data\n
             `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
-            `spectrum`: Display finviz spectrum in system viewer [Source: Finviz]\n
             `spending`: General government spending provides an indication of the size\n
             `spending_chart`: General government spending provides an indication of the size\n
             `treasury`: Get U.S. Treasury rates [Source: EconDB]\n

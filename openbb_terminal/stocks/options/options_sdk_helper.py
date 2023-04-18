@@ -7,7 +7,6 @@ from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
-from scipy.optimize import minimize
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
@@ -16,7 +15,6 @@ from openbb_terminal.stocks.options import (
     chartexchange_model,
     intrinio_model,
     nasdaq_model,
-    op_helpers,
     tradier_model,
     yfinance_model,
 )
@@ -58,6 +56,7 @@ def get_full_option_chain(
     """
 
     source = re.sub(r"\s+", "", source.lower())
+    df = pd.DataFrame()
     if source == "tradier":
         df = tradier_model.get_full_option_chain(symbol)
 
@@ -70,7 +69,7 @@ def get_full_option_chain(
     elif source == "intrinio":
         df = intrinio_model.get_full_option_chain(symbol)
 
-    if (df := None) is None:
+    if not isinstance(df, pd.DataFrame) or df.empty:
         logger.info("Invalid Source or Symbol")
         console.print("Invalid Source or Symbol")
         return pd.DataFrame()
@@ -106,6 +105,7 @@ def get_option_current_price(
     """
 
     source = re.sub(r"\s+", "", source.lower())
+    output = None
     if source == "tradier":
         output = tradier_model.get_last_price(symbol)
     if source == "nasdaq":
@@ -113,7 +113,7 @@ def get_option_current_price(
     if source == "yahoofinance":
         output = yfinance_model.get_last_price(symbol)
 
-    if (output := None) is None:
+    if not output:
         logger.info("Invalid Source or Symbol")
         console.print("Invalid Source or Symbol")
         return 0.0
@@ -142,8 +142,8 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
     >>> from openbb_terminal.sdk import openbb
     >>> SPX_expirations = openbb.stocks.options.expirations("SPX", source = "Tradier")
     """
-
     source = re.sub(r"\s+", "", source.lower())
+    output = []
     if source == "tradier":
         output = tradier_model.option_expirations(symbol)
     if source == "yahoofinance":
@@ -153,7 +153,7 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
     if source == "intrinio":
         output = intrinio_model.get_expiration_dates(symbol)
 
-    if (output := None) is None:
+    if not output:
         logger.info("Invalid Source or Symbol")
         console.print("Invalid Source or Symbol")
         return []
@@ -200,6 +200,7 @@ def hist(
     """
 
     source = re.sub(r"\s+", "", source.lower())
+    output = pd.DataFrame()
     if source == "chartexchange":
         output = chartexchange_model.get_option_history(symbol, exp, call, strike)
     if source == "tradier":
@@ -208,60 +209,12 @@ def hist(
         occ_symbol = f"{symbol}{''.join(exp[2:].split('-'))}{'C' if call else 'P'}{str(int(1000*strike)).zfill(8)}"
         output = intrinio_model.get_historical_options(occ_symbol)
 
-    if (output := None) is None:
+    if not isinstance(output, pd.DataFrame) or output.empty:
         logger.info("No data found for symbol, check symbol and expiration date")
         console.print("No data found for symbol, check symbol and expiration date")
         return pd.DataFrame()
 
     return output
-
-
-def get_delta_neutral(symbol: str, date: str, x0: Optional[float] = None) -> float:
-    """Get delta neutral price for symbol at a given close date
-
-    Parameters
-    ----------
-    symbol : str
-        Symbol to get delta neutral price for
-    date : str
-        Date to get delta neutral price for
-    x0 : float, optional
-        Optional initial guess for solver, defaults to close price of that day
-
-    Returns
-    -------
-    float
-        Delta neutral price
-    """
-    # Need an initial guess for the solver
-    if x0:
-        x0_guess = x0
-    else:
-        # Check that the close price exists.  I am finding that holidays are not consistent, such as June 20, 2022
-        try:
-            x0_guess = intrinio_model.get_close_at_date(symbol, date)
-        except Exception:
-            console.print("Error getting close price for symbol, check date and symbol")
-            return np.nan
-    x0_guess = x0 if x0 else intrinio_model.get_close_at_date(symbol, date)
-    chains = intrinio_model.get_full_chain_eod(symbol, date)
-    if chains.empty:
-        return np.nan
-    # Lots of things can go wrong with minimizing, so lets add a general exception catch here.
-    try:
-        res = minimize(
-            op_helpers.get_abs_market_delta,
-            x0=x0_guess,
-            args=(chains),
-            bounds=[(0.01, np.inf)],
-            method="l-bfgs-b",
-        )
-        return res.x[0]
-    except Exception as e:
-        logging.info(
-            "Error getting delta neutral price for %s on %s: error:%s", symbol, date, e
-        )
-        return np.nan
 
 
 def get_greeks(
