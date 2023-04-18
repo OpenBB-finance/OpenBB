@@ -9,7 +9,7 @@ This guide will walk you through the process of integrating the OpenBB Terminal 
 
 ## Registration
 
-To get started, you'll need to create an account on the OpenBB Hub by visiting https://my.openbb.dev/. 
+To get started, you'll need to create an account on the OpenBB Hub by visiting https://my.openbb.co/.
 
 By registering with the OpenBB Hub, you can easily access our products on multiple devices and maintain consistent settings for an improved user experience. This also enables you to receive updates for the terminal as soon as they become available.
 
@@ -39,7 +39,7 @@ As you may already know, the OpenBB Terminal acts as a mediator between users an
 
 ### OpenBB Hub
 
-If you were an OpenBB user prior to the release of OpenBB Terminal 3.0, you may already have an .env file containing all your API keys. If this is the case, simply drag and drop the file onto [this page](https://my.openbb.dev/app/terminal/api-keys) to automatically save your keys.
+If you were an OpenBB user prior to the release of OpenBB Terminal 3.0, you may already have an .env file containing all your API keys. If this is the case, simply drag and drop the file onto [this page](https://my.openbb.co/app/terminal/api-keys) to automatically save your keys.
 
 <img width="1441" alt="Screenshot 2023-04-14 at 6 14 55 PM" src="https://user-images.githubusercontent.com/25267873/232176162-b16296d4-0c08-408c-aaa4-f46a6bea1bf3.png">
 
@@ -63,7 +63,7 @@ In many cases, there are multiple data vendors offering access to the same data 
 
 ### OpenBB Hub
 
-In the OpenBB Hub, you can access [this page](https://my.openbb.dev/app/terminal/data-sources) which allows you to select the default data sources for all commands.
+In the OpenBB Hub, you can access [this page](https://my.openbb.co/app/terminal/data-sources) which allows you to select the default data sources for all commands.
 
 <img width="1440" alt="Screenshot 2023-04-14 at 6 26 53 PM" src="https://user-images.githubusercontent.com/25267873/232176560-5bee773f-1b9a-4904-8f05-fcaf1342a81d.png">
 
@@ -85,11 +85,11 @@ Theme styles correspond to the ability to change your terminal "skin" (i.e. colo
 
 ### OpenBB Hub
 
-In the OpenBB Hub, you have the ability to change your preferred themes for the terminal on [this page](https://my.openbb.dev/app/terminal/theme?index), 
+In the OpenBB Hub, you have the ability to change your preferred themes for the terminal on [this page](https://my.openbb.co/app/terminal/theme?index),
 
 <img width="1427" alt="Screenshot 2023-04-14 at 6 51 50 PM" src="https://user-images.githubusercontent.com/25267873/232177511-d86edd57-fa2f-40a2-b05f-35cbb856bb94.png">
 
-and charts and tables on [this page](https://my.openbb.dev/app/terminal/theme/charts-tables),
+and charts and tables on [this page](https://my.openbb.co/app/terminal/theme/charts-tables),
 
 <img width="1421" alt="Screenshot 2023-04-14 at 6 56 46 PM" src="https://user-images.githubusercontent.com/25267873/232177692-89fd6784-dd8b-4cb2-a613-d51f6332e2da.png">
 
@@ -119,11 +119,11 @@ and then run on the terminal utilizing:
 
 ### OpenBB Hub
 
-The OpenBB Hub allows users to manage their own script routines to be run in the OpenBB Terminal. They can do so on [this page](https://my.openbb.dev/app/terminal/routines).
+The OpenBB Hub allows users to manage their own script routines to be run in the OpenBB Terminal. They can do so on [this page](https://my.openbb.co/app/terminal/routines).
 
 <img width="1442" alt="Screenshot 2023-04-14 at 7 13 11 PM" src="https://user-images.githubusercontent.com/25267873/232178264-61f383ef-242f-48da-bd32-83fd013a094c.png">
 
-In addition, a few script routines will be distributed by the OpenBB Team on [this page](https://my.openbb.dev/app/terminal/routines/default). These come primarily from academic content that the team is releasing, but can serve as an example of what you can do.
+In addition, a few script routines will be distributed by the OpenBB Team on [this page](https://my.openbb.co/app/terminal/routines/default). These come primarily from academic content that the team is releasing, but can serve as an example of what you can do.
 
 <img width="1443" alt="Screenshot 2023-04-14 at 7 17 44 PM" src="https://user-images.githubusercontent.com/25267873/232178430-1e870571-26b7-4513-9d14-5ef2e97090b2.png">
 
@@ -153,7 +153,7 @@ Setting up API keys on the OpenBB Hub has an additional benefit: it allows you t
 
 ### OpenBB Hub
 
-If you go to the bottom of [this page](https://my.openbb.dev/app/sdk/api-keys) you can find your OpenBB PAT. This is the API Keys that will be used on the OpenBB SDK and this is the same as the ones set in the OpenBB Terminal.
+If you go to the bottom of [this page](https://my.openbb.co/app/sdk/api-keys) you can find your OpenBB PAT. This is the API Keys that will be used on the OpenBB SDK and this is the same as the ones set in the OpenBB Terminal.
 
 <img width="1427" alt="Screenshot 2023-04-14 at 10 37 44 PM" src="https://user-images.githubusercontent.com/25267873/232185425-672a7eb0-e4ba-4863-8dbb-dd951afd25cc.png">
 
