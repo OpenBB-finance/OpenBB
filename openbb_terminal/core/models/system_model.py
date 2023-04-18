@@ -24,6 +24,7 @@ class SystemModel(BaseModel):
     # System section
     OS: str = str(platform.system())
     PYTHON_VERSION: str = str(platform.python_version())
+    PLATFORM: str = str(platform.platform())
 
     # OpenBB section
     VERSION = "3.0.0rc2"

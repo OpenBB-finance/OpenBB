@@ -62,15 +62,6 @@ class PreferencesModel(BaseModel):
     ENABLE_RICH_PANEL: bool = True
     ENABLE_CHECK_API: bool = True
     TOOLBAR_HINT: bool = True
-    TOOLBAR_TWEET_NEWS: bool = False
-
-    # TOOLBAR
-    TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES: PositiveInt = 300
-    TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK: str = (
-        "WatcherGuru,unusual_whales,gurgavin,CBSNews"
-    )
-    TOOLBAR_TWEET_NEWS_KEYWORDS: str = "BREAKING,JUST IN"
-    TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ: PositiveInt = 3
 
     # GENERAL
     PREVIOUS_USE: bool = False
