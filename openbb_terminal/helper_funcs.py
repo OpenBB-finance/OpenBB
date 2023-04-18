@@ -72,8 +72,6 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
-LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
-
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 

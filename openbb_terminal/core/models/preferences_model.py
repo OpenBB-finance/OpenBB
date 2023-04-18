@@ -57,7 +57,6 @@ class PreferencesModel(BaseModel):
     OPEN_REPORT_AS_HTML: bool = True
     ENABLE_EXIT_AUTO_HELP: bool = True
     REMEMBER_CONTEXTS: bool = True
-    ENABLE_RICH: bool = True
     ENABLE_RICH_PANEL: bool = True
     ENABLE_CHECK_API: bool = True
     TOOLBAR_HINT: bool = True

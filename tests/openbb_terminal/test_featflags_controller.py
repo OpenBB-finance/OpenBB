@@ -66,16 +66,8 @@ def test_call_rcontext(controller):
     controller.call_rcontext(None)
 
 
-def test_call_rich(controller):
-    controller.call_rich(None)
-
-
 def test_call_richpanel(controller):
     controller.call_richpanel(None)
-
-
-def test_call_ion(controller):
-    controller.call_ion(None)
 
 
 def test_call_watermark(controller):

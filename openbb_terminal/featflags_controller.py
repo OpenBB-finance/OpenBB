@@ -49,7 +49,6 @@ class FeatureFlagsController(BaseController):
         "interactive",
         "cls",
         "color",
-        "ion",
         "watermark",
         "cmdloc",
         "promptkit",
@@ -57,7 +56,6 @@ class FeatureFlagsController(BaseController):
         "reporthtml",
         "exithelp",
         "rcontext",
-        "rich",
         "richpanel",
         "tbhint",
         "overwrite",
@@ -90,7 +88,6 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("reporthtml", current_user.preferences.OPEN_REPORT_AS_HTML)
         mt.add_setting("exithelp", current_user.preferences.ENABLE_EXIT_AUTO_HELP)
         mt.add_setting("rcontext", current_user.preferences.REMEMBER_CONTEXTS)
-        mt.add_setting("rich", current_user.preferences.ENABLE_RICH)
         mt.add_setting("richpanel", current_user.preferences.ENABLE_RICH_PANEL)
         mt.add_setting("watermark", current_user.preferences.USE_WATERMARK)
         mt.add_setting("cmdloc", current_user.preferences.USE_CMD_LOCATION_FIGURE)
@@ -192,13 +189,6 @@ class FeatureFlagsController(BaseController):
         """Process dt command"""
         set_and_save_preference(
             "USE_DATETIME", not get_current_user().preferences.USE_DATETIME
-        )
-
-    @log_start_end(log=logger)
-    def call_rich(self, _):
-        """Process rich command"""
-        set_and_save_preference(
-            "ENABLE_RICH", not get_current_user().preferences.ENABLE_RICH
         )
 
     @log_start_end(log=logger)
