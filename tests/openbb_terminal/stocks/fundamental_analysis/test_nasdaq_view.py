@@ -15,7 +15,7 @@ def vcr_config():
     }
 
 
-@pytest.mark.record_http
+@pytest.mark.vcr(record_mode="once")
 @pytest.mark.parametrize(
     "symbol, limit, year, form_group",
     [
