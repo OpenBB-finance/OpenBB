@@ -27,7 +27,7 @@
     @apply underline text-blue-300 hover:text-blue-400 active:text-blue-500 disabled:text-grey-600;
   }
   ._modal {
-    @apply card fixed top-1/2 left-1/2 z-50 max-h-[608px] w-[90%] max-w-[568px] -translate-x-1/2 -translate-y-1/2 overflow-auto bg-grey-900 p-2 duration-300 focus:outline-none md:p-10;
+    @apply card fixed top-1/2 left-1/2 z-50 max-h-[608px] w-[90%] max-w-[568px] -translate-x-1/2 -translate-y-1/2 overflow-auto text-white bg-grey-900 p-2 duration-300 focus:outline-none md:p-10;
   }
   ._modal-overlay {
     @apply bg-grey-900 opacity-60 z-40 inset-0 fixed;

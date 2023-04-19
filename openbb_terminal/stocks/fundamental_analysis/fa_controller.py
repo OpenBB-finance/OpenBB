@@ -31,8 +31,9 @@ from openbb_terminal.stocks.fundamental_analysis import (
     finnhub_view,
     finviz_view,
     fmp_view,
-    marketwatch_model,
     marketwatch_view,
+    nasdaq_model,
+    nasdaq_view,
     polygon_view,
     seeking_alpha_view,
     yahoo_finance_view,
@@ -2043,7 +2044,7 @@ class FundamentalAnalysisController(StockBaseController):
             dest="form",
             type=str,
             help="form group of SEC filings.",
-            choices=marketwatch_model.FORM_GROUP.keys(),
+            choices=nasdaq_model.FORM_GROUP.keys(),
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -2060,7 +2061,7 @@ class FundamentalAnalysisController(StockBaseController):
                 console.print(no_ticker_message)
                 return
 
-            marketwatch_view.sec_filings(
+            nasdaq_view.sec_filings(
                 symbol=ns_parser.ticker,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
