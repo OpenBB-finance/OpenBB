@@ -459,11 +459,6 @@ function on_submit(popup_id, on_annotation = null) {
 
         // We get main plotly trace to get the x/y axis
         let main_trace = gd.data[0];
-        gd.data.forEach((trace) => {
-          if (globals.added_traces.indexOf(trace.name) == -1) {
-            trace.showlegend = false;
-          }
-        });
 
         // We check how many yaxis have ticklabels on the left
         let left_yaxis_ticks = Object.keys(gd.layout)

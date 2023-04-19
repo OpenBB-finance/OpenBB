@@ -120,6 +120,11 @@ class PosthogHandler(logging.Handler):
         for log in re.findall(log_regex, log_info):
             log_dict[log[0]] = json.loads(log[1])
 
+        sdk_regex = r"({\"INPUT\":.*})"
+        sdk_dict = re.findall(sdk_regex, log_info)
+        if sdk_dict:
+            log_dict["SDK"] = json.loads(sdk_dict[0])
+
         return log_dict
 
     def send(self, record: logging.LogRecord):
@@ -138,6 +143,9 @@ class PosthogHandler(logging.Handler):
         if log_dict:
             key = list(log_dict.keys())[0]
             event_name = f"log_{key.lower()}"
+            if key == "SDK":
+                log_extra.update(log_dict[key].pop("INPUT", {}))
+
             log_extra = {**log_extra, **log_dict[key]}
             log_extra.pop("message", None)
 
