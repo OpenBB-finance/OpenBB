@@ -271,14 +271,12 @@ class AccountController(BaseController):
 
                 if ns_parser.type == "personal":
                     if not df.empty:
-                        console.print("[info]Displaying personal routines.[/info]")
                         self.REMOTE_CHOICES += list(df["name"])
                         self.update_runtime_choices()
                         display_personal_routines(df, page, pages)
                     else:
                         console.print("[red]No personal routines found.[/red]")
                 elif ns_parser.type == "default":
-                    console.print("[info]Displaying default routines.[/info]")
                     df = get_default_routines_info(self.DEFAULT_ROUTINES)
                     display_default_routines(df)
 
