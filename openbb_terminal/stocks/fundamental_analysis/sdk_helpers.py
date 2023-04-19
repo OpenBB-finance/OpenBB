@@ -6,10 +6,43 @@ import pandas as pd
 from openbb_terminal.stocks.fundamental_analysis import (
     av_model,
     eodhd_model,
+    finviz_model,
     fmp_model,
     polygon_model,
     yahoo_finance_model,
 )
+
+
+def get_overview(symbol: str, source: str = "YahooFinance"):
+    """Get overview.
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get overview for
+    source : str, optional
+        Data source for overview, by default "YahooFinance"
+        Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Finviz
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of overview
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> overview = openbb.stocks.fa.overview("AAPL", source="AlphaVantage")
+    """
+    if source == "YahooFinance":
+        return yahoo_finance_model.get_info(symbol=symbol)
+    if source == "AlphaVantage":
+        return av_model.get_overview(symbol=symbol)
+    if source == "FinancialModelingPrep":
+        return fmp_model.get_profile(symbol=symbol)
+    if source == "Finviz":
+        return finviz_model.get_data(symbol=symbol)
+    return pd.DataFrame()
 
 
 def get_income_statement(
