@@ -424,9 +424,6 @@ function on_submit(popup_id, on_annotation = null) {
       if (key != "title") {
         to_update[key + ".title"] = popup_data[key];
       }
-      if (key.includes("yaxis")) {
-        to_update[key + ".type"] = "linear";
-      }
     });
 
     console.log(to_update);
