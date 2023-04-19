@@ -72,8 +72,6 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
-LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
-
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 
@@ -339,7 +337,7 @@ def print_rich_table(
         return
 
     df = df.copy() if not limit else df.copy().iloc[:limit]
-    if current_user.preferences.USE_COLOR and automatic_coloring:
+    if automatic_coloring:
         if columns_to_auto_color:
             for col in columns_to_auto_color:
                 # checks whether column exists
