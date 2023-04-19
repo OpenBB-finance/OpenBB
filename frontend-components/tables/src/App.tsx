@@ -87,6 +87,9 @@ function App() {
                 ? "dark"
                 : "light"
             }
+            cmd={
+              data?.command_location ?? ""
+            }
           />
         )}
       </DndProvider>

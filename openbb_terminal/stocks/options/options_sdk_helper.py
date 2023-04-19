@@ -7,7 +7,6 @@ from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
-from scipy.optimize import minimize
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
@@ -16,7 +15,6 @@ from openbb_terminal.stocks.options import (
     chartexchange_model,
     intrinio_model,
     nasdaq_model,
-    op_helpers,
     tradier_model,
     yfinance_model,
 )
@@ -217,54 +215,6 @@ def hist(
         return pd.DataFrame()
 
     return output
-
-
-def get_delta_neutral(symbol: str, date: str, x0: Optional[float] = None) -> float:
-    """Get delta neutral price for symbol at a given close date
-
-    Parameters
-    ----------
-    symbol : str
-        Symbol to get delta neutral price for
-    date : str
-        Date to get delta neutral price for
-    x0 : float, optional
-        Optional initial guess for solver, defaults to close price of that day
-
-    Returns
-    -------
-    float
-        Delta neutral price
-    """
-    # Need an initial guess for the solver
-    if x0:
-        x0_guess = x0
-    else:
-        # Check that the close price exists.  I am finding that holidays are not consistent, such as June 20, 2022
-        try:
-            x0_guess = intrinio_model.get_close_at_date(symbol, date)
-        except Exception:
-            console.print("Error getting close price for symbol, check date and symbol")
-            return np.nan
-    x0_guess = x0 if x0 else intrinio_model.get_close_at_date(symbol, date)
-    chains = intrinio_model.get_full_chain_eod(symbol, date)
-    if chains.empty:
-        return np.nan
-    # Lots of things can go wrong with minimizing, so lets add a general exception catch here.
-    try:
-        res = minimize(
-            op_helpers.get_abs_market_delta,
-            x0=x0_guess,
-            args=(chains),
-            bounds=[(0.01, np.inf)],
-            method="l-bfgs-b",
-        )
-        return res.x[0]
-    except Exception as e:
-        logging.info(
-            "Error getting delta neutral price for %s on %s: error:%s", symbol, date, e
-        )
-        return np.nan
 
 
 def get_greeks(
