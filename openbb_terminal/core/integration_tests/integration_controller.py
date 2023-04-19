@@ -750,7 +750,6 @@ def main():
     # user
     current_user = get_current_user()
     current_user.preferences.ENABLE_EXIT_AUTO_HELP = False
-    current_user.preferences.USE_ION = True
     current_user.preferences.USE_PROMPT_TOOLKIT = False
     current_user.preferences.REMEMBER_CONTEXTS = False
     current_user.preferences.PLOT_ENABLE_PYWRY = False
