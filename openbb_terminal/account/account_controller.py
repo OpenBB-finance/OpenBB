@@ -233,6 +233,15 @@ class AccountController(BaseController):
             description="List routines available in the cloud.",
         )
         parser.add_argument(
+            "-t",
+            "--type",
+            type=str,
+            dest="type",
+            default="personal",
+            choices=["default", "personal"],
+            help="The type of routines to list.",
+        )
+        parser.add_argument(
             "-p",
             "--page",
             type=check_positive,
@@ -253,21 +262,27 @@ class AccountController(BaseController):
             print_guest_block_msg()
         else:
             if ns_parser:
-                response = Hub.list_routines(
-                    auth_header=get_current_user().profile.get_auth_header(),
-                    page=ns_parser.page,
-                    size=ns_parser.size,
-                )
-                df, page, pages = get_personal_routines_info(response)
-                if not df.empty:
-                    self.REMOTE_CHOICES += list(df["name"])
-                    self.update_runtime_choices()
-                    display_personal_routines(df, page, pages)
-                else:
-                    console.print("[red]No routines found.[/red]")
+                if ns_parser.type == "personal":
+                    response = Hub.list_routines(
+                        auth_header=get_current_user().profile.get_auth_header(),
+                        page=ns_parser.page,
+                        size=ns_parser.size,
+                    )
+                    df, page, pages = get_personal_routines_info(response)
+                    if not df.empty:
+                        self.REMOTE_CHOICES += list(df["name"])
+                        self.update_runtime_choices()
+                        display_personal_routines(df, page, pages)
+                    else:
+                        console.print("[red]No personal routines found.[/red]")
+                elif ns_parser.type == "default":
+                    df = get_default_routines_info(self.DEFAULT_ROUTINES)
+                    if not df.empty:
+                        display_default_routines(df)
+                    else:
+                        console.print("[red]No default routines found.[/red]")
+
                 console.print("")
-                df = get_default_routines_info(self.DEFAULT_ROUTINES)
-                display_default_routines(df)
 
     @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):
