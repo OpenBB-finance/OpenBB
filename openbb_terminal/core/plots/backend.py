@@ -168,11 +168,15 @@ class Backend(PyWry):
         if export_image and isinstance(export_image, str):
             export_image = Path(export_image).resolve()
 
+        json_data = json.loads(fig.to_json())
+
+        json_data.update({"theme": get_current_user().preferences.CHART_STYLE})
+
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_plotly_html(),
-                    "json_data": json.loads(fig.to_json()),
+                    "json_data": json_data,
                     "export_image": str(export_image),
                     **self.get_kwargs(command_location),
                 }
@@ -262,6 +266,19 @@ class Backend(PyWry):
 
         json_data = json.loads(df_table.to_json(orient="split", date_format="iso"))
         json_data.update(dict(title=title, source=source or "", theme=theme or "dark"))
+
+        # pylint: disable=C0415
+        from openbb_terminal.helper_funcs import command_location
+
+        json_data = json.loads(df_table.to_json(orient="split"))
+        json_data.update(
+            dict(
+                title=title,
+                source=source or "",
+                theme=theme or "dark",
+                command_location=command_location or "",
+            )
+        )
 
         self.outgoing.append(
             json.dumps(

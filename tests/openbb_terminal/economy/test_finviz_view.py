@@ -33,7 +33,6 @@ def test_display_valuation(mocker, tab):
     # MOCK OBBFF
     preferences = PreferencesModel(
         USE_TABULATE_DF=tab,
-        USE_ION=True,
     )
     mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
@@ -66,7 +65,6 @@ def test_display_performance(mocker, tab):
     # MOCK OBBFF
     preferences = PreferencesModel(
         USE_TABULATE_DF=tab,
-        USE_ION=True,
     )
     mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
@@ -99,7 +97,6 @@ def test_display_future(mocker, tab):
     # MOCK OBBFF
     preferences = PreferencesModel(
         USE_TABULATE_DF=tab,
-        USE_ION=True,
     )
     mock_current_user = copy_user(preferences=preferences)
     mocker.patch(

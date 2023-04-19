@@ -32,7 +32,6 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     AVAILABLE_FLAIRS,
-    check_positive,
     get_flair,
     get_user_timezone_or_invalid,
     parse_and_split_input,
@@ -58,8 +57,6 @@ class SettingsController(BaseController):
         "height",
         "lang",
         "table",
-        "tbnews",
-        "tweetnews",
         "tz",
         "userdata",
         "width",
@@ -182,23 +179,6 @@ class SettingsController(BaseController):
                 get_current_user().preferences.USER_DATA_SOURCES_FILE,
             )
             mt.add_raw("\n")
-        mt.add_setting("tbnews", current_user.preferences.TOOLBAR_TWEET_NEWS)
-        if current_user.preferences.TOOLBAR_TWEET_NEWS:
-            mt.add_raw("\n")
-            mt.add_cmd("tweetnews")
-            mt.add_raw("\n")
-            mt.add_param(
-                "_tbnu",
-                current_user.preferences.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES,
-            )
-            mt.add_param(
-                "_nttli",
-                current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
-            )
-            mt.add_param(
-                "_tatt", current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK
-            )
-            mt.add_param("_tk", current_user.preferences.TOOLBAR_TWEET_NEWS_KEYWORDS)
         console.print(text=mt.menu_text, menu="Settings")
 
     @staticmethod
@@ -581,92 +561,3 @@ class SettingsController(BaseController):
                         success_userdata = True
 
         console.print()
-
-    @log_start_end(log=logger)
-    def call_tbnews(self, other_args):
-        """Process tbnews command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tweetnews",
-            description="Tweak tweet news toolbal parameters",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            current_user = get_current_user()
-            if current_user.preferences.TOOLBAR_TWEET_NEWS:
-                console.print("Will take effect when running terminal next.")
-            self.set_and_save_preference(
-                "TOOLBAR_TWEET_NEWS",
-                not get_current_user().preferences.TOOLBAR_TWEET_NEWS,
-            )
-
-    @log_start_end(log=logger)
-    def call_tweetnews(self, other_args: List[str]):
-        """Process tweetnews command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tweetnews",
-            description="Tweak tweet news parameters",
-        )
-        parser.add_argument(
-            "-t",
-            "--time",
-            type=check_positive,
-            required=False,
-            dest="time",
-            help="Time (in seconds) between tweet news updates, e.g. 300",
-        )
-        parser.add_argument(
-            "-a",
-            "--accounts",
-            type=str,
-            required=False,
-            dest="accounts",
-            help="Twitter accounts to track news separated by commmas."
-            "For instance: 'WatcherGuru,unusual_whales,gurgavin'",
-        )
-        parser.add_argument(
-            "-k",
-            "--keywords",
-            type=str,
-            required=False,
-            dest="keywords",
-            nargs="+",
-            help="Keywords to look for, separated by commmas."
-            "For instance: 'Just In, Breaking'",
-        )
-        parser.add_argument(
-            "-n",
-            "--number",
-            type=check_positive,
-            required=False,
-            dest="number",
-            help="Number of tweets to look into from each account, e.g. 3",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if ns_parser.time:
-                self.set_and_save_preference(
-                    "TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
-                    str(ns_parser.time),
-                )
-
-            if ns_parser.number:
-                self.set_and_save_preference(
-                    "TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
-                    str(ns_parser.number),
-                )
-
-            if ns_parser.accounts:
-                self.set_and_save_preference(
-                    "TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
-                    str(ns_parser.accounts),
-                )
-
-            if ns_parser.keywords:
-                self.set_and_save_preference(
-                    "TOOLBAR_TWEET_NEWS_KEYWORDS",
-                    str(" ".join(ns_parser.keywords)),
-                )

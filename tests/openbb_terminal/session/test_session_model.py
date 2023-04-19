@@ -20,7 +20,6 @@ TEST_SESSION = {
 
 CONFIGS = {
     "features_settings": {
-        "USE_WATERMARK": "False",
         "TIMEZONE": "Europe/London",
         "PLOT_DPI": "95",
         "PLOT_HEIGHT_PERCENTAGE": "50.5",
