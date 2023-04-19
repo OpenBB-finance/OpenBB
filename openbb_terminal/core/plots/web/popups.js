@@ -325,7 +325,7 @@ function get_popup_data(popup_id = null) {
   return data;
 }
 
-const trace_defaults = {
+const layout_defaults = {
   overlaying: "y",
   side: "left",
   tickfont: { size: 12 },
@@ -416,6 +416,7 @@ function on_submit(popup_id, on_annotation = null) {
     }
   } else if (popup_id == "title") {
     document.getElementById("title").innerHTML = popup_data.title;
+    globals.title = popup_data.title;
 
     let to_update = {};
 
@@ -447,6 +448,7 @@ function on_submit(popup_id, on_annotation = null) {
         let data = [];
         let headers = lines[0].split(",");
         let trace = {};
+        let new_yaxis = false;
 
         for (let i = 1; i < lines.length; i++) {
           let obj = {};
@@ -459,11 +461,6 @@ function on_submit(popup_id, on_annotation = null) {
 
         // We get main plotly trace to get the x/y axis
         let main_trace = gd.data[0];
-        gd.data.forEach((trace) => {
-          if (globals.added_traces.indexOf(trace.name) == -1) {
-            trace.showlegend = false;
-          }
-        });
 
         // We check how many yaxis have ticklabels on the left
         let left_yaxis_ticks = Object.keys(gd.layout)
@@ -616,7 +613,7 @@ function on_submit(popup_id, on_annotation = null) {
             popup_data.same_yaxis == false
           ) {
             gd.layout[yaxis_id] = {
-              ...trace_defaults,
+              ...layout_defaults,
               title: {
                 text: "% Change",
                 font: {
@@ -627,6 +624,7 @@ function on_submit(popup_id, on_annotation = null) {
               ticksuffix: ticksuffix,
               tickformat: ".0%",
             };
+            new_yaxis = true;
             globals.percent_yaxis_added = true;
             if (globals.cmd_src_idx != null) {
               let xshift = gd.layout.annotations[globals.cmd_src_idx].xshift;
@@ -644,7 +642,7 @@ function on_submit(popup_id, on_annotation = null) {
         // New yaxis and not percent change
         if (!popup_data.percent_change && popup_data.same_yaxis == false) {
           gd.layout[yaxis_id] = {
-            ...trace_defaults,
+            ...layout_defaults,
             title: {
               text: popup_data.name,
               font: {
@@ -655,6 +653,7 @@ function on_submit(popup_id, on_annotation = null) {
             ticksuffix: ticksuffix,
             layer: "below traces",
           };
+          new_yaxis = true;
           if (globals.cmd_src_idx != null) {
             let xshift = gd.layout.annotations[globals.cmd_src_idx].xshift;
             xshift -= left_yaxis_ticks > 0 ? 40 + add_xshift : 40;
@@ -671,11 +670,12 @@ function on_submit(popup_id, on_annotation = null) {
         globals.added_traces.push(trace.name);
 
         Plotly.addTraces(gd, trace);
-
-        if (globals.csv_yaxis_id != null) {
-          gd.layout[globals.csv_yaxis_id].type = "linear";
-        }
         Plotly.react(gd, gd.data, gd.layout);
+
+        if (new_yaxis) {
+          gd.layout[yaxis_id].automargin = false;
+          Plotly.react(gd, gd.data, gd.layout);
+        }
 
         // We empty the fields and innerHTML after the plot is made
         globals.CSV_DIV.querySelector("#csv_colors").innerHTML = "";
