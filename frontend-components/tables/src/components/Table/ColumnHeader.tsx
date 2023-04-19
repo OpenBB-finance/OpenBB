@@ -136,7 +136,16 @@ const DraggableColumnHeader: FC<{
   table: any;
   advanced: boolean;
   idx: number;
-}> = ({ header, table, advanced, idx, lockFirstRow, setLockFirstRow }) => {
+  lockFirstColumn: boolean;
+  setLockFirstColumn: (value: boolean) => void;
+}> = ({
+  header,
+  table,
+  advanced,
+  idx,
+  lockFirstColumn,
+  setLockFirstColumn,
+}) => {
   const { getState, setColumnOrder } = table;
   const { columnOrder } = getState();
   const { column } = header;
@@ -248,9 +257,8 @@ const DraggableColumnHeader: FC<{
 
   return (
     <th
-      className={clsx("h-[70px] p-4", {
-        "sticky left-0 z-50 bg-white dark:bg-grey-900":
-          idx === 0 && lockFirstRow,
+      className={clsx("h-[70px] p-4 sticky", {
+        "left-0 z-50 bg-white dark:bg-grey-900": idx === 0 && lockFirstColumn,
       })}
       colSpan={header.colSpan}
       style={{ width: header.getSize(), opacity: isDragging ? 0.5 : 1 }}
@@ -266,11 +274,11 @@ const DraggableColumnHeader: FC<{
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => {
-                    setLockFirstRow(!lockFirstRow);
+                    setLockFirstColumn(!lockFirstColumn);
                   }}
                   className="hover:bg-grey-300 dark:hover:bg-grey-800 rounded-md p-2"
                 >
-                  {lockFirstRow ? "Unlock" : "Lock"} first row
+                  {lockFirstColumn ? "Unlock" : "Lock"} first column
                 </button>
               </div>
             </ContextMenuPrimitive.Content>
