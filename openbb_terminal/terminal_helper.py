@@ -161,7 +161,7 @@ def open_openbb_documentation(
                 path = "/usage?path=/usage/guides/customizing-the-terminal"
                 command = ""
             else:
-                path = f"/reference?path={path}"
+                path = f"/commands?path={path}"
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]

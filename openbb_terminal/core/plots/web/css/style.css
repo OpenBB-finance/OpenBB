@@ -79,8 +79,8 @@ body {
   position: absolute;
   z-index: 9;
   text-align: center;
-  top: 0;
-  right: 50;
+  top: 50%;
+  left: 50%;
   width: 100px;
   height: 60px;
   background-color: transparent;

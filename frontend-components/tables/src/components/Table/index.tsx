@@ -253,7 +253,7 @@ export default function Table({
     [advanced, colors]
   );
 
-  const [lockFirstRow, setLockFirstRow] = useState(false);
+  const [lockFirstColumn, setLockFirstColumn] = useState(false);
 
   const [columnOrder, setColumnOrder] = useState(
     rtColumns.map((column) => column.id as string)
@@ -383,8 +383,8 @@ export default function Table({
                       {headerGroup.headers.map((header, idx2) => {
                         return (
                           <DraggableColumnHeader
-                            setLockFirstRow={setLockFirstRow}
-                            lockFirstRow={lockFirstRow}
+                            setLockFirstColumn={setLockFirstColumn}
+                            lockFirstColumn={lockFirstColumn}
                             idx={idx2}
                             advanced={advanced}
                             key={header.id}
@@ -414,7 +414,7 @@ export default function Table({
                                   "bg-grey-100 dark:bg-[#202020]":
                                     idx % 2 === 1,
                                   "sticky left-0 z-10":
-                                    idx2 === 0 && lockFirstRow,
+                                    idx2 === 0 && lockFirstColumn,
                                 }
                               )}
                               style={{
