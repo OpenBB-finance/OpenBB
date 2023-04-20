@@ -30,6 +30,15 @@ const config = {
 
   plugins: [
     [
+      "posthog-docusaurus",
+      {
+        apiKey: "phc_nbGO1txsyzBuJan48dFE2G5RMlEl5jZJ6EFMXPYmxzk",
+        appUrl: "https://eu.posthog.com", // optional
+        enableInDevelopment: false, // optional
+        // other options are passed to posthog-js init as is
+      },
+    ],
+    [
       "@docusaurus/plugin-client-redirects",
       {
         redirects: [
