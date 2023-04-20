@@ -6,7 +6,6 @@ import os
 
 from openbb_terminal.alternative.companieshouse import companieshouse_model
 from openbb_terminal.alternative.companieshouse.company import Company
-from openbb_terminal.alternative.companieshouse.company_doc import CompanyDocument
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table

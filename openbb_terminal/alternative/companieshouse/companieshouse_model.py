@@ -6,13 +6,13 @@ import logging
 import pandas as pd
 import requests
 
+from openbb_terminal.alternative.companieshouse.company import Company
+from openbb_terminal.alternative.companieshouse.company_doc import CompanyDocument
 from openbb_terminal.core.session.constants import (
     TIMEOUT,
 )
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.alternative.companieshouse.company import Company
-from openbb_terminal.alternative.companieshouse.company_doc import CompanyDocument
 
 logger = logging.getLogger(__name__)
 
@@ -97,10 +97,7 @@ def get_company_info(company_number: str) -> Company:
             address_lines.append(address.get("region"))
         if address.get("postal_code"):
             address_lines.append(address.get("postal_code"))
-        if len(address_lines) > 0:
-            pretty_address = ",".join(address_lines)
-        else:
-            pretty_address = "No address data found"
+        pretty_address = ",".join(address_lines) if len(address_lines) > 0 else "No address data found"
 
         if last_accounts:
             pretty_accounts = "Period Start On : " + (

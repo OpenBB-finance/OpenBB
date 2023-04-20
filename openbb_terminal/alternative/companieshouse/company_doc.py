@@ -28,7 +28,4 @@ class CompanyDocument:
         self.content = content
 
     def dataAvailable(self) -> bool:
-        if len(self.content) > 0:
-            return True
-        else:
-            return False
+        return len(self.content) > 0

@@ -11,7 +11,4 @@ class Company:
         self.lastAccounts = lastAccounts
 
     def dataAvailable(self) -> bool:
-        if len(self.name) > 0:
-            return True
-        else:
-            return False
+        return len(self.name) > 0

@@ -16,7 +16,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.alternative.companieshouse.company import Company
 
 logger = logging.getLogger(__name__)
 
@@ -138,21 +137,20 @@ class CompaniesHouseController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser:
-            if ns_parser.companyNo:
-                self.companyNo = ns_parser.companyNo
-                company = companieshouse_view.display_company_info(
-                    ns_parser.companyNo, export=ns_parser.export
+        if ns_parser and ns_parser.companyNo:
+            self.companyNo = ns_parser.companyNo
+            company = companieshouse_view.display_company_info(
+                ns_parser.companyNo, export=ns_parser.export
+            )
+            if company.dataAvailable():
+                self.companyName = company.name
+                console.print(company.name)
+                console.print(company.address)
+                console.print(company.lastAccounts)
+            else:
+                console.print(
+                    f"[red]No data found for company number {ns_parser.companyNo}[/red]\n"
                 )
-                if company.dataAvailable():
-                    self.companyName = company.name
-                    console.print(company.name)
-                    console.print(company.address)
-                    console.print(company.lastAccounts)
-                else:
-                    console.print(
-                        f"[red]No data found for company number {ns_parser.companyNo}[/red]\n"
-                    )
 
     @log_start_end(log=logger)
     def call_officers(self, other_args: List[str]):
