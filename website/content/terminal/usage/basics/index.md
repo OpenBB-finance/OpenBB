@@ -108,7 +108,7 @@ Many functions will require obtaining (free or subscription) API keys from vario
 
 ### Default Data Sources
 
-The default data source for each function (where multiple sources are available) can be defined within the [`/sources` menu](https://docs.openbb.co/terminal/usage/guides/changing-sources).  The available sources for each function are displayed on the right of the menu, and they can be distinguished by the square brackets and distinct font color group.  Unless a preference for a particular function is defined, the command will prioritize in the order they are dispalyed, from left-to-right, on the Terminal screen.  To override a preference or default source, select one of the other choices by attaching the, `--source`, argument to the command syntax.  The available sources for the feature will be populated by auto complete when the `space bar` is pressed after typing `--source`.  This information is also printed with the `--help` dialogue of a command.
+The default data source for each function (where multiple sources are available) can be defined within the [`/sources` menu](https://docs.openbb.co/terminal/usage/guides/changing-sources).  The available sources for each function are displayed on the right of the menu, and they can be distinguished by the square brackets and distinct font color group.  Unless a preference for a particular function is defined, the command will prioritize in the order they are displayed, from left-to-right, on the Terminal screen.  To override a preference or default source, select one of the other choices by attaching the, `--source`, argument to the command syntax.  The available sources for the feature will be populated by auto complete when the `space bar` is pressed after typing `--source`.  This information is also printed with the `--help` dialogue of a command.
 
 ### Importing and Exporting Data
 
@@ -208,7 +208,7 @@ After choosing the file to overlay, select what to show and then click on `Submi
 
 ![Overlay Options](chart10.png)
 
-![Overlayed Chart](chart11.png)
+![Overlay Chart](chart11.png)
 
 ## Tables
 
