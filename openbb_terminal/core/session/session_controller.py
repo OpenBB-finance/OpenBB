@@ -108,9 +108,7 @@ def login_and_launch(session: dict, remember: bool = False):
 
 def main(session: Optional[Dict] = None):
     """Main function"""
-
     local_session = Local.get_session() if session is None else session
-    print(local_session)
     if not local_session:
         prompt()
     else:
