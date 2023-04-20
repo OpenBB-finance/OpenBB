@@ -50,9 +50,11 @@ def get_user_input() -> Tuple[str, str, bool]:
         message="> Password: ",
         is_password=True,
     )
-    save = s.prompt(message="> Remember me? (y/n): ", is_password=False).lower() == "y"
+    remember = (
+        s.prompt(message="> Remember me? (y/n): ", is_password=False).lower() == "y"
+    )
 
-    return email, password, save
+    return email, password, remember
 
 
 def prompt(welcome=True):
@@ -69,12 +71,12 @@ def prompt(welcome=True):
         display_welcome_message()
 
     while True:
-        email, password, save = get_user_input()
+        email, password, remember = get_user_input()
         if not email:
             return launch_terminal()
-        session = create_session(email, password, save)
+        session = create_session(email, password, remember)
         if isinstance(session, dict) and session:
-            return login_and_launch(session=session)
+            return login_and_launch(session, remember)
 
 
 def launch_terminal():
@@ -85,15 +87,17 @@ def launch_terminal():
     terminal_controller.parse_args_and_run()
 
 
-def login_and_launch(session: dict):
+def login_and_launch(session: dict, remember: bool = False):
     """Login and launch terminal.
 
     Parameters
     ----------
     session : dict
         The session info.
+    remember : bool, optional
+        Remember the session, by default False
     """
-    status = login(session)
+    status = login(session, remember)
     if status in [LoginStatus.SUCCESS, LoginStatus.NO_RESPONSE]:
         launch_terminal()
     elif status == LoginStatus.FAILED:
@@ -108,7 +112,7 @@ def main():
     if not local_session:
         prompt()
     else:
-        login_and_launch(session=local_session)
+        login_and_launch(session=local_session, remember=True)
 
 
 if __name__ == "__main__":

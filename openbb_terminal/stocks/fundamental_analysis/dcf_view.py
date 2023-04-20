@@ -982,7 +982,6 @@ class CreateExcelFA:
         if text:
             self.custom_exp(row, text)
 
-    @log_start_end(log=logger)
     def title_to_row(self, title: str) -> int:
         df = (
             self.df["IS"]

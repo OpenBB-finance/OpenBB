@@ -161,7 +161,7 @@ def open_openbb_documentation(
                 path = "/usage?path=/usage/guides/customizing-the-terminal"
                 command = ""
             else:
-                path = f"/reference?path={path}"
+                path = f"/commands?path={path}"
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
@@ -362,7 +362,7 @@ def welcome_message():
 
 
 def reset(queue: Optional[List[str]] = None):
-    """Resets the terminal.  Allows for checking code or keys without quitting"""
+    """Resets the terminal.  Allows for checking code without quitting"""
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
@@ -375,17 +375,15 @@ def reset(queue: Optional[List[str]] = None):
         for module in list(sys.modules.keys()):
             parts = module.split(".")
             if parts[0] == "openbb_terminal":
+                if len(parts) > 2 and parts[1] == "core" and parts[2] == "session":
+                    continue
                 del sys.modules[module]
 
         # pylint: disable=import-outside-toplevel
         # we run the terminal again
-        from openbb_terminal.core.session import session_controller
         from openbb_terminal.terminal_controller import main
 
-        if is_local():
-            main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
-        else:
-            session_controller.main()
+        main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))
