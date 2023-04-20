@@ -264,7 +264,7 @@ def setup_handlers(settings: Settings):
 
     if (
         not any([current_system.TEST_MODE, current_system.LOGGING_SUPPRESS])
-        # and current_system.LOG_COLLECT
+        and current_system.LOG_COLLECT
     ):
         add_posthog_handler(settings=settings)
 
