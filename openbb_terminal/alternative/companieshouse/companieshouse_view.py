@@ -5,6 +5,8 @@ import logging
 import os
 
 from openbb_terminal.alternative.companieshouse import companieshouse_model
+from openbb_terminal.alternative.companieshouse.company import Company
+from openbb_terminal.alternative.companieshouse.company_doc import CompanyDocument
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -50,7 +52,7 @@ def display_search(search_str: str, limit: int, export: str = "") -> None:
 
 
 @log_start_end(log=logger)
-def display_company_info(company_number: str, export: str = "") -> None:
+def display_company_info(company_number: str, export: str = "") -> Company:
     """Display company search results.
 
     Parameters
@@ -60,25 +62,7 @@ def display_company_info(company_number: str, export: str = "") -> None:
 
 
     """
-    results = companieshouse_model.get_company_info(company_number)
-
-    if len(results) > 0:
-        print_rich_table(
-            results,
-            show_index=False,
-            show_header=False,
-            title=f"[bold]{company_number}[/bold]",
-            export=bool(export),
-        )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "results",
-            results,
-        )
-    else:
-        console.print("[red]No Data Found[/red]")
+    return companieshouse_model.get_company_info(company_number)
 
 
 @log_start_end(log=logger)
@@ -174,7 +158,7 @@ def display_filings(company_number: str, export: str = "") -> None:
 
 
 def download_filing_document(
-    company_number: str, transactionID: str, export: str = ""
+    company_number: str, company_name: str, transactionID: str, export: str = ""
 ) -> None:
     """Display company's filing history.
 
@@ -189,13 +173,22 @@ def download_filing_document(
     """
     results = companieshouse_model.get_filing_document(company_number, transactionID)
 
-    if len(results) > 0:
+    if results.dataAvailable():
+        filename = (
+            company_name.replace(" ", "_")
+            + "_"
+            + results.category
+            + "_"
+            + transactionID
+            + ".pdf"
+        )
         with open(
-            f"{get_current_user().preferences.USER_COMPANIES_HOUSE_DIRECTORY}/{transactionID}.pdf",
+            f"{get_current_user().preferences.USER_COMPANIES_HOUSE_DIRECTORY}/{filename}",
             "wb",
         ) as f:
-            f.write(results)
-
-        console.print(f"[green] File {transactionID}.pdf downloaded [/green]\n")
+            f.write(results.content)
+            console.print(
+                f"File [green] {filename}[/green] downloaded to {get_current_user().preferences.USER_COMPANIES_HOUSE_DIRECTORY}"
+            )
     else:
         console.print("[red]" + "Document not found" + "[/red]\n")

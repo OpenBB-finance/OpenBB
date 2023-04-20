@@ -9,10 +9,14 @@ from openbb_terminal.alternative.companieshouse import companieshouse_view
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.alternative.companieshouse.company import Company
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +41,7 @@ class CompaniesHouseController(BaseController):
         super().__init__(queue)
 
         self.companyNo = ""
+        self.companyName = ""
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -61,13 +66,13 @@ class CompaniesHouseController(BaseController):
             description="Select the company name to search for. [Source: UK Companies House]",
         )
         parser.add_argument(
-            "-s",
-            "--searchStr",
-            help="searchStr",
+            "-n",
+            "--name",
+            help="name",
             type=str.upper,
             required="-h" not in other_args,
-            dest="searchStr",
-            metavar="searchStr",
+            dest="name",
+            metavar="name",
             nargs="+",
         )
 
@@ -84,19 +89,19 @@ class CompaniesHouseController(BaseController):
 
         if (
             other_args
-            and "-s" not in other_args[0]
-            and "--searchStr" not in other_args[0]
+            and "-n" not in other_args[0]
+            and "--name" not in other_args[0]
             and "-h" not in other_args
         ):
-            other_args.insert(0, "-s")
+            other_args.insert(0, "-n")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
-            if ns_parser.searchStr:
-                query = " ".join(ns_parser.searchStr)
+            if ns_parser.name:
+                query = " ".join(ns_parser.name)
                 companieshouse_view.display_search(
                     query, ns_parser.limit, export=ns_parser.export
                 )
@@ -136,11 +141,18 @@ class CompaniesHouseController(BaseController):
         if ns_parser:
             if ns_parser.companyNo:
                 self.companyNo = ns_parser.companyNo
-                companieshouse_view.display_company_info(
+                company = companieshouse_view.display_company_info(
                     ns_parser.companyNo, export=ns_parser.export
                 )
-            else:
-                console.print("[red]No data found for company number[/red]\n")
+                if company.dataAvailable():
+                    self.companyName = company.name
+                    console.print(company.name)
+                    console.print(company.address)
+                    console.print(company.lastAccounts)
+                else:
+                    console.print(
+                        f"[red]No data found for company number {ns_parser.companyNo}[/red]\n"
+                    )
 
     @log_start_end(log=logger)
     def call_officers(self, other_args: List[str]):
@@ -175,10 +187,7 @@ class CompaniesHouseController(BaseController):
 
         if ns_parser:
             companyNo = ns_parser.companyNo if ns_parser.companyNo else self.companyNo
-            # if ns_parser.companyNo:
             companieshouse_view.display_officers(companyNo, export=ns_parser.export)
-            # else:
-            #     console.print("[red]No data found for company number[/red]\n")
 
     @log_start_end(log=logger)
     def call_signifcontrol(self, other_args: List[str]):
@@ -254,10 +263,7 @@ class CompaniesHouseController(BaseController):
 
         if ns_parser:
             companyNo = ns_parser.companyNo if ns_parser.companyNo else self.companyNo
-            # if ns_parser.companyNo:
             companieshouse_view.display_filings(companyNo, export=ns_parser.export)
-            # else:
-            #     console.print("[red]No data found for company number[/red]\n")
 
     @log_start_end(log=logger)
     def call_filingdocument(self, other_args: List[str]):
@@ -294,7 +300,10 @@ class CompaniesHouseController(BaseController):
         if self.companyNo:
             if ns_parser:
                 companieshouse_view.download_filing_document(
-                    self.companyNo, ns_parser.transactionID, export=ns_parser.export
+                    self.companyNo,
+                    self.companyName,
+                    ns_parser.transactionID,
+                    export=ns_parser.export,
                 )
         else:
             console.print("[red]Load companyNo first[/red]\n")

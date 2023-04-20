@@ -11,6 +11,8 @@ from openbb_terminal.core.session.constants import (
 )
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.alternative.companieshouse.company import Company
+from openbb_terminal.alternative.companieshouse.company_doc import CompanyDocument
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +69,7 @@ def get_search_results(searchStr: str, limit: int = 20) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
-def get_company_info(company_number: str) -> pd.DataFrame:
+def get_company_info(company_number: str) -> Company:
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
@@ -80,47 +82,43 @@ def get_company_info(company_number: str) -> pd.DataFrame:
     last_accounts = {}
     returned_data = r.json()
     if returned_data.get("company_name"):
-        company = returned_data["company_name"]
+        company_name = returned_data["company_name"]
         if returned_data.get("accounts"):
             last_accounts = returned_data["accounts"]["last_accounts"]
-            print(type(last_accounts))
         address = returned_data["registered_office_address"]
-        pretty_address = (
-            (address.get("address_line_1") or "")
-            + " ,"
-            + (address.get("address_line_2") or "")
-            + " ,"
-            + (address.get("locality") or "")
-            + " ,"
-            + (address.get("region") or "")
-            + " ,"
-            + (address.get("postal_code") or "")
-        )
+        address_lines = []
+        if address.get("address_line_1"):
+            address_lines.append(address.get("address_line_1"))
+        if address.get("address_line_2"):
+            address_lines.append(address.get("address_line_2"))
+        if address.get("locality"):
+            address_lines.append(address.get("locality"))
+        if address.get("region"):
+            address_lines.append(address.get("region"))
+        if address.get("postal_code"):
+            address_lines.append(address.get("postal_code"))
+        if len(address_lines) > 0:
+            pretty_address = ",".join(address_lines)
+        else:
+            pretty_address = "No address data found"
 
         if last_accounts:
             pretty_accounts = "Period Start On : " + (
                 last_accounts.get("period_start_on") or ""
-            ) + "\n" + "Type : " + (
+            ) + " - " + "Type : " + (
                 last_accounts.get("type") or ""
-            ) + "\n" + "Made Up To : " + (
+            ) + " - " + "Made Up To : " + (
                 last_accounts.get("made_up_to") or ""
-            ) + "\n" "Period End On : " + (
+            ) + " - " "Period End On : " + (
                 last_accounts.get("period_end_on") or ""
             )
         else:
-            pretty_accounts = "No data available"
+            pretty_accounts = "No accounting period data found"
 
-        data = pd.DataFrame(
-            [
-                ["Company", company],
-                ["Address", pretty_address],
-                ["Last Account", pretty_accounts],
-            ]
-        )
-        data.columns = ["Title", "Data"]
+        data = Company(company_name, pretty_address, pretty_accounts)
         return data
     else:
-        return pd.DataFrame()
+        return Company()
 
 
 @log_start_end(log=logger)
@@ -204,8 +202,13 @@ def get_filings(company_number: str) -> pd.DataFrame:
                 "Date": (item.get("date") or " - "),
                 "Description": (item.get("description") or " - "),
                 "Type": (item.get("type") or " - "),
-                "Pages": (int(item.get("pages")) or " - "),
+                "Pages": (item.get("pages") or " - "),
                 "Transaction ID": (item.get("transaction_id") or " - "),
+                "Download": "https://find-and-update.company-information.service.gov.uk/company/"
+                f"{company_number}"
+                "/filing-history/"
+                f"{item.get('transaction_id')}"
+                "/document?format=pdf&download=0",
             }
         )
 
@@ -216,7 +219,7 @@ def get_filings(company_number: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
-def get_filing_document(company_number: str, transactionID: str) -> bytes:
+def get_filing_document(company_number: str, transactionID: str) -> CompanyDocument:
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
@@ -225,8 +228,11 @@ def get_filing_document(company_number: str, transactionID: str) -> bytes:
         auth=auth,
         timeout=TIMEOUT,
     )
+
     returned_data = r.json()
 
+    category = date = description = paper_filed = pages = transaction_id = ""
+    content = b""
     if returned_data.get("links") and returned_data.get("links").get(
         "document_metadata"
     ):
@@ -235,6 +241,25 @@ def get_filing_document(company_number: str, transactionID: str) -> bytes:
             url, auth=auth, headers={"Accept": "application/pdf"}, timeout=TIMEOUT
         )
 
-        return bytes(response.content)
+        if returned_data.get("category"):
+            category = returned_data["category"]
+        if returned_data.get("date"):
+            date = returned_data["date"]
+        if returned_data.get("description"):
+            description = returned_data["description"]
+        if returned_data.get("paper_filed"):
+            paper_filed = returned_data["paper_filed"]
+        if returned_data.get("pages"):
+            pages = returned_data["pages"]
+        if returned_data.get("transaction_id"):
+            transaction_id = returned_data["transaction_id"]
+
+        content = bytes(response.content)
+
+        return CompanyDocument(
+            category, date, description, paper_filed, pages, transaction_id, content
+        )
     else:
-        return b""
+        return CompanyDocument(
+            category, date, description, paper_filed, pages, transaction_id, content
+        )
