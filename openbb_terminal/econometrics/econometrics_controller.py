@@ -1948,35 +1948,36 @@ class EconometricsController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="garch",
             description="""Calculates annualized volatility forecasts based on GARCH.
-            GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for
-            instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
-        
+            GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, 
+            which is for instance used to model volatility clusters, stock return and inflation. It is a 
+            generalisation of the ARCH models.
+
             GARCH(p, q):  = (1 - alpha - beta) sigma_l + SUM(alpha u_{t-1} ^ 2) + SUM(beta sigma_{t-1} ^ 2) [1]
-        
+
             The GARCH-model assumes that the variance estimate consists of 3 components:
             - sigma_l; the long term component, which is unrelated to the current market conditions
             - u_t; the innovation/discovery through current market price changes
             - simgma_t; the last estimate
-        
+
             GARCH can be understood as a model, which allows to optimize these 3 variance components to the time series.
             This is done assigning weights to variance components: (1 - alpha - beta) for sigma_l, alpha for u_t and
             beta for sigma_t. [2]
-        
-            The weights can be estimated by iterating over different values of (1 - alpha - beta) sigma_l which we will call omega, alpha and beta, while
-            maximizing: SUM(-ln(v_i) - (u_i ^ 2) / v_i). With the constraints:
+
+            The weights can be estimated by iterating over different values of (1 - alpha - beta) sigma_l which we 
+            will call omega, alpha and beta, while maximizing: SUM(-ln(v_i) - (u_i ^ 2) / v_i). With the constraints:
             - alpha > 0
             - beta > 0
             - alpha + beta < 1
             Note that there is no restriction on omega.
-        
+
             Another method used for estimation is "variance targeting", where one first sets omega
-            equal to the variance of the time series. This method nearly as effective as the previously mentioned and is less
-            computationally effective.
-        
+            equal to the variance of the time series. This method nearly as effective as the previously mentioned and 
+            is less computationally effective.
+
             One can measure the fit of the time series to the GARCH method by using the Ljung-Box statistic. [3]
-        
+
             See the sources below for reference and for greater detail.
-        
+
             Sources:
             [1] Generalized Autoregressive Conditional Heteroskedasticity, by Tim Bollerslev
             [2] Finance Compact Plus Band 1, by Yvonne Seler Zimmerman and Heinz Zimmerman; ISBN: 978-3-907291-31-1

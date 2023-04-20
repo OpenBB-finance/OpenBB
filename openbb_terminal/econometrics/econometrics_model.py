@@ -8,10 +8,10 @@ import warnings
 from itertools import combinations
 from typing import Any, Dict, Optional, Tuple, Union
 
-from arch import arch_model
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from arch import arch_model
 from scipy import stats
 from statsmodels.tsa.stattools import adfuller, grangercausalitytests, kpss
 
@@ -363,8 +363,8 @@ def get_garch(
     This is done assigning weights to variance components: (1 - alpha - beta) for sigma_l, alpha for u_t and
     beta for sigma_t. [2]
 
-    The weights can be estimated by iterating over different values of (1 - alpha - beta) sigma_l which we will call omega, alpha and beta, while
-    maximizing: SUM(-ln(v_i) - (u_i ^ 2) / v_i). With the constraints:
+    The weights can be estimated by iterating over different values of (1 - alpha - beta) sigma_l which we will call
+    omega, alpha and beta, while maximizing: SUM(-ln(v_i) - (u_i ^ 2) / v_i). With the constraints:
     - alpha > 0
     - beta > 0
     - alpha + beta < 1
