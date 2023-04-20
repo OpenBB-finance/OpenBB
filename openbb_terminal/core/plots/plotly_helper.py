@@ -1634,10 +1634,8 @@ class OpenBBFigure(go.Figure):
         if self._feature_flags_applied:
             return
 
-        if get_current_user().preferences.USE_CMD_LOCATION_FIGURE:
-            self._add_cmd_source()
-        if get_current_user().preferences.USE_WATERMARK:
-            self._set_watermark()
+        self._add_cmd_source()
+        self._set_watermark()
 
         self._feature_flags_applied = True
 

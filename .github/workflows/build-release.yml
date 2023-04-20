@@ -3,7 +3,6 @@ name: Build & Release
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECT: false
-  OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
@@ -18,7 +17,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions: 
+permissions:
   actions: write
 
 jobs:
@@ -31,7 +30,7 @@ jobs:
           workflow: windows10_build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
-  
+
   trigger-macos-build:
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +40,7 @@ jobs:
           workflow: macos-build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
-  
+
   trigger-docker-build:
     runs-on: ubuntu-latest
     steps:

@@ -41,6 +41,8 @@ def get_score(symbol: str, years: int) -> Dict[str, Any]:
 
     current_user = get_current_user()
 
+    scores = {}
+
     try:
         valstock = valinvest.Fundamental(
             symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
