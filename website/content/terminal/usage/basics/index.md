@@ -5,15 +5,17 @@ keywords: [basics, commands, functions, features, menus, introduction, openbb te
 ---
 ## Overview
 
-The OpenBB Terminal is a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returning as charts, tables, or text.  Charts and tables are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.  The commands are grouped into menus, with a menu or sub-menu being visually distinguishable from a function by the, `>`, on the far left of the screen.  The color of the text can be altered under the [`/settings` menu](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal).  Navigating through the Terminal menus is similar to traversing folders from any operating system's command line prompt.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.  Absolute paths are also valid to-and-from any point.  From the [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options) menu, go directly to [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto).  By itself, `/`, returns to the home level.
+The OpenBB Terminal is a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returning as charts, tables, or text.  Charts and tables are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.  The commands are grouped into menus, with a menu or sub-menu being visually distinguishable from a function by the, `>`, on the far left of the screen.  The color of the text can be altered under the [`/settings` menu](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal).
 
-![The Home Screen](home.png)
+Navigating through the Terminal menus is similar to traversing folders from any operating system's command line prompt.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.  Absolute paths are also valid to-and-from any point.  From the [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options) menu, go directly to [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto).  By itself, `/`, returns to the home level.
+
+![The Home Screen](https://user-images.githubusercontent.com/85772166/233247655-2f8d0dae-be68-48ca-9b35-123b5b985cb6.png)
 
 ## Auto Complete
 
-The OpenBB Terminal is equipped with an auto completion engine that presents choices based on the current location.  It is activated immediately upon entering any key, and where the function contains optional arguments, pressing the `space bar` after typing the command will present the list of available arguments.  This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders.  The list of choices is browsable via the up and down arrow keys.
+The OpenBB Terminal is equipped with an auto completion engine that presents choices based on the current location.  It is activated immediately upon entering any key, and where the function contains optional arguments, pressing the `space bar` after typing the command will present the list of available arguments.  This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders.  The list of choices - where they are bound by a defined list - is browsable via the up and down arrow keys.
 
-![Auto Complete](autocomplete.png)
+![Auto Complete](https://user-images.githubusercontent.com/85772166/233247702-f707531c-2c65-4380-a662-cd4bc2ae0199.png)
 
 ## Help Dialogues
 
@@ -43,6 +45,12 @@ options:
                         Number of entries to show in data.
 
 For more information and examples, use 'about news' to access the related guide.
+```
+
+Try:
+
+```console
+/news --term Federal Reserve
 ```
 
 ### About
@@ -140,7 +148,7 @@ The default state is dark mode.
 /stocks/load aapl -w/candle
 ```
 
-![Apple Weekly Chart](chart1.png)
+![Apple Weekly Chart](https://user-images.githubusercontent.com/85772166/233247951-e011fe2c-23a6-4518-bd17-3f43a9c2011a.png)
 
 ### Toolbar
 
@@ -157,7 +165,7 @@ The toolbar is located at the bottom of the window, and provides methods for:
 
 The label for each tool is displayed by holding the mouse over it.
 
-![Chart Tools](chart2.png)
+![Chart Tools](https://user-images.githubusercontent.com/85772166/233247997-55c03cbd-9ca9-4f5e-b3fb-3e5a9c63b6eb.png)
 
 Toggle the toolbar's visibility via the keyboard with, `ctrl + h`.
 
@@ -165,15 +173,15 @@ Toggle the toolbar's visibility via the keyboard with, `ctrl + h`.
 
 Annotate a chart by clicking on the `Add Text` button, or with the keyboard, `ctrl + t`.
 
-![Annotate Charts](chart3.png)
+![Annotate Charts](https://user-images.githubusercontent.com/85772166/233248056-d459d7a0-ba2d-4533-896a-79406ded859e.png)
 
 Enter some text, make any adjustments to the options, then `submit`.  Place the crosshairs over the desired data point and click to place the text.
 
-![Place Text](chart4.png)
+![Place Text](https://user-images.githubusercontent.com/85772166/233248107-758bc0b2-ac92-451e-aabb-16eb111c7f88.png)
 
 After placement, the text can be updated or deleted by clicking on it again.
 
-![Delete Annotation](chart5.png)
+![Delete Annotation](https://user-images.githubusercontent.com/85772166/233248228-6226ab12-46dd-443b-a7c4-145fc781e71d.png)
 
 The title of the chart is edited by clicking the button, `Change Titles`, near the middle center of the toolbar, immediately to the right of the `Add Text` button.
 
@@ -190,25 +198,25 @@ The fourth group of icons on the toolbar are for drawing lines and shapes.
 
 To draw on the chart, select one of the four drawing buttons and drag the mouse over the desired area.  Click on any existing shape to modify it by dragging with the mouse and editing the color, or remove it by clicking the toolbar button, `Erase Active Shape`.  The edit colors button will pop up as a floating icon, and clicking on that will display the color palette.
 
-![Edit Colors](chart7.png)
+![Edit Colors](https://user-images.githubusercontent.com/85772166/233248349-d7cd2e2e-7e22-4efb-acdb-5f7a85bf2932.png)
 
 ### Export Tools
 
 The two buttons at the far-right of the toolbar are for saving the raw data or, to save an image file of the chart at the current panned and zoomed view.
 
-![Export Tools](chart8.png)
+![Export Tools](https://user-images.githubusercontent.com/85772166/233248436-08a2a463-403b-4b1b-b7d8-80cd5af7bee3.png)
 
 ### Overlay
 
 The button, `Overlay chart from CSV`, provides an easy import method for supplementing a chart with additional data.  Clicking on the button opens a pop-up dialogue to select the file, column, and whether the overlay should be a bar, candlestick, or line chart.  As a candlestick, the CSV file must contain OHLC data.  The import window can also be opened with the keyboard, `ctrl-o`.
 
-![Overlay CSV](chart9.png)
+![Overlay CSV](https://user-images.githubusercontent.com/85772166/233248522-16b539f4-b0ae-4c30-8c72-dfa59d0c0cfb.png)
 
 After choosing the file to overlay, select what to show and then click on `Submit`.
 
-![Overlay Options](chart10.png)
+[Overlay Options](https://user-images.githubusercontent.com/85772166/233250634-44864da0-0936-4d3c-8de2-c8374d26c1d2.png)
 
-![Overlay Chart](chart11.png)
+![Overlay Chart](https://user-images.githubusercontent.com/85772166/233248639-6d12b16d-471f-4550-a8ab-8d8c18eeabb3.png)
 
 ## Tables
 
@@ -232,34 +240,35 @@ Light mode:
 
 The default state is dark mode.
 
-![Dark Mode Tables](tables1.png)
+![Dark Mode Tables](https://user-images.githubusercontent.com/85772166/233248708-6947f8be-df68-4f63-8848-d2f59d3f2883.png)
 
 ### Sorting and Filtering
 
 Columns can be sorted ascending/descending/unsorted, by clicking the controls to the right of each header title.  The status of the filtering is shown as a blue indicator.
 
-![Sort Columns](tables2.png)
+![Sort Columns](https://user-images.githubusercontent.com/85772166/233248754-20c18390-a7af-490c-9571-876447b1b0ae.png)
 
 The settings button, at the lower-left corner, displays choices for customizing the table.  By selecting the `Type` to be `Advanced`, columns become filterable.
 
-![Table Settings](tables3.png)
+![Table Settings](https://user-images.githubusercontent.com/85772166/233248876-0d788ff4-974d-4d92-8186-56864469870a.png)
 
 The columns can be filtered with min/max values or by letters, depending on the content of each column.
 
-![Filtered Tables](tables4.png)
+![Filtered Tables](https://user-images.githubusercontent.com/85772166/233248923-45873bf1-de6b-40f8-a4aa-05e7c3d21ab0.png)
 
 ### Selecting Columns and Rows
 
 The table will scroll to the right as far as there are columns.  Columns can be removed from the table by clicking the icon to the right of the settings button and unchecking it from the list.
 
-![Select Columns](tables5.png)
+![Select Columns](https://user-images.githubusercontent.com/85772166/233248976-849791a6-c126-437c-bb54-454ba6ea4fa2.png)
 
 The number of rows per page is defined in the drop down selection near the center, at the bottom.
 
-![Rows per Page](tables6.png)
+![Rows per Page](https://user-images.githubusercontent.com/85772166/233249018-8269896d-72f7-4e72-a4d4-2715d1f11b96.png)
 
 ### Exporting Data
 
 At the bottom-right corner of the table window, there is a button for exporting the data.  To the left, the drop down selection for `Type` can be defined as a CSV, XLSX, or PNG file.  Exporting the table as a PNG file will create a screenshot of the table at its current view, and data that is not on the screen will not be captured.
 
-![Export Data](tables7.png)
+![Export Data](https://user-images.githubusercontent.com/85772166/233249065-60728dd1-612e-4684-b196-892f3604c0f4.png)
+
