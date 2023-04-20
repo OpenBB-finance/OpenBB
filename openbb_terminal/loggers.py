@@ -139,18 +139,13 @@ class PosthogHandler(logging.Handler):
         log_extra.update(dict(level=level_name, message=log_line))
         event_name = f"log_{level_name.lower()}"
 
-        log_dict = self.log_to_dict(log_info=log_line)
-        if log_dict:
-            key = list(log_dict.keys())[0]
-            event_name = f"log_{key.lower()}"
-            if key == "SDK":
-                log_extra.update(log_dict[key].pop("INPUT", {}))
+        if log_dict := self.log_to_dict(log_info=log_line):
+            event_name = f"log_{list(log_dict.keys())[0].lower()}"
 
-            log_extra = {**log_extra, **log_dict[key]}
+            log_extra = {**log_extra, **log_dict}
             log_extra.pop("message", None)
 
-        ignore_regex = r"^(START|END|INPUT:)"
-        if re.match(ignore_regex, log_line):
+        if re.match(r"^(START|END|INPUT:)", log_line):
             return
 
         if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
@@ -158,6 +153,7 @@ class PosthogHandler(logging.Handler):
             openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
 
         log_extra.update({"$geoip_disable": True})
+
         openbb_posthog.capture(
             app_settings.identifier,
             event_name,
@@ -182,6 +178,13 @@ class PosthogHandler(logging.Handler):
 
         if hasattr(record, "extra"):
             log_extra = {**log_extra, **record.extra}
+
+        if record.exc_info:
+            log_extra["exception"] = {
+                "type": str(record.exc_info[0]),
+                "value": str(record.exc_info[1]),
+                "traceback": self.format(record),
+            }
 
         return log_extra
 
