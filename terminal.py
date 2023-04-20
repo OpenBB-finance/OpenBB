@@ -5,7 +5,8 @@ import openbb_terminal.config_terminal as cfg
 
 # pylint:disable=unused-import,import-outside-toplevel
 import openbb_terminal.core.session.current_system as syst  # noqa: F401
-import openbb_terminal.core.session.current_user as user  # noqa: F401
+import openbb_terminal.core.session.current_user as user
+from openbb_terminal.menu import is_papermill  # noqa: F401
 from openbb_terminal.terminal_helper import (
     hide_splashscreen,
     is_auth_enabled,
@@ -30,7 +31,11 @@ def main():
     else:
         from openbb_terminal.core.session import session_controller
 
-        if is_auth_enabled() and ("--login" in sys.argv[1:] or is_installer()):
+        if (
+            is_auth_enabled()
+            and ("--login" in sys.argv[1:] or is_installer())
+            and not is_papermill()
+        ):
             session_controller.main()
         else:
             session_controller.launch_terminal()
