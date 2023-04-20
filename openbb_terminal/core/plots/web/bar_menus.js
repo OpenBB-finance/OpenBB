@@ -1,6 +1,6 @@
 // Custom Menu functions for Plotly charts
 
-function autoScaling(eventdata, graphs) {
+async function autoScaling(eventdata, graphs) {
   try {
     if (eventdata["xaxis.range[0]"] != undefined) {
       const x_min = eventdata["xaxis.range[0]"];
