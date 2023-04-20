@@ -130,11 +130,8 @@ def download_and_save_routines(auth_header: str):
         The authorization header, e.g. "Bearer <token>".
     """
     try:
-        console.print("\nDownloading routines...")
         routines = download_routines(auth_header=auth_header)
-        for name, content in optional_rich_track(
-            routines.items(), desc="Saving routines"
-        ):
+        for name, content in routines.items():
             save_routine(file_name=f"{name}.openbb", routine=content, force=True)
     except Exception:
         console.print("[red]Failed to download and save routines.[/red]")
