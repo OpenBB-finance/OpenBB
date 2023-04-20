@@ -259,7 +259,10 @@ def setup_handlers(settings: Settings):
         FormatterWithExceptions.LOGFORMAT.replace("|", "-"),
     )
 
-    if not current_system.TEST_MODE and not current_system.LOGGING_SUPPRESS:
+    if (
+        not any([current_system.TEST_MODE, current_system.LOGGING_SUPPRESS])
+        # and current_system.LOG_COLLECT
+    ):
         add_posthog_handler(settings=settings)
 
 
