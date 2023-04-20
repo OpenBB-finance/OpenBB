@@ -268,7 +268,7 @@ class Backend(PyWry):
                 title=title,
                 source=source or "",
                 theme=theme or "dark",
-                command_location=command_location or "",
+                command_location=command_location,
             )
         )
 
@@ -279,7 +279,7 @@ class Backend(PyWry):
                     "json_data": json.dumps(json_data),
                     "width": width,
                     "height": self.HEIGHT - 100,
-                    **self.get_kwargs(title),
+                    **self.get_kwargs(command_location),
                 }
             )
         )
