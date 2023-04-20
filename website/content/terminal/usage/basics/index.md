@@ -5,7 +5,7 @@ keywords: [basics, commands, functions, features, menus, introduction, openbb te
 ---
 ## Overview
 
-The OpenBB Terminal is a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returning as charts, tables, or text.  Charts and tables are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.  The commands are grouped into menus, with a menu or sub-menu being visually distinguishable from a function by the, `>`, on the far left of the screen.  The color of the text can be altered under the [`/settings` menu](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal).
+The OpenBB Terminal is a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.  Commands are grouped into menus, with a menu or sub-menu being visually distinguishable from a function by the, `>`, on the far left of the screen.  The color of the text can be altered under the [`/settings` menu](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal).
 
 Navigating through the Terminal menus is similar to traversing folders from any operating system's command line prompt.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.  Absolute paths are also valid to-and-from any point.  From the [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options) menu, go directly to [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto).  By itself, `/`, returns to the home level.
 
@@ -13,7 +13,7 @@ Navigating through the Terminal menus is similar to traversing folders from any 
 
 ## Auto Complete
 
-The OpenBB Terminal is equipped with an auto completion engine that presents choices based on the current location.  It is activated immediately upon entering any key, and where the function contains optional arguments, pressing the `space bar` after typing the command will present the list of available arguments.  This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders.  Choices - where they are bound by a defined list - are browsable via the up and down arrow keys.
+The OpenBB Terminal is equipped with an auto completion engine that presents choices based on the current menu.  Whenever you start typing, the prompt will appear. When the function contains optional arguments, pressing the `space bar` after typing the command will present the list of available arguments.  This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders.  Choices - where they are bound by a defined list - are searchable with the up and down arrow keys.
 
 ![Auto Complete](https://user-images.githubusercontent.com/85772166/233247702-f707531c-2c65-4380-a662-cd4bc2ae0199.png)
 
@@ -21,7 +21,7 @@ The OpenBB Terminal is equipped with an auto completion engine that presents cho
 
 ### -h or --help
 
-A help dialogue for any function at the current location is printed to the screen by attaching `-h` to the command.  The information returned contains a short description of the function and all accepted arguments.  If the parameters of an argument is a defined set of choices, they will also be included here.  For an example, the `/news` function:
+A help dialogue for any function at the current location is printed to the screen by attaching `-h` to the command.  The information returned contains a short description of the function and all accepted arguments.  For an example, the `/news` function:
 
 ```console
 news -h
@@ -61,7 +61,7 @@ Try:
 /about stocks
 ```
 
-The command above will open a browser to, [Introduction to the Stocks menu](https://docs.openbb.co/terminal/usage/intros/stocks).
+The command above will open a browser to [Introduction to the Stocks menu](https://docs.openbb.co/terminal/usage/intros/stocks).
 
 ## Menus
 
