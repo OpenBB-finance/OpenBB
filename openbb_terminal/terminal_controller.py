@@ -29,6 +29,7 @@ from openbb_terminal.account.account_controller import (
     set_login_called,
 )
 from openbb_terminal.common import feedparser_view
+from openbb_terminal.common import biztoc_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -94,6 +95,7 @@ class TerminalController(BaseController):
         "exe",
         "guess",
         "news",
+        "news_biztoc",
         "intro",
     ]
     CHOICES_MENUS = [
@@ -180,6 +182,7 @@ class TerminalController(BaseController):
             mt.add_cmd("update")
         mt.add_cmd("wiki")
         mt.add_cmd("news")
+        mt.add_cmd("news_biztoc")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         if is_auth_enabled():
@@ -251,6 +254,81 @@ class TerminalController(BaseController):
                 export=news_parser.export,
                 sheet_name=news_parser.sheet_name,
             )
+
+    def call_news_biztoc(self, other_args: List[str]) -> None:
+        """Process news_biztoc command."""
+        parse = argparse.ArgumentParser(
+            add_help=False,
+            prog="news_biztoc",
+            description="display news articles based on term, tag and news source",
+        )
+        parse.add_argument(
+            "-t",
+            "--term",
+            dest="term",
+            default="",
+            type=str,
+            nargs="+",
+            help="search for a term on the news",
+        )
+        parse.add_argument(
+            "-tg",
+            "--tag",
+            dest="tag",
+            default="",
+            type=str,
+            help="display news for an individual tag",
+        )
+        parse.add_argument(
+            "-s",
+            "--source",
+            dest="source",
+            default="",
+            type=str,
+            help="source from where to get news from",
+        )
+        parse.add_argument(
+            "-sl",
+            "--sourcelist",
+            dest="sourcelist",
+            action="store_true",
+            help="list all available sources from where to get news from",
+        )
+        parse.add_argument(
+            "-tl",
+            "--taglist",
+            dest="taglist",
+            action="store_true",
+            help="list all trending tags",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        biztoc_parser = self.parse_known_args_and_warn(
+            parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=100
+        )
+        console.print(biztoc_parser)
+        if biztoc_parser:
+            query = " ".join(biztoc_parser.term)
+            if biztoc_parser.sourcelist and biztoc_parser.sourcelist == True:
+                biztoc_view.display_sources(
+                    export=biztoc_parser.export,
+                    sheet_name=biztoc_parser.sheet_name,
+                )
+            elif biztoc_parser.taglist and biztoc_parser.taglist == True:
+                biztoc_view.display_tags(
+                    export=biztoc_parser.export,
+                    sheet_name=biztoc_parser.sheet_name,
+                )
+            else:
+                biztoc_view.display_news(
+                    term=query,
+                    tag=biztoc_parser.tag,
+                    source=biztoc_parser.source,
+                    limit=biztoc_parser.limit,
+                    export=biztoc_parser.export,
+                    sheet_name=biztoc_parser.sheet_name,
+                )
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""

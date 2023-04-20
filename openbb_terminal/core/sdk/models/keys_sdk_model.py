@@ -70,6 +70,7 @@ class KeysRoot(Category):
         self.messari = lib.keys_model.set_messari_key
         self.mykeys = lib.keys_model.get_keys
         self.news = lib.keys_model.set_news_key
+        self.biztoc = lib.keys_model.set_biztoc_key
         self.oanda = lib.keys_model.set_oanda_key
         self.polygon = lib.keys_model.set_polygon_key
         self.quandl = lib.keys_model.set_quandl_key
