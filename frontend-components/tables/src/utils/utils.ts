@@ -145,7 +145,7 @@ export const downloadData = (type: "csv" | "xlsx", columns: any, data: any) => {
   if (type === "csv") {
     const csvContent = csvData.map((e) => e.join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const filename = `${window.title}.png`;
+    const filename = `${window.title}.csv`;
     return getNewFileHandle({
       filename: filename,
     }).then((fileHandle) => {
