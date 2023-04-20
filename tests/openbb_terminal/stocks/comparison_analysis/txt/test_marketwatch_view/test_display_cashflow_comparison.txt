@@ -1,7 +1,7 @@
 Other available quarterly timeframes are: 30-Sep-2021, 31-Dec-2021, 31-Mar-2022, 30-Jun-2022, 30-Sep-2022
 
                                        31-Dec-2021 TSLA 31-Dec-2021 GM
-Item
+Item                                                                  
 Net Income before Extraordinaries                 2.34B          1.77B
 Net Income Growth                                41.23%        -25.98%
 Depreciation, Depletion & Amortization             848M          2.94B
