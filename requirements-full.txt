@@ -343,7 +343,6 @@ tqdm==4.65.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and py
 tradingview-ta==3.3.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 traitlets==5.9.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 transformers==4.27.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
-tweepy==4.13.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 types-python-dateutil==2.8.19.10 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 types-pytz==2021.3.8 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 types-pyyaml==6.0.12.8 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"

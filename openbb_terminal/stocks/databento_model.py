@@ -82,7 +82,7 @@ class DataBento(BaseModel):
         """Prepares the request to be made.  I am using their https interface instead of their python client.
         Their next update will change symbol.V.0 to symbol.C.0"""
 
-        base_url = "https://hist.databento.com/v0/timeseries.stream"
+        base_url = "https://hist.databento.com/v0/timeseries.get_range"
         symbol = self.symbol + ".V.0" if self.exchange == "GLBX.MDP3" else self.symbol
         params = {
             "dataset": self.exchange,

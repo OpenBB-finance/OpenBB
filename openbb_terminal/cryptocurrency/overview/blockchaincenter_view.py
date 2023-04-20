@@ -57,24 +57,13 @@ def display_altcoin_index(
         fig.set_title(f"Altcoin Index (Performance based on {period} days)")
         fig.add_scatter(x=df.index, y=df["Value"], mode="lines", name="Altcoin Index")
 
-        fig.add_hline(
-            y=75,
-            line_color=theme.up_color,
-            annotation=dict(
-                text="Altcoin Season (75)",
-                x=0.5,
-                xanchor="center",
-            ),
+        fig.add_hline_legend(
+            y=75, line=dict(color=theme.up_color), name="Altcoin Season (75)"
         )
-        fig.add_hline(
+        fig.add_hline_legend(
             y=25,
-            line_color=theme.down_color,
-            annotation=dict(
-                text="Bitcoin Season (25)",
-                x=0.5,
-                xanchor="center",
-                yshift=-30,
-            ),
+            line=dict(color=theme.down_color),
+            name="Bitcoin Season (25)",
         )
 
         export_data(

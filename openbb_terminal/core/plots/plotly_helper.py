@@ -932,6 +932,7 @@ class OpenBBFigure(go.Figure):
             ),
             yaxis2=dict(
                 autorange=True,
+                automargin=True,
                 side="right",
                 fixedrange=False,
                 anchor="x",
@@ -1055,6 +1056,8 @@ class OpenBBFigure(go.Figure):
                 color="#FFFFFF" if theme.mapbox_style == "dark" else "black",
                 activecolor="#d1030d" if theme.mapbox_style == "dark" else "blue",
             ),
+            spikedistance=2,
+            hoverdistance=2,
         )
 
         if external or self._exported:
@@ -1536,7 +1539,7 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=85, t=40, pad=0)
+            dict(l=80, r=60, b=90, t=40, pad=0)
             if not self._has_secondary_y or not self.has_subplots
             else dict(l=60, r=50, b=95, t=40, pad=0)
         )
@@ -1634,10 +1637,8 @@ class OpenBBFigure(go.Figure):
         if self._feature_flags_applied:
             return
 
-        if get_current_user().preferences.USE_CMD_LOCATION_FIGURE:
-            self._add_cmd_source()
-        if get_current_user().preferences.USE_WATERMARK:
-            self._set_watermark()
+        self._add_cmd_source()
+        self._set_watermark()
 
         self._feature_flags_applied = True
 

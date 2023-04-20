@@ -1,4 +1,9 @@
 const ICONS = {
+  sunIcon: {
+    width: 16,
+    height: 16,
+    path: "M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z",
+  },
   plotCsv: {
     width: 900,
     height: 900,
@@ -377,3 +382,698 @@ function button_pressed(title, active = false) {
     button.style.boxShadow = "none";
   }
 }
+
+const DARK_CHARTS_TEMPLATE = {
+  line: {
+    up_color: "#00ACFF",
+    down_color: "#e4003a",
+    color: "#ffed00",
+    width: 1.5,
+  },
+  data: {
+    candlestick: [
+      {
+        decreasing: {
+          fillcolor: "#e4003a",
+          line: {
+            color: "#e4003a",
+          },
+        },
+        increasing: {
+          fillcolor: "#00ACFF",
+          line: {
+            color: "#00ACFF",
+          },
+        },
+        type: "candlestick",
+      },
+    ],
+  },
+  layout: {
+    annotationdefaults: {
+      showarrow: false,
+    },
+    autotypenumbers: "strict",
+    colorway: [
+      "#ffed00",
+      "#ef7d00",
+      "#e4003a",
+      "#c13246",
+      "#822661",
+      "#48277c",
+      "#005ca9",
+      "#00aaff",
+      "#9b30d9",
+      "#af005f",
+      "#5f00af",
+      "#af87ff",
+    ],
+    dragmode: "pan",
+    font: {
+      family: "Fira Code",
+      size: 18,
+    },
+    hoverlabel: {
+      align: "left",
+    },
+    mapbox: {
+      style: "dark",
+    },
+    hovermode: "x",
+    legend: {
+      bgcolor: "rgba(0, 0, 0, 0)",
+      x: 0.01,
+      xanchor: "left",
+      y: 0.99,
+      yanchor: "top",
+      font: {
+        size: 15,
+      },
+    },
+    paper_bgcolor: "#000000",
+    plot_bgcolor: "#000000",
+    xaxis: {
+      automargin: true,
+      autorange: true,
+      rangeslider: {
+        visible: false,
+      },
+      showgrid: true,
+      showline: true,
+      tickfont: {
+        size: 14,
+      },
+      zeroline: false,
+      tick0: 1,
+      title: {
+        standoff: 20,
+      },
+      linecolor: "#F5EFF3",
+      mirror: true,
+      ticks: "outside",
+    },
+    yaxis: {
+      anchor: "x",
+      automargin: true,
+      fixedrange: false,
+      zeroline: false,
+      showgrid: true,
+      showline: true,
+      side: "right",
+      tick0: 0.5,
+      title: {
+        standoff: 20,
+      },
+      gridcolor: "#283442",
+      linecolor: "#F5EFF3",
+      mirror: true,
+      ticks: "outside",
+    },
+  },
+};
+
+const LIGHT_CHARTS_TEMPLATE = {
+  line: {
+    up_color: "#009600",
+    down_color: "#c80000",
+    color: "#0d0887",
+    width: 1.5,
+  },
+  data: {
+    barpolar: [
+      {
+        marker: {
+          line: {
+            color: "white",
+            width: 0.5,
+          },
+          pattern: {
+            fillmode: "overlay",
+            size: 10,
+            solidity: 0.2,
+          },
+        },
+        type: "barpolar",
+      },
+    ],
+    bar: [
+      {
+        error_x: {
+          color: "#2a3f5f",
+        },
+        error_y: {
+          color: "#2a3f5f",
+        },
+        marker: {
+          line: {
+            color: "white",
+            width: 0.5,
+          },
+          pattern: {
+            fillmode: "overlay",
+            size: 10,
+            solidity: 0.2,
+          },
+        },
+        type: "bar",
+      },
+    ],
+    carpet: [
+      {
+        aaxis: {
+          endlinecolor: "#2a3f5f",
+          gridcolor: "#C8D4E3",
+          linecolor: "#C8D4E3",
+          minorgridcolor: "#C8D4E3",
+          startlinecolor: "#2a3f5f",
+        },
+        baxis: {
+          endlinecolor: "#2a3f5f",
+          gridcolor: "#C8D4E3",
+          linecolor: "#C8D4E3",
+          minorgridcolor: "#C8D4E3",
+          startlinecolor: "#2a3f5f",
+        },
+        type: "carpet",
+      },
+    ],
+    choropleth: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        type: "choropleth",
+      },
+    ],
+    contourcarpet: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        type: "contourcarpet",
+      },
+    ],
+    contour: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "contour",
+      },
+    ],
+    heatmapgl: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "heatmapgl",
+      },
+    ],
+    heatmap: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "heatmap",
+      },
+    ],
+    histogram2dcontour: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "histogram2dcontour",
+      },
+    ],
+    histogram2d: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "histogram2d",
+      },
+    ],
+    histogram: [
+      {
+        marker: {
+          pattern: {
+            fillmode: "overlay",
+            size: 10,
+            solidity: 0.2,
+          },
+        },
+        type: "histogram",
+      },
+    ],
+    mesh3d: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        type: "mesh3d",
+      },
+    ],
+    parcoords: [
+      {
+        line: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "parcoords",
+      },
+    ],
+    pie: [
+      {
+        automargin: true,
+        type: "pie",
+      },
+    ],
+    scatter3d: [
+      {
+        line: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scatter3d",
+      },
+    ],
+    scattercarpet: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scattercarpet",
+      },
+    ],
+    scattergeo: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scattergeo",
+      },
+    ],
+    scattergl: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scattergl",
+      },
+    ],
+    scattermapbox: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scattermapbox",
+      },
+    ],
+    scatterpolargl: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scatterpolargl",
+      },
+    ],
+    scatterpolar: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scatterpolar",
+      },
+    ],
+    scatter: [
+      {
+        fillpattern: {
+          fillmode: "overlay",
+          size: 10,
+          solidity: 0.2,
+        },
+        type: "scatter",
+      },
+    ],
+    scatterternary: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scatterternary",
+      },
+    ],
+    surface: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "surface",
+      },
+    ],
+    table: [
+      {
+        cells: {
+          fill: {
+            color: "#EBF0F8",
+          },
+          line: {
+            color: "white",
+          },
+        },
+        header: {
+          fill: {
+            color: "#C8D4E3",
+          },
+          line: {
+            color: "white",
+          },
+        },
+        type: "table",
+      },
+    ],
+    candlestick: [
+      {
+        decreasing: {
+          fillcolor: "#c80000",
+          line: {
+            color: "#990000",
+          },
+        },
+        increasing: {
+          fillcolor: "#009600",
+          line: {
+            color: "#007500",
+          },
+        },
+        type: "candlestick",
+      },
+    ],
+  },
+  layout: {
+    annotationdefaults: {
+      arrowcolor: "#2a3f5f",
+      arrowhead: 0,
+      arrowwidth: 1,
+      showarrow: false,
+    },
+    autotypenumbers: "strict",
+    coloraxis: {
+      colorbar: {
+        outlinewidth: 0,
+        ticks: "",
+      },
+    },
+    colorscale: {
+      diverging: [
+        [0, "#8e0152"],
+        [0.1, "#c51b7d"],
+        [0.2, "#de77ae"],
+        [0.3, "#f1b6da"],
+        [0.4, "#fde0ef"],
+        [0.5, "#f7f7f7"],
+        [0.6, "#e6f5d0"],
+        [0.7, "#b8e186"],
+        [0.8, "#7fbc41"],
+        [0.9, "#4d9221"],
+        [1, "#276419"],
+      ],
+      sequential: [
+        [0.0, "#0d0887"],
+        [0.1111111111111111, "#46039f"],
+        [0.2222222222222222, "#7201a8"],
+        [0.3333333333333333, "#9c179e"],
+        [0.4444444444444444, "#bd3786"],
+        [0.5555555555555556, "#d8576b"],
+        [0.6666666666666666, "#ed7953"],
+        [0.7777777777777778, "#fb9f3a"],
+        [0.8888888888888888, "#fdca26"],
+        [1.0, "#f0f921"],
+      ],
+      sequentialminus: [
+        [0.0, "#0d0887"],
+        [0.1111111111111111, "#46039f"],
+        [0.2222222222222222, "#7201a8"],
+        [0.3333333333333333, "#9c179e"],
+        [0.4444444444444444, "#bd3786"],
+        [0.5555555555555556, "#d8576b"],
+        [0.6666666666666666, "#ed7953"],
+        [0.7777777777777778, "#fb9f3a"],
+        [0.8888888888888888, "#fdca26"],
+        [1.0, "#f0f921"],
+      ],
+    },
+    colorway: [
+      "#254495",
+      "#c13246",
+      "#48277c",
+      "#e4003a",
+      "#ef7d00",
+      "#822661",
+      "#ffed00",
+      "#00aaff",
+      "#9b30d9",
+      "#af005f",
+      "#5f00af",
+      "#af87ff",
+    ],
+    font: {
+      color: "#2a3f5f",
+    },
+    geo: {
+      bgcolor: "white",
+      lakecolor: "white",
+      landcolor: "white",
+      showlakes: true,
+      showland: true,
+      subunitcolor: "#C8D4E3",
+    },
+    hoverlabel: {
+      align: "left",
+    },
+    hovermode: "x",
+    mapbox: {
+      style: "light",
+    },
+    paper_bgcolor: "white",
+    plot_bgcolor: "white",
+    polar: {
+      angularaxis: {
+        gridcolor: "#EBF0F8",
+        linecolor: "#EBF0F8",
+        ticks: "",
+      },
+      bgcolor: "white",
+      radialaxis: {
+        gridcolor: "#EBF0F8",
+        linecolor: "#EBF0F8",
+        ticks: "",
+      },
+    },
+    scene: {
+      xaxis: {
+        backgroundcolor: "white",
+        gridcolor: "#DFE8F3",
+        gridwidth: 2,
+        linecolor: "#EBF0F8",
+        showbackground: true,
+        ticks: "",
+        zerolinecolor: "#EBF0F8",
+      },
+      yaxis: {
+        backgroundcolor: "white",
+        gridcolor: "#DFE8F3",
+        gridwidth: 2,
+        linecolor: "#EBF0F8",
+        showbackground: true,
+        ticks: "",
+        zerolinecolor: "#EBF0F8",
+      },
+      zaxis: {
+        backgroundcolor: "white",
+        gridcolor: "#DFE8F3",
+        gridwidth: 2,
+        linecolor: "#EBF0F8",
+        showbackground: true,
+        ticks: "",
+        zerolinecolor: "#EBF0F8",
+      },
+    },
+    shapedefaults: {
+      line: {
+        color: "#2a3f5f",
+      },
+    },
+    ternary: {
+      aaxis: {
+        gridcolor: "#DFE8F3",
+        linecolor: "#A2B1C6",
+        ticks: "",
+      },
+      baxis: {
+        gridcolor: "#DFE8F3",
+        linecolor: "#A2B1C6",
+        ticks: "",
+      },
+      bgcolor: "white",
+      caxis: {
+        gridcolor: "#DFE8F3",
+        linecolor: "#A2B1C6",
+        ticks: "",
+      },
+    },
+    title: {
+      x: 0.05,
+    },
+    xaxis: {
+      automargin: true,
+      ticks: "",
+      zerolinewidth: 2,
+      rangeslider: {
+        visible: false,
+      },
+      showgrid: true,
+      showline: true,
+      tickfont: {
+        size: 15,
+      },
+      mirror: true,
+      zeroline: false,
+    },
+    yaxis: {
+      automargin: true,
+      ticks: "",
+      tickfont: {
+        size: 15,
+      },
+      zerolinewidth: 2,
+      fixedrange: false,
+      nticks: 8,
+      showgrid: true,
+      showline: true,
+      side: "right",
+      mirror: true,
+      zeroline: false,
+    },
+    dragmode: "pan",
+    legend: {
+      bgcolor: "rgba(0, 0, 0, 0)",
+      x: 1.03,
+      xanchor: "left",
+      y: 0.99,
+      yanchor: "top",
+    },
+  },
+};
