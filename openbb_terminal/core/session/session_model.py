@@ -28,7 +28,7 @@ from openbb_terminal.core.session.sources_handler import get_updated_hub_sources
 from openbb_terminal.core.session.utils import run_thread
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.loggers import setup_logging
-from openbb_terminal.rich_config import console, optional_rich_track
+from openbb_terminal.rich_config import console
 
 # pylint: disable=consider-using-f-string
 
