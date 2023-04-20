@@ -48,7 +48,7 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     parse_and_split_input,
 )
-from openbb_terminal.menu import is_papermill, session
+from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
@@ -58,6 +58,7 @@ from openbb_terminal.terminal_helper import (
     first_time_user,
     is_auth_enabled,
     is_installer,
+    is_papermill,
     is_reset,
     print_goodbye,
     reset,

@@ -5,11 +5,11 @@ import openbb_terminal.config_terminal as cfg
 
 # pylint:disable=unused-import,import-outside-toplevel
 import openbb_terminal.core.session.current_system as syst  # noqa: F401
-from openbb_terminal.menu import is_papermill  # noqa: F401
 from openbb_terminal.terminal_helper import (
     hide_splashscreen,
     is_auth_enabled,
     is_installer,
+    is_papermill,
 )
 
 
