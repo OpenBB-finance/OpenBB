@@ -166,7 +166,9 @@ def search(
         kwargs["industry_group"] = industry_group
     if exchange:
         kwargs["exchange"] = exchange
-    kwargs["exclude_exchanges"] = False if (exchange_country or exchange) else not all_exchanges
+    kwargs["exclude_exchanges"] = (
+        False if (exchange_country or exchange) else not all_exchanges
+    )
 
     try:
         equities_database = fd.Equities()
