@@ -116,6 +116,7 @@ def search(
     sector: str = "",
     industry_group: str = "",
     industry: str = "",
+    exchange: str = "",
     exchange_country: str = "",
     all_exchanges: bool = False,
     limit: int = 0,
@@ -130,8 +131,12 @@ def search(
         Search by country to find stocks matching the criteria
     sector : str
         Search by sector to find stocks matching the criteria
+    industry_group : str
+        Search by industry group to find stocks matching the criteria
     industry : str
         Search by industry to find stocks matching the criteria
+    exchange: str
+        Search by exchange to find stock matching the criteria
     exchange_country: str
         Search by exchange country to find stock matching
     all_exchanges: bool
@@ -148,7 +153,7 @@ def search(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.stocks.search(country="united states", exchange_country="Germany")
+    >>> openbb.stocks.search(country="United States", exchange_country="Germany")
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
@@ -159,6 +164,8 @@ def search(
         kwargs["industry"] = industry
     if industry_group:
         kwargs["industry_group"] = industry_group
+    if exchange:
+        kwargs["exchange"] = exchange
     kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
 
     try:
@@ -220,7 +227,11 @@ def search(
     title = "Companies found"
     if query:
         title += f" on term {query}"
-    if exchange_country:
+    if exchange_country and exchange:
+        title += f" on the exchange {exchange} in {exchange_country.replace('_', ' ').title()}"
+    if exchange and not exchange_country:
+        title += f" on the exchange {exchange}"
+    if exchange_country and not exchange:
         title += f" on an exchange in {exchange_country.replace('_', ' ').title()}"
     if country:
         title += f" in {country.replace('_', ' ').title()}"
