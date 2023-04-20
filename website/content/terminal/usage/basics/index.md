@@ -13,7 +13,7 @@ Navigating through the Terminal menus is similar to traversing folders from any 
 
 ## Auto Complete
 
-The OpenBB Terminal is equipped with an auto completion engine that presents choices based on the current location.  It is activated immediately upon entering any key, and where the function contains optional arguments, pressing the `space bar` after typing the command will present the list of available arguments.  This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders.  The list of choices - where they are bound by a defined list - is browsable via the up and down arrow keys.
+The OpenBB Terminal is equipped with an auto completion engine that presents choices based on the current location.  It is activated immediately upon entering any key, and where the function contains optional arguments, pressing the `space bar` after typing the command will present the list of available arguments.  This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders.  Choices - where they are bound by a defined list - are browsable via the up and down arrow keys.
 
 ![Auto Complete](https://user-images.githubusercontent.com/85772166/233247702-f707531c-2c65-4380-a662-cd4bc2ae0199.png)
 
@@ -271,4 +271,3 @@ The number of rows per page is defined in the drop down selection near the cente
 At the bottom-right corner of the table window, there is a button for exporting the data.  To the left, the drop down selection for `Type` can be defined as a CSV, XLSX, or PNG file.  Exporting the table as a PNG file will create a screenshot of the table at its current view, and data that is not on the screen will not be captured.
 
 ![Export Data](https://user-images.githubusercontent.com/85772166/233249065-60728dd1-612e-4684-b196-892f3604c0f4.png)
-
