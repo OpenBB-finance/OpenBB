@@ -214,7 +214,7 @@ The button, `Overlay chart from CSV`, provides an easy import method for supplem
 
 After choosing the file to overlay, select what to show and then click on `Submit`.
 
-[Overlay Options](https://user-images.githubusercontent.com/85772166/233250634-44864da0-0936-4d3c-8de2-c8374d26c1d2.png)
+![Overlay Options](https://user-images.githubusercontent.com/85772166/233250634-44864da0-0936-4d3c-8de2-c8374d26c1d2.png)
 
 ![Overlay Chart](https://user-images.githubusercontent.com/85772166/233248639-6d12b16d-471f-4550-a8ab-8d8c18eeabb3.png)
 
