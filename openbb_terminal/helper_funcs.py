@@ -301,8 +301,7 @@ def print_rich_table(
         current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
     )
 
-    if isinstance(df.index, pd.RangeIndex):
-        show_index = False
+    show_index = not isinstance(df.index, pd.RangeIndex) and show_index
 
     for col in df.columns:
         try:
