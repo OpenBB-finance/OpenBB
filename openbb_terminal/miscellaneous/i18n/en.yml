@@ -980,6 +980,7 @@ en:
   econometrics/granger: Granger causality tests on two columns
   econometrics/coint: co-integration test on a multitude of columns
   econometrics/garch: estimate future volatility with GARCH
+  econometrics/ret: calculate returns for the given time series
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
   portfolio/load: load transactions into the portfolio (use load --example for an example)

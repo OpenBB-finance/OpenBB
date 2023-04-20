@@ -65,6 +65,7 @@ class EconometricsController(BaseController):
         "combine",
         "rename",
         "lag",
+        "ret",
         "ols",
         "norm",
         "root",
@@ -283,6 +284,7 @@ class EconometricsController(BaseController):
         mt.add_cmd("combine", self.files)
         mt.add_cmd("rename", self.files)
         mt.add_cmd("lag", self.files)
+        mt.add_cmd("ret", self.files)
         mt.add_cmd("export", self.files)
         mt.add_info("time_series_")
         mt.add_cmd("norm", self.files)
@@ -1229,6 +1231,50 @@ class EconometricsController(BaseController):
         self.update_runtime_choices()
 
     @log_start_end(log=logger)
+    def call_ret(self, other_args: List[str]):
+        """Process ret command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ret",
+            description="Calculate returns for the given column.",
+        )
+        parser.add_argument(
+            "-v",
+            "--values",
+            help="Dataset.column values to calculate returns.",
+            dest="values",
+            choices={
+                f"{dataset}.{column}": {column: None, dataset: None}
+                for dataset, dataframe in self.datasets.items()
+                for column in dataframe.columns
+            },
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=NO_EXPORT
+        )
+
+        if not ns_parser:
+            return
+
+        try:
+            dataset, col = ns_parser.values.split(".")
+            data = self.datasets[dataset]
+        except ValueError:
+            console.print("[red]Please enter 'dataset'.'column'.[/red]\n")
+            return
+
+        data[col + "_returns"] = econometrics_model.get_returns(data[col])
+        self.datasets[dataset] = data
+
+        self.update_runtime_choices()
+
+    @log_start_end(log=logger)
     def call_eval(self, other_args):
         """Process eval command"""
         parser = argparse.ArgumentParser(
@@ -1900,7 +1946,7 @@ class EconometricsController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="gach",
+            prog="garch",
             description="""Calculates annualized volatility forecasts based on GARCH.
             GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for
             instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
@@ -1991,6 +2037,8 @@ class EconometricsController(BaseController):
             action="store_true",
             default=False,
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )

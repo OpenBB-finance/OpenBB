@@ -328,6 +328,17 @@ def get_coint_df(
     return pd.DataFrame()
 
 
+def get_returns(data: pd.Series):
+    """Calculate returns for the given time series
+
+    Parameters
+    ----------
+    data: pd.Series
+        The data series to calculate returns for
+    """
+    return 100 * data.pct_change().dropna()
+
+
 def get_garch(
     data: pd.Series,
     p: int = 1,
@@ -375,7 +386,7 @@ def get_garch(
     Parameters
     ----------
     data: pd.Series
-        The time series to estimate volatility from
+        The time series (often returns) to estimate volatility from
     p: int
         Lag order of the symmetric innovation
     o: int
@@ -387,9 +398,7 @@ def get_garch(
     horizon: int
         The horizon of the forecast
     """
-    model = arch_model(
-        100 * data.pct_change().dropna(), vol="GARCH", p=p, o=o, q=q, mean=mean
-    )
+    model = arch_model(data.dropna(), vol="GARCH", p=p, o=o, q=q, mean=mean)
     model_fit = model.fit(disp="off")
     pred = model_fit.forecast(horizon=horizon, reindex=False)
 
