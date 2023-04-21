@@ -1,4 +1,5 @@
 import json
+import sys
 from enum import Enum
 from typing import Any, Dict, Optional
 
@@ -107,10 +108,12 @@ def login(session: Dict, remember: bool = False) -> LoginStatus:
             set_current_user(hub_user)
 
             auth_header = hub_user.profile.get_auth_header()
-            download_and_save_routines(auth_header)
-            run_thread(
-                update_backend_sources, {"auth_header": auth_header, "configs": configs}
-            )
+            if sys.stdin.isatty():
+                download_and_save_routines(auth_header)
+                run_thread(
+                    update_backend_sources,
+                    {"auth_header": auth_header, "configs": configs},
+                )
             Local.apply_configs(configs)
             Local.update_flair(get_current_user().profile.username)
 
