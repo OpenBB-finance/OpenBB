@@ -1,31 +1,44 @@
-name: Close issues with default templates
+name: Check issue template
+
 on:
   issues:
-    types: [opened, edited]
+    types: [opened]
+
 jobs:
-  close-issues:
+  check-template:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check if issue has default template
-        id: check_template
-        run: |
-          TEMPLATES=("bug_report.md" "enhancement.md" "feature_request.md")
-          for t in "${TEMPLATES[@]}"; do
-              if [[ $(curl -s https://raw.githubusercontent.com/${{ github.repository }}/.github/ISSUE_TEMPLATE/$t) == ${{ github.event.issue.body }} ]]; then
-                  echo "::set-output name=template::true"
-                  exit 0
-              fi
-          done
-      - name: Close issue if it has default template
-        if: steps.check_template.outputs.template == 'true'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.issues.update({
+    - name: Check issue template
+      id: check-template
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const issue = context.payload.issue;
+          const templates = ["bug_report.md" "enhancement.md" "feature_request.md"];
+          let templateMatched = false;
+          for (const template of templates) {
+            const templateContent = await github.repos.getContents({
               owner: 'jmaslek',
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              path: `.github/${template}`
+            });
+            const content = Buffer.from(issue.body, 'base64').toString();
+            if (content === templateContent.data.content) {
+              console.log(`Issue template ${template} has not been changed.`);
+              templateMatched = true;
+              break;
+            }
+          }
+          if (!templateMatched) {
+            console.log('Issue template has been changed.');
+          } else {
+            const params = {
+              owner: 'jmaslek',
+              repo: context.repo.repo,
+              issue_number: issue.number,
               state: 'closed'
-            })
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            }
+            await github.issues.update(params);
+          }
