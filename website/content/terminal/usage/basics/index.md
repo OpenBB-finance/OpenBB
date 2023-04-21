@@ -84,17 +84,21 @@ options:
   -h, --help            show this help message (default: False)
 ```
 
-![Support](support1.png)
+![Support](https://user-images.githubusercontent.com/85772166/233577183-fbeb7be2-1d00-4ca0-86b3-42f1b71081e8.png)
 
 ```console
 support search --type question --msg "How do I find stocks from India with OpenBB?"
 ```
 
-![Support Auto Complete](support3.png)
+![Support Auto Complete](https://user-images.githubusercontent.com/85772166/233577389-f0ad1b08-0e22-44b1-9d6b-9732c77af7d7.png)
 
 The command opens a browser window to a pre-populated form on the OpenBB website.  If you are signed-in to the Hub, all that is left to do is click `Submit`.
 
-![Submit Form](support3.png)
+![Submit Form](https://user-images.githubusercontent.com/85772166/233577448-3e426a88-d0cf-4338-8f4c-21b9fd01d8b2.png)
+
+:::note
+An answer to this question is: `search --country india --exchange-country india`
+:::
 
 ## Menus
 
