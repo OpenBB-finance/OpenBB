@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Dict, Optional, Tuple
 
 from prompt_toolkit import PromptSession
 
@@ -106,9 +106,9 @@ def login_and_launch(session: dict, remember: bool = False):
         prompt(welcome=True)
 
 
-def main():
+def main(session: Optional[Dict] = None):
     """Main function"""
-    local_session = Local.get_session()
+    local_session = Local.get_session() if session is None else session
     if not local_session:
         prompt()
     else:

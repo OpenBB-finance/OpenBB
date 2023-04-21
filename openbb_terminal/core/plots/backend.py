@@ -274,7 +274,7 @@ class Backend(PyWry):
         # pylint: disable=C0415
         from openbb_terminal.helper_funcs import command_location
 
-        json_data = json.loads(df_table.to_json(orient="split"))
+        json_data = json.loads(df_table.to_json(orient="split", date_format="iso"))
         json_data.update(
             dict(
                 title=title,
@@ -291,7 +291,7 @@ class Backend(PyWry):
                     "json_data": json.dumps(json_data),
                     "width": width,
                     "height": self.HEIGHT - 100,
-                    **self.get_kwargs(title),
+                    **self.get_kwargs(command_location),
                 }
             )
         )
