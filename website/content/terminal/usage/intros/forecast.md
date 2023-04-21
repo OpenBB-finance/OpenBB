@@ -97,7 +97,7 @@ The SPY time series now has two additional columns from the VIX dataframe, high 
 
 #### Delete
 
-It may be desireable to remove entire columns from the target dataset.  The syntax below removes the three columns from the SPY data loaded through the stocks menu.
+It may be desirable to remove entire columns from the target dataset.  The syntax below removes the three columns from the SPY data loaded through the stocks menu.
 
 ```console
 delete --delete SPY.adj_close
@@ -142,7 +142,7 @@ The Feature Engineering section provides methods for making fast calculations wi
 |sto |Add Stochastic Oscillator %K and %D |
 |signal |Add Price Signal (short vs. long term) |
 
-Each function will have slight variations to the command syntax, but will generally operate similarily.  Print the help dialogue as a reminder.
+Each function will have slight variations to the command syntax, but will generally operate similarly.  Print the help dialogue as a reminder.
 
 ```console
 usage: rsi [-d {vix,SPY}] [-c TARGET_COLUMN] [--period PERIOD] [-h]
@@ -224,7 +224,7 @@ Within this list of models, there are two distinct categories:
 - Without past covariates.
 - With past covariates.
 
-The models featuring past covariates will accept an unlimited number of columns, or all columns can be chosen.  The latter being more appropriate for when a dataset contains only columns which are deemed desireable for the purpose.  To use any model in its default state, all that is required is the command name and the target dataset's name.  The default target column will always be `close` so, a column must be defined to run a model if the target dataset does not contain a column with this name.  With the target column as `close`, the basic default syntax will look like:
+The models featuring past covariates will accept an unlimited number of columns, or all columns can be chosen.  The latter being more appropriate for when a dataset contains only columns which are deemed fit for the purpose.  To use any model in its default state, all that is required is the command name and the target dataset's name.  The default target column will always be `close` so, a column must be defined to run a model if the target dataset does not contain a column with this name.  With the target column as `close`, the basic default syntax will look like:
 
 ```console
 rwd -d SPY
@@ -326,7 +326,7 @@ RNN model obtains MAPE: 3.13%
 
 ![RNN](https://user-images.githubusercontent.com/85772166/233540770-28abd8d5-c301-4d26-bd88-77287a6d71d7.png)
 
-This result expresses a different view from the Probablistic Exponential Smoothing Model.
+This result expresses a different view from the Probabilistic Exponential Smoothing Model.
 
 For the second task, we would like to change the model type from `LSTM` --> `GRU`. Let's find out of this improves the MAPE score.  Use the `-h` flag to understand the particular parameters one can change for RNN. (Please note that the parameters are different for each model).
 
