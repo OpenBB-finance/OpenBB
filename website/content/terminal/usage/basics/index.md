@@ -1,13 +1,13 @@
 ---
 title: Basics
-description: The OpenBB Terminal is a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returning as charts, tables, or text.
+description: An introduction to the The OpenBB Terminal, a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returning as charts, tables, or text.
 keywords: [basics, commands, functions, features, menus, introduction, openbb terminal, obb, usage, how to, charts, tables, themes, styles, functions, data, sources, getting started]
 ---
 ## Overview
 
 The OpenBB Terminal is a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.  Commands are grouped into menus, with a menu or sub-menu being visually distinguishable from a function by the, `>`, on the far left of the screen.  The color of the text can be altered under the [`/settings` menu](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal).
 
-Navigating through the Terminal menus is similar to traversing folders from any operating system's command line prompt.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.  Absolute paths are also valid to-and-from any point.  From the [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options) menu, go directly to [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto).  By itself, `/`, returns to the home level.
+Navigating through the Terminal menus is similar to climbing a tree, or traversing folders from any operating system's command line prompt.  The `/home` screen is the trunk and the menus are branches.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.  Absolute paths are also valid to-and-from any point.  From the [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options) menu, go directly to [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto).  By itself, `/`, returns to the home level.
 
 ![The Home Screen](https://user-images.githubusercontent.com/85772166/233247655-2f8d0dae-be68-48ca-9b35-123b5b985cb6.png)
 
@@ -62,6 +62,39 @@ Try:
 ```
 
 The command above will open a browser to [Introduction to the Stocks menu](https://docs.openbb.co/terminal/usage/intros/stocks).
+
+### Support
+
+`support` is a global function for submitting a new request for support, a general question, or a bug report.  The command will pre-populate a form with key information, like the command or menu name specific to the issue.  Use the up and down arrow keys to browse and select the appropriate item for the ticket.  Naturally, this command has a help dialogue.
+
+```console
+support -h
+```
+
+```console
+Submit your support request
+
+options:
+  -c {search,load,quote,tob,candle,news,resources,codes,ta,ba,qa,disc,dps,scr,sia,ins,gov,res,dd,fa,bt,ca,options,th,forecast}, --command {generic,search,load,quote,tob,candle,news,resources,codes,ta,ba,qa,disc,dps,scr,sia,ins,gov,res,dd,fa,bt,ca,options,th,forecast}
+                        Command that needs support (default: None)
+  --msg MSG [MSG ...], -m MSG [MSG ...]
+                        Message to send. Enclose it with double quotes (default: )
+  --type {bug,suggestion,question,generic}, -t {bug,suggestion,question,generic}
+                        Support ticket type (default: generic)
+  -h, --help            show this help message (default: False)
+```
+
+![Support](support1.png)
+
+```console
+support search --type question --msg "How do I find stocks from India with OpenBB?"
+```
+
+![Support Auto Complete](support3.png)
+
+The command opens a browser window to a pre-populated form on the OpenBB website.  If you are signed-in to the Hub, all that is left to do is click `Submit`.
+
+![Submit Form](support3.png)
 
 ## Menus
 
@@ -124,29 +157,7 @@ Most functions provide a method for exporting the raw data as a CSV, JSON, or XL
 
 ## Charts
 
-The OpenBB charting library has themes for light and dark mode.
-
-### Light and Dark Mode
-
-Set the theme, globally, as either light or dark.
-
-Dark mode:
-
-```console
-/settings/chart -s dark
-```
-
-Light mode:
-
-```console
-/settings/chart -s light
-```
-
-The default state is dark mode.
-
-```console
-/stocks/load aapl -w/candle
-```
+The OpenBB charting library has themes for light and dark mode, the default state is dark.
 
 ![Apple Weekly Chart](https://user-images.githubusercontent.com/85772166/233247951-e011fe2c-23a6-4518-bd17-3f43a9c2011a.png)
 
@@ -220,27 +231,7 @@ After choosing the file to overlay, select what to show and then click on `Submi
 
 ## Tables
 
-The OpenBB Terminal sports interactive tables which opens in a separate window. They provide methods for searching, sorting, filtering, and exporting directly within the table.  Like the charts, both light and dark themes are included.  This preference can be set globally in the settings menu, or individually on the table with the click of a mouse.
-
-### Setting the Theme
-
-Set the theme, globally, as either light or dark.
-
-Dark mode:
-
-```console
-/settings/table -s dark
-```
-
-Light mode:
-
-```console
-/settings/table -s light
-```
-
-The default state is dark mode.
-
-![Dark Mode Tables](https://user-images.githubusercontent.com/85772166/233248708-6947f8be-df68-4f63-8848-d2f59d3f2883.png)
+The OpenBB Terminal sports interactive tables which opens in a separate window. They provide methods for searching, sorting, filtering, and exporting directly within the table.  Like the charts, both light and dark themes are included.  This preference can be in the settings menu or directly on the table with the click of a mouse.  The default state is dark mode.
 
 ### Sorting and Filtering
 
