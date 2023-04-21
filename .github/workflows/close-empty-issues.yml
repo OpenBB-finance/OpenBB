@@ -1,0 +1,32 @@
+name: Close issues with default templates
+on:
+  issues:
+    types: [opened, edited]
+jobs:
+  close-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if issue has default template
+        id: check_template
+        run: |
+          TEMPLATE_DIRS=".github/ISSUE_TEMPLATE"
+          TEMPLATES=("bug_report.md" "enhancement.md" "feature_request.md")
+          for t in "${TEMPLATES[@]}"; do
+              if [[ $(curl -s https://raw.githubusercontent.com/${{ github.repository }}/$TEMPLATE_DIRS/$t) == ${{ github.event.issue.body }} ]]; then
+                  echo "::set-output name=template::true"
+                  exit 0
+              fi
+          done
+      - name: Close issue if it has default template
+        if: steps.check_template.outputs.template == 'true'
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.issues.update({
+              owner: 'jmaslek',
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed'
+            })
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
