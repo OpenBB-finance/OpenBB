@@ -22,7 +22,7 @@ jobs:
             const templateContent = await github.repos.getContents({
               owner: 'jmaslek',
               repo: context.repo.repo,
-              path: `.github/${template}`
+              path: `.github/ISSUE_TEMPLATE/${template}`
             });
             const content = Buffer.from(issue.body, 'base64').toString();
             if (content === templateContent.data.content) {
