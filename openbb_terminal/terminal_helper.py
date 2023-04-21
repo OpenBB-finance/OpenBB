@@ -131,7 +131,7 @@ def update_terminal():
 
 def open_openbb_documentation(
     path,
-    url="https://my.openbb.dev/app/terminal",
+    url="https://my.openbb.co/app/terminal",
     command=None,
     arg_type="",
 ):

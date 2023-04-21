@@ -1,7 +1,7 @@
-BASE_URL = "https://payments.openbb.dev/"
+BASE_URL = "https://payments.openbb.co/"
 # BASE_URL = "http://127.0.0.1:8000/"
 
-HUB_URL = "https://my.openbb.dev/"
+HUB_URL = "https://my.openbb.co/"
 REGISTER_URL = HUB_URL + "register"
 SUPPORT_URL = HUB_URL + "app/terminal/support"
 SOURCES_URL = HUB_URL + "app/terminal/data-sources"
