@@ -110,7 +110,7 @@ def get_covid_ov(
         return pd.DataFrame()
     data = pd.concat([cases, deaths], axis=1)
     data.columns = ["Cases", "Deaths"]
-    data.index = [x.strftime("%Y-%m-%d") for x in data.index]
+    data.index = pd.to_datetime(data.index, format="%Y-%m-%d")
     return data
 
 

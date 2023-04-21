@@ -11,7 +11,12 @@ import clsx from "clsx";
 import { useMemo, useRef, useState } from "react";
 import { useVirtual } from "react-virtual";
 import Select from "../Select";
-import { formatNumberMagnitude, fuzzyFilter, isEqual } from "../../utils/utils";
+import {
+  formatNumberMagnitude,
+  fuzzyFilter,
+  isEqual,
+  includesDateNames,
+} from "../../utils/utils";
 import DraggableColumnHeader from "./ColumnHeader";
 import Pagination, { validatePageSize } from "./Pagination";
 import Export from "./Export";
@@ -39,20 +44,24 @@ function getCellWidth(row, column) {
     const indexValue = indexLabel ? row[indexLabel] : null;
     const value = row[column];
     const valueType = typeof value;
+    const only_numbers = value?.toString().replace(/[^0-9]/g, "");
+
     const probablyDate =
-      column.toLowerCase().includes("date") ||
-      column.toLowerCase() === "index" ||
-      (indexValue &&
-        typeof indexValue == "string" &&
-        (indexValue.toLowerCase().includes("date") ||
-          indexValue.toLowerCase().includes("day") ||
-          indexValue.toLowerCase().includes("time") ||
-          indexValue.toLowerCase().includes("timestamp") ||
-          indexValue.toLowerCase().includes("year") ||
-          indexValue.toLowerCase().includes("month") ||
-          indexValue.toLowerCase().includes("week") ||
-          indexValue.toLowerCase().includes("hour") ||
-          indexValue.toLowerCase().includes("minute")));
+      only_numbers.length >= 4 &&
+      (includesDateNames(column) ||
+        column.toLowerCase() === "index" ||
+        (indexValue &&
+          indexValue &&
+          typeof indexValue == "string" &&
+          (indexValue.toLowerCase().includes("date") ||
+            indexValue.toLowerCase().includes("day") ||
+            indexValue.toLowerCase().includes("time") ||
+            indexValue.toLowerCase().includes("timestamp") ||
+            indexValue.toLowerCase().includes("year") ||
+            indexValue.toLowerCase().includes("month") ||
+            indexValue.toLowerCase().includes("week") ||
+            indexValue.toLowerCase().includes("hour") ||
+            indexValue.toLowerCase().includes("minute"))));
 
     const probablyLink = valueType === "string" && value.startsWith("http");
     if (probablyLink) {
@@ -165,16 +174,17 @@ export default function Table({
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
+          const only_numbers = value?.toString().replace(/[^0-9]/g, "");
           const probablyDate =
-            column.toLowerCase().includes("date") ||
-            column.toLowerCase().includes("timestamp") ||
-            column.toLowerCase() === "index" ||
-            (indexValue &&
-              typeof indexValue == "string" &&
-              (indexValue.toLowerCase().includes("date") ||
-                indexValue.toLowerCase().includes("time") ||
-                indexValue.toLowerCase().includes("timestamp") ||
-                indexValue.toLowerCase().includes("year")));
+            only_numbers.length >= 4 &&
+            (includesDateNames(column) ||
+              column.toLowerCase() === "index" ||
+              (indexValue &&
+                typeof indexValue == "string" &&
+                (indexValue.toLowerCase().includes("date") ||
+                  indexValue.toLowerCase().includes("time") ||
+                  indexValue.toLowerCase().includes("timestamp") ||
+                  indexValue.toLowerCase().includes("year"))));
 
           const probablyLink =
             valueType === "string" && value.startsWith("http");
@@ -193,7 +203,16 @@ export default function Table({
           }
           if (probablyDate) {
             if (typeof value === "string") {
-              return <p>{value}</p>;
+              const date = value.split("T")[0];
+              const time = value.split("T")[1]?.split(".")[0];
+              if (time === "00:00:00") {
+                return <p>{date}</p>;
+              }
+              return (
+                <p>
+                  {date} {time}
+                </p>
+              );
             }
 
             if (typeof value === "number") {
