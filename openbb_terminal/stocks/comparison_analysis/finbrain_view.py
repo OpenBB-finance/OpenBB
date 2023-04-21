@@ -8,8 +8,7 @@ from typing import List, Optional
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -107,7 +106,7 @@ def display_sentiment_compare(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -195,4 +194,4 @@ def display_sentiment_correlation(
         sheet_name,
         fig,
     )
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

@@ -1,4 +1,4 @@
-"""Behavioural Analysis Controller Module"""
+"""Behavioural Analysis Controller Module."""
 __docformat__ = "numpy"
 
 import argparse
@@ -28,7 +28,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.stocks.behavioural_analysis import cramer_view, finnhub_view
+from openbb_terminal.stocks.behavioural_analysis import finnhub_view
 
 # pylint:disable=R0904,C0302
 
@@ -37,29 +37,26 @@ logger = logging.getLogger(__name__)
 
 
 class BehaviouralAnalysisController(StockBaseController):
-    """Behavioural Analysis Controller class"""
+    """Behavioural Analysis Controller class."""
 
     CHOICES_COMMANDS = [
         "load",
-        # "watchlist",
-        # "spac",
-        "spacc",
         "wsb",
         "popular",
+        "spacc",
+        "getdd",
+        "redditsent",
         "bullbear",
         "messages",
         "trending",
         "stalker",
         "infer",
         "sentiment",
-        "redditsent",
         "mentions",
         "regions",
         "queries",
         "rise",
         "headlines",
-        # "popular",
-        # "getdd",
         "snews",
         "interest",
     ]
@@ -73,7 +70,7 @@ class BehaviouralAnalysisController(StockBaseController):
     CHOICES_GENERATION = True
 
     def __init__(self, ticker: str, start: datetime, queue: Optional[List[str]] = None):
-        """Constructor"""
+        """Construct a new instance."""
         super().__init__(queue)
 
         self.ticker = ticker
@@ -85,7 +82,7 @@ class BehaviouralAnalysisController(StockBaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        """Print help"""
+        """Print help."""
         mt = MenuText("stocks/ba/")
         mt.add_cmd("load")
         mt.add_raw("\n")
@@ -94,11 +91,9 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("headlines", self.ticker)
         mt.add_cmd("snews", self.ticker)
         mt.add_cmd("wsb")
-        # mt.add_cmd("watchlist")
-        # mt.add_cmd("popular")
+        mt.add_cmd("popular")
         mt.add_cmd("spacc")
-        # mt.add_cmd("spac")
-        # mt.add_cmd("getdd", self.ticker)
+        mt.add_cmd("getdd")
         mt.add_cmd("redditsent", self.ticker)
         mt.add_cmd("trending")
         mt.add_cmd("stalker")
@@ -114,38 +109,14 @@ class BehaviouralAnalysisController(StockBaseController):
         console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")
 
     def custom_reset(self):
-        """Class specific component of reset command"""
+        """Class specific component of reset command."""
         if self.ticker:
             return ["stocks", "ba", f"load {self.ticker}"]
         return []
 
     @log_start_end(log=logger)
-    def call_watchlist(self, other_args: List[str]):
-        """Process watchlist command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="watchlist",
-            description="""Print other users watchlist. [Source: Reddit]""",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="limit of posts with watch lists retrieved.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            reddit_view.display_watchlist(limit=ns_parser.limit)
-
-    @log_start_end(log=logger)
     def call_snews(self, other_args: List[str]):
-        """Process snews command"""
+        """Process snews command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -161,32 +132,8 @@ class BehaviouralAnalysisController(StockBaseController):
             )
 
     @log_start_end(log=logger)
-    def call_spac(self, other_args: List[str]):
-        """Process spac command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spac",
-            description="""Show other users SPACs announcement. [Source: Reddit]""",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="n_limit",
-            type=check_positive,
-            default=5,
-            help="limit of posts with SPACs retrieved.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            reddit_view.display_spac(limit=ns_parser.n_limit)
-
-    @log_start_end(log=logger)
     def call_spacc(self, other_args: List[str]):
-        """Process spacc command"""
+        """Process spacc command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -220,7 +167,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_wsb(self, other_args: List[str]):
-        """Process wsb command"""
+        """Process wsb command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -253,7 +200,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_popular(self, other_args: List[str]):
-        """Process popular command"""
+        """Process popular command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -275,7 +222,7 @@ class BehaviouralAnalysisController(StockBaseController):
             action="store",
             dest="num",
             type=check_positive,
-            default=50,
+            default=10,
             help="number of posts retrieved per sub reddit.",
         )
         parser.add_argument(
@@ -308,7 +255,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_getdd(self, other_args: List[str]):
-        """Process getdd command"""
+        """Process getdd command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="getdd",
@@ -348,19 +295,15 @@ class BehaviouralAnalysisController(StockBaseController):
             other_args.insert(0, "-l")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.ticker:
-                reddit_view.display_due_diligence(
-                    symbol=self.ticker,
-                    limit=ns_parser.limit,
-                    n_days=ns_parser.days,
-                    show_all_flairs=ns_parser.all,
-                )
-            else:
-                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
+            reddit_view.display_due_diligence(
+                limit=ns_parser.limit,
+                n_days=ns_parser.days,
+                show_all_flairs=ns_parser.all,
+            )
 
     @log_start_end(log=logger)
     def call_redditsent(self, other_args: List[str]):
-        """Process redditsent command"""
+        """Process redditsent command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="redditsent",
@@ -460,7 +403,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_bullbear(self, other_args: List[str]):
-        """Process bullbear command"""
+        """Process bullbear command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -479,7 +422,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_messages(self, other_args: List[str]):
-        """Process messages command"""
+        """Process messages command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -508,7 +451,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_trending(self, other_args: List[str]):
-        """Process trending command"""
+        """Process trending command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -521,7 +464,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_stalker(self, other_args: List[str]):
-        """Process stalker command"""
+        """Process stalker command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -558,7 +501,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_mentions(self, other_args: List[str]):
-        """Process mentions command"""
+        """Process mentions command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -595,7 +538,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_regions(self, other_args: List[str]):
-        """Process regions command"""
+        """Process regions command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -626,7 +569,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_interest(self, other_args: List[str]):
-        """Process interest command"""
+        """Process interest command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -690,7 +633,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_queries(self, other_args: List[str]):
-        """Process queries command"""
+        """Process queries command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -726,7 +669,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_rise(self, other_args: List[str]):
-        """Process rise command"""
+        """Process rise command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -762,7 +705,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_infer(self, other_args: List[str]):
-        """Process infer command"""
+        """Process infer command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -802,7 +745,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_sentiment(self, other_args: List[str]):
-        """Process sentiment command"""
+        """Process sentiment command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -862,7 +805,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_headlines(self, other_args: List[str]):
-        """Process finbrain command"""
+        """Process finbrain command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -884,57 +827,3 @@ class BehaviouralAnalysisController(StockBaseController):
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-    def call_jcdr(self, other_args: List[str]):
-        """Process jcdr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="jcdr",
-            description="""
-                Show daily cramer recommendation
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--inverse",
-            default=False,
-            action="store_true",
-            help="Show inverse recommendation",
-            dest="inverse",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            cramer_view.display_cramer_daily(inverse=ns_parser.inverse)
-
-    @log_start_end(log=logger)
-    def call_jctr(self, other_args: List[str]):
-        """Process jctr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="jctr",
-            description="""
-                Show cramer recommendation for loaded ticker
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True,
-        )
-
-        if ns_parser:
-            if self.ticker:
-                cramer_view.display_cramer_ticker(
-                    symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
-                )
-            else:
-                console.print(
-                    "[red]No ticker loaded.  Please use load <ticker> first.\n[/red]"
-                )

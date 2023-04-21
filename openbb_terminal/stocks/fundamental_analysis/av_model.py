@@ -74,29 +74,8 @@ def get_overview(symbol: str) -> pd.DataFrame:
             df_fa.iloc[5:] = df_fa.iloc[5:].applymap(
                 lambda x: lambda_long_number_format(x)
             )
-            clean_df_index(df_fa)
-            df_fa = df_fa.rename(
-                index={
-                    "E b i t d a": "EBITDA",
-                    "P e ratio": "PE ratio",
-                    "P e g ratio": "PEG ratio",
-                    "E p s": "EPS",
-                    "Revenue per share t t m": "Revenue per share TTM",
-                    "Operating margin t t m": "Operating margin TTM",
-                    "Return on assets t t m": "Return on assets TTM",
-                    "Return on equity t t m": "Return on equity TTM",
-                    "Revenue t t m": "Revenue TTM",
-                    "Gross profit t t m": "Gross profit TTM",
-                    "Diluted e p s t t m": "Diluted EPS TTM",
-                    "Quarterly earnings growth y o y": "Quarterly earnings growth YOY",
-                    "Quarterly revenue growth y o y": "Quarterly revenue growth YOY",
-                    "Trailing p e": "Trailing PE",
-                    "Forward p e": "Forward PE",
-                    "Price to sales ratio t t m": "Price to sales ratio TTM",
-                    "E v to revenue": "EV to revenue",
-                    "E v to e b i t d a": "EV to EBITDA",
-                }
-            )
+            df_fa.columns = [" "]
+
     return df_fa
 
 
@@ -508,7 +487,6 @@ def get_earnings(symbol: str, quarterly: bool = False) -> pd.DataFrame:
     return df_fa
 
 
-@log_start_end(log=logger)
 def df_values(
     df: pd.DataFrame, item: str, index: int = 0, length: int = 2
 ) -> List[int]:
@@ -558,8 +536,7 @@ def replace_df(name: str, row: pd.Series) -> pd.Series:
         elif name in ["Zscore", "McKee"]:
             row[i] = color_zscore_mckee(item)
         else:
-            row[i] = str(round(float(item), 2))
-
+            row[i] = str(round(float(item), 2)) if item != "nan" else "N/A"
     return row
 
 
@@ -576,6 +553,8 @@ def color_mscore(value: str) -> str:
     new_value : str
         The string formatted with rich color
     """
+    if value == "nan":
+        return "N/A"
     value_float = float(value)
     if value_float <= -2.22:
         return f"[green]{value_float:.2f}[/green]"
@@ -596,6 +575,8 @@ def color_zscore_mckee(value: str) -> str:
     new_value : str
         The string formatted with rich color
     """
+    if value == "nan":
+        return "N/A"
     value_float = float(value)
     if value_float < 0.5:
         return f"[red]{value_float:.2f}[/red]"
@@ -620,7 +601,10 @@ def get_fraud_ratios(symbol: str, detail: bool = False) -> pd.DataFrame:
     """
 
     try:
-        fd = FundamentalData(key=get_current_user().credentials, output_format="pandas")
+        fd = FundamentalData(
+            key=get_current_user().credentials.API_KEY_ALPHAVANTAGE,
+            output_format="pandas",
+        )
         # pylint: disable=unbalanced-tuple-unpacking
         df_cf, _ = fd.get_cash_flow_annual(symbol=symbol)
         df_bs, _ = fd.get_balance_sheet_annual(symbol=symbol)
@@ -711,7 +695,7 @@ def get_fraud_ratios(symbol: str, detail: bool = False) -> pd.DataFrame:
                 "Zscore",
                 "Mckee",
             ]:
-                ratios[item] = "N/A"
+                ratios[item] = np.nan
         if fraud_years.empty:
             fraud_years.index = ratios.keys()
         fraud_years[df_cf.index[i]] = ratios.values()

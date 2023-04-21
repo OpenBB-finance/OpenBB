@@ -24,6 +24,7 @@ class StocksController(model.StocksRoot):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -37,7 +38,7 @@ class StocksController(model.StocksRoot):
         Attributes:
             `bullbear`: Gets bullbear sentiment for ticker [Source: stocktwits].\n
             `cnews`: Get news from a company. [Source: Finnhub]\n
-            `getdd`: Gets due diligence posts from list of subreddits [Source: reddit].\n
+            `getdd`: Get due diligence posts from list of subreddits [Source: reddit].\n
             `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
             `headlines_chart`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
             `infer`: Load tweets from twitter API and analyzes using VADER.\n
@@ -47,7 +48,7 @@ class StocksController(model.StocksRoot):
             `messages`: Get last messages for a given ticker [Source: stocktwits].\n
             `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
             `queries`: Get related queries from google api [Source: google].\n
-            `redditsent`: Finds posts related to a specific search term in Reddit.\n
+            `redditsent`: Find posts related to a specific search term in Reddit.\n
             `regions`: Get interest by region from google api [Source: google].\n
             `regions_chart`: Plots bars of regions based on stock's interest. [Source: Google].\n
             `rise`: Get top rising related queries with this stock's query [Source: google].\n
@@ -55,12 +56,10 @@ class StocksController(model.StocksRoot):
             `sentiment_chart`: Plots sentiments from symbol\n
             `snews`: Get headlines sentiment using VADER model over time. [Source: Finnhub]\n
             `snews_chart`: Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]\n
-            `spac`: Get posts containing SPAC from top subreddits [Source: reddit].\n
             `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
             `stalker`: Gets messages from given user [Source: stocktwits].\n
             `text_sent`: Find the sentiment of a post and related comments.\n
             `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
-            `watchlist`: Get reddit users watchlists [Source: reddit].\n
             `wsb`: Get wsb posts [Source: reddit].\n
         """
 
@@ -157,7 +156,6 @@ class StocksController(model.StocksRoot):
             `cal`: Get calendar earnings for ticker symbol\n
             `cash`: Get Cash Flow.\n
             `customer`: Print customers from ticker provided\n
-            `data`: Get fundamental data from finviz\n
             `dcf`: Get stocks dcf from FMP\n
             `dcfc`: Get stocks dcf from FMP\n
             `divs`: Get historical dividend for ticker\n
@@ -173,15 +171,13 @@ class StocksController(model.StocksRoot):
             `growth`: Get financial statement growth\n
             `historical_5`: Get 5 year monthly historical performance for a ticker with dividends filtered\n
             `income`: Get income statement.\n
-            `info`: Gets ticker symbol info\n
             `key`: Get key metrics from overview\n
             `metrics`: Get key metrics\n
             `mgmt`: Get company managers from Business Insider\n
             `mktcap`: Get market cap over time for ticker. [Source: Yahoo Finance]\n
             `mktcap_chart`: Display market cap over time. [Source: Yahoo Finance]\n
             `news`: Get news from Finviz\n
-            `overview`: Get alpha vantage company overview\n
-            `profile`: Get ticker profile from FMP\n
+            `overview`: Get overview.\n
             `pt`: Get analysts' price targets for a given stock. [Source: Business Insider]\n
             `pt_chart`: Display analysts' price targets for a given stock. [Source: Business Insider]\n
             `rating`: Get ratings for a given ticker. [Source: Financial Modeling Prep]\n
@@ -190,9 +186,7 @@ class StocksController(model.StocksRoot):
             `rot`: Get rating over time data. [Source: Finnhub]\n
             `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
             `score`: Gets value score from fmp\n
-            `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
-            `sec_fmp`: Get SEC Filings RSS feed, disseminated by FMP\n
-            `sec_fmp_chart`: Display recent forms submitted to the SEC\n
+            `sec`: Get SEC filings for a given stock ticker. [Source: Nasdaq]\n
             `shrs`: Get shareholders from yahoo\n
             `similar_dfs`: Get dataframes for similar companies\n
             `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
@@ -311,9 +305,6 @@ class StocksController(model.StocksRoot):
         """Stocks Screener Submodule
 
         Attributes:
-            `arktrades`: Gets a dataframe of ARK trades for ticker\n
-            `historical`: View historical price of stocks that meet preset\n
-            `historical_chart`: View historical price of stocks that meet preset\n
             `screener_data`: Screener Overview\n
             `screener_data_chart`: Screener one of the following: overview, valuation, financial, ownership, performance, technical.\n
         """
@@ -331,8 +322,6 @@ class StocksController(model.StocksRoot):
             `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
             `summary`: Get technical summary report provided by FinBrain's API\n
             `summary_chart`: Print technical summary report provided by FinBrain's API\n
-            `view`: Get finviz image for given ticker\n
-            `view_chart`: View finviz image for ticker\n
         """
 
         return model.StocksTechnicalAnalysis()

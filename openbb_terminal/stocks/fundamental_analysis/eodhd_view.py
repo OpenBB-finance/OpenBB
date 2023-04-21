@@ -130,10 +130,11 @@ def display_fundamentals(
         # Readable numbers
         fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(
-            fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
+            fundamentals.applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
             title=f"{symbol} {title_str}",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(

@@ -76,11 +76,12 @@ def display_history(
         return
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Account History",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

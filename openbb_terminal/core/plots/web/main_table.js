@@ -78,7 +78,7 @@ function processData(data) {
                 {
                     title: "Age",
                     field: "age",
-                    sorter: "number",  
+                    sorter: "number",
                 }
             ],
             data: {

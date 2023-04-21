@@ -7,8 +7,7 @@ import logging
 import os
 from typing import Optional, Union
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.nft import nftpricefloor_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -71,11 +70,12 @@ def display_collections(
             fig.show()
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="NFT Collections",
         export=bool(export),
+        limit=limit,
     )
 
     return export_data(
@@ -120,12 +120,13 @@ def display_floor_price(
 
     if raw:
         print_rich_table(
-            df.head(limit),
+            df,
             index_name="date",
             headers=list(df.columns),
             show_index=True,
             title=f"{slug} Floor Price",
             export=bool(export),
+            limit=limit,
         )
 
     fig = OpenBBFigure.create_subplots(
@@ -164,4 +165,4 @@ def display_floor_price(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

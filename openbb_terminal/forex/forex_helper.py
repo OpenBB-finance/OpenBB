@@ -28,7 +28,6 @@ CANDLE_SORT = [
 FOREX_SOURCES: Dict = {
     "YahooFinance": "YahooFinance",
     "AlphaVantage": "AlphaAdvantage",
-    "Oanda": "Oanda",
     "Polygon": "Polygon",
 }
 
@@ -262,16 +261,17 @@ def display_candle(
         has_volume = bool(data["Volume"].sum() > 0)
 
     if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
+        if "date_id" not in data.columns:
+            data = stocks_helper.process_candle(data)
         data = stocks_helper.find_trendline(data, "OC_High", "high")
         data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
     data.name = f"{from_symbol}/{to_symbol}"
     fig = PlotlyTA.plot(data, dict(rma=dict(length=ma)), volume=has_volume)
     if add_trend:
-        fig.add_trend(data)
+        fig.add_trend(data, secondary_y=has_volume)
 
-    fig.add_logscale_menus()
-    fig.update_yaxes(type=yscale, row=1, col=1, nticks=20)
+    fig.update_yaxes(type=yscale, row=1, col=1, nticks=20, secondary_y=has_volume)
 
     return fig.show(external=external_axes)
 

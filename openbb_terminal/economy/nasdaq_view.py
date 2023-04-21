@@ -42,11 +42,12 @@ def display_economic_calendar(
     if df.empty:
         return
     print_rich_table(
-        df.head(limit),
+        df,
         title="Economic Calendar",
         show_index=False,
         headers=df.columns,
         export=bool(export),
+        limit=limit,
     )
     console.print()
     export_data(
@@ -110,7 +111,7 @@ def display_big_mac_index(
             fig,
         )
 
-        return fig.show(external=external_axes)
+        return fig.show(external=raw or external_axes)
 
     logger.error("Unable to get big mac data")
     return console.print("[red]Unable to get big mac data[/red]\n")

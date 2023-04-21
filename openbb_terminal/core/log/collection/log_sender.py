@@ -4,6 +4,8 @@ from pathlib import Path
 from queue import SimpleQueue
 from threading import Thread
 
+# IMPORTATION THIRDPARTY
+# IMPORTATION INTERNAL
 from openbb_terminal.core.log.collection.s3_sender import send_to_s3
 from openbb_terminal.core.log.constants import (
     ARCHIVES_FOLDER_NAME,
@@ -11,10 +13,7 @@ from openbb_terminal.core.log.constants import (
     TMP_FOLDER_NAME,
 )
 from openbb_terminal.core.log.generation.settings import Settings
-
-# IMPORTATION THIRDPARTY
-# IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_system import get_current_system
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 
@@ -42,8 +41,7 @@ class LogSender(Thread):
     @staticmethod
     def start_required() -> bool:
         """Check if it makes sense to start a LogsSender instance ."""
-
-        return get_current_user().preferences.LOG_COLLECTION
+        return get_current_system().LOG_COLLECT
 
     @property
     def settings(self) -> Settings:

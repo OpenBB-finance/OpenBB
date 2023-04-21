@@ -53,11 +53,12 @@ def display_address_info(
     )
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Blockchain Token Information",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -100,11 +101,12 @@ def display_top_tokens(
             df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Top ERC20 Tokens",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -147,11 +149,12 @@ def display_top_token_holders(
     df["balance"] = df["balance"].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="ERC20 Token Holder Info",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -198,11 +201,12 @@ def display_address_history(
     )
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Historical Transactions Information",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -344,11 +348,12 @@ def display_token_history(
         df.drop("transactionHash", inplace=True, axis=1)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Token History Information",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -400,11 +405,12 @@ def display_token_historical_prices(
     df.loc[:, "cap"] = df["cap"].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Historical Token Prices",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

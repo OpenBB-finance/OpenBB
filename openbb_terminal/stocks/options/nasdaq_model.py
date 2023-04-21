@@ -47,7 +47,6 @@ sorted_chain_columns = [
 ]
 
 
-@log_start_end(log=logger)
 def get_dte_from_expiration(date: str) -> float:
     """
     Converts a date to total days until the option would expire.

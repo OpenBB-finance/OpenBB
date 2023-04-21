@@ -1,16 +1,21 @@
 import inspect
 import json
-import os
 import shutil
 from pathlib import Path
-from typing import Any, Dict, Literal, Optional, Union
+from textwrap import shorten
+from typing import Any, Dict, List, Literal, TextIO
 
 from docstring_parser import parse
 
 from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
-from website.controller_doc_classes import sub_names_full as subnames
 
 website_path = Path(__file__).parent.absolute()
+
+reference_import = """
+import ReferenceCard from "@site/src/components/General/ReferenceCard";
+
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+"""
 
 
 def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
@@ -18,7 +23,7 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     func_attr = trailmap.func_attrs[trail_type]
     if not func_attr.func_unwrapped:
         return None
-    doc_parsed = parse(func_attr.long_doc)
+    doc_parsed = parse(func_attr.long_doc)  # type: ignore
     line = func_attr.lineon
     path = func_attr.full_path
     func_def = func_attr.func_def
@@ -57,7 +62,10 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
 
     for example in doc_parsed.examples:
         examples.append(
-            {"snippet": example.snippet, "description": example.description.strip()}
+            {
+                "snippet": example.snippet,
+                "description": example.description.strip(),  # type: ignore
+            }
         )
 
     return {
@@ -117,7 +125,7 @@ def generate_markdown_section(meta: Dict[str, Any]):
         markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
         for param in meta["params"]:
             description = param["doc"].replace("\n", "<br/>") if param["doc"] else ""
-            markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"  # noqa: E501
+            markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"  # noqa
         markdown += "\n\n"
     else:
         markdown += "This function does not take any parameters.\n\n"
@@ -157,58 +165,81 @@ def generate_markdown_section(meta: Dict[str, Any]):
     return markdown
 
 
-def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
-    """Adds the trailmap to the dictionary. A trailmap is a path to a function
-    in the sdk. This function creates the dictionary paths to the function."""
+def create_nested_menus_card(folder: Path, url: str) -> str:
+    sub_categories = [
+        sub.stem
+        for sub in folder.glob("**/**/*.md*")
+        if sub.is_file() and sub.stem != "index"
+    ]
+    categories = shorten(", ".join(sub_categories), width=116, placeholder="...")
+    url = f"/sdk/reference/{url}/{folder.name}".replace("//", "/")
 
-    if location_path[0] not in d:
-        d[location_path[0]] = {}
-
-    if len(location_path) > 1:
-        add_todict(d[location_path[0]], location_path[1:], tmap)
-    else:
-        d[location_path[0]][tmap.class_attr] = (
-            f"/sdk/reference/{'/'.join(tmap.location_path)}/{tmap.class_attr}"
-        ).replace("//", "/")
-
-    return d
-
-
-def get_nested_dict(d: dict, path: Path) -> Union[dict, None]:
-    """Returns the nested dictionary for the given key."""
-    root, sub = path.parent.name, path.name
-
-    if sub in d:
-        return d[sub]
-    if root in d and sub in d[root]:
-        return d[root][sub]
-    for v in d.values():
-        if isinstance(v, dict):
-            item = get_nested_dict(v, path)
-            if item is not None:
-                return item
-
-    return None
+    index_card = f"""<ReferenceCard
+        title="{folder.name}"
+        description="{categories}"
+        url="{url}"
+    />\n"""
+    return index_card
 
 
-def get_subname(name: str) -> str:
-    """Returns the subname of the given name."""
-    if name != "reference":
-        subname = (
-            name.title() if name.lower() not in subnames else subnames[name.lower()]
-        )
-        return subname
-    return ""
+def create_cmd_cards(cmd_text: List[Dict[str, str]]) -> str:
+    cmd_cards = ""
+    for cmd in cmd_text:
+        url = f"/sdk/reference/{cmd['url']}/{cmd['title']}".replace("//", "/")
+        description = shorten(f"{cmd['description']}", width=116, placeholder="...")
+        cmd_cards += f"""<ReferenceCard
+    title="{cmd["title"]}"
+    description="{description}"
+    url="{url}"
+    command="true"
+/>\n"""
+    return cmd_cards
+
+
+def write_reference_index(
+    reference_cards: Dict[Path, List[Dict[str, str]]],
+    fname: str,
+    path: Path,
+    rel_path: Path,
+    f: TextIO,
+) -> None:
+    """Write to the corresponding index.mdx file for a given folder, with the
+    appropriate nested menus and command cards.
+
+    Parameters
+    ----------
+    reference_cards : Dict[Path, List[Dict[str, str]]]
+        Dictionary of command cards to be written to the index.mdx file.
+    fname : str
+        Name of the index.mdx file.
+    path : Path
+        Path to the folder to be written.
+    rel_path : Path
+        Relative path to the folder to be written.
+    f : TextIO
+        File to write to.
+    """
+    f.write(f"# {fname}\n{reference_import}")
+    for folder in path.glob("*"):
+        if folder.is_dir():
+            f.write(create_nested_menus_card(folder, "/".join(rel_path.parts)))
+
+    folder_cmd_cards: List[Dict[str, str]] = reference_cards.get(path, {})  # type: ignore
+    if folder_cmd_cards:
+        f.write(create_cmd_cards(folder_cmd_cards))
+
+    f.write("</ul>\n")
 
 
 def main() -> bool:
+    """Generate markdown files for OpenBB SDK Documentation."""
     print("Loading trailmaps...")
     trailmaps = get_trailmaps()
     kwargs = {"encoding": "utf-8", "newline": "\n"}
 
     print("Generating markdown files...")
     content_path = website_path / "content/sdk/reference"
-    functions_dict: dict = {}
+    reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 
     for file in content_path.glob("*"):
         if file.is_file():
@@ -220,9 +251,6 @@ def main() -> bool:
             if trailmap.location_path[0] == "root":
                 trailmap.location_path[0] = ""
 
-            functions_dict = add_todict(
-                functions_dict, trailmap.location_path, trailmap
-            )
             model_meta = (
                 get_function_meta(trailmap, "model") if trailmap.model else None
             )
@@ -232,35 +260,51 @@ def main() -> bool:
             if trailmap.class_attr == "index":
                 trailmap.class_attr = "index_cmd"
 
-            filepath = f"{str(content_path)}/{'/'.join(trailmap.location_path)}/{trailmap.class_attr}.md"
-            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+            filepath = (
+                content_path
+                / "/".join(trailmap.location_path)
+                / f"{trailmap.class_attr}.md"
+            )
+            func = trailmap.func_attrs.get(
+                "model", trailmap.func_attrs.get("view", None)
+            )
+
+            reference_cards.setdefault(filepath.parent, []).append(
+                dict(
+                    title=trailmap.class_attr,
+                    description=func.short_doc,  # type: ignore
+                    url="/".join(trailmap.location_path),
+                )
+            )
+
+            filepath.parent.mkdir(parents=True, exist_ok=True)
             with open(filepath, "w", **kwargs) as f:  # type: ignore
                 f.write(markdown)
+
         except Exception as e:
             print(
                 f"Error generating {trailmap.location_path} {trailmap.class_attr} - {e}"
             )
             return False
 
-    functions_dict = {
-        k: dict(sorted(v.items(), key=lambda item: item[0]))
-        for k, v in sorted(functions_dict.items(), key=lambda item: item[0])
-    }
-    index_markdown = (
-        f"# OpenBB SDK Reference\n\n{generate_index_markdown('', functions_dict, 2)}"
-    )
-    with open(content_path / "index.md", "w", **kwargs) as f:  # type: ignore
-        f.write(index_markdown)
+    # Sort reference_cards
+    reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
+
+    with open(content_path / "index.mdx", "w", **kwargs) as f:  # type: ignore
+        fname = "OpenBB SDK Reference"
+        rel_path = content_path.relative_to(content_path)
+        write_reference_index(reference_cards, fname, content_path, rel_path, f)
 
     with open(content_path / "_category_.json", "w", **kwargs) as f:  # type: ignore
+        """Generate category json"""
         f.write(json.dumps({"label": "SDK Reference", "position": 4}, indent=2))
 
     def gen_category_json(fname: str, path: Path):
         """Generate category json"""
-        fdict = {fname: get_nested_dict(functions_dict, path)}
 
-        with open(path / "index.md", "w", **kwargs) as f:  # type: ignore
-            f.write(f"# {fname}\n\n{generate_index_markdown('', fdict, 2, path)}")
+        with open(path / "index.mdx", "w", **kwargs) as f:  # type: ignore
+            rel_path = path.relative_to(content_path)
+            write_reference_index(reference_cards, fname, path, rel_path, f)
 
     def gen_category_recursive(nested_path: Path):
         """Generate category json recursively"""
@@ -273,22 +317,6 @@ def main() -> bool:
     print("Markdown files generated, check the functions folder")
 
     return True
-
-
-def generate_index_markdown(
-    markdown: str, d: dict, level: int, path: Optional[Path] = None
-) -> str:
-    """Generates the index markdown for the given dictionary."""
-    if path is None:
-        path = Path()
-    for key in d:
-        if isinstance(d[key], dict):
-            if path and path.name != key and key != "":
-                markdown += f"\n{'#' * level} {key}\n"
-            markdown = generate_index_markdown(markdown, d[key], level + 1, path)
-        else:
-            markdown += f"- [{key}]({d[key]})\n"
-    return markdown
 
 
 if __name__ == "__main__":

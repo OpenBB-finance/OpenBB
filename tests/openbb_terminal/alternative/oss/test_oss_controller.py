@@ -7,10 +7,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.alternative.oss import oss_controller
-from openbb_terminal.core.session.current_user import (
-    PreferencesModel,
-    copy_user,
-)
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 
 
 # pylint: disable=E1101

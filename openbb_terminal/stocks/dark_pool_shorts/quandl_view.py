@@ -7,8 +7,7 @@ from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -134,6 +133,7 @@ def short_interest(
         df_short_interest["% of Volume Shorted"] = df_short_interest[
             "% of Volume Shorted"
         ].apply(lambda x: f"{x/100:.2%}")
+
         df_short_interest = df_short_interest.applymap(
             lambda x: lambda_long_number_format(x)
         ).sort_index(ascending=False)
@@ -155,4 +155,4 @@ def short_interest(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

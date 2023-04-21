@@ -9,8 +9,7 @@ from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -157,16 +156,17 @@ def insider_activity(
     )
 
     if raw:
-        df_insider.index = pd.to_datetime(df_insider.index).date
+        df_insider.index = pd.to_datetime(df_insider.index)
 
         return print_rich_table(
-            df_insider.sort_index(ascending=False)
-            .head(n=limit)
-            .applymap(lambda x: x.replace(".00", "").replace(",", "")),
+            df_insider.sort_index(ascending=False).applymap(
+                lambda x: x.replace(".00", "").replace(",", "")
+            ),
             headers=list(df_insider.columns),
             show_index=True,
             title="Insider Activity",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)

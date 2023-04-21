@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+    method: GET
+    uri: https://api.coingecko.com/api/v3/global/decentralized_finance_defi
+  response:
+    body:
+      string: !!binary |
+        H4sIAB1GOWQAA1yPu07DQBBFfwW5RtbsvCc9HR0fYK1iQ6wQO7IWmij/zhgJCWi2mL3nPm7dWFvt
+        DrdunF7n4VK389SGY712h07QC4EAKfQIUQCEUITCDEmxe+ymdvqLoLAGkQUU7FNUSNJDw/KMVDiZ
+        75y2Dju71TavOwa9keyguFtJLEODDANMM5hEihuDgRY0cmUqIAjq2c5ir9K2Os7L2/C5vn9cpgH5
+        tPtmqJtADggPZBdGV4oI9XzKT51xvcxLXY5TMtQHe0ojEMCYMzVnhxRiRDcycFNHZyY2VGEjJMma
+        +Snie5X1OhzXeRmWetkdn+dxfXhp9TyND0/tNG2/Nf/zkXpnUcXcqiwAfr9/AQAA//8DAKpM0r2l
+        AQAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 7b7bedd98a600b4e-AMS
+      Cache-Control:
+      - public, max-age=120
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 14 Apr 2023 12:25:01 GMT
+      ETag:
+      - W/"056d305b01d871765103e871f1707d4c"
+      Expires:
+      - Fri, 14 Apr 2023 12:27:01 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=QNP0Q42W_qT6CBSZGlZHII373tdrUARiOWPHHUaYhY4-1681475101-0-AQh0lX5DL6qTL5OCrnzXccaHJB478lRi3OukUpSzVod7XuBXBq7/Ac/AtNdIuSL2oh0iCLjz5h4ZEsW6NvVPHgE=;
+        path=/; expires=Fri, 14-Apr-23 12:55:01 GMT; domain=.api.coingecko.com; HttpOnly;
+        Secure; SameSite=None
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 88e9eb6f-ba11-4cce-aa7c-cb52ba70d0b7
+      X-Runtime:
+      - '0.172612'
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

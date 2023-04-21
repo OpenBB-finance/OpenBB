@@ -90,11 +90,12 @@ def display_trades(
     """
     df = ccxt_model.get_trades(exchange_id=exchange, symbol=symbol, to_symbol=to_symbol)
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title=f"Trades for {exchange.upper()}:{symbol.upper()}/{to_symbol.upper()}",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

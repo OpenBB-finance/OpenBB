@@ -297,11 +297,12 @@ def display_exchange_rates(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Exchange Rates",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -474,11 +475,12 @@ def display_stablecoins(
 
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Stablecoin Data",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -544,11 +546,12 @@ def display_categories(
 
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             floatfmt=".2f",
             show_index=False,
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -597,11 +600,12 @@ def display_exchanges(
             df.drop("Url", axis=1, inplace=True)
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Top CoinGecko Exchanges",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -641,11 +645,12 @@ def display_platforms(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Financial Platforms",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -685,11 +690,12 @@ def display_products(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Financial Products",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -728,11 +734,12 @@ def display_indexes(
     df = gecko.get_indexes(sortby=sortby, ascend=ascend)
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Crypto Indexes",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -772,11 +779,12 @@ def display_derivatives(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Crypto Derivatives",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(

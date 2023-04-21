@@ -1,0 +1,109 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+    method: GET
+    uri: https://api.coingecko.com/api/v3/exchange_rates
+  response:
+    body:
+      string: !!binary |
+        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
+        iHfSrXESAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Age:
+      - '57'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - HIT
+      CF-RAY:
+      - 7b7bedd62f4c0bbc-AMS
+      Cache-Control:
+      - public, max-age=120
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 14 Apr 2023 12:25:01 GMT
+      ETag:
+      - W/"329b0906234a04bc1ae5700d56f6b45a"
+      Expires:
+      - Fri, 14 Apr 2023 12:27:01 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=j0UX3SMNI36ucnh0RcmUcBJyexjk5zNIimLjIKWo7IQ-1681475101-0-AXf1svk0uJhkuOedUJpKFf7+gXCPcWwdqpdO742UZU/gilCK+Ewrqtd5JOAGOcufhIgtAiFU5EcHAZHXqpyJAcM=;
+        path=/; expires=Fri, 14-Apr-23 12:55:01 GMT; domain=.api.coingecko.com; HttpOnly;
+        Secure; SameSite=None
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - c09aa613-dbc0-4ff0-80c1-8b77dce5ab86
+      X-Runtime:
+      - '0.020866'
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

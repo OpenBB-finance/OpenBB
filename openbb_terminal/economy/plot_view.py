@@ -109,12 +109,14 @@ def show_options(
             df = pd.concat([df, data], axis=1)
 
         if raw:
+            df = df.sort_index(ascending=False)
             print_rich_table(
-                df.tail(limit),
+                df,
                 show_index=True,
                 headers=list(df.columns),
                 title="Macro data",
                 export=bool(export),
+                limit=limit,
             )
         if export:
             export_data(

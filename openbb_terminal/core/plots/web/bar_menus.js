@@ -1,98 +1,133 @@
 // Custom Menu functions for Plotly charts
 
-function autoScaling(eventdata, graphs) {
+async function autoScaling(eventdata, graphs) {
   try {
     if (eventdata["xaxis.range[0]"] != undefined) {
-      let log_scale = true
-        ? graphs.layout.yaxis != undefined && graphs.layout.yaxis.type == "log"
-        : false;
-
-      let secondary_y = true
-        ? graphs.layout.yaxis2 != undefined &&
-          graphs.layout.yaxis2.overlaying == "y"
-        : false;
-
-      let x_min = eventdata["xaxis.range[0]"];
-      let x_max = eventdata["xaxis.range[1]"];
-
+      const x_min = eventdata["xaxis.range[0]"];
+      const x_max = eventdata["xaxis.range[1]"];
+      let to_update = {};
       let y_min, y_max;
-      let y_done = [];
 
-      for (let trace of graphs.data) {
-        let yaxis = !trace.yaxis
-          ? "yaxis"
-          : "yaxis" + trace.yaxis.replace("y", "");
+      const YaxisData = graphs.data.filter((trace) => trace.yaxis != undefined);
+      const yaxis_unique = [
+        ...new Set(
+          YaxisData.map(
+            (trace) =>
+              trace.yaxis || trace.y != undefined || trace.type == "candlestick"
+          )
+        ),
+      ];
 
-        if (trace.x != undefined) {
-          if (y_done.indexOf(yaxis) == -1) {
-            y_done.push(yaxis);
-          } else {
-            continue;
-          }
+      const get_all_yaxis_traces = (yaxis) => {
+        return graphs.data.filter(
+          (trace) =>
+            trace.yaxis == yaxis && (trace.y || trace.type == "candlestick")
+        );
+      };
 
-          let x = trace.x;
-          let y_low, y_high;
+      yaxis_unique.forEach((unique) => {
+        if (typeof unique != "string") {
+          return;
+        }
+        let yaxis = "yaxis" + unique.replace("y", "");
+        let y_candle = [];
+        let y_values = [];
+        let log_scale = graphs.layout[yaxis].type == "log";
 
-          if (trace.close != undefined) {
-            y_high = trace.high;
-            y_low = trace.low;
-          }
+        get_all_yaxis_traces(unique).forEach((trace2) => {
+          let x = trace2.x;
+          log_scale = graphs.layout[yaxis].type == "log";
 
-          let y = y_low ? y_low : trace.y;
+          let y = trace2.y != undefined ? trace2.y : [];
+          let y_low = trace2.type == "candlestick" ? trace2.low : [];
+          let y_high = trace2.type == "candlestick" ? trace2.high : [];
 
           if (log_scale) {
             y = y.map(Math.log10);
-            if (y_high != undefined) {
-              y_high = y_high.map(Math.log10);
+            if (trace2.type == "candlestick") {
+              y_low = trace2.low.map(Math.log10);
+              y_high = trace2.high.map(Math.log10);
             }
           }
-          for (let i = 0; i < x.length; i++) {
-            if (x[i] >= x_min && x[i] <= x_max) {
-              if (y_min == undefined || y_min > y[i]) {
-                y_min = y[i];
-              }
 
-              let y_high_value = y_high ? y_high[i] : y[i];
-              if (y_max == undefined || y_max < y_high_value) {
-                y_max = y_high_value;
+          let yx_values = x.map((x, i) => {
+            let out = null;
+            if (x >= x_min && x <= x_max) {
+              if (trace2.y != undefined) {
+                console.log(trace2.name, trace2.type, trace2.yaxis);
+                out = y[i];
+              }
+              if (trace2.type == "candlestick") {
+                y_candle.push(y_low[i]);
+                y_candle.push(y_high[i]);
               }
             }
-          }
+            return out;
+          });
+
+          y_values = y_values.concat(yx_values);
+        });
+
+        y_values = y_values.filter((y2) => y2 != undefined && y2 != null);
+        y_min = Math.min(...y_values);
+        y_max = Math.max(...y_values);
+
+        if (y_candle.length > 0) {
+          y_candle = y_candle.filter((y2) => y2 != undefined && y2 != null);
+          y_min = Math.min(...y_candle);
+          y_max = Math.max(...y_candle);
         }
+
+        let org_y_max = y_max;
+        let is_volume =
+          graphs.layout[yaxis].fixedrange != undefined &&
+          graphs.layout[yaxis].fixedrange == true;
 
         if (y_min != undefined && y_max != undefined) {
-          if (yaxis != "yaxis" && log_scale) {
-            y_min = Math.pow(10, y_min);
-            y_max = Math.pow(10, y_max);
-          }
-
           let y_range = y_max - y_min;
-
-          if (yaxis == "yaxis" && graphs.layout.yaxis.range[0] != 0) {
-            y_min -= y_range * 0.15;
-          }
-          y_max += y_range * 0.15;
-
-          if (yaxis == "yaxis" && secondary_y) {
-            secondary_y = [y_min, y_max];
+          let y_mult = 0.15;
+          if (y_candle.length > 0) {
+            y_mult = 0.3;
           }
 
-          if (yaxis == "yaxis2" && secondary_y) {
-            let y2_max = secondary_y[1] - secondary_y[0] * 1.5;
+          y_min -= y_range * y_mult;
+          y_max += y_range * y_mult;
+
+          if (is_volume) {
+            if (graphs.layout[yaxis].tickvals != undefined) {
+              const range_x = 7;
+              let volume_ticks = org_y_max;
+              let round_digits = -3;
+              let first_val = Math.round(volume_ticks * 0.2, round_digits);
+              let x_zipped = [2, 5, 6, 7, 8, 9, 10];
+              let y_zipped = [1, 4, 5, 6, 7, 8, 9];
+
+              for (let i = 0; i < x_zipped.length; i++) {
+                if (String(volume_ticks).length > x_zipped[i]) {
+                  round_digits = -y_zipped[i];
+                  first_val = Math.round(volume_ticks * 0.2, round_digits);
+                }
+              }
+              let tickvals = [
+                Math.floor(first_val),
+                Math.floor(first_val * 2),
+                Math.floor(first_val * 3),
+                Math.floor(first_val * 4),
+              ];
+              let volume_range = [0, Math.floor(volume_ticks * range_x)];
+
+              to_update[yaxis + ".tickvals"] = tickvals;
+              to_update[yaxis + ".range"] = volume_range;
+              to_update[yaxis + ".tickformat"] = ".2s";
+              return;
+            }
             y_min = 0;
-            y_max = secondary_y[1] - secondary_y[0] * 1.5;
-
-            if ((secondary_y[1] - y2_max) / secondary_y[1] > 0.5) {
-              y_max = secondary_y[0] * 1.2;
-            }
-            if ((secondary_y[0] - y2_max) / secondary_y[0] > 0.5) {
-              y_max = secondary_y[1] * 1.2;
-            }
+            y_max = graphs.layout[yaxis].range[1];
           }
-
-          Plotly.relayout(globals.chartDiv, yaxis + ".range", [y_min, y_max]);
+          to_update[yaxis + ".range"] = [y_min, y_max];
         }
-      }
+      });
+      Plotly.update(graphs, {}, to_update);
     }
   } catch (e) {
     console.log(`Error in AutoScaling: ${e}`);
@@ -158,10 +193,10 @@ function changeColor() {
   }
 }
 
-function downloadImage() {
+function uploadImage() {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
-  Plotly.toImage(globals.chartDiv, {
+  Plotly.toImage(globals.CHART_DIV, {
     format: "png",
     height: 627,
     width: 1200,
@@ -199,7 +234,121 @@ function downloadImage() {
     });
 }
 
-function downloadData(gd) {
+const openbb_watermark = {
+  yref: "paper",
+  xref: "paper",
+  x: 1,
+  y: 0,
+  text: "OpenBB Terminal",
+  font_size: 17,
+  font_color: "gray",
+  opacity: 0.5,
+  xanchor: "right",
+  yanchor: "bottom",
+  yshift: -80,
+  xshift: 40,
+};
+
+async function setWatermarks(margin, old_index, init = false) {
+  if (init) {
+    globals.CHART_DIV.layout.annotations.push(openbb_watermark);
+    if (globals.cmd_idx && globals.cmd_src) {
+      globals.CHART_DIV.layout.annotations[globals.cmd_idx].text =
+        globals.cmd_src;
+    }
+
+    Plotly.relayout(globals.CHART_DIV, {
+      "title.text": globals.title,
+      margin: globals.old_margin,
+    });
+  }
+
+  if (!init) {
+    if (globals.cmd_idx && globals.cmd_src) {
+      globals.CHART_DIV.layout.annotations[globals.cmd_idx].text = "";
+    }
+    globals.CHART_DIV.layout.annotations.splice(old_index, 1);
+
+    Plotly.relayout(globals.CHART_DIV, {
+      "title.text": "",
+      margin: margin,
+    });
+  }
+}
+
+async function downloadImage(filename, extension, writable = undefined) {
+  const loader = document.getElementById("loader");
+  loader.classList.add("show");
+
+  let imageDownload = undefined;
+
+  if (extension == "png") {
+    imageDownload = domtoimage.toPng;
+  } else if (extension == "jpeg") {
+    imageDownload = domtoimage.toJpeg;
+    // } else if (extension == "svg") {
+    //   imageDownload = domtoimage.toSvg;
+  } else if (["svg", "pdf"].includes(extension)) {
+    const margin = globals.CHART_DIV.layout.margin;
+    const old_index = globals.CHART_DIV.layout.annotations.length;
+
+    await setWatermarks(margin, old_index, true);
+
+    if (window.showSaveFilePicker && writable) {
+      await Plotly.toImage(globals.CHART_DIV, {
+        format: "svg",
+        height: globals.CHART_DIV.clientHeight,
+        width: globals.CHART_DIV.clientWidth,
+      }).then(async function (dataUrl) {
+        const blob = await fetch(dataUrl).then((r) => r.blob());
+        await writable.write(blob);
+        await writable.close();
+      });
+    } else {
+      Plotly.downloadImage(globals.CHART_DIV, {
+        format: "svg",
+        height: globals.CHART_DIV.clientHeight,
+        width: globals.CHART_DIV.clientWidth,
+        filename: filename,
+      });
+    }
+
+    await setWatermarks(margin, old_index, false);
+
+    return;
+  } else {
+    console.log("Invalid extension");
+    return;
+  }
+
+  imageDownload(document.getElementById("openbb_container"))
+    .then(async function (dataUrl) {
+      if (window.showSaveFilePicker && writable) {
+        const blob = await fetch(dataUrl).then((r) => r.blob());
+        await writable.write(blob);
+        await writable.close();
+      } else {
+        downloadURI(dataUrl, filename + "." + extension);
+      }
+      loader.classList.remove("show");
+    })
+    .catch(function (error) {
+      console.error("oops, something went wrong!", error);
+      loader.classList.remove("show");
+      hideModebar();
+    });
+}
+
+function downloadURI(uri, name) {
+  let link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+async function downloadData(gd, filename, writable = undefined) {
   let data = gd.data;
   let candlestick = false;
   let csv = undefined;
@@ -283,23 +432,29 @@ function downloadData(gd) {
     }
   }
 
-  let filename = openbbFilename(gd, true);
-  let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   if (navigator.msSaveBlob) {
     // IE 10+
     navigator.msSaveBlob(blob, filename);
   } else {
-    let link = window.document.createElement("a");
-    if (link.download !== undefined) {
-      // feature detection
-      // Browsers that support HTML5 download attribute
-      let url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", filename);
-      link.style.visibility = "hidden";
-      window.document.body.appendChild(link);
-      link.click();
-      window.document.body.removeChild(link);
+    // feature detection
+    // Browsers that support showSaveFilePicker or HTML5 download attribute
+    if (window.showSaveFilePicker && writable) {
+      await writable.write(blob);
+      await writable.close();
+    } else {
+      let link = window.document.createElement("a");
+      if (link.download !== undefined) {
+        // feature detection
+        // Browsers that support HTML5 download attribute
+        let url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = "hidden";
+        window.document.body.appendChild(link);
+        link.click();
+        window.document.body.removeChild(link);
+      }
     }
   }
 }

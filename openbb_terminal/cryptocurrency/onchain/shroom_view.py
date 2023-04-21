@@ -5,8 +5,7 @@ import logging
 import os
 from typing import Optional, Union
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.onchain.shroom_model import (
     get_daily_transactions,
     get_dapp_stats,
@@ -90,10 +89,11 @@ def display_dapp_stats(
 
     if raw:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
     fig = OpenBBFigure.create_subplots(specs=[[{"secondary_y": True}]])
@@ -126,7 +126,7 @@ def display_dapp_stats(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)

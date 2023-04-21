@@ -25,6 +25,7 @@ def show_macro_data(
     external_axes: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
+    limit: int = 10,
 ) -> Union[OpenBBFigure, None]:
     """Show the received macro data about a company [Source: EconDB]
 
@@ -119,12 +120,15 @@ def show_macro_data(
     df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df_rounded = df_rounded.sort_index(ascending=False)
         print_rich_table(
-            df_rounded.fillna("-").iloc[-10:],
+            df_rounded.fillna("-"),
             headers=list(df_rounded.columns),
             show_index=True,
             title=f"Macro Data {denomination}",
             export=bool(export),
+            limit=limit,
         )
 
     if export:
@@ -137,7 +141,7 @@ def show_macro_data(
             fig,
         )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -151,6 +155,7 @@ def show_treasuries(
     external_axes: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
+    limit: int = 10,
 ) -> Union[OpenBBFigure, None]:
     """Display U.S. Treasury rates [Source: EconDB]
 
@@ -202,12 +207,15 @@ def show_treasuries(
         )
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        treasury_data = treasury_data.sort_index(ascending=False)
         print_rich_table(
-            treasury_data.iloc[-10:],
+            treasury_data,
             headers=list(treasury_data.columns),
             show_index=True,
             title="U.S. Treasuries",
             export=bool(export),
+            limit=limit,
         )
 
     if export:
@@ -220,7 +228,7 @@ def show_treasuries(
             fig,
         )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)

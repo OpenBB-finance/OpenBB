@@ -5,11 +5,7 @@ import logging
 import os
 from typing import Optional, Union
 
-from openbb_terminal import (
-    OpenBBFigure,
-    config_terminal as cfg,
-)
-from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
@@ -47,7 +43,7 @@ def display_grouped_defi_protocols(
     )
     fig.set_title(f"Top {limit} dApp TVL grouped by chain")
 
-    colors = iter(cfg.theme.get_colors(reverse=True))
+    colors = iter(theme.get_colors(reverse=True))
 
     for chain in chains:
         chain_filter = df.loc[df.Chain == chain]
@@ -81,7 +77,6 @@ def display_grouped_defi_protocols(
 @log_start_end(log=logger)
 def display_defi_protocols(
     sortby: str,
-    interactive: bool = False,
     limit: int = 20,
     ascend: bool = False,
     description: bool = False,
@@ -93,12 +88,10 @@ def display_defi_protocols(
 
     Parameters
     ----------
-    interactive: bool
-        Flag to display interactive table
-    limit: int
-        Number of records to display
     sortby: str
         Key by which to sort data
+    limit: int
+        Number of records to display
     ascend: bool
         Flag to sort data descending
     description: bool
@@ -109,15 +102,13 @@ def display_defi_protocols(
 
     df = llama_model.get_defi_protocols(limit, sortby, ascend, description)
 
-    if interactive:
-        plots_backend().send_table(df, title="DeFi Protocols")
-    else:
-        print_rich_table(
-            df.head(limit),
-            headers=list(df.columns),
-            show_index=False,
-            export=bool(export),
-        )
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        export=bool(export),
+        limit=limit,
+    )
 
     export_data(
         export,

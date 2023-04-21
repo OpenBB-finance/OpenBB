@@ -108,10 +108,11 @@ def display_dividend_calendar(
     calendar.columns = calendar.columns.map(div_map)
     calendar = calendar.sort_values(by=sortby, ascending=ascend)
     print_rich_table(
-        calendar.head(limit),
+        calendar,
         headers=[x.title() for x in calendar.columns],
         title=f"[bold]Dividend Calendar for {date}[/bold]",
         export=bool(export),
+        limit=limit,
     )
     export_data(
         export,

@@ -75,11 +75,12 @@ def hot_penny_stocks(
         return
 
     print_rich_table(
-        df_penny_stocks.head(limit),
+        df_penny_stocks,
         headers=list(df_penny_stocks.columns) if source != "Shortinterest" else None,
         show_index=False,
         title="Top Penny Stocks",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

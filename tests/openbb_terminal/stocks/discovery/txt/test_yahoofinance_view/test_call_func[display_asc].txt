@@ -1,3 +1,26 @@
-  Symbol                    Name  Price (Intraday)  Change % Change  Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
-0   RIDE  Lordstown Motors Corp.             4.190  -0.020   -0.48%  2.282M           10.106M   805.448M               
-1   BGCP      BGC Partners, Inc.             4.585  -0.095   -2.03%  506011            2.615M     1.691B          39.87
+   Symbol                                       Name  Price (Intraday)  Change % Change  Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
+0    RIDE                     Lordstown Motors Corp.             4.190 -0.0200   -0.48%  2.282M           10.106M   805.448M               
+1    BGCP                         BGC Partners, Inc.             4.585 -0.0950   -2.03%  506011            2.615M     1.691B          39.87
+2    TIGR                 UP Fintech Holding Limited             5.720 -0.1100   -1.80%  1.957M            8.699M   929.597M          28.91
+3    CRSR                       Corsair Gaming, Inc.            20.940 -0.3100   -1.46%  390637            1.267M     1.976B          17.61
+4      DM                        Desktop Metal, Inc.             5.820 -0.0800   -1.39%  2.568M            6.439M     1.809B               
+5     CRK                   Comstock Resources, Inc.             8.430  0.1200   +1.44%  1.007M            3.312M     1.964B               
+6    BEST                                  BEST Inc.             1.090  0.1425  +15.04%  7.037M            5.928M   423.683M               
+7     BLU                         BELLUS Health Inc.             5.710  0.0400   +0.71%  222762             2.53M   451.395M               
+8    HYLN                     Hyliion Holdings Corp.             6.290  0.0100   +0.15%   1.02M            2.811M      1.09B               
+9    VLDR                       Velodyne Lidar, Inc.             5.140 -0.1200   -2.19%  1.266M            3.786M     1.011B               
+10    CNK                    Cinemark Holdings, Inc.            16.680 -0.2200   -1.30%   1.03M            3.479M     1.995B               
+11    DRH            DiamondRock Hospitality Company             9.250 -0.0700   -0.75%  992392            2.155M     1.948B               
+12   HUYA                                  HUYA Inc.             7.410 -0.0300   -0.40%   1.22M            2.869M     1.759B           9.87
+13    PEI  Pennsylvania Real Estate Investment Trust             1.100 -0.0800   -6.78%  854750            563609     88.22M               
+14   APPH                           AppHarvest, Inc.             5.150 -0.1200   -2.22%  405278            1.805M   518.897M               
+15    ATI        Allegheny Technologies Incorporated            15.080  0.2200   +1.48%  534922             1.59M     1.919B               
+16    HBM                       Hudbay Minerals Inc.             6.950 -0.1200   -1.77%  387843            1.336M     1.819B               
+17    FSM                  Fortuna Silver Mines Inc.             3.240 -0.0400   -1.22%  2.234M            5.095M   947.117M          11.45
+18   BGFV           Big 5 Sporting Goods Corporation            20.360 -0.1500   -0.73%  473833            2.257M   454.248M           4.42
+19    ZEV                    Lightning eMotors, Inc.             6.180 -0.0800   -1.28%  213193            754780   463.226M               
+20   DNMR                   Danimer Scientific, Inc.            12.080 -0.1400   -1.14%  568939            2.347M     1.181B               
+21   ORPH                              Orphazyme A/S             2.840 -0.1000   -3.40%  227834            1.395M   106.105M               
+22   REAL                         The RealReal, Inc.            12.560 -0.7800   -5.85%  2.211M            3.118M      1.16B               
+23    USA               Liberty All-Star Equity Fund             8.120  0.0200   +0.18%  564474            1.234M     1.819B           3.11
+24   CENX                   Century Aluminum Company            13.590 -0.0800   -0.59%  290416            1.543M     1.225B               

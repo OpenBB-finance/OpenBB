@@ -13,13 +13,25 @@ from typing import Optional, Union
 import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
-import pywry
 from packaging import version
 from reportlab.graphics import renderPDF
+
+try:
+    from pywry.core import PyWry
+
+    PYWRY_AVAILABLE = True
+except ImportError as e:
+    print(f"\033[91m{e}\033[0m")
+    PYWRY_AVAILABLE = False
+
 from svglib.svglib import svg2rlg
 
-from openbb_terminal.base_helpers import console, strtobool
+from openbb_terminal.base_helpers import console
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
+
+if not PYWRY_AVAILABLE:
+    from openbb_terminal.core.plots.no_import import DummyBackend as PyWry  # noqa
 
 try:
     from IPython import get_ipython
@@ -37,11 +49,11 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.2.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.20.0.min.js"
 BACKEND = None
 
 
-class Backend(pywry.PyWry):
+class Backend(PyWry):
     """Custom backend for Plotly."""
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
@@ -53,43 +65,51 @@ class Backend(pywry.PyWry):
     def __init__(self, daemon: bool = True, max_retries: int = 30):
         super().__init__(daemon=daemon, max_retries=max_retries)
         self.plotly_html: Path = (PLOTS_CORE_PATH / "plotly_temp.html").resolve()
-        self.table_html: Path = (PLOTS_CORE_PATH / "table_temp.html").resolve()
+        self.table_html: Path = (PLOTS_CORE_PATH / "table.html").resolve()
         self.inject_path_to_html()
         self.isatty = (
             not JUPYTER_NOTEBOOK
             and sys.stdin.isatty()
-            and not strtobool(os.environ.get("TEST_MODE", False))
-            and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
+            and not get_current_system().TEST_MODE
+            and not get_current_user().preferences.ENABLE_QUICK_EXIT
             and current_process().name == "MainProcess"
         )
+        if hasattr(PyWry, "__version__") and PyWry.__version__ == "0.0.0":
+            self.isatty = False
+
         self.WIDTH, self.HEIGHT = 1400, 762
 
         atexit.register(self.close)
 
-    def set_window_dimensions(self, width: int, height: int):
+    def set_window_dimensions(self):
         """Set the window dimensions."""
-        self.WIDTH, self.HEIGHT = int(width) * 100, (int(height) * 100) + 62
+        current_user = get_current_user()
+        width = current_user.preferences.PLOT_PYWRY_WIDTH or 1400
+        height = current_user.preferences.PLOT_PYWRY_HEIGHT or 762
+
+        self.WIDTH, self.HEIGHT = int(width), int(height)
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path."""
-        for html_file, temp_file in zip(
-            ["plotly.html", "table.html"], [self.plotly_html, self.table_html]
-        ):
-            with open(PLOTS_CORE_PATH / html_file, encoding="utf-8") as file:  # type: ignore
+        try:
+            with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
                 html = file.read()
-                html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
+                html = html.replace(
+                    "{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri())
+                ).replace("{{PLOTLYJS_PATH}}", str(PLOTLYJS_PATH.as_uri()))
 
             # We create a temporary file to inject the path to the script tag
             # This is so we don't have to modify the original file
             # The file is deleted at program exit.
-            with open(temp_file, "w", encoding="utf-8") as file:  # type: ignore
+            with open(self.plotly_html, "w", encoding="utf-8") as file:  # type: ignore
                 file.write(html)
-
-    def get_plotly_html(self) -> str:
-        """Get the plotly html file."""
-        if self.plotly_html and self.plotly_html.exists():
-            return str(self.plotly_html)
-        return ""
+        except FileNotFoundError as error:
+            console.print(
+                "[bold red]plotly.html file not found, check the path:[/]"
+                f"[green]{PLOTS_CORE_PATH / 'plotly.html'}[/]"
+            )
+            self.max_retries = 0  # pylint: disable=W0201
+            raise error
 
     def get_pending(self) -> list:
         """Get the pending data that has not been sent to the backend."""
@@ -99,11 +119,26 @@ class Backend(pywry.PyWry):
         self.init_engine: list = []
         return pending
 
+    def get_plotly_html(self) -> str:
+        """Get the plotly html file."""
+        self.set_window_dimensions()
+        if not self.plotly_html.exists():
+            self.inject_path_to_html()
+            return self.get_plotly_html()
+
+        return str(self.plotly_html)
+
     def get_table_html(self) -> str:
         """Get the table html file."""
-        if self.table_html and self.table_html.exists():
+        self.set_window_dimensions()
+        if self.table_html.exists():
             return str(self.table_html)
-        return ""
+        console.print(
+            "[bold red]table.html file not found, check the path:[/]"
+            f"[green]{PLOTS_CORE_PATH / 'table.html'}[/]"
+        )
+        self.max_retries = 0  # pylint: disable=W0201
+        raise FileNotFoundError
 
     def get_window_icon(self) -> str:
         """Get the window icon."""
@@ -125,33 +160,25 @@ class Backend(pywry.PyWry):
             Path to export image to, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
-        title = "Plots"
+        # pylint: disable=C0415
+        from openbb_terminal.helper_funcs import command_location
 
-        # We check if figure is a subplot and has a title annotation
-        if not fig.layout.title.text and fig._has_subplots():  # pylint: disable=W0212
-            for annotation in fig.select_annotations(
-                selector=dict(xref="paper", yref="paper")
-            ):
-                # Subplots always set the first annotation as the title
-                # so we break after the first one
-                if annotation.text:
-                    title = annotation.text
-                break
-
-        title = re.sub(
-            r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else title
-        )
+        fig.layout.height += 69
 
         if export_image and isinstance(export_image, str):
             export_image = Path(export_image).resolve()
+
+        json_data = json.loads(fig.to_json())
+
+        json_data.update({"theme": get_current_user().preferences.CHART_STYLE})
 
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_plotly_html(),
-                    "json_data": json.loads(fig.to_json()),
-                    "export_image": str(export_image).replace(".pdf", ".svg"),
-                    **self.get_kwargs(title),
+                    "json_data": json_data,
+                    "export_image": str(export_image),
+                    **self.get_kwargs(command_location),
                 }
             )
         )
@@ -163,15 +190,15 @@ class Backend(pywry.PyWry):
         pdf = export_image.suffix == ".pdf"
         img_path = export_image.resolve()
 
-        if pdf:
-            img_path = img_path.with_suffix(".svg")
-
         checks = 0
         while not img_path.exists():
             await asyncio.sleep(0.2)
             checks += 1
             if checks > 50:
                 break
+
+        if pdf:
+            img_path = img_path.rename(img_path.with_suffix(".svg"))
 
         if img_path.exists():
             if pdf:
@@ -186,7 +213,13 @@ class Backend(pywry.PyWry):
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
                     subprocess.check_call([opener, export_image])  # nosec: B603
 
-    def send_table(self, df_table: pd.DataFrame, title: str = ""):
+    def send_table(
+        self,
+        df_table: pd.DataFrame,
+        title: str = "",
+        source: str = "",
+        theme: str = "dark",
+    ):
         """Send table data to the backend to be displayed in a table.
 
         Parameters
@@ -195,26 +228,57 @@ class Backend(pywry.PyWry):
             Dataframe to send to backend.
         title : str, optional
             Title to display in the window, by default ""
+        source : str, optional
+            Source of the data, by default ""
+        theme : light or dark, optional
+            Theme of the table, by default "light"
         """
         self.loop.run_until_complete(self.check_backend())
+
+        if title:
+            # We remove any html tags and markdown from the title
+            title = re.sub(r"<[^>]*>", "", title)
+            title = re.sub(r"\[\/?[a-z]+\]", "", title)
+
+        # we get the length of each column using the max length of the column
+        # name and the max length of the column values as the column width
         columnwidth = [
-            max(len(str(df_table[col].name)), df_table[col].astype(str).str.len().max())
+            max(
+                len(str(df_table[col].name)),
+                df_table[col].astype(str).str.len().max(),
+            )
             for col in df_table.columns
+            if hasattr(df_table[col], "name") and hasattr(df_table[col], "dtype")
         ]
+
         # we add a percentage of max to the min column width
         columnwidth = [
             int(x + (max(columnwidth) - min(columnwidth)) * 0.2) for x in columnwidth
         ]
 
+        # in case of a very small table we set a min width
+        width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
+
+        # pylint: disable=C0415
+        from openbb_terminal.helper_funcs import command_location
+
+        json_data = json.loads(df_table.to_json(orient="split"))
+        json_data.update(
+            dict(
+                title=title,
+                source=source or "",
+                theme=theme or "dark",
+                command_location=command_location or "",
+            )
+        )
+
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_table_html(),
-                    "json_data": df_table.to_json(orient="split"),
-                    "width": int(max(sum(columnwidth) * 9.5, self.WIDTH + 100)),
-                    "height": int(
-                        min(len(df_table.index) * 25 + 25, self.HEIGHT + 100)
-                    ),
+                    "json_data": json.dumps(json_data),
+                    "width": width,
+                    "height": self.HEIGHT - 100,
                     **self.get_kwargs(title),
                 }
             )
@@ -284,8 +348,7 @@ class Backend(pywry.PyWry):
 
     def del_temp(self):
         """Delete the temporary html file."""
-        for file in (self.plotly_html, self.table_html):
-            file.unlink(missing_ok=True)
+        self.plotly_html.unlink(missing_ok=True)
 
     def start(self, debug: bool = False):
         """Start the backend WindowManager process."""
@@ -295,14 +358,24 @@ class Backend(pywry.PyWry):
     async def check_backend(self):
         """Override to check if isatty."""
         if self.isatty:
-            if not hasattr(pywry, "__version__") or version.parse(
-                pywry.__version__
-            ) < version.parse("0.3.5"):
-                console.print(
-                    "[bold red]Pywry version 0.3.5 or higher is required to use the "
-                    "OpenBB Plots backend.[/bold red]\n"
-                    "[yellow]Please update pywry with 'pip install pywry --upgrade'[/yellow]"
-                )
+            message = (
+                "[bold red]PyWry version 0.3.5 or higher is required to use the "
+                "OpenBB Plots backend.[/]\n"
+                "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
+            )
+            if not hasattr(PyWry, "__version__"):
+                try:
+                    # pylint: disable=C0415
+                    from pywry import __version__ as pywry_version
+                except ImportError:
+                    console.print(message)
+                    self.max_retries = 0
+                    return
+
+                PyWry.__version__ = pywry_version  # pylint: disable=W0201
+
+            if version.parse(PyWry.__version__) < version.parse("0.3.5"):
+                console.print(message)
                 self.max_retries = 0  # pylint: disable=W0201
                 return
             await super().check_backend()
@@ -323,7 +396,9 @@ async def download_plotly_js():
     try:
         # we use aiohttp to download plotly.js
         # this is so we don't have to block the main thread
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(verify_ssl=False)
+        ) as session:
             async with session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
                 with open(str(PLOTLYJS_PATH), "wb") as f:
                     while True:
@@ -348,7 +423,7 @@ if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
 
 def plots_backend() -> Backend:
     """Get the backend."""
-    global BACKEND  # pylint: disable=W0603
+    global BACKEND  # pylint: disable=W0603 # noqa
     if BACKEND is None:
         BACKEND = Backend()
     return BACKEND

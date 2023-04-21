@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 # IMPORTS STANDARD
 import argparse
+import inspect
 import io
 import json
 import logging
@@ -12,6 +13,7 @@ import random
 import re
 import sys
 import urllib.parse
+import webbrowser
 from datetime import (
     date as d,
     datetime,
@@ -29,11 +31,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pandas.io.formats.format
+import pandas_ta as ta
 import pytz
 import requests
-import tweepy
 import yfinance as yf
-from dateutil.relativedelta import relativedelta
 from holidays import US as us_holidays
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
@@ -47,29 +48,11 @@ from openbb_terminal import (
 )
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
-
-try:
-    twitter_api = tweepy.API(
-        tweepy.OAuth2BearerHandler(
-            get_current_user().credentials.API_TWITTER_BEARER_TOKEN,
-        ),
-        timeout=5,
-    )
-    if (
-        get_current_user().preferences.TOOLBAR_TWEET_NEWS
-        and get_current_user().credentials.API_TWITTER_BEARER_TOKEN != "REPLACE_ME"
-    ):
-        # A test to ensure that the Twitter API key is correct,
-        # otherwise we disable the Toolbar with Tweet News
-        twitter_api.get_user(screen_name="openbb_finance")
-except tweepy.errors.Unauthorized:
-    # Set toolbar tweet news to False because the Twitter API is not set up correctly
-    get_current_user().preferences.TOOLBAR_TWEET_NEWS = False
-
 
 logger = logging.getLogger(__name__)
 
@@ -89,8 +72,6 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
-LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
-
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 
@@ -106,7 +87,7 @@ def set_command_location(cmd_loc: str):
     cmd_loc: str
         Command location called by user
     """
-    global command_location
+    global command_location  # noqa
     command_location = cmd_loc
 
 
@@ -165,7 +146,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
-    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb|.ipynb)"
+    known_extensions = r"(\.(xlsx|csv|xls|tsv|json|yaml|ini|openbb|ipynb))"
     unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
 
     # Add custom expressions to handle edge cases of individual controllers
@@ -273,6 +254,9 @@ def print_rich_table(
     columns_to_auto_color: Optional[List[str]] = None,
     rows_to_auto_color: Optional[List[str]] = None,
     export: bool = False,
+    print_to_console: bool = False,
+    limit: Optional[int] = 1000,
+    source: Optional[str] = None,
 ):
     """Prepare a table from df in rich.
 
@@ -300,42 +284,84 @@ def print_rich_table(
         Rows to automatically color
     export: bool
         Whether we are exporting the table to a file. If so, we don't want to print it.
+    limit: Optional[int]
+        Limit the number of rows to show.
+    print_to_console: bool
+        Whether to print the table to the console. If False and interactive mode is
+        enabled, the table will be displayed in a new window. Otherwise, it will print to the
+        console.
+    source: Optional[str]
+        Source of the table. If provided, it will be displayed in the header of the table.
     """
     if export:
         return
 
     current_user = get_current_user()
+    enable_interactive = (
+        current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
+    )
+
+    def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
+        """Check if headers are valid and return them."""
+        output = _headers
+        if isinstance(_headers, pd.Index):
+            output = list(_headers)
+        if len(output) != len(df.columns):
+            log_and_raise(
+                ValueError("Length of headers does not match length of DataFrame")
+            )
+        return output
+
+    if enable_interactive and not print_to_console:
+        df_outgoing = df.copy()
+        # If headers are provided, use them
+        if headers is not None:
+            # We check if headers are valid
+            df_outgoing.columns = _get_headers(headers)
+
+        if show_index and index_name not in df_outgoing.columns:
+            # If index name is provided, we use it
+            df_outgoing.index.name = index_name or "Index"
+            df_outgoing = df_outgoing.reset_index()
+
+        for col in df_outgoing.columns:
+            if col == "":
+                df_outgoing = df_outgoing.rename(columns={col: "  "})
+
+        plots_backend().send_table(
+            df_table=df_outgoing,
+            title=title,
+            source=source,  # type: ignore
+            theme=current_user.preferences.TABLE_STYLE,
+        )
+        return
+
+    df = df.copy() if not limit else df.copy().iloc[:limit]
+    if automatic_coloring:
+        if columns_to_auto_color:
+            for col in columns_to_auto_color:
+                # checks whether column exists
+                if col in df.columns:
+                    df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+        if rows_to_auto_color:
+            for row in rows_to_auto_color:
+                # checks whether row exists
+                if row in df.index:
+                    df.loc[row] = df.loc[row].apply(
+                        lambda x: return_colored_value(str(x))
+                    )
+
+        if columns_to_auto_color is None and rows_to_auto_color is None:
+            df = df.applymap(lambda x: return_colored_value(str(x)))
 
     if current_user.preferences.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
-
-        if current_user.preferences.USE_COLOR and automatic_coloring:
-            if columns_to_auto_color:
-                for col in columns_to_auto_color:
-                    # checks whether column exists
-                    if col in df.columns:
-                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
-            if rows_to_auto_color:
-                for row in rows_to_auto_color:
-                    # checks whether row exists
-                    if row in df.index:
-                        df.loc[row] = df.loc[row].apply(
-                            lambda x: return_colored_value(str(x))
-                        )
-
-            if columns_to_auto_color is None and rows_to_auto_color is None:
-                df = df.applymap(lambda x: return_colored_value(str(x)))
 
         if show_index:
             table.add_column(index_name)
 
         if headers is not None:
-            if isinstance(headers, pd.Index):
-                headers = list(headers)
-            if len(headers) != len(df.columns):
-                log_and_raise(
-                    ValueError("Length of headers does not match length of DataFrame")
-                )
+            headers = _get_headers(headers)
             for header in headers:
                 table.add_column(str(header))
         else:
@@ -369,23 +395,6 @@ def print_rich_table(
             table.add_row(*row_idx)
         console.print(table)
     else:
-        if current_user.preferences.USE_COLOR and automatic_coloring:
-            if columns_to_auto_color:
-                for col in columns_to_auto_color:
-                    # checks whether column exists
-                    if col in df.columns:
-                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
-            if rows_to_auto_color:
-                for row in rows_to_auto_color:
-                    # checks whether row exists
-                    if row in df.index:
-                        df.loc[row] = df.loc[row].apply(
-                            lambda x: return_colored_value(str(x))
-                        )
-
-            if columns_to_auto_color is None and rows_to_auto_color is None:
-                df = df.applymap(lambda x: return_colored_value(str(x)))
-
         console.print(df.to_string(col_space=0))
 
 
@@ -506,14 +515,91 @@ def check_indicators(string: str) -> List[str]:
         [c.name.replace("plot_", "") for c in ta_cls if c.name != "plot_ma"]
         + ta_cls.ma_mode
     )
+    choices_print = (
+        f"{'`, `'.join(choices[:10])}`\n    `{'`, `'.join(choices[10:20])}"
+        f"`\n    `{'`, `'.join(choices[20:])}"
+    )
 
     strings = string.split(",")
     for s in strings:
         if s not in choices:
             raise argparse.ArgumentTypeError(
-                f"\nInvalid choice: {s}, choose from \n    (`{'`, `'.join(choices)}`)",
+                f"\nInvalid choice: {s}, choose from \n    `{choices_print}`",
             )
     return strings
+
+
+def check_indicator_parameters(args: str, _help: bool = False) -> str:
+    """Check if indicators parameters are valid."""
+    ta_cls = PlotlyTA()
+    indicators_dict: dict = {}
+
+    regex = re.compile(r"([a-zA-Z]+)\[([0-9.,]*)\]")
+    no_params_regex = re.compile(r"([a-zA-Z]+)")
+
+    matches = regex.findall(args)
+    no_params_matches = no_params_regex.findall(args)
+
+    indicators = [m[0] for m in matches]
+    for match in no_params_matches:
+        if match not in indicators:
+            matches.append((match, ""))
+
+    if _help:
+        console.print(
+            """[yellow]To pass custom parameters to indicators:[/]
+
+    [green]Example:
+        -i macd[12,26,9],rsi[14],sma[20,50]
+        -i macd,rsi,sma (uses default parameters)
+
+    [yellow]Would pass the following to the indicators:[/]
+        [green]macd=dict(fast=12, slow=26, signal=9)
+        rsi=dict(length=14)
+        sma=dict(length=[20,50])
+
+        They must be in the same order as the function parameters.[/]\n"""
+        )
+
+    pop_keys = ["close", "high", "low", "open", "open_", "volume", "talib", "return"]
+    if matches:
+        check_indicators(",".join([m[0] for m in matches]))
+        for match in matches:
+            indicator, args = match
+
+            indicators_dict.setdefault(indicator, {})
+            if indicator in ["fib", "srlines", "demark", "clenow"]:
+                if _help:
+                    console.print(
+                        f"[yellow]{indicator}:[/]\n{'':^4}[green]Parameters: None[/]"
+                    )
+                continue
+
+            fullspec = inspect.getfullargspec(getattr(ta, indicator))
+            kwargs = list(set(fullspec.args) - set(pop_keys))
+            kwargs.sort(key=fullspec.args.index)
+
+            if _help:
+                console.print(
+                    f"[yellow]{indicator}:[/]\n{'':^4}[green]Parameters: {', '.join(kwargs)}[/]"
+                )
+
+            if indicator in ta_cls.ma_mode:
+                indicators_dict[indicator]["length"] = check_positive_list(args)
+                continue
+
+            for i, arg in enumerate(args.split(",")):
+                if arg and len(kwargs) > i:
+                    indicators_dict[indicator][kwargs[i]] = (
+                        float(arg) if "." in arg else int(arg)
+                    )
+        return json.dumps(indicators_dict)
+
+    if not matches:
+        raise argparse.ArgumentTypeError(
+            f"Invalid indicator arguments: {args}. \n Example: -i macd[12,26,9],rsi[14]"
+        )
+    return args
 
 
 def check_positive_float(value) -> float:
@@ -723,8 +809,9 @@ def us_market_holidays(years) -> list:
     return valid_holidays
 
 
-def lambda_long_number_format(num, round_decimal=3) -> str:
+def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+
     if isinstance(num, float):
         magnitude = 0
         while abs(num) >= 1000:
@@ -1065,6 +1152,11 @@ def patch_pandas_text_adjustment():
 
 def lambda_financials_colored_values(val: str) -> str:
     """Add a color to a value."""
+
+    # We don't want to do the color stuff in interactive mode
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return val
+
     if val == "N/A" or str(val) == "nan":
         val = "[yellow]N/A[/yellow]"
     elif sum(c.isalpha() for c in val) < 2:
@@ -1090,37 +1182,40 @@ def lett_to_num(word: str) -> str:
     return word
 
 
+AVAILABLE_FLAIRS = {
+    ":openbb": "(🦋)",
+    ":bug": "(🐛)",
+    ":rocket": "(🚀)",
+    ":diamond": "(💎)",
+    ":stars": "(✨)",
+    ":baseball": "(⚾)",
+    ":boat": "(⛵)",
+    ":phone": "(☎)",
+    ":mercury": "(☿)",
+    ":hidden": "",
+    ":sun": "(☼)",
+    ":moon": "(☾)",
+    ":nuke": "(☢)",
+    ":hazard": "(☣)",
+    ":tunder": "(☈)",
+    ":king": "(♔)",
+    ":queen": "(♕)",
+    ":knight": "(♘)",
+    ":recycle": "(♻)",
+    ":scales": "(⚖)",
+    ":ball": "(⚽)",
+    ":golf": "(⛳)",
+    ":piece": "(☮)",
+    ":yy": "(☯)",
+}
+
+
 def get_flair() -> str:
     """Get a flair icon."""
-    available_flairs = {
-        ":openbb": "(🦋)",
-        ":rocket": "(🚀)",
-        ":diamond": "(💎)",
-        ":stars": "(✨)",
-        ":baseball": "(⚾)",
-        ":boat": "(⛵)",
-        ":phone": "(☎)",
-        ":mercury": "(☿)",
-        ":hidden": "",
-        ":sun": "(☼)",
-        ":moon": "(☾)",
-        ":nuke": "(☢)",
-        ":hazard": "(☣)",
-        ":tunder": "(☈)",
-        ":king": "(♔)",
-        ":queen": "(♕)",
-        ":knight": "(♘)",
-        ":recycle": "(♻)",
-        ":scales": "(⚖)",
-        ":ball": "(⚽)",
-        ":golf": "(⛳)",
-        ":piece": "(☮)",
-        ":yy": "(☯)",
-    }
 
     current_user = get_current_user()  # pylint: disable=redefined-outer-name
     current_flair = str(current_user.preferences.FLAIR)
-    flair = available_flairs.get(current_flair, current_flair)
+    flair = AVAILABLE_FLAIRS.get(current_flair, current_flair)
 
     if (
         current_user.preferences.USE_DATETIME
@@ -1193,27 +1288,35 @@ def str_to_bool(value) -> bool:
 
 def get_screeninfo():
     """Get screeninfo."""
-    screens = get_monitors()  # Get all available monitors
-    current_user = get_current_user()
-    if (
-        len(screens) - 1 < current_user.preferences.MONITOR
-    ):  # Check to see if chosen monitor is detected
-        monitor = 0
-        console.print(
-            f"Could not locate monitor {current_user.preferences.MONITOR}, using primary monitor."
-        )
-    else:
-        monitor = current_user.preferences.MONITOR
-    main_screen = screens[monitor]  # Choose what monitor to get
+    try:
+        screens = get_monitors()  # Get all available monitors
+    except Exception:
+        return None
 
-    return (main_screen.width, main_screen.height)
+    if screens:
+        current_user = get_current_user()
+        if (
+            len(screens) - 1 < current_user.preferences.MONITOR
+        ):  # Check to see if chosen monitor is detected
+            monitor = 0
+            console.print(
+                f"Could not locate monitor {current_user.preferences.MONITOR}, using primary monitor."
+            )
+        else:
+            monitor = current_user.preferences.MONITOR
+        main_screen = screens[monitor]  # Choose what monitor to get
+
+        return (main_screen.width, main_screen.height)
+
+    return None
 
 
 def plot_autoscale():
     """Autoscale plot."""
     current_user = get_current_user()
-    if current_user.preferences.USE_PLOT_AUTOSCALING:
-        x, y = get_screeninfo()  # Get screen size
+    screen_info = get_screeninfo()
+    if current_user.preferences.USE_PLOT_AUTOSCALING and screen_info:
+        x, y = screen_info  # Get screen size
         # account for ultrawide monitors
         if x / y > 1.5:
             x = x * 0.4
@@ -1230,9 +1333,6 @@ def plot_autoscale():
         x = current_user.preferences.PLOT_WIDTH / (current_user.preferences.PLOT_DPI)
         y = current_user.preferences.PLOT_HEIGHT / (current_user.preferences.PLOT_DPI)
     return x, y
-
-
-plots_backend().set_window_dimensions(*plot_autoscale())
 
 
 def get_last_time_market_was_open(dt):
@@ -1337,7 +1437,7 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     current_user = get_current_user()
     if current_user.preferences.FILE_OVERWRITE:
         return False, True
-    if os.environ.get("TEST_MODE") == "True":
+    if get_current_system().TEST_MODE:
         return False, True
     if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
@@ -1435,28 +1535,31 @@ def export_data(
                 # since xlsx does not support datetimes with timezones we need to remove it
                 df = remove_timezone_from_dataframe(df)
 
-                if sheet_name is None:
-                    df.to_excel(saved_path, index=True, header=True)
+                if sheet_name is None:  # noqa: SIM223
+                    df.to_excel(
+                        saved_path,
+                        index=True,
+                        header=True,
+                    )
 
+                elif saved_path.exists():
+                    with pd.ExcelWriter(
+                        saved_path,
+                        mode="a",
+                        if_sheet_exists="new",
+                        engine="openpyxl",
+                    ) as writer:
+                        df.to_excel(
+                            writer, sheet_name=sheet_name, index=True, header=True
+                        )
                 else:
-                    if saved_path.exists():
-                        with pd.ExcelWriter(
-                            saved_path,
-                            mode="a",
-                            if_sheet_exists="new",
-                            engine="openpyxl",
-                        ) as writer:
-                            df.to_excel(
-                                writer, sheet_name=sheet_name, index=True, header=True
-                            )
-                    else:
-                        with pd.ExcelWriter(
-                            saved_path,
-                            engine="openpyxl",
-                        ) as writer:
-                            df.to_excel(
-                                writer, sheet_name=sheet_name, index=True, header=True
-                            )
+                    with pd.ExcelWriter(
+                        saved_path,
+                        engine="openpyxl",
+                    ) as writer:
+                        df.to_excel(
+                            writer, sheet_name=sheet_name, index=True, header=True
+                        )
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
                 figure.show(export_image=saved_path, margin=margin)
             else:
@@ -1464,6 +1567,8 @@ def export_data(
                 continue
 
             console.print(f"Saved file: {saved_path}")
+
+        figure._exported = True  # pylint: disable=protected-access
 
 
 def get_rf() -> float:
@@ -1527,7 +1632,7 @@ def handle_error_code(requests_obj, error_code_map):
 
 def prefill_form(ticket_type, menu, path, command, message):
     """Pre-fill Google Form and open it in the browser."""
-    form_url = "https://openbb.co/support?"
+    form_url = "https://my.openbb.dev/app/terminal/support?"
 
     params = {
         "type": ticket_type,
@@ -1539,7 +1644,7 @@ def prefill_form(ticket_type, menu, path, command, message):
 
     url_params = urllib.parse.urlencode(params)
 
-    plots_backend().send_url(form_url + url_params)
+    webbrowser.open(form_url + url_params)
 
 
 def get_closing_price(ticker, days):
@@ -1710,7 +1815,7 @@ def search_wikipedia(expression: str) -> None:
         response_json = json.loads(response.text)
         res = {
             "title": response_json["title"],
-            "url": f"[blue]{response_json['content_urls']['desktop']['page']}[/blue]",
+            "url": f"{response_json['content_urls']['desktop']['page']}",
             "summary": response_json["extract"],
         }
     else:
@@ -1746,8 +1851,8 @@ def screenshot() -> None:
         else:
             console.print("No plots found.\n")
 
-    except Exception as e:
-        console.print(f"Cannot reach window - {e}\n")
+    except Exception as err:
+        console.print(f"Cannot reach window - {err}\n")
 
 
 def screenshot_to_canvas(shot, plot_exists: bool = False):
@@ -1832,12 +1937,12 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
 
 
 @lru_cache
-def load_json(path: str) -> Dict[str, str]:
+def load_json(path: Path) -> Dict[str, str]:
     """Load a dictionary from a json file path.
 
     Parameter
     ----------
-    path : str
+    path : Path
         The path for the json file
 
     Returns
@@ -1851,7 +1956,7 @@ def load_json(path: str) -> Dict[str, str]:
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
-            f"{get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
+            f"{get_current_user().preferences.USER_DATA_SOURCES_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
         return {}
@@ -1894,105 +1999,6 @@ def str_date_to_timestamp(date: str) -> int:
     )
 
     return date_ts
-
-
-def update_news_from_tweet_to_be_displayed() -> str:
-    """Update news from tweet to be displayed.
-
-    Returns
-    -------
-    str
-        The news from tweet to be displayed
-    """
-    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
-
-    news_tweet = ""
-
-    current_user = get_current_user()
-    # Check whether it has passed a certain amount of time since the last news update
-    if LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None or (
-        (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds()
-        > current_user.preferences.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
-    ):
-        # This doesn't depende on the time of the tweet but the time that the check was made
-        LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc)
-
-        dhours = 0
-        dminutes = 0
-        # Get timezone that corresponds to the user
-        if (
-            current_user.preferences.USE_DATETIME
-            and get_user_timezone_or_invalid() != "INVALID"
-        ):
-            utcnow = pytz.timezone("utc").localize(datetime.utcnow())  # generic time
-            here = utcnow.astimezone(pytz.timezone("Etc/UTC")).replace(tzinfo=None)
-            there = utcnow.astimezone(pytz.timezone(get_user_timezone())).replace(
-                tzinfo=None
-            )
-
-            offset = relativedelta(here, there)
-            dhours = offset.hours
-            dminutes = offset.minutes
-
-        if "," in current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
-            news_sources_twitter_handles = (
-                current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK.split(",")
-            )
-        else:
-            news_sources_twitter_handles = [
-                current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK
-            ]
-
-        news_tweet_to_use = ""
-        handle_to_use = ""
-        url = ""
-        last_tweet_dt: Optional[datetime] = None
-        for handle in news_sources_twitter_handles:
-            try:
-                # Get last N tweets from each handle
-                timeline = twitter_api.user_timeline(
-                    screen_name=handle,
-                    count=current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
-                )
-                timeline = timeline[
-                    : current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ
-                ]
-                for last_tweet in timeline:
-                    keywords = (
-                        current_user.preferences.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
-                    )
-                    more_recent = (
-                        last_tweet_dt is None or last_tweet.created_at > last_tweet_dt
-                    )
-                    with_keyword = any(key in last_tweet.text for key in keywords)
-
-                    if more_recent and with_keyword:
-                        handle_to_use = handle
-                        last_tweet_dt = last_tweet.created_at
-
-                        news_tweet_to_use = last_tweet.text
-
-                        url = f"https://twitter.com/x/status/{last_tweet.id_str}"
-
-            # In case the handle provided doesn't exist, we skip it
-            except (tweepy.errors.NotFound, tweepy.errors.Unauthorized):
-                pass
-
-        if last_tweet_dt and news_tweet_to_use:
-            tweet_hr = f"{last_tweet_dt.hour}"
-            tweet_min = f"{last_tweet_dt.minute}"
-            # Update time based on timezone specified by user
-            if (
-                current_user.preferences.USE_DATETIME
-                and get_user_timezone_or_invalid() != "INVALID"
-            ) and (dhours > 0 or dminutes > 0):
-                tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
-                tweet_min = f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"
-
-            # Update NEWS_TWEET with the new news tweet found
-            news_tweet = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
-
-    return news_tweet
 
 
 def check_start_less_than_end(start_date: str, end_date: str) -> bool:

@@ -6,8 +6,7 @@ from typing import Dict, Optional, Union
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.forex.oanda.oanda_model import (

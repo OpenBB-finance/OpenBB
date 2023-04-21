@@ -9,6 +9,7 @@ from typing import List
 import pandas as pd
 from finvizfinance.group import performance, spectrum, valuation
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
@@ -91,17 +92,23 @@ def get_valuation_data(
     try:
         group = GROUPS[group]
         df_group = valuation.Valuation().screener_view(group=group)
-        df_group["Market Cap"] = df_group["Market Cap"].apply(
+        df_group.columns = [col.replace(" ", "") for col in df_group.columns]
+        df_group = df_group.sort_values(by=sortby, ascending=ascend)
+        df_group.fillna("", inplace=True)
+
+        # Passing Raw data to Pandas DataFrame if using interactive mode
+        if get_current_user().preferences.USE_INTERACTIVE_DF:
+            return df_group
+        print(df_group.head())
+        df_group["MarketCap"] = df_group["MarketCap"].apply(
             lambda x: float(x.strip("B"))
             if x.endswith("B")
             else float(x.strip("M")) / 1000
         )
-        df_group.columns = [col.replace(" ", "") for col in df_group.columns]
-        df_group = df_group.sort_values(by=sortby, ascending=ascend)
         df_group["Volume"] = df_group["Volume"] / 1_000_000
         df_group = df_group.rename(columns={"Volume": "Volume [1M]"})
-        df_group.fillna("", inplace=True)
         return df_group
+
     except IndexError:
         console.print("Data not found.\n")
         return pd.DataFrame()
@@ -151,13 +158,19 @@ def get_performance_data(
         )
         df_group["Week"] = df_group["Week"].apply(lambda x: float(x.strip("%")) / 100)
         df_group = df_group.sort_values(by=sortby, ascending=ascend)
+        df_group.fillna("", inplace=True)
+
+        # Passing Raw data to Pandas DataFrame if using interactive mode
+        if get_current_user().preferences.USE_INTERACTIVE_DF:
+            return df_group
+
         df_group["Volume"] = df_group["Volume"] / 1_000_000
         df_group["AvgVolume"] = df_group["AvgVolume"] / 1_000_000
         df_group = df_group.rename(
             columns={"Volume": "Volume [1M]", "AvgVolume": "AvgVolume [1M]"}
         )
-        df_group.fillna("", inplace=True)
         return df_group
+
     except IndexError:
         console.print("Data not found.\n")
         return pd.DataFrame()

@@ -145,11 +145,12 @@ def display_all_coins_market_info(
     console.print(f"\nDisplaying data vs {symbol}")
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Basic Market Information",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -202,11 +203,12 @@ def display_all_coins_info(
     console.print(f"Displaying data vs {symbol}")
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Basic Coin Information",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -259,11 +261,12 @@ def display_all_exchanges(
     console.print(f"\nDisplaying data vs {symbol}")
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="List Exchanges",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -319,11 +322,12 @@ def display_exchange_markets(
         df.drop("market_url", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Exchange Markets",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -397,11 +401,12 @@ def display_contracts(
         return
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Contract Addresses",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

@@ -1,0 +1,448 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/balance-sheet-statement/TSLA?apikey=MOCK_API_KEY&limit=0&period=annual
+  response:
+    body:
+      string: "[\n  {\n    \"date\": \"2022-12-31\",\n    \"symbol\": \"TSLA\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\":
+        \"2023-01-31\",\n    \"acceptedDate\": \"2023-01-30 21:29:15\",\n    \"calendarYear\":
+        \"2022\",\n    \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 16253000000,\n
+        \   \"shortTermInvestments\": 5932000000,\n    \"cashAndShortTermInvestments\":
+        22185000000,\n    \"netReceivables\": 2952000000,\n    \"inventory\": 12839000000,\n
+        \   \"otherCurrentAssets\": 2941000000,\n    \"totalCurrentAssets\": 40917000000,\n
+        \   \"propertyPlantEquipmentNet\": 36635000000,\n    \"goodwill\": 194000000,\n
+        \   \"intangibleAssets\": 399000000,\n    \"goodwillAndIntangibleAssets\":
+        593000000,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        4193000000,\n    \"totalNonCurrentAssets\": 41421000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 82338000000,\n    \"accountPayables\": 15255000000,\n
+        \   \"shortTermDebt\": 1987000000,\n    \"taxPayables\": 1235000000,\n    \"deferredRevenue\":
+        2810000000,\n    \"otherCurrentLiabilities\": 5422000000,\n    \"totalCurrentLiabilities\":
+        26709000000,\n    \"longTermDebt\": 3761000000,\n    \"deferredRevenueNonCurrent\":
+        2804000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 82000000,\n    \"otherNonCurrentLiabilities\":
+        3084000000,\n    \"totalNonCurrentLiabilities\": 9731000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 3703000000,\n    \"totalLiabilities\":
+        36440000000,\n    \"preferredStock\": 0,\n    \"commonStock\": 3000000,\n
+        \   \"retainedEarnings\": 12885000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        -361000000,\n    \"othertotalStockholdersEquity\": 32177000000,\n    \"totalStockholdersEquity\":
+        44704000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 81144000000,\n
+        \   \"minorityInterest\": 1194000000,\n    \"totalEquity\": 45898000000,\n
+        \   \"totalLiabilitiesAndTotalEquity\": 82338000000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 5748000000,\n    \"netDebt\": -10505000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000095017023001409/0000950170-23-001409-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000095017023001409/tsla-20221231.htm\"\n
+        \ },\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2022-02-07\",\n
+        \   \"acceptedDate\": \"2022-02-04 20:11:27\",\n    \"calendarYear\": \"2021\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 17576000000,\n    \"shortTermInvestments\":
+        131000000,\n    \"cashAndShortTermInvestments\": 17707000000,\n    \"netReceivables\":
+        1913000000,\n    \"inventory\": 5757000000,\n    \"otherCurrentAssets\": 1723000000,\n
+        \   \"totalCurrentAssets\": 27100000000,\n    \"propertyPlantEquipmentNet\":
+        31176000000,\n    \"goodwill\": 200000000,\n    \"intangibleAssets\": 1517000000,\n
+        \   \"goodwillAndIntangibleAssets\": 1717000000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 2138000000,\n    \"totalNonCurrentAssets\":
+        35031000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 62131000000,\n
+        \   \"accountPayables\": 10025000000,\n    \"shortTermDebt\": 1957000000,\n
+        \   \"taxPayables\": 1122000000,\n    \"deferredRevenue\": 2372000000,\n    \"otherCurrentLiabilities\":
+        4229000000,\n    \"totalCurrentLiabilities\": 19705000000,\n    \"longTermDebt\":
+        6916000000,\n    \"deferredRevenueNonCurrent\": 2052000000,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        24000000,\n    \"otherNonCurrentLiabilities\": 1851000000,\n    \"totalNonCurrentLiabilities\":
+        10843000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        3531000000,\n    \"totalLiabilities\": 30548000000,\n    \"preferredStock\":
+        0,\n    \"commonStock\": 1000000,\n    \"retainedEarnings\": 331000000,\n
+        \   \"accumulatedOtherComprehensiveIncomeLoss\": 54000000,\n    \"othertotalStockholdersEquity\":
+        29803000000,\n    \"totalStockholdersEquity\": 30189000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        60737000000,\n    \"minorityInterest\": 1394000000,\n    \"totalEquity\":
+        31583000000,\n    \"totalLiabilitiesAndTotalEquity\": 62131000000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 8873000000,\n    \"netDebt\": -8703000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000095017022000796/0000950170-22-000796-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000095017022000796/tsla-20211231.htm\"\n
+        \ },\n  {\n    \"date\": \"2020-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2021-02-08\",\n
+        \   \"acceptedDate\": \"2021-02-08 07:27:23\",\n    \"calendarYear\": \"2020\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 19384000000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 19384000000,\n    \"netReceivables\":
+        1886000000,\n    \"inventory\": 4101000000,\n    \"otherCurrentAssets\": 1346000000,\n
+        \   \"totalCurrentAssets\": 26717000000,\n    \"propertyPlantEquipmentNet\":
+        23375000000,\n    \"goodwill\": 207000000,\n    \"intangibleAssets\": 313000000,\n
+        \   \"goodwillAndIntangibleAssets\": 520000000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 1536000000,\n    \"totalNonCurrentAssets\":
+        25431000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 52148000000,\n
+        \   \"accountPayables\": 6051000000,\n    \"shortTermDebt\": 2418000000,\n
+        \   \"taxPayables\": 777000000,\n    \"deferredRevenue\": 2210000000,\n    \"otherCurrentLiabilities\":
+        2792000000,\n    \"totalCurrentLiabilities\": 14248000000,\n    \"longTermDebt\":
+        10861000000,\n    \"deferredRevenueNonCurrent\": 1284000000,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        151000000,\n    \"otherNonCurrentLiabilities\": 1925000000,\n    \"totalNonCurrentLiabilities\":
+        14221000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        3008000000,\n    \"totalLiabilities\": 28469000000,\n    \"preferredStock\":
+        0,\n    \"commonStock\": 1000000,\n    \"retainedEarnings\": -5399000000,\n
+        \   \"accumulatedOtherComprehensiveIncomeLoss\": 363000000,\n    \"othertotalStockholdersEquity\":
+        27260000000,\n    \"totalStockholdersEquity\": 22225000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        50694000000,\n    \"minorityInterest\": 1454000000,\n    \"totalEquity\":
+        23679000000,\n    \"totalLiabilitiesAndTotalEquity\": 52148000000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 13279000000,\n    \"netDebt\": -6105000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459021004599/0001564590-21-004599-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459021004599/tsla-10k_20201231.htm\"\n
+        \ },\n  {\n    \"date\": \"2019-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2020-02-13\",\n
+        \   \"acceptedDate\": \"2020-02-13 07:12:18\",\n    \"calendarYear\": \"2019\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 6268000000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 6268000000,\n    \"netReceivables\":
+        1324000000,\n    \"inventory\": 3552000000,\n    \"otherCurrentAssets\": 959000000,\n
+        \   \"totalCurrentAssets\": 12103000000,\n    \"propertyPlantEquipmentNet\":
+        20199000000,\n    \"goodwill\": 198000000,\n    \"intangibleAssets\": 339000000,\n
+        \   \"goodwillAndIntangibleAssets\": 537000000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 1470000000,\n    \"totalNonCurrentAssets\":
+        22206000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 34309000000,\n
+        \   \"accountPayables\": 3771000000,\n    \"shortTermDebt\": 2070000000,\n
+        \   \"taxPayables\": 611000000,\n    \"deferredRevenue\": 1889000000,\n    \"otherCurrentLiabilities\":
+        2326000000,\n    \"totalCurrentLiabilities\": 10667000000,\n    \"longTermDebt\":
+        12627000000,\n    \"deferredRevenueNonCurrent\": 1207000000,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        0,\n    \"otherNonCurrentLiabilities\": 1698000000,\n    \"totalNonCurrentLiabilities\":
+        15532000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        2896000000,\n    \"totalLiabilities\": 26199000000,\n    \"preferredStock\":
+        0,\n    \"commonStock\": 0,\n    \"retainedEarnings\": -6083000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        -36000000,\n    \"othertotalStockholdersEquity\": 12737000000,\n    \"totalStockholdersEquity\":
+        6618000000,\n    \"totalLiabilitiesAndStockholdersEquity\": 32817000000,\n
+        \   \"minorityInterest\": 1492000000,\n    \"totalEquity\": 8110000000,\n
+        \   \"totalLiabilitiesAndTotalEquity\": 34309000000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 14697000000,\n    \"netDebt\": 8429000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459020004475/0001564590-20-004475-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459020004475/tsla-10k_20191231.htm\"\n
+        \ },\n  {\n    \"date\": \"2018-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2019-02-19\",\n
+        \   \"acceptedDate\": \"2019-02-19 06:10:16\",\n    \"calendarYear\": \"2018\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 3685618000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 3685618000,\n    \"netReceivables\":
+        949022000,\n    \"inventory\": 3113446000,\n    \"otherCurrentAssets\": 558222000,\n
+        \   \"totalCurrentAssets\": 8306308000,\n    \"propertyPlantEquipmentNet\":
+        19691231000,\n    \"goodwill\": 68159000,\n    \"intangibleAssets\": 282492000,\n
+        \   \"goodwillAndIntangibleAssets\": 350651000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 1391424000,\n    \"totalNonCurrentAssets\":
+        21433306000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 29739614000,\n
+        \   \"accountPayables\": 3404451000,\n    \"shortTermDebt\": 2711199000,\n
+        \   \"taxPayables\": 348663000,\n    \"deferredRevenue\": 1422893000,\n    \"otherCurrentLiabilities\":
+        2104930000,\n    \"totalCurrentLiabilities\": 9992136000,\n    \"longTermDebt\":
+        11116072000,\n    \"deferredRevenueNonCurrent\": 990873000,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        0,\n    \"otherNonCurrentLiabilities\": 1326929000,\n    \"totalNonCurrentLiabilities\":
+        13433874000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        3194796000,\n    \"totalLiabilities\": 23426010000,\n    \"preferredStock\":
+        0,\n    \"commonStock\": 173000,\n    \"retainedEarnings\": -5317832000,\n
+        \   \"accumulatedOtherComprehensiveIncomeLoss\": -8218000,\n    \"othertotalStockholdersEquity\":
+        10249120000,\n    \"totalStockholdersEquity\": 4923243000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        28349253000,\n    \"minorityInterest\": 1390361000,\n    \"totalEquity\":
+        6313604000,\n    \"totalLiabilitiesAndTotalEquity\": 29739614000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 13827271000,\n    \"netDebt\": 10141653000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459019003165/0001564590-19-003165-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459019003165/tsla-10k_20181231.htm\"\n
+        \ },\n  {\n    \"date\": \"2017-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2018-02-23\",\n
+        \   \"acceptedDate\": \"2018-02-23 06:07:43\",\n    \"calendarYear\": \"2017\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 3367914000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 3367914000,\n    \"netReceivables\":
+        515381000,\n    \"inventory\": 2263537000,\n    \"otherCurrentAssets\": 423688000,\n
+        \   \"totalCurrentAssets\": 6570520000,\n    \"propertyPlantEquipmentNet\":
+        20491616000,\n    \"goodwill\": 60237000,\n    \"intangibleAssets\": 361502000,\n
+        \   \"goodwillAndIntangibleAssets\": 421739000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 1171497000,\n    \"totalNonCurrentAssets\":
+        22084852000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 28655372000,\n
+        \   \"accountPayables\": 2390250000,\n    \"shortTermDebt\": 963862000,\n
+        \   \"taxPayables\": 185807000,\n    \"deferredRevenue\": 1869172000,\n    \"otherCurrentLiabilities\":
+        2265579000,\n    \"totalCurrentLiabilities\": 7674670000,\n    \"longTermDebt\":
+        11152086000,\n    \"deferredRevenueNonCurrent\": 1177799000,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        0,\n    \"otherNonCurrentLiabilities\": 3018495000,\n    \"totalNonCurrentLiabilities\":
+        15348380000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        1801010000,\n    \"totalLiabilities\": 23023050000,\n    \"preferredStock\":
+        0,\n    \"commonStock\": 169000,\n    \"retainedEarnings\": -4974299000,\n
+        \   \"accumulatedOtherComprehensiveIncomeLoss\": 33348000,\n    \"othertotalStockholdersEquity\":
+        9178024000,\n    \"totalStockholdersEquity\": 4237242000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        27260292000,\n    \"minorityInterest\": 1395080000,\n    \"totalEquity\":
+        5632322000,\n    \"totalLiabilitiesAndTotalEquity\": 28655372000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 12115948000,\n    \"netDebt\": 8748034000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459018002956/0001564590-18-002956-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459018002956/tsla-10k_20171231.htm\"\n
+        \ },\n  {\n    \"date\": \"2016-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2017-03-01\",\n
+        \   \"acceptedDate\": \"2017-03-01 16:54:21\",\n    \"calendarYear\": \"2016\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 3393216000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 3393216000,\n    \"netReceivables\":
+        499142000,\n    \"inventory\": 2067454000,\n    \"otherCurrentAssets\": 299984000,\n
+        \   \"totalCurrentAssets\": 6259796000,\n    \"propertyPlantEquipmentNet\":
+        15036917000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 376145000,\n
+        \   \"goodwillAndIntangibleAssets\": 376145000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 991218000,\n    \"totalNonCurrentAssets\":
+        16404280000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 22664076000,\n
+        \   \"accountPayables\": 1860341000,\n    \"shortTermDebt\": 1202178000,\n
+        \   \"taxPayables\": 152897000,\n    \"deferredRevenue\": 1426985000,\n    \"otherCurrentLiabilities\":
+        1184604000,\n    \"totalCurrentLiabilities\": 5827005000,\n    \"longTermDebt\":
+        7385937000,\n    \"deferredRevenueNonCurrent\": 851790000,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        0,\n    \"otherNonCurrentLiabilities\": 2694219000,\n    \"totalNonCurrentLiabilities\":
+        10931946000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        1459684000,\n    \"totalLiabilities\": 16758951000,\n    \"preferredStock\":
+        0,\n    \"commonStock\": 161000,\n    \"retainedEarnings\": -2997237000,\n
+        \   \"accumulatedOtherComprehensiveIncomeLoss\": -23740000,\n    \"othertotalStockholdersEquity\":
+        7773727000,\n    \"totalStockholdersEquity\": 4752911000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        21511862000,\n    \"minorityInterest\": 1152214000,\n    \"totalEquity\":
+        5905125000,\n    \"totalLiabilitiesAndTotalEquity\": 22664076000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 8588115000,\n    \"netDebt\": 5194899000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459017003118/0001564590-17-003118-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459017003118/tsla-10k_20161231.htm\"\n
+        \ },\n  {\n    \"date\": \"2015-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2016-02-24\",\n
+        \   \"acceptedDate\": \"2016-02-24 16:17:56\",\n    \"calendarYear\": \"2015\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1196908000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 1196908000,\n    \"netReceivables\":
+        168965000,\n    \"inventory\": 1277838000,\n    \"otherCurrentAssets\": 147857000,\n
+        \   \"totalCurrentAssets\": 2791568000,\n    \"propertyPlantEquipmentNet\":
+        5194737000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        106155000,\n    \"totalNonCurrentAssets\": 5300892000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 8092460000,\n    \"accountPayables\": 916148000,\n
+        \   \"shortTermDebt\": 633166000,\n    \"taxPayables\": 101206000,\n    \"deferredRevenue\":
+        707331000,\n    \"otherCurrentLiabilities\": 458423000,\n    \"totalCurrentLiabilities\":
+        2816274000,\n    \"longTermDebt\": 2082420000,\n    \"deferredRevenueNonCurrent\":
+        446105000,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        1658717000,\n    \"totalNonCurrentLiabilities\": 4187242000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 32671000,\n    \"totalLiabilities\":
+        7003516000,\n    \"preferredStock\": 0,\n    \"commonStock\": 131000,\n    \"retainedEarnings\":
+        -2322323000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -3556000,\n
+        \   \"othertotalStockholdersEquity\": 3414692000,\n    \"totalStockholdersEquity\":
+        1088944000,\n    \"totalLiabilitiesAndStockholdersEquity\": 8092460000,\n
+        \   \"minorityInterest\": 0,\n    \"totalEquity\": 1088944000,\n    \"totalLiabilitiesAndTotalEquity\":
+        8092460000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 2715586000,\n
+        \   \"netDebt\": 1518678000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459016013195/0001564590-16-013195-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459016013195/tsla-10k_20151231.htm\"\n
+        \ },\n  {\n    \"date\": \"2014-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2015-02-26\",\n
+        \   \"acceptedDate\": \"2015-02-26 17:13:26\",\n    \"calendarYear\": \"2014\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1905713000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 1905713000,\n    \"netReceivables\":
+        226604000,\n    \"inventory\": 953675000,\n    \"otherCurrentAssets\": 112665000,\n
+        \   \"totalCurrentAssets\": 3198657000,\n    \"propertyPlantEquipmentNet\":
+        2596011000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        54583000,\n    \"totalNonCurrentAssets\": 2650594000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 5849251000,\n    \"accountPayables\": 777946000,\n
+        \   \"shortTermDebt\": 632128000,\n    \"taxPayables\": 71229000,\n    \"deferredRevenue\":
+        449238000,\n    \"otherCurrentLiabilities\": 176625000,\n    \"totalCurrentLiabilities\":
+        2107166000,\n    \"longTermDebt\": 1876981000,\n    \"deferredRevenueNonCurrent\":
+        292271000,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        661123000,\n    \"totalNonCurrentLiabilities\": 2830375000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 42829000,\n    \"totalLiabilities\":
+        4937541000,\n    \"preferredStock\": 0,\n    \"commonStock\": 126000,\n    \"retainedEarnings\":
+        -1433682000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 0,\n    \"othertotalStockholdersEquity\":
+        2345266000,\n    \"totalStockholdersEquity\": 911710000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        5849251000,\n    \"minorityInterest\": 0,\n    \"totalEquity\": 911710000,\n
+        \   \"totalLiabilitiesAndTotalEquity\": 5849251000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 2509109000,\n    \"netDebt\": 603396000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459015001031/0001564590-15-001031-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459015001031/tsla-10k_20141231.htm\"\n
+        \ },\n  {\n    \"date\": \"2013-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2014-02-26\",\n
+        \   \"acceptedDate\": \"2014-02-26 16:02:51\",\n    \"calendarYear\": \"2013\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 845889000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 845889000,\n    \"netReceivables\":
+        49109000,\n    \"inventory\": 340355000,\n    \"otherCurrentAssets\": 30586000,\n
+        \   \"totalCurrentAssets\": 1265939000,\n    \"propertyPlantEquipmentNet\":
+        1120919000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 13930000,\n    \"goodwillAndIntangibleAssets\":
+        13930000,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        16142000,\n    \"totalNonCurrentAssets\": 1150991000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 2416930000,\n    \"accountPayables\": 303969000,\n
+        \   \"shortTermDebt\": 7904000,\n    \"taxPayables\": 38067000,\n    \"deferredRevenue\":
+        255035000,\n    \"otherCurrentLiabilities\": 70185000,\n    \"totalCurrentLiabilities\":
+        675160000,\n    \"longTermDebt\": 598974000,\n    \"deferredRevenueNonCurrent\":
+        181180000,\n    \"deferredTaxLiabilitiesNonCurrent\": 6821000,\n    \"otherNonCurrentLiabilities\":
+        287675000,\n    \"totalNonCurrentLiabilities\": 1074650000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 20577000,\n    \"totalLiabilities\":
+        1749810000,\n    \"preferredStock\": 0,\n    \"commonStock\": 123000,\n    \"retainedEarnings\":
+        -1139620000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 0,\n    \"othertotalStockholdersEquity\":
+        1806617000,\n    \"totalStockholdersEquity\": 667120000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        2416930000,\n    \"minorityInterest\": 0,\n    \"totalEquity\": 667120000,\n
+        \   \"totalLiabilitiesAndTotalEquity\": 2416930000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 606878000,\n    \"netDebt\": -239011000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000119312514069681/0001193125-14-069681-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312514069681/d668062d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2012-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2013-03-07\",\n
+        \   \"acceptedDate\": \"2013-03-07 17:10:43\",\n    \"calendarYear\": \"2012\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 201890000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 201890000,\n    \"netReceivables\":
+        26842000,\n    \"inventory\": 268504000,\n    \"otherCurrentAssets\": 27532000,\n
+        \   \"totalCurrentAssets\": 524768000,\n    \"propertyPlantEquipmentNet\":
+        562300000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 14267000,\n    \"goodwillAndIntangibleAssets\":
+        14267000,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        12854000,\n    \"totalNonCurrentAssets\": 589421000,\n    \"otherAssets\":
+        1000,\n    \"totalAssets\": 1114190000,\n    \"accountPayables\": 303382000,\n
+        \   \"shortTermDebt\": 55206000,\n    \"taxPayables\": 9710000,\n    \"deferredRevenue\":
+        140722000,\n    \"otherCurrentLiabilities\": 30088000,\n    \"totalCurrentLiabilities\":
+        539108000,\n    \"longTermDebt\": 411460000,\n    \"deferredRevenueNonCurrent\":
+        3060000,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        35862000,\n    \"totalNonCurrentLiabilities\": 450382000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 14330000,\n    \"totalLiabilities\":
+        989490000,\n    \"preferredStock\": 0,\n    \"commonStock\": 115000,\n    \"retainedEarnings\":
+        -1065606000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 0,\n    \"othertotalStockholdersEquity\":
+        1190191000,\n    \"totalStockholdersEquity\": 124700000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        1114190000,\n    \"minorityInterest\": 0,\n    \"totalEquity\": 124700000,\n
+        \   \"totalLiabilitiesAndTotalEquity\": 1114190000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 466666000,\n    \"netDebt\": 264776000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000119312513096241/0001193125-13-096241-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312513096241/d452995d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2011-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2012-02-27\",\n
+        \   \"acceptedDate\": \"2012-02-27 17:17:24\",\n    \"calendarYear\": \"2011\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 255266000,\n    \"shortTermInvestments\":
+        25061000,\n    \"cashAndShortTermInvestments\": 280327000,\n    \"netReceivables\":
+        9539000,\n    \"inventory\": 50082000,\n    \"otherCurrentAssets\": 32890000,\n
+        \   \"totalCurrentAssets\": 372838000,\n    \"propertyPlantEquipmentNet\":
+        310171000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        30439000,\n    \"totalNonCurrentAssets\": 340610000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 713448000,\n    \"accountPayables\": 56141000,\n
+        \   \"shortTermDebt\": 8983000,\n    \"taxPayables\": 967000,\n    \"deferredRevenue\":
+        2345000,\n    \"otherCurrentLiabilities\": 122903000,\n    \"totalCurrentLiabilities\":
+        191339000,\n    \"longTermDebt\": 271165000,\n    \"deferredRevenueNonCurrent\":
+        3146000,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        23753000,\n    \"totalNonCurrentLiabilities\": 298064000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 3897000,\n    \"totalLiabilities\": 489403000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 104000,\n    \"retainedEarnings\":
+        -669392000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -3000,\n    \"othertotalStockholdersEquity\":
+        893336000,\n    \"totalStockholdersEquity\": 224045000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        713448000,\n    \"minorityInterest\": 0,\n    \"totalEquity\": 224045000,\n
+        \   \"totalLiabilitiesAndTotalEquity\": 713448000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 280148000,\n    \"netDebt\": 24882000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000119312512081990/0001193125-12-081990-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312512081990/d279413d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2010-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2011-03-03\",\n
+        \   \"acceptedDate\": \"2011-03-03 14:47:36\",\n    \"calendarYear\": \"2010\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 99558000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 99558000,\n    \"netReceivables\":
+        6710000,\n    \"inventory\": 45182000,\n    \"otherCurrentAssets\": 84436000,\n
+        \   \"totalCurrentAssets\": 235886000,\n    \"propertyPlantEquipmentNet\":
+        122599000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        27597000,\n    \"totalNonCurrentAssets\": 150196000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 386082000,\n    \"accountPayables\": 28951000,\n
+        \   \"shortTermDebt\": 279000,\n    \"taxPayables\": 2674000,\n    \"deferredRevenue\":
+        4635000,\n    \"otherCurrentLiabilities\": 49026000,\n    \"totalCurrentLiabilities\":
+        85565000,\n    \"longTermDebt\": 72324000,\n    \"deferredRevenueNonCurrent\":
+        2783000,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        18362000,\n    \"totalNonCurrentLiabilities\": 93469000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 775000,\n    \"totalLiabilities\": 179034000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 95000,\n    \"retainedEarnings\":
+        -414982000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 0,\n    \"othertotalStockholdersEquity\":
+        621935000,\n    \"totalStockholdersEquity\": 207048000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        386082000,\n    \"minorityInterest\": 0,\n    \"totalEquity\": 207048000,\n
+        \   \"totalLiabilitiesAndTotalEquity\": 386082000,\n    \"totalInvestments\":
+        0,\n    \"totalDebt\": 72603000,\n    \"netDebt\": -26955000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000119312511054847/0001193125-11-054847-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312511054847/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2009-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2009-12-31\",\n
+        \   \"acceptedDate\": \"2009-12-31\",\n    \"calendarYear\": \"2009\",\n    \"period\":
+        \"FY\",\n    \"cashAndCashEquivalents\": 69627000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 69627000,\n    \"netReceivables\":
+        3488000,\n    \"inventory\": 23222000,\n    \"otherCurrentAssets\": 4222000,\n
+        \   \"totalCurrentAssets\": 100559000,\n    \"propertyPlantEquipmentNet\":
+        23535000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        6330000,\n    \"totalNonCurrentAssets\": 29865000,\n    \"otherAssets\": 0,\n
+        \   \"totalAssets\": 130424000,\n    \"accountPayables\": 15086000,\n    \"shortTermDebt\":
+        290000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 1377000,\n    \"otherCurrentLiabilities\":
+        40736000,\n    \"totalCurrentLiabilities\": 57489000,\n    \"longTermDebt\":
+        800000,\n    \"deferredRevenueNonCurrent\": 1240000,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        0,\n    \"otherNonCurrentLiabilities\": 324418000,\n    \"totalNonCurrentLiabilities\":
+        326458000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        1090000,\n    \"totalLiabilities\": 383947000,\n    \"preferredStock\": 0,\n
+        \   \"commonStock\": 7000,\n    \"retainedEarnings\": -260654000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        0,\n    \"othertotalStockholdersEquity\": 7124000,\n    \"totalStockholdersEquity\":
+        -253523000,\n    \"totalLiabilitiesAndStockholdersEquity\": 130424000,\n    \"minorityInterest\":
+        0,\n    \"totalEquity\": -253523000,\n    \"totalLiabilitiesAndTotalEquity\":
+        130424000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 1090000,\n    \"netDebt\":
+        -68537000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  },\n  {\n    \"date\":
+        \"2008-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\": \"USD\",\n
+        \   \"cik\": \"0001318605\",\n    \"fillingDate\": \"2008-12-31\",\n    \"acceptedDate\":
+        \"2008-12-31\",\n    \"calendarYear\": \"2008\",\n    \"period\": \"FY\",\n
+        \   \"cashAndCashEquivalents\": 9277000,\n    \"shortTermInvestments\": 0,\n
+        \   \"cashAndShortTermInvestments\": 9277000,\n    \"netReceivables\": 3320000,\n
+        \   \"inventory\": 16650000,\n    \"otherCurrentAssets\": 2180000,\n    \"totalCurrentAssets\":
+        31427000,\n    \"propertyPlantEquipmentNet\": 18793000,\n    \"goodwill\":
+        0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\": 0,\n
+        \   \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        1479000,\n    \"totalNonCurrentAssets\": 20272000,\n    \"otherAssets\": 0,\n
+        \   \"totalAssets\": 51699000,\n    \"accountPayables\": 14184000,\n    \"shortTermDebt\":
+        341000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 4073000,\n    \"otherCurrentLiabilities\":
+        69337000,\n    \"totalCurrentLiabilities\": 87935000,\n    \"longTermDebt\":
+        55416000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        0,\n    \"otherNonCurrentLiabilities\": 108062000,\n    \"totalNonCurrentLiabilities\":
+        163478000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        1229000,\n    \"totalLiabilities\": 251413000,\n    \"preferredStock\": 0,\n
+        \   \"commonStock\": 21000,\n    \"retainedEarnings\": -204914000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        0,\n    \"othertotalStockholdersEquity\": 5179000,\n    \"totalStockholdersEquity\":
+        -199714000,\n    \"totalLiabilitiesAndStockholdersEquity\": 51699000,\n    \"minorityInterest\":
+        0,\n    \"totalEquity\": -199714000,\n    \"totalLiabilitiesAndTotalEquity\":
+        51699000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 55757000,\n    \"netDebt\":
+        46480000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  },\n  {\n    \"date\":
+        \"2007-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\": \"USD\",\n
+        \   \"cik\": \"0001318605\",\n    \"fillingDate\": \"2007-12-31\",\n    \"acceptedDate\":
+        \"2007-12-31\",\n    \"calendarYear\": \"2007\",\n    \"period\": \"FY\",\n
+        \   \"cashAndCashEquivalents\": 17211000,\n    \"shortTermInvestments\": 0,\n
+        \   \"cashAndShortTermInvestments\": 17211000,\n    \"netReceivables\": 59000,\n
+        \   \"inventory\": 2108000,\n    \"otherCurrentAssets\": 2930000,\n    \"totalCurrentAssets\":
+        22308000,\n    \"propertyPlantEquipmentNet\": 11998000,\n    \"goodwill\":
+        0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\": 0,\n
+        \   \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        531000,\n    \"totalNonCurrentAssets\": 12529000,\n    \"otherAssets\": 0,\n
+        \   \"totalAssets\": 34837000,\n    \"accountPayables\": 5369000,\n    \"shortTermDebt\":
+        80000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        45847000,\n    \"totalCurrentLiabilities\": 51296000,\n    \"longTermDebt\":
+        18000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        0,\n    \"otherNonCurrentLiabilities\": 101369000,\n    \"totalNonCurrentLiabilities\":
+        101387000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        98000,\n    \"totalLiabilities\": 152683000,\n    \"preferredStock\": 0,\n
+        \   \"commonStock\": 18000,\n    \"retainedEarnings\": -122132000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        0,\n    \"othertotalStockholdersEquity\": 4268000,\n    \"totalStockholdersEquity\":
+        -117846000,\n    \"totalLiabilitiesAndStockholdersEquity\": 34837000,\n    \"minorityInterest\":
+        0,\n    \"totalEquity\": -117846000,\n    \"totalLiabilitiesAndTotalEquity\":
+        34837000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 98000,\n    \"netDebt\":
+        -17113000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '32136'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 11:31:56 GMT
+      ETag:
+      - W/"7d88-p+AcaJxz4fFMhwSTfymW3P/5LAk"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

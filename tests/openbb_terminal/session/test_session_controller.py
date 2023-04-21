@@ -1,7 +1,8 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
+from openbb_terminal import terminal_controller
 from openbb_terminal.core.session import session_controller
 
 
@@ -47,13 +48,14 @@ def test_prompt():
         assert create_session_mock.call_count == 1
 
 
-def test_launch_terminal():
-    with patch(
-        "openbb_terminal.core.session.session_controller.terminal_controller.parse_args_and_run",
-        return_value=True,
-    ) as parse_args_mock:
-        session_controller.launch_terminal()
-        assert parse_args_mock.call_count == 1
+def test_launch_terminal(mocker):
+    parse_args_mock = mocker.patch.object(
+        target=terminal_controller,
+        attribute="parse_args_and_run",
+        new=MagicMock(),
+    )
+    session_controller.launch_terminal()
+    assert parse_args_mock.call_count == 1
 
 
 def test_login_and_launch():

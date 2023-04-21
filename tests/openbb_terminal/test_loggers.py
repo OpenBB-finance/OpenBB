@@ -67,7 +67,10 @@ def test_get_commit_hash(mocker, git):
 
 
 def test_get_commit_hash_obff(mocker):
-    mocker.patch("openbb_terminal.loggers.LOGGING_COMMIT_HASH", "MOCKING_COMMIT_HASH")
+    mocker.patch(
+        "openbb_terminal.loggers.current_system.LOGGING_COMMIT_HASH",
+        "MOCKING_COMMIT_HASH",
+    )
     value = loggers.get_commit_hash()
     assert value
 

@@ -5,10 +5,7 @@ from typing import Optional, Union
 
 import pandas as pd
 
-from openbb_terminal import (
-    OpenBBFigure,
-    config_terminal as cfg,
-)
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -63,7 +60,7 @@ def display_crypto_rates(
     df_non_null = pd.melt(df.reset_index(), id_vars=["index"]).dropna()
 
     assets = df_non_null.variable.unique().tolist()
-    colors = iter(cfg.theme.get_colors(reverse=True))
+    colors = iter(theme.get_colors(reverse=True))
 
     for asset in assets:
         width = df_non_null.loc[(df_non_null.variable == asset)]
@@ -94,12 +91,13 @@ def display_crypto_rates(
     df = df.applymap(lambda x: str(round(100 * x, 2)) + "%" if x != "-" else x)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         index_name="Platform",
         show_index=True,
         title=f"Crypto {rate_type.capitalize()} Interest Rates",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

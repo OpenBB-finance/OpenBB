@@ -68,11 +68,12 @@ def view_holdings(
 
     data = stockanalysis_model.get_etf_holdings(symbol)
     print_rich_table(
-        data[:limit],
+        data,
         headers=list(data.columns),
         title="ETF Holdings",
         show_index=True,
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -148,10 +149,11 @@ def display_etf_by_name(
     matching_etfs = stockanalysis_model.get_etfs_by_name(name)
 
     print_rich_table(
-        matching_etfs.head(limit),
+        matching_etfs,
         show_index=False,
         title="ETF Search Result",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

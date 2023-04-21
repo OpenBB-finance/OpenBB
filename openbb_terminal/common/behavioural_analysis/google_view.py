@@ -7,9 +7,8 @@ from typing import List, Optional, Union
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.common.behavioural_analysis import google_model
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 

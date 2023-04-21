@@ -5,20 +5,24 @@ import logging
 import os
 import textwrap
 from datetime import datetime, timedelta
+from functools import partial
 from typing import Optional, Union
 
+import pandas as pd
 from pandas.core.frame import DataFrame
 
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.common.technical_analysis import ta_helpers
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.fundamental_analysis import business_insider_model
+from openbb_terminal.stocks.fundamental_analysis import (
+    business_insider_model,
+    yahoo_finance_model,
+)
 from openbb_terminal.stocks.stocks_helper import load
 
 logger = logging.getLogger(__name__)
@@ -62,8 +66,9 @@ def display_management(symbol: str, export: str = "", sheet_name: Optional[str] 
         logger.error("Data not available")
 
 
+# pylint: disable=R0913
 @log_start_end(log=logger)
-def price_target_from_analysts(
+def display_price_target_from_analysts(
     symbol: str,
     data: Optional[DataFrame] = None,
     start_date: Optional[str] = None,
@@ -72,6 +77,7 @@ def price_target_from_analysts(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
+    adjust_for_splits: bool = True,
 ) -> Union[OpenBBFigure, None]:
     """Display analysts' price targets for a given stock. [Source: Business Insider]
 
@@ -93,12 +99,21 @@ def price_target_from_analysts(
         Export dataframe data to csv,json,xlsx file
     external_axes: bool, optional
         Whether to return the figure object or not, by default False
+    adjust_for_splits: bool
+        Whether to adjust analyst price targets for stock splits, by default True
 
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.fa.pt_chart(symbol="AAPL")
     """
+
+    def adjust_splits(row, splits: pd.DataFrame):
+        original_value = row["Price Target"]
+        for index, sub_row in splits.iterrows():
+            if row.name < index:
+                original_value = original_value / sub_row["Stock Splits"]
+        return round(original_value, 2)
 
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
@@ -109,6 +124,11 @@ def price_target_from_analysts(
     df_analyst_data = business_insider_model.get_price_target_from_analysts(symbol)
     if df_analyst_data.empty:
         return console.print("[red]Could not get data for ticker.[/red]\n")
+    if adjust_for_splits:
+        df_splits = yahoo_finance_model.get_splits(symbol)
+        df_splits.index = df_splits.index.tz_convert(None)
+        adjusted_splits = partial(adjust_splits, splits=df_splits)
+        df_analyst_data["Price Target"] = df_analyst_data.apply(adjusted_splits, axis=1)
 
     fig = OpenBBFigure(yaxis_title="Share Price").set_title(
         f"{symbol} (Time Series) and Price Target"
@@ -160,18 +180,19 @@ def price_target_from_analysts(
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
         return print_rich_table(
-            df_analyst_data.sort_index(ascending=False).head(limit),
+            df_analyst_data.sort_index(ascending=False),
             headers=list(df_analyst_data.columns),
             show_index=True,
             title="Analyst Price Targets",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
-def estimates(
+def display_estimates(
     symbol: str, estimate: str, export: str = "", sheet_name: Optional[str] = None
 ):
     """Display analysts' estimates for a given ticker. [Source: Business Insider]

@@ -1,7 +1,102 @@
-                          Relationship      Transaction #Shares    Cost  Value ($) #Shares Total           Insider Trading       SEC Form 4
-Date                                                                                                                                       
-Sep 08                        Director  Option Exercise  26,250   14.99    393,488        31,650  Wilson-Thompson Kathleen  Sep 12 09:44 PM
-Sep 08                        Director             Sale  26,250  278.93  7,321,912         5,400  Wilson-Thompson Kathleen  Sep 12 09:44 PM
-Sep 06  SVP Powertrain and Energy Eng.             Sale   1,298  269.39    349,799        62,988          Baglino Andrew D  Sep 07 08:33 PM
-Sep 06         Chief Financial Officer             Sale   7,550  269.39  2,034,007       196,527          Kirkhorn Zachary  Sep 07 08:29 PM
-Sep 06        Chief Accounting Officer             Sale   3,755  269.39  1,011,548        91,324            Taneja Vaibhav  Sep 07 09:04 PM
+                          Relationship      Transaction    #Shares     Cost      Value ($) #Shares Total           Insider Trading       SEC Form 4
+Date                                                                                                                                               
+Sep 08                        Director  Option Exercise     26,250    14.99        393,488        31,650  Wilson-Thompson Kathleen  Sep 12 09:44 PM
+Sep 08                        Director             Sale     26,250   278.93      7,321,912         5,400  Wilson-Thompson Kathleen  Sep 12 09:44 PM
+Sep 06  SVP Powertrain and Energy Eng.             Sale      1,298   269.39        349,799        62,988          Baglino Andrew D  Sep 07 08:33 PM
+Sep 06         Chief Financial Officer             Sale      7,550   269.39      2,034,007       196,527          Kirkhorn Zachary  Sep 07 08:29 PM
+Sep 06        Chief Accounting Officer             Sale      3,755   269.39      1,011,548        91,324            Taneja Vaibhav  Sep 07 09:04 PM
+Sep 05         Chief Financial Officer  Option Exercise     16,870     0.00              0       204,078          Kirkhorn Zachary  Sep 07 08:29 PM
+Sep 05  SVP Powertrain and Energy Eng.  Option Exercise      2,586     0.00              0        64,287          Baglino Andrew D  Sep 07 08:33 PM
+Sep 05        Chief Accounting Officer  Option Exercise      8,228     0.00              0        95,079            Taneja Vaibhav  Sep 07 09:04 PM
+Aug 29  SVP Powertrain and Energy Eng.  Option Exercise     10,500    20.91        219,555        72,201          Baglino Andrew D  Aug 31 07:32 PM
+Aug 29  SVP Powertrain and Energy Eng.             Sale     10,500   283.00      2,971,500        61,701          Baglino Andrew D  Aug 31 07:32 PM
+Aug 01                        Director  Option Exercise      8,750    44.95        393,312        10,550  Wilson-Thompson Kathleen  Aug 02 08:17 PM
+Aug 01                        Director             Sale      8,750   904.00      7,910,000         1,800  Wilson-Thompson Kathleen  Aug 02 08:17 PM
+Jul 29                        Director  Option Exercise     17,500    44.95        786,625        19,300  Wilson-Thompson Kathleen  Aug 02 08:17 PM
+Jul 29                        Director             Sale     17,500   863.78     15,116,150         1,800  Wilson-Thompson Kathleen  Aug 02 08:17 PM
+Jul 27  SVP Powertrain and Energy Eng.  Option Exercise      3,500    62.72        219,520        24,067          Baglino Andrew D  Jul 29 08:34 PM
+Jul 27  SVP Powertrain and Energy Eng.             Sale      3,500   791.50      2,770,250        20,567          Baglino Andrew D  Jul 29 08:34 PM
+Jul 25                        Director  Option Exercise     25,000    74.17      1,854,250       536,240               Musk Kimbal  Jul 27 08:31 PM
+Jun 27  SVP Powertrain and Energy Eng.  Option Exercise      3,500    62.72        219,520        24,067          Baglino Andrew D  Jun 29 07:05 PM
+Jun 27  SVP Powertrain and Energy Eng.             Sale      3,500   748.11      2,618,385        20,567          Baglino Andrew D  Jun 29 07:05 PM
+Jun 10        Chief Accounting Officer  Option Exercise      2,500    55.32        138,300        28,949            Taneja Vaibhav  Jun 14 08:19 PM
+Jun 06        Chief Accounting Officer             Sale      1,518   718.31      1,090,754        26,449            Taneja Vaibhav  Jun 07 08:46 PM
+Jun 06         Chief Financial Officer             Sale      2,538   718.31      1,823,430        62,402          Kirkhorn Zachary  Jun 07 08:54 PM
+Jun 06  SVP Powertrain and Energy Eng.             Sale        433   718.31        311,028        20,567          Baglino Andrew D  Jun 07 09:03 PM
+Jun 05        Chief Accounting Officer  Option Exercise      3,283     0.00              0        27,968            Taneja Vaibhav  Jun 07 08:46 PM
+Jun 05         Chief Financial Officer  Option Exercise      5,623     0.00              0        64,941          Kirkhorn Zachary  Jun 07 08:54 PM
+Jun 05  SVP Powertrain and Energy Eng.  Option Exercise        862     0.00              0        21,000          Baglino Andrew D  Jun 07 09:03 PM
+Jun 01                        Director  Option Exercise     25,000    52.38      1,309,500        30,000           DENHOLM ROBYN M  Jun 03 06:54 PM
+Jun 01                        Director             Sale     25,000   757.33     18,933,242         5,000           DENHOLM ROBYN M  Jun 03 06:54 PM
+May 27  SVP Powertrain and Energy Eng.  Option Exercise      3,500    62.72        219,520        23,638          Baglino Andrew D  Jun 01 08:08 PM
+May 27  SVP Powertrain and Energy Eng.             Sale      3,500   722.10      2,527,350        20,138          Baglino Andrew D  Jun 01 08:08 PM
+May 02                        Director  Option Exercise     25,000    52.38      1,309,500        30,000           DENHOLM ROBYN M  May 04 07:00 PM
+May 02  SVP Powertrain and Energy Eng.  Option Exercise      5,000    55.32        276,600        25,138          Baglino Andrew D  May 04 08:25 PM
+May 02                        Director             Sale        121   887.99        107,447        25,000           DENHOLM ROBYN M  May 04 07:05 PM
+May 02                        Director             Sale     24,779   869.34     21,541,489            49           DENHOLM ROBYN M  May 04 07:00 PM
+May 02  SVP Powertrain and Energy Eng.             Sale      5,000   875.23      4,376,135        20,138          Baglino Andrew D  May 04 08:25 PM
+Apr 28                             CEO             Sale  1,041,799   887.91    925,020,194   162,963,251                 Musk Elon  Apr 29 09:15 AM
+Apr 28                             CEO             Sale  2,611,217   872.66  2,278,695,421   164,005,050                 Musk Elon  Apr 29 09:11 AM
+Apr 28                             CEO             Sale  1,576,984   839.81  1,324,373,164   166,616,267                 Musk Elon  Apr 29 09:08 AM
+Apr 27  SVP Powertrain and Energy Eng.  Option Exercise      3,500    62.72        219,520        23,638          Baglino Andrew D  Apr 29 06:56 PM
+Apr 27  SVP Powertrain and Energy Eng.             Sale      3,500   899.42      3,147,970        20,138          Baglino Andrew D  Apr 29 06:56 PM
+Apr 27                             CEO             Sale    345,601   898.00    310,350,358   168,193,251                 Musk Elon  Apr 28 09:46 PM
+Apr 27                             CEO             Sale    389,399   881.44    343,233,282   168,538,852                 Musk Elon  Apr 28 09:41 PM
+Apr 26                             CEO             Sale    215,528   987.53    212,841,259   168,928,251                 Musk Elon  Apr 28 09:41 PM
+Apr 26                             CEO             Sale    316,161   954.51    301,779,090   169,143,779                 Musk Elon  Apr 28 09:33 PM
+Apr 26                             CEO             Sale    889,825   913.82    813,139,334   169,459,940                 Musk Elon  Apr 28 09:16 PM
+Apr 26                             CEO             Sale  2,258,486   889.08  2,007,978,676   170,349,765                 Musk Elon  Apr 28 09:13 PM
+Apr 05        Chief Accounting Officer  Option Exercise      7,000    54.66        382,620        31,685            Taneja Vaibhav  Apr 07 07:00 PM
+Apr 05        Chief Accounting Officer             Sale      1,300  1141.94      1,484,528        24,685            Taneja Vaibhav  Apr 07 07:05 PM
+Apr 05        Chief Accounting Officer             Sale      5,700  1108.24      6,316,944        25,985            Taneja Vaibhav  Apr 07 07:00 PM
+Mar 28  SVP Powertrain and Energy Eng.  Option Exercise      3,500    62.72        219,520        23,638          Baglino Andrew D  Mar 30 07:16 PM
+Mar 28  SVP Powertrain and Energy Eng.             Sale      3,500  1065.00      3,727,500        20,138          Baglino Andrew D  Mar 30 07:16 PM
+Mar 07  SVP Powertrain and Energy Eng.             Sale        897   845.39        758,316        20,138          Baglino Andrew D  Mar 08 07:36 PM
+Mar 07         Chief Financial Officer             Sale      2,389   845.39      2,019,639        59,318          Kirkhorn Zachary  Mar 08 07:44 PM
+Mar 07        Chief Accounting Officer             Sale      1,535   845.39      1,297,675        24,685            Taneja Vaibhav  Mar 08 07:32 PM
+Mar 05        Chief Accounting Officer  Option Exercise      3,282     0.00              0        26,220            Taneja Vaibhav  Mar 08 07:32 PM
+Mar 05         Chief Financial Officer  Option Exercise      5,623     0.00              0        61,707          Kirkhorn Zachary  Mar 08 07:44 PM
+Mar 05  SVP Powertrain and Energy Eng.  Option Exercise      1,786     0.00              0        21,035          Baglino Andrew D  Mar 08 07:36 PM
+Mar 01                        Director  Option Exercise     25,000    52.38      1,309,500        30,000           DENHOLM ROBYN M  Mar 03 08:39 PM
+Mar 01                        Director             Sale     25,000   867.80     21,694,957         5,000           DENHOLM ROBYN M  Mar 03 08:39 PM
+Feb 28  SVP Powertrain and Energy Eng.  Option Exercise      3,500    62.72        219,520        22,749          Baglino Andrew D  Mar 02 07:57 PM
+Feb 28  SVP Powertrain and Energy Eng.             Sale      3,500   815.72      2,855,020        19,249          Baglino Andrew D  Mar 02 07:57 PM
+Feb 17         Chief Financial Officer             Sale      1,250   913.26      1,141,575        56,084          Kirkhorn Zachary  Feb 22 07:02 PM
+Feb 01                        Director  Option Exercise     25,000    52.38      1,309,500        30,000           DENHOLM ROBYN M  Feb 03 07:38 PM
+Feb 01                        Director             Sale     25,000   923.57     23,089,129         5,000           DENHOLM ROBYN M  Feb 03 07:38 PM
+Jan 27  SVP Powertrain and Energy Eng.  Option Exercise      3,500    62.72        219,520        22,749          Baglino Andrew D  Jan 31 07:37 PM
+Jan 27  SVP Powertrain and Energy Eng.             Sale      3,500   933.56      3,267,460        19,249          Baglino Andrew D  Jan 31 07:37 PM
+Jan 18         Chief Financial Officer             Sale      1,250  1026.75      1,283,438        57,334          Kirkhorn Zachary  Jan 20 07:39 PM
+Jan 05        Chief Accounting Officer  Option Exercise      7,000    54.66        382,620        29,905            Taneja Vaibhav  Jan 07 06:36 PM
+Jan 05        Chief Accounting Officer             Sale      1,100  1160.85      1,276,940        22,905            Taneja Vaibhav  Jan 07 06:37 PM
+Jan 05        Chief Accounting Officer             Sale      5,900  1131.26      6,674,424        24,005            Taneja Vaibhav  Jan 07 06:36 PM
+Dec 31         Chief Financial Officer  Option Exercise      3,200    55.32        177,024        58,584          Kirkhorn Zachary  Jan 04 09:50 PM
+Dec 28                             CEO  Option Exercise  1,554,176     6.24      9,698,058     1,554,176                 Musk Elon  Dec 28 08:47 PM
+Dec 28                             CEO             Sale    923,435  1091.48  1,007,908,791       630,741                 Musk Elon  Dec 28 08:47 PM
+Dec 28                             CEO             Sale     10,655  1113.59     11,865,297       620,086                 Musk Elon  Dec 28 08:48 PM
+Dec 27  SVP Powertrain and Energy Eng.  Option Exercise      3,500    62.72        219,520        22,749          Baglino Andrew D  Dec 29 09:28 PM
+Dec 27  SVP Powertrain and Energy Eng.             Sale      3,500  1073.00      3,755,500        19,249          Baglino Andrew D  Dec 29 09:28 PM
+Dec 22                             CEO  Option Exercise  2,105,171     6.24     13,136,267     3,260,035                 Musk Elon  Dec 22 09:24 PM
+Dec 22                             CEO             Sale    340,564   979.69    333,647,031     2,919,471                 Musk Elon  Dec 22 09:24 PM
+Dec 22                             CEO             Sale    593,527  1002.35    594,924,622     2,325,944                 Musk Elon  Dec 22 09:28 PM
+Dec 21                             CEO  Option Exercise  2,088,955     6.24     13,035,079     2,088,955                 Musk Elon  Dec 21 09:52 PM
+Dec 21                             CEO             Sale    583,611   904.74    528,016,861     1,505,344                 Musk Elon  Dec 21 09:52 PM
+Dec 21                             CEO             Sale    350,480   929.36    325,723,600     1,154,864                 Musk Elon  Dec 21 09:36 PM
+Dec 17         Chief Financial Officer             Sale      1,250   915.00      1,143,750        55,384          Kirkhorn Zachary  Dec 21 08:36 PM
+Dec 16                             CEO  Option Exercise  2,151,940     6.24     13,428,106     2,151,940                 Musk Elon  Dec 16 08:52 PM
+Dec 16                             CEO             Sale    295,214   969.83    286,307,000     1,217,849                 Musk Elon  Dec 16 08:55 PM
+Dec 16                             CEO             Sale    638,877   935.75    597,827,015     1,513,063                 Musk Elon  Dec 16 08:52 PM
+Dec 13                             CEO  Option Exercise  2,134,440     6.24     13,318,906     2,134,440                 Musk Elon  Dec 13 08:02 PM
+Dec 13                             CEO             Sale    169,111   992.27    167,804,268     1,200,349                 Musk Elon  Dec 13 08:04 PM
+Dec 13                             CEO             Sale    764,980   965.62    738,683,277     1,369,460                 Musk Elon  Dec 13 08:02 PM
+Dec 09                             CEO  Option Exercise  2,165,241     6.24     13,511,104     2,165,241                 Musk Elon  Dec 09 08:19 PM
+Dec 09                             CEO             Sale    390,639  1044.54    408,039,939     1,231,150                 Musk Elon  Dec 09 08:21 PM
+Dec 09                             CEO             Sale    543,452  1021.56    555,171,415     1,621,789                 Musk Elon  Dec 09 08:19 PM
+Dec 06        Chief Accounting Officer             Sale      1,590   980.41      1,559,339        22,905            Taneja Vaibhav  Dec 07 09:11 PM
+Dec 06         Chief Financial Officer             Sale      2,652   980.43      2,600,345        56,634          Kirkhorn Zachary  Dec 07 09:02 PM
+Dec 06  SVP Powertrain and Energy Eng.             Sale        917   980.47        899,091        19,249          Baglino Andrew D  Dec 07 09:20 PM
+Dec 05  SVP Powertrain and Energy Eng.  Option Exercise      1,786     0.00              0        20,166          Baglino Andrew D  Dec 07 09:20 PM
+Dec 05         Chief Financial Officer  Option Exercise      5,624     0.00              0        59,286          Kirkhorn Zachary  Dec 07 09:02 PM
+Dec 05        Chief Accounting Officer  Option Exercise      3,283     0.00              0        24,495            Taneja Vaibhav  Dec 07 09:11 PM
+Dec 02                             CEO  Option Exercise  2,133,441     6.24     13,312,672     2,133,441                 Musk Elon  Dec 02 09:43 PM
+Dec 02                             CEO             Sale    634,592  1079.29    684,906,148     1,498,849                 Musk Elon  Dec 02 09:43 PM

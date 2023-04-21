@@ -46,6 +46,8 @@ from openbb_terminal.common import (
     common_model,
     feedparser_model as common_feedparser_model,
     feedparser_view as common_feedparser_view,
+    ultima_newsmonitor_model as common_ultima_newsmonitor_model,
+    ultima_newsmonitor_view as common_ultima_newsmonitor_view,
     newsapi_model as common_newsapi_model,
     newsapi_view as common_newsapi_view,
 )
@@ -234,6 +236,8 @@ from openbb_terminal.economy import (
     wsj_model as economy_wsj_model,
     yfinance_model as economy_yfinance_model,
     yfinance_view as economy_yfinance_view,
+    oecd_model as economy_oecd_model,
+    oecd_view as economy_oecd_view,
 )
 
 # ETF's
@@ -253,6 +257,12 @@ from openbb_terminal.forex import (
     fxempire_model as forex_fxempire_model,
     fxempire_view as forex_fxempire_view,
     sdk_helpers as forex_sdk_helpers,
+)
+
+# Funds
+from openbb_terminal.mutual_funds import (
+    mstarpy_model as funds_mstarpy_model,
+    mstarpy_view as funds_mstarpy_view,
 )
 
 # Futures
@@ -336,6 +346,8 @@ from openbb_terminal.stocks.fundamental_analysis import (
     fmp_view as stocks_fa_fmp_view,
     marketwatch_model as stocks_fa_marketwatch_model,
     marketwatch_view as stocks_fa_marketwatch_view,
+    nasdaq_model as stocks_fa_nasdaq_model,
+    nasdaq_view as stocks_fa_nasdaq_view,
     polygon_model as stocks_fa_polygon_model,
     polygon_view as stocks_fa_polygon_view,
     sdk_helpers as stocks_fa_sdk_helpers,
@@ -391,18 +403,12 @@ from openbb_terminal.stocks.options.screen import (
 from openbb_terminal.stocks.screener import (
     finviz_model as stocks_screener_finviz_model,
     finviz_view as stocks_screener_finviz_view,
-    yahoofinance_model as stocks_screener_yahoofinance_model,
-    yahoofinance_view as stocks_screener_yahoofinance_view,
-    ark_model as stocks_screener_ark_model,
-    ark_view as stocks_screener_ark_view,
 )
 
 # Stocks - Technical Analysis
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_model as stocks_ta_finbrain_model,
     finbrain_view as stocks_ta_finbrain_view,
-    finviz_model as stocks_ta_finviz_model,
-    finviz_view as stocks_ta_finviz_view,
     rsp_model as stocks_ta_rsp_model,
     rsp_view as stocks_ta_rsp_view,
     tradingview_model as stocks_ta_tradingview_model,
@@ -493,7 +499,7 @@ FORECASTING_TOOLKIT_WARNING = (
     "[yellow]"
     "Forecasting Toolkit is disabled. "
     "To use the Forecasting features please install the toolkit following the "
-    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "instructions here: https://my.openbb.dev/app/sdk/installation"
     "\n"
     "[/yellow]"
 )
@@ -501,7 +507,7 @@ OPTIMIZATION_TOOLKIT_WARNING = (
     "[yellow]"
     "Portfolio Optimization Toolkit is disabled. "
     "To use the Optimization features please install the toolkit following the "
-    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "instructions here: https://my.openbb.dev/app/sdk/installation"
     "\n"
     "[/yellow]"
 )

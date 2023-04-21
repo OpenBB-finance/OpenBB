@@ -1442,6 +1442,7 @@ class DueDiligenceController(CryptoBaseController):
                 dev_activity=ns_parser.dev,
                 start_date=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
                 end_date=ns_parser.end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

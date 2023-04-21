@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, Tuple, Union
+from typing import Optional, Union
 
 import pandas as pd
 
@@ -16,13 +16,14 @@ from openbb_terminal.economy.yfinance_model import (
     get_search_indices,
 )
 from openbb_terminal.helper_funcs import export_data, print_rich_table, reindex_dates
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
 def show_indices(
-    indices: list,
+    indices: Union[list, pd.DataFrame],
     interval: str = "1d",
     start_date: Optional[int] = None,
     end_date: Optional[int] = None,
@@ -32,12 +33,13 @@ def show_indices(
     external_axes: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
-) -> Union[pd.DataFrame, Tuple[pd.DataFrame, OpenBBFigure]]:
+    limit: int = 10,
+) -> Union[pd.DataFrame, OpenBBFigure]:
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters
     ----------
-    indices: list
-        A list of indices you wish to load (and plot).
+    indices: Union[list, pd.DataFrame]
+        A list of indices to load in, or a DataFrame with indices as columns (to plot)
         Available indices can be accessed through economy.available_indices().
     interval: str
         Valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
@@ -60,14 +62,25 @@ def show_indices(
     -------
     Plots the Series.
     """
+    if isinstance(indices, list):
+        indices_data = get_indices(
+            indices, interval, start_date, end_date, column, returns
+        )
+    elif isinstance(indices, pd.DataFrame):
+        indices_data = indices
+        indices = indices_data.columns
+    else:
+        return console.print(
+            "Indices must be a list or a DataFrame with indices values as columns (column names = indices)"
+        )
 
-    indices_data = get_indices(indices, interval, start_date, end_date, column, returns)
+    fig = OpenBBFigure(title="Indices")
 
-    fig = OpenBBFigure(title="Indices", yaxis=dict(side="right"))
+    new_title = []
 
     for index in indices:
         label = INDICES[index.lower()]["name"] if index.lower() in INDICES else index
-
+        new_title.append(label)
         if not indices_data[index].empty:
             if returns:
                 indices_data.index.name = "date"
@@ -91,15 +104,19 @@ def show_indices(
                     name=label,
                 )
 
-            fig.show(external=external_axes)
+    if len(indices) < 2:
+        fig.update_layout(title=f"{' - '.join(new_title)}", yaxis=dict(side="right"))
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        indices_data = indices_data.sort_index(ascending=False)
         print_rich_table(
-            indices_data.fillna("-").iloc[-10:],
+            indices_data.fillna("-"),
             headers=list(indices_data.columns),
             show_index=True,
             title=f"Indices [column: {column}]",
             export=bool(export),
+            limit=limit,
         )
 
     if export:
@@ -112,10 +129,7 @@ def show_indices(
             fig,
         )
 
-    if (output := indices_data) is not None and external_axes:
-        output = (indices_data, fig.show(external_axes=external_axes))
-
-    return output
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -132,12 +146,13 @@ def search_indices(query: list, limit: int = 10):
     Shows a rich table with the available options.
     """
 
-    keyword_adjusted, queried_indices = get_search_indices(query, limit)
+    keyword_adjusted, queried_indices = get_search_indices(query)
 
     print_rich_table(
         queried_indices,
         show_index=True,
         index_name="ticker",
-        headers=queried_indices.columns,
+        headers=list(queried_indices.columns),
         title=f"Queried Indices with keyword {keyword_adjusted}",
+        limit=limit,
     )

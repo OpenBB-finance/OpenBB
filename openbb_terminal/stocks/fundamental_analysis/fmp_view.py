@@ -8,8 +8,7 @@ from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -200,7 +199,7 @@ def display_enterprise(
             sheet_name,
         )
 
-        return fig.show(external=external_axes)
+        return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -706,67 +705,6 @@ def display_financial_statement_growth(
         console.print("[red]Could not get data[/red]\n")
 
 
-@log_start_end(log=logger)
-@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_filings(
-    ticker: str = "",
-    pages: int = 1,
-    limit: int = 20,
-    export: str = "",
-    sheet_name: Optional[str] = None,
-) -> None:
-    """Display recent forms submitted to the SEC
-
-    Parameters
-    ----------
-    pages: int = 1
-        The range of most-rececnt pages to get entries from (1000 per page, max 30 pages)
-    limit: int = 20
-        Limit the number of entries to display (default: 20)
-    export: str = ""
-        Export data as csv, json, or xlsx
-
-    Examples
-    --------
-
-    openbb.stocks.display_filings()
-
-    openbb.stocks.display_filings(today = True, export = "csv")
-    """
-    filings = fmp_model.get_filings(pages)
-    ticker_filings = filings[filings["Ticker"] == ticker.upper()]
-
-    if ticker_filings.empty:
-        console.print(
-            f"[red]No filings found for ticker {ticker}, consider increasing the value "
-            "for --pages. Showing recent filings instead.[/red]\n"
-        )
-        print_rich_table(
-            filings[:limit],
-            title=f"Recent SEC Filings [Limit: {limit}]",
-            show_index=True,
-            export=bool(export),
-        )
-    elif not ticker_filings.empty:
-        print_rich_table(
-            ticker_filings[:limit],
-            title=f"SEC Filings for {ticker} [Limit: {limit}]]",
-            show_index=True,
-            export=bool(export),
-        )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "filings",
-            ticker_filings,
-            sheet_name,
-        )
-    else:
-        logger.error("Could not find any data.")
-        console.print("[red]Could not find any data for {ticker}[/red]\n")
-
-
 def add_color(value: str) -> str:
     if "buy" in value.lower():
         value = f"[green]{value}[/green]"
@@ -804,11 +742,12 @@ def rating(
     df = df.astype(str).applymap(lambda x: add_color(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=df.columns,
         show_index=True,
         title="Rating",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

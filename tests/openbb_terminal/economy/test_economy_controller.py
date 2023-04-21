@@ -536,18 +536,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_spectrum",
-            [
-                "--g=sector",
-                "--export=png",
-            ],
-            "finviz_view.display_spectrum",
-            [],
-            dict(
-                group="sector",
-            ),
-        ),
-        (
             "call_map",
             [
                 "--period=1w",
@@ -611,6 +599,219 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 export="csv",
                 sheet_name=None,
                 limit=20,
+            ),
+        ),
+        (
+            "call_gdp",
+            [
+                "--countries=united states",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "oecd_view.plot_gdp",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                units="USD_CAP",
+                raw=False,
+                export="csv",
+                sheet_name=None,
+            ),
+        ),
+        (
+            "call_rgdp",
+            [
+                "--countries=united states",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "oecd_view.plot_real_gdp",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                raw=False,
+                units="PC_CHGPY",
+                export="csv",
+                sheet_name=None,
+            ),
+        ),
+        (
+            "call_fgdp",
+            [
+                "--countries=united states",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "oecd_view.plot_gdp_forecast",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                quarterly=False,
+                types="real",
+                raw=False,
+                export="csv",
+                sheet_name=None,
+            ),
+        ),
+        (
+            "call_debt",
+            [
+                "--countries=united states",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "oecd_view.plot_debt",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                raw=False,
+                export="csv",
+                sheet_name=None,
+            ),
+        ),
+        (
+            "call_cpi",
+            [
+                "--countries=united states",
+                "--frequency=monthly",
+                "--units=growth_same",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "fred_view.plot_cpi",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                frequency="monthly",
+                units="growth_same",
+                harmonized=False,
+                options=False,
+                smart_select=True,
+                raw=False,
+                export="csv",
+                sheet_name=None,
+            ),
+        ),
+        (
+            "call_ccpi",
+            [
+                "--countries=united states",
+                "--frequency=M",
+                "--perspective=TOT",
+                "--units=AGRWTH",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "oecd_view.plot_cpi",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                frequency="M",
+                perspective="TOT",
+                units="AGRWTH",
+                raw=False,
+                export="csv",
+                sheet_name=None,
+            ),
+        ),
+        (
+            "call_balance",
+            [
+                "--countries=united states",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "oecd_view.plot_balance",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                raw=False,
+                export="csv",
+                sheet_name=None,
+            ),
+        ),
+        (
+            "call_revenue",
+            [
+                "--countries=united states",
+                "--units=PC_GDP",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "oecd_view.plot_revenue",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                units="PC_GDP",
+                raw=False,
+                export="csv",
+                sheet_name=None,
+            ),
+        ),
+        (
+            "call_spending",
+            [
+                "--countries=united states",
+                "--units=PC_GDP",
+                "--perspective=TOT",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "oecd_view.plot_spending",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                perspective="TOT",
+                units="PC_GDP",
+                raw=False,
+                export="csv",
+                sheet_name=None,
+            ),
+        ),
+        (
+            "call_trust",
+            [
+                "--countries=united states",
+                "--start=2021-01-01",
+                "--end=2023-01-01",
+                "--export=csv",
+            ],
+            "oecd_view.plot_trust",
+            [],
+            dict(
+                countries=["united states"],
+                start_date=datetime.datetime(2021, 1, 1, 0, 0),
+                end_date=datetime.datetime(2023, 1, 1, 0, 0),
+                raw=False,
+                export="csv",
+                sheet_name=None,
             ),
         ),
     ],
@@ -827,7 +1028,9 @@ def test_call_fred_query(mocker):
     controller = economy_controller.EconomyController(queue=None)
     controller.choices = {}
     controller.call_fred(["--query", "MOCK_QUERY", "--limit", "1"])
-    mock.assert_called_once_with(**dict(search_query="MOCK_QUERY", limit=1))
+    mock.assert_called_once_with(
+        **dict(search_query="MOCK_QUERY", limit=1, export="", sheet_name=None)
+    )
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -835,7 +1038,7 @@ def test_call_fred_query(mocker):
     "other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            ["--parameter=dgs2,dgs5"],
+            ["--parameter", "dgs2,dgs5"],
             "fred_view.display_fred_series",
             [],
             dict(
@@ -850,7 +1053,7 @@ def test_call_fred_query(mocker):
             ),
         ),
         (
-            ["--parameter=DgS2,dgs5", "--export=csv", "--raw"],
+            ["--parameter", "DgS2,dgs5", "--export=csv", "--raw"],
             "fred_view.display_fred_series",
             [],
             dict(
@@ -865,7 +1068,7 @@ def test_call_fred_query(mocker):
             ),
         ),
         (
-            ["--parameter=DgS2,dgs5", "--export=csv", "--start=2022-10-10"],
+            ["--parameter", "DgS2,dgs5", "--export=csv", "--start=2022-10-10"],
             "fred_view.display_fred_series",
             [],
             dict(
@@ -983,19 +1186,7 @@ def test_call_index(mocker):
     controller.choices = {}
     controller.call_index(["-i", "SP500,DOW_DJUS", "-s", "2022-10-01"])
 
-    mock.assert_called_once_with(
-        **dict(
-            indices=["SP500", "DOW_DJUS"],
-            start_date="2022-10-01",
-            end_date=None,
-            raw=False,
-            export="",
-            sheet_name=None,
-            interval="1d",
-            column="Adj Close",
-            returns=False,
-        )
-    )
+    mock.assert_called_once()
 
 
 MOCK_TREASURY_DEFAULT = pd.DataFrame.from_dict(

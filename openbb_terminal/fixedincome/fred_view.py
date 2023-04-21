@@ -221,7 +221,7 @@ def plot_estr(
     if export:
         if series_id not in ["ECBESTRTOTVOL", "ECBESTRNUMACTBANKS", "ECBESTRNUMTRANS"]:
             # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+            df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
 
@@ -282,7 +282,7 @@ def plot_sofr(
     if export:
         if series_id != "SOFRINDEX":
             # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+            df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
 
@@ -343,7 +343,7 @@ def plot_sonia(
     if export:
         if series_id not in ["IUDZOS2", "IUDZLT2"]:
             # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+            df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
 
@@ -402,7 +402,7 @@ def plot_ameribor(
     if export:
         if series_id not in ["AMBOR30T", "AMBOR90T"]:
             # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+            df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
 
@@ -462,7 +462,7 @@ def plot_fftr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "fftr",
-        pd.DataFrame(df, columns=["FFTR"]) / 100,
+        pd.DataFrame(df, columns=["FFTR"]),
         sheet_name,
         fig,
     )
@@ -483,6 +483,7 @@ def plot_fed(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Effective Federal Funds Rate.
 
@@ -567,20 +568,23 @@ def plot_fed(
         if not quantiles and not target:
             if series_id != "EFFRVOL":
                 # Check whether it is a percentage, relevant for exporting
-                df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+                df_transformed = pd.DataFrame(df, columns=[series_id])
             else:
                 df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
-            df_transformed = df / 100
+            df_transformed = df
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df_transformed = df_transformed.sort_index(ascending=False)
         print_rich_table(
-            df_transformed.iloc[-10:],
+            df_transformed,
             headers=list(df_transformed.columns),
             show_index=True,
             title=ID_TO_NAME_FED[series_id],
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     if export:
@@ -593,7 +597,7 @@ def plot_fed(
             fig,
         )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -629,7 +633,7 @@ def plot_iorb(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "iorb",
-        pd.DataFrame(df, columns=["IORB"]) / 100,
+        pd.DataFrame(df, columns=["IORB"]),
         sheet_name,
         fig,
     )
@@ -703,7 +707,7 @@ def plot_projection(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -746,7 +750,7 @@ def plot_dwpcr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[series_id]) / 100,
+        pd.DataFrame(df, columns=[series_id]),
         sheet_name,
         fig,
     )
@@ -764,6 +768,7 @@ def plot_ecb(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot the key ECB interest rates.
 
@@ -807,25 +812,28 @@ def plot_ecb(
     fig.update_layout(legend=dict(x=0.01, y=0.01, xanchor="left", yanchor="bottom"))
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             headers=list(df.columns),
             show_index=True,
             title=title,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ecbdfr",
-        pd.DataFrame(df, columns=["ECBDFR"]) / 100,
+        pd.DataFrame(df, columns=df.columns),
         sheet_name,
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -875,7 +883,7 @@ def plot_tmc(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[series_id]) / 100,
+        pd.DataFrame(df, columns=[series_id]),
         sheet_name,
         fig,
     )
@@ -927,7 +935,7 @@ def plot_ffrmc(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[series_id]) / 100,
+        pd.DataFrame(df, columns=[series_id]),
         sheet_name,
         fig,
     )
@@ -999,12 +1007,12 @@ def display_yield_curve(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ycrv",
-        rates.set_index("Maturity") / 100,
+        rates.set_index("Maturity"),
         sheet_name,
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1018,6 +1026,7 @@ def plot_usrates(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot various treasury rates from the United States
 
@@ -1059,6 +1068,9 @@ def plot_usrates(
         parameter=parameter, maturity=maturity, start_date=start_date, end_date=end_date
     )
 
+    if df.empty:
+        return console.print(f"[red]No data found for {parameter} {maturity}[/red]\n")
+
     title_dict = {
         "tbills": "Treasury Bill Secondary Market Rate, Discount Basis",
         "cmn": "Treasury Constant Maturity Nominal Market Yield",
@@ -1073,24 +1085,28 @@ def plot_usrates(
     fig.add_scatter(x=df.index, y=df[series_id], name="Yield")
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = pd.DataFrame(df, columns=[series_id])
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            pd.DataFrame(df, columns=[parameter]).iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=[parameter]) / 100,
+        pd.DataFrame(df, columns=[series_id]),
         sheet_name,
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1124,6 +1140,11 @@ def plot_tbffr(
         parameter=parameter, start_date=start_date, end_date=end_date
     )
 
+    if df.empty:
+        return console.print(
+            f"[red]No data found for {ID_TO_NAME_TBFFR[series_id]}[/red]"
+        )
+
     fig = OpenBBFigure(yaxis_title="Yield (%)")
     fig.set_title(
         f"{ID_TO_NAME_TBFFR[series_id]} Treasury Bill Minus Federal Funds Rate"
@@ -1135,7 +1156,7 @@ def plot_tbffr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=["TBFFR"]) / 100,
+        pd.DataFrame(df, columns=["TBFFR"]),
         sheet_name,
         fig,
     )
@@ -1158,6 +1179,7 @@ def plot_icebofa(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot ICE BofA US Corporate Bond Index data.
 
@@ -1215,7 +1237,17 @@ def plot_icebofa(
         start_date=start_date,
         end_date=end_date,
     )
-    title = "ICE BofA Bond Benchmark Indices" if len(df.columns) > 1 else df.columns[0]
+
+    if df.empty:
+        return console.print()
+
+    title = (
+        ""
+        if df.empty
+        else "ICE BofA Bond Benchmark Indices"
+        if len(df.columns) > 1
+        else df.columns[0]
+    )
 
     fig = OpenBBFigure(yaxis_title="Yield (%)" if units == "percent" else "Index")
     fig.set_title(title)
@@ -1226,16 +1258,22 @@ def plot_icebofa(
         )
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
-    if description:
-        for title, description_text in series[["Title", "Description"]].values:
+    if description and title:
+        for index_title in df.columns:
+            description_text = series[series["Title"] == index_title][
+                "Description"
+            ].values[0]
             console.print(f"\n[bold]{title}[/bold]")
             console.print(description_text)
 
@@ -1243,12 +1281,12 @@ def plot_icebofa(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ICEBOFA",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1262,6 +1300,7 @@ def plot_moody(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Moody Corporate Bond Index data
     Parameters
@@ -1291,6 +1330,9 @@ def plot_moody(
         data_type=data_type, spread=spread, start_date=start_date, end_date=end_date
     )
 
+    if df.empty:
+        return console.print(f"[bold red]No data found for {name}[/bold red]")
+
     fig = OpenBBFigure(yaxis_title="Yield (%)")
     fig.set_title(name)
 
@@ -1298,24 +1340,27 @@ def plot_moody(
         fig.add_scatter(x=df.index, y=df[series], name=series)
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=name,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "MOODY",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1332,6 +1377,7 @@ def plot_cp(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Commercial Paper
 
@@ -1379,6 +1425,10 @@ def plot_cp(
         start_date=start_date,
         end_date=end_date,
     )
+
+    if df.empty:
+        return console.print()
+
     title = "Commercial Paper Interest Rates" if len(df.columns) > 1 else df.columns[0]
 
     fig = OpenBBFigure(yaxis_title="Yield (%)")
@@ -1390,12 +1440,15 @@ def plot_cp(
         )
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     if description:
@@ -1407,12 +1460,12 @@ def plot_cp(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "CP",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1427,6 +1480,7 @@ def plot_spot(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Spot Rates for a given maturity
 
@@ -1461,6 +1515,11 @@ def plot_spot(
         maturity=maturity, category=category, start_date=start_date, end_date=end_date
     )
 
+    if df.empty:
+        return console.print(
+            f"[bold red]No data found for maturity {maturity} and category {category}[/bold red]"
+        )
+
     title = (
         "High Quality Market (HQM) Corporate Bond Rates"
         if len(df.columns) > 1
@@ -1476,12 +1535,15 @@ def plot_spot(
         )
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     if description:
@@ -1493,12 +1555,12 @@ def plot_spot(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "SPOT",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -1537,6 +1599,9 @@ def plot_hqm(
 
     df, date_of_yield = fred_model.get_hqm(date=date, par=par)
 
+    if df.empty:
+        return console.print()
+
     fig = OpenBBFigure(xaxis_title="Maturity", yaxis_title="Yield (%)")
     fig.set_title(f"Spot{'and Par' if par else ''} Yield Curve for {date_of_yield}")
 
@@ -1558,9 +1623,9 @@ def plot_hqm(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cycrv",
-        df / 100,
+        df,
         sheet_name,
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

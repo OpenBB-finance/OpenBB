@@ -9,7 +9,11 @@ from typing import List, Optional
 
 import financedatabase as fd
 
-from openbb_terminal.common import feedparser_view, newsapi_view
+from openbb_terminal.common import (
+    feedparser_view,
+    newsapi_view,
+    ultima_newsmonitor_view,
+)
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -73,8 +77,9 @@ class StocksController(StockBaseController):
         sector = stocks_options["sector"].tolist()
         industry_group = stocks_options["industry_group"].tolist()
         industry = stocks_options["industry"].tolist()
+        exchange = stocks_options["exchange"].tolist()
     except Exception:
-        country, sector, industry_group, industry = {}, {}, {}, {}
+        country, sector, industry_group, industry, exchange = {}, {}, {}, {}, {}
         console.print(
             "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command will not work. "
             "If other commands are failing please check your internet connection or communicate with your "
@@ -90,10 +95,6 @@ class StocksController(StockBaseController):
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
-            choices["load"] = {
-                "--file": {c: None for c in self.USER_IMPORT_FILES},
-                "-f": "--file",
-            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -113,11 +114,11 @@ class StocksController(StockBaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", stock_text)
         mt.add_raw("\n")
-        mt.add_cmd("quote")
-        mt.add_cmd("tob")
-        mt.add_cmd("candle")
-        mt.add_cmd("codes")
-        mt.add_cmd("news")
+        mt.add_cmd("quote", self.ticker)
+        mt.add_cmd("tob", self.ticker)
+        mt.add_cmd("candle", self.ticker)
+        mt.add_cmd("codes", self.ticker)
+        mt.add_cmd("news", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("th")
         mt.add_menu("options")
@@ -197,7 +198,7 @@ class StocksController(StockBaseController):
         )
         parser.add_argument(
             "-g",
-            "--industrygroup",
+            "--industry-group",
             default="",
             choices=stocks_helper.format_parse_choices(self.industry_group),
             type=str.lower,
@@ -219,15 +220,24 @@ class StocksController(StockBaseController):
             "-e",
             "--exchange",
             default="",
+            choices=stocks_helper.format_parse_choices(self.exchange),
+            type=str.lower,
+            metavar="exchange",
+            dest="exchange",
+            help="Search by a specific exchange to find stocks matching the criteria",
+        )
+        parser.add_argument(
+            "-m",
+            "--exchange-country",
+            default="",
             choices=stocks_helper.format_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
             ),
             type=str.lower,
-            metavar="exchange",
+            metavar="exchange_country",
             dest="exchange_country",
-            help="Search by a specific exchange country to find stocks matching the criteria",
+            help="Search by a specific country and all its exchanges to find stocks matching the criteria",
         )
-
         parser.add_argument(
             "-a",
             "--all-exchanges",
@@ -253,7 +263,10 @@ class StocksController(StockBaseController):
             industry_group = stocks_helper.map_parse_choices(self.industry_group)[
                 ns_parser.industry_group
             ]
-            exchange = stocks_helper.map_parse_choices(
+            exchange = stocks_helper.map_parse_choices(self.exchange)[
+                ns_parser.exchange
+            ]
+            exchange_country = stocks_helper.map_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
             )[ns_parser.exchange_country]
 
@@ -263,18 +276,19 @@ class StocksController(StockBaseController):
                 sector=sector,
                 industry_group=industry_group,
                 industry=industry,
-                exchange_country=exchange,
+                exchange=exchange,
+                exchange_country=exchange_country,
                 all_exchanges=ns_parser.all_exchanges,
                 limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
-        """Process quote command."""
+        """Process tob command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="quote",
+            prog="tob",
             description="Get top of book for loaded ticker from selected exchange",
         )
         parser.add_argument(
@@ -380,7 +394,7 @@ class StocksController(StockBaseController):
             dest="ticker",
             help="Ticker to analyze",
             type=str,
-            default=self.ticker,
+            default=None,
             required=not any(x in other_args for x in ["-h", "--help"])
             and not self.ticker,
         )
@@ -547,9 +561,9 @@ class StocksController(StockBaseController):
             help="Show news only from the sources specified (e.g bloomberg,reuters)",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
+            other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=3
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
             if ns_parser.ticker:
@@ -564,6 +578,27 @@ class StocksController(StockBaseController):
                         show_newest=ns_parser.n_oldest,
                         sources=ns_parser.sources,
                     )
+                elif str(ns_parser.source).lower() == "ultima":
+                    query = str(self.ticker).upper()
+                    if query not in ultima_newsmonitor_view.supported_terms():
+                        console.print(
+                            "[red]Ticker not supported by Ultima Insights News Monitor[/red]"
+                        )
+                        feedparser_view.display_news(
+                            term=query,
+                            sources=ns_parser.sources,
+                            limit=ns_parser.limit,
+                            export=ns_parser.export,
+                            sheet_name=ns_parser.sheet_name,
+                        )
+                    else:
+                        ultima_newsmonitor_view.display_news(
+                            term=query,
+                            sources=ns_parser.sources,
+                            limit=ns_parser.limit,
+                            export=ns_parser.export,
+                            sheet_name=ns_parser.sheet_name,
+                        )
                 elif ns_parser.source == "Feedparser":
                     feedparser_view.display_news(
                         term=self.ticker,

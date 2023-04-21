@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: query=%0A++++++++++++++++prefix+rdf%3A+%3Chttp%3A//www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0A++++++++++++++++prefix+rdfs%3A+%3Chttp%3A//www.w3.org/2000/01/rdf-schema%23%3E%0A++++++++++++++++prefix+owl%3A+%3Chttp%3A//www.w3.org/2002/07/owl%23%3E%0A++++++++++++++++prefix+xsd%3A+%3Chttp%3A//www.w3.org/2001/XMLSchema%23%3E%0A++++++++++++++++prefix+sr%3A+%3Chttp%3A//data.ordnancesurvey.co.uk/ontology/spatialrelations/%3E%0A++++++++++++++++prefix+ukhpi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ukhpi/%3E%0A++++++++++++++++prefix+lrppi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ppi/%3E%0A++++++++++++++++prefix+skos%3A+%3Chttp%3A//www.w3.org/2004/02/skos/core%23%3E%0A++++++++++++++++prefix+lrcommon%3A+%3Chttp%3A//landregistry.data.gov.uk/def/common/%3E%0A%0A++++++++++++++++SELECT++%3Fmonth+%3FavgPrice+%3FavgPriceCash+%3FtotalSalesVolume+%3FavgPriceExistingProperty%0A++++++++++++++++%3FavgPriceFirstTimeBuyer%0A++++++++++++++++%3FavgPriceDetached+%3Fhpi++%3Fdetachedhpi+%3Fnewbuildhpi%0A++++++++++++++++%7B%0A++++++++++++++++++++values+%3FrefRegion+%7B%3Chttp%3A//landregistry.data.gov.uk/id/region/essex%3E%7D%0A++++++++++++++++++++%3Fregion+ukhpi%3ArefPeriodStart+%3Fmonth+%3B%0A++++++++++++++++++++++++++++ukhpi%3AhousePriceIndex+%3Fhpi+%3B%0A++++++++++++++++++++++++++++ukhpi%3ArefRegion+%3FrefRegion+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePrice+%3FavgPrice+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePriceCash+%3FavgPriceCash+%3B%0A++++++++++++++++++++++++++++ukhpi%3AsalesVolume+%3FtotalSalesVolume+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePriceDetached+%3FavgPriceDetached+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePriceExistingProperty+%3FavgPriceExistingProperty+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePriceFirstTimeBuyer+%3FavgPriceFirstTimeBuyer+%3B%0A++++++++++++++++++++++++++++ukhpi%3AhousePriceIndexDetached+%3Fdetachedhpi+%3B%0A++++++++++++++++++++++++++++ukhpi%3AhousePriceIndexNewBuild+%3Fnewbuildhpi+.%0A++++++++++++++++++++%3FrefRegion+rdfs%3Alabel+%3FregionLabel+.%0A++++++++++++++++++++FILTER%28LANG%28%3FregionLabel%29+%3D+%22en%22%29.%0A++++++++++++++++++++FILTER+%28%0A++++++++++++++++++++++++%3Fmonth+%3E+%222020-12-01%22%5E%5Exsd%3Adate+%26%26%0A++++++++++++++++++++++++%3Fmonth+%3C+%222020-12-31%22%5E%5Exsd%3Adate%0A++++++++++++++++++++%29%0A%0A++++++++++++++++++++OPTIONAL+%7B%3Fregion+ukhpi%3AhousePriceIndexDetached+%3Fdetachedhpi%7D%0A++++++++++++++++++++OPTIONAL+%7B%3Fregion+ukhpi%3AhousePriceIndexNewBuild+%3Fnewbuildhpi+%7D%0A++++++++++++++++++++OPTIONAL+%7B%3Fregion+ukhpi%3AaveragePrice+%3FaveragePrice+%7D%0A++++++++++++++++%7D%0A++++++++++++++++ORDER+BY+%28%3Fmonth%29%0A++++++++++++&format=csv&output=csv&results=csv
+    headers:
+      Accept:
+      - text/csv
+      Connection:
+      - close
+      Content-Length:
+      - '2707'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - landregistry.data.gov.uk
+      User-Agent:
+      - sparqlwrapper 2.0.0 (rdflib.github.io/sparqlwrapper)
+    method: POST
+    uri: http://landregistry.data.gov.uk/landregistry/query
+  response:
+    body:
+      string: "month,avgPrice,avgPriceCash,totalSalesVolume,avgPriceExistingProperty,avgPriceFirstTimeBuyer,avgPriceDetached,hpi,detachedhpi,newbuildhpi\r\n"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - must-revalidate,no-cache,no-store, max-age=3600
+      Connection:
+      - Close
+      Content-Length:
+      - '139'
+      Content-Type:
+      - text/csv; charset=utf-8
+      Date:
+      - Thu, 23 Mar 2023 09:52:44 GMT
+      Expires:
+      - Thu, 23 Mar 2023 10:52:44 GMT
+      Fuseki-Request-ID:
+      - '393604'
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+    status:
+      code: 200
+      message: OK
+version: 1

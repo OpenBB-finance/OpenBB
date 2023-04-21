@@ -2,15 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-import math
-from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple
+from datetime import datetime
+from typing import Any, Dict, List, Tuple
 
 import pandas as pd
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console, optional_rich_track
 
 logger = logging.getLogger(__name__)
@@ -253,7 +251,6 @@ def get_closing(symbol: str) -> pd.Series:
     return tick.history(period="1y")["Close"]
 
 
-@log_start_end(log=logger)
 def get_dte(date_value: str) -> int:
     """Gets days to expiration from yfinance option date"""
     return (datetime.strptime(date_value, "%Y-%m-%d") - datetime.now()).days
@@ -286,102 +283,6 @@ def get_iv_surface(symbol: str) -> pd.DataFrame:
         df["dte"] = get_dte(date_value)
         vol_df = pd.concat([vol_df, df], axis=0)
     return vol_df
-
-
-@log_start_end(log=logger)
-def get_binom(
-    symbol: str,
-    expiry: str,
-    strike: float = 0,
-    put: bool = False,
-    europe: bool = False,
-    vol: Optional[float] = None,
-):
-    """Gets binomial pricing for options
-
-    Parameters
-    ----------
-    symbol : str
-        The ticker symbol of the option's underlying asset
-    expiry : str
-        The expiration for the option
-    strike : float
-        The strike price for the option
-    put : bool
-        Value a put instead of a call
-    europe : bool
-        Value a European option instead of an American option
-    vol : float
-        The annualized volatility for the underlying asset
-    """
-    # Base variables to calculate values
-    info = get_info(symbol)
-    price = yf.Ticker(symbol).fast_info.last_price
-    if vol is None:
-        closings = get_closing(symbol)
-        vol = (closings / closings.shift()).std() * (252**0.5)
-    div_yield = (
-        info["trailingAnnualDividendYield"]
-        if info["trailingAnnualDividendYield"] is not None
-        else 0
-    )
-    delta_t = 1 / 252
-    rf = get_rf()
-    exp_date = datetime.strptime(expiry, "%Y-%m-%d").date()
-    today = date.today()
-    days = (exp_date - today).days
-
-    # Binomial pricing specific variables
-    up = math.exp(vol * (delta_t**0.5))
-    down = 1 / up
-    prob_up = (math.exp((rf - div_yield) * delta_t) - down) / (up - down)
-    prob_down = 1 - prob_up
-    discount = math.exp(delta_t * rf)
-
-    und_vals: List[List[float]] = [[price]]
-
-    # Binomial tree for underlying values
-    for i in range(days):
-        cur_date = today + timedelta(days=i + 1)
-        if cur_date.weekday() < 5:
-            last = und_vals[-1]
-            new = [x * up for x in last]
-            new.append(last[-1] * down)
-            und_vals.append(new)
-
-    # Binomial tree for option values
-    opt_vals = (
-        [[max(strike - x, 0) for x in und_vals[-1]]]
-        if put
-        else [[max(x - strike, 0) for x in und_vals[-1]]]
-    )
-
-    j = 2
-    while len(opt_vals[0]) > 1:
-        new_vals = []
-        for i in range(len(opt_vals[0]) - 1):
-            if europe:
-                value = (
-                    opt_vals[0][i] * prob_up + opt_vals[0][i + 1] * prob_down
-                ) / discount
-            else:
-                if put:
-                    value = max(
-                        (opt_vals[0][i] * prob_up + opt_vals[0][i + 1] * prob_down)
-                        / discount,
-                        strike - und_vals[-j][i],
-                    )
-                else:
-                    value = max(
-                        (opt_vals[0][i] * prob_up + opt_vals[0][i + 1] * prob_down)
-                        / discount,
-                        und_vals[-j][i] - strike,
-                    )
-            new_vals.append(value)
-        opt_vals.insert(0, new_vals)
-        j += 1
-
-    return up, prob_up, discount, und_vals, opt_vals, days
 
 
 @log_start_end(log=logger)

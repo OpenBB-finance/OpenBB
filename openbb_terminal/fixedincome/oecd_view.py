@@ -27,6 +27,7 @@ def plot_treasuries(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Gets interest rates data from selected countries (3 month and 10 year)
 
@@ -89,13 +90,16 @@ def plot_treasuries(
     fig.set_title(title)
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             headers=list(df.columns),
             show_index=True,
             title=title,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -107,4 +111,4 @@ def plot_treasuries(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

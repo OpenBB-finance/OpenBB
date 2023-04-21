@@ -28,8 +28,6 @@ RUN apt-get -y install --no-install-recommends \
     libwebkit2gtk-4.0-dev \
     build-essential \
     libssl-dev \
-    libgtk-3-dev \
-    libayatana-appindicator3-dev \
     librsvg2-dev \
     ffmpeg \
     python3-tk
@@ -44,14 +42,10 @@ WORKDIR /home/python
 # SETUP POETRY IMAGE
 FROM debian as poetry
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
-
-ENV PATH="/home/python/.cargo/bin:${PATH}"
 ENV PATH="/home/python/.local/bin:${PATH}"
 
-RUN /bin/bash -c "source $HOME/.cargo/env"
 RUN pip install --upgrade pip wheel
-RUN pip install poetry==1.3.2
+RUN pip install poetry==1.4.0
 
 # SETUP OPENBB IMAGE
 FROM poetry as repository
@@ -61,8 +55,8 @@ COPY --chown=python:python pyproject.toml poetry.lock terminal.py ./
 RUN mkdir openbb_terminal
 COPY --chown=python:python openbb_terminal openbb_terminal
 
-RUN mkdir -p website/content/sdk/quickstart
-COPY --chown=python:python ./website/content/sdk/quickstart/installation.md ./website/content/sdk/quickstart
+RUN mkdir -p website/content/sdk
+COPY --chown=python:python ./website/content/sdk/installation.md ./website/content/sdk
 
 RUN mkdir OpenBBUserData
 RUN chown python:python OpenBBUserData

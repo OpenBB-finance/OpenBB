@@ -18,8 +18,9 @@ export default function Home(): JSX.Element {
               OpenBB Documentation
             </h1>
             <p className="mx-6 w-[315px] md:w-[880px] text-sm lg:text-lg xl:text-xl text-center text-grey-900 dark:text-white">
-              This website contains documentation for OpenBB SDK and Terminal, two
-              open source projects that powers your investment research.
+              This website contains documentation for OpenBB Terminal, OpenBB
+              SDK, and OpenBB Bot. All the tooling you need for your investment
+              research.
             </p>
           </div>
           <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0 mt-8 md:!mt-14 lg:!mt-15 md:mb-0">
@@ -28,18 +29,17 @@ export default function Home(): JSX.Element {
                 backgroundSize: "100% 110%",
               }}
               to="/terminal"
-              className="bg-[url('/img/terminal_bg_light.png')] dark:bg-[url('/img/terminal_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-400 bg-white dark:bg-grey-900"
+              className="bg-[url(/img/terminal_bg_light.png)] dark:bg-[url('/img/terminal_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-600/80 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 bg-white dark:bg-grey-900"
             >
-              <h3 className="uppercase tracking-widest font-bold text-2xl mb-3">
+              <h3 className="uppercase tracking-widest font-bold mb-3">
                 OpenBB Terminal
               </h3>
               <p className="text-sm lg:text-base dark:text-grey-300">
-                Desktop application that allows you to perform your own investment
-                research.
+                Free and open source investment research platform.
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal",
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
                 )}
               >
                 See more
@@ -51,18 +51,40 @@ export default function Home(): JSX.Element {
                 backgroundSize: "100% 130%",
               }}
               to="/sdk"
-              className="bg-[url('/img/sdk_bg_light.png')] dark:bg-[url('/img/sdk_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-400 bg-white dark:bg-grey-900"
+              className="bg-[url(/img/sdk_bg_light.png)] dark:bg-[url('/img/sdk_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-600/80 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 bg-white dark:bg-grey-900"
             >
-              <h3 className="uppercase tracking-widest font-bold text-2xl mb-3">
+              <h3 className="uppercase tracking-widest font-bold mb-3">
                 OpenBB SDK
               </h3>
               <p className="text-sm lg:text-base dark:text-grey-300">
-                Python library that allows you to build your own investment
-                research platform.
+                Python library that allows access to investment research data.
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal",
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
+                )}
+              >
+                See more
+                <ChevronRightIcon className="group-hover:translate-x-2 tw-transition w-3" />
+              </p>
+            </Link>
+            <Link
+              style={{
+                backgroundSize: "100% 130%",
+              }}
+              to="/bot"
+              className="bg-[url(/img/bot_bg_light.png)] dark:bg-[url('/img/bot_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-600/80 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 bg-white dark:bg-grey-900"
+            >
+              <h3 className="uppercase tracking-widest font-bold mb-3">
+                OpenBB Bot
+              </h3>
+              <p className="text-sm lg:text-base dark:text-grey-300">
+                Discord/Telegram bot to retrieve investment research data from
+                anywhere.
+              </p>
+              <p
+                className={clsx(
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
                 )}
               >
                 See more

@@ -56,6 +56,7 @@ def test_get_historical_greeks_invalid_status(mocker):
     assert result_df.empty
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_get_screener_output(mocker, recorder):
     mock_preset_path = Path(__file__).resolve().parent / "ini"

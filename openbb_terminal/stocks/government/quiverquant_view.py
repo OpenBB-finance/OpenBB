@@ -8,8 +8,7 @@ from typing import Optional, Union
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -154,7 +153,7 @@ def display_government_buys(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -237,7 +236,7 @@ def display_government_sells(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -273,15 +272,16 @@ def display_last_contracts(
         return
 
     print_rich_table(
-        df[:limit],
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Last Government Contracts",
         export=bool(export),
+        limit=limit,
     )
 
     df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d").dt.date
-    df = df.groupby("Date").sum().div(1000)
+    df = df.groupby("Date").sum(True).div(1000)
 
     fig = OpenBBFigure(yaxis_title="Amount ($1k)", xaxis_title="Date")
     fig.set_title("Total amount of government contracts given")
@@ -471,7 +471,7 @@ def display_contracts(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -732,11 +732,12 @@ def display_top_lobbying(
 
     if raw:
         return print_rich_table(
-            lobbying_by_ticker.head(limit),
+            lobbying_by_ticker,
             headers=["Amount ($100k)"],
             show_index=True,
             title="Top Lobbying Tickers",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)

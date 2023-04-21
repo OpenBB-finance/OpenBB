@@ -39,15 +39,13 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_suppliers(symbol: str, limit: int = 50) -> pd.DataFrame:
+def get_suppliers(symbol: str) -> pd.DataFrame:
     """Get suppliers from ticker provided. [Source: CSIMarket]
 
     Parameters
     ----------
     symbol: str
         Ticker to select suppliers from
-    limit: int
-        The maximum number of rows to show
 
     Returns
     -------
@@ -58,20 +56,17 @@ def get_suppliers(symbol: str, limit: int = 50) -> pd.DataFrame:
     dfs = pd.read_html(url, header=0)
     df = dfs[10]
     df = clean_table(df)
-
-    return df.head(limit)
+    return df
 
 
 @log_start_end(log=logger)
-def get_customers(symbol: str, limit: int = 50) -> pd.DataFrame:
+def get_customers(symbol: str) -> pd.DataFrame:
     """Print customers from ticker provided
 
     Parameters
     ----------
     symbol: str
         Ticker to select customers from
-    limit: int
-        The maximum number of rows to show
 
     Returns
     -------
@@ -83,4 +78,4 @@ def get_customers(symbol: str, limit: int = 50) -> pd.DataFrame:
     df = dfs[9]
     df = clean_table(df)
 
-    return df.head(limit)
+    return df

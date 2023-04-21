@@ -118,10 +118,11 @@ def display_transactions(
     else:
         df = get_transactions(portfolio_engine)
         print_rich_table(
-            df=df[:limit],
+            df,
             show_index=show_index,
             title=f"Last {limit if limit < len(df) else len(df)} transactions",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -454,7 +455,7 @@ def display_yearly_returns(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -726,12 +727,14 @@ def display_daily_returns(
     )
 
     if raw:
+        df = df.sort_index(ascending=False)
         return print_rich_table(
-            df.tail(limit),
+            df,
             title="Portfolio and Benchmark daily returns",
             headers=["Portfolio [%]", "Benchmark [%]"],
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)
@@ -750,17 +753,17 @@ def display_distribution_returns(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    interval : str
-        interval to compare cumulative returns and benchmark
-    raw : False
+    portfolio_engine : PortfolioEngine
+        The engine for the portfolio
+    window: str
+        The window
+    raw : bool
         Display raw data from cumulative return
     export : str
         Export certain type of data
-    external_axes : bool, optional
+    sheet_name: Optional[str]
+        The name for the sheet
+    external_axes : bool
         Whether to return the figure object or not, by default False
     """
 
@@ -865,12 +868,14 @@ def display_holdings_value(
     )
 
     if raw:
+        all_holdings = all_holdings.sort_index(ascending=False)
         return print_rich_table(
-            all_holdings.tail(limit),
+            all_holdings,
             title="Holdings of assets (absolute value)",
             headers=all_holdings.columns,
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)
@@ -938,12 +943,14 @@ def display_holdings_percentage(
 
         all_holdings.columns = [f"{col} [%]" for col in all_holdings.columns]
 
+        all_holdings = all_holdings.sort_index(ascending=False)
         return print_rich_table(
-            all_holdings.tail(limit),
+            all_holdings,
             title="Holdings of assets (in percentage)",
             headers=all_holdings.columns,
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)

@@ -8,12 +8,11 @@ from typing import Optional, Union
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure, rich_config
+from openbb_terminal import OpenBBFigure, rich_config, theme
 from openbb_terminal.common.behavioural_analysis.finbrain_model import get_sentiment
 from openbb_terminal.common.behavioural_analysis.finbrain_view import (
     lambda_sentiment_coloring,
 )
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
@@ -136,4 +135,4 @@ def display_crypto_sentiment_analysis(
             fig,
         )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

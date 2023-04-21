@@ -10,6 +10,7 @@ import pandas as pd
 
 from openbb_terminal import OpenBBFigure, rich_config, theme
 from openbb_terminal.common.behavioural_analysis import finbrain_model
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -51,7 +52,10 @@ def display_sentiment_analysis(
         return console.print("No sentiment data found.\n")
 
     if raw:
-        if rich_config.USE_COLOR:
+        if (
+            rich_config.USE_COLOR
+            and not get_current_user().preferences.USE_INTERACTIVE_DF
+        ):
             color_df = sentiment["Sentiment Analysis"].apply(
                 lambda_sentiment_coloring, last_val=0
             )
@@ -133,4 +137,4 @@ def display_sentiment_analysis(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

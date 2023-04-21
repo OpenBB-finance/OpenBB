@@ -67,11 +67,12 @@ def display_whales_transactions(
         df[col] = df[col].apply(lambda x: lambda_long_number_format(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Large Value Transactions",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

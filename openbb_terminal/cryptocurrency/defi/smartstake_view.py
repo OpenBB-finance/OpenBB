@@ -101,7 +101,7 @@ def display_luna_circ_supply_change(
     df = df.sort_index(ascending=False)
 
     print_rich_table(
-        df[RAW_COLS].head(limit),
+        df[RAW_COLS],
         headers=[
             "Circ Supply",
             "Liquid Circ Supply",
@@ -112,6 +112,7 @@ def display_luna_circ_supply_change(
         index_name="Time",
         title="Luna Circulating Supply Changes (in Millions)",
         export=bool(export),
+        limit=limit,
     )
 
     return fig.show(external=external_axes)

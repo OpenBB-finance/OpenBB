@@ -1,6 +1,6 @@
 ---
 title: Docker
-sidebar_position: 3
+sidebar_position: 5
 description: Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.
 keywords:
   [
@@ -20,9 +20,13 @@ keywords:
   ]
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.<p></p>
 
-<details><summary>Windows</summary>
+<Tabs>
+<TabItem value="Windows" label="Windows" default>
 
 **Install Docker Desktop**
 
@@ -66,11 +70,12 @@ To display charts with your container, you need: VcXsrv.
 
 You can download VcXsrv here: [Download VcXsrv](https://sourceforge.net/projects/vcxsrv)
 
-When running VcXsrv program check the option: `Disable access control`
+Once downloaded you will open the program and accept all the defaults expect the below settings:
+- CHECK the option: `Disable access control` and UNCHECK the `Native opengl` command
 
 **Pull and run the container**
 
-Execute this commands:
+Execute these commands:
 
 ```console
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
@@ -81,10 +86,9 @@ docker compose run openbb
 This will download and run the file: `docker-compose.yaml`
 
 This file contents the settings to pull and run OpenBB Terminal Docker image.
-</details>
+</TabItem>
 
-<details><summary>MacOS</summary>
-
+<TabItem value="MacOS" label="MacOS">
 **Install Docker Desktop**
 
 You can find `Docker Desktop` for MacOS here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
@@ -147,7 +151,7 @@ IP=$(ifconfig | grep inet | grep -v "127.0.0.1" | awk '$1=="inet" {print $2}')
 
 **Pull and run the container**
 
-Execute this commands:
+Execute these commands:
 
 ```console
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
@@ -161,12 +165,8 @@ This will download and run the file: `docker-compose.yaml`
 This file contents the settings to pull and run OpenBB Terminal Docker image.
 
 The `xhost +$IP` and `DISPLAY=$IP:0` parts are there to allow charts display.
-
-
-</details>
-
-<details><summary>Linux</summary>
-
+</TabItem>
+<TabItem value="Linux" label="Linux">
 **Install Docker Desktop**
 
 You can find `Docker Desktop` for Linux here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
@@ -205,7 +205,7 @@ Stopped: 10
 
 **Pull and run the container**
 
-Execute this commands:
+Execute these commands:
 
 ```console
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
@@ -215,5 +215,5 @@ docker compose run openbb
 ```
 
 Note: if you're using remote docker host, you can connect with `ssh -X <FQDN/IP>`.
-
-</details>
+</TabItem>
+</Tabs>

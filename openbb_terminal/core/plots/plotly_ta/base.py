@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, Iterator, List, Optional
+from typing import Any, Callable, Dict, Iterator, List, Optional, Type
 
 import pandas as pd
 
@@ -38,7 +38,7 @@ class PluginMeta(type):
     __inchart__: List[str] = []
     __subplots__: List[str] = []
 
-    def __new__(mcs: type["PluginMeta"], *args: Any, **kwargs: Any) -> "PluginMeta":
+    def __new__(mcs: Type["PluginMeta"], *args: Any, **kwargs: Any) -> "PluginMeta":
         name, bases, attrs = args
         indicators: Dict[str, Indicator] = {}
         cls_attrs: Dict[str, list] = {
@@ -75,7 +75,7 @@ class PluginMeta(type):
 
         return new_cls
 
-    def __iter__(cls: type["PluginMeta"]) -> Iterator[Indicator]:  # type: ignore
+    def __iter__(cls: Type["PluginMeta"]) -> Iterator[Indicator]:  # type: ignore
         return iter(cls.__indicators__)
 
     # pylint: disable=unused-argument
@@ -94,6 +94,7 @@ class PltTA(metaclass=PluginMeta):
     close_column: Optional[str] = "Close"
     params: Dict[str, TAIndicator] = {}
     inchart_colors: List[str] = []
+    show_volume: bool = True
 
     __static_methods__: list = []
     __indicators__: List[Indicator] = []
@@ -174,7 +175,7 @@ class PltTA(metaclass=PluginMeta):
 
     def get_float_precision(self) -> str:
         """Returns f-string precision format"""
-        price = self.df_stock.Close.tail(1).values[0]
+        price = self.df_stock[self.close_column].tail(1).values[0]
         float_precision = (
             ",.2f" if price > 1.10 else "" if len(str(price)) < 8 else ".6f"
         )
