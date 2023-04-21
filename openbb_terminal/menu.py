@@ -1,4 +1,5 @@
 import logging
+import sys
 from typing import Optional
 
 from matplotlib import pyplot
@@ -7,7 +8,6 @@ from prompt_toolkit.eventloop.inputhook import set_eventloop_with_inputhook
 from prompt_toolkit.history import FileHistory
 
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
-from openbb_terminal.terminal_helper import is_papermill
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +19,23 @@ def is_jupyter() -> bool:
         return True
     except NameError:
         return False
+
+
+def is_papermill() -> bool:
+    """Check if session is being launched with args '-m ipykernel_launcher',
+    thus coming from papermill Popen. See 'ipykernel_launcher' in reports_model
+    for more detail.
+    """
+
+    return all(
+        i in sys.argv
+        for i in [
+            "-m",
+            "ipykernel_launcher",
+            "-f",
+            "--HistoryManager.hist_file=:memory:",
+        ]
+    )
 
 
 def inputhook(inputhook_context):

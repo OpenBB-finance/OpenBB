@@ -239,23 +239,6 @@ def hide_splashscreen():
         logger.info(e)
 
 
-def is_papermill() -> bool:
-    """Check if session is being launched with args '-m ipykernel_launcher',
-    thus coming from papermill Popen. See 'ipykernel_launcher' in reports_model
-    for more detail.
-    """
-
-    return all(
-        i in sys.argv
-        for i in [
-            "-m",
-            "ipykernel_launcher",
-            "-f",
-            "--HistoryManager.hist_file=:memory:",
-        ]
-    )
-
-
 def is_auth_enabled() -> bool:
     """Tell whether or not authentication is enabled.
 
