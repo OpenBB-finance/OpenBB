@@ -170,10 +170,10 @@ Many functions will require obtaining (free or subscription) API keys from vario
 The default data source for each function (where multiple sources are available) can be defined within the [`/sources` menu](https://docs.openbb.co/terminal/usage/guides/changing-sources).  The available sources for each function are displayed on the right of the menu, and they can be distinguished by the square brackets and distinct font color group.  Unless a preference for a particular function is defined, the command will prioritize in the order they are displayed, from left-to-right, on the Terminal screen.  To override a preference or default source, select one of the other choices by attaching the, `--source`, argument to the command syntax.  The available sources for the feature will be populated by auto complete when the `space bar` is pressed after typing `--source`.  This information is also printed with the `--help` dialogue of a command.
 
 ```console
-/stocks/load AAPL/fa/earnings --source YahooFinance
+/stocks/load AAPL/fa/income --source Polygon
 ```
 
-![Selecting a new Data Source](https://user-images.githubusercontent.com/85772166/233719604-9f28b80d-4c5f-41f5-8cfe-71d5aaa6da99.png)
+![Selecting a new Data Source](https://user-images.githubusercontent.com/85772166/233730763-54fd6400-f3ad-44a0-9c73-254d91ac2085.png)
 
 ### Importing and Exporting Data
 
