@@ -108,9 +108,7 @@ def login(session: Dict, remember: bool = False) -> LoginStatus:
             set_current_user(hub_user)
 
             auth_header = hub_user.profile.get_auth_header()
-            print("mocing", sys.stdin.isatty())
             if sys.stdin.isatty():
-                print("Updating backend sources...")
                 download_and_save_routines(auth_header)
                 run_thread(
                     update_backend_sources,
