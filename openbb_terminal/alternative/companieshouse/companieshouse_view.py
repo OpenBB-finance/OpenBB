@@ -187,7 +187,8 @@ def download_filing_document(
         ) as f:
             f.write(results.content)
             console.print(
-                f"File [green] {filename}[/green] downloaded to {get_current_user().preferences.USER_COMPANIES_HOUSE_DIRECTORY}"
+                f"File [green] {filename}[/green] downloaded to \
+                  {get_current_user().preferences.USER_COMPANIES_HOUSE_DIRECTORY}"
             )
     else:
         console.print("[red]" + "Document not found" + "[/red]\n")
