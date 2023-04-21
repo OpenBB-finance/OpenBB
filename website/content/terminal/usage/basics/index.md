@@ -7,7 +7,7 @@ keywords: [basics, commands, functions, features, menus, introduction, openbb te
 
 The OpenBB Terminal is a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.  Commands are grouped into menus, with a menu or sub-menu being visually distinguishable from a function by the, `>`, on the far left of the screen.  The color of the text can be altered under the [`/settings` menu](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal).
 
-Navigating through the Terminal menus is similar to climbing a tree, or traversing folders from any operating system's command line prompt.  The `/home` screen is the trunk and the menus are branches.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.  Absolute paths are also valid to-and-from any point.  From the [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options) menu, go directly to [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto).  By itself, `/`, returns to the home level.
+Navigating through the Terminal menus is similar to following down a path, or traversing folders from any operating system's command line prompt.  The `/home` screen is the main path where everything begins, and the menus are paths branched from the main.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.  Absolute paths are also valid to-and-from any point.  From the [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options) menu, go directly to [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto).  By itself, `/`, returns to the home level.
 
 ![The Home Screen](https://user-images.githubusercontent.com/85772166/233247655-2f8d0dae-be68-48ca-9b35-123b5b985cb6.png)
 
@@ -110,7 +110,7 @@ Tips for submitting a support request:
 - Tell us what symbol (ticker) is, or was trying to be, loaded.
 - Show us the complete error message.
 - Let us know any contextual information that will help us replicate and accurately identify the problem.
-:::
+  :::
 
 ## Menus
 
