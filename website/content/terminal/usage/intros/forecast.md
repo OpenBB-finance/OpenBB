@@ -636,5 +636,5 @@ Regression model obtains MAPE: 1.66%
 ![Regression with All Past Covariates](https://user-images.githubusercontent.com/85772166/233541328-931117ff-9a84-437d-b8e8-b653d56335bc.png)
 
 :::note
-The examples here are over-simplified for demonstration a framework for creating and conducting experiments.  It is important to keep in mind that these are tools, they are not oracles, and that results may vary.  If you have any questions, requests for new feature engineering and model additions, or just want to be part of the conversation, please join us on [Discord](openbb.co/discord).  Happy hacking!
+The examples here are over-simplified as a means for demonstrating a framework to create and conduct experiments.  It is important to keep in mind that these are tools, they are not oracles, and that results may vary.  If you have any questions, requests for new feature engineering and model additions, or just want to be part of the conversation, please join us on [Discord](openbb.co/discord).  Happy hacking!
 :::
