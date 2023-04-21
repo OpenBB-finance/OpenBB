@@ -261,7 +261,7 @@ After choosing the file to overlay, select what to show and then click on `Submi
 
 ## Tables
 
-The OpenBB Terminal sports interactive tables which opens in a separate window. They provide methods for searching, sorting, filtering, and exporting directly within the table.  Like the charts, both light and dark themes are included.  This preference can be in the settings menu or directly on the table with the click of a mouse.  The default state is dark mode.
+The OpenBB Terminal sports interactive tables which opens in a separate window. They provide methods for searching, sorting, filtering, and exporting directly within the table.  Preferences and settings for the tables can be updated directly on the table.
 
 ### Sorting and Filtering
 
