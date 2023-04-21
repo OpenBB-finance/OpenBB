@@ -100,9 +100,7 @@ The command opens a browser window to a pre-populated form on the OpenBB website
 
 ![Submit Form](https://user-images.githubusercontent.com/85772166/233577448-3e426a88-d0cf-4338-8f4c-21b9fd01d8b2.png)
 
-:::note
-An answer to this question is: `search --country india --exchange-country india`
-:::
+**An answer to this question is**: `search --country india --exchange-country india`
 
 :::note
 Tips for submitting a support request:
@@ -114,7 +112,7 @@ Tips for submitting a support request:
 - Tell us what symbol (ticker) is, or was trying to be, loaded.
 - Show us the complete error message.
 - Let us know any contextual information that will help us replicate and accurately identify the problem.
-  :::
+:::
 
 ## Menus
 
