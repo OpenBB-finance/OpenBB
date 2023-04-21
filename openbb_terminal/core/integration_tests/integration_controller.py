@@ -280,10 +280,10 @@ def run_scripts(
         )
 
         if verbose:
-            terminal(file_cmds, test_mode=True)
+            terminal(file_cmds)
         else:
             with suppress_stdout():
-                terminal(file_cmds, test_mode=True)
+                terminal(file_cmds)
 
 
 def run_test(

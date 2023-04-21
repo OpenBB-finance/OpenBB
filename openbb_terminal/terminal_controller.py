@@ -35,7 +35,6 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import (
@@ -658,12 +657,10 @@ class TerminalController(BaseController):
 
 
 # pylint: disable=global-statement
-def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
+def terminal(jobs_cmds: Optional[List[str]] = None):
     """Terminal Menu."""
 
     current_user = get_current_user()
-
-    log_terminal(test_mode=test_mode)
 
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
@@ -913,7 +910,7 @@ def run_scripts(
         )
 
         if not test_mode or verbose:
-            terminal(file_cmds, test_mode=True)
+            terminal(file_cmds)
         else:
             with suppress_stdout():
                 print(f"To ensure: {output}")
@@ -926,9 +923,9 @@ def run_scripts(
                     with open(
                         whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
                     ) as output_file, contextlib.redirect_stdout(output_file):
-                        terminal(file_cmds, test_mode=True)
+                        terminal(file_cmds)
                 else:
-                    terminal(file_cmds, test_mode=True)
+                    terminal(file_cmds)
 
 
 def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:

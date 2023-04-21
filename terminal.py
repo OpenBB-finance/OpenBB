@@ -5,6 +5,7 @@ import openbb_terminal.config_terminal as cfg
 
 # pylint:disable=unused-import,import-outside-toplevel
 import openbb_terminal.core.session.current_system as syst  # noqa: F401
+from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.terminal_helper import (
     hide_splashscreen,
     is_auth_enabled,
@@ -28,6 +29,9 @@ def main():
         integration_controller.main()
     else:
         from openbb_terminal.core.session import session_controller
+
+        if sys.stdin.isatty():
+            log_terminal(test_mode=False)
 
         if (
             is_auth_enabled()
