@@ -301,6 +301,14 @@ def print_rich_table(
         current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
     )
 
+    show_index = not isinstance(df.index, pd.RangeIndex) and show_index
+
+    for col in df.columns:
+        try:
+            df[col] = pd.to_numeric(df[col])
+        except ValueError:
+            pass
+
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
         """Check if headers are valid and return them."""
         output = _headers
