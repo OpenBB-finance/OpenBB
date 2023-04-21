@@ -96,6 +96,18 @@ The command opens a browser window to a pre-populated form on the OpenBB website
 
 ![Submit Form](support3.png)
 
+:::note
+Tips for submitting a support request:
+
+- Tell us what version number is installed.
+- Tell us what operating system and version the machine has.
+- What is the installation type?  Installer, Source, PyPi, Docker, other?
+- Tell us the command and parameter combination causing the error.
+- Tell us what symbol (ticker) is, or was trying to be, loaded.
+- Show us the complete error message.
+- Let us know any contextual information that will help us replicate and accurately identify the problem.
+:::
+
 ## Menus
 
 ### The Main Menu
