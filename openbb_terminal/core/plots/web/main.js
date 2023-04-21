@@ -81,6 +81,7 @@ function OpenBBMain(
 
   // Sets the config with the custom buttons
   CONFIG = {
+    plotGlPixelRatio: 1,
     scrollZoom: true,
     responsive: true,
     displaylogo: false,
@@ -271,7 +272,21 @@ function OpenBBMain(
 
   // We set the plot config and plot the chart
   Plotly.setPlotConfig(CONFIG);
-  Plotly.newPlot(globals.CHART_DIV, graphs, { responsive: true });
+  Plotly.react(globals.CHART_DIV, graphs, { responsive: true });
+  graphs.layout.automargin = false;
+  graphs.layout.autoexpand = false;
+
+
+  let AXES = Object.keys(graphs.layout)
+    .filter((x) => x.startsWith("xaxis") || x.startsWith("yaxis"))
+
+  // We set all the axes automargin to false
+  if (AXES.length > 0) {
+    AXES.forEach((axis) => {
+      graphs.layout[axis].automargin = false;
+    });
+    Plotly.react(globals.CHART_DIV, graphs, { responsive: true });
+  }
 
   // Create global variables to for use later
   const modebar = document.getElementsByClassName("modebar-container")[0];
@@ -350,11 +365,11 @@ function OpenBBMain(
       active = false;
       globals.CHART_DIV.on(
         "plotly_relayout",
-        non_blocking(function (eventdata) {
+        non_blocking(async function (eventdata) {
           if (eventdata["xaxis.range[0]"] == undefined) {
             return;
           }
-          autoScaling(eventdata, globals.CHART_DIV);
+          await autoScaling(eventdata, globals.CHART_DIV);
         }, 100)
       );
     } else {
