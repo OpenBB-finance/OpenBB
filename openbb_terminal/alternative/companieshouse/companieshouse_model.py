@@ -97,7 +97,11 @@ def get_company_info(company_number: str) -> Company:
             address_lines.append(address.get("region"))
         if address.get("postal_code"):
             address_lines.append(address.get("postal_code"))
-        pretty_address = ",".join(address_lines) if len(address_lines) > 0 else "No address data found"
+        pretty_address = (
+            ",".join(address_lines)
+            if len(address_lines) > 0
+            else "No address data found"
+        )
 
         if last_accounts:
             pretty_accounts = "Period Start On : " + (
