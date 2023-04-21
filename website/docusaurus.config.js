@@ -32,10 +32,12 @@ const config = {
     [
       "posthog-docusaurus",
       {
-        apiKey: "phc_nbGO1txsyzBuJan48dFE2G5RMlEl5jZJ6EFMXPYmxzk",
-        appUrl: "https://eu.posthog.com", // optional
-        enableInDevelopment: false, // optional
-        // other options are passed to posthog-js init as is
+        apiKey: "phc_EqU3YjnV8OYmBlKanwWq222B8OHQksfmQBUtcVeteHR",
+        appUrl: "https://app.posthog.com",
+        enableInDevelopment: false,
+        autocapture: {
+          css_selector_allowlist: [".ph-capture"],
+        },
       },
     ],
     [
