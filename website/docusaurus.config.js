@@ -27,19 +27,7 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
-
   plugins: [
-    [
-      "posthog-docusaurus",
-      {
-        apiKey: "phc_EqU3YjnV8OYmBlKanwWq222B8OHQksfmQBUtcVeteHR",
-        appUrl: "https://app.posthog.com",
-        enableInDevelopment: false,
-        autocapture: {
-          css_selector_allowlist: [".ph-capture"],
-        },
-      },
-    ],
     [
       "@docusaurus/plugin-client-redirects",
       {
