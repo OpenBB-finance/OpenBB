@@ -16,7 +16,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const issue = context.payload.issue;
-          const templates = ["bug_report.md" "enhancement.md" "feature_request.md"];
+          const templates = ["bug_report.md", "enhancement.md", "feature_request.md"];
           let templateMatched = false;
           for (const template of templates) {
             const templateContent = await github.repos.getContents({
