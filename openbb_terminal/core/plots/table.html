@@ -19,7 +19,6 @@
             let user_id = data?.user_id || "";
             if (user_id != "" && user_id != "REPLACE_ME") {
               posthog.identify(user_id);
-              console.log(`Identified user: ${user_id}`);
             }
 
             posthog.capture("table", {
@@ -35,14 +34,11 @@
           posthog.onFeatureFlags(function () {
             if (!posthog.isFeatureEnabled("record-pywry")) {
               posthog.stopSessionRecording();
-              console.log("Stopped session recording");
             }
             if (!posthog.isFeatureEnabled("collect-logs-pywry")) {
               posthog.opt_out_capturing();
-              console.log("Opted out of capturing");
             } else if (posthog.has_opted_out_capturing()) {
               posthog.opt_in_capturing();
-              console.log("Opted in to capturing");
             }
           });
         },
