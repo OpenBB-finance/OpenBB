@@ -31,7 +31,6 @@
                 terminal_version: data.terminal_version,
               },
             });
-            console.log("Captured table");
           }
           posthog.onFeatureFlags(function () {
             if (!posthog.isFeatureEnabled("record-pywry")) {
