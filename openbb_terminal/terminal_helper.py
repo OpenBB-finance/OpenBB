@@ -10,18 +10,18 @@ import webbrowser
 
 # IMPORTATION STANDARD
 from contextlib import contextmanager
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import matplotlib.pyplot as plt
 
 # IMPORTATION THIRDPARTY
 from packaging import version
 
+# IMPORTATION INTERNAL
+import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.base_helpers import load_env_files
-
-# IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+from openbb_terminal.core.config.paths import HIST_FILE_PATH, SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.current_system import get_current_system
@@ -370,20 +370,37 @@ def reset(queue: Optional[List[str]] = None):
     debug = get_current_system().DEBUG_MODE
     load_env_files()
 
-    # we clear all openbb_terminal modules from sys.modules
     try:
+        # save the current user
+        user_profile = get_current_user().profile
+        session: Dict[str, str] = {
+            "access_token": user_profile.token,
+            "token_type": user_profile.token_type,
+            "uuid": user_profile.uuid,
+        }
+
+        # remove the hub routines
+        if not is_local():
+            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
+            if not get_current_user().profile.remember:
+                Local.remove(HIST_FILE_PATH)
+
+        # we clear all openbb_terminal modules from sys.modules
         for module in list(sys.modules.keys()):
             parts = module.split(".")
             if parts[0] == "openbb_terminal":
-                if len(parts) > 2 and parts[1] == "core" and parts[2] == "session":
-                    continue
                 del sys.modules[module]
 
         # pylint: disable=import-outside-toplevel
         # we run the terminal again
-        from openbb_terminal.terminal_controller import main
+        if is_local():
+            from openbb_terminal.terminal_controller import main
 
-        main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+            main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+        else:
+            from openbb_terminal.core.session import session_controller
+
+            session_controller.main(session)
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))
