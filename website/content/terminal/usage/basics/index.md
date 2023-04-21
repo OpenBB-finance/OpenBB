@@ -7,7 +7,7 @@ keywords: [basics, commands, functions, features, menus, introduction, openbb te
 
 The OpenBB Terminal is a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.  Commands are grouped into menus, with a menu or sub-menu being visually distinguishable from a function by the, `>`, on the far left of the screen.  The color of the text can be altered under the [`/settings` menu](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal).
 
-Navigating through the Terminal menus is similar to following down a path, or traversing folders from any operating system's command line prompt.  The `/home` screen is the main path where everything begins, and the menus are paths branched from the main.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.  
+Navigating through the Terminal menus is similar to following down a path, or traversing folders from any operating system's command line prompt.  The `/home` screen is the main path where everything begins, and the menus are paths branched from the main.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.
 
 :::note
 Absolute paths are also valid to-and-from any point.  From the [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options) menu, go directly to [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto).  By itself, `/`, returns to the home level.
@@ -25,7 +25,7 @@ The OpenBB Terminal is equipped with an auto completion engine that presents cho
 
 ### -h or --help
 
-A help dialogue for any function at the current location is printed to the screen by attaching `-h` to the command.  The information returned contains a short description of the function and all accepted arguments.  For an example, the `/news` function:
+A help dialogue for any function at the current location is printed to the screen by typing `-h` after the command.  The information returned contains a short description of the function and all accepted arguments.  For an example, the `/news` function:
 
 ```console
 news -h
@@ -51,7 +51,7 @@ options:
 For more information and examples, use 'about news' to access the related guide.
 ```
 
-Try:
+To search for news containing the term, "Federal Reserve", try this command:
 
 ```console
 /news --term Federal Reserve
@@ -177,7 +177,11 @@ Most functions provide a method for exporting the raw data as a CSV, JSON, or XL
 
 ## Charts
 
-The OpenBB charting library has themes for light and dark mode, the default state is dark.
+The OpenBB charting library has provides interative, customizable, charts.  Here's an example of weekly candles for AAPL.
+
+```console
+/stocks/load AAPL -w/candle
+```
 
 ![Apple Weekly Chart](https://user-images.githubusercontent.com/85772166/233247951-e011fe2c-23a6-4518-bd17-3f43a9c2011a.png)
 
