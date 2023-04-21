@@ -13,6 +13,21 @@ posthog.init("phc_EqU3YjnV8OYmBlKanwWq222B8OHQksfmQBUtcVeteHR", {
   autocapture: {
     css_selector_allowlist: [".ph-capture"],
   },
+  loaded: () => {
+    posthog.onFeatureFlags(function () {
+      if (!posthog.isFeatureEnabled("record-web")) {
+        posthog.stopSessionRecording();
+        console.log("Stopped session recording");
+      }
+      if (!posthog.isFeatureEnabled("collect-logs-web")) {
+        posthog.opt_out_capturing();
+        console.log("Opted out of capturing");
+      } else if (posthog.has_opted_out_capturing()) {
+        posthog.opt_in_capturing();
+        console.log("Opted in to capturing");
+      }
+    });
+  },
 });
 
 export default function Root({ children }) {
