@@ -49,7 +49,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.20.0.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.21.0.min.js"
 BACKEND = None
 
 
@@ -147,6 +147,16 @@ class Backend(PyWry):
             return str(icon_path)
         return ""
 
+    def get_json_update(self, theme: Optional[str] = None) -> dict:
+        """Get the json update for the backend."""
+        return dict(
+            theme=theme or get_current_user().preferences.CHART_STYLE,
+            user_id=get_current_system().LOGGING_APP_ID,
+            pywry_version=self.__version__,
+            terminal_version=get_current_system().VERSION,
+            python_version=get_current_system().PYTHON_VERSION,
+        )
+
     def send_figure(
         self, fig: go.Figure, export_image: Optional[Union[Path, str]] = ""
     ):
@@ -170,7 +180,9 @@ class Backend(PyWry):
 
         json_data = json.loads(fig.to_json())
 
-        json_data.update({"theme": get_current_user().preferences.CHART_STYLE})
+        json_data.update(
+            self.get_json_update(),
+        )
 
         self.outgoing.append(
             json.dumps(
@@ -267,8 +279,8 @@ class Backend(PyWry):
             dict(
                 title=title,
                 source=source or "",
-                theme=theme or "dark",
-                command_location=command_location or "",
+                command_location=command_location,
+                **self.get_json_update(theme or "dark"),
             )
         )
 

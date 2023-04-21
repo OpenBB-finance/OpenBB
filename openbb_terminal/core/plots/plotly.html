@@ -18,6 +18,36 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script>
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+      posthog.init("phc_vhssDAMod5qIplznQ75Kdgz4aB1qPFmeVmfEOZ4hkRw", {
+        api_host: "https://app.posthog.com",
+        autocapture: {
+          css_selector_allowlist: [".ph-capture"],
+        },
+        capture_pageview: false,
+        loaded: function (posthog) {
+          let user_id = window.plotly_figure?.user_id || "";
+          if (user_id != "" && user_id != "REPLACE_ME") {
+            posthog.identify(user_id);
+            console.log(`Identified user: ${user_id}`);
+          }
+          posthog.onFeatureFlags(function () {
+            if (!posthog.isFeatureEnabled("record-pywry")) {
+              posthog.stopSessionRecording();
+              console.log("Stopped session recording");
+            }
+            if (!posthog.isFeatureEnabled("collect-logs-pywry")) {
+              posthog.opt_out_capturing();
+              console.log("Opted out of capturing");
+            } else if (posthog.has_opted_out_capturing()) {
+              posthog.opt_in_capturing();
+              console.log("Opted in to capturing");
+            }
+          });
+        },
+      });
+    </script>
   </head>
 
   <body>
@@ -59,6 +89,7 @@
         width: 100%;
         bottom: 0;
         max-height: 60px;
+        min-height: 60px;
         font-size: 0px;
       "
     >
@@ -143,13 +174,17 @@
 
           <div style="float: right; margin-top: 20px">
             <button
-              class="_btn-tertiary"
+              class="_btn-tertiary ph-capture"
               id="csv_cancel"
               onclick="closePopup()"
             >
               Cancel
             </button>
-            <button class="_btn" id="csv_submit" onclick="on_submit('csv')">
+            <button
+              class="_btn ph-capture"
+              id="csv_submit"
+              onclick="on_submit('csv')"
+            >
               Submit
             </button>
           </div>
@@ -202,6 +237,7 @@
         globals.cmd_src = "";
         if (typeof OpenBBMain != "undefined" && window.plotly_figure) {
           clearInterval(interval);
+
           const date = new Date();
           const formattedDate = new Intl.DateTimeFormat("en-GB", {
             dateStyle: "full",
@@ -244,6 +280,18 @@
               }
             });
           }
+          if (globals.cmd_src != "") {
+            posthog.capture("chart", {
+              INFO: {
+                command: globals.cmd_src,
+                title: window.plotly_figure.layout.title.text,
+                date: formattedDate,
+                python_version: window.plotly_figure.python_version,
+                pywry_version: window.plotly_figure.pywry_version,
+                terminal_version: window.plotly_figure.terminal_version,
+              },
+            });
+          }
 
           document
             .querySelector('meta[name="color-scheme"]')
@@ -263,7 +311,8 @@
 
           let style = "font-size: 12px; font-weight: 400; color: gray;";
           document.getElementById("date").innerHTML =
-            formattedDate + `<br /><span style="${style}">${globals.cmd_src}</span>`;
+            formattedDate +
+            `<br /><span style="${style}">${globals.cmd_src}</span>`;
           document.getElementById("title").innerHTML = title;
 
           CHART_DIV = document.getElementById("openbb_chart");
