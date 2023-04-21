@@ -1640,7 +1640,7 @@ def handle_error_code(requests_obj, error_code_map):
 
 def prefill_form(ticket_type, menu, path, command, message):
     """Pre-fill Google Form and open it in the browser."""
-    form_url = "https://my.openbb.dev/app/terminal/support?"
+    form_url = "https://my.openbb.co/app/terminal/support?"
 
     params = {
         "type": ticket_type,

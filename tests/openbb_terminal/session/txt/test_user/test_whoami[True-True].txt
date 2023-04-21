@@ -1,3 +1,3 @@
 [info]You are currently logged as a guest.
-[info]Register: [/info][cmds]https://my.openbb.dev/register
+[info]Register: [/info][cmds]https://my.openbb.co/register
 [/cmds]
