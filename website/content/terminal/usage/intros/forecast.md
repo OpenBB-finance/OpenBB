@@ -14,9 +14,9 @@ The Forecast menu can be called from any location with the command:
  /forecast
 ```
 
-![The Forecast Menu](forecast1.png)
+![The Forecast Menu](https://user-images.githubusercontent.com/85772166/233540050-071524c6-f374-4241-aa31-cf33b7685e22.png)
 
-There are also methods for entering the menu with a loaded ticker symbol, from either of the [`/crypto` menu](https://docs.openbb.co/terminal/usage/intros/crypto) and the [`/stocks` menu](https://docs.openbb.co/terminal/usage/intros/stocks)
+There are also methods for entering the menu with a loaded ticker symbol from either of the [`/crypto` menu](https://docs.openbb.co/terminal/usage/intros/crypto) and [`/stocks` menu](https://docs.openbb.co/terminal/usage/intros/stocks)
 
 The menu is divided into sections for:
 
@@ -35,7 +35,7 @@ and the functions within these groups are described in the following sections.
 
 If the Forecast menu has not been entered directly through the [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto) or [`/stocks`](https://docs.openbb.co/terminal/usage/intros/stocks) menus, a dataset must be loaded before commencing any work.  Use the `load` command to open one from a CSV file placed in the OpenBBUserData folder.  The paths where the auto completion engine is looking for files is printed on the screen directly above the `load` command, `Looking for data in:`
 
-![Loading Data](forecast_load1.png)
+![Loading Data](https://user-images.githubusercontent.com/85772166/233540104-2aad880e-c077-448a-9aff-9d2f18baf19e.png)
 
 Use the following syntax to load a file and name a dataset, substituting `vix_daily` with the name of the file.
 
@@ -48,7 +48,7 @@ To refresh the screen, enter: `?`
 
 The dataset will be listed under the `load` command and display the column names within it.
 
-![Loading From a File](forecast_load2.png)
+![Loading From a File](https://user-images.githubusercontent.com/85772166/233540197-0222d0a6-6f08-42e3-9072-a248eeec6f53.png)
 
 Repeat the process until all desired datasets have been loaded.
 
@@ -62,7 +62,7 @@ Use the `load` command, according to the nuances of each menu.  For example's sa
 
 Combine these two methods an unlimited number of times for building a more complex model and forecast.
 
-![Load From Stocks Menu](forecast_load3.png)
+![Load From Stocks Menu](https://user-images.githubusercontent.com/85772166/233540295-a7711fd8-992a-4561-b202-1b02a9a4aded.png)
 
 With some data loaded, the first series of tools are for inspecting, managing, and exporting the sets.
 
@@ -109,13 +109,13 @@ delete --delete SPY.dividends
 
 After performing operations, examine the results using the `show` command.
 
-![Show](forecast_show1.png)
+![Show](https://user-images.githubusercontent.com/85772166/233540348-e34d9342-f48e-48c1-ac0b-bef3261d8300.png)
 
 ```console
 show --name SPY
 ```
 
-![Show Data](forecast_show2.png)
+![Show Data](https://user-images.githubusercontent.com/85772166/233540386-eca474d6-596b-431e-9bf0-b7154257c877.png)
 
 #### Export
 
@@ -197,7 +197,7 @@ rename -d SPY --oldcol true_range --newcol spy_atr
 
 ### Time Series Forecasting
 
-This group of features applies models to a target dataset and its columns.  There are a wide selection to choose from.  Please note that this guide is meant explain how to use the functions and does not attempt to explain the models themselves.  This menu is an implementation of the [Unit8 Darts Time Series for Python](https://unit8.com/resources/darts-time-series-made-easy-in-python/)
+This group of features applies models to a target dataset and its columns.  There are a wide selection to choose from.  Please note that this guide is meant explain how to use the functions and does not attempt to explain the models themselves.  This menu is an implementation of the [Unit8 Darts Time Series for Python](https://unit8.com/resources/darts-time-series-made-easy-in-python/) library.
 
 |Function |Description |Accepts Past Covariates? |
 |:--------|:------------|:-----------------------|
@@ -230,7 +230,7 @@ The models featuring past covariates will accept an unlimited number of columns,
 rwd -d SPY
 ```
 
-![Random Walk Drift](forecast_timeseries1.png)
+![Random Walk Drift](https://user-images.githubusercontent.com/85772166/233540491-34ba7cf0-dade-42d8-a165-5709ccf1e9fa.png)
 
 Each model should be reviewed carefully to understand what the adjustable parameters are, and how they should be defined.
 
@@ -242,7 +242,7 @@ Each model should be reviewed carefully to understand what the adjustable parame
 anom -d SPY
 ```
 
-![Quantile Anomaly Detection](forecast_anom.png)
+![Quantile Anomaly Detection](https://user-images.githubusercontent.com/85772166/233540548-1899cb39-35ef-4ea4-ac3c-1d1757f93ea8.png)
 
 ### Miscellaneous AI Tools
 
@@ -290,7 +290,7 @@ We use [MAPE](https://en.wikipedia.org/wiki/Mean_absolute_percentage_error) for 
 plot SPY.close
 ```
 
-![Plot](forecast_workflow1.png)
+![Plot](https://user-images.githubusercontent.com/85772166/233540628-cc0b58e6-6259-4893-9dfe-4fb73217a181.png)
 
 ### desc
 
@@ -298,7 +298,7 @@ plot SPY.close
 desc SPY
 ```
 
-![Describe](forecast_workflow2.png)
+![Describe](https://user-images.githubusercontent.com/85772166/233540670-3d4df645-8fff-41a6-a4f7-0a1005dbdb11.png)
 
 ### expo
 
@@ -308,7 +308,7 @@ Let's use a simple **Probabilistic Exponential Smoothing Model** to predict the 
 expo SPY
 ```
 
-![Probalistic Exponential Smoothing Model](forecast_workflow3.png)
+![Probalistic Exponential Smoothing Model](https://user-images.githubusercontent.com/85772166/233540707-1d87add0-b398-4083-9185-978e8e0bfe8c.png)
 
 ### rnn
 
@@ -324,7 +324,7 @@ Epoch 50: 100%|█████████████████████�
 RNN model obtains MAPE: 3.13%
 ```
 
-![RNN](forecast_workflow4.png)
+![RNN](https://user-images.githubusercontent.com/85772166/233540770-28abd8d5-c301-4d26-bd88-77287a6d71d7.png)
 
 This result expresses a different view from the Probablistic Exponential Smoothing Model.
 
@@ -397,7 +397,7 @@ Epoch 85: 100%|█████████████████████�
 RNN model obtains MAPE: 2.77% 
 ```
 
-![RNN with GRU](forecast_workflow5.png)
+![RNN with GRU](https://user-images.githubusercontent.com/85772166/233540843-2167a3ad-0088-4d84-a298-7b8b3b3655ff.png)
 
 We improved the accuracy score, great work!
 
@@ -464,7 +464,7 @@ Restart the Terminal to ensure that the routine file is found by the `/exe` comm
 exe --file forecast_demo.openbb
 ```
 
-![Forecast Routine Demo](forecastworkflow6.png)
+![Forecast Routine Demo](https://user-images.githubusercontent.com/85772166/233540963-b62b6f6b-a595-4cee-8ce9-8876024b3da8.png)
 
 ### brnn
 
@@ -482,7 +482,7 @@ Epoch 196: 100%|█████████████████████�
 Block RNN model obtains MAPE: 3.25% 
 ```
 
-![BRNN Without Covariates](forecast_workflow7.png)
+![BRNN Without Covariates](https://user-images.githubusercontent.com/85772166/233541019-7bc0545e-f2f1-4a6d-84a2-7e7ac1de9043.png)
 
 With covariates:
 
@@ -502,7 +502,7 @@ Epoch 86: 100%|█████████████████████�
 Block RNN model obtains MAPE: 4.69% 
 ```
 
-![BRNN With Past Covariates](forecast_workflow8.png)
+![BRNN With Past Covariates](https://user-images.githubusercontent.com/85772166/233541054-552243aa-0509-47fd-8ac8-42c0b433095a.png)
 
 It is evident here that adding in the external variable of `volume` negatively affected the accuracy.
 
@@ -519,7 +519,7 @@ Epoch 79: 100%|█████████████████████�
 Block RNN model obtains MAPE: 4.60%
 ```
 
-![BRNN With EMA200](forecast_workflow9.png)
+![BRNN With EMA200](https://user-images.githubusercontent.com/85772166/233541105-0f8dc802-e569-4ce2-b16a-0610e1cb99b7.png)
 
 This isn't an improvement.  It's possible that there is too much noise in the data, so let's try shortening the length of time being used to train.
 
@@ -532,7 +532,7 @@ Epoch 87: 100%|█████████████████████�
 Block RNN model obtains MAPE: 3.38% 
 ```
 
-![Parameter Adjustments](forecast_workflow10.png)
+![Parameter Adjustments](https://user-images.githubusercontent.com/85772166/233541148-707d2167-46ee-47b1-b6dc-ed56b239f32f.png)
 
 Removing the 2020 volatility from the window of observation made a massive improvement to the forecast.  Now let's see add all the columns in the dataset as past covariates.
 
@@ -552,7 +552,7 @@ Epoch 39: 100%|█████████████████████�
 Block RNN model obtains MAPE: 3.57% 
 ```
 
-![BRNN with All Past Covariates](forecast_workflow11.png)
+![BRNN with All Past Covariates](https://user-images.githubusercontent.com/85772166/233541177-7ddd64be-ec79-4aaf-b30f-41607a7b7f68.png)
 
 Adding all of the columns that were created doesn't improve the MAPE score, but it does narrow the range of forecasted prices.  Playing around like this shows how small changes can have a large impact on a forecast.  It is important to test many variables and parameters without getting too caught up overfitting any particular model.  Validate a thesis before dedicating a large amount of time into it.
 
@@ -576,7 +576,7 @@ Predicting Regression for 5 days
 Regression model obtains MAPE: 2.68%
 ```
 
-![regr](forecast_workflow12.png)
+![regr](https://user-images.githubusercontent.com/85772166/233541224-c2cbbaba-0b33-4d79-930a-dd2629d6ed94.png)
 
 Now that we know how to use covariates, and are starting to understand their effects, let's examine the impact of MSFT and AAPL closing prices on the regression forecast for SPY.  We will discard the previous work and start fresh.
 
@@ -615,7 +615,7 @@ Predicting Regression for 5 days
 Regression model obtains MAPE: 1.77%
 ```
 
-![Regression with Past Covariates](forecast_workflow13.png)
+![Regression with Past Covariates](https://user-images.githubusercontent.com/85772166/233541267-42a541e2-ff5f-429e-a9fd-b9d2c76060ce.png)
 
 Adding the rest of the columns as past covariates improves the MAPE score slightly and starts to take a more directional view.
 
@@ -633,7 +633,7 @@ Predicting Regression for 5 days
 Regression model obtains MAPE: 1.66% 
 ```
 
-![Regression with All Past Covariates](forecast_workflow14.png)
+![Regression with All Past Covariates](https://user-images.githubusercontent.com/85772166/233541328-931117ff-9a84-437d-b8e8-b653d56335bc.png)
 
 :::note
 The examples here are over-simplified for demonstration a framework for creating and conducting experiments.  It is important to keep in mind that these are tools, they are not oracles, and that results may vary.  If you have any questions, requests for new feature engineering and model additions, or just want to be part of the conversation, please join us on [Discord](openbb.co/discord).  Happy hacking!
