@@ -216,11 +216,11 @@ Annotate a chart by clicking on the `Add Text` button, or with the keyboard, `ct
 
 Enter some text, make any adjustments to the options, then `submit`.  Place the crosshairs over the desired data point and click to place the text.
 
-![Place Text](https://user-images.githubusercontent.com/85772166/233248107-758bc0b2-ac92-451e-aabb-16eb111c7f88.png)
+![Place Text](https://user-images.githubusercontent.com/85772166/233728645-74734241-4da2-4cff-af17-b68a62e95113.png)
 
 After placement, the text can be updated or deleted by clicking on it again.
 
-![Delete Annotation](https://user-images.githubusercontent.com/85772166/233248228-6226ab12-46dd-443b-a7c4-145fc781e71d.png)
+![Delete Annotation](https://user-images.githubusercontent.com/85772166/233728428-55d2a8e5-a68a-4cd1-9dbf-4c1cd697187e.png)
 
 The title of the chart is edited by clicking the button, `Change Titles`, near the middle center of the toolbar, immediately to the right of the `Add Text` button.
 
@@ -237,7 +237,7 @@ The fourth group of icons on the toolbar are for drawing lines and shapes.
 
 To draw on the chart, select one of the four drawing buttons and drag the mouse over the desired area.  Click on any existing shape to modify it by dragging with the mouse and editing the color, or remove it by clicking the toolbar button, `Erase Active Shape`.  The edit colors button will pop up as a floating icon, and clicking on that will display the color palette.
 
-![Edit Colors](https://user-images.githubusercontent.com/85772166/233248349-d7cd2e2e-7e22-4efb-acdb-5f7a85bf2932.png)
+![Edit Colors](https://user-images.githubusercontent.com/85772166/233729318-8af947fa-ce2a-43e2-85ab-657e583ac8b1.png)
 
 ### Export Tools
 
