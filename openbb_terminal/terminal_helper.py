@@ -379,7 +379,7 @@ def reset(queue: Optional[List[str]] = None):
             "uuid": user_profile.uuid,
         }
 
-        # remove the routines
+        # remove the hub routines
         if not is_local():
             Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
             if not get_current_user().profile.remember:
