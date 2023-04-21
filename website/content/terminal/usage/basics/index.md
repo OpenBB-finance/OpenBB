@@ -112,7 +112,7 @@ Tips for submitting a support request:
 - Tell us what symbol (ticker) is, or was trying to be, loaded.
 - Show us the complete error message.
 - Let us know any contextual information that will help us replicate and accurately identify the problem.
-:::
+  :::
 
 ## Menus
 
@@ -181,7 +181,7 @@ Most functions provide a method for exporting the raw data as a CSV, JSON, or XL
 
 ## Charts
 
-The OpenBB charting library has provides interative, customizable, charts.  Here's an example of weekly candles for AAPL.
+The OpenBB charting library has provides interactive, customizable, charts.  Here's an example of weekly candles for AAPL.
 
 ```console
 /stocks/load AAPL -w/candle
