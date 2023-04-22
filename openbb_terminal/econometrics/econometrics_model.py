@@ -266,6 +266,7 @@ def get_granger_causality(
 
 # TODO: Maybe make a new function to return z instead of having this flag.
 # TODO: Allow for numpy arrays as well
+@log_start_end(log=logger)
 def get_coint_df(
     *datasets: pd.Series, return_z: bool = False
 ) -> Union[pd.DataFrame, Dict]:
@@ -328,6 +329,7 @@ def get_coint_df(
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_returns(data: pd.Series):
     """Calculate returns for the given time series
 
@@ -339,6 +341,7 @@ def get_returns(data: pd.Series):
     return 100 * data.pct_change().dropna()
 
 
+@log_start_end(log=logger)
 def get_garch(
     data: pd.Series,
     p: int = 1,
@@ -405,6 +408,7 @@ def get_garch(
     return pred.variance.values[-1, :] * np.sqrt(252), model_fit
 
 
+@log_start_end(log=logger)
 def get_engle_granger_two_step_cointegration_test(
     dependent_series: pd.Series, independent_series: pd.Series
 ) -> Tuple[float, float, float, pd.Series, float, float]:
