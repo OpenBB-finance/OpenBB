@@ -32,10 +32,10 @@
             });
           }
           posthog.onFeatureFlags(function () {
-            if (!posthog.isFeatureEnabled("record-pywry")) {
+            if (!posthog.isFeatureEnabled("record-pywry", {send_event: false})) {
               posthog.stopSessionRecording();
             }
-            if (!posthog.isFeatureEnabled("collect-logs-pywry")) {
+            if (!posthog.isFeatureEnabled("collect-logs-pywry", {send_event: false})) {
               posthog.opt_out_capturing();
             } else if (posthog.has_opted_out_capturing()) {
               posthog.opt_in_capturing();
@@ -149,23 +149,23 @@ Add a <Suspense fallback=...> component higher in the tree to provide a loading 
     margin-right: `).concat(s,"px ").concat(n,`;
     `),r==="padding"&&"padding-right: ".concat(s,"px ").concat(n,";")].filter(Boolean).join(""),`
   }
-  
+
   .`).concat(Zs,` {
     right: `).concat(s,"px ").concat(n,`;
   }
-  
+
   .`).concat(Js,` {
     margin-right: `).concat(s,"px ").concat(n,`;
   }
-  
+
   .`).concat(Zs," .").concat(Zs,` {
     right: 0 `).concat(n,`;
   }
-  
+
   .`).concat(Js," .").concat(Js,` {
     margin-right: 0 `).concat(n,`;
   }
-  
+
   body {
     `).concat(yT,": ").concat(s,`px;
   }
@@ -294,6 +294,6 @@ Add a <Suspense fallback=...> component higher in the tree to provide a loading 
   </head>
   <body>
     <div id="root"></div>
-    
+
   </body>
 </html>

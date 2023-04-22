@@ -32,10 +32,10 @@
             posthog.identify(user_id);
           }
           posthog.onFeatureFlags(function () {
-            if (!posthog.isFeatureEnabled("record-pywry")) {
+            if (!posthog.isFeatureEnabled("record-pywry", {send_event: false})) {
               posthog.stopSessionRecording();
             }
-            if (!posthog.isFeatureEnabled("collect-logs-pywry")) {
+            if (!posthog.isFeatureEnabled("collect-logs-pywry", {send_event: false})) {
               posthog.opt_out_capturing();
             } else if (posthog.has_opted_out_capturing()) {
               posthog.opt_in_capturing();
