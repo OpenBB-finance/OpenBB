@@ -82,11 +82,21 @@ def display_news(
             f"[red]Relevant articles for {term} - {dt.datetime.now().strftime('%Y-%m-%d')}\n{top_headlines}[/red]"
         )
     else:
-        console.print(top_headlines)
+        split = top_headlines.split("\n")
+        header = split[0]
+        console.print(f"[purple]{header}[/purple]")
+        for idx, row in enumerate(split[1:]):
+            if len(row) > 0:
+                inner_split = row.split(" - ")
+                risk = inner_split[0]
+                description = " - ".join(inner_split[1:])
+                console.print(f"[green]{risk}[/green] (\x1B[3m{description}\x1B[0m)")
+            if idx < len(split[1:]) - 1:
+                console.print()
     console.print("------------------------")
     articles = ultima_newsmonitor_model.get_news(term, sort)
     articles = articles.head(limit).sort_values(by="relevancyScore", ascending=False)
-    # console.print(f"News Powered by [purple]Ultima Insights[/purple].\nFor more info: https://www.ultimainsights.ai\n")
+    console.print(f"[purple]News for {company_name}:[/purple]")
     for _, row in articles.iterrows():
         console.print(
             f"> {row['articlePublishedDate']} - {row['articleHeadline']}\n"
