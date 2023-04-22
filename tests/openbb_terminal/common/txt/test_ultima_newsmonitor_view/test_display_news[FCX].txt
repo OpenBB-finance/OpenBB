@@ -1,27 +1,32 @@
 
-> 2023-04-06 11:19:00 - ... Charlotte's Web Rises on New JV With British American Tobacco Subsidiary ... after it announced that it signed a definitive agreement with U.S.-based...
-[purple]Relevancy score: 4.41/5 Stars[/purple]
-[green]Competition Risk[/green] ([3mFreeport-McMoRan Inc. is exposed to competition risks from other mining companies and industries, as well as commodity price volatility, water supply risks, and geopolitical, economic, and social risks associated with its international operations. These risks can affect the company's profitability, such as delays in the transport of supplies, products and people at the Cerro Verde mine in Peru, or the inability to acquire additional back-up water supplies in Indonesia.[0m)
-Read more: https://www.morningstar.com/news/dow-jones/202304066953/toronto-stocks-flat-charlottes-web-rises-on-new-jv-with-british-american-tobacco-subsidiary
+[purple]Relevant articles for FCX - 2023-04-22:[/purple]
 
-> 2023-04-07 00:00:00 - Arizona Mining Industry News Monitoring Service from EIN News; ... Capstone Copper and Orion Announce Closing of C$328 Million Secondary Bought Deal ...
-[purple]Relevancy score: 4.33/5 Stars[/purple]
+[green]Environmental Risk[/green] ([3mRio Tinto reported a 4% year-on-year decrease in diamond production during Q1 2023, falling to 954,000 carats, due to temporary restrictions in accessing open pit material at the Diavik mine. The company plans to invest $40 million in underground mining to boost production, expecting an additional 1.4 million carats of rough diamonds as a result - [GJEPC](https://gjepc.org/solitaire/rio-tintos-q1-2023-diamond-production-drops-4-yoy-and-28-qoq-to-954000-carats/)[0m)
+------------------------
+[purple]News for Freeport-McMoRan:[/purple]
+> 2023-04-21 23:29:44 - SpaceX's giant Starship rocket left the launch pad for the first time on ... Rio Tinto has lowered its outlook for copper production for the year due to...
+[purple]Relevancy score: 4.61/5 Stars[/purple]
 [green]Competition Risk[/green] ([3mFreeport-McMoRan Inc. is exposed to competition risks from other mining companies and industries, as well as commodity price volatility, water supply risks, and geopolitical, economic, and social risks associated with its international operations. These risks can affect the company's profitability, such as delays in the transport of supplies, products and people at the Cerro Verde mine in Peru, or the inability to acquire additional back-up water supplies in Indonesia.[0m)
-Read more: https://mining.einnews.com/state/arizona
+Read more: https://www.ft.com/content/28e2305d-0f69-4316-9c16-1b3826fade1d
 
-> 2023-04-06 10:43:43 - The mining M&A space has been rustled recently with the news that Glencore extended an unsolicited proposal to acquire Teck Resources Limited (NYSE: TECK)...
-[purple]Relevancy score: 4.17/5 Stars[/purple]
-[green]Competition Risk[/green] ([3mFreeport-McMoRan Inc. is exposed to competition risks from other mining companies and industries, as well as commodity price volatility, water supply risks, and geopolitical, economic, and social risks associated with its international operations. These risks can affect the company's profitability, such as delays in the transport of supplies, products and people at the Cerro Verde mine in Peru, or the inability to acquire additional back-up water supplies in Indonesia.[0m)
-Read more: https://thedeepdive.ca/after-teck-rejected-its-acquisition-bid-should-glencore-sell-itself-instead/
-
-> 2023-04-07 00:00:00 - The Glencore bid also comes two months after Teck launched a proposal to carve up its business to boost value, spinning out coal operations from the firm's...
-[purple]Relevancy score: 3.72/5 Stars[/purple]
-[green]Competition Risk[/green] ([3mFreeport-McMoRan Inc. is exposed to competition risks from other mining companies and industries, as well as commodity price volatility, water supply risks, and geopolitical, economic, and social risks associated with its international operations. These risks can affect the company's profitability, such as delays in the transport of supplies, products and people at the Cerro Verde mine in Peru, or the inability to acquire additional back-up water supplies in Indonesia.[0m)
-Read more: https://kalkinemedia.com/uk/business-news/finance/canadas-teck-rejects-ps18bn-takeover-bid-by-london-listed-glencore
-
-> 2023-04-06 16:22:14 - Sherritt International's Ambatovy nickel-cobalt mine in Madagascar. ... Sherritt International's 40%-owned Ambatovy nickel project in Madagascar.
-[purple]Relevancy score: 3.66/5 Stars[/purple]
+> 2023-04-21 18:32:07 - 9 hours agoThe company plans to spend only $3.6 billion on capital expenditures this year when excluding the forced $1.6 billion spent on the Indonesia smelter project.
+[purple]Relevancy score: 4.48/5 Stars[/purple]
 [green]Political Risk[/green] ([3mFreeport-McMoRan is exposed to political risk due to its operations in many countries around the world. This risk includes the possibility of expropriation, nationalization, or other government interference, such as changing laws or regulations, taking control of assets or operations, imposing tariffs or taxes, changing currency exchange rates, or imposing sanctions or embargoes. The company also faces significant environmental, safety, and engineering challenges and risks associated with the management of its waste rock and tailings, as well as the risk of violence, civil and religious strife, and activism.[0m)
-Read more: https://www.northernminer.com/company/025059131/
+Read more: https://seekingalpha.com/article/4595641-freeport-mcmoran-next-leg-up
+
+> 2023-04-21 16:32:28 - According to CEO Richard Adkerson, the current price of copper is unsustainable, and he believes that prices will need to rise to incentivize the supplies. This...
+[purple]Relevancy score: 3.87/5 Stars[/purple]
+[green]Commodity Price Risk[/green] ([3mFreeport-McMoRan is exposed to commodity price risk due to a variety of macroeconomic factors, such as global supply and demand and inventory levels, global economic and political conditions, international regulatory, trade and/or tax policies, commodities investment activity and speculation, interest rates, expectations regarding future inflation rates, the strength of the U.S. dollar compared to foreign currencies, the price and availability of substitute products, and changes in technology. Additionally, supply chain disruptions, labor shortages, wage pressures, rising inflation, fuel and energy costs, natural disasters, public health crises, geopolitical conflicts, and foreign currency exchange rate fluctuations can all contribute to commodity price volatility.[0m)
+Read more: https://beststocks.com/freeportmcmorans-ceo-predicts-unsustainable-c/
+
+> 2023-04-21 22:32:33 - ... the outlook for shares of Freeport-McMoRan Inc. (NYSE:FCX) was improving. ... This and pressure on the core copper business meant that shares fell to...
+[purple]Relevancy score: 3.6/5 Stars[/purple]
+[green]Political Risk[/green] ([3mFreeport-McMoRan is exposed to political risk due to its operations in many countries around the world. This risk includes the possibility of expropriation, nationalization, or other government interference, such as changing laws or regulations, taking control of assets or operations, imposing tariffs or taxes, changing currency exchange rates, or imposing sanctions or embargoes. The company also faces significant environmental, safety, and engineering challenges and risks associated with the management of its waste rock and tailings, as well as the risk of violence, civil and religious strife, and activism.[0m)
+Read more: https://seekingalpha.com/article/4595676-freeport-mcmoran-looking-fair-here-after-q1-earnings?source=content_type%3Areact%7Csection_asset%3Arelated-analysis%7Csection%3Aright_rail%7Cfirst_level_url%3Aarticle%7Cline%3A1%7Cpos%3Aundefined
+
+> 2023-04-21 22:31:58 - ... as prices for everything from oil to gold to copper hit record highs ... Shortages turn to gluts and commodities enter the bearish part of the cycle.
+[purple]Relevancy score: 3.56/5 Stars[/purple]
+[green]Commodity Price Risk[/green] ([3mFreeport-McMoRan is exposed to commodity price risk due to a variety of macroeconomic factors, such as global supply and demand and inventory levels, global economic and political conditions, international regulatory, trade and/or tax policies, commodities investment activity and speculation, interest rates, expectations regarding future inflation rates, the strength of the U.S. dollar compared to foreign currencies, the price and availability of substitute products, and changes in technology. Additionally, supply chain disruptions, labor shortages, wage pressures, rising inflation, fuel and energy costs, natural disasters, public health crises, geopolitical conflicts, and foreign currency exchange rate fluctuations can all contribute to commodity price volatility.[0m)
+Read more: https://finance.yahoo.com/news/profiting-commodities-supercycle-222628412.html
 
 
