@@ -17,7 +17,7 @@ The commands are divided by categories that define their purpose for general-use
 - Trend - Directional strength
 - Volatility - Width of the price bands
 - Volume - Singling out volume
-- Custom - Fibonacci retracements
+- Custom - Multiple indicators and Fibonacci retracements
 
 All commands in this menu will rely on the interval and window chosen when loading an asset for analysis.  Refer to the directory tree on the left side of the page, [here](https://docs.openbb.co/terminal/reference), for information on individual commands. To get a better understanding of what these features are, and the formulas behind them, a number of sources should be consulted; but, a good starting point is [Investopedia](https://www.investopedia.com/terms/t/technicalanalysis.asp).  The menu employs the [Pandas-TA Library](https://github.com/twopirllc/pandas-ta).  Submit a [feature request](https://openbb.co/request-a-feature) to let us know which indicators we should add next!
 
@@ -109,7 +109,7 @@ For moving averages, there are two parameters: the window length and offset.  Le
 zlma -l 50,200
 ```
 
-![ZLMA 50,200](ta1.png)
+![ZLMA 50,200](https://user-images.githubusercontent.com/85772166/233763992-157eb965-e5ca-48d6-b621-1e6596d4f784.png)
 
 Drawing a chart with the Simple Moving Average shows the overlaps occur at different points in time.
 
@@ -117,7 +117,7 @@ Drawing a chart with the Simple Moving Average shows the overlaps occur at diffe
 sma -l 50,200
 ```
 
-![SMA 50,200](ta2.png)
+![SMA 50,200](https://user-images.githubusercontent.com/85772166/233764006-45f6e6db-aa8c-4404-8997-68f96fbbe29e.png)
 
 #### Multiple MA Types
 
@@ -131,7 +131,7 @@ multi -i sma[200],zlma[200]
 Make note of the difference in parameters syntax.  With the `multi` function, parameters for each indicator must be surrounded with square brackets [ ].
 :::
 
-![SMA/ZLMA Overlay](ta3.png)
+![SMA/ZLMA Overlay](https://user-images.githubusercontent.com/85772166/233764023-26991e03-6a82-47b6-9a6b-b2013dbdfffc.png)
 
 Now let's see both 200 and 50-day moving averages.
 
@@ -139,7 +139,7 @@ Now let's see both 200 and 50-day moving averages.
 multi -i sma[50,200],zlma[50,200]
 ```
 
-![SMA/ZLMA Overlay](ta4.png)
+![SMA/ZLMA Overlay](https://user-images.githubusercontent.com/85772166/233764031-fd0375e9-f13f-43dd-b304-795168a0424b.png)
 
 The last crossover point provides some confirmation of the current trend.  Intraday data might reveal more.  Let's see the one-hour MAs!
 
@@ -147,7 +147,7 @@ The last crossover point provides some confirmation of the current trend.  Intra
 load qqq -i 60/multi -i sma[50,200],zlma[50,200]
 ```
 
-![SMA/ZLMA Hourly Overlay](ta5.png)
+![SMA/ZLMA Hourly Overlay](https://user-images.githubusercontent.com/85772166/233764046-879252f8-3449-4f61-9098-6c538e130e47.png)
 
 The ZLMA 50 has crossed over the SMA50, potentially signalling that the trend is near its exhaustion point.  Let's consult some other indicators using the hourly data now loaded.
 
@@ -159,7 +159,7 @@ Load multiple indicators on the same chart with the `multi` command.
 load qqq -i 60 -s 2023-01-01/multi rsi,vwap,atr
 ```
 
-![multi rsi,vwap,atr](ta6.png)
+![multi rsi,vwap,atr](https://user-images.githubusercontent.com/85772166/233764057-46b82e00-0e93-4f69-a253-c74f102a5827.png)
 
 The help dialogue for this function provides some guidance for setting the optional arguments for each indicator.
 
@@ -218,7 +218,7 @@ The one-hour MACD generated a downward signal trend two days ago.
 load qqq -i 60 -s 2023-01-01/macd
 ```
 
-![MACD Hourly](ta7.png)
+![MACD Hourly](https://user-images.githubusercontent.com/85772166/233764068-521b6218-2e4f-49d2-94b3-b4806b739a56.png)
 
 :::note
 Clicking and dragging the mouse near the corners at each axis allows the zooming to be locked to the X or Y axis only.
@@ -232,11 +232,11 @@ Looking at the one-minute on-balance volume of QQQ today (April 21, 2023) reveal
 load qqq -i 1 -s 2023-04-21/macd
 ```
 
-![On-Balance Volume](ta8.png)
+![On-Balance Volume](https://user-images.githubusercontent.com/85772166/233764081-ade1d33f-7524-41d0-9885-911a6270a11c.png)
 
 The Accumulation/Distribution Line at the same one-minute interval signals in advance of the upward drift reversal, beginning to sell into the Friday close just before 14:00.
 
-![Accumlation Distribution](ta9.png)
+![Accumlation Distribution](https://user-images.githubusercontent.com/85772166/233764089-531dad18-d3c1-4bbb-aa6c-3c2c182f8fd3.png)
 
 ## Indicators Dashboard
 
@@ -246,6 +246,6 @@ This menu is also availabe as an experimental Dashboard Streamlit App.
 /dashboards/indicators
 ```
 
-![Dashboards Menu](ta10.png)
+![Dashboards Menu](https://user-images.githubusercontent.com/85772166/233764105-85b944eb-6ff7-42c8-b2c7-f9cbdff51388.png)
 
-![Indicators Dashboard](ta11.png)
+![Indicators Dashboard](https://user-images.githubusercontent.com/85772166/233764115-7bfbbf8c-793e-4dbc-a8de-9f16007d68a9.png)
