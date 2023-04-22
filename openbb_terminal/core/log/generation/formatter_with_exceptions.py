@@ -67,8 +67,8 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def mock_flair(text: str) -> str:
-        pattern = r"\[(.*?)\]"
-        replacement = " FILTERED_FLAIR "
+        pattern = r'("FLAIR": "\[)(.*?)\]'
+        replacement = r"\1 FILTERED_FLAIR ]"
         text_mocked = re.sub(pattern, replacement, text)
 
         return text_mocked
