@@ -1,6 +1,7 @@
 """ News View """
 __docformat__ = "numpy"
 
+import datetime as dt
 import logging
 import os
 from typing import Optional
@@ -75,6 +76,14 @@ def display_news(
                 console.print(row["URL"] + "\n")
             console.print("------------------------")
 
+    top_headlines = ultima_newsmonitor_model.get_top_headlines(term)["summary"]
+    if "Ultima Insights was unable to identify" in top_headlines:
+        console.print(
+            f"[red]Relevant articles for {term} - {dt.datetime.now().strftime('%Y-%m-%d')}\n{top_headlines}[/red]"
+        )
+    else:
+        console.print(top_headlines)
+    console.print("------------------------")
     articles = ultima_newsmonitor_model.get_news(term, sort)
     articles = articles.head(limit).sort_values(by="relevancyScore", ascending=False)
     # console.print(f"News Powered by [purple]Ultima Insights[/purple].\nFor more info: https://www.ultimainsights.ai\n")
