@@ -945,6 +945,7 @@ en:
   alternative/realestate/_enddate: End Date <YYYY-MM-DD>
   alternative/realestate/regionstats: retrieve UK sold house price stats by region
   alternative/realestate/_region: Region
+  alternative/companieshouse/_company: Current Company
   alternative/companieshouse/search: search for companies by name
   alternative/companieshouse/load: retrieve basic company details by company registration number
   alternative/companieshouse/officers: retrieve company officies

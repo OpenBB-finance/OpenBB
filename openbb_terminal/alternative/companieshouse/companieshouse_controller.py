@@ -46,7 +46,14 @@ class CompaniesHouseController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
+        """Print help"""
+        company_string = (
+            f"{self.companyNo} ({self.companyName})" if self.companyNo else ""
+        )
+
         mt = MenuText("alternative/companieshouse/")
+        mt.add_param("_company", company_string)
+        mt.add_raw("\n")
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_cmd("officers")
