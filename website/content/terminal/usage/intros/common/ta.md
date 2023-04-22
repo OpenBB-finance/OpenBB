@@ -43,7 +43,7 @@ The block above loads daily QQQ historical prices and volume, then enters the Te
 | cci          | Momentum   |                    Commodity Channel Index. |
 | cg           | Momentum   |                          Center of Gravity. |
 | clenow       | Momentum   |        Clenow Volatility Adjusted Momentum. |
-| demark       | Momentum   |          Tom Demark's Sequencial Indicator. |
+| demark       | Momentum   |          Tom Demark's Sequential Indicator. |
 | macd         | Momentum   |      Moving Average Convergence/Divergence. |
 | fisher       | Momentum   |                           Fisher Transform. |
 | rsi          | Momentum   |                    Relative Strength Index. |
@@ -73,7 +73,7 @@ With some daily data now loaded, let's look at some charts!
 
 ### Moving Averages
 
-There are five types of moving averages avaialble, they are grouped into the `Overlay` category.  It is possible to overlay multiple windows of time for each one, and it is also possible to overlay multiple versions of moving average.
+There are five types of moving averages available, they are grouped into the `Overlay` category.  It is possible to overlay multiple windows of time for each one, and it is also possible to overlay multiple versions of moving average.
 
 #### Single MA Type
 
@@ -240,7 +240,7 @@ The Accumulation/Distribution Line at the same one-minute interval signals in ad
 
 ## Indicators Dashboard
 
-This menu is also availabe as an experimental Dashboard Streamlit App.
+This menu is also available as an experimental Dashboard Streamlit App.
 
 ```console
 /dashboards/indicators
