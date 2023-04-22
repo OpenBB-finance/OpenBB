@@ -149,7 +149,7 @@ class ReportController(BaseController):
                 "[yellow]"
                 "Forecasting Toolkit is disabled. "
                 "To use the Forecasting features please install the toolkit following the "
-                "instructions here: https://my.openbb.dev/app/sdk/installation"
+                "instructions here: https://my.openbb.co/app/sdk/installation"
                 "\n"
                 "[/yellow]"
             )
