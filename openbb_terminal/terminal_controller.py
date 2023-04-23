@@ -501,16 +501,17 @@ class TerminalController(BaseController):
 
     def call_intro(self, _):
         """Process intro command."""
-        import json
+        webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
+        # import json
 
-        intro: dict = json.load((Path(__file__).parent / "intro.json").open())  # type: ignore
+        # intro: dict = json.load((Path(__file__).parent / "intro.json").open())  # type: ignore
 
-        for prompt in intro.get("prompts", []):
-            console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
-            console.print("".join(prompt["content"]))
-            if input("") == "q":
-                break
-            console.print("\n")
+        # for prompt in intro.get("prompts", []):
+        #     console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
+        #     console.print("".join(prompt["content"]))
+        #     if input("") == "q":
+        #         break
+        #     console.print("\n")
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""
@@ -705,11 +706,11 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
         if first_time_user():
             try:
-                t_controller.call_intro(None)
+                # t_controller.call_intro(None)
+                webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
                 # TDDO: Fix the CI
             except EOFError:
                 pass
-
         t_controller.print_help()
         check_for_updates()
 
