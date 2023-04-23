@@ -47,7 +47,7 @@ We try to keep example code up-to-date, but sometimes a specific example is left
 
 <details><summary>Why does a specific menu or command not exist?</summary>
 
-It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://my.openbb.dev/app/sdk/installation) to download the most recent release.
+It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://my.openbb.co/app/sdk/installation) to download the most recent release.
 
 Do note that it is also possible that the menu or command has been deprecated. If this is oversight, please reach out to us [here](https://openbb.co/support).
 

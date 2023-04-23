@@ -25,6 +25,7 @@ keywords:
     code block
   ]
 ---
+
 Both Windows and MacOS provide a "developer mode", and enabling it may help to overcome system-related issues.
 
 **MacOS**: Go to the System Settings, and under the "Privacy and Security" tab, scroll to the bottom and select the option to "Allow applications downloaded from App Store and identified developers". Then, scroll up to click on, "Developer Tools", and add `Terminal.app` and `Visual Studio Code` (or the preferred code editor) to the list of applications allowed to run software locally that does not meet the system's security policy.
@@ -40,7 +41,7 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 
 <details><summary>Why does a specific menu or command not exist?</summary>
 
-It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://my.openbb.dev/app/sdk/installation) to download the most recent release.
+It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://my.openbb.co/app/sdk/installation) to download the most recent release.
 
 Do note that it is also possible that the menu or command has been deprecated. If this is oversight, please reach out to us [here](https://openbb.co/support).
 
