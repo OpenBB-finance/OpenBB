@@ -285,6 +285,12 @@ The number of rows per page is defined in the drop down selection near the cente
 
 ![Rows per Page](https://user-images.githubusercontent.com/85772166/233249018-8269896d-72f7-4e72-a4d4-2715d1f11b96.png)
 
+### Freeze the Index and Column Headers
+
+Right-click on the index name to enable/disable freezing when scrolling to the right.  Column headers are frozen by default.
+
+![Index Freeze](tables8.png)
+
 ### Exporting Data
 
 At the bottom-right corner of the table window, there is a button for exporting the data.  To the left, the drop down selection for `Type` can be defined as a CSV, XLSX, or PNG file.  Exporting the table as a PNG file will create a screenshot of the table at its current view, and data that is not on the screen will not be captured.
