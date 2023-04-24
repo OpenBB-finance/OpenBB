@@ -112,7 +112,7 @@ Tips for submitting a support request:
 - Tell us what symbol (ticker) is, or was trying to be, loaded.
 - Show us the complete error message.
 - Let us know any contextual information that will help us replicate and accurately identify the problem.
-  :::
+:::
 
 ## Menus
 
