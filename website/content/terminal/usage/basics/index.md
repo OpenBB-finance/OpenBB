@@ -289,7 +289,7 @@ The number of rows per page is defined in the drop down selection near the cente
 
 Right-click on the index name to enable/disable freezing when scrolling to the right.  Column headers are frozen by default.
 
-![Index Freeze](tables8.png)
+![Index Freeze](https://user-images.githubusercontent.com/85772166/234103702-0965dfbd-24ca-4a66-8c76-9fac28abcff8.png)
 
 ### Exporting Data
 
