@@ -195,14 +195,14 @@ Start Docker, this is how the right output looks like:
 ```console
 docker info
 Client:
-Context:    default
-Debug Mode: false
+ Context:    desktop-linux
+ Debug Mode: false
 
 Server:
-Containers: 14
-Running: 2
-Paused: 1
-Stopped: 10
+ Containers: 14
+ Running: 2
+ Paused: 1
+ Stopped: 10
 ```
 
 **Pull and run the container**
@@ -211,11 +211,12 @@ Execute these commands:
 
 ```console
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
+curl -o docker-compose.x11.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.x11.yaml
 
-xhost +local:
-docker compose run openbb
+docker compose -f docker-compose.yaml -f docker-compose.x11.yaml run openbb
 ```
 
 Note: if you're using remote docker host, you can connect with `ssh -X <FQDN/IP>`.
+
 </TabItem>
 </Tabs>
