@@ -273,8 +273,6 @@ function OpenBBMain(
   // We set the plot config and plot the chart
   Plotly.setPlotConfig(CONFIG);
   Plotly.react(globals.CHART_DIV, graphs, { responsive: true });
-  graphs.layout.automargin = false;
-  graphs.layout.autoexpand = false;
 
   let AXES = Object.keys(graphs.layout).filter(
     (x) => x.startsWith("xaxis") || x.startsWith("yaxis")
@@ -283,7 +281,8 @@ function OpenBBMain(
   // We set all the axes automargin to false
   if (AXES.length > 0) {
     AXES.forEach((axis) => {
-      graphs.layout[axis].automargin = false;
+      let margin = axis.startsWith("y") ? "l+r" : "t+b";
+      graphs.layout[axis].automargin = margin;
     });
     Plotly.react(globals.CHART_DIV, graphs, { responsive: true });
   }

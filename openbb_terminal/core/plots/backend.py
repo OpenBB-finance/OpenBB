@@ -147,7 +147,7 @@ class Backend(PyWry):
             return str(icon_path)
         return ""
 
-    def get_json_update(self, theme: Optional[str] = None) -> dict:
+    def get_json_update(self, cmd_loc: str, theme: Optional[str] = None) -> dict:
         """Get the json update for the backend."""
         return dict(
             theme=theme or get_current_user().preferences.CHART_STYLE,
@@ -155,6 +155,8 @@ class Backend(PyWry):
             pywry_version=self.__version__,
             terminal_version=get_current_system().VERSION,
             python_version=get_current_system().PYTHON_VERSION,
+            collect_logs=get_current_system().LOG_COLLECT,
+            command_location=cmd_loc,
         )
 
     def send_figure(
@@ -180,9 +182,7 @@ class Backend(PyWry):
 
         json_data = json.loads(fig.to_json())
 
-        json_data.update(
-            self.get_json_update(),
-        )
+        json_data.update(self.get_json_update(command_location))
 
         self.outgoing.append(
             json.dumps(
@@ -279,8 +279,7 @@ class Backend(PyWry):
             dict(
                 title=title,
                 source=source or "",
-                command_location=command_location,
-                **self.get_json_update(theme or "dark"),
+                **self.get_json_update(command_location, theme or "dark"),
             )
         )
 
