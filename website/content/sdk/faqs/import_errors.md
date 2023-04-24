@@ -25,6 +25,11 @@ keywords:
     no module named,
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Import Errors - SDK" />
+
 ## Import Errors
 
 When packages not included in the OpenBB installation are installed to the same environment as the SDK, it is possible that an incompatible build of a specific library (like SciPy) has overwritten the existing and creating a conflict. In this event, try creating a new environment containing only the OpenBB dependencies.

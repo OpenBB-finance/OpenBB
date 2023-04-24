@@ -20,6 +20,11 @@ keywords:
     sdk
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Bugs, Support, and Feedback - SDK" />
+
 ## Bugs, Support, and Feedback
 
 When an error is encountered, it is always a good idea to check the open issues on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues). There may be a workaround solution for the specific problem until a patch is released.

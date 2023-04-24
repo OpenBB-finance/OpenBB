@@ -23,6 +23,11 @@ keywords:
     .whl
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Developer Issues - SDK" />
+
 ## Developer Issues
 
 <details><summary>What branch on GitHub should pull requests be submitted to?</summary>

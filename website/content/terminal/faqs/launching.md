@@ -27,6 +27,11 @@ keywords:
     ubuntu
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Launching - Terminal" />
+
 <details><summary>Mac: Invalid CPU Type - Terminal fails to launch.</summary>
 
 This error is usually the result of a Mac M1/M2 machine which does not have Rosetta installed. Install from the system Terminal command line:

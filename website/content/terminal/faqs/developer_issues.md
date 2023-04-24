@@ -23,6 +23,11 @@ keywords:
     .whl
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Developer Issues - Terminal" />
+
 <details><summary>What branch on GitHub should pull requests be submitted to?</summary>
 
 Pull requests submitted to the Main branch will not be merged, please create branches from the `develop` branch.

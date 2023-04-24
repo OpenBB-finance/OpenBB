@@ -25,6 +25,11 @@ keywords:
     error
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Installation and Updates - SDK" />
+
 ## Installation and Updates
 
 <details><summary>Do I have to use Miniconda?</summary>
