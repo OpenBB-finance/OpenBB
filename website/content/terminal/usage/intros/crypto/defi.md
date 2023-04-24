@@ -4,6 +4,10 @@ keywords: [cryptocurrency, defi, decentralized finance, crypto, dapps, uniswap, 
 description: An Introduction to Cryptocurrency DeFi menu, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Decentralized Finance - Terminal" />
+
 The Cryptocurrency Decentralized Finance (DeFi) menu gives the user the ability to delve deeper into Uniswap statistics (<a href="/terminal/reference/crypto/defi/tokens" target="_blank" rel="noreferrer noopener">tokens</a>, <a href="/terminal/reference/crypto/defi/stats" target="_blank" rel="noreferrer noopener">stats</a> and <a href="/terminal/reference/crypto/defi/pairs" target="_blank" rel="noreferrer noopener">pairs</a>), information about dApps (<a href="/terminal/reference/crypto/defi/gdapps" target="_blank" rel="noreferrer noopener">gdapps</a> and <a href="/terminal/reference/crypto/defi/stvl" target="_blank" rel="noreferrer noopener">stvl</a>) as well as information about terra blockchain (<a href="/terminal/reference/crypto/defi/sreturn" target="_blank" rel="noreferrer noopener">sreturn</a>) and luna (<a href="/terminal/reference/crypto/defi/lcsc" target="_blank" rel="noreferrer noopener">lcsc</a>).
 
 ### How to use

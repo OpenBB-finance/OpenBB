@@ -4,6 +4,10 @@ keywords: [forex, currency, money, hedge, dollar, euro, pound, currencies, marke
 description: A brief introduction and guide to the Forex menu. It includes descriptions of its functionality, commands, data, outputs, and examples in context.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Forex - Terminal" />
+
 The Forex menu enables you to <a href="/terminal/reference/forex/load" target="_blank" rel="noreferrer noopener">load</a> any combination of currencies (e.g. USDEUR or JPYGBP), show current <a href="/terminal/reference/forex/quote" target="_blank" rel="noreferrer noopener">quote</a> and historical data (<a href="/terminal/reference/forex/candle" target="_blank" rel="noreferrer noopener">candle</a>) as well as forward rates (<a href="/terminal/reference/forex/fwd" target="_blank" rel="noreferrer noopener">fwd</a>). Furthermore, the menu has the ability to also apply <a href="/terminal/usage/intros/common/ta" target="_blank" rel="noreferrer noopener">Technical Analysis</a> and <a href="/terminal/usage/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a> while also having an integration with <a href="/terminal/reference#oanda" target="_blank" rel="noreferrer noopener">Oanda</a>.
 
 ### How to use

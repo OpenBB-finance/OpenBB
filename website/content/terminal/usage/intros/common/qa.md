@@ -4,6 +4,10 @@ keywords: [quantitative, analysis, qa, q/a, daily, indicators, signals, average,
 description: This guide introduces the Quantitative Analysis menu, which is common across many sections of the OpenBB Terminal, briefly describes the features, and provides examples in context.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Quantitative Analysis - Terminal" />
+
 <a href = "https://www.investopedia.com/terms/q/quantitativeanalysis.asp" target="_blank" rel="noreferrer noopener">Quantitative analysis (QA)</a> in finance is an approach that emphasizes mathematical and statistical analysis to help determine the value of a financial asset, such as a stock or option. The ultimate goal of financial quantitative analysis is to use quantifiable statistics and metrics to assist investors in making profitable investment decisions. Quantitative analysis is different from qualitative analysis, which looks at factors such as how companies are structured, the makeup of their management teams, and what their strengths and weaknesses are.
 
 The Quantitative Analysis menu is a common menu to three asset classes:

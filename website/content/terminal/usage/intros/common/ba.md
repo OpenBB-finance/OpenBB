@@ -4,6 +4,10 @@ keywords: [stocks, behaviour, analysis, ba, headlines, snews, wsb, watchlist, po
 description: Learn the basics of the Behavioural Analysis menu. It offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Behavioural Analysis - Terminal" />
+
 The Behavioural Analysis menu offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction. Sentiment is particularly useful for momentum trading strategies, discovery, and general fundamental research. Navigate into the menu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks</a> menu by entering, `ba`; or, using absolute paths from anywhere in the Terminal: `/stocks/ba`
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218975466-a52343f6-9f43-4ecc-88ac-f47afbd7f128.png"></img>

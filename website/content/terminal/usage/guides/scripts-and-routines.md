@@ -4,6 +4,11 @@ title: Scripts & Routines
 description: Learn how to set up and maintain scripts and routines in the OpenBB Terminal. These operations will help automate processes and repetitive tasks to save time and effort.
 keywords: [scripts, routines, .do file, stata, spss, r studio, python, automation, data collection, aggregation, script, routine, openbb terminal, tasks, processes]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Scripts & Routines - Terminal" />
+
 OpenBB Routine Scripts, `.openbb`, are simple scripts for automating processes and repetitive tasks. They represent a 1:1 relationship with any command in the OpenBB Terminal; one line represents one function. Other software like STATA, SPSS and R-Studio share similar functionality in the area of Econometrics and the OpenBB routine scripts venture into the area of financial analysis and data collection to speed up the process. For example, not only is it possible to automate a set of functionality, it is also possible to export a large amount of data to Excel through the usage of `--export` and `--sheet-name` making data collection efficient, reproducible and customizable.
 
 ## Introduction

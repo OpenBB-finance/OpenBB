@@ -4,6 +4,11 @@ keywords: [etfs, exchange traded funds, fund, basket, retail, stocks, openbb ter
 description: A brief introduciton to the ETF menu. It includes a guide on the functionality, commands, data, and examples in context.
 
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ETF - Terminal" />
+
 The ETF menu enables you to lookup any ETF and obtain an <a href="/terminal/reference/etf/overview" target="_blank" rel="noreferrer noopener">overview</a>, <a href="/terminal/reference/etf/holdings" target="_blank" rel="noreferrer noopener">holdings</a>, <a href="/terminal/reference/etf/weights" target="_blank" rel="noreferrer noopener">weights</a> and <a href="/terminal/reference/etf/news" target="_blank" rel="noreferrer noopener">news</a> about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to <a href="/terminal/usage/intros/stocks/comparison" target="_blank" rel="noreferrer noopener">compare companies</a> within the ETF, discover gainers and losers within <a href="/terminal/reference#disc" target="_blank" rel="noreferrer noopener">discovery</a> and apply advanced <a href="/terminal/usage/intros/common/ta" target="_blank" rel="noreferrer noopener">technical indicators</a> and <a href="/terminal/usage/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a>. Lastly, it also has the option to export multiple ETFs to Excel with <a href="/terminal/reference/etf/pir" target="_blank" rel="noreferrer noopener">pir</a>.
 
 ### How to use

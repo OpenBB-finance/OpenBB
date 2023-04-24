@@ -4,6 +4,10 @@ keywords: [technical, analysis, ta, t/a, intraday, daily, indicators, signals, a
 description: This guide introduces the Technical Analysis menu, which is common across many sections of the OpenBB Terminal.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Technical Analysis - Terminal" />
+
 The Technical Analysis menu offers the user a suite of tools for analyzing the technical components of an asset's trading history. The menu can be found in most wings of the Terminal:
 
 - <a href="/terminal/usage/intros/crypto/" target="_blank" rel="noreferrer noopener">Crypto</a>

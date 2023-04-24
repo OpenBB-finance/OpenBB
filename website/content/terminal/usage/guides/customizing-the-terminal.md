@@ -5,6 +5,10 @@ description: Learn how to customize the look of your OpenBB Terminal. You can ad
 keywords: [settings, featflags, feature flags, lay-out, advanced, customizing, openbb terminal, layout, settings, colors, functionality, features]
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Customization - Terminal" />
+
 Since the code is open source you are able to adjust anything you like. However, to make it easy for you we have created a settings and featflags menu that include the most requested features that users like to have control over.
 
 ## Using the Settings Menu

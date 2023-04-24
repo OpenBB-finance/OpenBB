@@ -25,6 +25,10 @@ keywords:
   ]
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Installation - Terminal" />
+
 import LinkCard from "@site/src/components/General/LinkCard";
 
 <LinkCard

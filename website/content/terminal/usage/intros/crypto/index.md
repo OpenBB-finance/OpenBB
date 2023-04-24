@@ -4,6 +4,10 @@ keywords: [crypto, web3, nft, blockchain, cryptocurrency, how to, example, sub-m
 description: The Introduction to Cryptocurrency explains how to use the Cryptocurrency menu and provides a brief description of its sub-menus such as due diligence, DeFi, discovery, NFTs, and Onchain.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Cryptocurrency - Terminal" />
+
 The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/usage/intros/crypto/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/usage/intros/crypto/dd" target="_blank" rel="noreferrer noopener">dd</a>),
 NFT (<a href="/terminal/usage/intros/crypto/nft" target="_blank" rel="noreferrer noopener">nft</a>) or most lucrative Defi project
 (<a href="/terminal/usage/intros/crypto/defi" target="_blank" rel="noreferrer noopener">defi</a>). It does so by handing you tools to (among other things) perform technical analysis (<a href="/terminal/usage/intros/common/ta/" target="_blank" rel="noreferrer noopener">ta</a>), quantitative analysis (<a href="/terminal/usage/intros/common/qa" target="_blank" rel="noreferrer noopener">qa</a>), and give you access to onchain information (<a href="/terminal/usage/intros/crypto/onchain/" target="_blank" rel="noreferrer noopener">onchain</a>).
