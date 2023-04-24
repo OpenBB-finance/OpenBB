@@ -11,6 +11,6 @@ CHARTS_TABLES_URL = HUB_URL + "app/terminal/theme/charts-tables"
 
 DEFAULT_ROUTINES_URL = "https://tffo1zc1.directus.app/items/Routines"
 
-TIMEOUT = 15
+TIMEOUT = 30
 CONNECTION_ERROR_MSG = "[red]Connection error.[/red]"
 CONNECTION_TIMEOUT_MSG = "[red]Connection timeout.[/red]"
