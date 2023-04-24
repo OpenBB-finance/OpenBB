@@ -95,6 +95,7 @@ This file contents the settings to pull and run OpenBB Terminal Docker image.
 </TabItem>
 
 <TabItem value="MacOS" label="MacOS">
+
 **Install Docker Desktop**
 
 You can find `Docker Desktop` for MacOS here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
@@ -173,6 +174,7 @@ This file contents the settings to pull and run OpenBB Terminal Docker image.
 The `xhost +$IP` and `DISPLAY=$IP:0` parts are there to allow charts display.
 </TabItem>
 <TabItem value="Linux" label="Linux">
+
 **Install Docker Desktop**
 
 You can find `Docker Desktop` for Linux here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
@@ -199,14 +201,14 @@ Start Docker, this is how the right output looks like:
 ```console
 docker info
 Client:
-Context:    default
-Debug Mode: false
+ Context:    desktop-linux
+ Debug Mode: false
 
 Server:
-Containers: 14
-Running: 2
-Paused: 1
-Stopped: 10
+ Containers: 14
+ Running: 2
+ Paused: 1
+ Stopped: 10
 ```
 
 **Pull and run the container**
@@ -215,11 +217,12 @@ Execute these commands:
 
 ```console
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
+curl -o docker-compose.x11.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.x11.yaml
 
-xhost +local:
-docker compose run openbb
+docker compose -f docker-compose.yaml -f docker-compose.x11.yaml run openbb
 ```
 
 Note: if you're using remote docker host, you can connect with `ssh -X <FQDN/IP>`.
+
 </TabItem>
 </Tabs>

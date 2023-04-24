@@ -15,11 +15,11 @@ posthog.init("phc_EqU3YjnV8OYmBlKanwWq222B8OHQksfmQBUtcVeteHR", {
   },
   loaded: () => {
     posthog.onFeatureFlags(function () {
-      if (!posthog.isFeatureEnabled("record-web")) {
+      if (!posthog.isFeatureEnabled("record-web", { send_event: false })) {
         posthog.stopSessionRecording();
         console.log("Stopped session recording");
       }
-      if (!posthog.isFeatureEnabled("collect-logs-web")) {
+      if (!posthog.isFeatureEnabled("collect-logs-web", { send_event: false })) {
         posthog.opt_out_capturing();
         console.log("Opted out of capturing");
       } else if (posthog.has_opted_out_capturing()) {

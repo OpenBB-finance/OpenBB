@@ -194,7 +194,7 @@ Create the environment using a configuration file from the OpenBB Terminal repos
 Copy and paste these commands into the terminal/command prompt:
 
 ```shell
-conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/conda-3-9-env.yaml
+conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/conda/conda-3-9-env.yaml
 ```
 
 Agree to the prompts if there are any.
