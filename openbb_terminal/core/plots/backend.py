@@ -8,7 +8,7 @@ import subprocess  # nosec: B404
 import sys
 from multiprocessing import current_process
 from pathlib import Path
-from typing import Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import aiohttp
 import pandas as pd
@@ -49,7 +49,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.20.0.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.21.0.min.js"
 BACKEND = None
 
 
@@ -78,6 +78,7 @@ class Backend(PyWry):
             self.isatty = False
 
         self.WIDTH, self.HEIGHT = 1400, 762
+        self.logged_in: bool = False
 
         atexit.register(self.close)
 
@@ -147,6 +148,35 @@ class Backend(PyWry):
             return str(icon_path)
         return ""
 
+    def get_json_update(self, cmd_loc: str, theme: Optional[str] = None) -> dict:
+        """Get the json update for the backend."""
+        current_user = get_current_user()
+        current_system = get_current_system()
+
+        posthog: Dict[str, Any] = dict(collect_logs=current_system.LOG_COLLECT)
+        if (
+            current_system.LOG_COLLECT
+            and current_user.profile.email
+            and not self.logged_in
+        ):
+            self.logged_in = True
+            posthog.update(
+                dict(
+                    user_id=current_user.profile.uuid,
+                    email=current_user.profile.email,
+                )
+            )
+
+        return dict(
+            theme=theme or current_user.preferences.CHART_STYLE,
+            log_id=current_system.LOGGING_APP_ID,
+            pywry_version=self.__version__,
+            terminal_version=current_system.VERSION,
+            python_version=current_system.PYTHON_VERSION,
+            posthog=posthog,
+            command_location=cmd_loc,
+        )
+
     def send_figure(
         self, fig: go.Figure, export_image: Optional[Union[Path, str]] = ""
     ):
@@ -170,7 +200,7 @@ class Backend(PyWry):
 
         json_data = json.loads(fig.to_json())
 
-        json_data.update({"theme": get_current_user().preferences.CHART_STYLE})
+        json_data.update(self.get_json_update(command_location))
 
         self.outgoing.append(
             json.dumps(
@@ -267,8 +297,7 @@ class Backend(PyWry):
             dict(
                 title=title,
                 source=source or "",
-                theme=theme or "dark",
-                command_location=command_location,
+                **self.get_json_update(command_location, theme or "dark"),
             )
         )
 
