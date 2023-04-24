@@ -97,7 +97,7 @@ function OpenBBMain(
           },
         },
         {
-          name: "Download PNG (Ctrl+S)",
+          name: "Download Chart as Image (Ctrl+S)",
           icon: ICONS.downloadImage,
           click: async function () {
             await downloadImageButton();
@@ -273,17 +273,16 @@ function OpenBBMain(
   // We set the plot config and plot the chart
   Plotly.setPlotConfig(CONFIG);
   Plotly.react(globals.CHART_DIV, graphs, { responsive: true });
-  graphs.layout.automargin = false;
-  graphs.layout.autoexpand = false;
 
-
-  let AXES = Object.keys(graphs.layout)
-    .filter((x) => x.startsWith("xaxis") || x.startsWith("yaxis"))
+  let AXES = Object.keys(graphs.layout).filter(
+    (x) => x.startsWith("xaxis") || x.startsWith("yaxis")
+  );
 
   // We set all the axes automargin to false
   if (AXES.length > 0) {
     AXES.forEach((axis) => {
-      graphs.layout[axis].automargin = false;
+      let margin = axis.startsWith("y") ? "l+r" : "t+b";
+      graphs.layout[axis].automargin = margin;
     });
     Plotly.react(globals.CHART_DIV, graphs, { responsive: true });
   }
@@ -293,11 +292,24 @@ function OpenBBMain(
   const modebar_buttons = modebar.getElementsByClassName("modebar-btn");
   globals.barButtons = {};
 
+  const captureButtons = [
+    "Download CSV",
+    "Download Chart as Image",
+    "Overlay chart from CSV",
+    "Add Text",
+    "Change Titles",
+    "Auto Scale (Ctrl+Shift+A)",
+    "Reset Axes",
+  ];
+
   for (let i = 0; i < modebar_buttons.length; i++) {
     // We add the buttons to the global variable for later use
     // and set the border to transparent so we can change the
     // color of the buttons when they are pressed
     let button = modebar_buttons[i];
+    if (captureButtons.includes(button.getAttribute("data-title"))) {
+      button.classList.add("ph-capture");
+    }
     button.style.border = "transparent";
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
@@ -593,11 +605,42 @@ function OpenBBMain(
   }
   function changeTheme() {
     globals.dark_mode = !globals.dark_mode;
-    Plotly.relayout(globals.CHART_DIV, {
-      template: globals.dark_mode
-        ? DARK_CHARTS_TEMPLATE
-        : LIGHT_CHARTS_TEMPLATE,
-    });
     document.body.style.backgroundColor = globals.dark_mode ? "#000" : "#fff";
+    globals.CHART_DIV.layout.font.color = globals.dark_mode ? "#fff" : "#000";
+
+    const changeIcon = globals.dark_mode ? ICONS.sunIcon : ICONS.moonIcon;
+
+    globals.barButtons["Change Theme"]
+      .getElementsByTagName("path")[0]
+      .setAttribute("d", changeIcon.path);
+
+    globals.barButtons["Change Theme"]
+      .getElementsByTagName("svg")[0]
+      .setAttribute("viewBox", changeIcon.viewBox);
+
+    const volumeColors = {
+      "#e4003a": "#c80000",
+      "#00ACFF": "#009600",
+      "#009600": "#00ACFF",
+      "#c80000": "#e4003a",
+    };
+
+    TRACES.forEach((trace) => {
+      if (trace.type == "bar") {
+        trace.marker.color.forEach((color, i) => {
+          trace.marker.color[i] = volumeColors[color] || color;
+        });
+      }
+    });
+
+    Plotly.update(
+      globals.CHART_DIV,
+      {},
+      {
+        template: globals.dark_mode
+          ? DARK_CHARTS_TEMPLATE
+          : LIGHT_CHARTS_TEMPLATE,
+      }
+    );
   }
 }

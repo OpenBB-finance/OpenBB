@@ -115,3 +115,7 @@ tr {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
 }
+
+::-webkit-scrollbar-corner {
+  background: rgba(0,0,0,0);
+}
