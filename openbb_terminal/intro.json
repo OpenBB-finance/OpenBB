@@ -93,9 +93,9 @@
             ]
         },
         {
-            "header": "#6 - OpenBB Scripts",
+            "header": "#7 - OpenBB Scripts",
             "content": [
-                "\nThe command pipeline capability is great, but the user experience wasn't great copy-pasting large ",
+                "\nThe command pipeline capability is nice but the user experience wasn't great having to copy-paste large ",
                 "lists of commands.\n\n",
                 "We allow the user to create a text file of the form [param]FOLDER_PATH/my_script.openbb[/param] with following content:\n\n",
                 "stocks\nload TSLA\ndd\npt\n\n",
@@ -104,7 +104,7 @@
             ]
         },
         {
-            "header": "#7 - OpenBB Scripts with Arguments",
+            "header": "#8 - OpenBB Scripts with Arguments",
             "content": [
                 "\nThe user can create a script that includes arguments for the commands.\n\n",
                 "For instance, [param]FOLDER_PATH/my_script_with_variable_input.openbb[/param] may contain:\n\n",
@@ -117,7 +117,7 @@
             ]
         },
         {
-            "header": "#8 - OpenBB Script Generation",
+            "header": "#9 - OpenBB Script Generation",
             "content": [
                 "\nTo make it easier for users to create scripts, we have created a ",
                 "command that 'records' user commands ",
@@ -130,7 +130,7 @@
             ]
         },
         {
-            "header": "#9 - Terminal Customization",
+            "header": "#10 - Terminal Customization",
             "content": [
                 "\nUsers should explore the [param]settings[/param] and [param]featflags[/param] menus ",
                 "to configure their terminal.\n\n",
@@ -141,7 +141,7 @@
             ]
         },
         {
-            "header": "#10 - Support",
+            "header": "#11 - Support",
             "content": [
                 "\nWe are nothing without our community, hence we put a lot of effort in being here for you.\n\n",
                 "If you find any bug that you wish to report to improve the terminal you can do so with:\n",

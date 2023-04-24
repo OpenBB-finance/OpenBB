@@ -25,11 +25,11 @@ try:
             "Follow instructions on creating a new conda environment with the latest "
             f"Darts version ({darts_latest}):"
         )
-        print("https://my.openbb.dev/app/sdk/installation")
+        print("https://my.openbb.co/app/sdk/installation")
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
         "Please install the forecast version of the terminal. Instructions can be found "
-        "under the python tab: https://my.openbb.dev/app/sdk/installation"
+        "under the python tab: https://my.openbb.co/app/sdk/installation"
     )
 
 try:
