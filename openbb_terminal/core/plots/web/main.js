@@ -97,7 +97,7 @@ function OpenBBMain(
           },
         },
         {
-          name: "Download PNG (Ctrl+S)",
+          name: "Download Chart as Image (Ctrl+S)",
           icon: ICONS.downloadImage,
           click: async function () {
             await downloadImageButton();
@@ -292,12 +292,24 @@ function OpenBBMain(
   const modebar_buttons = modebar.getElementsByClassName("modebar-btn");
   globals.barButtons = {};
 
+  const captureButtons = [
+    "Download CSV",
+    "Download Chart as Image",
+    "Overlay chart from CSV",
+    "Add Text",
+    "Change Titles",
+    "Auto Scale (Ctrl+Shift+A)",
+    "Reset Axes",
+  ];
+
   for (let i = 0; i < modebar_buttons.length; i++) {
     // We add the buttons to the global variable for later use
     // and set the border to transparent so we can change the
     // color of the buttons when they are pressed
     let button = modebar_buttons[i];
-    button.classList.add("ph-capture");
+    if (captureButtons.includes(button.getAttribute("data-title"))) {
+      button.classList.add("ph-capture");
+    }
     button.style.border = "transparent";
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
