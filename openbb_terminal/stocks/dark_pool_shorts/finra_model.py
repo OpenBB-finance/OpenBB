@@ -63,7 +63,6 @@ def getFINRAweeks(tier: str = "T1", is_ats: bool = True) -> List:
     return response.json() if response.status_code == 200 else list()
 
 
-@log_start_end(log=logger)
 def getFINRAdata_offset(
     start_date: str,
     tier: str = "T1",

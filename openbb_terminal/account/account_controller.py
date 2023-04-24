@@ -3,17 +3,20 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from openbb_terminal.account.account_model import (
-    get_routines_info,
-    read_routine,
-    save_routine,
-    set_login_called,
+from openbb_terminal.account.account_view import (
+    display_default_routines,
+    display_personal_routines,
 )
-from openbb_terminal.account.account_view import display_routines_list
 from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
+)
+from openbb_terminal.core.session.routines_handler import (
+    get_default_routines_info,
+    get_personal_routines_info,
+    read_routine,
+    save_routine,
 )
 from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -25,6 +28,32 @@ from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.terminal_helper import print_guest_block_msg
 
 logger = logging.getLogger(__name__)
+
+
+__login_called = False
+
+
+def get_login_called():
+    """Get the login/logout called flag.
+
+    Returns
+    -------
+    bool
+        The login/logout called flag.
+    """
+    return __login_called
+
+
+def set_login_called(value: bool):
+    """Set the login/logout called flag.
+
+    Parameters
+    ----------
+    value : bool
+        The login/logout called flag.
+    """
+    global __login_called  # pylint: disable=global-statement
+    __login_called = value
 
 
 class AccountController(BaseController):
@@ -49,27 +78,41 @@ class AccountController(BaseController):
     def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
-        self.ROUTINE_FILES: Dict[str, Path] = {}
+        self.LOCAL_ROUTINES: Dict[str, Path] = {}
         self.REMOTE_CHOICES: List[str] = []
+
+        self.DEFAULT_ROUTINES: List[Dict[str, str]] = self.fetch_default_routines()
+        self.DEFAULT_CHOICES: List[str] = [
+            r["name"] for r in self.DEFAULT_ROUTINES if "name" in r
+        ]
+
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        self.ROUTINE_FILES = self.get_routines()
+        self.LOCAL_ROUTINES = self.get_local_routines()
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            self.choices["upload"]["--file"].update({c: {} for c in self.ROUTINE_FILES})
+            self.choices["upload"]["--file"].update(
+                {c: {} for c in self.LOCAL_ROUTINES}
+            )
             self.choices["download"]["--name"].update(
-                {c: {} for c in self.REMOTE_CHOICES}
+                {c: {} for c in self.DEFAULT_CHOICES + self.REMOTE_CHOICES}
             )
             self.choices["delete"]["--name"].update(
                 {c: {} for c in self.REMOTE_CHOICES}
             )
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
-    def get_routines(self):
-        """Get routines"""
+    def get_local_routines(self) -> Dict[str, Path]:
+        """Get local routines
+
+        Returns
+        -------
+        Dict[str, Path]
+            The local routines
+        """
         current_user = get_current_user()
         return {
             filepath.name: filepath
@@ -77,6 +120,20 @@ class AccountController(BaseController):
                 "*.openbb"
             )
         }
+
+    def fetch_default_routines(self) -> List[Dict[str, str]]:
+        """Fetch default routines
+
+        Returns
+        -------
+        List[Dict[str, str]]
+            The default routines
+        """
+        response = Hub.get_default_routines()
+        if response and response.status_code == 200:
+            d = response.json()
+            return d.get("data", [])
+        return []
 
     def print_help(self):
         """Print help"""
@@ -155,7 +212,7 @@ class AccountController(BaseController):
             if ns_parser:
                 i = console.input(
                     "[bold red]This action is irreversible![/bold red]\n"
-                    "Are you sure you want to permanently delete your keys? (y/n): "
+                    "Are you sure you want to permanently delete your keys from OpenBB hub? (y/n): "
                 )
                 console.print("")
                 if i.lower() in ["y", "yes"]:
@@ -174,6 +231,15 @@ class AccountController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="list",
             description="List routines available in the cloud.",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            type=str,
+            dest="type",
+            default="personal",
+            choices=["default", "personal"],
+            help="The type of routines to list.",
         )
         parser.add_argument(
             "-p",
@@ -196,18 +262,27 @@ class AccountController(BaseController):
             print_guest_block_msg()
         else:
             if ns_parser:
-                response = Hub.list_routines(
-                    auth_header=get_current_user().profile.get_auth_header(),
-                    page=ns_parser.page,
-                    size=ns_parser.size,
-                )
-                df, page, pages = get_routines_info(response)
-                if not df.empty:
-                    self.REMOTE_CHOICES += list(df["name"])
-                    self.update_runtime_choices()
-                    display_routines_list(df, page, pages)
-                else:
-                    console.print("[red]No routines found.[/red]")
+                if ns_parser.type == "personal":
+                    response = Hub.list_routines(
+                        auth_header=get_current_user().profile.get_auth_header(),
+                        page=ns_parser.page,
+                        size=ns_parser.size,
+                    )
+                    df, page, pages = get_personal_routines_info(response)
+                    if not df.empty:
+                        self.REMOTE_CHOICES += list(df["name"])
+                        self.update_runtime_choices()
+                        display_personal_routines(df, page, pages)
+                    else:
+                        console.print("[red]No personal routines found.[/red]")
+                elif ns_parser.type == "default":
+                    df = get_default_routines_info(self.DEFAULT_ROUTINES)
+                    if not df.empty:
+                        display_default_routines(df)
+                    else:
+                        console.print("[red]No default routines found.[/red]")
+
+                console.print("")
 
     @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):
@@ -320,49 +395,61 @@ class AccountController(BaseController):
             print_guest_block_msg()
         else:
             if ns_parser:
-                response = Hub.download_routine(
-                    auth_header=get_current_user().profile.get_auth_header(),
-                    name=" ".join(ns_parser.name),
-                )
+                data = None
 
-                if response and response.status_code == 200:
-                    data = response.json()
-                    if data:
-                        name = data.get("name", "")
-                        if name:
-                            console.print(f"[info]Name:[/info] {name}")
+                # Default routine
+                name = " ".join(ns_parser.name)
+                if name in self.DEFAULT_CHOICES:
+                    data = next(
+                        (r for r in self.DEFAULT_ROUTINES if r["name"] == name), None
+                    )
+                else:
+                    # User routine
+                    response = Hub.download_routine(
+                        auth_header=get_current_user().profile.get_auth_header(),
+                        name=name,
+                    )
+                    data = (
+                        response.json()
+                        if response and response.status_code == 200
+                        else None
+                    )
 
-                        description = data.get("description", "")
-                        if description:
-                            console.print(f"[info]Description:[/info] {description}")
+                # Save routine
+                if data:
+                    name = data.get("name", "")
+                    if name:
+                        console.print(f"[info]Name:[/info] {name}")
 
-                        script = data.get("script", "")
-                        if script:
-                            file_name = f"{name}.openbb"
-                            file_path = save_routine(
-                                file_name=file_name,
-                                routine=script,
+                    description = data.get("description", "")
+                    if description:
+                        console.print(f"[info]Description:[/info] {description}")
+
+                    script = data.get("script", "")
+                    if script:
+                        file_name = f"{name}.openbb"
+                        file_path = save_routine(
+                            file_name=file_name,
+                            routine=script,
+                        )
+                        if file_path == "File already exists":
+                            i = console.input(
+                                "\nA file with the same name already exists, "
+                                "do you want to replace it? (y/n): "
                             )
-                            if file_path == "File already exists":
-                                i = console.input(
-                                    "\nA file with the same name already exists, "
-                                    "do you want to replace it? (y/n): "
+                            console.print("")
+                            if i.lower() in ["y", "yes"]:
+                                file_path = save_routine(
+                                    file_name=file_name,
+                                    routine=script,
+                                    force=True,
                                 )
-                                console.print("")
-                                if i.lower() in ["y", "yes"]:
-                                    file_path = save_routine(
-                                        file_name=file_name,
-                                        routine=script,
-                                        force=True,
-                                    )
-                                    if file_path:
-                                        console.print(
-                                            f"[info]Location:[/info] {file_path}"
-                                        )
-                                else:
-                                    console.print("[info]Aborted.[/info]")
-                            elif file_path:
-                                console.print(f"[info]Location:[/info] {file_path}")
+                                if file_path:
+                                    console.print(f"[info]Location:[/info] {file_path}")
+                            else:
+                                console.print("[info]Aborted.[/info]")
+                        elif file_path:
+                            console.print(f"[info]Location:[/info] {file_path}")
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):

@@ -15,7 +15,8 @@ from pandas.tseries.holiday import USFederalHolidayCalendar
 
 import openbb_terminal
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.core.plots.backend import plots_backend  # noqa: F401
+from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_user import get_current_user  # noqa: F401
 from openbb_terminal.decorators import disable_check_api
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -409,7 +410,7 @@ class ControllerDoc:
                 if self.name == "forecast" and action.dest == "values":
                     other_args.extend(["--values", "AAPL.close"])
 
-            set_command_location(f"{'/'.join(self.controller.path)}/{cmd_name}")
+            set_command_location(f"/{'/'.join(self.controller.path)}/{cmd_name}")
 
             _ = getattr(self.controller, command)(other_args)
 
@@ -514,6 +515,7 @@ if __name__ == "__main__":
                 cfg.setup_config_terminal()
                 plots_backend().start()
                 plots_backend().isatty = True
+                get_current_user().preferences.USE_INTERACTIVE_DF = False
                 controller_doc.run_image_exports()
     except KeyboardInterrupt:
         sys.exit(0)

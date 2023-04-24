@@ -42,6 +42,7 @@ class DiscoveryController(BaseController):
     """Discovery Controller class"""
 
     CHOICES_COMMANDS = [
+        "filings",
         "pipo",
         "fipo",
         "gainers",
@@ -60,7 +61,6 @@ class DiscoveryController(BaseController):
         "rtat",
         "divcal",
         "heatmap",
-        "filings",
     ]
 
     arkord_sortby_choices = [
@@ -884,37 +884,6 @@ class DiscoveryController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_heatmap(self, other_args: List[str]):
-        """Process heatmap command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="heatmap",
-            description="""
-                    Get the SP 500 heatmap from finviz and display in interactive treemap
-                """,
-        )
-        parser.add_argument(
-            "-t",
-            "--timeframe",
-            default="day",
-            choices=self.heatmap_timeframes,
-            help="Timeframe to get heatmap data for",
-            dest="timeframe",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            finviz_view.display_heatmap(
-                ns_parser.timeframe,
-                ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
     def call_filings(self, other_args: List[str]) -> None:
         """Process Filings command"""
         parser = argparse.ArgumentParser(
@@ -951,4 +920,35 @@ class DiscoveryController(BaseController):
         if ns_parser:
             fmp_view.display_filings(
                 ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
+            )
+
+    @log_start_end(log=logger)
+    def call_heatmap(self, other_args: List[str]):
+        """Process heatmap command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="heatmap",
+            description="""
+                    Get the SP 500 heatmap from finviz and display in interactive treemap
+                """,
+        )
+        parser.add_argument(
+            "-t",
+            "--timeframe",
+            default="day",
+            choices=self.heatmap_timeframes,
+            help="Timeframe to get heatmap data for",
+            dest="timeframe",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            finviz_view.display_heatmap(
+                ns_parser.timeframe,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

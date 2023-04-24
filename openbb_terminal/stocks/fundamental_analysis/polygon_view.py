@@ -64,7 +64,6 @@ def display_fundamentals(
 
     fundamentals = fundamentals.iloc[:, :limit]
     fundamentals = fundamentals[fundamentals.columns[::-1]]
-
     if statement == "income":
         fundamentals.index = [
             stocks_helper.INCOME_PLOT["Polygon"][i]

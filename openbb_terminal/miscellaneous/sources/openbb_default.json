@@ -31,13 +31,8 @@
         "scr": ["Syncretism"]
       },
       "load": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
-      "exp": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
       "pcr": ["AlphaQuery"],
       "info": ["Barchart"],
-      "chains": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
-      "oi": ["YahooFinance", "Tradier", "Nasdaq"],
-      "vol": ["YahooFinance", "Tradier", "Nasdaq"],
-      "voi": ["YahooFinance", "Tradier", "Nasdaq"],
       "hist": ["ChartExchange", "Tradier", "Intrinio"],
       "vsurf": ["YahooFinance"],
       "grhist": ["Syncretism", "Intrinio"],
@@ -264,7 +259,7 @@
       "ratios": ["FinancialModelingPrep"],
       "dupont": ["AlphaVantage"],
       "fraud": ["AlphaVantage"],
-      "sec": ["MarketWatch", "FinancialModelingPrep"],
+      "sec": ["Nasdaq"],
       "analysis": ["Elect"],
       "earnings": ["AlphaVantage", "YahooFinance"],
       "epsfc": ["SeekingAlpha"],
@@ -282,8 +277,7 @@
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "recom": ["TradingView"],
       "summary": ["FinBrain"],
-      "tv": ["TradingView"],
-      "view": ["Finviz"]
+      "tv": ["TradingView"]
     },
     "qa": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"]
@@ -304,8 +298,7 @@
       "nft": ["DappRadar"],
       "games": ["DappRadar"],
       "dapps": ["DappRadar"],
-      "dex": ["DappRadar"],
-      "fees": ["CryptoStats"]
+      "dex": ["DappRadar"]
     },
     "ov": {
       "global": ["CoinGecko", "CoinPaprika"],
@@ -347,9 +340,7 @@
       "ueat": ["BitQuery"],
       "ttcp": ["BitQuery"],
       "baas": ["BitQuery"],
-      "dt": ["Shroom"],
-      "ds": ["Shroom"],
-      "tvl": ["Shroom"],
+      "query": ["Shroom"],
       "address": ["Ethplorer"],
       "top": ["Ethplorer"],
       "balance": ["Ethplorer"],
@@ -463,7 +454,6 @@
     "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],
     "performance": ["Finviz"],
-    "spectrum": ["Finviz"],
     "gdp": ["OECD"],
     "rgdp": ["OECD"],
     "fgdp": ["OECD"],

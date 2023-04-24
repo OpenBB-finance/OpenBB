@@ -22,7 +22,9 @@ from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
+import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.completer.choices import build_controller_choice_map
+from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -39,7 +41,6 @@ from openbb_terminal.helper_funcs import (
     set_command_location,
     support_message,
     system_clear,
-    update_news_from_tweet_to_be_displayed,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -342,7 +343,8 @@ class BaseController(metaclass=ABCMeta):
         """
         actions = self.parse_input(an_input)
 
-        console.print()
+        if an_input and an_input != "reset":
+            console.print()
 
         # Empty command
         if len(actions) == 0:
@@ -393,7 +395,13 @@ class BaseController(metaclass=ABCMeta):
 
         self.log_queue()
 
-        if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+        if (
+            an_input
+            and an_input != "reset"
+            and (
+                not self.queue or (self.queue and self.queue[0] not in ("quit", "help"))
+            )
+        ):
             console.print()
 
         return self.queue
@@ -472,6 +480,11 @@ class BaseController(metaclass=ABCMeta):
         self.save_class()
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
+
+        if not is_local():
+            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
+            if not get_current_user().profile.remember:
+                Local.remove(HIST_FILE_PATH)
 
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
@@ -935,55 +948,8 @@ class BaseController(metaclass=ABCMeta):
                 try:
                     # Get input from user using auto-completion
                     if session and current_user.preferences.USE_PROMPT_TOOLKIT:
-                        # Check if tweet news is enabled
-                        if current_user.preferences.TOOLBAR_TWEET_NEWS:
-                            news_tweet = update_news_from_tweet_to_be_displayed()
-
-                            # Check if there is a valid tweet news to be displayed
-                            if news_tweet:
-                                an_input = session.prompt(
-                                    f"{get_flair()} {self.PATH} $ ",
-                                    completer=self.completer,
-                                    search_ignore_case=True,
-                                    bottom_toolbar=HTML(news_tweet),
-                                    style=Style.from_dict(
-                                        {
-                                            "bottom-toolbar": "#ffffff bg:#333333",
-                                        }
-                                    ),
-                                )
-
-                            else:
-                                # Check if toolbar hint was enabled
-                                if current_user.preferences.TOOLBAR_HINT:
-                                    an_input = session.prompt(
-                                        f"{get_flair()} {self.PATH} $ ",
-                                        completer=self.completer,
-                                        search_ignore_case=True,
-                                        bottom_toolbar=HTML(
-                                            '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
-                                            '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu'
-                                            '    <style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
-                                            '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
-                                            "see usage and available options    "
-                                            f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
-                                            f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
-                                        ),
-                                        style=Style.from_dict(
-                                            {
-                                                "bottom-toolbar": "#ffffff bg:#333333",
-                                            }
-                                        ),
-                                    )
-                                else:
-                                    an_input = session.prompt(
-                                        f"{get_flair()} {self.PATH} $ ",
-                                        completer=self.completer,
-                                        search_ignore_case=True,
-                                    )
-
                         # Check if toolbar hint was enabled
-                        elif current_user.preferences.TOOLBAR_HINT:
+                        if current_user.preferences.TOOLBAR_HINT:
                             an_input = session.prompt(
                                 f"{get_flair()} {self.PATH} $ ",
                                 completer=self.completer,
@@ -1060,7 +1026,11 @@ class BaseController(metaclass=ABCMeta):
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
-                    if not self.contains_keys(an_input):
+                    if not self.contains_keys(an_input) and an_input not in [
+                        "exit",
+                        "quit",
+                        "help",
+                    ]:
                         logger.warning("Replacing by %s", an_input)
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)

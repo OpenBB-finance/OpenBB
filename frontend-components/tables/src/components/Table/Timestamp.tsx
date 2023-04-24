@@ -12,7 +12,7 @@ export default function Timestamp() {
   const minutesPassed = Math.floor(counter / 60);
 
   return (
-    <div className="flex gap-2 items-center bg-grey-200 dark:bg-grey-800 rounded p-2 text-xs">
+    <div className="lg:flex gap-2 items-center bg-grey-200 dark:bg-grey-800 rounded p-2 text-xs hidden">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -41,7 +41,7 @@ export default function Timestamp() {
         </defs>
       </svg>
       <span className="whitespace-nowrap">
-        {minutesPassed > 0 ? `${minutesPassed} minutes ago` : "Just now"}
+        {minutesPassed > 0 ? `${minutesPassed} min ago` : "Just now"}
       </span>
     </div>
   );
