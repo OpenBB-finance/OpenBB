@@ -241,7 +241,7 @@ def display_discounted_cash_flow(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "dcf",
-            dcf,
+            dcf.transpose(),
             sheet_name,
         )
 
@@ -602,7 +602,7 @@ def display_key_metrics(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "metrics",
-            key_metrics,
+            key_metrics.transpose(),
             sheet_name,
         )
     else:

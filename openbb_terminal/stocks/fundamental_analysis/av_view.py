@@ -77,7 +77,7 @@ def display_key(symbol: str, export: str = "", sheet_name: Optional[str] = None)
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "key",
-        df_key,
+        df_key.transpose(),
         sheet_name,
     )
 
