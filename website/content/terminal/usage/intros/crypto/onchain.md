@@ -6,7 +6,7 @@ description: An Introduction to Cryptocurrency Onchain, within the Cryptocurrenc
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Onchain - Terminal" />
+<HeadTitle title="Onchain - Terminal | OpenBB Docs" />
 
 The Cryptocurrency Onchain menu provides access to features that determine market sentiment by leveraging data from a blockchain ledger. This can be, among other things, blockchain hashrates (<a href="/terminal/reference/crypto/onchain/hr/" target="_blank" rel="noreferrer noopener">hr</a>), confirmed transactions (<a href="/terminal/reference/crypto/onchain/btcct/" target="_blank" rel="noreferrer noopener">btcct</a>) and top traded crypto pairs (<a href="/terminal/reference/crypto/onchain/ttcp/" target="_blank" rel="noreferrer noopener">ttcp</a>).
 

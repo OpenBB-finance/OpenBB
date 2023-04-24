@@ -6,7 +6,7 @@ description: An Introduction to Non Fungible Token (NFT), within the Cryptocurre
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Non Fungible Token - Terminal" />
+<HeadTitle title="Non Fungible Token - Terminal | OpenBB Docs" />
 
 The Non Fungible Token (NFT) menu gives the user the ability to dive into certain NFTs (<a href="/terminal/reference/crypto/nft/stats/" target="_blank" rel="noreferrer noopener">stats</a>).
 

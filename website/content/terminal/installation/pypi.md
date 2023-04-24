@@ -30,7 +30,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="PyPI - Terminal" />
+<HeadTitle title="PyPI - Terminal | OpenBB Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 

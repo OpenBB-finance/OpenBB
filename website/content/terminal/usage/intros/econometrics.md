@@ -6,7 +6,7 @@ description: A brief guide to the Econometrics menu. It explains the general fun
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Econometrics - Terminal" />
+<HeadTitle title="Econometrics - Terminal | OpenBB Docs" />
 
 The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by (for example) adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
 
@@ -360,7 +360,7 @@ Here, the dataset is loaded in and an alias is used by using the `-a` argument. 
 │     bgod               Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression                                                                                                          │
 │     bpag               Breusch-Pagan heteroscedasticity test on the residuals of the regression                                                                                                                    │
 │                                                                                                                                                                                                                    │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── OpenBB Terminal v2.4.0 (https://openbb.co) ─╯                                                                      
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── OpenBB Terminal v2.4.0 (https://openbb.co) ─╯
 ```
 
 To run panel regressions with <a href="/terminal/reference/econometrics/panel" target="_blank" rel="noreferrer noopener">panel</a> it is important to define both _entity_ (e.g. company) and _time_ (e.g. year). Trying to run the `panel` command would right now result in the following:

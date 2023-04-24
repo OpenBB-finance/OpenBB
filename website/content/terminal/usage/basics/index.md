@@ -6,7 +6,7 @@ keywords: [basics, installation, commands, menus, your own data, introduction, o
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Basics - Terminal" />
+<HeadTitle title="Basics - Terminal | OpenBB Docs" />
 
 The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank" rel="noreferrer noopener">Command Line Interface (CLI)</a>
 which is installed by default on every computer. By opening the application you have installed from the [Installation Page](/terminal/installation/windows),

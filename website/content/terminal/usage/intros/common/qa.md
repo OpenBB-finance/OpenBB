@@ -6,7 +6,7 @@ description: This guide introduces the Quantitative Analysis menu, which is comm
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quantitative Analysis - Terminal" />
+<HeadTitle title="Quantitative Analysis - Terminal | OpenBB Docs" />
 
 <a href = "https://www.investopedia.com/terms/q/quantitativeanalysis.asp" target="_blank" rel="noreferrer noopener">Quantitative analysis (QA)</a> in finance is an approach that emphasizes mathematical and statistical analysis to help determine the value of a financial asset, such as a stock or option. The ultimate goal of financial quantitative analysis is to use quantifiable statistics and metrics to assist investors in making profitable investment decisions. Quantitative analysis is different from qualitative analysis, which looks at factors such as how companies are structured, the makeup of their management teams, and what their strengths and weaknesses are.
 

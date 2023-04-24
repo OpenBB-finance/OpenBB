@@ -26,7 +26,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Developer Issues - SDK" />
+<HeadTitle title="Developer Issues - SDK | OpenBB Docs" />
 
 ## Developer Issues
 

@@ -6,7 +6,7 @@ description: Introducing the Discovery menu, within the Stocks menu. This guide 
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Discovery - SDK" />
+<HeadTitle title="Discovery - SDK | OpenBB Docs" />
 
 The Disc module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.disc`
 ​

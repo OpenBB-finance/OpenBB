@@ -7,7 +7,7 @@ keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbus
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Exporting & Importing Data - Terminal" />
+<HeadTitle title="Exporting & Importing Data - Terminal | OpenBB Docs" />
 
 The OpenBB Terminal offers a variety of ways to export financial data. This can be through XLSX, CSV or JSON but also through PNG, JPG, PDF and SVG giving plenty of flexibility to export the data the way you desire.
 

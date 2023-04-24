@@ -30,7 +30,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation and Updates - Terminal" />
+<HeadTitle title="Installation and Updates - Terminal | OpenBB Docs" />
 
 ## Installation and Updates
 

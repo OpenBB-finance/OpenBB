@@ -6,7 +6,7 @@ description: This guide introduces the Technical Analysis menu, which is common 
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Technical Analysis - SDK" />
+<HeadTitle title="Technical Analysis - SDK | OpenBB Docs" />
 
 The Technical Analysis module is a toolkit for analyzing time-series data, at any resolution. The functions are a collection of formulas that fit into broad categories, and they are mostly derived from the pandas_ta library:
 

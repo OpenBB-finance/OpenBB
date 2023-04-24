@@ -8,7 +8,7 @@ keywords: [source, sources, default source, datasources, api keys, api, keys, op
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Changing Sources - Terminal" />
+<HeadTitle title="Changing Sources - Terminal | OpenBB Docs" />
 
 Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. Many have a default source, but you can change the default sources of each command via two methods.
 

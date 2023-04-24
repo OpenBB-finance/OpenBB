@@ -6,7 +6,7 @@ description: Learn how to lookup any ETF and obtain an overview about the chosen
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ETF - SDK" />
+<HeadTitle title="ETF - SDK | OpenBB Docs" />
 
 The ETF module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.etf`
 ​

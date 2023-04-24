@@ -6,7 +6,7 @@ description: This guide introduces the Government submenu, within the Stocks men
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Government - SDK" />
+<HeadTitle title="Government - SDK | OpenBB Docs" />
 
 The Government module provides programmatic access to the same functions from the [OpenBB Terminal](https://docs.openbb.co/terminal/usage/intros/stocks/gov). They provide an excellent supplement to fundamental and macroeconomic research. Please note that this module will only return data from the USA.
 
