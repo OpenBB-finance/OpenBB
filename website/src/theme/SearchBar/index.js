@@ -189,22 +189,13 @@ export default function SearchBar() {
     <div className="flex gap-2">
       <DocSearch {...siteConfig.themeConfig.algolia} />
       {!isIFrame && (
-        <div className="flex gap-2">
-          <a
-            href="https://openbb.co/"
-            className="_btn-dark text-xs hover:text-black"
-          >
-            <span className="md:hidden">Website</span>
-            <span className="hidden md:inline">OpenBB Website</span>
-          </a>
-          <a
-            href="https://my.openbb.co/"
-            className="_btn-dark text-xs hover:text-black"
-          >
-            <span className="md:hidden">Hub</span>
-            <span className="hidden md:inline">OpenBB Hub</span>
-          </a>
-        </div>
+        <a
+          href="https://my.openbb.co/"
+          className="_btn-dark text-xs hover:text-black"
+        >
+          <span className="md:hidden">Hub</span>
+          <span className="hidden md:inline">OpenBB Hub</span>
+        </a>
       )}
     </div>
   );
