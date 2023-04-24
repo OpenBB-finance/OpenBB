@@ -5,6 +5,10 @@ description: Learn to customize your OpenBB Bot experience
 keywords: [discord, telegram, slack, how to, explanation, openbb bot, openbb, guide, bot guide, customize, individual, server]
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Customization - Bot | OpenBB Docs" />
+
 ## Customizing your Bot Experience
 
 For the best user experience, you will want to customize the OpenBB Bot settings. Different types of customizations we offer are:

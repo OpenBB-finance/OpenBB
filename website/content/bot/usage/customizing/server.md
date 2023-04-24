@@ -5,6 +5,10 @@ description: Learn to customize your OpenBB Bot server experience.
 keywords: [discord, telegram, server, customizing, customization, how to, explanation, openbb bot, openbb, guide, bot guide]
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Server - Bot | OpenBB Docs" />
+
 ## Customizing your Server Bot Experience
 
 The Server plan for OpenBB Bot offers three different capabilities - Charting, BillBoard, and Auto Posting. Any server that registers with us on the [OpenBB HUB](https://my.openbb.co) gets access to set up one Auto Posting for free. Once you have paid plan you have full access to all these features.
