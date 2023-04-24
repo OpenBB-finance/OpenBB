@@ -6,7 +6,7 @@ description: The Comparison Analysis menu provides the user with tools for compa
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Comparison Analysis - SDK" />
+<HeadTitle title="Comparison Analysis - SDK | OpenBB Docs" />
 
 The CA module provides programmatic access to the commands from within the OpenBB Terminal menu. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ca`
 

@@ -6,7 +6,7 @@ description: The Introduction to Dark Pools & Short Data, within the Stocks menu
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Dark Pools and Short Data - SDK" />
+<HeadTitle title="Dark Pools and Short Data - SDK | OpenBB Docs" />
 
 The `DPS` sub-module contains the commands from the [Dark Pools and Short Data menu](https://docs.openbb.co/terminal/usage/intros/stocks/dark-pool-shorts) within the OpenBB Terminal. These functions are meant to supplement other research on technical trading factors, settlement schedules, market flow, and volume dynamics. Commands are specifically for US-listed equities, and the data is reported to [FINRA](https://www.finra.org/#/) on a lagging schedule. Some will also have a `_chart` companion.
 
@@ -216,4 +216,3 @@ openbb.stocks.dps.hsi()
 | 33 | RIDE     | Lordstown Motors Corp          | Nasdaq     | 20.69%     | 162.40M | 216.98M  | Auto & Truck Manufacturers                 |
 | 34 | FFIE     | Faraday Future Intelligent Ele | Nasdaq     | 20.67%     | 242.00M | 386.26M  | Auto & Truck Manufacturers                 |
 | 35 | IGMS     | IGM Biosciences Inc            | Nasdaq     | 20.57%     | 17.31M  | 29.14M   | Biotechnology & Medical Research           |
-

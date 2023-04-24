@@ -7,7 +7,7 @@ keywords: [source, sources, default source, datasources, api keys, api, keys, op
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Changing Sources - SDK" />
+<HeadTitle title="Changing Sources - SDK | OpenBB Docs" />
 
 Some functions have the built-in capability of requesting data from multiple sources. `obb.stocks.load` is one example of this type feature:
 

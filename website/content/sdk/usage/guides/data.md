@@ -7,7 +7,7 @@ keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbus
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Exporting and Importing Datasets - SDK" />
+<HeadTitle title="Exporting and Importing Datasets - SDK | OpenBB Docs" />
 
 The OpenBB SDK shares the `OpenBBUserData` folder with the Terminal, even with multiple versions installed on the same machine. Portfolio files, screener presets, and Matplotlib style sheets are all shared resources. This folder will be created after the first installation and it is read by subsequent installations. The default location for it is in the root of the operating system user account folder.
 

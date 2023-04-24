@@ -6,7 +6,7 @@ description: Learn about the Stocks menu - the high-level menu for the Public Eq
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Stocks - SDK" />
+<HeadTitle title="Stocks - SDK | OpenBB Docs" />
 
 The Stocks module provides the functionality of the Stocks menu from the OpenBB Terminal. The list below are the SDK functions within the Stocks module and a short description:
 

@@ -6,7 +6,7 @@ description: An Introduction to the Trading Hours menu, within the Stocks menu. 
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Trading Hours - SDK" />
+<HeadTitle title="Trading Hours - SDK | OpenBB Docs" />
 
 The Trading Hours sub-module is a set of functions for checking the status and hours of operation for markets globally.
 

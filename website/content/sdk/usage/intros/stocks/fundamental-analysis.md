@@ -6,7 +6,7 @@ description: This guide introduces the Fundamental Analysis menu within the Stoc
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Fundamental Analysis - SDK" />
+<HeadTitle title="Fundamental Analysis - SDK | OpenBB Docs" />
 
 The FA module provides programmatic access to the commands from within the OpenBB Terminal. To get the most out of these functions, we recommend obtaining API keys from:
 

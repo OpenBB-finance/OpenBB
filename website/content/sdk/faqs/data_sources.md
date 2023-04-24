@@ -25,7 +25,7 @@ keywords:
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Sources - SDK" />
+<HeadTitle title="Data Sources - SDK | OpenBB Docs" />
 
 ## Data and Sources
 

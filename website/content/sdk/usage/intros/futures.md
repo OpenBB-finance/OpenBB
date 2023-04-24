@@ -6,7 +6,7 @@ description: Learn how to use and see examples of the Futures menu, which provid
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Futures - SDK" />
+<HeadTitle title="Futures - SDK | OpenBB Docs" />
 
 The functions from the OpenBB Terminal Futures menu is part of the SDK layer, and provides methods for programmatically accessing the data and charts associated with them. Get started by importing the OpenBB SDK to the Python script or Jupyter Notebook file.
 

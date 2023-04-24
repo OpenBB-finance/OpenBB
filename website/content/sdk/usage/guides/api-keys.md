@@ -7,7 +7,7 @@ keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, 
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="API Keys - SDK" />
+<HeadTitle title="API Keys - SDK | OpenBB Docs" />
 
 ## The Keys Module
 
@@ -21,7 +21,7 @@ Which prints:
 
 ```console
     Set Reddit key
-  
+
     Parameters
     ----------
     client_id: str
@@ -44,7 +44,7 @@ Which prints:
     -------
     str
         Status of key set
-  
+
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb

@@ -7,7 +7,7 @@ keywords: [installation, installer, install, guide, mac, windows, linux, python,
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation - SDK" />
+<HeadTitle title="Installation - SDK | OpenBB Docs" />
 
 The OpenBB SDK provides programmatic access to all Terminal functions and much more. This layer of code allows users to build their own tools and applications on top of the existing architecture.
 

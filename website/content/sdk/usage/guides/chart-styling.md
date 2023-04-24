@@ -7,7 +7,7 @@ keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbus
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Chart Styling - SDK" />
+<HeadTitle title="Chart Styling - SDK | OpenBB Docs" />
 
 Within the OpenBB SDK, you can customize your chart style. You can switch between `dark` and `light` easily using this block of code:
 

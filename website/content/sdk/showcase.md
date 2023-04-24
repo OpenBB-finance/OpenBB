@@ -4,7 +4,7 @@ sidebar_position: 6
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Showcase - SDK" />
+<HeadTitle title="Showcase - SDK | OpenBB Docs" />
 
 import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 

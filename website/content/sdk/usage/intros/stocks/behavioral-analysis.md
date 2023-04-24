@@ -6,7 +6,7 @@ description: The Behavioural Analysis menu offers the user tools for gauging the
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Behavioral Analysis - SDK" />
+<HeadTitle title="Behavioral Analysis - SDK | OpenBB Docs" />
 
 The BA module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ba`
 ​

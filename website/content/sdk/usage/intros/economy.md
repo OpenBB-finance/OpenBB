@@ -6,7 +6,7 @@ description: Learn and see examples for the Economy menu, which enables users to
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Economy - SDK" />
+<HeadTitle title="Economy - SDK | OpenBB Docs" />
 
 The Economy module wraps the functions from the Economy menu of the OpenBB Terminal, and provides the user with more control over their workflow. In a Jupyter Notebook environment, it is quick and easy to get going. To get the most out of these functions, it is highly recommended to acquire API keys for:
 
