@@ -1,0 +1,996 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/balance-sheet-statement/AAPL?apikey=MOCK_API_KEY&limit=0&period=annual
+  response:
+    body:
+      string: "[\n  {\n    \"date\": \"2022-09-24\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"2022-10-28\",\n    \"acceptedDate\": \"2022-10-27 18:01:14\",\n    \"calendarYear\":
+        \"2022\",\n    \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 23646000000,\n
+        \   \"shortTermInvestments\": 24658000000,\n    \"cashAndShortTermInvestments\":
+        48304000000,\n    \"netReceivables\": 60932000000,\n    \"inventory\": 4946000000,\n
+        \   \"otherCurrentAssets\": 21223000000,\n    \"totalCurrentAssets\": 135405000000,\n
+        \   \"propertyPlantEquipmentNet\": 42117000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\":
+        0,\n    \"goodwillAndIntangibleAssets\": 0,\n    \"longTermInvestments\":
+        120805000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 54428000000,\n
+        \   \"totalNonCurrentAssets\": 217350000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        352755000000,\n    \"accountPayables\": 64115000000,\n    \"shortTermDebt\":
+        21110000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 7912000000,\n
+        \   \"otherCurrentLiabilities\": 60845000000,\n    \"totalCurrentLiabilities\":
+        153982000000,\n    \"longTermDebt\": 98959000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        49142000000,\n    \"totalNonCurrentLiabilities\": 148101000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 302083000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 64849000000,\n    \"retainedEarnings\":
+        -3068000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -11109000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        50672000000,\n    \"totalEquity\": 50672000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        352755000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        352755000000,\n    \"totalInvestments\": 145463000000,\n    \"totalDebt\":
+        120069000000,\n    \"netDebt\": 96423000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019322000108/0000320193-22-000108-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019322000108/aapl-20220924.htm\"\n
+        \ },\n  {\n    \"date\": \"2021-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2021-10-29\",\n
+        \   \"acceptedDate\": \"2021-10-28 18:04:28\",\n    \"calendarYear\": \"2021\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 34940000000,\n    \"shortTermInvestments\":
+        27699000000,\n    \"cashAndShortTermInvestments\": 62639000000,\n    \"netReceivables\":
+        51506000000,\n    \"inventory\": 6580000000,\n    \"otherCurrentAssets\":
+        14111000000,\n    \"totalCurrentAssets\": 134836000000,\n    \"propertyPlantEquipmentNet\":
+        39440000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 127877000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        48849000000,\n    \"totalNonCurrentAssets\": 216166000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 351002000000,\n    \"accountPayables\": 54763000000,\n
+        \   \"shortTermDebt\": 15613000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        7612000000,\n    \"otherCurrentLiabilities\": 47493000000,\n    \"totalCurrentLiabilities\":
+        125481000000,\n    \"longTermDebt\": 109106000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        53325000000,\n    \"totalNonCurrentLiabilities\": 162431000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 287912000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 57365000000,\n    \"retainedEarnings\":
+        5562000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 163000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        63090000000,\n    \"totalEquity\": 63090000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        351002000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        351002000000,\n    \"totalInvestments\": 155576000000,\n    \"totalDebt\":
+        124719000000,\n    \"netDebt\": 89779000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019321000105/0000320193-21-000105-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019321000105/aapl-20210925.htm\"\n
+        \ },\n  {\n    \"date\": \"2020-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2020-10-30\",\n
+        \   \"acceptedDate\": \"2020-10-29 18:06:25\",\n    \"calendarYear\": \"2020\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 38016000000,\n    \"shortTermInvestments\":
+        52927000000,\n    \"cashAndShortTermInvestments\": 90943000000,\n    \"netReceivables\":
+        37445000000,\n    \"inventory\": 4061000000,\n    \"otherCurrentAssets\":
+        11264000000,\n    \"totalCurrentAssets\": 143713000000,\n    \"propertyPlantEquipmentNet\":
+        36766000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 100887000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        42522000000,\n    \"totalNonCurrentAssets\": 180175000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 323888000000,\n    \"accountPayables\": 42296000000,\n
+        \   \"shortTermDebt\": 13769000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        6643000000,\n    \"otherCurrentLiabilities\": 42684000000,\n    \"totalCurrentLiabilities\":
+        105392000000,\n    \"longTermDebt\": 98667000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        54490000000,\n    \"totalNonCurrentLiabilities\": 153157000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 258549000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 50779000000,\n    \"retainedEarnings\":
+        14966000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -406000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        65339000000,\n    \"totalEquity\": 65339000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        323888000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        323888000000,\n    \"totalInvestments\": 153814000000,\n    \"totalDebt\":
+        112436000000,\n    \"netDebt\": 74420000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019320000096/0000320193-20-000096-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019320000096/aapl-20200926.htm\"\n
+        \ },\n  {\n    \"date\": \"2019-09-28\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2019-10-31\",\n
+        \   \"acceptedDate\": \"2019-10-30 18:12:36\",\n    \"calendarYear\": \"2019\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 48844000000,\n    \"shortTermInvestments\":
+        51713000000,\n    \"cashAndShortTermInvestments\": 100557000000,\n    \"netReceivables\":
+        45804000000,\n    \"inventory\": 4106000000,\n    \"otherCurrentAssets\":
+        12352000000,\n    \"totalCurrentAssets\": 162819000000,\n    \"propertyPlantEquipmentNet\":
+        37378000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 105341000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        32978000000,\n    \"totalNonCurrentAssets\": 175697000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 338516000000,\n    \"accountPayables\": 46236000000,\n
+        \   \"shortTermDebt\": 16240000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        5522000000,\n    \"otherCurrentLiabilities\": 37720000000,\n    \"totalCurrentLiabilities\":
+        105718000000,\n    \"longTermDebt\": 91807000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        50503000000,\n    \"totalNonCurrentLiabilities\": 142310000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 248028000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 45174000000,\n    \"retainedEarnings\":
+        45898000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -584000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        90488000000,\n    \"totalEquity\": 90488000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        338516000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        338516000000,\n    \"totalInvestments\": 157054000000,\n    \"totalDebt\":
+        108047000000,\n    \"netDebt\": 59203000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019319000119/0000320193-19-000119-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019319000119/a10-k20199282019.htm\"\n
+        \ },\n  {\n    \"date\": \"2018-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2018-11-05\",\n
+        \   \"acceptedDate\": \"2018-11-05 08:01:40\",\n    \"calendarYear\": \"2018\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 25913000000,\n    \"shortTermInvestments\":
+        40388000000,\n    \"cashAndShortTermInvestments\": 66301000000,\n    \"netReceivables\":
+        48995000000,\n    \"inventory\": 3956000000,\n    \"otherCurrentAssets\":
+        12087000000,\n    \"totalCurrentAssets\": 131339000000,\n    \"propertyPlantEquipmentNet\":
+        41304000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 170799000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        22283000000,\n    \"totalNonCurrentAssets\": 234386000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 365725000000,\n    \"accountPayables\": 55888000000,\n
+        \   \"shortTermDebt\": 20748000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        7543000000,\n    \"otherCurrentLiabilities\": 32687000000,\n    \"totalCurrentLiabilities\":
+        116866000000,\n    \"longTermDebt\": 93735000000,\n    \"deferredRevenueNonCurrent\":
+        2797000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 426000000,\n    \"otherNonCurrentLiabilities\":
+        44754000000,\n    \"totalNonCurrentLiabilities\": 141712000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 258578000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 40201000000,\n    \"retainedEarnings\":
+        70400000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -3454000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        107147000000,\n    \"totalEquity\": 107147000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        365725000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        365725000000,\n    \"totalInvestments\": 211187000000,\n    \"totalDebt\":
+        114483000000,\n    \"netDebt\": 88570000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019318000145/0000320193-18-000145-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019318000145/a10-k20189292018.htm\"\n
+        \ },\n  {\n    \"date\": \"2017-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2017-11-03\",\n
+        \   \"acceptedDate\": \"2017-11-03 08:01:37\",\n    \"calendarYear\": \"2017\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 20289000000,\n    \"shortTermInvestments\":
+        53892000000,\n    \"cashAndShortTermInvestments\": 74181000000,\n    \"netReceivables\":
+        35673000000,\n    \"inventory\": 4855000000,\n    \"otherCurrentAssets\":
+        13936000000,\n    \"totalCurrentAssets\": 128645000000,\n    \"propertyPlantEquipmentNet\":
+        33783000000,\n    \"goodwill\": 5717000000,\n    \"intangibleAssets\": 2298000000,\n
+        \   \"goodwillAndIntangibleAssets\": 8015000000,\n    \"longTermInvestments\":
+        194714000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 10162000000,\n
+        \   \"totalNonCurrentAssets\": 246674000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        375319000000,\n    \"accountPayables\": 49049000000,\n    \"shortTermDebt\":
+        18473000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 7548000000,\n
+        \   \"otherCurrentLiabilities\": 25744000000,\n    \"totalCurrentLiabilities\":
+        100814000000,\n    \"longTermDebt\": 97207000000,\n    \"deferredRevenueNonCurrent\":
+        2836000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 31504000000,\n    \"otherNonCurrentLiabilities\":
+        8911000000,\n    \"totalNonCurrentLiabilities\": 140458000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 241272000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 35867000000,\n    \"retainedEarnings\":
+        98330000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -150000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        134047000000,\n    \"totalEquity\": 134047000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        375319000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        375319000000,\n    \"totalInvestments\": 248606000000,\n    \"totalDebt\":
+        115680000000,\n    \"netDebt\": 95391000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019317000070/0000320193-17-000070-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019317000070/a10-k20179302017.htm\"\n
+        \ },\n  {\n    \"date\": \"2016-09-24\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2016-10-26\",\n
+        \   \"acceptedDate\": \"2016-10-26 16:42:16\",\n    \"calendarYear\": \"2016\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 20484000000,\n    \"shortTermInvestments\":
+        46671000000,\n    \"cashAndShortTermInvestments\": 67155000000,\n    \"netReceivables\":
+        29299000000,\n    \"inventory\": 2132000000,\n    \"otherCurrentAssets\":
+        8283000000,\n    \"totalCurrentAssets\": 106869000000,\n    \"propertyPlantEquipmentNet\":
+        27010000000,\n    \"goodwill\": 5414000000,\n    \"intangibleAssets\": 3206000000,\n
+        \   \"goodwillAndIntangibleAssets\": 8620000000,\n    \"longTermInvestments\":
+        170430000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 8757000000,\n
+        \   \"totalNonCurrentAssets\": 214817000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        321686000000,\n    \"accountPayables\": 37294000000,\n    \"shortTermDebt\":
+        11605000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 8080000000,\n
+        \   \"otherCurrentLiabilities\": 22027000000,\n    \"totalCurrentLiabilities\":
+        79006000000,\n    \"longTermDebt\": 75427000000,\n    \"deferredRevenueNonCurrent\":
+        2930000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 26019000000,\n    \"otherNonCurrentLiabilities\":
+        10055000000,\n    \"totalNonCurrentLiabilities\": 114431000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 193437000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 31251000000,\n    \"retainedEarnings\":
+        96364000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 634000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        128249000000,\n    \"totalEquity\": 128249000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        321686000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        321686000000,\n    \"totalInvestments\": 217101000000,\n    \"totalDebt\":
+        87032000000,\n    \"netDebt\": 66548000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000162828016020309/0001628280-16-020309-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000162828016020309/a201610-k9242016.htm\"\n
+        \ },\n  {\n    \"date\": \"2015-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2015-10-28\",\n
+        \   \"acceptedDate\": \"2015-10-28 16:31:09\",\n    \"calendarYear\": \"2015\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 21120000000,\n    \"shortTermInvestments\":
+        20481000000,\n    \"cashAndShortTermInvestments\": 41601000000,\n    \"netReceivables\":
+        30343000000,\n    \"inventory\": 2349000000,\n    \"otherCurrentAssets\":
+        15085000000,\n    \"totalCurrentAssets\": 89378000000,\n    \"propertyPlantEquipmentNet\":
+        22471000000,\n    \"goodwill\": 5116000000,\n    \"intangibleAssets\": 3893000000,\n
+        \   \"goodwillAndIntangibleAssets\": 9009000000,\n    \"longTermInvestments\":
+        164065000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 5556000000,\n
+        \   \"totalNonCurrentAssets\": 201101000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        290479000000,\n    \"accountPayables\": 35490000000,\n    \"shortTermDebt\":
+        10999000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 8940000000,\n
+        \   \"otherCurrentLiabilities\": 25181000000,\n    \"totalCurrentLiabilities\":
+        80610000000,\n    \"longTermDebt\": 53463000000,\n    \"deferredRevenueNonCurrent\":
+        3624000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 24062000000,\n    \"otherNonCurrentLiabilities\":
+        9365000000,\n    \"totalNonCurrentLiabilities\": 90514000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 171124000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 27416000000,\n    \"retainedEarnings\":
+        92284000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -345000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        119355000000,\n    \"totalEquity\": 119355000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        290479000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        290479000000,\n    \"totalInvestments\": 184546000000,\n    \"totalDebt\":
+        64462000000,\n    \"netDebt\": 43342000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312515356351/0001193125-15-356351-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312515356351/d17062d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2014-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2014-10-27\",\n
+        \   \"acceptedDate\": \"2014-10-27 17:11:55\",\n    \"calendarYear\": \"2014\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 13844000000,\n    \"shortTermInvestments\":
+        11233000000,\n    \"cashAndShortTermInvestments\": 25077000000,\n    \"netReceivables\":
+        27219000000,\n    \"inventory\": 2111000000,\n    \"otherCurrentAssets\":
+        14124000000,\n    \"totalCurrentAssets\": 68531000000,\n    \"propertyPlantEquipmentNet\":
+        20624000000,\n    \"goodwill\": 4616000000,\n    \"intangibleAssets\": 4142000000,\n
+        \   \"goodwillAndIntangibleAssets\": 8758000000,\n    \"longTermInvestments\":
+        130162000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 3764000000,\n
+        \   \"totalNonCurrentAssets\": 163308000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        231839000000,\n    \"accountPayables\": 30196000000,\n    \"shortTermDebt\":
+        6308000000,\n    \"taxPayables\": 1209000000,\n    \"deferredRevenue\": 8491000000,\n
+        \   \"otherCurrentLiabilities\": 17244000000,\n    \"totalCurrentLiabilities\":
+        63448000000,\n    \"longTermDebt\": 28987000000,\n    \"deferredRevenueNonCurrent\":
+        3031000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 20259000000,\n    \"otherNonCurrentLiabilities\":
+        4567000000,\n    \"totalNonCurrentLiabilities\": 56844000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 120292000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 23313000000,\n    \"retainedEarnings\":
+        87152000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 1082000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        111547000000,\n    \"totalEquity\": 111547000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        231839000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        231839000000,\n    \"totalInvestments\": 141395000000,\n    \"totalDebt\":
+        35295000000,\n    \"netDebt\": 21451000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312514383437/0001193125-14-383437-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312514383437/d783162d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2013-09-28\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2013-10-30\",\n
+        \   \"acceptedDate\": \"2013-10-29 20:38:28\",\n    \"calendarYear\": \"2013\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 14259000000,\n    \"shortTermInvestments\":
+        26287000000,\n    \"cashAndShortTermInvestments\": 40546000000,\n    \"netReceivables\":
+        20641000000,\n    \"inventory\": 1764000000,\n    \"otherCurrentAssets\":
+        10335000000,\n    \"totalCurrentAssets\": 73286000000,\n    \"propertyPlantEquipmentNet\":
+        16597000000,\n    \"goodwill\": 1577000000,\n    \"intangibleAssets\": 4179000000,\n
+        \   \"goodwillAndIntangibleAssets\": 5756000000,\n    \"longTermInvestments\":
+        106215000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 5146000000,\n
+        \   \"totalNonCurrentAssets\": 133714000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        207000000000,\n    \"accountPayables\": 22367000000,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 1200000000,\n    \"deferredRevenue\": 7435000000,\n
+        \   \"otherCurrentLiabilities\": 12656000000,\n    \"totalCurrentLiabilities\":
+        43658000000,\n    \"longTermDebt\": 16960000000,\n    \"deferredRevenueNonCurrent\":
+        2625000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 16489000000,\n    \"otherNonCurrentLiabilities\":
+        3719000000,\n    \"totalNonCurrentLiabilities\": 39793000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 83451000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 19764000000,\n    \"retainedEarnings\":
+        104256000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -471000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        123549000000,\n    \"totalEquity\": 123549000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        207000000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        207000000000,\n    \"totalInvestments\": 132502000000,\n    \"totalDebt\":
+        16960000000,\n    \"netDebt\": 2701000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312513416534/0001193125-13-416534-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312513416534/d590790d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2012-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2012-10-31\",\n
+        \   \"acceptedDate\": \"2012-10-31 17:07:19\",\n    \"calendarYear\": \"2012\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 10746000000,\n    \"shortTermInvestments\":
+        18383000000,\n    \"cashAndShortTermInvestments\": 29129000000,\n    \"netReceivables\":
+        18692000000,\n    \"inventory\": 791000000,\n    \"otherCurrentAssets\": 9041000000,\n
+        \   \"totalCurrentAssets\": 57653000000,\n    \"propertyPlantEquipmentNet\":
+        15452000000,\n    \"goodwill\": 1135000000,\n    \"intangibleAssets\": 4224000000,\n
+        \   \"goodwillAndIntangibleAssets\": 5359000000,\n    \"longTermInvestments\":
+        92122000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 5478000000,\n
+        \   \"totalNonCurrentAssets\": 118411000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        176064000000,\n    \"accountPayables\": 21175000000,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 1535000000,\n    \"deferredRevenue\": 5953000000,\n
+        \   \"otherCurrentLiabilities\": 9879000000,\n    \"totalCurrentLiabilities\":
+        38542000000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        2648000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 13847000000,\n    \"otherNonCurrentLiabilities\":
+        2817000000,\n    \"totalNonCurrentLiabilities\": 19312000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 57854000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 16422000000,\n    \"retainedEarnings\":
+        101289000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 499000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        118210000000,\n    \"totalEquity\": 118210000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        176064000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        176064000000,\n    \"totalInvestments\": 110505000000,\n    \"totalDebt\":
+        0,\n    \"netDebt\": -10746000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312512444068/0001193125-12-444068-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312512444068/d411355d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2011-09-24\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2011-10-26\",\n
+        \   \"acceptedDate\": \"2011-10-26 16:35:25\",\n    \"calendarYear\": \"2011\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 9815000000,\n    \"shortTermInvestments\":
+        16137000000,\n    \"cashAndShortTermInvestments\": 25952000000,\n    \"netReceivables\":
+        11717000000,\n    \"inventory\": 776000000,\n    \"otherCurrentAssets\": 6543000000,\n
+        \   \"totalCurrentAssets\": 44988000000,\n    \"propertyPlantEquipmentNet\":
+        7777000000,\n    \"goodwill\": 896000000,\n    \"intangibleAssets\": 3536000000,\n
+        \   \"goodwillAndIntangibleAssets\": 4432000000,\n    \"longTermInvestments\":
+        55618000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 3556000000,\n
+        \   \"totalNonCurrentAssets\": 71383000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        116371000000,\n    \"accountPayables\": 14632000000,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 1140000000,\n    \"deferredRevenue\": 4091000000,\n
+        \   \"otherCurrentLiabilities\": 8107000000,\n    \"totalCurrentLiabilities\":
+        27970000000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        1686000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 8159000000,\n    \"otherNonCurrentLiabilities\":
+        1941000000,\n    \"totalNonCurrentLiabilities\": 11786000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 39756000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 13331000000,\n    \"retainedEarnings\":
+        62841000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 443000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        76615000000,\n    \"totalEquity\": 76615000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        116371000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        116371000000,\n    \"totalInvestments\": 71755000000,\n    \"totalDebt\":
+        0,\n    \"netDebt\": -9815000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312511282113/0001193125-11-282113-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312511282113/d220209d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2010-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2010-10-27\",\n
+        \   \"acceptedDate\": \"2010-10-27 16:36:21\",\n    \"calendarYear\": \"2010\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 11261000000,\n    \"shortTermInvestments\":
+        14359000000,\n    \"cashAndShortTermInvestments\": 25620000000,\n    \"netReceivables\":
+        9924000000,\n    \"inventory\": 1051000000,\n    \"otherCurrentAssets\": 5083000000,\n
+        \   \"totalCurrentAssets\": 41678000000,\n    \"propertyPlantEquipmentNet\":
+        4768000000,\n    \"goodwill\": 741000000,\n    \"intangibleAssets\": 342000000,\n
+        \   \"goodwillAndIntangibleAssets\": 1083000000,\n    \"longTermInvestments\":
+        25391000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 2263000000,\n
+        \   \"totalNonCurrentAssets\": 33505000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        75183000000,\n    \"accountPayables\": 12015000000,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 210000000,\n    \"deferredRevenue\": 2984000000,\n
+        \   \"otherCurrentLiabilities\": 5513000000,\n    \"totalCurrentLiabilities\":
+        20722000000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        1139000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        5531000000,\n    \"totalNonCurrentLiabilities\": 6670000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 27392000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 10668000000,\n    \"retainedEarnings\":
+        37169000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -46000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        47791000000,\n    \"totalEquity\": 47791000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        75183000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        75183000000,\n    \"totalInvestments\": 39750000000,\n    \"totalDebt\": 0,\n
+        \   \"netDebt\": -11261000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312510238044/0001193125-10-238044-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312510238044/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2009-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2009-10-27\",\n
+        \   \"acceptedDate\": \"2009-10-27 16:18:29\",\n    \"calendarYear\": \"2009\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 5263000000,\n    \"shortTermInvestments\":
+        18201000000,\n    \"cashAndShortTermInvestments\": 23464000000,\n    \"netReceivables\":
+        5057000000,\n    \"inventory\": 455000000,\n    \"otherCurrentAssets\": 7289000000,\n
+        \   \"totalCurrentAssets\": 36265000000,\n    \"propertyPlantEquipmentNet\":
+        2954000000,\n    \"goodwill\": 206000000,\n    \"intangibleAssets\": 247000000,\n
+        \   \"goodwillAndIntangibleAssets\": 453000000,\n    \"longTermInvestments\":
+        10528000000,\n    \"taxAssets\": 259000000,\n    \"otherNonCurrentAssets\":
+        3392000000,\n    \"totalNonCurrentAssets\": 17586000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 53851000000,\n    \"accountPayables\": 5601000000,\n
+        \   \"shortTermDebt\": 0,\n    \"taxPayables\": 439000000,\n    \"deferredRevenue\":
+        10305000000,\n    \"otherCurrentLiabilities\": 2937000000,\n    \"totalCurrentLiabilities\":
+        19282000000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        4485000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 966000000,\n    \"otherNonCurrentLiabilities\":
+        1286000000,\n    \"totalNonCurrentLiabilities\": 6737000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 26019000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 8210000000,\n    \"retainedEarnings\":
+        19538000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 84000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        27832000000,\n    \"totalEquity\": 27832000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        53851000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        53851000000,\n    \"totalInvestments\": 28729000000,\n    \"totalDebt\": 0,\n
+        \   \"netDebt\": -5263000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312509214859/0001193125-09-214859-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312509214859/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2008-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2008-11-05\",\n
+        \   \"acceptedDate\": \"2008-11-05 06:16:23\",\n    \"calendarYear\": \"2008\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 11875000000,\n    \"shortTermInvestments\":
+        12615000000,\n    \"cashAndShortTermInvestments\": 24490000000,\n    \"netReceivables\":
+        4704000000,\n    \"inventory\": 509000000,\n    \"otherCurrentAssets\": 4987000000,\n
+        \   \"totalCurrentAssets\": 34690000000,\n    \"propertyPlantEquipmentNet\":
+        2455000000,\n    \"goodwill\": 207000000,\n    \"intangibleAssets\": 285000000,\n
+        \   \"goodwillAndIntangibleAssets\": 492000000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 138000000,\n    \"otherNonCurrentAssets\": 1797000000,\n
+        \   \"totalNonCurrentAssets\": 4882000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        39572000000,\n    \"accountPayables\": 5520000000,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 100000000,\n    \"deferredRevenue\": 4853000000,\n
+        \   \"otherCurrentLiabilities\": 3619000000,\n    \"totalCurrentLiabilities\":
+        14092000000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        3029000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 675000000,\n    \"otherNonCurrentLiabilities\":
+        746000000,\n    \"totalNonCurrentLiabilities\": 4450000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 18542000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 7177000000,\n    \"retainedEarnings\":
+        13845000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 8000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        21030000000,\n    \"totalEquity\": 21030000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        39572000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        39572000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
+        -11875000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312508224958/0001193125-08-224958-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312508224958/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2007-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2007-11-15\",\n
+        \   \"acceptedDate\": \"2007-11-15 16:49:37\",\n    \"calendarYear\": \"2007\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 9352000000,\n    \"shortTermInvestments\":
+        6034000000,\n    \"cashAndShortTermInvestments\": 15386000000,\n    \"netReceivables\":
+        4029000000,\n    \"inventory\": 346000000,\n    \"otherCurrentAssets\": 2195000000,\n
+        \   \"totalCurrentAssets\": 21956000000,\n    \"propertyPlantEquipmentNet\":
+        1832000000,\n    \"goodwill\": 38000000,\n    \"intangibleAssets\": 299000000,\n
+        \   \"goodwillAndIntangibleAssets\": 337000000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 88000000,\n    \"otherNonCurrentAssets\": 1134000000,\n
+        \   \"totalNonCurrentAssets\": 3391000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        25347000000,\n    \"accountPayables\": 4970000000,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 488000000,\n    \"deferredRevenue\": 1410000000,\n
+        \   \"otherCurrentLiabilities\": 2431000000,\n    \"totalCurrentLiabilities\":
+        9299000000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        830000000,\n    \"deferredTaxLiabilitiesNonCurrent\": 619000000,\n    \"otherNonCurrentLiabilities\":
+        67000000,\n    \"totalNonCurrentLiabilities\": 1516000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 10815000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 5368000000,\n    \"retainedEarnings\":
+        9101000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 63000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        14532000000,\n    \"totalEquity\": 14532000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        25347000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        25347000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
+        -9352000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746907009340/0001047469-07-009340-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746907009340/a2181030z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2006-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2006-12-29\",\n
+        \   \"acceptedDate\": \"2006-12-29 06:05:58\",\n    \"calendarYear\": \"2006\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 6392000000,\n    \"shortTermInvestments\":
+        3718000000,\n    \"cashAndShortTermInvestments\": 10110000000,\n    \"netReceivables\":
+        2845000000,\n    \"inventory\": 270000000,\n    \"otherCurrentAssets\": 1284000000,\n
+        \   \"totalCurrentAssets\": 14509000000,\n    \"propertyPlantEquipmentNet\":
+        1281000000,\n    \"goodwill\": 38000000,\n    \"intangibleAssets\": 139000000,\n
+        \   \"goodwillAndIntangibleAssets\": 177000000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 1238000000,\n    \"totalNonCurrentAssets\":
+        2696000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 17205000000,\n
+        \   \"accountPayables\": 3390000000,\n    \"shortTermDebt\": 0,\n    \"taxPayables\":
+        388000000,\n    \"deferredRevenue\": 746000000,\n    \"otherCurrentLiabilities\":
+        1947000000,\n    \"totalCurrentLiabilities\": 6471000000,\n    \"longTermDebt\":
+        0,\n    \"deferredRevenueNonCurrent\": 355000000,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        381000000,\n    \"otherNonCurrentLiabilities\": 14000000,\n    \"totalNonCurrentLiabilities\":
+        750000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        0,\n    \"totalLiabilities\": 7221000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
+        4355000000,\n    \"retainedEarnings\": 5607000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        22000000,\n    \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        9984000000,\n    \"totalEquity\": 9984000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        17205000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        17205000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
+        -6392000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465906084288/a06-25759_210k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465906084288/a06-25759_210k.htm\"\n
+        \ },\n  {\n    \"date\": \"2005-09-24\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2005-12-01\",\n
+        \   \"acceptedDate\": \"2005-11-30 21:22:48\",\n    \"calendarYear\": \"2005\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 3491000000,\n    \"shortTermInvestments\":
+        4770000000,\n    \"cashAndShortTermInvestments\": 8261000000,\n    \"netReceivables\":
+        1312000000,\n    \"inventory\": 165000000,\n    \"otherCurrentAssets\": 562000000,\n
+        \   \"totalCurrentAssets\": 10300000000,\n    \"propertyPlantEquipmentNet\":
+        817000000,\n    \"goodwill\": 69000000,\n    \"intangibleAssets\": 27000000,\n
+        \   \"goodwillAndIntangibleAssets\": 96000000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 183000000,\n    \"otherNonCurrentAssets\": 155000000,\n
+        \   \"totalNonCurrentAssets\": 1251000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        11551000000,\n    \"accountPayables\": 1779000000,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 501000000,\n    \"otherCurrentLiabilities\":
+        1204000000,\n    \"totalCurrentLiabilities\": 3484000000,\n    \"longTermDebt\":
+        0,\n    \"deferredRevenueNonCurrent\": 281000000,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        308000000,\n    \"otherNonCurrentLiabilities\": 12000000,\n    \"totalNonCurrentLiabilities\":
+        601000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        0,\n    \"totalLiabilities\": 4085000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
+        3521000000,\n    \"retainedEarnings\": 4005000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        0,\n    \"othertotalStockholdersEquity\": -60000000,\n    \"totalStockholdersEquity\":
+        7466000000,\n    \"totalEquity\": 7466000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        11551000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        11551000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
+        -3491000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465905058421/a05-20674_110k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465905058421/a05-20674_110k.htm\"\n
+        \ },\n  {\n    \"date\": \"2004-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2004-12-03\",\n
+        \   \"acceptedDate\": \"2004-12-02 18:05:49\",\n    \"calendarYear\": \"2004\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 2969000000,\n    \"shortTermInvestments\":
+        2495000000,\n    \"cashAndShortTermInvestments\": 5464000000,\n    \"netReceivables\":
+        1050000000,\n    \"inventory\": 101000000,\n    \"otherCurrentAssets\": 440000000,\n
+        \   \"totalCurrentAssets\": 7055000000,\n    \"propertyPlantEquipmentNet\":
+        707000000,\n    \"goodwill\": 80000000,\n    \"intangibleAssets\": 17000000,\n
+        \   \"goodwillAndIntangibleAssets\": 97000000,\n    \"longTermInvestments\":
+        0,\n    \"taxAssets\": 86000000,\n    \"otherNonCurrentAssets\": 105000000,\n
+        \   \"totalNonCurrentAssets\": 995000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        8050000000,\n    \"accountPayables\": 1451000000,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 544000000,\n    \"otherCurrentLiabilities\":
+        685000000,\n    \"totalCurrentLiabilities\": 2680000000,\n    \"longTermDebt\":
+        0,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        294000000,\n    \"otherNonCurrentLiabilities\": 0,\n    \"totalNonCurrentLiabilities\":
+        294000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        0,\n    \"totalLiabilities\": 2974000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
+        2514000000,\n    \"retainedEarnings\": 2670000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        -15000000,\n    \"othertotalStockholdersEquity\": -93000000,\n    \"totalStockholdersEquity\":
+        5076000000,\n    \"totalEquity\": 5076000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        8050000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        8050000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
+        -2969000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746904035975/a2147337z10-k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746904035975/a2147337z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2003-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2003-12-19\",\n
+        \   \"acceptedDate\": \"2003-12-19 17:25:45\",\n    \"calendarYear\": \"2003\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 3396000000,\n    \"shortTermInvestments\":
+        1170000000,\n    \"cashAndShortTermInvestments\": 4566000000,\n    \"netReceivables\":
+        950000000,\n    \"inventory\": 56000000,\n    \"otherCurrentAssets\": 315000000,\n
+        \   \"totalCurrentAssets\": 5887000000,\n    \"propertyPlantEquipmentNet\":
+        669000000,\n    \"goodwill\": 85000000,\n    \"intangibleAssets\": 24000000,\n
+        \   \"goodwillAndIntangibleAssets\": 109000000,\n    \"longTermInvestments\":
+        5000000,\n    \"taxAssets\": 60000000,\n    \"otherNonCurrentAssets\": 85000000,\n
+        \   \"totalNonCurrentAssets\": 928000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        6815000000,\n    \"accountPayables\": 1154000000,\n    \"shortTermDebt\":
+        304000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 368000000,\n
+        \   \"otherCurrentLiabilities\": 531000000,\n    \"totalCurrentLiabilities\":
+        2357000000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 235000000,\n    \"otherNonCurrentLiabilities\":
+        0,\n    \"totalNonCurrentLiabilities\": 235000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 2592000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 1926000000,\n    \"retainedEarnings\":
+        2394000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -35000000,\n
+        \   \"othertotalStockholdersEquity\": -62000000,\n    \"totalStockholdersEquity\":
+        4223000000,\n    \"totalEquity\": 4223000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6815000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        6815000000,\n    \"totalInvestments\": 1175000000,\n    \"totalDebt\": 304000000,\n
+        \   \"netDebt\": -3092000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746903041604/a2124888z10-k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746903041604/a2124888z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2002-09-28\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2002-12-19\",\n
+        \   \"acceptedDate\": \"2002-12-19 17:20:21\",\n    \"calendarYear\": \"2002\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 2252000000,\n    \"shortTermInvestments\":
+        2085000000,\n    \"cashAndShortTermInvestments\": 4337000000,\n    \"netReceivables\":
+        565000000,\n    \"inventory\": 45000000,\n    \"otherCurrentAssets\": 441000000,\n
+        \   \"totalCurrentAssets\": 5388000000,\n    \"propertyPlantEquipmentNet\":
+        621000000,\n    \"goodwill\": 85000000,\n    \"intangibleAssets\": 34000000,\n
+        \   \"goodwillAndIntangibleAssets\": 119000000,\n    \"longTermInvestments\":
+        39000000,\n    \"taxAssets\": 229000000,\n    \"otherNonCurrentAssets\": -98000000,\n
+        \   \"totalNonCurrentAssets\": 910000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
+        6298000000,\n    \"accountPayables\": 911000000,\n    \"shortTermDebt\": 0,\n
+        \   \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        747000000,\n    \"totalCurrentLiabilities\": 1658000000,\n    \"longTermDebt\":
+        316000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        0,\n    \"otherNonCurrentLiabilities\": 229000000,\n    \"totalNonCurrentLiabilities\":
+        545000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        0,\n    \"totalLiabilities\": 2203000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
+        1826000000,\n    \"retainedEarnings\": 2325000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        -56000000,\n    \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        4095000000,\n    \"totalEquity\": 4095000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6298000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        6298000000,\n    \"totalInvestments\": 2124000000,\n    \"totalDebt\": 316000000,\n
+        \   \"netDebt\": -1936000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746902007674/0001047469-02-007674-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746902007674/a2096490z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2001-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2001-12-21\",\n
+        \   \"acceptedDate\": \"2001-12-21 00:00:00\",\n    \"calendarYear\": \"2001\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 2310000000,\n    \"shortTermInvestments\":
+        2026000000,\n    \"cashAndShortTermInvestments\": 4336000000,\n    \"netReceivables\":
+        466000000,\n    \"inventory\": 11000000,\n    \"otherCurrentAssets\": 330000000,\n
+        \   \"totalCurrentAssets\": 5143000000,\n    \"propertyPlantEquipmentNet\":
+        564000000,\n    \"goodwill\": 66000000,\n    \"intangibleAssets\": 10000000,\n
+        \   \"goodwillAndIntangibleAssets\": 76000000,\n    \"longTermInvestments\":
+        128000000,\n    \"taxAssets\": 266000000,\n    \"otherNonCurrentAssets\":
+        -156000000,\n    \"totalNonCurrentAssets\": 878000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 6021000000,\n    \"accountPayables\": 801000000,\n
+        \   \"shortTermDebt\": 0,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 717000000,\n    \"totalCurrentLiabilities\":
+        1518000000,\n    \"longTermDebt\": 317000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        266000000,\n    \"totalNonCurrentLiabilities\": 583000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 2101000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 1693000000,\n    \"retainedEarnings\":
+        2260000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -33000000,\n
+        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        3920000000,\n    \"totalEquity\": 3920000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6021000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        6021000000,\n    \"totalInvestments\": 2154000000,\n    \"totalDebt\": 317000000,\n
+        \   \"netDebt\": -1993000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205701544436/a2066171z10-k405.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205701544436/a2066171z10-k405.htm\"\n
+        \ },\n  {\n    \"date\": \"2000-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2000-12-14\",\n
+        \   \"acceptedDate\": \"2000-12-14 00:00:00\",\n    \"calendarYear\": \"2000\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1191000000,\n    \"shortTermInvestments\":
+        2836000000,\n    \"cashAndShortTermInvestments\": 4027000000,\n    \"netReceivables\":
+        953000000,\n    \"inventory\": 33000000,\n    \"otherCurrentAssets\": 414000000,\n
+        \   \"totalCurrentAssets\": 5427000000,\n    \"propertyPlantEquipmentNet\":
+        313000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        1063000000,\n    \"totalNonCurrentAssets\": 1376000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 6803000000,\n    \"accountPayables\": 1157000000,\n
+        \   \"shortTermDebt\": 0,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 776000000,\n    \"totalCurrentLiabilities\":
+        1933000000,\n    \"longTermDebt\": 300000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 463000000,\n    \"otherNonCurrentLiabilities\":
+        0,\n    \"totalNonCurrentLiabilities\": 763000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 2696000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 1502000000,\n    \"retainedEarnings\":
+        2285000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -387000000,\n
+        \   \"othertotalStockholdersEquity\": 707000000,\n    \"totalStockholdersEquity\":
+        4107000000,\n    \"totalEquity\": 4107000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6803000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        6803000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 300000000,\n
+        \   \"netDebt\": -891000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205700053623/0000912057-00-053623-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205700053623/a2032880z10-k.txt\"\n
+        \ },\n  {\n    \"date\": \"1999-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1999-12-22\",\n
+        \   \"acceptedDate\": \"1999-12-22 00:00:00\",\n    \"calendarYear\": \"1999\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1326000000,\n    \"shortTermInvestments\":
+        1900000000,\n    \"cashAndShortTermInvestments\": 3226000000,\n    \"netReceivables\":
+        681000000,\n    \"inventory\": 20000000,\n    \"otherCurrentAssets\": 358000000,\n
+        \   \"totalCurrentAssets\": 4285000000,\n    \"propertyPlantEquipmentNet\":
+        318000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 339000000,\n    \"taxAssets\": 208000000,\n
+        \   \"otherNonCurrentAssets\": 11000000,\n    \"totalNonCurrentAssets\": 876000000,\n
+        \   \"otherAssets\": 0,\n    \"totalAssets\": 5161000000,\n    \"accountPayables\":
+        812000000,\n    \"shortTermDebt\": 0,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 737000000,\n    \"totalCurrentLiabilities\":
+        1549000000,\n    \"longTermDebt\": 300000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        208000000,\n    \"totalNonCurrentLiabilities\": 508000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 2057000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 1349000000,\n    \"retainedEarnings\":
+        1499000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 106000000,\n
+        \   \"othertotalStockholdersEquity\": 150000000,\n    \"totalStockholdersEquity\":
+        3104000000,\n    \"totalEquity\": 3104000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        5161000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        5161000000,\n    \"totalInvestments\": 2239000000,\n    \"totalDebt\": 300000000,\n
+        \   \"netDebt\": -1026000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205799010244/0000912057-99-010244-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000912057-99-010244.txt\"\n
+        \ },\n  {\n    \"date\": \"1998-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1998-09-25\",\n
+        \   \"acceptedDate\": \"1998-09-24 20:00:00\",\n    \"calendarYear\": \"1998\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1481000000,\n    \"shortTermInvestments\":
+        819000000,\n    \"cashAndShortTermInvestments\": 2300000000,\n    \"netReceivables\":
+        955000000,\n    \"inventory\": 78000000,\n    \"otherCurrentAssets\": 365000000,\n
+        \   \"totalCurrentAssets\": 3698000000,\n    \"propertyPlantEquipmentNet\":
+        348000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 173000000,\n    \"otherNonCurrentAssets\":
+        70000000,\n    \"totalNonCurrentAssets\": 591000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 4289000000,\n    \"accountPayables\": 719000000,\n
+        \   \"shortTermDebt\": 0,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 801000000,\n    \"totalCurrentLiabilities\":
+        1520000000,\n    \"longTermDebt\": 954000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        173000000,\n    \"totalNonCurrentLiabilities\": 1127000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 2647000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 633000000,\n    \"retainedEarnings\":
+        898000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -39000000,\n
+        \   \"othertotalStockholdersEquity\": 150000000,\n    \"totalStockholdersEquity\":
+        1642000000,\n    \"totalEquity\": 1642000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        4289000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        4289000000,\n    \"totalInvestments\": 819000000,\n    \"totalDebt\": 954000000,\n
+        \   \"netDebt\": -527000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \ },\n  {\n    \"date\": \"1997-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1997-12-05\",\n
+        \   \"acceptedDate\": \"1997-12-05 00:00:00\",\n    \"calendarYear\": \"1997\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1230000000,\n    \"shortTermInvestments\":
+        229000000,\n    \"cashAndShortTermInvestments\": 1459000000,\n    \"netReceivables\":
+        1035000000,\n    \"inventory\": 437000000,\n    \"otherCurrentAssets\": 493000000,\n
+        \   \"totalCurrentAssets\": 3424000000,\n    \"propertyPlantEquipmentNet\":
+        486000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 264000000,\n    \"otherNonCurrentAssets\":
+        59000000,\n    \"totalNonCurrentAssets\": 809000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 4233000000,\n    \"accountPayables\": 685000000,\n
+        \   \"shortTermDebt\": 25000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 1108000000,\n    \"totalCurrentLiabilities\":
+        1818000000,\n    \"longTermDebt\": 951000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        264000000,\n    \"totalNonCurrentLiabilities\": 1215000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 3033000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 498000000,\n    \"retainedEarnings\":
+        589000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -74000000,\n
+        \   \"othertotalStockholdersEquity\": 187000000,\n    \"totalStockholdersEquity\":
+        1200000000,\n    \"totalEquity\": 1200000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        4233000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        4233000000,\n    \"totalInvestments\": 229000000,\n    \"totalDebt\": 976000000,\n
+        \   \"netDebt\": -254000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746997006960/0001047469-97-006960-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0001047469-97-006960.txt\"\n
+        \ },\n  {\n    \"date\": \"1996-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1996-12-19\",\n
+        \   \"acceptedDate\": \"1996-12-19 00:00:00\",\n    \"calendarYear\": \"1996\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1552000000,\n    \"shortTermInvestments\":
+        193000000,\n    \"cashAndShortTermInvestments\": 1745000000,\n    \"netReceivables\":
+        1496000000,\n    \"inventory\": 662000000,\n    \"otherCurrentAssets\": 612000000,\n
+        \   \"totalCurrentAssets\": 4515000000,\n    \"propertyPlantEquipmentNet\":
+        598000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 354000000,\n    \"otherNonCurrentAssets\":
+        -103000000,\n    \"totalNonCurrentAssets\": 849000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 5364000000,\n    \"accountPayables\": 791000000,\n
+        \   \"shortTermDebt\": 186000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 1026000000,\n    \"totalCurrentLiabilities\":
+        2003000000,\n    \"longTermDebt\": 949000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        354000000,\n    \"totalNonCurrentLiabilities\": 1303000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 3306000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 439000000,\n    \"retainedEarnings\":
+        1634000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -30000000,\n
+        \   \"othertotalStockholdersEquity\": 15000000,\n    \"totalStockholdersEquity\":
+        2058000000,\n    \"totalEquity\": 2058000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        5364000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        5364000000,\n    \"totalInvestments\": 193000000,\n    \"totalDebt\": 1135000000,\n
+        \   \"netDebt\": -417000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019396000023/0000320193-96-000023-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-96-000023.txt\"\n
+        \ },\n  {\n    \"date\": \"1995-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1995-12-19\",\n
+        \   \"acceptedDate\": \"1995-12-19 00:00:00\",\n    \"calendarYear\": \"1995\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 756000000,\n    \"shortTermInvestments\":
+        196000000,\n    \"cashAndShortTermInvestments\": 952000000,\n    \"netReceivables\":
+        1931000000,\n    \"inventory\": 1775000000,\n    \"otherCurrentAssets\": 566000000,\n
+        \   \"totalCurrentAssets\": 5224000000,\n    \"propertyPlantEquipmentNet\":
+        711000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 702000000,\n    \"otherNonCurrentAssets\":
+        -406000000,\n    \"totalNonCurrentAssets\": 1007000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 6231000000,\n    \"accountPayables\": 1165000000,\n
+        \   \"shortTermDebt\": 461000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 699000000,\n    \"totalCurrentLiabilities\":
+        2325000000,\n    \"longTermDebt\": 303000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 0,\n    \"otherNonCurrentLiabilities\":
+        702000000,\n    \"totalNonCurrentLiabilities\": 1005000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 3330000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 398000000,\n    \"retainedEarnings\":
+        2464000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 78000000,\n
+        \   \"othertotalStockholdersEquity\": -39000000,\n    \"totalStockholdersEquity\":
+        2901000000,\n    \"totalEquity\": 2901000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        6231000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        6231000000,\n    \"totalInvestments\": 196000000,\n    \"totalDebt\": 764000000,\n
+        \   \"netDebt\": 8000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019395000016/0000320193-95-000016-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-95-000016.txt\"\n
+        \ },\n  {\n    \"date\": \"1994-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1994-12-13\",\n
+        \   \"acceptedDate\": \"1994-12-13 00:00:00\",\n    \"calendarYear\": \"1994\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1203488000,\n    \"shortTermInvestments\":
+        54368000,\n    \"cashAndShortTermInvestments\": 1257856000,\n    \"netReceivables\":
+        1581347000,\n    \"inventory\": 1088434000,\n    \"otherCurrentAssets\": 548815000,\n
+        \   \"totalCurrentAssets\": 4476452000,\n    \"propertyPlantEquipmentNet\":
+        667100000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        159194000,\n    \"totalNonCurrentAssets\": 826294000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 5302746000,\n    \"accountPayables\": 881717000,\n
+        \   \"shortTermDebt\": 292200000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 770388000,\n    \"totalCurrentLiabilities\":
+        1944305000,\n    \"longTermDebt\": 304000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 670668000,\n    \"otherNonCurrentLiabilities\":
+        472000,\n    \"totalNonCurrentLiabilities\": 975140000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 2919445000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 297929000,\n    \"retainedEarnings\":
+        2096206000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -785088000,\n
+        \   \"othertotalStockholdersEquity\": 774254000,\n    \"totalStockholdersEquity\":
+        2383301000,\n    \"totalEquity\": 2383301000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        5302746000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        5302746000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 596200000,\n
+        \   \"netDebt\": -607288000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019394000016/0000320193-94-000016-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-94-000016.txt\"\n
+        \ },\n  {\n    \"date\": \"1993-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1993-09-30\",\n
+        \   \"acceptedDate\": \"1993-09-29 20:00:00\",\n    \"calendarYear\": \"1993\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 676400000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 676400000,\n    \"netReceivables\":
+        1381900000,\n    \"inventory\": 1506600000,\n    \"otherCurrentAssets\": 773500000,\n
+        \   \"totalCurrentAssets\": 4338400000,\n    \"propertyPlantEquipmentNet\":
+        659500000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        173500000,\n    \"totalNonCurrentAssets\": 833000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 5171400000,\n    \"accountPayables\": 742600000,\n
+        \   \"shortTermDebt\": 823200000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 949400000,\n    \"totalCurrentLiabilities\":
+        2515200000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 629800000,\n    \"otherNonCurrentLiabilities\":
+        0,\n    \"totalNonCurrentLiabilities\": 629800000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 3145000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        1842600000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -753100000,\n
+        \   \"othertotalStockholdersEquity\": 936900000,\n    \"totalStockholdersEquity\":
+        2026400000,\n    \"totalEquity\": 2026400000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        5171400000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        5171400000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 823200000,\n
+        \   \"netDebt\": 146800000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \ },\n  {\n    \"date\": \"1992-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1992-09-30\",\n
+        \   \"acceptedDate\": \"1992-09-29 20:00:00\",\n    \"calendarYear\": \"1992\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 498600000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 498600000,\n    \"netReceivables\":
+        1087200000,\n    \"inventory\": 580100000,\n    \"otherCurrentAssets\": 1392500000,\n
+        \   \"totalCurrentAssets\": 3558400000,\n    \"propertyPlantEquipmentNet\":
+        462200000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        203100000,\n    \"totalNonCurrentAssets\": 665300000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 4223700000,\n    \"accountPayables\": 426900000,\n
+        \   \"shortTermDebt\": 184500000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 814100000,\n    \"totalCurrentLiabilities\":
+        1425500000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 610800000,\n    \"otherNonCurrentLiabilities\":
+        0,\n    \"totalNonCurrentLiabilities\": 610800000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 2036300000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        1904500000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -673400000,\n
+        \   \"othertotalStockholdersEquity\": 956300000,\n    \"totalStockholdersEquity\":
+        2187400000,\n    \"totalEquity\": 2187400000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        4223700000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        4223700000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 184500000,\n
+        \   \"netDebt\": -314100000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \ },\n  {\n    \"date\": \"1991-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1991-09-30\",\n
+        \   \"acceptedDate\": \"1991-09-29 20:00:00\",\n    \"calendarYear\": \"1991\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 604100000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 604100000,\n    \"netReceivables\":
+        907200000,\n    \"inventory\": 671700000,\n    \"otherCurrentAssets\": 680600000,\n
+        \   \"totalCurrentAssets\": 2863600000,\n    \"propertyPlantEquipmentNet\":
+        448000000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        182000000,\n    \"totalNonCurrentAssets\": 630000000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 3493600000,\n    \"accountPayables\": 357100000,\n
+        \   \"shortTermDebt\": 148600000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 711400000,\n    \"totalCurrentLiabilities\":
+        1217100000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 509900000,\n    \"otherNonCurrentLiabilities\":
+        -100000,\n    \"totalNonCurrentLiabilities\": 509800000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 1726900000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        1492000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -588000000,\n
+        \   \"othertotalStockholdersEquity\": 862700000,\n    \"totalStockholdersEquity\":
+        1766700000,\n    \"totalEquity\": 1766700000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        3493600000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        3493600000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 148600000,\n
+        \   \"netDebt\": -455500000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \ },\n  {\n    \"date\": \"1990-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1990-09-30\",\n
+        \   \"acceptedDate\": \"1990-09-29 20:00:00\",\n    \"calendarYear\": \"1990\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 374700000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 374700000,\n    \"netReceivables\":
+        761900000,\n    \"inventory\": 355500000,\n    \"otherCurrentAssets\": 911200000,\n
+        \   \"totalCurrentAssets\": 2403300000,\n    \"propertyPlantEquipmentNet\":
+        398200000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        174200000,\n    \"totalNonCurrentAssets\": 572400000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 2975700000,\n    \"accountPayables\": 340600000,\n
+        \   \"shortTermDebt\": 122600000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 563800000,\n    \"totalCurrentLiabilities\":
+        1027000000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 501800000,\n    \"otherNonCurrentLiabilities\":
+        100000,\n    \"totalNonCurrentLiabilities\": 501900000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 1528900000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        1312200000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -446700000,\n
+        \   \"othertotalStockholdersEquity\": 581300000,\n    \"totalStockholdersEquity\":
+        1446800000,\n    \"totalEquity\": 1446800000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        2975700000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        2975700000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 122600000,\n
+        \   \"netDebt\": -252100000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \ },\n  {\n    \"date\": \"1989-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1989-09-30\",\n
+        \   \"acceptedDate\": \"1989-09-29 20:00:00\",\n    \"calendarYear\": \"1989\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 438300000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 438300000,\n    \"netReceivables\":
+        792800000,\n    \"inventory\": 475400000,\n    \"otherCurrentAssets\": 587900000,\n
+        \   \"totalCurrentAssets\": 2294400000,\n    \"propertyPlantEquipmentNet\":
+        334200000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        115300000,\n    \"totalNonCurrentAssets\": 449500000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 2743900000,\n    \"accountPayables\": 334200000,\n
+        \   \"shortTermDebt\": 56800000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        0,\n    \"otherCurrentLiabilities\": 504300000,\n    \"totalCurrentLiabilities\":
+        895300000,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\": 0,\n
+        \   \"deferredTaxLiabilitiesNonCurrent\": 362900000,\n    \"otherNonCurrentLiabilities\":
+        0,\n    \"totalNonCurrentLiabilities\": 362900000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 1258200000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        1175900000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -309100000,\n
+        \   \"othertotalStockholdersEquity\": 618900000,\n    \"totalStockholdersEquity\":
+        1485700000,\n    \"totalEquity\": 1485700000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        2743900000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        2743900000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 56800000,\n
+        \   \"netDebt\": -381500000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \ },\n  {\n    \"date\": \"1988-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1988-09-30\",\n
+        \   \"acceptedDate\": \"1988-09-29 20:00:00\",\n    \"calendarYear\": \"1988\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 545700000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 545700000,\n    \"netReceivables\":
+        638800000,\n    \"inventory\": 461500000,\n    \"otherCurrentAssets\": 137000000,\n
+        \   \"totalCurrentAssets\": 1783000000,\n    \"propertyPlantEquipmentNet\":
+        207400000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        91700000,\n    \"totalNonCurrentAssets\": 299100000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 2082100000,\n    \"accountPayables\": 0,\n    \"shortTermDebt\":
+        127900000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        699200000,\n    \"totalCurrentLiabilities\": 827100000,\n    \"longTermDebt\":
+        0,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        251600000,\n    \"otherNonCurrentLiabilities\": 0,\n    \"totalNonCurrentLiabilities\":
+        251600000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        0,\n    \"totalLiabilities\": 1078700000,\n    \"preferredStock\": 0,\n    \"commonStock\":
+        0,\n    \"retainedEarnings\": 776500000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        -213000000,\n    \"othertotalStockholdersEquity\": 439900000,\n    \"totalStockholdersEquity\":
+        1003400000,\n    \"totalEquity\": 1003400000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        2082100000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        2082100000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 315000000,\n
+        \   \"netDebt\": -230700000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \ },\n  {\n    \"date\": \"1987-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1987-09-30\",\n
+        \   \"acceptedDate\": \"1987-09-29 20:00:00\",\n    \"calendarYear\": \"1987\",\n
+        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 565100000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 565100000,\n    \"netReceivables\":
+        405600000,\n    \"inventory\": 225800000,\n    \"otherCurrentAssets\": 110900000,\n
+        \   \"totalCurrentAssets\": 1307400000,\n    \"propertyPlantEquipmentNet\":
+        130400000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        40100000,\n    \"totalNonCurrentAssets\": 170500000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 1477900000,\n    \"accountPayables\": 0,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        478700000,\n    \"totalCurrentLiabilities\": 478700000,\n    \"longTermDebt\":
+        0,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        162800000,\n    \"otherNonCurrentLiabilities\": -100000,\n    \"totalNonCurrentLiabilities\":
+        162700000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        0,\n    \"totalLiabilities\": 641400000,\n    \"preferredStock\": 0,\n    \"commonStock\":
+        0,\n    \"retainedEarnings\": 573100000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        -158700000,\n    \"othertotalStockholdersEquity\": 422100000,\n    \"totalStockholdersEquity\":
+        836500000,\n    \"totalEquity\": 836500000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        1477900000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        1477900000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
+        -565100000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  },\n  {\n    \"date\":
+        \"1986-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\": \"USD\",\n
+        \   \"cik\": \"0000320193\",\n    \"fillingDate\": \"1986-09-30\",\n    \"acceptedDate\":
+        \"1986-09-29 20:00:00\",\n    \"calendarYear\": \"1986\",\n    \"period\":
+        \"FY\",\n    \"cashAndCashEquivalents\": 576200000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 576200000,\n    \"netReceivables\":
+        263100000,\n    \"inventory\": 108700000,\n    \"otherCurrentAssets\": 92900000,\n
+        \   \"totalCurrentAssets\": 1040900000,\n    \"propertyPlantEquipmentNet\":
+        107300000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        11900000,\n    \"totalNonCurrentAssets\": 119200000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 1160100000,\n    \"accountPayables\": 0,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        328500000,\n    \"totalCurrentLiabilities\": 328500000,\n    \"longTermDebt\":
+        0,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        137500000,\n    \"otherNonCurrentLiabilities\": 0,\n    \"totalNonCurrentLiabilities\":
+        137500000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        0,\n    \"totalLiabilities\": 466000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
+        0,\n    \"retainedEarnings\": 474300000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        -114700000,\n    \"othertotalStockholdersEquity\": 334500000,\n    \"totalStockholdersEquity\":
+        694100000,\n    \"totalEquity\": 694100000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        1160100000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        1160100000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
+        -576200000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  },\n  {\n    \"date\":
+        \"1985-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\": \"USD\",\n
+        \   \"cik\": \"0000320193\",\n    \"fillingDate\": \"1985-09-30\",\n    \"acceptedDate\":
+        \"1985-09-29 20:00:00\",\n    \"calendarYear\": \"1985\",\n    \"period\":
+        \"FY\",\n    \"cashAndCashEquivalents\": 337000000,\n    \"shortTermInvestments\":
+        0,\n    \"cashAndShortTermInvestments\": 337000000,\n    \"netReceivables\":
+        220200000,\n    \"inventory\": 167000000,\n    \"otherCurrentAssets\": 97900000,\n
+        \   \"totalCurrentAssets\": 822100000,\n    \"propertyPlantEquipmentNet\":
+        90400000,\n    \"goodwill\": 0,\n    \"intangibleAssets\": 0,\n    \"goodwillAndIntangibleAssets\":
+        0,\n    \"longTermInvestments\": 0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\":
+        23700000,\n    \"totalNonCurrentAssets\": 114100000,\n    \"otherAssets\":
+        0,\n    \"totalAssets\": 936200000,\n    \"accountPayables\": 0,\n    \"shortTermDebt\":
+        0,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        295400000,\n    \"totalCurrentLiabilities\": 295400000,\n    \"longTermDebt\":
+        0,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        90300000,\n    \"otherNonCurrentLiabilities\": 0,\n    \"totalNonCurrentLiabilities\":
+        90300000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        0,\n    \"totalLiabilities\": 385700000,\n    \"preferredStock\": 0,\n    \"commonStock\":
+        0,\n    \"retainedEarnings\": 320300000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
+        -85200000,\n    \"othertotalStockholdersEquity\": 315400000,\n    \"totalStockholdersEquity\":
+        550500000,\n    \"totalEquity\": 550500000,\n    \"totalLiabilitiesAndStockholdersEquity\":
+        936200000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        936200000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
+        -337000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '75795'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 12 Apr 2023 14:40:23 GMT
+      ETag:
+      - W/"12813-eXHaig19XZ8txB67SYcQ/0wtq/A"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

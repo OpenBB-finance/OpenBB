@@ -536,18 +536,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_spectrum",
-            [
-                "--g=sector",
-                "--export=png",
-            ],
-            "finviz_view.display_spectrum",
-            [],
-            dict(
-                group="sector",
-            ),
-        ),
-        (
             "call_map",
             [
                 "--period=1w",

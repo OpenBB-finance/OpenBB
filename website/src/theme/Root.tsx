@@ -1,11 +1,34 @@
-import Head from "@docusaurus/Head";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import posthog from "posthog-js";
+import { useLocation } from "@docusaurus/router";
 
 export const iFrameContext = createContext({
   isIFrame: false,
 });
 
 export const useIFrameContext = () => useContext(iFrameContext);
+
+posthog.init("phc_EqU3YjnV8OYmBlKanwWq222B8OHQksfmQBUtcVeteHR", {
+  api_host: "https://app.posthog.com",
+  autocapture: {
+    css_selector_allowlist: [".ph-capture"],
+  },
+  loaded: () => {
+    posthog.onFeatureFlags(function () {
+      if (!posthog.isFeatureEnabled("record-web")) {
+        posthog.stopSessionRecording();
+        console.log("Stopped session recording");
+      }
+      if (!posthog.isFeatureEnabled("collect-logs-web")) {
+        posthog.opt_out_capturing();
+        console.log("Opted out of capturing");
+      } else if (posthog.has_opted_out_capturing()) {
+        posthog.opt_in_capturing();
+        console.log("Opted in to capturing");
+      }
+    });
+  },
+});
 
 export default function Root({ children }) {
   const [isIFrame, setIsIFrame] = useState(false);
@@ -20,19 +43,19 @@ export default function Root({ children }) {
       });
     }
   }, []);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    posthog.capture("$pageview");
+  }, [location]);
+
   return (
     <iFrameContext.Provider
       value={{
         isIFrame,
       }}
     >
-      <Head>
-        <script
-          defer
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token": "100eb319cb954b9ea86aa757652c0958"}'
-        ></script>
-      </Head>
       {children}
     </iFrameContext.Provider>
   );

@@ -11,13 +11,9 @@ from openbb_terminal import (
     keys_model,
     keys_view,
 )
-from openbb_terminal.core.config.paths import (
-    PACKAGE_ENV_FILE,
-    REPOSITORY_ENV_FILE,
-    SETTINGS_ENV_FILE,
-)
 from openbb_terminal.core.session.constants import KEYS_URL
 from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.env_handler import get_reading_order
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -72,15 +68,25 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                         keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE
                     )
 
+    def get_source_hierarchy(self) -> str:
+        """Hierarchy is equivalent to reverse order of reading .env files.
+
+        Returns
+        -------
+        str
+            Source priority string.
+        """
+        reading_order = get_reading_order()
+        hierarchy = "\n        ".join(list(map(str, reversed(reading_order))))
+        return hierarchy if is_local() else f"{KEYS_URL}\n        {hierarchy}"
+
     def print_help(self, update_status: bool = False, reevaluate: bool = False):
         """Print help"""
         self.check_keys_status(reevaluate=reevaluate)
         mt = MenuText("keys/")
         mt.add_param(
             "_source",
-            f"{SETTINGS_ENV_FILE}\n        {PACKAGE_ENV_FILE}\n        {REPOSITORY_ENV_FILE}"
-            if is_local()
-            else KEYS_URL,
+            self.get_source_hierarchy(),
         )
         mt.add_raw("\n")
         mt.add_info("_keys_")

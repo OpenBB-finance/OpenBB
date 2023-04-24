@@ -68,7 +68,7 @@ def display_management(symbol: str, export: str = "", sheet_name: Optional[str] 
 
 # pylint: disable=R0913
 @log_start_end(log=logger)
-def price_target_from_analysts(
+def display_price_target_from_analysts(
     symbol: str,
     data: Optional[DataFrame] = None,
     start_date: Optional[str] = None,
@@ -126,9 +126,12 @@ def price_target_from_analysts(
         return console.print("[red]Could not get data for ticker.[/red]\n")
     if adjust_for_splits:
         df_splits = yahoo_finance_model.get_splits(symbol)
-        df_splits.index = df_splits.index.tz_convert(None)
-        adjusted_splits = partial(adjust_splits, splits=df_splits)
-        df_analyst_data["Price Target"] = df_analyst_data.apply(adjusted_splits, axis=1)
+        if not df_splits.empty:
+            df_splits.index = df_splits.index.tz_convert(None)
+            adjusted_splits = partial(adjust_splits, splits=df_splits)
+            df_analyst_data["Price Target"] = df_analyst_data.apply(
+                adjusted_splits, axis=1
+            )
 
     fig = OpenBBFigure(yaxis_title="Share Price").set_title(
         f"{symbol} (Time Series) and Price Target"
@@ -192,7 +195,7 @@ def price_target_from_analysts(
 
 
 @log_start_end(log=logger)
-def estimates(
+def display_estimates(
     symbol: str, estimate: str, export: str = "", sheet_name: Optional[str] = None
 ):
     """Display analysts' estimates for a given ticker. [Source: Business Insider]

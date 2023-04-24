@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 import requests
 
@@ -7,6 +7,7 @@ from openbb_terminal.core.session.constants import (
     BASE_URL,
     CONNECTION_ERROR_MSG,
     CONNECTION_TIMEOUT_MSG,
+    DEFAULT_ROUTINES_URL,
     TIMEOUT,
 )
 from openbb_terminal.core.session.current_system import get_current_system
@@ -301,15 +302,15 @@ def upload_user_field(
     timeout : int
         The timeout, by default TIMEOUT
     silent : bool
-        Whether to print the status, by default False
+        Whether to silence the console output, by default False
 
     Returns
     -------
     Optional[requests.Response]
         The response from the put request.
     """
+    console_print = console.print if not silent else lambda *args, **kwargs: None
     try:
-        console_print = console.print if not silent else lambda *args, **kwargs: None
         data: Dict[str, dict] = {key: value}
 
         console_print("Sending to OpenBB hub...")
@@ -338,7 +339,7 @@ def upload_user_field(
 def upload_config(
     key: str,
     value: str,
-    type_: Literal["keys", "settings", "terminal_style"],
+    type_: Literal["settings", "terminal_style"],
     auth_header: str,
     base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
@@ -351,7 +352,7 @@ def upload_config(
         The key to patch.
     value : str
         The value to patch.
-    type_ : Literal["keys", "settings", "terminal_style"]
+    type_ : Literal["settings", "terminal_style"]
         The type of the patch.
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
@@ -365,7 +366,7 @@ def upload_config(
     Optional[requests.Response]
         The response from the patch request.
     """
-    if type_ not in ["keys", "settings", "terminal_style"]:
+    if type_ not in ["settings", "terminal_style"]:
         console.print("[red]\nInvalid patch type.[/red]")
         return None
 
@@ -556,10 +557,12 @@ def delete_routine(
 
 def list_routines(
     auth_header: str,
+    fields: Optional[List[str]] = None,
     page: int = 1,
     size: int = 10,
     base_url=BASE_URL,
     timeout: int = TIMEOUT,
+    silent: bool = False,
 ) -> Optional[requests.Response]:
     """List all routines from the server.
 
@@ -567,6 +570,8 @@ def list_routines(
     ----------
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
+    fields : Optional[List[str]]
+        The fields to return, by default None
     page : int
         The page number.
     size : int
@@ -575,31 +580,73 @@ def list_routines(
         The base url, by default BASE_URL
     timeout : int
         The timeout, by default TIMEOUT
+    silent : bool
+        Whether to silence the console output, by default False
 
     Returns
     -------
     Optional[requests.Response]
         The response from the get request.
     """
-    fields = "name%2Cdescription"
-
+    console_print = console.print if not silent else lambda *args, **kwargs: None
     try:
+        if fields is None:
+            fields = ["name", "description", "version", "updated_date"]
+
+        fields_str = "%2C".join(fields)
         response = requests.get(
             headers={"Authorization": auth_header},
-            url=f"{base_url}terminal/script?fields={fields}&page={page}&size={size}",
+            url=f"{base_url}terminal/script?fields={fields_str}&page={page}&size={size}",
             timeout=timeout,
         )
         if response.status_code != 200:
-            console.print("[red]Failed to list your routines.[/red]")
+            console_print("[red]Failed to list your routines.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        console_print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        console_print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
-        console.print("[red]Failed to list your routines.[/red]")
+        console_print("[red]Failed to list your routines.[/red]")
+        return None
+
+
+def get_default_routines(
+    url: str = DEFAULT_ROUTINES_URL, timeout: int = TIMEOUT, silent: bool = False
+):
+    """Get the default routines from CMS.
+
+    Parameters
+    ----------
+    timeout : int
+        The timeout, by default TIMEOUT
+    silent : bool
+        Whether to silence the console output, by default False
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the get request.
+    """
+    console_print = console.print if not silent else lambda *args, **kwargs: None
+    try:
+        response = requests.get(
+            url=url,
+            timeout=timeout,
+        )
+        if response.status_code != 200:
+            console_print("[red]Failed to get default routines.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console_print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console_print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console_print("[red]Failed to get default routines.[/red]")
         return None
 
 
