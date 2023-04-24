@@ -4,6 +4,10 @@ keywords: [OpenBB, sdk, Options, stocks, derivatives, puts, calls, oi, vol, gree
 excerpt: This guide introduces the user to Options submenu within the Stocks menu.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Options - SDK" />
+
 The Options module wraps the Terminal commands for the SDK layer, providing programmatic access and greater flexibility for processing data.
 
 ## How to Use

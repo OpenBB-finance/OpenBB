@@ -4,6 +4,10 @@ keywords: [darkpools, dps, dark, pools, dp, short, shorts, naked, selling, sales
 description: The Introduction to Dark Pools & Short Data, within the Stocks menu, which explains how to use the menu and provides a brief explanation of the features.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Dark Pools and Short Data - SDK" />
+
 The `DPS` sub-module contains the commands from the [Dark Pools and Short Data menu](https://docs.openbb.co/terminal/usage/intros/stocks/dark-pool-shorts) within the OpenBB Terminal. These functions are meant to supplement other research on technical trading factors, settlement schedules, market flow, and volume dynamics. Commands are specifically for US-listed equities, and the data is reported to [FINRA](https://www.finra.org/#/) on a lagging schedule. Some will also have a `_chart` companion.
 
 ## How to Use

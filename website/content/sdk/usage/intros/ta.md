@@ -4,6 +4,10 @@ keywords: [technical, analysis, ta, t/a, intraday, daily, indicators, signals, a
 description: This guide introduces the Technical Analysis menu, which is common across many sections of the OpenBB Terminal.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Technical Analysis - SDK" />
+
 The Technical Analysis module is a toolkit for analyzing time-series data, at any resolution. The functions are a collection of formulas that fit into broad categories, and they are mostly derived from the pandas_ta library:
 
 - Momentum

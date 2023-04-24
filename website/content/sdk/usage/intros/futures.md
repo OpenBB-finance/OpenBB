@@ -4,6 +4,10 @@ keywords: [forex, currency, money, hedge, dollar, euro, futures, future, interes
 description: Learn how to use and see examples of the Futures menu, which provides historical prices and the current term structure for an asset.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Futures - SDK" />
+
 The functions from the OpenBB Terminal Futures menu is part of the SDK layer, and provides methods for programmatically accessing the data and charts associated with them. Get started by importing the OpenBB SDK to the Python script or Jupyter Notebook file.
 
 

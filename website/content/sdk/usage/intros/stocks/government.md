@@ -4,6 +4,10 @@ keywords: [government, house, senate, politician, lobby, lobbyist, contract, con
 description: This guide introduces the Government submenu, within the Stocks menu, by briefly explaining the features and how to use them, showing examples in context.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Government - SDK" />
+
 The Government module provides programmatic access to the same functions from the [OpenBB Terminal](https://docs.openbb.co/terminal/usage/intros/stocks/gov). They provide an excellent supplement to fundamental and macroeconomic research. Please note that this module will only return data from the USA.
 
 ## How to Use

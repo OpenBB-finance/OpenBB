@@ -4,6 +4,10 @@ keywords: [quantitative, analysis, qa, q/a, daily, indicators, signals, average,
 description: Learn how to use and see examples of the Quantitative Analysis menu, which is common across many sections of the OpenBB Terminal. This guide describes the features and commands.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Quantitative Analysis - SDK" />
+
 The `qa` module is the Terminal's Quantitative Analysis menu for the SDK environment. It provides users with more ways to interact with the library of functions, and provides cross-disciplinary utility. To activate the code completion for the menu, enter `.` after, `openbb.qa`.
 
 ## How to Use

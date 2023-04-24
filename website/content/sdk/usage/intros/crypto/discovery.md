@@ -4,6 +4,10 @@ keywords: [cryptocurrency, discovery, nft, app, decentralized, coins, function, 
 description: An Introduction to Cryptocurrency Discovery, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Discovery - SDK" />
+
 The Discovery sub-module contains the tools for finding new trends in Crpyto markets and making new discoveries. The commands within the menu are listed below along with a short description. The module is accessed by entering, `openbb.crypto.disc`, and then a `.` activates code completion and type hints.
 
 ## How to Use

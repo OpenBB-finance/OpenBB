@@ -4,6 +4,10 @@ keywords: [machine learning, statistics, artificial intelligence, deep learning,
 description: The Forecast menu is a machine learning toolkit that provides practitioners with high-level components that can quickly provide state-of-the-art results, be it with with classical or deep learning models, while also providing researchers with low-level components to build new approaches and custom tuned models.
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Forecast - SDK" />
+
 The Forecast module provides programmatic access to the same commands found in the OpenBB Terminal Forecast menu. The extensive library of models, built on top of the [u8darts](https://unit8co.github.io/darts/) library, are easily tuned with hyper-parameters.
 
 ## How to Use

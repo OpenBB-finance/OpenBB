@@ -3,6 +3,11 @@ title: Stocks
 keywords: [stocks, fundamental analysis, analysis, Behavioural, strategy, comparison, due diligence, discovery, dark pool, short, data, forecasting, fundamental, quantitative, government, forecating, ml, ai, machine learning, artificial intelligence, insider, trading, research, sector, industry, technical, trading hours, quote, market data, close, adjusted close, download, export, tools, openbb sdk]
 description: Learn about the Stocks menu - the high-level menu for the Public Equity asset class. It contains functions for searching and loading company market data, showing candle charts, quotes and company specifics via a large selection of sub-menus. Refer to each sub-menu's introductory guide for a more detailed explanation of the functions within.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stocks - SDK" />
+
 The Stocks module provides the functionality of the Stocks menu from the OpenBB Terminal. The list below are the SDK functions within the Stocks module and a short description:
 
 | Path                   |    Type    |                                             Description |

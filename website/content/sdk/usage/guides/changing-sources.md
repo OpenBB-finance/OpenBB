@@ -5,6 +5,10 @@ description: How to change which data sources are the default source for command
 keywords: [source, sources, default source, datasources, api keys, api, keys, openbb sdk, yfinance, yahoo finance, alphavantage polygon, EODHD]
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Changing Sources - SDK" />
+
 Some functions have the built-in capability of requesting data from multiple sources. `obb.stocks.load` is one example of this type feature:
 
 ```python
