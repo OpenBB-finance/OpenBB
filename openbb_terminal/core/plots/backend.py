@@ -155,7 +155,7 @@ class Backend(PyWry):
 
         posthog = dict(collect_logs=current_system.LOG_COLLECT)
         if (
-            posthog["collect_logs"]
+            current_system.LOG_COLLECT
             and current_user.profile.email
             and not self.logged_in
         ):
