@@ -27,30 +27,36 @@ def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
     """
     routines_dict = {}
 
-    response = Hub.get_default_routines(silent=silent)
-    if response and response.status_code == 200:
-        content = response.json()
-        data = content.get("data", [])
-        for routine in data:
-            name = routine.get("name", "")
-            if name:
-                routines_dict[name] = routine.get("script", "")
+    try:
+        response = Hub.get_default_routines(silent=silent)
+        if response and response.status_code == 200:
+            content = response.json()
+            data = content.get("data", [])
+            for routine in data:
+                name = routine.get("name", "")
+                if name:
+                    routines_dict[name] = routine.get("script", "")
+    except Exception:
+        console.print("[red]\nFailed to download default routines.[/red]")
 
-    # Number of routines downloaded is limited to 100
-    response = Hub.list_routines(
-        auth_header=auth_header,
-        fields=["name", "script"],
-        page=1,
-        size=100,
-        silent=silent,
-    )
-    if response and response.status_code == 200:
-        content = response.json()
-        items = content.get("items", [])
-        for routine in items:
-            name = routine.get("name", "")
-            if name:
-                routines_dict[name] = routine.get("script", "")
+    try:
+        # Number of routines downloaded is limited to 100
+        response = Hub.list_routines(
+            auth_header=auth_header,
+            fields=["name", "script"],
+            page=1,
+            size=100,
+            silent=silent,
+        )
+        if response and response.status_code == 200:
+            content = response.json()
+            items = content.get("items", [])
+            for routine in items:
+                name = routine.get("name", "")
+                if name:
+                    routines_dict[name] = routine.get("script", "")
+    except Exception:
+        console.print("[red]\nFailed to download personal routines.[/red]")
 
     return routines_dict
 

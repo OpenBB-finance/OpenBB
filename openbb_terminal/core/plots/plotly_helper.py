@@ -5,13 +5,17 @@ import textwrap
 from datetime import datetime
 from math import floor
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, TypeVar, Union
-
-try:
-    # pylint: disable=W0611 # noqa: F401
-    from darts import TimeSeries
-except ImportError:
-    pass
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+)
 
 import numpy as np
 import pandas as pd
@@ -34,6 +38,13 @@ from openbb_terminal.core.plots.config.openbb_styles import (
 )
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
+
+if TYPE_CHECKING:
+    try:
+        # pylint: disable=W0611 # noqa: F401
+        from darts import TimeSeries
+    except ImportError:
+        pass
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
@@ -85,6 +96,7 @@ class TerminalStyle:
         self.load_available_styles()
         self.load_style(plt_style)
         self.apply_console_style(console_style)
+        self.apply_style()
 
     def apply_console_style(self, style: Optional[str] = None) -> None:
         """Apply the style to the console."""
@@ -246,7 +258,6 @@ theme = TerminalStyle(
     get_current_user().preferences.CHART_STYLE,
     get_current_user().preferences.RICH_STYLE,
 )
-theme.apply_style()
 
 
 # pylint: disable=R0913
