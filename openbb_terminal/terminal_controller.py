@@ -21,7 +21,6 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
-from rich import panel
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.account.account_controller import (
