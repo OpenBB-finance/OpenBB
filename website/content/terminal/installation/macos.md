@@ -63,13 +63,13 @@ Step by step instructions:
 1. Download the PKG file from the links above.
 
 2. Launch the PKG installer by double-clicking on it.
-<img width="634" alt="image" src="https://user-images.githubusercontent.com/11668535/234018847-f3e76345-7d4e-445d-a462-64e0d6d902bd.png">
+<img width="634" alt="image" src="https://user-images.githubusercontent.com/11668535/234018847-f3e76345-7d4e-445d-a462-64e0d6d902bd.png"></img>
 
-3. Follow the Installer prompt. You will be asked to enter your system password. 
-<img width="638" alt="image" src="https://user-images.githubusercontent.com/11668535/234032407-8ca009a7-0545-4196-b671-5bcc4c5cea9b.png">
+3. Follow the Installer prompt. You will be asked to enter your system password.
+<img width="638" alt="image" src="https://user-images.githubusercontent.com/11668535/234032407-8ca009a7-0545-4196-b671-5bcc4c5cea9b.png"></img>
 
 4. This process installs the application into the `/Application/OpenBB Terminal` folder.
-<img width="618" alt="image" src="https://user-images.githubusercontent.com/11668535/234034347-cb2a80a0-81bb-4e8d-b91e-b636e161cf32.png">
+<img width="618" alt="image" src="https://user-images.githubusercontent.com/11668535/234034347-cb2a80a0-81bb-4e8d-b91e-b636e161cf32.png"></img>
 
 5. Launch the application by double-clicking on the `OpenBB Terminal` application. If everything was successful you should see a screen like the one below:
 
