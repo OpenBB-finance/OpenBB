@@ -6,7 +6,7 @@ description: A brief guide to the Economy menu. It includes an introduction to t
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Economny - Terminal" />
+<HeadTitle title="Economny - Terminal | OpenBB Docs" />
 
 The Economy menu enables you to obtain market overviews (<a href="/terminal/reference/economy/overview" target="_blank" rel="noreferrer noopener">overview</a> and <a href="/terminal/reference/economy/futures" target="_blank" rel="noreferrer noopener">futures</a>), see yield curves of any country (<a href="/terminal/reference/economy/ycrv" target="_blank" rel="noreferrer noopener">ycrv</a>) and discover sector, industry and country performance (<a href="/terminal/reference/economy/performance" target="_blank" rel="noreferrer noopener">performance</a>). Next to that, the databases of <a href="https://www.econdb.com/" target="_blank" rel="noreferrer noopener">EconDB</a>, <a href="https://fred.stlouisfed.org/" target="_blank" rel="noreferrer noopener">FRED</a> and <a href="https://finance.yahoo.com/" target="_blank" rel="noreferrer noopener">Yahoo Finance</a> can be accessed via <a href="/terminal/reference/economy/macro" target="_blank" rel="noreferrer noopener">macro</a>, <a href="/terminal/reference/economy/fred" target="_blank" rel="noreferrer noopener">fred</a> and <a href="/terminal/reference/economy/index_cmd" target="_blank" rel="noreferrer noopener">index</a> respectively. All of this can also be further analysed with <a href="/terminal/usage/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a> (`forecast`) and <a href="/terminal/usage/intros/common/qa" target="_blank" rel="noreferrer noopener">Quantitative Techniques</a> (`qa`).
 

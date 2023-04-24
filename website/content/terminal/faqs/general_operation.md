@@ -28,7 +28,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="General Operation - Terminal" />
+<HeadTitle title="General Operation - Terminal | OpenBB Docs" />
 
 Both Windows and MacOS provide a "developer mode", and enabling it may help to overcome system-related issues.
 

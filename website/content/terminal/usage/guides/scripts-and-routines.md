@@ -7,12 +7,12 @@ keywords: [scripts, routines, .do file, stata, spss, r studio, python, automatio
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Scripts & Routines - Terminal" />
+<HeadTitle title="Scripts & Routines - Terminal | OpenBB Docs" />
 
 OpenBB Routine Scripts, `.openbb`, are simple scripts for automating processes and repetitive tasks. They represent a 1:1 relationship with any command in the OpenBB Terminal; one line represents one function. Other software like STATA, SPSS and R-Studio share similar functionality in the area of Econometrics and the OpenBB routine scripts venture into the area of financial analysis and data collection to speed up the process. For example, not only is it possible to automate a set of functionality, it is also possible to export a large amount of data to Excel through the usage of `--export` and `--sheet-name` making data collection efficient, reproducible and customizable.
 
 ## Introduction
-A routine file can be created or modified in any basic text editor. The only difference between a plain-text file and an OpenBB Routine file is the `.openbb` file extension. Additionally, routine files can be captured with the macro recorder, controlled with global commands, `record` & `stop`. Upon `stop`. The script is automatically saved to the, `~/OpenBBUserData/routines/`, folder.  
+A routine file can be created or modified in any basic text editor. The only difference between a plain-text file and an OpenBB Routine file is the `.openbb` file extension. Additionally, routine files can be captured with the macro recorder, controlled with global commands, `record` & `stop`. Upon `stop`. The script is automatically saved to the, `~/OpenBBUserData/routines/`, folder.
 
 Routine files stored there are callable from the main menu, using the `exe` function. By deploying variable arguments - `$ARGV[0]` - to any line in the script, dates, symbols, exported filenames, or any Terminal function argument, scripts become dynamic.
 
@@ -43,7 +43,7 @@ The following shows the script being ran and the charts that are created because
 
 ![Routines](https://user-images.githubusercontent.com/46355364/223204998-70d9e5da-f84e-4c22-90c4-576dcf87c1df.png)
 
-After the script is finished, you are able to access the routine file when using `exe --file`. The naming of the file can differ for you based on the time you are executing the script. You can find this script inside the `routines` folder within the `OpenBBUserData` folder (as found [here](https://docs.openbb.co/terminal/usage/guides/data)) 
+After the script is finished, you are able to access the routine file when using `exe --file`. The naming of the file can differ for you based on the time you are executing the script. You can find this script inside the `routines` folder within the `OpenBBUserData` folder (as found [here](https://docs.openbb.co/terminal/usage/guides/data))
 
 ![Routines](https://user-images.githubusercontent.com/46355364/223205394-77e7a33d-e9fa-4686-b32f-e8d183b265e6.png)
 

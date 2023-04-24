@@ -30,7 +30,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Launching - Terminal" />
+<HeadTitle title="Launching - Terminal | OpenBB Docs" />
 
 <details><summary>Mac: Invalid CPU Type - Terminal fails to launch.</summary>
 

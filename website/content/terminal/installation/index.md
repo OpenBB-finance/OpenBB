@@ -27,7 +27,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation - Terminal" />
+<HeadTitle title="Installation - Terminal | OpenBB Docs" />
 
 import LinkCard from "@site/src/components/General/LinkCard";
 

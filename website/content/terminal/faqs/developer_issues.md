@@ -26,7 +26,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Developer Issues - Terminal" />
+<HeadTitle title="Developer Issues - Terminal | OpenBB Docs" />
 
 <details><summary>What branch on GitHub should pull requests be submitted to?</summary>
 
