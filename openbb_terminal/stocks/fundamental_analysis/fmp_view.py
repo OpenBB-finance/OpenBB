@@ -345,7 +345,7 @@ def display_income_statement(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "income",
-            income,
+            income.transpose(),
             sheet_name,
             fig,
         )
@@ -449,7 +449,7 @@ def display_balance_sheet(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "balance",
-            balance,
+            balance.transpose(),
             sheet_name,
             fig,
         )
@@ -553,7 +553,7 @@ def display_cash_flow(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "cash",
-            cash,
+            cash.transpose(),
             sheet_name,
             fig,
         )
@@ -650,7 +650,7 @@ def display_financial_ratios(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "grratiosowth",
-            ratios,
+            ratios.transpose(),
             sheet_name,
         )
     else:
@@ -697,7 +697,7 @@ def display_financial_statement_growth(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "growth",
-            growth,
+            growth.transpose(),
             sheet_name,
         )
     else:
