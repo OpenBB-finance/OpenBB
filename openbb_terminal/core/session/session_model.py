@@ -137,7 +137,7 @@ def download_and_save_routines(auth_header: str):
         for name, content in routines.items():
             save_routine(file_name=f"{name}.openbb", routine=content, force=True)
     except Exception:
-        console.print("[red]Failed to download and save routines.[/red]")
+        console.print("[red]\nFailed to download and save routines.[/red]")
 
 
 def update_backend_sources(auth_header, configs, silent: bool = True):
