@@ -129,11 +129,14 @@ class AccountController(BaseController):
         List[Dict[str, str]]
             The default routines
         """
-        response = Hub.get_default_routines()
-        if response and response.status_code == 200:
-            d = response.json()
-            return d.get("data", [])
-        return []
+        try:
+            response = Hub.get_default_routines()
+            if response and response.status_code == 200:
+                d = response.json()
+                return d.get("data", [])
+            return []
+        except Exception:
+            return []
 
     def print_help(self):
         """Print help"""
