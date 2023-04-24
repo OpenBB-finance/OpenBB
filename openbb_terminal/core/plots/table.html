@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OpenBB Interactive Tables</title>
     <script>
-      if (window.json_data?.collect_logs) {
+      if (window.json_data?.posthog?.collect_logs) {
         !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
         posthog.init("phc_vhssDAMod5qIplznQ75Kdgz4aB1qPFmeVmfEOZ4hkRw", {
           api_host: "https://app.posthog.com",
@@ -17,9 +17,18 @@
             if (window.json_data) {
               const data = JSON.parse(window.json_data);
 
-              let user_id = data?.user_id || "";
-              if (user_id != "" && user_id != "REPLACE_ME") {
-                posthog.identify(user_id);
+              const log_id = data?.log_id || "";
+              const posthog_obj = data?.posthog || {};
+
+              if (log_id != "" && log_id != "REPLACE_ME") {
+                if (posthog_obj?.user_id) {
+                  posthog.identify(posthog_obj.user_id, {
+                    email: posthog_obj.email,
+                  });
+                  posthog.alias(posthog_obj.user_id, log_id);
+                } else {
+                  posthog.identify(log_id);
+                }
               }
 
               posthog.capture("table", {

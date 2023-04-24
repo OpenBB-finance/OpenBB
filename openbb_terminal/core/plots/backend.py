@@ -78,6 +78,7 @@ class Backend(PyWry):
             self.isatty = False
 
         self.WIDTH, self.HEIGHT = 1400, 762
+        self.logged_in: bool = False
 
         atexit.register(self.close)
 
@@ -149,13 +150,30 @@ class Backend(PyWry):
 
     def get_json_update(self, cmd_loc: str, theme: Optional[str] = None) -> dict:
         """Get the json update for the backend."""
+        current_user = get_current_user()
+        current_system = get_current_system()
+
+        posthog = dict(collect_logs=current_system.LOG_COLLECT)
+        if (
+            posthog["collect_logs"]
+            and current_user.profile.email
+            and not self.logged_in
+        ):
+            self.logged_in = True
+            posthog.update(
+                dict(
+                    user_id=current_user.profile.uuid,
+                    email=current_user.profile.email,
+                )
+            )
+
         return dict(
-            theme=theme or get_current_user().preferences.CHART_STYLE,
-            user_id=get_current_system().LOGGING_APP_ID,
+            theme=theme or current_user.preferences.CHART_STYLE,
+            log_id=current_system.LOGGING_APP_ID,
             pywry_version=self.__version__,
-            terminal_version=get_current_system().VERSION,
-            python_version=get_current_system().PYTHON_VERSION,
-            collect_logs=get_current_system().LOG_COLLECT,
+            terminal_version=current_system.VERSION,
+            python_version=current_system.PYTHON_VERSION,
+            posthog=posthog,
             command_location=cmd_loc,
         )
 
