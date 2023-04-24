@@ -89,6 +89,7 @@ This file contents the settings to pull and run OpenBB Terminal Docker image.
 </TabItem>
 
 <TabItem value="MacOS" label="MacOS">
+
 **Install Docker Desktop**
 
 You can find `Docker Desktop` for MacOS here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
@@ -167,6 +168,7 @@ This file contents the settings to pull and run OpenBB Terminal Docker image.
 The `xhost +$IP` and `DISPLAY=$IP:0` parts are there to allow charts display.
 </TabItem>
 <TabItem value="Linux" label="Linux">
+
 **Install Docker Desktop**
 
 You can find `Docker Desktop` for Linux here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
