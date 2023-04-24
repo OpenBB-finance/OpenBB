@@ -17,7 +17,7 @@ Absolute paths are also valid to-and-from any point.  From the [`/stocks/options
 
 ## Auto Complete
 
-The OpenBB Terminal is equipped with an auto completion engine that presents choices based on the current menu.  Whenever you start typing, the prompt will appear. When the function contains optional arguments, pressing the `space bar` after typing the command will present the list of available arguments.  This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders.  Choices - where they are bound by a defined list - are searchable with the up and down arrow keys.
+The OpenBB Terminal is equipped with an auto completion engine that presents choices based on the current menu.  Whenever you start typing, the prompt will appear. When the function contains arguments, pressing the `space bar` after typing the command will present the list of available arguments.  This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders.  Choices - where they are bound by a defined list - are searchable with the up and down arrow keys.
 
 ![Auto Complete](https://user-images.githubusercontent.com/85772166/233247702-f707531c-2c65-4380-a662-cd4bc2ae0199.png)
 
@@ -151,7 +151,7 @@ The main menu, or the home screen, contains both menus and commands.  Some of th
 
 ### Additional Global Commands
 
-The commands listed below are not displayed on a Terminal menu, but are active globally.
+The commands listed below are not displayed on any Terminal menu, but are available from any location in the Terminal.
 
 | Function Key |                                       Description |
 | :----------- | ------------------------------------------------: |
@@ -163,7 +163,7 @@ The commands listed below are not displayed on a Terminal menu, but are active g
 
 ## Data
 
-Many functions will require obtaining (free or subscription) API keys from various data providers.  OpenBB provides methods for consuming these data feeds but has no control over the quality or quantity of data provided to an end-user.   None are required to get started using the Terminal.  See the list of data providers [here](https://docs.openbb.co/terminal/usage/guides/api-keys), along with instructions for entering the credentials into the OpenBB Terminal.  [Request a feature](https://openbb.co/request-a-feature) to let us know what we are missing!
+Many functions will require obtaining (free or subscription) API keys from various data providers.  OpenBB provides methods for consuming these data feeds, but has no control over the quality or quantity of data provided to an end-user.   **No API Keys are required to get started using the Terminal**.  See the list of data providers [here](https://docs.openbb.co/terminal/usage/guides/api-keys), along with instructions for entering the credentials into the OpenBB Terminal.  [Request a feature](https://openbb.co/request-a-feature) to let us know what we are missing!
 
 ### Default Data Sources
 
@@ -177,11 +177,11 @@ The default data source for each function (where multiple sources are available)
 
 ### Importing and Exporting Data
 
-Most functions provide a method for exporting the raw data as a CSV, JSON, or XLSX file.  Exported data and user-supplied files to import are saved to the [OpenBBUserData folder](https://docs.openbb.co/terminal/usage/guides/data).  The folder is located at the root of the operating system's User Account folder.  Follow the link for a detailed description.
+Most functions provide a method for exporting the raw data as a CSV, JSON, or XLSX file (with a specific sheet name).  Exported data and user-supplied files to import are saved to the [OpenBBUserData folder](https://docs.openbb.co/terminal/usage/guides/data).  The folder is located at the root of the operating system's User Account folder.  Follow the link for a detailed description.
 
 ## Charts
 
-The OpenBB charting library has provides interactive, customizable, charts.  Here's an example of weekly candles for AAPL.
+The OpenBB charting library provides interactive, customizable, charts.  Here's an example of displaying weekly candles for AAPL.
 
 ```console
 /stocks/load AAPL -w/candle
