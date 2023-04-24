@@ -24,9 +24,13 @@ keywords:
     arm,
     library,
     error,
-    raspberry pi
+    raspberry pi,
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Installation and Updates - Terminal" />
 
 ## Installation and Updates
 
@@ -108,4 +112,3 @@ brew install libomp
 ```
 
 </details>
-
