@@ -8,7 +8,7 @@ import subprocess  # nosec: B404
 import sys
 from multiprocessing import current_process
 from pathlib import Path
-from typing import Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import aiohttp
 import pandas as pd
@@ -153,7 +153,7 @@ class Backend(PyWry):
         current_user = get_current_user()
         current_system = get_current_system()
 
-        posthog = dict(collect_logs=current_system.LOG_COLLECT)
+        posthog: Dict[str, Any] = dict(collect_logs=current_system.LOG_COLLECT)
         if (
             current_system.LOG_COLLECT
             and current_user.profile.email
