@@ -41,7 +41,7 @@ def get_anchor_data(address: str = "") -> Tuple[pd.DataFrame, pd.DataFrame, str]
 
     response = request(f"{api_url}/get-anchor-protocol-data-v2/{address}")
     if response.status_code != 200:
-        console.print(f"Status code: {response.status_code}. Reason: {response.text}")
+        console.print(f"Status code: {response.status_code}. Reason: {response.reason}")
         return pd.DataFrame(), pd.DataFrame(), ""
 
     data = response.json()
