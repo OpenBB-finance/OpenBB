@@ -63,7 +63,7 @@ class SDKLogger:
     def _try_to_login(sdk: "OpenBBSDK"):
         if is_local() and is_auth_enabled():
             try:
-                sdk.login()
+                sdk.login(silent=True)
             except Exception:
                 pass
 
