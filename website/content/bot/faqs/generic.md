@@ -1,7 +1,7 @@
 ---
-title: Generic
+title: generic
 sidebar_position: 1
-description: TBD
+description: Here we answer frequently asked questions about the OpenBB Bot from our users and community.
 keywords:
   [
     installation,
@@ -16,7 +16,7 @@ keywords:
     macos,
     how to,
     explanation,
-    openbb terminal,
+    openbb bot,
   ]
 ---
 

@@ -17,8 +17,18 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    big sur,
+    intel,
+    intel-based,
+    apple silicon,
+    m1,
+    dmg file
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="MacOS - Terminal | OpenBB Docs" />
 
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
