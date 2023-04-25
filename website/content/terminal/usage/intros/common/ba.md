@@ -10,7 +10,7 @@ The Behavioural Analysis menu offers the user tools for gauging the overall publ
 
 ### How to use
 
-Some data sources will require a valid API key, which can be obtained for free and then set using the [Keys menu](https://docs.openbb.co/terminal/quickstart/api-keys). As with every command, using the `-h` argument displays the help dialogue. Running the <a href="/terminal/reference/stocks/ba/headlines/" target="_blank" rel="noreferrer noopener">headlines</a> command returns the following:
+Some data sources will require a valid API key, which can be obtained for free and then set using the [Keys menu](https://docs.openbb.co/terminal/usage/guides/api-keys). As with every command, using the `-h` argument displays the help dialogue. Running the <a href="/terminal/reference/stocks/ba/headlines/" target="_blank" rel="noreferrer noopener">headlines</a> command returns the following:
 
 ```
 (🦋) /stocks/ba/ $ headlines
@@ -101,52 +101,3 @@ Of the last 100 tweets, 19.00 % had a higher negative sentiment
 The <a href="/terminal/reference/stocks/ba/sentiment/" target="_blank" rel="noreferrer noopener">sentiment</a> command returns the following:
 
 <img alt="sentiment" src="https://user-images.githubusercontent.com/46355364/170243539-1ea3fc6a-d7ec-4991-a6bb-ed5879753328.png"></img>
-
-More advanced techniques can also be applied by using tools from <a href="https://sentimentinvestor.com" target="_blank" rel="noreferrer noopener">Sentiment Investor</a> that analyzes millions of messages to show the most talked about stocks by hour. This has the ability to show the most trending tickers with <a href="/terminal/reference/stocks/ba/trending/" target="_blank" rel="noreferrer noopener">trending</a>.
-
-```
-(🦋) /stocks/ba/ $ trending
-
-Most trending stocks at 2022-05-23 00:00
-
-| TICKER | TOTAL | LIKES  | RHI  | AHI  |
-|--------|-------|--------|------|------|
-| SPY    | 89.00 | 43.00  | 1.22 | 1.26 |
-| AMC    | 80.00 | 155.00 | 1.07 | 1.18 |
-| TSLA   | 80.00 | 78.00  | 1.07 | 1.34 |
-| BTC    | 62.00 | 74.00  | 1.14 | 1.09 |
-| NIO    | 50.00 | 14.00  | 1.17 | 1.15 |
-| AAPL   | 28.00 | 4.00   | 0.66 | 0.75 |
-| AMD    | 26.00 | 59.00  | 0.57 | 0.61 |
-| NVAX   | 13.00 | 4.00   | 0.47 | 0.40 |
-| NVDA   | 12.00 | 11.00  | 0.45 | 0.47 |
-| DIS    | 12.00 | 1.00   | 0.69 | 0.44 |
-```
-
-Inspired by the Twitter user, <a href="https://twitter.com/CramerTracker" target="_blank" rel="noreferrer noopener">@cramertracker</a>, the final two features follow (CNBC Talking Head) Jim Cramer stock recommendations as satire that rings true.
-
-```
-(🦋) /stocks/ba/ $ jcdr
-
-Jim Cramer Recommendations for 05/19
-
-
-| Company                | Symbol | Price  | LastPrice | Change (%) | Recommendation |
-|------------------------|--------|--------|-----------|------------|----------------|
-| Apple                  | AAPL   | 137.35 | 142.38    | 3.53       | Buy            |
-| AeroVironment          | AVAV   | 85.35  | 85.49     | 0.16       | Buy            |
-| Alibaba                | BABA   | 87.69  | 87.04     | -0.75      | Sell           |
-| Constellation Energy   | CEG    | 57.23  | 56.92     | -0.54      | Buy            |
-| Costco                 | COST   | 422.93 | 427.93    | 1.17       | Buy            |
-| DraftKings             | DKNG   | 14.15  | 13.89     | -1.87      | Buy            |
-| Lockheed Martin        | LMT    | 425.62 | 433.71    | 1.87       | Buy            |
-| Cloudflare             | NET    | 58.00  | 56.92     | -1.90      | Buy            |
-| Northrop Grumman       | NOC    | 448.50 | 456.57    | 1.77       | Buy            |
-| NVIDIA                 | NVDA   | 171.24 | 168.29    | -1.75      | Buy            |
-| Palo Alto Networks     | PANW   | 436.37 | 502.69    | 13.19      | Buy            |
-| PLBY Group             | PLBY   | 9.06   | 9.26      | 2.16       | Sell           |
-| Raytheon Technologies  | RTX    | 90.25  | 91.87     | 1.76       | Buy            |
-| SoFi Technologies      | SOFI   | 7.75   | 7.30      | -6.16      | Buy            |
-```
-
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/170243863-f95dc515-c0d7-4ede-964d-f6ba41aec743.png"><img alt="Jim Cramer historical recommendations for $DKNG" src="https://user-images.githubusercontent.com/46355364/170243863-f95dc515-c0d7-4ede-964d-f6ba41aec743.png"></img></a>

@@ -4,10 +4,6 @@ from inspect import signature
 from logging import Logger, getLogger
 from typing import Any, Callable, Dict, Optional
 
-import dotenv
-
-import openbb_terminal.config_terminal as cfg
-from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.sdk.sdk_init import (
     FORECASTING_TOOLKIT_ENABLED,
@@ -15,22 +11,26 @@ from openbb_terminal.core.sdk.sdk_init import (
     OPTIMIZATION_TOOLKIT_ENABLED,
     OPTIMIZATION_TOOLKIT_WARNING,
 )
+from openbb_terminal.core.session.current_system import (
+    get_current_system,
+    set_system_variable,
+)
 from openbb_terminal.rich_config import console
 
 SETTINGS_ENV_FILE.parent.mkdir(parents=True, exist_ok=True)
 
-if not FORECASTING_TOOLKIT_ENABLED and not load_env_vars(
-    "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
+if (
+    not FORECASTING_TOOLKIT_ENABLED
+    and not get_current_system().DISABLE_FORECASTING_WARNING
 ):
-    dotenv.set_key(str(SETTINGS_ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
+    set_system_variable("DISABLE_FORECASTING_WARNING", True)
     console.print(FORECASTING_TOOLKIT_WARNING)
 
-if not OPTIMIZATION_TOOLKIT_ENABLED and not load_env_vars(
-    "OPENBB_DISABLE_OPTIMIZATION_WARNING", strtobool, False
+if (
+    not OPTIMIZATION_TOOLKIT_ENABLED
+    and not get_current_system().DISABLE_OPTIMIZATION_WARNING
 ):
-    dotenv.set_key(
-        str(SETTINGS_ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True"
-    )
+    set_system_variable("DISABLE_OPTIMIZATION_WARNING", True)
     console.print(OPTIMIZATION_TOOLKIT_WARNING)
 
 
@@ -264,11 +264,13 @@ class OperationLogger:
 
         if func_module == "openbb_terminal.keys_model":
             # pylint: disable=C0415
-            from openbb_terminal.core.log.generation.settings_logger import log_keys
+            from openbb_terminal.core.log.generation.settings_logger import (
+                log_credentials,
+            )
 
             # remove key if defined
             function_args.pop("key", None)
-            log_keys()
+            log_credentials()
         return function_args
 
     def log_after_call(
@@ -313,7 +315,9 @@ class OperationLogger:
         )
 
     def __check_logging_conditions(self) -> bool:
-        return not cfg.LOGGING_SUPPRESS and not self.__check_last_method()
+        return (
+            not get_current_system().LOGGING_SUPPRESS and not self.__check_last_method()
+        )
 
     def __check_last_method(self) -> bool:
         current_method = {
@@ -349,14 +353,14 @@ from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-cfg.start_required_configurations()
-cfg.start_plot_backend()
+cfg.setup_config_terminal(is_sdk=True)
 
 logger = logging.getLogger(__name__)
-theme.applyMPLstyle()
+cfg.theme.applyMPLstyle()
 \r\r\r
 """
     return "\r".join(sdk_imports.splitlines())

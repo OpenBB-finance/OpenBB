@@ -265,9 +265,11 @@ def display_bw(
     >>> df = openbb.stocks.load("AAPL")
     >>> openbb.qa.bw(data=df, target="Adj Close")
     """
+    data = data.copy()
     start = data[target].index[0]
 
-    color = theme.get_colors()[0]
+    colors = theme.get_colors()
+    color = colors[0]
     pd.options.mode.chained_assignment = None
     data["x_data"] = data[target].index.year if yearly else data[target].index.month
     pd.options.mode.chained_assignment = "warn"
@@ -288,7 +290,10 @@ def display_bw(
     ]
 
     fig = OpenBBFigure(
-        title=f"{['Monthly','Yearly'][yearly]} box plot of {symbol} {target} from {start.strftime('%Y-%m-%d')}",
+        title=(
+            f"{['Monthly','Yearly'][yearly]} box plot of {symbol.upper()} "
+            f"{target} from {start.strftime('%Y-%m-%d')}"
+        ),
         yaxis_title=target,
         xaxis_title=["Monthly", "Yearly"][yearly],
     )
@@ -296,6 +301,7 @@ def display_bw(
     for i, group in enumerate(data["x_data"].unique()):
         x = group if yearly else l_months[group - 1]
         y = data[data["x_data"] == group][target]
+
         fig.add_box(
             y=y,
             x=[x] * len(y),
@@ -304,7 +310,7 @@ def display_bw(
                 color=theme.up_color,
                 outliercolor=theme.up_color,
             ),
-            fillcolor=theme.get_colors()[i],
+            fillcolor=colors[i % len(colors)],
             line_color=color,
             boxmean=True,
             whiskerwidth=1,

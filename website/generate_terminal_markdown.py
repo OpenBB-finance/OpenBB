@@ -5,7 +5,8 @@ import shutil
 import traceback
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Union
+from textwrap import shorten
+from typing import Dict, List, TextIO, Union
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
@@ -16,6 +17,13 @@ from website.controller_doc_classes import (
 )
 
 website_path = Path(__file__).parent.absolute()
+
+reference_import = """
+import ReferenceCard from "@site/src/components/General/ReferenceCard";
+
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+"""
+
 USER_PATH = (
     f"{get_current_user().preferences.USER_DATA_DIRECTORY}",
     "`USER_DATA_DIRECTORY`",
@@ -207,38 +215,71 @@ description: OpenBB Terminal Function
     return markdown.replace("<", "").replace(">", "")
 
 
-def add_todict(d: dict, location_path: list, cmd_name: str, full_path: str) -> dict:
-    """Adds the trailmap to the dictionary. This function creates the dictionary paths to the function.
+def create_nested_menus_card(folder: Path, url: str) -> str:
+    sub_categories = [
+        sub.stem
+        for sub in folder.glob("**/**/*.md*")
+        if sub.is_file() and sub.stem != "index"
+    ]
+    categories = shorten(", ".join(sub_categories), width=116, placeholder="...")
+    url = f"/terminal/reference/{url}/{folder.name}".replace("//", "/")
 
+    index_card = f"""<ReferenceCard
+        title="{folder.name}"
+        description="{categories}"
+        url="{url}"
+/>\n"""
+    return index_card
+
+
+def create_cmd_cards(cmd_text: List[Dict[str, str]]) -> str:
+    cmd_cards = ""
+    for cmd in cmd_text:
+        url = f"/terminal/reference/{cmd['url']}/{cmd['title']}".replace("//", "/")
+        description = shorten(cmd["description"], width=116, placeholder="...")
+
+        cmd_cards += f"""<ReferenceCard
+    title="{cmd["title"]}"
+    description="{description.replace('"', "'")}"
+    url="{url}"
+    command="true"
+/>\n"""
+    return cmd_cards
+
+
+def write_reference_index(
+    reference_cards: Dict[Path, List[Dict[str, str]]],
+    fname: str,
+    path: Path,
+    rel_path: Path,
+    f: TextIO,
+) -> None:
+    """Write to the corresponding index.mdx file for a given folder, with the
+    appropriate nested menus and command cards.
 
     Parameters
     ----------
-    d : dict
-        The dictionary to add the path to
-    location_path : list
-        The path to the function
-    cmd_name : str
-        The name of the function
-    full_path : str
-        The full path to the function
-
-    Returns
-    -------
-    dict
-        The updated dictionary
+    reference_cards : Dict[Path, List[Dict[str, str]]]
+        Dictionary of command cards to be written to the index.md file.
+    fname : str
+        Name of the index.md file.
+    path : Path
+        Path to the folder to be written.
+    rel_path : Path
+        Relative path to the folder to be written.
+    f : TextIO
+        File to write to.
     """
+    f.write(f"# {fname}\n{reference_import}")
+    for folder in path.glob("*"):
+        if folder.is_dir():
+            f.write(create_nested_menus_card(folder, "/".join(rel_path.parts)))
 
-    if location_path[0] not in d:
-        d[location_path[0]] = {}
+    folder_cmd_cards: List[Dict[str, str]] = reference_cards.get(path, {})  # type: ignore
+    if folder_cmd_cards:
+        f.write(create_cmd_cards(folder_cmd_cards))
 
-    if len(location_path) > 1:
-        add_todict(d[location_path[0]], location_path[1:], cmd_name, full_path)
-    else:
-        d[location_path[0]][
-            cmd_name
-        ] = f"/terminal/reference/{'/'.join(full_path)}/{cmd_name}"
-
-    return d
+    f.write("</ul>\n")
 
 
 def main() -> bool:
@@ -255,7 +296,7 @@ def main() -> bool:
         "[bright_yellow]Generating markdown files... Don't ignore any errors now[/bright_yellow]"
     )
     content_path: Path = website_path / "content/terminal/reference"
-    terminal_ref: Dict[str, dict] = {}
+    reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 
     for file in content_path.glob("*"):
         if file.is_file():
@@ -277,9 +318,14 @@ def main() -> bool:
 
                 trail = ctrl_trailmap.split(".")
 
-                terminal_ref = add_todict(terminal_ref, trail, cmd["cmd_name"], trail)  # type: ignore
                 filepath = content_path / f"{'/'.join(trail)}/{cmd['cmd_name']}.md"
-
+                reference_cards.setdefault(filepath.parent, []).append(
+                    dict(
+                        title=cmd["cmd_name"],
+                        description=cmd["description"],
+                        url="/".join(trail),
+                    )
+                )
                 filepath.parent.mkdir(parents=True, exist_ok=True)
                 with open(filepath, "w", **wopen_kwargs) as f:  # type: ignore
                     f.write(markdown)
@@ -291,26 +337,28 @@ def main() -> bool:
             )
             return False
 
-    terminal_ref = {
-        k: dict(sorted(v.items(), key=lambda item: item[0]))
-        for k, v in sorted(terminal_ref.items(), key=lambda item: item[0])
-    }
+    # Sort reference_cards
+    reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
 
     # Generate root "_category_.json" file
     with open(content_path / "_category_.json", "w", **wopen_kwargs) as f:  # type: ignore
         f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))
 
     # Generate root "index.md" file
-    with open(content_path / "index.md", "w", **wopen_kwargs) as f:  # type: ignore
-        f.write(
-            f"# OpenBB Terminal Features\n\n{generate_index_markdown('', terminal_ref, 2)}"
-        )
+    with open(content_path / "index.mdx", "w", **wopen_kwargs) as f:  # type: ignore
+        fname = "OpenBB Terminal Features"
+        rel_path = content_path.relative_to(content_path)
+        write_reference_index(reference_cards, fname, content_path, rel_path, f)
 
     def gen_category_json(fname: str, path: Path):
         """Generate category json"""
         fname = subnames[fname.lower()] if fname.lower() in subnames else fname.title()
         with open(path / "_category_.json", "w", **wopen_kwargs) as f:  # type: ignore
             f.write(json.dumps({"label": fname}, indent=2))
+
+        with open(path / "index.mdx", "w", **wopen_kwargs) as f:  # type: ignore
+            rel_path = path.relative_to(content_path)
+            write_reference_index(reference_cards, fname, path, rel_path, f)
 
     def gen_category_recursive(nested_path: Path):
         """Generate category json recursively"""
@@ -327,32 +375,6 @@ def main() -> bool:
     )
 
     return True
-
-
-def generate_index_markdown(markdown: str, d: dict, level: int) -> str:
-    """Generate index markdown
-
-    Parameters
-    ----------
-    markdown : str
-        The markdown to add to
-    d : dict
-        The dictionary to recursively generate markdown from
-    level : int
-        The level of the markdown header
-
-    Returns
-    -------
-    str
-        Generated index file markdown string
-    """
-    for key in d:
-        if isinstance(d[key], dict):
-            markdown += f"\n{'#' * level} {key}\n\n"
-            markdown = generate_index_markdown(markdown, d[key], level + 1)
-        else:
-            markdown += f"- [{key}]({d[key]})\n"
-    return markdown
 
 
 if __name__ == "__main__":

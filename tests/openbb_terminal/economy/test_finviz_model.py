@@ -59,3 +59,24 @@ def test_get_futures(recorder):
     result_dict = finviz_model.get_futures()
 
     recorder.capture(result_dict)
+
+
+def test_get_groups():
+    result = finviz_model.get_groups()
+    assert result == [
+        "sector",
+        "industry",
+        "basic_materials",
+        "communication_services",
+        "consumer_cyclical",
+        "consumer_defensive",
+        "energy",
+        "financial",
+        "healthcare",
+        "industrials",
+        "real_Estate",
+        "technology",
+        "utilities",
+        "country",
+        "capitalization",
+    ]

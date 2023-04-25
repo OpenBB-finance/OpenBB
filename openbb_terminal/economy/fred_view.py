@@ -40,7 +40,12 @@ def format_units(num: int) -> str:
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def notes(search_query: str, limit: int = 10):
+def notes(
+    search_query: str,
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+):
     """Display series notes. [Source: FRED]
 
     Parameters
@@ -49,6 +54,10 @@ def notes(search_query: str, limit: int = 10):
         Text query to search on fred series notes database
     limit : int
         Maximum number of series notes to display
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    sheet_name : Optional[str]
+        The name of the sheet
     """
     df_search = fred_model.get_series_notes(search_query)
 
@@ -61,6 +70,14 @@ def notes(search_query: str, limit: int = 10):
         show_index=False,
         headers=["Series ID", "Title", "Description"],
         limit=limit,
+        export=bool(export),
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "fred",
+        df_search,
+        sheet_name,
     )
 
 
@@ -93,6 +110,8 @@ def display_fred_series(
         Output only raw data
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    sheet_name : Optional[str]
+        The name of the sheet
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
@@ -108,17 +127,40 @@ def display_fred_series(
     # Try to get everything onto the same 0-10 scale.
     # To do so, think in scientific notation.  Divide the data by whatever the E would be
 
-    fig = OpenBBFigure()
+    fig = OpenBBFigure(title="FRED Series")
     for s_id, sub_dict in detail.items():
         data_to_plot, title = format_data_to_plot(data[s_id], sub_dict)
+        title = title.replace(
+            "Assets: Total Assets: Total Assets", "Assets: Total Assets"
+        )
 
         fig.add_scatter(
             x=data_to_plot.index,
             y=data_to_plot,
-            name="\n".join(textwrap.wrap(title, 80)) if len(series_ids) < 5 else title,
+            showlegend=len(series_ids) > 1,
+            name="<br>".join(textwrap.wrap(title, 80))
+            if len(series_ids) < 5
+            else title,
         )
+        if len(series_ids) == 1:
+            fig.set_title(title)
 
+    fig.update_layout(
+        margin=dict(b=20),
+        legend=dict(yanchor="top", y=-0.06, xanchor="left", x=0),
+    )
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
+
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "fred",
+            data,
+            sheet_name,
+            fig,
+        )
+        return None, None
 
     if raw:
         data = data.sort_index(ascending=False)
@@ -130,15 +172,7 @@ def display_fred_series(
             export=bool(export),
             limit=limit,
         )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "fred",
-        data,
-        sheet_name,
-        fig,
-    )
+        return None, None
 
     if get_data:
         fig.show(external=external_axes)
@@ -164,7 +198,13 @@ def plot_cpi(
     external_axes: bool = False,
     limit: int = 10,
 ) -> Union[None, OpenBBFigure]:
-    """Plot CPI data. [Source: FRED]
+    """
+    Inflation measured by consumer price index (CPI) is defined as the change in
+    the prices of a basket of goods and services that are typically purchased by
+    specific groups of households. Inflation is measured in terms of the annual
+    growth rate and in index, 2015 base year with a breakdown for food, energy
+    and total excluding food and energy. Inflation measures the erosion of living standards.
+    [Source: FRED / OECD]
 
     Parameters
     ----------
@@ -214,7 +254,7 @@ def plot_cpi(
         return print_rich_table(series.drop(["series_id"], axis=1))
 
     ylabel_dict = {
-        "growth_same": "Growth Same Period (%)",
+        "growth_same": "Growth Same Period of Previous Year (%)",
         "growth_previous": "Growth Previous Period (%)",
     }
 
@@ -233,7 +273,7 @@ def plot_cpi(
 
     for column in df.columns:
         country, frequency, units = column.split("-")
-        label = f"{str(country).replace('_', ' ').title()} ({frequency}, {units})"
+        label = f"{str(country).replace('_', ' ').title()}"
 
         fig.add_scatter(x=df.index, y=df[column].values, name=label)
 
@@ -258,7 +298,7 @@ def plot_cpi(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:

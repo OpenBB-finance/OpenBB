@@ -4,6 +4,7 @@ logs/
 .DS_Store
 *.env
 .venv
+venv*/
 venv
 .vscode
 *.ipynb
@@ -51,9 +52,10 @@ build/terminal
 build/nsis/app
 DMG/*
 *.dmg
+*.sh
 
 # User stylesheets
-styles/user
+openbb_terminal/miscellaneous/styles/user/hub.richstyle.json
 
 # the file containing the API keys for the web version
 openbb_terminal_web/setenv
@@ -70,4 +72,3 @@ cache/
 
 # lightning logs
 lightning_logs/
-

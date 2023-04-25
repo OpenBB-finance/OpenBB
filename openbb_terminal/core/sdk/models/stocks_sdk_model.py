@@ -11,6 +11,7 @@ class StocksRoot(Category):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
+        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
@@ -23,6 +24,7 @@ class StocksRoot(Category):
         super().__init__()
         self.candle = lib.stocks_helper.display_candle
         self.load = lib.stocks_helper.load
+        self.news = lib.common_ultima_newsmonitor_model.get_news
         self.process_candle = lib.stocks_helper.process_candle
         self.quote = lib.stocks_model.get_quote
         self.search = lib.stocks_helper.search
@@ -245,7 +247,6 @@ class StocksFundamentalAnalysis(Category):
         `cal`: Get calendar earnings for ticker symbol\n
         `cash`: Get Cash Flow.\n
         `customer`: Print customers from ticker provided\n
-        `data`: Get fundamental data from finviz\n
         `dcf`: Get stocks dcf from FMP\n
         `dcfc`: Get stocks dcf from FMP\n
         `divs`: Get historical dividend for ticker\n
@@ -261,15 +262,13 @@ class StocksFundamentalAnalysis(Category):
         `growth`: Get financial statement growth\n
         `historical_5`: Get 5 year monthly historical performance for a ticker with dividends filtered\n
         `income`: Get income statement.\n
-        `info`: Gets ticker symbol info\n
         `key`: Get key metrics from overview\n
         `metrics`: Get key metrics\n
         `mgmt`: Get company managers from Business Insider\n
         `mktcap`: Get market cap over time for ticker. [Source: Yahoo Finance]\n
         `mktcap_chart`: Display market cap over time. [Source: Yahoo Finance]\n
         `news`: Get news from Finviz\n
-        `overview`: Get alpha vantage company overview\n
-        `profile`: Get ticker profile from FMP\n
+        `overview`: Get overview.\n
         `pt`: Get analysts' price targets for a given stock. [Source: Business Insider]\n
         `pt_chart`: Display analysts' price targets for a given stock. [Source: Business Insider]\n
         `rating`: Get ratings for a given ticker. [Source: Financial Modeling Prep]\n
@@ -278,9 +277,7 @@ class StocksFundamentalAnalysis(Category):
         `rot`: Get rating over time data. [Source: Finnhub]\n
         `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
         `score`: Gets value score from fmp\n
-        `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
-        `sec_fmp`: Get SEC Filings RSS feed, disseminated by FMP\n
-        `sec_fmp_chart`: Display recent forms submitted to the SEC\n
+        `sec`: Get SEC filings for a given stock ticker. [Source: Nasdaq]\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
         `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
@@ -298,7 +295,6 @@ class StocksFundamentalAnalysis(Category):
         self.cal = lib.stocks_fa_yahoo_finance_model.get_calendar_earnings
         self.cash = lib.stocks_fa_sdk_helpers.get_cash_flow
         self.customer = lib.stocks_fa_csimarket_model.get_customers
-        self.data = lib.stocks_fa_finviz_model.get_data
         self.dcf = lib.stocks_fa_fmp_model.get_dcf
         self.dcfc = lib.stocks_fa_fmp_model.get_dcf
         self.divs = lib.stocks_fa_yahoo_finance_model.get_dividends
@@ -314,26 +310,24 @@ class StocksFundamentalAnalysis(Category):
         self.growth = lib.stocks_fa_fmp_model.get_financial_growth
         self.historical_5 = lib.stocks_fa_dcf_model.get_historical_5
         self.income = lib.stocks_fa_sdk_helpers.get_income_statement
-        self.info = lib.stocks_fa_yahoo_finance_model.get_info
         self.key = lib.stocks_fa_av_model.get_key_metrics
         self.metrics = lib.stocks_fa_fmp_model.get_key_metrics
         self.mgmt = lib.stocks_fa_business_insider_model.get_management
         self.mktcap = lib.stocks_fa_yahoo_finance_model.get_mktcap
         self.mktcap_chart = lib.stocks_fa_yahoo_finance_view.display_mktcap
         self.news = lib.stocks_fa_finviz_model.get_news
-        self.overview = lib.stocks_fa_av_model.get_overview
-        self.profile = lib.stocks_fa_fmp_model.get_profile
+        self.overview = lib.stocks_fa_sdk_helpers.get_overview
         self.pt = lib.stocks_fa_business_insider_model.get_price_target_from_analysts
-        self.pt_chart = lib.stocks_fa_business_insider_view.price_target_from_analysts
+        self.pt_chart = (
+            lib.stocks_fa_business_insider_view.display_price_target_from_analysts
+        )
         self.rating = lib.stocks_fa_fmp_model.get_rating
         self.ratios = lib.stocks_fa_fmp_model.get_key_ratios
         self.revfc = lib.stocks_fa_seeking_alpha_model.get_estimates_rev
         self.rot = lib.stocks_fa_finnhub_model.get_rating_over_time
         self.rot_chart = lib.stocks_fa_finnhub_view.rating_over_time
         self.score = lib.stocks_fa_fmp_model.get_score
-        self.sec = lib.stocks_fa_marketwatch_model.get_sec_filings
-        self.sec_fmp = lib.stocks_fa_fmp_model.get_filings
-        self.sec_fmp_chart = lib.stocks_fa_fmp_view.display_filings
+        self.sec = lib.stocks_fa_nasdaq_model.get_sec_filings
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
         self.splits = lib.stocks_fa_yahoo_finance_model.get_splits
@@ -536,9 +530,6 @@ class StocksScreener(Category):
     """Screener Module.
 
     Attributes:
-        `arktrades`: Gets a dataframe of ARK trades for ticker\n
-        `historical`: View historical price of stocks that meet preset\n
-        `historical_chart`: View historical price of stocks that meet preset\n
         `screener_data`: Screener Overview\n
         `screener_data_chart`: Screener one of the following: overview, valuation, financial, ownership, performance, technical.\n
     """
@@ -547,9 +538,6 @@ class StocksScreener(Category):
 
     def __init__(self):
         super().__init__()
-        self.arktrades = lib.stocks_screener_ark_model.get_ark_trades_by_ticker
-        self.historical = lib.stocks_screener_yahoofinance_model.historical
-        self.historical_chart = lib.stocks_screener_yahoofinance_view.historical
         self.screener_data = lib.stocks_screener_finviz_model.get_screener_data
         self.screener_data_chart = lib.stocks_screener_finviz_view.screener
 
@@ -564,8 +552,6 @@ class StocksTechnicalAnalysis(Category):
         `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
         `summary`: Get technical summary report provided by FinBrain's API\n
         `summary_chart`: Print technical summary report provided by FinBrain's API\n
-        `view`: Get finviz image for given ticker\n
-        `view_chart`: View finviz image for ticker\n
     """
 
     _location_path = "stocks.ta"
@@ -578,8 +564,6 @@ class StocksTechnicalAnalysis(Category):
         self.rsp_chart = lib.stocks_ta_rsp_view.display_rsp
         self.summary = lib.stocks_ta_finbrain_model.get_technical_summary_report
         self.summary_chart = lib.stocks_ta_finbrain_view.technical_summary_report
-        self.view = lib.stocks_ta_finviz_model.get_finviz_image
-        self.view_chart = lib.stocks_ta_finviz_view.view
 
 
 class StocksTradingHours(Category):

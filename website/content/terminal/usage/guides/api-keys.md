@@ -1,5 +1,5 @@
 ---
-title: Settings API Keys
+title: Settings & API Keys
 sidebar_position: 1
 description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address. Each key is entered into the Terminal from the `/keys` menu, using the syntax described below. The `--help` dialogue for each source will also display the expected inputs.
 keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, openbb terminal]
@@ -30,6 +30,12 @@ options:
   -a USER_AGENT [USER_AGENT ...], --agent USER_AGENT [USER_AGENT ...]
                         User agent (default: None)
   -h, --help            show this help message (default: False)
+```
+
+In order to set the API key in the terminal, after obtaining the correct information from reddit, one would enter into the terminal:
+
+```console
+reddit -i <YOUR-CLIENT-ID> -s <YOUR-CLIENT-SECRET> -u <USERNAME> -p <PASSWORD> -a <USER-AGENT>
 ```
 
 A message similar to the one below will be printed when a function requesting data from an API is called but the key has not yet been entered.
@@ -221,9 +227,9 @@ Go to: https://docs.databento.com/getting-started
 ![Databento](https://user-images.githubusercontent.com/85772166/221943074-7a5e55c1-6193-42d8-a04c-431603a69a05.png)
 
 Click on, [Sign up](https://databento.com/signup), and after creating an account, the API key is found in the [account portal](https://databento.com/portal/keys).
-  
+
 ![Databento](https://user-images.githubusercontent.com/85772166/221943270-e0ada7bf-c7fb-46f2-bd7a-49afb3bc7bd8.png)
-  
+
 Enter this into the terminal with:
 
 ```console
@@ -246,7 +252,7 @@ Go to: https://www.degiro.com/
 Click on, "Open an account", and then go through the registration process. After setting up the account, the login credentials can be entered in the OpenBB Terminal with:
 
 ```console
-/keys/degiro -u USERNAME -p PASSWORD 
+/keys/degiro -u USERNAME -p PASSWORD
 ```
 
 Instructions for setting up 2FA authorization are [here](https://github.com/Chavithra/degiro-connector#35-how-to-use-2fa-).
@@ -785,6 +791,25 @@ Click on, "Open Account", to start the sign-up process. After the account has be
 <summary>Upcoming changes to the Twitter API will deprecate the current functionality, it is uncertain if the current features will continue to work. </summary>
 
 ![Twitter API](https://pbs.twimg.com/media/FooIJF3agAIU8SN?format=png&name=medium)
+
+</details>
+
+### Ultima Insights
+
+> Ultima Insights' News Monitor is a platform that harnesses the power of GPT + LLMs to help deliver better, more relevant news to investors. We help find the news & tell you why it's important before it's on the front page of Bloomberg.
+
+<details>
+<summary>Instructions</summary>
+
+Go to: https://ultimainsights.ai/
+
+![Ultima Insights](https://user-images.githubusercontent.com/1911913/229215125-e3419788-eef3-4389-a3bd-5c08f3333347.png)
+
+Click on, "Get Started", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://beta.ultimainsights.ai/my-account/generate-api-key) and click "Generate Key". Copy the API key to the clipboard, and enter this key into the OpenBB Terminal with:
+
+```console
+/keys/ultima REPLACE_WITH_KEY
+```
 
 </details>
 

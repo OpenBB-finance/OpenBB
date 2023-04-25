@@ -372,6 +372,7 @@ def display_clenow_momentum(
         title=f"Clenow Exponential Regression Factor on {symbol}",
         show_header=False,
         export=bool(export),
+        print_to_console=True,
     )
 
     export_data(

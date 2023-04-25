@@ -8,7 +8,6 @@ from typing import Tuple
 
 import pandas as pd
 from bs4 import BeautifulSoup
-from rapidfuzz import fuzz
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
@@ -93,7 +92,6 @@ def get_management(symbol: str) -> pd.DataFrame:
     )
 
     df_management["Info"] = "-"
-    df_management["Insider Activity"] = "-"
     df_management = df_management.set_index("Name")
 
     for s_name in df_management.index:
@@ -103,15 +101,6 @@ def get_management(symbol: str) -> pd.DataFrame:
             " ", "%20"
         )
 
-    s_url_base = "https://markets.businessinsider.com"
-    for insider in text_soup_market_business_insider.findAll(
-        "a", {"onclick": "silentTrackPI()"}
-    ):
-        for s_name in df_management.index:
-            if fuzz.token_set_ratio(s_name, insider.text.strip()) > 70:  # type: ignore
-                df_management.loc[s_name]["Insider Activity"] = (
-                    s_url_base + insider.attrs["href"]
-                )
     return df_management
 
 

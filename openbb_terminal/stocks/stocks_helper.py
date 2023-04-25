@@ -1,8 +1,7 @@
 """Main helper."""
 __docformat__ = "numpy"
-
-# pylint: disable=unsupported-assignment-operation,too-many-lines
-# pylint: disable=no-member,too-many-branches,too-many-arguments
+# pylint: disable=too-many-lines, unsupported-assignment-operation
+# pylint: disable=no-member, too-many-branches, too-many-arguments
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=consider-using-dict-items
 
@@ -117,6 +116,7 @@ def search(
     sector: str = "",
     industry_group: str = "",
     industry: str = "",
+    exchange: str = "",
     exchange_country: str = "",
     all_exchanges: bool = False,
     limit: int = 0,
@@ -131,8 +131,12 @@ def search(
         Search by country to find stocks matching the criteria
     sector : str
         Search by sector to find stocks matching the criteria
+    industry_group : str
+        Search by industry group to find stocks matching the criteria
     industry : str
         Search by industry to find stocks matching the criteria
+    exchange: str
+        Search by exchange to find stock matching the criteria
     exchange_country: str
         Search by exchange country to find stock matching
     all_exchanges: bool
@@ -149,7 +153,7 @@ def search(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.stocks.search(country="united states", exchange_country="Germany")
+    >>> openbb.stocks.search(country="United States", exchange_country="Germany")
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
@@ -160,6 +164,8 @@ def search(
         kwargs["industry"] = industry
     if industry_group:
         kwargs["industry_group"] = industry_group
+    if exchange:
+        kwargs["exchange"] = exchange
     kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
 
     try:
@@ -221,7 +227,11 @@ def search(
     title = "Companies found"
     if query:
         title += f" on term {query}"
-    if exchange_country:
+    if exchange_country and exchange:
+        title += f" on the exchange {exchange} in {exchange_country.replace('_', ' ').title()}"
+    if exchange and not exchange_country:
+        title += f" on the exchange {exchange}"
+    if exchange_country and not exchange:
         title += f" on an exchange in {exchange_country.replace('_', ' ').title()}"
     if country:
         title += f" in {country.replace('_', ' ').title()}"
@@ -250,7 +260,7 @@ def search(
     return df
 
 
-def load(
+def load(  # pylint: disable=too-many-return-statements
     symbol: str,
     start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
@@ -333,7 +343,9 @@ def load(
     # Daily
     if int(interval) == 1440:
         if source == "AlphaVantage":
-            df_stock_candidate = load_stock_av(symbol, int_string, start_date, end_date)
+            df_stock_candidate: pd.DataFrame = load_stock_av(
+                symbol, int_string, start_date, end_date
+            )
 
         elif source == "YahooFinance":
             df_stock_candidate = load_stock_yf(
@@ -341,9 +353,19 @@ def load(
             )
 
         elif source == "EODHD":
-            df_stock_candidate = load_stock_eodhd(
-                symbol, start_date, end_date, weekly, monthly
-            )
+            try:
+                df_stock_candidate = load_stock_eodhd(
+                    symbol,
+                    start_date,
+                    end_date,
+                    weekly,
+                    monthly,
+                )
+            except KeyError:
+                console.print(
+                    "[red]Invalid symbol for EODHD. Please check your subscription.[/red]\n"
+                )
+                return pd.DataFrame()
 
         elif source == "Polygon":
             df_stock_candidate = load_stock_polygon(
@@ -376,37 +398,58 @@ def load(
             s_start = start_date
             int_string = "Minute"
             s_interval = f"{interval}min"
+            if end_date:
+                end_date = (end_date + timedelta(days=1)).strftime("%Y-%m-%d")
+                end_date = datetime.strptime(end_date, "%Y-%m-%d")
             df_stock_candidate = load_stock_av(
                 symbol, int_string, start_date, end_date, s_interval
             )
+            s_start = df_stock_candidate.index[0]
 
         elif source == "YahooFinance":
             s_int = str(interval) + "m"
             s_interval = s_int + "in"
-            d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
-            s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
-            s_date_start = s_start_dt.strftime("%Y-%m-%d")
+            # add 1 day to end_date to include the last day
+            if end_date:
+                end_date = (end_date + timedelta(days=1)).strftime("%Y-%m-%d")
+            else:
+                end_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
             df_stock_candidate = yf.download(
                 symbol,
-                start=s_date_start
-                if s_start_dt > start_date
-                else start_date.strftime("%Y-%m-%d"),
+                start=start_date.strftime("%Y-%m-%d"),
+                end=end_date,
                 progress=False,
                 interval=s_int,
                 prepost=prepost,
+                show_errors=False,
             )
+            # Handle the case when start and end dates aren't explicitly set
+            # TODO: This is a temporary fix, need to find a better way to handle this
+            if df_stock_candidate.empty:
+                d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+                s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+                s_date_start = s_start_dt.strftime("%Y-%m-%d")
+                df_stock_candidate = yf.download(
+                    symbol,
+                    start=s_date_start
+                    if s_start_dt > start_date
+                    else start_date.strftime("%Y-%m-%d"),
+                    progress=False,
+                    interval=s_int,
+                    prepost=prepost,
+                )
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
                 return pd.DataFrame()
 
-            df_stock_candidate.index = (
-                pd.to_datetime(df_stock_candidate.index, utc=True)
-                .tz_convert(pytz.timezone("America/New_York"))
-                .tz_localize(None)
-            )
+            df_stock_candidate.index = pd.to_datetime(
+                df_stock_candidate.index
+            ).tz_localize(None)
+
+            s_start_dt = df_stock_candidate.index[0]
 
             s_start = (
                 pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
@@ -418,6 +461,7 @@ def load(
             console.print(
                 "[red]We currently do not support intraday data with Intrinio.[/red]\n"
             )
+            return pd.DataFrame()
 
         elif source == "Polygon":
             request_url = (
@@ -472,6 +516,34 @@ def load(
                 pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
             )
             s_interval = f"{interval}min"
+
+        elif source == "EODHD":
+            df_stock_candidate = load_stock_eodhd(
+                symbol, start_date, end_date, weekly, monthly, intraday=True
+            )
+
+            if df_stock_candidate.empty:
+                return pd.DataFrame()
+
+            df_stock_candidate.index = df_stock_candidate.index.tz_convert(
+                "US/Eastern"
+            ).tz_localize(None)
+
+            s_start_dt = df_stock_candidate.index[0]
+
+            s_start = (
+                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            )
+
+            s_interval = f"{interval}min"
+
+        else:
+            console.print("[red]Invalid intraday data source[/red]")
+            return pd.DataFrame()
+
+        if not prepost:
+            df_stock_candidate = df_stock_candidate.between_time("9:30", "16:00")
+
         int_string = "Intraday"
 
     s_intraday = (f"Intraday {interval}min", int_string)[interval == 1440]
@@ -518,11 +590,7 @@ def display_candle(
         Flag to add high and low trends to chart
     ma: Tuple[int]
         Moving averages to add to the candle
-    asset_type_: str
-        String to include in title
-    external_axes : bool, optional
-        Whether to return the figure object or not, by default False
-    asset_type_: str
+    asset_type: str
         String to include in title
     start_date: str or datetime, optional
         Start date to get data from with. - datetime or string format (YYYY-MM-DD)
@@ -538,6 +606,8 @@ def display_candle(
         Flag to get weekly data
     monthly: bool
         Flag to get monthly data
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     raw : bool, optional
         Flag to display raw data, by default False
     yscale: str
@@ -592,14 +662,17 @@ def display_candle(
     if ma:
         kwargs["rma"] = dict(length=ma)
 
+    if data.index[-2].date() == data.index[-1].date():
+        interval = int((data.index[1] - data.index[0]).seconds / 60)
+
     data.name = f"{asset_type} {symbol}"
+
     fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
 
     if add_trend:
-        fig.add_trend(data)
+        fig.add_trend(data, secondary_y=True)
 
-    fig.update_layout(yaxis=dict(title="Stock Price ($)", type=yscale))
-    fig.add_logscale_menus()
+    fig.update_layout(yaxis2=dict(type=yscale))
 
     return fig.show(external=external_axes)
 
@@ -763,7 +836,14 @@ def load_custom(file_path: str) -> pd.DataFrame:
         console.print("[red]File path does not exist.[/red]\n")
         return pd.DataFrame()
 
-    df = pd.read_csv(file_path)
+    if file_path.endswith(".csv"):
+        df = pd.read_csv(file_path)
+    elif file_path.endswith(".xlsx"):
+        df = pd.read_excel(file_path)
+    else:
+        console.print("[red]File type not supported.[/red]\n")
+        return pd.DataFrame()
+
     console.print(f"Loaded data has columns: {', '.join(df.columns.to_list())}\n")
 
     # Nasdaq specific
@@ -826,9 +906,6 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
 
     perf_df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
     perf_df = perf_df.applymap(lambda x: str(round(x, 2)) + " %")
-    perf_df = perf_df.applymap(
-        lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]"
-    )
     if len(closes) > 252:
         perf_df["Volatility (1Y)"] = (
             str(round(100 * np.sqrt(252) * closes[-252:].pct_change().std(), 2)) + " %"
@@ -880,10 +957,16 @@ def show_codes_polygon(ticker: str):
     r_json = r_json["results"]
     cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
     vals = [r_json[col] for col in cols]
-    polygon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    polygon_df = pd.DataFrame(
+        {"codes": [c.upper() for c in cols], "values": vals},
+        columns=["codes", "values"],
+    )
     polygon_df.codes = polygon_df.codes.apply(lambda x: x.replace("_", " "))
     print_rich_table(
-        polygon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+        polygon_df,
+        show_index=False,
+        headers=["code", "value"],
+        title=f"{ticker.upper()} Codes",
     )
 
 

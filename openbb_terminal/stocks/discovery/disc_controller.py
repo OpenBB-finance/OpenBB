@@ -42,6 +42,7 @@ class DiscoveryController(BaseController):
     """Discovery Controller class"""
 
     CHOICES_COMMANDS = [
+        "filings",
         "pipo",
         "fipo",
         "gainers",
@@ -60,7 +61,6 @@ class DiscoveryController(BaseController):
         "rtat",
         "divcal",
         "heatmap",
-        "filings",
     ]
 
     arkord_sortby_choices = [
@@ -659,17 +659,16 @@ class DiscoveryController(BaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
-            help="Limit of upcoming earnings release dates to display.",
+            default=5,
+            help="Limit of upcoming earnings release dates to look ahead.",
         )
         parser.add_argument(
-            "-p",
-            "--pages",
-            action="store",
-            dest="n_pages",
-            type=check_positive,
-            default=10,
-            help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start  date of data, in YYYY-MM-DD format. Defaults to today.",
+            dest="start_date",
+            default=datetime.today().strftime("%Y-%m-%d"),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -678,8 +677,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             seeking_alpha_view.upcoming_earning_release_dates(
-                num_pages=ns_parser.n_pages,
                 limit=ns_parser.limit,
+                start_date=ns_parser.start_date,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
@@ -885,37 +884,6 @@ class DiscoveryController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_heatmap(self, other_args: List[str]):
-        """Process heatmap command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="heatmap",
-            description="""
-                    Get the SP 500 heatmap from finviz and display in interactive treemap
-                """,
-        )
-        parser.add_argument(
-            "-t",
-            "--timeframe",
-            default="day",
-            choices=self.heatmap_timeframes,
-            help="Timeframe to get heatmap data for",
-            dest="timeframe",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            finviz_view.display_heatmap(
-                ns_parser.timeframe,
-                ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
     def call_filings(self, other_args: List[str]) -> None:
         """Process Filings command"""
         parser = argparse.ArgumentParser(
@@ -952,4 +920,35 @@ class DiscoveryController(BaseController):
         if ns_parser:
             fmp_view.display_filings(
                 ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
+            )
+
+    @log_start_end(log=logger)
+    def call_heatmap(self, other_args: List[str]):
+        """Process heatmap command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="heatmap",
+            description="""
+                    Get the SP 500 heatmap from finviz and display in interactive treemap
+                """,
+        )
+        parser.add_argument(
+            "-t",
+            "--timeframe",
+            default="day",
+            choices=self.heatmap_timeframes,
+            help="Timeframe to get heatmap data for",
+            dest="timeframe",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            finviz_view.display_heatmap(
+                ns_parser.timeframe,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

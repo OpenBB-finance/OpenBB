@@ -1,5 +1,10 @@
-                                   Name
-JOUT              Johnson Outdoors Inc.
-ASO   Academy Sports and Outdoors, Inc.
-                                        Name
-GMLPP  Golar LNG Partners LP 8.75% CUM PFD A
+  Ticker                                                            Name Exchange Release Time       Date
+0    OMH                                              Ohmyhome Pte. Ltd.   NASDAQ         None 2023-03-22
+1   AMAO                           American Acquisition Opportunity Inc.   NASDAQ         None 2023-03-22
+2   MGRX                                            Mangoceuticals, Inc.   NASDAQ         None 2023-03-22
+3   VALN                                                      Valneva SE   NASDAQ  Post-Market 2023-03-23
+4   PSPC                            Post Holdings Partnering Corporation     NYSE         None 2023-03-23
+5   AAMC                         Altisource Asset Management Corporation     NYSE         None 2023-03-23
+6   AVRO                                                   AVROBIO, Inc.   NASDAQ         None 2023-03-23
+7  OXSQG  Oxford Square Capital Corp - 5.50% NT REDEEM 31/07/2028 USD 25   NASDAQ         None 2023-03-23
+8  OXSQZ                    Oxford Square Capital Corp. 6.25% Notes 2026   NASDAQ         None 2023-03-23

@@ -5,10 +5,11 @@ import logging
 import os
 from typing import Optional
 
+import pandas as pd
+
 from openbb_terminal.common import feedparser_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data
-from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -37,18 +38,18 @@ def display_news(
     sort: str
         the column to sort by
     """
-    articles = feedparser_model.get_news(term, sources, sort)
+    df = feedparser_model.get_news(term, sources, sort, limit)
 
-    console.print()
-    for _, row in articles.head(limit).iterrows():
-        console.print(f"> {row['published']} - {row['title']}")
-        console.print(row["link"] + "\n")
-    console.print()
+    if not df.empty:
+        # For table - convert from Timestamp to string
+        df["Date"] = pd.to_datetime(df["Date"], utc=True)
+        df["Date"] = df["Date"].dt.strftime("%Y-%m-%d %H:%M:%S")
+        print_rich_table(df, title="News - articles", export=bool(export))
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"news_{'_'.join(term)}_{'_'.join(sources)}",
-        articles,
+        df,
         sheet_name,
     )

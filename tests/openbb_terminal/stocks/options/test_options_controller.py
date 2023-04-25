@@ -844,51 +844,6 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             dict(),
         ),
         (
-            "call_parity",
-            [
-                "--put",
-                "--ask",
-                "--min=1",
-                "--max=2",
-                "--export=csv",
-            ],
-            "yfinance_view.show_parity",
-            [
-                "MOCK_TICKER",
-                "2022-01-07",
-                True,
-                True,
-                1,
-                2,
-                "csv",
-            ],
-            dict(),
-        ),
-        (
-            "call_binom",
-            [
-                "1",
-                "--put",
-                "--european",
-                "--xlsx",
-                "--plot",
-                "--volatility=2",
-                "--export=csv",
-            ],
-            "yfinance_view.show_binom",
-            [
-                "MOCK_TICKER",
-                "2022-01-07",
-                1.0,
-                True,
-                True,
-                True,
-                True,
-                2.0,
-            ],
-            dict(),
-        ),
-        (
             "call_pricing",
             [],
             "pricing_controller.PricingController",
@@ -965,9 +920,6 @@ def test_call_func(
         "call_chains",
         "call_grhist",
         "call_plot",
-        "call_parity",
-        "call_binom",
-        "call_pricing",
     ],
 )
 def test_call_func_no_ticker(func, mocker):
@@ -994,9 +946,6 @@ def test_call_func_no_ticker(func, mocker):
         "call_oi",
         "call_vol",
         "call_plot",
-        "call_parity",
-        "call_binom",
-        "call_pricing",
     ],
 )
 def test_call_func_no_selected_date(func, mocker):

@@ -1,4 +1,10 @@
 {
+    "line": {
+        "up_color": "#009600",
+        "down_color": "#c80000",
+        "color": "#0d0887",
+        "width": 1.5
+    },
     "data": {
         "barpolar": [
             {
@@ -547,15 +553,15 @@
         "candlestick": [
             {
                 "decreasing": {
-                    "fillcolor": "#e4003a",
+                    "fillcolor": "#c80000",
                     "line": {
-                        "color": "#e4003a"
+                        "color": "#990000"
                     }
                 },
                 "increasing": {
-                    "fillcolor": "#00ACFF",
+                    "fillcolor": "#009600",
                     "line": {
-                        "color": "#00ACFF"
+                        "color": "#007500"
                     }
                 },
                 "type": "candlestick"
@@ -812,10 +818,7 @@
         },
         "xaxis": {
             "automargin": true,
-            "gridcolor": "#EBF0F8",
-            "linecolor": "#EBF0F8",
             "ticks": "",
-            "zerolinecolor": "#EBF0F8",
             "zerolinewidth": 2,
             "rangeslider": {
                 "visible": false
@@ -830,13 +833,10 @@
         },
         "yaxis": {
             "automargin": true,
-            "gridcolor": "#EBF0F8",
-            "linecolor": "#EBF0F8",
             "ticks": "",
             "tickfont": {
                 "size": 15
             },
-            "zerolinecolor": "#EBF0F8",
             "zerolinewidth": 2,
             "fixedrange": false,
             "nticks": 8,

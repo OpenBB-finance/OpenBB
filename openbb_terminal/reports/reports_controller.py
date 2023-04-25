@@ -8,7 +8,6 @@ import os
 # pylint: disable=R1732, R0912
 from typing import Any, Dict, List, Optional
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -139,10 +138,6 @@ class ReportController(BaseController):
 
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
-        # if is_packaged_application():
-        #     console.print("This report is disabled for the installed version")
-        #     return
-
         try:
             # noqa: F401, E501 # pylint: disable=C0415,W0611
             import darts  # noqa # pyright: reportMissingImports=false
@@ -154,7 +149,7 @@ class ReportController(BaseController):
                 "[yellow]"
                 "Forecasting Toolkit is disabled. "
                 "To use the Forecasting features please install the toolkit following the "
-                "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+                "instructions here: https://my.openbb.co/app/sdk/installation"
                 "\n"
                 "[/yellow]"
             )
@@ -195,14 +190,17 @@ class ReportController(BaseController):
             ns_parser = self.parse_simple_args(parser, other_args)
 
             if ns_parser:
-                cfg.LOGGING_SUPPRESS = True
+                if report_name == "equity" and "." in ns_parser.symbol:
+                    console.print(
+                        "[red]Cannot currently handle tickers with a '.' in them[/red]\n"
+                    )
+                    return
                 parameters = vars(ns_parser)
                 parameters.pop("help")
                 reports_model.render_report(
                     input_path=str(reports_model.REPORTS_FOLDER / report_name),
                     args_dict=parameters,
                 )
-                cfg.LOGGING_SUPPRESS = False
 
         else:
             console.print("[red]Notebook not found![/red]\n")

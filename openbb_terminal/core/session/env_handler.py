@@ -1,9 +1,9 @@
 # IMPORTS STANDARD
-from typing import Any, Dict, Optional, Type, Union
+import sys
+from typing import Any, Dict, Optional
 
 # IMPORTS THIRDPARTY
-from dotenv import dotenv_values
-from pydantic import ValidationError
+from dotenv import dotenv_values, set_key
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.config.paths import (
@@ -11,21 +11,35 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.models.credentials_model import CredentialsModel
-from openbb_terminal.core.models.preferences_model import PreferencesModel
+
+DEFAULT_ORDER = [
+    SETTINGS_ENV_FILE,
+    PACKAGE_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+]
 
 
-def reading_env() -> Dict[str, Any]:
+def get_reading_order() -> list:
+    """Get order of .env files. If we are on frozen app, we reverse the order to
+    read the SETTINGS_ENV_FILE last.
+
+    Returns
+    -------
+    list
+        List of .env files.
+    """
+    local_order = DEFAULT_ORDER.copy()
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        local_order.reverse()
+    return local_order
+
+
+def read_env() -> Dict[str, Any]:
     __env_dict: Dict[str, Optional[str]] = {}
 
-    if REPOSITORY_ENV_FILE.exists():
-        __env_dict.update(**dotenv_values(REPOSITORY_ENV_FILE))
-
-    if PACKAGE_ENV_FILE.exists():
-        __env_dict.update(**dotenv_values(PACKAGE_ENV_FILE))
-
-    if SETTINGS_ENV_FILE.exists():
-        __env_dict.update(**dotenv_values(SETTINGS_ENV_FILE))
+    for env_file in get_reading_order():
+        if env_file.exists():
+            __env_dict.update(**dotenv_values(env_file))
 
     __env_dict_filtered = {
         k[len("OPENBBB_") - 1 :]: v
@@ -36,36 +50,14 @@ def reading_env() -> Dict[str, Any]:
     return __env_dict_filtered
 
 
-def load_env_to_model(
-    env_dict: dict, model: Union[Type[CredentialsModel], Type[PreferencesModel]]
-) -> Union[Type[CredentialsModel], Type[PreferencesModel]]:
-    """Load environment variables to model.
+def write_to_dotenv(name: str, value: str) -> None:
+    """Write to .env file.
 
     Parameters
     ----------
-    env_dict : dict
-        Environment variables dictionary.
-    model : Union[Type[CredentialsModel], Type[PreferencesModel]]
-        Model to validate.
-
-    Returns
-    -------
-    Union[Type[CredentialsModel], Type[PreferencesModel]]
-        Model with environment variables.
+    name : str
+        Name of the variable.
+    value : str
+        Value of the variable.
     """
-    try:
-        return model(**env_dict)  # type: ignore
-    except ValidationError as error:
-        model_name = model.__name__.strip("Model").lower()
-        print(f"Error loading {model_name}:")
-        for err in error.errors():
-            loc = err.get("loc", None)
-            var_name = str(loc[0]) if loc else ""
-            msg = err.get("msg", "")
-            var = env_dict.pop(var_name, None)
-            fields: dict[str, Any] = model.get_fields()
-            if var and var_name in fields:
-                default = fields[var_name].default
-                print(f"    {var_name}: {msg}, using default -> {default}")
-
-        return model(**env_dict)  # type: ignore
+    set_key(str(SETTINGS_ENV_FILE), name, str(value))

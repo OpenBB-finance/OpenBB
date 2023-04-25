@@ -70,16 +70,14 @@ def display_historical(
     df_hist.columns = [x.title() for x in df_hist.columns]
 
     fig = OpenBBFigure.create_subplots(
-        rows=2,
+        rows=1,
         cols=1,
-        shared_xaxes=True,
+        specs=[[{"secondary_y": True}]],
         vertical_spacing=0.06,
-        row_width=[0.3, 0.7],
-        subplot_titles=["", "Volume"],
     )
     fig.set_title(f"Historical {symbol} {strike} {op_type.title()}")
 
-    df_hist.index = df_hist.index.astype("datetime64[ms]")
+    df_hist.index = df_hist.index.astype("datetime64[ns]")
 
     fig.add_candlestick(
         open=df_hist["Open"],
@@ -90,8 +88,9 @@ def display_historical(
         name=f"{symbol} OHLC",
         row=1,
         col=1,
+        secondary_y=True,
     )
-    fig.add_stock_volume(df_hist, row=2, col=1)
+    fig.add_inchart_volume(df_hist)
     fig.hide_holidays()
 
     if export:
@@ -104,4 +103,4 @@ def display_historical(
             fig,
         )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

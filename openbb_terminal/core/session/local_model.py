@@ -1,18 +1,22 @@
 import json
 import os
+import shutil
 from pathlib import Path
-from typing import Optional, Union
+from typing import List, Optional
 
 from openbb_terminal.core.config.paths import (
-    HIST_FILE_PATH,
-    SETTINGS_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+    SESSION_FILE_PATH,
 )
-from openbb_terminal.core.session.credentials_handler import set_credential
-from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.models.sources_model import get_allowed_sources
+from openbb_terminal.core.session.current_user import (
+    get_env_dict,
+    set_credential,
+    set_preference,
+    set_sources,
+)
+from openbb_terminal.core.session.sources_handler import merge_sources
 from openbb_terminal.rich_config import console
-
-SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
 
 def save_session(data: dict, file_path: Path = SESSION_FILE_PATH):
@@ -54,12 +58,12 @@ def get_session(file_path: Path = SESSION_FILE_PATH) -> dict:
     return {}
 
 
-def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
-    """Remove the session file.
+def remove(path: Path) -> bool:
+    """Remove path.
 
     Parameters
     ----------
-    file_path : Path
+    path : Path
         The file path.
 
     Returns
@@ -69,37 +73,31 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
     """
 
     try:
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-            return True
+        if os.path.isfile(path):
+            os.remove(path)
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
         return True
     except Exception:
-        console.print("\n[red]Failed to remove login file.[/red]")
+        console.print(
+            f"\n[bold red]Failed to remove {path}"
+            "\nPlease delete this manually![/bold red]"
+        )
         return False
 
 
-def remove_cli_history_file(file_path: Path = HIST_FILE_PATH) -> bool:
-    """Remove the cli history file.
+def update_flair(username: str):
+    """Update the flair.
 
     Parameters
     ----------
-    file_path : Path
-        The file path.
-
-    Returns
-    -------
-    bool
-        The status of the removal.
+    username : str
+        The username.
     """
-
-    try:
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-            return True
-        return True
-    except Exception:
-        console.print("\n[red]Failed to remove terminal history file.[/red]")
-        return False
+    if "FLAIR" not in get_env_dict():
+        MAX_FLAIR_LEN = 20
+        flair = "[" + username[:MAX_FLAIR_LEN] + "]" + " 🦋"
+        set_preference("FLAIR", flair)
 
 
 def apply_configs(configs: dict):
@@ -110,112 +108,124 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
+    # Saving the RICH_STYLE state allows user to change the default from 'hub' style to
+    # some custom .richstyle.json file
+    set_credentials_from_hub(configs)
+    set_preferences_from_hub(configs, fields=["RICH_STYLE"])
+    set_rich_style_from_hub(configs)
+    set_chart_style_from_hub(configs)
+    set_table_style_from_hub(configs)
+    set_sources_from_hub(configs)
+
+
+def set_credentials_from_hub(configs: dict):
+    """Set credentials from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
     if configs:
-        settings = configs.get("features_settings", {})
-        sync = update_sync_flag(settings)
-        if sync:
-            if settings:
-                for k, v in settings.items():
-                    set_preference(k, v, login=True)
-
-            keys = configs.get("features_keys", {})
-            if keys:
-                for k, v in keys.items():
-                    set_credential(k, v, login=True)
+        credentials = configs.get("features_keys", {}) or {}
+        for k, v in credentials.items():
+            set_credential(k, v)
 
 
-def update_sync_flag(settings: dict) -> bool:
-    """Update the sync flag.
+def set_preferences_from_hub(configs: dict, fields: Optional[List[str]] = None):
+    """Set preferences from hub.
 
     Parameters
     ----------
-    settings : dict
-        The settings.
-
-    Returns
-    -------
-    bool
-        The sync flag.
+    configs : dict
+        The configurations.
+    fields : Optional[List[str]]
+        The fields to set, if None, all fields will be set.
     """
-    sync = not (settings and settings.get("SYNC_ENABLED", "true").lower() == "false")
-
-    set_preference("SYNC_ENABLED", sync, login=True)
-
-    return sync
-
-
-def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
-    """Get the routine.
-
-    Returns
-    -------
-    file_name : str
-        The routine.
-    folder : Optional[Path]
-        The routines folder.
-    """
-
-    current_user = get_current_user()
-    if folder is None:
-        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
-
-    try:
-        user_folder = folder / current_user.profile.get_uuid()
-        file_path = (
-            user_folder / file_name
-            if os.path.exists(user_folder / file_name)
-            else folder / file_name
-        )
-
-        with open(file_path) as f:
-            routine = "".join(f.readlines())
-        return routine
-    except Exception:
-        console.print("[red]Failed to find routine.[/red]")
-        return None
+    if configs:
+        preferences = configs.get("features_settings", {}) or {}
+        for k, v in preferences.items():
+            if not fields:
+                set_preference(k, v)
+            elif k in fields:
+                set_preference(k, v)
 
 
-def save_routine(
-    file_name: str,
-    routine: str,
-    folder: Optional[Path] = None,
-    force: bool = False,
-) -> Union[Optional[Path], str]:
-    """Save the routine.
+def set_rich_style_from_hub(configs: dict):
+    """Set rich style from hub.
 
     Parameters
     ----------
-    file_name : str
-        The routine.
-    routine : str
-        The routine.
-    folder : Path
-        The routines folder.
-    force : bool
-        Force the save.
-
-    Returns
-    -------
-    Optional[Path, str]
-        The path to the routine or None.
+    configs : dict
+        The configurations.
     """
+    if configs:
+        terminal_style = configs.get("features_terminal_style", {}) or {}
+        if terminal_style:
+            rich_style = terminal_style.get("theme", None)
+            if rich_style:
+                rich_style = {k: v.replace(" ", "") for k, v in rich_style.items()}
+                try:
+                    with open(
+                        MISCELLANEOUS_DIRECTORY
+                        / "styles"
+                        / "user"
+                        / "hub.richstyle.json",
+                        "w",
+                    ) as f:
+                        json.dump(rich_style, f)
 
-    current_user = get_current_user()
-    if folder is None:
-        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
+                    # Default to hub theme
+                    preferences = configs.get("features_settings", {}) or {}
+                    if "RICH_STYLE" not in preferences:
+                        set_preference("RICH_STYLE", "hub")
 
-    try:
-        uuid = current_user.profile.get_uuid()
-        user_folder = folder / uuid
-        if not os.path.exists(user_folder):
-            os.makedirs(user_folder)
+                except Exception:
+                    console.print("[red]Failed to set rich style.[/red]")
 
-        file_path = user_folder / file_name
-        if os.path.exists(file_path) and not force:
-            return "File already exists"
-        with open(file_path, "w") as f:
-            f.write(routine)
-        return user_folder / file_name
-    except Exception:
-        console.print("[red]\nFailed to save routine.[/red]")
-        return None
+
+def set_chart_style_from_hub(configs: dict):
+    """Set chart style from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        terminal_style = configs.get("features_terminal_style", {}) or {}
+        if terminal_style:
+            chart_style = terminal_style.get("chart", None)
+            if chart_style:
+                set_preference("CHART_STYLE", chart_style)
+
+
+def set_table_style_from_hub(configs: dict):
+    """Set table style from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        terminal_style = configs.get("features_terminal_style", {}) or {}
+        if terminal_style:
+            table_style = terminal_style.get("table", None)
+            if table_style:
+                set_preference("TABLE_STYLE", table_style)
+
+
+def set_sources_from_hub(configs: dict):
+    """Set sources from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        incoming = configs.get("features_sources", {}) or {}
+        if incoming:
+            choices = merge_sources(incoming=incoming, allowed=get_allowed_sources())
+            set_sources(choices)

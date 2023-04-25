@@ -20,6 +20,8 @@ class Custom(PltTA):
     @indicator()
     def plot_srlines(self, fig: OpenBBFigure, df_ta: pd.DataFrame):
         """Adds support and resistance lines to plotly figure"""
+        window = self.params["srlines"].get_argument_values("window")
+        window = window[0] if isinstance(window, list) and len(window) > 0 else 200
 
         def is_far_from_level(value, levels, df_stock):
             ave = np.mean(df_stock["High"] - df_stock["Low"])
@@ -40,6 +42,11 @@ class Custom(PltTA):
             return cond1 and cond2 and cond3 and cond4
 
         df_ta2 = df_ta.copy()
+        today = pd.to_datetime(datetime.now(), unit="ns")
+        start_date = pd.to_datetime(datetime.now() - timedelta(days=window), unit="ns")
+
+        df_ta2 = df_ta2.loc[(df_ta2.index >= start_date) & (df_ta2.index < today)]
+
         if df_ta2.index[-2].date() != df_ta2.index[-1].date():
             interval = 1440
         else:
@@ -49,18 +56,19 @@ class Custom(PltTA):
             cut_days = 1 if interval < 15 else 2
             dt_unique_days = df_ta2.index.normalize().unique()
             df_ta2 = df_ta2.loc[
-                (df_ta.index >= dt_unique_days[-cut_days])
-                & (df_ta.index < datetime.now())
+                (df_ta2.index >= pd.to_datetime(dt_unique_days[-cut_days], unit="ns"))
+                & (df_ta2.index < today)
             ].copy()
 
         levels: list = []
-        x_range = (
-            df_ta2.index[-1].replace(hour=17, minute=45)
-            if interval < 15
-            else df_ta2.index[-1].replace(hour=15, minute=45)
-        )
+        x_range = df_ta2.index[-1].replace(hour=15, minute=59)
         if interval > 15:
             x_range = df_ta2.index[-1] + timedelta(days=15)
+            if x_range.weekday() > 4:
+                x_range = x_range + timedelta(days=7 - x_range.weekday())
+
+        elif df_ta2.index[-1] >= today.replace(hour=15, minute=0):
+            x_range = (df_ta2.index[-1] + timedelta(days=1)).replace(hour=11, minute=0)
             if x_range.weekday() > 4:
                 x_range = x_range + timedelta(days=7 - x_range.weekday())
 
@@ -70,52 +78,46 @@ class Custom(PltTA):
                 if is_far_from_level(lv, levels, df_ta2):
                     levels.append((i, lv))
                     fig.add_scatter(
-                        x=[x_range],
-                        y=[lv],
+                        x=[df_ta.index[0], x_range],
+                        y=[lv, lv],
                         opacity=1,
-                        mode="text",
-                        text=f"{lv:{self.get_float_precision()}}",
-                        textposition="top left",
+                        mode="lines+text",
+                        text=["", f"{lv:{self.get_float_precision()}}"],
+                        textposition="top center",
                         textfont=dict(
-                            family="Arial Black", color="rgb(120, 70, 200)", size=12
+                            family="Arial Black", color="rgb(120, 70, 200)", size=10
                         ),
+                        line=dict(
+                            width=2, dash="dash", color="rgba(120, 70, 200, 0.70)"
+                        ),
+                        connectgaps=True,
                         showlegend=False,
                         row=1,
                         col=1,
-                    )
-                    fig.add_hline(
-                        y=lv,
-                        line_width=2,
-                        line_dash="dash",
-                        line_color="rgba(120, 70, 200, 0.70)",
-                        row=1,
-                        col=1,
+                        secondary_y=self.show_volume,
                     )
             elif is_resistance(df_ta2, i):
                 lv = df_ta2["High"][i]
                 if is_far_from_level(lv, levels, df_ta2):
                     levels.append((i, lv))
                     fig.add_scatter(
-                        x=[x_range],
-                        y=[lv],
+                        x=[df_ta.index[0], x_range],
+                        y=[lv, lv],
                         opacity=1,
-                        mode="text",
-                        text=f"{lv:{self.get_float_precision()}}",
-                        textposition="top left",
+                        mode="lines+text",
+                        text=["", f"{lv:{self.get_float_precision()}}"],
+                        textposition="top center",
                         textfont=dict(
-                            family="Arial Black", color="rgb(120, 70, 200)", size=12
+                            family="Arial Black", color="rgb(120, 70, 200)", size=10
                         ),
+                        line=dict(
+                            width=2, dash="dash", color="rgba(120, 70, 200, 0.70)"
+                        ),
+                        connectgaps=True,
                         showlegend=False,
                         row=1,
                         col=1,
-                    )
-                    fig.add_hline(
-                        y=lv,
-                        line_width=2,
-                        line_dash="dash",
-                        line_color="rgba(120, 70, 200, 0.70)",
-                        row=1,
-                        col=1,
+                        secondary_y=self.show_volume,
                     )
 
         return fig
@@ -144,8 +146,8 @@ class Custom(PltTA):
             "<b>0.65</b>",
             "<b>1</b>",
         ]
-        min_date = min_date.to_pydatetime()
-        max_date = max_date.to_pydatetime()
+        min_date = pd.to_datetime(min_date).to_pydatetime()
+        max_date = pd.to_datetime(max_date).to_pydatetime()
         self.df_fib = df_fib
 
         fig.add_scatter(
@@ -158,6 +160,7 @@ class Custom(PltTA):
             showlegend=False,
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         df_ta2 = df_ta.copy()
         interval = 1440
@@ -198,6 +201,7 @@ class Custom(PltTA):
                 showlegend=False,
                 row=1,
                 col=1,
+                secondary_y=self.show_volume,
             )
 
         return fig

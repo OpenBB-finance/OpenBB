@@ -30,7 +30,6 @@ class KeysRoot(Category):
         `mykeys`: Get currently set API keys.\n
         `news`: Set News key\n
         `oanda`: Set Oanda key\n
-        `openbb`: Set OpenBB Personal Access Token.\n
         `polygon`: Set Polygon key\n
         `quandl`: Set Quandl key\n
         `reddit`: Set Reddit key\n
@@ -43,6 +42,7 @@ class KeysRoot(Category):
         `tokenterminal`: Set Token Terminal key.\n
         `tradier`: Set Tradier key\n
         `twitter`: Set Twitter key\n
+        `ultima`: Set Ultima Insights key\n
         `walert`: Set Walert key\n
     """
 
@@ -71,7 +71,6 @@ class KeysRoot(Category):
         self.mykeys = lib.keys_model.get_keys
         self.news = lib.keys_model.set_news_key
         self.oanda = lib.keys_model.set_oanda_key
-        self.openbb = lib.keys_model.set_openbb_personal_access_token
         self.polygon = lib.keys_model.set_polygon_key
         self.quandl = lib.keys_model.set_quandl_key
         self.reddit = lib.keys_model.set_reddit_key
@@ -84,4 +83,5 @@ class KeysRoot(Category):
         self.tokenterminal = lib.keys_model.set_tokenterminal_key
         self.tradier = lib.keys_model.set_tradier_key
         self.twitter = lib.keys_model.set_twitter_key
+        self.ultima = lib.keys_model.set_ultima_key
         self.walert = lib.keys_model.set_walert_key

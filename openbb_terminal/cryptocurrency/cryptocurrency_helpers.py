@@ -506,7 +506,7 @@ def load(
     exchange: str = "binance",
     to_symbol: str = "usd",
     end_date: Optional[Union[datetime, Union[str, None]]] = None,
-    source: str = "CoinGecko",
+    source: str = "YahooFinance",
 ) -> pd.DataFrame:
     """
     Load crypto currency to get data for
@@ -900,11 +900,10 @@ def plot_candles(  # pylint: disable=too-many-arguments
         return data
 
     fig = OpenBBFigure.create_subplots(
-        rows=1 if not volume else 2,
+        rows=1,
         cols=1,
-        shared_xaxes=True,
         vertical_spacing=0,
-        row_width=[1] if not volume else [0.2, 0.7],
+        specs=[[{"secondary_y": True}]],
     ).set_title(f"\n{symbol if title == '' else title}")
 
     fig.add_candlestick(
@@ -913,15 +912,17 @@ def plot_candles(  # pylint: disable=too-many-arguments
         low=data.Low,
         close=data.Close,
         x=data.index,
-        name=f"OHLC {symbol}",
+        name=f"{symbol} OHLC",
         row=1,
         col=1,
+        secondary_y=volume,
     )
     if volume:
-        fig.add_stock_volume(data)
-        fig.update_yaxes(title="Volume", row=2, col=1)
+        fig.add_inchart_volume(data)
 
-    fig.update_layout(showlegend=False, yaxis=dict(title="Price", type=yscale))
+    fig.set_yaxis_title("Price", row=1, col=1, secondary_y=volume, type=yscale)
+    fig.update_layout(showlegend=False)
+
     return fig.show(external=external_axes)
 
 

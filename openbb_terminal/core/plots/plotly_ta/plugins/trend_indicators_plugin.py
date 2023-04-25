@@ -25,6 +25,7 @@ class Trend(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_scatter(
             name="+DI",
@@ -35,6 +36,7 @@ class Trend(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_scatter(
             name="-DI",
@@ -45,11 +47,12 @@ class Trend(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>ADX</b>",
             x=0,
             xanchor="right",
@@ -60,7 +63,7 @@ class Trend(PltTA):
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text=(
                 f"<span style='color: {theme.up_color}'>D+</span><br>"
                 f"<span style='color: {theme.down_color}'>D-</span>"
@@ -82,8 +85,9 @@ class Trend(PltTA):
             line=dict(color="white", dash="dash"),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1
 
@@ -102,6 +106,7 @@ class Trend(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_scatter(
             name="Aroon Down",
@@ -112,11 +117,12 @@ class Trend(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>Aroon</b>",
             x=0,
             xanchor="right",
@@ -127,7 +133,7 @@ class Trend(PltTA):
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text=(
                 f"<span style='color: {theme.up_color}'>↑</span><br>"
                 f"<span style='color: {theme.down_color}'>↓</span>"
@@ -148,6 +154,7 @@ class Trend(PltTA):
             line=dict(color="white", dash="dash"),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         subplot_row += 1
@@ -162,11 +169,12 @@ class Trend(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>Aroon<br>OSC</b>",
             x=0,
             xanchor="right",
@@ -175,7 +183,7 @@ class Trend(PltTA):
             font_size=14,
             font_color="#e0b700",
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(
             tickvals=[-100, 0, 100],
             ticktext=["-100", "0", "100"],
             nticks=5,

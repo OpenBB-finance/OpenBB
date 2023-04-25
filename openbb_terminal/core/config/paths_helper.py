@@ -1,11 +1,11 @@
 # IMPORTATION STANDARD
+from pathlib import Path
 from typing import List
 
 from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     SETTINGS_DIRECTORY,
     SETTINGS_ENV_FILE,
-    USER_DATA_SOURCES_DEFAULT_FILE,
 )
 from openbb_terminal.core.session.current_user import get_current_user
 
@@ -58,8 +58,13 @@ dirs_list = [
     current_user.preferences.USER_PRESETS_DIRECTORY / "stocks" / "insider",
     current_user.preferences.USER_PRESETS_DIRECTORY / "etf" / "screener",
     current_user.preferences.USER_ROUTINES_DIRECTORY,
+    current_user.preferences.USER_DATA_DIRECTORY / "sources",
 ]
-dirs_files = [SETTINGS_ENV_FILE, REPOSITORY_ENV_FILE, USER_DATA_SOURCES_DEFAULT_FILE]
+dirs_files = [
+    SETTINGS_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+    Path(current_user.preferences.USER_DATA_SOURCES_FILE),
+]
 initialized = False
 
 
@@ -67,7 +72,7 @@ def init_userdata():
     """
     Initializes the user data folder
     """
-    global initialized
+    global initialized  # noqa
     if not initialized:
         create_paths(dirs_list)
         create_files(dirs_files)

@@ -26,6 +26,7 @@ class Volume(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_hline(
@@ -36,11 +37,12 @@ class Volume(PltTA):
             line=dict(color="white", dash="dash", width=2),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>AD</b>",
             x=0,
             xanchor="right",
@@ -49,7 +51,7 @@ class Volume(PltTA):
             font_size=14,
             font_color=theme.get_colors()[1],
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(nticks=3, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=3, autorange=True)
 
         return fig, subplot_row + 1
 
@@ -66,11 +68,12 @@ class Volume(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>ADOSC</b>",
             x=0,
             xanchor="right",
@@ -95,11 +98,12 @@ class Volume(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>OBV</b>",
             x=0,
             xanchor="right",
@@ -108,6 +112,6 @@ class Volume(PltTA):
             font_size=14,
             font_color=theme.get_colors()[1],
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1

@@ -18,16 +18,6 @@ else:
     WITH_GIT = True
 
 # IMPORTATION INTERNAL
-from openbb_terminal.config_terminal import (
-    LOGGING_APP_NAME,
-    LOGGING_AWS_ACCESS_KEY_ID,
-    LOGGING_AWS_SECRET_ACCESS_KEY,
-    LOGGING_COMMIT_HASH,
-    LOGGING_FREQUENCY,
-    LOGGING_HANDLERS,
-    LOGGING_ROLLING_CLOCK,
-    LOGGING_VERBOSITY,
-)
 from openbb_terminal.core.log.generation.directories import get_log_dir
 from openbb_terminal.core.log.generation.formatter_with_exceptions import (
     FormatterWithExceptions,
@@ -42,11 +32,16 @@ from openbb_terminal.core.log.generation.settings import (
     Settings,
 )
 from openbb_terminal.core.log.generation.user_logger import get_user_uuid
-
-logging.getLogger("requests").setLevel(LOGGING_VERBOSITY)
-logging.getLogger("urllib3").setLevel(LOGGING_VERBOSITY)
+from openbb_terminal.core.session.current_system import (
+    get_current_system,
+    set_current_system,
+)
 
 logger = logging.getLogger(__name__)
+current_system = get_current_system()
+
+logging.getLogger("requests").setLevel(current_system.LOGGING_VERBOSITY)
+logging.getLogger("urllib3").setLevel(current_system.LOGGING_VERBOSITY)
 
 
 def get_app_id() -> str:
@@ -77,8 +72,8 @@ def get_session_id() -> str:
 def get_commit_hash(use_env=True) -> str:
     """Get Commit Short Hash"""
 
-    if use_env and LOGGING_COMMIT_HASH != "REPLACE_ME":
-        return LOGGING_COMMIT_HASH
+    if use_env and current_system.LOGGING_COMMIT_HASH != "REPLACE_ME":
+        return current_system.LOGGING_COMMIT_HASH
 
     git_dir = Path(__file__).parent.parent.joinpath(".git")
 
@@ -168,21 +163,24 @@ def setup_logging(
 
     # AppSettings
     commit_hash = get_commit_hash()
-    name = app_name or LOGGING_APP_NAME
+    name = app_name or current_system.LOGGING_APP_NAME
     identifier = get_app_id()
     session_id = get_session_id()
     user_id = get_user_uuid()
 
+    current_system.LOGGING_APP_ID = identifier
+    set_current_system(current_system)
+
     # AWSSettings
-    aws_access_key_id = LOGGING_AWS_ACCESS_KEY_ID
-    aws_secret_access_key = LOGGING_AWS_SECRET_ACCESS_KEY
+    aws_access_key_id = current_system.LOGGING_AWS_ACCESS_KEY_ID
+    aws_secret_access_key = current_system.LOGGING_AWS_SECRET_ACCESS_KEY
 
     # LogSettings
     directory = get_log_dir()
-    frequency = frequency or LOGGING_FREQUENCY
-    handler_list = LOGGING_HANDLERS
-    rolling_clock = LOGGING_ROLLING_CLOCK
-    verbosity = verbosity or LOGGING_VERBOSITY
+    frequency = frequency or current_system.LOGGING_FREQUENCY
+    handler_list = current_system.LOGGING_HANDLERS
+    rolling_clock = current_system.LOGGING_ROLLING_CLOCK
+    verbosity = verbosity or current_system.LOGGING_VERBOSITY
 
     settings = Settings(
         app_settings=AppSettings(

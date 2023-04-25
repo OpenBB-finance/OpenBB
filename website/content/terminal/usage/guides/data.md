@@ -30,7 +30,7 @@ This folder contains all things user-created. For example:
 
 ## Exporting Files
 
-Within many of the functionalities, we offer the capability to export to Excel (xlsx and csv) or JSON. This can be demonstrated with the `--export` argument, e.g. if you wish to export to `xlsx` you would add `--export xlsx`. 
+Within many of the functionalities, we offer the capability to export to Excel (xlsx and csv) or JSON. This can be demonstrated with the `--export` argument, e.g. if you wish to export to `xlsx` you would add `--export xlsx`.
 
 For example, if you wish to download market data you can do so from the stocks menu with the following:
 
@@ -58,7 +58,7 @@ Lastly, when you select the `xlsx` option, you can also specify the sheet name w
 /stocks/load AAPL -s 2010-01-01 --export apple.xlsx --sheet-name Market Data
 ```
 
-Then enter the `fa` (Fundamental Analysis) menu and copy and paste the code below. This requires an API key from FinancialModelingPrep which you can obtain for free. Please have a look [here](https://docs.openbb.co/terminal/quickstart/api-keys).
+Then enter the `fa` (Fundamental Analysis) menu and copy and paste the code below. This requires an API key from FinancialModelingPrep which you can obtain for free. Please have a look [here](https://docs.openbb.co/terminal/usage/guides/api-keys).
 
 
 ```console

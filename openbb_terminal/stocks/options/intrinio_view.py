@@ -72,12 +72,11 @@ def display_historical(
     df_hist.columns = [x.title() for x in df_hist.columns]
 
     fig = OpenBBFigure.create_subplots(
-        rows=2,
+        rows=1,
         cols=1,
-        shared_xaxes=True,
+        specs=[[{"secondary_y": True}]],
         vertical_spacing=0.03,
-        row_heights=[0.3, 0.7],
-        subplot_titles=[f"{symbol} {strike} {op_type}", "Volume"],
+        subplot_titles=[f"{symbol} {strike} {op_type}"],
     )
 
     fig.add_candlestick(
@@ -89,8 +88,9 @@ def display_historical(
         name=f"{symbol} OHLC",
         row=1,
         col=1,
+        secondary_y=True,
     )
-    fig.add_stock_volume(df_hist, row=2, col=1)
+    fig.add_inchart_volume(df_hist)
     fig.hide_holidays()
 
     if export:
@@ -103,7 +103,7 @@ def display_historical(
             fig,
         )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -180,9 +180,7 @@ def view_historical_greeks(
             limit=limit,
         )
 
-    try:
-        greek_df = df[greek.lower()]
-    except KeyError:
+    if greek.lower() not in df.columns:
         return console.print(f"[red]Could not find greek {greek} in data.[/red]\n")
 
     fig = OpenBBFigure.create_subplots(
@@ -195,16 +193,18 @@ def view_historical_greeks(
 
     fig.add_scatter(
         x=df.index,
-        y=df.price,
-        name="Stock Price",
+        y=df.price.values,
+        name="Option Premium",
         line=dict(color=theme.down_color),
+        secondary_y=False,
     )
     fig.add_scatter(
         x=df.index,
-        y=greek_df,
+        y=df[greek.lower()].values,
         name=greek.title(),
         line=dict(color=theme.up_color),
         yaxis="y2",
+        secondary_y=True,
     )
     fig.update_layout(
         yaxis2=dict(
@@ -214,7 +214,7 @@ def view_historical_greeks(
             overlaying="y",
         ),
         yaxis=dict(
-            title=f"{symbol} Price",
+            title=f"{symbol} Option Premium",
             side="right",
         ),
     )
@@ -229,4 +229,4 @@ def view_historical_greeks(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

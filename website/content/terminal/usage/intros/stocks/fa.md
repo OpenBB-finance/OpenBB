@@ -8,12 +8,16 @@ The Fundamental Analysis menu is a set of tools for measuring a company's intrin
 
 ### How to use
 
-Enter the submenu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>, with a ticker loaded.
+Enter the submenu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>.  Note all functions in this submenu can add a ticker argument with the `-t` flag.
+
+```
+(🦋) /stocks/ $ fa
+```
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218980249-5d98c0e0-6fba-4f62-acb2-2984f5fd517b.png"></img>
 
 Some commands offer interpretations of the data, but, the majority are statements reported to the SEC. The `overview` command is a table of basic statistics, including price.
-````
+```
 (🦋) /stocks/fa/ $ overview
 
                    Ticker Screener
@@ -33,10 +37,10 @@ Some commands offer interpretations of the data, but, the majority are statement
 │ P/E                │ 2.65                         │
 ├────────────────────┼──────────────────────────────┤
 <continues>
-````
+```
 The `analysis` command reads SEC filings with NLP and extracts the most important statements.
 
-````
+```
 (🦋) /stocks/fa/ $ analysis
 
         DISCUSSION AND ANALYSIS:
@@ -63,10 +67,10 @@ The following table sets forth certain cash flow information for the six months 
 The revolving line provides for availability for general corporate purposes, with borrowings to bear interest at either the Base Rate or LIBOR rate, plus an applicable margin based on our consolidated leverage ratio, as of October 31, 2021.
 
 In response to a Springing Lien Triggering Event (as defined in the credit agreement), we would be required to enter into certain documents that create in favor of TD Bank, N. A., as administrative agent, and the lenders party to such documents as legal, valid, and enforceable first priority lien on the collateral described therein.
-````
+```
 The `warnings` command uses <a href="https://www.drwealth.com/gone-fishing-with-buffett-by-sean-seah/comment-page-1/" target="_blank" rel="noreferrer noopener">Sean Seah's signals</a> to highlight certain of qualities a business.
 
-````
+```
 (🦋) /stocks/fa/ $ warnings
 
 
@@ -101,14 +105,14 @@ No consistent historical earnings per share
 NOT consistently high return on equity
 NOT consistently high return on assets
 5x Net Income < Long-Term Debt
-````
+```
 
 Historical enterprise value(`enterprise`) is a different way to look at a company's value over time. It can be useful for smoothing a profile where the number of outstanding shares is dynamic.
 
 ```
 (🦋) /stocks/fa/ $ enterprise -l 10
 
-                                                                   TSLA Enterprise                                                                    
+                                                                   TSLA Enterprise
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
 ┃                                 ┃ 2012      ┃ 2013      ┃ 2014     ┃ 2015     ┃ 2016     ┃ 2017     ┃ 2018     ┃ 2019      ┃ 2020      ┃ 2021      ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
@@ -262,10 +266,10 @@ Or check recommendations from several investment banks with `analyst`:
 
 The `revfc` command will show revenue estimations:
 
-````
+```
 (🦋) /stocks/fa/ $ revfc
 
-                              TSLA Revenue History and Estimations                               
+                              TSLA Revenue History and Estimations
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ fiscalyear ┃ consensus_mean ┃ change % ┃ analysts ┃ actual   ┃ consensus_low ┃ consensus_high ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
@@ -289,7 +293,7 @@ The `revfc` command will show revenue estimations:
 ├────────────┼────────────────┼──────────┼──────────┼──────────┼───────────────┼────────────────┤
 │ 2031       │ 775.300 B      │ 106.13   │ 1.0      │ 0        │ 775.300 B     │ 775.300 B      │
 └────────────┴────────────────┴──────────┴──────────┴──────────┴───────────────┴────────────────┘
-````
+```
 
 The command `dupont` is a chart detailing the components of a company's return on equity.
 
@@ -308,7 +312,7 @@ Sometimes a company must do a reverse-split to save its listing from collapsing 
 ![Aurora Cannabis reverse split](https://user-images.githubusercontent.com/85772166/175223786-6bb7e14b-09c5-43fd-b6fd-beaa4551e814.png)
 
 Use the command `shrs` to see a quick breakdown of the ownership and major shareholders.
-````
+```
 (🦋) /stocks/fa/ $ shrs
 
 
@@ -376,7 +380,7 @@ Use the command `shrs` to see a quick breakdown of the ownership and major share
 ├────────────────────────────────────────────────────┼───────────┼───────────────┼────────┼──────────┤
 │ Fidelity Small Cap Index Fund                      │ 359.342 K │ 2022-03-30    │ 0.79 % │ 5.437 M  │
 └────────────────────────────────────────────────────┴───────────┴───────────────┴────────┴──────────┘
-````
+```
 
 Financial statements default to yearly reports, adding `-q` will flag for quarterly statements with `-l` being the number of quarters to show.
 

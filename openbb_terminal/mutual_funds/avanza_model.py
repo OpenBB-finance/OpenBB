@@ -15,13 +15,18 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_data(isin: str):
+def get_data(isin: str) -> dict:
     """Gets the data from Avanza
 
     Parameters
     ----------
     isin: str
         ISIN of the fund
+
+    Returns
+    -------
+    dict
+        Fund data
     """
     ava_fund = pd.read_csv(
         os.path.join("openbb_terminal", "mutual_funds", "avanza_fund_ID.csv"),

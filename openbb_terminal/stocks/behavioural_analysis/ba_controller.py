@@ -28,7 +28,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.stocks.behavioural_analysis import cramer_view, finnhub_view
+from openbb_terminal.stocks.behavioural_analysis import finnhub_view
 
 # pylint:disable=R0904,C0302
 
@@ -373,7 +373,7 @@ class BehaviouralAnalysisController(StockBaseController):
             "--display",
             action="store_true",
             dest="display",
-            default=True,
+            default=False,
             help="Print table of sentiment values",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -827,57 +827,3 @@ class BehaviouralAnalysisController(StockBaseController):
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-    def call_jcdr(self, other_args: List[str]):
-        """Process jcdr command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="jcdr",
-            description="""
-                Show daily cramer recommendation
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--inverse",
-            default=False,
-            action="store_true",
-            help="Show inverse recommendation",
-            dest="inverse",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            cramer_view.display_cramer_daily(inverse=ns_parser.inverse)
-
-    @log_start_end(log=logger)
-    def call_jctr(self, other_args: List[str]):
-        """Process jctr command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="jctr",
-            description="""
-                Show cramer recommendation for loaded ticker
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True,
-        )
-
-        if ns_parser:
-            if self.ticker:
-                cramer_view.display_cramer_ticker(
-                    symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
-                )
-            else:
-                console.print(
-                    "[red]No ticker loaded.  Please use load <ticker> first.\n[/red]"
-                )

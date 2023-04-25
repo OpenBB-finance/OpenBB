@@ -1,4 +1,4 @@
-    load               get historical data                         [YahooFinance, AlphaVantage, Polygon, Oanda]
+    load               get historical data                         [YahooFinance, AlphaVantage, Polygon]
 
 Ticker: 
 Source: YahooFinance

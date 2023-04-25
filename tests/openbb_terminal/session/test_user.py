@@ -8,6 +8,7 @@ from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,
     ProfileModel,
+    SourcesModel,
     UserModel,
 )
 
@@ -26,8 +27,9 @@ def fixture_test_user():
         credentials=CredentialsModel(),
         preferences=PreferencesModel(),
         profile=ProfileModel(),
+        sources=SourcesModel(),
     )
-    test_user.profile.load_user_info(TEST_SESSION, "test@email.com")
+    test_user.profile.load_user_info(TEST_SESSION, "test@email.com", False)
     return test_user
 
 
@@ -37,6 +39,7 @@ def test_load_user_info(test_user):
     assert test_user.profile.token_type == "bearer"
     assert test_user.profile.uuid == "test_uuid"
     assert test_user.profile.email == "test@email.com"
+    assert test_user.profile.remember is False
 
 
 def test_get_session(test_user):

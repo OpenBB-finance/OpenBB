@@ -6,6 +6,8 @@ import os
 from typing import Optional, Union
 
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -31,8 +33,7 @@ def display_overview(symbol: str, export: str = "", sheet_name: Optional[str] = 
         return
 
     print_rich_table(
-        df_fa.drop(index=["Description"]),
-        headers=[""],
+        df_fa,
         title=f"{symbol} Overview",
         show_index=True,
         export=bool(export),
@@ -76,7 +77,7 @@ def display_key(symbol: str, export: str = "", sheet_name: Optional[str] = None)
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "key",
-        df_key,
+        df_key.transpose(),
         sheet_name,
     )
 
@@ -173,7 +174,7 @@ def display_income_statement(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "income",
-        df_income,
+        df_income.transpose(),
         sheet_name,
         fig,
     )
@@ -270,7 +271,7 @@ def display_balance_sheet(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "balance",
-        df_balance,
+        df_balance.transpose(),
         sheet_name,
         fig,
     )
@@ -365,7 +366,7 @@ def display_cash_flow(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cash",
-        df_cash,
+        df_cash.transpose(),
         sheet_name,
         fig,
     )
@@ -442,16 +443,22 @@ def display_fraud(
     detail : bool
         Whether to show the details for the mscore
     """
+    current_user = get_current_user()
+    enable_interactive = (
+        current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
+    )
     df = av_model.get_fraud_ratios(symbol, detail=detail)
 
     if df.empty:
+        console.print("[red]No data found[/red]")
         return
 
     df_color = df.copy()
-    if color:
+    if color and not enable_interactive:
         for column in df_color:
             df_color[column] = df_color[column].astype(str)
         df_color = df_color.apply(lambda x: av_model.replace_df(x.name, x), axis=1)
+    df_color = df_color.fillna("N/A")
 
     print_rich_table(
         df_color,

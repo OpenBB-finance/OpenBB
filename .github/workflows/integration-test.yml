@@ -5,6 +5,7 @@ on:
     branches:
       - release/*
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -41,9 +42,16 @@ jobs:
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
-        version: 1.3.2
+        version: 1.4.0
         virtualenvs-create: true
         virtualenvs-in-project: true
+
+    - name: Setup sudo apt installs for ubuntu-latest
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+            libgtk-3-dev \
+            libwebkit2gtk-4.0-dev
 
     - name: Load cached venv
       id: cached-poetry-dependencies
@@ -60,8 +68,7 @@ jobs:
       id: integration-tests
       run: |
         source $VENV
-        python terminal.py -t > result.txt
-        cat result.txt
+        python terminal.py -t | tee result.txt
         grep "================================ integration test summary ================================" result.txt -A100 | tail -c 2000 > failed_tests.txt
 
     - name: Upload summary to Slack
@@ -72,7 +79,7 @@ jobs:
         title: "Integration test summary"
         path: failed_tests.txt
         channel: ${{ secrets.SLACK_CHANNEL_ID }}
-    
+
     - name: Slack Notification - Success/Failure
       uses: act10ns/slack@v1
       with:

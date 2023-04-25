@@ -19,22 +19,23 @@ en:
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   account/_authentication_: Authentication
+  account/login: Log in to OpenBB account
   account/logout: Log out from OpenBB account
   account/_personal_access_token_: OpenBB Personal Access Token
   account/generate: Generate a Personal Access Token
   account/show: Shows the current Personal Access Token
   account/revoke: Revoke the Personal Access Token
-  account/_info_: Cloud storage of keys, settings and feature flags
-  account/sync: Turns the cloud synchronization on/off
-  account/pull: Pull data from cloud
-  account/clear: Clear data from cloud
+  account/_info_: Cloud storage of keys
+  account/clear: Clear keys from cloud
   account/_routines_: Cloud storage of routines
   account/list: List available routines
   account/upload: Upload routine
   account/download: Download routine
-  account/delete: Delete routine
+  account/delete: Delete routine stored in cloud
+  keys/_source: Source
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   keys/mykeys: get your defined keys
+  keys/status: reevaluate keys status
   keys/_status_: Status
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
@@ -42,11 +43,12 @@ en:
   defined, not tested: defined, not tested
   defined, test inconclusive: defined, test inconclusive
   sources/_info_: Get and set default data sources
+  sources/_source: Source
   sources/get: get available data sources associated with command
   sources/set: set default data source for a command
   featflags/_info_: Feature flags through environment variables
   featflags/retryload: retry misspelled commands with load first
-  featflags/tab: use tabulate to print dataframes
+  featflags/interactive: open dataframes in interactive window
   featflags/cls: clear console after each command
   featflags/color: use coloring features
   featflags/promptkit: enable prompt toolkit (autocomplete and history)
@@ -62,8 +64,14 @@ en:
   featflags/overwrite: whether to overwrite Excel files if they already exists
   featflags/version: whether to show the version in the bottom right corner
   featflags/tbhint: displays usage hints in the bottom toolbar
-  settings/_info_: Settings through environment variables
+  settings/_info_: Current settings
+  settings/_cmds_: Change settings
   settings/colors: set your own terminal colors
+  settings/_colors: Colors
+  settings/chart: set charts style
+  settings/_chart: Charts style
+  settings/table: set tables style
+  settings/_table: Tables style
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used
@@ -91,8 +99,6 @@ en:
   settings/_timezone: Timezone
   settings/source: specify data source file
   settings/_data_source: Data sources
-  settings/tbnews: displays tweets news in the bottom toolbar
-  settings/tweetnews: tweak tweet news parameters
   settings/_tbnu: Time (in seconds) between tweet news updates
   settings/_tatt: Twitter accounts to track
   settings/_nttli: Number of tweets to look into from each account
@@ -155,8 +161,6 @@ en:
   stocks/options/vsurf: show 3D volatility surface
   stocks/options/grhist: plot option greek history
   stocks/options/plot: plot variables provided by the user
-  stocks/options/parity: shows whether options are above or below expected price
-  stocks/options/binom: shows the value of an option using binomial options pricing
   stocks/options/greeks: shows the greeks for a given option
   stocks/options/eodchain: gets option chain at a specific date
   stocks/options/pricing: shows options pricing and risk neutral valuation
@@ -167,12 +171,6 @@ en:
   stocks/options/screen/scr: screen data from this preset
   stocks/options/screen/_screened_tickers: Last screened tickers
   stocks/options/screen/ca: take these to comparison analysis menu
-  stocks/options/pricing/_ticker: Ticker
-  stocks/options/pricing/_expiry: Expiry
-  stocks/options/pricing/add: add an expected price to the list
-  stocks/options/pricing/rmv: remove an expected price from the list
-  stocks/options/pricing/show: show the listed of expected prices
-  stocks/options/pricing/rnval: risk neutral valuation for an option
   stocks/options/hedge/_ticker: Ticker
   stocks/options/hedge/_expiry: Expiry
   stocks/options/hedge/pick: pick the underlying asset position
@@ -251,14 +249,12 @@ en:
   stocks/scr/view: view available presets (defaults and customs)
   stocks/scr/set: set one of the available presets
   stocks/scr/_preset: Preset
-  stocks/scr/historical: view historical price
   stocks/scr/overview: overview (e.g. Sector, Industry, Market Cap, Volume)
   stocks/scr/valuation: valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
   stocks/scr/financial: financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
   stocks/scr/ownership: ownership (e.g. Float, Insider Own, Short Ratio)
   stocks/scr/performance: performance (e.g. Perf Week, Perf YTD, Volatility M)
   stocks/scr/technical: technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
-  stocks/scr/arktrades: get ARK trades for a chosen ticker
   stocks/scr/_screened_tickers: Last screened tickers
   stocks/scr/ca: take these to comparison analysis menu
   stocks/ins/view: view available presets
@@ -415,7 +411,6 @@ en:
   stocks/bt/load: load a specific stock ticker for analysis
   stocks/ta/_ticker: Ticker
   stocks/ta/load: load a specific stock ticker for analysis
-  stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
   stocks/ta/recom: recommendation based on technical indicators
   stocks/ta/_overlap_: Overlap
@@ -513,6 +508,7 @@ en:
   crypto/disc/games: top blockchain games
   crypto/disc/dapps: top decentralized apps
   crypto/disc/dex: top decentralized exchanges
+  crypto/ov/global: global crypto market statistics
   crypto/ov/defi: global DeFi market info
   crypto/ov/stables: stablecoins
   crypto/ov/exrates: coin exchange rates
@@ -747,6 +743,17 @@ en:
   etf/ta/obv: on balance volume
   etf/ta/_custom_: Custom
   etf/ta/fib: fibonacci retracement
+  economy/_country_: Country Performance
+  economy/gdp: Show nominal Gross Domestic Product (GDP)
+  economy/rgdp: Show real Gross Domestic Product (GDP)
+  economy/fgdp: Show forecasts of nominal and real Gross Domestic Product (GDP)
+  economy/debt: Show government debt-to-GDP ratio
+  economy/cpi: obtain the (harmonized) Consumer Price Index (CPI)
+  economy/ccpi: obtain components of the CPI including Food, Energy and Total
+  economy/balance: Show Government defict or surplus in capital income and expenditures
+  economy/revenue: Show Government revenue based on tax income
+  economy/spending: Show Government spending as indicator of size of government
+  economy/trust: Show Government trust based on surveys regarding confidence in the government
   economy/_database_: Databases
   economy/_stored: Stored datasets
   economy/overview: show a market overview of either indices, bonds or currencies
@@ -757,7 +764,6 @@ en:
   economy/fred: collect macro data from FRED based on a series ID
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
-  economy/cpi: obtain (harmonized) Consumer Price Indices for any country
   economy/ycrv: show sovereign yield curves
   economy/spread: show bond spread matrix
   economy/events: show economic calendar
@@ -766,7 +772,6 @@ en:
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
-  economy/spectrum: spectrum of sectors, industry, country
   economy/eval: create new series by performing operations on loaded data
   economy/forecast: forecast techniques; rnn, nbeats, transformer, block rnn
   economy/qa: Open quantitative analysis menu with stored data
@@ -949,13 +954,17 @@ en:
   econometrics/plot: plot data from a dataset
   econometrics/type: change types of the columns or display their types
   econometrics/desc: show descriptive statistics of a dataset
+  econometrics/corr: Plot the correlation coefficients for dataset features
+  econometrics/season: Plot the seasonality for a dataset column
   econometrics/index: set (multi) index based on columns
   econometrics/clean: clean a dataset by filling or dropping NaNs
   econometrics/modify: combine columns of datasets and delete or rename columns
   econometrics/add: Add columns to dataset with option to use formulas
+  econometrics/eval: create new series by performing operations on loaded data
   econometrics/delete: Delete columns from dataset
   econometrics/combine: Combine columns from different datasets
   econometrics/rename: Rename column from dataset
+  econometrics/lag: Add lag to a variable by shifting a column
   econometrics/_regression_: Regression
   econometrics/_regression_tests_: Regression Tests
   econometrics/ols: fit a (multi) linear regression model
@@ -1000,7 +1009,6 @@ en:
   portfolio/var: display value at risk
   portfolio/es: display expected shortfall
   portfolio/om: display omega ratio
-  portfolio/bro/ally: Ally Invest Menu
   portfolio/bro/degiro: Degiro Menu
   portfolio/bro/rh: Robinhood Menu
   portfolio/bro/cb: Coinbase Pro Menu
@@ -1071,11 +1079,10 @@ en:
   dashboards/stocks: historic stock information
   dashboards/forecast: forecasting for timeseries datasets
   dashboards/forecasting: forecasting for timeseries datasets
+  dashboards/indicators: technical analysis indicators
   dashboards/correlation: stock correlations
-  dashboards/vsurf: options volatility surface
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
-  dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates

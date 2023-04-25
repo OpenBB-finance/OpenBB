@@ -1,8 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      screens: {
+        smh: { raw: "(max-height: 450px)" },
+      },
       colors: {
         "grey-50": "#f6f6f6ff",
         "grey-100": "#eaeaeaff",

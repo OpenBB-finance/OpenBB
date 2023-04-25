@@ -1,7 +1,6 @@
 # pylint: disable=R0902
 import importlib
 import inspect
-import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
@@ -9,10 +8,12 @@ from typing import Any, Dict, List, Optional, Type, Union
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure, theme
-from openbb_terminal.base_helpers import console
 from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
 from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
+from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.rich_config import console
 
 PLUGINS_PATH = Path(__file__).parent / "plugins"
 PLOTLY_TA: Optional["PlotlyTA"] = None
@@ -88,7 +89,7 @@ class PlotlyTA(PltTA):
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
-        global PLOTLY_TA  # pylint: disable=global-statement
+        global PLOTLY_TA  # pylint: disable=global-statement # noqa
         if PLOTLY_TA is None:
             # Creates the instance of the class and loads the plugins
             # We set the global variable to the instance of the class so that
@@ -97,6 +98,7 @@ class PlotlyTA(PltTA):
             PLOTLY_TA._locate_plugins()
             PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)
 
+        cls.inchart_colors = theme.get_colors()
         return PLOTLY_TA
 
     def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument
@@ -131,6 +133,7 @@ class PlotlyTA(PltTA):
     def subplots(self, value: List[str]):
         self.__subplots__ = value
 
+    # pylint: disable=R0913
     def __plot__(
         self,
         df_stock: Union[pd.DataFrame, pd.Series],
@@ -140,6 +143,7 @@ class PlotlyTA(PltTA):
         volume: bool = True,
         prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
+        volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
         if isinstance(df_stock, pd.Series):
@@ -161,7 +165,9 @@ class PlotlyTA(PltTA):
 
         self.prepost = prepost
 
-        return self.plot_fig(fig=fig, symbol=symbol, candles=candles)
+        return self.plot_fig(
+            fig=fig, symbol=symbol, candles=candles, volume_ticks_x=volume_ticks_x
+        )
 
     @staticmethod
     def plot(
@@ -172,6 +178,7 @@ class PlotlyTA(PltTA):
         volume: bool = True,
         prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
+        volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """Plot a chart with the given indicators.
 
@@ -198,23 +205,28 @@ class PlotlyTA(PltTA):
             Plot pre and post market data, by default False
         fig : OpenBBFigure, optional
             Plotly figure to plot on, by default None
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
         """
         if indicators is None and PLOTLY_TA is not None:
             indicators = PLOTLY_TA.indicators
 
         return PlotlyTA().__plot__(
-            df_stock, indicators, symbol, candles, volume, prepost, fig
+            df_stock, indicators, symbol, candles, volume, prepost, fig, volume_ticks_x
         )
 
     @staticmethod
     def _locate_plugins() -> None:
         """Locate all the plugins in the plugins folder"""
         path = (
-            Path(sys.executable).parent if hasattr(sys, "frozen") else Path(os.getcwd())
+            Path(sys.executable).parent
+            if hasattr(sys, "frozen")
+            else REPOSITORY_DIRECTORY
         )
+        current_system = get_current_system()
 
         # This is for debugging purposes
-        if os.environ.get("DEBUG_MODE", "False").lower() == "true":
+        if current_system.DEBUG_MODE:
             console.print(f"[bold green]Loading plugins from {path}[/]")
             console.print("[bold green]Plugins found:[/]")
 
@@ -222,7 +234,7 @@ class PlotlyTA(PltTA):
             python_path = plugin.relative_to(path).with_suffix("")
 
             # This is for debugging purposes
-            if os.environ.get("DEBUG_MODE", "False").lower() == "true":
+            if current_system.DEBUG_MODE:
                 console.print(f"    [bold red]{plugin.name}[/]")
                 console.print(f"        [bold yellow]{python_path}[/]")
                 console.print(f"        [bold bright_cyan]{__package__}[/]")
@@ -315,14 +327,13 @@ class PlotlyTA(PltTA):
         check_active = self.indicators.get_active_ids()
         subplots = [subplot for subplot in self.subplots if subplot in check_active]
 
-        if self.show_volume:
-            subplots.append("volume")
-
         check_rows = min(len(self.check_subplots(subplots)), 4)
         check_rows += 1 if "aroon" in subplots and (check_rows + 1) < 5 else 0
 
+        specs = [[{"secondary_y": True}]] + [[{"secondary_y": False}]] * check_rows
+
         output = row_params.get(str(check_rows), dict(rows=1, row_width=[1]))
-        output.update(dict(cols=1, vertical_spacing=0.04))
+        output.update(dict(cols=1, vertical_spacing=0.04, specs=specs))
 
         return output
 
@@ -341,14 +352,17 @@ class PlotlyTA(PltTA):
         fig : OpenBBFigure
             Plotly figure with candlestick/line chart and volume bar chart (if enabled)
         """
-
         fig = OpenBBFigure.create_subplots(
-            2,
+            1,
             1,
             shared_xaxes=True,
             vertical_spacing=0.06,
-            subplot_titles=[f"{symbol}", "Volume" if self.show_volume else ""],
-            row_width=[0.2, 0.7],
+            horizontal_spacing=0.01,
+            row_width=[1],
+            specs=[[{"secondary_y": True}]],
+        )
+        cc_linewidth = (
+            0.8 if len(self.df_stock.index) > 500 else 0.9 if self.intraday else 1.1
         )
         if candles:
             fig.add_candlestick(
@@ -357,10 +371,13 @@ class PlotlyTA(PltTA):
                 high=self.df_stock.High,
                 low=self.df_stock.Low,
                 close=self.df_stock.Close,
-                name="OHLC",
+                decreasing=dict(line=dict(width=cc_linewidth)),
+                increasing=dict(line=dict(width=cc_linewidth)),
+                name=f"{symbol} OHLC",
                 showlegend=False,
                 row=1,
                 col=1,
+                secondary_y=self.show_volume,
             )
         else:
             fig.add_scatter(
@@ -370,14 +387,12 @@ class PlotlyTA(PltTA):
                 connectgaps=True,
                 row=1,
                 col=1,
+                secondary_y=self.show_volume,
             )
             fig.update_layout(yaxis=dict(nticks=15))
             self.inchart_colors = theme.get_colors()[1:]
 
-        if self.show_volume:
-            fig.add_stock_volume(self.df_stock, self.close_column, row=2, col=1)  # type: ignore
-
-        fig.update_layout(yaxis_title="Price ($)")
+        fig.set_title(symbol, x=0.5, y=0.98, xanchor="center", yanchor="top")
         return fig
 
     def plot_fig(
@@ -385,6 +400,7 @@ class PlotlyTA(PltTA):
         fig: Optional[OpenBBFigure] = None,
         symbol: str = "",
         candles: bool = True,
+        volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """Plot indicators on plotly figure
 
@@ -396,6 +412,8 @@ class PlotlyTA(PltTA):
             Symbol to plot, by default uses the dataframe.name attribute if available or ""
         candles : bool, optional
             Plot a candlestick chart, by default True (if False, plots a line chart)
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
 
         Returns
         -------
@@ -415,15 +433,15 @@ class PlotlyTA(PltTA):
 
         subplot_row, fig_new = 2, {}
         inchart_index, ma_done = 0, False
-        subplot_row += (
-            1 if self.show_volume and "Volume" in self.df_stock.columns else 0
-        )
 
-        figure = self.process_fig(figure)
+        figure = self.process_fig(figure, volume_ticks_x)
 
+        # Aroon indicator is always plotted first since it has 2 subplot rows
         plot_indicators = sorted(
-            self.indicators.get_active_ids(), key=lambda x: x in self.subplots
+            self.indicators.get_active_ids(),
+            key=lambda x: 50 if x == "aroon" else 999 if x in self.subplots else 1,
         )
+
         for indicator in plot_indicators:
             try:
                 if indicator in self.subplots:
@@ -446,10 +464,18 @@ class PlotlyTA(PltTA):
 
                 fig_new.update(figure.to_plotly_json())
 
-                if subplot_row > 5 and indicator != plot_indicators[-1]:
-                    remaining = plot_indicators[plot_indicators.index(indicator) + 1 :]
+                remaining_subplots = (
+                    list(
+                        set(plot_indicators[plot_indicators.index(indicator) + 1 :])
+                        - set(self.inchart)
+                    )
+                    if indicator != "ma"
+                    else []
+                )
+                if subplot_row > 5 and remaining_subplots:
                     console.print(
-                        f"[bold red]Reached max number of subplots, skipping {', '.join(remaining)}[/]"
+                        f"[bold red]Reached max number of subplots.   "
+                        f"Skipping {', '.join(remaining_subplots)}[/]"
                     )
                     break
             except Exception as e:
@@ -457,19 +483,29 @@ class PlotlyTA(PltTA):
                 continue
 
         figure.update(fig_new)
+        figure.update_yaxes(
+            row=1,
+            col=1,
+            secondary_y=self.show_volume,
+            nticks=15 if subplot_row < 3 else 10,
+            tickfont=dict(size=16),
+        )
         figure.update_traces(
             selector=dict(type="scatter", mode="lines"), connectgaps=True
         )
-        figure.update_layout(showlegend=False, margin=dict(l=40))
+        figure.update_layout(showlegend=False)
         figure.hide_holidays(self.prepost)
+
+        if not self.show_volume:
+            figure.update_layout(margin=dict(l=20))
 
         # We remove xaxis labels from all but bottom subplot, and we make sure
         # they all match the bottom one
-        xbottom = list(figure.select_xaxes())[-1].anchor
-        for xa in figure.select_xaxes():
-            if not self.show_volume and subplot_row == 2:
+        xbottom = f"y{subplot_row+1}"
+        xaxes = list(figure.select_xaxes())
+        for xa in xaxes:
+            if xa == xaxes[-1]:
                 xa.showticklabels = True
-                break
             if not xa.showticklabels and xa.anchor != xbottom:
                 xa.showticklabels = False
             if xa.anchor != xbottom:
@@ -477,13 +513,15 @@ class PlotlyTA(PltTA):
 
         return figure
 
-    def process_fig(self, fig: OpenBBFigure) -> OpenBBFigure:
+    def process_fig(self, fig: OpenBBFigure, volume_ticks_x: int = 7) -> OpenBBFigure:
         """Process plotly figure before plotting indicators
 
         Parameters
         ----------
         fig : OpenBBFigure
             Plotly figure to process
+        volume_ticks_x : int, optional
+            Number to multiply volume, by default 7
 
         Returns
         -------
@@ -515,34 +553,11 @@ class PlotlyTA(PltTA):
         for trace in fig.select_traces():
             xref, yref = trace.xaxis, trace.yaxis
             row, col = subplots[xref][yref][0]
-            if trace.name == "Volume":
-                try:
-                    list(fig.select_annotations(selector=dict(text="Volume")))[
-                        0
-                    ].text = ""
-                except IndexError:
-                    pass
-                if not self.show_volume:
-                    continue
-                fig.add_annotation(
-                    xref=f"x{row} domain",
-                    yref=f"y{row} domain",
-                    text="<b>Volume</b>",
-                    x=0,
-                    xanchor="right",
-                    xshift=-6,
-                    y=0.96,
-                    font_size=14,
-                    font_color="#e0b700",
-                )
-                fig.update_yaxes(nticks=5, row=row, col=col)
-
-            new_subplot.add_trace(trace, row=row, col=col)
+            secondary_y = not row > 1 if self.show_volume else False
+            new_subplot.add_trace(trace, row=row, col=col, secondary_y=secondary_y)
 
         fig_json = fig.to_plotly_json()["layout"]
         for layout in fig_json:
-            if layout in ["xaxis2", "yaxis2"] and not self.show_volume:
-                continue
             if (
                 isinstance(fig_json[layout], dict)
                 and "domain" in fig_json[layout]
@@ -554,5 +569,10 @@ class PlotlyTA(PltTA):
 
             fig.layout.update({layout: fig_json[layout]})
             new_subplot.layout.update({layout: fig.layout[layout]})
+
+        if self.show_volume:
+            new_subplot.add_inchart_volume(
+                self.df_stock, self.close_column, volume_ticks_x=volume_ticks_x
+            )
 
         return new_subplot

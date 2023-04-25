@@ -20,13 +20,14 @@ from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-cfg.start_required_configurations()
-cfg.start_plot_backend()
+cfg.setup_config_terminal(is_sdk=True)
 
 logger = logging.getLogger(__name__)
+cfg.theme.applyMPLstyle()
 
 
 class OpenBBSDK:
@@ -39,7 +40,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = cfg.VERSION
+    __version__ = get_current_system().VERSION
 
     def __init__(self):
         SDKLogger()
@@ -131,18 +132,28 @@ class OpenBBSDK:
 
         Attributes:
             `available_indices`: Get available indices\n
+            `balance`: General government deficit is defined as the balance of income and expenditure of government,\n
+            `balance_chart`: General government balance is defined as the balance of income and expenditure of government,\n
             `bigmac`: Display Big Mac Index for given countries\n
             `bigmac_chart`: Display Big Mac Index for given countries\n
+            `ccpi`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
+            `ccpi_chart`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
             `country_codes`: Get available country codes for Bigmac index\n
             `cpi`: Obtain CPI data from FRED. [Source: FRED]\n
-            `cpi_chart`: Plot CPI data. [Source: FRED]\n
+            `cpi_chart`: Inflation measured by consumer price index (CPI) is defined as the change in\n
             `currencies`: Scrape data for global currencies\n
+            `debt`: General government debt-to-GDP ratio measures the gross debt of the general\n
+            `debt_chart`: General government debt-to-GDP ratio measures the gross debt of the general\n
             `events`: Get economic calendar for countries between specified dates\n
+            `fgdp`: Real gross domestic product (GDP) is GDP given in constant prices and\n
+            `fgdp_chart`: Real gross domestic product (GDP) is GDP given in constant prices and\n
             `fred`: Get Series data. [Source: FRED]\n
             `fred_chart`: Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]\n
             `fred_notes`: Get series notes. [Source: FRED]\n
             `future`: Get futures data. [Source: Finviz]\n
             `futures`: Get futures data.\n
+            `gdp`: Gross domestic product (GDP) is the standard measure of the value added created\n
+            `gdp_chart`: Gross domestic product (GDP) is the standard measure of the value added created\n
             `get_groups`: Get group available\n
             `glbonds`: Scrape data for global bonds\n
             `index`: Get data on selected indices over time [Source: Yahoo Finance]\n
@@ -155,13 +166,20 @@ class OpenBBSDK:
             `overview`: Scrape data for market overview\n
             `perfmap`: Opens Finviz map website in a browser. [Source: Finviz]\n
             `performance`: Get group (sectors, industry or country) performance data. [Source: Finviz]\n
+            `revenue`: Governments collect revenues mainly for two purposes: to finance the goods\n
+            `revenue_chart`: Governments collect revenues mainly for two purposes: to finance the goods\n
+            `rgdp`: Gross domestic product (GDP) is the standard measure of the value added\n
+            `rgdp_chart`: Gross domestic product (GDP) is the standard measure of the value added\n
             `rtps`: Get real-time performance sector data\n
             `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
-            `spectrum`: Display finviz spectrum in system viewer [Source: Finviz]\n
+            `spending`: General government spending provides an indication of the size\n
+            `spending_chart`: General government spending provides an indication of the size\n
             `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
             `treasury_chart`: Display U.S. Treasury rates [Source: EconDB]\n
             `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
+            `trust`: Trust in government refers to the share of people who report having confidence in\n
+            `trust_chart`: Trust in government refers to the share of people who report having confidence in\n
             `usbonds`: Scrape data for us bonds\n
             `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
         """
@@ -312,6 +330,24 @@ class OpenBBSDK:
         return ctrl.ForexController()
 
     @property
+    def funds(self):
+        """Mutual Funds Submodule
+
+        Attributes:
+            `carbon`: Search mstarpy for carbon metrics\n
+            `exclusion`: Search mstarpy exclusion policy in esgData\n
+            `historical`: Get historical fund, category, index price\n
+            `historical_chart`: Display historical fund, category, index price\n
+            `holdings`: Search mstarpy for holdings\n
+            `load`: Search mstarpy for matching funds\n
+            `search`: Search mstarpy for matching funds\n
+            `sector`: Get fund, category, index sector breakdown\n
+            `sector_chart`: Display fund, category, index sector breakdown\n
+        """
+
+        return model.FundsRoot()
+
+    @property
     def futures(self):
         """Futures Submodule
 
@@ -351,7 +387,6 @@ class OpenBBSDK:
             `mykeys`: Get currently set API keys.\n
             `news`: Set News key\n
             `oanda`: Set Oanda key\n
-            `openbb`: Set OpenBB Personal Access Token.\n
             `polygon`: Set Polygon key\n
             `quandl`: Set Quandl key\n
             `reddit`: Set Reddit key\n
@@ -364,6 +399,7 @@ class OpenBBSDK:
             `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
             `twitter`: Set Twitter key\n
+            `ultima`: Set Ultima Insights key\n
             `walert`: Set Walert key\n
         """
 
@@ -479,6 +515,7 @@ class OpenBBSDK:
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
+            `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Gets ticker quote from FMP\n
             `search`: Search selected query for tickers.\n
@@ -556,16 +593,17 @@ class SDKLogger:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not cfg.LOGGING_SUPPRESS:
+        if not get_current_system().LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
     def __initialize_logging() -> None:
         # pylint: disable=C0415
+        from openbb_terminal.core.session.current_system import set_system_variable
         from openbb_terminal.core.log.generation.settings_logger import log_all_settings
         from openbb_terminal.loggers import setup_logging
 
-        cfg.LOGGING_SUB_APP = "sdk"
+        set_system_variable("LOGGING_SUB_APP", "sdk")
         setup_logging()
         log_all_settings()
 

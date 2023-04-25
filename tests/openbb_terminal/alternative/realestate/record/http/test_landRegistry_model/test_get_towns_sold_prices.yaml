@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: query=%0A++++++++++++++++prefix+rdf%3A+%3Chttp%3A//www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0A++++++++++++++++prefix+rdfs%3A+%3Chttp%3A//www.w3.org/2000/01/rdf-schema%23%3E%0A++++++++++++++++prefix+owl%3A+%3Chttp%3A//www.w3.org/2002/07/owl%23%3E%0A++++++++++++++++prefix+xsd%3A+%3Chttp%3A//www.w3.org/2001/XMLSchema%23%3E%0A++++++++++++++++prefix+sr%3A+%3Chttp%3A//data.ordnancesurvey.co.uk/ontology/spatialrelations/%3E%0A++++++++++++++++prefix+ukhpi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ukhpi/%3E%0A++++++++++++++++prefix+lrppi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ppi/%3E%0A++++++++++++++++prefix+skos%3A+%3Chttp%3A//www.w3.org/2004/02/skos/core%23%3E%0A++++++++++++++++prefix+lrcommon%3A+%3Chttp%3A//landregistry.data.gov.uk/def/common/%3E%0A%0A++++++++++++++++SELECT+%3Fpaon+%3Fsaon+%3Fstreet+++%3Fcounty+%3Fpostcode+%3Famount+%3Fdate+%3Fcategory%0A++++++++++++++++WHERE%0A++++++++++++++++%7B%0A++++++++++++++++VALUES+%3Ftown+%7B%22DARTFORD%22%5E%5Exsd%3Astring%7D%0A%0A++++++++++++++++%3Faddr+lrcommon%3Atown+%3Ftown+%3B%0A++++++++++++++++++++++++lrcommon%3Apostcode+%3Fpostcode.%0A%0A++++++++++++++++%3Ftransx+lrppi%3ApropertyAddress+%3Faddr+%3B%0A++++++++++++++++++++++++lrppi%3ApricePaid+%3Famount+%3B%0A++++++++++++++++++++++++lrppi%3AtransactionDate+%3Fdate+%3B%0A++++++++++++++++++++++++lrppi%3AtransactionCategory/skos%3AprefLabel+%3Fcategory.%0A%0A++++++++++++++++FILTER+%28%0A++++++++++++++++++++%3Fdate+%3E+%222019-01-01%22%5E%5Exsd%3Adate+%26%26%0A++++++++++++++++++++%3Fdate+%3C+%222022-01-01%22%5E%5Exsd%3Adate%0A++++++++++++++++%29.%0A%0A++++++++++++++++OPTIONAL+%7B%3Faddr+lrcommon%3Acounty+%3Fcounty%7D%0A++++++++++++++++OPTIONAL+%7B%3Faddr+lrcommon%3Apaon+%3Fpaon%7D%0A++++++++++++++++OPTIONAL+%7B%3Faddr+lrcommon%3Asaon+%3Fsaon%7D%0A++++++++++++++++OPTIONAL+%7B%3Faddr+lrcommon%3Asaon+%3Fpostcode%7D%0A++++++++++++++++OPTIONAL+%7B%3Faddr+lrcommon%3Astreet+%3Fstreet%7D%0A++++++++++++++++%7D%0A++++++++++++++++ORDER+BY+%28%3Fdate+%26%26+%3Fpostcode%29%0A%0A++++++++++++++++LIMIT+10%0A++++++++++++&format=csv&output=csv&results=csv
+    headers:
+      Accept:
+      - text/csv
+      Connection:
+      - close
+      Content-Length:
+      - '2068'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - landregistry.data.gov.uk
+      User-Agent:
+      - sparqlwrapper 2.0.0 (rdflib.github.io/sparqlwrapper)
+    method: POST
+    uri: http://landregistry.data.gov.uk/landregistry/query
+  response:
+    body:
+      string: "paon,saon,street,county,postcode,amount,date,category\r\n175,,DARTFORD
+        ROAD,KENT,DA1 3EW,10000,2020-10-02,Additional price paid transaction\r\n46,,ARUNDEL
+        ROAD,KENT,DA1 5EH,225000,2020-12-18,Additional price paid transaction\r\n158,,JAMES
+        SMITH COURT,KENT,DA1 5XN,65494,2020-02-12,Additional price paid transaction\r\nMASTERSON
+        HOUSE,FLAT 11,VICTORIA DRIVE,KENT,DA4 9ND,150000,2020-08-28,Additional price
+        paid transaction\r\n76,,ALEXANDRA WALK,KENT,DA4 9LY,205000,2020-12-17,Additional
+        price paid transaction\r\n37,,DARWIN AVENUE,KENT,DA1 5RR,305000,2020-12-22,Additional
+        price paid transaction\r\n40,,MONTAGU GARDENS,KENT,DA1 5RP,325000,2019-04-26,Additional
+        price paid transaction\r\nCRANFORD HOUSE,FLAT 5,MAIDEN LANE,KENT,DA1 4AQ,230000,2021-09-29,Additional
+        price paid transaction\r\n138,,JAMES SMITH COURT,KENT,DA1 5XL,64475,2019-04-17,Additional
+        price paid transaction\r\n78,,CEDAR ROAD,KENT,DA1 2RS,285000,2019-10-16,Additional
+        price paid transaction\r\n"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - must-revalidate,no-cache,no-store, max-age=3600
+      Connection:
+      - Close
+      Content-Length:
+      - '939'
+      Content-Type:
+      - text/csv; charset=utf-8
+      Date:
+      - Thu, 23 Mar 2023 09:51:07 GMT
+      Expires:
+      - Thu, 23 Mar 2023 10:51:07 GMT
+      Fuseki-Request-ID:
+      - '394849'
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+    status:
+      code: 200
+      message: OK
+version: 1

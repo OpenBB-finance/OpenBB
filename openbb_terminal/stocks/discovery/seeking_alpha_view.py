@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from datetime import date
 from typing import List, Optional
 
 import pandas as pd
@@ -17,8 +18,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def upcoming_earning_release_dates(
-    num_pages: int = 5,
-    limit: int = 1,
+    limit: int = 5,
+    start_date: date = date.today(),
     export: str = "",
     sheet_name: Optional[str] = None,
 ):
@@ -27,66 +28,35 @@ def upcoming_earning_release_dates(
     Parameters
     ----------
     num_pages: int
-        Number of pages to scrape
+        Number of pages to scrape, each page is one day
     limit: int
         Number of upcoming earnings release dates
+    start_date: Optional[date]
+        The day to start looking at earnings releases from
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    # TODO: Check why there are repeated companies
-    # TODO: Create a similar command that returns not only upcoming, but antecipated earnings
-    # i.e. companies where expectation on their returns are high
 
-    df_earnings = seeking_alpha_model.get_next_earnings(num_pages)
+    df_earnings = seeking_alpha_model.get_next_earnings(limit, start_date)
 
     if df_earnings.empty:
         console.print("No upcoming earnings release dates found")
+        return
+
+    print_rich_table(
+        df_earnings,
+        show_index=False,
+        headers=df_earnings.columns,
+        title="Upcoming Earnings Releases",
+        export=bool(export),
+    )
 
     if export:
-        l_earnings = []
-        l_earnings_dates = []
-
-    for n_days, earning_date in enumerate(df_earnings.index.unique()):
-        if n_days > (limit - 1):
-            break
-
-        # TODO: Potentially extract Market Cap for each Ticker, and sort
-        # by Market Cap. Then cut the number of tickers shown to 10 with
-        # bigger market cap. Didier attempted this with yfinance, but
-        # the computational time involved wasn't worth pursuing that solution.
-
-        df_earn = (
-            df_earnings[earning_date == df_earnings.index][["Ticker", "Name"]]
-            .dropna()
-            .drop_duplicates()
-        )
-
-        if export:
-            l_earnings_dates.append(earning_date.date())
-            l_earnings.append(df_earn)
-
-        df_earn.index = df_earn["Ticker"].values
-        df_earn.drop(columns=["Ticker"], inplace=True)
-
-        print_rich_table(
-            df_earn,
-            show_index=True,
-            headers=[f"Earnings on {earning_date.date()}"],
-            title="Upcoming Earnings Releases",
-            export=bool(export),
-        )
-
-    if export:
-        for item in l_earnings:
-            item.reset_index(drop=True, inplace=True)
-        df_data = pd.concat(l_earnings, axis=1, ignore_index=True)
-        df_data.columns = l_earnings_dates
-
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "upcoming",
-            df_data,
+            df_earnings,
             sheet_name,
         )
 

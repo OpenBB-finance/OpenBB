@@ -1,4 +1,16 @@
 const ICONS = {
+  sunIcon: {
+    viewBox: "0 0 16 16",
+    width: 16,
+    height: 16,
+    path: "M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z",
+  },
+  moonIcon: {
+    viewBox: "0 0 25 25",
+    width: 25,
+    height: 25,
+    path: "M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z",
+  },
   plotCsv: {
     width: 900,
     height: 900,
@@ -15,19 +27,54 @@ const ICONS = {
     height: 900,
   },
   changeColor: {
-    path: "M512 0C229.376 0 0 229.376 0 512s229.376 512 512 512 512-229.376 512-512S794.624 0 512 0zM512 896C264.192 896 64 695.808 64 448S264.192 64 512 64s448 200.192 448 448-200.192 448-448 448z m0-768c-141.312 0-256 114.688-256 256s114.688 256 256 256 256-114.688 256-256-114.688-256-256-256z m0 448c-70.656 0-128-57.344-128-128s57.344-128 128-128 128 57.344 128 128-57.344 128-128 128z m0-192c-35.328 0-64 28.672-64 64s28.672 64 64 64 64-28.672 64-64-28.672-64-64-64z",
-    width: 1024,
-    height: 1024,
+    path: "M8 3C5.79 3 4 4.79 4 7V14C4 15.1 4.9 16 6 16H9V20C9 21.1 9.9 22 11 22H13C14.1 22 15 21.1 15 20V16H18C19.1 16 20 15.1 20 14V3H8M8 5H12V7H14V5H15V9H17V5H18V10H6V7C6 5.9 6.9 5 8 5M6 14V12H18V14H6Z",
+    width: 22,
+    height: 22,
   },
   uploadImage: {
     path: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5",
     width: 1024,
     height: 1024,
   },
+  downloadCsv: {
+    path: `M486.2,196.121h-13.164V132.59c0-0.399-0.064-0.795-0.116-1.2c-0.021-2.52-0.824-5-2.551-6.96L364.656,3.677
+		c-0.031-0.034-0.064-0.044-0.085-0.075c-0.629-0.707-1.364-1.292-2.141-1.796c-0.231-0.157-0.462-0.286-0.704-0.419
+		c-0.672-0.365-1.386-0.672-2.121-0.893c-0.199-0.052-0.377-0.134-0.576-0.188C358.229,0.118,357.4,0,356.562,0H96.757
+		C84.893,0,75.256,9.649,75.256,21.502v174.613H62.093c-16.972,0-30.733,13.756-30.733,30.73v159.81
+		c0,16.966,13.761,30.736,30.733,30.736h13.163V526.79c0,11.854,9.637,21.501,21.501,21.501h354.777
+		c11.853,0,21.502-9.647,21.502-21.501V417.392H486.2c16.966,0,30.729-13.764,30.729-30.731v-159.81
+		C516.93,209.872,503.166,196.121,486.2,196.121z M96.757,21.502h249.053v110.006c0,5.94,4.818,10.751,10.751,10.751h94.973v53.861
+		H96.757V21.502z M258.618,313.18c-26.68-9.291-44.063-24.053-44.063-47.389c0-27.404,22.861-48.368,60.733-48.368
+		c18.107,0,31.447,3.811,40.968,8.107l-8.09,29.3c-6.43-3.107-17.862-7.632-33.59-7.632c-15.717,0-23.339,7.149-23.339,15.485
+		c0,10.247,9.047,14.769,29.78,22.632c28.341,10.479,41.681,25.239,41.681,47.874c0,26.909-20.721,49.786-64.792,49.786
+		c-18.338,0-36.449-4.776-45.497-9.77l7.38-30.016c9.772,5.014,24.775,10.006,40.264,10.006c16.671,0,25.488-6.908,25.488-17.396
+		C285.536,325.789,277.909,320.078,258.618,313.18z M69.474,302.692c0-54.781,39.074-85.269,87.654-85.269
+		c18.822,0,33.113,3.811,39.549,7.149l-7.392,28.816c-7.38-3.084-17.632-5.939-30.491-5.939c-28.822,0-51.206,17.375-51.206,53.099
+		c0,32.158,19.051,52.4,51.456,52.4c10.947,0,23.097-2.378,30.241-5.238l5.483,28.346c-6.672,3.34-21.674,6.919-41.208,6.919
+		C98.06,382.976,69.474,348.424,69.474,302.692z M451.534,520.962H96.757v-103.57h354.777V520.962z M427.518,380.583h-42.399
+		l-51.45-160.536h39.787l19.526,67.894c5.479,19.046,10.479,37.386,14.299,57.397h0.709c4.048-19.298,9.045-38.352,14.526-56.693
+		l20.487-68.598h38.599L427.518,380.583z`,
+    width: 550,
+    height: 550,
+    transform: "translate(4, 0)",
+  },
+  downloadImage: {
+    path: "M22.71,6.29a1,1,0,0,0-1.42,0L20,7.59V2a1,1,0,0,0-2,0V7.59l-1.29-1.3a1,1,0,0,0-1.42,1.42l3,3a1,1,0,0,0,.33.21.94.94,0,0,0,.76,0,1,1,0,0,0,.33-.21l3-3A1,1,0,0,0,22.71,6.29ZM19,13a1,1,0,0,0-1,1v.38L16.52,12.9a2.79,2.79,0,0,0-3.93,0l-.7.7L9.41,11.12a2.85,2.85,0,0,0-3.93,0L4,12.6V7A1,1,0,0,1,5,6h8a1,1,0,0,0,0-2H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V14A1,1,0,0,0,19,13ZM5,20a1,1,0,0,1-1-1V15.43l2.9-2.9a.79.79,0,0,1,1.09,0l3.17,3.17,0,0L15.46,20Zm13-1a.89.89,0,0,1-.18.53L13.31,15l.7-.7a.77.77,0,0,1,1.1,0L18,17.21Z",
+    width: 21,
+    height: 21,
+    transform: "translate(-2, -2)",
+  },
 };
 
+function onlyOne(checkbox) {
+  var checkboxes = document.getElementsByName("csv_plot_yaxis_check");
+  checkboxes.forEach((item) => {
+    if (item !== checkbox) item.checked = false;
+  });
+}
+
 function add_annotation(data, yshift, popup_data, current_text = null) {
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
   let x = data.x;
   let y = data.y;
   let yref = data.yref;
@@ -86,9 +133,17 @@ function add_annotation(data, yshift, popup_data, current_text = null) {
 function checkFile(popup, type = false) {
   console.log("checkFile");
   let csv_file = popup.querySelector("#csv_file");
+  let csv_name = popup.querySelector("#csv_name");
   let csv_type = popup.querySelector("#csv_trace_type");
   let csv_columns = popup.querySelector("#csv_columns");
   let csv_colors = popup.querySelector("#csv_colors");
+  let csv_plot_yaxis_options = popup.querySelector("#csv_plot_yaxis_options");
+  let csv_bar_orientation = popup.querySelector("#csv_bar_orientation");
+  csv_plot_yaxis_options.style.display = "none";
+  csv_bar_orientation.style.display = "none";
+  csv_plot_yaxis_options.querySelector(
+    "#csv_percent_change_div"
+  ).style.display = "inline-block";
 
   if (csv_file.files.length > 0) {
     console.log("file selected");
@@ -125,22 +180,28 @@ function checkFile(popup, type = false) {
       csv_columns.innerHTML = "<b>Columns:</b><br>";
       if (csv_type.value == "candlestick") {
         option_ids = ["x", "open", "high", "low", "close"];
+        let options_select = "";
 
         for (let i = 0; i < option_ids.length; i++) {
           let header_name = option_ids[i].replace(/\b[a-z]/g, (x) =>
             x.toUpperCase()
           );
 
-          csv_columns.innerHTML += `
-                        <label for="csv_${option_ids[i]}">${header_name}</label>
-                        <select id="csv_${option_ids[i]}">
-                            ${options}
-                        </select>
-                    `;
+          options_select += `
+          <div style="display: flex; align-items: center; justify-items: space-between;">
+          <label style="width: 100px;" for="csv_${option_ids[i]}">${header_name}</label>
+          <select id="csv_${option_ids[i]}" style="width: 100%;">
+          ${options}
+          </select>
+          </div>
+          `;
         }
+        csv_columns.innerHTML += `
+        <div class="csv_column_container">${options_select}</div>
+        `;
 
         csv_colors.innerHTML = `
-                    <b>Candlestick colors:</b><br><br>
+                    <b>Candlestick colors:</b><br>
 
                     <label for="csv_increasing">Increasing</label>
                     <input type="color" id="csv_increasing" value="#00ACFF"></input>
@@ -157,19 +218,28 @@ function checkFile(popup, type = false) {
               headers[headers_lower.indexOf("date")];
           }
         }
+        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display =
+          "none";
       } else {
+        let color_text = csv_type.value == "bar" ? "Bar color" : "Line color";
         csv_columns.innerHTML = `
-                    <label for="csv_x">X axis</label>
-                    <select id="csv_x">
-                        ${options}
-                    </select>
-                    <label for="csv_y">Y axis</label>
-                    <select id="csv_y">
-                        ${options}
-                    </select><br><br>
+                    <b>Columns:</b><br>
+                    <div style="margin-top: 5px; margin-bottom: 10px;">
+                      <label for="csv_x">X axis</label>
+                      <select id="csv_x">
+                          ${options}
+                      </select>
+                    </div>
+                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                      <label for="csv_y">Y axis</label>
+                      <select id="csv_y">
+                          ${options}
+                      </select>
+                    </div>
                 `;
         csv_colors.innerHTML = `
-                    <label for="csv_color"><b>Line color:</b></label>
+                    <label style="margin-top: 10px; margin-bottom: 10px;"
+                      for="csv_color"><b>${color_text}:</b></label>
                     <input type="color" id="csv_color" value="#FFDD00"></input>
                 `;
 
@@ -189,8 +259,40 @@ function checkFile(popup, type = false) {
             headers[headers_lower.indexOf("close")];
         }
       }
+      if (csv_type.value == "bar") {
+        csv_bar_orientation.style.display = "inline-block";
+        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display =
+          "none";
+      }
 
-      csv_columns.style.display = "inline-block";
+      csv_plot_yaxis_options.style.display = "inline-block";
+
+      // we try to guess the date and time to remove from the name of the file
+      // if "_" in the name of the file,
+      // we assume the first 2 parts or the last 2 parts are date and time
+      let filename = file.name.split(".")[0];
+      csv_name.value = filename;
+
+      try {
+        if (filename.includes("_")) {
+          let name_parts = filename.split("_");
+          let date_regex = new RegExp("^[0-9]{8}$");
+
+          if (name_parts.length > 2) {
+            // we check if the first 2 parts are date and time
+            if (date_regex.test(name_parts[0])) {
+              name_parts.splice(0, 2);
+            }
+            // we check if the last 2 parts are date and time
+            else if (date_regex.test(name_parts[name_parts.length - 2])) {
+              name_parts.splice(name_parts.length - 2, 2);
+            }
+            csv_name.value = name_parts.join("_").replace(/openbb_/g, "");
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     reader.readAsText(file);
@@ -210,9 +312,8 @@ function openbbFilename(data, csv = false) {
 
   let date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
   let time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
-  let dateTime = date + "_" + time;
 
-  return filename + "_" + dateTime;
+  return filename + "_" + date + "_" + time;
 }
 
 function plot_text(data, popup_data, current_text = null) {
@@ -223,13 +324,10 @@ function plot_text(data, popup_data, current_text = null) {
   // data is the data from the chart
 
   console.log("plot_text");
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
   let annotations = undefined;
-  let yrange = gd.layout.yaxis.range;
-
-  if (data.yref == "y2") {
-    yrange = gd.layout.yaxis2.range;
-  }
+  let yaxis = data.yref.replace("y", "yaxis");
+  let yrange = gd.layout[yaxis].range;
   let yshift = (yrange[1] - yrange[0]) * 0.2;
 
   if (popup_data.yanchor == "below") {
@@ -241,18 +339,16 @@ function plot_text(data, popup_data, current_text = null) {
   } else {
     annotations = add_annotation(data, yshift, popup_data, current_text);
   }
+  let to_update = { annotations: annotations, dragmode: "pan" };
+  to_update[yaxis + ".type"] = "linear";
 
-  Plotly.relayout(gd, { annotations: annotations });
-  Plotly.react(gd, gd.data, gd.layout, gd.config);
-  Plotly.relayout(gd, { "yaxis.type": "linear", dragmode: "pan" });
+  Plotly.update(gd, {}, to_update);
   gd.removeAllListeners("plotly_click");
 
-  TEXT_DIV = document.getElementById("popup_text");
-  TEXT_DIV.querySelectorAll("input").forEach(function (input) {
-    if (!input.name != "addtext_color") {
+  globals.TEXT_DIV = document.getElementById("popup_text");
+  globals.TEXT_DIV.querySelectorAll("input").forEach(function (input) {
+    if (!input.name in ["addtext_color", "addtext_border"]) {
       input.value = "";
-    } else {
-      input.value = "#ffffff";
     }
   });
   closePopup();
@@ -262,17 +358,18 @@ function update_color() {
   // updates the color of the last added shape
   // this function is called when the color picker is used
   let color = globals.color_picker.querySelector("#picked_color").value;
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
 
-  // we change last added shape color
+  // if there are no shapes, we remove the color picker
   let shapes = gd.layout.shapes;
   if (!shapes || shapes.length == 0) {
-    color_picker.remove();
+    globals.color_picker.remove();
     return;
   }
+  // we change last added shape color
   let last_shape = shapes[shapes.length - 1];
   last_shape.line.color = color;
-  Plotly.relayout(gd, "shapes", shapes);
+  Plotly.update(gd, {}, { shapes: shapes });
 }
 
 function button_pressed(title, active = false) {
@@ -283,11 +380,701 @@ function button_pressed(title, active = false) {
   let button = globals.barButtons[title];
 
   if (!active) {
-    button.style.border = "1px solid rgba(255, 0, 0, 0.7)";
+    button.style.border = "1px solid rgba(0, 151, 222, 1.0)";
     button.style.borderRadius = "5px";
-    button.style.boxShadow = "0 0 5px rgba(255, 0, 0, 0.7)";
+    button.style.borderpadding = "5px";
+    button.style.boxShadow = "0 0 5px rgba(0, 151, 222, 1.0)";
   } else {
     button.style.border = "transparent";
     button.style.boxShadow = "none";
   }
 }
+
+const DARK_CHARTS_TEMPLATE = {
+  data: {
+    candlestick: [
+      {
+        decreasing: {
+          fillcolor: "#e4003a",
+          line: {
+            color: "#e4003a",
+          },
+        },
+        increasing: {
+          fillcolor: "#00ACFF",
+          line: {
+            color: "#00ACFF",
+          },
+        },
+        type: "candlestick",
+      },
+    ],
+  },
+  layout: {
+    annotationdefaults: {
+      showarrow: false,
+    },
+    autotypenumbers: "strict",
+    colorway: [
+      "#ffed00",
+      "#ef7d00",
+      "#e4003a",
+      "#c13246",
+      "#822661",
+      "#48277c",
+      "#005ca9",
+      "#00aaff",
+      "#9b30d9",
+      "#af005f",
+      "#5f00af",
+      "#af87ff",
+    ],
+    dragmode: "pan",
+    font: {
+      family: "Fira Code",
+      size: 18,
+    },
+    hoverlabel: {
+      align: "left",
+    },
+    mapbox: {
+      style: "dark",
+    },
+    hovermode: "x",
+    legend: {
+      bgcolor: "rgba(0, 0, 0, 0)",
+      x: 0.01,
+      xanchor: "left",
+      y: 0.99,
+      yanchor: "top",
+      font: {
+        size: 15,
+      },
+    },
+    paper_bgcolor: "#000000",
+    plot_bgcolor: "#000000",
+    xaxis: {
+      automargin: true,
+      autorange: true,
+      rangeslider: {
+        visible: false,
+      },
+      showgrid: true,
+      showline: true,
+      tickfont: {
+        size: 14,
+      },
+      zeroline: false,
+      tick0: 1,
+      title: {
+        standoff: 20,
+      },
+      linecolor: "#F5EFF3",
+      mirror: true,
+      ticks: "outside",
+    },
+    yaxis: {
+      anchor: "x",
+      automargin: true,
+      fixedrange: false,
+      zeroline: false,
+      showgrid: true,
+      showline: true,
+      side: "right",
+      tick0: 0.5,
+      title: {
+        standoff: 20,
+      },
+      gridcolor: "#283442",
+      linecolor: "#F5EFF3",
+      mirror: true,
+      ticks: "outside",
+    },
+  },
+};
+
+const LIGHT_CHARTS_TEMPLATE = {
+  data: {
+    barpolar: [
+      {
+        marker: {
+          line: {
+            color: "white",
+            width: 0.5,
+          },
+          pattern: {
+            fillmode: "overlay",
+            size: 10,
+            solidity: 0.2,
+          },
+        },
+        type: "barpolar",
+      },
+    ],
+    bar: [
+      {
+        error_x: {
+          color: "#2a3f5f",
+        },
+        error_y: {
+          color: "#2a3f5f",
+        },
+        marker: {
+          line: {
+            color: "white",
+            width: 0.5,
+          },
+          pattern: {
+            fillmode: "overlay",
+            size: 10,
+            solidity: 0.2,
+          },
+        },
+        type: "bar",
+      },
+    ],
+    carpet: [
+      {
+        aaxis: {
+          endlinecolor: "#2a3f5f",
+          gridcolor: "#C8D4E3",
+          linecolor: "#C8D4E3",
+          minorgridcolor: "#C8D4E3",
+          startlinecolor: "#2a3f5f",
+        },
+        baxis: {
+          endlinecolor: "#2a3f5f",
+          gridcolor: "#C8D4E3",
+          linecolor: "#C8D4E3",
+          minorgridcolor: "#C8D4E3",
+          startlinecolor: "#2a3f5f",
+        },
+        type: "carpet",
+      },
+    ],
+    choropleth: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        type: "choropleth",
+      },
+    ],
+    contourcarpet: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        type: "contourcarpet",
+      },
+    ],
+    contour: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "contour",
+      },
+    ],
+    heatmapgl: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "heatmapgl",
+      },
+    ],
+    heatmap: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "heatmap",
+      },
+    ],
+    histogram2dcontour: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "histogram2dcontour",
+      },
+    ],
+    histogram2d: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "histogram2d",
+      },
+    ],
+    histogram: [
+      {
+        marker: {
+          pattern: {
+            fillmode: "overlay",
+            size: 10,
+            solidity: 0.2,
+          },
+        },
+        type: "histogram",
+      },
+    ],
+    mesh3d: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        type: "mesh3d",
+      },
+    ],
+    parcoords: [
+      {
+        line: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "parcoords",
+      },
+    ],
+    pie: [
+      {
+        automargin: true,
+        type: "pie",
+      },
+    ],
+    scatter3d: [
+      {
+        line: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scatter3d",
+      },
+    ],
+    scattercarpet: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scattercarpet",
+      },
+    ],
+    scattergeo: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scattergeo",
+      },
+    ],
+    scattergl: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scattergl",
+      },
+    ],
+    scattermapbox: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scattermapbox",
+      },
+    ],
+    scatterpolargl: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scatterpolargl",
+      },
+    ],
+    scatterpolar: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scatterpolar",
+      },
+    ],
+    scatter: [
+      {
+        fillpattern: {
+          fillmode: "overlay",
+          size: 10,
+          solidity: 0.2,
+        },
+        type: "scatter",
+      },
+    ],
+    scatterternary: [
+      {
+        marker: {
+          colorbar: {
+            outlinewidth: 0,
+            ticks: "",
+          },
+        },
+        type: "scatterternary",
+      },
+    ],
+    surface: [
+      {
+        colorbar: {
+          outlinewidth: 0,
+          ticks: "",
+        },
+        colorscale: [
+          [0.0, "#0d0887"],
+          [0.1111111111111111, "#46039f"],
+          [0.2222222222222222, "#7201a8"],
+          [0.3333333333333333, "#9c179e"],
+          [0.4444444444444444, "#bd3786"],
+          [0.5555555555555556, "#d8576b"],
+          [0.6666666666666666, "#ed7953"],
+          [0.7777777777777778, "#fb9f3a"],
+          [0.8888888888888888, "#fdca26"],
+          [1.0, "#f0f921"],
+        ],
+        type: "surface",
+      },
+    ],
+    table: [
+      {
+        cells: {
+          fill: {
+            color: "#EBF0F8",
+          },
+          line: {
+            color: "white",
+          },
+        },
+        header: {
+          fill: {
+            color: "#C8D4E3",
+          },
+          line: {
+            color: "white",
+          },
+        },
+        type: "table",
+      },
+    ],
+    candlestick: [
+      {
+        decreasing: {
+          fillcolor: "#c80000",
+          line: {
+            color: "#990000",
+          },
+        },
+        increasing: {
+          fillcolor: "#009600",
+          line: {
+            color: "#007500",
+          },
+        },
+        type: "candlestick",
+      },
+    ],
+  },
+  layout: {
+    annotationdefaults: {
+      arrowcolor: "#2a3f5f",
+      arrowhead: 0,
+      arrowwidth: 1,
+      showarrow: false,
+    },
+    autotypenumbers: "strict",
+    coloraxis: {
+      colorbar: {
+        outlinewidth: 0,
+        ticks: "",
+      },
+    },
+    colorscale: {
+      diverging: [
+        [0, "#8e0152"],
+        [0.1, "#c51b7d"],
+        [0.2, "#de77ae"],
+        [0.3, "#f1b6da"],
+        [0.4, "#fde0ef"],
+        [0.5, "#f7f7f7"],
+        [0.6, "#e6f5d0"],
+        [0.7, "#b8e186"],
+        [0.8, "#7fbc41"],
+        [0.9, "#4d9221"],
+        [1, "#276419"],
+      ],
+      sequential: [
+        [0.0, "#0d0887"],
+        [0.1111111111111111, "#46039f"],
+        [0.2222222222222222, "#7201a8"],
+        [0.3333333333333333, "#9c179e"],
+        [0.4444444444444444, "#bd3786"],
+        [0.5555555555555556, "#d8576b"],
+        [0.6666666666666666, "#ed7953"],
+        [0.7777777777777778, "#fb9f3a"],
+        [0.8888888888888888, "#fdca26"],
+        [1.0, "#f0f921"],
+      ],
+      sequentialminus: [
+        [0.0, "#0d0887"],
+        [0.1111111111111111, "#46039f"],
+        [0.2222222222222222, "#7201a8"],
+        [0.3333333333333333, "#9c179e"],
+        [0.4444444444444444, "#bd3786"],
+        [0.5555555555555556, "#d8576b"],
+        [0.6666666666666666, "#ed7953"],
+        [0.7777777777777778, "#fb9f3a"],
+        [0.8888888888888888, "#fdca26"],
+        [1.0, "#f0f921"],
+      ],
+    },
+    colorway: [
+      "#254495",
+      "#c13246",
+      "#48277c",
+      "#e4003a",
+      "#ef7d00",
+      "#822661",
+      "#ffed00",
+      "#00aaff",
+      "#9b30d9",
+      "#af005f",
+      "#5f00af",
+      "#af87ff",
+    ],
+    font: {
+      color: "#2a3f5f",
+    },
+    geo: {
+      bgcolor: "white",
+      lakecolor: "white",
+      landcolor: "white",
+      showlakes: true,
+      showland: true,
+      subunitcolor: "#C8D4E3",
+    },
+    hoverlabel: {
+      align: "left",
+    },
+    hovermode: "x",
+    mapbox: {
+      style: "light",
+    },
+    paper_bgcolor: "white",
+    plot_bgcolor: "white",
+    polar: {
+      angularaxis: {
+        gridcolor: "#EBF0F8",
+        linecolor: "#EBF0F8",
+        ticks: "",
+      },
+      bgcolor: "white",
+      radialaxis: {
+        gridcolor: "#EBF0F8",
+        linecolor: "#EBF0F8",
+        ticks: "",
+      },
+    },
+    scene: {
+      xaxis: {
+        backgroundcolor: "white",
+        gridcolor: "#DFE8F3",
+        gridwidth: 2,
+        linecolor: "#EBF0F8",
+        showbackground: true,
+        ticks: "",
+        zerolinecolor: "#EBF0F8",
+      },
+      yaxis: {
+        backgroundcolor: "white",
+        gridcolor: "#DFE8F3",
+        gridwidth: 2,
+        linecolor: "#EBF0F8",
+        showbackground: true,
+        ticks: "",
+        zerolinecolor: "#EBF0F8",
+      },
+      zaxis: {
+        backgroundcolor: "white",
+        gridcolor: "#DFE8F3",
+        gridwidth: 2,
+        linecolor: "#EBF0F8",
+        showbackground: true,
+        ticks: "",
+        zerolinecolor: "#EBF0F8",
+      },
+    },
+    shapedefaults: {
+      line: {
+        color: "#2a3f5f",
+      },
+    },
+    ternary: {
+      aaxis: {
+        gridcolor: "#DFE8F3",
+        linecolor: "#A2B1C6",
+        ticks: "",
+      },
+      baxis: {
+        gridcolor: "#DFE8F3",
+        linecolor: "#A2B1C6",
+        ticks: "",
+      },
+      bgcolor: "white",
+      caxis: {
+        gridcolor: "#DFE8F3",
+        linecolor: "#A2B1C6",
+        ticks: "",
+      },
+    },
+    title: {
+      x: 0.05,
+    },
+    xaxis: {
+      automargin: true,
+      ticks: "outside",
+      zerolinewidth: 2,
+      rangeslider: {
+        visible: false,
+      },
+      showgrid: true,
+      showline: true,
+      tickfont: {
+        size: 15,
+      },
+      title: {
+        standoff: 20,
+      },
+      mirror: true,
+      zeroline: false,
+    },
+    yaxis: {
+      automargin: true,
+      ticks: "outside",
+      tickfont: {
+        size: 15,
+      },
+      zerolinewidth: 2,
+      fixedrange: false,
+      title: {
+        standoff: 20,
+      },
+      nticks: 8,
+      showgrid: true,
+      showline: true,
+      side: "right",
+      mirror: true,
+      zeroline: false,
+    },
+    dragmode: "pan",
+    legend: {
+      bgcolor: "rgba(0, 0, 0, 0)",
+      x: 1.03,
+      xanchor: "left",
+      y: 0.99,
+      yanchor: "top",
+    },
+  },
+};

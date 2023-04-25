@@ -1,15 +1,13 @@
 # IMPORTATION STANDARD
 
 import os
+from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import (
-    PreferencesModel,
-    copy_user,
-)
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.stocks.discovery import disc_controller
 
 
@@ -344,8 +342,13 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_upcoming",
             "seeking_alpha_view.upcoming_earning_release_dates",
-            ["--n_pages=10", "--limit=5", "--export=csv"],
-            {"num_pages": 10, "limit": 5, "export": "csv", "sheet_name": None},
+            ["--start=2023-03-22", "--limit=5", "--export=csv"],
+            {
+                "limit": 5,
+                "start_date": datetime(2023, 3, 22),
+                "export": "csv",
+                "sheet_name": None,
+            },
         ),
     ],
 )

@@ -185,6 +185,11 @@ def display_cashflow_comparison(
     if not quarter:
         df_financials_compared.index.name = timeframe
 
+    if any(isinstance(col, tuple) for col in df_financials_compared.columns):
+        df_financials_compared.columns = [
+            " ".join(col) for col in df_financials_compared.columns
+        ]
+
     print_rich_table(
         df_financials_compared,
         headers=list(df_financials_compared.columns),
