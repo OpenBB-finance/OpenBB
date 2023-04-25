@@ -340,7 +340,6 @@ def display_roadmap(
             )
 
             df_copy = df_copy[df_copy["Date"].notnull()]
-            titles = list(df_copy[df_copy["Date"] > df_prices.index[0]]["Title"])
 
             max_price = df_prices["Close"].max()
             for counter, x in enumerate(roadmap_dates):
@@ -348,7 +347,7 @@ def display_roadmap(
                     fig.add_annotation(
                         x=x,
                         y=max_price * 0.7,
-                        text=titles[counter],
+                        text=df.iloc[counter]["Title"],
                         textangle=90,
                         font=dict(size=15),
                         xshift=10,
