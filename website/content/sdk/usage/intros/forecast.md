@@ -1,8 +1,12 @@
 ---
 title: Forecast
-keywords: [machine learning, statistics, artificial intelligence, deep learning, neural networks, time series, research, feature engineering, hyperparameters, ai, ml, openbb sdk]
-description: The Forecast menu is a machine learning toolkit that provides practitioners with high-level components that can quickly provide state-of-the-art results, be it with with classical or deep learning models, while also providing researchers with low-level components that can be mixed, matched and fine tuned to build new approaches and custom tuned models. Bring in multiple datasets and train machine learning models with unlimited external factors to see how underlying data may change future forecasting predictions and accuracy.
+keywords: [machine learning, statistics, artificial intelligence, deep learning, neural networks, time series, research, feature engineering, hyperparameters, ai, ml, openbb sdk, forecast, how to, usage, examples, model, exploration, path, type, description, import, loading data, plot, theta, ema, rsi, sto, delete, models, regr_chart, combine, corr, hyper parameter]
+description: The Forecast menu is a machine learning toolkit that provides practitioners with high-level components that can quickly provide state-of-the-art results, be it with with classical or deep learning models, while also providing researchers with low-level components to build new approaches and custom tuned models.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Forecast - SDK | OpenBB Docs" />
 
 The Forecast module provides programmatic access to the same commands found in the OpenBB Terminal Forecast menu. The extensive library of models, built on top of the [u8darts](https://unit8co.github.io/darts/) library, are easily tuned with hyper-parameters.
 

@@ -1,6 +1,6 @@
 ---
 title: Trading Hours
-keywords: [markets, trading, hours, stocks, time, global, world, location, open, close, exchange]
+keywords: [markets, trading, hours, stocks, time, global, world, location, open, close, exchange, how to, example]
 description: An Introduction to the Trading Hours menu, within the Stocks menu. This set of features displays the status of international markets.
 ---
 This set of features is for checking the operating status of markets globally. To access the Trading Hours features, enter `th` from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>. Alternatively, a user can access the submenu with absolute path navigation from anywhere in the Terminal: `/stocks/th`

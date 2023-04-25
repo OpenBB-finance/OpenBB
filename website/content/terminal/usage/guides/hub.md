@@ -23,6 +23,10 @@ keywords:
   ]
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Hub Synchronization - Terminal | OpenBB Docs" />
+
 This guide will walk you through the process of integrating the OpenBB Terminal with the OpenBB Hub to achieve optimal performance.
 
 ## Registration
