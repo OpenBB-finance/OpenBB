@@ -69,10 +69,10 @@ class Backend(PyWry):
         proc_name: str = "OpenBB Terminal",
     ):
         has_version = hasattr(PyWry, "__version__")
-        init_kwargs = {"daemon": daemon, "max_retries": max_retries}
+        init_kwargs: Dict[str, Any] = dict(daemon=daemon, max_retries=max_retries)
 
         if has_version and version.parse(PyWry.__version__) >= version.parse("0.4.8"):
-            init_kwargs["proc_name"] = proc_name
+            init_kwargs.update(dict(proc_name=proc_name))
 
         super().__init__(**init_kwargs)
 
