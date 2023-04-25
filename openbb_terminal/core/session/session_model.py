@@ -132,12 +132,12 @@ def download_and_save_routines(auth_header: str):
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
     """
+    routines = download_routines(auth_header=auth_header)
     try:
-        routines = download_routines(auth_header=auth_header)
         for name, content in routines.items():
             save_routine(file_name=f"{name}.openbb", routine=content, force=True)
     except Exception:
-        console.print("[red]\nFailed to download and save routines.[/red]")
+        console.print("[red]\nFailed to save routines.[/red]")
 
 
 def update_backend_sources(auth_header, configs, silent: bool = True):
