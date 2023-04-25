@@ -117,5 +117,11 @@ tr {
 }
 
 ::-webkit-scrollbar-corner {
-  background: rgba(0,0,0,0);
+  background: rgba(0, 0, 0, 0);
+}
+
+table thead th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }
