@@ -59,7 +59,7 @@ function App() {
       const transformedRow = {};
       row.forEach((value: any, index: number) => {
         //@ts-ignore
-        transformedRow[columns[index]] = value;
+        transformedRow[columns[index]] = value || "";
       });
       return transformedRow;
     });
