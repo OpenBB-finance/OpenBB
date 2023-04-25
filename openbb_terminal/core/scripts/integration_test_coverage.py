@@ -138,7 +138,10 @@ def get_coverage_all_controllers() -> None:
 
 
 def get_coverage_single_controller(
-    controller: str, integration_test: str, output_table: bool = False
+    controller: str,
+    integration_test: str,
+    module_name: str = "",
+    output_table: bool = False,
 ) -> None:
     """Test single controller coverage.
 
@@ -156,7 +159,7 @@ def get_coverage_single_controller(
         )
 
     """
-    module = get_module(controller)
+    module = get_module(controller, module_name=module_name)
     functions = get_functions(module)
     tested_functions = get_tested_functions(INTEGRATION_PATH + integration_test)
     calculate_coverage_percentage(tested_functions, functions, output_table)
