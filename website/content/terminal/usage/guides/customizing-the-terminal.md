@@ -6,6 +6,9 @@ keywords: [settings, featflags, feature flags, lay-out, advanced, customizing, o
 ---
 The OpenBB Terminal contains two menus for altering the behaviour and presentation of the Terminal, Settings and FeatFlags, both of which are accessed from the main menu.
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Customization - Terminal | OpenBB Docs" />
 ## The Settings Menu
 
 The `/settings` menu provides methods for customizing the look of the Terminal.  Enter the menu from anywhere in the Terminal with:

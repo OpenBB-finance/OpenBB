@@ -4,7 +4,11 @@ keywords: [machine learning, statistics, artificial intelligence, deep learning,
 description: An introduction to the OpenBB Terminal's Forecast menu and machine learning toolkit.
 ---
 
-The Forecast menu is a machine learning toolkit, providing practitioners with high-level components that quickly provide state-of-the-art results, be it with classical or deep learning models, while also supplying researchers with the low-level components for mixing, matching and fine tuning models to build new approaches. Bring in multiple datasets and train machine learning models with an unlimited number of external factors to see how underlying data may change future forecasting predictions and accuracy.
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Forecast - Terminal | OpenBB Docs" />
+
+The Forecast menu is a machine learning toolkit that provides practitioners with high-level components that can quickly provide state-of-the-art results, be it with with classical or deep learning models, while also providing researchers with low-level components that can be mixed, matched and fine tuned to build new approaches and custom tuned models. Bring in multiple datasets and train machine learning models with unlimited external factors to see how underlying data may change future forecasting predictions and accuracy.
 
 ## The Forecast Menu
 
@@ -156,6 +160,7 @@ options:
                         The name of the specific column you want to use (default: close)
   --period PERIOD       The period to use (default: 10)
   -h, --help            show this help message (default: False)
+
 
 For more information and examples, use 'about rsi' to access the related guide.
 ```
