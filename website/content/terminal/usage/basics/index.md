@@ -304,6 +304,8 @@ At the bottom-right corner of the table window, there is a button for exporting 
 
 ![Export Data](https://user-images.githubusercontent.com/85772166/233249065-60728dd1-612e-4684-b196-892f3604c0f4.png)
 
+### Cheat Sheet
+
 The image below can be saved and used as a reference.
 
 ![Chart Intro (5)](https://user-images.githubusercontent.com/85772166/234315026-de098953-111b-4b69-9124-31530c01407a.png)
