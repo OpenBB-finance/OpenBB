@@ -77,7 +77,6 @@ class FeatureFlagsController(BaseController):
         mt.add_info("_info_")
         mt.add_raw("\n")
         mt.add_setting("retryload", current_user.preferences.RETRY_WITH_LOAD)
-        mt.add_setting("tab", current_user.preferences.USE_TABULATE_DF)
         mt.add_setting("interactive", current_user.preferences.USE_INTERACTIVE_DF)
         mt.add_setting("cls", current_user.preferences.USE_CLEAR_AFTER_CMD)
         mt.add_setting("promptkit", current_user.preferences.USE_PROMPT_TOOLKIT)
@@ -95,7 +94,7 @@ class FeatureFlagsController(BaseController):
     def call_overwrite(self, _):
         """Process overwrite command"""
         set_and_save_preference(
-            "FILE_OVERWITE", not get_current_user().preferences.FILE_OVERWRITE
+            "FILE_OVERWRITE", not get_current_user().preferences.FILE_OVERWRITE
         )
 
     def call_version(self, _):
@@ -108,13 +107,6 @@ class FeatureFlagsController(BaseController):
         """Process retryload command"""
         set_and_save_preference(
             "RETRY_WITH_LOAD", not get_current_user().preferences.RETRY_WITH_LOAD
-        )
-
-    @log_start_end(log=logger)
-    def call_tab(self, _):
-        """Process tab command"""
-        set_and_save_preference(
-            "USE_TABULATE_DF", not get_current_user().preferences.USE_TABULATE_DF
         )
 
     @log_start_end(log=logger)

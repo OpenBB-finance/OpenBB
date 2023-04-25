@@ -34,10 +34,6 @@ def test_print_help(controller):
     controller.print_help()
 
 
-def test_call_tab(controller):
-    controller.call_tab(None)
-
-
 def test_call_cls(controller):
     controller.call_cls(None)
 
