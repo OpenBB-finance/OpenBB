@@ -2,6 +2,7 @@
 title: Basics
 description: An introduction to the The OpenBB Terminal, a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returning as charts, tables, or text.
 keywords: [basics, commands, functions, features, menus, introduction, openbb terminal, obb, usage, how to, charts, tables, themes, styles, functions, data, sources, getting started]
+---
 
 ## Overview
 
