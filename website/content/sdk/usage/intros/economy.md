@@ -1,8 +1,12 @@
 ---
 title: Economy
-keywords: [economy, macro, index, treasury, fred, market, econdb, index, yield, curve, economic, indicators, micro, inflation, interest rate, interest, unemploymeny, gdp, gross domestic product, openbb sdk]
-description: The Economy menu enables you to obtain market overviews, see yield curves of any country and discover sector, industry and country performance. Next to that, the databases of EconDB, FRED and Yahoo Finance can be accessed. All of this can also be further analysed within the Forecasting menu and with Quantitative Techniques.
+keywords: [economy, macro, index, treasury, fred, market, econdb, index, yield, curve, economic, indicators, micro, inflation, interest rate, interest, unemploymeny, gdp, gross domestic product, openbb sdk, fred, quandl, nasdaq, alphavantage]
+description: Learn and see examples for the Economy menu, which enables users to obtain market overviews, see yield curves of any country and discover sector, industry and country performance.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Economy - SDK | OpenBB Docs" />
 
 The Economy module wraps the functions from the Economy menu of the OpenBB Terminal, and provides the user with more control over their workflow. In a Jupyter Notebook environment, it is quick and easy to get going. To get the most out of these functions, it is highly recommended to acquire API keys for:
 

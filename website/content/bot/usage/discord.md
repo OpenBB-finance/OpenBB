@@ -1,9 +1,13 @@
 ---
 title: Discord
 sidebar_position: 2
-description: TBD
-keywords: [discord, how to, explanation, openbb bot, openbb, guide, bot guide]
+description: Understand the basics for getting started and running the OpenBB Boton Discord.
+keywords: [discord, how to, explanation, openbb bot, openbb, guide, bot guide, commands, community]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Discord - Bot | OpenBB Docs" />
 
 ## Getting Started with Discord
 
