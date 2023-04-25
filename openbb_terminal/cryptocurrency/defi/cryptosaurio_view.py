@@ -69,3 +69,4 @@ def display_anchor_data(
         )
 
         return fig.show(external=external_axes)
+    return None
