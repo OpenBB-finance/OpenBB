@@ -1,114 +1,316 @@
 ---
 title: Basics
-description: The OpenBB Terminal is a modern investment research platform for everyone. It is a desktop application that allows you to access all the data and tools you need to make better investment decisions.
-keywords: [basics, installation, commands, menus, your own data, introduction, openbb terminal, explanation, basic usage, usage, how to]
+description: An introduction to the The OpenBB Terminal, a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returning as charts, tables, or text.
+keywords: [basics, commands, functions, features, menus, introduction, openbb terminal, obb, usage, how to, charts, tables, themes, styles, functions, data, sources, getting started]
 ---
 
-The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank" rel="noreferrer noopener">Command Line Interface (CLI)</a>
-which is installed by default on every computer. By opening the application you have installed from the [Installation Page](/terminal/installation/windows),
-you are greeted with the following interface:
+## Overview
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/223211150-5c0bce44-98f3-403c-9db1-2344c1ad79d4.png"></img>
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-The OpenBB Terminal is centered around keyboard input. To navigate and perform analysis you will have to type in the name of the command followed by an `ENTER` (⏎). If you wish to see information about the OpenBB Terminal you can do so by typing `about` and then press `ENTER` (⏎). As you are typing, you will notice that you receive suggestions, by using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select the command and execute it.
+<HeadTitle title="Basics - Terminal | OpenBB Docs" />
 
-Throughout the entire terminal, the same set of colors are used which all share the same representation. This is structured as follows:
+The OpenBB Terminal is a Command Line Interface (CLI) application.  Functions (commands) are called through the keyboard with results returned as charts, tables, or text.  Charts and tables (if enabled) are displayed in a new window, and are fully interactive, while text prints directly to the Terminal screen.  Commands are grouped into menus, with a menu or sub-menu being visually distinguishable from a function by the, `>`, on the far left of the screen.  The color of the text can be altered under the [`/settings` menu](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal).
 
-- <b><span style={{color:"#00AAFF"}}>Light Blue</span></b>: represents commands.
-- <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>: represents menus, also recognizable by the `>` in front.
-- <b><span style={{color:"#EF7D00"}}>Orange</span></b>: represents titles and headers.
-- <b><span style={{color:"#FCED00"}}>Yellow</span></b>: represents descriptions of a parameter or variable.
-- <b>White</b>: represents text, usually in combination with a description that is in Yellow.
+Navigating through the Terminal menus is similar to following down a path, or traversing folders from any operating system's command line prompt.  The `/home` screen is the main path where everything begins, and the menus are paths branched from the main.  Instead of `C:\Users\OpenBB\Documents`, it is, [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options). Instead of, `cd ..`, two periods - `..` - returns to the menu one level back towards the home screen.
 
-### Explanation of Menus
-
-Menus, depicted in <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>, take you to a new section of the terminal referred to as a menu. For example, if you wish to view information about stocks, you can do so by typing `stocks` and pressing `ENTER` (⏎). This opens a new menu as depicted below.
-
-<img width="800" alt="Explanation of Menus" src="https://user-images.githubusercontent.com/46355364/225117373-93787a40-cb26-4599-86b7-7bd023b31e4b.png"></img>
-
-Depending on the menu you are in, you are presented with a new set of commands and menus you can select. There are interactions in place between each menu. For example, when selecting a company within the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu. See [Introduction to Stocks](/terminal/usage/intros/stocks).
-
-:::note **About Pipelines**
-You can quickly jump between menus by using a forward slash (`/`). For example, if I want to access the options menu, You can type `/stocks/options` to instantly arrive at this menu. You can do this from any location within the OpenBB Terminal!
+:::note
+Absolute paths are also valid to-and-from any point.  From the [`/stocks/options`](https://docs.openbb.co/terminal/usage/intros/stocks/options) menu, go directly to [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto).  By itself, `/`, returns to the home level.
 :::
 
-### Explanation of Commands
+![The Home Screen](https://user-images.githubusercontent.com/85772166/233247655-2f8d0dae-be68-48ca-9b35-123b5b985cb6.png)
 
-Commands, depicted in <b><span style={{color:"#00AAFF"}}>Light Blue</span></b>, execute an action or task. For example,
-the commands that you are able to use from any menu in the terminal (see <a href="#explanation-of-menus">Explanation of Menus</a>) are as follows:
+## Auto Complete
 
-- `cls`: clears the screen, by executing this command you are left with an empty screen.
-- `help`, `h` or `?`: displays the menu that you are currently on.
-- `quit`, `q` or `..`: allows for navigation through the menu. E.g. if you type `stocks` press `ENTER` (⏎) and then
-  use `q` and press `ENTER` (⏎) you return to where you started. Validate this by typing `?` and pressing `ENTER` (⏎).
-- `support`: allows you to submit bugs, questions and suggestions.
-- `about`: this opens the related guide, linking to this website. It also has the ability to open a guide to a specific
-  command. For example, within the `stocks` menu, `about candle` opens <a href="/terminal/reference/stocks/candle/" target="_blank" rel="noreferrer noopener">this guide</a>.
-- `wiki`: search for a given expression on the Wikipedia without leaving the terminal.
+The OpenBB Terminal is equipped with an auto completion engine that presents choices based on the current menu.  Whenever you start typing, the prompt will appear. When the function contains arguments, pressing the `space bar` after typing the command will present the list of available arguments.  This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders.  Choices - where they are bound by a defined list - are searchable with the up and down arrow keys.
 
-Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you will see a command named <a href="/terminal/reference/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
+![Auto Complete](https://user-images.githubusercontent.com/85772166/233247702-f707531c-2c65-4380-a662-cd4bc2ae0199.png)
 
+## Help Dialogues
+
+### -h or --help
+
+A help dialogue for any function at the current location is printed to the screen by typing `-h` after the command.  The information returned contains a short description of the function and all accepted arguments.  For an example, the `/news` function:
+
+```console
+news -h
 ```
-usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [--exchange] [--performance] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]
-            [--source {YahooFinance,AlphaVantage,Polygon,EODHD,Intrinio}]
 
-Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-
-providers-yahoo-finance-sln2310.html.
+```console
+usage: news [-t TERM [TERM ...]] [-s SOURCES] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [-l LIMIT]
 
-optional arguments:
-  -t TICKER, --ticker TICKER
-                        Stock ticker (default: None)
-  -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-02-11)
-  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-02-15)
-  -i {1,5,15,30,60}, --interval {1,5,15,30,60}
-                        Intraday stock minutes (default: 1440)
-  -p, --prepost         Pre/After market hours. Only reflected in 'YahooFinance' intraday data. (default: False)
-  -f FILEPATH, --file FILEPATH
-                        Path to load custom file. (default: None)
-  -m, --monthly         Load monthly data (default: False)
-  -w, --weekly          Load weekly data (default: False)
-  --exchange            Show exchange information. (default: False)
-  --performance         Show performance information. (default: False)
-  -h, --help            show this help message (default: False)
-  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+display news articles based on term and data sources
+
+options:
+  -t TERM [TERM ...], --term TERM [TERM ...]
+                        search for a term on the news
+  -s SOURCES, --sources SOURCES
+                        sources from where to get news from (separated by comma)
+  -h, --help            show this help message
+  --export EXPORT       Export raw data into csv, json, xlsx
   --sheet-name SHEET_NAME [SHEET_NAME ...]
-                        Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
-  --source {YahooFinance,AlphaVantage,Polygon,EODHD,Intrinio}
-                        Data source to select from (default: YahooFinance)
+                        Name of excel sheet to save data to. Only valid for .xlsx files.
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data.
 
-For more information and examples, use 'about load' to access the related guide.
-
+For more information and examples, use 'about news' to access the related guide.
 ```
 
-This shows you all **arguments** the command has. These are additional options you can provide to the command. Each default value is also displayed which is used when you do not select this option. For example, if I would use the <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank" rel="noreferrer noopener">stock ticker</a> of Amazon (AMZN, which can also be found with `search amazon`), I can use `load AMZN` which will return the following:
+To search for news containing the term, "Federal Reserve", try this command:
 
-```
-(🦋) /stocks/ $ load AMZN
-
-Loading Daily data for AMZN with starting period 2020-02-11.
-
+```console
+/news --term Federal Reserve
 ```
 
-The default values you see within `load -h` have been inputted here. E.g. the starting period is 2020-02-11. I can decide to change these default values by calling the argument and inputting a different value.
+### About
 
-Whenever you wish to apply an optional argument, you use the related shortcode, e.g. `-s` or `--start`. Then, if there is an additional word behind the argument (in this case there is, which is `START`) it implies the argument expects you to define a value. Within the documentation you can read that the format must be `YYYY-MM-DD` implying that `2010-01-01` will be valid. If there is not an additional word behind it, it is enough to write down `load AMZN -p` (which refers to the prepost optional argument)
+`about` is a global function that opens a browser to the OpenBB documentation pages at the specific command or menu.
 
-Let's change the starting and ending period of the data that is being loaded in by doing the following:
-
-```
-(🦋) /stocks/ $ load AMZN -s 2005-01-01 -e 2010-01-01
-
-Loading Daily data for AMZN with starting period 2005-01-03.
-
+```console
+/about stocks
 ```
 
-We can check that this period has changed by looking into the <a href="https://www.investopedia.com/trading/candlestick-charting-what-is-it/" target="_blank" rel="noreferrer noopener">candle chart</a> with `candle`. This, again shares the same `-h` argument. This results in the following which indeed depicts our selected period.
+The command above will open a browser to [Introduction to the Stocks menu](https://docs.openbb.co/terminal/usage/intros/stocks).
 
+### Support
+
+`support` is a global function for submitting a new request for support, a general question, or a bug report.  The command will pre-populate a form with key information, like the command or menu name specific to the issue.  Use the up and down arrow keys to browse and select the appropriate item for the ticket.  Naturally, this command has a help dialogue.
+
+```console
+support -h
 ```
-(🦋) /stocks/ $ candle
+
+```console
+Submit your support request
+
+options:
+  -c {search,load,quote,tob,candle,news,resources,codes,ta,ba,qa,disc,dps,scr,sia,ins,gov,res,dd,fa,bt,ca,options,th,forecast}, --command {generic,search,load,quote,tob,candle,news,resources,codes,ta,ba,qa,disc,dps,scr,sia,ins,gov,res,dd,fa,bt,ca,options,th,forecast}
+                        Command that needs support (default: None)
+  --msg MSG [MSG ...], -m MSG [MSG ...]
+                        Message to send. Enclose it with double quotes (default: )
+  --type {bug,suggestion,question,generic}, -t {bug,suggestion,question,generic}
+                        Support ticket type (default: generic)
+  -h, --help            show this help message (default: False)
 ```
 
-![Candlestick Chart Amazon](https://user-images.githubusercontent.com/46355364/223211728-1317abea-36da-461c-bc3b-140ed7973173.svg)
+![Support](https://user-images.githubusercontent.com/85772166/233577183-fbeb7be2-1d00-4ca0-86b3-42f1b71081e8.png)
 
-As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the loaded market data from <a href="/terminal/reference/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank" rel="noreferrer noopener">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
+```console
+support search --type question --msg "How do I find stocks from India with OpenBB?"
+```
+
+![Support Auto Complete](https://user-images.githubusercontent.com/85772166/233577389-f0ad1b08-0e22-44b1-9d6b-9732c77af7d7.png)
+
+The command opens a browser window to a pre-populated form on the OpenBB website.  If you are signed-in to the Hub, all that is left to do is click `Submit`.
+
+![Submit Form](https://user-images.githubusercontent.com/85772166/233577448-3e426a88-d0cf-4338-8f4c-21b9fd01d8b2.png)
+
+**An answer to this question is**: `search --country india --exchange-country india`
+
+:::note
+Tips for submitting a support request:
+
+- Tell us what version number is installed.
+- Tell us what operating system and version the machine has.
+- What is the installation type?  Installer, Source, PyPi, Docker, other?
+- Tell us the command and parameter combination causing the error.
+- Tell us what symbol (ticker) is, or was trying to be, loaded.
+- Show us the complete error message.
+- Let us know any contextual information that will help us replicate and accurately identify the problem.
+:::
+
+## Menus
+
+### The Main Menu
+
+The main menu, or the home screen, contains both menus and commands.  Some of these commands are global, meaning they can be called from any location within the OpenBB Terminal.  Refer to the in-depth introduction guides for each menu, for example, [Forecast](https://docs.openbb.co/terminal/usage/intros/forecast)
+
+| Function Key |   Type   | Is Global? |                                                                     Description |
+| :----------- | :------: | :--------: | ------------------------------------------------------------------------------: |
+| about        | Function |    Yes    |        Opens a browser page to the documentation pages at the function or menu. |
+| account      |   Menu   |     -     |                                                     Manage your OpenBB account. |
+| alternative  |   Menu   |     -     |                                                          Alternative data sets. |
+| crypto       |   Menu   |     -     |                                                                 Digital assets. |
+| econometrics |   Menu   |     -     |                                              Econometrics and custom data sets. |
+| economy      |   Menu   |     -     |                                                              The broad economy. |
+| etf          |   Menu   |     -     |                                                          Exchange-Traded Funds. |
+| exe          | Function |     No     |                                                 Execute OpenBB Routine Scripts. |
+| featflags    |   Menu   |     -     |                                             Enable/disable Terminal behaviours. |
+| fixedincome  |   Menu   |     -     |                              Central Bank and corporate bond rates and indexes. |
+| forecast     |   Menu   |     -     |                                   Time series forecasting and machine learning. |
+| forex        |   Menu   |     -     |                                                                 Currency pairs. |
+| funds        |   Menu   |     -     |                                                                   Mutual funds. |
+| futures      |   Menu   |     -     |                                                Commodity and financial futures. |
+| keys         |   Menu   |     -     |                                         Set and test API keys for data sources. |
+| intro        | Function |     No     |                                                    An in-Terminal introduction. |
+| news         | Function |     No     |                                          Find news articles by term and source. |
+| portfolio    |   Menu   |     -     |                                                    Portfolio and risk analysis. |
+| record       | Function |    Yes    |                                      Starts recording an OpenBB Routine Script. |
+| settings     |   Menu   |     -     |                                                       Adjust Terminal settings. |
+| sources      |   Menu   |     -     |                                                  Set preferred default sources. |
+| stop         | Function |    Yes    | Stop recording the OpenBB Routine Script and save to the OpenBBUserData folder. |
+| support      | Function |    Yes    |                            Report a bug or create a support ticket with OpenBB. |
+| survey       | Function |     No     |                                    Take a short user survey to help us improve. |
+| update       | Function |     No     |   Attempt to update (**Only for Github cloned repository installations**) |
+| wiki         | Function |    Yes    |                                   Query the Wikipedia API for a term or phrase. |
+
+### Additional Global Commands
+
+The commands listed below are not displayed on any Terminal menu, but are available from any location in the Terminal.
+
+| Function Key |                                       Description |
+| :----------- | ------------------------------------------------: |
+| cls          |                       Clears the Terminal screen. |
+| exit         |                               Quits the Terminal. |
+| help, h, ?   |                   Prints the current menu screen. |
+| quit, q, ..  |             Navigates back one menu towards Home. |
+| reset, r     | Resets the Terminal, opening to the current menu. |
+
+## Data
+
+Many functions will require obtaining (free or subscription) API keys from various data providers.  OpenBB provides methods for consuming these data feeds, but has no control over the quality or quantity of data provided to an end-user.   **No API Keys are required to get started using the Terminal**.  See the list of data providers [here](https://docs.openbb.co/terminal/usage/guides/api-keys), along with instructions for entering the credentials into the OpenBB Terminal.  [Request a feature](https://openbb.co/request-a-feature) to let us know what we are missing!
+
+### Default Data Sources
+
+The default data source for each function (where multiple sources are available) can be defined within the [`/sources` menu](https://docs.openbb.co/terminal/usage/guides/changing-sources).  The available sources for each function are displayed on the right of the menu, and they can be distinguished by the square brackets and distinct font color group.  Unless a preference for a particular function is defined, the command will prioritize in the order they are displayed, from left-to-right, on the Terminal screen.  To override a preference or default source, select one of the other choices by attaching the, `--source`, argument to the command syntax.  The available sources for the feature will be populated by auto complete when the `space bar` is pressed after typing `--source`.  This information is also printed with the `--help` dialogue of a command.
+
+```console
+/stocks/load AAPL/fa/income --source Polygon
+```
+
+![Selecting a new Data Source](https://user-images.githubusercontent.com/85772166/233730763-54fd6400-f3ad-44a0-9c73-254d91ac2085.png)
+
+### Importing and Exporting Data
+
+Most functions provide a method for exporting the raw data as a CSV, JSON, or XLSX file (with a specific sheet name).  Exported data and user-supplied files to import are saved to the [OpenBBUserData folder](https://docs.openbb.co/terminal/usage/guides/data).  The folder is located at the root of the operating system's User Account folder.  Follow the link for a detailed description.
+
+## Charts
+
+The OpenBB charting library provides interactive, customizable, charts.  Here's an example of displaying weekly candles for AAPL.
+
+```console
+/stocks/load AAPL -w/candle
+```
+
+![Apple Weekly Chart](https://user-images.githubusercontent.com/85772166/233247951-e011fe2c-23a6-4518-bd17-3f43a9c2011a.png)
+
+### Toolbar
+
+The toolbar is located at the bottom of the window, and provides methods for:
+
+- Panning and zooming.
+- Modifying the title and axis labels.
+- Adjusting the hover read out.
+- Toggling light/dark mode.
+- Annotating and drawing.
+- Exporting raw data.
+- Saving the chart as an image.
+- Adding supplementary external data as an overlay.
+
+The label for each tool is displayed by holding the mouse over it.
+
+![Chart Tools](https://user-images.githubusercontent.com/85772166/233247997-55c03cbd-9ca9-4f5e-b3fb-3e5a9c63b6eb.png)
+
+Toggle the toolbar's visibility via the keyboard with, `ctrl + h`.
+
+### Text Tools
+
+Annotate a chart by clicking on the `Add Text` button, or with the keyboard, `ctrl + t`.
+
+![Annotate Charts](https://user-images.githubusercontent.com/85772166/233248056-d459d7a0-ba2d-4533-896a-79406ded859e.png)
+
+Enter some text, make any adjustments to the options, then `submit`.  Place the crosshairs over the desired data point and click to place the text.
+
+![Place Text](https://user-images.githubusercontent.com/85772166/233728645-74734241-4da2-4cff-af17-b68a62e95113.png)
+
+After placement, the text can be updated or deleted by clicking on it again.
+
+![Delete Annotation](https://user-images.githubusercontent.com/85772166/233728428-55d2a8e5-a68a-4cd1-9dbf-4c1cd697187e.png)
+
+The title of the chart is edited by clicking the button, `Change Titles`, near the middle center of the toolbar, immediately to the right of the `Add Text` button.
+
+### Draw Tools
+
+The fourth group of icons on the toolbar are for drawing lines and shapes.
+
+- Edit the colors.
+- Draw a straight line.
+- Draw a freeform line.
+- Draw a circle.
+- Draw a rectangle.
+- Erase a shape.
+
+To draw on the chart, select one of the four drawing buttons and drag the mouse over the desired area.  Click on any existing shape to modify it by dragging with the mouse and editing the color, or remove it by clicking the toolbar button, `Erase Active Shape`.  The edit colors button will pop up as a floating icon, and clicking on that will display the color palette.
+
+![Edit Colors](https://user-images.githubusercontent.com/85772166/233729318-8af947fa-ce2a-43e2-85ab-657e583ac8b1.png)
+
+### Export Tools
+
+The two buttons at the far-right of the toolbar are for saving the raw data or, to save an image file of the chart at the current panned and zoomed view.
+
+![Export Tools](https://user-images.githubusercontent.com/85772166/233248436-08a2a463-403b-4b1b-b7d8-80cd5af7bee3.png)
+
+### Overlay
+
+The button, `Overlay chart from CSV`, provides an easy import method for supplementing a chart with additional data.  Clicking on the button opens a pop-up dialogue to select the file, column, and whether the overlay should be a bar, candlestick, or line chart.  As a candlestick, the CSV file must contain OHLC data.  The import window can also be opened with the keyboard, `ctrl-o`.
+
+![Overlay CSV](https://user-images.githubusercontent.com/85772166/233248522-16b539f4-b0ae-4c30-8c72-dfa59d0c0cfb.png)
+
+After choosing the file to overlay, select what to show and then click on `Submit`.
+
+![Overlay Options](https://user-images.githubusercontent.com/85772166/233250634-44864da0-0936-4d3c-8de2-c8374d26c1d2.png)
+
+![Overlay Chart](https://user-images.githubusercontent.com/85772166/233248639-6d12b16d-471f-4550-a8ab-8d8c18eeabb3.png)
+
+### Cheat Sheet
+
+The image below can be saved and used as a reference.
+
+![Group 653](https://user-images.githubusercontent.com/85772166/234313541-3d725e1c-ce48-4413-9267-b03571e0eccd.png)
+
+
+## Tables
+
+The OpenBB Terminal sports interactive tables which opens in a separate window. They provide methods for searching, sorting, filtering, and exporting directly within the table.  Preferences and settings for the tables can be updated directly on the table.
+
+### Sorting and Filtering
+
+Columns can be sorted ascending/descending/unsorted, by clicking the controls to the right of each header title.  The status of the filtering is shown as a blue indicator.
+
+![Sort Columns](https://user-images.githubusercontent.com/85772166/233248754-20c18390-a7af-490c-9571-876447b1b0ae.png)
+
+The settings button, at the lower-left corner, displays choices for customizing the table.  By selecting the `Type` to be `Advanced`, columns become filterable.
+
+![Table Settings](https://user-images.githubusercontent.com/85772166/233248876-0d788ff4-974d-4d92-8186-56864469870a.png)
+
+The columns can be filtered with min/max values or by letters, depending on the content of each column.
+
+![Filtered Tables](https://user-images.githubusercontent.com/85772166/233248923-45873bf1-de6b-40f8-a4aa-05e7c3d21ab0.png)
+
+### Selecting Columns and Rows
+
+The table will scroll to the right as far as there are columns.  Columns can be removed from the table by clicking the icon to the right of the settings button and unchecking it from the list.
+
+![Select Columns](https://user-images.githubusercontent.com/85772166/233248976-849791a6-c126-437c-bb54-454ba6ea4fa2.png)
+
+The number of rows per page is defined in the drop down selection near the center, at the bottom.
+
+![Rows per Page](https://user-images.githubusercontent.com/85772166/233249018-8269896d-72f7-4e72-a4d4-2715d1f11b96.png)
+
+### Freeze the Index and Column Headers
+
+Right-click on the index name to enable/disable freezing when scrolling to the right.  Column headers are frozen by default.
+
+![Index Freeze](https://user-images.githubusercontent.com/85772166/234103702-0965dfbd-24ca-4a66-8c76-9fac28abcff8.png)
+
+### Exporting Data
+
+At the bottom-right corner of the table window, there is a button for exporting the data.  To the left, the drop down selection for `Type` can be defined as a CSV, XLSX, or PNG file.  Exporting the table as a PNG file will create a screenshot of the table at its current view, and data that is not on the screen will not be captured.
+
+![Export Data](https://user-images.githubusercontent.com/85772166/233249065-60728dd1-612e-4684-b196-892f3604c0f4.png)
+
+### Cheat Sheet
+
+The image below can be saved and used as a reference.
+
+![Chart Intro (5)](https://user-images.githubusercontent.com/85772166/234315026-de098953-111b-4b69-9124-31530c01407a.png)

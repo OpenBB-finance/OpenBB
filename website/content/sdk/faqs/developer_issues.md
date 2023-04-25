@@ -1,7 +1,7 @@
 ---
 title: Developer Issues
 sidebar_position: 7
-description: Developer Issues.
+description: Help with issues commonly faced by developers.
 keywords:
   [
     installation,
@@ -16,9 +16,18 @@ keywords:
     macos,
     how to,
     explanation,
-    openbb terminal,
+    openbb sdk,
+    error,
+    branch,
+    VS Code,
+    .whl
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Developer Issues - SDK | OpenBB Docs" />
+
 ## Developer Issues
 
 <details><summary>What branch on GitHub should pull requests be submitted to?</summary>

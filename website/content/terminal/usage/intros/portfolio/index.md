@@ -1,8 +1,12 @@
 ---
 title: Portfolio
-keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report, optimization, risk, benchmark, brokers]
-description: The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a benchmark. For example, you are able to load both your portfolio and a benchmark (load and bench), then have the option to look into the performance compared to the benchmark asking the question "What if I invested all my money in the benchmark instead?" (perf) as well as see a wide variety of statistics and metrics (rsharpe, distr, var and metric). Next to that, with these findings you can apply optimization techniques to your portfolio through the Portfolio Optimization menu.
+keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report, optimization, risk, benchmark, brokers, how to, example, load, rsharpe, distr, var, metric, perf]
+description: The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a benchmark.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Portfolio - Terminal | OpenBB Docs" />
 
 The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a <a href="https://www.investopedia.com/terms/b/benchmark.asp" target="_blank" rel="noreferrer noopener">benchmark</a>. For example, you are able to load both your portfolio and a benchmark (<a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a> and <a href="/terminal/reference/portfolio/bench" target="_blank" rel="noreferrer noopener">bench</a>), then have the option to look into the performance compared to the benchmark asking the question "_What if I invested all my money in the benchmark instead?_" (<a href="/terminal/reference/portfolio/perf" target="_blank" rel="noreferrer noopener">perf</a>) as well as see a wide variety of statistics and metrics (<a href="/terminal/reference/portfolio/rsharpe/" target="_blank" rel="noreferrer noopener">rsharpe</a>, <a href="/terminal/reference/portfolio/distr" target="_blank" rel="noreferrer noopener">distr</a>, <a href="/terminal/reference/portfolio/var" target="_blank" rel="noreferrer noopener">var</a>
 and <a href="/terminal/reference/portfolio/metric" target="_blank" rel="noreferrer noopener">metric</a>). Next to that, with these findings you can apply optimization techniques to your portfolio through the <a href="/terminal/usage/intros/portfolio/po/" target="_blank" rel="noreferrer noopener">Portfolio Optimization menu</a>.
@@ -13,7 +17,7 @@ The Portfolio menu is called upon by typing `portfolio` which opens the followin
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218995675-f09d21bc-9e64-4546-83d0-ce21e10b3b62.png"></img>
 
-The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a>. Within this guide, we provide an example file when running `load --example` which will be used to explain the functionality through the guide. 
+The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a>. Within this guide, we provide an example file when running `load --example` which will be used to explain the functionality through the guide.
 
 :::note If you wish to load in your own Excel holdings file, please follow the following steps:
 1. Download the Excel file that can be used as a template [here](https://www.dropbox.com/s/03wjjf1lfkqjmtn/holdings_example.xlsx?dl=0).
@@ -101,7 +105,7 @@ After loading in the portfolio, it is time to select a benchmark. By default, th
 │                                                                                                                                                                                         │
 │ Loaded transactions file: OpenBB Example Portfolio                                                                                                                                      │
 │ Risk Free Rate:   0.00%                                                                                                                                                                 │
-│ Benchmark: Vanguard Total Stock Market ETF (VTI)      
+│ Benchmark: Vanguard Total Stock Market ETF (VTI)
 <continues>
 ```
 

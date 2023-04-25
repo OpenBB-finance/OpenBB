@@ -1,8 +1,12 @@
 ---
 title: Discovery
-keywords: [cryptocurrency, discovery, nft, app, decentralized, coins]
+keywords: [cryptocurrency, discovery, nft, app, decentralized, coins, function, sub-module, openbb.crypto, openbb sdk, sdk, import statement, load, candles, find, active address, trades, coin_list, baas, trending, news]
 description: An Introduction to Cryptocurrency Discovery, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Discovery - SDK | OpenBB Docs" />
 
 The Discovery sub-module contains the tools for finding new trends in Crpyto markets and making new discoveries. The commands within the menu are listed below along with a short description. The module is accessed by entering, `openbb.crypto.disc`, and then a `.` activates code completion and type hints.
 
@@ -124,4 +128,3 @@ openbb.crypto.disc.losers(interval = '1y').head(3)
 | 39 | lunc     | Terra Luna Classic |  0.00017433 |   1042097683 |                40 |     75780496 |        -99.9997 |
 | 16 | sol      | Solana             | 13.87       |   5045641411 |                17 |    382220595 |        -92.9463 |
 | 43 | axs      | Axie Infinity      |  8.92       |   1004779023 |                44 |    707998935 |        -91.6799 |
-

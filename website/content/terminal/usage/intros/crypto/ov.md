@@ -1,8 +1,12 @@
 ---
 title: Overview
-keywords: [cryptocurrency, overview, news, stablecoins, defi, blockchain]
-excerpt: An Introduction to Cryptocurrency Overview, within the Cryptocurrency Menu, with a brief overview of the features.
+keywords: [cryptocurrency, overview, news, stablecoins, defi, blockchain, how to, example, market, find, index, derivative, news feed, fees]
+excerpt: An Introduction to Cryptocurrency Overview, within the Cryptocurrency Menu, with a brief explanation of the features.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Overview - Terminal | OpenBB Docs" />
 
 The Cryptocurrency Overview menu provides, among other things, the option to obtain a complete overview of the Cryptocurrency market (<a href="/terminal/reference/crypto/ov/global" target="_blank" rel="noreferrer noopener">global</a>), find cryptocurrency indexes and derivatives (<a href="/terminal/reference/crypto/ov/indexes" target="_blank" rel="noreferrer noopener">indexes</a> and <a href="/terminal/reference/crypto/ov/derivatives" target="_blank" rel="noreferrer noopener">derivatives</a>), news feeds (<a href="/terminal/reference/crypto/ov/news" target="_blank" rel="noreferrer noopener">news</a>) and fees (<a href="/terminal/reference/crypto/ov/wf" target="_blank" rel="noreferrer noopener">wf</a> and <a href="/terminal/reference/crypto/ov/ewf" target="_blank" rel="noreferrer noopener">ewf</a>)
 
