@@ -257,6 +257,13 @@ After choosing the file to overlay, select what to show and then click on `Submi
 
 ![Overlay Chart](https://user-images.githubusercontent.com/85772166/233248639-6d12b16d-471f-4550-a8ab-8d8c18eeabb3.png)
 
+### Cheat Sheet
+
+The image below can be saved and used as a reference.
+
+![Group 653](https://user-images.githubusercontent.com/85772166/234313541-3d725e1c-ce48-4413-9267-b03571e0eccd.png)
+
+
 ## Tables
 
 The OpenBB Terminal sports interactive tables which opens in a separate window. They provide methods for searching, sorting, filtering, and exporting directly within the table.  Preferences and settings for the tables can be updated directly on the table.
@@ -296,3 +303,7 @@ Right-click on the index name to enable/disable freezing when scrolling to the r
 At the bottom-right corner of the table window, there is a button for exporting the data.  To the left, the drop down selection for `Type` can be defined as a CSV, XLSX, or PNG file.  Exporting the table as a PNG file will create a screenshot of the table at its current view, and data that is not on the screen will not be captured.
 
 ![Export Data](https://user-images.githubusercontent.com/85772166/233249065-60728dd1-612e-4684-b196-892f3604c0f4.png)
+
+The image below can be saved and used as a reference.
+
+![Chart Intro (5)](https://user-images.githubusercontent.com/85772166/234315026-de098953-111b-4b69-9124-31530c01407a.png)
