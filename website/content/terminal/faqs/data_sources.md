@@ -1,7 +1,7 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: Data Sources and Providers.
+description: Information about data sources and providers offered through the OpenBB Terminal.
 keywords:
   [
     installation,
@@ -17,8 +17,17 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    data,
+    data provider,
+    india,
+    binance
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Sources - Terminal | OpenBB Docs" />
+
 ## Data and Sources
 
 Please note that OpenBB does not provide any data, it is an aggregator which provides users access to data from a variety of sources. OpenBB does not maintain or have any control over the raw data supplied. If there is a specific problem with the output from a data provider, please consider contacting them first.

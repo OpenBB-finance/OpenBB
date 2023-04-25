@@ -1,9 +1,13 @@
 ---
 title: Exporting and Importing Datasets
 sidebar_position: 2
-description: The OpenBBUserData folder's default location is the home of the system user account. By default this will be the following paths. Within the folder you can find files that you have exported as well as files that you wish to import directly into the OpenBB Terminal. For example, this could be an orderbook which you can store in OpenBBUserData/portfolio/holdings.
-keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbuserdata, where is data exported, market data, financial data, free, openbb sdk]
+description: Export and import data from your computer or server to and from the OpenBB SDK
+keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbuserdata, where is data exported, market data, financial data, free, openbb sdk, folder, default, openbb sdk]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Exporting and Importing Datasets - SDK | OpenBB Docs" />
 
 The OpenBB SDK shares the `OpenBBUserData` folder with the Terminal, even with multiple versions installed on the same machine. Portfolio files, screener presets, and Matplotlib style sheets are all shared resources. This folder will be created after the first installation and it is read by subsequent installations. The default location for it is in the root of the operating system user account folder.
 

@@ -17,8 +17,20 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    pypi,
+    c++,
+    miniconda,
+    library,
+    arm,
+    library,
+    error,
+    raspberry pi,
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Installation and Updates - Terminal | OpenBB Docs" />
 
 ## Installation and Updates
 
@@ -100,4 +112,3 @@ brew install libomp
 ```
 
 </details>
-
