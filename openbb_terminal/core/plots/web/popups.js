@@ -558,8 +558,14 @@ function on_submit(popup_id, on_annotation = null) {
             }),
             type: popup_data.trace_type,
             name: popup_data.name,
-            increasing: { line: { color: popup_data.increasing } },
-            decreasing: { line: { color: popup_data.decreasing } },
+            increasing: {
+              line: { color: popup_data.increasing },
+              fillcolor: popup_data.increasing,
+            },
+            decreasing: {
+              line: { color: popup_data.decreasing },
+              fillcolor: popup_data.decreasing,
+            },
             showlegend: true,
             yaxis: yaxis,
           };
