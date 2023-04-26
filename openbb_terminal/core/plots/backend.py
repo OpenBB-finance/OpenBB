@@ -62,8 +62,20 @@ class Backend(PyWry):
             cls.instance = super().__new__(cls)  # pylint: disable=E1120
         return cls.instance
 
-    def __init__(self, daemon: bool = True, max_retries: int = 30):
-        super().__init__(daemon=daemon, max_retries=max_retries)
+    def __init__(
+        self,
+        daemon: bool = True,
+        max_retries: int = 30,
+        proc_name: str = "OpenBB Terminal",
+    ):
+        has_version = hasattr(PyWry, "__version__")
+        init_kwargs: Dict[str, Any] = dict(daemon=daemon, max_retries=max_retries)
+
+        if has_version and version.parse(PyWry.__version__) >= version.parse("0.4.8"):
+            init_kwargs.update(dict(proc_name=proc_name))
+
+        super().__init__(**init_kwargs)
+
         self.plotly_html: Path = (PLOTS_CORE_PATH / "plotly_temp.html").resolve()
         self.table_html: Path = (PLOTS_CORE_PATH / "table.html").resolve()
         self.inject_path_to_html()
@@ -74,7 +86,7 @@ class Backend(PyWry):
             and not get_current_user().preferences.ENABLE_QUICK_EXIT
             and current_process().name == "MainProcess"
         )
-        if hasattr(PyWry, "__version__") and PyWry.__version__ == "0.0.0":
+        if has_version and PyWry.__version__ == "0.0.0":
             self.isatty = False
 
         self.WIDTH, self.HEIGHT = 1400, 762
