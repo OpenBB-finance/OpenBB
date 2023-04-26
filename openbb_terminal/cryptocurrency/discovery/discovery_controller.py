@@ -624,9 +624,9 @@ class DiscoveryController(BaseController):
             """,
         )
         parser.add_argument(
-            "-n",
-            "--name",
-            dest="name",
+            "-c",
+            "--chain",
+            dest="chain",
             help="Name of the blockchain to filter by.",
         )
         parser.add_argument(
@@ -660,7 +660,7 @@ class DiscoveryController(BaseController):
             dappradar_view.display_nft_marketplaces(
                 sortby=ns_parser.sortby,
                 order=ns_parser.order,
-                name=ns_parser.name,
+                chain=ns_parser.chain,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)

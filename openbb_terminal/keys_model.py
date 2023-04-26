@@ -26,7 +26,11 @@ from tokenterminal import TokenTerminal
 
 from openbb_terminal.core.session.current_user import get_current_user, set_credential
 from openbb_terminal.core.session.env_handler import write_to_dotenv
-from openbb_terminal.cryptocurrency.coinbase_helpers import CoinbaseApiException, CoinbaseProAuth, make_coinbase_request
+from openbb_terminal.cryptocurrency.coinbase_helpers import (
+    CoinbaseApiException,
+    CoinbaseProAuth,
+    make_coinbase_request,
+)
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console

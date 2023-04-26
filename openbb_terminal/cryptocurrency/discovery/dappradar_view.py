@@ -196,12 +196,12 @@ def display_top_dapps(
 
 
 @log_start_end(log=logger)
-@check_api_key("API_DAPPRADAR_KEY")
+@check_api_key(["API_DAPPRADAR_KEY"])
 def display_nft_marketplaces(
     limit: int = 10,
     sortby: str = "",
     order: str = "",
-    name: str = "",
+    chain: str = "",
     export: str = "",
     sheet_name: Optional[str] = None,
 ) -> None:
@@ -209,7 +209,7 @@ def display_nft_marketplaces(
 
     Parameters
     ----------
-    name: str
+    chain: str
         Name of the chain
     order: str
         Order of sorting (asc/desc)
@@ -222,7 +222,7 @@ def display_nft_marketplaces(
     """
 
     df = dappradar_model.get_nft_marketplaces(
-        name=name,
+        chain=chain,
         sortby=sortby,
         order=order,
         limit=limit,

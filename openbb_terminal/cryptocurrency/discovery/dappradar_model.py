@@ -60,7 +60,7 @@ def _make_request(url: str, verbose: bool = False) -> Optional[dict]:
     headers = {
         "Accept": "application/json",
         "User-Agent": get_user_agent(),
-        "referer": "https://api.dappradar.com/4tsxo4vuhotaojtl/",
+        # "referer": "https://api.dappradar.com/4tsxo4vuhotaojtl/",
         "X-BLOBR-KEY": current_user.credentials.API_DAPPRADAR_KEY,
     }
     response = request(url, headers=headers)
@@ -271,7 +271,7 @@ def get_top_dapps(sortby: str = "", limit: int = 10) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-@check_api_key("API_DAPPRADAR_KEY")
+@check_api_key(["API_DAPPRADAR_KEY"])
 def get_nft_marketplaces(
     chain: str = "", sortby: str = "", order: str = "", limit: int = 10
 ) -> pd.DataFrame:
@@ -280,7 +280,7 @@ def get_nft_marketplaces(
     Parameters
     ----------
     chain: str
-        Blockchain name
+        Name of the chain
     sortby: str
         Key by which to sort data
     order: str
