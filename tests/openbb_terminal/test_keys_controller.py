@@ -48,7 +48,6 @@ class MockCFG:
         self.API_TRADIER_TOKEN = kwargs.get("TRADIER", None)
         self.API_CMC_KEY = kwargs.get("CMC", None)
         self.API_FINNHUB_KEY = kwargs.get("FINNHUB", None)
-        self.API_IEX_TOKEN = kwargs.get("IEX", None)
         self.API_REDDIT_CLIENT_ID = kwargs.get("REDDIT_CLIENT", None)
         self.API_REDDIT_CLIENT_SECRET = kwargs.get("REDDIT_SECRET", None)
         self.API_REDDIT_USERNAME = kwargs.get("REDDIT_USERNAME", None)
