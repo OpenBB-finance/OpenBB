@@ -49,7 +49,7 @@ def inputhook(inputhook_context):
 
 
 try:
-    if not is_jupyter() and not is_papermill():
+    if sys.stdin.isatty():
         session: Optional[PromptSession] = PromptSession(
             history=FileHistory(str(HIST_FILE_PATH))
         )

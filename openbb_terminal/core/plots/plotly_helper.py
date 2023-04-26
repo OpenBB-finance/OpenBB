@@ -1,18 +1,21 @@
 """Chart and style helpers for Plotly."""
 # pylint: disable=C0302,R0902,W3301
 import json
-import os
 import textwrap
 from datetime import datetime
 from math import floor
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, TypeVar, Union
-
-try:
-    # pylint: disable=W0611 # noqa: F401
-    from darts import TimeSeries
-except ImportError:
-    pass
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+)
 
 import numpy as np
 import pandas as pd
@@ -35,6 +38,13 @@ from openbb_terminal.core.plots.config.openbb_styles import (
 )
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
+
+if TYPE_CHECKING:
+    try:
+        # pylint: disable=W0611 # noqa: F401
+        from darts import TimeSeries
+    except ImportError:
+        pass
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
@@ -86,6 +96,7 @@ class TerminalStyle:
         self.load_available_styles()
         self.load_style(plt_style)
         self.apply_console_style(console_style)
+        self.apply_style()
 
     def apply_console_style(self, style: Optional[str] = None) -> None:
         """Apply the style to the console."""
@@ -109,7 +120,7 @@ class TerminalStyle:
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
         if not style:
-            style = get_current_user().preferences.THEME
+            style = get_current_user().preferences.CHART_STYLE
 
         if style != self.plt_style:
             self.load_style(style)
@@ -244,9 +255,9 @@ class TerminalStyle:
 
 
 theme = TerminalStyle(
-    get_current_user().preferences.THEME, get_current_user().preferences.RICH_STYLE
+    get_current_user().preferences.CHART_STYLE,
+    get_current_user().preferences.RICH_STYLE,
 )
-theme.apply_style()
 
 
 # pylint: disable=R0913
@@ -932,6 +943,7 @@ class OpenBBFigure(go.Figure):
             ),
             yaxis2=dict(
                 autorange=True,
+                automargin=True,
                 side="right",
                 fixedrange=False,
                 anchor="x",
@@ -1055,13 +1067,15 @@ class OpenBBFigure(go.Figure):
                 color="#FFFFFF" if theme.mapbox_style == "dark" else "black",
                 activecolor="#d1030d" if theme.mapbox_style == "dark" else "blue",
             ),
+            spikedistance=2,
+            hoverdistance=2,
         )
 
         if external or self._exported:
             return self  # type: ignore
 
         # We check if in headless mode to return the JSON
-        if strtobool(os.environ.get("HEADLESS", False)):
+        if strtobool(get_current_system().HEADLESS):
             return self.to_json()
 
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
@@ -1536,8 +1550,8 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=105, t=40, pad=0)
-            if not self._has_secondary_y
+            dict(l=80, r=60, b=90, t=40, pad=0)
+            if not self._has_secondary_y or not self.has_subplots
             else dict(l=60, r=50, b=95, t=40, pad=0)
         )
 
@@ -1634,10 +1648,8 @@ class OpenBBFigure(go.Figure):
         if self._feature_flags_applied:
             return
 
-        if get_current_user().preferences.USE_CMD_LOCATION_FIGURE:
-            self._add_cmd_source()
-        if get_current_user().preferences.USE_WATERMARK:
-            self._set_watermark()
+        self._add_cmd_source()
+        self._set_watermark()
 
         self._feature_flags_applied = True
 

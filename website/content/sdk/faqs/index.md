@@ -1,12 +1,22 @@
 ---
 title: FAQs
 sidebar_position: 1
-description: Frequently Asked Questions
+description: Frequently Asked Questions about the OpenBB SDK
 keywords:
   [
     faqs,
     questions,
-    troubleshooting
+    troubleshooting,
+    answers,
+    installation,
+    updates,
+    general operation,
+    data sources,
+    bug,
+    support,
+    feedback,
+    developer issues,
+    issue,
   ]
 ---
 

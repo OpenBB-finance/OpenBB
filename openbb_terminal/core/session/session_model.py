@@ -1,4 +1,5 @@
 import json
+import sys
 from enum import Enum
 from typing import Any, Dict, Optional
 
@@ -76,13 +77,15 @@ def create_session_from_token(token: str, save: bool) -> Dict[Any, Any]:
     return session
 
 
-def login(session: dict) -> LoginStatus:
+def login(session: Dict, remember: bool = False) -> LoginStatus:
     """Login and load user info.
 
     Parameters
     ----------
     session : dict
         The session info.
+    remember : bool, optional
+        Remember the session, by default False
     """
     # Create a new user:
     #   credentials: stored in hub, but we fallback to local (.env)
@@ -101,14 +104,16 @@ def login(session: dict) -> LoginStatus:
         if response.status_code == 200:
             configs = json.loads(response.content)
             email = configs.get("email", "")
-            hub_user.profile.load_user_info(session, email)
+            hub_user.profile.load_user_info(session, email, remember)
             set_current_user(hub_user)
 
             auth_header = hub_user.profile.get_auth_header()
-            run_thread(download_and_save_routines, {"auth_header": auth_header})
-            run_thread(
-                update_backend_sources, {"auth_header": auth_header, "configs": configs}
-            )
+            if sys.stdin.isatty():
+                download_and_save_routines(auth_header)
+                run_thread(
+                    update_backend_sources,
+                    {"auth_header": auth_header, "configs": configs},
+                )
             Local.apply_configs(configs)
             Local.update_flair(get_current_user().profile.username)
 
@@ -119,21 +124,20 @@ def login(session: dict) -> LoginStatus:
     return LoginStatus.NO_RESPONSE
 
 
-def download_and_save_routines(auth_header: str, silent: bool = True):
+def download_and_save_routines(auth_header: str):
     """Download and save routines.
 
     Parameters
     ----------
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
-    silent : bool
-        Whether to silence the console output, by default True
     """
-    routines = download_routines(auth_header=auth_header, silent=silent)
-    for name, content in routines.items():
-        save_routine(
-            file_name=f"{name}.openbb", routine=content, force=True, silent=silent
-        )
+    routines = download_routines(auth_header=auth_header)
+    try:
+        for name, content in routines.items():
+            save_routine(file_name=f"{name}.openbb", routine=content, force=True)
+    except Exception:
+        console.print("[red]\nFailed to save routines.[/red]")
 
 
 def update_backend_sources(auth_header, configs, silent: bool = True):

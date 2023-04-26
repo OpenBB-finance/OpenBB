@@ -44,35 +44,6 @@ def fixture_test_user():
         ),
     ],
 )
-def test_get_session_exception(email: str, password: str, token: str, save: bool):
-    path = "openbb_terminal.core.session.sdk_session."
-    with patch(path + "session_model.create_session") as mock_create_session:
-        with patch(
-            path + "session_model.create_session_from_token"
-        ) as mock_create_session_from_token:
-            mock_create_session.return_value = {}
-            mock_create_session_from_token.return_value = {}
-
-            with pytest.raises(Exception):
-                sdk_session.get_session(
-                    email=email, password=password, token=token, save=save
-                )
-
-            mock_create_session.assert_called_once_with(email, password, save)
-            mock_create_session_from_token.assert_called_once_with(token, save)
-
-
-@pytest.mark.parametrize(
-    "email, password, token, save",
-    [
-        (
-            "test_email",
-            "test_pass",
-            "test_token",
-            True,
-        ),
-    ],
-)
 def test_get_session(email: str, password: str, token: str, save: bool):
     path = "openbb_terminal.core.session.sdk_session."
     with patch(path + "session_model.create_session") as mock_create_session:
@@ -149,18 +120,9 @@ def test_login(
     mock_hub_get_session.return_value = TEST_SESSION
     mock_login.return_value = status
 
-    if status in [LoginStatus.FAILED, LoginStatus.NO_RESPONSE]:
-        with pytest.raises(Exception):
-            sdk_session.login(
-                email=email,
-                password=password,
-                token=token,
-                keep_session=keep_session,
-            )
-    else:
-        sdk_session.login(
-            email=email, password=password, token=token, keep_session=keep_session
-        )
+    sdk_session.login(
+        email=email, password=password, token=token, keep_session=keep_session
+    )
 
     if has_session:
         mock_hub_get_session.assert_not_called()
@@ -225,7 +187,7 @@ def test_login_no_args(
 
 
 def test_logout(mocker, test_user):
-    test_user.profile.load_user_info(TEST_SESSION, "testy@email.com")
+    test_user.profile.load_user_info(TEST_SESSION, "testy@email.com", False)
     mocker.patch(
         target="openbb_terminal.core.session.sdk_session.get_current_user",
         return_value=test_user,
@@ -253,6 +215,7 @@ def test_whoami(mocker, test_user):
             "uuid": "MOCK_UUID",
         },
         email="MOCK_EMAIL",
+        remember=False,
     )
     mocker.patch(
         target="openbb_terminal.core.session.sdk_session.get_current_user",

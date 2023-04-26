@@ -1,9 +1,14 @@
 ---
 title: Setting API Keys
 sidebar_position: 1
-description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address. Each key is entered into the OpenBB SDk from the `openbb.keys` module, using the syntax described below. The docstrings for each source will also display the expected inputs.
-keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, sdk]
+description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. Learn how to set, manage, and access data APIs for the OpenBB SDK.
+keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, sdk, alphavantage, bitquery, coinbase, databento, finnhub, FRED, github, glassnode, iex cloud, news API, robinhood, santiment, shroomdk, token terminal, tradier, twitter, whale alert]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="API Keys - SDK | OpenBB Docs" />
+
 ## The Keys Module
 
 API (Application Programming Interface) keys are access credentials for obtaining data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address, some will require an account with proper KYC (Know Your Customer). Each source is entered into the SDK with the `openbb.keys` module, using the syntax described in the sections below. Wrapping the command with `help()` will print the docstrings to the screen. For example:
@@ -16,7 +21,7 @@ Which prints:
 
 ```console
     Set Reddit key
-  
+
     Parameters
     ----------
     client_id: str
@@ -39,7 +44,7 @@ Which prints:
     -------
     str
         Status of key set
-  
+
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb

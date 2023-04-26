@@ -1,8 +1,12 @@
 ---
 title: Options
-keywords: [Options, stocks, derivatives, puts, calls, oi, vol, greeks, voi, volatility, vsurf, chains, parity, binom, screen, pricing, hedge, pcr, info, hist, grhist, plot, parity]
-excerpt: This guide introduces the user to Options submenu, within the Stocks menu.
+keywords: [OpenBB, sdk, Options, stocks, derivatives, puts, calls, oi, vol, greeks, voi, volatility, vsurf, chains, parity, binom, screen, pricing, hedge, pcr, info, hist, grhist, plot, parity, how to, usage, examples, path, import, unusual options, options]
+excerpt: This guide introduces the user to Options submenu within the Stocks menu.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Options - SDK | OpenBB Docs" />
 
 The Options module wraps the Terminal commands for the SDK layer, providing programmatic access and greater flexibility for processing data.
 

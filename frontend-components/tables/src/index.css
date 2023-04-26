@@ -26,6 +26,18 @@
   ._hyper-link {
     @apply underline text-blue-300 hover:text-blue-400 active:text-blue-500 disabled:text-grey-600;
   }
+  ._modal {
+    @apply card fixed top-1/2 left-1/2 z-50 max-h-[608px] w-[90%] max-w-[568px] -translate-x-1/2 -translate-y-1/2 overflow-auto text-white bg-grey-900 p-2 duration-300 focus:outline-none md:p-10;
+  }
+  ._modal-overlay {
+    @apply bg-grey-900 opacity-60 z-40 inset-0 fixed;
+  }
+  ._modal-title {
+    @apply text-white uppercase tracking-widest text-lg font-bold;
+  }
+  .card {
+    @apply w-full rounded border border-grey-600 p-6 shadow bg-grey-850;
+  }
 }
 
 ._header {
@@ -82,4 +94,34 @@ tr {
   *:hover > .resizer {
     opacity: 1;
   }
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0);
+}
+
+table thead th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }

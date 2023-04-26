@@ -32,12 +32,21 @@ const non_blocking = (func, delay) => {
   };
 };
 
-function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
+function OpenBBMain(
+  plotly_figure,
+  chartdiv,
+  csvdiv,
+  textdiv,
+  titlediv,
+  downloaddiv
+) {
   // Main function that plots the graphs and initializes the bar menus
   globals.CHART_DIV = chartdiv;
   globals.TITLE_DIV = titlediv;
   globals.TEXT_DIV = textdiv;
   globals.CSV_DIV = csvdiv;
+  globals.dark_mode = plotly_figure.theme === "dark";
+  globals.DOWNLOAD_DIV = downloaddiv;
   console.log("main.js loaded");
   console.log("plotly_figure", plotly_figure);
   let graphs = plotly_figure;
@@ -72,6 +81,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
 
   // Sets the config with the custom buttons
   CONFIG = {
+    plotGlPixelRatio: 1,
     scrollZoom: true,
     responsive: true,
     displaylogo: false,
@@ -82,15 +92,15 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         {
           name: "Download CSV (Ctrl+Shift+S)",
           icon: ICONS.downloadCsv,
-          click: function (gd) {
-            downloadCsvButton(gd);
+          click: async function (gd) {
+            await downloadCsvButton(gd);
           },
         },
         {
-          name: "Download PNG (Ctrl+S)",
+          name: "Download Chart as Image (Ctrl+S)",
           icon: ICONS.downloadImage,
-          click: function () {
-            downloadImageButton();
+          click: async function () {
+            await downloadImageButton();
           },
         },
         // {
@@ -147,6 +157,13 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           icon: ICONS.changeTitle,
           click: function () {
             openPopup("popup_title");
+          },
+        },
+        {
+          name: "Change Theme",
+          icon: ICONS.sunIcon,
+          click: function () {
+            changeTheme();
           },
         },
       ],
@@ -255,18 +272,44 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
 
   // We set the plot config and plot the chart
   Plotly.setPlotConfig(CONFIG);
-  Plotly.newPlot(globals.CHART_DIV, graphs, { responsive: true });
+  Plotly.react(globals.CHART_DIV, graphs, { responsive: true });
+
+  let AXES = Object.keys(graphs.layout).filter(
+    (x) => x.startsWith("xaxis") || x.startsWith("yaxis")
+  );
+
+  // We set all the axes automargin to false
+  if (AXES.length > 0) {
+    AXES.forEach((axis) => {
+      let margin = axis.startsWith("y") ? "l+r" : "t+b";
+      graphs.layout[axis].automargin = margin;
+    });
+    Plotly.react(globals.CHART_DIV, graphs, { responsive: true });
+  }
 
   // Create global variables to for use later
   const modebar = document.getElementsByClassName("modebar-container")[0];
   const modebar_buttons = modebar.getElementsByClassName("modebar-btn");
   globals.barButtons = {};
 
+  const captureButtons = [
+    "Download CSV",
+    "Download Chart as Image",
+    "Overlay chart from CSV",
+    "Add Text",
+    "Change Titles",
+    "Auto Scale (Ctrl+Shift+A)",
+    "Reset Axes",
+  ];
+
   for (let i = 0; i < modebar_buttons.length; i++) {
     // We add the buttons to the global variable for later use
     // and set the border to transparent so we can change the
     // color of the buttons when they are pressed
     let button = modebar_buttons[i];
+    if (captureButtons.includes(button.getAttribute("data-title"))) {
+      button.classList.add("ph-capture");
+    }
     button.style.border = "transparent";
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
@@ -334,11 +377,11 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       active = false;
       globals.CHART_DIV.on(
         "plotly_relayout",
-        non_blocking(function (eventdata) {
+        non_blocking(async function (eventdata) {
           if (eventdata["xaxis.range[0]"] == undefined) {
             return;
           }
-          autoScaling(eventdata, globals.CHART_DIV);
+          await autoScaling(eventdata, globals.CHART_DIV);
         }, 100)
       );
     } else {
@@ -349,11 +392,44 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     button_pressed(title, active);
   }
 
-  function downloadImageButton() {
-    loadingOverlay("Saving PNG");
+  async function downloadImageButton() {
+    let filename = globals.filename;
+    let ext = "png";
+    let writable;
+    if (window.showSaveFilePicker) {
+      const handle = await showSaveFilePicker({
+        suggestedName: `${filename}.${ext}`,
+        types: [
+          {
+            description: "PNG Image",
+            accept: {
+              "image/png": [".png"],
+            },
+          },
+          {
+            description: "JPEG Image",
+            accept: {
+              "image/jpeg": [".jpeg"],
+            },
+          },
+          {
+            description: "SVG Image",
+            accept: {
+              "image/svg+xml": [".svg"],
+            },
+          },
+        ],
+        excludeAcceptAllOption: true,
+      });
+      writable = await handle.createWritable();
+      filename = handle.name;
+      ext = handle.name.split(".").pop();
+    }
+
+    loadingOverlay(`Saving ${ext.toUpperCase()}`);
     hideModebar();
-    non_blocking(function () {
-      downloadImage(globals.filename, "png");
+    non_blocking(async function () {
+      await downloadImage(filename, ext, writable);
       setTimeout(function () {
         setTimeout(function () {
           loading.classList.remove("show");
@@ -363,10 +439,30 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     }, 2)();
   }
 
-  function downloadCsvButton(gd) {
+  async function downloadCsvButton(gd) {
+    let filename = globals.filename;
+    let writable;
+
+    if (window.showSaveFilePicker) {
+      const handle = await showSaveFilePicker({
+        suggestedName: `${filename}.csv`,
+        types: [
+          {
+            description: "CSV File",
+            accept: {
+              "image/csv": [".csv"],
+            },
+          },
+        ],
+        excludeAcceptAllOption: true,
+      });
+      writable = await handle.createWritable();
+      filename = handle.name;
+    }
+
     loadingOverlay("Saving CSV");
-    setTimeout(function () {
-      downloadData(gd);
+    setTimeout(async function () {
+      await downloadData(gd, filename, writable);
     }, 500);
     setTimeout(function () {
       loading.classList.remove("show");
@@ -506,5 +602,45 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         downloadImage(filename.split(".")[0], extension);
       }, 2)();
     }
+  }
+  function changeTheme() {
+    globals.dark_mode = !globals.dark_mode;
+    document.body.style.backgroundColor = globals.dark_mode ? "#000" : "#fff";
+    globals.CHART_DIV.layout.font.color = globals.dark_mode ? "#fff" : "#000";
+
+    const changeIcon = globals.dark_mode ? ICONS.sunIcon : ICONS.moonIcon;
+
+    globals.barButtons["Change Theme"]
+      .getElementsByTagName("path")[0]
+      .setAttribute("d", changeIcon.path);
+
+    globals.barButtons["Change Theme"]
+      .getElementsByTagName("svg")[0]
+      .setAttribute("viewBox", changeIcon.viewBox);
+
+    const volumeColors = {
+      "#e4003a": "#c80000",
+      "#00ACFF": "#009600",
+      "#009600": "#00ACFF",
+      "#c80000": "#e4003a",
+    };
+
+    TRACES.forEach((trace) => {
+      if (trace.type == "bar") {
+        trace.marker.color.forEach((color, i) => {
+          trace.marker.color[i] = volumeColors[color] || color;
+        });
+      }
+    });
+
+    Plotly.update(
+      globals.CHART_DIV,
+      {},
+      {
+        template: globals.dark_mode
+          ? DARK_CHARTS_TEMPLATE
+          : LIGHT_CHARTS_TEMPLATE,
+      }
+    );
   }
 }

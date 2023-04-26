@@ -139,7 +139,6 @@ CURRENCIES = [
 ]
 
 
-@log_start_end(log=logger)
 def string_float(string: str) -> float:
     """Convert a string to a float
 
@@ -190,7 +189,6 @@ def insert_row(
     return df
 
 
-@log_start_end(log=logger)
 def set_cell(
     ws: worksheet,
     cell: str,
@@ -566,7 +564,6 @@ def get_value(df: pd.DataFrame, row: str, column: int) -> Tuple[float, float]:
     return fin_val1, fin_val2
 
 
-@log_start_end(log=logger)
 def frac(num: float, denom: float) -> Union[str, float]:
     """
     Converts a numerator and a denominator in a fraction, checking for invalid denominators

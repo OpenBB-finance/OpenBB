@@ -31,8 +31,9 @@ from openbb_terminal.stocks.fundamental_analysis import (
     finnhub_view,
     finviz_view,
     fmp_view,
-    marketwatch_model,
     marketwatch_view,
+    nasdaq_model,
+    nasdaq_view,
     polygon_view,
     seeking_alpha_view,
     yahoo_finance_view,
@@ -1637,15 +1638,23 @@ class FundamentalAnalysisController(StockBaseController):
                 return
 
             if self.ticker:
-                dcf = dcf_view.CreateExcelFA(
-                    symbol=self.ticker,
-                    beta=ns_parser.beta,
-                    audit=ns_parser.audit,
-                    ratios=ns_parser.ratios,
-                    len_pred=ns_parser.prediction,
-                    max_similars=ns_parser.similar,
-                    growth=ns_parser.growth,
-                )
+                try:
+                    dcf = dcf_view.CreateExcelFA(
+                        symbol=self.ticker,
+                        beta=ns_parser.beta,
+                        audit=ns_parser.audit,
+                        ratios=ns_parser.ratios,
+                        len_pred=ns_parser.prediction,
+                        max_similars=ns_parser.similar,
+                        growth=ns_parser.growth,
+                    )
+                except Exception as e:
+                    logger.exception(e)
+                    console.print(
+                        "[red]Could not properly create the DCF, please make sure you are"
+                        " using a valid, US listed ticker.[/red]"
+                    )
+                    return
                 if dcf and dcf.data:
                     dcf.create_workbook()
             else:
@@ -2035,7 +2044,7 @@ class FundamentalAnalysisController(StockBaseController):
             dest="form",
             type=str,
             help="form group of SEC filings.",
-            choices=marketwatch_model.FORM_GROUP.keys(),
+            choices=nasdaq_model.FORM_GROUP.keys(),
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -2052,7 +2061,7 @@ class FundamentalAnalysisController(StockBaseController):
                 console.print(no_ticker_message)
                 return
 
-            marketwatch_view.sec_filings(
+            nasdaq_view.sec_filings(
                 symbol=ns_parser.ticker,
                 limit=ns_parser.limit,
                 export=ns_parser.export,

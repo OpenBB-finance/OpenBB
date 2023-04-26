@@ -21,7 +21,6 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
-from rich import panel
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.account.account_controller import (
@@ -47,7 +46,6 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_and_split_input,
-    update_news_from_tweet_to_be_displayed,
 )
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
@@ -502,16 +500,17 @@ class TerminalController(BaseController):
 
     def call_intro(self, _):
         """Process intro command."""
-        import json
+        webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
+        # import json
 
-        intro: dict = json.load((Path(__file__).parent / "intro.json").open())
+        # intro: dict = json.load((Path(__file__).parent / "intro.json").open())  # type: ignore
 
-        for prompt in intro.get("prompts", []):
-            console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
-            console.print("".join(prompt["content"]))
-            if input("") == "q":
-                break
-            console.print("\n")
+        # for prompt in intro.get("prompts", []):
+        #     console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
+        #     console.print("".join(prompt["content"]))
+        #     if input("") == "q":
+        #         break
+        #     console.print("\n")
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""
@@ -706,11 +705,11 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
         if first_time_user():
             try:
-                t_controller.call_intro(None)
+                # t_controller.call_intro(None)
+                webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
                 # TDDO: Fix the CI
             except EOFError:
                 pass
-
         t_controller.print_help()
         check_for_updates()
 
@@ -739,54 +738,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
             try:
                 # Get input from user using auto-completion
                 if session and current_user.preferences.USE_PROMPT_TOOLKIT:
-                    # Check if tweet news is enabled
-                    if current_user.preferences.TOOLBAR_TWEET_NEWS:
-                        news_tweet = update_news_from_tweet_to_be_displayed()
-
-                        # Check if there is a valid tweet news to be displayed
-                        if news_tweet:
-                            an_input = session.prompt(
-                                f"{get_flair()} / $ ",
-                                completer=t_controller.completer,
-                                search_ignore_case=True,
-                                bottom_toolbar=HTML(news_tweet),
-                                style=Style.from_dict(
-                                    {
-                                        "bottom-toolbar": "#ffffff bg:#333333",
-                                    }
-                                ),
-                            )
-
-                        else:
-                            # Check if toolbar hint was enabled
-                            if current_user.preferences.TOOLBAR_HINT:
-                                an_input = session.prompt(
-                                    f"{get_flair()} / $ ",
-                                    completer=t_controller.completer,
-                                    search_ignore_case=True,
-                                    bottom_toolbar=HTML(
-                                        '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
-                                        '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu'
-                                        '    <style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
-                                        '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
-                                        "see usage and available options    "
-                                        '<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
-                                    ),
-                                    style=Style.from_dict(
-                                        {
-                                            "bottom-toolbar": "#ffffff bg:#333333",
-                                        }
-                                    ),
-                                )
-                            else:
-                                an_input = session.prompt(
-                                    f"{get_flair()} / $ ",
-                                    completer=t_controller.completer,
-                                    search_ignore_case=True,
-                                )
-
                     # Check if toolbar hint was enabled
-                    elif current_user.preferences.TOOLBAR_HINT:
+                    if current_user.preferences.TOOLBAR_HINT:
                         an_input = session.prompt(
                             f"{get_flair()} / $ ",
                             completer=t_controller.completer,
