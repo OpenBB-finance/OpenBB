@@ -1,9 +1,13 @@
 ---
 title: Customization
 sidebar_position: 4
-description: TBD
-keywords: [discord, telegram, how to, explanation, openbb bot, openbb, guide, bot guide]
+description: Learn to customize your OpenBB Bot experience
+keywords: [discord, telegram, slack, how to, explanation, openbb bot, openbb, guide, bot guide, customize, individual, server]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Customization - Bot | OpenBB Docs" />
 
 ## Customizing your Bot Experience
 

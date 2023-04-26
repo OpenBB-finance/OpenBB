@@ -32,7 +32,10 @@ from openbb_terminal.core.log.generation.settings import (
     Settings,
 )
 from openbb_terminal.core.log.generation.user_logger import get_user_uuid
-from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.session.current_system import (
+    get_current_system,
+    set_current_system,
+)
 
 logger = logging.getLogger(__name__)
 current_system = get_current_system()
@@ -164,6 +167,9 @@ def setup_logging(
     identifier = get_app_id()
     session_id = get_session_id()
     user_id = get_user_uuid()
+
+    current_system.LOGGING_APP_ID = identifier
+    set_current_system(current_system)
 
     # AWSSettings
     aws_access_key_id = current_system.LOGGING_AWS_ACCESS_KEY_ID

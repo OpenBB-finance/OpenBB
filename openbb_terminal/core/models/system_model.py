@@ -24,11 +24,13 @@ class SystemModel(BaseModel):
     # System section
     OS: str = str(platform.system())
     PYTHON_VERSION: str = str(platform.python_version())
+    PLATFORM: str = str(platform.platform())
 
     # OpenBB section
-    VERSION = "3.0.0rc2"
+    VERSION = "3.0.0"
 
     # Logging section
+    LOGGING_APP_ID: str = "REPLACE_ME"
     LOGGING_APP_NAME: str = "gst"
     LOGGING_AWS_ACCESS_KEY_ID: str = "REPLACE_ME"
     LOGGING_AWS_SECRET_ACCESS_KEY: str = "REPLACE_ME"
@@ -50,6 +52,7 @@ class SystemModel(BaseModel):
     TEST_MODE: bool = False
     DEBUG_MODE: bool = False
     ENABLE_AUTHENTICATION: bool = True
+    HEADLESS: bool = False
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()

@@ -1,8 +1,13 @@
 ---
 title: Stocks Screener
-keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics]
+keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics, amex, nasdaq, nyse, default, description, how to, example]
 description: This guide introduces the Stock Screener, within the context of the OpenBB SDK.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stocks Screener - SDK | OpenBB Docs" />
+
 The Stocks Screener module imports the same screener found in the OpenBB Terminal. The screener utilizes presets (.ini files) to scan for stocks meeting the defined criteria. User-generated files are kept in the `stocks/screener` folder within the [OpenBBUserData](https://docs.openbb.co/sdk/usage/guides/data) folder.
 
 This screener can find stocks on three exchanges:
@@ -78,8 +83,8 @@ All of the included presets can be viewed online [here](https://github.com/OpenB
 Without any parameters, a screener preset file must contain the following at a minimum:
 
 ```console
-# Author of preset: 
-# Description: 
+# Author of preset:
+# Description:
 
 [General]
 
@@ -149,7 +154,7 @@ It is a good idea to test choices made before making it too complicated. Start w
 ### Performance
 
 ```python
-openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_type = 'performance')
+openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset', data_type = 'performance')
 ```
 
 |    | Ticker | Perf Week | Perf Month | Perf Quart | Perf Half | Perf Year | Perf YTD | Volatility W | Volatility M | Recom | Avg Volume | Rel Volume |  Price |  Change |      Volume |
@@ -177,7 +182,7 @@ Beta = Under 0.5
 Running the exact same command as before trims down the list to only eleven.
 
 ```python
-openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_type = 'performance')
+openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset', data_type = 'performance')
 ```
 
 |    | Ticker | Perf Week | Perf Month | Perf Quart | Perf Half | Perf Year | Perf YTD | Volatility W | Volatility M | Recom | Avg Volume | Rel Volume |  Price |  Change |      Volume |
@@ -200,7 +205,7 @@ openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_
 We know know that these eleven companies have a beta relative to the S&P of under 0.5, and that they all have a price-to-free-cashflow ratio under 15. The `signal` argument has also been set as `Major News`, so we know at least this much about the companies and their relative performance over the last year. Setting the `data_type` to 'overview', will fetch the data which helps us understand who these companies are.
 
 ```python
-openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_type = 'overview')
+openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset', data_type = 'overview')
 ```
 
 |    | Ticker | Company                               | Sector                 | Industry                       | Country | Market Cap |    P/E |  Price |  Change |      Volume |
@@ -223,7 +228,7 @@ openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_
 When `data_type = 'ownership'`, data presented are statistics for the general float, insider, institutional, and the short ratio.
 
 ```python
-openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_type = 'ownership')
+openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset', data_type = 'ownership')
 ```
 
 |    | Ticker | Market Cap | Outstanding |      Float | Insider Own | Insider Trans | Inst Own | Inst Trans | Float Short | Short Ratio | Avg Volume |  Price |  Change |      Volume |
@@ -246,7 +251,7 @@ openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_
 With `data_type` set to `technical`, aspects of technical analysis is returned.
 
 ```python
-openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset.ini', data_type = 'technical')
+openbb.stocks.screener.screener_data(preset_loaded='sdk_guide_preset', data_type = 'technical')
 ```
 
 |    | Ticker |  Beta |  ATR |   SMA20 |   SMA50 |  SMA200 | 52W High | 52W Low |   RSI |  Price |  Change | from Open |     Gap |      Volume |
@@ -304,11 +309,11 @@ Copy and past the block above into any text editor; then save the file, as `sp50
 from openbb_terminal.sdk import openbb
 import pandas as pd
 
-sp500_overview = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter.ini', data_type = 'overview')
-sp500_ownership = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter.ini', data_type = 'ownership')
-sp500_performance = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter.ini', data_type = 'performance')
-sp500_technical = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter.ini', data_type = 'technical')
-sp500_valuation = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter.ini', data_type = 'valuation')
+sp500_overview = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter', data_type = 'overview')
+sp500_ownership = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter', data_type = 'ownership')
+sp500_performance = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter', data_type = 'performance')
+sp500_technical = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter', data_type = 'technical')
+sp500_valuation = openbb.stocks.screener.screener_data(preset_loaded='sp500_filter', data_type = 'valuation')
 
 sp500_overview = sp500_overview.convert_dtypes()
 sp500_ownership = sp500_ownership.convert_dtypes()

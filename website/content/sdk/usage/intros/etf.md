@@ -1,8 +1,12 @@
 ---
 title: ETF
-keywords: [etfs, exchange traded funds, fund, basket, retail, stocks, openbb terminal]
-description: The ETF menu enables you to lookup any ETF and obtain an overview about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to compare companies within the ETF, discover gainers and losers within discovery and apply advanced technical indicators. Lastly, it also has the option to export multiple ETFs to Excel.
+keywords: [etfs, exchange traded funds, fund, basket, retail, stocks, openbb terminal, sdk, how to, usage, examples, path, type, description, category, tickers, performance, metrics, holdings, screener, disc, ]
+description: Learn how to lookup any ETF and obtain an overview about the chosen ETF in the OpenBB Terminal.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ETF - SDK | OpenBB Docs" />
 
 The ETF module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.etf`
 ​

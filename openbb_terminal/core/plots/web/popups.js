@@ -24,8 +24,8 @@ function get_popup(data = null, popup_id = null) {
         </div>
 
         <div style="float: right; margin-top: 20px;">
-        <button class="_btn-tertiary" id="title_cancel" onclick="closePopup()">Cancel</button>
-        <button class="_btn" id="title_submit" onclick="on_submit('title')">Submit</button>
+        <button class="_btn-tertiary ph-capture" id="title_cancel" onclick="closePopup()">Cancel</button>
+        <button class="_btn ph-capture" id="title_submit" onclick="on_submit('title')">Submit</button>
         </div>
         `;
 
@@ -135,9 +135,9 @@ function get_popup(data = null, popup_id = null) {
     if (has_annotation) {
       globals.TEXT_DIV.innerHTML += `
       <div style="float: right; margin-top: 20px;">
-            <button class="_btn-tertiary" id="addtext_cancel" onclick="closePopup()">Cancel</button>
-            <button class="_btn" id="addtext_delete" onclick="on_delete('text')">Delete</button>
-            <button class="_btn" id="addtext_submit" onclick="on_submit('text', true)">Submit</button>
+            <button class="_btn-tertiary ph-capture" id="addtext_cancel" onclick="closePopup()">Cancel</button>
+            <button class="_btn ph-capture" id="addtext_delete" onclick="on_delete('text')">Delete</button>
+            <button class="_btn ph-capture" id="addtext_submit" onclick="on_submit('text', true)">Submit</button>
             <input id="addtext_annotation" type="hidden" value='${JSON.stringify(
               data
             )}'></input>
@@ -146,8 +146,8 @@ function get_popup(data = null, popup_id = null) {
     } else {
       globals.TEXT_DIV.innerHTML += `
       <div style="float: right; margin-top: 20px;">
-            <button class="_btn-tertiary" id="addtext_cancel" onclick="closePopup()">Cancel</button>
-            <button class="_btn" id="addtext_submit" onclick="on_submit('text')">Submit</button>
+            <button class="_btn-tertiary ph-capture" id="addtext_cancel" onclick="closePopup()">Cancel</button>
+            <button class="_btn ph-capture" id="addtext_submit" onclick="on_submit('text')">Submit</button>
     </div>
             `;
 
@@ -183,9 +183,35 @@ function get_popup(data = null, popup_id = null) {
       `;
     popup = globals.TEXT_DIV;
     console.log("upload");
+  } else if (popup_id == "download") {
+    popup = globals.DOWNLOAD_DIV;
+
+    popup.querySelector("#download_path").innerHTML = `
+    <textarea style="${style} width: 100%; max-width: 100%; max-height: 200px;
+    margin-top: 8px;" rows="4" cols="50" value="${data}"
+      placeholder="Enter text here">${data}</textarea><br>
+      `;
+
+    openfile_button = popup.querySelector("#openfile_button");
+    openfile_button.onclick = function () {
+      window.ipc.postMessage(`#OPEN:${data}`);
+    };
+
+    openfolder_button = popup.querySelector("#openfolder_button");
+    openfolder_button.onclick = function () {
+      folder_path = data.split("\\").slice(0, -1).join("\\");
+      window.ipc.postMessage(`#OPEN:${folder_path}`);
+    };
+
+    globals.DOWNLOAD_DIV.style.display = "inline-block";
   }
 
-  let popup_divs = [globals.TITLE_DIV, globals.TEXT_DIV, globals.CSV_DIV];
+  let popup_divs = [
+    globals.TITLE_DIV,
+    globals.TEXT_DIV,
+    globals.CSV_DIV,
+    globals.DOWNLOAD_DIV,
+  ];
   popup_divs.forEach(function (div) {
     if (div.id != popup.id) {
       div.style.display = "none";
@@ -299,7 +325,7 @@ function get_popup_data(popup_id = null) {
   return data;
 }
 
-const trace_defaults = {
+const layout_defaults = {
   overlaying: "y",
   side: "left",
   tickfont: { size: 12 },
@@ -390,15 +416,13 @@ function on_submit(popup_id, on_annotation = null) {
     }
   } else if (popup_id == "title") {
     document.getElementById("title").innerHTML = popup_data.title;
+    globals.title = popup_data.title;
 
     let to_update = {};
 
     Object.keys(popup_data).forEach(function (key) {
       if (key != "title") {
         to_update[key + ".title"] = popup_data[key];
-      }
-      if (key.includes("yaxis")) {
-        to_update[key + ".type"] = "linear";
       }
     });
 
@@ -421,6 +445,7 @@ function on_submit(popup_id, on_annotation = null) {
         let data = [];
         let headers = lines[0].split(",");
         let trace = {};
+        let new_yaxis = false;
 
         for (let i = 1; i < lines.length; i++) {
           let obj = {};
@@ -433,11 +458,6 @@ function on_submit(popup_id, on_annotation = null) {
 
         // We get main plotly trace to get the x/y axis
         let main_trace = gd.data[0];
-        gd.data.forEach((trace) => {
-          if (globals.added_traces.indexOf(trace.name) == -1) {
-            trace.showlegend = false;
-          }
-        });
 
         // We check how many yaxis have ticklabels on the left
         let left_yaxis_ticks = Object.keys(gd.layout)
@@ -538,8 +558,14 @@ function on_submit(popup_id, on_annotation = null) {
             }),
             type: popup_data.trace_type,
             name: popup_data.name,
-            increasing: { line: { color: popup_data.increasing } },
-            decreasing: { line: { color: popup_data.decreasing } },
+            increasing: {
+              line: { color: popup_data.increasing },
+              fillcolor: popup_data.increasing,
+            },
+            decreasing: {
+              line: { color: popup_data.decreasing },
+              fillcolor: popup_data.decreasing,
+            },
             showlegend: true,
             yaxis: yaxis,
           };
@@ -590,7 +616,7 @@ function on_submit(popup_id, on_annotation = null) {
             popup_data.same_yaxis == false
           ) {
             gd.layout[yaxis_id] = {
-              ...trace_defaults,
+              ...layout_defaults,
               title: {
                 text: "% Change",
                 font: {
@@ -601,6 +627,7 @@ function on_submit(popup_id, on_annotation = null) {
               ticksuffix: ticksuffix,
               tickformat: ".0%",
             };
+            new_yaxis = true;
             globals.percent_yaxis_added = true;
             if (globals.cmd_src_idx != null) {
               let xshift = gd.layout.annotations[globals.cmd_src_idx].xshift;
@@ -610,15 +637,15 @@ function on_submit(popup_id, on_annotation = null) {
               xshift += xshift < -320 ? 10 + 2 * left_yaxis_ticks : 0;
 
               gd.layout.annotations[globals.cmd_src_idx].xshift = xshift;
-              gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 + add_xshift : 45;
             }
+            gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 + add_xshift : 45;
           }
         }
 
         // New yaxis and not percent change
         if (!popup_data.percent_change && popup_data.same_yaxis == false) {
           gd.layout[yaxis_id] = {
-            ...trace_defaults,
+            ...layout_defaults,
             title: {
               text: popup_data.name,
               font: {
@@ -629,6 +656,7 @@ function on_submit(popup_id, on_annotation = null) {
             ticksuffix: ticksuffix,
             layer: "below traces",
           };
+          new_yaxis = true;
           if (globals.cmd_src_idx != null) {
             let xshift = gd.layout.annotations[globals.cmd_src_idx].xshift;
             xshift -= left_yaxis_ticks > 0 ? 40 + add_xshift : 40;
@@ -637,19 +665,20 @@ function on_submit(popup_id, on_annotation = null) {
             xshift += xshift < -320 ? 10 + 2 * left_yaxis_ticks : 0;
 
             gd.layout.annotations[globals.cmd_src_idx].xshift = xshift;
-            gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 : 45;
           }
+          gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 : 45;
         }
         console.log("trace: ", trace);
 
         globals.added_traces.push(trace.name);
 
         Plotly.addTraces(gd, trace);
-
-        if (globals.csv_yaxis_id != null) {
-          gd.layout[globals.csv_yaxis_id].type = "linear";
-        }
         Plotly.react(gd, gd.data, gd.layout);
+
+        if (new_yaxis) {
+          gd.layout[yaxis_id].automargin = false;
+          Plotly.react(gd, gd.data, gd.layout);
+        }
 
         // We empty the fields and innerHTML after the plot is made
         globals.CSV_DIV.querySelector("#csv_colors").innerHTML = "";

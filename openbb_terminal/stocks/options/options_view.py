@@ -70,6 +70,7 @@ def print_raw(
             show_index=False,
             title=table_title,
             export=bool(export),
+            floatfmt=".6f",
         )
 
     for opt_type, only in zip(["call", "put"], [puts_only, calls_only]):
@@ -81,6 +82,7 @@ def print_raw(
                 show_index=False,
                 title=f"{title} - {opt_type.title()}s",
                 export=bool(export),
+                floatfmt=".4f",
             )
 
     return None
@@ -177,7 +179,7 @@ def plot_vol(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -280,7 +282,7 @@ def plot_oi(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -414,7 +416,7 @@ def plot_voi(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)

@@ -1,12 +1,16 @@
 ---
 sidebar_position: 2
 title: Changing Sources
-description: Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. Many have a default source but you can change the default sources of each command via two methods.
-keywords: [source, sources, default source, datasources, api keys, api, keys, openbb terminal]
+description: How to change which data sources are the default source for commands run in the OpenBB Terminal.
+keywords: [source, sources, default source, datasources, api keys, api, keys, openbb sdk, yfinance, yahoo finance, alphavantage polygon, EODHD, change the source]
 
 ---
 
-Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. Many have a default source but you can change the default sources of each command via two methods.
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Changing Sources - Terminal | OpenBB Docs" />
+
+Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. Many have a default source, but you can change the default sources of each command via two methods.
 
 ## Changing the Source
 
