@@ -64,7 +64,6 @@ class MockCFG:
         self.API_BINANCE_KEY = kwargs.get("BINANCE", None)
         self.API_BINANCE_SECRET = kwargs.get("BINANCE", None)
         self.API_BITQUERY_KEY = kwargs.get("BITQUERY", None)
-        self.API_SENTIMENTINVESTOR_TOKEN = kwargs.get("SI", None)
         self.API_COINBASE_KEY = kwargs.get("COINBASE", None)
         self.API_COINBASE_SECRET = kwargs.get("COINBASE", None)
         self.API_COINBASE_PASS_PHRASE = kwargs.get("COINBASE", None)
