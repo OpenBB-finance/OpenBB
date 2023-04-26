@@ -49,6 +49,7 @@ st.markdown(middle_html, unsafe_allow_html=True)
 
 MAIN_LOOP: asyncio.AbstractEventLoop = None  # type: ignore
 
+st_helpers.set_current_page("Short Data")
 st_helpers.set_css()
 
 
