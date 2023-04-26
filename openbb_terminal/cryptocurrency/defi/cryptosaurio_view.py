@@ -41,9 +41,10 @@ def display_anchor_data(
 
     df, df_deposits, stats_str = cryptosaurio_model.get_anchor_data(address=address)
 
-    console.print(f"\n{stats_str}\n")
+    if stats_str:
+        console.print(f"\n{stats_str}\n")
 
-    if show_transactions:
+    if not df_deposits.empty and show_transactions:
         print_rich_table(
             df_deposits,
             headers=list(df_deposits.columns),
@@ -52,18 +53,20 @@ def display_anchor_data(
             export=bool(export),
         )
 
-    fig = OpenBBFigure(yaxis_title="Earnings Value [UST]")
-    fig.set_title("Earnings in Anchor Earn")
+    if not df.empty:
+        fig = OpenBBFigure(yaxis_title="Earnings Value [UST]")
+        fig.set_title("Earnings in Anchor Earn")
 
-    fig.add_scatter(x=df["time"], y=df["yield"], name="Earnings")
+        fig.add_scatter(x=df["time"], y=df["yield"], name="Earnings")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "anchor",
-        df,
-        sheet_name,
-        fig,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "anchor",
+            df,
+            sheet_name,
+            fig,
+        )
 
-    return fig.show(external=external_axes)
+        return fig.show(external=external_axes)
+    return None
