@@ -11,7 +11,7 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
 from openbb_terminal.cryptocurrency.discovery import dappradar_model
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
@@ -190,6 +190,66 @@ def display_top_dapps(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "drdapps",
+        df,
+        sheet_name,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key("API_DAPPRADAR_KEY")
+def display_nft_marketplaces(
+    limit: int = 10,
+    sortby: str = "",
+    order: str = "",
+    name: str = "",
+    export: str = "",
+    sheet_name: Optional[str] = None,
+) -> None:
+    """Prints table showing nft marketplaces [Source: https://dappradar.com/]
+
+    Parameters
+    ----------
+    name: str
+        Name of the chain
+    order: str
+        Order of sorting (asc/desc)
+    limit: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = dappradar_model.get_nft_marketplaces(
+        name=name,
+        sortby=sortby,
+        order=order,
+        limit=limit,
+    )
+    if df.empty:
+        console.print("[red]Failed to fetch data from DappRadar[/red]")
+        return
+    for col in ["Avg Price [$]", "Volume [$]"]:
+        if col in df.columns:
+            df[col] = (
+                df[col]
+                .fillna(-1)
+                .apply(lambda x: lambda_very_long_number_formatter(x))
+                .replace(-1, np.nan)
+            )
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="NFT marketplaces",
+        export=bool(export),
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "drnft",
         df,
         sheet_name,
     )

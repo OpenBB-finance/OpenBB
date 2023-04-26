@@ -7,7 +7,8 @@ from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
@@ -54,11 +55,13 @@ def _make_request(url: str, verbose: bool = False) -> Optional[dict]:
     Optional[dict]:
         dictionary with response data
     """
+    current_user = get_current_user()
 
     headers = {
         "Accept": "application/json",
         "User-Agent": get_user_agent(),
-        "referer": "https://dappradar.com/",
+        "referer": "https://api.dappradar.com/4tsxo4vuhotaojtl/",
+        "X-BLOBR-KEY": current_user.credentials.API_DAPPRADAR_KEY,
     }
     response = request(url, headers=headers)
     if not 200 <= response.status_code < 300:
@@ -264,4 +267,75 @@ def get_top_dapps(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         if sortby in DAPPS_COLUMNS:
             df = df.sort_values(by=sortby, ascending=False)
         return df.head(limit)
+    return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+@check_api_key("API_DAPPRADAR_KEY")
+def get_nft_marketplaces(
+    chain: str = "", sortby: str = "", order: str = "", limit: int = 10
+) -> pd.DataFrame:
+    """Get top nft collections [Source: https://dappradar.com/]
+
+    Parameters
+    ----------
+    chain: str
+        Blockchain name
+    sortby: str
+        Key by which to sort data
+    order: str
+        Order of sorting
+    limit: int
+        Number of records to display
+
+    Returns
+    -------
+    pd.DataFrame
+        Columns: Name, Dapp ID, Logo, Chains, Avg Price [$], Avg Price Change [%],
+        Volume [$], Volume Change [%], Traders, Traders Change [%]
+    """
+
+    args = {
+        "chain": chain,
+        "order": order,
+        "sort": sortby,
+        "resultsPerPage": limit,
+    }
+    args = {k: v for k, v in args.items() if v}
+    query_string = "&".join([f"{k}={v}" for k, v in args.items()])
+
+    response = _make_request(
+        f"https://api.dappradar.com/4tsxo4vuhotaojtl/nfts/marketplaces?{query_string}"
+    )
+    if response:
+        data = response.get("results")
+
+        return pd.DataFrame(
+            data,
+            columns=[
+                "name",
+                "dappId",
+                "logo",
+                "chains",
+                "avgPrice",
+                "avgPricePercentageChange",
+                "volume",
+                "volumePercentageChange",
+                "traders",
+                "tradersPercentageChange",
+            ],
+        ).rename(
+            columns={
+                "name": "Name",
+                "dappId": "Dapp ID",
+                "logo": "Logo",
+                "chains": "Chains",
+                "avgPrice": "Avg Price [$]",
+                "avgPricePercentageChange": "Avg Price Change [%]",
+                "volume": "Volume [$]",
+                "volumePercentageChange": "Volume Change [%]",
+                "traders": "Traders",
+                "tradersPercentageChange": "Traders Change [%]",
+            }
+        )
     return pd.DataFrame()

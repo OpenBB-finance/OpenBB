@@ -19,10 +19,7 @@ from openbb_terminal.cryptocurrency.discovery import (
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
-)
+from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
@@ -41,6 +38,7 @@ class DiscoveryController(BaseController):
         "gainers",
         "losers",
         "nft",
+        "nft_mktp",
         "games",
         "dapps",
         "dex",
@@ -85,6 +83,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("losers")
         mt.add_cmd("search")
         mt.add_cmd("nft")
+        mt.add_cmd("nft_mktp")
         mt.add_cmd("games")
         mt.add_cmd("dapps")
         mt.add_cmd("dex")
@@ -609,4 +608,62 @@ class DiscoveryController(BaseController):
                 else None,
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,
+            )
+
+    @log_start_end(log=logger)
+    def call_nft_mktp(self, other_args):
+        """Process nft_mktp command"""
+        parser = argparse.ArgumentParser(
+            prog="nft_mktp",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows NFT marketplaces [Source: https://dappradar.com/]
+            Accepts --sort {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap,Volume [$]}
+            to sort by column
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            dest="name",
+            help="Name of the blockchain to filter by.",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column.",
+            choices=stocks_helper.format_parse_choices(dappradar_model.NFT_COLUMNS),
+            metavar="SORTBY",
+        )
+        parser.add_argument(
+            "-o",
+            "--order",
+            dest="order",
+            help="Order of sorting. Default: desc",
+            default="desc",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of records to display",
+            default=10,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            dappradar_view.display_nft_marketplaces(
+                sortby=ns_parser.sortby,
+                order=ns_parser.order,
+                name=ns_parser.name,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
