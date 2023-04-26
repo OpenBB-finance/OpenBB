@@ -191,4 +191,3 @@ def get_curve_futures(
         return pd.DataFrame()
 
     return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Last Price"])
-    

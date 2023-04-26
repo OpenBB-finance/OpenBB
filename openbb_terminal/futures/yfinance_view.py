@@ -227,7 +227,7 @@ def display_curve(
 
     fig.add_scatter(
         x=df.index,
-        y=df.iloc[:,0],
+        y=df.iloc[:, 0],
         mode="lines+markers",
         name=name,
         line=dict(dash="dash", width=4),
