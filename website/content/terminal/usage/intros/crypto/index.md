@@ -1,8 +1,12 @@
 ---
 title: Cryptocurrency
-keywords: [crypto, web3, nft, blockchain, cryptocurrency]
-description: The Introduction to Cryptocurrency explains how to use the Cryptocurrency and provides a brief description of its sub-menus
+keywords: [crypto, web3, nft, blockchain, cryptocurrency, how to, example, sub-menu, menu]
+description: The Introduction to Cryptocurrency explains how to use the Cryptocurrency menu and provides a brief description of its sub-menus such as due diligence, DeFi, discovery, NFTs, and Onchain.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Cryptocurrency - Terminal | OpenBB Docs" />
 
 The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/usage/intros/crypto/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/usage/intros/crypto/dd" target="_blank" rel="noreferrer noopener">dd</a>),
 NFT (<a href="/terminal/usage/intros/crypto/nft" target="_blank" rel="noreferrer noopener">nft</a>) or most lucrative Defi project

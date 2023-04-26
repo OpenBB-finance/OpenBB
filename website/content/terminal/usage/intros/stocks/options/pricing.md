@@ -1,6 +1,6 @@
 ---
 title: Options Pricing
-keywords: [Options, stocks, derivatives, puts, calls, oi, vol, greeks, hedge, gamme, delta, theta, rho, vanna, vomma, phi, charm, iv, volatility, implied, realized, price, last, bid, ask, expiry, expiration, chains, chain, put, call]
+keywords: [Options, stocks, derivatives, puts, calls, oi, vol, greeks, hedge, gamme, delta, theta, rho, vanna, vomma, phi, charm, iv, volatility, implied, realized, price, last, bid, ask, expiry, expiration, chains, chain, put, call, how to, example, pricing]
 description: This guide introduces the user to the Options Pricing submenu, within the Options menu.
 ---
 

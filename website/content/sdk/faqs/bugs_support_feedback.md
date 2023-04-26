@@ -16,9 +16,15 @@ keywords:
     macos,
     how to,
     explanation,
-    openbb terminal,
+    openbb sdk,
+    sdk
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Bugs, Support, and Feedback - SDK | OpenBB Docs" />
+
 ## Bugs, Support, and Feedback
 
 When an error is encountered, it is always a good idea to check the open issues on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues). There may be a workaround solution for the specific problem until a patch is released.
