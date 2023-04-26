@@ -25,13 +25,13 @@ STOCKS_CLEAN_DATA = {
 }
 
 
-def set_page() -> None:
-    """Sets the current page to the set page"""
+def update_current_page() -> None:
+    """Updates the current page to the set page"""
     st.session_state["set_page"] = st.session_state["current_page"]
 
 
 def set_current_page(page: str) -> None:
-    """Sets the current page at the start of the dashboard"""
+    """Sets the current page to the given page"""
     st.session_state["current_page"] = page
 
 
@@ -80,7 +80,7 @@ def load_state(name: str, default: Any) -> Any:
     elif st.session_state.get("current_page", None) != st.session_state.get(
         "set_page", None
     ):
-        set_page()
+        update_current_page()
         st.session_state[name] = default
 
     return st.session_state[name]
@@ -93,7 +93,7 @@ def load_widget_options(default: Any) -> Any:
     elif st.session_state.get("current_page", None) != st.session_state.get(
         "set_page", None
     ):
-        set_page()
+        update_current_page()
         st.session_state[name] = default
 
     return st.session_state[name]
