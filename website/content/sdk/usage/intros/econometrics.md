@@ -1,10 +1,14 @@
 ---
 title: Econometrics
-keywords: [econometrics, statistics, regression, panel data, time series, research, thesis, university]
-description: The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by (for example) adding columns or setting indices, apply statistical tests (Breusch-Godfrey autocorrelation tests) as well as OLS regressions and Panel regressions (Random Effects and Fixed Effects)
+keywords: [econometrics, statistics, regression, panel data, time series, research, thesis, university, how to, usage, examples, random effects, fixed effects, path, description, loading, dataset, ]
+description: Learn about functionality and using the Econometrics menu. Its purpose is to provide the user the ability to perform statistical research on custom datasets.
 ---
 
-The capabilities of the [Econometrics menu](/terminal/usage/intros/econometrics) from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Econometrics - SDK | OpenBB Docs" />
+
+The capabilities of the [Econometrics menu](/terminal/usage/intros/econometrics) in the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
 
 ## How to use
 

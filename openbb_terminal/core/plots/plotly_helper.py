@@ -5,13 +5,17 @@ import textwrap
 from datetime import datetime
 from math import floor
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, TypeVar, Union
-
-try:
-    # pylint: disable=W0611 # noqa: F401
-    from darts import TimeSeries
-except ImportError:
-    pass
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+)
 
 import numpy as np
 import pandas as pd
@@ -34,6 +38,13 @@ from openbb_terminal.core.plots.config.openbb_styles import (
 )
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
+
+if TYPE_CHECKING:
+    try:
+        # pylint: disable=W0611 # noqa: F401
+        from darts import TimeSeries
+    except ImportError:
+        pass
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
@@ -85,6 +96,7 @@ class TerminalStyle:
         self.load_available_styles()
         self.load_style(plt_style)
         self.apply_console_style(console_style)
+        self.apply_style()
 
     def apply_console_style(self, style: Optional[str] = None) -> None:
         """Apply the style to the console."""
@@ -246,7 +258,6 @@ theme = TerminalStyle(
     get_current_user().preferences.CHART_STYLE,
     get_current_user().preferences.RICH_STYLE,
 )
-theme.apply_style()
 
 
 # pylint: disable=R0913
@@ -932,6 +943,7 @@ class OpenBBFigure(go.Figure):
             ),
             yaxis2=dict(
                 autorange=True,
+                automargin=True,
                 side="right",
                 fixedrange=False,
                 anchor="x",
@@ -1055,6 +1067,8 @@ class OpenBBFigure(go.Figure):
                 color="#FFFFFF" if theme.mapbox_style == "dark" else "black",
                 activecolor="#d1030d" if theme.mapbox_style == "dark" else "blue",
             ),
+            spikedistance=2,
+            hoverdistance=2,
         )
 
         if external or self._exported:
@@ -1536,7 +1550,7 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=85, t=40, pad=0)
+            dict(l=80, r=60, b=90, t=40, pad=0)
             if not self._has_secondary_y or not self.has_subplots
             else dict(l=60, r=50, b=95, t=40, pad=0)
         )

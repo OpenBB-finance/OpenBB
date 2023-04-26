@@ -501,7 +501,7 @@ FORECASTING_TOOLKIT_WARNING = (
     "[yellow]"
     "Forecasting Toolkit is disabled. "
     "To use the Forecasting features please install the toolkit following the "
-    "instructions here: https://my.openbb.dev/app/sdk/installation"
+    "instructions here: https://my.openbb.co/app/sdk/installation"
     "\n"
     "[/yellow]"
 )
@@ -509,7 +509,7 @@ OPTIMIZATION_TOOLKIT_WARNING = (
     "[yellow]"
     "Portfolio Optimization Toolkit is disabled. "
     "To use the Optimization features please install the toolkit following the "
-    "instructions here: https://my.openbb.dev/app/sdk/installation"
+    "instructions here: https://my.openbb.co/app/sdk/installation"
     "\n"
     "[/yellow]"
 )

@@ -1,10 +1,15 @@
 ---
+title: Showcase
 sidebar_position: 6
+description: Showcasing apps created by users using the OpenBB SDK
+keywords: [Showcasing, showcase, OpenBB, openbb, sdk, api, pip, pypi,]
 ---
 
-import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-# Showcase
+<HeadTitle title="Showcase - SDK | OpenBB Docs" />
+
+import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 
 This page contains a list of projects that use the OpenBB SDK.
 
@@ -24,17 +29,17 @@ src="https://ai1crypto.vercel.app/" title="Ai1Crypto"></iframe>
 
 <ShowcaseItem
 categories={['Commodities', 'Economy', 'Crypto', 'Stocks']}
-title="DirtyDefi’s Streamlit Dashboard"
+title="DirtyDefi's Streamlit Dashboard"
 description="A dashboard built with information from OpenBB by Joseph B, also known as DirtyDefi."
 url="https://openbb.streamlit.app/">
 
 <iframe style={{height: 400}} className="w-full rounded"
-src="https://openbb.streamlit.app/?embedded=true" title="DirtyDefi’s Streamlit Dashboard"></iframe>
+src="https://openbb.streamlit.app/?embedded=true" title="DirtyDefi's Streamlit Dashboard"></iframe>
 </ShowcaseItem>
 
 <ShowcaseItem
 categories={['Economy', 'ETF', 'Stocks']}
-title="Kulbinderdio’s Streamlit Dashboard"
+title="Kulbinderdio's Streamlit Dashboard"
 description="A dashboard built with information from OpenBB by Kulbinderdio."
 url="https://github.com/kulbinderdio/streamlit_openBB">
 

@@ -1,8 +1,12 @@
 ---
 title: Portfolio Optimization
-keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report]
-description: The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from mean-variance optimization to risk parity models and hierarchical clustering models. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
+keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report, how to, example, mean variance, risk parity, hierarchical cluster]
+description: A brief introduction and explanation of the Portfolio Optimization menu. It allows the user to apply advanced optimization techniques to a portfolio of any type and of any size.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Portfolio Optimization - Terminal | OpenBB Docs" />
 
 The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank" rel="noreferrer noopener">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank" rel="noreferrer noopener">risk parity models</a> and <a href="https://www.investopedia.com/terms/c/cluster_analysis.asp" target="_blank" rel="noreferrer noopener">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
 
@@ -12,7 +16,7 @@ The portfolio optimization menu can be reached by visiting the `portfolio` menu 
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218996021-63d4b1f9-efad-4303-bdde-7de3115157a7.png"></img>
 
-The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/po/load" target="_blank" rel="noreferrer noopener">load</a>. Within this guide, we provide an example file when running `load --example` which will be used to explain the functionality through the guide. 
+The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/po/load" target="_blank" rel="noreferrer noopener">load</a>. Within this guide, we provide an example file when running `load --example` which will be used to explain the functionality through the guide.
 
 :::note If you wish to load in your own Excel allocation file, please follow the following steps:
 1. Download the Excel file that can be used as a template [here](https://www.dropbox.com/s/wp1lcq86exyngjy/allocation_example.xlsx?dl=0).
@@ -113,7 +117,7 @@ Optimization can take time. Please be patient...
 [3 Years] Risk parity portfolio based on risk budgeting approach
 using volatility as risk measure
 
-      Weights       
+      Weights
 ┏━━━━━━━┳━━━━━━━━━━┓
 ┃       ┃ Value    ┃
 ┡━━━━━━━╇━━━━━━━━━━┩
@@ -160,7 +164,7 @@ To understand how this portfolio differs from the original portfolio, the <a hre
 
 Portfolio - RP_0
 
-                            Category - Asset_Class                             
+                            Category - Asset_Class
 ┏━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃     ┃ Asset_Class    ┃ Current_Invested_Amount ┃ Current_Weights ┃ Value    ┃
 ┡━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
@@ -175,7 +179,7 @@ Portfolio - RP_0
 │ USD │ TOTAL USD      │             8,492,000 $ │        100.00 % │ 100.00 % │
 └─────┴────────────────┴─────────────────────────┴─────────────────┴──────────┘
 
-                                   Category - Sector                                   
+                                   Category - Sector
 ┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃     ┃ Sector                 ┃ Current_Invested_Amount ┃ Current_Weights ┃ Value    ┃
 ┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
@@ -198,7 +202,7 @@ Portfolio - RP_0
 │ USD │ TOTAL USD              │             8,492,000 $ │        100.00 % │ 100.00 % │
 └─────┴────────────────────────┴─────────────────────────┴─────────────────┴──────────┘
 
-                                            Category - Industry                                            
+                                            Category - Industry
 ┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃     ┃ Industry                                   ┃ Current_Invested_Amount ┃ Current_Weights ┃ Value    ┃
 ┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
@@ -229,7 +233,7 @@ Portfolio - RP_0
 │ USD │ TOTAL USD                                  │             8,492,000 $ │        100.00 % │ 100.00 % │
 └─────┴────────────────────────────────────────────┴─────────────────────────┴─────────────────┴──────────┘
 
-                              Category - Country                              
+                              Category - Country
 ┏━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃     ┃ Country       ┃ Current_Invested_Amount ┃ Current_Weights ┃ Value    ┃
 ┡━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
@@ -253,7 +257,7 @@ Optimization can take time. Please be patient...
 [5 Years] Risk parity portfolio based on risk budgeting approach
 using conditional value at risk (CVaR) as risk measure
 
-      Weights       
+      Weights
 ┏━━━━━━━┳━━━━━━━━━━┓
 ┃       ┃ Value    ┃
 ┡━━━━━━━╇━━━━━━━━━━┩
@@ -351,7 +355,7 @@ Optimization can take time. Please be patient...
 [3 Years] Hierarchical risk parity portfolio using pearson codependence,
 single linkage and volatility as risk measure
 
-      Weights       
+      Weights
 ┏━━━━━━━┳━━━━━━━━━━┓
 ┃       ┃ Value    ┃
 ┡━━━━━━━╇━━━━━━━━━━┩
@@ -402,7 +406,7 @@ Current Categories: INDUSTRY, CURRENT_INVESTED_AMOUNT, ASSET_CLASS, COUNTRY, CUR
 
 Portfolio: _HRP0
 
-                                   Category - Sector                                   
+                                   Category - Sector
 ┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃     ┃ Sector                 ┃ Current_Invested_Amount ┃ Current_Weights ┃ Value    ┃
 ┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
