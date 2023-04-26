@@ -64,7 +64,6 @@ def display_fundamentals(
 
     fundamentals = fundamentals.iloc[:, :limit]
     fundamentals = fundamentals[fundamentals.columns[::-1]]
-
     if statement == "income":
         fundamentals.index = [
             stocks_helper.INCOME_PLOT["Polygon"][i]
@@ -132,7 +131,7 @@ def display_fundamentals(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         statement,
-        fundamentals,
+        fundamentals.transpose(),
         sheet_name,
         fig,
     )

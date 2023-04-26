@@ -35,7 +35,7 @@ jobs:
     - name: Check branch name for develop PRs
       if: ${{ steps.branch-name-check.outputs.target-branch == 'develop' }}
       run: |
-        if [[ "${{ steps.branch-name-check.outputs.source-branch }}" =~ ^(main|feature/.*|hotfix/.*|release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
+        if [[ "${{ steps.branch-name-check.outputs.source-branch }}" =~ ^(main|feature/.*|docs/.*|hotfix/.*|release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
           echo "Branch name is valid"
         else
           echo "Invalid branch name. Branches must follow the GitFlow naming convention to be allowed to merge into the develop branch."

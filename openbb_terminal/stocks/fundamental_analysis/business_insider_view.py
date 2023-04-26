@@ -126,9 +126,12 @@ def display_price_target_from_analysts(
         return console.print("[red]Could not get data for ticker.[/red]\n")
     if adjust_for_splits:
         df_splits = yahoo_finance_model.get_splits(symbol)
-        df_splits.index = df_splits.index.tz_convert(None)
-        adjusted_splits = partial(adjust_splits, splits=df_splits)
-        df_analyst_data["Price Target"] = df_analyst_data.apply(adjusted_splits, axis=1)
+        if not df_splits.empty:
+            df_splits.index = df_splits.index.tz_convert(None)
+            adjusted_splits = partial(adjust_splits, splits=df_splits)
+            df_analyst_data["Price Target"] = df_analyst_data.apply(
+                adjusted_splits, axis=1
+            )
 
     fig = OpenBBFigure(yaxis_title="Share Price").set_title(
         f"{symbol} (Time Series) and Price Target"

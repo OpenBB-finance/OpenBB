@@ -605,7 +605,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_sec",
-            "marketwatch_view.sec_filings",
+            "nasdaq_view.sec_filings",
             ["--limit=10"],
             {
                 "symbol": "TSLA",

@@ -1,9 +1,15 @@
 ---
 title: Individual
 sidebar_position: 3
-description: TBD
+description: Learn to customize your individual OpenBB Bot experience
 keywords: [discord, telegram, individual, customizing, customization, how to, explanation, openbb bot, openbb, guide, bot guide]
 ---
+
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Individual - Bot | OpenBB Docs" />
+
 ## Customizing your Individual Bot Experience
 
 The individual plan offers three different capabilities - Charting, Alerts, and Watchlist. In addition to these benefits you also get unlimited commands per month after registering.

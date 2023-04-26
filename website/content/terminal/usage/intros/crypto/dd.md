@@ -1,8 +1,12 @@
 ---
 title: Due Diligence
-keywords: [cryptocurrency, dd, due diligence, tokenomics, overview, bitcoin]
+keywords: [cryptocurrency, dd, due diligence, tokenomics, overview, bitcoin, how to, example, balance, fundraising, social media]
 description: An Introduction to Cryptocurrency Due Diligence, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Due Diligence - Terminal | OpenBB Docs" />
 
 The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper into the coin of choice. To be able to do this, the menu offers basic information about the loaded coin (<a href="/terminal/reference/crypto/dd/info" target="_blank" rel="noreferrer noopener">info</a> and <a href="/terminal/reference/crypto/dd/basic" target="_blank" rel="noreferrer noopener">basic</a>), information about the project, technology details, audits etcetera (<a href="/terminal/reference/crypto/dd/pi" target="_blank" rel="noreferrer noopener">pi</a>), insights into the coin balance (<a href="/terminal/reference/crypto/dd/balance" target="_blank" rel="noreferrer noopener">balance</a>), the tokenomics and fundraising details
 (<a href="/terminal/reference/crypto/dd/tk" target="_blank" rel="noreferrer noopener">tk</a> and <a href="/terminal/reference/crypto/dd/fr" target="_blank" rel="noreferrer noopener">fr</a>) and lastly, social media activity (<a href="/terminal/reference/crypto/dd/mt" target="_blank" rel="noreferrer noopener">mt</a>, <a href="/terminal/reference/crypto/dd/twitter" target="_blank" rel="noreferrer noopener">twitter</a> and <a href="/terminal/reference/crypto/dd/dev" target="_blank" rel="noreferrer noopener">dev</a>).

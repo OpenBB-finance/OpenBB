@@ -77,7 +77,7 @@ def display_key(symbol: str, export: str = "", sheet_name: Optional[str] = None)
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "key",
-        df_key,
+        df_key.transpose(),
         sheet_name,
     )
 
@@ -174,7 +174,7 @@ def display_income_statement(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "income",
-        df_income,
+        df_income.transpose(),
         sheet_name,
         fig,
     )
@@ -271,7 +271,7 @@ def display_balance_sheet(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "balance",
-        df_balance,
+        df_balance.transpose(),
         sheet_name,
         fig,
     )
@@ -366,7 +366,7 @@ def display_cash_flow(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cash",
-        df_cash,
+        df_cash.transpose(),
         sheet_name,
         fig,
     )

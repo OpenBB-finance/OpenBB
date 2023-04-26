@@ -173,7 +173,6 @@ class OpenBBSDK:
             `rtps`: Get real-time performance sector data\n
             `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
-            `spectrum`: Display finviz spectrum in system viewer [Source: Finviz]\n
             `spending`: General government spending provides an indication of the size\n
             `spending_chart`: General government spending provides an indication of the size\n
             `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
@@ -612,7 +611,7 @@ class SDKLogger:
     def _try_to_login(sdk: "OpenBBSDK"):
         if is_local() and is_auth_enabled():
             try:
-                sdk.login()
+                sdk.login(silent=True)
             except Exception:
                 pass
 

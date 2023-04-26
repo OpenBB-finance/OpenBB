@@ -2,8 +2,13 @@
 title: Basics
 sidebar_position: 1
 description: The OpenBB SDK is a modern investment research platform for everyone. It is a Software Development Kit that allows you to access all the data and tools you need to make better investment decisions.
-keywords: [basics, installation, commands, menus, your own data, introduction, openbb terminal, explanation, basic usage, usage, how to, openbb sdk]
+keywords: [basics, installation, commands, menus, your own data, introduction, openbb sdk, explanation, basic usage, usage, how to, openbb terminal, importing, navigation, docstrings, function, charts, display]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Basics - SDK | OpenBB Docs" />
+
 ### Importing the SDK
 
 Now that you have the SDK installed, the first step is to import the OpenBB SDK in your preferred code editor. Nearly everything required to interact with any function from the OpenBB Terminal gets imported in one line. Begin a Python script or Notebook file with:

@@ -207,7 +207,6 @@ economy.revenue,economy_oecd_model.get_revenue,economy_oecd_view.plot_revenue
 economy.rgdp,economy_oecd_model.get_real_gdp,economy_oecd_view.plot_real_gdp
 economy.rtps,economy_alphavantage_model.get_sector_data,economy_alphavantage_view.realtime_performance_sector
 economy.search_index,economy_yfinance_model.get_search_indices,
-economy.spectrum,economy_finviz_view.display_spectrum,
 economy.spending,economy_oecd_model.get_spending,economy_oecd_view.plot_spending
 economy.treasury,economy_econdb_model.get_treasuries,economy_econdb_view.show_treasuries
 economy.treasury_maturities,economy_econdb_model.get_treasury_maturities,
@@ -411,6 +410,7 @@ stocks.disc.active,stocks_disc_yahoofinance_model.get_active,
 stocks.disc.arkord,stocks_disc_ark_model.get_ark_orders,
 stocks.disc.asc,stocks_disc_yahoofinance_model.get_asc,
 stocks.disc.dividends,stocks_disc_nasdaq_model.get_dividend_cal,
+stocks.disc.filings,stocks_fa_fmp_model.get_filings,stocks_disc_fmp_view.display_filings
 stocks.disc.fipo,stocks_disc_finnhub_model.get_future_ipo,
 stocks.disc.gainers,stocks_disc_yahoofinance_model.get_gainers,
 stocks.disc.gtech,stocks_disc_yahoofinance_model.get_gtech,
@@ -442,7 +442,6 @@ stocks.fa.balance,stocks_fa_sdk_helpers.get_balance_sheet,
 stocks.fa.cal,stocks_fa_yahoo_finance_model.get_calendar_earnings,
 stocks.fa.cash,stocks_fa_sdk_helpers.get_cash_flow,
 stocks.fa.customer,stocks_fa_csimarket_model.get_customers,
-stocks.fa.data,stocks_fa_finviz_model.get_data,
 stocks.fa.dcf,stocks_fa_fmp_model.get_dcf,
 stocks.fa.dcfc,stocks_fa_fmp_model.get_dcf,
 stocks.fa.divs,stocks_fa_yahoo_finance_model.get_dividends,stocks_fa_yahoo_finance_view.display_dividends
@@ -457,21 +456,19 @@ stocks.fa.fraud,stocks_fa_av_model.get_fraud_ratios,
 stocks.fa.growth,stocks_fa_fmp_model.get_financial_growth,
 stocks.fa.historical_5,stocks_fa_dcf_model.get_historical_5,
 stocks.fa.income,stocks_fa_sdk_helpers.get_income_statement,
-stocks.fa.info,stocks_fa_yahoo_finance_model.get_info,
 stocks.fa.key,stocks_fa_av_model.get_key_metrics,
 stocks.fa.metrics,stocks_fa_fmp_model.get_key_metrics,
 stocks.fa.mgmt,stocks_fa_business_insider_model.get_management,
 stocks.fa.mktcap,stocks_fa_yahoo_finance_model.get_mktcap,stocks_fa_yahoo_finance_view.display_mktcap
 stocks.fa.news,stocks_fa_finviz_model.get_news,
-stocks.fa.overview,stocks_fa_av_model.get_overview,
-stocks.fa.profile,stocks_fa_fmp_model.get_profile,
+stocks.fa.overview,stocks_fa_sdk_helpers.get_overview,
 stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.display_price_target_from_analysts
 stocks.fa.rating,stocks_fa_fmp_model.get_rating,
 stocks.fa.ratios,stocks_fa_fmp_model.get_key_ratios,
 stocks.fa.revfc,stocks_fa_seeking_alpha_model.get_estimates_rev,
 stocks.fa.rot,stocks_fa_finnhub_model.get_rating_over_time,stocks_fa_finnhub_view.rating_over_time
 stocks.fa.score,stocks_fa_fmp_model.get_score,
-stocks.fa.sec,stocks_fa_marketwatch_model.get_sec_filings,
+stocks.fa.sec,stocks_fa_nasdaq_model.get_sec_filings,
 stocks.fa.shrs,stocks_fa_yahoo_finance_model.get_shareholders,
 stocks.fa.similar_dfs,stocks_fa_dcf_model.get_similar_dfs,
 stocks.fa.splits,stocks_fa_yahoo_finance_model.get_splits,stocks_fa_yahoo_finance_view.display_splits
@@ -535,7 +532,6 @@ stocks.search,stocks_helper.search,
 stocks.ta.recom,stocks_ta_tradingview_model.get_tradingview_recommendation,stocks_ta_tradingview_view.print_recommendation
 stocks.ta.rsp,stocks_ta_rsp_model.get_rsp,stocks_ta_rsp_view.display_rsp
 stocks.ta.summary,stocks_ta_finbrain_model.get_technical_summary_report,stocks_ta_finbrain_view.technical_summary_report
-stocks.ta.view,stocks_ta_finviz_model.get_finviz_image,stocks_ta_finviz_view.view
 stocks.th.all,stocks_th_bursa_model.get_all,stocks_th_bursa_view.display_all
 stocks.th.check_if_open,stocks_th_bursa_model.check_if_open,
 stocks.th.closed,stocks_th_bursa_model.get_closed,stocks_th_bursa_view.display_closed
