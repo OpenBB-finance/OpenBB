@@ -197,6 +197,36 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             self.print_help(update_status=True, reevaluate=not is_key)
 
     @log_start_end(log=logger)
+    def call_dune(self, other_args: List[str]):
+        """Process dune command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dune",
+            description="Set Dune Analytics API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://dune.com"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["dune"] = keys_model.set_dune_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
         """Process av command"""
         parser = argparse.ArgumentParser(

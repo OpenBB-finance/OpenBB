@@ -84,6 +84,7 @@ API_DICT: Dict = {
     "santiment": "SANTIMENT",
     "tokenterminal": "TOKEN_TERMINAL",
     "shroom": "SHROOM",
+    "dune": "DUNE",
     "stocksera": "STOCKSERA",
 }
 
@@ -263,6 +264,33 @@ def handle_credential(name: str, value: str, persist: bool = False):
     if persist:
         write_to_dotenv("OPENBB_" + name, value)
 
+def set_dune_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Dune Analytics key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.dune(key="example_key")
+    """
+
+    handle_credential("API_KEY_DUNE", key, persist)
+    return "Dune Analytics key set." # TODO: check_dune_key(show_output)
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Alpha Vantage key

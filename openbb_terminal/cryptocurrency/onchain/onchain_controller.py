@@ -26,6 +26,7 @@ from openbb_terminal.cryptocurrency.onchain import (
     shroom_view,
     whale_alert_model,
     whale_alert_view,
+    dune_view
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -85,6 +86,7 @@ class OnchainController(BaseController):
         "dt",
         "ds",
         "tvl",
+        "dquery"
     ]
 
     PATH = "/crypto/onchain/"
@@ -125,6 +127,7 @@ class OnchainController(BaseController):
         mt.add_cmd("dt")
         mt.add_cmd("ds")
         mt.add_cmd("tvl")
+        mt.add_cmd("dquery")
         mt.add_raw("\n")
         mt.add_param("_address", self.address or "")
         mt.add_param("_type", self.address_type or "")
@@ -140,6 +143,41 @@ class OnchainController(BaseController):
         mt.add_cmd("prices", self.address_type == "token")
         mt.add_cmd("tx", self.address_type == "tx")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Onchain")
+
+
+    @log_start_end(log=logger)
+    def call_dquery(self, other_args: List[str]):
+        """Process dquery command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dquery",
+            description="""
+                Query data from the Dune Analytics database
+                [Source:https://www.duneanalytics.com/]
+            """,
+        )
+
+        parser.add_argument(
+            "-q",
+            "--query",
+            dest="query",
+            type=str,
+            help="Dune Analytics query id (e.g., 2412896 for https://www.duneanalytics.com/queries/2412896)",
+        )
+
+        if other_args and other_args[0][0] != "-":
+            other_args.insert(0, "-q")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            dune_view.display_query(
+                ns_parser.query
+            )
+
 
     @log_start_end(log=logger)
     def call_tvl(self, other_args: List[str]):
