@@ -178,7 +178,7 @@ class Handler:
                     fig.update_layout(
                         title=dict(x=0.5, xanchor="center", yanchor="top", y=0.99),
                         showlegend=True,
-                        margin=dict(t=40),
+                        margin=dict(t=40, l=30),
                         height=500,
                         legend=dict(
                             bgcolor="rgba(0,0,0,0.5)",
