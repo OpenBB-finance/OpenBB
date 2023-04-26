@@ -45,4 +45,7 @@ aroon
 bbands
 donchian
 fib
+ad -l 15 -d 2
+help
+reset
 exit

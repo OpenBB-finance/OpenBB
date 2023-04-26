@@ -1,0 +1,38 @@
+economy
+macro
+treasury
+qa
+
+# Statistics
+summary
+normality
+unitroot
+
+# Plots
+line
+line --log
+hist
+hist -b 10
+cdf
+bw
+bw -y
+acf
+qqplot
+
+# Rolling Metrics
+rolling
+spread
+quantile
+skew
+kurtosis
+
+# Other
+raw -r
+decompose
+decompose -m
+cusum
+
+pick united_states_CPI
+help
+reset
+exit
