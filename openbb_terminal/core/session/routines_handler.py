@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
-
 import numpy as np
 import pandas as pd
 
@@ -10,7 +9,7 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
 
-def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
+def download_routines(auth_header: str, silent: bool = False) -> list:
     """Download default and personal routines.
 
     Parameters
@@ -25,7 +24,8 @@ def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
     Dict[str, str]
         The routines.
     """
-    routines_dict = {}
+    personal_routines_dict = {}
+    default_routines_dict = {}
 
     try:
         response = Hub.get_default_routines(silent=silent)
@@ -35,7 +35,7 @@ def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
             for routine in data:
                 name = routine.get("name", "")
                 if name:
-                    routines_dict[name] = routine.get("script", "")
+                    default_routines_dict[name] = [routine.get("script", ""), "default"]
     except Exception:
         console.print("[red]\nFailed to download default routines.[/red]")
 
@@ -54,11 +54,11 @@ def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
             for routine in items:
                 name = routine.get("name", "")
                 if name:
-                    routines_dict[name] = routine.get("script", "")
+                    personal_routines_dict[name] = [routine.get("script", ""), "personal"]
     except Exception:
         console.print("[red]\nFailed to download personal routines.[/red]")
 
-    return routines_dict
+    return [personal_routines_dict, default_routines_dict]
 
 
 def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
@@ -101,7 +101,7 @@ def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]
 
 def save_routine(
     file_name: str,
-    routine: str,
+    routine: list,
     folder: Optional[Path] = None,
     force: bool = False,
     silent: bool = False,
@@ -133,7 +133,11 @@ def save_routine(
         folder = current_user.preferences.USER_ROUTINES_DIRECTORY
 
     try:
-        user_folder = folder / "hub"
+        if routine[1] == "default":
+            user_folder = folder / "hub" / "default"
+        elif routine[1] == "personal":
+            user_folder = folder / "hub" / "personal"
+
         if not os.path.exists(user_folder):
             os.makedirs(user_folder)
 
@@ -141,7 +145,7 @@ def save_routine(
         if os.path.exists(file_path) and not force:
             return "File already exists"
         with open(file_path, "w") as f:
-            f.write(routine)
+            f.write(routine[0])
         return user_folder / file_name
     except Exception:
         console_print("[red]\nFailed to save routine.[/red]")

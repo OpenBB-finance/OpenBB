@@ -403,32 +403,32 @@ class AccountController(BaseController):
                 # Default routine
                 name = " ".join(ns_parser.name)
                 if name in self.DEFAULT_CHOICES:
-                    data = next(
+                    data = [next(
                         (r for r in self.DEFAULT_ROUTINES if r["name"] == name), None
-                    )
+                    ), "default"]
                 else:
                     # User routine
                     response = Hub.download_routine(
                         auth_header=get_current_user().profile.get_auth_header(),
                         name=name,
                     )
-                    data = (
+                    data = [(
                         response.json()
                         if response and response.status_code == 200
                         else None
-                    )
+                    ), "personal"]
 
                 # Save routine
-                if data:
-                    name = data.get("name", "")
+                if data[0]:
+                    name = data[0].get("name", "")
                     if name:
                         console.print(f"[info]Name:[/info] {name}")
 
-                    description = data.get("description", "")
+                    description = data[0].get("description", "")
                     if description:
                         console.print(f"[info]Description:[/info] {description}")
 
-                    script = data.get("script", "")
+                    script = [data[0].get("script", ""), data[1]]
                     if script:
                         file_name = f"{name}.openbb"
                         file_path = save_routine(
