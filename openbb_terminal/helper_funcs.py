@@ -14,11 +14,7 @@ import re
 import sys
 import urllib.parse
 import webbrowser
-from datetime import (
-    date as d,
-    datetime,
-    timedelta,
-)
+from datetime import date as d, datetime, timedelta
 from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
@@ -42,10 +38,7 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-from openbb_terminal import (
-    OpenBBFigure,
-    plots_backend,
-)
+from openbb_terminal import OpenBBFigure, plots_backend
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.core.session.current_system import get_current_system

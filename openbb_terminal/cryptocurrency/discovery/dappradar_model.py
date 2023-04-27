@@ -368,7 +368,6 @@ def get_nft_marketplace_chains() -> pd.DataFrame:
 @log_start_end(log=logger)
 @check_api_key(["API_DAPPRADAR_KEY"])
 def get_dapps(chain: str = "", page: int = 1, resultPerPage: int = 15):
-    # TODO: Check why the rich display is not working
     """Get dapps [Source: https://dappradar.com/]
 
     Parameters
@@ -384,7 +383,7 @@ def get_dapps(chain: str = "", page: int = 1, resultPerPage: int = 15):
     -------
     pd.DataFrame
         Columns: Dapp ID, Name, Description, Full Description, Logo, Link, Website,
-        Chains, Categories, Social Links
+        Chains, Categories
     """
 
     args = {
@@ -408,12 +407,11 @@ def get_dapps(chain: str = "", page: int = 1, resultPerPage: int = 15):
                     "name",
                     "description",
                     "fullDescription",
+                    "chains",
+                    "categories",
                     "logo",
                     "link",
                     "website",
-                    "chains",
-                    "categories",
-                    "socialLinks",
                 ],
             )
             .rename(
@@ -422,12 +420,11 @@ def get_dapps(chain: str = "", page: int = 1, resultPerPage: int = 15):
                     "name": "Name",
                     "description": "Description",
                     "fullDescription": "Full Description",
+                    "chains": "Chains",
+                    "categories": "Categories",
                     "logo": "Logo",
                     "link": "Link",
                     "website": "Website",
-                    "chains": "Chains",
-                    "categories": "Categories",
-                    "socialLinks": "Social Links",
                 }
             )
             .head(resultPerPage)  # DappRadar resultsPerPage is broken
@@ -561,6 +558,28 @@ def get_defi_chains() -> pd.DataFrame:
     """
 
     response = _make_request("https://api.dappradar.com/4tsxo4vuhotaojtl/defi/chains")
+    if response:
+        data = response.get("chains")
+
+        return pd.DataFrame(
+            data,
+            columns=["Chains"],
+        )
+    return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def get_token_chains() -> pd.DataFrame:
+    """Get chains that support tokens [Source: https://dappradar.com/]
+
+    Returns
+    -------
+    pd.DataFrame
+        Columns: Chains
+    """
+
+    response = _make_request("https://api.dappradar.com/4tsxo4vuhotaojtl/tokens/chains")
     if response:
         data = response.get("chains")
 

@@ -46,6 +46,7 @@ class DiscoveryController(BaseController):
         "dapp_chains",
         "dapp_metrics",
         "defi_chains",
+        "tokens",
         "dex",
     ]
 
@@ -96,6 +97,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("dapp_chains")
         mt.add_cmd("dapp_metrics"),
         mt.add_cmd("defi_chains")
+        mt.add_cmd("tokens")
         mt.add_cmd("dex")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
 
@@ -825,6 +827,29 @@ class DiscoveryController(BaseController):
                 order=ns_parser.order,
                 chain=ns_parser.chain,
                 limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_tokens(self, other_args):
+        """Process tokens command"""
+        parser = argparse.ArgumentParser(
+            prog="tokens",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows chains that support tokens [Source: https://dappradar.com/]
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            dappradar_view.display_token_chains(
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name

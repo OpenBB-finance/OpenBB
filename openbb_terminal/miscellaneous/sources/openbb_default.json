@@ -771,6 +771,9 @@
       "defi_chains": [
         "DappRadar"
       ],
+      "tokens": [
+        "DappRadar"
+      ],
       "dex": [
         "DappRadar"
       ]

@@ -481,3 +481,31 @@ def display_defi_chains(export: str = "", sheet_name: Optional[str] = None) -> N
         df,
         sheet_name,
     )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def display_token_chains(
+    export: str = "",
+    sheet_name: Optional[str] = None,
+) -> None:
+    """Prints table showing chains that support tokens [Source: https://dappradar.com/]"""
+
+    df = dappradar_model.get_token_chains()
+    if df.empty:
+        console.print("[red]Failed to fetch data from DappRadar[/red]")
+        return
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Token chains",
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "drtokenchains",
+        df,
+        sheet_name,
+    )
