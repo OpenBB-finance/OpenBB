@@ -48,7 +48,6 @@ en:
   sources/set: set default data source for a command
   featflags/_info_: Feature flags through environment variables
   featflags/retryload: retry misspelled commands with load first
-  featflags/tab: use tabulate to print dataframes
   featflags/interactive: open dataframes in interactive window
   featflags/cls: clear console after each command
   featflags/color: use coloring features
@@ -203,7 +202,6 @@ en:
   stocks/disc/arkord: orders by ARK Investment Management LLC
   stocks/disc/upcoming: upcoming earnings release dates
   stocks/disc/trending: trending news
-  stocks/disc/cnews: customized news (buybacks, ipos, spacs, healthcare, politics)
   stocks/disc/lowfloat: low float stocks under 10M shares float
   stocks/disc/hotpenny: today's hot penny stocks
   stocks/disc/rtat: top 10 retail traded stocks per day

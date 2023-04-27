@@ -1,7 +1,7 @@
 ---
 title: PyPI
 sidebar_position: 4
-description: This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems.
+description: This section provides steps to install the OpenBB Terminal from PyPI. This installation type supports Windows, macOS and Linux systems.
 keywords:
   [
     installation,
@@ -17,8 +17,20 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    pypi,
+    miniconda,
+    git,
+    c++,
+    rosetta2,
+    libomp,
+    vcxsrv,
+    gtk
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="PyPI - Terminal | OpenBB Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -182,7 +194,7 @@ Create the environment using a configuration file from the OpenBB Terminal repos
 Copy and paste these commands into the terminal/command prompt:
 
 ```shell
-conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/conda-3-9-env.yaml
+conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/conda/conda-3-9-env.yaml
 ```
 
 Agree to the prompts if there are any.

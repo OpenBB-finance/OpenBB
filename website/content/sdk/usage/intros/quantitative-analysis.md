@@ -1,8 +1,12 @@
 ---
 title: Quantitative Analysis
-keywords: [quantitative, analysis, qa, q/a, daily, indicators, signals, average, summary, normality, line, hist, cdf, bw, acf, qqplot, rolling, spread, quantile, skew, kurtosis, var, es, sh, so, om, raw, decompose, cusum, capm, beta, histogram, auto-correlation, value, median, crypto, forex, fx, cryptocurrency, stocks]
-description: This guide introduces the Quantitative Analysis menu, which is common across many sections of the OpenBB Terminal, briefly describes the features, and provides examples in context.
+keywords: [quantitative, analysis, qa, q/a, daily, indicators, signals, average, summary, normality, line, hist, cdf, bw, acf, qqplot, rolling, spread, quantile, skew, kurtosis, var, es, sh, so, om, raw, decompose, cusum, capm, beta, histogram, auto-correlation, value, median, crypto, forex, fx, cryptocurrency, stocks, how to, usage, examples, import statement, get data, unit root test]
+description: Learn how to use and see examples of the Quantitative Analysis menu, which is common across many sections of the OpenBB Terminal. This guide describes the features and commands.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Quantitative Analysis - SDK | OpenBB Docs" />
 
 The `qa` module is the Terminal's Quantitative Analysis menu for the SDK environment. It provides users with more ways to interact with the library of functions, and provides cross-disciplinary utility. To activate the code completion for the menu, enter `.` after, `openbb.qa`.
 

@@ -77,4 +77,9 @@ ad
 adosc
 obv
 fib
+atr
+cones
+multi -i macd[12,26,9],rsi,sma[20]
+help
+reset
 exit

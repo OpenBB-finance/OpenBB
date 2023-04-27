@@ -27,6 +27,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 st_helpers.set_css()
+st_helpers.set_current_page("Forecasting")
 
 
 EXPLAINABILITY_FIGURE: Union[OpenBBFigure, None] = None
@@ -89,10 +90,10 @@ class Handler:
         st_helpers.load_state("last_tickers", "")
         st_helpers.load_state("last_intervals", "1d")
         st_helpers.load_state("df", pd.DataFrame())
-        default_opts = {
+        self.default_opts = {
             key: [] for key in ["target_widget", "column_widget", "past_covs_widget"]
         }
-        st_helpers.load_widget_options(default_opts, "Forecasting")
+        st_helpers.load_widget_options(self.default_opts)
 
         self.feature_model = None
         self.feature_target = None
@@ -177,7 +178,7 @@ class Handler:
                     fig.update_layout(
                         title=dict(x=0.5, xanchor="center", yanchor="top", y=0.99),
                         showlegend=True,
-                        margin=dict(t=40),
+                        margin=dict(t=40, l=30),
                         height=500,
                         legend=dict(
                             bgcolor="rgba(0,0,0,0.5)",
@@ -313,7 +314,9 @@ class Handler:
         with col_order[1]:
             target_widget = st.selectbox(
                 "Target",
-                options=st.session_state["widget_options"]["target_widget"],
+                options=st_helpers.get_widget_options(
+                    self.default_opts, "target_widget"
+                ),
             )
 
         with col_order[2]:
@@ -328,7 +331,9 @@ class Handler:
             with col_order[0]:
                 past_covs_widget = st.multiselect(
                     "Past Covariates",
-                    options=st.session_state["widget_options"]["past_covs_widget"],
+                    options=st_helpers.get_widget_options(
+                        self.default_opts, "past_covs_widget"
+                    ),
                     disabled=not enable_past_covs,
                     label_visibility="hidden" if not enable_past_covs else "visible",
                 )

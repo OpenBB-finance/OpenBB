@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import date
-from typing import List, Optional
+from typing import Optional
 
 import pandas as pd
 
@@ -126,51 +126,5 @@ def news(
             os.path.dirname(os.path.abspath(__file__)),
             "trending",
             df_articles,
-            sheet_name,
-        )
-
-
-@log_start_end(log=logger)
-def display_news(
-    news_type: str = "top-news",
-    limit: int = 5,
-    export: str = "",
-    sheet_name: Optional[str] = None,
-):
-    """Display news. [Source: SeekingAlpha]
-
-    Parameters
-    ----------
-    news_type : str
-        From: Top-News, On-The-Move, Market-Pulse, Notable-Calls, Buybacks, Commodities, Crypto, Issuance, Global,
-        Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
-    limit : int
-        Number of news to display
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-    news_to_display: List = seeking_alpha_model.get_news(news_type, limit)
-
-    if not news:
-        console.print("No news found.", "\n")
-
-    else:
-        df_news = pd.DataFrame(
-            news_to_display, columns=["publishOn", "id", "title", "url"]
-        )
-        df_news = df_news.drop("id", axis=1)
-        print_rich_table(
-            df_news,
-            show_index=False,
-            title=f"{news_type}",
-            export=bool(export),
-            limit=limit,
-        )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "cnews : " + news_type,
-            pd.DataFrame(news_to_display),
             sheet_name,
         )

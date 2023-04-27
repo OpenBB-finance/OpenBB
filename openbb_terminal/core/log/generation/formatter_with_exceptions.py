@@ -66,6 +66,14 @@ class FormatterWithExceptions(logging.Formatter):
         return text_mocked
 
     @staticmethod
+    def mock_flair(text: str) -> str:
+        pattern = r'("FLAIR": "\[)(.*?)\]'
+        replacement = r"\1 FILTERED_FLAIR ]"
+        text_mocked = re.sub(pattern, replacement, text)
+
+        return text_mocked
+
+    @staticmethod
     def mock_home_directory(text: str) -> str:
         user_home_directory = str(HOME_DIRECTORY.as_posix())
         text_mocked = text.replace("\\\\", "/").replace(
@@ -87,6 +95,7 @@ class FormatterWithExceptions(logging.Formatter):
         text_filtered = cls.mock_email(text=text_filtered)
         text_filtered = cls.mock_password(text=text_filtered)
         text_filtered = cls.mock_home_directory(text=text_filtered)
+        text_filtered = cls.mock_flair(text=text_filtered)
 
         return text_filtered
 

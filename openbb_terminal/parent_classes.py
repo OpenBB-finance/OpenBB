@@ -21,9 +21,8 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
-import openbb_terminal.core.session.local_model as Local
-
 # IMPORTS INTERNAL
+import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session.current_user import get_current_user, is_local

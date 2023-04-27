@@ -27,7 +27,6 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
-
   plugins: [
     [
       "@docusaurus/plugin-client-redirects",

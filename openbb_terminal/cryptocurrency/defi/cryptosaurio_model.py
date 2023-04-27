@@ -8,6 +8,7 @@ import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -33,13 +34,15 @@ def get_anchor_data(address: str = "") -> Tuple[pd.DataFrame, pd.DataFrame, str]
     """
 
     if not address.startswith("terra"):
-        raise Exception(
+        console.print(
             "Select a valid address. Valid terra addresses start with 'terra'"
         )
+        return pd.DataFrame(), pd.DataFrame(), ""
 
     response = request(f"{api_url}/get-anchor-protocol-data-v2/{address}")
     if response.status_code != 200:
-        raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
+        console.print(f"Status code: {response.status_code}. Reason: {response.reason}")
+        return pd.DataFrame(), pd.DataFrame(), ""
 
     data = response.json()
     df = pd.DataFrame(reversed(data["historicalData"]))

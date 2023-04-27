@@ -1,8 +1,12 @@
 ---
 title: Discovery
-keywords: [stocks, discovery, disc, menu, submenu, pipo, fipo, gainers, losers, ugs, gtech, active, ulc, asc, ford, arkord, upcoming, trending, cnews, lowfloat, hotpenny, rtat, divcal, dividends, short, trending, news]
+keywords: [stocks, discovery, disc, menu, submenu, pipo, fipo, gainers, losers, ugs, gtech, active, ulc, asc, ford, arkord, upcoming, trending, lowfloat, hotpenny, rtat, divcal, dividends, short, trending, news, how to, usage, examples, filings, screener, overview]
 description: Introducing the Discovery menu, within the Stocks menu. This guide will empower the user to get the most out of this set of features.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Discovery - SDK | OpenBB Docs" />
 
 The Disc module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.disc`
 ​
