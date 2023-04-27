@@ -1,0 +1,13 @@
+funds
+country --name united_states
+search  --fund morning
+load --fund Vanguard
+plot -c both
+sector -t equity
+sector -t fixed_income
+holdings -t all
+carbon
+exclusion
+help
+reset
+exit

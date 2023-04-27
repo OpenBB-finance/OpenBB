@@ -39,8 +39,8 @@ function getCellWidth(row, column) {
     const indexLabel = row.hasOwnProperty("index")
       ? "index"
       : row.hasOwnProperty("Index")
-      ? "Index"
-      : null;
+        ? "Index"
+        : null;
     const indexValue = indexLabel ? row[indexLabel] : null;
     const value = row[column];
     const valueType = typeof value;
@@ -138,7 +138,7 @@ export default function Table({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [fontSize, setFontSize] = useLocalStorage("fontSize", "1");
-  const [open, setOpen] = useState(columns.length > MAX_COLUMNS);
+  const [open, setOpen] = useState(false);
   const defaultVisibleColumns = columns.reduce((acc, cur, idx) => {
     acc[cur] = idx < MAX_COLUMNS ? true : false;
     return acc;
@@ -169,8 +169,8 @@ export default function Table({
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
-            ? "Index"
-            : columns[0];
+              ? "Index"
+              : columns[0];
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
@@ -467,9 +467,9 @@ export default function Table({
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.footer,
-                                  header.getContext()
-                                )}
+                                header.column.columnDef.footer,
+                                header.getContext()
+                              )}
                           </th>
                         ))}
                       </tr>

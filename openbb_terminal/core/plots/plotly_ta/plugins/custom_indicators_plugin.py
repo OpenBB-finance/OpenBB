@@ -146,8 +146,8 @@ class Custom(PltTA):
             "<b>0.65</b>",
             "<b>1</b>",
         ]
-        min_date = min_date.to_pydatetime()
-        max_date = max_date.to_pydatetime()
+        min_date = pd.to_datetime(min_date).to_pydatetime()
+        max_date = pd.to_datetime(max_date).to_pydatetime()
         self.df_fib = df_fib
 
         fig.add_scatter(
