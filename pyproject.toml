@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "3.0.0rc2"
+version = "3.0.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -101,7 +101,7 @@ jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
 streamlit = "^1.21.0"
-pywry = "^0.4.8"
+pywry = "^0.5.0"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
