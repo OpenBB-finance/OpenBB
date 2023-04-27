@@ -759,6 +759,15 @@
       "dapps": [
         "DappRadar"
       ],
+      "dapp_categories": [
+        "DappRadar"
+      ],
+      "dapp_chains": [
+        "DappRadar"
+      ],
+      "dapp_metrics": [
+        "DappRadar"
+      ],
       "dex": [
         "DappRadar"
       ]

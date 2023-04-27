@@ -363,3 +363,187 @@ def get_nft_marketplace_chains() -> pd.DataFrame:
             columns=["Chain"],
         )
     return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def get_dapps(chain: str = "", page: int = 1, resultPerPage: int = 15):
+    # TODO: Check why the rich display is not working
+    """Get dapps [Source: https://dappradar.com/]
+
+    Parameters
+    ----------
+    chain: str
+        Name of the chain
+    page: int
+        Page number
+    resultPerPage: int
+        Number of records to display
+
+    Returns
+    -------
+    pd.DataFrame
+        Columns: Dapp ID, Name, Description, Full Description, Logo, Link, Website,
+        Chains, Categories, Social Links
+    """
+
+    args = {
+        "chain": chain,
+        "page": page,
+    }
+    args = {k: v for k, v in args.items() if v}
+    query_string = "&".join([f"{k}={v}" for k, v in args.items()])
+
+    response = _make_request(
+        f"https://api.dappradar.com/4tsxo4vuhotaojtl/dapps?{query_string}"
+    )
+
+    if response:
+        data = response.get("results")
+        return (
+            pd.DataFrame(
+                data,
+                columns=[
+                    "dappId",
+                    "name",
+                    "description",
+                    "fullDescription",
+                    "logo",
+                    "link",
+                    "website",
+                    "chains",
+                    "categories",
+                    "socialLinks",
+                ],
+            )
+            .rename(
+                columns={
+                    "dappId": "Dapp ID",
+                    "name": "Name",
+                    "description": "Description",
+                    "fullDescription": "Full Description",
+                    "logo": "Logo",
+                    "link": "Link",
+                    "website": "Website",
+                    "chains": "Chains",
+                    "categories": "Categories",
+                    "socialLinks": "Social Links",
+                }
+            )
+            .head(resultPerPage)  # DappRadar resultsPerPage is broken
+        )
+
+    return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def get_dapp_categories() -> pd.DataFrame:
+    """Get dapp categories [Source: https://dappradar.com/]
+
+    Returns
+    -------
+    pd.DataFrame
+        Columns: Category
+    """
+
+    response = _make_request(
+        "https://api.dappradar.com/4tsxo4vuhotaojtl/dapps/categories"
+    )
+    if response:
+        data = response.get("categories")
+
+        return pd.DataFrame(
+            data,
+            columns=["Category"],
+        )
+    return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def get_dapp_chains() -> pd.DataFrame:
+    """Get dapp chains [Source: https://dappradar.com/]
+
+    Returns
+    -------
+    pd.DataFrame
+        Columns: Chain
+    """
+
+    response = _make_request("https://api.dappradar.com/4tsxo4vuhotaojtl/dapps/chains")
+    if response:
+        data = response.get("chains")
+
+        return pd.DataFrame(
+            data,
+            columns=["Chain"],
+        )
+    return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def get_dapp_metrics(
+    dappId: int, chain: str = "", time_range: str = ""
+) -> pd.DataFrame:
+    """Get dapp metrics [Source: https://dappradar.com/]
+
+    Parameters
+    ----------
+    dappId: int
+        Dapp ID
+    chain: str
+        Name of the chain if the dapp is multi-chain
+    range: str
+        Time range for the metrics. Can be 24h, 7d, 30d
+
+    Returns
+    -------
+    pd.DataFrame
+        Columns: Transactions, Transactions Change [%], Users, UAW, UAW Change [%],
+        Volume [$], Volume Change [%], Balance [$], Balance Change [%]
+    """
+    if not dappId:
+        console.print("[red]Please provide a dappId[/red]")
+        return pd.DataFrame()
+
+    query_string = (
+        f"range={time_range}" if not chain else f"chain={chain}&range={time_range}"
+    )
+
+    response = _make_request(
+        f"https://api.dappradar.com/4tsxo4vuhotaojtl/dapps/{dappId}?{query_string}"
+    )
+
+    if response:
+        data = response["results"].get("metrics")
+        return pd.DataFrame(
+            data,
+            columns=[
+                "transactions",
+                "transactionsPercentageChange",
+                "users",
+                "uaw",
+                "uawPercentageChange",
+                "volume",
+                "volumePercentageChange",
+                "balance",
+                "balancePercentageChange",
+            ],
+            index=[response["results"]["name"]],
+        ).rename(
+            columns={
+                "transactions": "Transactions",
+                "transactionsPercentageChange": "Transactions Change [%]",
+                "users": "Users",
+                "uaw": "UAW",
+                "uawPercentageChange": "UAW Change [%]",
+                "volume": "Volume [$]",
+                "volumePercentageChange": "Volume Change [%]",
+                "balance": "Balance [$]",
+                "balancePercentageChange": "Balance Change [%]",
+            }
+        )
+
+    return pd.DataFrame()

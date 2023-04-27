@@ -42,6 +42,9 @@ class DiscoveryController(BaseController):
         "nft_mktp",
         "games",
         "dapps",
+        "dapp_categories",
+        "dapp_chains",
+        "dapp_metrics",
         "dex",
     ]
 
@@ -88,6 +91,9 @@ class DiscoveryController(BaseController):
         mt.add_cmd("nft_mktp")
         mt.add_cmd("games")
         mt.add_cmd("dapps")
+        mt.add_cmd("dapp_categories")
+        mt.add_cmd("dapp_chains")
+        mt.add_cmd("dapp_metrics")
         mt.add_cmd("dex")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
 
@@ -191,37 +197,140 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Shows top decentralized applications [Source: https://dappradar.com/]
-            Accepts --sort {Name,Category,Protocols,Daily Users,Daily Volume [$]}
-            to sort by column
+            Shows available decentralized applications [Source: https://dappradar.com/]
+            Accepts --chain argument to filter by blockchain
+                    --page argument to show a specific page. Default: 1
+                    --limit argument to limit the number of records per page. Default: 15
             """,
         )
-
+        parser.add_argument(
+            "-c",
+            "--chain",
+            dest="chain",
+            help="Filter by blockchain",
+            metavar="CHAIN",
+        )
+        parser.add_argument(
+            "-p",
+            "--page",
+            dest="page",
+            type=check_positive,
+            help="Page number",
+            default=1,
+        )
         parser.add_argument(
             "-l",
             "--limit",
             dest="limit",
             type=check_positive,
-            help="Number of records to display",
+            help="Number of records to display per page",
             default=15,
         )
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            nargs="+",
-            help="Sort by given column. Default: Daily Volume [$]",
-            default="Daily Volume [$]",
-            choices=stocks_helper.format_parse_choices(dappradar_model.DAPPS_COLUMNS),
-            metavar="SORTBY",
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            dappradar_view.display_dapps(
+                chain=ns_parser.chain,
+                page=ns_parser.page,
+                resultPerPage=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_dapp_categories(self, other_args):
+        """Process dapp_categories command"""
+        parser = argparse.ArgumentParser(
+            prog="dapp_categories",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows available dapp categories [Source: https://dappradar.com/]
+            """,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            dappradar_view.display_top_dapps(
-                sortby=" ".join(ns_parser.sortby),
-                limit=ns_parser.limit,
+            dappradar_view.display_dapp_categories(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_dapp_chains(self, other_args):
+        """Process dapp_chains command"""
+        parser = argparse.ArgumentParser(
+            prog="dapp_chains",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows available dapp chains [Source: https://dappradar.com/]
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            dappradar_view.display_dapp_chains(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_dapp_metrics(self, other_args):
+        """Process dapp_metrics command"""
+        parser = argparse.ArgumentParser(
+            prog="dapp_metrics",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows dapp metrics [Source: https://dappradar.com/]
+            Accepts --dappId argument to specify the dapp
+                    --chain argument to filter by blockchain for multi-chain dapps
+                    --time_range argument to specify the time range. Default: 7d (can be 24h, 7d, 30d)
+            """,
+        )
+        parser.add_argument(
+            "-d",
+            "--dappId",
+            dest="dappId",
+            help="Dapp ID",
+            metavar="DAPP_ID",
+        )
+        parser.add_argument(
+            "-c",
+            "--chain",
+            dest="chain",
+            help="Filter by blockchain",
+            metavar="CHAIN",
+        )
+        parser.add_argument(
+            "-t",
+            "--time_range",
+            dest="time_range",
+            help="Time range",
+            metavar="TIME_RANGE",
+            choices=["24h", "7d", "30d"],
+            default="7d",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            dappradar_view.display_dapp_metrics(
+                dappId=ns_parser.dappId,
+                chain=ns_parser.chain,
+                time_range=ns_parser.time_range,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
