@@ -1,4 +1,4 @@
-""" Discovery Controller Module """
+"""Discovery Controller Module."""
 __docformat__ = "numpy"
 
 import argparse
@@ -57,7 +57,6 @@ class DiscoveryController(BaseController):
         "trending",
         "lowfloat",
         "hotpenny",
-        "cnews",
         "rtat",
         "divcal",
         "heatmap",
@@ -75,32 +74,7 @@ class DiscoveryController(BaseController):
         "shares",
     ]
     arkord_fund_choices = ["ARKK", "ARKF", "ARKW", "ARKQ", "ARKG", "ARKX", ""]
-    cnews_type_choices = [
-        nt.lower()
-        for nt in [
-            "Top-News",
-            "On-The-Move",
-            "Market-Pulse",
-            "Notable-Calls",
-            "Buybacks",
-            "Commodities",
-            "Crypto",
-            "Issuance",
-            "Global",
-            "Guidance",
-            "IPOs",
-            "SPACs",
-            "Politics",
-            "M-A",
-            "Consumer",
-            "Energy",
-            "Financials",
-            "Healthcare",
-            "MLPs",
-            "REITs",
-            "Technology",
-        ]
-    ]
+
     PATH = "/stocks/disc/"
     dividend_columns = [
         "Name",
@@ -140,7 +114,6 @@ class DiscoveryController(BaseController):
         mt.add_cmd("arkord", "Cathies Ark")
         mt.add_cmd("upcoming", "Seeking Alpha")
         mt.add_cmd("trending", "Seeking Alpha")
-        mt.add_cmd("cnews", "Seeking Alpha")
         mt.add_cmd("lowfloat", "Fidelity")
         mt.add_cmd("hotpenny", "Shortinterest")
         mt.add_cmd("rtat", "NASDAQ Data Link")
@@ -767,49 +740,6 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             shortinterest_view.low_float(
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_cnews(self, other_args: List[str]):
-        """Process cnews command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cnews",
-            description="""Customized news. [Source: Seeking Alpha]""",
-        )
-        parser.add_argument(
-            "-t",
-            "--type",
-            action="store",
-            dest="s_type",
-            choices=self.cnews_type_choices,
-            default="top-news",
-            help="number of news to display",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="limit of news to display",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            seeking_alpha_view.display_news(
-                news_type=ns_parser.s_type,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)

@@ -15,6 +15,7 @@ st.set_page_config(
     page_title="Chains",
     initial_sidebar_state="expanded",
 )
+st_helpers.set_current_page("Chains")
 st_helpers.set_css()
 
 st.sidebar.markdown(
