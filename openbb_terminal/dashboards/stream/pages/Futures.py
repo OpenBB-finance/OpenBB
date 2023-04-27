@@ -21,6 +21,7 @@ st.set_page_config(
     page_title="Futures",
     initial_sidebar_state="expanded",
 )
+st_helpers.set_current_page("Futures")
 st_helpers.set_css()
 
 df = pd.read_csv(MISCELLANEOUS_DIRECTORY / "futures" / "futures.csv")
@@ -130,12 +131,12 @@ class Chart:
         self.tickers = st_helpers.load_state("tickers", {})
         self.last_ticker = st_helpers.load_state("last_ticker", TICKERS[0])
         self.last_exchange = st_helpers.load_state("last_exchange", EXCHANGES[0])
-        default_opts = {
+        self.default_opts = {
             "exch_widget": EXCHANGES,
             "tickers_widget": TICKERS,
             "cat_widget": CATEGORIES,
         }
-        st_helpers.load_widget_options(default_opts, "Futures")
+        st_helpers.load_widget_options(self.default_opts)
 
     def create_stock(self, chart_type, contracts, ticker):
         if not ticker:
@@ -216,25 +217,25 @@ class Chart:
 
         st.sidebar.multiselect(
             "Category",
-            st.session_state["widget_options"]["cat_widget"],
+            st_helpers.get_widget_options(self.default_opts, "cat_widget"),
             on_change=self.on_change,
             key="cat_widget",
         )
         st.sidebar.multiselect(
             "Exchange",
-            st.session_state["widget_options"]["exch_widget"],
+            st_helpers.get_widget_options(self.default_opts, "exch_widget"),
             key="exch_widget",
             on_change=self.on_change,
         )
         ticker_widget = st.sidebar.selectbox(
             "Ticker",
-            st.session_state["widget_options"]["tickers_widget"],
+            st_helpers.get_widget_options(self.default_opts, "tickers_widget"),
             key="tickers_widget",
             index=0,
         )
 
-        chart_widget = st.sidebar.multiselect(
-            "Chart Type", chart_type, key="chart_widget", default=chart_type[0]
+        chart_widget = st.sidebar.selectbox(
+            "Chart Type", chart_type, key="chart_widget", index=0
         )
         contracts_widget = st.sidebar.slider(
             "Contracts", 1, 24, 6, key="contracts_widget"
