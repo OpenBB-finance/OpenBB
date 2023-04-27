@@ -305,8 +305,9 @@ def print_rich_table(
 
     for col in df.columns:
         try:
-            df[col] = pd.to_numeric(df[col])
-        except ValueError:
+            if not isinstance(df[col].iloc[0], pd.Timestamp):
+                df[col] = pd.to_numeric(df[col])
+        except (ValueError, TypeError):
             pass
 
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
@@ -819,6 +820,9 @@ def us_market_holidays(years) -> list:
 
 def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+
+    if num == float("inf"):
+        return "inf"
 
     if isinstance(num, float):
         magnitude = 0

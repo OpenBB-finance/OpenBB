@@ -4,6 +4,12 @@ sidebar_position: 1
 description: How to get started with OpenBB Bot
 keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,]
 ---
+
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Telegram - Bot | OpenBB Docs" />
+
 import AddBotDialogTelegram from "@site/src/components/General/AddBotTelegram";
 
 ## Telegram Server - First Time Setup

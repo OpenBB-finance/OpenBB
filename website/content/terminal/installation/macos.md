@@ -17,8 +17,18 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    big sur,
+    intel,
+    intel-based,
+    apple silicon,
+    m1,
+    dmg file
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="MacOS - Terminal | OpenBB Docs" />
 
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
@@ -27,7 +37,7 @@ Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions 
 <div style={{
   height: 80
 }}>
-<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/x86.64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/ARM64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac M1 Installer" />
+<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.0.0/x86.64.MacOS.OpenBB.Terminal.v3.0.0.pkg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.0.0/ARM64.MacOS.OpenBB.Terminal.v3.0.0.pkg" label="Mac M1 Installer" />
 </div>
 
 <details><summary>Minimum Requirements</summary>
@@ -60,13 +70,16 @@ To understand whether you are using an Apple Sillicon (M1) device or an Intel-ba
 
 Step by step instructions:
 
-1. Download the DMG file from the links above.
-2. Mount the downloaded DMG file by double-clicking on it.
-3. Click and drag the OpenBB Terminal folder and hold it over the Applications shortcut. This opens a new Finder window, then drag the OpenBB Terminal folder into the Applications folder.
+1. Download the PKG file from the links above.
 
-![MacOS Installation](https://user-images.githubusercontent.com/11668535/173027899-9b25ae4f-1eef-462c-9dc9-86086e9cf197.png)
+2. Launch the PKG installer by double-clicking on it.
+<img width="634" alt="image" src="https://user-images.githubusercontent.com/11668535/234018847-f3e76345-7d4e-445d-a462-64e0d6d902bd.png"></img>
 
-4. Unmount the installer, by "Ejecting OpenBB Terminal" from, locations, in Finder.
+3. Follow the Installer prompt. You will be asked to enter your system password.
+<img width="638" alt="image" src="https://user-images.githubusercontent.com/11668535/234032407-8ca009a7-0545-4196-b671-5bcc4c5cea9b.png"></img>
+
+4. This process installs the application into the `/Application/OpenBB Terminal` folder.
+<img width="618" alt="image" src="https://user-images.githubusercontent.com/11668535/234034347-cb2a80a0-81bb-4e8d-b91e-b636e161cf32.png"></img>
 
 5. Launch the application by double-clicking on the `OpenBB Terminal` application. If everything was successful you should see a screen like the one below:
 

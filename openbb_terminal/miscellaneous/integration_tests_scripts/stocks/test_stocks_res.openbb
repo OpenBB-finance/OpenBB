@@ -1,0 +1,6 @@
+stocks
+load ${ticker=aapl}
+res
+help
+reset
+exit

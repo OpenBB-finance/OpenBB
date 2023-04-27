@@ -184,12 +184,10 @@ def get_curve_futures(
             data = yf.download(future_symbol, progress=False, ignore_tz=True)
 
         if not data.empty:
-            futures_index.append(future.strftime("%Y-%b"))
+            futures_index.append(future.strftime("%b-%Y"))
             futures_curve.append(data["Adj Close"].values[-1])
 
     if not futures_index:
         return pd.DataFrame()
 
-    futures_index = pd.to_datetime(futures_index)
-
-    return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Futures"])
+    return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Last Price"])

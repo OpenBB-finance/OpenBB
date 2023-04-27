@@ -57,24 +57,58 @@
       }
     },
     "disc": {
-      "filings": ["FinancialModelingPrep"],
-      "pipo": ["Finnhub"],
-      "fipo": ["Finnhub"],
-      "gainers": ["YahooFinance"],
-      "losers": ["YahooFinance"],
-      "ugs": ["YahooFinance"],
-      "gtech": ["YahooFinance"],
-      "active": ["YahooFinance"],
-      "ulc": ["YahooFinance"],
-      "asc": ["YahooFinance"],
-      "arkord": ["CathiesArk"],
-      "upcoming": ["SeekingAlpha"],
-      "trending": ["SeekingAlpha"],
-      "cnews": ["SeekingAlpha"],
-      "lowfloat": ["Fidelity"],
-      "hotpenny": ["YahooFinance", "Shortinterest"],
-      "rtat": ["Nasdaq"],
-      "divcal": ["Nasdaq"]
+      "filings": [
+        "FinancialModelingPrep"
+      ],
+      "pipo": [
+        "Finnhub"
+      ],
+      "fipo": [
+        "Finnhub"
+      ],
+      "gainers": [
+        "YahooFinance"
+      ],
+      "losers": [
+        "YahooFinance"
+      ],
+      "ugs": [
+        "YahooFinance"
+      ],
+      "gtech": [
+        "YahooFinance"
+      ],
+      "active": [
+        "YahooFinance"
+      ],
+      "ulc": [
+        "YahooFinance"
+      ],
+      "asc": [
+        "YahooFinance"
+      ],
+      "arkord": [
+        "CathiesArk"
+      ],
+      "upcoming": [
+        "SeekingAlpha"
+      ],
+      "trending": [
+        "SeekingAlpha"
+      ],
+      "lowfloat": [
+        "Fidelity"
+      ],
+      "hotpenny": [
+        "YahooFinance",
+        "Shortinterest"
+      ],
+      "rtat": [
+        "Nasdaq"
+      ],
+      "divcal": [
+        "Nasdaq"
+      ]
     },
     "sia": {
       "select": ["YahooFinance"],
@@ -204,24 +238,41 @@
       "technical": ["Finviz"]
     },
     "fa": {
-      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
-      "enterprise": ["FinancialModelingPrep", "YahooFinance"],
-      "overview": [
+      "load": [
         "YahooFinance",
-        "Finviz",
-        "FinancialModelingPrep",
-        "AlphaVantage"
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
       ],
-      "divs": ["YahooFinance"],
-      "splits": ["YahooFinance"],
-      "rating": ["Finviz", "FinancialModelingPrep"],
-      "rot": ["Finnhub"],
-      "score": ["FinancialModelingPrep"],
-      "warnings": ["MarketWatch"],
-      "mgmt": ["BusinessInsider"],
-      "shrs": ["YahooFinance"],
-      "supplier": ["CSIMarket"],
-      "customer": ["CSIMarket"],
+      "enterprise": [
+        "FinancialModelingPrep",
+        "YahooFinance"
+      ],
+      "divs": [
+        "YahooFinance"
+      ],
+      "splits": [
+        "YahooFinance"
+      ],
+      "rating": [
+        "Finviz",
+        "FinancialModelingPrep"
+      ],
+      "rot": [
+        "Finnhub"
+      ],
+      "warnings": [
+        "MarketWatch"
+      ],
+      "shrs": [
+        "YahooFinance"
+      ],
+      "supplier": [
+        "CSIMarket"
+      ],
+      "customer": [
+        "CSIMarket"
+      ],
       "income": [
         "FinancialModelingPrep",
         "Polygon",
@@ -249,25 +300,64 @@
         "AlphaVantage",
         "YahooFinance"
       ],
-      "mgmt": ["BusinessInsider"],
-      "analysis": ["Elect"],
-      "score": ["FinancialModelingPrep"],
-      "quote": ["FinancialModelingPrep"],
-      "mktcap": ["FinancialModelingPrep", "YahooFinance"],
-      "growth": ["FinancialModelingPrep"],
-      "metrics": ["FinancialModelingPrep", "AlphaVantage"],
-      "ratios": ["FinancialModelingPrep"],
-      "dupont": ["AlphaVantage"],
-      "fraud": ["AlphaVantage"],
-      "sec": ["Nasdaq"],
-      "analysis": ["Elect"],
-      "earnings": ["AlphaVantage", "YahooFinance"],
-      "epsfc": ["SeekingAlpha"],
-      "revfc": ["SeekingAlpha"],
-      "est": ["BusinessInsider"],
-      "pt": ["BusinessInsider", "FinancialModelingPrep"],
-      "dcf": ["StockAnalysis"],
-      "dcfc": ["FinancialModelingPrep"]
+      "mgmt": [
+        "BusinessInsider"
+      ],
+      "analysis": [
+        "Elect"
+      ],
+      "score": [
+        "FinancialModelingPrep"
+      ],
+      "quote": [
+        "FinancialModelingPrep"
+      ],
+      "mktcap": [
+        "FinancialModelingPrep",
+        "YahooFinance"
+      ],
+      "growth": [
+        "FinancialModelingPrep"
+      ],
+      "metrics": [
+        "FinancialModelingPrep",
+        "AlphaVantage"
+      ],
+      "ratios": [
+        "FinancialModelingPrep"
+      ],
+      "dupont": [
+        "AlphaVantage"
+      ],
+      "fraud": [
+        "AlphaVantage"
+      ],
+      "sec": [
+        "Nasdaq"
+      ],
+      "earnings": [
+        "AlphaVantage",
+        "YahooFinance"
+      ],
+      "epsfc": [
+        "SeekingAlpha"
+      ],
+      "revfc": [
+        "SeekingAlpha"
+      ],
+      "est": [
+        "BusinessInsider"
+      ],
+      "pt": [
+        "BusinessInsider",
+        "FinancialModelingPrep"
+      ],
+      "dcf": [
+        "StockAnalysis"
+      ],
+      "dcfc": [
+        "FinancialModelingPrep"
+      ]
     },
     "bt": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],

@@ -24,8 +24,8 @@ function get_popup(data = null, popup_id = null) {
         </div>
 
         <div style="float: right; margin-top: 20px;">
-        <button class="_btn-tertiary" id="title_cancel" onclick="closePopup()">Cancel</button>
-        <button class="_btn" id="title_submit" onclick="on_submit('title')">Submit</button>
+        <button class="_btn-tertiary ph-capture" id="title_cancel" onclick="closePopup()">Cancel</button>
+        <button class="_btn ph-capture" id="title_submit" onclick="on_submit('title')">Submit</button>
         </div>
         `;
 
@@ -135,9 +135,9 @@ function get_popup(data = null, popup_id = null) {
     if (has_annotation) {
       globals.TEXT_DIV.innerHTML += `
       <div style="float: right; margin-top: 20px;">
-            <button class="_btn-tertiary" id="addtext_cancel" onclick="closePopup()">Cancel</button>
-            <button class="_btn" id="addtext_delete" onclick="on_delete('text')">Delete</button>
-            <button class="_btn" id="addtext_submit" onclick="on_submit('text', true)">Submit</button>
+            <button class="_btn-tertiary ph-capture" id="addtext_cancel" onclick="closePopup()">Cancel</button>
+            <button class="_btn ph-capture" id="addtext_delete" onclick="on_delete('text')">Delete</button>
+            <button class="_btn ph-capture" id="addtext_submit" onclick="on_submit('text', true)">Submit</button>
             <input id="addtext_annotation" type="hidden" value='${JSON.stringify(
               data
             )}'></input>
@@ -146,8 +146,8 @@ function get_popup(data = null, popup_id = null) {
     } else {
       globals.TEXT_DIV.innerHTML += `
       <div style="float: right; margin-top: 20px;">
-            <button class="_btn-tertiary" id="addtext_cancel" onclick="closePopup()">Cancel</button>
-            <button class="_btn" id="addtext_submit" onclick="on_submit('text')">Submit</button>
+            <button class="_btn-tertiary ph-capture" id="addtext_cancel" onclick="closePopup()">Cancel</button>
+            <button class="_btn ph-capture" id="addtext_submit" onclick="on_submit('text')">Submit</button>
     </div>
             `;
 
@@ -558,8 +558,14 @@ function on_submit(popup_id, on_annotation = null) {
             }),
             type: popup_data.trace_type,
             name: popup_data.name,
-            increasing: { line: { color: popup_data.increasing } },
-            decreasing: { line: { color: popup_data.decreasing } },
+            increasing: {
+              line: { color: popup_data.increasing },
+              fillcolor: popup_data.increasing,
+            },
+            decreasing: {
+              line: { color: popup_data.decreasing },
+              fillcolor: popup_data.decreasing,
+            },
             showlegend: true,
             yaxis: yaxis,
           };
@@ -631,8 +637,8 @@ function on_submit(popup_id, on_annotation = null) {
               xshift += xshift < -320 ? 10 + 2 * left_yaxis_ticks : 0;
 
               gd.layout.annotations[globals.cmd_src_idx].xshift = xshift;
-              gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 + add_xshift : 45;
             }
+            gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 + add_xshift : 45;
           }
         }
 
@@ -659,8 +665,8 @@ function on_submit(popup_id, on_annotation = null) {
             xshift += xshift < -320 ? 10 + 2 * left_yaxis_ticks : 0;
 
             gd.layout.annotations[globals.cmd_src_idx].xshift = xshift;
-            gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 : 45;
           }
+          gd.layout.margin.l += left_yaxis_ticks > 0 ? 50 : 45;
         }
         console.log("trace: ", trace);
 

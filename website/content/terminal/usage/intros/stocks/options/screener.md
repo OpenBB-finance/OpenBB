@@ -1,7 +1,7 @@
 ---
 title: Options Screener
-keywords: [Options, stocks, derivatives, puts, calls, oi, vol, greeks, bid, ask, last, lp, price, delta, theta, gamma, interest, screener, dte, expiration, expiry, screen]
-description: This guide introduces the user to the Options Screener, located within the Options Menu, and provides examples for how to use.
+keywords: [Options, stocks, derivatives, puts, calls, oi, vol, greeks, bid, ask, last, lp, price, delta, theta, gamma, interest, screener, dte, expiration, expiry, screen, how to, example, template, set, view, preset]
+description: This guide introduces the user to the Options Screener, located within the Options Menu, and provides examples for how to use the set of commands.
 ---
 The OpenBB options screener is a versatile discovery tool for an options trader.
 

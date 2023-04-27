@@ -15,6 +15,13 @@ keywords:
     how to,
     openbb,
     terminal,
+	free,
+	open source,
+	forks,
+	stars,
+	github,
+	contributor,
+	python
   ]
 description: The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built financial terminal that will help you make more informed decisions, faster.
 ---
