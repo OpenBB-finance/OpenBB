@@ -302,7 +302,7 @@ class BaseController(metaclass=ABCMeta):
             if not self.contains_keys(joined_queue):
                 queue = {"path": self.PATH, "queue": joined_queue}
                 logger.info(
-                    "QUEUE: %s ", json.dumps(queue, default=str, ensure_ascii=False)
+                    "QUEUE: %s", json.dumps(queue, default=str, ensure_ascii=False)
                 )
 
     def log_cmd_and_queue(

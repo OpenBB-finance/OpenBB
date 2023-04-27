@@ -121,8 +121,7 @@ class PosthogHandler(logging.Handler):
             log_dict[log[0]] = json.loads(log[1])
 
         sdk_regex = r"({\"INPUT\":.*})"
-        sdk_dict = re.findall(sdk_regex, log_info)
-        if sdk_dict:
+        if sdk_dict := re.findall(sdk_regex, log_info):
             log_dict["SDK"] = json.loads(sdk_dict[0])
 
         return log_dict
@@ -151,8 +150,6 @@ class PosthogHandler(logging.Handler):
         if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
             self.logged_in = True
             openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
-
-        log_extra.update({"$geoip_disable": True})
 
         openbb_posthog.capture(
             app_settings.identifier,

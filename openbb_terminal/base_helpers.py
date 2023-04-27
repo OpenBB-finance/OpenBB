@@ -18,7 +18,7 @@ console = Console()
 menus = Literal["", "featflags", "settings"]
 
 openbb_posthog = Posthog(
-    "phc_8fP8xXi0ptWTlGAXOcMQnSFsul4lmLoxnwp9EiXQstO",
+    "phc_vhssDAMod5qIplznQ75Kdgz4aB1qPFmeVmfEOZ4hkRw",
     host="https://app.posthog.com",
 )
 
