@@ -245,6 +245,7 @@
         globals.cmd_src = "";
         if (typeof OpenBBMain != "undefined" && window.plotly_figure) {
           clearInterval(interval);
+
           const date = new Date();
           const formattedDate = new Intl.DateTimeFormat("en-GB", {
             dateStyle: "full",
