@@ -339,3 +339,27 @@ def get_nft_marketplaces(
             }
         )
     return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def get_nft_marketplace_chains() -> pd.DataFrame:
+    """Get nft marketplaces chains [Source: https://dappradar.com/]
+
+    Returns
+    -------
+    pd.DataFrame
+        Columns: Chain
+    """
+
+    response = _make_request(
+        "https://api.dappradar.com/4tsxo4vuhotaojtl/nfts/marketplaces/chains"
+    )
+    if response:
+        data = response.get("chains")
+
+        return pd.DataFrame(
+            data,
+            columns=["Chain"],
+        )
+    return pd.DataFrame()

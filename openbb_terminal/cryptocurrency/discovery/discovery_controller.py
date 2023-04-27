@@ -38,6 +38,7 @@ class DiscoveryController(BaseController):
         "gainers",
         "losers",
         "nft",
+        "nft_mktp_chains",
         "nft_mktp",
         "games",
         "dapps",
@@ -83,6 +84,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("losers")
         mt.add_cmd("search")
         mt.add_cmd("nft")
+        mt.add_cmd("nft_mktp_chains")
         mt.add_cmd("nft_mktp")
         mt.add_cmd("games")
         mt.add_cmd("dapps")
@@ -611,6 +613,30 @@ class DiscoveryController(BaseController):
             )
 
     @log_start_end(log=logger)
+    def call_nft_mktp_chains(self, other_args):
+        """Process nft_mktp_chains command"""
+        parser = argparse.ArgumentParser(
+            prog="nft_mktp_chains",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows NFT marketplace chains [Source: https://dappradar.com/]
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            dappradar_view.display_nft_marketplace_chains(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
     def call_nft_mktp(self, other_args):
         """Process nft_mktp command"""
         parser = argparse.ArgumentParser(
@@ -619,8 +645,10 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
             Shows NFT marketplaces [Source: https://dappradar.com/]
-            Accepts --sort {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap,Volume [$]}
-            to sort by column
+            Accepts --chain  to filter by blockchain
+                    --sortby {name, avgPrice, volume, traders...} to sort by column
+                    --order {asc, desc} to sort ascending or descending
+                    --limit to limit number of records
             """,
         )
         parser.add_argument(
@@ -631,7 +659,7 @@ class DiscoveryController(BaseController):
         )
         parser.add_argument(
             "-s",
-            "--sort",
+            "--sortby",
             dest="sortby",
             nargs="+",
             help="Sort by given column.",

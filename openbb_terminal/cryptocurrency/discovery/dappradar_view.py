@@ -219,6 +219,8 @@ def display_nft_marketplaces(
         Key by which to sort data
     export : str
         Export dataframe data to csv,json,xlsx file
+    sheet_name: str
+        Name of the sheet in excel or csv file
     """
 
     df = dappradar_model.get_nft_marketplaces(
@@ -250,6 +252,43 @@ def display_nft_marketplaces(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "drnft",
+        df,
+        sheet_name,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def display_nft_marketplace_chains(
+    export: str = "",
+    sheet_name: Optional[str] = None,
+) -> None:
+    """Prints table showing nft marketplaces chains [Source: https://dappradar.com/]
+
+    Parameters
+    ----------
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    sheet_name: str
+        Name of the sheet in excel or csv file
+    """
+
+    df = dappradar_model.get_nft_marketplace_chains()
+    if df.empty:
+        console.print("[red]Failed to fetch data from DappRadar[/red]")
+        return
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="NFT marketplace chains",
+        export=bool(export),
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "drnftchains",
         df,
         sheet_name,
     )

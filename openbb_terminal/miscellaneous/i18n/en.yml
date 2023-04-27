@@ -505,6 +505,7 @@ en:
   crypto/disc/losers: top losers
   crypto/disc/search: search for coins
   crypto/disc/nft: top non fungible tokens
+  crypto/disc/nft_mktp_chains: nft marketplace chains
   crypto/disc/nft_mktp: nft marketplaces
   crypto/disc/games: top blockchain games
   crypto/disc/dapps: top decentralized apps
