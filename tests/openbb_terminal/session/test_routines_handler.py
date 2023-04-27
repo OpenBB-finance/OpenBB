@@ -29,16 +29,9 @@ def fixture_test_user():
     )
 
 
-@pytest.mark.parametrize(
-    "exists",
-    [
-        False,
-        True,
-    ],
-)
-def test_read_routine(mocker, exists: bool, test_user):
+def test_read_routine(mocker, test_user):
     file_name = "test_routine.openbb"
-    routine = "do something"
+    routine = "test_routine"
     current_user = get_current_user()
     path = "openbb_terminal.core.session.routines_handler"
 
@@ -46,50 +39,54 @@ def test_read_routine(mocker, exists: bool, test_user):
         target=path + ".get_current_user",
         return_value=test_user,
     )
-
-    exists_mock = mocker.patch(path + ".os.path.exists", return_value=exists)
+    walk_mock = mocker.patch(
+        path + ".walk", return_value=[(current_user.preferences.USER_ROUTINES_DIRECTORY / "hub", ["personal"], []),
+                                      (current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / "personal", [],
+                                       [file_name])]
+    )
+    relpath_mock = mocker.patch(path + ".os.path.relpath", return_value="hub/personal")
     open_mock = mocker.patch(
         path + ".open",
-        mock_open(read_data=json.dumps(routine)),
+        mock_open(read_data=json.dumps(routine))
     )
-
     assert read_routine(file_name=file_name) == json.dumps(routine)
 
-    exists_mock.assert_called_with(
-        current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
+    walk_mock.assert_called_with(current_user.preferences.USER_ROUTINES_DIRECTORY / "hub")
+    relpath_mock.assert_called_once_with(
+        current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / "personal",
+        current_user.preferences.USER_ROUTINES_DIRECTORY
     )
-    if exists:
-        open_mock.assert_called_with(
-            current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
-        )
-    else:
-        open_mock.assert_called_with(
-            current_user.preferences.USER_ROUTINES_DIRECTORY / file_name
-        )
+    open_mock.assert_called_with(
+        current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / "personal" / file_name
+    )
 
 
 def test_read_routine_exception(mocker, test_user):
     file_name = "test_routine.openbb"
     current_user = get_current_user()
     path = "openbb_terminal.core.session.routines_handler"
-
     mocker.patch(
         target=path + ".get_current_user",
         return_value=test_user,
     )
-    exists_mock = mocker.patch(path + ".os.path.exists")
+    walk_mock = mocker.patch(
+        path + ".walk", return_value=[(current_user.preferences.USER_ROUTINES_DIRECTORY / "hub", ["personal"], []),
+                                      (current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / "personal", [],
+                                       ["do something"])]
+    )
+    relpath_mock = mocker.patch(path + ".os.path.relpath")
     open_mock = mocker.patch(
         path + ".open",
         side_effect=Exception("test exception"),
     )
-
     assert read_routine(file_name=file_name) is None
 
-    exists_mock.assert_called_with(
-        current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
+    walk_mock.assert_called_with(
+        current_user.preferences.USER_ROUTINES_DIRECTORY / "hub"
     )
+    relpath_mock.assert_not_called()
     open_mock.assert_called_with(
-        current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
+        current_user.preferences.USER_ROUTINES_DIRECTORY / file_name
     )
 
 
@@ -102,7 +99,7 @@ def test_read_routine_exception(mocker, test_user):
 )
 def test_save_routine(mocker, exists: bool, test_user):
     file_name = "test_routine.openbb"
-    routine = "do something"
+    routine = ["do something", "personal"]
     current_user = get_current_user()
     path = "openbb_terminal.core.session.routines_handler"
 
@@ -124,12 +121,12 @@ def test_save_routine(mocker, exists: bool, test_user):
         makedirs_mock.assert_not_called()
     else:
         assert (
-            result
-            == current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name
+                result
+                == current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / "personal" / file_name
         )
         makedirs_mock.assert_called_once()
         open_mock.assert_called_with(
-            current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / file_name, "w"
+            current_user.preferences.USER_ROUTINES_DIRECTORY / "hub" / "personal" / file_name, "w"
         )
 
     assert exists_mock.call_count == 2
@@ -137,7 +134,7 @@ def test_save_routine(mocker, exists: bool, test_user):
 
 def test_save_routine_exception(mocker, test_user):
     file_name = "test_routine.openbb"
-    routine = "do something"
+    routine = ["do something", "personal"]
     path = "openbb_terminal.core.session.routines_handler"
 
     mocker.patch(

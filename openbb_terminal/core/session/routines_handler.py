@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
+from os import walk
 
 import openbb_terminal.core.session.hub_model as Hub
 from openbb_terminal.core.session.current_user import get_current_user
@@ -85,12 +86,11 @@ def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]
 
     try:
         user_folder = folder / "hub"
-        file_path = (
-            user_folder / file_name
-            if os.path.exists(user_folder / file_name)
-            else folder / file_name
-        )
-
+        for path, directories, files in walk(user_folder):
+            if file_name in files:
+                file_path = folder / os.path.relpath(path, folder) / file_name
+            else:
+                file_path = folder / file_name
         with open(file_path) as f:
             routine = "".join(f.readlines())
         return routine
@@ -133,6 +133,7 @@ def save_routine(
         folder = current_user.preferences.USER_ROUTINES_DIRECTORY
 
     try:
+        user_folder = folder / "hub"
         if routine[1] == "default":
             user_folder = folder / "hub" / "default"
         elif routine[1] == "personal":
