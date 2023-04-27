@@ -5,7 +5,7 @@ excerpt: This guide introduces the Options sub-menu, within the Stocks menu, and
 ---
 ## Overview
 
-The Options menu provides the user with tools for analyzing equity options.  Wikipedia is a great resource for definitions and for learning about the mechanics of derivatives, read it [here](https://en.wikipedia.org/wiki/Option_(finance)).  These are complex, leveraged, financial instruments requiring specialized knoweledge and a different frame-of-mind than the approach taken by an equities long-only investor.  Always conduct thorough due diligence.
+The Options menu provides the user with tools for analyzing equity options.  Wikipedia is a great resource for definitions and for learning about the mechanics of derivatives, read it [here](https://en.wikipedia.org/wiki/Option_(finance)).  These are complex, leveraged, financial instruments requiring specialized knowledge and a different frame-of-mind than the approach taken by an equities long-only investor.  Always conduct thorough due diligence.
 
 ### The Options Menu
 
@@ -96,6 +96,10 @@ Let's take a look at one of these tickers, GM.  The default source will be `Yaho
 load gm
 ```
 
+:::note
+**This obtains the data for all the expirations, very long chains - like SPY - may take a few moments to load.**
+:::
+
 ```console
 Getting Option Chain ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
 Loaded option chain from YahooFinance
@@ -103,7 +107,7 @@ Loaded option chain from YahooFinance
 
 #### pcr
 
-The `pcr` command plots a rolling put/call ratio (ten years max) over a selectable window of time (default is 30).
+The `pcr` command plots a rolling put/call ratio (ten years max) over a selectable window of time (default is 30 days).
 
 ```console
 pcr -l 90 -s 2010-04-01
