@@ -10,21 +10,27 @@ top -s Market Cap -r
 trending
 
 # cggainers
-gainers
-gainers -s Price [$] -l 5 -i 14d
+# gainers # bugged
+# gainers -s Price [$] -l 5 -i 14d # bugged
 
 # cglosers
-losers
-losers -s Price [$] -l 5 -i 14d
+#losers # bugged
+# losers -s Price [$] -l 5 -i 14d # bugged
 
 # cpsearch CURRENTLY BUGGY
 search ${crypto=bitcoin}
 search -q ${crypto=bitcoin} -s name
 search -q ${crypto=bitcoin} -c exchanges -l 2
 
-nft
-games
+nft_mktp_chains
+nft_mktp
 dapps
-dex
+dapp_categories
+dapp_chains
+dapp_metrics --dappId 3
+defi_chains
+tokens
 
+help
+reset
 exit
