@@ -6,6 +6,7 @@ keywords:
     openbb,
     discord,
     telegram,
+    slack,
     beginner guide,
     how to use openbb bot,
     introduction,

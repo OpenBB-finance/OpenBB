@@ -1,8 +1,10 @@
 import { flexRender } from "@tanstack/react-table";
 import clsx from "clsx";
 import { FC } from "react";
+import { includesDateNames } from "../../utils/utils";
 import { useDrag, useDrop } from "react-dnd";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+
 function Filter({
   column,
   table,
@@ -29,9 +31,15 @@ function Filter({
 
   const columnFilterValue = column.getFilterValue();
 
-  const isProbablyDate =
-    column.id.toLowerCase().includes("date") ||
-    (column.id.toLowerCase() === "index" && !valuesContainStringWithSpaces);
+  const isProbablyDate = values.every((value) => {
+    if (typeof value !== "string") return false;
+    const only_numbers = value.replace(/[^0-9]/g, "");
+    return (
+      only_numbers.length >= 4 &&
+      (includesDateNames(column.id) ||
+        (column.id.toLowerCase() === "index" && !valuesContainStringWithSpaces))
+    );
+  });
 
   if (isProbablyDate) {
     function getTime(value) {

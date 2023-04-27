@@ -1,8 +1,15 @@
 const ICONS = {
   sunIcon: {
+    viewBox: "0 0 16 16",
     width: 16,
     height: 16,
     path: "M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z",
+  },
+  moonIcon: {
+    viewBox: "0 0 25 25",
+    width: 25,
+    height: 25,
+    path: "M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z",
   },
   plotCsv: {
     width: 900,
@@ -384,12 +391,6 @@ function button_pressed(title, active = false) {
 }
 
 const DARK_CHARTS_TEMPLATE = {
-  line: {
-    up_color: "#00ACFF",
-    down_color: "#e4003a",
-    color: "#ffed00",
-    width: 1.5,
-  },
   data: {
     candlestick: [
       {
@@ -493,12 +494,6 @@ const DARK_CHARTS_TEMPLATE = {
 };
 
 const LIGHT_CHARTS_TEMPLATE = {
-  line: {
-    up_color: "#009600",
-    down_color: "#c80000",
-    color: "#0d0887",
-    width: 1.5,
-  },
   data: {
     barpolar: [
       {
@@ -1039,7 +1034,7 @@ const LIGHT_CHARTS_TEMPLATE = {
     },
     xaxis: {
       automargin: true,
-      ticks: "",
+      ticks: "outside",
       zerolinewidth: 2,
       rangeslider: {
         visible: false,
@@ -1049,17 +1044,23 @@ const LIGHT_CHARTS_TEMPLATE = {
       tickfont: {
         size: 15,
       },
+      title: {
+        standoff: 20,
+      },
       mirror: true,
       zeroline: false,
     },
     yaxis: {
       automargin: true,
-      ticks: "",
+      ticks: "outside",
       tickfont: {
         size: 15,
       },
       zerolinewidth: 2,
       fixedrange: false,
+      title: {
+        standoff: 20,
+      },
       nticks: 8,
       showgrid: true,
       showline: true,

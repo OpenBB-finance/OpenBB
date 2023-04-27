@@ -23,6 +23,9 @@ module.exports = {
         "2xl": { css: disabledCss },
       },
       colors: {
+        "burgundy-300": "#B47DA0",
+        "burgundy-400": "#9B5181",
+        "burgundy-500": "#822661",
         "grey-50": "#f6f6f6ff",
         "grey-100": "#eaeaeaff",
         "grey-200": "#dcdcdcff",

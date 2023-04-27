@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Dict, Optional, Tuple
 
 from prompt_toolkit import PromptSession
 
@@ -18,12 +18,8 @@ def display_welcome_message():
     """Display welcome message"""
     with open(PACKAGE_DIRECTORY / "core" / "session" / "banner.txt") as f:
         console.print(f"[menu]{f.read()}[/menu]\n")
-        console.print(f"Register     : [cmds]{REGISTER_URL}[/cmds]")
-        console.print(f"Ask support  : [cmds]{SUPPORT_URL}[/cmds]")
-        console.print(
-            "[yellow]\nWARNING: This is a pre-release version published for testing.[/yellow]"
-            "[yellow]\nBeware that your account will be deleted without notice.[/yellow]"
-        )
+        console.print(f"Register : [cmds]{REGISTER_URL}[/cmds]")
+        console.print(f"Support  : [cmds]{SUPPORT_URL}[/cmds]")
 
 
 def get_user_input() -> Tuple[str, str, bool]:
@@ -106,9 +102,9 @@ def login_and_launch(session: dict, remember: bool = False):
         prompt(welcome=True)
 
 
-def main():
+def main(session: Optional[Dict] = None):
     """Main function"""
-    local_session = Local.get_session()
+    local_session = Local.get_session() if session is None else session
     if not local_session:
         prompt()
     else:

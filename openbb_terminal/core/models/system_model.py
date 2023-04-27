@@ -27,9 +27,10 @@ class SystemModel(BaseModel):
     PLATFORM: str = str(platform.platform())
 
     # OpenBB section
-    VERSION = "3.0.0rc2"
+    VERSION = "3.0.0"
 
     # Logging section
+    LOGGING_APP_ID: str = "REPLACE_ME"
     LOGGING_APP_NAME: str = "gst"
     LOGGING_AWS_ACCESS_KEY_ID: str = "REPLACE_ME"
     LOGGING_AWS_SECRET_ACCESS_KEY: str = "REPLACE_ME"

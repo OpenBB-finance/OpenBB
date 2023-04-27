@@ -1,7 +1,7 @@
 ---
 title: Insider Trading
-keywords: [Executive, director, directors, CEO, CFO, CIO, COO, DIR, sell, buy, SEC, disclosure, disclose, stats, act, lins, filter, view, set, lcb, lpsb, lit, lip, blip, blop, blcp, lis, blis, blos, blcs, topt, toppw, toppm, tipt, tippw, tippm, tist, tispw, tispm, openinsider, finviz, business, stocks, options]
-description: This guide introduces the Insider Trading submenu, within the Stocks menu, by briefly explaining the features and how to use them, showing examples in context.
+keywords: [Executive, director, directors, CEO, CFO, CIO, COO, DIR, sell, buy, SEC, disclosure, disclose, stats, act, lins, filter, view, set, lcb, lpsb, lit, lip, blip, blop, blcp, lis, blis, blos, blcs, topt, toppw, toppm, tipt, tippw, tippm, tist, tispw, tispm, openinsider, finviz, business, stocks, options, insider trading, insider, how to, example, retail trade, guided missiles]
+description: This guide introduces the Insider Trading submenu, within the Stocks menu, by briefly explaining the features and how to use them, and showing examples in context.
 ---
 
 The Insider Trading menu gives stock screener for SEC Form 4 filings and researching individual companies for executive and director transactions. Navigate to the Insider Trading submenu from the `stocks` menu by typing `ins` and pressing `enter`. The features in this menu function only for companies registered with the SEC, that also trade in public markets.

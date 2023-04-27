@@ -15,6 +15,18 @@ keywords:
     how to,
     openbb,
     sdk,
+    learn,
+    guide,
+    data,
+    financial data,
+    analysis,
+    open source,
+    visualization,
+    dashboard,
+    report,
+    custom,
+    jupyter,
+    jupyter notebook
   ]
 description: The OpenBB Documentation provides guidance on how to use the OpenBB SDK, a free, custom built financial SDK that will help you make more informed decisions, faster.
 ---

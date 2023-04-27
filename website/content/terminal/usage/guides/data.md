@@ -1,9 +1,13 @@
 ---
-title: Exporting and Importing Datasets
+title: Exporting & Importing Datasets
 sidebar_position: 3
-description: The `OpenBBUserData` folder is where files are saved when they are created from within the OpenBB Terminal, like exports and generated reports. It is also where user-generated files are stored.
-keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbuserdata, terminal, user, data, presets, screener, portfolio, styles, themes]
+description: Export and import data from your computer or server to and from the OpenBB Terminal.
+keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbuserdata, openbb terminal, terminal, user, data, presets, screener, portfolio, styles, themes, folder, default, macos, windows]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Exporting & Importing Data - Terminal | OpenBB Docs" />
 
 The OpenBB Terminal offers a variety of ways to export financial data. This can be through XLSX, CSV or JSON but also through PNG, JPG, PDF and SVG giving plenty of flexibility to export the data the way you desire.
 
