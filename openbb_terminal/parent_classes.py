@@ -326,7 +326,7 @@ class BaseController(metaclass=ABCMeta):
                 "other_args": other_args_str,
                 "input": the_input,
             }
-            logger.info("CMD: %s ", json.dumps(cmd))
+            logger.info("CMD: %s", json.dumps(cmd))
 
         if the_input not in self.KEYS_MENU:
             self.log_queue()
