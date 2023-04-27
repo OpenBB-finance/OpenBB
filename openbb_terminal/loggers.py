@@ -115,7 +115,7 @@ class PosthogHandler(logging.Handler):
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict"""
         log_regex = r"(KEYS|PREFERENCES|SYSTEM|CMD|QUEUE): (.*)"
-        log_dict = {}
+        log_dict: Dict[str, Any] = {}
 
         for log in re.findall(log_regex, log_info):
             log_dict[log[0]] = json.loads(log[1])
@@ -160,7 +160,7 @@ class PosthogHandler(logging.Handler):
     def extract_log_extra(self, record: logging.LogRecord) -> Dict[str, Any]:
         """Extract log extra from record"""
 
-        log_extra = {
+        log_extra: Dict[str, Any] = {
             "appName": self.app_settings.name,
             "appId": self.app_settings.identifier,
             "sessionId": self.app_settings.session_id,
