@@ -16,6 +16,8 @@ st.set_page_config(
     page_title="Correlation",
     initial_sidebar_state="expanded",
 )
+
+st_helpers.set_current_page("Correlation")
 st_helpers.set_css()
 st.sidebar.markdown(
     "<h2 style='text-align: center;'>Correlation Analysis</h2>",
