@@ -152,7 +152,7 @@ class OnchainController(BaseController):
             dest="query",
             type=str,
             nargs="+",
-            required=True,
+            required=not any(["-h" in other_args,"--help" in other_args]),
             help="Query to make",
         )
 
