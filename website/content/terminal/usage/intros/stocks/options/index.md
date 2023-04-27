@@ -11,8 +11,8 @@ The Options menu provides the user with tools for analyzing equity options.  Wik
 
 Navigate to the menu by typing `options`, from the `Stocks` menu, and then pressing enter. Alternatively, absolute path navigation can jump straight there, from anywhere. `/stocks/options`.  The source for the options data can be defined using the `load` command, or a default preference can be defined using the `/sources` menu.  The chains data returned will vary by source.  The following sources are currently available to use:
 
-- Nasdaq
 - YahooFinance
+- Nasdaq
 - Tradier (requires API key)
 - Intrinio (requires API key)
 
@@ -86,7 +86,7 @@ unu -l 500
 
 This returned over 500 results which can then be filtered, for example, by June/23 expirations.  There were thirty-four results.
 
-![Unusual Options](options1.png)
+![Unusual Options](https://user-images.githubusercontent.com/85772166/234757578-da79b032-416b-4e0a-b759-a05f651f28a2.png)
 
 #### load
 
@@ -109,7 +109,7 @@ The `pcr` command plots a rolling put/call ratio (ten years max) over a selectab
 pcr -l 90 -s 2010-04-01
 ```
 
-![GM 90-Day P/C Ratio](options2.png)
+![GM 90-Day P/C Ratio](https://user-images.githubusercontent.com/85772166/234757627-8250700b-1586-4535-948e-33d6ff18c4a2.png)
 
 Adding in an overlay from an exported CSV file adds more context to the story.
 
@@ -117,7 +117,7 @@ Adding in an overlay from an exported CSV file adds more context to the story.
 /stocks/load GM --start 2013-04-01 --monthly --export gm_monthly.csv
 ```
 
-![GM 90-Day P/C Ratio Against Share Price](options3.png)
+![GM 90-Day P/C Ratio Against Share Price](https://user-images.githubusercontent.com/85772166/234757705-0bc63a89-0cb8-4d32-a403-2a8aa7b0337a.png)
 
 #### exp
 
@@ -139,7 +139,7 @@ Use the `plot` function to draw the volatility smile for the selected expiration
 plot -c smile
 ```
 
-![Volatility Smile](options4.png)
+![Volatility Smile](https://user-images.githubusercontent.com/85772166/234757758-537ada39-cf47-49e3-a861-b97c4b7a9919.png)
 
 #### greeks
 
@@ -149,6 +149,6 @@ Calculate the second order Greeks - Rho, Phi, Charm, Vanna, Vomma - with the `gr
 greeks --risk-free 4.8 --all
 ```
 
-![Greeks Command](options5.png)
+![Greeks Command](https://user-images.githubusercontent.com/85772166/234757813-c6a7b04f-3a20-4c7b-841b-1cd3fec7c088.png)
 
-![Second Order Greeks](options6.png)
+![Second Order Greeks](https://user-images.githubusercontent.com/85772166/234757864-749ff78e-00c3-465a-b1b1-f4d0d2991c84.png)
