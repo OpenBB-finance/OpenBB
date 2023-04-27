@@ -300,14 +300,6 @@
             });
           }
 
-          if (globals.cmd_src != "") {
-            posthog.capture("chart", {
-              command: globals.cmd_src,
-              title: window.plotly_figure.layout.title.text,
-              date: formattedDate,
-            });
-          }
-
           document
             .querySelector('meta[name="color-scheme"]')
             .setAttribute(
