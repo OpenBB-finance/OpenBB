@@ -512,6 +512,7 @@ en:
   crypto/disc/dapp_categories: show available dapp categories
   crypto/disc/dapp_chains: show available dapp chains
   crypto/disc/dapp_metrics: show dapp metrics
+  crypto/disc/defi_chains: show available defi chains
   crypto/disc/dex: top decentralized exchanges
   crypto/ov/global: global crypto market statistics
   crypto/ov/defi: global DeFi market info

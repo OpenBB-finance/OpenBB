@@ -456,3 +456,28 @@ def display_dapp_metrics(
         df,
         sheet_name,
     )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def display_defi_chains(export: str = "", sheet_name: Optional[str] = None) -> None:
+    """Prints table showing defi chains [Source: https://dappradar.com/]"""
+
+    df = dappradar_model.get_defi_chains()
+    if df.empty:
+        console.print("[red]Failed to fetch data from DappRadar[/red]")
+        return
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Defi chains",
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "drdefichains",
+        df,
+        sheet_name,
+    )

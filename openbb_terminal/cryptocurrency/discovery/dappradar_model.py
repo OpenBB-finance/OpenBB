@@ -547,3 +547,25 @@ def get_dapp_metrics(
         )
 
     return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_DAPPRADAR_KEY"])
+def get_defi_chains() -> pd.DataFrame:
+    """Get defi chains [Source: https://dappradar.com/]
+
+    Returns
+    -------
+    pd.DataFrame
+        Columns: Chains
+    """
+
+    response = _make_request("https://api.dappradar.com/4tsxo4vuhotaojtl/defi/chains")
+    if response:
+        data = response.get("chains")
+
+        return pd.DataFrame(
+            data,
+            columns=["Chains"],
+        )
+    return pd.DataFrame()

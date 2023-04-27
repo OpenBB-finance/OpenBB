@@ -45,6 +45,7 @@ class DiscoveryController(BaseController):
         "dapp_categories",
         "dapp_chains",
         "dapp_metrics",
+        "defi_chains",
         "dex",
     ]
 
@@ -93,7 +94,8 @@ class DiscoveryController(BaseController):
         mt.add_cmd("dapps")
         mt.add_cmd("dapp_categories")
         mt.add_cmd("dapp_chains")
-        mt.add_cmd("dapp_metrics")
+        mt.add_cmd("dapp_metrics"),
+        mt.add_cmd("defi_chains")
         mt.add_cmd("dex")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
 
@@ -739,6 +741,30 @@ class DiscoveryController(BaseController):
 
         if ns_parser:
             dappradar_view.display_nft_marketplace_chains(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_defi_chains(self, other_args):
+        """Process defi_chains command"""
+        parser = argparse.ArgumentParser(
+            prog="defi_chains",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows DeFi chains [Source: https://dappradar.com/]
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            dappradar_view.display_defi_chains(
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name

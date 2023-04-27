@@ -768,6 +768,9 @@
       "dapp_metrics": [
         "DappRadar"
       ],
+      "defi_chains": [
+        "DappRadar"
+      ],
       "dex": [
         "DappRadar"
       ]
