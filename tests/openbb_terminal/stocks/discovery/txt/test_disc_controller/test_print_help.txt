@@ -5,7 +5,7 @@
     losers             show latest top losers                                          [YahooFinance]
     ugs                undervalued stocks with revenue and earnings growth above 25%   [YahooFinance]
     gtech              tech stocks with revenue and earnings growth more than 25%      [YahooFinance]
-    active             most active stocks by intraday trade volume                     [YahooFinance]
+    active             most active stocks by intraday trade volumest                   [YahooFinance]
     ulc                potentially undervalued large cap stocks                        [YahooFinance]
     asc                small cap stocks with earnings growth rates better than 25%     [YahooFinance]
     arkord             orders by ARK Investment Management LLC                         [CathiesArk]
@@ -16,3 +16,4 @@
     rtat               top 10 retail traded stocks per day                             [Nasdaq]
     divcal             dividend calendar for selected date                             [Nasdaq]
     heatmap            heatmap of SP500 tickers
+
