@@ -6,12 +6,8 @@ import os
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import (
-    PreferencesModel,
-    copy_user,
-)
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.cryptocurrency.discovery import discovery_controller
-
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -209,30 +205,23 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_dapps",
+            "call_dapp_categories",
             [],
-            "dappradar_view.display_top_dapps",
-            [],
-            dict(),
-        ),
-        (
-            "call_games",
-            [],
-            "dappradar_view.display_top_games",
+            "dappradar_view.display_dapp_categories",
             [],
             dict(),
         ),
         (
-            "call_dex",
+            "call_dapp_chains",
             [],
-            "dappradar_view.display_top_dexes",
+            "dappradar_view.display_dapp_chains",
             [],
             dict(),
         ),
         (
-            "call_nft",
+            "call_nft_mktp",
             [],
-            "dappradar_view.display_top_nfts",
+            "dappradar_view.display_nft_marketplaces",
             [],
             dict(),
         ),
@@ -268,6 +257,27 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_search",
             ["MOCK_QUERY"],
             "coinpaprika_view.display_search_results",
+            [],
+            dict(),
+        ),
+        (
+            "call_nft_mktp_chains",
+            [],
+            "dappradar_view.display_nft_marketplace_chains",
+            [],
+            dict(),
+        ),
+        (
+            "call_defi_chains",
+            [],
+            "dappradar_view.display_defi_chains",
+            [],
+            dict(),
+        ),
+        (
+            "call_tokens",
+            [],
+            "dappradar_view.display_token_chains",
             [],
             dict(),
         ),

@@ -1,0 +1,92 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      X-BLOBR-KEY:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://api.dappradar.com/4tsxo4vuhotaojtl/nfts/marketplaces?resultsPerPage=10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA7yXWW/jNhDHv0qgZ5sihxwefsumRQ+gbYDsQ4uiWNASZXtXlgRJziZY5LvvyDlM
+        uSkf2mYDx7CO4Yi/+c+hL9lwKIowDNlq7A9hkfW+2YRslYHaZotsaPuRDm7b+rAPdNz2ZejpRBmG
+        gg6Lrd812ao51DVZhuFQj7TQn1+yxu+nRd7Vh/75tulCFsZt6MNhn/21yOp209I923HshlWeN9W4
+        3IfRD6G/3RWBlb7rel/6nhXtPvfdLt+HcufzwddhyH1zP1nke99/CmNXe9pDviZ3rGs25HKy/qnM
+        VsC1wkXmbzfXPa2arYQWhqEAAANCSift6ep16IvQjH4TrraPGJaOGTJ/2j8Zc6tQCYbWKO6ctc/X
+        XjEVnFm5yEbaROhp9wq1ejl85X7OpHlYvLD7rQvNTfAzfL5f7yhM+2x6Zl/7pthOUVnvGvoZlgPR
+        GJePQVmcWC+yrq3vN21zDChZ+bfB39ITD8GfRUDIGL8xzDkUBoXjznCpk/QFMBvh18KiAsccl1Kj
+        VCJF3zKuI/pCIbcJ/EDRQh3/RbH4Hf6Ab6jjO7gH9rELc4yoZyQ1KsfQgEZAcFy4JEnUDCESMudA
+        UmZaoJXaqQRICUxADNKlVAyKyZjcVX/fje31ofk0fEOAxdFrN3k9VyPMigGXVhumTJKdQibsiR1w
+        Y6RiSWhasqnsnHI/lfhSMikjZj9f/3BxM7Z9mBErfF/6pn0FWOmH7bqly0s/DGEczoiVbUEP2Yy5
+        sMpB/rHbDNPiy+muZYxt+eRiOa2/FFrf0f+HwB3KqnLAFWBYY6i80VAVWLpybWV5DnhyEjN2lIhg
+        HZVbY+Eonn9GTSVTRSIFKSktpeModCrVFVNxoRXSmBRv8iIg4v3ru8uL9213cbNtxxnyqm4/v41A
+        m7UnfQ7k8AwfIopZvWQowWiuKNEpaZ3GFD/NQJz4KSqxiRIJyFRcIcHZFDbHlIigXd7twsUvpz29
+        nt00FbQNdaM3gejpEc7wOeXwDJ9WJFdjuaG2w0VSfdTXZYSPWjw1BS7RKqUh1WwmkcYkZZLkUlOr
+        iVC+3xKH7/q2mzEcp7P/Jdu1ECY/rlLS2q+k+/HaPNkNWo8IAtfOgxWWV0Wh6NvSapXmf+vtk4+Y
+        tyRiQO0djJKSQ7q7g2Qu5o1cGhq3nBAURZmSLjV3O2vuwiV40xQBcU+6HNv9rvjxsJ7x/uzv3kim
+        R3ePp8740SZncuXUVajk0axihXGKdJcEKI8jzjM/MjSahIjCOqON4yZVM48t7QWgdkakujqzccH8
+        vg6TxOaj6b+ZR/8n3keL0o8+f/aR87ugfEHtRqoiVCSt4EtwCirv/JqLUNiq4EUlrMhL6mj04vJB
+        K/qcBciidHGAkMYbS+ER0hlDX5CKj5oKShwgoSWNEkaTxC0omdA3jRyam9kEoWWypyHj+EA8O39c
+        4PHHVXugMFFbfX47ezoxdeGn1zVa6/rRhD98BQAA//8DAAjczkYNDgAA
+    headers:
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - '*'
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Apr 2023 13:32:46 GMT
+      Etag:
+      - W/"e0d-612H85k+TIxGeMwKHPKi7bl2ebw"
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via:
+      - 1.1 b0311c7e530c126dd286898583b59e4c.cloudfront.net (CloudFront)
+      X-Amz-Apigw-Id:
+      - ECfr1Gz5FiAFX5w=
+      X-Amz-Cf-Id:
+      - rTNpPVFDje8cq3q1uXYD9H49H_b2CFhqp6LucpGZfFs9McrLarXRVQ==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Amzn-Remapped-Connection:
+      - keep-alive
+      X-Amzn-Remapped-Content-Length:
+      - '3597'
+      X-Amzn-Remapped-Date:
+      - Thu, 27 Apr 2023 13:32:46 GMT
+      X-Amzn-Remapped-Server:
+      - nginx/1.23.3
+      X-Amzn-Requestid:
+      - a3d04c3c-d54a-4fd0-b797-0df1ac6350ae
+      X-Amzn-Trace-Id:
+      - Root=1-00000000-000000000000000000000000
+      X-Blobr-Request-Id:
+      - 1682602366559162816-YXdzLWV1LXdlc3QtMQ==-a07133d696ac4abbb3098ae685029a1d7f7150fe7d8646928aaf230a57ba1a0f
+      X-Blobr-Version:
+      - 2.9.0
+      X-Cache:
+      - Miss from cloudfront
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
