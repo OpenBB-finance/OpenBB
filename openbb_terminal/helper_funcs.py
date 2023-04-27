@@ -14,7 +14,11 @@ import re
 import sys
 import urllib.parse
 import webbrowser
-from datetime import date as d, datetime, timedelta
+from datetime import (
+    date as d,
+    datetime,
+    timedelta,
+)
 from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path

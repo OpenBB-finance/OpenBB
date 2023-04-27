@@ -744,16 +744,10 @@
       "search": [
         "CoinPaprika"
       ],
-      "nft": [
-        "DappRadar"
-      ],
       "nft_mktp_chains": [
         "DappRadar"
       ],
       "nft_mktp": [
-        "DappRadar"
-      ],
-      "games": [
         "DappRadar"
       ],
       "dapps": [
@@ -772,9 +766,6 @@
         "DappRadar"
       ],
       "tokens": [
-        "DappRadar"
-      ],
-      "dex": [
         "DappRadar"
       ]
     },
