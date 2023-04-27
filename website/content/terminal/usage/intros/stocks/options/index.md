@@ -78,7 +78,7 @@ Ticker   | Exp        |   Strike | Type   |   Vol/OI |   Vol |   OI |   Bid |   
 | HPQ      | 2023-05-05 |     29.5 | Call   |     25.7 |  3986 |  155 |  0.28 |  0.31 |
 | MSFT     | 2023-04-28 |    292.5 | Put    |     20.8 | 24519 | 1178 |  1.28 |  1.3  |
 
-With the new interactive tables, it may be better to remove the limit utilize the built-in filtering.
+With the new interactive tables, it may be better to remove the limit and utilize the table's built-in filtering.
 
 ```console
 unu -l 500
@@ -121,7 +121,7 @@ Adding in an overlay from an exported CSV file adds more context to the story.
 
 #### exp
 
-After loading, you can select an expiration date for the chain using the `exp` command.  To display the list of available expirations, use the function with no arguments.  The date can be selected by entering a number - with `0` being the nearest expiry - or by entering the date, formatted as `YYYY-MM-DD`.
+After loading, select an expiration date for the chain using the `exp` command.  To display the list of available expirations, use the function with no arguments.  The date can be selected by entering a number - with `0` being the nearest expiry - or by entering the date, formatted as `YYYY-MM-DD`.
 
 ```console
 exp 2023-06-02
