@@ -112,12 +112,14 @@ Use the `infoswe` command when the target country is, `sweden`, and a loaded fun
 /funds/country sweden/load F00000OW3P/infoswe
 ```
 
+**The description below has been translated into English in this documentation because of the spelling checkers working in the repository are expecting English.**
+
 ```console
 The fund Avanza 100 - SE0004841526 (F00000OW3P) was successfully loaded.
 
 Swedish Description:
 
-Fonden är en fondandelsfond och har som mål att ge en positiv avkastning på lång sikt med hänsyn tagen till fondens risknivå. De underliggande fonderna skall vara kostnadseffektiva och ha en bred marknadsexponering. Fonden placerar främst i globala, svenska och tillväxtmarknadsorienterade aktiefonder. Den aktieexponerade andelen i fonden ligger normalt mellan 80 och 100 procent.
+The fund is a mutual fund and aims to provide a positive return in the long term, taking into account the fund's risk level. The underlying funds must be cost-effective and have broad market exposure. The fund mainly invests in global, Swedish and growth market-oriented equity funds. The share exposed to shares in the fund is normally between 80 and 100 percent.
 
 The fund is managed by:
         - Peter Stengård since 2012-10-19
