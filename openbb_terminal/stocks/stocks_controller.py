@@ -332,7 +332,7 @@ class StocksController(StockBaseController):
             action="store",
             dest="s_ticker",
             required=False,
-            default="",
+            default=self.ticker,
             help=translate("stocks/QUOTE_ticker"),
         )
 
@@ -344,9 +344,9 @@ class StocksController(StockBaseController):
         )
         if ns_parser:
             tickers = ns_parser.s_ticker.split(",")
-            if ns_parser.s_ticker and len(ns_parser.s_ticker) == 1:
+            if ns_parser.s_ticker and len(tickers) == 1:
                 self.ticker = ns_parser.s_ticker
-                self.ticker = self.custom_load_wrapper([self.ticker])
+                self.custom_load_wrapper([self.ticker])
 
             stocks_view.display_quote(
                 tickers,
