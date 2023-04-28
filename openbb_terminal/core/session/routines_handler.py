@@ -10,6 +10,9 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
 
+# created dictionaries for personal and default routines with the structure
+# {"file_name" :["script","personal/default"]}
+# and stored dictionaries in list
 def download_routines(auth_header: str, silent: bool = False) -> list:
     """Download default and personal routines.
 
@@ -62,6 +65,7 @@ def download_routines(auth_header: str, silent: bool = False) -> list:
     return [personal_routines_dict, default_routines_dict]
 
 
+# use os.walk to search subdirectories and then construct file path
 def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
     """Read the routine.
 
@@ -99,6 +103,7 @@ def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]
         return None
 
 
+# created new directory structure to account for personal and default routines
 def save_routine(
     file_name: str,
     routine: list,

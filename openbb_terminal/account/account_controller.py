@@ -371,6 +371,8 @@ class AccountController(BaseController):
                         self.REMOTE_CHOICES.append(name)
                         self.update_runtime_choices()
 
+    # store data in list with "personal/default" to identify data's routine type
+    # and for save_routine
     @log_start_end(log=logger)
     def call_download(self, other_args: List[str]):
         """Download"""
