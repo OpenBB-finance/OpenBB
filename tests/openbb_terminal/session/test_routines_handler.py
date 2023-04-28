@@ -4,6 +4,7 @@
 # IMPORTATION THIRDPARTY
 import json
 from unittest.mock import mock_open
+from requests import Response
 
 import pytest
 
@@ -16,7 +17,7 @@ from openbb_terminal.core.models.user_model import (
     UserModel,
 )
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.session.routines_handler import read_routine, save_routine
+from openbb_terminal.core.session.routines_handler import read_routine, save_routine, download_routines
 
 
 @pytest.fixture(name="test_user")
@@ -151,3 +152,129 @@ def test_save_routine_exception(mocker, test_user):
 
     result = save_routine(file_name=file_name, routine=routine)
     assert result is None
+
+
+def test_download_routine(mocker, test_user, silent=False):
+    path_hub_model = "openbb_terminal.core.session.hub_model"
+    path_routines_handler = "openbb_terminal.core.session.routines_handler"
+    mocker.patch(
+        target=path_routines_handler + ".get_current_user",
+        return_value=test_user,
+    )
+    response_default = Response()
+    response_default.status_code = 200
+    content = {
+        "data": [{"name": "script1",
+                  "description": "abc",
+                  "script": "do something"}]
+    }
+    response_default._content = json.dumps(content).encode(  # pylint: disable=protected-access
+        "utf-8"
+    )
+    # print(response_default._content)
+
+    response_personal = Response()
+    response_personal.status_code = 200
+    content = {
+        "items": [{"name": "script2",
+                   "description": "cde",
+                   "script": "do something"}]
+    }
+
+    response_personal._content = json.dumps(content).encode(  # pylint: disable=protected-access
+        "utf-8"
+    )
+    get_default_routines_mock = mocker.patch(target=path_hub_model + ".get_default_routines",
+                                             return_value=response_default)
+    get_personal_routines_mock = mocker.patch(target=path_hub_model + ".list_routines", return_value=response_personal)
+    assert download_routines(test_user.profile.get_auth_header()) == [{"script2": ["do something", "personal"]},
+                                                                      {"script1": ["do something", "default"]}]
+
+    get_default_routines_mock.assert_called_once()
+    get_personal_routines_mock.assert_called_once_with(
+        auth_header=test_user.profile.get_auth_header(), fields=["name", "script"], page=1, size=100, silent=silent
+    )
+
+
+def test_download_default_routine_exception(mocker, test_user, silent=False):
+    path_hub_model = "openbb_terminal.core.session.hub_model"
+    path_routines_handler = "openbb_terminal.core.session.routines_handler"
+    mocker.patch(
+        target=path_routines_handler + ".get_current_user",
+        return_value=test_user,
+    )
+    response_personal = Response()
+    response_personal.status_code = 200
+    content = {
+        "items": [{"name": "script2",
+                   "description": "cde",
+                   "script": "do something"}]
+    }
+    response_personal._content = json.dumps(content).encode(  # pylint: disable=protected-access
+        "utf-8"
+    )
+    get_personal_routines_mock = mocker.patch(target=path_hub_model + ".list_routines", return_value=response_personal)
+    get_default_routines_mock = mocker.patch(
+        path_hub_model + ".get_default_routines",
+        side_effect=Exception("test exception"),
+    )
+    assert download_routines(test_user.profile.get_auth_header()) == [{"script2": ["do something", "personal"]},
+                                                                      {}]
+    get_default_routines_mock.assert_called_once()
+    get_personal_routines_mock.assert_called_once_with(
+        auth_header=test_user.profile.get_auth_header(), fields=["name", "script"], page=1, size=100, silent=silent
+    )
+
+
+def test_download_personal_routine_exception(mocker, test_user, silent=False):
+    path_hub_model = "openbb_terminal.core.session.hub_model"
+    path_routines_handler = "openbb_terminal.core.session.routines_handler"
+    mocker.patch(
+        target=path_routines_handler + ".get_current_user",
+        return_value=test_user,
+    )
+    response_default = Response()
+    response_default.status_code = 200
+    content = {
+        "data": [{"name": "script1",
+                  "description": "abc",
+                  "script": "do something"}]
+    }
+    response_default._content = json.dumps(content).encode(  # pylint: disable=protected-access
+        "utf-8"
+    )
+    get_default_routines_mock = mocker.patch(target=path_hub_model + ".get_default_routines",
+                                             return_value=response_default)
+    get_personal_routines_mock = mocker.patch(
+        path_hub_model + ".list_routines",
+        side_effect=Exception("test exception"),
+    )
+    assert download_routines(test_user.profile.get_auth_header()) == [{},
+                                                                      {"script1": ["do something", "default"]}]
+    get_default_routines_mock.assert_called_once()
+    get_personal_routines_mock.assert_called_once_with(
+        auth_header=test_user.profile.get_auth_header(), fields=["name", "script"], page=1, size=100, silent=silent
+    )
+
+
+def test_download_default_and_personal_routine_exception(mocker, test_user, silent=False):
+    path_hub_model = "openbb_terminal.core.session.hub_model"
+    path_routines_handler = "openbb_terminal.core.session.routines_handler"
+    mocker.patch(
+        target=path_routines_handler + ".get_current_user",
+        return_value=test_user,
+    )
+    get_default_routines_mock = mocker.patch(
+        path_hub_model + ".get_default_routines",
+        side_effect=Exception("test exception"),
+    )
+
+    get_personal_routines_mock = mocker.patch(
+        path_hub_model + ".list_routines",
+        side_effect=Exception("test exception"),
+    )
+    assert download_routines(test_user.profile.get_auth_header()) == [{}, {}]
+    get_default_routines_mock.assert_called_once()
+    get_personal_routines_mock.assert_called_once_with(
+        auth_header=test_user.profile.get_auth_header(), fields=["name", "script"], page=1, size=100, silent=silent
+    )
