@@ -18,17 +18,8 @@
               const data = JSON.parse(window.json_data);
 
               const log_id = data?.log_id || "";
-              const posthog_obj = data?.posthog || {};
-
               if (log_id != "" && log_id != "REPLACE_ME") {
-                if (posthog_obj?.user_id) {
-                  posthog.identify(posthog_obj.user_id, {
-                    email: posthog_obj.email,
-                  });
-                  posthog.alias(posthog_obj.user_id, log_id);
-                } else {
-                  posthog.identify(log_id);
-                }
+                posthog.identify(log_id);
               }
 
               posthog.capture("table", {
