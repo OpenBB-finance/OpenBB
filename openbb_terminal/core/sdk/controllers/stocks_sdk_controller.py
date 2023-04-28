@@ -108,7 +108,6 @@ class StocksController(model.StocksRoot):
             `ipo`: Get IPO calendar\n
             `losers`: Get top losers. [Source: Yahoo Finance]\n
             `lowfloat`: Returns low float DataFrame\n
-            `news`: Gets news. [Source: SeekingAlpha]\n
             `pipo`: Past IPOs dates. [Source: Finnhub]\n
             `rtat`: Gets the top 10 retail stocks per day\n
             `trending`: Returns a list of trending articles\n

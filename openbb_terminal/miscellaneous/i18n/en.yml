@@ -203,7 +203,6 @@ en:
   stocks/disc/arkord: orders by ARK Investment Management LLC
   stocks/disc/upcoming: upcoming earnings release dates
   stocks/disc/trending: trending news
-  stocks/disc/cnews: customized news (buybacks, ipos, spacs, healthcare, politics)
   stocks/disc/lowfloat: low float stocks under 10M shares float
   stocks/disc/hotpenny: today's hot penny stocks
   stocks/disc/rtat: top 10 retail traded stocks per day
@@ -545,9 +544,7 @@ en:
   crypto/onchain/ueat: unique ethereum addresses which made a transaction
   crypto/onchain/ttcp: top traded crypto pairs on given decentralized exchange
   crypto/onchain/baas: bid, ask prices, average spread for given crypto pair
-  crypto/onchain/dt: daily transactions of eth tokens
-  crypto/onchain/ds: stats of eth platform (daily users; fees)
-  crypto/onchain/tvl: total value locked of ERC20 tokens
+  crypto/onchain/query: flipsidecrypto query
   crypto/onchain/_address: Ethereum address
   crypto/onchain/_type: Address type
   crypto/onchain/_ethereum_: Ethereum

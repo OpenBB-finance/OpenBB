@@ -101,7 +101,7 @@ jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
 streamlit = "^1.21.0"
-pywry = "^0.4.8"
+pywry = "^0.5.0"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
@@ -114,6 +114,7 @@ setuptools-rust = {version = "^1.5.2", optional = true}
 transformers = {version = "^4.26.1", optional = true}
 yt-dlp = {version = "^2023.2.17", optional = true}
 pydantic = "^1.10.5"
+posthog = "^3.0.1"
 
 
 
@@ -161,6 +162,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.pydocstyle]
 convention = "numpy"
 match = '((?!test_).)*\.py'
+ignore = "D401"
 
 
 [tool.ruff]

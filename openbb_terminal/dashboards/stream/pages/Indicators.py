@@ -25,11 +25,13 @@ set_system_variable("LOGGING_SUPPRESS", True)
 
 
 pd.options.plotting.backend = "plotly"
+
 st.set_page_config(
     layout="wide",
     page_title="Indicators",
     initial_sidebar_state="expanded",
 )
+st_helpers.set_current_page("Indicators")
 st_helpers.set_css()
 
 logger = st.empty()

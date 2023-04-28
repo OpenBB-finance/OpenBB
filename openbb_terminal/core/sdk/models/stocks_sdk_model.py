@@ -156,7 +156,6 @@ class StocksDiscovery(Category):
         `ipo`: Get IPO calendar\n
         `losers`: Get top losers. [Source: Yahoo Finance]\n
         `lowfloat`: Returns low float DataFrame\n
-        `news`: Gets news. [Source: SeekingAlpha]\n
         `pipo`: Past IPOs dates. [Source: Finnhub]\n
         `rtat`: Gets the top 10 retail stocks per day\n
         `trending`: Returns a list of trending articles\n
@@ -182,7 +181,6 @@ class StocksDiscovery(Category):
         self.ipo = lib.stocks_disc_finnhub_model.get_ipo_calendar
         self.losers = lib.stocks_disc_yahoofinance_model.get_losers
         self.lowfloat = lib.stocks_disc_shortinterest_model.get_low_float
-        self.news = lib.stocks_disc_seeking_alpha_model.get_news
         self.pipo = lib.stocks_disc_finnhub_model.get_past_ipo
         self.rtat = lib.stocks_disc_nasdaq_model.get_retail_tickers
         self.trending = lib.stocks_disc_seeking_alpha_model.get_trending_list
