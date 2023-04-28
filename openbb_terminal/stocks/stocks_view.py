@@ -13,13 +13,13 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_quote(
-    symbol: list[str] = "", export: str = "", sheet_name: Optional[str] = None
+    symbols: list[str], export: str = "", sheet_name: Optional[str] = None
 ):
     """Financial Modeling Prep ticker quote
 
     Parameters
     ----------
-    symbol : str
+    symbols : list[str]
         Fundamental analysis ticker symbol
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
@@ -27,7 +27,7 @@ def display_quote(
         Format to export data
     """
 
-    quote = stocks_model.get_quote(symbol)
+    quote = stocks_model.get_quote(symbols)
     if quote.empty:
         console.print("[red]Data not found[/red]\n")
         return
