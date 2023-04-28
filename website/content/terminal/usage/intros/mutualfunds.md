@@ -5,7 +5,7 @@ description: An introduction to the Mutual Funds menu - search and analyze the g
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-`<HeadTitle title="Mutual Funds - Terminal | OpenBB Docs" />`
+<HeadTitle title="Mutual Funds - Terminal | OpenBB Docs"/>
 
 ## Overview
 
