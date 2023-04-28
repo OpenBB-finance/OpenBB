@@ -632,5 +632,6 @@
       "tr": ["GitHub"]
     },
     "hn": ["HackerNews"]
-  }
+  },
+  "news" : ["Biztoc","Feedparser"]
 }

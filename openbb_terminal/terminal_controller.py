@@ -27,8 +27,7 @@ from openbb_terminal.account.account_controller import (
     get_login_called,
     set_login_called,
 )
-from openbb_terminal.common import feedparser_view
-from openbb_terminal.common import biztoc_view
+from openbb_terminal.common import biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -94,7 +93,6 @@ class TerminalController(BaseController):
         "exe",
         "guess",
         "news",
-        "news_biztoc",
         "intro",
     ]
     CHOICES_MENUS = [
@@ -166,7 +164,7 @@ class TerminalController(BaseController):
             choices["support"] = self.SUPPORT_CHOICES
             choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
-
+            choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -239,95 +237,76 @@ class TerminalController(BaseController):
             type=str,
             help="sources from where to get news from (separated by comma)",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        news_parser = self.parse_known_args_and_warn(
-            parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
-        )
-        if news_parser:
-            query = " ".join(news_parser.term)
-            feedparser_view.display_news(
-                term=query,
-                sources=news_parser.sources,
-                limit=news_parser.limit,
-                export=news_parser.export,
-                sheet_name=news_parser.sheet_name,
-            )
-
-    def call_news_biztoc(self, other_args: List[str]) -> None:
-        """Process news_biztoc command."""
-        parse = argparse.ArgumentParser(
-            add_help=False,
-            prog="news_biztoc",
-            description="display news articles based on term, tag and news source",
-        )
         parse.add_argument(
-            "-t",
-            "--term",
-            dest="term",
-            default="",
-            type=str,
-            nargs="+",
-            help="search for a term on the news",
-        )
-        parse.add_argument(
-            "-tg",
             "--tag",
             dest="tag",
             default="",
             type=str,
-            help="display news for an individual tag",
+            help="display news for an individual tag [Biztoc only]",
         )
         parse.add_argument(
-            "-s",
-            "--source",
-            dest="source",
-            default="",
-            type=str,
-            help="source from where to get news from",
-        )
-        parse.add_argument(
-            "-sl",
             "--sourcelist",
             dest="sourcelist",
             action="store_true",
-            help="list all available sources from where to get news from",
+            help="list all available sources from where to get news from [Biztoc only]",
         )
         parse.add_argument(
-            "-tl",
             "--taglist",
             dest="taglist",
             action="store_true",
-            help="list all trending tags",
+            help="list all trending tags [Biztoc only]",
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        biztoc_parser = self.parse_known_args_and_warn(
-            parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=100
+        news_parser = self.parse_known_args_and_warn(
+            parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=25
         )
-        console.print(biztoc_parser)
-        if biztoc_parser:
-            query = " ".join(biztoc_parser.term)
-            if biztoc_parser.sourcelist and biztoc_parser.sourcelist == True:
-                biztoc_view.display_sources(
-                    export=biztoc_parser.export,
-                    sheet_name=biztoc_parser.sheet_name,
-                )
-            elif biztoc_parser.taglist and biztoc_parser.taglist == True:
-                biztoc_view.display_tags(
-                    export=biztoc_parser.export,
-                    sheet_name=biztoc_parser.sheet_name,
-                )
-            else:
-                biztoc_view.display_news(
+        if news_parser:
+            if news_parser.source == "Feedparser":
+                # If biztoc options passed to feedparser source, let the user know
+                to_return = False
+                if news_parser.taglist:
+                    console.print("--taglist only available for Biztoc.\n")
+                    to_return = True
+                if news_parser.sourcelist:
+                    console.print("--sourcelist only available for Biztoc.\n")
+                    to_return = True
+                if news_parser.tag:
+                    console.print("--tag only available for Biztoc.\n")
+                    to_return = True
+
+                if to_return:
+                    return
+
+                query = " ".join(news_parser.term)
+                feedparser_view.display_news(
                     term=query,
-                    tag=biztoc_parser.tag,
-                    source=biztoc_parser.source,
-                    limit=biztoc_parser.limit,
-                    export=biztoc_parser.export,
-                    sheet_name=biztoc_parser.sheet_name,
+                    sources=news_parser.sources,
+                    limit=news_parser.limit,
+                    export=news_parser.export,
+                    sheet_name=news_parser.sheet_name,
                 )
+            if news_parser.source == "Biztoc":
+                query = " ".join(news_parser.term)
+                if news_parser.sourcelist and news_parser.sourcelist is True:
+                    biztoc_view.display_sources(
+                        export=news_parser.export,
+                        sheet_name=news_parser.sheet_name,
+                    )
+                elif news_parser.taglist and news_parser.taglist is True:
+                    biztoc_view.display_tags(
+                        export=news_parser.export,
+                        sheet_name=news_parser.sheet_name,
+                    )
+                else:
+                    biztoc_view.display_news(
+                        term=query,
+                        tag=news_parser.tag,
+                        source=news_parser.sources,
+                        limit=news_parser.limit,
+                        export=news_parser.export,
+                        sheet_name=news_parser.sheet_name,
+                    )
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""

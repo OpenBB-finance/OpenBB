@@ -6,10 +6,8 @@ import os
 from typing import Optional
 
 from openbb_terminal.common import biztoc_model
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +69,7 @@ def display_sources(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"news_biztoc_sources",
+        "news_biztoc_sources",
         df,
         sheet_name,
     )
@@ -94,7 +92,7 @@ def display_tags(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"news_biztoc_tags",
+        "news_biztoc_tags",
         df,
         sheet_name,
     )
