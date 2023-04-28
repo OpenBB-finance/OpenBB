@@ -27,7 +27,7 @@ from openbb_terminal.account.account_controller import (
     get_login_called,
     set_login_called,
 )
-from openbb_terminal.common import biztoc_view, feedparser_view
+from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -165,6 +165,10 @@ class TerminalController(BaseController):
             choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
             choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
+
+            if biztoc_model.BIZTOC_TAGS:
+                choices["news"]["--tag"] = {c: {} for c in biztoc_model.BIZTOC_TAGS}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

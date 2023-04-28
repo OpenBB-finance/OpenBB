@@ -169,3 +169,13 @@ def get_news(
     df.columns = ["Date", "Title", "Body", "URL"]
     df = df[:limit]
     return df
+
+
+# Define for auto-completion
+try:
+    BIZTOC_TAGS = get_tags().tag.tolist()
+
+
+except Exception:
+    # If key not defined or there is an issue
+    BIZTOC_TAGS = []
