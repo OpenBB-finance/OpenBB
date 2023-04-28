@@ -32,11 +32,11 @@ Commands in the Mutual Funds menu are grouped according to the workflow.
 
 To use the menu, a country must be selected, and the default is `united_states`.  To select a different one, type `country`, followed by the `spacebar`.  This will bring up a list that can be picked from using the up/down arrow keys.
 
-![Mutual Funds Menu](mutualfunds1.png)
+![Mutual Funds Menu](https://user-images.githubusercontent.com/85772166/235046797-0541dfbf-8f2a-41a0-a70b-d6fb890aa61d.png)
 
 Refresh the screen, by typing `?`, to verify the choice has been made.
 
-![Selecting a Country](mutualfunds2.png)
+![Selecting a Country](https://user-images.githubusercontent.com/85772166/235046837-4bc9ad55-a4ca-411d-a3b4-800fe2e03db1.png)
 
 ### Search
 
@@ -46,7 +46,7 @@ The most effective way to sift through a vast quantity of funds is to use the `s
 /funds/country canada/search rbc --limit 1000
 ```
 
-![Search Funds](mutualfunds3.png)
+![Search Funds](https://user-images.githubusercontent.com/85772166/235046894-6cae803b-6b42-4e24-9d16-a02be06599e9.png)
 
 ### Load
 
@@ -74,7 +74,7 @@ The holdings data returned will vary by country.  Some will only return the top 
 /funds/country canada/load F00000U48G/holdings
 ```
 
-![Holdings](mutualfunds4.png)
+![Holdings](https://user-images.githubusercontent.com/85772166/235046949-e4aa2a5c-149d-4733-80a2-e1a703741cd3.png)
 
 In contrast, the iShares Developed Real Estate Index Fund Investor A Shares, from the United States, returns 449 results.
 
@@ -82,7 +82,7 @@ In contrast, the iShares Developed Real Estate Index Fund Investor A Shares, fro
 funds/country united_states/load F00000VW8Z/holdings
 ```
 
-![Holdings](mutualfunds5.png)
+![Holdings](https://user-images.githubusercontent.com/85772166/235047003-7e4e0e0f-7a72-416e-a40a-8f9d30027c35.png)
 
 ### plot
 
@@ -92,7 +92,7 @@ Plot historical performance of the fund against its benchmark index or the broad
 /funds/country united_states/load F00000VW8Z --start 2000-01-01/plot -c both
 ```
 
-![Plot Performance](mutualfunds6.png)
+![Plot Performance](https://user-images.githubusercontent.com/85772166/235047052-0f7cd672-534f-4a03-b6af-a5ec53ff1718.png)
 
 ### sector
 
@@ -101,6 +101,8 @@ The `sector` command displays a breakdown of sector weightings, compared against
 ```console
 /funds/country united_states/load F00000ZAFI/sector
 ```
+
+![Sector Breakdown](https://user-images.githubusercontent.com/85772166/235047206-01cfd8c3-d65f-4bfa-ae47-ba0869a0c38e.png)
 
 ### infoswe
 
