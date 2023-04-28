@@ -82,7 +82,7 @@ def get_tags() -> pd.DataFrame:
     elif hasattr(req, "status_code") and req.status_code != 200:
         # If data request failed
         console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
-        return pd.DataFrame()
+        df = pd.DataFrame()
 
     return df
 
