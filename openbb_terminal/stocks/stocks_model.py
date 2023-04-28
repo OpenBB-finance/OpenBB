@@ -339,5 +339,6 @@ def get_quote(symbols: list[str]) -> pd.DataFrame:
 
         df_fa.columns = df_fa.loc["Symbol"][:]
         df_fa = df_fa.drop("Symbol", axis=0)
+        df_fa.index = df_fa.index.str.title()
 
     return df_fa
