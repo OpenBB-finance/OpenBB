@@ -87,8 +87,9 @@ class Volatility(PltTA):
             columns_regex(df_ta, "BBL")[0]
             .replace("BBL_", "BB")
             .replace("_", ",")
-            .split(".")[0]
         )
+        if float(bbands_text.split(",")[1]) % 10 == 0:
+            bbands_text = bbands_text.split(".")[0]
         fig.add_annotation(
             xref="paper",
             yref="paper",
