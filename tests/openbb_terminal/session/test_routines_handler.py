@@ -31,7 +31,7 @@ def fixture_test_user():
 
 def test_read_routine(mocker, test_user):
     file_name = "test_routine.openbb"
-    routine = "test_routine"
+    routine = "do something"
     current_user = get_current_user()
     path = "openbb_terminal.core.session.routines_handler"
 
