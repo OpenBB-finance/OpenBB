@@ -81,8 +81,7 @@ from openbb_terminal.common import (
     ultima_newsmonitor_view as common_ultima_newsmonitor_view,
     newsapi_model as common_newsapi_model,
     newsapi_view as common_newsapi_view,
-    biztoc_model as common_bitoc_model,
-    biztoc_view as common_biztoc_view,
+    news_sdk_helper as common_news_sdk_helper,
 )
 
 

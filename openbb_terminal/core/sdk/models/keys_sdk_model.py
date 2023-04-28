@@ -12,6 +12,7 @@ class KeysRoot(Category):
         `av`: Set Alpha Vantage key\n
         `binance`: Set Binance key\n
         `bitquery`: Set Bitquery key\n
+        `biztoc`: Set BizToc key\n
         `cmc`: Set Coinmarketcap key\n
         `coinbase`: Set Coinbase key\n
         `coinglass`: Set Coinglass key.\n
@@ -53,6 +54,7 @@ class KeysRoot(Category):
         self.av = lib.keys_model.set_av_key
         self.binance = lib.keys_model.set_binance_key
         self.bitquery = lib.keys_model.set_bitquery_key
+        self.biztoc = lib.keys_model.set_biztoc_key
         self.cmc = lib.keys_model.set_cmc_key
         self.coinbase = lib.keys_model.set_coinbase_key
         self.coinglass = lib.keys_model.set_coinglass_key
@@ -70,7 +72,6 @@ class KeysRoot(Category):
         self.messari = lib.keys_model.set_messari_key
         self.mykeys = lib.keys_model.get_keys
         self.news = lib.keys_model.set_news_key
-        self.biztoc = lib.keys_model.set_biztoc_key
         self.oanda = lib.keys_model.set_oanda_key
         self.polygon = lib.keys_model.set_polygon_key
         self.quandl = lib.keys_model.set_quandl_key
