@@ -388,7 +388,8 @@
       "nft": ["DappRadar"],
       "games": ["DappRadar"],
       "dapps": ["DappRadar"],
-      "dex": ["DappRadar"]
+      "dex": ["DappRadar"],
+      "fees": ["Cryptostats"]
     },
     "ov": {
       "global": ["CoinGecko", "CoinPaprika"],
