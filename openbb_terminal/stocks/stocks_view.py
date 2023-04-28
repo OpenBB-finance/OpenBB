@@ -12,7 +12,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_quote(symbol: str, export: str = "", sheet_name: Optional[str] = None):
+def display_quote(
+    symbol: list[str] = "", export: str = "", sheet_name: Optional[str] = None
+):
     """Financial Modeling Prep ticker quote
 
     Parameters
@@ -31,8 +33,8 @@ def display_quote(symbol: str, export: str = "", sheet_name: Optional[str] = Non
         return
     print_rich_table(
         quote,
-        headers=["Value"],
-        title=f"{symbol.upper()} Quote",
+        headers=quote.columns,
+        title="Quote",
         index_name="Info",
         show_index=True,
         export=bool(export),
