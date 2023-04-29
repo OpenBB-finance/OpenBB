@@ -114,6 +114,7 @@ setuptools-rust = {version = "^1.5.2", optional = true}
 transformers = {version = "^4.26.1", optional = true}
 yt-dlp = {version = "^2023.2.17", optional = true}
 pydantic = "^1.10.5"
+posthog = "^3.0.1"
 
 
 
