@@ -1947,7 +1947,7 @@ class EconometricsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="garch",
-            description="""Calculates annualized volatility forecasts based on GARCH.
+            description=r"""Calculates annualized volatility forecasts based on GARCH.
             GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series,
             which is for instance used to model volatility clusters, stock return and inflation. It is a
             generalisation of the ARCH models.
