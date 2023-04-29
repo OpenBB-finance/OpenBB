@@ -433,7 +433,7 @@ def display_garch(
 
     fig.add_scatter(x=list(range(1, horizon + 1)), y=result)
     fig.set_title(
-        f"{f'GARCH({p}, {o}, {q})' if o != 0 else f'GARCH({p}, {q})'} annualized volatility forecast"
+        f"{f'GARCH({p}, {o}, {q})' if o != 0 else f'GARCH({p}, {q})'} volatility forecast"
     )
 
     if fig.is_image_export(export):
