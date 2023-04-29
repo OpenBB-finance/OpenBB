@@ -178,6 +178,7 @@ class PortfolioPortfolioOptimization(Category):
 
         if not lib.OPTIMIZATION_TOOLKIT_ENABLED:
             # pylint: disable=C0415
+
             from openbb_terminal.rich_config import console
 
             console.print(lib.OPTIMIZATION_TOOLKIT_WARNING)

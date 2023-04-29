@@ -75,8 +75,10 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def mock_home_directory(text: str) -> str:
-        user_home_directory = str(HOME_DIRECTORY)
-        text_mocked = text.replace(user_home_directory, "MOCKING_USER_PATH")
+        user_home_directory = str(HOME_DIRECTORY.as_posix())
+        text_mocked = text.replace("\\\\", "/").replace(
+            user_home_directory, "MOCKING_USER_PATH"
+        )
 
         return text_mocked
 

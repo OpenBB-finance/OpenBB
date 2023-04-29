@@ -429,6 +429,8 @@ class CryptoOnChain(Category):
         `lt_chart`: Prints table showing Trades on Decentralized Exchanges aggregated by DEX or Month\n
         `prices`: Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]\n
         `prices_chart`: Display token historical prices with volume and market cap, and average price.\n
+        `query`: Get query data\n
+        `query_chart`: Display query results from shroom\n
         `query_graph`: Helper methods for querying graphql api. [Source: https://bitquery.io/]\n
         `th`: Get info about token historical transactions. [Source: Ethplorer]\n
         `th_chart`: Display info about token history. [Source: Ethplorer]\n
@@ -497,6 +499,8 @@ class CryptoOnChain(Category):
         self.prices_chart = (
             lib.crypto_onchain_ethplorer_view.display_token_historical_prices
         )
+        self.query = lib.crypto_onchain_shroom_model.get_query_data
+        self.query_chart = lib.crypto_onchain_shroom_view.display_query
         self.query_graph = lib.crypto_onchain_bitquery_model.query_graph
         self.th = lib.crypto_onchain_ethplorer_model.get_token_history
         self.th_chart = lib.crypto_onchain_ethplorer_view.display_token_history
