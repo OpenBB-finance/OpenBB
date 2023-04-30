@@ -594,3 +594,20 @@ class Option:
             * norm.pdf(self.d1)
             / self._sigma
         )
+
+
+@log_start_end(log=logger)
+def get_dte(chain: pd.DataFrame) -> pd.DataFrame:
+    """
+    Returns a new column containing the DTE as an integer, including 0.
+    Requires the chain to have the column labeled as, expiration.
+    """
+    if "expiration" not in chain.columns:
+        raise ValueError("No column labeled 'expiration' was found.")
+
+    now = datetime.now()
+    temp = pd.DatetimeIndex(chain.expiration)
+    temp_ = (temp - now).days + 1
+    chain["dte"] = temp_
+
+    return chain
