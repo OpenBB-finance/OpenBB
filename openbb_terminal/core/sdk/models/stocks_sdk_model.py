@@ -14,6 +14,7 @@ class StocksRoot(Category):
         `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
+        `quote_chart`: Financial Modeling Prep ticker(s) quote.\n
         `search`: Search selected query for tickers.\n
         `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
     """
@@ -27,6 +28,7 @@ class StocksRoot(Category):
         self.news = lib.common_ultima_newsmonitor_model.get_news
         self.process_candle = lib.stocks_helper.process_candle
         self.quote = lib.stocks_model.get_quote
+        self.quote_chart = lib.stocks_view.display_quote
         self.search = lib.stocks_helper.search
         self.tob = lib.stocks_cboe_model.get_top_of_book
 

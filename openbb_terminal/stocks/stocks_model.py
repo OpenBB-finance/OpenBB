@@ -292,12 +292,23 @@ def get_quote(symbols: list[str]) -> pd.DataFrame:
     Parameters
     ----------
     symbols : List[str]
-        Stock ticker symbol
+        A list of Stock ticker symbols
 
     Returns
     -------
     pd.DataFrame
         Dataframe of ticker quote
+
+    Examples
+    --------
+
+    A single ticker must be entered as a list.
+
+    >>> df = openbb.stocks.quote(["AAPL"])
+
+    Multiple tickers can be retrieved.
+
+    >>> df = openbb.stocks.quote(["AAPL","MSFT","GOOG","NFLX","META","AMZN","NVDA"])
     """
     symbol = ",".join(symbols)
     df_fa = pd.DataFrame()

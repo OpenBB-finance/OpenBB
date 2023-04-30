@@ -15,16 +15,27 @@ logger = logging.getLogger(__name__)
 def display_quote(
     symbols: list[str], export: str = "", sheet_name: Optional[str] = None
 ):
-    """Financial Modeling Prep ticker quote
+    """Financial Modeling Prep ticker(s) quote.
 
     Parameters
     ----------
     symbols : list[str]
-        Fundamental analysis ticker symbol
+        A list of ticker symbols.
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
+
+    Examples
+    --------
+    This end point displays the results as an interactive table.
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.stocks.quote_chart(["MSFT"])
+
+    Multiple tickers are retrieved at once using a comma-separated list.
+
+    >>> openbb.stocks.quote_chart(["MSFT","AAPL"])
     """
 
     quote = stocks_model.get_quote(symbols)
