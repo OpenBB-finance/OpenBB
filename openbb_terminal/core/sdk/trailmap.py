@@ -1,25 +1,17 @@
 import inspect
-
 from pathlib import Path
-
 from types import FunctionType
-
 from typing import Any, Callable, Dict, ForwardRef, List, Optional
-
 
 import pandas as pd
 
-
 import openbb_terminal.core.sdk.sdk_init as lib
-
 from openbb_terminal.core.config.paths import (
     MAP_FORECASTING_PATH,
     MAP_OPTIMIZATION_PATH,
     MAP_PATH,
 )
-
 from openbb_terminal.core.sdk.sdk_helpers import clean_attr_desc
-
 from openbb_terminal.rich_config import console
 
 
