@@ -10,6 +10,7 @@ import pandas as pd
 from darts import TimeSeries
 from statsforecast.core import StatsForecast
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import USE_COLOR, console
@@ -21,10 +22,14 @@ logger = logging.getLogger(__name__)
 # pylint: disable=E1123,E1137
 
 
-def precision_format(best_model: str, index: str, val: float) -> str:
-    if index == best_model and USE_COLOR:
+def precision_format(best_model: str, index: str, val: float) -> Union[str, float]:
+    if (
+        index == best_model
+        and USE_COLOR
+        and not get_current_user().preferences.USE_INTERACTIVE_DF
+    ):
         return f"[#00AAFF]{val:.2f}% [/#00AAFF]"
-    return f"{val:.2f}%"
+    return val
 
 
 @log_start_end(log=logger)
@@ -167,6 +172,7 @@ def get_autoselect_data(
         helpers.mean_absolute_percentage_error(y_true, historical_fcast[model].values)
         for model in model_names
     ]
+
     precision: pd.DataFrame = pd.DataFrame(
         {"precision": precision_per_model}, index=model_names
     )
@@ -181,12 +187,18 @@ def get_autoselect_data(
         for index, val in precision["precision"].iteritems()
     ]
     console.print("\n")
+
+    title = (
+        f"[#00AAFF]{best_model}[/#00AAFF]"
+        if not get_current_user().preferences.USE_INTERACTIVE_DF
+        else best_model
+    )
     helpers.print_rich_table(
         precision,
         show_index=True,
         index_name="Model",
         headers=["MAPE"],
-        title=f"Performance per model.\nBest model: [#00AAFF]{best_model}[/#00AAFF]",
+        title=f"Performance per model.\nBest model: {title}",
     )
 
     # transform outputs to make them compatible with
