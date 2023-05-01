@@ -596,7 +596,6 @@ class Option:
         )
 
 
-@log_start_end(log=logger)
 def get_dte(chain: pd.DataFrame) -> pd.DataFrame:
     """
     Returns a new column containing the DTE as an integer, including 0.
