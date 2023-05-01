@@ -29,18 +29,15 @@ def vcr_config():
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 def test_quote():
     stocks_view.display_quote(["GME"])
 
 
-@pytest.mark.record_stdout
 @pytest.mark.vcr
 def test_multi_quote() -> None:
     stocks_view.display_quote(["AAPL", "MSFT", "AMZN", "TSLA", "BTCUSD"])
 
 
-@pytest.mark.record_stdout
 @pytest.mark.vcr
 def test_quote_bad_ticker() -> None:
     stocks_view.display_quote(["F", "GM", "RIVN", "VW", "69420"])
