@@ -29,24 +29,22 @@
           capture_pageview: false,
           loaded: function (posthog) {
             const log_id = window.plotly_figure?.log_id || "";
-            const posthog_obj = window.plotly_figure?.posthog || {};
 
             if (log_id != "" && log_id != "REPLACE_ME") {
-              if (posthog_obj?.user_id) {
-                console.log("aliasing", posthog_obj.user_id, log_id);
-                posthog.identify(posthog_obj.user_id, { email: posthog_obj.email });
-                posthog.alias(posthog_obj.user_id, log_id);
-              } else {
-                posthog.identify(log_id);
-              }
-              console.log("identified", log_id);
+              posthog.identify(log_id);
             }
 
             posthog.onFeatureFlags(function () {
-              if (!posthog.isFeatureEnabled("record-pywry", {send_event: false})) {
+              if (
+                !posthog.isFeatureEnabled("record-pywry", { send_event: false })
+              ) {
                 posthog.stopSessionRecording();
               }
-              if (!posthog.isFeatureEnabled("collect-logs-pywry", {send_event: false})) {
+              if (
+                !posthog.isFeatureEnabled("collect-logs-pywry", {
+                  send_event: false,
+                })
+              ) {
                 posthog.opt_out_capturing();
               } else if (posthog.has_opted_out_capturing()) {
                 posthog.opt_in_capturing();
@@ -288,7 +286,10 @@
               }
             });
           }
-          if (globals.cmd_src != "" && window.plotly_figure?.posthog?.collect_logs) {
+          if (
+            globals.cmd_src != "" &&
+            window.plotly_figure?.posthog?.collect_logs
+          ) {
             posthog.capture("chart", {
               INFO: {
                 command: globals.cmd_src,

@@ -49,7 +49,7 @@ export const fuzzyFilter = (
   return itemRank;
 };
 
-const writeFileHandler = async ({
+const exportNativeFileSystem = async ({
   fileHandle,
   blob,
 }: {
@@ -59,6 +59,17 @@ const writeFileHandler = async ({
   if (!fileHandle) {
     throw new Error("Cannot access filesystem");
   }
+
+  await writeFileHandler({ fileHandle, blob });
+};
+
+const writeFileHandler = async ({
+  fileHandle,
+  blob,
+}: {
+  fileHandle: FileSystemFileHandle;
+  blob: Blob;
+}) => {
   const writer = await fileHandle.createWritable();
   await writer.write(blob);
   await writer.close();
@@ -77,12 +88,6 @@ const IMAGE_TYPE: FilePickerAcceptType[] = [
       "image/jpeg": [".jpeg"],
     },
   },
-  {
-    description: "SVG Image",
-    accept: {
-      "image/svg+xml": [".svg"],
-    },
-  },
 ];
 
 const getNewFileHandle = ({
@@ -92,47 +97,48 @@ const getNewFileHandle = ({
   filename: string;
   is_image?: boolean;
 }): Promise<FileSystemFileHandle | null> => {
-  if ("showSaveFilePicker"! in window) {
-    return new Promise((resolve) => {
-      resolve(null);
-    });
+  if ("showSaveFilePicker" in window) {
+    const opts: SaveFilePickerOptions = {
+      suggestedName: filename,
+      types: is_image
+        ? IMAGE_TYPE
+        : [
+            {
+              description: "CSV File",
+              accept: {
+                "image/csv": [".csv"],
+              },
+            },
+          ],
+      excludeAcceptAllOption: true,
+    };
+
+    return showSaveFilePicker(opts);
   }
 
-  const opts: SaveFilePickerOptions = {
-    suggestedName: filename,
-    types: is_image
-      ? IMAGE_TYPE
-      : [
-          {
-            description: "CSV File",
-            accept: {
-              "image/csv": [".csv"],
-            },
-          },
-        ],
-    excludeAcceptAllOption: true,
-  };
-
-  return showSaveFilePicker(opts);
+  return new Promise((resolve) => {
+    resolve(null);
+  });
 };
 
 export const saveToFile = (
   blob: Blob,
   fileName: string,
-  fileHandle?: FileSystemFileHandle | null
+  fileHandle?: FileSystemFileHandle
 ) => {
-  if ("showSaveFilePicker" in window) {
-    return writeFileHandler({ fileHandle, blob });
+  try {
+    exportNativeFileSystem({ fileHandle, blob });
+  } catch (error) {
+    console.error("oops, something went wrong!", error);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", fileName);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", fileName);
-  link.style.visibility = "hidden";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
 };
 
 export const downloadData = (type: "csv" | "xlsx", columns: any, data: any) => {
@@ -146,11 +152,14 @@ export const downloadData = (type: "csv" | "xlsx", columns: any, data: any) => {
     const csvContent = csvData.map((e) => e.join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const filename = `${window.title}.csv`;
-    return getNewFileHandle({
+
+    getNewFileHandle({
       filename: filename,
     }).then((fileHandle) => {
+      // @ts-ignore
       saveToFile(blob, filename, fileHandle);
     });
+    return;
   }
 
   const wb = utils.book_new();
@@ -166,7 +175,9 @@ export const downloadImage = (id: string) => {
     filename: filename,
     is_image: true,
   }).then((fileHandle) => {
-    domtoimage.toBlob(table).then(function (blob: Blob) {
+    // @ts-ignore
+    domtoimage.toBlob(table).then(function (blob) {
+      // @ts-ignore
       saveToFile(blob, filename, fileHandle);
     });
   });

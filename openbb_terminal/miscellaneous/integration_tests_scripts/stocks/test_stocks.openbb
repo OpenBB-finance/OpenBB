@@ -11,4 +11,36 @@ candle --raw
 candle --sort AdjClose -r --raw
 codes
 news -l 3
+th
+..
+options
+..
+disc
+..
+dps
+..
+scr
+..
+ins
+..
+gov
+..
+ba
+..
+ca
+..
+fa
+..
+bt
+..
+ta
+..
+qa
+..
+forecast
+..
+res
+..
+help
+reset
 exit

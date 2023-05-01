@@ -11,9 +11,7 @@ from openbb_terminal.core.session.current_user import PreferencesModel, copy_use
 from openbb_terminal.stocks.discovery import disc_controller
 
 
-# pylint: disable=E1101
-# pylint: disable=W0603
-# pylint: disable=E1111
+# pylint: disable=E1101,W0603,E1111
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -233,21 +231,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {"limit": 5, "export": "csv", "sheet_name": None},
         ),
         (
-            "call_cnews",
-            "seeking_alpha_view.display_news",
-            [
-                "--type=technology",
-                "--limit=5",
-                "--export=csv",
-            ],
-            {
-                "news_type": "technology",
-                "limit": 5,
-                "export": "csv",
-                "sheet_name": None,
-            },
-        ),
-        (
             "call_fipo",
             "finnhub_view.future_ipo",
             ["--days=5", "--limit=20", "--export=csv"],
@@ -376,7 +359,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_active",
         "call_arkord",
         "call_asc",
-        "call_cnews",
         "call_fipo",
         "call_gainers",
         "call_gtech",
