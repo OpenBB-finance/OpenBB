@@ -207,7 +207,7 @@ def get_estimates(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame
     date_row = dict()
 
     # Get quarter earnings estimates
-    df_quarter_earnings = df_quarter.iloc[0:5, :].copy()
+    df_quarter_earnings = df_quarter.iloc[0:5, :].reset_index(drop=True).copy()
     df_quarter_earnings.drop(index=0, inplace=True)
     l_quarter_earnings_columns = df_quarter_earnings.columns.tolist()
     l_quarter_earnings_columns[0] = "QUARTER EARNINGS ESTIMATES"
@@ -226,7 +226,8 @@ def get_estimates(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame
     )
     df_quarter_earnings.set_index("QUARTER EARNINGS ESTIMATES", inplace=True)
 
-    date_row.pop("QUARTER EARNINGS ESTIMATES")
+    # Setting date_row to empty dict object
+    date_row = dict()
 
     # Get quarter revenues estimates
     df_quarter_revenues = df_quarter.iloc[5:, :].reset_index(drop=True).copy()
