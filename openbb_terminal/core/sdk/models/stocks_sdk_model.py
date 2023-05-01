@@ -451,7 +451,7 @@ class StocksOptions(Category):
 
     Attributes:
         `chains`: Get Option Chain For A Stock.  No greek data is returned\n
-        `dte`: Gets days to expiration from yfinance option date\n
+        `dte`: Returns a new column containing the DTE as an integer, including 0.\n
         `eodchain`: Get full EOD option date across all expirations\n
         `expirations`: Get Option Chain Expirations\n
         `generate_data`: Gets x values, and y values before and after premiums\n
@@ -479,7 +479,7 @@ class StocksOptions(Category):
     def __init__(self):
         super().__init__()
         self.chains = lib.stocks_options_sdk_helper.get_full_option_chain
-        self.dte = lib.stocks_options_yfinance_model.get_dte
+        self.dte = lib.stocks_options_helpers.get_dte
         self.eodchain = lib.stocks_options_intrinio_model.get_full_chain_eod
         self.expirations = lib.stocks_options_sdk_helper.get_option_expirations
         self.generate_data = lib.stocks_options_yfinance_model.generate_data
