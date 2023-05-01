@@ -310,7 +310,9 @@ def get_quote(symbols: list[str]) -> pd.DataFrame:
 
     >>> df = openbb.stocks.quote(["AAPL","MSFT","GOOG","NFLX","META","AMZN","NVDA"])
     """
-    symbol = ",".join(symbols)
+
+    symbol = symbols if isinstance(symbols, list) is False else ",".join(symbols)
+
     df_fa = pd.DataFrame()
 
     try:
