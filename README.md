@@ -80,7 +80,7 @@ If you wish to install the OpenBB Terminal or the OpenBB SDK, please use one of 
 |:-|:-|
 |[PyPI](https://docs.openbb.co/terminal/installation/pypi)|If you wish to use the OpenBB SDK in Python or Jupyter Notebooks|
 |[Source](https://docs.openbb.co/terminal/installation/source)|If you wish to contribute to the development of the OpenBB Terminal|
-nbsp;|
+<!-- nbsp;| -->
 
 ## 2. Contributing
 
