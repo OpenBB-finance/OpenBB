@@ -66,6 +66,29 @@ export function PlotConfig({
     { preventDefault: true }
   );
   useHotkeys(
+    "ctrl+e",
+    () => {
+      changeColor(true);
+    },
+    { preventDefault: true }
+  );
+  useHotkeys(
+    "ctrl+shift+s",
+    async () => {
+      setModal({ modal: "downloadCsv" });
+      await downloadCSV(document.getElementById("plotlyChart") as any);
+    },
+    { preventDefault: true }
+  );
+  useHotkeys(
+    "ctrl+s",
+    async () => {
+      hideModebar();
+      downloadImage("MainChart", hideModebar, Loading);
+    },
+    { preventDefault: true }
+  );
+  useHotkeys(
     "ctrl+w",
     () => {
       window.close();
