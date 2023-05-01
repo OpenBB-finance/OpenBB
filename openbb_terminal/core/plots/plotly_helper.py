@@ -1550,9 +1550,9 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=90, t=40, pad=0)
+            dict(l=80, r=60, b=80, t=40, pad=0)
             if not self._has_secondary_y or not self.has_subplots
-            else dict(l=60, r=50, b=95, t=40, pad=0)
+            else dict(l=60, r=50, b=85, t=40, pad=0)
         )
 
         # We adjust margins

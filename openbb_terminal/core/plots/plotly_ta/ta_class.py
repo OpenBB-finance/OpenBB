@@ -452,7 +452,7 @@ class PlotlyTA(PltTA):
                     if indicator in self.ma_mode:
                         if ma_done:
                             continue
-                        indicator, ma_done = "ma", True
+                        indicator, ma_done = "ma", True  # noqa
 
                     figure, inchart_index = getattr(self, f"plot_{indicator}")(
                         figure, self.df_ta, inchart_index

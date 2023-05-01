@@ -76,9 +76,8 @@ class Backend(PyWry):
 
         super().__init__(**init_kwargs)
 
-        self.plotly_html: Path = (PLOTS_CORE_PATH / "plotly_temp.html").resolve()
+        self.plotly_html: Path = (PLOTS_CORE_PATH / "plotly.html").resolve()
         self.table_html: Path = (PLOTS_CORE_PATH / "table.html").resolve()
-        self.inject_path_to_html()
         self.isatty = (
             not JUPYTER_NOTEBOOK
             and sys.stdin.isatty()
@@ -102,28 +101,6 @@ class Backend(PyWry):
 
         self.WIDTH, self.HEIGHT = int(width), int(height)
 
-    def inject_path_to_html(self):
-        """Update the script tag in html with local path."""
-        try:
-            with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
-                html = file.read()
-                html = html.replace(
-                    "{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri())
-                ).replace("{{PLOTLYJS_PATH}}", str(PLOTLYJS_PATH.as_uri()))
-
-            # We create a temporary file to inject the path to the script tag
-            # This is so we don't have to modify the original file
-            # The file is deleted at program exit.
-            with open(self.plotly_html, "w", encoding="utf-8") as file:  # type: ignore
-                file.write(html)
-        except FileNotFoundError as error:
-            console.print(
-                "[bold red]plotly.html file not found, check the path:[/]"
-                f"[green]{PLOTS_CORE_PATH / 'plotly.html'}[/]"
-            )
-            self.max_retries = 0  # pylint: disable=W0201
-            raise error
-
     def get_pending(self) -> list:
         """Get the pending data that has not been sent to the backend."""
         # pylint: disable=W0201,E0203
@@ -135,11 +112,15 @@ class Backend(PyWry):
     def get_plotly_html(self) -> str:
         """Get the plotly html file."""
         self.set_window_dimensions()
-        if not self.plotly_html.exists():
-            self.inject_path_to_html()
-            return self.get_plotly_html()
+        if self.plotly_html.exists():
+            return str(self.plotly_html)
 
-        return str(self.plotly_html)
+        console.print(
+            "[bold red]plotly.html file not found, check the path:[/]"
+            f"[green]{PLOTS_CORE_PATH / 'plotly.html'}[/]"
+        )
+        self.max_retries = 0  # pylint: disable=W0201
+        raise FileNotFoundError
 
     def get_table_html(self) -> str:
         """Get the table html file."""
@@ -387,10 +368,6 @@ class Backend(PyWry):
             "download_path": str(get_current_user().preferences.USER_EXPORTS_DIRECTORY),
         }
 
-    def del_temp(self):
-        """Delete the temporary html file."""
-        self.plotly_html.unlink(missing_ok=True)
-
     def start(self, debug: bool = False):
         """Start the backend WindowManager process."""
         if self.isatty:
@@ -425,8 +402,6 @@ class Backend(PyWry):
         """Close the backend."""
         if reset:
             self.max_retries = 50  # pylint: disable=W0201
-        elif self.isatty:
-            self.del_temp()
 
         super().close(reset)
 
