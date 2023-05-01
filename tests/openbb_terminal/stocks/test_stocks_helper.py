@@ -53,6 +53,7 @@ def test_search(mocker, use_tab):
         sector="",
         industry="",
         industry_group="",
+        exchange="",
         exchange_country="",
         all_exchanges=False,
         limit=5,
