@@ -57,7 +57,7 @@ const exportNativeFileSystem = async ({
   blob: Blob;
 }) => {
   if (!fileHandle) {
-    throw new Error("Cannot access filesystem");
+    return;
   }
 
   await writeFileHandler({ fileHandle, blob });
@@ -127,6 +127,9 @@ export const saveToFile = (
   fileHandle?: FileSystemFileHandle
 ) => {
   try {
+    if (fileHandle === null) {
+      throw new Error("Cannot access filesystem");
+    }
     exportNativeFileSystem({ fileHandle, blob });
   } catch (error) {
     console.error("oops, something went wrong!", error);

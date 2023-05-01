@@ -5,6 +5,7 @@ import Chart from "./components/Chart";
 import { plotlyMockup, candlestickMockup } from "./data/mockup";
 
 declare global {
+  [Exposed=Window, SecureContext]
   interface Window {
     plotly_figure: any;
     export_image: string;
