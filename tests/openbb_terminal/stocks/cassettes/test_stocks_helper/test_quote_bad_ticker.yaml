@@ -13,30 +13,31 @@ interactions:
   response:
     body:
       string: "[\n  {\n    \"symbol\": \"F\",\n    \"name\": \"Ford Motor Company\",\n
-        \   \"price\": 11.88,\n    \"changesPercentage\": 2.3256,\n    \"change\":
-        0.27,\n    \"dayLow\": 11.57,\n    \"dayHigh\": 11.94,\n    \"yearHigh\":
-        16.68,\n    \"yearLow\": 10.61,\n    \"marketCap\": 46514120970,\n    \"priceAvg50\":
-        12.2092,\n    \"priceAvg200\": 13.1173,\n    \"exchange\": \"NYSE\",\n    \"volume\":
-        54953863,\n    \"avgVolume\": 70012027,\n    \"open\": 11.59,\n    \"previousClose\":
-        11.61,\n    \"eps\": -0.49,\n    \"pe\": -24.24,\n    \"earningsAnnouncement\":
+        \   \"price\": 12.06,\n    \"changesPercentage\": 1.5152,\n    \"change\":
+        0.18,\n    \"dayLow\": 11.99,\n    \"dayHigh\": 12.29,\n    \"yearHigh\":
+        16.68,\n    \"yearLow\": 10.61,\n    \"marketCap\": 47218880379,\n    \"priceAvg50\":
+        12.1882,\n    \"priceAvg200\": 13.11915,\n    \"exchange\": \"NYSE\",\n    \"volume\":
+        55959087,\n    \"avgVolume\": 69625791,\n    \"open\": 12.005,\n    \"previousClose\":
+        11.88,\n    \"eps\": -0.49,\n    \"pe\": -24.61,\n    \"earningsAnnouncement\":
         \"2023-05-02T20:05:00.000+0000\",\n    \"sharesOutstanding\": 3915330048,\n
-        \   \"timestamp\": 1682712235\n  },\n  {\n    \"symbol\": \"GM\",\n    \"name\":
-        \"General Motors Company\",\n    \"price\": 33.04,\n    \"changesPercentage\":
-        0.978,\n    \"change\": 0.32,\n    \"dayLow\": 32.41,\n    \"dayHigh\": 33.3,\n
-        \   \"yearHigh\": 43.63,\n    \"yearLow\": 30.33,\n    \"marketCap\": 45929562685,\n
-        \   \"priceAvg50\": 36.4592,\n    \"priceAvg200\": 37.09435,\n    \"exchange\":
-        \"NYSE\",\n    \"volume\": 15501880,\n    \"avgVolume\": 15501916,\n    \"open\":
-        32.42,\n    \"previousClose\": 32.72,\n    \"eps\": 6.47,\n    \"pe\": 5.11,\n
-        \   \"earningsAnnouncement\": \"2023-07-25T12:30:00.000+0000\",\n    \"sharesOutstanding\":
-        1390119936,\n    \"timestamp\": 1682712002\n  },\n  {\n    \"symbol\": \"RIVN\",\n
-        \   \"name\": \"Rivian Automotive, Inc.\",\n    \"price\": 12.82,\n    \"changesPercentage\":
-        1.1839,\n    \"change\": 0.15,\n    \"dayLow\": 12.47,\n    \"dayHigh\": 12.955,\n
-        \   \"yearHigh\": 40.86,\n    \"yearLow\": 11.68,\n    \"marketCap\": 11784977608,\n
-        \   \"priceAvg50\": 14.9264,\n    \"priceAvg200\": 25.608376,\n    \"exchange\":
-        \"NASDAQ\",\n    \"volume\": 17949615,\n    \"avgVolume\": 29456506,\n    \"open\":
-        12.7,\n    \"previousClose\": 12.67,\n    \"eps\": -7.59,\n    \"pe\": -1.69,\n
-        \   \"earningsAnnouncement\": \"2023-05-09T20:00:00.000+0000\",\n    \"sharesOutstanding\":
-        919265024,\n    \"timestamp\": 1682712004\n  }\n]"
+        \   \"timestamp\": 1682971388\n  },\n  {\n    \"symbol\": \"GM\",\n    \"name\":
+        \"General Motors Company\",\n    \"price\": 33.48,\n    \"changesPercentage\":
+        1.3317,\n    \"change\": 0.44,\n    \"dayLow\": 33.435,\n    \"dayHigh\":
+        34.2796,\n    \"yearHigh\": 43.63,\n    \"yearLow\": 30.33,\n    \"marketCap\":
+        46541215457,\n    \"priceAvg50\": 36.261,\n    \"priceAvg200\": 37.10095,\n
+        \   \"exchange\": \"NYSE\",\n    \"volume\": 16839357,\n    \"avgVolume\":
+        14667721,\n    \"open\": 34,\n    \"previousClose\": 33.04,\n    \"eps\":
+        6.53,\n    \"pe\": 5.13,\n    \"earningsAnnouncement\": \"2023-07-25T12:30:00.000+0000\",\n
+        \   \"sharesOutstanding\": 1390119936,\n    \"timestamp\": 1682971202\n  },\n
+        \ {\n    \"symbol\": \"RIVN\",\n    \"name\": \"Rivian Automotive, Inc.\",\n
+        \   \"price\": 12.65,\n    \"changesPercentage\": -1.3261,\n    \"change\":
+        -0.17,\n    \"dayLow\": 12.37,\n    \"dayHigh\": 12.83,\n    \"yearHigh\":
+        40.86,\n    \"yearLow\": 11.68,\n    \"marketCap\": 11628702554,\n    \"priceAvg50\":
+        14.7598,\n    \"priceAvg200\": 25.518675,\n    \"exchange\": \"NASDAQ\",\n
+        \   \"volume\": 12487673,\n    \"avgVolume\": 29025515,\n    \"open\": 12.805,\n
+        \   \"previousClose\": 12.82,\n    \"eps\": -7.49,\n    \"pe\": -1.69,\n    \"earningsAnnouncement\":
+        \"2023-05-09T20:00:00.000+0000\",\n    \"sharesOutstanding\": 919265024,\n
+        \   \"timestamp\": 1682971204\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -52,13 +53,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '1786'
+      - '1792'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 30 Apr 2023 14:57:34 GMT
+      - Mon, 01 May 2023 22:58:55 GMT
       ETag:
-      - W/"6fa-uNAG7wh3ZLAVasRayZ2EG9F+jxA"
+      - W/"700-IpaNmdmCYQhRNNWUZgdju/Q/0zE"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:
