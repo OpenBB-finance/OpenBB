@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import json
 import logging
-import re
 from typing import Tuple
 
 import pandas as pd
