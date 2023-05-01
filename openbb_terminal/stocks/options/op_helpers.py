@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
 
 
-@log_start_end(log=logger)
 def get_strikes(
     min_sp: float, max_sp: float, current_price: float
 ) -> Tuple[float, float]:
@@ -58,7 +57,6 @@ def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     return loss
 
 
-@log_start_end(log=logger)
 def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     """Returns the max pain for a given call/put dataframe
 
@@ -104,7 +102,6 @@ def convert(orig: str, to: str) -> float:
     raise ValueError("Invalid to format, please use '%' or ','.")
 
 
-@log_start_end(log=logger)
 def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> float:
     """The risk neutral payoff for a stock
     Parameters
