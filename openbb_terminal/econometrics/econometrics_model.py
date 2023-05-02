@@ -15,13 +15,11 @@ from arch import arch_model
 from scipy import stats
 from statsmodels.tsa.stattools import adfuller, grangercausalitytests, kpss
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
-@log_start_end(log=logger)
 def get_options(
     datasets: Dict[str, pd.DataFrame], dataset_name: str = ""
 ) -> Dict[Union[str, Any], pd.DataFrame]:
@@ -63,7 +61,6 @@ def get_options(
     return option_tables
 
 
-@log_start_end(log=logger)
 def get_corr_df(data: pd.DataFrame) -> pd.DataFrame:
     """Returns correlation for a given df
 
@@ -81,7 +78,6 @@ def get_corr_df(data: pd.DataFrame) -> pd.DataFrame:
     return corr
 
 
-@log_start_end(log=logger)
 def clean(
     dataset: pd.DataFrame,
     fill: str = "",
@@ -129,7 +125,6 @@ def clean(
     return dataset
 
 
-@log_start_end(log=logger)
 def get_normality(data: pd.Series) -> pd.DataFrame:
     """
     The distribution of returns and generate statistics on the relation to the normal curve.
@@ -184,7 +179,6 @@ def get_normality(data: pd.Series) -> pd.DataFrame:
     )
 
 
-@log_start_end(log=logger)
 def get_root(
     data: pd.Series, fuller_reg: str = "c", kpss_reg: str = "c"
 ) -> pd.DataFrame:
@@ -226,7 +220,6 @@ def get_root(
     return data
 
 
-@log_start_end(log=logger)
 def get_granger_causality(
     dependent_series: pd.Series, independent_series: pd.Series, lags: int = 3
 ) -> dict:
@@ -266,7 +259,6 @@ def get_granger_causality(
 
 # TODO: Maybe make a new function to return z instead of having this flag.
 # TODO: Allow for numpy arrays as well
-@log_start_end(log=logger)
 def get_coint_df(
     *datasets: pd.Series, return_z: bool = False
 ) -> Union[pd.DataFrame, Dict]:
@@ -329,7 +321,6 @@ def get_coint_df(
     return pd.DataFrame()
 
 
-@log_start_end(log=logger)
 def get_returns(data: pd.Series):
     """Calculate returns for the given time series
 
@@ -341,7 +332,6 @@ def get_returns(data: pd.Series):
     return 100 * data.pct_change().dropna()
 
 
-@log_start_end(log=logger)
 def get_garch(
     data: pd.Series,
     p: int = 1,
@@ -411,7 +401,6 @@ def get_garch(
     return np.sqrt(pred.variance.values[-1, :]), model_fit
 
 
-@log_start_end(log=logger)
 def get_engle_granger_two_step_cointegration_test(
     dependent_series: pd.Series, independent_series: pd.Series
 ) -> Tuple[float, float, float, pd.Series, float, float]:
