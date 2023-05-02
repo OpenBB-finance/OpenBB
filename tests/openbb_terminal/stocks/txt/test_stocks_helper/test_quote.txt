@@ -1,0 +1,22 @@
+Symbol                                 GME
+Name                        GameStop Corp.
+Price                                18.55
+Changes Percentage                 -3.8362
+Change                               -0.74
+Day Low                              18.46
+Day High                             19.25
+Year High                            47.99
+Year Low                             15.41
+Market Cap                         5.652 B
+Price Avg50                        20.2712
+Price Avg200                      25.07525
+Exchange                              NYSE
+Volume                             2.338 M
+Avg Volume                         4985721
+Open                                 19.16
+Previous Close                       19.29
+Eps                                  -1.05
+Pe                                  -17.67
+Earnings Announcement  2023-05-30 10:59:00
+Shares Outstanding               304.675 M
+Timestamp              2023-05-01 13:00:02

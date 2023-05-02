@@ -13,14 +13,14 @@ interactions:
   response:
     body:
       string: "[\n  {\n    \"symbol\": \"GME\",\n    \"name\": \"GameStop Corp.\",\n
-        \   \"price\": 18.06,\n    \"changesPercentage\": -3.1635,\n    \"change\":
-        -0.59,\n    \"dayLow\": 18.06,\n    \"dayHigh\": 18.835,\n    \"yearHigh\":
-        49.8525,\n    \"yearLow\": 15.41,\n    \"marketCap\": 5500678391,\n    \"priceAvg50\":
-        19.9016,\n    \"priceAvg200\": 27.140675,\n    \"exchange\": \"NYSE\",\n    \"volume\":
-        2366114,\n    \"avgVolume\": 4727827,\n    \"open\": 18.54,\n    \"previousClose\":
-        18.65,\n    \"eps\": -1.64,\n    \"pe\": -11.01,\n    \"earningsAnnouncement\":
-        \"2023-03-15T10:59:00.000+0000\",\n    \"sharesOutstanding\": 304577984,\n
-        \   \"timestamp\": 1678222802\n  }\n]"
+        \   \"price\": 18.55,\n    \"changesPercentage\": -3.8362,\n    \"change\":
+        -0.74,\n    \"dayLow\": 18.46,\n    \"dayHigh\": 19.25,\n    \"yearHigh\":
+        47.99,\n    \"yearLow\": 15.41,\n    \"marketCap\": 5651721398,\n    \"priceAvg50\":
+        20.2712,\n    \"priceAvg200\": 25.07525,\n    \"exchange\": \"NYSE\",\n    \"volume\":
+        2337859,\n    \"avgVolume\": 4985721,\n    \"open\": 19.16,\n    \"previousClose\":
+        19.29,\n    \"eps\": -1.05,\n    \"pe\": -17.67,\n    \"earningsAnnouncement\":
+        \"2023-05-30T10:59:00.000+0000\",\n    \"sharesOutstanding\": 304675008,\n
+        \   \"timestamp\": 1682971202\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -36,13 +36,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '594'
+      - '590'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 08 Mar 2023 14:01:23 GMT
+      - Mon, 01 May 2023 22:58:54 GMT
       ETag:
-      - W/"252-3YV8k360rN54CWWpVAM/bjKtIxg"
+      - W/"24e-XRtJPSt+45Q/tN8/AO8qQev8aT8"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

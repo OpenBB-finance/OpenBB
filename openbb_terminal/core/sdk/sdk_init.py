@@ -2,7 +2,6 @@
 
 # noqa: F401
 
-
 # Session
 
 from openbb_terminal.core.session import sdk_session
@@ -580,7 +579,6 @@ except ImportError:
 # Portfolio
 
 from openbb_terminal.portfolio import portfolio_model, portfolio_view
-
 
 try:
     # pylint: disable=W0611 # noqa: F401 # pyright: reportMissingImports=false
