@@ -2,6 +2,8 @@
 
 # IMPORT STANDARD
 import importlib
+import json
+import os
 import re
 
 # IMPORT THIRD-PARTY
@@ -12,6 +14,81 @@ from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
 
 INTEGRATION_PATH = "./openbb_terminal/miscellaneous/integration_tests_scripts"
+
+
+def find_controllers() -> list:
+    """Find all controllers in the OpenBB Terminal."""
+    controllers = []
+
+    for root, _, files in os.walk("./openbb_terminal"):
+        for file in files:
+            if file.endswith("_controller.py") and "sdk" not in root:
+                controllers.append(os.path.join(root, file))
+
+    return controllers
+
+
+def find_integration_tests() -> list:
+    """Find all integration tests in the OpenBB Terminal."""
+    test = []
+    for root, _, files in os.walk(INTEGRATION_PATH):
+        for file in files:
+            if file.endswith(".openbb"):
+                test.append(os.path.join(root, file))
+
+    test = [
+        re.sub(r"^\./openbb_terminal/miscellaneous/integration_tests_scripts", "", i)
+        for i in test
+    ]
+    return test
+
+
+def create_matching_dict() -> dict:
+    """Fills the controller and integration test matches by outlier files."""
+    return {
+        "./openbb_terminal/mutual_funds/mutual_fund_controller.py": "/mutual_funds/test_mutual_fund.openbb",
+        "./openbb_terminal/stocks/options/screen/screener_controller.py": "/stocks/test_screen.openbb",
+    }
+
+
+def match_controller_with_test(controllers: list, tests: list) -> dict:
+    """Match controllers with integration tests."""
+    matched = create_matching_dict()
+
+    for key, value in matched.items():
+        controllers.remove(key)
+        tests.remove(value)
+
+    for controller in controllers:
+        try:
+            controller_name = re.search(  # type: ignore
+                r"(?<=/)[a-zA-Z]+(?=_controller)", controller
+            ).group(0)
+        except AttributeError:
+            controller_name = "mutual_fund"
+
+        for test in tests:
+            try:
+                test_name = re.search(r"(?<=/test_)[a-zA-Z]+(?=.openbb)", test).group(0)  # type: ignore
+            except AttributeError:
+                test_name = "mutual_fund"
+
+            if controller_name == test_name:
+                if controller_name in ["ta", "qa"]:
+                    controller_path = re.search(  # type: ignore
+                        r"(?<=openbb_terminal/)[a-zA-Z/]+(?=/)", controller
+                    ).group(0)
+                    if controller_path in test:
+                        matched[controller] = test
+                        tests.remove(test)
+                else:
+                    matched[controller] = test
+                    tests.remove(test)
+
+    if len(tests) > 0:
+        console.print(f"[red]Unmatched tests: {tests}[/red]")
+
+    return matched
 
 
 def get_module(module_path: str, module_name: str = "") -> object:
@@ -98,43 +175,43 @@ def calculate_coverage_percentage(
     else:
         console.print(
             f"Integration test coverage: {coverage}%\n"
-            f"=============================\n"
+            f"================================\n"
             f"[red]Untested functions: {untested_functions}[/red]\n"
             f"[green]Tested functions: {tested_functions}[/green]\n"
-            f"=============================\n"
+            f"================================\n"
         )
 
 
-def get_coverage_all_controllers() -> None:
+def get_coverage_all_controllers(output_table: bool = False) -> None:
     """Test all controllers."""
-    controllers = pd.read_json("controllers.json")
+    with open("openbb_terminal/core/scripts/controllers.json") as f:
+        controller_name_mapping = json.load(f)
 
-    for controller in controllers:
-        if controllers[controller]["integration_test"] == "":
-            console.print(
-                f"[red]No integration test found for the {controller} controller.[/red]"
-            )
-        else:
-            path = controller.replace("/", ".")
-            path = "openbb_terminal" + path
+    controllers = find_controllers()
+    tests = find_integration_tests()
+
+    matched = match_controller_with_test(controllers, tests)
+
+    for controller, test in matched.items():
+        path = controller.replace("/", ".")[2:-3]
+        try:
+            module = get_module(path)
+        except ModuleNotFoundError:
+            module_name = controller_name_mapping[path]
             try:
-                module = get_module(path)
+                module = get_module(path, module_name=module_name)
             except ModuleNotFoundError:
-                try:
-                    module = get_module(
-                        path, module_name=controllers[controller]["module_name"]
-                    )
-                except ModuleNotFoundError:
-                    console.print(f"Module for {controller} not found.")
+                console.print(f"Module {module_name} not found!")
+        except OSError as e:
+            console.print(e)
+            continue
 
-            available_functions = get_functions(module)
-            tested_functions = get_tested_functions(
-                INTEGRATION_PATH + controllers[controller]["integration_test"]
-            )
-            console.print(f"Calculating coverage for {controller}...")
-            calculate_coverage_percentage(
-                tested_functions, available_functions, output_table=False
-            )
+        available_functions = get_functions(module)
+        tested_functions = get_tested_functions(INTEGRATION_PATH + test)
+        console.print(f"Calculating coverage for {controller}...")
+        calculate_coverage_percentage(
+            tested_functions, available_functions, output_table=output_table
+        )
 
 
 def get_coverage_single_controller(
