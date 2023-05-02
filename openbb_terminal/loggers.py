@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import atexit
 import json
 import logging
+import os
 import re
 import sys
 import time
@@ -261,7 +262,7 @@ def setup_handlers(settings: Settings):
 
     if (
         not any([current_system.TEST_MODE, current_system.LOGGING_SUPPRESS])
-        and current_system.LOG_COLLECT
+        and os.environ.get("OPENBB_LOG_COLLECT", "false").lower() == "true"
     ):
         add_posthog_handler(settings=settings)
 
