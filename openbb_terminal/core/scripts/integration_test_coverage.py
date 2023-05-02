@@ -48,6 +48,7 @@ def create_matching_dict() -> dict:
     return {
         "./openbb_terminal/mutual_funds/mutual_fund_controller.py": "/mutual_funds/test_mutual_fund.openbb",
         "./openbb_terminal/stocks/options/screen/screener_controller.py": "/stocks/test_screen.openbb",
+        "./openbb_terminal/stocks/discovery/disc_controller.py": "/stocks/test_disc.openbb",
     }
 
 

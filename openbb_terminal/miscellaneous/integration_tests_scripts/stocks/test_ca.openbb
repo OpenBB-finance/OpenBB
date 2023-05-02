@@ -29,4 +29,5 @@ ticker -t ${ticker=tsla}
 get --source Polygon
 get --source Finnhub
 get
+add -s 2
 exit

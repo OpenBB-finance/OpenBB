@@ -81,4 +81,6 @@ es
 sh
 so
 om
+line
+line --log
 exit

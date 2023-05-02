@@ -63,8 +63,18 @@ twitter
 twitter --limit 3 --sort retweet_count
 twitter --sort date -r
 
+active -s 2021-05-02 -u 2021-10-10
+active -s 2021-05-02 -u 2021-10-10 -i 1w
+active -s 2021-05-02 -u 2021-10-10 -i 1month
+change -s 2021-05-02 -u 2021-10-10
+eb -s 2021-05-02 -u 2021-10-10
+nonzero -s 2021-05-02 -u 2021-10-10
+
 social
 score
 dev
 gh
+
+help
+reset
 exit

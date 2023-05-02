@@ -10,6 +10,8 @@ financial -l 3
 ownership
 performance
 technical
+set --preset cheap_dividend
 ca
 exit
+help
 exit

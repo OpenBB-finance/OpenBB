@@ -9,6 +9,7 @@
     "openbb_terminal.stocks.backtesting.bt_controller": "BacktestingController",
     "openbb_terminal.stocks.behavioural_analysis.ba_controller": "BehaviouralAnalysisController",
     "openbb_terminal.stocks.discovery.disc_controller": "DiscoveryController",
+    "openbb_terminal.etf.discovery.disc_controller": "DiscoveryController",
     "openbb_terminal.stocks.fundamental_analysis.fa_controller": "FundamentalAnalysisController",
     "openbb_terminal.stocks.technical_analysis.ta_controller": "TechnicalAnalysisController",
     "openbb_terminal.stocks.dark_pool_shorts.dps_controller": "DarkPoolShortsController",
