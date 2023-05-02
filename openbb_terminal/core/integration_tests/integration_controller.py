@@ -15,6 +15,8 @@ from pathlib import Path
 from traceback import FrameSummary, extract_tb, format_list
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
+from matplotlib import pyplot as plt
+
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
@@ -747,7 +749,7 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
-    # user
+    # User
     current_user = get_current_user()
     current_user.preferences.ENABLE_EXIT_AUTO_HELP = False
     current_user.preferences.USE_PROMPT_TOOLKIT = False
@@ -756,12 +758,15 @@ def main():
     current_user.preferences.USE_INTERACTIVE_DF = False
     set_current_user(current_user)
 
-    # system
+    # System
     set_system_variable("HEADLESS", True)
     set_system_variable("DEBUG_MODE", True)
     set_system_variable("LOG_COLLECT", False)
 
-    # run integration tests
+    # Portfolio optimization - automatically close matplotlib figures
+    plt.ion()
+
+    # Run integration tests
     parse_args_and_run()
 
 
