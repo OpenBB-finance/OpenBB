@@ -12,9 +12,9 @@ interactions:
     body:
       string: "[\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2022-12-31\",\n    \"period\":
         \"FY\",\n    \"revenueGrowth\": 0.011367616621557077,\n    \"grossProfitGrowth\":
-        -0.04748538011695906,\n    \"ebitgrowth\": -0.049611197511664075,\n    \"operatingIncomeGrowth\":
-        -0.049611197511664075,\n    \"netIncomeGrowth\": -0.0066966736194972,\n    \"epsgrowth\":
-        -0.003430531732418604,\n    \"epsdilutedGrowth\": -0.003430531732418604,\n
+        -0.04748538011695906,\n    \"ebitgrowth\": -0.056184971098265896,\n    \"operatingIncomeGrowth\":
+        -0.056184971098265896,\n    \"netIncomeGrowth\": -0.0066966736194972,\n    \"epsgrowth\":
+        -0.006837606837606844,\n    \"epsdilutedGrowth\": -0.005136986301369906,\n
         \   \"weightedAverageSharesGrowth\": -0.0006418485237483953,\n    \"weightedAverageSharesDilutedGrowth\":
         -0.0012828736369467607,\n    \"dividendsperShareGrowth\": 0.03126877850138039,\n
         \   \"operatingCashFlowGrowth\": -0.09726748558535973,\n    \"freeCashFlowGrowth\":
@@ -24,19 +24,19 @@ interactions:
         \   \"fiveYOperatingCFGrowthPerShare\": 0.20829311996900549,\n    \"threeYOperatingCFGrowthPerShare\":
         0.06928873281124993,\n    \"tenYNetIncomeGrowthPerShare\": 0.1173305307409352,\n
         \   \"fiveYNetIncomeGrowthPerShare\": 0.4944397884530347,\n    \"threeYNetIncomeGrowthPerShare\":
-        0.2576726025505395,\n    \"tenYShareholdersEquityGrowthPerShare\": -1.856509043016689,\n
-        \   \"fiveYShareholdersEquityGrowthPerShare\": 0.246429065259241,\n    \"threeYShareholdersEquityGrowthPerShare\":
-        0.21177651145281812,\n    \"tenYDividendperShareGrowthPerShare\": 0.5709365359849053,\n
+        0.2576726025505395,\n    \"tenYShareholdersEquityGrowthPerShare\": -1.8002354709752093,\n
+        \   \"fiveYShareholdersEquityGrowthPerShare\": 0.2612745033957558,\n    \"threeYShareholdersEquityGrowthPerShare\":
+        0.2273046090711274,\n    \"tenYDividendperShareGrowthPerShare\": 0.5709365359849053,\n
         \   \"fiveYDividendperShareGrowthPerShare\": 0.19431185503032025,\n    \"threeYDividendperShareGrowthPerShare\":
-        0.0895077947101069,\n    \"receivablesGrowth\": -1,\n    \"inventoryGrowth\":
-        -1,\n    \"assetGrowth\": -0.01387745216759506,\n    \"bookValueperShareGrowth\":
-        0.0953029550223,\n    \"debtGrowth\": -0.11601812558440625,\n    \"rdexpenseGrowth\":
+        0.0895077947101069,\n    \"receivablesGrowth\": 0.20710659898477157,\n    \"inventoryGrowth\":
+        0.13371559633027522,\n    \"assetGrowth\": 0.4938483894405425,\n    \"bookValueperShareGrowth\":
+        0.1131255957244982,\n    \"debtGrowth\": 0.5508523340286269,\n    \"rdexpenseGrowth\":
         0,\n    \"sgaexpensesGrowth\": -0.033376885615868865\n  },\n  {\n    \"symbol\":
         \"PM\",\n    \"date\": \"2021-12-31\",\n    \"period\": \"FY\",\n    \"revenueGrowth\":
         0.0944796821635185,\n    \"grossProfitGrowth\": 0.11764705882352941,\n    \"ebitgrowth\":
-        0.10215975317106617,\n    \"operatingIncomeGrowth\": 0.10215975317106617,\n
-        \   \"netIncomeGrowth\": 0.1307100297914598,\n    \"epsgrowth\": 0.12984496124031006,\n
-        \   \"epsdilutedGrowth\": 0.12984496124031006,\n    \"weightedAverageSharesGrowth\":
+        0.11201576962632842,\n    \"operatingIncomeGrowth\": 0.11201576962632842,\n
+        \   \"netIncomeGrowth\": 0.1307100297914598,\n    \"epsgrowth\": 0.13372093023255804,\n
+        \   \"epsdilutedGrowth\": 0.13178294573643404,\n    \"weightedAverageSharesGrowth\":
         0.0006422607578676942,\n    \"weightedAverageSharesDilutedGrowth\": 0.0006418485237483953,\n
         \   \"dividendsperShareGrowth\": 0.028671209694457717,\n    \"operatingCashFlowGrowth\":
         0.21962902568283735,\n    \"freeCashFlowGrowth\": 0.21813246471226927,\n    \"tenYRevenueGrowthPerShare\":
@@ -79,7 +79,7 @@ interactions:
         0.0060759493670886075,\n    \"grossProfitGrowth\": 0.022526103779085174,\n
         \   \"ebitgrowth\": -0.07436055199085875,\n    \"operatingIncomeGrowth\":
         -0.07436055199085875,\n    \"netIncomeGrowth\": -0.09177095183921123,\n    \"epsgrowth\":
-        -0.09251968503937003,\n    \"epsdilutedGrowth\": -0.09251968503937003,\n    \"weightedAverageSharesGrowth\":
+        -0.09430255402750483,\n    \"epsdilutedGrowth\": -0.09430255402750483,\n    \"weightedAverageSharesGrowth\":
         0,\n    \"weightedAverageSharesDilutedGrowth\": 0.0006430868167202572,\n    \"dividendsperShareGrowth\":
         0.04008714596949895,\n    \"operatingCashFlowGrowth\": 0.06457058451150031,\n
         \   \"freeCashFlowGrowth\": 0.14871922407361352,\n    \"tenYRevenueGrowthPerShare\":
@@ -100,7 +100,7 @@ interactions:
         \   \"period\": \"FY\",\n    \"revenueGrowth\": 0.030506470015305414,\n    \"grossProfitGrowth\":
         0.03008298755186722,\n    \"ebitgrowth\": -0.010953664261497001,\n    \"operatingIncomeGrowth\":
         -0.010953664261497001,\n    \"netIncomeGrowth\": 0.3108533554266777,\n    \"epsgrowth\":
-        0.309278350515464,\n    \"epsdilutedGrowth\": 0.309278350515464,\n    \"weightedAverageSharesGrowth\":
+        0.3084832904884318,\n    \"epsdilutedGrowth\": 0.3084832904884318,\n    \"weightedAverageSharesGrowth\":
         0.0019329896907216496,\n    \"weightedAverageSharesDilutedGrowth\": 0.00128783000643915,\n
         \   \"dividendsperShareGrowth\": 0.05394433156451575,\n    \"operatingCashFlowGrowth\":
         0.06350987432675045,\n    \"freeCashFlowGrowth\": 0.09206952743074416,\n    \"tenYRevenueGrowthPerShare\":
@@ -121,8 +121,8 @@ interactions:
         \"PM\",\n    \"date\": \"2017-12-31\",\n    \"period\": \"FY\",\n    \"revenueGrowth\":
         0.07730934982199737,\n    \"grossProfitGrowth\": 0.05909564010639528,\n    \"ebitgrowth\":
         0.06361534905224225,\n    \"operatingIncomeGrowth\": 0.06361534905224225,\n
-        \   \"netIncomeGrowth\": -0.13377350366011195,\n    \"epsgrowth\": -0.13392857142857154,\n
-        \   \"epsdilutedGrowth\": -0.13392857142857154,\n    \"weightedAverageSharesGrowth\":
+        \   \"netIncomeGrowth\": -0.13377350366011195,\n    \"epsgrowth\": -0.133630289532294,\n
+        \   \"epsdilutedGrowth\": -0.133630289532294,\n    \"weightedAverageSharesGrowth\":
         0.0006447453255963894,\n    \"weightedAverageSharesDilutedGrowth\": 0.0012894906511927789,\n
         \   \"dividendsperShareGrowth\": 0.021605357333359332,\n    \"operatingCashFlowGrowth\":
         0.10337996780983039,\n    \"freeCashFlowGrowth\": 0.0664735698769008,\n    \"tenYRevenueGrowthPerShare\":
@@ -143,7 +143,7 @@ interactions:
         \   \"period\": \"FY\",\n    \"revenueGrowth\": -0.004068074942151228,\n    \"grossProfitGrowth\":
         -0.007745711171036777,\n    \"ebitgrowth\": 0.018073990398192602,\n    \"operatingIncomeGrowth\":
         0.018073990398192602,\n    \"netIncomeGrowth\": 0.013676705950822057,\n    \"epsgrowth\":
-        0.013574660633484276,\n    \"epsdilutedGrowth\": 0.013574660633484276,\n    \"weightedAverageSharesGrowth\":
+        0.01126126126126122,\n    \"epsdilutedGrowth\": 0.01126126126126122,\n    \"weightedAverageSharesGrowth\":
         0.0012911555842479018,\n    \"weightedAverageSharesDilutedGrowth\": 0.0012911555842479018,\n
         \   \"dividendsperShareGrowth\": 0.019164100580270755,\n    \"operatingCashFlowGrowth\":
         0.02695486331849968,\n    \"freeCashFlowGrowth\": 0,\n    \"tenYRevenueGrowthPerShare\":
@@ -164,7 +164,7 @@ interactions:
         \   \"period\": \"FY\",\n    \"revenueGrowth\": -0.09987570127994087,\n    \"grossProfitGrowth\":
         -0.0983911851430345,\n    \"ebitgrowth\": -0.09220646043411383,\n    \"operatingIncomeGrowth\":
         -0.09220646043411383,\n    \"netIncomeGrowth\": -0.08274389430134793,\n    \"epsgrowth\":
-        -0.0714285714285714,\n    \"epsdilutedGrowth\": -0.0714285714285714,\n    \"weightedAverageSharesGrowth\":
+        -0.07112970711297067,\n    \"epsdilutedGrowth\": -0.07112970711297067,\n    \"weightedAverageSharesGrowth\":
         -0.010855683269476373,\n    \"weightedAverageSharesDilutedGrowth\": -0.010855683269476373,\n
         \   \"dividendsperShareGrowth\": 0.04699132401212418,\n    \"operatingCashFlowGrowth\":
         0.01628117327820132,\n    \"freeCashFlowGrowth\": 0.04843607652596417,\n    \"tenYRevenueGrowthPerShare\":
@@ -185,7 +185,7 @@ interactions:
         \   \"period\": \"FY\",\n    \"revenueGrowth\": -0.04644905019700804,\n    \"grossProfitGrowth\":
         -0.07093766520882396,\n    \"ebitgrowth\": -0.13414724380318166,\n    \"operatingIncomeGrowth\":
         -0.13414724380318166,\n    \"netIncomeGrowth\": -0.12628264925373134,\n    \"epsgrowth\":
-        -0.09505703422053233,\n    \"epsdilutedGrowth\": -0.09505703422053233,\n    \"weightedAverageSharesGrowth\":
+        -0.09640831758034023,\n    \"epsdilutedGrowth\": -0.09640831758034023,\n    \"weightedAverageSharesGrowth\":
         -0.0345252774352651,\n    \"weightedAverageSharesDilutedGrowth\": -0.0345252774352651,\n
         \   \"dividendsperShareGrowth\": 0.09279912297153681,\n    \"operatingCashFlowGrowth\":
         -0.2364084854464726,\n    \"freeCashFlowGrowth\": -0.26289871292669276,\n
@@ -207,7 +207,7 @@ interactions:
         -0.005099276540140868,\n    \"grossProfitGrowth\": -0.009379165873167016,\n
         \   \"ebitgrowth\": -0.02390582117579084,\n    \"operatingIncomeGrowth\":
         -0.02390582117579084,\n    \"netIncomeGrowth\": -0.025454545454545455,\n    \"epsgrowth\":
-        0.017408123791102487,\n    \"epsdilutedGrowth\": 0.017408123791102487,\n    \"weightedAverageSharesGrowth\":
+        0.01730769230769228,\n    \"epsdilutedGrowth\": 0.01730769230769228,\n    \"weightedAverageSharesGrowth\":
         -0.041371158392434985,\n    \"weightedAverageSharesDilutedGrowth\": -0.041371158392434985,\n
         \   \"dividendsperShareGrowth\": 0.10415539112919045,\n    \"operatingCashFlowGrowth\":
         0.07578813289459718,\n    \"freeCashFlowGrowth\": 0.06814106395696354,\n    \"tenYRevenueGrowthPerShare\":
@@ -227,8 +227,8 @@ interactions:
         \"PM\",\n    \"date\": \"2012-12-31\",\n    \"period\": \"FY\",\n    \"revenueGrowth\":
         0.009004083995240698,\n    \"grossProfitGrowth\": 0.02864978696312258,\n    \"ebitgrowth\":
         0.03855385538553855,\n    \"operatingIncomeGrowth\": 0.03855385538553855,\n
-        \   \"netIncomeGrowth\": 0.024327784891165175,\n    \"epsgrowth\": 0.0386389771274419,\n
-        \   \"epsdilutedGrowth\": 0.0386389771274419,\n    \"weightedAverageSharesGrowth\":
+        \   \"netIncomeGrowth\": 0.024327784891165175,\n    \"epsgrowth\": 0.04417670682730918,\n
+        \   \"epsdilutedGrowth\": 0.04417670682730918,\n    \"weightedAverageSharesGrowth\":
         -0.019646848450322343,\n    \"weightedAverageSharesDilutedGrowth\": -0.019646848450322343,\n
         \   \"dividendsperShareGrowth\": 0.15127387408928147,\n    \"operatingCashFlowGrowth\":
         -0.10523316554278658,\n    \"freeCashFlowGrowth\": -0.13154069767441862,\n
@@ -249,8 +249,8 @@ interactions:
         \"PM\",\n    \"date\": \"2011-12-31\",\n    \"period\": \"FY\",\n    \"revenueGrowth\":
         0.1429359012055278,\n    \"grossProfitGrowth\": 0.1671334667047728,\n    \"ebitgrowth\":
         0.19035714285714286,\n    \"operatingIncomeGrowth\": 0.19035714285714286,\n
-        \   \"netIncomeGrowth\": 0.1834963493594159,\n    \"epsgrowth\": 0.26658218829516545,\n
-        \   \"epsdilutedGrowth\": 0.2698132653061226,\n    \"weightedAverageSharesGrowth\":
+        \   \"netIncomeGrowth\": 0.1834963493594159,\n    \"epsgrowth\": 0.26075949367088613,\n
+        \   \"epsdilutedGrowth\": 0.2639593908629443,\n    \"weightedAverageSharesGrowth\":
         -0.06149610331702012,\n    \"weightedAverageSharesDilutedGrowth\": -0.06302461129207383,\n
         \   \"dividendsperShareGrowth\": 0.15345623831942803,\n    \"operatingCashFlowGrowth\":
         0.11571473985376708,\n    \"freeCashFlowGrowth\": 0.10408069692801467,\n    \"tenYRevenueGrowthPerShare\":
@@ -270,8 +270,8 @@ interactions:
         \"PM\",\n    \"date\": \"2010-12-31\",\n    \"period\": \"FY\",\n    \"revenueGrowth\":
         0.08679848212502496,\n    \"grossProfitGrowth\": 0.09254980328483108,\n    \"ebitgrowth\":
         0.11553784860557768,\n    \"operatingIncomeGrowth\": 0.11553784860557768,\n
-        \   \"netIncomeGrowth\": 0.1445916114790287,\n    \"epsgrowth\": 0.20923076923076928,\n
-        \   \"epsdilutedGrowth\": 0.20987654320987645,\n    \"weightedAverageSharesGrowth\":
+        \   \"netIncomeGrowth\": 0.1445916114790287,\n    \"epsgrowth\": 0.21165644171779155,\n
+        \   \"epsdilutedGrowth\": 0.21230769230769228,\n    \"weightedAverageSharesGrowth\":
         -0.05352547606793618,\n    \"weightedAverageSharesDilutedGrowth\": -0.055384615384615386,\n
         \   \"dividendsperShareGrowth\": 0.07999343500282076,\n    \"operatingCashFlowGrowth\":
         0.19698122780314561,\n    \"freeCashFlowGrowth\": 0.21690612358766914,\n    \"tenYRevenueGrowthPerShare\":
@@ -292,7 +292,7 @@ interactions:
         \   \"period\": \"FY\",\n    \"revenueGrowth\": -0.026064967905076834,\n    \"grossProfitGrowth\":
         -0.022226292971850765,\n    \"ebitgrowth\": -0.02029664324746292,\n    \"operatingIncomeGrowth\":
         -0.02029664324746292,\n    \"netIncomeGrowth\": -0.0795355587808418,\n    \"epsgrowth\":
-        -0.024024024024024045,\n    \"epsdilutedGrowth\": -0.024096385542168565,\n
+        -0.021021021021021106,\n    \"epsdilutedGrowth\": -0.021084337349397544,\n
         \   \"weightedAverageSharesGrowth\": -0.06044487427466151,\n    \"weightedAverageSharesDilutedGrowth\":
         -0.061597690086621755,\n    \"dividendsperShareGrowth\": -0.0932523969962195,\n
         \   \"operatingCashFlowGrowth\": -0.006427221172022685,\n    \"freeCashFlowGrowth\":
@@ -334,8 +334,8 @@ interactions:
         \"PM\",\n    \"date\": \"2007-12-31\",\n    \"period\": \"FY\",\n    \"revenueGrowth\":
         -0.5276004973062578,\n    \"grossProfitGrowth\": 0.11367771537061941,\n    \"ebitgrowth\":
         0.06034894837476099,\n    \"operatingIncomeGrowth\": 0.06034894837476099,\n
-        \   \"netIncomeGrowth\": -0.019524894240156198,\n    \"epsgrowth\": -0.015013324776190065,\n
-        \   \"epsdilutedGrowth\": -0.021877343418864704,\n    \"weightedAverageSharesGrowth\":
+        \   \"netIncomeGrowth\": -0.019524894240156198,\n    \"epsgrowth\": -0.013745704467353964,\n
+        \   \"epsdilutedGrowth\": -0.020618556701030945,\n    \"weightedAverageSharesGrowth\":
         -0.003941109199982837,\n    \"weightedAverageSharesDilutedGrowth\": 0.003170210820007767,\n
         \   \"dividendsperShareGrowth\": 1.3690489106728898,\n    \"operatingCashFlowGrowth\":
         -0.10375240538806928,\n    \"freeCashFlowGrowth\": -0.15570093457943926,\n
@@ -356,8 +356,8 @@ interactions:
         \"PM\",\n    \"date\": \"2006-12-31\",\n    \"period\": \"FY\",\n    \"revenueGrowth\":
         0.06562444797738916,\n    \"grossProfitGrowth\": 0.022073091849935316,\n    \"ebitgrowth\":
         0.08183581124757595,\n    \"operatingIncomeGrowth\": 0.08183581124757595,\n
-        \   \"netIncomeGrowth\": 0.09359430604982207,\n    \"epsgrowth\": 0.09359418250058639,\n
-        \   \"epsdilutedGrowth\": 0.09359418250058639,\n    \"weightedAverageSharesGrowth\":
+        \   \"netIncomeGrowth\": 0.09359430604982207,\n    \"epsgrowth\": 0.09398496240601503,\n
+        \   \"epsdilutedGrowth\": 0.09398496240601503,\n    \"weightedAverageSharesGrowth\":
         0,\n    \"weightedAverageSharesDilutedGrowth\": 0,\n    \"dividendsperShareGrowth\":
         -0.6381150741994273,\n    \"operatingCashFlowGrowth\": 0.20899573478092284,\n
         \   \"freeCashFlowGrowth\": 0.20985979194934418,\n    \"tenYRevenueGrowthPerShare\":
@@ -423,13 +423,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '33828'
+      - '33860'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 07 Mar 2023 17:08:49 GMT
+      - Tue, 02 May 2023 14:20:59 GMT
       ETag:
-      - W/"8424-C/vFWHx5CFs6M1QkgSRsuyviOjQ"
+      - W/"8444-Gyc8jekMEKMwMU+1li7/akYxrUA"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:
