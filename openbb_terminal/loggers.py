@@ -142,8 +142,7 @@ class PosthogHandler(logging.Handler):
 
         if log_dict := self.log_to_dict(log_info=log_line):
             event_name = f"log_{list(log_dict.keys())[0].lower()}"
-            if "STARTUP" in log_dict:
-                log_dict = log_dict["STARTUP"]
+            log_dict = log_dict.get("STARTUP", log_dict)
 
             log_extra = {**log_extra, **log_dict}
             log_extra.pop("message", None)
