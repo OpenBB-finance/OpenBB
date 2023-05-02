@@ -1,0 +1,22 @@
+Symbol                                   F                      GM                     RIVN
+Name                    Ford Motor Company  General Motors Company  Rivian Automotive, Inc.
+Price                                12.06                   33.48                    12.65
+Changes Percentage                  1.5152                  1.3317                  -1.3261
+Change                                0.18                    0.44                    -0.17
+Day Low                              11.99                  33.435                    12.37
+Day High                             12.29                 34.2796                    12.83
+Year High                            16.68                   43.63                    40.86
+Year Low                             10.61                   30.33                    11.68
+Market Cap                        47.219 B                46.541 B                 11.629 B
+Price Avg50                        12.1882                  36.261                  14.7598
+Price Avg200                      13.11915                37.10095                25.518675
+Exchange                              NYSE                    NYSE                   NASDAQ
+Volume                            55.959 M                16.839 M                 12.488 M
+Avg Volume                        69625791                14667721                 29025515
+Open                                12.005                    34.0                   12.805
+Previous Close                       11.88                   33.04                    12.82
+Eps                                  -0.49                    6.53                    -7.49
+Pe                                  -24.61                    5.13                    -1.69
+Earnings Announcement  2023-05-02 20:05:00     2023-07-25 12:30:00      2023-05-09 20:00:00
+Shares Outstanding                 3.915 B                 1.390 B                919.265 M
+Timestamp              2023-05-01 13:03:08     2023-05-01 13:00:02      2023-05-01 13:00:04
