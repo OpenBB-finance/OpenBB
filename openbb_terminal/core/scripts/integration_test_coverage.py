@@ -44,7 +44,7 @@ def find_integration_tests() -> list:
 
 
 def create_matching_dict() -> dict:
-    """Fills the controller and integration test matches by outlier files."""
+    """Fill the controller and integration test matches by outlier files."""
     return {
         "./openbb_terminal/mutual_funds/mutual_fund_controller.py": "/mutual_funds/test_mutual_fund.openbb",
         "./openbb_terminal/stocks/options/screen/screener_controller.py": "/stocks/test_screen.openbb",
