@@ -1,0 +1,74 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/quote/F,GM,RIVN,VW,69420?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: "[\n  {\n    \"symbol\": \"F\",\n    \"name\": \"Ford Motor Company\",\n
+        \   \"price\": 12.06,\n    \"changesPercentage\": 1.5152,\n    \"change\":
+        0.18,\n    \"dayLow\": 11.99,\n    \"dayHigh\": 12.29,\n    \"yearHigh\":
+        16.68,\n    \"yearLow\": 10.61,\n    \"marketCap\": 47218880379,\n    \"priceAvg50\":
+        12.1882,\n    \"priceAvg200\": 13.11915,\n    \"exchange\": \"NYSE\",\n    \"volume\":
+        55959087,\n    \"avgVolume\": 69625791,\n    \"open\": 12.005,\n    \"previousClose\":
+        11.88,\n    \"eps\": -0.49,\n    \"pe\": -24.61,\n    \"earningsAnnouncement\":
+        \"2023-05-02T20:05:00.000+0000\",\n    \"sharesOutstanding\": 3915330048,\n
+        \   \"timestamp\": 1682971388\n  },\n  {\n    \"symbol\": \"GM\",\n    \"name\":
+        \"General Motors Company\",\n    \"price\": 33.48,\n    \"changesPercentage\":
+        1.3317,\n    \"change\": 0.44,\n    \"dayLow\": 33.435,\n    \"dayHigh\":
+        34.2796,\n    \"yearHigh\": 43.63,\n    \"yearLow\": 30.33,\n    \"marketCap\":
+        46541215457,\n    \"priceAvg50\": 36.261,\n    \"priceAvg200\": 37.10095,\n
+        \   \"exchange\": \"NYSE\",\n    \"volume\": 16839357,\n    \"avgVolume\":
+        14667721,\n    \"open\": 34,\n    \"previousClose\": 33.04,\n    \"eps\":
+        6.53,\n    \"pe\": 5.13,\n    \"earningsAnnouncement\": \"2023-07-25T12:30:00.000+0000\",\n
+        \   \"sharesOutstanding\": 1390119936,\n    \"timestamp\": 1682971202\n  },\n
+        \ {\n    \"symbol\": \"RIVN\",\n    \"name\": \"Rivian Automotive, Inc.\",\n
+        \   \"price\": 12.65,\n    \"changesPercentage\": -1.3261,\n    \"change\":
+        -0.17,\n    \"dayLow\": 12.37,\n    \"dayHigh\": 12.83,\n    \"yearHigh\":
+        40.86,\n    \"yearLow\": 11.68,\n    \"marketCap\": 11628702554,\n    \"priceAvg50\":
+        14.7598,\n    \"priceAvg200\": 25.518675,\n    \"exchange\": \"NASDAQ\",\n
+        \   \"volume\": 12487673,\n    \"avgVolume\": 29025515,\n    \"open\": 12.805,\n
+        \   \"previousClose\": 12.82,\n    \"eps\": -7.49,\n    \"pe\": -1.69,\n    \"earningsAnnouncement\":
+        \"2023-05-09T20:00:00.000+0000\",\n    \"sharesOutstanding\": 919265024,\n
+        \   \"timestamp\": 1682971204\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '1792'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 May 2023 22:58:55 GMT
+      ETag:
+      - W/"700-IpaNmdmCYQhRNNWUZgdju/Q/0zE"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
