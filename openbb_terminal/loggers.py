@@ -103,7 +103,6 @@ class PosthogHandler(logging.Handler):
         super().__init__()
         self.settings = settings
         self.app_settings = settings.app_settings
-        self.logged_in = False
         atexit.register(openbb_posthog.shutdown)
 
     def emit(self, record: logging.LogRecord):
@@ -146,10 +145,6 @@ class PosthogHandler(logging.Handler):
 
         if re.match(r"^(START|END|INPUT:)", log_line):
             return
-
-        if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
-            self.logged_in = True
-            openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
 
         openbb_posthog.capture(
             app_settings.identifier,
