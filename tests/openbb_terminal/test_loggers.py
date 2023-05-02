@@ -25,7 +25,7 @@ settings = Settings(
     log_settings=LogSettings(
         directory=Path("."),
         frequency="H",
-        handler_list="file",
+        handler_list=["file"],
         rolling_clock=False,
         verbosity=20,
     ),

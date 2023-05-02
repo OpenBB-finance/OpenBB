@@ -1,6 +1,7 @@
 import platform
-from typing import Literal
+from typing import List, Literal
 
+from pydantic import Field, root_validator, validator
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.models import BaseModel
@@ -36,7 +37,7 @@ class SystemModel(BaseModel):
     LOGGING_AWS_SECRET_ACCESS_KEY: str = "REPLACE_ME"
     LOGGING_COMMIT_HASH: str = "REPLACE_ME"
     LOGGING_FREQUENCY: Literal["D", "H", "M", "S"] = "H"
-    LOGGING_HANDLERS: Literal["stdout", "stderr", "noop", "file"] = "file"
+    LOGGING_HANDLERS: List[str] = Field(default_factory=lambda: ["file"])
     LOGGING_ROLLING_CLOCK: bool = False
     LOGGING_VERBOSITY: int = 20
     LOGGING_SUB_APP: str = "terminal"
@@ -56,3 +57,20 @@ class SystemModel(BaseModel):
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()
+
+    @root_validator
+    def add_additional_handlers(cls, values):
+        if (
+            not any([values["TEST_MODE"], values["LOGGING_SUPPRESS"]])
+            and values["LOG_COLLECT"]
+        ):
+            values["LOGGING_HANDLERS"].append("posthog")
+
+        return values
+
+    @validator("LOGGING_HANDLERS")
+    def validate_logging_handlers(cls, v):
+        for value in v:
+            if value not in ["stdout", "stderr", "noop", "file", "posthog"]:
+                raise ValueError("Invalid logging handler")
+        return v
