@@ -13,8 +13,6 @@ from pathlib import Path
 from platform import platform, python_version
 from typing import Any, Dict, Optional
 
-from openbb_terminal.core.session.current_user import get_current_user
-
 # IMPORTATION THIRDPARTY
 try:
     import git
@@ -40,6 +38,7 @@ from openbb_terminal.core.log.generation.settings import (
 )
 from openbb_terminal.core.log.generation.user_logger import (
     NO_USER_PLACEHOLDER,
+    get_current_user,
     get_user_uuid,
 )
 from openbb_terminal.core.session.current_system import (
