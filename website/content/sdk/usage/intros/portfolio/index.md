@@ -71,7 +71,7 @@ Note that the Excel sheet requires the following columns:
   country, sector or industry.
 
 
-This is also illustrated int the table beThe table below illustrates the required column titles:
+The table below illustrates the required column titles:
 
 | Date       | Type   | Ticker   | Side   |   Price |   Quantity |   Fees |   Investment | Currency   | Sector                 | Industry                       | Country       | Region        |
 |:-----------|:-------|:---------|:-------|--------:|-----------:|-------:|-------------:|:-----------|:-----------------------|:-------------------------------|:--------------|:--------------|
