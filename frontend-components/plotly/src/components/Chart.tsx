@@ -35,10 +35,9 @@ export default function Chart({
 }) {
   const posthog = usePostHog();
 
-  if (info)
-    useEffect(() => {
-      if (posthog) posthog.capture("chart", info);
-    }, [posthog]);
+  useEffect(() => {
+    if (posthog) posthog.capture("chart", info);
+  }, [info]);
 
   delete json.layout.width;
   delete json.layout.height;
@@ -51,10 +50,10 @@ export default function Chart({
   const [chartTitle, setChartTitle] = useState(title);
   const [axesTitles, setAxesTitles] = useState({});
   const [plotLoaded, setPlotLoaded] = useState(false);
-  const [modal, setModal] = useState({ modal: "" });
+  const [modal, setModal] = useState({ name: "" });
   const [loading, setLoading] = useState(false);
   const [plotDiv, setPlotDiv] = useState(null);
-  const [Volume, setVolume] = useState({ old_nticks: {} });
+  const [volumeBars, setVolumeBars] = useState({ old_nticks: {} });
 
   const [plotData, setPlotData] = useState(json);
   const [annotations, setAnnotations] = useState([]);
@@ -65,7 +64,7 @@ export default function Chart({
   const [colorActive, setColorActive] = useState(false);
   const [onAnnotationClick, setOnAnnotationClick] = useState({});
 
-  const onClose = () => setModal({ modal: "" });
+  const onClose = () => setModal({ name: "" });
 
   // @ts-ignore
   function onDeleteAnnotation(annotation) {
@@ -96,16 +95,18 @@ export default function Chart({
     });
   }
 
-  if (axesTitles && Object.keys(axesTitles).length > 0) {
-    Object.keys(axesTitles).forEach((k) => {
-      plotData.layout[k].title = {
-        ...(plotData.layout[k].title || {}),
-        text: axesTitles[k],
-      };
-      plotData.layout[k].showticklabels = true;
-    });
-    setAxesTitles({});
-  }
+  useEffect(() => {
+    if (axesTitles && Object.keys(axesTitles).length > 0) {
+      Object.keys(axesTitles).forEach((k) => {
+        plotData.layout[k].title = {
+          ...(plotData.layout[k].title || {}),
+          text: axesTitles[k],
+        };
+        plotData.layout[k].showticklabels = true;
+      });
+      setAxesTitles({});
+    }
+  }, [axesTitles]);
 
   function onChangeColor(color) {
     // updates the color of the last added shape
@@ -337,14 +338,14 @@ export default function Chart({
       }
 
       window.addEventListener("resize", async function () {
-        let update = await ResizeHandler({ plotData, Volume });
+        let update = await ResizeHandler({ plotData, volumeBars });
         let layout_update = update.layout_update;
         let newPlotData = update.plotData;
         let volume_update = update.volume_update;
 
         if (Object.keys(layout_update).length > 0) {
           setPlotData(newPlotData);
-          setVolume(volume_update);
+          setVolumeBars(volume_update);
           Plotly.relayout(plotDiv, layout_update);
         }
       });
@@ -386,7 +387,7 @@ export default function Chart({
         }}
         plotlyData={plotData}
         setLoading={setLoading}
-        open={modal.modal === "overlayChart"}
+        open={modal.name === "overlayChart"}
         close={onClose}
       />
       <TitleChartDialog
@@ -394,12 +395,12 @@ export default function Chart({
         updateAxesTitles={(axesTitles) => setAxesTitles(axesTitles)}
         defaultTitle={chartTitle}
         plotlyData={plotData}
-        open={modal.modal === "titleDialog"}
+        open={modal.name === "titleDialog"}
         close={onClose}
       />
       <TextChartDialog
-        popupData={modal.modal === "textDialog" ? modal?.data : null}
-        open={modal.modal === "textDialog"}
+        popupData={modal.name === "textDialog" ? modal?.data : null}
+        open={modal.name === "textDialog"}
         close={onClose}
         addAnnotation={(data) => onAddAnnotation(data)}
         deleteAnnotation={(data) => onDeleteAnnotation(data)}

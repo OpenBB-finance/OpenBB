@@ -130,7 +130,7 @@ export function init_annotation({
   plotData: Figure;
   popupData: Partial<PopupData>;
   setPlotData: (plotData: Partial<Figure>) => void;
-  setModal: (modal: { modal: string; data?: any }) => void;
+  setModal: (modal: { name: string; data?: any }) => void;
   onAnnotationClick: any;
   setOnAnnotationClick: (onAnnotationClick: any) => void;
   setAnnotations: (annotations: Partial<Annotations>[]) => void;
@@ -191,7 +191,7 @@ export function init_annotation({
       };
       console.log("popup_data", popup_data);
       setOnAnnotationClick(popup_data);
-      setModal({ modal: "textDialog", data: popup_data });
+      setModal({ name: "textDialog", data: popup_data });
       setOnAnnotationClick({});
     });
 

@@ -31,7 +31,7 @@ export function PlotConfig({
   Loading,
   changeColor,
 }: {
-  setModal: (modal: { modal: string; data?: any }) => void;
+  setModal: (modal: { name: string; data?: any }) => void;
   changeTheme: (change: boolean) => void;
   autoScaling: (change: boolean) => void;
   Loading: (change: boolean) => void;
@@ -40,21 +40,21 @@ export function PlotConfig({
   useHotkeys(
     "ctrl+shift+t",
     () => {
-      setModal({ modal: "titleDialog" });
+      setModal({ name: "titleDialog" });
     },
     { preventDefault: true }
   );
   useHotkeys(
     "ctrl+t",
     () => {
-      setModal({ modal: "textDialog" });
+      setModal({ name: "textDialog" });
     },
     { preventDefault: true }
   );
   useHotkeys(
     "ctrl+o",
     () => {
-      setModal({ modal: "overlayChart" });
+      setModal({ name: "overlayChart" });
     },
     { preventDefault: true }
   );
@@ -75,7 +75,7 @@ export function PlotConfig({
   useHotkeys(
     "ctrl+shift+s",
     async () => {
-      setModal({ modal: "downloadCsv" });
+      setModal({ name: "downloadCsv" });
       await downloadCSV(document.getElementById("plotlyChart") as any);
     },
     { preventDefault: true }
@@ -96,7 +96,6 @@ export function PlotConfig({
     { preventDefault: true }
   );
 
-
   const CONFIG = {
     plotGlPixelRatio: 1,
     scrollZoom: true,
@@ -110,7 +109,7 @@ export function PlotConfig({
           name: "Download CSV (Ctrl+Shift+S)",
           icon: ICONS.downloadCsv,
           click: async function (gd: any) {
-            setModal({ modal: "downloadCsv" });
+            setModal({ name: "downloadCsv" });
             await downloadCSV(gd);
           },
         },
@@ -149,21 +148,21 @@ export function PlotConfig({
           name: "Overlay chart from CSV (Ctrl+O)",
           icon: ICONS.plotCsv,
           click: function () {
-            setModal({ modal: "overlayChart" });
+            setModal({ name: "overlayChart" });
           },
         },
         {
           name: "Add Text (Ctrl+T)",
           icon: ICONS.addText,
           click: function () {
-            setModal({ modal: "textDialog", data: { text: "" } });
+            setModal({ name: "textDialog", data: { text: "" } });
           },
         },
         {
           name: "Change Titles (Ctrl+Shift+T)",
           icon: ICONS.changeTitle,
           click: function () {
-            setModal({ modal: "titleDialog" });
+            setModal({ name: "titleDialog" });
           },
         },
         {
