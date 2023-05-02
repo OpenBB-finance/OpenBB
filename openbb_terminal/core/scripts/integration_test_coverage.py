@@ -2,6 +2,7 @@
 
 # IMPORT STANDARD
 import importlib
+import inspect
 import json
 import os
 import re
@@ -145,6 +146,130 @@ def get_tested_functions(test_file: str) -> list:
     return list(tested_functions)
 
 
+def find_all_calls(module) -> list:
+    """Find all function calls in a module."""
+    calls = []
+    module_dict = module.__dict__
+    for key, _ in module_dict.items():
+        if "call_" in key:
+            calls.append(key)
+    return calls
+
+
+def parse_args(module, func) -> list:
+    """Parse the arguments of a given module function."""
+    source = inspect.getsource(module.__dict__[func])
+    params = re.findall(r"-\w+", source)
+    return params
+
+
+def get_tested_function_params(tested_functions: list, test_file: str) -> list:
+    """Obtain all function parameters that are called in a given test file."""
+    tested_functions = []
+    with open(test_file) as f:
+        for line in f:
+            try:
+                function = line.split()[0]
+            except IndexError:
+                continue
+
+            params = re.findall(r"-\w+", line)
+            tested_functions.append((function, params))
+    return tested_functions
+
+
+def map_module_to_calls(module) -> dict:
+    """Map module to its function calls and parameters."""
+    calls = find_all_calls(module)
+    calls_dict = {}
+    for call in calls:
+        calls_dict[call] = parse_args(module, call)
+
+    calls_dict = {k[5:]: v for k, v in calls_dict.items()}
+    return calls_dict
+
+
+def calculate_function_coverage(
+    tested_functions: list,
+    tested_function: str,
+    module: object,
+    limit: int = 10,
+    output_table: bool = True,
+) -> None:
+    """Compare tested functions with module."""
+    missing_params = {}
+    module_dict = map_module_to_calls(module)
+    tested_function_params = get_tested_function_params(
+        tested_functions, tested_function
+    )
+    try:
+        controller = str(module).split(".")[3].split("_")[0]
+    except IndexError:
+        controller = str(module).split(".")[2].split("_")[0]
+
+    for function, params in tested_function_params:
+        if function != controller:
+            try:
+                all_params = module_dict[function]
+            except KeyError:
+                # this catches the (sub)menu
+                continue
+
+            if set(params).issubset(set(all_params)):
+                all_params = [param for param in all_params if param not in params]
+                for param in params:
+                    if param in all_params:
+                        all_params.remove(param)
+            else:
+                missing_params[function] = [
+                    param for param in all_params if param not in params
+                ]
+
+    for key, value in missing_params.items():
+        missing_params[key] = list(value)
+        for param in value:
+            for param2 in value:
+                if param != param2 and param2.startswith(param):
+                    missing_params[key].remove(param)
+                    break
+
+    coverage_dict = {}
+    for key, value in missing_params.items():
+        try:
+            coverage_dict[key] = round(
+                (len(module_dict[key]) - len(value)) / len(module_dict[key]) * 100, 2
+            )
+        except ZeroDivisionError:
+            coverage_dict[key] = 100
+        if not output_table:
+            console.print(f"[red]Coverage for {key}: {coverage_dict[key]}%[/red]")
+
+    for key, value in module_dict.items():
+        if key not in coverage_dict:
+            coverage_dict[key] = 100
+
+    if output_table:
+        df = pd.DataFrame(
+            coverage_dict.items(),
+            columns=["Function", "Coverage %"],
+        ).sort_values(by=["Coverage %"], ascending=True)
+        average_coverage = round(df["Coverage %"].mean(), 2)
+        df = df.astype({"Coverage %": "str"})
+        df["Coverage %"] = df["Coverage %"].apply(
+            lambda x: f"[green]{x}[/green]" if x >= 80 else f"[red]{x}[/red]"
+        )
+        print_rich_table(
+            df,
+            headers=[
+                "Function",
+                f"Parameter Coverage {average_coverage}%",
+            ],
+            limit=limit,
+        )
+
+    console.print(f"[red]Missing params: {missing_params}[/red]")
+
+
 def calculate_coverage_percentage(
     tested_functions: list, available_functions: list, output_table: bool = False
 ) -> None:
@@ -176,10 +301,10 @@ def calculate_coverage_percentage(
     else:
         console.print(
             f"Integration test coverage: {coverage}%\n"
-            f"================================\n"
+            f"=======================================\n"
             f"[red]Untested functions: {untested_functions}[/red]\n"
             f"[green]Tested functions: {tested_functions}[/green]\n"
-            f"================================\n"
+            f"=======================================\n"
         )
 
 
@@ -213,6 +338,7 @@ def get_coverage_all_controllers(output_table: bool = False) -> None:
         calculate_coverage_percentage(
             tested_functions, available_functions, output_table=output_table
         )
+        calculate_function_coverage(tested_functions, INTEGRATION_PATH + test, module)
 
 
 def get_coverage_single_controller(
@@ -241,3 +367,6 @@ def get_coverage_single_controller(
     functions = get_functions(module)
     tested_functions = get_tested_functions(INTEGRATION_PATH + integration_test)
     calculate_coverage_percentage(tested_functions, functions, output_table)
+    calculate_function_coverage(
+        tested_functions, INTEGRATION_PATH + integration_test, module
+    )
