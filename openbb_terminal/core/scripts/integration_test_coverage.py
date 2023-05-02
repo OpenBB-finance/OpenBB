@@ -254,15 +254,15 @@ def calculate_function_coverage(
             columns=["Function", "Coverage %"],
         ).sort_values(by=["Coverage %"], ascending=True)
         average_coverage = round(df["Coverage %"].mean(), 2)
-        df = df.astype({"Coverage %": "str"})
-        df["Coverage %"] = df["Coverage %"].apply(
-            lambda x: f"[green]{x}[/green]" if x >= 80 else f"[red]{x}[/red]"
-        )
+        df["Coverage %"] = df[  # pylint: disable=unsupported-assignment-operation
+            "Coverage %"
+        ].apply(lambda x: f"[green]{x}[/green]" if x >= 80 else f"[red]{x}[/red]")
+        console.print("Integration Test Parameter Coverage")
         print_rich_table(
             df,
             headers=[
                 "Function",
-                f"Parameter Coverage {average_coverage}%",
+                f"Coverage {average_coverage}%",
             ],
             limit=limit,
         )
