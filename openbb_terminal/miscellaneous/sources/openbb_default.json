@@ -867,13 +867,7 @@
       "baas": [
         "BitQuery"
       ],
-      "dt": [
-        "Shroom"
-      ],
-      "ds": [
-        "Shroom"
-      ],
-      "tvl": [
+      "query": [
         "Shroom"
       ],
       "address": [
