@@ -39,6 +39,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 
 
 class Record:
