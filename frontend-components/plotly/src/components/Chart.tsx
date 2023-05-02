@@ -22,6 +22,7 @@ export default function Chart({
   date,
   cmd,
   title,
+  global,
   info,
 }: {
   // @ts-ignore
@@ -29,6 +30,7 @@ export default function Chart({
   date: Date;
   cmd: string;
   title: string;
+  global: any;
   info?: any;
 }) {
   const posthog = usePostHog();
@@ -41,6 +43,8 @@ export default function Chart({
   delete json.layout.width;
   delete json.layout.height;
   json.layout.title.text = "";
+
+  const [globals, setGlobals] = useState(global);
 
   const [barButtons, setModeBarButtons] = useState({});
   const [LogYaxis, setLogYaxis] = useState(false);
@@ -447,6 +451,7 @@ export default function Chart({
                 const plot = document.getElementById("plotlyChart");
                 console.log("plot", plot);
                 if (plot) setPlotDiv(plot);
+                plot.globals = globals;
               }
               if (!plotLoaded) setPlotLoaded(true);
             }}

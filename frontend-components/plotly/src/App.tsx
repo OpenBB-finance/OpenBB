@@ -5,7 +5,7 @@ import Chart from "./components/Chart";
 import { plotlyMockup, candlestickMockup } from "./data/mockup";
 
 declare global {
-  [Exposed=Window, SecureContext]
+  [(Exposed = Window), SecureContext];
   interface Window {
     plotly_figure: any;
     export_image: string;
@@ -38,6 +38,15 @@ function App() {
 
   const transformData = (data: any) => {
     if (!data) return null;
+    let globals = {
+      added_traces: [],
+      csv_yaxis_id: null,
+      cmd_src_idx: null,
+      cmd_idx: null,
+      cmd_src: "",
+      old_margin: null,
+      title: "",
+    };
     let filename = data.layout?.title?.text
       .replace(/<b>|<\/b>/g, "")
       .replace(/ /g, "_");
@@ -53,11 +62,14 @@ function App() {
 
     if (data.layout.annotations != undefined) {
       data.layout.annotations.forEach(function (annotation) {
-        if (annotation.text != undefined && !["svg", "pdf"].includes(extension))
+        if (annotation.text != undefined)
           if (annotation.text[0] == "/") {
+            globals.cmd_src = annotation.text;
+            globals.cmd_idx = data.layout.annotations.indexOf(annotation);
             annotation.text = "";
 
             let margin = data.layout.margin;
+            globals.old_margin = { ...margin };
             if (margin.t != undefined && margin.t > 40) margin.t = 40;
 
             margin.l = 70;
@@ -66,9 +78,11 @@ function App() {
       });
     }
     let title = data.layout?.title?.text;
+    globals.title = title;
     return {
       data: data,
       date: new Date(),
+      globals: globals,
       cmd: data.command_location,
       posthog: data.posthog,
       python_version: data.python_version,
@@ -130,6 +144,7 @@ function App() {
         date={transformedData.date}
         cmd={transformedData.cmd}
         title={transformedData.title}
+        global={transformedData.globals}
         info={info}
       />
     );

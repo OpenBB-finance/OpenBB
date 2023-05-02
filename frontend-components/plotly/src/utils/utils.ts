@@ -1,6 +1,7 @@
 // @ts-nocheck
 import domtoimage from "dom-to-image";
 import { Figure } from "react-plotly.js";
+import * as Plotly from "plotly.js-dist-min";
 
 const exportNativeFileSystem = async ({
   fileHandle,
@@ -39,6 +40,12 @@ const IMAGE_TYPE: FilePickerAcceptType[] = [
     description: "JPEG Image",
     accept: {
       "image/jpeg": [".jpeg"],
+    },
+  },
+  {
+    description: "SVG Image",
+    accept: {
+      "image/svg+xml": [".svg"],
     },
   },
 ];
@@ -243,26 +250,34 @@ const openbb_watermark = {
 };
 
 async function setWatermarks(margin, old_index, init = false) {
+  const chart = document.getElementById("plotlyChart") as HTMLElement;
+
   if (init) {
-    globals.CHART_DIV.layout.annotations.push(openbb_watermark);
-    if (globals.cmd_idx && globals.cmd_src) {
-      globals.CHART_DIV.layout.annotations[globals.cmd_idx].text =
-        globals.cmd_src;
+    chart.layout.annotations.push(openbb_watermark);
+    if (
+      chart.globals.cmd_idx != undefined &&
+      chart.globals.cmd_src != undefined
+    ) {
+      chart.layout.annotations[chart.globals.cmd_idx].text =
+        chart.globals.cmd_src;
     }
 
-    Plotly.relayout(globals.CHART_DIV, {
-      "title.text": globals.title,
-      margin: globals.old_margin,
+    Plotly.relayout(chart, {
+      "title.text": chart.globals.title,
+      margin: chart.globals.old_margin,
     });
   }
 
   if (!init) {
-    if (globals.cmd_idx && globals.cmd_src) {
-      globals.CHART_DIV.layout.annotations[globals.cmd_idx].text = "";
+    if (
+      chart.globals.cmd_idx != undefined &&
+      chart.globals.cmd_src != undefined
+    ) {
+      chart.layout.annotations[chart.globals.cmd_idx].text = "";
     }
-    globals.CHART_DIV.layout.annotations.splice(old_index, 1);
+    chart.layout.annotations.splice(old_index, 1);
 
-    Plotly.relayout(globals.CHART_DIV, {
+    Plotly.relayout(chart, {
       "title.text": "",
       margin: margin,
     });
@@ -277,19 +292,21 @@ export async function saveImage(
   const chart = document.getElementById(id) as HTMLElement;
 
   if (["svg", "pdf"].includes(extension)) {
-    const margin = globals.CHART_DIV.layout.margin;
-    const old_index = globals.CHART_DIV.layout.annotations.length;
+    const chart = document.getElementById("plotlyChart") as HTMLElement;
+    const margin = chart.layout.margin;
+    const old_index = chart.layout.annotations.length;
 
     await setWatermarks(margin, old_index, true);
 
-    Plotly.downloadImage(globals.CHART_DIV, {
+    Plotly.downloadImage(chart, {
       format: "svg",
-      height: globals.CHART_DIV.clientHeight,
-      width: globals.CHART_DIV.clientWidth,
-      filename: filename,
+      height: chart.clientHeight,
+      width: chart.clientWidth,
+      filename: window.title,
     });
 
     await setWatermarks(margin, old_index, false);
+    await loadingOverlay("", true);
 
     return;
   }
@@ -314,13 +331,20 @@ export async function downloadImage(
       filename: filename,
       is_image: true,
     });
-    let ext: string = "png";
+    let extension: string = "png";
     if (fileHandle !== null) {
       // @ts-ignore
-      ext = fileHandle.name.split(".").pop();
+      extension = fileHandle.name.split(".").pop();
     }
     loading(true);
-    await loadingOverlay(`Saving ${ext.toUpperCase()}`);
+    await loadingOverlay(`Saving ${extension.toUpperCase()}`);
+
+    if (["svg", "pdf"].includes(extension)) {
+      await saveImage(id, filename, extension);
+      hidemodebar(false);
+      loading(false);
+      return;
+    }
 
     non_blocking(async function () {
       domtoimage.toBlob(chart).then(function (blob: Blob) {
