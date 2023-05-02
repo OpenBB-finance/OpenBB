@@ -147,9 +147,7 @@ class Category:
 
     def __getattribute__(self, name: str):
         """We override the __getattribute__ method and wrap all callable
-
         attributes with a wrapper that logs the call and the result.
-
         """
 
         attr = super().__getattribute__(name)
@@ -258,39 +256,21 @@ class OperationLogger:
     @staticmethod
     def __merge_function_args(func: Callable, args: tuple, kwargs: dict) -> dict:
         """
-
         Merge user input args and kwargs with signature defaults into a dictionary.
 
-
-
         Parameters
-
         ----------
-
-
-
         func : Callable
-
             Function to get the args from
-
         args : tuple
-
             Positional args
-
         kwargs : dict
-
             Keyword args
 
-
-
         Returns
-
-        ----------
-
+        -------
         dict
-
             Merged user args and signature defaults
-
         """
 
         import inspect  # pylint: disable=C0415
@@ -316,33 +296,19 @@ class OperationLogger:
     @staticmethod
     def __remove_key_and_log_state(func_module: str, function_args: dict) -> dict:
         """
-
         Remove API key from the function args and log state of keys.
 
-
-
         Parameters
-
         ----------
-
         func_module : str
-
             Module of the function
-
         function_args : dict
-
             Function args
 
-
-
         Returns
-
-        ----------
-
+        -------
         dict
-
             Function args with API key removed
-
         """
 
         if func_module == "openbb_terminal.keys_model":
@@ -435,15 +401,11 @@ def get_sdk_imports_text() -> str:
 
 import logging
 
-
-
 import openbb_terminal.config_terminal as cfg
 
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 
 from openbb_terminal.core.plots.plotly_helper import theme  # noqa: F401
-
-
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 
@@ -455,16 +417,12 @@ from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 
 from openbb_terminal.reports.reports_controller import ReportController
 
-
-
 import openbb_terminal.core.sdk.sdk_init as lib
 
 from openbb_terminal.core.sdk import (
-
     controllers as ctrl,
 
     models as model,
-
 )
 
 from openbb_terminal.core.session.current_system import get_current_system
@@ -473,11 +431,7 @@ from openbb_terminal.core.session.current_user import is_local
 
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-
-
 cfg.setup_config_terminal(is_sdk=True)
-
-
 
 logger = logging.getLogger(__name__)
 
