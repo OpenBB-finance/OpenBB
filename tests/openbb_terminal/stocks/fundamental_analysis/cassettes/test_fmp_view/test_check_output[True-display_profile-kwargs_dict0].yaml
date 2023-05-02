@@ -10,9 +10,9 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/profile/PM?apikey=MOCK_API_KEY
   response:
     body:
-      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"price\": 98.5,\n    \"beta\":
-        0.709205,\n    \"volAvg\": 4480064,\n    \"mktCap\": 152697656576,\n    \"lastDiv\":
-        5.04,\n    \"range\": \"82.85-109.81\",\n    \"changes\": -1.6,\n    \"companyName\":
+      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"price\": 96.99,\n    \"beta\":
+        0.704152,\n    \"volAvg\": 4389060,\n    \"mktCap\": 150547871793,\n    \"lastDiv\":
+        5.08,\n    \"range\": \"82.85-109.81\",\n    \"changes\": -2.36,\n    \"companyName\":
         \"Philip Morris International Inc.\",\n    \"currency\": \"USD\",\n    \"cik\":
         \"0001413329\",\n    \"isin\": \"US7181721090\",\n    \"cusip\": \"718172109\",\n
         \   \"exchange\": \"New York Stock Exchange\",\n    \"exchangeShortName\":
@@ -32,11 +32,11 @@ interactions:
         U in Indonesia; and Fortune and Jackpot in the Philippines. The company sells
         its smoke-free products in 71 markets. Philip Morris International Inc. was
         incorporated in 1987 and is headquartered in New York, New York.\",\n    \"ceo\":
-        \"Mr. Andre  Calantzopoulos\",\n    \"sector\": \"Consumer Defensive\",\n
-        \   \"country\": \"US\",\n    \"fullTimeEmployees\": \"69600\",\n    \"phone\":
-        \"917 663 2000\",\n    \"address\": \"120 Park Avenue\",\n    \"city\": \"New
-        York\",\n    \"state\": \"NY\",\n    \"zip\": \"10017-5592\",\n    \"dcfDiff\":
-        3.97239,\n    \"dcf\": 99.7876,\n    \"image\": \"https://financialmodelingprep.com/image-stock/PM.png\",\n
+        \"Mr. Jacek  Olczak\",\n    \"sector\": \"Consumer Defensive\",\n    \"country\":
+        \"US\",\n    \"fullTimeEmployees\": \"79800\",\n    \"phone\": \"917 663 2000\",\n
+        \   \"address\": \"120 Park Avenue\",\n    \"city\": \"New York\",\n    \"state\":
+        \"NY\",\n    \"zip\": \"10017-5592\",\n    \"dcfDiff\": 3.97239,\n    \"dcf\":
+        99.7876,\n    \"image\": \"https://financialmodelingprep.com/image-stock/PM.png\",\n
         \   \"ipoDate\": \"2008-03-17\",\n    \"defaultImage\": false,\n    \"isEtf\":
         false,\n    \"isActivelyTrading\": true,\n    \"isAdr\": false,\n    \"isFund\":
         false\n  }\n]"
@@ -55,13 +55,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '2159'
+      - '2153'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 07 Mar 2023 17:08:32 GMT
+      - Tue, 02 May 2023 14:20:46 GMT
       ETag:
-      - W/"86f-vfRG1blo/5jJ3j+zinFHJHEokF0"
+      - W/"869-UIxLgjqmaaI2aHy3ZAppujC5jkU"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:
