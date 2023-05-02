@@ -11,6 +11,7 @@ import {
 } from "./data/mockup";
 
 declare global {
+  [Exposed=Window, SecureContext]
   interface Window {
     json_data: any;
     title: string;

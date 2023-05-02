@@ -25,6 +25,16 @@ STOCKS_CLEAN_DATA = {
 }
 
 
+def update_current_page() -> None:
+    """Updates the current page to the set page"""
+    st.session_state["set_page"] = st.session_state["current_page"]
+
+
+def set_current_page(page: str) -> None:
+    """Sets the current page to the given page"""
+    st.session_state["current_page"] = page
+
+
 def get_calc(item, df, rolling) -> pd.DataFrame:
     return STOCKS_VIEWS[item](df, rolling)
 
@@ -67,18 +77,34 @@ def has_parameter(func: Callable[..., Any], parameter: str) -> bool:
 def load_state(name: str, default: Any) -> Any:
     if name not in st.session_state:
         st.session_state[name] = default
+    elif st.session_state.get("current_page", None) != st.session_state.get(
+        "set_page", None
+    ):
+        update_current_page()
+        st.session_state[name] = default
+
     return st.session_state[name]
 
 
-def load_widget_options(default: Any, page: str) -> Any:
+def load_widget_options(default: Any) -> Any:
     name = "widget_options"
     if name not in st.session_state:
         st.session_state[name] = default
-    elif st.session_state[name].get("page", "") != page:
+    elif st.session_state.get("current_page", None) != st.session_state.get(
+        "set_page", None
+    ):
+        update_current_page()
         st.session_state[name] = default
 
-    st.session_state[name]["page"] = page
     return st.session_state[name]
+
+
+def get_widget_options(default: dict, key: str) -> Any:
+    options = load_widget_options(default)
+    if key not in options:
+        options[key] = default.get(key, None)
+
+    return options[key]
 
 
 def save_state(name: str, value: Any):

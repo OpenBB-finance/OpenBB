@@ -24,6 +24,7 @@ st.set_page_config(
     page_title="Stocks",
     initial_sidebar_state="expanded",
 )
+st_helpers.set_current_page("Stocks")
 
 logger = st.empty()
 page_title = st.empty()

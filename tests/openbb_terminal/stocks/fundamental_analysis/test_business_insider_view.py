@@ -83,5 +83,5 @@ def test_price_target_from_analysts_plt():
 @pytest.mark.record_stdout
 def test_estimates():
     business_insider_view.display_estimates(
-        symbol="TSLA", estimate="annualearnings", export=None
+        symbol="TSLA", estimate="annual_earnings", export=None
     )

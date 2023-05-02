@@ -215,7 +215,7 @@ def display_estimates(
         df_quarter_revenues,
     ) = business_insider_model.get_estimates(symbol)
 
-    if estimate == "annualearnings":
+    if estimate == "annual_earnings":
         print_rich_table(
             df_year_estimates,
             headers=list(df_year_estimates.columns),
@@ -231,7 +231,7 @@ def display_estimates(
             sheet_name,
         )
 
-    elif estimate == "quarterearnings":
+    elif estimate == "quarter_earnings":
         print_rich_table(
             df_quarter_earnings,
             headers=list(df_quarter_earnings.columns),
@@ -247,7 +247,7 @@ def display_estimates(
             sheet_name,
         )
 
-    elif estimate == "annualrevenue":
+    elif estimate == "quarter_revenues":
         print_rich_table(
             df_quarter_revenues,
             headers=list(df_quarter_revenues.columns),
