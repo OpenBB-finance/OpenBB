@@ -145,10 +145,13 @@ class Backend(PyWry):
         """Get the json update for the backend."""
         current_user = get_current_user()
         current_system = get_current_system()
-        collect_logs = os.environ.get("OPENBB_LOG_COLLECT", "false").lower() == "true"
 
-        posthog: Dict[str, Any] = dict(collect_logs=collect_logs)
-        if collect_logs and current_user.profile.email and not self.logged_in:
+        posthog: Dict[str, Any] = dict(collect_logs=current_system.LOG_COLLECT)
+        if (
+            current_system.LOG_COLLECT
+            and current_user.profile.email
+            and not self.logged_in
+        ):
             self.logged_in = True
             posthog.update(
                 dict(

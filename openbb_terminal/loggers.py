@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 import atexit
 import json
 import logging
-import os
 import re
 import sys
 import time
@@ -13,6 +12,8 @@ import uuid
 from pathlib import Path
 from platform import platform, python_version
 from typing import Any, Dict, Optional
+
+from openbb_terminal.core.session.current_user import get_current_user
 
 # IMPORTATION THIRDPARTY
 try:
@@ -115,7 +116,7 @@ class PosthogHandler(logging.Handler):
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict"""
-        log_regex = r"(KEYS|PREFERENCES|SYSTEM|CMD|QUEUE): (.*)"
+        log_regex = r"(STARTUP|CMD|QUEUE): (.*)"
         log_dict: Dict[str, Any] = {}
 
         for log in re.findall(log_regex, log_info):
@@ -141,15 +142,20 @@ class PosthogHandler(logging.Handler):
 
         if log_dict := self.log_to_dict(log_info=log_line):
             event_name = f"log_{list(log_dict.keys())[0].lower()}"
+            if "STARTUP" in log_dict:
+                log_dict = log_dict["STARTUP"]
 
             log_extra = {**log_extra, **log_dict}
             log_extra.pop("message", None)
 
-        if re.match(r"^(START|END|INPUT:)", log_line):
+        if re.match(r"^(START|END|INPUT:)", log_line) and not log_dict:
             return
 
         if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
             self.logged_in = True
+            openbb_posthog.identify(
+                get_user_uuid(), {"email": get_current_user().profile.email}
+            )
             openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
 
         openbb_posthog.capture(
@@ -262,7 +268,7 @@ def setup_handlers(settings: Settings):
 
     if (
         not any([current_system.TEST_MODE, current_system.LOGGING_SUPPRESS])
-        and os.environ.get("OPENBB_LOG_COLLECT", "false").lower() == "true"
+        and current_system.LOG_COLLECT
     ):
         add_posthog_handler(settings=settings)
 
