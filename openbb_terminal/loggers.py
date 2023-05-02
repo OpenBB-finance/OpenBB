@@ -116,7 +116,7 @@ class PosthogHandler(logging.Handler):
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict"""
-        log_regex = r"(STARTUP|CMD|QUEUE): (.*)"
+        log_regex = r"(STARTUP|CMD): (.*)"
         log_dict: Dict[str, Any] = {}
 
         for log in re.findall(log_regex, log_info):
@@ -148,7 +148,7 @@ class PosthogHandler(logging.Handler):
             log_extra = {**log_extra, **log_dict}
             log_extra.pop("message", None)
 
-        if re.match(r"^(START|END|INPUT:)", log_line) and not log_dict:
+        if re.match(r"^(QUEUE|START|END|INPUT:)", log_line) and not log_dict:
             return
 
         if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
