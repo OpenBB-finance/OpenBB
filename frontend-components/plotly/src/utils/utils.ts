@@ -144,7 +144,7 @@ export async function downloadCSV(gd: Figure) {
       if (columns.length == 0) {
         columns.push(xaxis);
       }
-      columns.push(trace.name);
+      columns.push(trace.name != undefined ? trace.name : yaxis);
       trace.x.forEach(function (x, i) {
         if (rows[i] == undefined) {
           rows[i] = [x];
@@ -327,6 +327,7 @@ export async function downloadImage(
   const filename = `${window.title}.png`;
 
   try {
+    loading(true);
     let fileHandle = await getNewFileHandle({
       filename: filename,
       is_image: true,
@@ -336,7 +337,6 @@ export async function downloadImage(
       // @ts-ignore
       extension = fileHandle.name.split(".").pop();
     }
-    loading(true);
     await loadingOverlay(`Saving ${extension.toUpperCase()}`);
 
     if (["svg", "pdf"].includes(extension)) {
@@ -351,12 +351,13 @@ export async function downloadImage(
         saveToFile(blob, filename, fileHandle).then(async function () {
           await loadingOverlay("", true);
           hidemodebar(false);
+          loading(false);
         });
       });
     }, 2)();
-    loading(false);
   } catch (error) {
     console.error(error);
     hidemodebar(false);
+    loading(false);
   }
 }

@@ -4,10 +4,12 @@ import { hideModebar } from "./PlotlyConfig";
 
 export default async function ResizeHandler({
   plotData,
-  Volume,
+  volumeBars,
+  setMaximizePlot
 }: {
   plotData: Figure;
-  Volume: any;
+  volumeBars: any;
+  setMaximizePlot: (value: boolean) => void;
 }) {
   // We hide the modebar and set the number of ticks to 5
   const XAXIS = Object.keys(plotData.layout)
@@ -19,12 +21,12 @@ export default async function ResizeHandler({
   );
 
   let layout_update: any = {};
-  let volume: any = Volume || { old_nticks: {} };
+  let volume: any = volumeBars || { old_nticks: {} };
 
   const width = window.innerWidth;
   const height = window.innerHeight;
   let tick_size =
-    height > 420 && width < 920 ? 9 : height > 420 && width < 500 ? 10 : 8;
+    height > 420 && width < 920 ? 8 : height > 420 && width < 500 ? 9 : 7;
 
   if (width < 750) {
     // We hide the modebar and set the number of ticks to 5
@@ -33,7 +35,7 @@ export default async function ResizeHandler({
       if (trace.type == "bar") {
         trace.opacity = 1;
         trace.marker.line.width = 0.09;
-        if (Volume.yaxis == undefined) {
+        if (volumeBars.yaxis == undefined) {
           volume.yaxis = "yaxis" + trace.yaxis.replace("y", "");
           layout_update[volume.yaxis + ".tickfont.size"] = tick_size;
           volume.tickfont = plotData.layout[volume.yaxis].tickfont || {};
@@ -48,12 +50,15 @@ export default async function ResizeHandler({
         volume.old_nticks[x] = plotData.layout[x].nticks || 10;
       }
     });
+    setMaximizePlot(true);
+
     await hideModebar();
   } else if (window.MODEBAR.style.cssText.includes("display: none")) {
     // We show the modebar
     await hideModebar(false);
+    setMaximizePlot(false);
 
-    if (Volume.old_nticks != undefined) {
+    if (volumeBars.old_nticks != undefined) {
       XAXIS.forEach((x) => {
         if (volume.old_nticks[x] != undefined) {
           layout_update[x + ".nticks"] = volume.old_nticks[x];
@@ -62,7 +67,7 @@ export default async function ResizeHandler({
       });
     }
 
-    if (Volume.yaxis != undefined) {
+    if (volumeBars.yaxis != undefined) {
       TRACES.forEach((trace) => {
         if (trace.type == "bar") {
           trace.opacity = 0.5;

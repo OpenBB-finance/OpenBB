@@ -109,7 +109,6 @@ export function PlotConfig({
           name: "Download CSV (Ctrl+Shift+S)",
           icon: ICONS.downloadCsv,
           click: async function (gd: any) {
-            setModal({ name: "downloadCsv" });
             await downloadCSV(gd);
           },
         },

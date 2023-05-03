@@ -14,6 +14,7 @@ import autoScaling from "./AutoScaling";
 import { non_blocking, saveImage } from "../utils/utils";
 import ResizeHandler from "./ResizeHandler";
 import ChangeColor from "./ChangeColor";
+import clsx from "clsx";
 
 const Plot = createPlotlyComponent(Plotly);
 
@@ -54,6 +55,7 @@ export default function Chart({
   const [loading, setLoading] = useState(false);
   const [plotDiv, setPlotDiv] = useState(null);
   const [volumeBars, setVolumeBars] = useState({ old_nticks: {} });
+  const [maximizePlot, setMaximizePlot] = useState(false);
 
   const [plotData, setPlotData] = useState(json);
   const [annotations, setAnnotations] = useState([]);
@@ -338,7 +340,11 @@ export default function Chart({
       }
 
       window.addEventListener("resize", async function () {
-        let update = await ResizeHandler({ plotData, volumeBars });
+        let update = await ResizeHandler({
+          plotData,
+          volumeBars,
+          setMaximizePlot,
+        });
         let layout_update = update.layout_update;
         let newPlotData = update.plotData;
         let volume_update = update.volume_update;
@@ -445,7 +451,12 @@ export default function Chart({
           </p>
         )} */}
         </div>
-        <div className="w-full h-[calc(100%-50px)] sm:pb-12">
+        <div
+          className={clsx("w-full sm:pb-12", {
+            "h-[calc(100%-10px)]": maximizePlot,
+            "h-[calc(100%-50px)]": !maximizePlot,
+          })}
+        >
           <Plot
             onInitialized={() => {
               if (!plotDiv) {
