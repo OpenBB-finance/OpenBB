@@ -54,15 +54,13 @@
 
 ._header {
   background: #062d48;
-  background: linear-gradient(
-    90deg,
-    #062d48,
-    #0b3054 15%,
-    #0e386c 45%,
-    #0b203d 64%,
-    #06101a 82%,
-    #060709
-  );
+  background: linear-gradient(90deg,
+      #062d48,
+      #0b3054 15%,
+      #0e386c 45%,
+      #0b203d 64%,
+      #06101a 82%,
+      #060709);
 }
 
 /* custom scrollbar */
@@ -89,9 +87,10 @@
   background: rgba(0, 0, 0, 0);
 }
 
-body, html {
+body,
+html {
   height: 100%;
-  overflow:hidden;
+  overflow: hidden;
   background: #000;
 }
 
@@ -187,7 +186,10 @@ code {
   margin-left: 45px;
 }
 
-._modal {font-size: 0.65rem !important; animation: popup 0.3s ease-in-out;}
+._modal {
+  font-size: 0.65rem !important;
+  animation: popup 0.3s ease-in-out;
+}
 
 #changecolor {
   position: absolute;
@@ -317,7 +319,12 @@ code {
 }
 
 @media screen and (max-width: 900px) {
-  ._modal {font-size: 0.65rem !important; animation: popup 0.3s ease-in-out; height: 70% !important; overflow: auto !important;}
+  ._modal {
+    font-size: 0.65rem !important;
+    animation: popup 0.3s ease-in-out;
+    height: 70% !important;
+    overflow: auto !important;
+  }
 }
 
 .modebar-group {
@@ -480,4 +487,19 @@ code {
 .modebar-btn:hover {
   background-color: #1f1f1f !important;
   border-radius: 8px;
+}
+
+
+@media screen and (max-height: 1000px) and (max-width: 1100px) {
+  ._header strong {
+    font-size: 0.8rem !important;
+  }
+
+  ._header p {
+    font-size: 0.7rem !important;
+  }
+
+  ._header span {
+    font-size: 0.5rem !important;
+  }
 }

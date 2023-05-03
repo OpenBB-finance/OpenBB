@@ -179,12 +179,8 @@ export async function downloadData(columns: any, data: any) {
     let fileHandle = await getNewFileHandle({
       filename: filename,
     });
-    let ext: string = "png";
-    if (fileHandle !== null) {
-      // @ts-ignore
-      ext = fileHandle.name.split(".").pop();
-    }
-    await loadingOverlay(`Saving ${ext.toUpperCase()}`);
+
+    await loadingOverlay("Saving CSV");
     await new Promise((resolve) => setTimeout(resolve, 1500));
     non_blocking(async function () {
       // @ts-ignore
