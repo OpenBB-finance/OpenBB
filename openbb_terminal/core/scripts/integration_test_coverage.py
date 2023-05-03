@@ -261,6 +261,10 @@ def calculate_function_coverage(
                         pass
 
     missing_params = {k: v for k, v in missing_params.items() if v}
+    # remove all values that are equal to '-h'
+    missing_params = {
+        k: v for k, v in missing_params.items() if not all(x == "-h" for x in v)
+    }
 
     coverage_dict = {}
     for key, value in missing_params.items():
@@ -296,7 +300,8 @@ def calculate_function_coverage(
             limit=limit,
         )
 
-    console.print(f"[red]Missing params: {missing_params}[/red]")
+    if len(missing_params) > 0:
+        console.print(f"[red]Missing params: {missing_params}[/red]")
 
 
 def calculate_coverage_percentage(
