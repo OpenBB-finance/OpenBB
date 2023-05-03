@@ -200,8 +200,10 @@ export async function downloadData(
         // @ts-ignore
         ext = fileHandle.name.split(".").pop();
         await loadingOverlay(`Saving ${ext.toUpperCase()}`);
+        console.log("Saving to file system");
       }else{
         await loadingOverlay(`Saving ${ext.toUpperCase()}`);
+        console.log("Saving to file system2");
         await new Promise((resolve) => setTimeout(resolve, 1500));
       }
       // @ts-ignore
@@ -213,6 +215,7 @@ export async function downloadData(
         });
       }, 2)();
     } catch (error) {
+      console.log("Saving to file system3");
       console.error(error);
     }
 
