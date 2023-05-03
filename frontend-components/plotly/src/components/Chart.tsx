@@ -42,7 +42,9 @@ export default function Chart({
 
   delete json.layout.width;
   delete json.layout.height;
-  json.layout.title.text = "";
+  if (json.layout?.title?.text) {
+    json.layout.title.text = "";
+  }
 
   const [barButtons, setModeBarButtons] = useState({});
   const [LogYaxis, setLogYaxis] = useState(false);

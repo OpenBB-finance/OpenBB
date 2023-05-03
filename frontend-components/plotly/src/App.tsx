@@ -54,12 +54,6 @@ function App() {
     let time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
     window.title = `openbb_${filename}_${date}_${time}`;
 
-    let extension = "";
-    if (window.export_image != undefined) {
-      filename = window.export_image.split("/").pop();
-      extension = filename.split(".").pop().replace("jpg", "jpeg");
-    }
-
     if (data.layout.annotations != undefined) {
       data.layout.annotations.forEach(function (annotation) {
         if (annotation.text != undefined)
