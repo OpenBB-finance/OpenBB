@@ -1,68 +1,92 @@
 # flake8: noqa pylint: disable=R0402,C0412,unused-import
 
+
 # noqa: F401
 
+
 # Session
+
 
 from openbb_terminal.core.session import sdk_session
 
 
 # Alternative
 
+
 import openbb_terminal.alternative.hackernews_model as alt_hackernews_model
+
 
 import openbb_terminal.alternative.hackernews_view as alt_hackernews_view
 
+
 import openbb_terminal.alternative.oss.github_model as alt_oss_github_model
+
 
 import openbb_terminal.alternative.oss.github_view as alt_oss_github_view
 
+
 import openbb_terminal.alternative.oss.runa_model as alt_oss_runa_model
 
+
 import openbb_terminal.alternative.oss.runa_view as alt_oss_runa_view
+
 
 import openbb_terminal.alternative.realestate.landRegistry_model as alt_realestate_landRegistry_model
 
 
 # Crypto Helpers
 
+
 import openbb_terminal.cryptocurrency.cryptocurrency_helpers as crypto_helpers
 
 
 # ETF
 
+
 import openbb_terminal.etf.discovery.wsj_model as etf_disc_wsj_model
+
 
 import openbb_terminal.etf.discovery.wsj_view as etf_disc_wsj_view
 
 
 # Forex Helpers
 
+
 import openbb_terminal.forex.forex_helper as forex_helper
 
+
 import openbb_terminal.forex.oanda.oanda_model as forex_oanda_model
+
 
 import openbb_terminal.forex.oanda.oanda_view as forex_oanda_view
 
 
 # Keys
 
+
 import openbb_terminal.keys_model as keys_model
+
 
 import openbb_terminal.stocks.options.hedge.hedge_model as stocks_options_hedge_model
 
+
 import openbb_terminal.stocks.options.hedge.hedge_view as stocks_options_hedge_view
 
+
 import openbb_terminal.stocks.quantitative_analysis.beta_model as stocks_qa_beta_model
+
 
 import openbb_terminal.stocks.quantitative_analysis.beta_view as stocks_qa_beta_view
 
 
 # Stocks - Quantitative Analysis
 
+
 import openbb_terminal.stocks.quantitative_analysis.factors_model as stocks_qa_factors_model
 
+
 import openbb_terminal.stocks.quantitative_analysis.factors_view as stocks_qa_factors_view
+
 
 from openbb_terminal.alternative.covid import (
     covid_model as alt_covid_model,
@@ -71,6 +95,7 @@ from openbb_terminal.alternative.covid import (
 
 
 # Common
+
 
 from openbb_terminal.common import (
     common_model,
@@ -84,6 +109,7 @@ from openbb_terminal.common import (
 
 
 # Common Behavioural Analysis
+
 
 from openbb_terminal.common.behavioural_analysis import (
     finbrain_model as stocks_ba_finbrain_model,
@@ -101,6 +127,7 @@ from openbb_terminal.common.behavioural_analysis import (
 
 # Common Quantitative Analysis
 
+
 from openbb_terminal.common.quantitative_analysis import (
     qa_model as common_qa_model,
     qa_view as common_qa_view,
@@ -110,6 +137,7 @@ from openbb_terminal.common.quantitative_analysis import (
 
 
 # Common Technical Analysis
+
 
 from openbb_terminal.common.technical_analysis import (
     custom_indicators_model as common_ta_custom_indicators_model,
@@ -126,6 +154,7 @@ from openbb_terminal.common.technical_analysis import (
     volume_view as common_ta_volume_view,
 )
 
+
 from openbb_terminal.cryptocurrency import (
     crypto_models,
     pyth_model as crypto_pyth_model,
@@ -133,6 +162,7 @@ from openbb_terminal.cryptocurrency import (
 
 
 # Cryptocurrency Defi
+
 
 from openbb_terminal.cryptocurrency.defi import (
     coindix_model as crypto_defi_coindix_model,
@@ -156,6 +186,7 @@ from openbb_terminal.cryptocurrency.defi import (
 
 # Cryptocurrency Discovery
 
+
 from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_model as crypto_disc_coinmarketcap_model,
     coinmarketcap_view as crypto_disc_coinmarketcap_view,
@@ -172,6 +203,7 @@ from openbb_terminal.cryptocurrency.discovery import (
 
 
 # Cryptocurrency Due Diligence
+
 
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_model as crypto_dd_binance_model,
@@ -200,6 +232,7 @@ from openbb_terminal.cryptocurrency.due_diligence import (
 
 # Cryptocurrency NFT
 
+
 from openbb_terminal.cryptocurrency.nft import (
     nftpricefloor_model as crypto_nft_pricefloor_model,
     nftpricefloor_view as crypto_nft_pricefloor_view,
@@ -209,6 +242,7 @@ from openbb_terminal.cryptocurrency.nft import (
 
 
 # Cryptocurrency Onchain
+
 
 from openbb_terminal.cryptocurrency.onchain import (
     bitquery_model as crypto_onchain_bitquery_model,
@@ -227,6 +261,7 @@ from openbb_terminal.cryptocurrency.onchain import (
 
 
 # Cryptocurrency Overview
+
 
 from openbb_terminal.cryptocurrency.overview import (
     blockchaincenter_model as crypto_ov_blockchaincenter_model,
@@ -253,6 +288,7 @@ from openbb_terminal.cryptocurrency.overview import (
 
 # Cryptocurrency Tools
 
+
 from openbb_terminal.cryptocurrency.tools import (
     tools_model as crypto_tools_model,
     tools_view as crypto_tools_view,
@@ -260,6 +296,7 @@ from openbb_terminal.cryptocurrency.tools import (
 
 
 # Econometrics
+
 
 from openbb_terminal.econometrics import (
     econometrics_model,
@@ -271,6 +308,7 @@ from openbb_terminal.econometrics import (
 
 # Fixedincome
 
+
 from openbb_terminal.fixedincome import (
     fred_model as fixedincome_fred_model,
     ecb_model as fixedincome_ecb_model,
@@ -280,6 +318,7 @@ from openbb_terminal.fixedincome import (
 
 
 # Economy
+
 
 from openbb_terminal.economy import (
     alphavantage_model as economy_alphavantage_model,
@@ -303,6 +342,7 @@ from openbb_terminal.economy import (
 
 # ETF's
 
+
 from openbb_terminal.etf import (
     financedatabase_model as etf_financedatabase_model,
     financedatabase_view as etf_financedatabase_view,
@@ -315,6 +355,7 @@ from openbb_terminal.etf import (
 
 # Forex
 
+
 from openbb_terminal.forex import (
     av_model as forex_av_model,
     av_view as forex_av_view,
@@ -326,6 +367,7 @@ from openbb_terminal.forex import (
 
 # Funds
 
+
 from openbb_terminal.mutual_funds import (
     mstarpy_model as funds_mstarpy_model,
     mstarpy_view as funds_mstarpy_view,
@@ -333,6 +375,7 @@ from openbb_terminal.mutual_funds import (
 
 
 # Futures
+
 
 from openbb_terminal.futures import (
     yfinance_model as futures_yfinance_model,
@@ -342,6 +385,7 @@ from openbb_terminal.futures import (
 
 
 # Stocks Helpers
+
 
 from openbb_terminal.stocks import (
     cboe_model as stocks_cboe_model,
@@ -354,6 +398,7 @@ from openbb_terminal.stocks import (
 
 # Stocks -Behavioral Analysis
 
+
 from openbb_terminal.stocks.behavioural_analysis import (
     finnhub_model as stocks_ba_finnhub_model,
     finnhub_view as stocks_ba_finnhub_view,
@@ -361,6 +406,7 @@ from openbb_terminal.stocks.behavioural_analysis import (
 
 
 # Stocks - Comparison Analysis
+
 
 from openbb_terminal.stocks.comparison_analysis import (
     finbrain_model as stocks_ca_finbrain_model,
@@ -377,6 +423,7 @@ from openbb_terminal.stocks.comparison_analysis import (
 
 
 # Stocks - Dark Pool Shorts
+
 
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_model as stocks_dps_finra_model,
@@ -397,6 +444,7 @@ from openbb_terminal.stocks.dark_pool_shorts import (
 
 # Stocks - Fundamental Discovery
 
+
 from openbb_terminal.stocks.discovery import (
     ark_model as stocks_disc_ark_model,
     finnhub_model as stocks_disc_finnhub_model,
@@ -409,6 +457,7 @@ from openbb_terminal.stocks.discovery import (
 
 
 # Stocks - Fundamental Analysis
+
 
 from openbb_terminal.stocks.fundamental_analysis import (
     av_model as stocks_fa_av_model,
@@ -440,6 +489,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
 
 # Government
 
+
 from openbb_terminal.stocks.government import (
     quiverquant_model as stocks_gov_quiverquant_model,
     quiverquant_view as stocks_gov_quiverquant_view,
@@ -447,6 +497,7 @@ from openbb_terminal.stocks.government import (
 
 
 # Stocks - Insider Trading
+
 
 from openbb_terminal.stocks.insider import (
     businessinsider_model as stocks_insider_businessinsider_model,
@@ -460,6 +511,7 @@ from openbb_terminal.stocks.insider import (
 
 
 # Stocks - Options
+
 
 from openbb_terminal.stocks.options import (
     alphaquery_model as stocks_options_alphaquery_model,
@@ -482,6 +534,7 @@ from openbb_terminal.stocks.options import (
     yfinance_view as stocks_options_yfinance_view,
 )
 
+
 from openbb_terminal.stocks.options.screen import (
     syncretism_model as stocks_options_screen_syncretism_model,
     syncretism_view as stocks_options_screen_syncretism_view,
@@ -490,6 +543,7 @@ from openbb_terminal.stocks.options.screen import (
 
 # Stocks - Screener
 
+
 from openbb_terminal.stocks.screener import (
     finviz_model as stocks_screener_finviz_model,
     finviz_view as stocks_screener_finviz_view,
@@ -497,6 +551,7 @@ from openbb_terminal.stocks.screener import (
 
 
 # Stocks - Technical Analysis
+
 
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_model as stocks_ta_finbrain_model,
@@ -509,6 +564,7 @@ from openbb_terminal.stocks.technical_analysis import (
 
 
 # Stocks - Trading Hours
+
 
 from openbb_terminal.stocks.tradinghours import (
     bursa_model as stocks_th_bursa_model,
@@ -574,13 +630,16 @@ try:
         whisper_model as forecast_whisper_model,
     )
 
+
 except ImportError:
     FORECASTING_TOOLKIT_ENABLED = False
 
 
 # Portfolio
 
+
 from openbb_terminal.portfolio import portfolio_model, portfolio_view
+
 
 try:
     # pylint: disable=W0611 # noqa: F401 # pyright: reportMissingImports=false
@@ -595,6 +654,7 @@ try:
 
     OPTIMIZATION_TOOLKIT_ENABLED = True
 
+
 except ModuleNotFoundError:
     OPTIMIZATION_TOOLKIT_ENABLED = False
 
@@ -607,6 +667,7 @@ FORECASTING_TOOLKIT_WARNING = (
     "\n"
     "[/yellow]"
 )
+
 
 OPTIMIZATION_TOOLKIT_WARNING = (
     "[yellow]"

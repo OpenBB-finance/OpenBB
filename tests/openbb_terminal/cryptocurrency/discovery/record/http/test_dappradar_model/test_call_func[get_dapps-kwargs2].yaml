@@ -1,0 +1,131 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      X-BLOBR-KEY:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://api.dappradar.com/4tsxo4vuhotaojtl/dapps?page=1
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - '*'
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Apr 2023 13:32:47 GMT
+      Etag:
+      - W/"3859-Anik6B5zYeZ4H9IDXJoO26Ic3Fc"
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via:
+      - 1.1 4ca98b546b8d71c72caf6a3d8f75dc24.cloudfront.net (CloudFront)
+      X-Amz-Apigw-Id:
+      - ECfr-HNMFiAFmUw=
+      X-Amz-Cf-Id:
+      - r-2GQF-B69oMPpsEDsA43u8VodXqEAUMX_3AcsCkSPO0Fz4bHo7zhw==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Amzn-Remapped-Connection:
+      - keep-alive
+      X-Amzn-Remapped-Content-Length:
+      - '14425'
+      X-Amzn-Remapped-Date:
+      - Thu, 27 Apr 2023 13:32:47 GMT
+      X-Amzn-Remapped-Server:
+      - nginx/1.23.3
+      X-Amzn-Requestid:
+      - bbb20019-5f60-4a45-8631-e82ee4772845
+      X-Amzn-Trace-Id:
+      - Root=1-00000000-000000000000000000000000
+      X-Blobr-Request-Id:
+      - 1682602367448566684-YXdzLWV1LXdlc3QtMQ==-f93ff265d65f4af381bb32fa2219665555c21eb96da74fec94f19f2fab984392
+      X-Blobr-Version:
+      - 2.9.0
+      X-Cache:
+      - Miss from cloudfront
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
