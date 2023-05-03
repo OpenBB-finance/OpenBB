@@ -393,6 +393,10 @@ def get_garch(
         The name of the mean model
     horizon: int
         The horizon of the forecast
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.econometrics.garch(openbb.stocks.load("AAPL").pct_change()*100)
     """
     model = arch_model(data.dropna(), vol="GARCH", p=p, o=o, q=q, mean=mean)
     model_fit = model.fit(disp="off")
