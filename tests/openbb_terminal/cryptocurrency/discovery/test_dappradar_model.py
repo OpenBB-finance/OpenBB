@@ -12,21 +12,24 @@ from openbb_terminal.cryptocurrency.discovery import dappradar_model
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("User-Agent", None)],
+        "filter_headers": [("User-Agent", None), ("X-BLOBR-KEY", "MOCK_API_KEY")],
     }
 
 
-@pytest.mark.vcr
+@pytest.mark.record_http
 @pytest.mark.parametrize(
     "func, kwargs",
     [
-        ("get_top_nfts", dict()),
-        ("get_top_dexes", dict()),
-        ("get_top_games", dict()),
-        ("get_top_dapps", dict()),
+        ("get_nft_marketplaces", dict()),
+        ("get_nft_marketplace_chains", dict()),
+        ("get_dapps", dict()),
+        ("get_dapp_chains", dict()),
+        ("get_dapp_categories", dict()),
+        ("get_token_chains", dict()),
+        ("get_defi_chains", dict()),
     ],
 )
-def test_call_func(func, kwargs, recorder):
+def test_call_func(func, kwargs, record):
     result = getattr(dappradar_model, func)(**kwargs)
 
-    recorder.capture(result)
+    record.add_verify(result)

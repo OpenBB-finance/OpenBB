@@ -7,10 +7,7 @@ import argparse
 import logging
 from typing import Callable, Dict, List, Optional
 
-from openbb_terminal import (
-    keys_model,
-    keys_view,
-)
+from openbb_terminal import keys_model, keys_view
 from openbb_terminal.core.session.constants import KEYS_URL
 from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.core.session.env_handler import get_reading_order
@@ -1295,5 +1292,33 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["ultima"] = keys_model.set_ultima_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_dappradar(self, other_args: List[str]):
+        """Process dappradar command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dappradar",
+            description="Set DappRadar API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, visit: https://dappradar.com/api")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["dappradar"] = keys_model.set_dappradar_key(
                 key=ns_parser.key, persist=True, show_output=True
             )

@@ -285,10 +285,14 @@
       "gainers": ["CoinGecko"],
       "losers": ["CoinGecko"],
       "search": ["CoinPaprika"],
-      "nft": ["DappRadar"],
-      "games": ["DappRadar"],
+      "nft_mktp_chains": ["DappRadar"],
+      "nft_mktp": ["DappRadar"],
       "dapps": ["DappRadar"],
-      "dex": ["DappRadar"]
+      "dapp_categories": ["DappRadar"],
+      "dapp_chains": ["DappRadar"],
+      "dapp_metrics": ["DappRadar"],
+      "defi_chains": ["DappRadar"],
+      "tokens": ["DappRadar"]
     },
     "ov": {
       "global": ["CoinGecko", "CoinPaprika"],
@@ -331,6 +335,7 @@
       "ttcp": ["BitQuery"],
       "baas": ["BitQuery"],
       "query": ["Shroom"],
+      "dquery": ["Dune"],
       "address": ["Ethplorer"],
       "top": ["Ethplorer"],
       "balance": ["Ethplorer"],
@@ -339,8 +344,7 @@
       "holders": ["Ethplorer"],
       "th": ["Ethplorer"],
       "prices": ["Ethplorer"],
-      "tx": ["Ethplorer"],
-      "dquery": ["Dune"]
+      "tx": ["Ethplorer"]
     },
     "defi": {
       "newsletter": ["Substack"],
