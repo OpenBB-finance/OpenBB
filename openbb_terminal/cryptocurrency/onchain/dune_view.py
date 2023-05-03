@@ -5,10 +5,8 @@ import logging
 import os
 from typing import Optional, Union
 
-from openbb_terminal import OpenBBFigure, theme
-from openbb_terminal.cryptocurrency.onchain.dune_model import (
-    get_query
-)
+from openbb_terminal import OpenBBFigure
+from openbb_terminal.cryptocurrency.onchain.dune_model import get_query
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -30,7 +28,7 @@ def display_query(
     Parameters
     ----------
     id : str
-        Query id
+        Query id (e.g., 2412896)
     raw : bool
         Show raw data
     limit : int

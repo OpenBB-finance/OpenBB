@@ -1,20 +1,25 @@
-import pandas as pd
 import logging
+
+import pandas as pd
 from requests import post
+
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.helper_funcs import request
 from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://api.dune.com/api/v1/"
 
-def make_api_url(module, action, ID):
+
+def make_api_url(module, action, ID, use_csv=True):
     """
     We shall use this function to generate a URL to call the API.
     """
 
     url = BASE_URL + module + "/" + ID + "/" + action
+    if action == "results" and use_csv:
+        url += "/csv"
 
     return url
 
@@ -22,7 +27,7 @@ def make_api_url(module, action, ID):
 def execute_query(query_id, engine="medium"):
     """
     Takes in the query ID and engine size.
-    Specifying the engine size will change how quickly your query runs. 
+    Specifying the engine size will change how quickly your query runs.
     The default is "medium" which spends 10 credits, while "large" spends 20 credits.
     Calls the API to execute the query.
     Returns the execution ID of the instance which is executing the query.
@@ -32,11 +37,15 @@ def execute_query(query_id, engine="medium"):
     params = {
         "performance": engine,
     }
-    response = post(url, headers={
-        "x-dune-api-key": get_current_user().credentials.API_DUNE_KEY
-    }, params=params)
+
+    response = post(
+        url,
+        headers={"x-dune-api-key": get_current_user().credentials.API_DUNE_KEY},
+        params=params,
+        timeout=30,
+    )
     data = response.json()
-    execution_id = data['execution_id']
+    execution_id = data["execution_id"]
 
     return execution_id
 
@@ -49,26 +58,26 @@ def get_query_status(execution_id):
     """
 
     url = make_api_url("execution", "status", execution_id)
-    response = request(url, headers={
-        "x-dune-api-key": get_current_user().credentials.API_DUNE_KEY
-    })
+    response = request(
+        url, headers={"x-dune-api-key": get_current_user().credentials.API_DUNE_KEY}
+    )
 
     return response
 
 
-def get_query_results(execution_id):
+def get_query_results(execution_id) -> pd.DataFrame:
     """
     Takes in an execution ID.
     Fetches the results returned from the query using the API
     Returns the results response object
     """
 
-    url = make_api_url("execution", "results", execution_id)
-    response = request(url, headers={
-        "x-dune-api-key": get_current_user().credentials.API_DUNE_KEY
-    })
+    url = make_api_url("execution", "results", execution_id, use_csv=True)
 
-    return response
+    return pd.read_csv(
+        url,
+        storage_options={"x-dune-api-key": get_current_user().credentials.API_DUNE_KEY},
+    )
 
 
 def cancel_query_execution(execution_id):
@@ -79,11 +88,12 @@ def cancel_query_execution(execution_id):
     """
 
     url = make_api_url("execution", "cancel", execution_id)
-    response = request(url, headers={
-        "x-dune-api-key": get_current_user().credentials.API_DUNE_KEY
-    })
+    response = request(
+        url, headers={"x-dune-api-key": get_current_user().credentials.API_DUNE_KEY}
+    )
 
     return response
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_DUNE_KEY"])
@@ -97,7 +107,7 @@ def get_query(
     Parameters
     ----------
     id : str
-        Query ID
+        Query ID (e.g., 2412896)
     engine : str, optional
         Engine size, by default "medium"
 
@@ -109,11 +119,16 @@ def get_query(
 
     execution_id = execute_query(id, engine)
     response_status = get_query_status(execution_id)
-    while response_status.json()['state'] != 'QUERY_STATE_COMPLETED':
+    state = response_status.json()["state"]
+    possible_states = [
+        "QUERY_STATE_COMPLETED",
+        "QUERY_STATE_FAILED",
+        "QUERY_STATE_CANCELED",
+    ]
+    while state not in possible_states:
         response_status = get_query_status(execution_id)
+        state = response_status.json()["state"]
 
-    response = get_query_results(execution_id)
-
-    df = pd.DataFrame(response.json()['result']['rows'])
+    df = get_query_results(execution_id)
 
     return df

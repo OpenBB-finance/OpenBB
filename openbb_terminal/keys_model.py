@@ -264,6 +264,7 @@ def handle_credential(name: str, value: str, persist: bool = False):
     if persist:
         write_to_dotenv("OPENBB_" + name, value)
 
+
 def set_dune_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Dune Analytics key
 
@@ -289,8 +290,48 @@ def set_dune_key(key: str, persist: bool = False, show_output: bool = False) -> 
     >>> openbb.keys.dune(key="example_key")
     """
 
-    handle_credential("API_KEY_DUNE", key, persist)
-    return "Dune Analytics key set." # TODO: check_dune_key(show_output)
+    handle_credential("API_DUNE_KEY", key, persist)
+    return check_dune_key(show_output)
+
+
+def check_dune_key(show_output: bool = False) -> str:
+    """Check Dune Analytics key
+
+    Parameters
+    ----------
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.check_dune_key()
+    """
+
+    if show_output:
+        console.print("Checking status...")
+
+    current_user = get_current_user()
+
+    if (
+        current_user.credentials.API_DUNE_KEY == "REPLACE_ME"
+    ):  # pragma: allowlist secret
+        logger.info("Dune key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        logger.warning("Dune key defined, test inconclusive")
+        status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Alpha Vantage key

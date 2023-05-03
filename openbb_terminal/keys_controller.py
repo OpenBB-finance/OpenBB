@@ -213,9 +213,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print(
-                "For your API Key, visit: https://dune.com"
-            )
+            console.print("For your API Key, visit: https://dune.com")
             return
 
         if other_args and "-" not in other_args[0][0]:

@@ -13,6 +13,7 @@
     dt                 daily transactions of eth tokens                                [Shroom]
     ds                 stats of eth platform (daily users; fees)                       [Shroom]
     tvl                total value locked of ERC20 tokens                              [Shroom]
+    dquery             check for any dune analytics query                              [Dune]
 
 Ethereum address: 
 Address type: 

@@ -19,6 +19,7 @@ from openbb_terminal.cryptocurrency.onchain import (
     bitquery_model,
     bitquery_view,
     blockchain_view,
+    dune_view,
     ethgasstation_view,
     ethplorer_model,
     ethplorer_view,
@@ -26,7 +27,6 @@ from openbb_terminal.cryptocurrency.onchain import (
     shroom_view,
     whale_alert_model,
     whale_alert_view,
-    dune_view
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -86,7 +86,7 @@ class OnchainController(BaseController):
         "dt",
         "ds",
         "tvl",
-        "dquery"
+        "dquery",
     ]
 
     PATH = "/crypto/onchain/"
@@ -144,7 +144,6 @@ class OnchainController(BaseController):
         mt.add_cmd("tx", self.address_type == "tx")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Onchain")
 
-
     @log_start_end(log=logger)
     def call_dquery(self, other_args: List[str]):
         """Process dquery command"""
@@ -174,10 +173,7 @@ class OnchainController(BaseController):
         )
 
         if ns_parser:
-            dune_view.display_query(
-                ns_parser.query
-            )
-
+            dune_view.display_query(ns_parser.query)
 
     @log_start_end(log=logger)
     def call_tvl(self, other_args: List[str]):
