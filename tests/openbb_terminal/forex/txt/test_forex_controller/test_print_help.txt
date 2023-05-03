@@ -7,8 +7,8 @@ Source: YahooFinance
 [unvl]    candle             show candle plot for loaded pair[/unvl]
 [unvl]    fwd                get forward rates for loaded pair[/unvl]           [FXEmpire]
 
-[unvl]>   ta                 technical analysis,          ema, macd, rsi, adx, bbands, obv[/unvl]
-[unvl]>   qa                 quantitative analysis,       decompose, cusum, residuals analysis[/unvl]
+[unvl]>   ta                 technical analysis           ema, macd, rsi, adx, bbands, obv[/unvl]
+[unvl]>   qa                 quantitative analysis        decompose, cusum, residuals analysis[/unvl]
 >   forecast           forecast techniques
 
 Forex brokerages:

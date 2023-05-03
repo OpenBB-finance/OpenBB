@@ -1,6 +1,6 @@
->   covid              COVID menu,                 cases, deaths, rates
->   oss                Open Source menu,           star history, repos information
->   realestate         Real Estate menu,           sold prices, HPIs
+>   covid              COVID menu                  cases, deaths, rates
+>   oss                Open Source menu            star history, repos information
+>   realestate         Real Estate menu            sold prices, HPIs
 
     hn                 Hacker News most popular stories                                [HackerNews]
 
