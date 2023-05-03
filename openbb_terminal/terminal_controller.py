@@ -156,15 +156,19 @@ class TerminalController(BaseController):
         if get_current_user().profile.get_token():
             self.ROUTINE_DEFAULT_FILES = {
                 filepath.name: filepath
-                for filepath in Path(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub" / "default").rglob(
-                    "*.openbb"
-                )
+                for filepath in Path(
+                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                    / "hub"
+                    / "default"
+                ).rglob("*.openbb")
             }
             self.ROUTINE_PERSONAL_FILES = {
                 filepath.name: filepath
-                for filepath in Path(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub" / "personal").rglob(
-                    "*.openbb"
-                )
+                for filepath in Path(
+                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                    / "hub"
+                    / "personal"
+                ).rglob("*.openbb")
             }
 
         self.ROUTINE_CHOICES["--file"] = {
@@ -593,11 +597,11 @@ class TerminalController(BaseController):
                 # regex is used to match strings that start with C:/ and remove it so there won't be duplicates
                 # for user who starts the string with Users/username
                 file_path = " ".join(ns_parser.file)
-                full_path = file_path
+                full_path = Path('C:/' + re.sub(r'^(C:\/?|c:\/?)', '', file_path).strip())
                 hub_routine = file_path.split('/')
                 if hub_routine[0] == 'default':
                     path = self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
-                elif hub_routine[0] == 'personal':
+                elif hub_routine[0] == "personal":
                     path = self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
                 else:
                     path = self.ROUTINE_FILES.get(file_path, full_path)

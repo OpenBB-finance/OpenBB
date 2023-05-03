@@ -1,9 +1,10 @@
 import os
+from os import walk
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
+
 import numpy as np
 import pandas as pd
-from os import walk
 
 import openbb_terminal.core.session.hub_model as Hub
 from openbb_terminal.core.session.current_user import get_current_user
@@ -58,7 +59,10 @@ def download_routines(auth_header: str, silent: bool = False) -> list:
             for routine in items:
                 name = routine.get("name", "")
                 if name:
-                    personal_routines_dict[name] = [routine.get("script", ""), "personal"]
+                    personal_routines_dict[name] = [
+                        routine.get("script", ""),
+                        "personal",
+                    ]
     except Exception:
         console.print("[red]\nFailed to download personal routines.[/red]")
 
@@ -91,10 +95,11 @@ def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]
     try:
         user_folder = folder / "hub"
         for path, directories, files in walk(user_folder):
-            if file_name in files:
-                file_path = folder / os.path.relpath(path, folder) / file_name
-            else:
-                file_path = folder / file_name
+            file_path = (
+                folder / os.path.relpath(path, folder) / file_name
+                if file_name in files
+                else folder / file_name
+            )
         with open(file_path) as f:
             routine = "".join(f.readlines())
         return routine
