@@ -20,6 +20,7 @@ menus = Literal["", "featflags", "settings"]
 openbb_posthog = Posthog(
     "phc_vhssDAMod5qIplznQ75Kdgz4aB1qPFmeVmfEOZ4hkRw",
     host="https://app.posthog.com",
+    timeout=5,
 )
 
 

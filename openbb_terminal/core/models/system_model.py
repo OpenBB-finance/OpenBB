@@ -59,7 +59,7 @@ class SystemModel(BaseModel):
         return super().__repr__()
 
     @root_validator
-    def add_additional_handlers(cls, values):
+    def add_additional_handlers(cls, values):  # pylint: disable=no-self-argument
         if (
             not any([values["TEST_MODE"], values["LOGGING_SUPPRESS"]])
             and values["LOG_COLLECT"]
@@ -69,7 +69,7 @@ class SystemModel(BaseModel):
         return values
 
     @validator("LOGGING_HANDLERS")
-    def validate_logging_handlers(cls, v):
+    def validate_logging_handlers(cls, v):  # pylint: disable=no-self-argument
         for value in v:
             if value not in ["stdout", "stderr", "noop", "file", "posthog"]:
                 raise ValueError("Invalid logging handler")
