@@ -38,20 +38,21 @@ def display_query(
     """
     df = get_query(id)
     if df.empty:
-        return console.print("[red]No data found.[/red]")
+        console.print("[red]No data found.[/red]")
 
-    print_rich_table(
-        df,
-        headers=list(df.columns),
-        show_index=True,
-        export=bool(export),
-        limit=limit,
-    )
+    else:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            export=bool(export),
+            limit=limit,
+        )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "dquery",
-        df,
-        sheet_name,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "dquery",
+            df,
+            sheet_name,
+        )
