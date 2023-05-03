@@ -199,8 +199,11 @@ export async function downloadData(
       if (fileHandle !== null) {
         // @ts-ignore
         ext = fileHandle.name.split(".").pop();
+        await loadingOverlay(`Saving ${ext.toUpperCase()}`);
+      }else{
+        await loadingOverlay(`Saving ${ext.toUpperCase()}`);
+        await new Promise((resolve) => setTimeout(resolve, 1500));
       }
-      await loadingOverlay(`Saving ${ext.toUpperCase()}`);
       // @ts-ignore
       non_blocking(async function () {
         // @ts-ignore
