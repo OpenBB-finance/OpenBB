@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      X-BLOBR-KEY:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://api.dappradar.com/4tsxo4vuhotaojtl/dapps/chains
+  response:
+    body:
+      string: '{"success":true,"chains":["algorand","arbitrum","astar","aurora","avalanche","binance-smart-chain","cardano","celo","cronos","defikingdoms","dep","eos","ethereum","everscale","fantom","flow","harmony","hedera","hive","immutablex","iotex","kardiachain","klaytn","mooi","moonbeam","moonriver","near","oasis","ontology","optimism","other","platon","polygon","rangers","ronin","shiden","solana","stacks","steem","sxnetwork","telos","telosevm","tezos","theta","thundercore","tron","vechain","vulcanforged","wax","zilliqa"]}'
+    headers:
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - '*'
+      Access-Control-Allow-Origin:
+      - '*'
+      Apicache-Store:
+      - memory
+      Apicache-Version:
+      - 1.6.3
+      Cache-Control:
+      - max-age=165
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '518'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Apr 2023 13:32:48 GMT
+      Etag:
+      - W/"206-PLMOElwlzD+0EthZgK2V4/XtiXY"
+      Via:
+      - 1.1 ba761cfda8bfa6cbda2b6c433d6201f6.cloudfront.net (CloudFront)
+      X-Amz-Apigw-Id:
+      - ECfsDFm6liAFc0g=
+      X-Amz-Cf-Id:
+      - _uCzpbs9eEPFBQXp7CsoS1WFrjVz8Q-qJyjk_2gpJYAt-v9ldtWL7A==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Amzn-Remapped-Connection:
+      - keep-alive
+      X-Amzn-Remapped-Content-Length:
+      - '518'
+      X-Amzn-Remapped-Date:
+      - Thu, 27 Apr 2023 13:32:48 GMT
+      X-Amzn-Remapped-Server:
+      - nginx/1.23.3
+      X-Amzn-Requestid:
+      - c5103300-e5a9-4555-bb25-844e8bf54a1c
+      X-Amzn-Trace-Id:
+      - Root=1-00000000-000000000000000000000000
+      X-Blobr-Request-Id:
+      - 1682602367968336391-YXdzLWV1LXdlc3QtMQ==-a14a645e05cb4b8db121520499978d3185743fb32833481693e32fca7c095209
+      X-Blobr-Version:
+      - 2.9.0
+      X-Cache:
+      - Miss from cloudfront
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
