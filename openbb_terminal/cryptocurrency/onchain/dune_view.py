@@ -21,7 +21,7 @@ def display_query(
     limit: int = 500,
     export: str = "",
     sheet_name: Optional[str] = None,
-) -> Union[OpenBBFigure, None]:
+):
     """
     Display Dune query [Source: https://dune.com/]
 
