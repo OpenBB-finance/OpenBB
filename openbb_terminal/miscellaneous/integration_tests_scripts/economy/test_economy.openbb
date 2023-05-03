@@ -91,4 +91,6 @@ kurtosis --window 9
 raw --limit 2 --reverse
 cusum --threshold 10 --drift 10
 decompose
+help
+reset
 exit

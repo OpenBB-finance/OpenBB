@@ -158,10 +158,27 @@ def find_all_calls(module) -> list:
 
 def parse_args(module, func) -> list:
     """Parse the arguments of a given module function."""
+    filters = [
+        "-ape",
+        "-yacht",
+        "-club",
+        "-h",
+        "-to",
+        "-seeking",
+        "-sloping",
+        "-neutral",
+        "-known",
+        "-yields",
+        "-level",
+        "-rating",
+        "-traded",
+    ]
     source = inspect.getsource(module.__dict__[func])
     params = re.findall(r"-\w+", source)
     params = [param for param in params if not param[1:].isupper()]
     params = [param for param in params if not param[1:].isdigit()]
+    params = [param for param in params if not param[1].isupper()]
+    params = [param for param in params if param not in filters]
     params = list(dict.fromkeys(params))
     return params
 
@@ -224,6 +241,17 @@ def get_missing_params(
                 missing_params[function] = [
                     param for param in all_params if param not in params
                 ]
+
+                # if function == "debt" or function == "treasury":
+                for param in all_params:
+                    for param2 in used_unabbreviated_params:
+                        if param2.startswith(param):
+                            try:
+                                missing_params[function].remove(param)
+                                missing_params[function].remove(param2)
+                            except ValueError:
+                                pass
+
                 missing_params[function] = [
                     param
                     for param in missing_params[function]
@@ -248,9 +276,6 @@ def get_missing_params(
                         pass
 
     missing_params = {k: v for k, v in missing_params.items() if v}
-    missing_params = {
-        k: v for k, v in missing_params.items() if not all(x == "-h" for x in v)
-    }
 
     return missing_params
 
@@ -263,7 +288,6 @@ def calculate_function_coverage(
     output_table: bool = True,
 ) -> None:
     """Compare tested functions with module."""
-    missing_params = {}
     module_dict = map_module_to_calls(module)
     tested_function_params = get_tested_function_params(
         tested_functions, tested_function
@@ -274,6 +298,14 @@ def calculate_function_coverage(
         controller = str(module).split(".")[2].split("_")[0]
 
     missing_params = get_missing_params(tested_function_params, controller, module_dict)
+    # if the module is fixedincome, we need to remove the -term parameter
+    if controller == "FixedIncomeController'>":
+        for key, value in missing_params.items():
+            try:
+                missing_params[key].remove("-term")
+            except ValueError:
+                pass
+        missing_params = {k: v for k, v in missing_params.items() if v}
 
     coverage_dict = {}
     for key, value in missing_params.items():
