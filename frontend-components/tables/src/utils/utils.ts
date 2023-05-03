@@ -125,7 +125,6 @@ const getNewFileHandle = ({
   is_image?: boolean;
 }): Promise<FileSystemFileHandle | null> => {
   if ("showSaveFilePicker" in window) {
-    console.log("showSaveFilePicker");
     const opts: SaveFilePickerOptions = {
       suggestedName: filename,
       types: is_image
@@ -145,7 +144,6 @@ const getNewFileHandle = ({
   }
 
   return new Promise((resolve) => {
-    console.log("resolve");
     resolve(null);
   });
 };
@@ -195,7 +193,6 @@ export async function downloadData(
     const filename = `${window.title}.csv`;
 
     try {
-      console.log("Filename");
       let fileHandle = await getNewFileHandle({
         filename: filename,
       });
@@ -204,12 +201,10 @@ export async function downloadData(
       if (fileHandle !== null) {
         // @ts-ignore
         ext = fileHandle.name.split(".").pop();
-        await loadingOverlay(`Saving ${ext.toUpperCase()}`);
-        console.log("Saving to file system");
-      }else{
-        await loadingOverlay(`Saving ${ext.toUpperCase()}`);
-        console.log("Saving to file system2");
       }
+
+      await loadingOverlay(`Saving ${ext.toUpperCase()}`);
+
       // @ts-ignore
       non_blocking(async function () {
         // @ts-ignore
@@ -219,7 +214,6 @@ export async function downloadData(
         });
       }, 2)();
     } catch (error) {
-      console.log("Saving to file system3");
       console.error(error);
     }
 
@@ -234,7 +228,6 @@ export async function downloadData(
     // @ts-ignore
     // timeout to allow loading overlay to show
     await new Promise((resolve) => setTimeout(resolve, 1500));
-
     writeFile(wb, `${window.title}.xlsx`);
     await loadingOverlay("", true);
   }, 2)();
