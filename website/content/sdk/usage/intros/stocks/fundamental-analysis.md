@@ -207,7 +207,7 @@ openbb.stocks.fa.key('COST')
 
 ### SHRS
 
-The top 10 mutual funds holding the stock are retrived with:
+The top 10 mutual funds holding the stock are retrieved with:
 
 ```python
 openbb.stocks.fa.shrs(symbol = 'COST', holder = 'mutualfund')
@@ -300,6 +300,10 @@ openbb.stocks.fa.income('COST').tail(4)
 
 `openbb.stocks.fa.supplier` will return a list of suppliers for the compnay, that are also listed US stocks.
 
+```python
+openbb.stocks.fa.supplier('COST').head(5)
+```
+
 | TICKER | Company Name            | Revenue | Net Income | Net Margin | Cash Flow |
 | :----- | :---------------------- | ------: | ---------: | :--------- | --------: |
 | BRKA   | Berkshire Hathaway Inc  |   78165 |      18321 | 23.44 %    |    -52307 |
@@ -307,11 +311,6 @@ openbb.stocks.fa.income('COST').tail(4)
 | COST   | Costco Wholesale Corp   |   54437 |       1364 | 2.51 %     |       653 |
 | BUD    | Anheuser busch Inbev Sa |   54304 |       6114 | 11.26 %    |         0 |
 | DEO    | Diageo Plc              |   22448 |       3338 | 14.87 %    |      2749 |
-| PG     | Procter and Gamble Co   |   20068 |       3424 | 17.06 %    |       742 |
-| PEP    | Pepsico Inc             |   17846 |       1944 | 10.89 %    |      -263 |
-| ACN    | Accenture Plc           | 15814.2 |    1525.25 | 9.64 %     |    339.08 |
-| DE     | Deere and Co            |   12652 |       1957 | 15.47 %    |      -763 |
-| NKE    | Nike Inc                |   12390 |       1240 | 10.01 %    |       465 |
 
 ### EPSFC
 
