@@ -28,6 +28,7 @@ lowfloat
 hotpenny
 rtat
 divcal -s Dividend -a
+divcal --date 2023-01-01 --sort record_date --reverse
 heatmap
 reset
 r

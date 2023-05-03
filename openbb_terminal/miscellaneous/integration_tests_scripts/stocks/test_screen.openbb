@@ -5,4 +5,8 @@ view
 view high_IV.ini
 set high_IV.ini
 scr
+ca
+..
+help
+reset
 exit

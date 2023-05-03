@@ -10,7 +10,7 @@ futures -c metals --source Finviz
 futures -c meats --source Finviz
 futures -c grains --source Finviz
 futures -c softs --source Finviz
-futures -c energy -s ticker --reverse --source Finviz
+futures -commodity energy -s ticker --reverse --source Finviz --sortby ticker
 map
 map -p 1w -t world
 bigmac
@@ -25,6 +25,7 @@ valuation
 valuation --group sector --sortby MarketCap --reverse
 performance
 performance -g basic_materials -s Month -a
+performance -group energy --sortby YTD --reverse
 gdp
 rgdp
 fgdp
