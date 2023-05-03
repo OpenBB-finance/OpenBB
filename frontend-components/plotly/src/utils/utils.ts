@@ -219,7 +219,7 @@ function loadingOverlay(message?: string, is_close?: boolean) {
         clearInterval(is_loaded);
         resolve(true);
       }
-    }, 0.1);
+    }, 0.3);
   });
 }
 

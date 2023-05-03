@@ -27,6 +27,33 @@ export function includesDateNames(column: string) {
   );
 }
 
+function loadingOverlay(message?: string, is_close?: boolean) {
+  const loading = window.document.getElementById("loading") as HTMLElement;
+  const loading_text = window.document.getElementById(
+    "loading_text"
+  ) as HTMLElement;
+  return new Promise((resolve) => {
+    if (is_close) {
+      loading.classList.remove("show");
+    } else {
+      // @ts-ignore
+      loading_text.innerHTML = message;
+      loading.classList.add("show");
+    }
+
+    let is_loaded = setInterval(function () {
+      if (
+        is_close
+          ? !loading.classList.contains("show")
+          : loading.classList.contains("show")
+      ) {
+        clearInterval(is_loaded);
+        resolve(true);
+      }
+    }, 0.1);
+  });
+}
+
 export function isEqual(a: any, b: any) {
   if (a === b) return true;
   if (a == null || b == null) return false;
@@ -142,9 +169,17 @@ export const saveToFile = (
     link.click();
     document.body.removeChild(link);
   }
+
+  return new Promise((resolve) => {
+    resolve(true);
+  });
 };
 
-export const downloadData = (type: "csv" | "xlsx", columns: any, data: any) => {
+export async function downloadData(
+  type: "csv" | "xlsx",
+  columns: any,
+  data: any
+) {
   const headers = columns;
   const rows = data.map((row: any) =>
     headers.map((column: any) => row[column])
@@ -156,20 +191,44 @@ export const downloadData = (type: "csv" | "xlsx", columns: any, data: any) => {
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const filename = `${window.title}.csv`;
 
-    getNewFileHandle({
-      filename: filename,
-    }).then((fileHandle) => {
+    try {
+      let fileHandle = await getNewFileHandle({
+        filename: filename,
+      });
+      let ext: string = "csv";
+      if (fileHandle !== null) {
+        // @ts-ignore
+        ext = fileHandle.name.split(".").pop();
+      }
+      await loadingOverlay(`Saving ${ext.toUpperCase()}`);
       // @ts-ignore
-      saveToFile(blob, filename, fileHandle);
-    });
+      non_blocking(async function () {
+        // @ts-ignore
+        saveToFile(blob, filename, fileHandle).then(async function () {
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          await loadingOverlay("", true);
+        });
+      }, 2)();
+    } catch (error) {
+      console.error(error);
+    }
+
     return;
   }
 
   const wb = utils.book_new();
   const ws = utils.aoa_to_sheet(csvData);
   utils.book_append_sheet(wb, ws, "Sheet1");
-  writeFile(wb, `${window.title}.xlsx`);
-};
+  await loadingOverlay(`Saving XLSX`);
+  non_blocking(async function () {
+    // @ts-ignore
+    // timeout to allow loading overlay to show
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    writeFile(wb, `${window.title}.xlsx`);
+    await loadingOverlay("", true);
+  }, 2)();
+}
 
 export const downloadImage = (id: string) => {
   const table = document.getElementById(id);
@@ -185,3 +244,16 @@ export const downloadImage = (id: string) => {
     });
   });
 };
+
+
+export const non_blocking = (func: Function, delay: number) => {
+  let timeout: number;
+  return function () {
+    // @ts-ignore
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), delay);
+  };
+};
+
