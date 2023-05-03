@@ -200,7 +200,7 @@ export async function downloadData(
         filename: filename,
       });
       let ext: string = "csv";
-      
+
       if (fileHandle !== null) {
         // @ts-ignore
         ext = fileHandle.name.split(".").pop();
@@ -209,7 +209,6 @@ export async function downloadData(
       }else{
         await loadingOverlay(`Saving ${ext.toUpperCase()}`);
         console.log("Saving to file system2");
-        await new Promise((resolve) => setTimeout(resolve, 1500));
       }
       // @ts-ignore
       non_blocking(async function () {
