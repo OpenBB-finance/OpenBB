@@ -58,7 +58,10 @@ def download_routines(auth_header: str, silent: bool = False) -> list:
             for routine in items:
                 name = routine.get("name", "")
                 if name:
-                    personal_routines_dict[name] = [routine.get("script", ""), "personal"]
+                    personal_routines_dict[name] = [
+                        routine.get("script", ""),
+                        "personal",
+                    ]
     except Exception:
         console.print("[red]\nFailed to download personal routines.[/red]")
 

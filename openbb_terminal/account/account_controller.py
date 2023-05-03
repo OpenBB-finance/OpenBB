@@ -405,20 +405,27 @@ class AccountController(BaseController):
                 # Default routine
                 name = " ".join(ns_parser.name)
                 if name in self.DEFAULT_CHOICES:
-                    data = [next(
-                        (r for r in self.DEFAULT_ROUTINES if r["name"] == name), None
-                    ), "default"]
+                    data = [
+                        next(
+                            (r for r in self.DEFAULT_ROUTINES if r["name"] == name),
+                            None,
+                        ),
+                        "default",
+                    ]
                 else:
                     # User routine
                     response = Hub.download_routine(
                         auth_header=get_current_user().profile.get_auth_header(),
                         name=name,
                     )
-                    data = [(
-                        response.json()
-                        if response and response.status_code == 200
-                        else None
-                    ), "personal"]
+                    data = [
+                        (
+                            response.json()
+                            if response and response.status_code == 200
+                            else None
+                        ),
+                        "personal",
+                    ]
 
                 # Save routine
                 if data[0]:
