@@ -401,24 +401,19 @@ class AccountController(BaseController):
         else:
             if ns_parser:
                 data = None
-
-                # Default routine
                 name = " ".join(ns_parser.name)
-                if name in self.DEFAULT_CHOICES:
+                # Personal routines
+                response = Hub.download_routine(
+                    auth_header=get_current_user().profile.get_auth_header(),
+                    name=name,
+                )
+                if response and response.status_code == 200:
+                    data = [response.json(), "personal"]
+                # Default routine
+                elif name in self.DEFAULT_CHOICES:
                     data = [next(
                         (r for r in self.DEFAULT_ROUTINES if r["name"] == name), None
                     ), "default"]
-                else:
-                    # User routine
-                    response = Hub.download_routine(
-                        auth_header=get_current_user().profile.get_auth_header(),
-                        name=name,
-                    )
-                    data = [(
-                        response.json()
-                        if response and response.status_code == 200
-                        else None
-                    ), "personal"]
 
                 # Save routine
                 if data[0]:
