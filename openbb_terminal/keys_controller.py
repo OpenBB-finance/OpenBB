@@ -490,7 +490,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_id",
             help="Client ID",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -498,7 +498,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_secret",
             help="Client Secret",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-u",
@@ -506,7 +506,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="username",
             help="Username",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -514,7 +514,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="password",
             help="Password",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-a",
@@ -522,7 +522,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="user_agent",
             help="User agent",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             nargs="+",
         )
         if not other_args:
@@ -560,7 +560,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -568,7 +568,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret",
             help="Secret key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-t",
@@ -576,7 +576,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="token",
             help="Bearer token",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://developer.twitter.com")
@@ -641,7 +641,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="username",
             help="username",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -649,7 +649,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="password",
             help="password",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -730,7 +730,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -738,7 +738,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret",
             help="Secret key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://binance.com")
@@ -794,7 +794,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -802,7 +802,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret",
             help="Secret key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -810,7 +810,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="passphrase",
             help="Passphrase",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://docs.pro.coinbase.com/")
@@ -983,7 +983,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-t",
@@ -991,7 +991,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="token",
             help="Token",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://www.smartstake.io")
