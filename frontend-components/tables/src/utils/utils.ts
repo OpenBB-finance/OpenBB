@@ -125,6 +125,7 @@ const getNewFileHandle = ({
   is_image?: boolean;
 }): Promise<FileSystemFileHandle | null> => {
   if ("showSaveFilePicker" in window) {
+    console.log("showSaveFilePicker");
     const opts: SaveFilePickerOptions = {
       suggestedName: filename,
       types: is_image
@@ -144,6 +145,7 @@ const getNewFileHandle = ({
   }
 
   return new Promise((resolve) => {
+    console.log("resolve");
     resolve(null);
   });
 };
@@ -192,6 +194,7 @@ export async function downloadData(
     const filename = `${window.title}.csv`;
 
     try {
+      console.log("Filename");
       let fileHandle = await getNewFileHandle({
         filename: filename,
       });
@@ -211,7 +214,6 @@ export async function downloadData(
         // @ts-ignore
         saveToFile(blob, filename, fileHandle).then(async function () {
           await new Promise((resolve) => setTimeout(resolve, 1500));
-          await loadingOverlay("", true);
         });
       }, 2)();
     } catch (error) {
