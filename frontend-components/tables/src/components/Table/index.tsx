@@ -39,8 +39,8 @@ function getCellWidth(row, column) {
     const indexLabel = row.hasOwnProperty("index")
       ? "index"
       : row.hasOwnProperty("Index")
-        ? "Index"
-        : null;
+      ? "Index"
+      : null;
     const indexValue = indexLabel ? row[indexLabel] : null;
     const value = row[column];
     const valueType = typeof value;
@@ -107,12 +107,16 @@ function getCellWidth(row, column) {
 export const EXPORT_TYPES = ["csv", "xlsx", "png"];
 export default function Table({
   data,
+  rawData,
+  rawColumns,
   columns,
   title,
   initialTheme,
   cmd = "",
 }: {
   data: any[];
+  rawData: any[];
+  rawColumns: any[];
   columns: any[];
   title: string;
   initialTheme: "light" | "dark";
@@ -169,8 +173,8 @@ export default function Table({
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
-              ? "Index"
-              : columns[0];
+            ? "Index"
+            : columns[0];
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
@@ -467,9 +471,9 @@ export default function Table({
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                header.column.columnDef.footer,
-                                header.getContext()
-                              )}
+                                  header.column.columnDef.footer,
+                                  header.getContext()
+                                )}
                           </th>
                         ))}
                       </tr>
@@ -632,7 +636,12 @@ export default function Table({
             setCurrentPage={setCurrentPage}
             table={table}
           />
-          <Export setType={setType} type={type} columns={columns} data={data} />
+          <Export
+            setType={setType}
+            type={type}
+            columns={rawColumns}
+            data={rawData}
+          />
         </div>
       </div>
     </>

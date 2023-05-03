@@ -11,7 +11,7 @@ import {
 } from "./data/mockup";
 
 declare global {
-  [Exposed=Window, SecureContext]
+  [(Exposed = Window), SecureContext];
   interface Window {
     json_data: any;
     title: string;
@@ -77,6 +77,8 @@ function App() {
       <DndProvider backend={HTML5Backend}>
         {transformedData && (
           <Table
+            rawData={transformedData.data}
+            rawColumns={transformedData.columns}
             // source={source}
             title={title}
             data={transformedData.data}
@@ -88,9 +90,7 @@ function App() {
                 ? "dark"
                 : "light"
             }
-            cmd={
-              data?.command_location ?? ""
-            }
+            cmd={data?.command_location ?? ""}
           />
         )}
       </DndProvider>
