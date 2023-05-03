@@ -63,6 +63,7 @@ export default function Chart({
   const [changeColor, setChangeColor] = useState(false);
   const [colorActive, setColorActive] = useState(false);
   const [onAnnotationClick, setOnAnnotationClick] = useState({});
+  const [ohlcAnnotation, setOhlcAnnotation] = useState([]);
 
   const onClose = () => setModal({ name: "" });
 
@@ -90,6 +91,8 @@ export default function Chart({
       setOnAnnotationClick,
       setAnnotations,
       onAnnotationClick,
+      ohlcAnnotation,
+      setOhlcAnnotation,
       annotations,
       plotDiv,
     });

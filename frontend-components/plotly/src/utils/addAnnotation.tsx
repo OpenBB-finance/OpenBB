@@ -44,6 +44,10 @@ export function add_annotation({
       break;
     }
   }
+
+  if (popup_data.high != undefined) {
+    y = popup_data.yanchor == "above" ? popup_data.high : popup_data.low;
+  }
   if (index == -1) {
     let annotation: Annotations = {
       x: x,
@@ -71,14 +75,19 @@ export function add_annotation({
       },
       clicktoshow: "onoff",
       captureevents: true,
+      high: popup_data.high || undefined,
+      low: popup_data.low || undefined,
     };
     annotations.push(annotation);
   } else {
+    annotations[index].y = y;
     annotations[index].text = popup_data.text;
     annotations[index].font.color = popup_data.color;
     annotations[index].font.size = popup_data.size;
     annotations[index].ay = y + popup_data.yshift;
     annotations[index].bordercolor = popup_data.bordercolor;
+    annotations[index].high = popup_data.high || undefined;
+    annotations[index].low = popup_data.low || undefined;
   }
   return { annotations: annotations, annotation: annotations[index] };
 }
@@ -124,6 +133,8 @@ export function init_annotation({
   setOnAnnotationClick,
   setAnnotations,
   onAnnotationClick,
+  ohlcAnnotation,
+  setOhlcAnnotation,
   annotations,
   plotDiv,
 }: {
@@ -134,12 +145,15 @@ export function init_annotation({
   onAnnotationClick: any;
   setOnAnnotationClick: (onAnnotationClick: any) => void;
   setAnnotations: (annotations: Partial<Annotations>[]) => void;
+  ohlcAnnotation: any;
+  setOhlcAnnotation: (ohlcAnnotation: any) => void;
   annotations: Annotations[];
   plotDiv: PlotlyHTMLElement;
 }) {
   if (popupData.text != undefined && popupData.text != "") {
     popupData.text = popupData.text.replace(/\n/g, "<br>");
     let popup_data: Partial<PopupData>;
+    let inOhlc = false;
 
     if (popupData.annotation) {
       console.log("data", popupData);
@@ -151,12 +165,35 @@ export function init_annotation({
           popupData.annotation.y < popupData.annotation.ay ? "above" : "below",
         ...popupData,
       };
+      if (popupData.annotation.high != undefined) {
+        inOhlc = true;
+      }
       console.log("popup_data", popup_data);
       let to_update = plot_text({
         plotData,
         popup_data: popup_data as PopupData,
         current_text: popupData.annotation.text,
       });
+
+      if (inOhlc) {
+        // we update the ohlcAnnotation
+        let ohlcAnnotationIndex = ohlcAnnotation.findIndex(
+          (a) =>
+            a.x == popupData.annotation.x &&
+            a.y == popupData.annotation.y &&
+            a.yref == popupData.annotation.yref
+        );
+        console.log("ohlcAnnotationIndex", ohlcAnnotationIndex);
+        if (ohlcAnnotationIndex == -1) {
+          // we add the annotation to the ohlcAnnotation array
+          setOhlcAnnotation([...ohlcAnnotation, to_update.annotation]);
+        } else {
+          // we replace the annotation in the ohlcAnnotation array
+          ohlcAnnotation[ohlcAnnotationIndex] = to_update.annotation;
+          setOhlcAnnotation(ohlcAnnotation);
+        }
+      }
+
       setAnnotations(
         [...annotations, to_update.annotation].filter((a) => a != undefined)
       );
@@ -182,6 +219,8 @@ export function init_annotation({
       let popup_data = {
         x: annotation.x,
         y: annotation.y,
+        high: annotation?.high ?? undefined,
+        low: annotation?.low ?? undefined,
         yanchor: annotation.y < annotation.ay ? "above" : "below",
         text: annotation.text,
         color: annotation.font.color,
@@ -189,7 +228,8 @@ export function init_annotation({
         bordercolor: annotation.bordercolor,
         annotation: annotation,
       };
-      console.log("popup_data", popup_data);
+
+      console.log("popup_data_clickannotation", popup_data);
       setOnAnnotationClick(popup_data);
       setModal({ name: "textDialog", data: popup_data });
       setOnAnnotationClick({});
@@ -200,12 +240,15 @@ export function init_annotation({
       let x = eventData.points[0].x;
       let yaxis = eventData.points[0].fullData.yaxis;
       let y = 0;
+      let high, low;
 
       // We need to check if the trace is a candlestick or not
       // this is because the y value is stored in the high or low
       if (eventData.points[0].y != undefined) {
         y = eventData.points[0].y;
       } else if (eventData.points[0].low != undefined) {
+        high = eventData.points[0].high;
+        low = eventData.points[0].low;
         if (popup_data?.yanchor == "below") {
           y = eventData.points[0].low;
         } else {
@@ -217,13 +260,24 @@ export function init_annotation({
         x: onAnnotationClick?.annotation?.x ?? x,
         y: onAnnotationClick?.annotation?.y ?? y,
         yref: onAnnotationClick?.annotation?.yref ?? yaxis,
+        high: onAnnotationClick?.annotation?.high ?? high,
+        low: onAnnotationClick?.annotation?.low ?? low,
         ...popupData,
       };
+
+      if (high != undefined) {
+        // save the annotation to use later
+        ohlcAnnotation.push(popup_data);
+        setOhlcAnnotation(ohlcAnnotation);
+        console.log("ohlcAnnotation", ohlcAnnotation);
+      }
+
       let to_update = plot_text({
         plotData,
         popup_data: popup_data as PopupData,
         current_text: onAnnotationClick?.annotation?.text,
       });
+
       setAnnotations(
         [...annotations, to_update.annotation].filter((a) => a != undefined)
       );

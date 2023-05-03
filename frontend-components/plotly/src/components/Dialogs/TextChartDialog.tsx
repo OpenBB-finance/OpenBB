@@ -49,21 +49,13 @@ export default function TextChartDialog({
   function onChange(e: any) {
     console.log(e.target.id.replace("addtext_", ""), e.target.value);
     const name = e.target.id.replace("addtext_", "");
-    const value =
-      e.target.type === "checkbox"
-        ? e.target.checked
-          ? 1
-          : 0
-        : e.target.value;
+    const value = e.target.value;
     setNewPopupData({ ...newPopupData, [name]: value });
   }
 
   function onSubmit() {
     console.log("submitting", newPopupData);
     if (newPopupData.text !== "") {
-      let above = ["above", 1].includes(newPopupData.yanchor);
-      newPopupData.yanchor = above ? "above" : "below";
-
       if (popUpData?.annotation) {
         setNewPopupData({ ...newPopupData, annotation: popUpData.annotation });
       }
@@ -158,19 +150,21 @@ export default function TextChartDialog({
               defaultValue={popUpData?.annotation?.size || newPopupData?.size}
             ></input>
             <div>
-              <label htmlFor="addtext_yanchor" style={{ marginRight: 28 }}>
-                <b>Position (Above)</b>
+              <label htmlFor="addtext_yanchor" style={{ marginRight: 31 }}>
+                <b>Position</b>
               </label>
-              <input
-                type="checkbox"
-                style={{ ...style, width: "45px" }}
+              <select
                 id="addtext_yanchor"
-                name="check"
-                defaultChecked={
-                  newPopupData?.yanchor === "above" ? true : false
+                name="yanchor"
+                style={{ width: "100px" }}
+                defaultValue={
+                  popUpData?.annotation?.yanchor || newPopupData?.yanchor
                 }
                 onChange={onChange}
-              ></input>
+              >
+                <option value="above">Above</option>
+                <option value="below">Below</option>
+              </select>
             </div>
           </div>
         </div>
