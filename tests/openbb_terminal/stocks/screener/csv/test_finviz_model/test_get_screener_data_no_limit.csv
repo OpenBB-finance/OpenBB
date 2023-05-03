@@ -1,24 +1,24 @@
 ,Ticker,Company,Sector,Industry,Country,Market Cap,P/E,Price,Change,Volume
-0,ALPS,"Alpine Summit Energy Partners, Inc.",Energy,Oil & Gas E&P,USA,68570000.0,5.58,2.01,-0.0383,109999.0
+0,ALPS,Alpine Summit Energy Partners Inc.,Energy,Oil & Gas E&P,USA,68570000.0,5.58,2.01,-0.0383,109999.0
 1,WATT,Energous Corporation,Technology,Scientific & Technical Instruments,USA,47910000.0,,0.58,-0.026699999999999998,425358.0
-2,INFI,"Infinity Pharmaceuticals, Inc.",Healthcare,Biotechnology,USA,22100000.0,,0.21,-0.1157,2137949.0
+2,INFI,Infinity Pharmaceuticals Inc.,Healthcare,Biotechnology,USA,22100000.0,,0.21,-0.1157,2137949.0
 3,GSMG,Glory Star New Media Group Holdings Limited,Communication Services,Advertising Agencies,China,53220000.0,1.75,0.75,-0.0169,33975.0
-4,ASTI,"Ascent Solar Technologies, Inc.",Technology,Solar,USA,19310000.0,,0.49,0.0103,219740.0
-5,JAGX,"Jaguar Health, Inc.",Healthcare,Biotechnology,USA,4190000.0000000005,,1.92,-0.030299999999999997,1114262.0
+4,ASTI,Ascent Solar Technologies Inc.,Technology,Solar,USA,19310000.0,,0.49,0.0103,219740.0
+5,JAGX,Jaguar Health Inc.,Healthcare,Biotechnology,USA,4190000.0000000005,,1.92,-0.030299999999999997,1114262.0
 6,GOOD,Gladstone Commercial Corporation,Real Estate,REIT - Diversified,USA,609850000.0,,13.68,-0.0318,511965.0
-7,SMSI,"Smith Micro Software, Inc.",Technology,Software - Application,USA,88480000.0,,1.4,-0.1195,1528649.0
+7,SMSI,Smith Micro Software Inc.,Technology,Software - Application,USA,88480000.0,,1.4,-0.1195,1528649.0
 8,UEIC,Universal Electronics Inc.,Technology,Consumer Electronics,USA,169180000.0,385.45,12.72,-0.0327,173747.0
-9,FNGR,"FingerMotion, Inc.",Communication Services,Telecom Services,USA,77830000.0,,1.44,-0.1166,354671.0
-10,CCSI,"Consensus Cloud Solutions, Inc.",Technology,Software - Infrastructure,USA,864710000.0,11.3,41.04,-0.0291,378590.0
+9,FNGR,FingerMotion Inc.,Communication Services,Telecom Services,USA,77830000.0,,1.44,-0.1166,354671.0
+10,CCSI,Consensus Cloud Solutions Inc.,Technology,Software - Infrastructure,USA,864710000.0,11.3,41.04,-0.0291,378590.0
 11,GRNA,GreenLight Biosciences Holdings,Healthcare,Biotechnology,USA,78900000.0,,0.48,-0.013000000000000001,1392599.0
-12,IBRX,"ImmunityBio, Inc.",Healthcare,Biotechnology,USA,1070000000.0000001,,2.44,-0.0317,2822114.0
-13,GRNT,"Granite Ridge Resources, Inc.",Financial,Shell Companies,USA,776680000.0,,5.29,-0.0554,49952.0
+12,IBRX,ImmunityBio Inc.,Healthcare,Biotechnology,USA,1070000000.0000001,,2.44,-0.0317,2822114.0
+13,GRNT,Granite Ridge Resources Inc.,Financial,Shell Companies,USA,776680000.0,,5.29,-0.0554,49952.0
 14,SBSW,Sibanye Stillwater Limited,Basic Materials,Gold,South Africa,5820000000.0,5.2,8.1,-0.0276,4403774.0
-15,NOTE,"FiscalNote Holdings, Inc.",Technology,Information Technology Services,USA,351940000.0,,2.35,-0.0637,372421.0
-16,UFAB,"Unique Fabricating, Inc.",Consumer Cyclical,Auto Parts,USA,2950000.0,,0.26,-0.0583,1696839.0
-17,TWKS,"Thoughtworks Holding, Inc.",Technology,Information Technology Services,USA,2480000000.0,,7.36,-0.1721,4361752.0
+15,NOTE,FiscalNote Holdings Inc.,Technology,Information Technology Services,USA,351940000.0,,2.35,-0.0637,372421.0
+16,UFAB,Unique Fabricating Inc.,Consumer Cyclical,Auto Parts,USA,2950000.0,,0.26,-0.0583,1696839.0
+17,TWKS,Thoughtworks Holding Inc.,Technology,Information Technology Services,USA,2480000000.0,,7.36,-0.1721,4361752.0
 18,KT,KT Corporation,Communication Services,Telecom Services,South Korea,6400000000.0,5.0,11.57,0.0105,1278821.0
 19,CISO,Cerberus Cyber Sentinel Corporation,Technology,Software - Infrastructure,USA,91890000.0,,0.57,0.0179,656013.0
 20,ENSV,Enservco Corporation,Energy,Oil & Gas Equipment & Services,USA,6570000.0,,0.59,-0.0168,236172.0
-21,ETAO,"ETAO International Co., Ltd.",Healthcare,Health Information Services,Cayman Islands,8210000.000000001,,2.28,-0.1231,605377.0
-22,GETR,"Getaround, Inc.",Technology,Software - Application,USA,60230000.0,,0.47,0.0387,139168.0
+21,ETAO,ETAO International Co. Ltd.,Healthcare,Health Information Services,Cayman Islands,8210000.000000001,,2.28,-0.1231,605377.0
+22,GETR,Getaround Inc.,Technology,Software - Application,USA,60230000.0,,0.47,0.0387,139168.0
