@@ -7,5 +7,5 @@
     games              top blockchain games                                            [DappRadar]
     dapps              top decentralized apps                                          [DappRadar]
     dex                top decentralized exchanges                                     [DappRadar]
-    fees               cryptos where users pay most fees on                            [CryptoStats]
+    fees               cryptos where users pay most fees on                            [Cryptostats]
 
