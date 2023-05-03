@@ -112,55 +112,58 @@ export default function TextChartDialog({
               defaultValue={popUpData?.annotation?.text || newPopupData?.text}
             ></textarea>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div>
-              <label htmlFor="addtext_color">
-                <b>Font color:</b>
-              </label>
-              <input
-                type="color"
-                id="addtext_color"
-                defaultValue={
-                  popUpData?.annotation?.color || newPopupData?.color
-                }
-                onChange={onChange}
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="addtext_bordercolor">
-                <b>Border color:</b>
-              </label>
-              <input
-                type="color"
-                id="addtext_bordercolor"
-                defaultValue={
-                  popUpData?.annotation?.bordercolor ||
-                  newPopupData?.bordercolor
-                }
-                onChange={onChange}
-              ></input>
-            </div>
-          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: 15,
+              alignItems: "center",
+              flexWrap: "wrap",
+              columnCount: 2,
+              justifyContent: "space-between",
+              marginBottom: 20,
 
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            }}
+          >
+            <label htmlFor="addtext_color">
+              <b>Font color</b>
+            </label>
+            <input
+              type="color"
+              id="addtext_color"
+              style={{ margin: "2px 2px 2px 15px" }}
+              defaultValue={popUpData?.annotation?.color || newPopupData?.color}
+              onChange={onChange}
+            ></input>
+            <label htmlFor="addtext_bordercolor" style={{ marginLeft: 20 }}>
+              <b>Border color</b>
+            </label>
+            <input
+              type="color"
+              id="addtext_bordercolor"
+              style={{ margin: "2px 2px 10px 15px" }}
+              defaultValue={
+                popUpData?.annotation?.bordercolor || newPopupData?.bordercolor
+              }
+              onChange={onChange}
+            ></input>
+
+            <label htmlFor="addtext_size">
+              <b>Font size</b>
+            </label>
+            <input
+              style={{ ...style, width: "52px", margin: "0px 0px 0px 2px" }}
+              type="number"
+              id="addtext_size"
+              onChange={onChange}
+              defaultValue={popUpData?.annotation?.size || newPopupData?.size}
+            ></input>
             <div>
-              <label htmlFor="addtext_size">
-                <b>Font size:</b>
-              </label>
-              <input
-                style={{ ...style, width: "45px" }}
-                type="number"
-                id="addtext_size"
-                onChange={onChange}
-                defaultValue={popUpData?.annotation?.size || newPopupData?.size}
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="addtext_yanchor">
-                <b>Position (Above):</b>
+              <label htmlFor="addtext_yanchor" style={{ marginRight: 28 }}>
+                <b>Position (Above)</b>
               </label>
               <input
                 type="checkbox"
+                style={{ ...style, width: "45px" }}
                 id="addtext_yanchor"
                 name="check"
                 defaultChecked={

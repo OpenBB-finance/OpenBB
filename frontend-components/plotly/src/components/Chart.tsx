@@ -23,7 +23,7 @@ export default function Chart({
   date,
   cmd,
   title,
-  global,
+  globals,
   info,
 }: {
   // @ts-ignore
@@ -31,20 +31,18 @@ export default function Chart({
   date: Date;
   cmd: string;
   title: string;
-  global: any;
+  globals: any;
   info?: any;
 }) {
   const posthog = usePostHog();
 
   useEffect(() => {
     if (posthog) posthog.capture("chart", info);
-  }, [info]);
+  }, []);
 
   delete json.layout.width;
   delete json.layout.height;
   json.layout.title.text = "";
-
-  const [globals, setGlobals] = useState(global);
 
   const [barButtons, setModeBarButtons] = useState({});
   const [LogYaxis, setLogYaxis] = useState(false);

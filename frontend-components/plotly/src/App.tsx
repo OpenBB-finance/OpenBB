@@ -144,7 +144,7 @@ function App() {
         date={transformedData.date}
         cmd={transformedData.cmd}
         title={transformedData.title}
-        global={transformedData.globals}
+        globals={transformedData.globals}
         info={info}
       />
     );
