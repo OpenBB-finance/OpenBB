@@ -597,9 +597,9 @@ class TerminalController(BaseController):
                 # regex is used to match strings that start with C:/ and remove it so there won't be duplicates
                 # for user who starts the string with Users/username
                 file_path = " ".join(ns_parser.file)
-                full_path = Path('C:/' + re.sub(r'^(C:\/?|c:\/?)', '', file_path).strip())
-                hub_routine = file_path.split('/')
-                if hub_routine[0] == 'default':
+                full_path = file_path
+                hub_routine = file_path.split("/")
+                if hub_routine[0] == "default":
                     path = self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
                 elif hub_routine[0] == "personal":
                     path = self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
