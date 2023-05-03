@@ -324,7 +324,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="quote",
-            description="Current quote for stock ticker",
+            description="Current quote for the loaded stock ticker.",
         )
         parser.add_argument(
             "-t",
@@ -333,7 +333,7 @@ class StocksController(StockBaseController):
             dest="s_ticker",
             required=False,
             default=self.ticker,
-            help=translate("stocks/QUOTE_ticker"),
+            help="Get a quote for a specific ticker, or comma-separated list of tickers.",
         )
 
         # For the case where a user uses: 'quote BB'
