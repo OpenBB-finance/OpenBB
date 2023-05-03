@@ -336,6 +336,10 @@ export default function Table({
         open={open}
         setOpen={setOpen}
       />
+      <div id="loading" className="saving">
+                <div id="loading_text" className="loading_text"></div>
+                <div id="loader" className="loader"></div>
+              </div>
       <div
         ref={tableContainerRef}
         className={clsx("overflow-x-hidden h-screen")}
@@ -483,10 +487,6 @@ export default function Table({
         <div className="smh:hidden flex max-h-[68px] overflow-x-auto bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full gap-10 justify-between py-4 px-4 text-sm">
           <div className="flex items-center gap-10">
             <DialogPrimitive.Root>
-              <div id="loading" className="saving">
-                <div id="loading_text" className="loading_text"></div>
-                <div id="loader" className="loader"></div>
-              </div>
               <DialogPrimitive.Trigger className="_btn">
                 Settings
               </DialogPrimitive.Trigger>

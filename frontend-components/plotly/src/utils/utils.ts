@@ -185,6 +185,7 @@ export async function downloadData(columns: any, data: any) {
       ext = fileHandle.name.split(".").pop();
     }
     await loadingOverlay(`Saving ${ext.toUpperCase()}`);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     non_blocking(async function () {
       // @ts-ignore
       saveToFile(blob, filename, fileHandle).then(async function () {

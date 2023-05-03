@@ -161,7 +161,6 @@ export const saveToFile = (
     }
     exportNativeFileSystem({ fileHandle, blob });
   } catch (error) {
-    console.error("oops, something went wrong!", error);
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
@@ -188,6 +187,8 @@ export async function downloadData(
   );
   const csvData = [headers, ...rows];
 
+  await loadingOverlay(`Saving ${"CSV".toUpperCase()}`);
+
   if (type === "csv") {
     const csvContent = csvData.map((e) => e.join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -199,6 +200,7 @@ export async function downloadData(
         filename: filename,
       });
       let ext: string = "csv";
+      
       if (fileHandle !== null) {
         // @ts-ignore
         ext = fileHandle.name.split(".").pop();
@@ -214,6 +216,7 @@ export async function downloadData(
         // @ts-ignore
         saveToFile(blob, filename, fileHandle).then(async function () {
           await new Promise((resolve) => setTimeout(resolve, 1500));
+          await loadingOverlay("",true);
         });
       }, 2)();
     } catch (error) {
