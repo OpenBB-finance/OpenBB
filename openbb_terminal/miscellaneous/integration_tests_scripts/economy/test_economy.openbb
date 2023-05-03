@@ -10,14 +10,14 @@ futures -c metals --source Finviz
 futures -c meats --source Finviz
 futures -c grains --source Finviz
 futures -c softs --source Finviz
-futures -commodity energy -s ticker --reverse --source Finviz --sortby ticker
+futures -c energy -s ticker -r --source Finviz --sortby ticker
 map
 map -p 1w -t world
 bigmac
 bigmac -c USA,ESP,LVA,DEU,FRA,FIN
 events
-events --country united_states -s 2022-07-07 -e 2022-07-08
-events -c spain,canada
+events --countries united_states -s 2022-07-07 -e 2022-07-08
+events -c united_states,united_kingdom
 events -n
 edebt --limit 10
 rtps

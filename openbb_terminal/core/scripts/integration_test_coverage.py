@@ -160,6 +160,10 @@ def parse_args(module, func) -> list:
     """Parse the arguments of a given module function."""
     source = inspect.getsource(module.__dict__[func])
     params = re.findall(r"-\w+", source)
+    # Clean the params
+    params = [param for param in params if not param[1:].isupper()]
+    params = [param for param in params if not param[1:].isdigit()]
+    params = list(dict.fromkeys(params))
     return params
 
 
@@ -221,17 +225,42 @@ def calculate_function_coverage(
                     if param in all_params:
                         all_params.remove(param)
             else:
+                unpacked_params = []
+                used_unabbreviated_params = []
+                for param in params:
+                    unpacked_params.append(param)
+
+                for param in unpacked_params:
+                    for unabbreviated_param in all_params:
+                        if unabbreviated_param.startswith(param):
+                            used_unabbreviated_params.append(unabbreviated_param)
+
                 missing_params[function] = [
                     param for param in all_params if param not in params
                 ]
+                missing_params[function] = [
+                    param
+                    for param in missing_params[function]
+                    if param not in used_unabbreviated_params
+                ]
+
+            try:
+                missing_params[function] = list(dict.fromkeys(missing_params[function]))
+            except KeyError:
+                continue
 
     for key, value in missing_params.items():
         missing_params[key] = list(value)
         for param in value:
             for param2 in value:
                 if param != param2 and param2.startswith(param):
-                    missing_params[key].remove(param)
-                    break
+                    try:
+                        missing_params[key].remove(param)
+                        missing_params[key].remove(param2)
+                    except ValueError:
+                        pass
+
+    missing_params = {k: v for k, v in missing_params.items() if v}
 
     coverage_dict = {}
     for key, value in missing_params.items():
