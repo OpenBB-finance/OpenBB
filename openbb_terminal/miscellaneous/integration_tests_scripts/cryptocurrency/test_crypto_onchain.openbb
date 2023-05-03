@@ -73,6 +73,10 @@ prices --sort volumeConverted --reverse
 # loads transaction hash
 address 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6 -tx
 
+hr -i 1w
+
 # tx
 
+help
+reset
 exit

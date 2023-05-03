@@ -240,6 +240,8 @@ class CryptoController(model.CryptoRoot):
             `lt_chart`: Prints table showing Trades on Decentralized Exchanges aggregated by DEX or Month\n
             `prices`: Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]\n
             `prices_chart`: Display token historical prices with volume and market cap, and average price.\n
+            `query`: Get query data\n
+            `query_chart`: Display query results from shroom\n
             `query_graph`: Helper methods for querying graphql api. [Source: https://bitquery.io/]\n
             `th`: Get info about token historical transactions. [Source: Ethplorer]\n
             `th_chart`: Display info about token history. [Source: Ethplorer]\n

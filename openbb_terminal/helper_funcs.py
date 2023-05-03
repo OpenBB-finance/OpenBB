@@ -307,7 +307,7 @@ def print_rich_table(
         try:
             if not isinstance(df[col].iloc[0], pd.Timestamp):
                 df[col] = pd.to_numeric(df[col])
-        except ValueError:
+        except (ValueError, TypeError):
             pass
 
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
@@ -612,7 +612,7 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
 
 
 def check_positive_float(value) -> float:
-    """Argparse type to check positive int."""
+    """Argparse type to check positive float."""
     new_value = float(value)
     if new_value <= 0:
         log_and_raise(
