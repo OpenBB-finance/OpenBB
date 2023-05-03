@@ -5,7 +5,7 @@ import { hideModebar } from "./PlotlyConfig";
 export default async function ResizeHandler({
   plotData,
   volumeBars,
-  setMaximizePlot
+  setMaximizePlot,
 }: {
   plotData: Figure;
   volumeBars: any;
@@ -14,7 +14,11 @@ export default async function ResizeHandler({
   // We hide the modebar and set the number of ticks to 5
   const XAXIS = Object.keys(plotData.layout)
     .filter((x) => x.startsWith("xaxis"))
-    .filter((x) => plotData.layout[x].showticklabels);
+    .filter(
+      (x) =>
+        plotData.layout[x].showticklabels ||
+        plotData.layout[x].matches == undefined
+    );
 
   const TRACES = plotData.data.filter((trace) =>
     trace?.name?.startsWith("Volume")
@@ -29,7 +33,7 @@ export default async function ResizeHandler({
     height > 420 && width < 920 ? 8 : height > 420 && width < 500 ? 9 : 7;
 
   if (width < 750) {
-    // We hide the modebar and set the number of ticks to 5
+    // We hide the modebar and set the number of ticks to 6
 
     TRACES.forEach((trace) => {
       if (trace.type == "bar") {
@@ -44,8 +48,9 @@ export default async function ResizeHandler({
         }
       }
     });
+
     XAXIS.forEach((x) => {
-      if (volume.old_nticks?.[x] == undefined) {
+      if (volumeBars.old_nticks?.[x] == undefined) {
         layout_update[x + ".nticks"] = 6;
         volume.old_nticks[x] = plotData.layout[x].nticks || 10;
       }
@@ -60,7 +65,7 @@ export default async function ResizeHandler({
 
     if (volumeBars.old_nticks != undefined) {
       XAXIS.forEach((x) => {
-        if (volume.old_nticks[x] != undefined) {
+        if (volumeBars.old_nticks[x] != undefined) {
           layout_update[x + ".nticks"] = volume.old_nticks[x];
           volume.old_nticks[x] = undefined;
         }

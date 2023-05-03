@@ -71,7 +71,20 @@ function App() {
           }
       });
     }
-    let title = data.layout?.title?.text;
+
+    // We add spaces to all trace names, due to Fira Code font width issues
+    // to make sure that the legend is not cut off
+    data.data.forEach(function (trace) {
+      if (trace.name != undefined) {
+        const name_length = trace.name.length;
+        trace.name = trace.name + "      ";
+        trace.hoverlabel = {
+          namelength: name_length,
+        };
+      }
+    });
+
+    let title = data.layout?.title?.text || "Interactive Chart";
     globals.title = title;
     return {
       data: data,

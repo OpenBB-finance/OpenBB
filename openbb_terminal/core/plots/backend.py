@@ -188,18 +188,6 @@ class Backend(PyWry):
 
         title = "Interactive Chart"
 
-        # We check if figure is a subplot and has a title annotation
-        if not fig.layout.title.text and fig._has_subplots():  # pylint: disable=W0212
-            for annotation in fig.select_annotations(
-                selector=dict(xref="paper", yref="paper")
-            ):
-                # Subplots always set the first annotation as the title
-                # so we break after the first one
-                if annotation.text:
-                    title = annotation.text
-                    annotation.text = ""
-                break
-
         fig.layout.title.text = re.sub(
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else title
         )
