@@ -4,9 +4,9 @@
 # IMPORTATION THIRDPARTY
 import json
 from unittest.mock import mock_open
-from requests import Response
 
 import pytest
+from requests import Response
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.models.user_model import (
@@ -18,9 +18,9 @@ from openbb_terminal.core.models.user_model import (
 )
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.core.session.routines_handler import (
+    download_routines,
     read_routine,
     save_routine,
-    download_routines,
 )
 
 
