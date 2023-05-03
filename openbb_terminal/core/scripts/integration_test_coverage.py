@@ -160,7 +160,6 @@ def parse_args(module, func) -> list:
     """Parse the arguments of a given module function."""
     source = inspect.getsource(module.__dict__[func])
     params = re.findall(r"-\w+", source)
-    # Clean the params
     params = [param for param in params if not param[1:].isupper()]
     params = [param for param in params if not param[1:].isdigit()]
     params = list(dict.fromkeys(params))
@@ -193,24 +192,11 @@ def map_module_to_calls(module) -> dict:
     return calls_dict
 
 
-def calculate_function_coverage(
-    tested_functions: list,
-    tested_function: str,
-    module: object,
-    limit: int = 10,
-    output_table: bool = True,
-) -> None:
-    """Compare tested functions with module."""
+def get_missing_params(
+    tested_function_params: list, controller: str, module_dict: dict
+) -> dict:
+    """Get missing parameters for a given function."""
     missing_params = {}
-    module_dict = map_module_to_calls(module)
-    tested_function_params = get_tested_function_params(
-        tested_functions, tested_function
-    )
-    try:
-        controller = str(module).split(".")[3].split("_")[0]
-    except IndexError:
-        controller = str(module).split(".")[2].split("_")[0]
-
     for function, params in tested_function_params:
         if function != controller:
             try:
@@ -247,6 +233,7 @@ def calculate_function_coverage(
             try:
                 missing_params[function] = list(dict.fromkeys(missing_params[function]))
             except KeyError:
+                # this catches the (sub)menu
                 continue
 
     for key, value in missing_params.items():
@@ -261,10 +248,32 @@ def calculate_function_coverage(
                         pass
 
     missing_params = {k: v for k, v in missing_params.items() if v}
-    # remove all values that are equal to '-h'
     missing_params = {
         k: v for k, v in missing_params.items() if not all(x == "-h" for x in v)
     }
+
+    return missing_params
+
+
+def calculate_function_coverage(
+    tested_functions: list,
+    tested_function: str,
+    module: object,
+    limit: int = 10,
+    output_table: bool = True,
+) -> None:
+    """Compare tested functions with module."""
+    missing_params = {}
+    module_dict = map_module_to_calls(module)
+    tested_function_params = get_tested_function_params(
+        tested_functions, tested_function
+    )
+    try:
+        controller = str(module).split(".")[3].split("_")[0]
+    except IndexError:
+        controller = str(module).split(".")[2].split("_")[0]
+
+    missing_params = get_missing_params(tested_function_params, controller, module_dict)
 
     coverage_dict = {}
     for key, value in missing_params.items():
