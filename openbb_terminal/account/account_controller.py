@@ -411,9 +411,13 @@ class AccountController(BaseController):
                     data = [response.json(), "personal"]
                 # Default routine
                 elif name in self.DEFAULT_CHOICES:
-                    data = [next(
-                        (r for r in self.DEFAULT_ROUTINES if r["name"] == name), None
-                    ), "default"]
+                    data = [
+                        next(
+                            (r for r in self.DEFAULT_ROUTINES if r["name"] == name),
+                            None,
+                        ),
+                        "default",
+                    ]
 
                 # Save routine
                 if data[0]:
