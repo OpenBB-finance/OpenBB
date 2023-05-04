@@ -208,7 +208,7 @@ export async function downloadData(
       non_blocking(async function () {
         // @ts-ignore
         saveToFile(blob, filename, fileHandle).then(async function () {
-          await new Promise((resolve) => setTimeout(resolve, 10));
+          await new Promise((resolve) => setTimeout(resolve, 1500));
           if (!fileHandle) {
             downloadFinished(true);
           }
