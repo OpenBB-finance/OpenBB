@@ -1,6 +1,0 @@
-            Name  Daily Users  Daily Volume [$]
-0  Splinterlands       305103           7976.61
-2   Alien Worlds       235631         759203.57
-3  Farmers World       111680           2300.16
-5  Axie Infinity        90876       11619801.91
-6         Upland        63279              0.00

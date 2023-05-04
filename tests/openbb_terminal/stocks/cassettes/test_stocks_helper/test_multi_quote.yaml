@@ -1,0 +1,90 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/quote/AAPL,MSFT,AMZN,TSLA,BTCUSD?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: "[\n  {\n    \"symbol\": \"AAPL\",\n    \"name\": \"Apple Inc.\",\n
+        \   \"price\": 169.59,\n    \"changesPercentage\": -0.053,\n    \"change\":
+        -0.09,\n    \"dayLow\": 168.64,\n    \"dayHigh\": 170.45,\n    \"yearHigh\":
+        176.15,\n    \"yearLow\": 124.17,\n    \"marketCap\": 2683235983012,\n    \"priceAvg50\":
+        157.903,\n    \"priceAvg200\": 150.89626,\n    \"exchange\": \"NASDAQ\",\n
+        \   \"volume\": 47584395,\n    \"avgVolume\": 61989696,\n    \"open\": 169.28,\n
+        \   \"previousClose\": 169.68,\n    \"eps\": 5.89,\n    \"pe\": 28.79,\n    \"earningsAnnouncement\":
+        \"2023-05-04T20:00:00.000+0000\",\n    \"sharesOutstanding\": 15821899776,\n
+        \   \"timestamp\": 1682971204\n  },\n  {\n    \"symbol\": \"MSFT\",\n    \"name\":
+        \"Microsoft Corporation\",\n    \"price\": 305.56,\n    \"changesPercentage\":
+        -0.5533,\n    \"change\": -1.7,\n    \"dayLow\": 305.15,\n    \"dayHigh\":
+        308.6,\n    \"yearHigh\": 308.93,\n    \"yearLow\": 213.43,\n    \"marketCap\":
+        2271988260844,\n    \"priceAvg50\": 272.9444,\n    \"priceAvg200\": 256.1089,\n
+        \   \"exchange\": \"NASDAQ\",\n    \"volume\": 20749354,\n    \"avgVolume\":
+        31388708,\n    \"open\": 306.97,\n    \"previousClose\": 307.26,\n    \"eps\":
+        9.22,\n    \"pe\": 33.14,\n    \"earningsAnnouncement\": \"2023-07-24T10:59:00.000+0000\",\n
+        \   \"sharesOutstanding\": 7435489792,\n    \"timestamp\": 1682971204\n  },\n
+        \ {\n    \"symbol\": \"AMZN\",\n    \"name\": \"Amazon.com, Inc.\",\n    \"price\":
+        102.05,\n    \"changesPercentage\": -3.2243,\n    \"change\": -3.4,\n    \"dayLow\":
+        101.82,\n    \"dayHigh\": 105.23,\n    \"yearHigh\": 146.57,\n    \"yearLow\":
+        81.43,\n    \"marketCap\": 1046828886938,\n    \"priceAvg50\": 98.942,\n    \"priceAvg200\":
+        106.82795,\n    \"exchange\": \"NASDAQ\",\n    \"volume\": 71685223,\n    \"avgVolume\":
+        64279718,\n    \"open\": 104.95,\n    \"previousClose\": 105.45,\n    \"eps\":
+        -0.26,\n    \"pe\": -392.5,\n    \"earningsAnnouncement\": \"2023-07-26T10:59:00.000+0000\",\n
+        \   \"sharesOutstanding\": 10257999872,\n    \"timestamp\": 1682971204\n  },\n
+        \ {\n    \"symbol\": \"TSLA\",\n    \"name\": \"Tesla, Inc.\",\n    \"price\":
+        161.83,\n    \"changesPercentage\": -1.5093,\n    \"change\": -2.48,\n    \"dayLow\":
+        158.83,\n    \"dayHigh\": 163.27,\n    \"yearHigh\": 318.5,\n    \"yearLow\":
+        101.81,\n    \"marketCap\": 512920169464,\n    \"priceAvg50\": 186.3808,\n
+        \   \"priceAvg200\": 210.43953,\n    \"exchange\": \"NASDAQ\",\n    \"volume\":
+        108089884,\n    \"avgVolume\": 153783115,\n    \"open\": 163.17,\n    \"previousClose\":
+        164.31,\n    \"eps\": 3.48,\n    \"pe\": 46.5,\n    \"earningsAnnouncement\":
+        \"2023-07-18T20:00:00.000+0000\",\n    \"sharesOutstanding\": 3169499904,\n
+        \   \"timestamp\": 1682971204\n  },\n  {\n    \"symbol\": \"BTCUSD\",\n    \"name\":
+        \"Bitcoin USD\",\n    \"price\": 28009.943,\n    \"changesPercentage\": -4.6604,\n
+        \   \"change\": -1369.1914,\n    \"dayLow\": 27680.793,\n    \"dayHigh\":
+        29325.674,\n    \"yearHigh\": 39902.95,\n    \"yearLow\": 15599.047,\n    \"marketCap\":
+        542320281443,\n    \"priceAvg50\": 28050.547,\n    \"priceAvg200\": 21765.43,\n
+        \   \"exchange\": \"CRYPTO\",\n    \"volume\": 18651375616,\n    \"avgVolume\":
+        23774151613,\n    \"open\": 29248.242,\n    \"previousClose\": 29248.242,\n
+        \   \"eps\": null,\n    \"pe\": null,\n    \"earningsAnnouncement\": null,\n
+        \   \"sharesOutstanding\": 19361706,\n    \"timestamp\": 1682981820\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '3018'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 May 2023 22:58:54 GMT
+      ETag:
+      - W/"bca-t18O6Ptklma9u9zVacTGRlZOKjg"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

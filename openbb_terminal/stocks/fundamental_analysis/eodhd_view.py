@@ -141,7 +141,7 @@ def display_fundamentals(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         statement,
-        fundamentals.transpose(),
+        fundamentals,
         sheet_name,
         fig,
     )
