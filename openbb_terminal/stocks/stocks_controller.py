@@ -26,7 +26,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import MenuText, console, translate
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
 
@@ -324,7 +324,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="quote",
-            description="Current quote for stock ticker",
+            description="Current quote for the loaded stock ticker.",
         )
         parser.add_argument(
             "-t",
@@ -333,7 +333,7 @@ class StocksController(StockBaseController):
             dest="s_ticker",
             required=False,
             default=self.ticker,
-            help=translate("stocks/QUOTE_ticker"),
+            help="Get a quote for a specific ticker, or comma-separated list of tickers.",
         )
 
         # For the case where a user uses: 'quote BB'
