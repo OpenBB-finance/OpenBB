@@ -124,13 +124,14 @@ class TerminalController(BaseController):
     GUESS_SUM_SCORE = 0.0
     GUESS_CORRECTLY = 0
     CHOICES_GENERATION = False
-    ROUTINE_DEFAULT_FILES: Dict[str, str] = {}
-    ROUTINE_PERSONAL_FILES: Dict[str, str] = {}
-    ROUTINE_FILES: Dict[str, str] = {}
-    ROUTINE_CHOICES: Dict[str, Any] = {}
 
     def __init__(self, jobs_cmds: Optional[List[str]] = None):
         """Construct terminal controller."""
+        self.ROUTINE_FILES: Dict[str, str] = dict()
+        self.ROUTINE_DEFAULT_FILES: Dict[str, str] = dict()
+        self.ROUTINE_PERSONAL_FILES: Dict[str, str] = dict()
+        self.ROUTINE_FILES: Dict[str, str] = dict()
+        self.ROUTINE_CHOICES: Dict[str, Any] = dict()
 
         super().__init__(jobs_cmds)
 
