@@ -11,7 +11,7 @@ export function formatNumberMagnitude(number: number) {
     }
   }
 
-  if (number > 1000) {
+  if (number > 10_000) {
     const magnitude = Math.min(4, Math.floor(Math.log10(Math.abs(number)) / 3));
     const suffix = ["", "K", "M", "B", "T"][magnitude];
     const formatted = (number / 10 ** (magnitude * 3)).toFixed(2);
