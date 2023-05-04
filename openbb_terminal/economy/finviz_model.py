@@ -156,6 +156,7 @@ def get_performance_data(
                 "Rel Volume": "RelVolume",
             }
         )
+        df_group.columns = [col.strip() for col in df_group.columns]
         df_group["Week"] = df_group["Week"].apply(lambda x: float(x.strip("%")) / 100)
         df_group = df_group.sort_values(by=sortby, ascending=ascend)
         df_group.fillna("", inplace=True)
