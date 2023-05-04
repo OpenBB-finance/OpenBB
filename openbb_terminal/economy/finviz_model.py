@@ -92,7 +92,7 @@ def get_valuation_data(
     try:
         group = GROUPS[group]
         df_group = valuation.Valuation().screener_view(group=group)
-        df_group.columns = [col.replace(" ", "") for col in df_group.columns]
+        df_group.columns = [col.replace(" ", "").strip() for col in df_group.columns]
         df_group = df_group.sort_values(by=sortby, ascending=ascend)
         df_group.fillna("", inplace=True)
 
@@ -156,6 +156,7 @@ def get_performance_data(
                 "Rel Volume": "RelVolume",
             }
         )
+        df_group.columns = [col.strip() for col in df_group.columns]
         df_group["Week"] = df_group["Week"].apply(lambda x: float(x.strip("%")) / 100)
         df_group = df_group.sort_values(by=sortby, ascending=ascend)
         df_group.fillna("", inplace=True)
