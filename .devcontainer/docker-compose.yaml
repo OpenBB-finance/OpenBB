@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  openbb:
+    volumes:
+      - ~/OpenBBUserData:/home/vscode/OpenBBUserData
+      - ~/.openbb_terminal:/home/vscode/.openbb_terminal
+      - ../:/workspaces/openbb
+    platform: linux/amd64
+    build:
+      dockerfile: .devcontainer/Dockerfile
+      context: ../ 
