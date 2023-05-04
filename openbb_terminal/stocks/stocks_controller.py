@@ -26,7 +26,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import MenuText, console, translate
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
 
@@ -321,7 +321,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="quote",
-            description="Current quote for stock ticker",
+            description="Current quote for the loaded stock ticker.",
         )
         parser.add_argument(
             "-t",
@@ -329,7 +329,8 @@ class StocksController(StockBaseController):
             action="store",
             dest="s_ticker",
             required=False,
-            help=translate("stocks/QUOTE_ticker"),
+            default=self.ticker,
+            help="Get a quote for a specific ticker, or comma-separated list of tickers.",
         )
 
         # For the case where a user uses: 'quote BB'
@@ -339,12 +340,13 @@ class StocksController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if ns_parser.s_ticker:
+            tickers = ns_parser.s_ticker.split(",")
+            if ns_parser.s_ticker and len(tickers) == 1:
                 self.ticker = ns_parser.s_ticker
                 self.custom_load_wrapper([self.ticker])
 
             stocks_view.display_quote(
-                self.ticker,
+                tickers,
                 ns_parser.export,
                 " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
