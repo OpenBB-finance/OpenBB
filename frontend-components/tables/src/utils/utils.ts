@@ -186,8 +186,6 @@ export async function downloadData(
   );
   const csvData = [headers, ...rows];
 
-  await loadingOverlay(`Saving ${"CSV".toUpperCase()}`);
-
   if (type === "csv") {
     const csvContent = csvData.map((e) => e.join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
