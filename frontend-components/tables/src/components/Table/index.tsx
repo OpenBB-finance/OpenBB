@@ -16,6 +16,8 @@ import {
   fuzzyFilter,
   isEqual,
   includesDateNames,
+  formatNumberNoMagnitude,
+  includesPriceNames,
 } from "../../utils/utils";
 import DraggableColumnHeader from "./ColumnHeader";
 import Pagination, { validatePageSize } from "./Pagination";
@@ -180,7 +182,7 @@ export default function Table({
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
-          const only_numbers = value?.toString().replace(/[^0-9]/g, "");
+          const only_numbers = value?.toString().replace(/[^0-9]/g, "") ?? "";
           const probablyDate =
             only_numbers.length >= 4 &&
             (includesDateNames(column) ||
@@ -207,7 +209,7 @@ export default function Table({
               </a>
             );
           }
-          if (probablyDate) {
+          if (probablyDate && typeof value !== "number") {
             if (typeof value === "string") {
               const date = value.split("T")[0];
               const time = value.split("T")[1]?.split(".")[0];
@@ -219,12 +221,6 @@ export default function Table({
                   {date} {time}
                 </p>
               );
-            }
-
-            if (typeof value === "number") {
-              if (value < 1000000000000) {
-                return <p>{value}</p>;
-              }
             }
 
             try {
@@ -250,19 +246,42 @@ export default function Table({
               return <p>{value}</p>;
             }
           }
-          if (valueType === "number") {
-            const valueFormatted = formatNumberMagnitude(value);
+          if (
+            valueType === "number" ||
+            value
+              ?.toString()
+              .replace(/[^a-zA-Z]/g, "")
+              .trim().length === 1
+          ) {
+            let valueFormatted = formatNumberMagnitude(value, column);
+            const valueFormattedNoMagnitude = Number(
+              formatNumberNoMagnitude(value)
+            );
+
+            if (
+              typeof indexValue === "string" &&
+              includesPriceNames(indexValue)
+            ) {
+              valueFormatted = Number(formatNumberNoMagnitude(value));
+              if (valueFormatted > 1000) {
+                valueFormatted = valueFormatted.toLocaleString("en-US", {
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                });
+              }
+            }
+
             return (
               <p
                 className={clsx("whitespace-nowrap", {
                   "text-black dark:text-white": !colors,
-                  "text-[#16A34A]": value > 0 && colors,
-                  "text-[#F87171]": value < 0 && colors,
-                  "text-[#404040]": value === 0 && colors,
+                  "text-[#16A34A]": valueFormattedNoMagnitude > 0 && colors,
+                  "text-[#F87171]": valueFormattedNoMagnitude < 0 && colors,
+                  "text-[#404040]": valueFormattedNoMagnitude === 0 && colors,
                 })}
               >
-                {value !== 0
-                  ? value > 0
+                {valueFormattedNoMagnitude !== 0
+                  ? valueFormattedNoMagnitude > 0
                     ? `${valueFormatted}`
                     : `${valueFormatted}`
                   : valueFormatted}

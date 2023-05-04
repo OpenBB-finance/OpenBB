@@ -2,7 +2,28 @@ import { rankItem } from "@tanstack/match-sorter-utils";
 import domtoimage from "dom-to-image";
 import { utils, writeFile } from "xlsx";
 
-export function formatNumberMagnitude(number: number) {
+export function formatNumberNoMagnitude(number: number | string) {
+  if (typeof number === "string") {
+    const suffix = number.replace(/[^a-zA-Z]/g, "").trim();
+    const magnitude = ["", "K", "M", "B", "T"].indexOf(
+      suffix.replace(/\s/g, "")
+    );
+    number =
+      Number(number.replace(/[^0-9.]/g, "").trim()) *
+      Math.pow(10, magnitude * 3);
+  }
+
+  return number;
+}
+
+export function formatNumberMagnitude(
+  number: number | string,
+  column?: string
+) {
+  if (typeof number === "string") {
+    number = Number(formatNumberNoMagnitude(number));
+  }
+
   if (number % 1 !== 0) {
     const decimalPlaces = Math.max(2, number.toString().split(".")[1].length);
     const toFixed = Math.min(4, decimalPlaces);
@@ -11,11 +32,15 @@ export function formatNumberMagnitude(number: number) {
     }
   }
 
-  if (number > 10_000) {
+  if (number > 1000 && !includesPriceNames(column || "")) {
     const magnitude = Math.min(4, Math.floor(Math.log10(Math.abs(number)) / 3));
     const suffix = ["", "K", "M", "B", "T"][magnitude];
     const formatted = (number / 10 ** (magnitude * 3)).toFixed(2);
     return `${formatted} ${suffix}`;
+  }
+
+  if (number > 1000) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   return number;
@@ -25,6 +50,19 @@ export function includesDateNames(column: string) {
   return ["date", "day", "time", "timestamp", "year"].some((dateName) =>
     column.toLowerCase().includes(dateName)
   );
+}
+
+export function includesPriceNames(column: string) {
+  return [
+    "price",
+    "value",
+    "cost",
+    "amount",
+    "open",
+    "close",
+    "high",
+    "low",
+  ].some((priceName) => column.toLowerCase().includes(priceName));
 }
 
 function loadingOverlay(message?: string, is_close?: boolean) {
