@@ -9,6 +9,7 @@ candle --raw
 candle --sort adjclose --reverse --raw
 candle -ma
 candle -t --ma 4
+candle -t -ma
 news
 compare spy,ivv
 disc

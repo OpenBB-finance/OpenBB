@@ -16,6 +16,9 @@ whales --address # this is bugged
 whales --min 5000000 --limit 3 --sort amount
 whales --sort amount_usd -r
 
+baas -c ETH -vs BTC -l 10 -s date -r
+
+
 lt
 lt --kind time --vs ${crypto=ETH} --limit 3 --days 7 --sort tradeAmount
 
@@ -75,7 +78,7 @@ address 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6 -tx
 
 hr -i 1w
 
-# tx
+tx
 
 help
 reset

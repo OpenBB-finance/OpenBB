@@ -49,4 +49,6 @@ adosc --open --fast 2 --slow 1
 obv
 fib
 fib --period 30 --start 2021-01-01 --end 2023-01-01
+help
+reset
 exit

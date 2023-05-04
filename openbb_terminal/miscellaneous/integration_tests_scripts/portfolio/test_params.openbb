@@ -7,4 +7,6 @@ set ef
 arg tangency False
 arg log_returns True
 clear
+help
+reset
 exit

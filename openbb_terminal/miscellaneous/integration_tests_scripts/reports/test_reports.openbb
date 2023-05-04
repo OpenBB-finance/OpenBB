@@ -38,4 +38,6 @@ run
 run --file dummyfile.csv
 run --file dummyfile.ipynb
 
+help
+reset
 exit

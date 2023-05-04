@@ -15,6 +15,7 @@ unitroot -r ct -k ct
 # line
 line
 line -l
+line -log
 line --log
 line --ml 2022-01-01 --ms 2022-06-06
 

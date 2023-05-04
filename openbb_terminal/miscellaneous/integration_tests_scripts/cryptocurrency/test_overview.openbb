@@ -11,6 +11,7 @@ defi
 # stables
 stables
 stables -p
+stables --pie
 stables --sortbyby Price_[$] --reverse --limit 3
 
 # exchanges
@@ -19,6 +20,7 @@ exchanges --source CoinGecko
 exchanges --source CoinPaprika
 exchanges --urls
 exchanges --vs ${crypto_vs=ETH}
+exchanges -vs ${crypto_vs=ETH}
 exchanges --source CoinGecko --limit 3 --sortby Trust_Score -r
 
 # exrates
@@ -95,6 +97,7 @@ btcrb
 # ch
 ch
 ch --slug polynetwork-rekt
+ch -s wormhole-rekt
 ch --sortbyby Amount [$] -r --limit 3
 
 # cr
@@ -106,4 +109,6 @@ cr --cryptocurrrencies ZRX --platforms Compound
 
 fun --metric market_cap
 
+help
+reset
 exit
