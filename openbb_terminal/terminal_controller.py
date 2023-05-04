@@ -7,13 +7,14 @@ import contextlib
 import difflib
 import logging
 import os
+import pathlib
 import re
 import sys
 import time
 import webbrowser
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 import certifi
 import pandas as pd
@@ -123,10 +124,10 @@ class TerminalController(BaseController):
     GUESS_SUM_SCORE = 0.0
     GUESS_CORRECTLY = 0
     CHOICES_GENERATION = False
-    ROUTINE_DEFAULT_FILES = {}
-    ROUTINE_PERSONAL_FILES = {}
-    ROUTINE_FILES = {}
-    ROUTINE_CHOICES = {}
+    ROUTINE_DEFAULT_FILES: Dict[str, pathlib] = {}
+    ROUTINE_PERSONAL_FILES: Dict[str, pathlib] = {}
+    ROUTINE_FILES: Dict[str, pathlib] = {}
+    ROUTINE_CHOICES: Dict[str, Any] = {}
 
     def __init__(self, jobs_cmds: Optional[List[str]] = None):
         """Construct terminal controller."""
