@@ -52,7 +52,7 @@ A brief description below highlights the properties of the `fa` module.
 | openbb.stocks.fa.score        |               Investing Score from Warren Buffet |
 | openbb.stocks.fa.shrs         |                               Major shareholders |
 | openbb.stocks.fa.splits       |        Stock Splits and Reverse Splits Since IPO |
-| openbb.stocks.fa.splits_chart |                                Chart for `splits |
+| openbb.stocks.fa.splits_chart |                               Chart for `splits` |
 | openbb.stocks.fa.supplier     |   Lists other public companies who are suppliers |
 
 This can be printed to the screen with:
@@ -162,7 +162,7 @@ openbb.stocks.fa.growth('COST')
 
 ### Analysis
 
-The `openbb.stocks.fa.analysis` function scans 10K SEC filings with NLP to highlight risk factors and statements provided in the Discussion and Analysis sections.
+The `openbb.stocks.fa.analysis` function scans 10K SEC filings with NLP to highlight risk factors and statements provided in the Discussion and Analysis sections.  Summarizations by, [elclect.us](https://eclect.us/)
 
 ```python
 openbb.stocks.fa.analysis('COST').head(1)
