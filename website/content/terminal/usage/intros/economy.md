@@ -75,11 +75,11 @@ A morning ritual might begin with checking the economic calendar for the day's -
 /economy/events
 ```
 
-![Economic Calendar](economy1.png)
+![Economic Calendar](https://user-images.githubusercontent.com/85772166/236106887-07732390-bee3-44e0-a69f-a71c8ee90a8e.png)
 
 To select a specific country, attach `--countries` to the command, then press the space bar.  Use the up or down arrow keys to browse the choices.
 
-![Economic Calendar Countries](economy2.png)
+![Economic Calendar Countries](https://user-images.githubusercontent.com/85772166/236106932-473c0f02-af80-49a6-bdb3-548ac1e689fa.png)
 
 ### overview
 
@@ -89,7 +89,7 @@ The `overview` fetches the headline levels and rates from the Wall Street Journa
 /economy/overview -t usbonds
 ```
 
-![Overview](economy3.png)
+![Overview](https://user-images.githubusercontent.com/85772166/236106975-961d7163-2ac8-4e05-b8df-34f2cf4908e7.png)
 
 |              |   Rate (%) |   Yld (%) |   Yld Chg (%) |
 |:-------------|-----------:|----------:|--------------:|
@@ -112,7 +112,7 @@ Compare debt-to-GDP ratios between groups of countries by entering them as a com
 /economy/debt -c australia,norway,united_states,italy,japan
 ```
 
-![Debt-to-GDP](economy4.png)
+![Debt-to-GDP](https://user-images.githubusercontent.com/85772166/236107021-231e7472-10a0-4208-a92e-fe56c81076c0.png)
 
 ### index
 
@@ -122,32 +122,34 @@ Major global indices are curated under the `index` command.  Adding `--show` to 
 index --show
 ```
 
-The cumulative returns of an index is returned instead of the level by attaching `-r` to the command. Multiple indices can be queried simultaneously.
+![Curated Index List](https://user-images.githubusercontent.com/85772166/236107143-a3e260e0-9530-4448-a552-12b46ae0aa72.png)
+
+The cumulative returns of an index is displayed instead of the levels by attaching `-r` to the command. Multiple indices can be queried simultaneously.
 
 ```console
 index sp500,sp400,sp600 --start 2023-01-01 -r
 ```
 
-![Indices](economy6.png)
+![Indices](https://user-images.githubusercontent.com/85772166/236107229-410673db-e1ce-4e93-9e96-7821328e04dd.png)
 
 ### fred
 
-Lookup FRED series by keywords by attaching `-q` to the `fred` command.
+To lookup FRED series by keywords attach, `-q`, to the `fred` command.
 
 ```console
 fred -q PCE
 ```
 
-![Fred Series](economy7.png)
+![Fred Series](https://user-images.githubusercontent.com/85772166/236107269-8f126f17-3da7-4bb3-8acb-35f3ad783f84.png)
 
 ### plot
 
 After requesting a time series, it gets populated under `Stored datasets`.  Plot them together, on a shared or separate y-axis, by using the `plot` command.
 
-![Multi-Axis Plots](economy8.png)
+![Multi-Axis Plots](https://user-images.githubusercontent.com/85772166/236107312-95ed4b92-e418-444c-b436-f45a1fc0a75d.png)
 
 ```console
 plot --y1 PCE --y2 sp500
 ```
 
-![Plot Multiple Time Series](economy9.png)
+![Plot Multiple Time Series](https://user-images.githubusercontent.com/85772166/236107339-46037f4b-bc4f-458c-9f17-55a4cc6a61bc.png)
