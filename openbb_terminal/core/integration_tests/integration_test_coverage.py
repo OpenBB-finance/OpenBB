@@ -289,7 +289,7 @@ def calculate_function_coverage(
     module: object,
     limit: int = 10,
     output_table: bool = True,
-) -> None:
+) -> dict:
     """Compare tested functions with module."""
     module_dict = map_module_to_calls(module)
     tested_function_params = get_tested_function_params(
@@ -347,10 +347,12 @@ def calculate_function_coverage(
     if len(missing_params) > 0:
         console.print(f"[red]Missing params: {missing_params}[/red]")
 
+    return missing_params
+
 
 def calculate_coverage_percentage(
     tested_functions: list, available_functions: list, output_table: bool = False
-) -> None:
+) -> tuple[float, list]:
     """Calculate the integration test coverage."""
     untested_functions = []
     coverage = min(
@@ -385,16 +387,19 @@ def calculate_coverage_percentage(
             f"=======================================\n"
         )
 
+    return coverage, untested_functions
+
 
 def get_coverage_all_controllers(output_table: bool = False) -> None:
-    """Test all controllers."""
+    """Get integration test coverage for all controllers."""
+    summary = {}
+
     parent_dir = os.path.join(Path(__file__).parent)
     with open(os.path.join(parent_dir, "controllers.json")) as f:
         controller_name_mapping = json.load(f)
 
     controllers = find_controllers()
     tests = find_integration_tests()
-
     matched = match_controller_with_test(controllers, tests)
 
     for controller, test in matched.items():
@@ -413,12 +418,34 @@ def get_coverage_all_controllers(output_table: bool = False) -> None:
 
         available_functions = get_functions(module)
         tested_functions = get_tested_functions(INTEGRATION_PATH + test)
+
         console.print(to_section_title(controller), "\n")
-        calculate_coverage_percentage(
+        coverage, untested_functions = calculate_coverage_percentage(
             tested_functions, available_functions, output_table=output_table
         )
-        calculate_function_coverage(tested_functions, INTEGRATION_PATH + test, module)
+        missing_params = calculate_function_coverage(
+            tested_functions, INTEGRATION_PATH + test, module
+        )
         console.print(f"Finished calculating coverage for {controller}\n\n")
+
+        summary[controller] = {
+            "Coverage": coverage,
+            "Untested functions": untested_functions,
+            "Missing params": missing_params,
+        }
+
+    console.print(to_section_title("Integration Test Summary"))
+    summary = dict(
+        sorted(
+            summary.items(), key=lambda item: item[1]["Coverage"], reverse=False  # type: ignore
+        )
+    )
+    for key, value in summary.items():
+        console.print(
+            f"[bold]{key}[/bold]: {value['Coverage']}% \n"
+            f"    [red]Untested functions: {value['Untested functions']}[/red]\n"
+            f"    [red]Missing params: {value['Missing params']}[/red]\n\n"
+        )
 
 
 def get_coverage_single_controller(
@@ -427,7 +454,7 @@ def get_coverage_single_controller(
     module_name: str = "",
     output_table: bool = False,
 ) -> None:
-    """Test single controller coverage.
+    """Get single controller integration test coverage.
 
     Parameters
     ----------
