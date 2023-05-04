@@ -9,6 +9,9 @@ fp --slug cryptopunks --limit 3 --raw
 
 # collections
 collections --limit 3 --fp
+collections -fp
 collections --limit 3 --sales
 
+help
+reset
 exit

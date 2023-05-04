@@ -83,4 +83,6 @@ so
 om
 line
 line --log
+help
+reset
 exit

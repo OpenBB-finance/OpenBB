@@ -11,6 +11,7 @@ quote --source YahooFinance
 quote --source AlphaVantage
 candle --sort open -r --raw --limit 10
 candle -t
+candle --ma 14 --log
 help
 oanda
 qa

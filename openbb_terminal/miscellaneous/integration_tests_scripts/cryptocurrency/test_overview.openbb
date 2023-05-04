@@ -10,7 +10,7 @@ defi
 
 # stables
 stables
-stables --pie
+stables -p
 stables --sortbyby Price_[$] --reverse --limit 3
 
 # exchanges

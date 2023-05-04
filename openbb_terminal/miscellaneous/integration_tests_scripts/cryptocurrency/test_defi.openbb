@@ -20,6 +20,8 @@ tokens --sort txCount --reverse
 # stats
 stats
 
+lcsc -d 2 -l 10
+
 # pairs
 pairs --limit 3 --vol 150 --tx 150 --days 15 --sort volumeUSD
 pairs --sort volumeUSD -r
@@ -50,6 +52,7 @@ stvl --limit 3
 dtvl --dapps anchor
 
 # sinfo
+sinfo -a terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz -l 10
 
 # validators
 validators --sort validatorName --reverse

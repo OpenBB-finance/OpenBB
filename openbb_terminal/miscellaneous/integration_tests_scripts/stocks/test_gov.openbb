@@ -28,4 +28,6 @@ contracts
 histcont
 histcont --raw
 lobbying
+help
+reset
 exit

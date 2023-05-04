@@ -55,4 +55,7 @@ es
 raw
 decompose
 cusum
+pick -t High
+help
+reset
 exit

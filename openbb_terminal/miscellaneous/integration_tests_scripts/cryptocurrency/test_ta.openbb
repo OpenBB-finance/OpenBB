@@ -40,6 +40,12 @@ aroon
 aroon -l 10 -s 10
 
 ###### Volatility
+atr
+atr -l 10 -o 1 -m sma
+atr -m ema
+atr -m wma
+atr -m hma
+atr -m zlma
 bbands
 bbands -l 10 -s 0.5 -m ema
 cones
@@ -59,4 +65,6 @@ obv
 fib
 fib --period 10 --start 2022-01-01 --end 2022-03-03
 
+help
+reset
 exit

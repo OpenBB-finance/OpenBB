@@ -10,4 +10,7 @@ add -i 1 --short --put
 rmv Option A
 sop
 plot
+
+help
+reset
 exit

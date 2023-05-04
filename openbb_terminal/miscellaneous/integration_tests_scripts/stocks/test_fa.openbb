@@ -73,4 +73,7 @@ supplier
 customer
 load ${ticker=tsla}
 arktrades
+dcf -t aapl -g -a --no-filter
+help
+reset
 exit

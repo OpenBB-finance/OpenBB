@@ -28,7 +28,16 @@ vsurf
 load NDX --source Nasdaq
 exp 0
 chains --source Nasdaq
+chains -M -1 -m -1 -e 2025-12-19
+eodchain -d 2025-12-19
 oi
 vol
 voi
+
+hedge
+..
+
+load --help
+help
+reset
 exit

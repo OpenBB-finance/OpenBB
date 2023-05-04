@@ -8,4 +8,6 @@ crypto -n
 futures -n
 forecast -n
 forecasting -n
+help
+reset
 exit

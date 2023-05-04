@@ -56,4 +56,8 @@ dwat -p
 bgod -l 2
 bpag
 
+remove -n fair
+
+help
+reset
 exit

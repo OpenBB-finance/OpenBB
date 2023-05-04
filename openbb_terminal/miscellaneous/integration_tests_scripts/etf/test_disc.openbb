@@ -3,4 +3,9 @@ disc
 gainers
 decliners
 active
+<<<<<<< Updated upstream:openbb_terminal/miscellaneous/integration_tests_scripts/etf/test_disc.openbb
+=======
+help
+reset
+>>>>>>> Stashed changes:openbb_terminal/miscellaneous/integration_tests_scripts/etf/test_etf_disc.openbb
 exit

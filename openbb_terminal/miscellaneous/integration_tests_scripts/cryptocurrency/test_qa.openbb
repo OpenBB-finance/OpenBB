@@ -14,6 +14,7 @@ unitroot -r ct -k ct
 
 # line
 line
+line -l
 line --log
 line --ml 2022-01-01 --ms 2022-06-06
 
@@ -68,4 +69,8 @@ decompose -m
 cusum
 cusum -t 120 -d 60
 
+pick -t Open
+
+help
+reset
 exit

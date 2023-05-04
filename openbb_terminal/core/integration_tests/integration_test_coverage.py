@@ -175,6 +175,10 @@ def parse_args(module, func) -> list:
         "-level",
         "-rating",
         "-traded",
+        "-frens",
+        "-ad",
+        "-sheet",
+        "-flow",
     ]
     source = inspect.getsource(module.__dict__[func])
     params = re.findall(r"-\w+", source)

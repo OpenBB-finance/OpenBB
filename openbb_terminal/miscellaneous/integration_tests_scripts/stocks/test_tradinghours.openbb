@@ -7,4 +7,6 @@ all
 exchange
 holidays
 symbol ${ticker=MSFT}
+help
+reset
 exit
