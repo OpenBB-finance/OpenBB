@@ -396,7 +396,7 @@ def get_garch(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.econometrics.garch(openbb.stocks.load("AAPL").pct_change()*100)
+    >>> openbb.econometrics.garch(openbb.stocks.load("AAPL").iloc[0].pct_change()*100)
     """
     model = arch_model(data.dropna(), vol="GARCH", p=p, o=o, q=q, mean=mean)
     model_fit = model.fit(disp="off")
