@@ -197,8 +197,7 @@ class StocksController(StockBaseController):
             help="Search by sector to find stocks matching the criteria",
         )
         parser.add_argument(
-            "--ig",
-            "--industry-group",
+            "--industrygroup",
             default="",
             choices=stocks_helper.format_parse_choices(self.industry_group),
             type=str.lower,
@@ -227,8 +226,7 @@ class StocksController(StockBaseController):
             help="Search by a specific exchange to find stocks matching the criteria",
         )
         parser.add_argument(
-            "--ec",
-            "--exchange-country",
+            "--exchangecountry",
             default="",
             choices=stocks_helper.format_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
