@@ -123,16 +123,17 @@ class TerminalController(BaseController):
     GUESS_SUM_SCORE = 0.0
     GUESS_CORRECTLY = 0
     CHOICES_GENERATION = False
+    ROUTINE_DEFAULT_FILES = {}
+    ROUTINE_PERSONAL_FILES = {}
+    ROUTINE_FILES = {}
+    ROUTINE_CHOICES = {}
 
     def __init__(self, jobs_cmds: Optional[List[str]] = None):
         """Construct terminal controller."""
+
         super().__init__(jobs_cmds)
 
         self.queue: List[str] = list()
-        self.ROUTINE_DEFAULT_FILES = {}
-        self.ROUTINE_PERSONAL_FILES = {}
-        self.ROUTINE_FILES = {}
-        self.ROUTINE_CHOICES = {}
 
         if jobs_cmds:
             self.queue = parse_and_split_input(
@@ -151,8 +152,6 @@ class TerminalController(BaseController):
                 "*.openbb"
             )
         }
-        self.ROUTINE_DEFAULT_FILES = {}
-        self.ROUTINE_PERSONAL_FILES = {}
         if get_current_user().profile.get_token():
             self.ROUTINE_DEFAULT_FILES = {
                 filepath.name: filepath
@@ -988,7 +987,7 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
     return default
 
 
-def run_routine(file: str, routines_args=List[str]):
+def run_routine(file: str, routines_args=Optional[str]):
     """Execute command routine from .openbb file."""
     user_routine_path = (
         get_current_user().preferences.USER_DATA_DIRECTORY / "routines" / file

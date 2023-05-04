@@ -400,7 +400,7 @@ class AccountController(BaseController):
             print_guest_block_msg()
         else:
             if ns_parser:
-                data = None
+                data = []
                 name = " ".join(ns_parser.name)
                 # Personal routines
                 response = Hub.download_routine(
