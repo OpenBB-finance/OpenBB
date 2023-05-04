@@ -30,12 +30,14 @@ export function PlotConfig({
   autoScaling,
   Loading,
   changeColor,
+  downloadFinished,
 }: {
   setModal: (modal: { name: string; data?: any }) => void;
   changeTheme: (change: boolean) => void;
   autoScaling: (change: boolean) => void;
   Loading: (change: boolean) => void;
   changeColor: (change: boolean) => void;
+  downloadFinished: (change: boolean) => void;
 }) {
   useHotkeys(
     "ctrl+shift+t",
@@ -76,7 +78,7 @@ export function PlotConfig({
     "ctrl+shift+s",
     async () => {
       setModal({ name: "downloadCsv" });
-      await downloadCSV(document.getElementById("plotlyChart") as any);
+      await downloadCSV(document.getElementById("plotlyChart") as any, downloadFinished);
     },
     { preventDefault: true }
   );
@@ -84,7 +86,7 @@ export function PlotConfig({
     "ctrl+s",
     async () => {
       hideModebar();
-      downloadImage("MainChart", hideModebar, Loading);
+      downloadImage("MainChart", hideModebar, Loading, downloadFinished);
     },
     { preventDefault: true }
   );
@@ -109,7 +111,7 @@ export function PlotConfig({
           name: "Download CSV (Ctrl+Shift+S)",
           icon: ICONS.downloadCsv,
           click: async function (gd: any) {
-            await downloadCSV(gd);
+            await downloadCSV(gd, downloadFinished);
           },
         },
         {
@@ -117,7 +119,7 @@ export function PlotConfig({
           icon: ICONS.downloadImage,
           click: async function () {
             hideModebar();
-            await downloadImage("MainChart", hideModebar, Loading);
+            await downloadImage("MainChart", hideModebar, Loading, downloadFinished);
           },
         },
         // {

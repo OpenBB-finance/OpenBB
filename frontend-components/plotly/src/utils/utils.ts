@@ -107,7 +107,10 @@ export const saveToFile = (
   });
 };
 
-export async function downloadCSV(gd: Figure) {
+export async function downloadCSV(
+  gd: Figure,
+  downloadFinished: (change: boolean) => void
+) {
   let data = gd.data;
   let columns: string[] = [];
   let rows: any[] = [];
@@ -154,10 +157,14 @@ export async function downloadCSV(gd: Figure) {
     }
   });
 
-  return await downloadData(columns, rows);
+  return await downloadData(columns, rows, downloadFinished);
 }
 
-export async function downloadData(columns: any, data: any) {
+export async function downloadData(
+  columns: any,
+  data: any,
+  downloadFinished: (change: boolean) => void
+) {
   const headers = columns;
   const rows = data.map((row: any) =>
     row.map((cell: any) => {
@@ -181,10 +188,14 @@ export async function downloadData(columns: any, data: any) {
     });
 
     await loadingOverlay("Saving CSV");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     non_blocking(async function () {
       // @ts-ignore
       saveToFile(blob, filename, fileHandle).then(async function () {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        if (!fileHandle) {
+          downloadFinished(true);
+        }
         await loadingOverlay("", true);
       });
     }, 2)();
@@ -216,7 +227,7 @@ function loadingOverlay(message?: string, is_close?: boolean) {
         clearInterval(is_loaded);
         resolve(true);
       }
-    }, 0.3);
+    }, 0.01);
   });
 }
 
@@ -304,7 +315,6 @@ export async function saveImage(
 
     await setWatermarks(margin, old_index, false);
     await loadingOverlay("", true);
-
     return;
   }
 
@@ -318,7 +328,8 @@ export async function saveImage(
 export async function downloadImage(
   id: string,
   hidemodebar: () => void,
-  loading: (bool: boolean) => void
+  loading: (bool: boolean) => void,
+  downloadFinished: (bool: boolean) => void
 ) {
   const chart = document.getElementById(id) as HTMLElement;
   const filename = `${window.title}.png`;
@@ -338,6 +349,9 @@ export async function downloadImage(
 
     if (["svg", "pdf"].includes(extension)) {
       await saveImage(id, filename, extension);
+      if (!fileHandle) {
+        downloadFinished(true);
+      }
       hidemodebar(false);
       loading(false);
       return;
@@ -346,6 +360,9 @@ export async function downloadImage(
     non_blocking(async function () {
       domtoimage.toBlob(chart).then(function (blob: Blob) {
         saveToFile(blob, filename, fileHandle).then(async function () {
+          if (!fileHandle) {
+            downloadFinished(true);
+          }
           await loadingOverlay("", true);
           hidemodebar(false);
           loading(false);

@@ -50,7 +50,7 @@ function loadingOverlay(message?: string, is_close?: boolean) {
         clearInterval(is_loaded);
         resolve(true);
       }
-    }, 0.1);
+    }, 0.01);
   });
 }
 
@@ -177,7 +177,8 @@ export const saveToFile = (
 export async function downloadData(
   type: "csv" | "xlsx",
   columns: any,
-  data: any
+  data: any,
+  downloadFinished: (changed: boolean) => void
 ) {
   const headers = columns;
   const rows = data.map((row: any) =>
@@ -209,8 +210,11 @@ export async function downloadData(
       non_blocking(async function () {
         // @ts-ignore
         saveToFile(blob, filename, fileHandle).then(async function () {
-          await new Promise((resolve) => setTimeout(resolve, 1500));
-          await loadingOverlay("",true);
+          await new Promise((resolve) => setTimeout(resolve, 10));
+          if (!fileHandle) {
+            downloadFinished(true);
+          }
+          await loadingOverlay("", true);
         });
       }, 2)();
     } catch (error) {
@@ -230,24 +234,45 @@ export async function downloadData(
     await new Promise((resolve) => setTimeout(resolve, 1500));
     writeFile(wb, `${window.title}.xlsx`);
     await loadingOverlay("", true);
+    downloadFinished && downloadFinished(true);
   }, 2)();
 }
 
-export const downloadImage = (id: string) => {
+export async function downloadImage(
+  id: string,
+  downloadFinished: (change: boolean) => void
+) {
   const table = document.getElementById(id);
   const filename = `${window.title}.png`;
-  getNewFileHandle({
-    filename: filename,
-    is_image: true,
-  }).then((fileHandle) => {
-    // @ts-ignore
-    domtoimage.toBlob(table).then(function (blob) {
-      // @ts-ignore
-      saveToFile(blob, filename, fileHandle);
+  try {
+    let fileHandle = await getNewFileHandle({
+      filename: filename,
+      is_image: true,
     });
-  });
-};
+    let extension: string = "png";
+    if (fileHandle !== null) {
+      // @ts-ignore
+      extension = fileHandle.name.split(".").pop();
+    }
+    await loadingOverlay(`Saving ${extension.toUpperCase()}`);
 
+    non_blocking(async function () {
+      // @ts-ignore
+      domtoimage.toBlob(table).then(function (blob: Blob) {
+        // @ts-ignore
+        saveToFile(blob, filename, fileHandle).then(async function () {
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          if (!fileHandle) {
+            downloadFinished(true);
+          }
+          await loadingOverlay("", true);
+        });
+      });
+    }, 2)();
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export const non_blocking = (func: Function, delay: number) => {
   let timeout: number;
@@ -259,4 +284,3 @@ export const non_blocking = (func: Function, delay: number) => {
     timeout = setTimeout(() => func.apply(context, args), delay);
   };
 };
-

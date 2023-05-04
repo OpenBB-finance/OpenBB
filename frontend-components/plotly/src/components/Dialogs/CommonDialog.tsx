@@ -22,10 +22,6 @@ export default function CommonDialog({
 }) {
   return (
     <DialogPrimitive.Root open={open} onOpenChange={close}>
-      <div id="loading" className="saving">
-        <div id="loading_text" className="loading_text"></div>
-        <div id="loader" className="loader"></div>
-      </div>
       <DialogPrimitive.Overlay onClick={close} className="_modal-overlay" />
       <DialogPrimitive.Content className="_modal">
         <DialogPrimitive.Title className="_modal-title">

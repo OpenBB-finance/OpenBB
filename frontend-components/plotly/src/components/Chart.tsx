@@ -15,6 +15,7 @@ import { non_blocking, saveImage } from "../utils/utils";
 import ResizeHandler from "./ResizeHandler";
 import ChangeColor from "./ChangeColor";
 import clsx from "clsx";
+import DownloadFinishedDialog from "./Dialogs/DownloadFinishedDialog";
 
 const Plot = createPlotlyComponent(Plotly);
 
@@ -56,6 +57,7 @@ export default function Chart({
   const [plotDiv, setPlotDiv] = useState(null);
   const [volumeBars, setVolumeBars] = useState({ old_nticks: {} });
   const [maximizePlot, setMaximizePlot] = useState(false);
+  const [downloadFinished, setDownloadFinished] = useState(false);
 
   const [plotData, setPlotData] = useState(json);
   const [annotations, setAnnotations] = useState([]);
@@ -99,6 +101,13 @@ export default function Chart({
       plotDiv,
     });
   }
+
+  useEffect(() => {
+    if (downloadFinished) {
+      setModal({ name: "downloadFinished" });
+      setDownloadFinished(false);
+    }
+  }, [downloadFinished]);
 
   useEffect(() => {
     if (axesTitles && Object.keys(axesTitles).length > 0) {
@@ -387,6 +396,10 @@ export default function Chart({
           </svg>
         </div>
       )}
+      <div id="loading" className="saving">
+        <div id="loading_text" className="loading_text"></div>
+        <div id="loader" className="loader"></div>
+      </div>
       <OverlayChartDialog
         addOverlay={(overlay) => {
           console.log(overlay);
@@ -415,6 +428,10 @@ export default function Chart({
         deleteAnnotation={(data) => onDeleteAnnotation(data)}
       />
       <ChangeColor open={colorActive} onColorChange={onChangeColor} />
+      <DownloadFinishedDialog
+        open={modal.name === "downloadFinished"}
+        close={onClose}
+      />
 
       <div className="relative h-full" id="MainChart">
         <div className="_header relative gap-4 py-2 text-center text-xs flex items-center justify-between px-4 text-white">
@@ -480,6 +497,7 @@ export default function Chart({
               autoScaling: setAutoScaling,
               Loading: setLoading,
               changeColor: setChangeColor,
+              downloadFinished: setDownloadFinished,
             })}
           />
         </div>

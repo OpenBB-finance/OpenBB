@@ -13,6 +13,8 @@ declare global {
     title: string;
     Plotly: any;
     MODEBAR: HTMLElement;
+    download_path: string;
+    ipc: any;
   }
 }
 
