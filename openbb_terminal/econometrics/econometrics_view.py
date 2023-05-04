@@ -401,7 +401,7 @@ def display_garch(
     export: str = "",
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
-    """Plots the annualized volatility forecasts based on GARCH
+    """Plots the volatility forecasts based on GARCH
 
     Parameters
     ----------

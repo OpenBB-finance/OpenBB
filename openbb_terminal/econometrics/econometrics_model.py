@@ -340,7 +340,7 @@ def get_garch(
     mean: str = "constant",
     horizon: int = 100,
 ):
-    r"""Calculates annualized volatility forecasts based on GARCH.
+    r"""Calculates volatility forecasts based on GARCH.
 
     GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series,
     which is for instance used to model volatility clusters, stock return and inflation. It is a
