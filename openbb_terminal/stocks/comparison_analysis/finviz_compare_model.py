@@ -41,9 +41,9 @@ def get_similar_companies(
     """
     try:
         compare_list = ["Sector", "Industry"] if compare_list is None else compare_list
-        similar = (
-            Overview().compare(symbol, compare_list, verbose=0)["Ticker"].to_list()
-        )
+        similar = Overview().compare(symbol, compare_list, verbose=0)
+        similar.columns = [x.strip() for x in similar.columns]
+        return similar.Ticker.to_list()
     except Exception as e:
         logger.exception(str(e))
         console.print(e)
