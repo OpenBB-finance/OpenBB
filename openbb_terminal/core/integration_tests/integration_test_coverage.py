@@ -252,7 +252,6 @@ def get_missing_params(
                     param for param in all_params if param not in params
                 ]
 
-                # if function == "debt" or function == "treasury":
                 for param in all_params:
                     for param2 in used_unabbreviated_params:
                         if param2.startswith(param):
@@ -290,11 +289,25 @@ def get_missing_params(
     return missing_params
 
 
+def validate_missing_params(missing_params: dict, test_file: str) -> dict:
+    """Validate missing parameters."""
+    with open(test_file) as f:
+        lines = f.readlines()
+        for key, values in missing_params.items():
+            for line in lines:
+                for value in values:
+                    if key in line and value in line:
+                        missing_params[key].remove(value)
+
+    missing_params = {k: v for k, v in missing_params.items() if v}
+    return missing_params
+
+
 def calculate_function_coverage(
     tested_functions: list,
     tested_function: str,
     module: object,
-    limit: int = 10,
+    limit: int = 5,
     output_table: bool = True,
 ) -> dict:
     """Compare tested functions with module."""
@@ -352,6 +365,7 @@ def calculate_function_coverage(
         )
 
     if len(missing_params) > 0:
+        missing_params = validate_missing_params(missing_params, tested_function)
         console.print(f"[red]Missing params: {missing_params}[/red]")
 
     return missing_params
@@ -433,6 +447,7 @@ def get_coverage_all_controllers(output_table: bool = False) -> None:
         missing_params = calculate_function_coverage(
             tested_functions, INTEGRATION_PATH + test, module
         )
+
         console.print(f"Finished calculating coverage for {controller}\n\n")
 
         summary[controller] = {
