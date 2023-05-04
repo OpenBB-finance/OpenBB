@@ -6,9 +6,12 @@ import inspect
 import json
 import os
 import re
+from pathlib import Path
 
 # IMPORT THIRD-PARTY
 import pandas as pd
+
+from openbb_terminal.core.integration_tests.utils import to_section_title
 
 # IMPORT INTERNAL
 from openbb_terminal.helper_funcs import print_rich_table
@@ -385,7 +388,8 @@ def calculate_coverage_percentage(
 
 def get_coverage_all_controllers(output_table: bool = False) -> None:
     """Test all controllers."""
-    with open("openbb_terminal/core/scripts/controllers.json") as f:
+    parent_dir = os.path.join(Path(__file__).parent)
+    with open(os.path.join(parent_dir, "controllers.json")) as f:
         controller_name_mapping = json.load(f)
 
     controllers = find_controllers()
@@ -409,11 +413,12 @@ def get_coverage_all_controllers(output_table: bool = False) -> None:
 
         available_functions = get_functions(module)
         tested_functions = get_tested_functions(INTEGRATION_PATH + test)
-        console.print(f"Calculating coverage for {controller}...")
+        console.print(to_section_title(controller), "\n")
         calculate_coverage_percentage(
             tested_functions, available_functions, output_table=output_table
         )
         calculate_function_coverage(tested_functions, INTEGRATION_PATH + test, module)
+        console.print(f"Finished calculating coverage for {controller}\n\n")
 
 
 def get_coverage_single_controller(
