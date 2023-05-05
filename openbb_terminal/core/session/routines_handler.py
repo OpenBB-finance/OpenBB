@@ -94,7 +94,7 @@ def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]
 
     try:
         user_folder = folder / "hub"
-        for path, directories, files in walk(user_folder):
+        for path, _, files in walk(user_folder):
             file_path = (
                 folder / os.path.relpath(path, folder) / file_name
                 if file_name in files
