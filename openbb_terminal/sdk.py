@@ -10,13 +10,11 @@
 
 import logging
 
-
 import openbb_terminal.config_terminal as cfg
 
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 
 from openbb_terminal.core.plots.plotly_helper import theme  # noqa: F401
-
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 
@@ -27,7 +25,6 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 
 from openbb_terminal.reports.reports_controller import ReportController
-
 
 import openbb_terminal.core.sdk.sdk_init as lib
 
@@ -42,9 +39,7 @@ from openbb_terminal.core.session.current_user import is_local
 
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-
 cfg.setup_config_terminal(is_sdk=True)
-
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +52,7 @@ class OpenBBSDK:
     Attributes:
         `login`: Login and load user info.\n
         `logout`: Logout and clear session.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Access news from either feedparser or biztoc for a given term or from specified sources\n
         `whoami`: Display user info.\n
     """
 
