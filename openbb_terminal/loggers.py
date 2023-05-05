@@ -38,8 +38,8 @@ from openbb_terminal.core.log.generation.settings import (
 )
 from openbb_terminal.core.log.generation.user_logger import (
     NO_USER_PLACEHOLDER,
-    get_user_uuid,
     get_current_user,
+    get_user_uuid,
 )
 from openbb_terminal.core.session.current_system import (
     get_current_system,

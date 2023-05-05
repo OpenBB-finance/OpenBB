@@ -9,6 +9,7 @@ import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import (
     remove_log_handlers,
+    set_posthog_alias,
 )
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
 from openbb_terminal.core.models.user_model import (
@@ -30,7 +31,6 @@ from openbb_terminal.core.session.utils import run_thread
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.rich_config import console
-from openbb_terminal.base_helpers import set_posthog_alias
 
 # pylint: disable=consider-using-f-string
 

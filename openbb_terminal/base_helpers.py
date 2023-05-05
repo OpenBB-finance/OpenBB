@@ -13,8 +13,8 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.log.generation.user_logger import NO_USER_PLACEHOLDER
-from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.session.current_user import get_current_user
 
 console = Console()
 
