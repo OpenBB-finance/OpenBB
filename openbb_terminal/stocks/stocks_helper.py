@@ -17,6 +17,7 @@ import pandas as pd
 import pytz
 import yfinance as yf
 from pandas.tseries.holiday import USFederalHolidayCalendar
+from pandas_ta import candles
 from requests.exceptions import ReadTimeout
 from scipy import stats
 
@@ -48,8 +49,6 @@ from openbb_terminal.stocks.stocks_model import (
 )
 
 from . import databento_model
-
-from pandas_ta import candles
 
 logger = logging.getLogger(__name__)
 
@@ -899,7 +898,8 @@ def clean_function(entry: str) -> Union[str, float]:
 
 
 def show_quick_performance(
-    stock_df: pd.DataFrame, ticker: str, verbose: Optional[bool] = True
+    stock_df: pd.DataFrame,
+    ticker: str,
 ) -> None:
     """Show quick performance stats of stock prices.
 
@@ -938,14 +938,12 @@ def show_quick_performance(
 
     perf_df["Previous Close"] = str(round(closes[-1], 2))
 
-    if verbose:
-        print_rich_table(
-            perf_df,
-            show_index=False,
-            headers=perf_df.columns,
-            title=f"{ticker.upper()} Performance",
-        )
-    return perf_df
+    print_rich_table(
+        perf_df,
+        show_index=False,
+        headers=perf_df.columns,
+        title=f"{ticker.upper()} Performance",
+    )
 
 
 def show_codes_polygon(ticker: str):
