@@ -426,6 +426,7 @@ def get_coverage_all_controllers(output_table: bool = False) -> None:
                 module = get_module(path, module_name=module_name)
             except ModuleNotFoundError:
                 console.print(f"Module {module_name} not found!")
+                continue
         except OSError as e:
             console.print(e)
             continue
