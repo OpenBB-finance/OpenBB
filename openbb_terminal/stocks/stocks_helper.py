@@ -1082,12 +1082,11 @@ def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
         data["Low"],
         data["Close"],
     )
-    ha_cols = [
+    ha.columns = [
         "HA Open",
         "HA High",
         "HA Low",
         "HA Close",
     ]
-    ha.columns = ha_cols
 
     return pd.concat([data, ha], axis=1)
