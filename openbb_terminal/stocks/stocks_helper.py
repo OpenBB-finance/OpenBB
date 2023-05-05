@@ -1060,7 +1060,7 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
 
 
 def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
-    """Return OHLC data as Heiken Ashi Candles.
+    """Return OHLC data as Heikin Ashi Candles.
 
     Parameters
     ----------
