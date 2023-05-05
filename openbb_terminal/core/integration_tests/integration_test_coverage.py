@@ -348,17 +348,17 @@ def calculate_function_coverage(
     if output_table:
         df = pd.DataFrame(
             coverage_dict.items(),
-            columns=["Function", "Coverage %"],
+            columns=["Command", "Coverage %"],
         ).sort_values(by=["Coverage %"], ascending=True)
         average_coverage = round(df["Coverage %"].mean(), 2)
         df["Coverage %"] = df[  # pylint: disable=unsupported-assignment-operation
             "Coverage %"
         ].apply(lambda x: f"[green]{x}[/green]" if x >= 80 else f"[red]{x}[/red]")
-        console.print("Integration Test Parameter Coverage")
+        console.print("* Integration Test Parameter Coverage")
         print_rich_table(
             df,
             headers=[
-                "Function",
+                "Command",
                 f"Coverage {average_coverage}%",
             ],
             limit=limit,
@@ -398,14 +398,9 @@ def calculate_coverage_percentage(
             columns_to_auto_color=["tested"],
         )
     else:
-        console.print(
-            f"Integration test coverage: {coverage}%\n"
-            f"=======================================\n"
-            f"[red]Untested commands: {untested_commands}[/red]\n"
-            f"[green]Tested commands: {tested_commands}[/green]\n"
-            f"=======================================\n"
-        )
-
+        console.print(f"* Integration test coverage: {coverage}%\n")
+        console.print(f"[red]Untested commands: {untested_commands}[/red]")
+        console.print(f"[green]Tested commands: {tested_commands}[/green]\n")
     return coverage, untested_commands
 
 
@@ -446,7 +441,7 @@ def get_coverage_all_controllers(output_table: bool = False) -> None:
             tested_commands, INTEGRATION_PATH + test, module
         )
 
-        console.print(f"Finished calculating coverage for {controller}\n\n")
+        console.print(f"* Finished calculating coverage for {controller}\n\n")
 
         summary[controller] = {
             "Coverage": coverage,
@@ -482,14 +477,15 @@ def display_coverage_summary(summary: dict) -> None:
         console.print(f"* Coverage: {coverage}%")
 
         if untested:
-            console.print(f"* [red]Untested functions: {untested}[/red]")
+            untested_join = ", ".join(untested)
+            console.print(f"* [red]Untested commands: {untested_join}[/red]")
         else:
-            console.print("* [green]All functions tested![/green]")
+            console.print("* [green]All commands tested![/green]")
 
         if missing:
             console.print(f"* [red]Missing params: {missing}[/red]")
         else:
-            console.print("* [green]All params tested![/green]")
+            console.print("* [green]All parameters tested![/green]")
 
 
 def get_coverage_single_controller(
