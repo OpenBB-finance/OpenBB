@@ -42,6 +42,18 @@ softwareupdate --install-rosetta
 
 </details>
 
+<details><summary>Incompatible library version: libtiff.6.dylib requires version 10.0.0 or later, but liblzma.5.dylib provides version 8.0.0</summary>
+
+This issue can be resolved by following the steps below.
+
+- Show hidden files
+  - Command + Shift + . (period)
+- Then go to Applications folder > OpenBB Terminal > .OpenBB
+  - Find the file "liblzma.5.dylib" and remove it.
+- Relaunch the terminal.
+
+</details>
+
 <details><summary>Terminal app does not launch: Failed to execute script 'terminal' due to unhandled exception!</summary>
 
 When an installer-packaged version of the OpenBB Terminal fails to launch, because of this message, the machine may have an obsolete CPU-type or operating system. Please try installing via the source code, and if problems persist, reach out to us on [Discord](https://discord.gg/xPHTuHCmuV) or fill out a support request form on our [website](https://openbb.co/support).
