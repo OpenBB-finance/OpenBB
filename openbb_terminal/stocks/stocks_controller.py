@@ -458,7 +458,7 @@ class StocksController(StockBaseController):
             action="store_true",
             default=False,
             help="Flag to show Heikin Ashi candles.",
-        ),
+        )
         parser.add_argument(
             "--log",
             help="Plot with y axis on log scale",
