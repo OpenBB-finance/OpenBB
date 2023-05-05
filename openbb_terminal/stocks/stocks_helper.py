@@ -139,11 +139,11 @@ def search(
     exchange: str
         Search by exchange to find stock matching the criteria
     exchange_country: str
-        Search by exchange country to find stock matching
+        Search by exchange country to find stock matching the criteria
     all_exchanges: bool
         Whether to search all exchanges, without this option only the United States market is searched
     limit : int
-        The limit of companies shown.
+        The limit of results shown, where 0 means all the results
 
     Returns
     -------
@@ -167,7 +167,9 @@ def search(
         kwargs["industry_group"] = industry_group
     if exchange:
         kwargs["exchange"] = exchange
-    kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
+    kwargs["exclude_exchanges"] = (
+        False if (exchange_country or exchange) else not all_exchanges
+    )
 
     try:
         equities_database = fd.Equities()
@@ -188,7 +190,7 @@ def search(
             " capabilities. This tends to be due to access restrictions for GitHub.com,"
             " please check if you can access this website without a VPN.[/red]\n"
         )
-        data = {}
+        data = pd.DataFrame()
     except ValueError:
         console.print(
             "[red]No companies were found that match the given criteria.[/red]\n"
@@ -224,6 +226,8 @@ def search(
             exchange_suffix[x] = k
 
     df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
+    # To automate renaming columns
+    headers = [col.replace("_", " ") for col in df.columns.tolist()]
 
     title = "Companies found"
     if query:
@@ -253,7 +257,8 @@ def search(
     print_rich_table(
         df,
         show_index=True,
-        headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
+        headers=headers,
+        index_name="Symbol",
         title=title,
         limit=limit,
     )
