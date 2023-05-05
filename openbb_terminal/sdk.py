@@ -57,7 +57,7 @@ class OpenBBSDK:
     Attributes:
         `login`: Login and load user info.\n
         `logout`: Logout and clear session.\n
-        `news`: Access news from either feedparser or biztoc for a given term or from specified sources\n
+        `news`: Get news for a given term and source. [Source: Feedparser]\n
         `whoami`: Display user info.\n
     """
 
@@ -540,6 +540,7 @@ class OpenBBSDK:
             `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Gets ticker quote from FMP\n
+            `quote_chart`: Financial Modeling Prep ticker(s) quote.\n
             `search`: Search selected query for tickers.\n
             `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
         """
