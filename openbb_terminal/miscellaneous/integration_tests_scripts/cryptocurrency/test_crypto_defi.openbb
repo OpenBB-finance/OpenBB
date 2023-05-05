@@ -13,7 +13,7 @@ vaults --chain ${crypto_full=ethereum} --protocol aave --kind stable --top 3 --l
 vaults --chain ${crypto_full=ethereum} -s apy -r
 
 # tokens
-tokens
+tokens # this is running into a timeout issue
 tokens --skip 3 --limit 3 --sort totalLiquidity
 tokens --sort txCount --reverse
 
@@ -68,6 +68,8 @@ sreturn --limit 200
 anchor --address terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz
 anchor --address terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz --transactions
 
+help
+reset
 exit
 
 # TERRA ADDRESSES FOR EXAMPLES

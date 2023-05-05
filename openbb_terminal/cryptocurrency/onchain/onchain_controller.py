@@ -22,7 +22,6 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethgasstation_view,
     ethplorer_model,
     ethplorer_view,
-    shroom_model,
     shroom_view,
     whale_alert_model,
     whale_alert_view,
@@ -82,9 +81,7 @@ class OnchainController(BaseController):
         "btccp",
         "btcct",
         "btcblockdata",
-        "dt",
-        "ds",
-        "tvl",
+        "query",
     ]
 
     PATH = "/crypto/onchain/"
@@ -101,9 +98,6 @@ class OnchainController(BaseController):
             choices: dict = self.choices_default
 
             choices["hr"].update({c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS})
-            choices["ds"].update(
-                {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
-            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -122,9 +116,7 @@ class OnchainController(BaseController):
         mt.add_cmd("ueat")
         mt.add_cmd("ttcp")
         mt.add_cmd("baas")
-        mt.add_cmd("dt")
-        mt.add_cmd("ds")
-        mt.add_cmd("tvl")
+        mt.add_cmd("query")
         mt.add_raw("\n")
         mt.add_param("_address", self.address or "")
         mt.add_param("_type", self.address_type or "")
@@ -142,136 +134,40 @@ class OnchainController(BaseController):
         console.print(text=mt.menu_text, menu="Cryptocurrency - Onchain")
 
     @log_start_end(log=logger)
-    def call_tvl(self, other_args: List[str]):
-        """Process tvl command"""
+    def call_query(self, other_args: List[str]):
+        """Process query command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tvl",
+            prog="query",
             description="""
-                Total value locked (TVL) metric - Ethereum ERC20
+                Make any flipsidecrypto query
                 [Source:https://docs.flipsidecrypto.com/]
-                useraddress OR addressname must be provided
             """,
         )
 
         parser.add_argument(
-            "-u",
-            "--useraddress",
-            dest="useraddress",
+            "-q",
+            "--query",
+            dest="query",
             type=str,
-            help="User address we'd like to take a balance reading of against the contract",
-        )
-
-        parser.add_argument(
-            "-a",
-            "--addressname",
-            dest="addressname",
-            type=str,
-            help="Address name corresponding to the user address",
-        )
-
-        parser.add_argument(
-            "-s",
-            "--symbol",
-            dest="symbol",
-            type=str,
-            help="Contract symbol",
-            default="USDC",
-        )
-
-        parser.add_argument(
-            "-i",
-            "--interval",
-            dest="interval",
-            type=int,
-            help="Interval in months",
-            default=12,
+            nargs="+",
+            required=not any(["-h" in other_args, "--help" in other_args]),
+            help="Query to make",
         )
 
         if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "-u")
+            other_args.insert(0, "-q")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10
         )
 
         if ns_parser:
-            shroom_view.display_total_value_locked(
-                user_address=ns_parser.useraddress,
-                address_name=ns_parser.addressname,
-                interval=ns_parser.interval,
-                symbol=ns_parser.symbol,
+            shroom_view.display_query(
+                query=" ".join(ns_parser.query),
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_ds(self, other_args: List[str]):
-        """Process ds command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ds",
-            description="""
-            Get daily transactions for certain symbols in ethereum blockchain
-            [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
-            """,
-        )
-
-        parser.add_argument(
-            "-p",
-            "--platform",
-            dest="platform",
-            type=str,
-            help="Ethereum platform to check fees/number of users over time",
-            default="curve",
-            choices=shroom_model.DAPP_STATS_PLATFORM_CHOICES,
-        )
-
-        if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "-p")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
-        )
-
-        if ns_parser:
-            shroom_view.display_dapp_stats(
-                raw=ns_parser.raw,
                 limit=ns_parser.limit,
-                platform=ns_parser.platform,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_dt(self, other_args: List[str]):
-        """Process dt command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dt",
-            description="""
-                Get daily transactions for certain symbols in ethereum blockchain
-                [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            shroom_view.display_daily_transactions(
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
             )
 
     @log_start_end(log=logger)

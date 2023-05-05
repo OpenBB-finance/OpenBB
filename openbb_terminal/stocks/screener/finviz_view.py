@@ -252,7 +252,7 @@ def screener(
             sheet_name,
         )
 
-        return list(df_screen["Ticker"].values)
+        return df_screen.Ticker.tolist()
 
     console.print(
         "Error: The preset selected did not return results."

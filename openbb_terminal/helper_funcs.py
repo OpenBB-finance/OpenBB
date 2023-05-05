@@ -42,10 +42,7 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-from openbb_terminal import (
-    OpenBBFigure,
-    plots_backend,
-)
+from openbb_terminal import OpenBBFigure, plots_backend
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.core.session.current_system import get_current_system
@@ -307,7 +304,7 @@ def print_rich_table(
         try:
             if not isinstance(df[col].iloc[0], pd.Timestamp):
                 df[col] = pd.to_numeric(df[col])
-        except ValueError:
+        except (ValueError, TypeError):
             pass
 
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
@@ -612,7 +609,7 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
 
 
 def check_positive_float(value) -> float:
-    """Argparse type to check positive int."""
+    """Argparse type to check positive float."""
     new_value = float(value)
     if new_value <= 0:
         log_and_raise(

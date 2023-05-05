@@ -10,8 +10,8 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/discounted-cash-flow/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2023-03-07\",\n    \"dcf\":
-        100.55973025048169,\n    \"Stock Price\": 98.5\n  }\n]"
+      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2023-05-02\",\n    \"dcf\":
+        99.0397302504817,\n    \"Stock Price\": 96.98\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -27,13 +27,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '112'
+      - '111'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 07 Mar 2023 17:08:43 GMT
+      - Tue, 02 May 2023 14:20:54 GMT
       ETag:
-      - W/"70-fGZ/iCdoviIneRkO6Cg8Dcw0Yew"
+      - W/"6f-W1oPBl8KYlXloKT8kc/ps1NqhcA"
       Server:
       - nginx/1.14.0 (Ubuntu)
       X-Frame-Options:
@@ -96,7 +96,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 07 Mar 2023 17:08:43 GMT
+      - Tue, 02 May 2023 14:20:55 GMT
       ETag:
       - W/"684-KUHB5l+xWU/bXUHG5KRXSaS5M+4"
       Server:

@@ -1,12 +1,16 @@
-                                                  0
+
+Image: https://financialmodelingprep.com/image-stock/PM.png
+
+Description: Philip Morris International Inc. operates as a tobacco company working to delivers a smoke-free future and evolving portfolio for the long-term to include products outside of the tobacco and nicotine sector. The company's product portfolio primarily consists of cigarettes and smoke-free products, including heat-not-burn, vapor, and oral nicotine products that are sold in markets outside the United States. The company offers its smoke-free products under the HEETS, HEETS Creations, HEETS Dimensions, HEETS Marlboro, HEETS FROM MARLBORO, Marlboro Dimensions, Marlboro HeatSticks, Parliament HeatSticks, and TEREA brands, as well as the KT&G-licensed brands, Fiit, and Miix. It also sells its products under the Marlboro, Parliament, Bond Street, Chesterfield, L&M, Lark, and Philip Morris brands. In addition, the company owns various cigarette brands, such as Dji Sam Soe, Sampoerna A, and Sampoerna U in Indonesia; and Fortune and Jackpot in the Philippines. The company sells its smoke-free products in 71 markets. Philip Morris International Inc. was incorporated in 1987 and is headquartered in New York, New York.
+                                                   
 symbol                                           PM
-price                                          98.5
-beta                                       0.709205
-volAvg                                      4480064
-mktCap                                 152697656576
-lastDiv                                        5.04
+price                                         96.98
+beta                                       0.704152
+volAvg                                      4389060
+mktCap                                 150532349793
+lastDiv                                        5.08
 range                                  82.85-109.81
-changes                                        -1.6
+changes                                       -2.37
 companyName        Philip Morris International Inc.
 currency                                        USD
 cik                                      0001413329
@@ -16,10 +20,10 @@ exchange                    New York Stock Exchange
 exchangeShortName                              NYSE
 industry                                    Tobacco
 website                         https://www.pmi.com
-ceo                       Mr. Andre  Calantzopoulos
+ceo                               Mr. Jacek  Olczak
 sector                           Consumer Defensive
 country                                          US
-fullTimeEmployees                             69600
+fullTimeEmployees                             79800
 phone                                  917 663 2000
 address                             120 Park Avenue
 city                                       New York
@@ -33,8 +37,4 @@ isEtf                                         False
 isActivelyTrading                              True
 isAdr                                         False
 isFund                                        False
-
-Image: https://financialmodelingprep.com/image-stock/PM.png
-
-Description: Philip Morris International Inc. operates as a tobacco company working to delivers a smoke-free future and evolving portfolio for the long-term to include products outside of the tobacco and nicotine sector. The company's product portfolio primarily consists of cigarettes and smoke-free products, including heat-not-burn, vapor, and oral nicotine products that are sold in markets outside the United States. The company offers its smoke-free products under the HEETS, HEETS Creations, HEETS Dimensions, HEETS Marlboro, HEETS FROM MARLBORO, Marlboro Dimensions, Marlboro HeatSticks, Parliament HeatSticks, and TEREA brands, as well as the KT&G-licensed brands, Fiit, and Miix. It also sells its products under the Marlboro, Parliament, Bond Street, Chesterfield, L&M, Lark, and Philip Morris brands. In addition, the company owns various cigarette brands, such as Dji Sam Soe, Sampoerna A, and Sampoerna U in Indonesia; and Fortune and Jackpot in the Philippines. The company sells its smoke-free products in 71 markets. Philip Morris International Inc. was incorporated in 1987 and is headquartered in New York, New York.
 

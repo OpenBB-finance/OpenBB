@@ -3,6 +3,7 @@ search -c United States -s Consumer Cyclical -i Specialty Retail -e USA -l 5
 load ${ticker=aapl} -i 5
 load ${ticker=aapl} -s 2022-10-01
 quote
+quote --ticker AAPL,MSFT,GOOG,META,AMZN,NFLX
 tob
 tob -e EDGX
 candle
@@ -11,4 +12,36 @@ candle --raw
 candle --sort AdjClose -r --raw
 codes
 news -l 3
+th
+..
+options
+..
+disc
+..
+dps
+..
+scr
+..
+ins
+..
+gov
+..
+ba
+..
+ca
+..
+fa
+..
+bt
+..
+ta
+..
+qa
+..
+forecast
+..
+res
+..
+help
+reset
 exit

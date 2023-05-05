@@ -23,44 +23,19 @@ interactions:
         3931000000,\n    \"totalNonCurrentAssets\": 42062000000,\n    \"otherAssets\":
         0,\n    \"totalAssets\": 61681000000,\n    \"accountPayables\": 4076000000,\n
         \   \"shortTermDebt\": 8248000000,\n    \"taxPayables\": 8480000000,\n    \"deferredRevenue\":
-        0,\n    \"otherCurrentLiabilities\": 19088000000,\n    \"totalCurrentLiabilities\":
+        0,\n    \"otherCurrentLiabilities\": 15012000000,\n    \"totalCurrentLiabilities\":
         27336000000,\n    \"longTermDebt\": 34875000000,\n    \"deferredRevenueNonCurrent\":
         0,\n    \"deferredTaxLiabilitiesNonCurrent\": 1956000000,\n    \"otherNonCurrentLiabilities\":
-        3825000000,\n    \"totalNonCurrentLiabilities\": 40656000000,\n    \"otherLiabilities\":
+        28332000000,\n    \"totalNonCurrentLiabilities\": 40656000000,\n    \"otherLiabilities\":
         0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 67992000000,\n
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         34289000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -9559000000,\n
-        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        \   \"othertotalStockholdersEquity\": -33687000000,\n    \"totalStockholdersEquity\":
         -8957000000,\n    \"totalEquity\": -8957000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        67992000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        67992000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 43123000000,\n
+        59035000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        59035000000,\n    \"totalInvestments\": 4431000000,\n    \"totalDebt\": 43123000000,\n
         \   \"netDebt\": 39916000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/0001413329-23-000025-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/pm-20221231.htm\"\n
-        \ },\n  {\n    \"date\": \"2022-09-30\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
-        \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2022-10-27\",\n
-        \   \"acceptedDate\": \"2022-10-27 08:17:59\",\n    \"calendarYear\": \"2022\",\n
-        \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 5368000000,\n    \"shortTermInvestments\":
-        0,\n    \"cashAndShortTermInvestments\": 5368000000,\n    \"netReceivables\":
-        0,\n    \"inventory\": 0,\n    \"otherCurrentAssets\": 0,\n    \"totalCurrentAssets\":
-        5368000000,\n    \"propertyPlantEquipmentNet\": 5610000000,\n    \"goodwill\":
-        6127000000,\n    \"intangibleAssets\": 2224000000,\n    \"goodwillAndIntangibleAssets\":
-        8351000000,\n    \"longTermInvestments\": 4087000000,\n    \"taxAssets\":
-        0,\n    \"otherNonCurrentAssets\": 0,\n    \"totalNonCurrentAssets\": 18048000000,\n
-        \   \"otherAssets\": 17301000000,\n    \"totalAssets\": 40717000000,\n    \"accountPayables\":
-        0,\n    \"shortTermDebt\": 2818000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
-        0,\n    \"otherCurrentLiabilities\": 0,\n    \"totalCurrentLiabilities\":
-        2818000000,\n    \"longTermDebt\": 21762000000,\n    \"deferredRevenueNonCurrent\":
-        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 923000000,\n    \"otherNonCurrentLiabilities\":
-        22617000000,\n    \"totalNonCurrentLiabilities\": 45302000000,\n    \"otherLiabilities\":
-        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 48120000000,\n
-        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
-        0,\n    \"accumulatedOtherComprehensiveIncomeLoss\": 0,\n    \"othertotalStockholdersEquity\":
-        0,\n    \"totalStockholdersEquity\": -9137000000,\n    \"totalEquity\": -9137000000,\n
-        \   \"totalLiabilitiesAndStockholdersEquity\": 38983000000,\n    \"minorityInterest\":
-        0,\n    \"totalLiabilitiesAndTotalEquity\": 38983000000,\n    \"totalInvestments\":
-        0,\n    \"totalDebt\": 24580000000,\n    \"netDebt\": 19212000000,\n    \"link\":
-        \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000114/0001413329-22-000114-index.htm\",\n
-        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000114/pm-20220930.htm\"\n
         \ },\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2022-02-11\",\n
         \   \"acceptedDate\": \"2022-02-11 08:29:22\",\n    \"calendarYear\": \"2021\",\n
@@ -74,17 +49,17 @@ interactions:
         2549000000,\n    \"totalNonCurrentAssets\": 23573000000,\n    \"otherAssets\":
         0,\n    \"totalAssets\": 41290000000,\n    \"accountPayables\": 3331000000,\n
         \   \"shortTermDebt\": 3023000000,\n    \"taxPayables\": 7349000000,\n    \"deferredRevenue\":
-        0,\n    \"otherCurrentLiabilities\": 16232000000,\n    \"totalCurrentLiabilities\":
+        0,\n    \"otherCurrentLiabilities\": 12901000000,\n    \"totalCurrentLiabilities\":
         19255000000,\n    \"longTermDebt\": 24783000000,\n    \"deferredRevenueNonCurrent\":
         0,\n    \"deferredTaxLiabilitiesNonCurrent\": 726000000,\n    \"otherNonCurrentLiabilities\":
-        4734000000,\n    \"totalNonCurrentLiabilities\": 30243000000,\n    \"otherLiabilities\":
+        23889000000,\n    \"totalNonCurrentLiabilities\": 30243000000,\n    \"otherLiabilities\":
         0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 49498000000,\n
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         33082000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -9577000000,\n
-        \   \"othertotalStockholdersEquity\": 0,\n    \"totalStockholdersEquity\":
+        \   \"othertotalStockholdersEquity\": -33611000000,\n    \"totalStockholdersEquity\":
         -10106000000,\n    \"totalEquity\": -10106000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        49498000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        49498000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 27806000000,\n
+        41290000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        41290000000,\n    \"totalInvestments\": 4463000000,\n    \"totalDebt\": 27806000000,\n
         \   \"netDebt\": 23310000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm\"\n
         \ },\n  {\n    \"date\": \"2020-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -92,7 +67,7 @@ interactions:
         \   \"acceptedDate\": \"2021-02-09 16:20:37\",\n    \"calendarYear\": \"2020\",\n
         \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 7280000000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 7280000000,\n    \"netReceivables\":
-        3761000000,\n    \"inventory\": 9591000000,\n    \"otherCurrentAssets\": 860000000,\n
+        3761000000,\n    \"inventory\": 9591000000,\n    \"otherCurrentAssets\": 14212000000,\n
         \   \"totalCurrentAssets\": 21492000000,\n    \"propertyPlantEquipmentNet\":
         6365000000,\n    \"goodwill\": 5964000000,\n    \"intangibleAssets\": 2019000000,\n
         \   \"goodwillAndIntangibleAssets\": 7983000000,\n    \"longTermInvestments\":
@@ -100,17 +75,17 @@ interactions:
         2767000000,\n    \"totalNonCurrentAssets\": 23323000000,\n    \"otherAssets\":
         0,\n    \"totalAssets\": 44815000000,\n    \"accountPayables\": 2780000000,\n
         \   \"shortTermDebt\": 3368000000,\n    \"taxPayables\": 7494000000,\n    \"deferredRevenue\":
-        0,\n    \"otherCurrentLiabilities\": 5973000000,\n    \"totalCurrentLiabilities\":
+        0,\n    \"otherCurrentLiabilities\": 13467000000,\n    \"totalCurrentLiabilities\":
         19615000000,\n    \"longTermDebt\": 28168000000,\n    \"deferredRevenueNonCurrent\":
         0,\n    \"deferredTaxLiabilitiesNonCurrent\": 684000000,\n    \"otherNonCurrentLiabilities\":
-        6979000000,\n    \"totalNonCurrentLiabilities\": 35831000000,\n    \"otherLiabilities\":
+        29683000000,\n    \"totalNonCurrentLiabilities\": 35831000000,\n    \"otherLiabilities\":
         0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 55446000000,\n
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         31638000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -11181000000,\n
         \   \"othertotalStockholdersEquity\": -33024000000,\n    \"totalStockholdersEquity\":
         -12567000000,\n    \"totalEquity\": -12567000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        42879000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        42879000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 31536000000,\n
+        44815000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        44815000000,\n    \"totalInvestments\": 4798000000,\n    \"totalDebt\": 31536000000,\n
         \   \"netDebt\": 24256000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/0001413329-21-000007-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/pm-20201231.htm\"\n
         \ },\n  {\n    \"date\": \"2019-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -118,25 +93,25 @@ interactions:
         \   \"acceptedDate\": \"2020-02-07 06:47:13\",\n    \"calendarYear\": \"2019\",\n
         \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 6861000000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 6861000000,\n    \"netReceivables\":
-        3717000000,\n    \"inventory\": 9235000000,\n    \"otherCurrentAssets\": 701000000,\n
+        3717000000,\n    \"inventory\": 9235000000,\n    \"otherCurrentAssets\": 13653000000,\n
         \   \"totalCurrentAssets\": 20514000000,\n    \"propertyPlantEquipmentNet\":
         6631000000,\n    \"goodwill\": 5858000000,\n    \"intangibleAssets\": 2113000000,\n
         \   \"goodwillAndIntangibleAssets\": 7971000000,\n    \"longTermInvestments\":
         4635000000,\n    \"taxAssets\": 1153000000,\n    \"otherNonCurrentAssets\":
         1971000000,\n    \"totalNonCurrentAssets\": 22361000000,\n    \"otherAssets\":
         0,\n    \"totalAssets\": 42875000000,\n    \"accountPayables\": 2299000000,\n
-        \   \"shortTermDebt\": 4389000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        \   \"shortTermDebt\": 4389000000,\n    \"taxPayables\": 6633000000,\n    \"deferredRevenue\":
         0,\n    \"otherCurrentLiabilities\": 12145000000,\n    \"totalCurrentLiabilities\":
         18833000000,\n    \"longTermDebt\": 26656000000,\n    \"deferredRevenueNonCurrent\":
         0,\n    \"deferredTaxLiabilitiesNonCurrent\": 908000000,\n    \"otherNonCurrentLiabilities\":
-        6077000000,\n    \"totalNonCurrentLiabilities\": 33641000000,\n    \"otherLiabilities\":
+        26953000000,\n    \"totalNonCurrentLiabilities\": 33641000000,\n    \"otherLiabilities\":
         0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 52474000000,\n
         \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
         30987000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -9363000000,\n
         \   \"othertotalStockholdersEquity\": -33201000000,\n    \"totalStockholdersEquity\":
         -11577000000,\n    \"totalEquity\": -11577000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        40897000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        40897000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 31045000000,\n
+        42875000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        42875000000,\n    \"totalInvestments\": 4635000000,\n    \"totalDebt\": 31045000000,\n
         \   \"netDebt\": 24184000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/0001413329-20-000007-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/pm123119form10kwrapinc.htm\"\n
         \ },\n  {\n    \"date\": \"2018-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -151,7 +126,7 @@ interactions:
         1269000000,\n    \"taxAssets\": 977000000,\n    \"otherNonCurrentAssets\":
         1445000000,\n    \"totalNonCurrentAssets\": 20359000000,\n    \"otherAssets\":
         0,\n    \"totalAssets\": 39801000000,\n    \"accountPayables\": 2068000000,\n
-        \   \"shortTermDebt\": 4784000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        \   \"shortTermDebt\": 4784000000,\n    \"taxPayables\": 5664000000,\n    \"deferredRevenue\":
         0,\n    \"otherCurrentLiabilities\": 10339000000,\n    \"totalCurrentLiabilities\":
         17191000000,\n    \"longTermDebt\": 26975000000,\n    \"deferredRevenueNonCurrent\":
         0,\n    \"deferredTaxLiabilitiesNonCurrent\": 898000000,\n    \"otherNonCurrentLiabilities\":
@@ -161,8 +136,8 @@ interactions:
         31014000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -10111000000,\n
         \   \"othertotalStockholdersEquity\": -33362000000,\n    \"totalStockholdersEquity\":
         -12459000000,\n    \"totalEquity\": -12459000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        38081000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        38081000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 31759000000,\n
+        39801000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        39801000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 31759000000,\n
         \   \"netDebt\": 25166000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/0001413329-19-000007-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/pm123118form10kwrapinclfsm.htm\"\n
         \ },\n  {\n    \"date\": \"2017-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -177,7 +152,7 @@ interactions:
         1074000000,\n    \"taxAssets\": 1007000000,\n    \"otherNonCurrentAssets\":
         1924000000,\n    \"totalNonCurrentAssets\": 21374000000,\n    \"otherAssets\":
         0,\n    \"totalAssets\": 42968000000,\n    \"accountPayables\": 2242000000,\n
-        \   \"shortTermDebt\": 3005000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        \   \"shortTermDebt\": 3005000000,\n    \"taxPayables\": 6136000000,\n    \"deferredRevenue\":
         0,\n    \"otherCurrentLiabilities\": 10715000000,\n    \"totalCurrentLiabilities\":
         15962000000,\n    \"longTermDebt\": 31334000000,\n    \"deferredRevenueNonCurrent\":
         0,\n    \"deferredTaxLiabilitiesNonCurrent\": 799000000,\n    \"otherNonCurrentLiabilities\":
@@ -187,8 +162,8 @@ interactions:
         29859000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -8535000000,\n
         \   \"othertotalStockholdersEquity\": -33410000000,\n    \"totalStockholdersEquity\":
         -12086000000,\n    \"totalEquity\": -12086000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        41112000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        41112000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 34339000000,\n
+        42968000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        42968000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 34339000000,\n
         \   \"netDebt\": 25892000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/0001413329-18-000007-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/pm123117form10kwrapinclfsm.htm\"\n
         \ },\n  {\n    \"date\": \"2016-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -203,7 +178,7 @@ interactions:
         1011000000,\n    \"taxAssets\": 859000000,\n    \"otherNonCurrentAssets\":
         1515000000,\n    \"totalNonCurrentAssets\": 19243000000,\n    \"otherAssets\":
         0,\n    \"totalAssets\": 36851000000,\n    \"accountPayables\": 1666000000,\n
-        \   \"shortTermDebt\": 3216000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\":
+        \   \"shortTermDebt\": 3216000000,\n    \"taxPayables\": 7036000000,\n    \"deferredRevenue\":
         0,\n    \"otherCurrentLiabilities\": 11585000000,\n    \"totalCurrentLiabilities\":
         16467000000,\n    \"longTermDebt\": 25851000000,\n    \"deferredRevenueNonCurrent\":
         0,\n    \"deferredTaxLiabilitiesNonCurrent\": 1897000000,\n    \"otherNonCurrentLiabilities\":
@@ -213,8 +188,8 @@ interactions:
         30397000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -9559000000,\n
         \   \"othertotalStockholdersEquity\": -33526000000,\n    \"totalStockholdersEquity\":
         -12688000000,\n    \"totalEquity\": -12688000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        35063000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        35063000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 29067000000,\n
+        36851000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        36851000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 29067000000,\n
         \   \"netDebt\": 24828000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332917000014/0001413329-17-000014-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332917000014/pm123116form10kwrapinclfsm.htm\"\n
         \ },\n  {\n    \"date\": \"2015-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -229,17 +204,18 @@ interactions:
         890000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 1503000000,\n
         \   \"totalNonCurrentAssets\": 18152000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
         33956000000,\n    \"accountPayables\": 1289000000,\n    \"shortTermDebt\":
-        3230000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
-        10867000000,\n    \"totalCurrentLiabilities\": 15386000000,\n    \"longTermDebt\":
-        25250000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
-        1543000000,\n    \"otherNonCurrentLiabilities\": 3253000000,\n    \"totalNonCurrentLiabilities\":
-        30046000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
-        0,\n    \"totalLiabilities\": 45432000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
-        0,\n    \"retainedEarnings\": 29842000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
-        -9402000000,\n    \"othertotalStockholdersEquity\": -33684000000,\n    \"totalStockholdersEquity\":
+        3230000000,\n    \"taxPayables\": 6091000000,\n    \"deferredRevenue\": 0,\n
+        \   \"otherCurrentLiabilities\": 10867000000,\n    \"totalCurrentLiabilities\":
+        15386000000,\n    \"longTermDebt\": 25250000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 1543000000,\n    \"otherNonCurrentLiabilities\":
+        3253000000,\n    \"totalNonCurrentLiabilities\": 30046000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 45432000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        29842000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -9402000000,\n
+        \   \"othertotalStockholdersEquity\": -33684000000,\n    \"totalStockholdersEquity\":
         -13244000000,\n    \"totalEquity\": -13244000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        32188000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        32188000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 28480000000,\n
+        33956000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        33956000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 28480000000,\n
         \   \"netDebt\": 25063000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332916000076/0001413329-16-000076-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332916000076/pm123115form10kwrapinclfsm.htm\"\n
         \ },\n  {\n    \"date\": \"2014-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -254,17 +230,18 @@ interactions:
         1083000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 1176000000,\n
         \   \"totalNonCurrentAssets\": 19703000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
         35187000000,\n    \"accountPayables\": 1242000000,\n    \"shortTermDebt\":
-        2526000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
-        11344000000,\n    \"totalCurrentLiabilities\": 15112000000,\n    \"longTermDebt\":
-        26929000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
-        1549000000,\n    \"otherNonCurrentLiabilities\": 2800000000,\n    \"totalNonCurrentLiabilities\":
-        31278000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
-        0,\n    \"totalLiabilities\": 46390000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
-        0,\n    \"retainedEarnings\": 29249000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
-        -6826000000,\n    \"othertotalStockholdersEquity\": -35052000000,\n    \"totalStockholdersEquity\":
+        2526000000,\n    \"taxPayables\": 6568000000,\n    \"deferredRevenue\": 0,\n
+        \   \"otherCurrentLiabilities\": 11344000000,\n    \"totalCurrentLiabilities\":
+        15112000000,\n    \"longTermDebt\": 26929000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 1549000000,\n    \"otherNonCurrentLiabilities\":
+        2800000000,\n    \"totalNonCurrentLiabilities\": 31278000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 46390000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        29249000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -6826000000,\n
+        \   \"othertotalStockholdersEquity\": -35052000000,\n    \"totalStockholdersEquity\":
         -12629000000,\n    \"totalEquity\": -12629000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        33761000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        33761000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 29455000000,\n
+        35187000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        35187000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 29455000000,\n
         \   \"netDebt\": 27773000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332915000016/0001413329-15-000016-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332915000016/pm12312014form10kwrapinclf.htm\"\n
         \ },\n  {\n    \"date\": \"2013-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -279,17 +256,18 @@ interactions:
         1536000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 939000000,\n
         \   \"totalNonCurrentAssets\": 21316000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
         38168000000,\n    \"accountPayables\": 1274000000,\n    \"shortTermDebt\":
-        3655000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
-        12137000000,\n    \"totalCurrentLiabilities\": 17066000000,\n    \"longTermDebt\":
-        24023000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
-        1477000000,\n    \"otherNonCurrentLiabilities\": 1876000000,\n    \"totalNonCurrentLiabilities\":
-        27376000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
-        0,\n    \"totalLiabilities\": 44442000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
-        0,\n    \"retainedEarnings\": 27843000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
-        -4190000000,\n    \"othertotalStockholdersEquity\": -31419000000,\n    \"totalStockholdersEquity\":
+        3655000000,\n    \"taxPayables\": 7684000000,\n    \"deferredRevenue\": 0,\n
+        \   \"otherCurrentLiabilities\": 12137000000,\n    \"totalCurrentLiabilities\":
+        17066000000,\n    \"longTermDebt\": 24023000000,\n    \"deferredRevenueNonCurrent\":
+        0,\n    \"deferredTaxLiabilitiesNonCurrent\": 1477000000,\n    \"otherNonCurrentLiabilities\":
+        1876000000,\n    \"totalNonCurrentLiabilities\": 27376000000,\n    \"otherLiabilities\":
+        0,\n    \"capitalLeaseObligations\": 0,\n    \"totalLiabilities\": 44442000000,\n
+        \   \"preferredStock\": 0,\n    \"commonStock\": 0,\n    \"retainedEarnings\":
+        27843000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\": -4190000000,\n
+        \   \"othertotalStockholdersEquity\": -31419000000,\n    \"totalStockholdersEquity\":
         -7766000000,\n    \"totalEquity\": -7766000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        36676000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        36676000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 27678000000,\n
+        38168000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        38168000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 27678000000,\n
         \   \"netDebt\": 25524000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332914000012/0001413329-14-000012-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332914000012/pm1231201310-k.htm\"\n
         \ },\n  {\n    \"date\": \"2012-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -301,20 +279,20 @@ interactions:
         \   \"totalCurrentAssets\": 16590000000,\n    \"propertyPlantEquipmentNet\":
         6645000000,\n    \"goodwill\": 9900000000,\n    \"intangibleAssets\": 3619000000,\n
         \   \"goodwillAndIntangibleAssets\": 13519000000,\n    \"longTermInvestments\":
-        24000000,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 892000000,\n
-        \   \"totalNonCurrentAssets\": 21080000000,\n    \"otherAssets\": 0,\n    \"totalAssets\":
-        37670000000,\n    \"accountPayables\": 1103000000,\n    \"shortTermDebt\":
-        5200000000,\n    \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 916000000,\n    \"totalNonCurrentAssets\":
+        21080000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 37670000000,\n
+        \   \"accountPayables\": 1103000000,\n    \"shortTermDebt\": 5200000000,\n
+        \   \"taxPayables\": 6806000000,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
         10713000000,\n    \"totalCurrentLiabilities\": 17016000000,\n    \"longTermDebt\":
         17639000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
-        1875000000,\n    \"otherNonCurrentLiabilities\": 4294000000,\n    \"totalNonCurrentLiabilities\":
-        23808000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
-        0,\n    \"totalLiabilities\": 40824000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
+        1875000000,\n    \"otherNonCurrentLiabilities\": 2993000000,\n    \"totalNonCurrentLiabilities\":
+        22507000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
+        0,\n    \"totalLiabilities\": 39523000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         0,\n    \"retainedEarnings\": 25076000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -3604000000,\n    \"othertotalStockholdersEquity\": -24948000000,\n    \"totalStockholdersEquity\":
         -3476000000,\n    \"totalEquity\": -3476000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        37348000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        37348000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 22839000000,\n
+        37670000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        37670000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 22839000000,\n
         \   \"netDebt\": 19856000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332913000019/0001413329-13-000019-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332913000019/pm1231201210-k.htm\"\n
         \ },\n  {\n    \"date\": \"2011-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -329,7 +307,7 @@ interactions:
         0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 754000000,\n    \"totalNonCurrentAssets\":
         20629000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 35488000000,\n
         \   \"accountPayables\": 1031000000,\n    \"shortTermDebt\": 3717000000,\n
-        \   \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        \   \"taxPayables\": 6243000000,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
         10046000000,\n    \"totalCurrentLiabilities\": 14794000000,\n    \"longTermDebt\":
         14828000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
         1976000000,\n    \"otherNonCurrentLiabilities\": 2127000000,\n    \"totalNonCurrentLiabilities\":
@@ -338,8 +316,8 @@ interactions:
         0,\n    \"retainedEarnings\": 21757000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -2863000000,\n    \"othertotalStockholdersEquity\": -18665000000,\n    \"totalStockholdersEquity\":
         229000000,\n    \"totalEquity\": 229000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        33954000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        33954000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 18545000000,\n
+        35488000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        35488000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 18545000000,\n
         \   \"netDebt\": 15995000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312512076983/0001193125-12-076983-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312512076983/d258717d10k.htm\"\n
         \ },\n  {\n    \"date\": \"2010-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -354,7 +332,7 @@ interactions:
         0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 761000000,\n    \"totalNonCurrentAssets\":
         21294000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 35050000000,\n
         \   \"accountPayables\": 835000000,\n    \"shortTermDebt\": 3132000000,\n
-        \   \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        \   \"taxPayables\": 5485000000,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
         8837000000,\n    \"totalCurrentLiabilities\": 12804000000,\n    \"longTermDebt\":
         13370000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
         2027000000,\n    \"otherNonCurrentLiabilities\": 1728000000,\n    \"totalNonCurrentLiabilities\":
@@ -363,8 +341,8 @@ interactions:
         0,\n    \"retainedEarnings\": 18133000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -1140000000,\n    \"othertotalStockholdersEquity\": -13487000000,\n    \"totalStockholdersEquity\":
         3506000000,\n    \"totalEquity\": 3506000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        33435000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        33435000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 16502000000,\n
+        35050000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        35050000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 16502000000,\n
         \   \"netDebt\": 14799000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312511046772/0001193125-11-046772-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312511046772/d10k.htm\"\n
         \ },\n  {\n    \"date\": \"2009-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -379,7 +357,7 @@ interactions:
         0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 822000000,\n    \"totalNonCurrentAssets\":
         19870000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 34552000000,\n
         \   \"accountPayables\": 670000000,\n    \"shortTermDebt\": 1744000000,\n
-        \   \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        \   \"taxPayables\": 5324000000,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
         8764000000,\n    \"totalCurrentLiabilities\": 11178000000,\n    \"longTermDebt\":
         13672000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
         1688000000,\n    \"otherNonCurrentLiabilities\": 1869000000,\n    \"totalNonCurrentLiabilities\":
@@ -388,8 +366,8 @@ interactions:
         0,\n    \"retainedEarnings\": 15358000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
         -817000000,\n    \"othertotalStockholdersEquity\": -8825000000,\n    \"totalStockholdersEquity\":
         5716000000,\n    \"totalEquity\": 5716000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
-        34123000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
-        34123000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 15416000000,\n
+        34552000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
+        34552000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 15416000000,\n
         \   \"netDebt\": 13876000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312510041735/0001193125-10-041735-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312510041735/d10k.htm\"\n
         \ },\n  {\n    \"date\": \"2008-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
@@ -404,7 +382,7 @@ interactions:
         0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 586000000,\n    \"totalNonCurrentAssets\":
         18033000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 32972000000,\n
         \   \"accountPayables\": 1013000000,\n    \"shortTermDebt\": 584000000,\n
-        \   \"taxPayables\": 0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        \   \"taxPayables\": 4990000000,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
         8547000000,\n    \"totalCurrentLiabilities\": 10144000000,\n    \"longTermDebt\":
         11377000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
         1401000000,\n    \"otherNonCurrentLiabilities\": 2550000000,\n    \"totalNonCurrentLiabilities\":
@@ -419,7 +397,7 @@ interactions:
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312509038765/d10k.htm\"\n
         \ },\n  {\n    \"date\": \"2007-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2007-12-31\",\n
-        \   \"acceptedDate\": \"2007-12-30 19:00:00\",\n    \"calendarYear\": \"2007\",\n
+        \   \"acceptedDate\": \"2007-12-31 00:00:00\",\n    \"calendarYear\": \"2007\",\n
         \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1656000000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 1656000000,\n    \"netReceivables\":
         3497000000,\n    \"inventory\": 9332000000,\n    \"otherCurrentAssets\": 567000000,\n
@@ -429,9 +407,9 @@ interactions:
         0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 725000000,\n    \"totalNonCurrentAssets\":
         16991000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 32043000000,\n
         \   \"accountPayables\": 852000000,\n    \"shortTermDebt\": 729000000,\n    \"taxPayables\":
-        0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\": 6970000000,\n
-        \   \"totalCurrentLiabilities\": 8551000000,\n    \"longTermDebt\": 5578000000,\n
-        \   \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
+        5001000000,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\":
+        6970000000,\n    \"totalCurrentLiabilities\": 8551000000,\n    \"longTermDebt\":
+        5578000000,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
         1240000000,\n    \"otherNonCurrentLiabilities\": 1273000000,\n    \"totalNonCurrentLiabilities\":
         8091000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
         0,\n    \"totalLiabilities\": 16642000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
@@ -440,10 +418,10 @@ interactions:
         15401000000,\n    \"totalEquity\": 15401000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
         32043000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         32043000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 6307000000,\n
-        \   \"netDebt\": 4651000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \   \"netDebt\": 4651000000,\n    \"link\": null,\n    \"finalLink\": null\n
         \ },\n  {\n    \"date\": \"2006-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2006-12-31\",\n
-        \   \"acceptedDate\": \"2006-12-30 19:00:00\",\n    \"calendarYear\": \"2006\",\n
+        \   \"acceptedDate\": \"2006-12-31 00:00:00\",\n    \"calendarYear\": \"2006\",\n
         \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1676000000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 1676000000,\n    \"netReceivables\":
         2160000000,\n    \"inventory\": 7075000000,\n    \"otherCurrentAssets\": 1014000000,\n
@@ -452,22 +430,22 @@ interactions:
         \   \"goodwillAndIntangibleAssets\": 7824000000,\n    \"longTermInvestments\":
         0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 1133000000,\n    \"totalNonCurrentAssets\":
         14195000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 26120000000,\n
-        \   \"accountPayables\": 672000000,\n    \"shortTermDebt\": 0,\n    \"taxPayables\":
-        0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\": 6317000000,\n
+        \   \"accountPayables\": 672000000,\n    \"shortTermDebt\": 564000000,\n    \"taxPayables\":
+        0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\": 5753000000,\n
         \   \"totalCurrentLiabilities\": 6989000000,\n    \"longTermDebt\": 2222000000,\n
         \   \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
         1166000000,\n    \"otherNonCurrentLiabilities\": 1476000000,\n    \"totalNonCurrentLiabilities\":
         4864000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
         0,\n    \"totalLiabilities\": 11853000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         0,\n    \"retainedEarnings\": 13002000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
-        -4224000000,\n    \"othertotalStockholdersEquity\": 5489000000,\n    \"totalStockholdersEquity\":
+        0,\n    \"othertotalStockholdersEquity\": 1265000000,\n    \"totalStockholdersEquity\":
         14267000000,\n    \"totalEquity\": 14267000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
         26120000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         26120000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 2786000000,\n
-        \   \"netDebt\": 1110000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \   \"netDebt\": 1110000000,\n    \"link\": null,\n    \"finalLink\": null\n
         \ },\n  {\n    \"date\": \"2005-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2005-12-31\",\n
-        \   \"acceptedDate\": \"2005-12-30 19:00:00\",\n    \"calendarYear\": \"2005\",\n
+        \   \"acceptedDate\": \"2005-12-31 00:00:00\",\n    \"calendarYear\": \"2005\",\n
         \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 1209000000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 1209000000,\n    \"netReceivables\":
         1898000000,\n    \"inventory\": 5420000000,\n    \"otherCurrentAssets\": 1498000000,\n
@@ -476,22 +454,22 @@ interactions:
         \   \"goodwillAndIntangibleAssets\": 6970000000,\n    \"longTermInvestments\":
         0,\n    \"taxAssets\": 0,\n    \"otherNonCurrentAssets\": 1537000000,\n    \"totalNonCurrentAssets\":
         13110000000,\n    \"otherAssets\": 0,\n    \"totalAssets\": 23135000000,\n
-        \   \"accountPayables\": 669000000,\n    \"shortTermDebt\": 0,\n    \"taxPayables\":
-        0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\": 5665000000,\n
+        \   \"accountPayables\": 669000000,\n    \"shortTermDebt\": 768000000,\n    \"taxPayables\":
+        0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\": 4897000000,\n
         \   \"totalCurrentLiabilities\": 6334000000,\n    \"longTermDebt\": 4141000000,\n
         \   \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
         1024000000,\n    \"otherNonCurrentLiabilities\": 1329000000,\n    \"totalNonCurrentLiabilities\":
         6494000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
         0,\n    \"totalLiabilities\": 12828000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         0,\n    \"retainedEarnings\": 9042000000,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
-        -3515000000,\n    \"othertotalStockholdersEquity\": 4780000000,\n    \"totalStockholdersEquity\":
+        0,\n    \"othertotalStockholdersEquity\": 1265000000,\n    \"totalStockholdersEquity\":
         10307000000,\n    \"totalEquity\": 10307000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
         23135000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         23135000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 4909000000,\n
-        \   \"netDebt\": 3700000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n
+        \   \"netDebt\": 3700000000,\n    \"link\": null,\n    \"finalLink\": null\n
         \ },\n  {\n    \"date\": \"2003-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2003-12-31\",\n
-        \   \"acceptedDate\": \"2003-12-30 19:00:00\",\n    \"calendarYear\": \"2003\",\n
+        \   \"acceptedDate\": \"2003-12-31 00:00:00\",\n    \"calendarYear\": \"2003\",\n
         \   \"period\": \"FY\",\n    \"cashAndCashEquivalents\": 3161000000,\n    \"shortTermInvestments\":
         0,\n    \"cashAndShortTermInvestments\": 3161000000,\n    \"netReceivables\":
         0,\n    \"inventory\": 4274000000,\n    \"otherCurrentAssets\": 3618000000,\n
@@ -503,15 +481,15 @@ interactions:
         \   \"accountPayables\": 0,\n    \"shortTermDebt\": 0,\n    \"taxPayables\":
         0,\n    \"deferredRevenue\": 0,\n    \"otherCurrentLiabilities\": 0,\n    \"totalCurrentLiabilities\":
         0,\n    \"longTermDebt\": 0,\n    \"deferredRevenueNonCurrent\": 0,\n    \"deferredTaxLiabilitiesNonCurrent\":
-        0,\n    \"otherNonCurrentLiabilities\": 0,\n    \"totalNonCurrentLiabilities\":
-        0,\n    \"otherLiabilities\": 7139000000,\n    \"capitalLeaseObligations\":
+        0,\n    \"otherNonCurrentLiabilities\": 7139000000,\n    \"totalNonCurrentLiabilities\":
+        7139000000,\n    \"otherLiabilities\": 0,\n    \"capitalLeaseObligations\":
         0,\n    \"totalLiabilities\": 7139000000,\n    \"preferredStock\": 0,\n    \"commonStock\":
         0,\n    \"retainedEarnings\": 0,\n    \"accumulatedOtherComprehensiveIncomeLoss\":
-        -2826000000,\n    \"othertotalStockholdersEquity\": 13317000000,\n    \"totalStockholdersEquity\":
+        0,\n    \"othertotalStockholdersEquity\": 10491000000,\n    \"totalStockholdersEquity\":
         10491000000,\n    \"totalEquity\": 10491000000,\n    \"totalLiabilitiesAndStockholdersEquity\":
         17630000000,\n    \"minorityInterest\": 0,\n    \"totalLiabilitiesAndTotalEquity\":
         17630000000,\n    \"totalInvestments\": 0,\n    \"totalDebt\": 0,\n    \"netDebt\":
-        -3161000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  }\n]"
+        -3161000000,\n    \"link\": null,\n    \"finalLink\": null\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -527,13 +505,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '40478'
+      - '38675'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 07 Mar 2023 17:08:37 GMT
+      - Tue, 02 May 2023 14:20:49 GMT
       ETag:
-      - W/"9e1e-Epa6BAZgAYXgsPxNZuNLZ4YHwl8"
+      - W/"9713-q9IViGvCzbJvc/D93XuPyx+gGTM"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

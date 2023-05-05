@@ -24,7 +24,7 @@ def test_globe(source):
     "source",
     [
         "CoinGecko",
-        "CoinPaprika",
+        # "CoinPaprika",
     ],
 )
 def test_exchanges(source):

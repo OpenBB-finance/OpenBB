@@ -10,19 +10,25 @@ from openbb_terminal.cryptocurrency.discovery import dappradar_view
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("User-Agent", None)],
+        "filter_headers": [
+            ("User-Agent", None),
+            ("X-BLOBR-KEY", "MOCK_API_KEY"),
+        ],
     }
 
 
-@pytest.mark.vcr
-@pytest.mark.record_stdout
+@pytest.mark.record_http
+@pytest.mark.record_verify_screen
 @pytest.mark.parametrize(
     "func, kwargs",
     [
-        ("display_top_nfts", dict()),
-        ("display_top_games", dict()),
-        ("display_top_dexes", dict()),
-        ("display_top_dapps", dict()),
+        ("display_nft_marketplaces", dict()),
+        ("display_nft_marketplace_chains", dict()),
+        ("display_dapps", dict()),
+        ("display_dapp_categories", dict()),
+        ("display_dapp_chains", dict()),
+        ("display_token_chains", dict()),
+        ("display_defi_chains", dict()),
     ],
 )
 def test_call_func(func, kwargs, mocker):
@@ -34,30 +40,44 @@ def test_call_func(func, kwargs, mocker):
     getattr(dappradar_view, func)(**kwargs)
 
 
-@pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
+@pytest.mark.record_verify_screen
 @pytest.mark.parametrize(
     "func, kwargs, mocked_func",
     [
         (
-            "display_top_nfts",
+            "display_nft_marketplaces",
             dict(),
-            "get_top_nfts",
+            "get_nft_marketplaces",
         ),
         (
-            "display_top_games",
+            "display_nft_marketplace_chains",
             dict(),
-            "get_top_games",
+            "get_nft_marketplace_chains",
         ),
         (
-            "display_top_dexes",
+            "display_dapps",
             dict(),
-            "get_top_dexes",
+            "get_dapps",
         ),
         (
-            "display_top_dapps",
+            "display_dapp_categories",
             dict(),
-            "get_top_dapps",
+            "get_dapp_categories",
+        ),
+        (
+            "display_dapp_chains",
+            dict(),
+            "get_dapp_chains",
+        ),
+        (
+            "display_token_chains",
+            dict(),
+            "get_token_chains",
+        ),
+        (
+            "display_defi_chains",
+            dict(),
+            "get_defi_chains",
         ),
     ],
 )
