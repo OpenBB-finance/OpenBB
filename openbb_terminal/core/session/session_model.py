@@ -30,6 +30,7 @@ from openbb_terminal.core.session.utils import run_thread
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.rich_config import console
+from openbb_terminal.base_helpers import set_posthog_alias
 
 # pylint: disable=consider-using-f-string
 
@@ -106,6 +107,7 @@ def login(session: Dict, remember: bool = False) -> LoginStatus:
             email = configs.get("email", "")
             hub_user.profile.load_user_info(session, email, remember)
             set_current_user(hub_user)
+            set_posthog_alias()
 
             auth_header = hub_user.profile.get_auth_header()
             if sys.stdin.isatty():

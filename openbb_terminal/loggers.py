@@ -39,6 +39,7 @@ from openbb_terminal.core.log.generation.settings import (
 from openbb_terminal.core.log.generation.user_logger import (
     NO_USER_PLACEHOLDER,
     get_user_uuid,
+    get_current_user,
 )
 from openbb_terminal.core.session.current_system import (
     get_current_system,
@@ -149,7 +150,9 @@ class PosthogHandler(logging.Handler):
 
         if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
             self.logged_in = True
-            openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
+            openbb_posthog.identify(
+                get_user_uuid(), {"email": get_current_user().profile.email}
+            )
 
         openbb_posthog.capture(
             app_settings.identifier,
