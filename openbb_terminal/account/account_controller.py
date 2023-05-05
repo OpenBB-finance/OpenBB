@@ -371,6 +371,8 @@ class AccountController(BaseController):
                         self.REMOTE_CHOICES.append(name)
                         self.update_runtime_choices()
 
+    # store data in list with "personal/default" to identify data's routine type
+    # and for save_routine
     @log_start_end(log=logger)
     def call_download(self, other_args: List[str]):
         """Download"""
@@ -398,37 +400,36 @@ class AccountController(BaseController):
             print_guest_block_msg()
         else:
             if ns_parser:
-                data = None
-
-                # Default routine
+                data = []
                 name = " ".join(ns_parser.name)
-                if name in self.DEFAULT_CHOICES:
-                    data = next(
-                        (r for r in self.DEFAULT_ROUTINES if r["name"] == name), None
-                    )
-                else:
-                    # User routine
-                    response = Hub.download_routine(
-                        auth_header=get_current_user().profile.get_auth_header(),
-                        name=name,
-                    )
-                    data = (
-                        response.json()
-                        if response and response.status_code == 200
-                        else None
-                    )
+                # Personal routines
+                response = Hub.download_routine(
+                    auth_header=get_current_user().profile.get_auth_header(),
+                    name=name,
+                )
+                if response and response.status_code == 200:
+                    data = [response.json(), "personal"]
+                # Default routine
+                elif name in self.DEFAULT_CHOICES:
+                    data = [
+                        next(
+                            (r for r in self.DEFAULT_ROUTINES if r["name"] == name),
+                            None,
+                        ),
+                        "default",
+                    ]
 
                 # Save routine
-                if data:
-                    name = data.get("name", "")
+                if data[0]:
+                    name = data[0].get("name", "")
                     if name:
                         console.print(f"[info]Name:[/info] {name}")
 
-                    description = data.get("description", "")
+                    description = data[0].get("description", "")
                     if description:
                         console.print(f"[info]Description:[/info] {description}")
 
-                    script = data.get("script", "")
+                    script = [data[0].get("script", ""), data[1]]
                     if script:
                         file_name = f"{name}.openbb"
                         file_path = save_routine(
