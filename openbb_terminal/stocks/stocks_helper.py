@@ -49,6 +49,8 @@ from openbb_terminal.stocks.stocks_model import (
 
 from . import databento_model
 
+from pandas_ta import candles
+
 logger = logging.getLogger(__name__)
 
 exch_file_path = os.path.join(
@@ -572,6 +574,7 @@ def display_candle(
     source: str = "YahooFinance",
     weekly: bool = False,
     monthly: bool = False,
+    ha: Optional[bool] = False,
     external_axes: bool = False,
     raw: bool = False,
     yscale: str = "linear",
@@ -606,6 +609,8 @@ def display_candle(
         Flag to get weekly data
     monthly: bool
         Flag to get monthly data
+    ha: bool
+        Flag to show Heikin Ashi candles.
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     raw : bool, optional
@@ -666,6 +671,16 @@ def display_candle(
         interval = int((data.index[1] - data.index[0]).seconds / 60)
 
     data.name = f"{asset_type} {symbol}"
+
+    if ha:
+        data_ = heikin_ashi(data)
+        data["Open"] = data_["HA Open"]
+        data["High"] = data_["HA High"]
+        data["Low"] = data_["HA Low"]
+        data["Close"] = data_["HA Close"]
+
+    if ha:
+        data.name = f"{asset_type} {symbol} - Heikin Ashi Candles"
 
     fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
 
@@ -883,7 +898,9 @@ def clean_function(entry: str) -> Union[str, float]:
     return entry
 
 
-def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
+def show_quick_performance(
+    stock_df: pd.DataFrame, ticker: str, verbose: Optional[bool] = True
+) -> None:
     """Show quick performance stats of stock prices.
 
     Daily prices expected.
@@ -920,12 +937,15 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         )
 
     perf_df["Previous Close"] = str(round(closes[-1], 2))
-    print_rich_table(
-        perf_df,
-        show_index=False,
-        headers=perf_df.columns,
-        title=f"{ticker.upper()} Performance",
-    )
+
+    if verbose:
+        print_rich_table(
+            perf_df,
+            show_index=False,
+            headers=perf_df.columns,
+            title=f"{ticker.upper()} Performance",
+        )
+    return perf_df
 
 
 def show_codes_polygon(ticker: str):
@@ -1039,3 +1059,23 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
                 )
         return True
     return False
+
+
+def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
+    """Return OHLC data as Heiken Ashi Candles."""
+
+    ha = candles.ha(
+        data["Open"],
+        data["High"],
+        data["Low"],
+        data["Close"],
+    )
+    ha_cols = [
+        "HA Open",
+        "HA High",
+        "HA Low",
+        "HA Close",
+    ]
+    ha.columns = ha_cols
+
+    return pd.concat([data, ha], axis=1)

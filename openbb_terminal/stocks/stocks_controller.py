@@ -388,13 +388,13 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="candle",
-            description="Shows historic data for a stock",
+            description="Shows historic price and volume for the asset.",
         )
         parser.add_argument(
             "-t",
             "--ticker",
             dest="ticker",
-            help="Ticker to analyze",
+            help="Ticker to analyze.",
             type=str,
             default=None,
             required=not any(x in other_args for x in ["-h", "--help"])
@@ -406,7 +406,7 @@ class StocksController(StockBaseController):
             action="store_true",
             default=False,
             dest="prepost",
-            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
+            help="Pre/After market hours. Only works for intraday data.",
         )
         parser.add_argument(
             "--sort",
@@ -433,13 +433,13 @@ class StocksController(StockBaseController):
             action="store_true",
             dest="raw",
             default=False,
-            help="Shows raw data instead of chart.",
+            help="Shows raw data instead of a chart.",
         )
         parser.add_argument(
             "--trend",
             action="store_true",
             default=False,
-            help="Flag to add high and low trends to candle",
+            help="Flag to add high and low trends to candle.",
             dest="trendlines",
         )
         parser.add_argument(
@@ -452,6 +452,13 @@ class StocksController(StockBaseController):
             ),
             default=None,
         )
+        parser.add_argument(
+            "--ha",
+            dest="ha",
+            action="store_true",
+            default=False,
+            help="Flag to show Heikin Ashi candles.",
+        ),
         parser.add_argument(
             "--log",
             help="Plot with y axis on log scale",
@@ -503,8 +510,9 @@ class StocksController(StockBaseController):
                         data=data,
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        ha=ns_parser.ha,
                         prepost=ns_parser.prepost,
-                        asset_type="Stock",
+                        asset_type="",
                         yscale="log" if ns_parser.logy else "linear",
                         external_axes=ns_parser.is_image,
                     )
