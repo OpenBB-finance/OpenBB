@@ -197,8 +197,7 @@ class StocksController(StockBaseController):
             help="Search by sector to find stocks matching the criteria",
         )
         parser.add_argument(
-            "-g",
-            "--industry-group",
+            "--industrygroup",
             default="",
             choices=stocks_helper.format_parse_choices(self.industry_group),
             type=str.lower,
@@ -227,8 +226,7 @@ class StocksController(StockBaseController):
             help="Search by a specific exchange to find stocks matching the criteria",
         )
         parser.add_argument(
-            "-m",
-            "--exchange-country",
+            "--exchangecountry",
             default="",
             choices=stocks_helper.format_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
@@ -248,13 +246,12 @@ class StocksController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
             limit=10,
-        )
-        if ns_parser:
+        ):
             # Mapping
             sector = stocks_helper.map_parse_choices(self.sector)[ns_parser.sector]
             industry = stocks_helper.map_parse_choices(self.industry)[
@@ -296,7 +293,7 @@ class StocksController(StockBaseController):
             "--ticker",
             action="store",
             dest="s_ticker",
-            required=not any(x in other_args for x in ["-h", "--help"])
+            required=all(x not in other_args for x in ["-h", "--help"])
             and not self.ticker,
             help="Ticker to get data for",
         )
@@ -311,10 +308,8 @@ class StocksController(StockBaseController):
 
         if not self.ticker and other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
-            ticker = ns_parser.s_ticker if ns_parser.s_ticker else self.ticker
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
+            ticker = ns_parser.s_ticker or self.ticker
             cboe_view.display_top_of_book(ticker, ns_parser.exchange)
 
     @log_start_end(log=logger)
