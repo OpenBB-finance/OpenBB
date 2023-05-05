@@ -129,7 +129,6 @@ class TerminalController(BaseController):
         self.ROUTINE_FILES: Dict[str, str] = dict()
         self.ROUTINE_DEFAULT_FILES: Dict[str, str] = dict()
         self.ROUTINE_PERSONAL_FILES: Dict[str, str] = dict()
-        self.ROUTINE_FILES: Dict[str, str] = dict()
         self.ROUTINE_CHOICES: Dict[str, Any] = dict()
 
         super().__init__(jobs_cmds)
@@ -586,30 +585,34 @@ class TerminalController(BaseController):
 
         if ns_parser:
             if ns_parser.example:
-                path = MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
+                routine_path = (
+                    MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
+                )
                 console.print(
                     "[info]Executing an example, please type `about exe` "
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
             elif ns_parser.file:
-                # if string is not in this format eg)"default/file.openbb" then check for files in ROUTINE_FILES
-                # regex is used to match strings that start with C:/ and remove it so there won't be duplicates
-                # for user who starts the string with Users/username
+                # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
                 file_path = " ".join(ns_parser.file)
                 full_path = file_path
                 hub_routine = file_path.split("/")
                 if hub_routine[0] == "default":
-                    path = self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
+                    routine_path = Path(
+                        self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
+                    )
                 elif hub_routine[0] == "personal":
-                    path = self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
+                    routine_path = Path(
+                        self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
+                    )
                 else:
-                    path = self.ROUTINE_FILES.get(file_path, full_path)
+                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
 
             else:
                 return
 
-            with open(path) as fp:
+            with open(routine_path) as fp:
                 raw_lines = [
                     x for x in fp if (not is_reset(x)) and ("#" not in x) and x
                 ]
