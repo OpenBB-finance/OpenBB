@@ -11,7 +11,10 @@ from pathlib import Path
 # IMPORT THIRD-PARTY
 import pandas as pd
 
-from openbb_terminal.core.integration_tests.utils import to_section_title
+from openbb_terminal.core.integration_tests.utils import (
+    SECTION_LENGTH,
+    to_section_title,
+)
 
 # IMPORT INTERNAL
 from openbb_terminal.helper_funcs import print_rich_table
@@ -468,25 +471,22 @@ def display_coverage_summary(summary: dict) -> None:
             summary.items(), key=lambda item: item[1]["Coverage"], reverse=False  # type: ignore
         )
     )
-    for key, value in summary.items():
-        coverage = value["Coverage"]
+    for controller_name, value in summary.items():
+        coverage = value["Coverage"] / 100
+        coverage_percentage = f"{coverage:.0%}"
+
         untested = value.get("Untested commands", [])
+        len_untested = len(untested)
         missing = value.get("Missing params", {})
 
-        console.print(f"[bold]\n{key}[/bold]")
+        len_res = len(coverage_percentage) + len_untested
+        spaces = SECTION_LENGTH - len(controller_name) - len_res
 
-        console.print(f"* Coverage: {coverage}%")
-
-        if untested:
-            untested_join = ", ".join(untested)
-            console.print(f"* [red]Untested commands: {untested_join}[/red]")
-        else:
-            console.print("* [green]All commands tested![/green]")
-
-        if missing:
-            console.print(f"* [red]Missing params: {missing}[/red]")
-        else:
-            console.print("* [green]All parameters tested![/green]")
+        console.print(
+            f"{controller_name}"
+            + spaces * " "
+            + f"{coverage_percentage}, {len_untested}",
+        )
 
 
 def get_coverage_single_controller(
