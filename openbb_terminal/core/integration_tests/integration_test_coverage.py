@@ -132,9 +132,9 @@ def get_functions(module: object) -> list:
     return functions
 
 
-def get_tested_functions(test_file: str) -> list:
+def get_tested_commands(test_file: str) -> list:
     """Obtain all functions that are called in a given test file."""
-    tested_functions = []
+    tested_commands = []
     with open(test_file) as f:
         for line in f:
             try:
@@ -143,10 +143,10 @@ def get_tested_functions(test_file: str) -> list:
                 continue
 
             if function != "#":
-                tested_functions.append(function)
+                tested_commands.append(function)
 
-    tested_functions = list(dict.fromkeys(tested_functions))
-    return list(tested_functions)
+    tested_commands = list(dict.fromkeys(tested_commands))
+    return list(tested_commands)
 
 
 def find_all_calls(module) -> list:
@@ -193,9 +193,9 @@ def parse_args(module, func) -> list:
     return params
 
 
-def get_tested_function_params(tested_functions: list, test_file: str) -> list:
+def get_tested_function_params(tested_commands: list, test_file: str) -> list:
     """Obtain all function parameters that are called in a given test file."""
-    tested_functions = []
+    tested_commands = []
     with open(test_file) as f:
         for line in f:
             try:
@@ -204,8 +204,8 @@ def get_tested_function_params(tested_functions: list, test_file: str) -> list:
                 continue
 
             params = re.findall(r"-\w+", line)
-            tested_functions.append((function, params))
-    return tested_functions
+            tested_commands.append((function, params))
+    return tested_commands
 
 
 def map_module_to_calls(module) -> dict:
@@ -304,7 +304,7 @@ def validate_missing_params(missing_params: dict, test_file: str) -> dict:
 
 
 def calculate_function_coverage(
-    tested_functions: list,
+    tested_commands: list,
     tested_function: str,
     module: object,
     limit: int = 5,
@@ -313,7 +313,7 @@ def calculate_function_coverage(
     """Compare tested functions with module."""
     module_dict = map_module_to_calls(module)
     tested_function_params = get_tested_function_params(
-        tested_functions, tested_function
+        tested_commands, tested_function
     )
     try:
         controller = str(module).split(".")[3].split("_")[0]
@@ -372,20 +372,18 @@ def calculate_function_coverage(
 
 
 def calculate_coverage_percentage(
-    tested_functions: list, available_functions: list, output_table: bool = False
+    tested_commands: list, available_functions: list, output_table: bool = False
 ) -> tuple[float, list]:
     """Calculate the integration test coverage."""
-    untested_functions = []
-    coverage = min(
-        100, round(len(tested_functions) / len(available_functions) * 100, 2)
-    )
+    untested_commands = []
+    coverage = min(100, round(len(tested_commands) / len(available_functions) * 100, 2))
     for function in available_functions:
-        if function not in tested_functions:
-            untested_functions.append(function)
+        if function not in tested_commands:
+            untested_commands.append(function)
 
     if output_table:
         df = pd.DataFrame({"function": available_functions})
-        df["tested"] = df["function"].apply(lambda x: x in tested_functions)
+        df["tested"] = df["function"].apply(lambda x: x in tested_commands)
         df = df.sort_values(by=["function"])
         df = df.astype({"tested": "str"})
         df["tested"] = df["tested"].apply(
@@ -403,12 +401,12 @@ def calculate_coverage_percentage(
         console.print(
             f"Integration test coverage: {coverage}%\n"
             f"=======================================\n"
-            f"[red]Untested functions: {untested_functions}[/red]\n"
-            f"[green]Tested functions: {tested_functions}[/green]\n"
+            f"[red]Untested commands: {untested_commands}[/red]\n"
+            f"[green]Tested commands: {tested_commands}[/green]\n"
             f"=======================================\n"
         )
 
-    return coverage, untested_functions
+    return coverage, untested_commands
 
 
 def get_coverage_all_controllers(output_table: bool = False) -> None:
@@ -438,36 +436,60 @@ def get_coverage_all_controllers(output_table: bool = False) -> None:
             continue
 
         available_functions = get_functions(module)
-        tested_functions = get_tested_functions(INTEGRATION_PATH + test)
+        tested_commands = get_tested_commands(INTEGRATION_PATH + test)
 
         console.print(to_section_title(controller), "\n")
-        coverage, untested_functions = calculate_coverage_percentage(
-            tested_functions, available_functions, output_table=output_table
+        coverage, untested_commands = calculate_coverage_percentage(
+            tested_commands, available_functions, output_table=output_table
         )
         missing_params = calculate_function_coverage(
-            tested_functions, INTEGRATION_PATH + test, module
+            tested_commands, INTEGRATION_PATH + test, module
         )
 
         console.print(f"Finished calculating coverage for {controller}\n\n")
 
         summary[controller] = {
             "Coverage": coverage,
-            "Untested functions": untested_functions,
+            "Untested commands": untested_commands,
             "Missing params": missing_params,
         }
 
-    console.print(to_section_title("Integration Test Summary"))
+    display_coverage_summary(summary)
+
+
+def display_coverage_summary(summary: dict) -> None:
+    """Display the coverage summary.
+
+    Parameters
+    ----------
+    summary: dict
+        Summary of the integration test coverage.
+    """
+
+    console.print(to_section_title("Integration Coverage Summary"))
     summary = dict(
         sorted(
             summary.items(), key=lambda item: item[1]["Coverage"], reverse=False  # type: ignore
         )
     )
     for key, value in summary.items():
-        console.print(
-            f"[bold]{key}[/bold]: {value['Coverage']}% \n"
-            f"    [red]Untested functions: {value['Untested functions']}[/red]\n"
-            f"    [red]Missing params: {value['Missing params']}[/red]\n\n"
-        )
+        coverage = value["Coverage"]
+        untested = value.get("Untested commands", [])
+        missing = value.get("Missing params", {})
+
+        console.print(f"[bold]\n{key}[/bold]")
+
+        console.print(f"* Coverage: {coverage}%")
+
+        if untested:
+            console.print(f"* [red]Untested functions: {untested}[/red]")
+        else:
+            console.print("* [green]All functions tested![/green]")
+
+        if missing:
+            console.print(f"* [red]Missing params: {missing}[/red]")
+        else:
+            console.print("* [green]All params tested![/green]")
 
 
 def get_coverage_single_controller(
@@ -494,8 +516,8 @@ def get_coverage_single_controller(
     """
     module = get_module(controller, module_name=module_name)
     functions = get_functions(module)
-    tested_functions = get_tested_functions(INTEGRATION_PATH + integration_test)
-    calculate_coverage_percentage(tested_functions, functions, output_table)
+    tested_commands = get_tested_commands(INTEGRATION_PATH + integration_test)
+    calculate_coverage_percentage(tested_commands, functions, output_table)
     calculate_function_coverage(
-        tested_functions, INTEGRATION_PATH + integration_test, module
+        tested_commands, INTEGRATION_PATH + integration_test, module
     )
