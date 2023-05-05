@@ -682,9 +682,7 @@ def display_candle(
         data["High"] = data_["HA High"]
         data["Low"] = data_["HA Low"]
         data["Close"] = data_["HA Close"]
-
-    if ha:
-        data.name = f"{asset_type} {symbol} - Heikin Ashi Candles"
+        data.name = f"{symbol} - Heikin Ashi Candles"
 
     fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
 
