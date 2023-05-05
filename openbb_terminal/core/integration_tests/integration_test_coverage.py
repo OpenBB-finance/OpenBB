@@ -428,7 +428,7 @@ def get_coverage_all_controllers(output_table: bool = False) -> None:
         try:
             module = get_module(path)
         except ModuleNotFoundError:
-            module_name = controller_name_mapping[path]
+            module_name = controller_name_mapping.get(path, "")
             try:
                 module = get_module(path, module_name=module_name)
             except ModuleNotFoundError:
