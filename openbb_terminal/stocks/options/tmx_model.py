@@ -115,10 +115,17 @@ def get_underlying_price(symbol: str) -> pd.DataFrame:
 class Ticker:
     def __init__(self) -> None:
         self.SYMBOLS = get_all_ticker_symbols()
+        self.chains = pd.DataFrame()
+        self.expirations: list = []
+        self.strikes: list = []
+        self.last_price: float = 0
+        self.underlying_name: str = ""
+        self.underlying_price = pd.Series()
 
     def check_symbol(self, symbol: str) -> bool:
         """Checks if the symbol is valid."""
-        return len(self.SYMBOLS.query("`Underlying Symbol` == @symbol.upper()")) == 1
+        symbol = symbol.upper()
+        return len(self.SYMBOLS.query("`Underlying Symbol` == @symbol")) == 1
 
     def get_quotes(self, symbol: str = "") -> object:
         """Gets the current quotes for the complete options chain.
