@@ -539,7 +539,7 @@ class Momentum(PltTA):
         leading_span_a = ((conversion_line + base_line) / 2).shift(displacement)
 
         # Senkou Span B (Leading Span B)
-        lagging_line = df_ta["Close"].shift(-lagging_line_period)
+        lagging_line = df_ta[self.close_column].shift(-lagging_line_period)  # type: ignore
         leading_span_b = (
             (
                 lagging_line.rolling(window=base_period).max()
