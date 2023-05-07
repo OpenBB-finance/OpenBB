@@ -13,7 +13,7 @@ import time
 import webbrowser
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import certifi
 import pandas as pd
@@ -126,6 +126,11 @@ class TerminalController(BaseController):
 
     def __init__(self, jobs_cmds: Optional[List[str]] = None):
         """Construct terminal controller."""
+        self.ROUTINE_FILES: Dict[str, str] = dict()
+        self.ROUTINE_DEFAULT_FILES: Dict[str, str] = dict()
+        self.ROUTINE_PERSONAL_FILES: Dict[str, str] = dict()
+        self.ROUTINE_CHOICES: Dict[str, Any] = dict()
+
         super().__init__(jobs_cmds)
 
         self.queue: List[str] = list()
@@ -147,8 +152,24 @@ class TerminalController(BaseController):
                 "*.openbb"
             )
         }
+        if get_current_user().profile.get_token():
+            self.ROUTINE_DEFAULT_FILES = {
+                filepath.name: filepath
+                for filepath in Path(
+                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                    / "hub"
+                    / "default"
+                ).rglob("*.openbb")
+            }
+            self.ROUTINE_PERSONAL_FILES = {
+                filepath.name: filepath
+                for filepath in Path(
+                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                    / "hub"
+                    / "personal"
+                ).rglob("*.openbb")
+            }
 
-        self.ROUTINE_CHOICES = {}
         self.ROUTINE_CHOICES["--file"] = {
             filename: None for filename in self.ROUTINE_FILES
         }
@@ -564,19 +585,34 @@ class TerminalController(BaseController):
 
         if ns_parser:
             if ns_parser.example:
-                path = MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
+                routine_path = (
+                    MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
+                )
                 console.print(
                     "[info]Executing an example, please type `about exe` "
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
             elif ns_parser.file:
+                # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
                 file_path = " ".join(ns_parser.file)
-                path = self.ROUTINE_FILES.get(file_path, Path(file_path))
+                full_path = file_path
+                hub_routine = file_path.split("/")
+                if hub_routine[0] == "default":
+                    routine_path = Path(
+                        self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
+                    )
+                elif hub_routine[0] == "personal":
+                    routine_path = Path(
+                        self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
+                    )
+                else:
+                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
+
             else:
                 return
 
-            with open(path) as fp:
+            with open(routine_path) as fp:
                 raw_lines = [
                     x for x in fp if (not is_reset(x)) and ("#" not in x) and x
                 ]
@@ -955,7 +991,7 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
     return default
 
 
-def run_routine(file: str, routines_args=List[str]):
+def run_routine(file: str, routines_args=Optional[str]):
     """Execute command routine from .openbb file."""
     user_routine_path = (
         get_current_user().preferences.USER_DATA_DIRECTORY / "routines" / file
