@@ -229,8 +229,8 @@ class Ticker:
             self.underlying_price = get_underlying_price(symbol)
             self.last_price = self.underlying_price["Last Price"]
         except TypeError:
-            self.last_price = None
-            self.underlying_price = None
+            self.last_price = 0
+            self.underlying_price = 0
 
         return self
 
