@@ -20,7 +20,7 @@ One of the concepts that OpenBB introduced early on was the concept of script ro
 
 E.g. by running `exe script.openbb` the following sequence could be executed
 
-```
+```shell
 stocks/load AAPL/candle --ma 20/fa/epsfc/pt/est
 ```
 
