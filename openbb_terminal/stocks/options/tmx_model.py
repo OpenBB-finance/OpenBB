@@ -146,7 +146,7 @@ class Ticker:
 
         if symbol == "":
             print("Please enter a symbol.")
-            return
+            return self
 
         symbol = symbol.upper()
 
@@ -160,7 +160,7 @@ class Ticker:
                 "The symbol, " f"{symbol}" ", does not have listed options.",
                 sep=None,
             )
-            return
+            return self
 
         QUOTES_URL = "https://www.m-x.ca/en/trading/data/quotes?symbol=" f"{symbol}" "*"
 
@@ -261,14 +261,14 @@ class Ticker:
 
         if symbol == "":
             print("Please enter a symbol.")
-            return
+            return self
 
         if symbol not in self.SYMBOLS.index:
             print(
                 "The symbol, " f"{symbol}" ", does not have listed options.",
                 sep=None,
             )
-            return
+            return self
 
         if date == "":
             EOD_URL = BASE_URL + f"{symbol}" "&dnld=1#quotes"
