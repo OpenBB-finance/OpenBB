@@ -12,7 +12,10 @@ import pandas as pd
 
 from openbb_terminal.core.integration_tests.utils import (
     SECTION_LENGTH,
+    get_submodule_commands,
+    map_module_to_calls,
     to_section_title,
+    validate_missing_params,
 )
 
 # IMPORT INTERNAL
@@ -133,10 +136,24 @@ def get_commands_and_params(
 ):
     """Get all commands from a given module."""
     params: dict = {}
-    module = module()  # type: ignore
+    commands: list = []
+    try:
+        module = module()  # type: ignore
+    except TypeError:
+        # HERE GOES OLD LOGIC
+        commands = get_submodule_commands(module)
+        params = map_module_to_calls(module)
+        if get_commands and get_params:
+            return commands, params
+        if get_commands and not get_params:
+            return commands
+        if not get_commands and get_params:
+            return params
 
     module_data = getattr(module, "choices_default")
-    commands = list(module_data.keys())
+    if len(commands) == 0:
+        commands = list(module_data.keys())
+
     commands = [command for command in commands if command not in COMMAND_FILTERS]
 
     for command in commands:
@@ -145,6 +162,7 @@ def get_commands_and_params(
             params[command] = list(module_data[command].keys())
         except AttributeError:
             pass
+
     if get_commands and get_params:
         return commands, params
     if get_commands and not get_params:
@@ -262,8 +280,6 @@ def calculate_parameter_coverage(
 ) -> tuple[dict, dict]:
     """Calculate the parameter coverage for controller commands."""
     module_dict = get_commands_and_params(module, get_commands=False)
-    if module_dict is None:
-        return {}, {}
 
     tested_command_params = get_tested_command_params(tested_function)
     for key, value in dict(tested_command_params).items():
@@ -375,7 +391,10 @@ def get_coverage_all_controllers(output_table: bool = True) -> None:
             console.print(e)
             continue
 
-        available_commands = get_commands_and_params(module, get_params=False)
+        try:
+            available_commands = get_commands_and_params(module, get_params=False)
+        except TypeError:
+            continue
         tested_commands = get_tested_commands(INTEGRATION_PATH + integration_test)
 
         command_coverage, untested_commands = calculate_command_coverage(
@@ -385,6 +404,9 @@ def get_coverage_all_controllers(output_table: bool = True) -> None:
         missing_params, coverage_dict = calculate_parameter_coverage(
             tested_function=INTEGRATION_PATH + integration_test,
             module=module,
+        )
+        missing_params = validate_missing_params(
+            missing_params, test_file=INTEGRATION_PATH + integration_test
         )
 
         try:
@@ -438,7 +460,7 @@ def display_coverage_summary(summary: dict) -> None:
     console.print(to_section_title("Integration Coverage Summary"))
     summary = dict(
         sorted(
-            summary.items(), key=lambda item: item[1]["Coverage"], reverse=False  # type: ignore
+            summary.items(), key=lambda item: item[1]["Controller coverage"], reverse=False  # type: ignore
         )
     )
     for controller_name, value in summary.items():
@@ -446,14 +468,14 @@ def display_coverage_summary(summary: dict) -> None:
         command_coverage = value["Command coverage"]
         parameter_coverage = value["Parameter coverage"]
 
-        len_res = len(controller_coverage)
+        len_res = len(str(controller_coverage)) + len("Controller coverage: %")
         spaces = SECTION_LENGTH - len(controller_name) - len_res
 
         console.print(
             f"{controller_name}" + spaces * " ",
-            f"{controller_coverage}",
-            f"Command coverage: {command_coverage}",
-            f"Parameter coverage: {parameter_coverage}",
+            f"Controller coverage: {controller_coverage}%",
+            f"\n* Command coverage: {command_coverage}%",
+            f"\n* Parameter coverage: {parameter_coverage}%",
         )
 
 
@@ -542,6 +564,9 @@ def get_coverage_single_controller(
         tested_function=INTEGRATION_PATH + integration_test,
         module=module,
     )
+    missing_params = validate_missing_params(
+        missing_params, test_file=INTEGRATION_PATH + integration_test
+    )
 
     try:
         average_parameter_coverage = round(
@@ -569,11 +594,11 @@ def get_coverage_single_controller(
         output_table,
     )
 
-    # return controller_coverage, command_coverage, average_parameter_coverage
-
 
 # get_coverage_single_controller(
 #     "openbb_terminal.fixedincome.fixedincome_controller",
 #     "/fixedincome/test_fixedincome.openbb",
 #     "FixedIncomeController",
 # )
+
+# get_coverage_all_controllers()
