@@ -50,10 +50,10 @@ def get_options_listings(option_type: str = "Equity") -> pd.DataFrame:
 
     options_listings = pd.DataFrame()
 
-    if option_type not in OPTIONS_TYPES.keys():
+    if option_type not in OPTIONS_TYPES:
         print("Invalid Choice. Choose from:", list(OPTIONS_TYPES.keys()))
         options_listings = pd.DataFrame()
-        return None
+        return options_listings
 
     types_: int = OPTIONS_TYPES[option_type]
     options_listings = pd.read_html("https://www.m-x.ca/en/trading/data/options-list")[
@@ -79,9 +79,10 @@ def get_all_ticker_symbols() -> pd.DataFrame:
     return SYMBOLS.set_index("Option Symbol")
 
 
-def get_underlying_price(symbol: str) -> pd.DataFrame:
+def get_underlying_price(symbol: str) -> pd.Series:
     """Gets the current price of the underlying asset from the Canadian Securities Exchange."""
 
+    data = pd.Series()
     symbol = symbol.upper()
     URL = f"https://webapi.thecse.com/trading/other/securities/{symbol}.json"
 
@@ -89,7 +90,7 @@ def get_underlying_price(symbol: str) -> pd.DataFrame:
 
     if response.status_code != 200:
         print("No price data found for the underlying security, " f"{symbol}")
-        return
+        return data
 
     data = response.json()["ticker"]
     data = pd.Series(data)[
