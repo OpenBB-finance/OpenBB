@@ -133,8 +133,8 @@ def get_commands_and_params(
 ):
     """Get all commands from a given module."""
     params: dict = {}
-
     module = module()  # type: ignore
+
     module_data = getattr(module, "choices_default")
     commands = list(module_data.keys())
     commands = [command for command in commands if command not in COMMAND_FILTERS]
@@ -257,41 +257,13 @@ def get_missing_params(
     return missing_params
 
 
-def display_parameter_coverage(
-    coverage_dict: dict, missing_params: dict, limit: int = 5, output_table: bool = True
-) -> None:
-    if output_table:
-        df = pd.DataFrame(
-            coverage_dict.items(),
-            columns=["Command", "Coverage %"],
-        ).sort_values(by=["Coverage %"], ascending=True)
-        average_coverage = round(df["Coverage %"].mean(), 2)
-        df["Coverage %"] = df[  # pylint: disable=unsupported-assignment-operation
-            "Coverage %"
-        ].apply(lambda x: f"[green]{x}[/green]" if x >= 80 else f"[red]{x}[/red]")
-        df["Missing params"] = (  # pylint: disable=unsupported-assignment-operation
-            df["Command"].map(missing_params).fillna("")
-        )
-        print_rich_table(
-            df,
-            headers=[
-                "Command",
-                "Coverage",
-                "Missing params",
-            ],
-            limit=limit,
-            title=f"* Integration test parameter coverage {average_coverage}%",
-        )
-
-
 def calculate_parameter_coverage(
-    tested_function: str,
-    module: object,
-    limit: int = 5,
-    output_table: bool = True,
-) -> dict:
-    """Compare tested functions with module."""
+    tested_function: str, module: object
+) -> tuple[dict, dict]:
+    """Calculate the parameter coverage for controller commands."""
     module_dict = get_commands_and_params(module, get_commands=False)
+    if module_dict is None:
+        return {}, {}
 
     tested_command_params = get_tested_command_params(tested_function)
     for key, value in dict(tested_command_params).items():
@@ -318,13 +290,7 @@ def calculate_parameter_coverage(
         if key not in coverage_dict:
             coverage_dict[key] = 100
 
-    if output_table:
-        display_parameter_coverage(coverage_dict, missing_params, limit, output_table)
-
-    if len(missing_params) > 0:
-        console.print(f"[red]Missing params: {missing_params}[/red]")
-
-    return missing_params
+    return missing_params, coverage_dict
 
 
 def display_command_coverage(
@@ -344,7 +310,6 @@ def display_command_coverage(
         df["tested"] = df["tested"].apply(
             lambda x: "[red]False[/red]" if x == "False" else "[green]True[/green]"
         )
-        # sort df by Tested columns so that the first ones are False
         df = df.sort_values(by=["tested"], ascending=False)
         print_rich_table(
             df,
@@ -395,7 +360,7 @@ def get_coverage_all_controllers(output_table: bool = True) -> None:
     tests = find_integration_tests()
     matched = match_controller_with_test(controllers, tests)
 
-    for controller, test in matched.items():
+    for controller, integration_test in matched.items():
         path = controller.replace("/", ".")[2:-3]
         try:
             module = get_module(path)
@@ -411,30 +376,52 @@ def get_coverage_all_controllers(output_table: bool = True) -> None:
             continue
 
         available_commands = get_commands_and_params(module, get_params=False)
-        tested_commands = get_tested_commands(INTEGRATION_PATH + test)
+        tested_commands = get_tested_commands(INTEGRATION_PATH + integration_test)
 
-        console.print(to_section_title(controller), "\n")
-        coverage, untested_commands = calculate_command_coverage(
+        command_coverage, untested_commands = calculate_command_coverage(
             tested_commands, available_commands
         )
-        display_command_coverage(
-            available_commands,
-            tested_commands,
-            untested_commands,
-            coverage,
-            output_table,
-        )
-        missing_params = calculate_parameter_coverage(
-            tested_function=INTEGRATION_PATH + test, module=module
+
+        missing_params, coverage_dict = calculate_parameter_coverage(
+            tested_function=INTEGRATION_PATH + integration_test,
+            module=module,
         )
 
-        console.print(f"* Finished calculating coverage for {controller}\n\n")
+        try:
+            average_parameter_coverage = round(
+                sum(coverage_dict.values()) / len(coverage_dict), 2
+            )
+        except ZeroDivisionError:
+            average_parameter_coverage = 100
+
+        controller_coverage = calculate_controller_coverage(
+            command_coverage=command_coverage,
+            average_parameter_coverage=average_parameter_coverage,
+        )
 
         summary[controller] = {
-            "Coverage": coverage,
-            "Untested commands": untested_commands,
-            "Missing params": missing_params,
+            "Controller coverage": controller_coverage,
+            "Command coverage": command_coverage,
+            "Parameter coverage": average_parameter_coverage,
         }
+
+        console.print(to_section_title(controller), "\n")
+        console.print(
+            f"Controller coverage: {controller_coverage}%\n"
+            + f"Command coverage: {command_coverage}%\n"
+            + f"Parameter coverage: {average_parameter_coverage}%"
+        )
+
+        display_uncovered_commands(
+            missing_params,
+            untested_commands,
+            coverage_dict,
+            output_table,
+        )
+
+        console.print(
+            f"* Finished calculating integration test coverage for {controller}\n\n"
+        )
 
     display_coverage_summary(summary)
 
@@ -455,30 +442,78 @@ def display_coverage_summary(summary: dict) -> None:
         )
     )
     for controller_name, value in summary.items():
-        coverage = value["Coverage"] / 100
-        coverage_percentage = f"{coverage:.0%}"
+        controller_coverage = value["Controller coverage"]
+        command_coverage = value["Command coverage"]
+        parameter_coverage = value["Parameter coverage"]
 
-        untested = value.get("Untested commands", [])
-        len_untested = len(untested)
-        missing = value.get("Missing params", {})
-        len_missing = len(missing)
-
-        len_res = len(coverage_percentage) + len_untested
+        len_res = len(controller_coverage)
         spaces = SECTION_LENGTH - len(controller_name) - len_res
 
         console.print(
-            f"{controller_name}"
-            + spaces * " "
-            + f"{coverage_percentage}, {len_untested}"
-            + f"missing params: {len_missing}"
+            f"{controller_name}" + spaces * " ",
+            f"{controller_coverage}",
+            f"Command coverage: {command_coverage}",
+            f"Parameter coverage: {parameter_coverage}",
         )
+
+
+def display_uncovered_commands(
+    missing_params: dict,
+    untested_commands: list,
+    coverage_dict: dict,
+    output_table: bool,
+) -> None:
+    """Display the uncovered commands."""
+    missing_commands = []
+    for command in missing_params:
+        if command not in untested_commands:
+            missing_commands.append(command)
+
+    for command in untested_commands:
+        if command not in missing_params:
+            missing_commands.append(command)
+
+    if output_table:
+        df = pd.DataFrame()
+        df["Command"] = missing_commands
+        df["Missing params"] = [  # pylint: disable=unsupported-assignment-operation
+            "all params missing"
+            if command in untested_commands
+            else missing_params[command]
+            for command in missing_commands
+        ]
+        df["Coverage"] = [
+            0 if command in untested_commands else coverage_dict[command]
+            for command in missing_commands
+        ]
+        df = df.sort_values(by=["Coverage"], ascending=True)
+        df["Coverage"].astype(str)
+        df["Coverage"] = df[  # pylint: disable=unsupported-assignment-operation
+            "Coverage"
+        ].apply(lambda x: f"[red]{x}[/red]" if x < 80 else f"[green]{x}[/green]")
+        df = df[["Command", "Coverage", "Missing params"]]
+        try:
+            print_rich_table(df, title="Uncovered commands and parameters")
+        except IndexError:
+            console.print("\nNo uncovered commands found!")
+
+
+def calculate_controller_coverage(
+    command_coverage: float,
+    average_parameter_coverage: float,
+) -> float:
+    """Calculate the global coverage."""
+    # Up for discussion
+    controller_coverage = (command_coverage * average_parameter_coverage) / 100
+
+    return round(controller_coverage, 2)
 
 
 def get_coverage_single_controller(
     controller: str,
     integration_test: str,
     module_name: str = "",
-    output_table: bool = False,
+    output_table: bool = True,
 ) -> None:
     """Get single controller integration test coverage.
 
@@ -486,7 +521,7 @@ def get_coverage_single_controller(
     ----------
         controller (str): Controller to test.
         integration_test (str): Integration test to use.
-        output_table (bool): Output a table with the results.
+        output_table (bool): Output a table with the detailed results.
 
     Example:
     --------
@@ -499,21 +534,46 @@ def get_coverage_single_controller(
     module = get_module(controller, module_name=module_name)
     available_commands = get_commands_and_params(module, get_params=False)
     tested_commands = get_tested_commands(INTEGRATION_PATH + integration_test)
-    coverage, untested_commands = calculate_command_coverage(
+    command_coverage, untested_commands = calculate_command_coverage(
         tested_commands, available_commands
     )
-    display_command_coverage(
-        available_commands, tested_commands, untested_commands, coverage, output_table
-    )
-    calculate_parameter_coverage(
+
+    missing_params, coverage_dict = calculate_parameter_coverage(
         tested_function=INTEGRATION_PATH + integration_test,
         module=module,
-        output_table=output_table,
     )
+
+    try:
+        average_parameter_coverage = round(
+            sum(coverage_dict.values()) / len(coverage_dict), 2
+        )
+    except ZeroDivisionError:
+        average_parameter_coverage = 100
+
+    controller_coverage = calculate_controller_coverage(
+        command_coverage=command_coverage,
+        average_parameter_coverage=average_parameter_coverage,
+    )
+
+    console.print(to_section_title(controller), "\n")
+    console.print(
+        f"Controller coverage: {controller_coverage}%\n"
+        + f"Command coverage: {command_coverage}%\n"
+        + f"Parameter coverage: {round(average_parameter_coverage, 2)}%"
+    )
+
+    display_uncovered_commands(
+        missing_params,
+        untested_commands,
+        coverage_dict,
+        output_table,
+    )
+
+    # return controller_coverage, command_coverage, average_parameter_coverage
 
 
 # get_coverage_single_controller(
-#     "openbb_terminal.economy.economy_controller",
-#     "/economy/test_economy.openbb",
-#     output_table=False,
+#     "openbb_terminal.fixedincome.fixedincome_controller",
+#     "/fixedincome/test_fixedincome.openbb",
+#     "FixedIncomeController",
 # )
