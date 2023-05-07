@@ -133,8 +133,12 @@ def download_and_save_routines(auth_header: str):
         The authorization header, e.g. "Bearer <token>".
     """
     routines = download_routines(auth_header=auth_header)
+    personal_routines_dict = routines[0]
+    default_routines_dict = routines[1]
     try:
-        for name, content in routines.items():
+        for name, content in personal_routines_dict.items():
+            save_routine(file_name=f"{name}.openbb", routine=content, force=True)
+        for name, content in default_routines_dict.items():
             save_routine(file_name=f"{name}.openbb", routine=content, force=True)
     except Exception:
         console.print("[red]\nFailed to save routines.[/red]")
