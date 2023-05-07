@@ -204,7 +204,7 @@ class Backend(PyWry):
         outgoing = dict(
             html_path=self.get_plotly_html(),
             json_data=json_data,
-            export_image=export_image,
+            export_image=str(export_image),
             **self.get_kwargs(command_location),
         )
         self.send_outgoing(outgoing)
