@@ -457,7 +457,7 @@ class PlotlyTA(PltTA):
                     figure, inchart_index = getattr(self, f"plot_{indicator}")(
                         figure, self.df_ta, inchart_index
                     )
-                elif indicator in ["fib", "srlines", "demark", "clenow"]:
+                elif indicator in ["fib", "srlines", "demark", "clenow", "ichimoku"]:
                     figure = getattr(self, f"plot_{indicator}")(figure, self.df_ta)
                 else:
                     raise ValueError(f"Unknown indicator: {indicator}")

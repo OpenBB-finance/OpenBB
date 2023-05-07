@@ -48,7 +48,7 @@ export function formatNumberMagnitude(
 
 export function includesDateNames(column: string) {
   return ["date", "day", "time", "timestamp", "year"].some((dateName) =>
-    column.toLowerCase().includes(dateName)
+    column?.toLowerCase().includes(dateName)
   );
 }
 
@@ -62,7 +62,7 @@ export function includesPriceNames(column: string) {
     "close",
     "high",
     "low",
-  ].some((priceName) => column.toLowerCase().includes(priceName));
+  ].some((priceName) => column?.toLowerCase().includes(priceName));
 }
 
 function loadingOverlay(message?: string, is_close?: boolean) {

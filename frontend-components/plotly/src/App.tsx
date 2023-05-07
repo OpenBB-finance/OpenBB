@@ -7,7 +7,7 @@ import { plotlyMockup, candlestickMockup } from "./data/mockup";
 declare global {
   [(Exposed = Window), SecureContext];
   interface Window {
-    plotly_figure: any;
+    json_data: any;
     export_image: string;
     save_image: boolean;
     title: string;
@@ -27,8 +27,8 @@ function App() {
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
       const interval = setInterval(() => {
-        if (window.plotly_figure) {
-          const data = window.plotly_figure;
+        if (window.json_data) {
+          const data = window.json_data;
           console.log(data);
           setData(data);
           clearInterval(interval);
@@ -68,8 +68,7 @@ function App() {
             globals.old_margin = { ...margin };
             if (margin.t != undefined && margin.t > 40) margin.t = 40;
 
-            margin.l = 70;
-            if (data.cmd == "/stocks/candle") margin.r -= 40;
+            if (data.cmd == "/stocks/candle") margin.r -= 50;
           }
       });
     }

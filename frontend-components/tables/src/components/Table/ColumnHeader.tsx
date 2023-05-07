@@ -5,6 +5,15 @@ import { formatNumberMagnitude, includesDateNames } from "../../utils/utils";
 import { useDrag, useDrop } from "react-dnd";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 
+function checkIfNumber(value: string | number | Date) {
+  return (value?.toString().replace(/[^0-9]/g, "") ?? "").trim().length !== 0 &&
+    value
+      ?.toString()
+      .replace(/[^a-zA-Z]/g, "" ?? "")
+      .trim().length === 1
+    ? value
+    : 0;
+}
 function Filter({
   column,
   table,
@@ -20,10 +29,14 @@ function Filter({
       row.getValue(column.id)
     );
 
+  const numberValues = values.map((value: string | number | Date) =>
+    checkIfNumber(value)
+  );
+
   const areAllValuesString = values.every(
     (value: null) => typeof value === "string" || value === null
   );
-  const areAllValuesNumber = values.every(
+  const areAllValuesNumber = numberValues.every(
     (value: null | number | string) =>
       typeof value === "number" ||
       value === null ||

@@ -16,22 +16,22 @@ import plotly.graph_objects as go
 from packaging import version
 from reportlab.graphics import renderPDF
 
+# pylint: disable=C0415
 try:
-    from pywry.core import PyWry
-
-    PYWRY_AVAILABLE = True
+    from pywry import PyWry
 except ImportError as e:
     print(f"\033[91m{e}\033[0m")
-    PYWRY_AVAILABLE = False
+    from openbb_terminal.core.plots.no_import import DummyBackend
+
+    class PyWry(DummyBackend):
+        pass
+
 
 from svglib.svglib import svg2rlg
 
 from openbb_terminal.base_helpers import console
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
-
-if not PYWRY_AVAILABLE:
-    from openbb_terminal.core.plots.no_import import DummyBackend as PyWry  # noqa
 
 try:
     from IPython import get_ipython
@@ -109,11 +109,11 @@ class Backend(PyWry):
         self.init_engine: list = []
         return pending
 
-    def get_plotly_html(self) -> str:
+    def get_plotly_html(self) -> Path:
         """Get the plotly html file."""
         self.set_window_dimensions()
         if self.plotly_html.exists():
-            return str(self.plotly_html)
+            return self.plotly_html
 
         console.print(
             "[bold red]plotly.html file not found, check the path:[/]"
@@ -122,11 +122,11 @@ class Backend(PyWry):
         self.max_retries = 0  # pylint: disable=W0201
         raise FileNotFoundError
 
-    def get_table_html(self) -> str:
+    def get_table_html(self) -> Path:
         """Get the table html file."""
         self.set_window_dimensions()
         if self.table_html.exists():
-            return str(self.table_html)
+            return self.table_html
         console.print(
             "[bold red]table.html file not found, check the path:[/]"
             f"[green]{PLOTS_CORE_PATH / 'table.html'}[/]"
@@ -134,12 +134,12 @@ class Backend(PyWry):
         self.max_retries = 0  # pylint: disable=W0201
         raise FileNotFoundError
 
-    def get_window_icon(self) -> str:
+    def get_window_icon(self) -> Optional[Path]:
         """Get the window icon."""
         icon_path = PLOTS_CORE_PATH / "assets" / "Terminal_icon.png"
         if icon_path.exists():
-            return str(icon_path)
-        return ""
+            return icon_path
+        return None
 
     def get_json_update(self, cmd_loc: str, theme: Optional[str] = None) -> dict:
         """Get the json update for the backend."""
@@ -201,16 +201,14 @@ class Backend(PyWry):
 
         json_data.update(self.get_json_update(command_location))
 
-        self.outgoing.append(
-            json.dumps(
-                {
-                    "html_path": self.get_plotly_html(),
-                    "json_data": json_data,
-                    "export_image": str(export_image),
-                    **self.get_kwargs(command_location),
-                }
-            )
+        outgoing = dict(
+            html_path=self.get_plotly_html(),
+            json_data=json_data,
+            export_image=export_image,
+            **self.get_kwargs(command_location),
         )
+        self.send_outgoing(outgoing)
+
         if export_image and isinstance(export_image, Path):
             self.loop.run_until_complete(self.process_image(export_image))
 
@@ -300,35 +298,14 @@ class Backend(PyWry):
             )
         )
 
-        self.outgoing.append(
-            json.dumps(
-                {
-                    "html_path": self.get_table_html(),
-                    "json_data": json.dumps(json_data),
-                    "width": width,
-                    "height": self.HEIGHT - 100,
-                    **self.get_kwargs(command_location),
-                }
-            )
+        outgoing = dict(
+            html_path=self.get_table_html(),
+            json_data=json.dumps(json_data),
+            width=width,
+            height=self.HEIGHT - 100,
+            **self.get_kwargs(command_location),
         )
-
-    def send_html(self, html_str: str = "", html_path: str = "", title: str = ""):
-        """Send HTML to the backend to be displayed in a window.
-
-        Parameters
-        ----------
-        html_str : str
-            HTML string to send to backend.
-        html_path : str, optional
-            Path to html file to send to backend, by default ""
-        title : str, optional
-            Title to display in the window, by default ""
-        """
-        self.loop.run_until_complete(self.check_backend())
-        message = json.dumps(
-            {"html_str": html_str, "html_path": html_path, **self.get_kwargs(title)}
-        )
-        self.outgoing.append(message)
+        self.send_outgoing(outgoing)
 
     def send_url(
         self,
@@ -356,15 +333,13 @@ class Backend(PyWry):
             window.location.replace("{url}");
         </script>
         """
-        message = json.dumps(
-            {
-                "html_str": script,
-                **self.get_kwargs(title),
-                "width": width or self.WIDTH,
-                "height": height or self.HEIGHT,
-            }
+        outgoing = dict(
+            html_str=script,
+            **self.get_kwargs(title),
+            width=width or self.WIDTH,
+            height=height or self.HEIGHT,
         )
-        self.outgoing.append(message)
+        self.send_outgoing(outgoing)
 
     def get_kwargs(self, title: str = "") -> dict:
         """Get the kwargs for the backend."""
@@ -383,7 +358,7 @@ class Backend(PyWry):
         """Override to check if isatty."""
         if self.isatty:
             message = (
-                "[bold red]PyWry version 0.3.5 or higher is required to use the "
+                "[bold red]PyWry version 0.5.2 or higher is required to use the "
                 "OpenBB Plots backend.[/]\n"
                 "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
             )
@@ -398,7 +373,7 @@ class Backend(PyWry):
 
                 PyWry.__version__ = pywry_version  # pylint: disable=W0201
 
-            if version.parse(PyWry.__version__) < version.parse("0.3.5"):
+            if version.parse(PyWry.__version__) < version.parse("0.5.2"):
                 console.print(message)
                 self.max_retries = 0  # pylint: disable=W0201
                 return

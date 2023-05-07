@@ -5032,17 +5032,18 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.2.2)", "pytest (>=7.2.1)", "pytes
 
 [[package]]
 name = "plotly"
-version = "5.13.1"
+version = "5.14.1"
 description = "An open-source, interactive data visualization library for Python"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "plotly-5.13.1-py2.py3-none-any.whl", hash = "sha256:f776a5c664908450c6c1727f61e8e2e22798d9c6c69d37a9057735365084a2fa"},
-    {file = "plotly-5.13.1.tar.gz", hash = "sha256:90ee9a1fee0dda30e2830e129855081ea17bd1b06a553a62b62de15caff1a219"},
+    {file = "plotly-5.14.1-py2.py3-none-any.whl", hash = "sha256:a63f3ad9e4cc2e02902a738e5e3e7f3d1307f2732ac71a6c28f1238ed3052826"},
+    {file = "plotly-5.14.1.tar.gz", hash = "sha256:bcac86d7fcba3eff7260c1eddc36ca34dae2aded10a0709808446565e0e53b93"},
 ]
 
 [package.dependencies]
+packaging = "*"
 tenacity = ">=6.2.0"
 
 [[package]]
@@ -6497,31 +6498,29 @@ files = [
 
 [[package]]
 name = "pywry"
-version = "0.5.1"
+version = "0.5.2"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pywry-0.5.1-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:b2c31abb3002c44bbcfca62bc197b3a2b762c4414cf9679550354f38a4c728dc"},
-    {file = "pywry-0.5.1-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:bf072c55efc4147f5f5e0818708e46273d2e126890c58014a9a614d4498b258e"},
-    {file = "pywry-0.5.1-cp310-none-win_amd64.whl", hash = "sha256:a48ecc60ba974353eac36dff45940943cec197cb1d76af9178d009a95591eaf5"},
-    {file = "pywry-0.5.1-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:c82f66559972c2af7638257147285f636212facd33e72796c5c7c0001461bcdd"},
-    {file = "pywry-0.5.1-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:a29dcc57bd12e48ff812dd24677b7a728e36a700adacccb1a33ce0b7f536b3ba"},
-    {file = "pywry-0.5.1-cp311-none-win_amd64.whl", hash = "sha256:c9c6572981635ac22e69cbcd843493dfb92d8a243300db8dac7574d97f718677"},
-    {file = "pywry-0.5.1-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:186b79aced01d7b0373c43196cb1a072ab42658f17fc0f2d9a6bff023e1221cf"},
-    {file = "pywry-0.5.1-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:1a6a7bb35ee122623477e5774d5dd9e3089064191de72e1637ef85cafd6aba3b"},
-    {file = "pywry-0.5.1-cp38-none-win_amd64.whl", hash = "sha256:f290da8ea34ee393bbe6fb2252db333f1404c3b81e43d0dcb387ac53f1a821df"},
-    {file = "pywry-0.5.1-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:e2889ad9ed837873d11c3871707d3e6203b7df268b5917f84926f81561897c8e"},
-    {file = "pywry-0.5.1-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:6f2765c1b8eda26ec33a2cafda3814cd7fa37a9f047302f9d07dbf6a775df7b0"},
-    {file = "pywry-0.5.1-cp39-none-win_amd64.whl", hash = "sha256:ef9a1a749f2d471659c6c4bbf4ecd3a022d12c91c714b1a587d3e1fa2b5721fe"},
-    {file = "pywry-0.5.1.tar.gz", hash = "sha256:b8fbbe7c7a8e6d0fe8bfbab1cf58c069e3768ac928eb40213b7ee1d3412badf7"},
+    {file = "pywry-0.5.2-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:68e23f974db0a31e340016300f895bc00cd44fa1194208ddc1820cd23c98ba92"},
+    {file = "pywry-0.5.2-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:4b43dc407bd87266a71edf79a568df58291513b78da6cfd0e2a2b4268ccf862f"},
+    {file = "pywry-0.5.2-cp310-none-win_amd64.whl", hash = "sha256:957274a1603558a38576e2d04a0db142fb4c7e053c20e5770e5552124d9de906"},
+    {file = "pywry-0.5.2-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:e38c11a932f5844c5130a42dd20599c8e608a87bce9499962d454a6f6aa1e35c"},
+    {file = "pywry-0.5.2-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:0d310e0c5f415752f19aaf8827c214b34133aa8a4c57509ea1dde12ac0c2cffb"},
+    {file = "pywry-0.5.2-cp311-none-win_amd64.whl", hash = "sha256:695b7776e3e1a976578519ea2914e9ae17a72023fe0f6dd49cd680e71bc4bb50"},
+    {file = "pywry-0.5.2-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:00a23256553a3badbdc7c028171f9659341cda5dd3e39d4a29fc093caa13a76d"},
+    {file = "pywry-0.5.2-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:7601fedb7dc709a72d3dba975dde871a37445678f738d491ee5d09dc395f8625"},
+    {file = "pywry-0.5.2-cp38-none-win_amd64.whl", hash = "sha256:f6a85cbaffbdcbb9ca5c6421c5ed104a7c0a5a59abd3ad11c00f01112036e508"},
+    {file = "pywry-0.5.2-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:da4ca7ad6a9c8e05176952d287b847dcd3b171fd292a8af088554b43c2321c9b"},
+    {file = "pywry-0.5.2-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:a02a1d5b4a7ec2833ce0055d93e7efbb0bc8528abf66f819150af20f3cd252e3"},
+    {file = "pywry-0.5.2-cp39-none-win_amd64.whl", hash = "sha256:2d8b6488f318101c5c33f7c6abaed34fdc3ad0ae11996e3e933f8c51b4ffccf4"},
+    {file = "pywry-0.5.2.tar.gz", hash = "sha256:f23131d5347513aa231a03d1f972704f772d7b1175e38c95668599f560989939"},
 ]
 
 [package.dependencies]
-psutil = ">=5.8.0,<5.9.4"
 setproctitle = "*"
-websockets = "*"
 
 [package.extras]
 dev = ["auditwheel", "wheel"]
@@ -9692,4 +9691,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "7e54817d717ecfc5e9a7e9e7312f717c7ae86398f5a386910f0d9aab047ac69a"
+content-hash = "7a187d9fd3045fbc04fbc4140afc122d96a26f092908cf63fcefe362e81ea26f"
