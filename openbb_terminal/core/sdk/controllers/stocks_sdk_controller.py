@@ -27,6 +27,7 @@ class StocksController(model.StocksRoot):
         `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
+        `quote_chart`: Financial Modeling Prep ticker(s) quote.\n
         `search`: Search selected query for tickers.\n
         `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
     """
@@ -260,7 +261,7 @@ class StocksController(model.StocksRoot):
 
         Attributes:
             `chains`: Get Option Chain For A Stock.  No greek data is returned\n
-            `dte`: Gets days to expiration from yfinance option date\n
+            `dte`: Returns a new column containing the DTE as an integer, including 0.\n
             `eodchain`: Get full EOD option date across all expirations\n
             `expirations`: Get Option Chain Expirations\n
             `generate_data`: Gets x values, and y values before and after premiums\n
