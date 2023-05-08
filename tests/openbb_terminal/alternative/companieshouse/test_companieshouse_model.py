@@ -1,4 +1,3 @@
-import pytest
 import requests
 
 # IMPORTATION INTERNAL
@@ -182,7 +181,7 @@ def test_get_filings(mocker):
                 "description_values": {"made_up_date": "2022-12-17"},
                 "links": {
                     "self": "/company/13090621/filing-history/MzM2NDcxNTAzMWFkaXF6a2N4",
-                    "document_metadata": "https://frontend-doc-api.company-information.service.gov.uk/document/ZIvXc9ye1Y9q7FaE5mPNlwe1XghXICPgIhdoXoKxgjE",
+                    "document_metadata": "https://frontend-doc-api.company-information.service.gov.uk/document/ZIvX",
                 },
                 "type": "CS01",
                 "pages": 3,
@@ -196,7 +195,7 @@ def test_get_filings(mocker):
                 "description_values": {"made_up_date": "2021-12-31"},
                 "links": {
                     "self": "/company/13090621/filing-history/MzM1MTY4NjU5NmFkaXF6a2N4",
-                    "document_metadata": "https://frontend-doc-api.company-information.service.gov.uk/document/8_jguL3wGhY4CYashWk47Z5Zd-h5QpW4bQKT15Qgorc",
+                    "document_metadata": "https://frontend-doc-api.company-information.service.gov.uk/document/8_jg",
                 },
                 "type": "AA",
                 "pages": 9,
@@ -215,7 +214,7 @@ def test_get_filings(mocker):
                 },
                 "links": {
                     "self": "/company/13090621/filing-history/MzM1MTIwMjE4NGFkaXF6a2N4",
-                    "document_metadata": "https://frontend-doc-api.company-information.service.gov.uk/document/h1b5B84vYbJ2dqXuxSALZNdNV3J9pv_RmxUSVGj2Yes",
+                    "document_metadata": "https://frontend-doc-api.company-information.service.gov.uk/document/h1b5B84v",
                 },
                 "type": "AD01",
                 "pages": 1,
