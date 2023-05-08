@@ -8,6 +8,8 @@ from pandas.tseries.holiday import next_workday
 
 from openbb_terminal.helper_funcs import request
 
+__docformat__ = "numpy"
+
 cal = mcal.get_calendar(name="TSX")
 holidays = list(cal.regular_holidays.holidays().strftime("%Y-%m-%d"))
 
