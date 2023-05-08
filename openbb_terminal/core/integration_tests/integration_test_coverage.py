@@ -140,7 +140,6 @@ def get_commands_and_params(
     try:
         module = module()  # type: ignore
     except TypeError:
-        # HERE GOES OLD LOGIC
         commands = get_submodule_commands(module)
         params = map_module_to_calls(module)
         if get_commands and get_params:
@@ -525,7 +524,6 @@ def calculate_controller_coverage(
     average_parameter_coverage: float,
 ) -> float:
     """Calculate the global coverage."""
-    # Up for discussion
     controller_coverage = (command_coverage * average_parameter_coverage) / 100
 
     return round(controller_coverage, 2)
@@ -593,12 +591,3 @@ def get_coverage_single_controller(
         coverage_dict,
         output_table,
     )
-
-
-# get_coverage_single_controller(
-#     "openbb_terminal.fixedincome.fixedincome_controller",
-#     "/fixedincome/test_fixedincome.openbb",
-#     "FixedIncomeController",
-# )
-
-# get_coverage_all_controllers()
