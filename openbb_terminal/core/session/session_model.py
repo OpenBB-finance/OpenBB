@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import (
-    posthog_identify_and_alias,
     remove_log_handlers,
 )
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
@@ -107,7 +106,6 @@ def login(session: Dict, remember: bool = False) -> LoginStatus:
             email = configs.get("email", "")
             hub_user.profile.load_user_info(session, email, remember)
             set_current_user(hub_user)
-            posthog_identify_and_alias()
 
             auth_header = hub_user.profile.get_auth_header()
             if sys.stdin.isatty():

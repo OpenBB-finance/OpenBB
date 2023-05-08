@@ -12,9 +12,6 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.log.generation.user_logger import NO_USER_PLACEHOLDER
-from openbb_terminal.core.session.current_system import get_current_system
-from openbb_terminal.core.session.current_user import get_current_user
 
 console = Console()
 
@@ -24,32 +21,6 @@ openbb_posthog = Posthog(
     "phc_vhssDAMod5qIplznQ75Kdgz4aB1qPFmeVmfEOZ4hkRw",
     host="https://app.posthog.com",
 )
-
-
-def posthog_alias():
-    user_uuid = get_current_user().profile.uuid
-    app_id = get_current_system().LOGGING_APP_ID
-
-    if (
-        user_uuid
-        and user_uuid != NO_USER_PLACEHOLDER
-        and app_id
-        and app_id != "REPLACE_ME"
-    ):
-        openbb_posthog.alias(user_uuid, app_id)
-
-
-def posthog_identify():
-    current_user = get_current_user()
-    user_uuid = current_user.profile.uuid
-
-    if user_uuid and user_uuid != NO_USER_PLACEHOLDER:
-        openbb_posthog.identify(user_uuid, {"email": current_user.profile.email})
-
-
-def posthog_identify_and_alias():
-    posthog_identify()
-    posthog_alias()
 
 
 def handle_error(name: str, default: Any, menu: menus = ""):

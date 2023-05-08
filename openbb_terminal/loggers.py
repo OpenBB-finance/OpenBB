@@ -22,7 +22,8 @@ else:
     WITH_GIT = True
 
 # IMPORTATION INTERNAL
-from openbb_terminal.base_helpers import openbb_posthog, posthog_identify
+from openbb_terminal.base_helpers import openbb_posthog
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.core.log.generation.directories import get_log_dir
 from openbb_terminal.core.log.generation.formatter_with_exceptions import (
     FormatterWithExceptions,
@@ -147,9 +148,16 @@ class PosthogHandler(logging.Handler):
         if re.match(r"^(START|END|INPUT:)", log_line):
             return
 
-        if not self.logged_in:
+        if (
+            not self.logged_in
+            and get_user_uuid() != NO_USER_PLACEHOLDER
+            and get_current_user().profile.remember
+        ):
             self.logged_in = True
-            posthog_identify()
+            openbb_posthog.identify(
+                get_user_uuid(), {"email": get_current_user().profile.email}
+            )
+            openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
 
         openbb_posthog.capture(
             app_settings.identifier,
