@@ -1,0 +1,315 @@
+Option Symbol,Name of Underlying Instrument,Underlying Symbol
+ARE,Aecon Group Inc.,ARE
+AEM,Agnico Eagle Mines Limited,AEM
+AC,Air Canada,AC
+AGI,Alamos Gold Inc.,AGI
+AD,Alaris Royalty Corp.,AD.UN
+ASTL,Algoma Steel Group Inc.,ASTL
+AQN,Algonquin Power & Utilities Corp.,AQN
+ATD,"Alimentation Couche Tard Inc., Cl. B",ATD
+AP,Allied Properties Real Estate Investment Trust,AP.UN
+ALA,AltaGas Ltd.,ALA
+AIF,Altus Group Limited,AIF
+ARX,ARC Resources Ltd.,ARX
+ATZ,Aritzia Inc.,ATZ
+AX,Artis Real Estate Investment Trust,AX.UN
+ACO,ATCO Ltd. Cl. I,ACO.X
+ATS,ATS Corporation,ATS
+ACB,Aurora Cannabis Inc.,ACB
+ACQ,AutoCanada Inc.,ACQ
+BTO,B2Gold Corp.,BTO
+BDGI,Badger Infrastructure Solutions Ltd.,BDGI
+BLDP,Ballard Power Systems Inc.,BLDP
+BMO,Bank of Montreal,BMO
+BNS,Bank of Nova Scotia (The),BNS
+ABX,Barrick Gold Corporation,ABX
+BHC,Bausch Health Companies Inc.,BHC
+BTE,Baytex Energy Corp.,BTE
+BCE,BCE Inc.,BCE
+BIR,Birchcliff Energy Limited,BIR
+BITF,Bitfarms Ltd,BITF
+BB,BlackBerry Limited,BB
+BEI,Boardwalk Real Estate Investment Trust,BEIu
+BBD,"Bombardier Inc., Cl. B",BBD.B
+BBD1,"Bombardier Inc., Cl. B",BBD1
+BLX,Boralex Inc. Class A Shares,BLX
+BAM,"Brookfield Asset Management Inc., Cl. A",BAM
+BN1,"Brookfield Asset Management Inc., Cl. A",BN1
+BN,Brookfield Corporation,BN
+BIP,Brookfield Infrastructure Partners L.P.,BIPu
+BEPC,Brookfield Renewable Corporation,BEPC
+BEP,Brookfield Renewable Partners L.P.,BEPu
+DOO,BRP Inc.,DOO
+CAE,CAE Inc.,CAE
+CCO,Cameco Corporation,CCO
+CF,Canaccord Genuity Group Inc.,CF
+GOOS,Canada Goose Holdings Inc.,GOOS
+CAR,Canadian Apartment Properties Real Estate Investment Trust,CARu
+CM,Canadian Imperial Bank of Commerce,CM
+CNR,Canadian National Railway Company,CNR
+CNQ,Canadian Natural Resources Limited,CNQ
+CP,Canadian Pacific Railway Limited,CP
+CTC,"Canadian Tire Corporation Limited, Cl. A",CTC.A
+CU,"Canadian Utilities Limited, Cl. A",CU
+CWB,Canadian Western Bank,CWB
+CFP,Canfor Corporation,CFP
+WEED,Canopy Growth Corporation,WEED
+CPX,Capital Power Corporation,CPX
+CS,Capstone Mining Corp.,CS
+CJ,Cardinal Energy Ltd.,CJ
+CAS,Cascades Inc.,CAS
+CCL,"CCL Industries Inc., Cl. B",CCL.B
+CLS,Celestica Inc.,CLS
+CVE,Cenovus Energy Inc.,CVE
+CG,Centerra Gold Inc.,CG
+GIB,"CGI Inc., Cl. A",GIB.A
+CIA,Champion Iron Limited,CIA
+CWEB,Charlotte’s Web Holdings Inc.,CWEB
+CSH,Chartwell Retirement Residences,CSHu
+CHE,Chemtrade Logistics Income Fund,CHEu
+CHP,Choice Properties Real Estate Investment Trust,CHPu
+CIX,CI Financial Corp.,CIX
+CGX,Cineplex Inc.,CGX
+CCA,Cogeco Communications Inc.,CCA
+CTS,Converge Technology Solutions Corp.,CTS
+CJR,"CORUS Entertainment Inc., Cl. B",CJR.B
+CPG,Crescent Point Energy Corp.,CPG
+CRR,Crombie Real Estate Investment Trust,CRRu
+CRON,Cronos Group Inc.,CRON
+DFY,Definity Financial Corporation,DFY
+DSG,Descartes Systems Group Inc.,DSG
+DOL,Dollarama Inc.,DOL
+DII,Dorel Industries Inc. Cl. B,DII.B
+DIR,Dream Industrial Real Estate Investment Trust,DIRu
+D,Dream Office Real Estate Investment Trust,D.UN
+DPM,Dundee Precious Metals Inc.,DPM
+DND,Dye & Durham Limited,DND
+ECN,ECN Capital Corp.,ECN
+ELD,Eldorado Gold Corp.,ELD
+EFN,Element Fleet Management Corp.,EFN
+EMA,Emera Inc.,EMA
+EMP,"Empire Company Limited, Cl. A",EMP.A
+ENB,Enbridge Inc.,ENB
+EDV,Endeavour Mining Corporation,EDV
+EDR,Endeavour Silver Corp.,EDR
+EFR,Energy Fuels Inc.,EFR
+ERF,Enerplus Resources Fund,ERF
+EGLX,Enthusiast Gaming Holdings Inc.,EGLX
+EQX,Equinox Gold Corp,EQX
+ERO,Ero Copper Corp.,ERO
+EXE,Extendicare Inc.,EXE
+FIL,Filo Mining Corp.,FIL
+FTT,Finning International Inc.,FTT
+FCR,First Capital Real Estate Investment Trust,FCRu
+FR,First Majestic Silver Corp.,FR
+FM,First Quantum Minerals Ltd.,FM
+FTS,Fortis Inc.,FTS
+FVI,Fortuna Silver Mines Inc.,FVI
+FNV,Franco-Nevada Corp.,FNV
+FRU,Freehold Royalties Ltd.,FRU
+FEC,Frontera Energy Corporation,FEC
+GLXY,Galaxy Digital Holdings Ltd.,GLXY
+WN,George Weston Limited,WN
+GFL,GFL Environmental Inc.,GFL
+GEI,Gibson Energy Inc.,GEI
+GIL,Gildan Activewear Inc.,GIL
+GLO,Global Atomic Corporation,GLO
+FOOD,GoodFood Market Corp.,FOOD
+GRT,Granite Real Estate Investment Trust Inc.,GRTu
+GWO,Great-West Lifeco Inc.,GWO
+AIM,Groupe Aeroplan Inc.,AIM
+HWX,Headwater Exploration Inc.,HWX
+HEXO2,HEXO Corp.,HEXO2
+HCG,Home Capital Group Inc.,HCG
+HBM,Hudbay Minerals Inc.,HBM
+HUT,Hut 8 Mining Corp.,HUT
+H,Hydro One Limited,H
+IAG,iA Financial Corporation Inc.,IAG
+IMG,IAMGOLD Corporation,IMG
+IGM,IGM Financial Inc.,IGM
+ILLM,ILLM,ILLM
+IMO,Imperial Oil Limited,IMO
+INE,Innergex Renewable Energy Inc.,INE
+IFC,Intact Financial Corporation,IFC
+IPL2,Inter Pipeline Ltd.,IPL2
+IFP,Interfor Corporation,IFP
+IVN,Ivanhoe Mines Ltd.,IVN
+KNT,K92 Mining Inc.,KNT
+KRR,Karora Resources Inc.,KRR
+KEY,Keyera Corp.,KEY
+KXS,Kinaxis Inc.,KXS
+K,Kinross Gold Corporation,K
+LIF,Labrador Iron Ore Royalty Corporation Please refer to circular no. 040-17.,LIF
+LB,Laurentian Bank of Canada,LB
+LSPD,Lightspeed POS Inc.,LSPD
+LNR,Linamar Corporation,LNR
+LEV,Lion Electric Company,LEV
+LAC,Lithium Americas,LAC
+L,Loblaw Companies Ltd.,L
+LUG,Lundin Gold Inc.,LUG
+LUN,Lundin Mining Corporation,LUN
+MAG,MAG Silver Corp.,MAG
+MG,Magna International Inc,MG
+MDI,Major Drilling Group International Inc.,MDI
+MFC,Manulife Financial Corporation,MFC
+MFI,Maple Leaf Foods Inc.,MFI
+MRE,Martinrea International Inc.,MRE
+MAXR,Maxar Technologies Ltd.,MAXR
+MEG,MEG Energy Corp.,MEG
+MX,Methanex Corporation,MX
+MRU,Metro Inc.,MRU
+MTL,Mullen Group Ltd.,MTL
+,National Bank of Canada,
+NGD,New Gold Inc.,NGD
+NGT,Newmont Corporation,NGT
+NXE,NexGen Energy Ltd.,NXE
+NFI,NFI Group Inc.,NFI
+NPI,Northland Power Inc.,NPI
+NWH,NorthWest Healthcare Properties Real Estate Investment Trust,NWHu
+NG,NovaGold Resources Inc.,NG
+NTR,Nutrien Ltd.,NTR
+NVEI,Nuvei Corporation,NVEI
+OBE,Obsidian Energy Ltd.,OBE
+OGC,OceanaGold Corporation,OGC
+ONEX,Onex Corporation,ONEX
+OTEX,Open Text Corp.,OTEX
+OGI,Organigram Holdings Inc.,OGI
+OLA,Orla Mining Ltd,OLA
+OR,Osisko Gold Royalties Ltd.,OR
+OSK,Osisko Mining Corp.,OSK
+OVV,Ovintiv Inc.,OVV
+PAAS,Pan American Silver Corporation,PAAS
+POU,Paramount Resources Ltd.,POU
+PXT,Parex Resources Inc.,PXT
+PKI,Parkland Fuel Corporation,PKI
+PPL,Pembina Pipeline Corporation,PPL
+PEY,Peyto Exploration & Development Corp.,PEY
+POW,Power Corporation of Canada,POW
+PSK,PrairieSky Royalty Ltd.,PSK
+PD,Precision Drilling Corporation,PD
+PBH,Premium Brands Holdings Corporation,PBH
+PMZ,Primaris Retail Real Estate Investment Trust,PMZu
+PRMW,Primo Water Corporation,PRMW
+PYR,Pyrogenesis Canada Inc.,PYR
+QBR,"Quebecor Inc., Cl. B",QBR.B
+REAL,Real Matters Inc.,REAL
+QSR,Restaurant Brands International,QSR
+REI,RioCan Real Estate Investment Trust,REIu
+RBA,Ritchie Bros. Auctioneers Incorporated,RBA
+RBA1,Ritchie Bros. Auctioneers Incorporated,RBA1
+RCI,"Rogers Communications Inc., Cl. B",RCI.B
+RY,Royal Bank of Canada,RY
+RUS,Russel Metals Inc.,RUS
+SSL,Sandstorm Gold Ltd.,SSL
+SAP,Saputo Inc.,SAP
+SIS,Savaria Corporation,SIS
+SEA,Seabridge Gold Inc.,SEA
+SES,Secure Energy Services Inc.,SES
+SCL,"ShawCor Ltd., Cl. A",SCL
+SHOP,Shopify Inc. Cl. A,SHOP
+SIA,Sienna Senior Living Inc.,SIA
+SVM,Silvercorp Metals Inc.,SVM
+SIL,SilverCrest Metals Inc.,SIL
+SRU,SmartCentres Real Estate Investment Trust,SRUu
+SNC,SNC-Lavalin Group Inc.,SNC
+TOY,Spin Master Corp.,TOY
+SSRM,SSR Mining Inc.,SSRM
+STN,Stantec Inc.,STN
+STLC,Stelco Holdings Inc.,STLC
+SJ,Stella-Jones Inc.,SJ
+SVI,StorageVault Canada Inc.,SVI
+SLF,Sun Life Financial,SLF
+SU,Suncor Energy Inc.,SU
+SOY,"SunOpta, Inc.",SOY
+SPB,Superior Plus Corp.,SPB
+TVE,Tamarack Valley Energy Ltd.,TVE
+TRP,TC Energy Corporation,TRP
+TECK,"Teck Resources Limited, Cl. B",TECK.B
+T,TELUS Corporation,T
+TIXT,Telus International Cda Inc.,TIXT
+TFII,TFI International Inc.,TFII
+TRI,Thomson Reuters Corporation,TRI
+TLRY,Tilray Inc.,TLRY
+X,TMX Group Limited,X
+TPZ,Topaz Energy Corp.,TPZ
+TXG,Torex Gold Resources Inc.,TXG
+TIH,Toromont Industries Ltd.,TIH
+TD,Toronto-Dominion Bank (The),TD
+TOU,Tourmaline Oil Corp.,TOU
+TA,TransAlta Corporation,TA
+RNW,TransAlta Renewable Inc.,RNW
+TCL,"Transcontinental Inc., Cl. A",TCL.A
+TCN,Tricon Capital Group Inc.,TCN
+TSU,Trisura Group Ltd.,TSU
+UNS,Uni-Select Inc.,UNS
+NPK,Verde AgriTech Plc,NPK
+VET,Vermilion Energy Inc.,VET
+VGCX,Victoria Gold Corp.,VGCX
+WCN,Waste Connections Inc.,WCN
+WELL,WELL Health Technologies Corp.,WELL
+WDO,Wesdome Gold Mines Ltd.,WDO
+WFG,West Fraser Timber Co. Ltd.,WFG
+WPRT,Westport Fuel Systems Inc.,WPRT
+WTE,Westshore Terminals Investment Corporation,WTE
+WPM,Wheaton Precious Metals Corp.,WPM
+WCP,Whitecap Resources Inc.,WCP
+WSP,WSP Global Inc.,WSP
+YRI1,Yamana Gold Inc. Please refer to circular no. 114-12.,YRI1
+BTCQ,3iQ CoinShares Bitcoin ETF,BTCQ
+ETHQ,3iQ Coinshares Ether ETF,ETHQ
+HGD,BetaPro Canadian Gold Miners -2x Daily Bear ETF,HGD
+HGU,BetaPro Canadian Gold Miners 2x Daily Bull ETF,HGU
+HOD,BetaPro Crude Oil Inverse Leveraged Daily Bear ETF,HOD
+HOD1,BetaPro Crude Oil Inverse Leveraged Daily Bear ETF,HOD1
+HND,BetaPro Natural Gas Inverse Leveraged Daily Bear ETF,HND
+HND2,BetaPro Natural Gas Inverse Leveraged Daily Bear ETF Please refer to circular no. 021-14.,HND2
+HNU,BetaPro Natural Gas Leveraged Daily Bull ETF,HNU
+HNU1,BetaPro Natural Gas Leveraged Daily Bull ETF Please refer to circular no. 145-10.,HNU1
+ZAG,BMO Aggregate Bond Index ETF,ZAG
+ZEB,BMO Equal Weight Banks Index ETF,ZEB
+ZUB,BMO Equal Weight US Banks Hedged to CAD Index ETF,ZUB
+ZBK,BMO Equal Weight US Banks Index ETF CAD Units,ZBK
+ZUT,BMO Equal Weight Utilities Index ETF,ZUT
+ZHY,BMO High Yield US Corporate Bond Hedged to CAD Index ETF,ZHY
+ZLB,BMO Low Volatility Canadian Equity ETF,ZLB
+ZDM,BMO MSCI EAFE Hedged to CAD Index ETF,ZDM
+ZUQ,BMO MSCI USA High Quality Index ETF,ZUQ
+ZQQ,BMO Nasdaq 100 Equity Hedged to CAD Index ETF,ZQQ
+ZUE,BMO S&P 500 Hedged to CAD Index ETF,ZUE
+ZSP,BMO S&P 500 Index ETF,ZSP
+ZCN,BMO S&P/TSX Capped Composite Index ETF,ZCN
+ZPR,BMO S&P/TSX Laddered Preferred Share Index ETF,ZPR
+BTCX,CI Galaxy Bitcoin ETF,BTCX.B
+ETHX,CI Galaxy Ethereum ETF,ETHX.B
+ETHR,Ether ETF,ETHR
+EBIT,Evolve Bitcoin ETF Canadian dollar denominated units,EBIT
+TECH,Evolve FANGMA Index ETF,TECH
+HPR,Horizons Active Preferred Share ETF,HPR
+HMMJ,Horizons Marijuana Life Sciences Index ETF,HMMJ
+HMMJ2,Horizons Marijuana Life Sciences Index ETF,HMMJ2
+HMMJ3,Horizons Marijuana Life Sciences Index ETF,HMMJ3
+HXQ,Horizons NASDAQ 100 Index ETF,HXQ
+HOG,Horizons Pipelines & Energy Services Index ETF,HOG
+HXT,Horizons S&P/TSX 60 Index ETF,HXT
+XDV,iShares Canadian Select Dividend Index ETF,XDV
+XCB,iShares Core Canadian Corporate Bond Index ETF,XCB
+XSB,iShares Core Canadian Short Term Bond Index ETF,XSB
+XSP,iShares Core S&P 500 Index ETF (CAD-Hedged),XSP
+XIC,iShares Core S&P/TSX Capped Composite Index ETF,XIC
+XIN,iShares MSCI EAFE Index ETF (CAD-Hedged),XIN
+XIU,iShares S&P/TSX 60 Index ETF,XIU
+XEG,iShares S&P/TSX Capped Energy Index ETF,XEG
+XFN,iShares S&P/TSX Capped Financials Index ETF,XFN
+XRE,iShares S&P/TSX Capped REIT Index ETF,XRE
+XGD,iShares S&P/TSX Global Gold Index ETF,XGD
+XSU,iShares U.S. Small Cap Index ETF (CAD-Hedged),XSU
+BTCC,Purpose Bitcoin ETF CAD ETF Non-currency Hedged Units,BTCC.B
+ETHH,Purpose Ether ETF,ETHH.B
+VAB,Vanguard Canadian Aggregate Bond Index ETF,VAB
+VSB,Vanguard Canadian Short-Term Bond Index ETF,VSB
+VSC,Vanguard Canadian Short-Term Corporate Bond Index ETF,VSC
+VFV,Vanguard S&P 500 Index ETF,VFV
+SXO,S&P/TSX 60 Index Standard Options,TX60
+SXV,S&P/TSX Capped Utilities Index Options,TTUT
+SXJ,S&P/TSX Composite Index Banks (Industry Group) Options,TXBA
+USX,Options on the US Dollar,

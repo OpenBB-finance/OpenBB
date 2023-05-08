@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1
+    method: GET
+    uri: https://webapi.thecse.com/trading/other/securities/BAD_SYMBOL.json
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>4KSTMZNES4N3M5XV</RequestId><HostId>XDm7l4yF+muC3yi7ySuxa2JWNvYYqGy/ZrvdHDX1/zu7KB2RFNPXTJn+Sd9MgD9AchGpDS1vif8=</HostId></Error>'
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=86400
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/xml
+      Date:
+      - Mon, 08 May 2023 01:28:42 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 35575576af8067e30cfb17c6b9fde8e2.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - UbpAMGvkZWXQJrgOD3C3FKbdhzDjzHl1Jw8fHem1YSxmQ7-wHKHuYQ==
+      X-Amz-Cf-Pop:
+      - SEA73-P1
+      X-Cache:
+      - Error from cloudfront
+    status:
+      code: 403
+      message: Forbidden
+version: 1
