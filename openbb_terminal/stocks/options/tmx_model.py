@@ -82,7 +82,7 @@ def get_all_ticker_symbols() -> pd.DataFrame:
 def get_underlying_price(symbol: str) -> pd.Series:
     """Gets the current price of the underlying asset from the Canadian Securities Exchange."""
 
-    data:object = ()
+    data: object = ()
     symbol = symbol.upper()
     URL = f"https://webapi.thecse.com/trading/other/securities/{symbol}.json"
 
@@ -121,7 +121,7 @@ class Ticker:
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = ""
-        self.underlying_price:object = ()
+        self.underlying_price: object = ()
 
     def check_symbol(self, symbol: str) -> bool:
         """Checks if the symbol is valid."""
