@@ -110,11 +110,11 @@ class Backend(PyWry):
         self.init_engine: list = []
         return pending
 
-    def get_plotly_html(self) -> str:
+    def get_plotly_html(self) -> Path:
         """Get the plotly html file."""
         self.set_window_dimensions()
         if self.plotly_html.exists():
-            return str(self.plotly_html)
+            return self.plotly_html
 
         console.print(
             "[bold red]plotly.html file not found, check the path:[/]"
@@ -123,11 +123,11 @@ class Backend(PyWry):
         self.max_retries = 0  # pylint: disable=W0201
         raise FileNotFoundError
 
-    def get_table_html(self) -> str:
+    def get_table_html(self) -> Path:
         """Get the table html file."""
         self.set_window_dimensions()
         if self.table_html.exists():
-            return str(self.table_html)
+            return self.table_html
         console.print(
             "[bold red]table.html file not found, check the path:[/]"
             f"[green]{PLOTS_CORE_PATH / 'table.html'}[/]"
@@ -205,7 +205,7 @@ class Backend(PyWry):
         outgoing = dict(
             html_path=self.get_plotly_html(),
             json_data=json_data,
-            export_image=str(export_image),
+            export_image=export_image,
             **self.get_kwargs(command_location),
         )
         self.send_outgoing(outgoing)
