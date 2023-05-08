@@ -72,7 +72,6 @@ def get_underlying_price(symbol: str) -> pd.Series:
     return data
 
 
-# %%
 class Ticker:
     def __init__(self) -> None:
         self.SYMBOLS = get_all_ticker_symbols()
