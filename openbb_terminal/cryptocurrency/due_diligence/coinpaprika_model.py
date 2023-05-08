@@ -122,11 +122,12 @@ def get_coin_events_by_id(
         lambda x: "\n".join(textwrap.wrap(x, width=40)) if isinstance(x, str) else x
     )
     data.drop(["id", "proof_image_link"], axis=1, inplace=True)
-    data["date"] = pd.to_datetime(data["date"], format="%Y-%m-%dT%H:%M:%SZ").dt.strftime(
-        "%Y-%m-%d %H:%M:%S"
-    )
-    data["date_to"] = pd.to_datetime(data["date_to"], format="%Y-%m-%dT%H:%M:%SZ").dt.strftime(
-        "%Y-%m-%d %H:%M:%S")
+    data["date"] = pd.to_datetime(
+        data["date"], format="%Y-%m-%dT%H:%M:%SZ"
+    ).dt.strftime("%Y-%m-%d %H:%M:%S")
+    data["date_to"] = pd.to_datetime(
+        data["date_to"], format="%Y-%m-%dT%H:%M:%SZ"
+    ).dt.strftime("%Y-%m-%d %H:%M:%S")
     data = data.sort_values(by=sortby, ascending=ascend)
 
     return data
