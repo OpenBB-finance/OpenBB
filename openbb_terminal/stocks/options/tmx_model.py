@@ -121,7 +121,7 @@ class Ticker:
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = ""
-        self.underlying_price: object = ()
+        self.underlying_price = pd.DataFrame()
 
     def check_symbol(self, symbol: str) -> bool:
         """Checks if the symbol is valid."""
@@ -183,7 +183,7 @@ class Ticker:
             "volume",
             "optionType",
         ]
-        data: object = pd.DataFrame()
+        data = pd.DataFrame()
         data = pd.read_html(QUOTES_URL)[0]
         data = data.iloc[:-1]
 
