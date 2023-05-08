@@ -111,11 +111,6 @@ jobs:
         run: |
           dist\OpenBBTerminal\OpenBBTerminal.exe -t --coverage | tee result.txt
           echo. >> summary.txt
-
-          find "================================ Integration Coverage Summary ================================" in result.txt and print ALL lines until the end of the file to summary.txt
-
-          Select
-
           Select-String "================================ Integration Coverage Summary ================================" result.txt -Context 0,300 | Select-Object -Last 2000 >> summary.txt
 
       - name: Upload summary to Slack
