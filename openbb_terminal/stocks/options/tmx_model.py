@@ -129,6 +129,9 @@ class Ticker:
 
         symbol = symbol.upper()
 
+        if ".TO" in symbol:
+            symbol = symbol.replace(".TO", "")
+
         if self.check_symbol(symbol):
             symbol = list(
                 self.SYMBOLS.query("`Underlying Symbol` == @symbol").index.values

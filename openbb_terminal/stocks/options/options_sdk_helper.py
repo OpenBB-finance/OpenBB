@@ -15,6 +15,7 @@ from openbb_terminal.stocks.options import (
     chartexchange_model,
     intrinio_model,
     nasdaq_model,
+    tmx_model,
     tradier_model,
     yfinance_model,
 )
@@ -36,7 +37,7 @@ def get_full_option_chain(
     symbol : str
         Symbol to get chain for
     source : str, optional
-        Source to get data from, by default "Nasdaq". Can be YahooFinance, Tradier, Nasdaq, or Intrinio
+        Source to get data from, by default "Nasdaq". Can be YahooFinance, Tradier, Nasdaq, Intrinio, or TMX.
     expiration : Union[str, None], optional
         Date to get chain for.  By default returns all dates
 
@@ -68,6 +69,9 @@ def get_full_option_chain(
 
     elif source == "intrinio":
         df = intrinio_model.get_full_option_chain(symbol)
+
+    elif source == "tmx":
+        df = tmx_model.Ticker().get_quotes(symbol).chains
 
     if not isinstance(df, pd.DataFrame) or df.empty:
         logger.info("Invalid Source or Symbol")
