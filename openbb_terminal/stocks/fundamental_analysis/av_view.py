@@ -174,7 +174,7 @@ def display_income_statement(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "income",
-        df_income,
+        df_income.transpose(),
         sheet_name,
         fig,
     )

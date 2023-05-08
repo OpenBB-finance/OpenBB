@@ -1,32 +1,48 @@
 """OpenBB Terminal SDK."""
+
 # ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
+
 # flake8: noqa
+
 # pylint: disable=unused-import,wrong-import-order
+
 # pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
+
 import logging
 
 import openbb_terminal.config_terminal as cfg
+
 from openbb_terminal import helper_funcs as helper  # noqa: F401
+
 from openbb_terminal.core.plots.plotly_helper import theme  # noqa: F401
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
+
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
+
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
+
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
+
 from openbb_terminal.reports.reports_controller import ReportController
 
 import openbb_terminal.core.sdk.sdk_init as lib
+
 from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
+
 from openbb_terminal.core.session.current_system import get_current_system
+
 from openbb_terminal.core.session.current_user import is_local
+
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 cfg.setup_config_terminal(is_sdk=True)
 
 logger = logging.getLogger(__name__)
+
 cfg.theme.applyMPLstyle()
 
 
@@ -46,7 +62,7 @@ class OpenBBSDK:
         SDKLogger()
         self.login = lib.sdk_session.login
         self.logout = lib.sdk_session.logout
-        self.news = lib.common_ultima_newsmonitor_model.get_news
+        self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
         SDKLogger._try_to_login(self)
 
@@ -173,7 +189,6 @@ class OpenBBSDK:
             `rtps`: Get real-time performance sector data\n
             `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
-            `spectrum`: Display finviz spectrum in system viewer [Source: Finviz]\n
             `spending`: General government spending provides an indication of the size\n
             `spending_chart`: General government spending provides an indication of the size\n
             `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
@@ -516,9 +531,10 @@ class OpenBBSDK:
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
-            `news`: Get news for a given term and source. [Source: Feedparser]\n
+            `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Gets ticker quote from FMP\n
+            `quote_chart`: Financial Modeling Prep ticker(s) quote.\n
             `search`: Search selected query for tickers.\n
             `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
         """
@@ -612,7 +628,7 @@ class SDKLogger:
     def _try_to_login(sdk: "OpenBBSDK"):
         if is_local() and is_auth_enabled():
             try:
-                sdk.login()
+                sdk.login(silent=True)
             except Exception:
                 pass
 

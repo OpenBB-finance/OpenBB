@@ -5,10 +5,22 @@ on:
     branches:
       - main
       - release/*
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   generate:
     name: Generate and Deploy documentation
+    if: >
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' &&
+      startsWith(github.head_ref, 'docs/'))
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
@@ -73,7 +85,12 @@ jobs:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: startsWith(github.ref, 'refs/heads/main')
+        if: >
+          (startsWith(github.ref, 'refs/heads/main')) ||
+          (github.event_name == 'pull_request' &&
+          github.event.pull_request.merged == true &&
+          github.event.pull_request.base.ref == 'develop' &&
+          startsWith(github.head_ref, 'docs/')) 
         with:
           github_token: ${{ secrets.DEPLOY_TOKEN }}
           publish_dir: ./website/build

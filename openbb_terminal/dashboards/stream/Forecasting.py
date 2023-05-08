@@ -1,7 +1,6 @@
 import re
 from datetime import date, datetime, timedelta
-from inspect import signature
-from typing import Any, Callable, Optional, Union
+from typing import Any, Optional, Union
 from unittest.mock import patch
 
 import pandas as pd
@@ -11,15 +10,15 @@ from rich.table import Table
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.session.current_system import set_system_variable
+from openbb_terminal.dashboards.stream import (
+    common_vars,
+    streamlit_helpers as st_helpers,
+)
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
 
 # Suppressing sdk logs
 set_system_variable("LOGGING_SUPPRESS", True)
-
-# Import the OpenBB SDK
-# pylint: disable=wrong-import-position
-from openbb_terminal.sdk import openbb  # noqa: E402
 
 st.set_page_config(
     layout="wide",
@@ -27,68 +26,10 @@ st.set_page_config(
     page_icon="📈",
     initial_sidebar_state="expanded",
 )
-st.markdown(
-    """
-    <style>
-        section[data-testid="stSidebar"] .css-ng1t4o {{width: 14rem;}}
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+st_helpers.set_css()
+st_helpers.set_current_page("Forecasting")
 
-css_container_style = """
-<style>
-    .table_container {
-        position: relative;
-        text-align: center;
-        align-items: center;
-        margin-right: 20px;
-        top: 20px;
-        font-size: 14px;
-        color: white;
-    }
-    .cov-legend {
-        position: relative;
-        text-align: center;
-        align-items: center;
-        top: 20px;
-        left: 40px;
-        font-size: 16px;
-        color: green;
-    }
-</style>
-"""
-st.markdown(css_container_style, unsafe_allow_html=True)
 
-# pylint: disable=E1101
-model_opts = {
-    "expo": openbb.forecast.expo,  # type: ignore
-    "theta": openbb.forecast.theta,  # type: ignore
-    "linregr": openbb.forecast.linregr,  # type: ignore
-    "regr": openbb.forecast.regr,  # type: ignore
-    "rnn": openbb.forecast.rnn,  # type: ignore
-    "brnn": openbb.forecast.brnn,  # type: ignore
-    "nbeats": openbb.forecast.nbeats,  # type: ignore
-    "tcn": openbb.forecast.tcn,  # type: ignore
-    "trans": openbb.forecast.trans,  # type: ignore
-    "tft": openbb.forecast.tft,  # type: ignore
-}
-
-feat_engs = {
-    "ema": openbb.forecast.ema,  # type: ignore
-    "sto": openbb.forecast.sto,  # type: ignore
-    "rsi": openbb.forecast.rsi,  # type: ignore
-    "roc": openbb.forecast.roc,  # type: ignore
-    "mom": openbb.forecast.mom,  # type: ignore
-    "atr": openbb.forecast.atr,  # type: ignore
-    "delta": openbb.forecast.delta,  # type: ignore
-    "signal": openbb.forecast.signal,  # type: ignore
-}
-# pylint: enable=E1101
-
-# Add these: "1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h",
-interval_opts = ["1d", "5d", "1wk", "1mo", "3mo"]
-REGEX_RICH = re.compile(r"\[\/{0,1}[a-zA-Z0-9#]+\]|\[\/\]")
 EXPLAINABILITY_FIGURE: Union[OpenBBFigure, None] = None
 PAST_COVERAGE_PRINT: str = "<br>"
 
@@ -114,45 +55,10 @@ plotly_chart, table_container = st.columns([4, 1])
 explainability, past_cov_legend = st.columns([4, 1])
 
 
-def format_df(df: pd.DataFrame) -> pd.DataFrame:
-    if len(df.columns) != 6:
-        df.columns = ["_".join(col).strip() for col in df.columns.values]
-    df.reset_index(inplace=True)
-    df.columns = [x.lower() for x in df.columns]
-    return df
-
-
-def has_parameter(func: Callable[..., Any], parameter: str) -> bool:
-    params = signature(func).parameters
-    parameters = params.keys()
-    return parameter in parameters
-
-
-def load_state(name: str, default: Any):
-    if name not in st.session_state:
-        st.session_state[name] = default
-
-
-def rich_to_dataframe(table: Table) -> pd.DataFrame:
-    columns = [column.header for column in table.columns]
-    rows: dict = {column: [] for column in columns}
-    for column in table.columns:
-        for cell in column.cells:
-            text: str = re.sub(REGEX_RICH, "", cell)  # type: ignore
-            rows[column.header].append(text)
-
-    df = pd.DataFrame(rows, columns=columns)
-    if "Datetime" in df.columns:
-        df.index = pd.to_datetime(df["Datetime"]).dt.date
-        df.drop("Datetime", axis=1, inplace=True)
-
-    return df
-
-
 def special_st(text: Optional[str] = None) -> Optional[str]:
     if isinstance(text, Table):
         with table_container:
-            text.title = re.sub(REGEX_RICH, "", text.title).replace(
+            text.title = re.sub(st_helpers.REGEX_RICH, "", text.title).replace(
                 "Actual price:",
                 "<h3 class='table_container'>Actual price:"
                 "<text style='color: yellow'>",
@@ -161,10 +67,10 @@ def special_st(text: Optional[str] = None) -> Optional[str]:
                 f"{text.title}</text></h3>",
                 unsafe_allow_html=True,
             )
-            st.table(rich_to_dataframe(text))
+            st.table(st_helpers.rich_to_dataframe(text))
     elif isinstance(text, str) and "[green]" in text:
         global PAST_COVERAGE_PRINT  # pylint: disable=W0603 # noqa
-        PAST_COVERAGE_PRINT += re.sub(REGEX_RICH, "", text) + "<br>"
+        PAST_COVERAGE_PRINT += re.sub(st_helpers.REGEX_RICH, "", text) + "<br>"
 
     return text
 
@@ -181,13 +87,13 @@ def mock_show(self: OpenBBFigure, *args, **kwargs):  # pylint: disable=W0613
 
 class Handler:
     def __init__(self):
-        load_state("last_tickers", "")
-        load_state("last_intervals", "1d")
-        load_state("df", pd.DataFrame())
-        default_opts = {
+        st_helpers.load_state("last_tickers", "")
+        st_helpers.load_state("last_intervals", "1d")
+        st_helpers.load_state("df", pd.DataFrame())
+        self.default_opts = {
             key: [] for key in ["target_widget", "column_widget", "past_covs_widget"]
         }
-        load_state("widget_options", default_opts)
+        st_helpers.load_widget_options(self.default_opts)
 
         self.feature_model = None
         self.feature_target = None
@@ -233,11 +139,13 @@ class Handler:
                 final_df = helpers.clean_data(result)
                 kwargs: dict[str, Any] = {}
 
-                forecast_model = model_opts[model]
-                contains_covariates = has_parameter(forecast_model, "past_covariates")
+                forecast_model = common_vars.FORECAST_MODEL_OPTS[model]
+                contains_covariates = st_helpers.has_parameter(
+                    forecast_model, "past_covariates"
+                )
                 if contains_covariates and past_covariates != []:
                     kwargs["past_covariates"] = ",".join(past_covariates)
-                if has_parameter(forecast_model, "output_chunk_length"):
+                if st_helpers.has_parameter(forecast_model, "output_chunk_length"):
                     kwargs["output_chunk_length"] = n_predict
 
                 if final_df.empty:
@@ -257,9 +165,9 @@ class Handler:
 
                 with st.spinner("Running model..."):
                     with patch.object(OpenBBFigure, "show", mock_show):
-                        fig: OpenBBFigure = getattr(openbb.forecast, f"{model}_chart")(
-                            **kwargs
-                        )
+                        fig: OpenBBFigure = getattr(
+                            common_vars.openbb.forecast, f"{model}_chart"
+                        )(**kwargs)
 
                 with plotly_chart:
                     dt_now = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -270,7 +178,7 @@ class Handler:
                     fig.update_layout(
                         title=dict(x=0.5, xanchor="center", yanchor="top", y=0.99),
                         showlegend=True,
-                        margin=dict(t=40),
+                        margin=dict(t=40, l=30),
                         height=500,
                         legend=dict(
                             bgcolor="rgba(0,0,0,0.5)",
@@ -327,7 +235,7 @@ class Handler:
 
     def handle_eng(self, target, feature):
         self.feature_target = target
-        self.feature_model = feat_engs[feature]
+        self.feature_model = common_vars.FORECAST_FEAT_ENGS[feature]
 
     def on_ticker_change(self):
         tickers = st.session_state.ticker
@@ -339,21 +247,22 @@ class Handler:
                 tickers != st.session_state["last_tickers"]
                 or interval != st.session_state["last_interval"]
             ):
+                kwargs = {}
                 if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
-                    df = yf.download(
-                        tickers, period="max", interval=interval, progress=False
-                    )
+                    kwargs.update({"period": "max"})
                 else:
-                    end_date = end + timedelta(days=1)
-                    df = yf.download(
-                        tickers,
-                        start=start,
-                        end=end_date,
-                        interval=interval,
-                        progress=False,
-                    )
+                    kwargs.update({"start": start, "end": end + timedelta(days=1)})
+
+                df: pd.DataFrame = yf.download(  # type: ignore
+                    tickers,
+                    interval=interval,
+                    progress=False,
+                    **kwargs,
+                )
                 df = df.dropna()
-                st.session_state["df"] = format_df(df)
+                if not df.empty:
+                    df.index = pd.to_datetime(df.index).tz_localize(None)
+                st.session_state["df"] = st_helpers.format_df(df)
                 st.session_state["last_tickers"] = tickers
                 st.session_state["last_interval"] = interval
         st.session_state["widget_options"]["target_widget"] = sorted(
@@ -379,7 +288,10 @@ class Handler:
             end_date = st.date_input("End date", date.today(), key="end")
         with r1c4:
             target_interval = st.selectbox(
-                "Interval", index=0, key="interval", options=interval_opts
+                "Interval",
+                index=0,
+                key="interval",
+                options=common_vars.INTERVAL_OPTS[3:],
             )
         with r1c5:
             n_predict = st.selectbox(
@@ -391,7 +303,9 @@ class Handler:
             if not hasattr(st.session_state, "model")
             else st.session_state["model"]
         )
-        enable_past_covs = has_parameter(model_opts[model], "past_covariates")
+        enable_past_covs = st_helpers.has_parameter(
+            common_vars.FORECAST_MODEL_OPTS[model], "past_covariates"
+        )
 
         col_order = [r2c3, r2c1, r2c2]
         if enable_past_covs:
@@ -400,13 +314,15 @@ class Handler:
         with col_order[1]:
             target_widget = st.selectbox(
                 "Target",
-                options=st.session_state["widget_options"]["target_widget"],
+                options=st_helpers.get_widget_options(
+                    self.default_opts, "target_widget"
+                ),
             )
 
         with col_order[2]:
             model_widget = st.selectbox(
                 "Model",
-                options=list(model_opts),
+                options=list(common_vars.FORECAST_MODEL_OPTS),
                 key="model",
             )
 
@@ -415,7 +331,9 @@ class Handler:
             with col_order[0]:
                 past_covs_widget = st.multiselect(
                     "Past Covariates",
-                    options=st.session_state["widget_options"]["past_covs_widget"],
+                    options=st_helpers.get_widget_options(
+                        self.default_opts, "past_covs_widget"
+                    ),
                     disabled=not enable_past_covs,
                     label_visibility="hidden" if not enable_past_covs else "visible",
                 )

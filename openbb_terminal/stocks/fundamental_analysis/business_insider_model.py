@@ -3,12 +3,10 @@ __docformat__ = "numpy"
 
 import json
 import logging
-import re
 from typing import Tuple
 
 import pandas as pd
 from bs4 import BeautifulSoup
-from rapidfuzz import fuzz
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
@@ -93,7 +91,6 @@ def get_management(symbol: str) -> pd.DataFrame:
     )
 
     df_management["Info"] = "-"
-    df_management["Insider Activity"] = "-"
     df_management = df_management.set_index("Name")
 
     for s_name in df_management.index:
@@ -103,15 +100,6 @@ def get_management(symbol: str) -> pd.DataFrame:
             " ", "%20"
         )
 
-    s_url_base = "https://markets.businessinsider.com"
-    for insider in text_soup_market_business_insider.findAll(
-        "a", {"onclick": "silentTrackPI()"}
-    ):
-        for s_name in df_management.index:
-            if fuzz.token_set_ratio(s_name, insider.text.strip()) > 70:  # type: ignore
-                df_management.loc[s_name]["Insider Activity"] = (
-                    s_url_base + insider.attrs["href"]
-                )
     return df_management
 
 
@@ -204,120 +192,61 @@ def get_estimates(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame
         "lxml",
     )
 
-    l_estimates_year_header = list()
-    l_estimates_quarter_header = list()
-    for estimates_header in text_soup_market_business_insider.findAll(
-        "th", {"class": "table__th text-right"}
-    ):
-        s_estimates_header = estimates_header.text.strip()
-        if s_estimates_header.isdigit():
-            l_estimates_year_header.append(s_estimates_header)
-        elif ("in %" not in s_estimates_header) and ("Job" not in s_estimates_header):
-            l_estimates_quarter_header.append(s_estimates_header)
+    # Get all tables and convert them to list of pandas dataframes
+    tables = text_soup_market_business_insider.find_all("table")
+    list_df = pd.read_html(str(tables))
 
-    l_estimates_year_metric = list()
-    for estimates_year_metric in text_soup_market_business_insider.findAll(
-        "td", {"class": "table__td black"}
-    ):
-        l_estimates_year_metric.append(estimates_year_metric.text)
+    # Get year estimates
+    df_year_estimates = list_df[3]
+    l_year_estimates_columns = df_year_estimates.columns.tolist()
+    l_year_estimates_columns[0] = "YEARLY ESTIMATES"
+    df_year_estimates.columns = l_year_estimates_columns
+    df_year_estimates.set_index("YEARLY ESTIMATES", inplace=True)
 
-    l_estimates_quarter_metric = list()
-    for estimates_quarter_metric in text_soup_market_business_insider.findAll(
-        "td", {"class": "table__td font-color-dim-gray"}
-    ):
-        l_estimates_quarter_metric.append(estimates_quarter_metric.text)
+    df_quarter = list_df[4]
+    date_row = dict()
 
-    d_metric_year = dict()
-    d_metric_quarter_earnings = dict()
-    d_metric_quarter_revenues = dict()
-    l_metrics = list()
-    n_metrics = 0
-    b_year = True
-    for idx, metric_value in enumerate(
-        text_soup_market_business_insider.findAll(
-            "td", {"class": "table__td text-right"}
-        )
-    ):
-        if b_year:
-            # YEAR metrics
-            l_metrics.append(metric_value.text.strip())
+    # Get quarter earnings estimates
+    df_quarter_earnings = df_quarter.iloc[0:5, :].reset_index(drop=True).copy()
+    df_quarter_earnings.drop(index=0, inplace=True)
+    l_quarter_earnings_columns = df_quarter_earnings.columns.tolist()
+    l_quarter_earnings_columns[0] = "QUARTER EARNINGS ESTIMATES"
+    date_row["QUARTER EARNINGS ESTIMATES"] = "Date"
 
-            # Check if we have processed all year metrics
-            if n_metrics > len(l_estimates_year_metric) - 1:
-                b_year = False
-                n_metrics = 0
-                l_metrics = list()
-                idx_y = idx
+    # Adding Date info to add to dataframe
+    for col in l_quarter_earnings_columns[1:]:
+        key = col.split("ending")[0].strip()
+        value = col[col.find("ending") :].strip()
+        date_row[key] = value
 
-            # Add value to dictionary
-            if (idx + 1) % len(l_estimates_year_header) == 0:
-                d_metric_year[l_estimates_year_metric[n_metrics]] = l_metrics
-                l_metrics = list()
-                n_metrics += 1
-
-        if not b_year:
-            # QUARTER metrics
-            l_metrics.append(metric_value.text.strip())
-
-            # Check if we have processed all quarter metrics
-            if n_metrics > len(l_estimates_quarter_metric) - 1:
-                break
-
-            # Add value to dictionary
-            if (idx - idx_y + 1) % len(l_estimates_quarter_header) == 0:
-                if n_metrics < 4:
-                    d_metric_quarter_earnings[
-                        l_estimates_quarter_metric[n_metrics]
-                    ] = l_metrics
-                else:
-                    d_metric_quarter_revenues[
-                        l_estimates_quarter_metric[n_metrics - 4]
-                    ] = l_metrics
-                l_metrics = list()
-                n_metrics += 1
-
-    df_year_estimates = pd.DataFrame.from_dict(
-        d_metric_year, orient="index", columns=l_estimates_year_header
+    df_quarter_earnings.columns = date_row.keys()
+    date_row = pd.DataFrame(date_row, index=[0])
+    df_quarter_earnings = pd.concat([date_row, df_quarter_earnings]).reset_index(
+        drop=True
     )
-    df_year_estimates.index.name = "YEARLY ESTIMATES"
-    df_quarter_earnings = pd.DataFrame.from_dict(
-        d_metric_quarter_earnings,
-        orient="index",
-        columns=l_estimates_quarter_header,
+    df_quarter_earnings.set_index("QUARTER EARNINGS ESTIMATES", inplace=True)
+
+    # Setting date_row to empty dict object
+    date_row = dict()
+
+    # Get quarter revenues estimates
+    df_quarter_revenues = df_quarter.iloc[5:, :].reset_index(drop=True).copy()
+    df_quarter_revenues.drop(index=0, inplace=True)
+    l_quarter_revenues_columns = df_quarter_revenues.columns.tolist()
+    l_quarter_revenues_columns[0] = "QUARTER REVENUES ESTIMATES"
+    date_row["QUARTER REVENUES ESTIMATES"] = "Date"
+
+    # Adding Date info to add to dataframe
+    for col in l_quarter_revenues_columns[1:]:
+        key = col.split("ending")[0].strip()
+        value = col[col.find("ending") :].strip()
+        date_row[key] = value
+
+    df_quarter_revenues.columns = date_row.keys()
+    date_row = pd.DataFrame(date_row, index=[0])
+    df_quarter_revenues = pd.concat([date_row, df_quarter_revenues]).reset_index(
+        drop=True
     )
-    # df_quarter_earnings.index.name = 'Earnings'
-    df_quarter_revenues = pd.DataFrame.from_dict(
-        d_metric_quarter_revenues,
-        orient="index",
-        columns=l_estimates_quarter_header,
-    )
-    # df_quarter_revenues.index.name = 'Revenues'
-
-    if not df_quarter_earnings.empty:
-        l_quarter = list()
-        l_date = list()
-        for quarter_title in df_quarter_earnings.columns:
-            l_quarter.append(re.split("  ending", quarter_title)[0])
-            if len(re.split("  ending", quarter_title)) == 2:
-                l_date.append(
-                    "ending " + re.split("  ending", quarter_title)[1].strip()
-                )
-            else:
-                l_date.append("-")
-
-        df_quarter_earnings.index.name = "QUARTER EARNINGS ESTIMATES"
-        df_quarter_earnings.columns = l_quarter
-        df_quarter_earnings.loc["Date"] = l_date
-        df_quarter_earnings = df_quarter_earnings.reindex(
-            ["Date", "No. of Analysts", "Average Estimate", "Year Ago", "Publish Date"]
-        )
-
-    if not df_quarter_revenues.empty:
-        df_quarter_revenues.index.name = "QUARTER REVENUES ESTIMATES"
-        df_quarter_revenues.columns = l_quarter
-        df_quarter_revenues.loc["Date"] = l_date
-        df_quarter_revenues = df_quarter_revenues.reindex(
-            ["Date", "No. of Analysts", "Average Estimate", "Year Ago", "Publish Date"]
-        )
+    df_quarter_revenues.set_index("QUARTER REVENUES ESTIMATES", inplace=True)
 
     return df_year_estimates, df_quarter_earnings, df_quarter_revenues

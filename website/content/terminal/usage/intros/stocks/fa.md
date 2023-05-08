@@ -1,6 +1,6 @@
 ---
 title: Fundamental Analysis
-keywords: [fundamentals, fundamental, fa, ratios, earnings, balance, income, cash, statement, statements, sec, multiples, price, ebitda, ebitdam, revenue, quarter, annual, change, company, performance, filing, filings, 10K, 8K, audit, audited]
+keywords: [fundamentals, fundamental, fa, ratios, earnings, balance, income, cash, statement, statements, sec, multiples, price, ebitda, ebitdam, revenue, quarter, annual, change, company, performance, filing, filings, 10K, 8K, audit, audited, how to, example]
 description: This guide introduces the Fundamental Analysis menu within the Stocks menu, briefly explains the features, and provides examples in context.
 ---
 

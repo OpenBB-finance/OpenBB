@@ -1,0 +1,338 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/income-statement/TSLA?apikey=MOCK_API_KEY&limit=0&period=annual
+  response:
+    body:
+      string: "[\n  {\n    \"date\": \"2022-12-31\",\n    \"symbol\": \"TSLA\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\":
+        \"2023-01-31\",\n    \"acceptedDate\": \"2023-01-30 21:29:15\",\n    \"calendarYear\":
+        \"2022\",\n    \"period\": \"FY\",\n    \"revenue\": 81462000000,\n    \"costOfRevenue\":
+        60609000000,\n    \"grossProfit\": 20853000000,\n    \"grossProfitRatio\":
+        0.25598438535759005,\n    \"researchAndDevelopmentExpenses\": 3075000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 3946000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 7021000000,\n    \"costAndExpenses\": 67630000000,\n
+        \   \"interestIncome\": 297000000,\n    \"interestExpense\": 191000000,\n
+        \   \"depreciationAndAmortization\": 3747000000,\n    \"ebitda\": 17653000000,\n
+        \   \"ebitdaratio\": 0.2167022660872554,\n    \"operatingIncome\": 13832000000,\n
+        \   \"operatingIncomeRatio\": 0.16979696054602145,\n    \"totalOtherIncomeExpensesNet\":
+        -113000000,\n    \"incomeBeforeTax\": 13719000000,\n    \"incomeBeforeTaxRatio\":
+        0.16840981070928776,\n    \"incomeTaxExpense\": 1132000000,\n    \"netIncome\":
+        12583000000,\n    \"netIncomeRatio\": 0.15446465836831896,\n    \"eps\": 4.24,\n
+        \   \"epsdiluted\": 3.71,\n    \"weightedAverageShsOut\": 2958000000,\n    \"weightedAverageShsOutDil\":
+        3387000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000095017023001409/0000950170-23-001409-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000095017023001409/tsla-20221231.htm\"\n
+        \ },\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2022-02-07\",\n
+        \   \"acceptedDate\": \"2022-02-04 20:11:27\",\n    \"calendarYear\": \"2021\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 53823000000,\n    \"costOfRevenue\":
+        40217000000,\n    \"grossProfit\": 13606000000,\n    \"grossProfitRatio\":
+        0.25279155751258753,\n    \"researchAndDevelopmentExpenses\": 2593000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 4517000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 7110000000,\n    \"costAndExpenses\": 47327000000,\n
+        \   \"interestIncome\": 56000000,\n    \"interestExpense\": 371000000,\n    \"depreciationAndAmortization\":
+        2911000000,\n    \"ebitda\": 9500000000,\n    \"ebitdaratio\": 0.17650446834996192,\n
+        \   \"operatingIncome\": 6496000000,\n    \"operatingIncomeRatio\": 0.12069189751593185,\n
+        \   \"totalOtherIncomeExpensesNet\": -153000000,\n    \"incomeBeforeTax\":
+        6343000000,\n    \"incomeBeforeTaxRatio\": 0.11784924660461141,\n    \"incomeTaxExpense\":
+        699000000,\n    \"netIncome\": 5519000000,\n    \"netIncomeRatio\": 0.10253980640246735,\n
+        \   \"eps\": 1.866667,\n    \"epsdiluted\": 1.633333,\n    \"weightedAverageShsOut\":
+        2958000000,\n    \"weightedAverageShsOutDil\": 3387000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000095017022000796/0000950170-22-000796-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000095017022000796/tsla-20211231.htm\"\n
+        \ },\n  {\n    \"date\": \"2020-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2021-02-08\",\n
+        \   \"acceptedDate\": \"2021-02-08 07:27:23\",\n    \"calendarYear\": \"2020\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 31536000000,\n    \"costOfRevenue\":
+        24906000000,\n    \"grossProfit\": 6630000000,\n    \"grossProfitRatio\":
+        0.2102359208523592,\n    \"researchAndDevelopmentExpenses\": 1491000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 3145000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 4636000000,\n    \"costAndExpenses\": 29542000000,\n
+        \   \"interestIncome\": 30000000,\n    \"interestExpense\": 748000000,\n    \"depreciationAndAmortization\":
+        2322000000,\n    \"ebitda\": 4052000000,\n    \"ebitdaratio\": 0.1284880771182141,\n
+        \   \"operatingIncome\": 1994000000,\n    \"operatingIncomeRatio\": 0.06322932521562659,\n
+        \   \"totalOtherIncomeExpensesNet\": -840000000,\n    \"incomeBeforeTax\":
+        1154000000,\n    \"incomeBeforeTaxRatio\": 0.03659309994926433,\n    \"incomeTaxExpense\":
+        292000000,\n    \"netIncome\": 690000000,\n    \"netIncomeRatio\": 0.021879756468797563,\n
+        \   \"eps\": 0.246667,\n    \"epsdiluted\": 0.213333,\n    \"weightedAverageShsOut\":
+        2880000000,\n    \"weightedAverageShsOutDil\": 2880000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459021004599/0001564590-21-004599-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459021004599/tsla-10k_20201231.htm\"\n
+        \ },\n  {\n    \"date\": \"2019-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2020-02-13\",\n
+        \   \"acceptedDate\": \"2020-02-13 07:12:18\",\n    \"calendarYear\": \"2019\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 24578000000,\n    \"costOfRevenue\":
+        20509000000,\n    \"grossProfit\": 4069000000,\n    \"grossProfitRatio\":
+        0.1655545609895028,\n    \"researchAndDevelopmentExpenses\": 1343000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 2646000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 3989000000,\n    \"costAndExpenses\": 24498000000,\n
+        \   \"interestIncome\": 44000000,\n    \"interestExpense\": 685000000,\n    \"depreciationAndAmortization\":
+        2154000000,\n    \"ebitda\": 2087000000,\n    \"ebitdaratio\": 0.08491333713076735,\n
+        \   \"operatingIncome\": 80000000,\n    \"operatingIncomeRatio\": 0.0032549434453576368,\n
+        \   \"totalOtherIncomeExpensesNet\": -745000000,\n    \"incomeBeforeTax\":
+        -665000000,\n    \"incomeBeforeTaxRatio\": -0.027056717389535356,\n    \"incomeTaxExpense\":
+        110000000,\n    \"netIncome\": -862000000,\n    \"netIncomeRatio\": -0.03507201562372854,\n
+        \   \"eps\": -0.328,\n    \"epsdiluted\": -0.328,\n    \"weightedAverageShsOut\":
+        2655000000,\n    \"weightedAverageShsOutDil\": 2655000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459020004475/0001564590-20-004475-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459020004475/tsla-10k_20191231.htm\"\n
+        \ },\n  {\n    \"date\": \"2018-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2019-02-19\",\n
+        \   \"acceptedDate\": \"2019-02-19 06:10:16\",\n    \"calendarYear\": \"2018\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 21461268000,\n    \"costOfRevenue\":
+        17419247000,\n    \"grossProfit\": 4042021000,\n    \"grossProfitRatio\":
+        0.18834026954977684,\n    \"researchAndDevelopmentExpenses\": 1460370000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 2834491000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 4294861000,\n    \"costAndExpenses\": 21714108000,\n
+        \   \"interestIncome\": 24533000,\n    \"interestExpense\": 663071000,\n    \"depreciationAndAmortization\":
+        1901050000,\n    \"ebitda\": 1645867000,\n    \"ebitdaratio\": 0.07669010982948445,\n
+        \   \"operatingIncome\": -252840000,\n    \"operatingIncomeRatio\": -0.011781223737572262,\n
+        \   \"totalOtherIncomeExpensesNet\": -751905000,\n    \"incomeBeforeTax\":
+        -1004745000,\n    \"incomeBeforeTaxRatio\": -0.04681666525948047,\n    \"incomeTaxExpense\":
+        57837000,\n    \"netIncome\": -976091000,\n    \"netIncomeRatio\": -0.045481515817238756,\n
+        \   \"eps\": -0.381333,\n    \"epsdiluted\": -0.381333,\n    \"weightedAverageShsOut\":
+        2557875000,\n    \"weightedAverageShsOutDil\": 2557875000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459019003165/0001564590-19-003165-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459019003165/tsla-10k_20181231.htm\"\n
+        \ },\n  {\n    \"date\": \"2017-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2018-02-23\",\n
+        \   \"acceptedDate\": \"2018-02-23 06:07:43\",\n    \"calendarYear\": \"2017\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 11758751000,\n    \"costOfRevenue\":
+        9536264000,\n    \"grossProfit\": 2222487000,\n    \"grossProfitRatio\": 0.1890070637604283,\n
+        \   \"researchAndDevelopmentExpenses\": 1378073000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        2476500000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 3854573000,\n
+        \   \"costAndExpenses\": 13390837000,\n    \"interestIncome\": 19686000,\n
+        \   \"interestExpense\": 471259000,\n    \"depreciationAndAmortization\":
+        1636003000,\n    \"ebitda\": 177408000,\n    \"ebitdaratio\": 0.015087316671643102,\n
+        \   \"operatingIncome\": -1632086000,\n    \"operatingIncomeRatio\": -0.13879756446921956,\n
+        \   \"totalOtherIncomeExpensesNet\": -576946000,\n    \"incomeBeforeTax\":
+        -2209032000,\n    \"incomeBeforeTaxRatio\": -0.18786280957901055,\n    \"incomeTaxExpense\":
+        31546000,\n    \"netIncome\": -1961400000,\n    \"netIncomeRatio\": -0.16680343005817538,\n
+        \   \"eps\": -0.788667,\n    \"epsdiluted\": -0.788667,\n    \"weightedAverageShsOut\":
+        2486370000,\n    \"weightedAverageShsOutDil\": 2486370000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1318605/000156459018002956/0001564590-18-002956-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459018002956/tsla-10k_20171231.htm\"\n
+        \ },\n  {\n    \"date\": \"2016-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2017-03-01\",\n
+        \   \"acceptedDate\": \"2017-03-01 16:54:21\",\n    \"calendarYear\": \"2016\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 7000132000,\n    \"costOfRevenue\":
+        5400875000,\n    \"grossProfit\": 1599257000,\n    \"grossProfitRatio\": 0.22846097759299397,\n
+        \   \"researchAndDevelopmentExpenses\": 834408000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1432189000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 2266597000,\n
+        \   \"costAndExpenses\": 7667472000,\n    \"interestIncome\": 8530000,\n    \"interestExpense\":
+        198810000,\n    \"depreciationAndAmortization\": 947099000,\n    \"ebitda\":
+        497693000,\n    \"ebitdaratio\": 0.07109765930128174,\n    \"operatingIncome\":
+        -667340000,\n    \"operatingIncomeRatio\": -0.09533248801594027,\n    \"totalOtherIncomeExpensesNet\":
+        -79008000,\n    \"incomeBeforeTax\": -746348000,\n    \"incomeBeforeTaxRatio\":
+        -0.10661913232493331,\n    \"incomeTaxExpense\": 26698000,\n    \"netIncome\":
+        -674914000,\n    \"netIncomeRatio\": -0.09641446761289645,\n    \"eps\": -0.312,\n
+        \   \"epsdiluted\": -0.312,\n    \"weightedAverageShsOut\": 2163180000,\n
+        \   \"weightedAverageShsOutDil\": 2163180000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459017003118/0001564590-17-003118-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459017003118/tsla-10k_20161231.htm\"\n
+        \ },\n  {\n    \"date\": \"2015-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2016-02-24\",\n
+        \   \"acceptedDate\": \"2016-02-24 16:17:56\",\n    \"calendarYear\": \"2015\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 4046025000,\n    \"costOfRevenue\":
+        3122522000,\n    \"grossProfit\": 923503000,\n    \"grossProfitRatio\": 0.22824945471172323,\n
+        \   \"researchAndDevelopmentExpenses\": 717900000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        922232000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1640132000,\n
+        \   \"costAndExpenses\": 4762654000,\n    \"interestIncome\": 1508000,\n    \"interestExpense\":
+        118851000,\n    \"depreciationAndAmortization\": 422590000,\n    \"ebitda\":
+        -334183000,\n    \"ebitdaratio\": -0.08259538683028404,\n    \"operatingIncome\":
+        -716629000,\n    \"operatingIncomeRatio\": -0.17711927138364197,\n    \"totalOtherIncomeExpensesNet\":
+        -158995000,\n    \"incomeBeforeTax\": -875624000,\n    \"incomeBeforeTaxRatio\":
+        -0.2164158649538745,\n    \"incomeTaxExpense\": 13039000,\n    \"netIncome\":
+        -888663000,\n    \"netIncomeRatio\": -0.21963853411681836,\n    \"eps\": -0.462,\n
+        \   \"epsdiluted\": -0.462,\n    \"weightedAverageShsOut\": 1923030000,\n
+        \   \"weightedAverageShsOutDil\": 1923030000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459016013195/0001564590-16-013195-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459016013195/tsla-10k_20151231.htm\"\n
+        \ },\n  {\n    \"date\": \"2014-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2015-02-26\",\n
+        \   \"acceptedDate\": \"2015-02-26 17:13:26\",\n    \"calendarYear\": \"2014\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 3198356000,\n    \"costOfRevenue\":
+        2316685000,\n    \"grossProfit\": 881671000,\n    \"grossProfitRatio\": 0.27566380978227567,\n
+        \   \"researchAndDevelopmentExpenses\": 464700000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        603660000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1068360000,\n
+        \   \"costAndExpenses\": 3385045000,\n    \"interestIncome\": 1126000,\n    \"interestExpense\":
+        100886000,\n    \"depreciationAndAmortization\": 231931000,\n    \"ebitda\":
+        48181000,\n    \"ebitdaratio\": 0.015064301785042065,\n    \"operatingIncome\":
+        -186689000,\n    \"operatingIncomeRatio\": -0.0583703002417492,\n    \"totalOtherIncomeExpensesNet\":
+        -97947000,\n    \"incomeBeforeTax\": -284636000,\n    \"incomeBeforeTaxRatio\":
+        -0.08899447090942972,\n    \"incomeTaxExpense\": 9404000,\n    \"netIncome\":
+        -294040000,\n    \"netIncomeRatio\": -0.09193473146829184,\n    \"eps\": -0.157333,\n
+        \   \"epsdiluted\": -0.157333,\n    \"weightedAverageShsOut\": 1868595000,\n
+        \   \"weightedAverageShsOutDil\": 1868595000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459015001031/0001564590-15-001031-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000156459015001031/tsla-10k_20141231.htm\"\n
+        \ },\n  {\n    \"date\": \"2013-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2014-02-26\",\n
+        \   \"acceptedDate\": \"2014-02-26 16:02:51\",\n    \"calendarYear\": \"2013\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 2013496000,\n    \"costOfRevenue\":
+        1557234000,\n    \"grossProfit\": 456262000,\n    \"grossProfitRatio\": 0.22660189044328868,\n
+        \   \"researchAndDevelopmentExpenses\": 231976000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        285569000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 517545000,\n
+        \   \"costAndExpenses\": 2074779000,\n    \"interestIncome\": 189000,\n    \"interestExpense\":
+        32934000,\n    \"depreciationAndAmortization\": 106083000,\n    \"ebitda\":
+        67591000,\n    \"ebitdaratio\": 0.0335689765462658,\n    \"operatingIncome\":
+        -61283000,\n    \"operatingIncomeRatio\": -0.030436117081931127,\n    \"totalOtherIncomeExpensesNet\":
+        -10143000,\n    \"incomeBeforeTax\": -71426000,\n    \"incomeBeforeTaxRatio\":
+        -0.035473623985346876,\n    \"incomeTaxExpense\": 2588000,\n    \"netIncome\":
+        -74014000,\n    \"netIncomeRatio\": -0.03675895060134214,\n    \"eps\": -0.041333,\n
+        \   \"epsdiluted\": -0.041333,\n    \"weightedAverageShsOut\": 1791315000,\n
+        \   \"weightedAverageShsOutDil\": 1791315000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312514069681/0001193125-14-069681-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312514069681/d668062d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2012-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2013-03-07\",\n
+        \   \"acceptedDate\": \"2013-03-07 17:10:43\",\n    \"calendarYear\": \"2012\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 413256000,\n    \"costOfRevenue\":
+        383189000,\n    \"grossProfit\": 30067000,\n    \"grossProfitRatio\": 0.07275635441469694,\n
+        \   \"researchAndDevelopmentExpenses\": 273978000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        150372000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 424350000,\n
+        \   \"costAndExpenses\": 807539000,\n    \"interestIncome\": 288000,\n    \"interestExpense\":
+        254000,\n    \"depreciationAndAmortization\": 28825000,\n    \"ebitda\": -366998000,\n
+        \   \"ebitdaratio\": -0.8880645411076911,\n    \"operatingIncome\": -394283000,\n
+        \   \"operatingIncomeRatio\": -0.9540889908434481,\n    \"totalOtherIncomeExpensesNet\":
+        -1794000,\n    \"incomeBeforeTax\": -396077000,\n    \"incomeBeforeTaxRatio\":
+        -0.9584301256364094,\n    \"incomeTaxExpense\": 136000,\n    \"netIncome\":
+        -396213000,\n    \"netIncomeRatio\": -0.958759219466868,\n    \"eps\": -0.246,\n
+        \   \"epsdiluted\": -0.246,\n    \"weightedAverageShsOut\": 1610235000,\n
+        \   \"weightedAverageShsOutDil\": 1610235000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312513096241/0001193125-13-096241-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312513096241/d452995d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2011-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2012-02-27\",\n
+        \   \"acceptedDate\": \"2012-02-27 17:17:24\",\n    \"calendarYear\": \"2011\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 204242000,\n    \"costOfRevenue\":
+        142647000,\n    \"grossProfit\": 61595000,\n    \"grossProfitRatio\": 0.3015785195992989,\n
+        \   \"researchAndDevelopmentExpenses\": 208981000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        104102000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 313083000,\n
+        \   \"costAndExpenses\": 455730000,\n    \"interestIncome\": 255000,\n    \"interestExpense\":
+        43000,\n    \"depreciationAndAmortization\": 16919000,\n    \"ebitda\": -236960000,\n
+        \   \"ebitdaratio\": -1.160192320874257,\n    \"operatingIncome\": -251488000,\n
+        \   \"operatingIncomeRatio\": -1.231323625894772,\n    \"totalOtherIncomeExpensesNet\":
+        -2434000,\n    \"incomeBeforeTax\": -253922000,\n    \"incomeBeforeTaxRatio\":
+        -1.243240861331166,\n    \"incomeTaxExpense\": 489000,\n    \"netIncome\":
+        -254411000,\n    \"netIncomeRatio\": -1.245635079954172,\n    \"eps\": -0.168667,\n
+        \   \"epsdiluted\": -0.168667,\n    \"weightedAverageShsOut\": 1505832225,\n
+        \   \"weightedAverageShsOutDil\": 1505832225,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312512081990/0001193125-12-081990-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312512081990/d279413d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2010-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2011-03-03\",\n
+        \   \"acceptedDate\": \"2011-03-03 14:47:36\",\n    \"calendarYear\": \"2010\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 116744000,\n    \"costOfRevenue\":
+        86013000,\n    \"grossProfit\": 30731000,\n    \"grossProfitRatio\": 0.26323408483519495,\n
+        \   \"researchAndDevelopmentExpenses\": 92996000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        84573000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 177569000,\n
+        \   \"costAndExpenses\": 263582000,\n    \"interestIncome\": 258000,\n    \"interestExpense\":
+        992000,\n    \"depreciationAndAmortization\": 10623000,\n    \"ebitda\": -142540000,\n
+        \   \"ebitdaratio\": -1.2209621051188926,\n    \"operatingIncome\": -146838000,\n
+        \   \"operatingIncomeRatio\": -1.2577777016377716,\n    \"totalOtherIncomeExpensesNet\":
+        -7317000,\n    \"incomeBeforeTax\": -154155000,\n    \"incomeBeforeTaxRatio\":
+        -1.3204532995271705,\n    \"incomeTaxExpense\": 173000,\n    \"netIncome\":
+        -154328000,\n    \"netIncomeRatio\": -1.3219351743986842,\n    \"eps\": -0.202667,\n
+        \   \"epsdiluted\": -0.202667,\n    \"weightedAverageShsOut\": 760774530,\n
+        \   \"weightedAverageShsOutDil\": 760774530,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312511054847/0001193125-11-054847-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1318605/000119312511054847/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2009-12-31\",\n    \"symbol\": \"TSLA\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\": \"2009-12-31\",\n
+        \   \"acceptedDate\": \"2009-12-31\",\n    \"calendarYear\": \"2009\",\n    \"period\":
+        \"FY\",\n    \"revenue\": 111943000,\n    \"costOfRevenue\": 102408000,\n
+        \   \"grossProfit\": 9535000,\n    \"grossProfitRatio\": 0.08517727772169766,\n
+        \   \"researchAndDevelopmentExpenses\": 19282000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        42150000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 61432000,\n
+        \   \"costAndExpenses\": 163840000,\n    \"interestIncome\": 159000,\n    \"interestExpense\":
+        2531000,\n    \"depreciationAndAmortization\": 6940000,\n    \"ebitda\": -46243000,\n
+        \   \"ebitdaratio\": -0.4130941639941756,\n    \"operatingIncome\": -51897000,\n
+        \   \"operatingIncomeRatio\": -0.4636020117381167,\n    \"totalOtherIncomeExpensesNet\":
+        -3817000,\n    \"incomeBeforeTax\": -55714000,\n    \"incomeBeforeTaxRatio\":
+        -0.49769972218003805,\n    \"incomeTaxExpense\": 26000,\n    \"netIncome\":
+        -55740000,\n    \"netIncomeRatio\": -0.4979319832414711,\n    \"eps\": -0.046667,\n
+        \   \"epsdiluted\": -0.046667,\n    \"weightedAverageShsOut\": 1165407810,\n
+        \   \"weightedAverageShsOutDil\": 1165407810,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"2008-12-31\",\n    \"symbol\": \"TSLA\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\":
+        \"2008-12-31\",\n    \"acceptedDate\": \"2008-12-31\",\n    \"calendarYear\":
+        \"2008\",\n    \"period\": \"FY\",\n    \"revenue\": 14742000,\n    \"costOfRevenue\":
+        15883000,\n    \"grossProfit\": -1141000,\n    \"grossProfitRatio\": -0.07739791073124407,\n
+        \   \"researchAndDevelopmentExpenses\": 53714000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        23649000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 77363000,\n
+        \   \"costAndExpenses\": 93246000,\n    \"interestIncome\": 529000,\n    \"interestExpense\":
+        3747000,\n    \"depreciationAndAmortization\": 4157000,\n    \"ebitda\": -74781000,\n
+        \   \"ebitdaratio\": -5.072649572649572,\n    \"operatingIncome\": -78504000,\n
+        \   \"operatingIncomeRatio\": -5.325193325193325,\n    \"totalOtherIncomeExpensesNet\":
+        -4181000,\n    \"incomeBeforeTax\": -82685000,\n    \"incomeBeforeTaxRatio\":
+        -5.608804775471442,\n    \"incomeTaxExpense\": 97000,\n    \"netIncome\":
+        -82782000,\n    \"netIncomeRatio\": -5.615384615384615,\n    \"eps\": -0.040481,\n
+        \   \"epsdiluted\": -0.040481,\n    \"weightedAverageShsOut\": 2044950000,\n
+        \   \"weightedAverageShsOutDil\": 2044950000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"2007-12-31\",\n    \"symbol\": \"TSLA\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001318605\",\n    \"fillingDate\":
+        \"2007-12-31\",\n    \"acceptedDate\": \"2007-12-31\",\n    \"calendarYear\":
+        \"2007\",\n    \"period\": \"FY\",\n    \"revenue\": 73000,\n    \"costOfRevenue\":
+        9000,\n    \"grossProfit\": 64000,\n    \"grossProfitRatio\": 0.8767123287671232,\n
+        \   \"researchAndDevelopmentExpenses\": 62753000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        17244000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 79997000,\n
+        \   \"costAndExpenses\": 80006000,\n    \"interestIncome\": 1749000,\n    \"interestExpense\":
+        1749000,\n    \"depreciationAndAmortization\": 2895000,\n    \"ebitda\": -73403000,\n
+        \   \"ebitdaratio\": -1005.5205479452055,\n    \"operatingIncome\": -79933000,\n
+        \   \"operatingIncomeRatio\": -1094.972602739726,\n    \"totalOtherIncomeExpensesNet\":
+        1886000,\n    \"incomeBeforeTax\": -78047000,\n    \"incomeBeforeTaxRatio\":
+        -1069.13698630137,\n    \"incomeTaxExpense\": 110000,\n    \"netIncome\":
+        -78157000,\n    \"netIncomeRatio\": -1070.6438356164383,\n    \"eps\": -0.03822,\n
+        \   \"epsdiluted\": -0.03822,\n    \"weightedAverageShsOut\": 2044950000,\n
+        \   \"weightedAverageShsOutDil\": 2044950000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '23443'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 11:31:11 GMT
+      ETag:
+      - W/"5b93-9wy3nZtIQObnQ9ouUaf8hD3vpDU"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

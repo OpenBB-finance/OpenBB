@@ -1,7 +1,6 @@
 stocks
 load ${ticker=aapl}
 ta
-view
 recom
 summary
 ema -l 20,30,50
@@ -78,4 +77,9 @@ ad
 adosc
 obv
 fib
+atr
+cones
+multi -i macd[12,26,9],rsi,sma[20]
+help
+reset
 exit

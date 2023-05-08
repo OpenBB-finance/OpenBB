@@ -1,26 +1,25 @@
 # OpenBB Workflows
 This directory contains the workflows for the OpenBB 🦋 Project. The workflows are:
 
-| Workflows   | Summary
-| :-------------------- |:--- 
-| branch-name-check.yml | Checks if the branch name is valid and follows the naming convention.
-| build-release.yml     | Builds the project and runs the tests.
-| docker.yml            | Builds the docker image and pushes it to the docker hub.
-| draft.yml             | Creates a draft release when a new tag is pushed.
-| gh-pages.yml          | Builds the documentation and deploy to github pages.
-| integration-test.yml  | Runs the integration tests.
-| intel_macos_build.yml | Builds the project on Intel Macs.
-| issue.yml             | Creates an issue when a new bug is reported.
-| labels.yml            | Adds labels to the issues and pull requests.
-| linting.yml           | Runs the linters.
-| m1_macos_build.yml    | Builds the project on M1 Macs.
-| mac.yml               | Builds the project on Mac OS X Full Clean Build with ML.
-| nightly-build.yml     | Builds the project and runs the integration tests every night on the `develop` branch.
-| pypi.yml              | Publishes the package to PyPI.
-| nightly-pypi.yml      | Publishes the package to PyPI every night on the `develop` branch.
-| unit-test.yml         | Runs the unit tests.
-| windows.yml           | Builds the project on Windows 10 Full Clean Build with ML.
-| windows10_build.yml   | Builds the project on Windows 10.
+| Workflows   | Summary |   Branches
+| :-------------------- |:------------------ | :------------------
+| branch-name-check.yml | Checks if the branch name is valid and follows the naming convention.                     | all branches
+| build-release.yml     | Builds the project and runs the tests.                                                    | main, release/*
+| docker-build.yml      | Builds the docker image and pushes it to the docker hub.                                  | all branches (only pushes to docker hub on main)
+| draft-release.yml     | Creates a draft release when a new tag is pushed.                                         | -
+| gh-pages.yml          | Builds the documentation and deploy to github pages.                                      | main and release/*
+| integration-test.yml  | Runs the integration tests.                                                               | all branches
+| labels-issue.yml      | Creates an issue when a new bug is reported.                                              | -
+| labels-PR.yml         | Adds labels to the issues and pull requests.                                              | -
+| linting.yml           | Runs the linters.                                                                         | all branches
+| macos-build.yml       | Builds the project on M1 Macs.                                                            | develop, main, release/*
+| macos-ml.yml          | Builds the project on Mac OS X Full Clean Build with ML.                                  | main
+| nightly-build.yml     | Builds the project and runs the integration tests every night on the `develop` branch.    | develop
+| pypi.yml              | Publishes the package to PyPI.                                                            | all branches (only pushes to PyPI on main)
+| pypi-nightly.yml      | Publishes the package to PyPI every night on the `develop` branch.                        | develop
+| unit-test.yml         | Runs the unit tests.                                                                      | all branches
+| windows_ml.yml        | Builds the project on Windows 10 Full Clean Build with ML.                                | main
+| windows10_build.yml   | Builds the project on Windows 10.                                                         | all branches
 
 ## Branch Name Check Workflow
 Objective: To check if pull request branch names follow the GitFlow naming convention before merging.
@@ -74,7 +73,7 @@ Steps
 
 6.  Publishing the Docker Image: This step publishes the Docker image to the GitHub Container Registry. The Docker image is only pushed to the registry if the branch being built is `main`.
 
-## Draft Workflow
+## Release Drafter Workflow
 This GitHub Actions workflow is designed to automatically generate and update draft releases in a GitHub repository. The workflow is triggered when it is manually dispatched, allowing you to control when the draft releases are updated.
 
 ## GH Pages Workflow
@@ -94,27 +93,6 @@ The workflow consists of the following steps:
 7.  Upload a summary of the test results to Slack
 
 The results of the tests are captured in a file called `result.txt`. The summary of the tests, including information about failed tests, is then uploaded to Slack using the `adrey/slack-file-upload-action` GitHub Action.
-
-## Intel MacOS Build Workflow
-This GitHub Actions workflow is responsible for building and testing the project on Intel Macs. The workflow is triggered by the workflow_dispatch event, which means it can be manually triggered. The concurrency group for the job is defined based on the Github workflow and the Github ref, and it is set to cancel in-progress runs.
-
-The job named `Build` has several steps:
-
-1.  Checkout the repository's main branch.
-2.  Git log to see the history of the repository.
-3.  Install `create-dmg` using Homebrew.
-4.  Clean up previous environment variables and set PATH to default.
-5.  Set up conda environment caching.
-6.  Set up Miniconda using the `build/conda/conda-3-9-env-full.yaml` file.
-7.  Use Poetry to install the necessary dependencies.
-8.  Install Pyinstaller.
-9.  Install Portfolio Optimization and Forecasting Toolkits.
-10. Install a specific version of Papermill using pip.
-11. Build the bundle using Pyinstaller and do some additional tasks such as setting up icons.
-12. Create a keychain and decode a certificate using a password stored in Github secrets.
-13. Code sign specific binaries using the certificate and password from the previous step.
-
-This workflow builds the OpenBB Terminal application on MacOS and signs it with a certificate to allow it to run on the MacOS system.
 
 ## Linting Workflow
 This GitHub Actions workflow is responsible for running linting checks on the codebase. This workflow is triggered on pull request events such as `opened`, `synchronize`, and `edited`, and push events on branches with names that start with `feature/`, `hotfix/`, or `release/`. The workflow also sets a number of environment variables and uses Github Actions caching to improve performance.

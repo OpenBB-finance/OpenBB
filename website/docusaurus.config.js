@@ -3,6 +3,8 @@
 
 const lightCodeTheme = require("prism-react-renderer/themes/vsLight");
 const darkCodeTheme = require("prism-react-renderer/themes/vsDark");
+const math = require("remark-math");
+const katex = require("rehype-katex");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -27,7 +29,6 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
-
   plugins: [
     [
       "@docusaurus/plugin-client-redirects",
@@ -85,6 +86,8 @@ const config = {
             "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
           routeBasePath: "/",
           path: "content",
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -114,6 +117,13 @@ const config = {
         contextualSearch: false,
       },
     }),
+
+  stylesheets: [
+    {
+      href: "/katex/katex.min.css",
+      type: "text/css",
+    },
+  ],
 };
 
 module.exports = config;

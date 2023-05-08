@@ -3,25 +3,25 @@
 
 Stock: 
 
-    quote              view the current price for a specific stock ticker              [FinancialModelingPrep]
-    tob                view top of book for loaded ticker (US exchanges only)          [CBOE]
-    candle             view a candle chart for a specific stock ticker
-    codes              FIGI, SIK and SIC codes codes                                   [Polygon]
-    news               latest news of the company                                      [Feedparser, NewsApi, Ultima]
+[unvl]    quote              view the current price for a specific stock ticker[/unvl]              [FinancialModelingPrep]
+[unvl]    tob                view top of book for loaded ticker (US exchanges only)[/unvl]          [CBOE]
+[unvl]    candle             view a candle chart for a specific stock ticker[/unvl]
+[unvl]    codes              FIGI, SIK and SIC codes codes[/unvl]                                   [Polygon]
+[unvl]    news               latest news of the company[/unvl]                                      [Feedparser, NewsApi, Ultima]
 
->   th                 trading hours,                check open markets
->   options            options menu,                 chains, open interest, greeks, parity
->   disc               discover trending stocks,     map, sectors, high short interest
->   dps                dark pool and short data,     darkpool, short interest, ftd
->   scr                screener stocks,              overview/performance, using preset filters
->   ins                insider trading,              latest penny stock buys, top officer purchases
->   gov                government menu,              house trading, contracts, corporate lobbying
->   ba                 behavioural analysis,         from reddit, stocktwits, twitter, google
->   ca                 comparison analysis,          get similar, historical, correlation, financials
->   fa                 fundamental analysis,         income, balance, cash, ratios, earnings, expectations
->   bt                 strategy backtester,          simple ema, ema cross, rsi strategies
->   ta                 technical analysis,           ema, macd, rsi, adx, bbands, obv
->   qa                 quantitative analysis,        decompose, cusum, residuals analysis
->   forecast           forecast techniques,          rnn, nbeats, transformer, block rnn
-[unvl]>   res                research web page,            macroaxis, yahoo finance, fool[/unvl]
+>   th                 trading hours                 check open markets
+>   options            options menu                  chains, open interest, greeks, parity
+>   disc               discover trending stocks      map, sectors, high short interest
+>   dps                dark pool and short data      darkpool, short interest, ftd
+>   scr                screener stocks               overview/performance, using preset filters
+>   ins                insider trading               latest penny stock buys, top officer purchases
+>   gov                government menu               house trading, contracts, corporate lobbying
+>   ba                 behavioural analysis          from reddit, stocktwits, twitter, google
+>   ca                 comparison analysis           get similar, historical, correlation, financials
+>   fa                 fundamental analysis          income, balance, cash, ratios, earnings, expectations
+>   bt                 strategy backtester           simple ema, ema cross, rsi strategies
+>   ta                 technical analysis            ema, macd, rsi, adx, bbands, obv
+>   qa                 quantitative analysis         decompose, cusum, residuals analysis
+>   forecast           forecast techniques           rnn, nbeats, transformer, block rnn
+[unvl]>   res                research web page             macroaxis, yahoo finance, fool[/unvl]
 

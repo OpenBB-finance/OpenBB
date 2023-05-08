@@ -7,7 +7,7 @@ exclude-contributors:
   - 'deeleeramone'
   - 'hjoaquim'
   - 'jose-donato'
-  - 'luqman-bello'
+  - 'luqmanbello'
   - 'martinb-bb'
   - 'montezdesousa'
   - 'tehcoderer'
@@ -16,6 +16,8 @@ exclude-contributors:
   - 'northern-64bit'
   - 'piiq'
   - 'andrewkenreich'
+  - 'IgorWounds'
+  - 'jerryduluk'
 
 template: |
   ## Thank you and welcome to our new contributors 🔥

@@ -11,16 +11,49 @@
     ></script>
     <script src="/{{MAIN_PATH}}/web/popups.js" type="text/javascript"></script>
     <script src="/{{MAIN_PATH}}/web/main.js" type="text/javascript"></script>
-    <script
-      src="/{{PLOTLYJS_PATH}}"
-      type="text/javascript"
-    ></script>
+    <script src="/{{PLOTLYJS_PATH}}" type="text/javascript"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
       integrity="sha512-01CJ9/g7e8cUmY0DFTMcUw/ikS799FHiOA0eyHsUWfOetgbx/t6oV4otQ5zXKQyIrQGTHSmRVPIgrgLcZi/WMA=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script>
+      if (window.plotly_figure?.posthog?.collect_logs) {
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init("phc_vhssDAMod5qIplznQ75Kdgz4aB1qPFmeVmfEOZ4hkRw", {
+          api_host: "https://app.posthog.com",
+          autocapture: {
+            css_selector_allowlist: [".ph-capture"],
+          },
+          capture_pageview: false,
+          loaded: function (posthog) {
+            const log_id = window.plotly_figure?.log_id || "";
+
+            if (log_id != "" && log_id != "REPLACE_ME") {
+              posthog.identify(log_id);
+            }
+
+            posthog.onFeatureFlags(function () {
+              if (
+                !posthog.isFeatureEnabled("record-pywry", { send_event: false })
+              ) {
+                posthog.stopSessionRecording();
+              }
+              if (
+                !posthog.isFeatureEnabled("collect-logs-pywry", {
+                  send_event: false,
+                })
+              ) {
+                posthog.opt_out_capturing();
+              } else if (posthog.has_opted_out_capturing()) {
+                posthog.opt_in_capturing();
+              }
+            });
+          },
+        });
+      }
+    </script>
   </head>
 
   <body>
@@ -29,7 +62,7 @@
       <div
         id="openbb_header"
         class="_header flex items-center justify-between gap-4 py-2 px-4 text-center"
-        style="z-index: 99999999999; width: 100%; top: 0; max-height: 60px;"
+        style="z-index: 99999999999; width: 100%; top: 0; max-height: 60px"
       >
         <div class="w-1/3">
           <svg
@@ -45,24 +78,34 @@
             ></path>
           </svg>
         </div>
-        <strong class="w-1/3 font-bold" id="title" style="font-size: 16px;"></strong>
+        <strong
+          class="w-1/3 font-bold"
+          id="title"
+          style="font-size: 16px"
+        ></strong>
         <p class="w-1/3 text-right" id="date"></p>
       </div>
-      <div
-        id="openbb_chart"
-        class="plotly-graph-div"
-      ></div>
+      <div id="openbb_chart" class="plotly-graph-div"></div>
     </div>
     <div
       id="openbb_footer"
       class="_footer flex items-center justify-between gap-4 py-2 px-4 text-center"
-      style="z-index: 99999999999; width: 100%; bottom: 0; max-height: 60px; font-size: 0px;"
-    >......................</div>
-
-    <div id="loading" class="saving">
-      <div id="loading_text" class="loading_text"></div><div id="loader" class="loader"></div>
+      style="
+        z-index: 99999999999;
+        width: 100%;
+        bottom: 0;
+        max-height: 60px;
+        min-height: 60px;
+        font-size: 0px;
+      "
+    >
+      ......................
     </div>
 
+    <div id="loading" class="saving">
+      <div id="loading_text" class="loading_text"></div>
+      <div id="loader" class="loader"></div>
+    </div>
 
     <!-- Popups Overlay -->
     <div id="popup_overlay" class="popup_overlay">
@@ -86,38 +129,68 @@
           <div style="margin-top: 12px">
             <label for="csv_name"><b>Trace Name:</b></label>
             <textarea
-            id="csv_name" style="padding: 5px 2px 2px 5px !important; width: 100%; max-width: 100%;
-            max-height: 200px; margin-top: 8px;" rows="2" cols="20"
-            value="" placeholder="Enter a name to give this trace"></textarea>
+              id="csv_name"
+              style="
+                padding: 5px 2px 2px 5px !important;
+                width: 100%;
+                max-width: 100%;
+                max-height: 200px;
+                margin-top: 8px;
+              "
+              rows="2"
+              cols="20"
+              value=""
+              placeholder="Enter a name to give this trace"
+            ></textarea>
           </div>
 
           <div style="margin-top: 15px" id="csv_columns"><!-- Empty --></div>
           <div style="margin-top: 15px" id="csv_colors"><!-- Empty --></div>
 
-          <div style="margin-top: 10px; display: none;" id="csv_plot_yaxis_options">
+          <div
+            style="margin-top: 10px; display: none"
+            id="csv_plot_yaxis_options"
+          >
+            <div id="csv_percent_change_div" style="display: none">
+              <input
+                type="checkbox"
+                id="csv_percent_change"
+                name="csv_plot_yaxis_check"
+                onclick="onlyOne(this)"
+              />
+              <label for="csv_percent_change"
+                >Plot as percent change from first value</label
+              >
+            </div>
+            <br />
 
-            <div id="csv_percent_change_div" style="display: none;">
-              <input type="checkbox" id="csv_percent_change" name="csv_plot_yaxis_check" onclick="onlyOne(this)" />
-              <label for="csv_percent_change">Plot as percent change from first value</label>
-            </div><br />
-
-            <input type="checkbox" id="csv_same_yaxis" name="csv_plot_yaxis_check" onclick="onlyOne(this)" />
+            <input
+              type="checkbox"
+              id="csv_same_yaxis"
+              name="csv_plot_yaxis_check"
+              onclick="onlyOne(this)"
+            />
             <label for="csv_same_yaxis">Share Y-axis</label>
           </div>
-          <div style="margin-top: 2px; display: none;" id="csv_bar_orientation">
+          <div style="margin-top: 2px; display: none" id="csv_bar_orientation">
             <input type="checkbox" id="csv_bar_horizontal" />
             <label for="csv_bar_horizontal">Plot horizontally</label>
-          </div><br />
+          </div>
+          <br />
 
           <div style="float: right; margin-top: 20px">
             <button
-              class="_btn-tertiary"
+              class="_btn-tertiary ph-capture"
               id="csv_cancel"
               onclick="closePopup()"
             >
               Cancel
             </button>
-            <button class="_btn" id="csv_submit" onclick="on_submit('csv')">
+            <button
+              class="_btn ph-capture"
+              id="csv_submit"
+              onclick="on_submit('csv')"
+            >
               Submit
             </button>
           </div>
@@ -128,6 +201,23 @@
 
         <!-- Title Popup -->
         <div class="popup_content" id="popup_title"></div>
+
+        <!-- Download Popup -->
+        <div class="popup_content" id="popup_download">
+          <p>File saved to:</p>
+          <p id="download_path"></p>
+          <div style="float: right; margin-top: 20px">
+            <button class="_btn" id="openfile_button">Open File</button>
+            <button class="_btn" id="openfolder_button">Open Folder</button>
+            <button
+              class="_btn-tertiary"
+              id="close_button"
+              onclick="closePopup()"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -150,8 +240,10 @@
       var interval = setInterval(function () {
         // Waits for OpenBBMain and plotly_figure to be defined before
         // calling OpenBBMain to avoid errors
+        globals.cmd_src = "";
         if (typeof OpenBBMain != "undefined" && window.plotly_figure) {
           clearInterval(interval);
+
           const date = new Date();
           const formattedDate = new Intl.DateTimeFormat("en-GB", {
             dateStyle: "full",
@@ -160,24 +252,90 @@
             .format(date)
             .replace(/:\d\d /, " ");
 
+          let filename = "";
+          let extension = "";
+          if (window.export_image != undefined) {
+            filename = window.export_image.split("/").pop();
+            extension = filename.split(".").pop().replace("jpg", "jpeg");
+          }
+
+          if (window.plotly_figure.layout.annotations != undefined) {
+            window.plotly_figure.layout.annotations.forEach(function (
+              annotation
+            ) {
+              if (
+                annotation.text != undefined &&
+                !["svg", "pdf"].includes(extension)
+              ) {
+                if (annotation.text[0] == "/") {
+                  globals.cmd_src = annotation.text;
+                  globals.cmd_idx =
+                    window.plotly_figure.layout.annotations.indexOf(annotation);
+                  annotation.text = "";
+
+                  let margin = window.plotly_figure.layout.margin;
+                  globals.old_margin = { ...margin };
+                  if (margin.t != undefined && margin.t > 40) {
+                    margin.t = 40;
+                  }
+                  margin.l = 70;
+                  if (globals.cmd_src == "/stocks/candle") {
+                    margin.r -= 40;
+                  }
+                }
+              }
+            });
+          }
+          if (
+            globals.cmd_src != "" &&
+            window.plotly_figure?.posthog?.collect_logs
+          ) {
+            posthog.capture("chart", {
+              INFO: {
+                command: globals.cmd_src,
+                title: window.plotly_figure.layout.title.text,
+                date: formattedDate,
+                python_version: window.plotly_figure.python_version,
+                pywry_version: window.plotly_figure.pywry_version,
+                terminal_version: window.plotly_figure.terminal_version,
+              },
+            });
+          }
+
           document
             .querySelector('meta[name="color-scheme"]')
-            .setAttribute("content", window.plotly_figure.layout.template.layout.mapbox.style);
+            .setAttribute(
+              "content",
+              window.plotly_figure.layout.template.layout.mapbox.style
+            );
 
-          document.getElementById("date").innerHTML = formattedDate;
-          document.getElementById("title").innerHTML =
+          let title =
             window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";
+
+          globals.title = title;
+
+          if (title.length > 50) {
+            document.getElementById("title").style.fontSize = "12px";
+          }
+
+          let style = "font-size: 12px; font-weight: 400; color: gray;";
+          document.getElementById("date").innerHTML =
+            formattedDate +
+            `<br /><span style="${style}">${globals.cmd_src}</span>`;
+          document.getElementById("title").innerHTML = title;
 
           CHART_DIV = document.getElementById("openbb_chart");
           CSV_DIV = document.getElementById("popup_csv");
           TEXT_DIV = document.getElementById("popup_text");
           TITLE_DIV = document.getElementById("popup_title");
+          DOWNLOAD_DIV = document.getElementById("popup_download");
           OpenBBMain(
             window.plotly_figure,
             CHART_DIV,
             CSV_DIV,
             TEXT_DIV,
-            TITLE_DIV
+            TITLE_DIV,
+            DOWNLOAD_DIV
           );
         }
       }, 20);

@@ -84,16 +84,18 @@ def display_profile(symbol: str, export: str = "", sheet_name: Optional[str] = N
     profile = fmp_model.get_profile(symbol)
 
     if not profile.empty:
+        console.print(f"\nImage: {profile.loc['image'][0]}")
+        console.print(f"\nDescription: {profile.loc['description'][0]}")
+
+        profile.drop(index=["description", "image"], inplace=True)
+        profile.columns = [" "]
+
         print_rich_table(
-            profile.drop(index=["description", "image"]),
-            headers=[""],
+            profile,
             title=f"{symbol.upper()} Profile",
             show_index=True,
             export=bool(export),
         )
-
-        console.print(f"\nImage: {profile.loc['image'][0]}")
-        console.print(f"\nDescription: {profile.loc['description'][0]}")
 
         export_data(
             export,
@@ -199,7 +201,7 @@ def display_enterprise(
             sheet_name,
         )
 
-        return fig.show(external=external_axes)
+        return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -241,7 +243,7 @@ def display_discounted_cash_flow(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "dcf",
-            dcf,
+            dcf.transpose(),
             sheet_name,
         )
 
@@ -703,69 +705,6 @@ def display_financial_statement_growth(
     else:
         logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_filings(
-    ticker: str = "",
-    pages: int = 1,
-    limit: int = 20,
-    export: str = "",
-    sheet_name: Optional[str] = None,
-) -> None:
-    """Display recent forms submitted to the SEC
-
-    Parameters
-    ----------
-    pages: int = 1
-        The range of most-rececnt pages to get entries from (1000 per page, max 30 pages)
-    limit: int = 20
-        Limit the number of entries to display (default: 20)
-    export: str = ""
-        Export data as csv, json, or xlsx
-
-    Examples
-    --------
-
-    openbb.stocks.display_filings()
-
-    openbb.stocks.display_filings(today = True, export = "csv")
-    """
-    filings = fmp_model.get_filings(pages)
-    ticker_filings = filings[filings["Ticker"] == ticker.upper()]
-
-    if ticker_filings.empty:
-        console.print(
-            f"[red]No filings found for ticker {ticker}, consider increasing the value "
-            "for --pages. Showing recent filings instead.[/red]\n"
-        )
-        print_rich_table(
-            filings,
-            title=f"Recent SEC Filings [Limit: {limit}]",
-            show_index=True,
-            export=bool(export),
-            limit=limit,
-        )
-    elif not ticker_filings.empty:
-        print_rich_table(
-            ticker_filings,
-            title=f"SEC Filings for {ticker} [Limit: {limit}]]",
-            show_index=True,
-            export=bool(export),
-            limit=limit,
-        )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "filings",
-            ticker_filings,
-            sheet_name,
-        )
-    else:
-        logger.error("Could not find any data.")
-        console.print("[red]Could not find any data for {ticker}[/red]\n")
 
 
 def add_color(value: str) -> str:

@@ -621,7 +621,7 @@ class EconometricsController(BaseController):
                     df,
                     headers=list(df.columns),
                     show_index=True,
-                    title=f"Dataset {name} | Showing {ns_parser.limit} of {len(df)} rows",
+                    title=f"Dataset {name}",
                     export=bool(ns_parser.export),
                     limit=ns_parser.limit,
                 )

@@ -1,14 +1,18 @@
 ---
 title: Fixed Income
-keywords: [fixed income, government bonds, bonds, corporate bonds, fixed, income, interest, rates, inflation, central bank, reference, rates, sofr, sonia, ester, estr]
-description: The Fixed Income menu is the high-level menu for the Fixed Income asset class. It contains reference rates, central bank rates, government bonds, yield curves, corporate bond benchmarks and more.
+keywords: [fixed income, government bonds, bonds, corporate bonds, fixed, income, interest, rates, inflation, central bank, reference, rates, sofr, sonia, ester, estr, fred, fomc, projection, ameribor, ecb, how to, example]
+description: An introduction to the Fixed Income menu - the high-level menu for the Fixed Income asset class. It contains reference rates, central bank rates, government bonds, yield curves, corporate bond benchmarks and more.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Fixed Income - Terminal | OpenBB Docs" />
 
 The Fixed Income menu is the high-level menu for the Fixed Income asset class. It contains reference rates (ESTER, SOFR, SONIA and Ameribor), central bank rates (FRED, FOMC projections and ECB key interest rates), government bonds (treasury rates for any country, us-specific rates, yield curves), corporate bonds (ICE BofA Corporate Indices, Moody's AAA and BAA Corporate Indices, Commercial Paper, Spot Rates and HQM Corporate Yield Curve) and spread (ICE BofA spreads, constant maturity spreads, and federal funds rate)
 
 ## How to Use
 
-The Fixed Income menu can be accessed directly from the `home` screen by typing `fixedincome`. This opens the menu as shown below. The menu heavily relies on FRED to obtain the data as seen below, please refer to the [API keys guide](https://docs.openbb.co/terminal/quickstart/api-keys) for information on how to obtain and set a key for FRED.
+The Fixed Income menu can be accessed directly from the `home` screen by typing `fixedincome`. This opens the menu as shown below. The menu heavily relies on FRED to obtain the data as seen below, please refer to the [API keys guide](https://docs.openbb.co/terminal/usage/guides/api-keys) for information on how to obtain and set a key for FRED.
 
 ![Fixed Income Menu](https://user-images.githubusercontent.com/46355364/220970904-d32a63b5-aa14-47b4-bfe6-b5efc1cf2cd4.png)
 

@@ -116,6 +116,7 @@ def search(
     sector: str = "",
     industry_group: str = "",
     industry: str = "",
+    exchange: str = "",
     exchange_country: str = "",
     all_exchanges: bool = False,
     limit: int = 0,
@@ -130,14 +131,18 @@ def search(
         Search by country to find stocks matching the criteria
     sector : str
         Search by sector to find stocks matching the criteria
+    industry_group : str
+        Search by industry group to find stocks matching the criteria
     industry : str
         Search by industry to find stocks matching the criteria
+    exchange: str
+        Search by exchange to find stock matching the criteria
     exchange_country: str
-        Search by exchange country to find stock matching
+        Search by exchange country to find stock matching the criteria
     all_exchanges: bool
         Whether to search all exchanges, without this option only the United States market is searched
     limit : int
-        The limit of companies shown.
+        The limit of results shown, where 0 means all the results
 
     Returns
     -------
@@ -148,7 +153,7 @@ def search(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.stocks.search(country="united states", exchange_country="Germany")
+    >>> openbb.stocks.search(country="United States", exchange_country="Germany")
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
@@ -159,7 +164,11 @@ def search(
         kwargs["industry"] = industry
     if industry_group:
         kwargs["industry_group"] = industry_group
-    kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
+    if exchange:
+        kwargs["exchange"] = exchange
+    kwargs["exclude_exchanges"] = (
+        False if (exchange_country or exchange) else not all_exchanges
+    )
 
     try:
         equities_database = fd.Equities()
@@ -180,7 +189,7 @@ def search(
             " capabilities. This tends to be due to access restrictions for GitHub.com,"
             " please check if you can access this website without a VPN.[/red]\n"
         )
-        data = {}
+        data = pd.DataFrame()
     except ValueError:
         console.print(
             "[red]No companies were found that match the given criteria.[/red]\n"
@@ -216,11 +225,17 @@ def search(
             exchange_suffix[x] = k
 
     df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
+    # To automate renaming columns
+    headers = [col.replace("_", " ") for col in df.columns.tolist()]
 
     title = "Companies found"
     if query:
         title += f" on term {query}"
-    if exchange_country:
+    if exchange_country and exchange:
+        title += f" on the exchange {exchange} in {exchange_country.replace('_', ' ').title()}"
+    if exchange and not exchange_country:
+        title += f" on the exchange {exchange}"
+    if exchange_country and not exchange:
         title += f" on an exchange in {exchange_country.replace('_', ' ').title()}"
     if country:
         title += f" in {country.replace('_', ' ').title()}"
@@ -241,7 +256,8 @@ def search(
     print_rich_table(
         df,
         show_index=True,
-        headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
+        headers=headers,
+        index_name="Symbol",
         title=title,
         limit=limit,
     )
@@ -661,7 +677,7 @@ def display_candle(
     if add_trend:
         fig.add_trend(data, secondary_y=True)
 
-    fig.update_layout(yaxis2=dict(title="Stock Price ($)", type=yscale))
+    fig.update_layout(yaxis2=dict(type=yscale))
 
     return fig.show(external=external_axes)
 
