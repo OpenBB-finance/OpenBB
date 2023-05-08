@@ -53,16 +53,9 @@ export function includesDateNames(column: string) {
 }
 
 export function includesPriceNames(column: string) {
-  return [
-    "price",
-    "value",
-    "cost",
-    "amount",
-    "open",
-    "close",
-    "high",
-    "low",
-  ].some((priceName) => column?.toLowerCase().includes(priceName));
+  return ["price", "open", "close", "high", "low"].some((priceName) =>
+    column?.toLowerCase().includes(priceName)
+  );
 }
 
 function loadingOverlay(message?: string, is_close?: boolean) {
