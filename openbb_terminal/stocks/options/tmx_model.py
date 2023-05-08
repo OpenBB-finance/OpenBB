@@ -1,5 +1,4 @@
 """Model for retrieving public options data from the Montreal Options Exchange."""
-# %%
 
 from datetime import timedelta
 
@@ -11,6 +10,8 @@ from openbb_terminal.helper_funcs import request
 
 cal = mcal.get_calendar(name="TSX")
 holidays = list(cal.regular_holidays.holidays().strftime("%Y-%m-%d"))
+
+# mypy: disable-error-code=no-redef
 
 
 def check_weekday(date: str) -> str:
