@@ -149,7 +149,11 @@ class PosthogHandler(logging.Handler):
         if re.match(r"^(QUEUE|START|END|INPUT:)", log_line) and not log_dict:
             return
 
-        if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
+        if (
+            not self.logged_in
+            and get_user_uuid() != NO_USER_PLACEHOLDER
+            and get_current_user().profile.remember
+        ):
             self.logged_in = True
             openbb_posthog.identify(
                 get_user_uuid(), {"email": get_current_user().profile.email}

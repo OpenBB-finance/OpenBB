@@ -35,7 +35,6 @@ def get_system() -> dict:
     system_dict = get_current_system().to_dict()
     system_dict.pop("LOGGING_AWS_ACCESS_KEY_ID", None)
     system_dict.pop("LOGGING_AWS_SECRET_ACCESS_KEY", None)
-    # logger.info("SYSTEM: %s ", json.dumps(system_dict))
 
     return system_dict
 
@@ -57,7 +56,6 @@ def get_credentials() -> dict:
         else:
             current_keys[cfg_var_name] = "not_defined"
 
-    # logger.info("KEYS: %s ", json.dumps(current_keys))
     return current_keys
 
 

@@ -205,7 +205,7 @@ class Backend(PyWry):
         outgoing = dict(
             html_path=self.get_plotly_html(),
             json_data=json_data,
-            export_image=str(export_image),
+            export_image=export_image,
             **self.get_kwargs(command_location),
         )
         self.send_outgoing(outgoing)
@@ -359,7 +359,7 @@ class Backend(PyWry):
         """Override to check if isatty."""
         if self.isatty:
             message = (
-                "[bold red]PyWry version 0.5.2 or higher is required to use the "
+                "[bold red]PyWry version 0.5.4 or higher is required to use the "
                 "OpenBB Plots backend.[/]\n"
                 "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
             )
@@ -374,7 +374,7 @@ class Backend(PyWry):
 
                 PyWry.__version__ = pywry_version  # pylint: disable=W0201
 
-            if version.parse(PyWry.__version__) < version.parse("0.5.2"):
+            if version.parse(PyWry.__version__) < version.parse("0.5.4"):
                 console.print(message)
                 self.max_retries = 0  # pylint: disable=W0201
                 return
