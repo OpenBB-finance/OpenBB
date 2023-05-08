@@ -23,7 +23,6 @@ else:
 
 # IMPORTATION INTERNAL
 from openbb_terminal.base_helpers import openbb_posthog
-from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.core.log.generation.directories import get_log_dir
 from openbb_terminal.core.log.generation.formatter_with_exceptions import (
     FormatterWithExceptions,
@@ -45,6 +44,7 @@ from openbb_terminal.core.session.current_system import (
     get_current_system,
     set_system_variable,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 
 logger = logging.getLogger(__name__)
 current_system = get_current_system()
