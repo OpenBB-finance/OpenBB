@@ -2845,7 +2845,7 @@ def check_ultima_key(show_output: bool = False) -> str:
     return str(status)
 
 
-  def set_dappradar_key(
+def set_dappradar_key(
     key: str, persist: bool = False, show_output: bool = False
 ) -> str:
     """Set DappRadar key
@@ -2875,7 +2875,7 @@ def check_ultima_key(show_output: bool = False) -> str:
     handle_credential("API_DAPPRADAR_KEY", key, persist)
     return check_dappradar_key(show_output)
 
-  
+
 def check_dappradar_key(show_output: bool = False) -> str:
     """Check DappRadar key
 
@@ -2914,9 +2914,9 @@ def check_dappradar_key(show_output: bool = False) -> str:
         console.print(status.colorize())
 
     return str(status)
-  
-  
-  def set_companieshouse_key(
+
+
+def set_companieshouse_key(
     key: str,
     persist: bool = False,
     show_output: bool = False,
@@ -2990,4 +2990,3 @@ def check_companieshouse_key(show_output: bool = False) -> str:
         console.print(status.colorize())
 
     return str(status)
-
