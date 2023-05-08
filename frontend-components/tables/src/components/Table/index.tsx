@@ -51,7 +51,7 @@ function getCellWidth(row, column) {
     const only_numbers = value?.toString().replace(/[^0-9]/g, "");
 
     const probablyDate =
-      only_numbers.length >= 4 &&
+      only_numbers?.length >= 4 &&
       (includesDateNames(column) ||
         column.toLowerCase() === "index" ||
         (indexValue &&
@@ -160,8 +160,8 @@ export default function Table({
     const cellLength = Math.max(
       //@ts-ignore
       ...rows.map((row) => getCellWidth(row, accessor)),
-      headerText.length + 8
-    );
+      headerText?.length ? headerText?.length + 8 : 0
+      );
     return Math.min(maxWidth, cellLength * magicSpacing);
   };
 
@@ -184,7 +184,7 @@ export default function Table({
           const valueType = typeof value;
           const only_numbers = value?.toString().replace(/[^0-9]/g, "") ?? "";
           const probablyDate =
-            only_numbers.length >= 4 &&
+            only_numbers?.length >= 4 &&
             (includesDateNames(column) ||
               column.toLowerCase() === "index" ||
               (indexValue &&
@@ -205,7 +205,7 @@ export default function Table({
                 target="_blank"
                 rel="noreferrer"
               >
-                {value.length > 25 ? value.substring(0, 25) + "..." : value}
+                {value?.length > 25 ? value.substring(0, 25) + "..." : value}
               </a>
             );
           }
@@ -333,7 +333,7 @@ export default function Table({
         pageSize:
           typeof currentPage === "string"
             ? currentPage.includes("All")
-              ? data.length
+              ? data?.length
               : parseInt(currentPage)
             : currentPage,
       },
@@ -487,7 +487,7 @@ export default function Table({
                     );
                   })}
                 </tbody>
-                {rows.length > 30 && visibleColumns.length > 4 && (
+                {rows?.length > 30 && visibleColumns?.length > 4 && (
                   <tfoot>
                     {table.getFooterGroups().map((footerGroup) => (
                       <tr key={footerGroup.id}>

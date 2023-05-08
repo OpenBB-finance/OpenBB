@@ -25,7 +25,7 @@ export function formatNumberMagnitude(
   }
 
   if (number % 1 !== 0) {
-    const decimalPlaces = Math.max(2, number.toString().split(".")[1].length);
+    const decimalPlaces = Math.max(2, number.toString().split(".")[1]?.length || 0);
     const toFixed = Math.min(4, decimalPlaces);
     if (number < 1000) {
       return number.toFixed(toFixed) || 0;
@@ -88,9 +88,9 @@ function loadingOverlay(message?: string, is_close?: boolean) {
 export function isEqual(a: any, b: any) {
   if (a === b) return true;
   if (a == null || b == null) return false;
-  if (a.length !== b.length) return false;
+  if (a?.length !== b?.length) return false;
 
-  for (var i = 0; i < a.length; ++i) {
+  for (var i = 0; i < a?.length; ++i) {
     if (a[i] !== b[i]) return false;
   }
   return true;
