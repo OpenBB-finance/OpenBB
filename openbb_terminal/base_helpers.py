@@ -26,7 +26,7 @@ openbb_posthog = Posthog(
 )
 
 
-def set_posthog_alias():
+def posthog_alias():
     current_user = get_current_user()
     current_system = get_current_system()
 
@@ -37,6 +37,20 @@ def set_posthog_alias():
         openbb_posthog.alias(
             current_user.profile.uuid, get_current_system().LOGGING_APP_ID
         )
+
+
+def posthog_identify():
+    current_user = get_current_user()
+
+    if current_user.profile.uuid != NO_USER_PLACEHOLDER:
+        openbb_posthog.identify(
+            current_user.profile.uuid, {"email": current_user.profile.email}
+        )
+
+
+def posthog_identify_and_alias():
+    posthog_identify()
+    posthog_alias()
 
 
 def handle_error(name: str, default: Any, menu: menus = ""):
