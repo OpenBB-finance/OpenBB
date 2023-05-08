@@ -27,25 +27,24 @@ openbb_posthog = Posthog(
 
 
 def posthog_alias():
-    current_user = get_current_user()
-    current_system = get_current_system()
+    user_uuid = get_current_user().profile.uuid
+    app_id = get_current_system().LOGGING_APP_ID
 
     if (
-        current_user.profile.uuid != NO_USER_PLACEHOLDER
-        and current_system.LOGGING_APP_ID != "REPLACE_ME"
+        user_uuid
+        and user_uuid != NO_USER_PLACEHOLDER
+        and app_id
+        and app_id != "REPLACE_ME"
     ):
-        openbb_posthog.alias(
-            current_user.profile.uuid, get_current_system().LOGGING_APP_ID
-        )
+        openbb_posthog.alias(user_uuid, app_id)
 
 
 def posthog_identify():
     current_user = get_current_user()
+    user_uuid = current_user.profile.uuid
 
-    if current_user.profile.uuid != NO_USER_PLACEHOLDER:
-        openbb_posthog.identify(
-            current_user.profile.uuid, {"email": current_user.profile.email}
-        )
+    if user_uuid and user_uuid != NO_USER_PLACEHOLDER:
+        openbb_posthog.identify(user_uuid, {"email": current_user.profile.email})
 
 
 def posthog_identify_and_alias():
