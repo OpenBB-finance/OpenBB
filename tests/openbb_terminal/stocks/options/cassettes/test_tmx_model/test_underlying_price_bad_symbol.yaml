@@ -9,14 +9,14 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1
+      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://webapi.thecse.com/trading/other/securities/BAD_SYMBOL.json
   response:
     body:
       string: '<?xml version="1.0" encoding="UTF-8"?>
 
-        <Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>4KSTMZNES4N3M5XV</RequestId><HostId>XDm7l4yF+muC3yi7ySuxa2JWNvYYqGy/ZrvdHDX1/zu7KB2RFNPXTJn+Sd9MgD9AchGpDS1vif8=</HostId></Error>'
+        <Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>3999PTFTEADSA08Y</RequestId><HostId>PT4CzLdsinkreo2LdI3HCZOTCKSqFpL/E3LYE65Zs20H4TRd5m74d/K6+fbssxttqANDc4dtjmw=</HostId></Error>'
     headers:
       Alt-Svc:
       - h3=":443"; ma=86400
@@ -25,15 +25,15 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Mon, 08 May 2023 01:28:42 GMT
+      - Mon, 08 May 2023 04:57:16 GMT
       Server:
       - AmazonS3
       Transfer-Encoding:
       - chunked
       Via:
-      - 1.1 35575576af8067e30cfb17c6b9fde8e2.cloudfront.net (CloudFront)
+      - 1.1 989017835f43d594873bde5a7ee7fe5e.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - UbpAMGvkZWXQJrgOD3C3FKbdhzDjzHl1Jw8fHem1YSxmQ7-wHKHuYQ==
+      - NLXVne7gI9TbIozAKsFa7xY9m1CzLEdO64bI9kPBfITMClv4eKaxpQ==
       X-Amz-Cf-Pop:
       - SEA73-P1
       X-Cache:

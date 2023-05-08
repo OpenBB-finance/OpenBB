@@ -1006,7 +1006,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 08 May 2023 02:14:46 GMT
+      - Mon, 08 May 2023 04:57:36 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -1014,18 +1014,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=bocelfg0a6fm9diag9sgcv8bti; expires=Mon, 08-May-2023 02:38:45 GMT;
+      - PHPSESSID=k4011r49h0kasc75ahtgqrc8mk; expires=Mon, 08-May-2023 05:21:36 GMT;
         Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:46 GMT; Path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:46 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:36 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:36 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 a3b5bb90516201e5ddd137696b7b0f50.cloudfront.net (CloudFront)
+      - 1.1 f3ac324bf05099849ebda59e8136db0e.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - 4-plvlqmeMUfNKFLnD5kjgxsGVMA4nIBSKo5l5JptDADTas7gbF1Sg==
+      - 1KwraYW8PDjgrjmw5ttHX5qpV1aBD_ojMZz1OI_X-GQVYAKf2jr5CA==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
@@ -2040,7 +2040,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 08 May 2023 02:14:46 GMT
+      - Mon, 08 May 2023 04:57:36 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -2048,18 +2048,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=e1kpvgdh64fngj6mnc05bns8jl; expires=Mon, 08-May-2023 02:38:46 GMT;
+      - PHPSESSID=9aqirgqv6j6uufnmbip9l6qn9a; expires=Mon, 08-May-2023 05:21:36 GMT;
         Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:46 GMT; Path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:46 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:36 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:36 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 618052a0d9c86c1a3bf663f82d041d1c.cloudfront.net (CloudFront)
+      - 1.1 f268a165a18929fd0a24a3189fbd16b2.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - n3qxWtHgGC0f4uaKEvgxOjO1aQ3QCm7BTZvAlp6xVYkcJsclGjGrBw==
+      - 2OZp0KROSgvfzl9d51CCqg139AtBjyBpglobWZcgCn9Qlxrjtlctng==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
@@ -3074,7 +3074,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 08 May 2023 02:14:47 GMT
+      - Mon, 08 May 2023 04:57:37 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -3082,18 +3082,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=3gtp1ek1kpbc3cdmr9fuhrm09k; expires=Mon, 08-May-2023 02:38:47 GMT;
+      - PHPSESSID=6tqtglthavsfdjc1all22jjdni; expires=Mon, 08-May-2023 05:21:37 GMT;
         Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:47 GMT; Path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:47 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:37 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:37 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 e11ee4e3208082d534c251b36bbee268.cloudfront.net (CloudFront)
+      - 1.1 5c7981a979abd51ba7e5ca7d464fd048.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - -FhWf2SOLyK8Pa_E2VYaH6buMotyGCSHHaQAEmjkt-eGPGj_fIeTUw==
+      - V72QVC25Q3Kmj44u91B6mDXR6QgA0QzSUx9EsHfzmXJxFUs8DooHdg==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
@@ -4108,7 +4108,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 08 May 2023 02:14:48 GMT
+      - Mon, 08 May 2023 04:57:38 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -4116,18 +4116,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=gi57uihlnq8on0doeshovkhl70; expires=Mon, 08-May-2023 02:38:47 GMT;
+      - PHPSESSID=9oecrnc8b45l2h6ml4011b3mkk; expires=Mon, 08-May-2023 05:21:37 GMT;
         Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:47 GMT; Path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:48 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:38 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:38 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 a06140ffee86972bad90c57fc682df36.cloudfront.net (CloudFront)
+      - 1.1 3236f234d59c0fda99b416088c283260.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - n7fbK12SDoWeoQSogTtXuyPsMjjz4YyEV4JlnhP8NULV1gKzAshK0w==
+      - RKEnK0IBJomY_4VCunCelc6Lc0lilXKt-SclLCZb9CUaUDPacKe-fw==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
@@ -4890,7 +4890,7 @@ interactions:
         Volatility Calculation</a></p>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div
         id=\"quotes\" class=\"main one_column\">\n<div class=\"block\" id=\"RY\">\n<h2>RY
         &ndash; Royal Bank of Canada</h2>\n<div class=\"quote-info\">\n<p>Last update:
-        <b>May&nbsp;7,&nbsp;2023&nbsp;at&nbsp;10:14&nbsp;p.m.</b> &nbsp; (Real-time)</p>\n<ul>\n<li>Last
+        <b>May&nbsp;8,&nbsp;2023&nbsp;at&nbsp;12:57&nbsp;a.m.</b> &nbsp; (Real-time)</p>\n<ul>\n<li>Last
         price: <b>0</b></li>\n<li>Net change: <b class=\"equal\">0</b></li>\n<li>Bid
         price: <b>0</b></li>\n<li>Ask price: <b>0</b></li>\n<li>30-day historical
         volatility: <b>12.72%</b></li>\n</ul>\n</div>\n<table class=\"dataTable loading
@@ -7145,7 +7145,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 08 May 2023 02:14:49 GMT
+      - Mon, 08 May 2023 04:57:39 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -7153,18 +7153,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=qm21ghsu4tluq4i72m1tvmj48c; expires=Mon, 08-May-2023 02:38:48 GMT;
+      - PHPSESSID=rbvdlule5gg8qljji8k2u2rf3i; expires=Mon, 08-May-2023 05:21:38 GMT;
         Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:48 GMT; Path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 02:14:48 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:38 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:38 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 a06140ffee86972bad90c57fc682df36.cloudfront.net (CloudFront)
+      - 1.1 a9e73292d0b92053c3e38dcec15fd0e2.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - lJzl2Lf-LaSWC51oJPfsCNEzUpxkIcqrouOvXFDHoihbZ-YnM8A1iQ==
+      - HK7MrlJ1JVR7FHgGZNGYePH_FKS3DObPqUMmlSNWB2TYDxwCihsMOg==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
@@ -7182,12 +7182,12 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0
     method: GET
     uri: https://webapi.thecse.com/trading/other/securities/RY.json
   response:
     body:
-      string: '{"updated_at":{"date":"2023-05-05","time":"16:33:30"},"metadata":{"listing_market":"TSX","symbol":"RY","listing_date":"1961-04-10","trading_date":"2015-09-01","status":"Active","security_name":"ROYAL
+      string: '{"updated_at":{"date":"2023-05-08","time":"00:02:13"},"metadata":{"listing_market":"TSX","symbol":"RY","listing_date":"1961-04-10","trading_date":"2015-09-01","status":"Active","security_name":"ROYAL
         BANK OF CANADA","security_type":"Equity","sector":"BANKING","sector_tags":[],"currency":"CAD","outstanding_shares":0,"reserved_shares":null,"total_equity_shares_as_if_converted":null,"market_maker":{"dealer
         name":"Citadel Securities Canada ULC","type":"full"},"index":"No","recent_change":{},"sedar_filings":null},"metatdata":{"deprecated":"Please
         use ''metadata'' instead","removal_date":"2022-07-01","listing_market":"TSX","symbol":"RY","listing_date":"1961-04-10","trading_date":"2015-09-01","status":"Active","security_name":"ROYAL
@@ -7222,7 +7222,7 @@ interactions:
         World Markets Inc.","sell_dealer":"CIBC World Markets Inc."},{"date":"2023-05-05","time":"15:59:06.013","timestamp":1683316746,"price":130.98,"tick":null,"change":1.69,"volume":200,"buy_dealer":"CIBC
         World Markets Inc.","sell_dealer":"CIBC World Markets Inc."},{"date":"2023-05-05","time":"15:59:05.935","timestamp":1683316745,"price":130.98,"tick":-0.01,"change":1.69,"volume":100,"buy_dealer":"CIBC
         World Markets Inc.","sell_dealer":"CIBC World Markets Inc."},{"date":"2023-05-05","time":"15:59:00.117","timestamp":1683316740,"price":130.99,"tick":null,"change":1.7,"volume":100,"buy_dealer":"CIBC
-        World Markets Inc.","sell_dealer":"Anonymous"}],"CSE2":{"updated_at":{"date":"2023-05-05","time":"16:15:30"},"metadata":{"listing_market":"TSX","symbol":"RY","listing_date":"1961-04-10","trading_date":"2022-10-07","status":"Active","security_name":"ROYAL
+        World Markets Inc.","sell_dealer":"Anonymous"}],"CSE2":{"updated_at":{"date":"2023-05-08","time":"00:01:18"},"metadata":{"listing_market":"TSX","symbol":"RY","listing_date":"1961-04-10","trading_date":"2022-10-07","status":"Active","security_name":"ROYAL
         BANK OF CANADA","security_type":"Equity","sector":"BANKING","sector_tags":[],"currency":"CAD","outstanding_shares":0,"reserved_shares":null,"total_equity_shares_as_if_converted":null,"market_maker":{"dealer
         name":"Citadel Securities Canada ULC","type":"odd lot only"},"index":"No","recent_change":{},"sedar_filings":null},"quote":{"Time":"15:59:59.293","Bid
         Size":null,"Bid Price":0.0,"Ask Price":0.0,"Ask Size":null},"depth_by_order":{},"depth_by_price":{},"ticker":{"Time":"15:57:18.019","Previous
@@ -7255,9 +7255,9 @@ interactions:
         World Markets Inc.","sell_dealer":"Scotia Capital Inc."},{"date":"2023-05-03","time":"15:55:10.369","timestamp":1683143710,"price":131.07,"tick":-0.15,"change":-0.48,"volume":100,"buy_dealer":"CIBC
         World Markets Inc.","sell_dealer":"CIBC World Markets Inc."},{"date":"2023-05-03","time":"15:51:19.246","timestamp":1683143479,"price":131.22,"tick":-0.34,"change":-0.33,"volume":100,"buy_dealer":"CIBC
         World Markets Inc.","sell_dealer":"CIBC World Markets Inc."},{"date":"2023-05-03","time":"15:19:17.915","timestamp":1683141557,"price":131.56,"tick":0.04,"change":0.01,"volume":100,"buy_dealer":"CIBC
-        World Markets Inc.","sell_dealer":"CIBC World Markets Inc."}]},"consolidated":{"ticker":{"Time":"16:33:31.262843","Previous
-        Closing Price":129.29,"Trade Count":593,"Trading Volume":32502,"Trading Value":4253097.0,"Trading
-        Value (CAD)":4253097.0,"Last Price":130.99,"Net Change":1.7,"Net Change Percentage":1.31,"Days
+        World Markets Inc.","sell_dealer":"CIBC World Markets Inc."}]},"consolidated":{"ticker":{"Time":"00:08:25.979855","Previous
+        Closing Price":130.99,"Trade Count":593,"Trading Volume":32502,"Trading Value":4253097.0,"Trading
+        Value (CAD)":4253097.0,"Last Price":130.99,"Net Change":null,"Net Change Percentage":0.0,"Days
         Low Price":130.02,"Days High Price":131.18},"trades":[{"date":"2023-05-05","time":"16:17:38.048","timestamp":1683317858,"price":130.99,"tick":-0.05,"change":1.7,"volume":100,"buy_dealer":"Interactive
         Brokers Canada Inc.","sell_dealer":"Instinet Canada Limited","venue":"CSE"},{"date":"2023-05-05","time":"15:59:57.963","timestamp":1683316797,"price":131.04,"tick":-0.01,"change":1.75,"volume":100,"buy_dealer":"Anonymous","sell_dealer":"CIBC
         World Markets Inc.","venue":"CSE"},{"date":"2023-05-05","time":"15:59:57.960","timestamp":1683316797,"price":131.05,"tick":0.01,"change":1.76,"volume":100,"buy_dealer":"Anonymous","sell_dealer":"CIBC
@@ -7301,21 +7301,21 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 08 May 2023 02:14:50 GMT
+      - Mon, 08 May 2023 04:57:40 GMT
       ETag:
-      - '"ea4590fa37273ab48b69ccc208e41444"'
+      - '"69f32129dbcf900891d44e657702b6e8"'
       Last-Modified:
-      - Fri, 05 May 2023 20:33:32 GMT
+      - Mon, 08 May 2023 04:21:07 GMT
       Server:
       - AmazonS3
       Via:
-      - 1.1 4c19973ee1875e6ec362c34e124d0998.cloudfront.net (CloudFront)
+      - 1.1 b13f158bdf9805ca47e07c0c35870c12.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - fd1dUDGyNbOa9qezVRtY6BLHbDqPiHOLHrDpu6TXQGy5H1IBX8-04w==
+      - EQzxUhCGVrzxxQzn1-SobYG8ygwuruyojt55krbwfVK4yXu8XuNj4Q==
       X-Amz-Cf-Pop:
       - SEA73-P1
       X-Cache:
-      - RefreshHit from cloudfront
+      - Miss from cloudfront
       x-amz-server-side-encryption:
       - AES256
     status:

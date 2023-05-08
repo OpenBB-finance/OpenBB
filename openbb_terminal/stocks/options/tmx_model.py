@@ -37,7 +37,7 @@ def get_options_listings(option_type: str = "Equity") -> pd.DataFrame:
 
     Example
     -------
-    etf_options = options_listings(option_type = 'ETF')
+    >>> etf_options = options_listings(option_type = 'ETF')
     """
 
     OPTIONS_TYPES = {
@@ -80,7 +80,7 @@ def get_all_ticker_symbols() -> pd.DataFrame:
 
 
 def get_underlying_price(symbol: str) -> pd.Series:
-    """Gets the current price of the underlying asset from the Canadian Securities Exchange."""
+    """Gets the current price and performance of the underlying asset from the Canadian Securities Exchange."""
 
     data: object = ()
     symbol = symbol.upper()
@@ -150,7 +150,19 @@ class Ticker:
             Series of the current price and performance of the underlying asset.
         self.last_price: float
             The last price of the underlying asset.
+
+        Example
+        -------
+        >>> ticker = tmx_model.Ticker().get_quotes("AC")
+        >>> chains = ticker.chains
         """
+
+        self.chains = pd.DataFrame()
+        self.expirations: list = []
+        self.strikes: list = []
+        self.last_price: float = 0
+        self.underlying_name: str = ""
+        self.underlying_price = pd.DataFrame()
 
         if symbol == "":
             print("Please enter a symbol.")
@@ -193,7 +205,7 @@ class Ticker:
 
         expirations = expirations.str.strip("(Weekly)")
 
-        self.expirations = pd.DatetimeIndex(expirations.unique())
+        self.expirations = list(pd.DatetimeIndex(expirations.unique()).astype(str))
 
         strikes = (data["Unnamed: 7_level_0"].dropna().sort_values("Strike")).rename(
             columns={"Strike": "strike"}
@@ -263,6 +275,13 @@ class Ticker:
         -------
         >>> xiu = Ticker().get_eodchains("XIU", "2009-01-01")
         """
+
+        self.chains = pd.DataFrame()
+        self.expirations: list = []
+        self.strikes: list = []
+        self.last_price: float = 0
+        self.underlying_name: str = ""
+        self.underlying_price = pd.DataFrame()
 
         symbol = symbol.upper()
         BASE_URL = "https://www.m-x.ca/en/trading/data/historical?symbol="
@@ -346,7 +365,9 @@ class Ticker:
 
         data.columns = cols
 
-        self.expirations = list(data["expiration"].iloc[1:].unique())
+        self.expirations = list(
+            pd.DatetimeIndex(data["expiration"].iloc[1:].unique()).astype(str)
+        )
 
         self.strikes = list(data["strike"].iloc[1:].unique())
 

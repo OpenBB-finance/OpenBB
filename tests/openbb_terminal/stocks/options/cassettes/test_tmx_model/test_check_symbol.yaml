@@ -993,7 +993,7 @@ interactions:
         such information.</p>\n</div>\n<div class=\"copyright\">\nCopyright &copy;
         2023 Bourse de Montr\xE9al Inc. All rights reserved.<br>\nCanadian Derivatives
         Exchange is an official mark of Bourse de Montr\xE9al Inc.    </div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<script
-        type=\"text/javascript\" src=\"/assets/application/js/common.1674328270.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/assets/application/js/common.1674328269.min.js\"></script>\n<script
         type=\"text/javascript\" src=\"/assets/application/js/datatables.1633646019.min.js\"></script>\n<script
         type=\"text/javascript\" src=\"https://www.tmx.com/tmxes/tmxes.js?lang=en&amp;nocss&amp;container=tmxes-search-container-mobile&amp;index=mx\"></script><script>\n//<!--\njQuery(function($){\n\"use
         strict\";\n$('#tetf, #tequity, #tweekly').unwrap('.twrap').DataTable({order:[[0,'asc']],pageLength:25,info:false,fixedHeader:{headerOffset:42},dom:'<\"filters
@@ -1006,7 +1006,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 08 May 2023 01:45:12 GMT
+      - Mon, 08 May 2023 04:57:22 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -1014,18 +1014,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=pgasjhvh2s47vs8i73bq9f3ike; expires=Mon, 08-May-2023 02:09:12 GMT;
+      - PHPSESSID=8pn62benqd6a8bmtgv6gnviobc; expires=Mon, 08-May-2023 05:21:22 GMT;
         Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 01:45:12 GMT; Path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 01:45:12 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:22 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:22 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 82893cc36087a50f9a150a621d10e740.cloudfront.net (CloudFront)
+      - 1.1 219e8f088c8c2a564bdacafe44be620a.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - 6G7nEs-fSZ1hyBsYYDlpHek1Oljd_M-2w1f1341p3sgHN-89Ywnc4w==
+      - acF97j-UCmH7Tm9ZG1HCpPTQVBPyKFZUwfw-pukud5UWbb3DzjpuKg==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
@@ -2040,7 +2040,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 08 May 2023 01:45:13 GMT
+      - Mon, 08 May 2023 04:57:22 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -2048,18 +2048,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=hc7ehg67ufmu6e8oh027vrueqb; expires=Mon, 08-May-2023 02:09:13 GMT;
+      - PHPSESSID=h3hm0aie4ln0lhn2t8lab027d1; expires=Mon, 08-May-2023 05:21:22 GMT;
         Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 01:45:13 GMT; Path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 01:45:13 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:22 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:22 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 f958a3846d80a3925f664b320dfad9c8.cloudfront.net (CloudFront)
+      - 1.1 6bdc2963c9ed59b475ec36c35e5932a4.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - RvvM0eyvCVmULzZm3goIx_EdOK1_JvgNsr7CQCfueqv_k6nL9tGqJA==
+      - lDpkPJsbXtMvruBgBnm0AIr_lNPdeUOnw-SaLbwGcihrX7BO-1rDTg==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
@@ -3074,7 +3074,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 08 May 2023 01:45:14 GMT
+      - Mon, 08 May 2023 04:57:23 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -3082,18 +3082,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=outcrc3559c59vqqlarus142iu; expires=Mon, 08-May-2023 02:09:14 GMT;
+      - PHPSESSID=m25i2le9pquqdgmvlgt5ad2qg2; expires=Mon, 08-May-2023 05:21:23 GMT;
         Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 01:45:14 GMT; Path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 01:45:14 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:23 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:23 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 2750b94b402c92287d764b5fa115a042.cloudfront.net (CloudFront)
+      - 1.1 9adef5b1c5fc9ca80d6f4f8d19e103a2.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - MCiaXxHKdzeo3INMpafNecM0b5TlAXlMHvot8FHOkugWeT9aPpuuZQ==
+      - NtB_ViYlB2_7q3bVO8hhBALsd6FIUgXxDw4ujS4_QKR5xHnVFjcRaQ==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
@@ -4108,7 +4108,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 08 May 2023 01:45:14 GMT
+      - Mon, 08 May 2023 04:57:23 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -4116,18 +4116,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=l8nc7mrja6t5oph1jrvoigjbn6; expires=Mon, 08-May-2023 02:09:14 GMT;
+      - PHPSESSID=k3gcnsbvi8dqmackh5hv6aq98f; expires=Mon, 08-May-2023 05:21:23 GMT;
         Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 01:45:14 GMT; Path=/
-      - tmx_locale=en; Expires=Tue, 07-May-2024 01:45:14 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:23 GMT; Path=/
+      - tmx_locale=en; Expires=Tue, 07-May-2024 04:57:23 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 2c6b5dd77f1abe60653ce0454f344b64.cloudfront.net (CloudFront)
+      - 1.1 ac463f3377446e4c603deca30feb744a.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - o9jf-zbl6ezD_PlSFl3WXcwLygkgC1iwB7K49Ce8ZdpVLCCKuucSPw==
+      - dr0bM5ia2MVD9KUzjriNGWFVBtdFfBibv1hdHpqGMaqz5_Nky5aKpg==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
