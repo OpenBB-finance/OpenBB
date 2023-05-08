@@ -83,6 +83,7 @@ def test_eodchains_holiday(recorder):
     assert not results_df.empty
     recorder.capture(results_df)
 
+
 @pytest.mark.vcr
 def test_expirations(recorder):
     ticker = tmx_model.Ticker().get_quotes("VFV")
@@ -92,4 +93,4 @@ def test_expirations(recorder):
     results_df2 = ticker.expirations
     assert isinstance(results_df2, list)
     assert results_df != results_df2
-    recorder.capture([results_df,results_df2])
+    recorder.capture([results_df, results_df2])
