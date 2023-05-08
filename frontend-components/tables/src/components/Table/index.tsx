@@ -263,12 +263,11 @@ export default function Table({
               includesPriceNames(indexValue)
             ) {
               valueFormatted = Number(formatNumberNoMagnitude(value));
-              if (valueFormatted > 1000) {
-                valueFormatted = valueFormatted.toLocaleString("en-US", {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                });
-              }
+              const maxFixed = valueFormatted < 10 ? 4 : 2;
+              valueFormatted = valueFormatted.toLocaleString("en-US", {
+                maximumFractionDigits: maxFixed,
+                minimumFractionDigits: 2,
+              });
             }
 
             return (
