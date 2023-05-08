@@ -263,7 +263,7 @@ export default function Table({
               includesPriceNames(indexValue)
             ) {
               valueFormatted = Number(formatNumberNoMagnitude(value));
-              const maxFixed = valueFormatted < 10 ? 4 : 2;
+              const maxFixed = valueFormatted < 2 ? 4 : 2;
               valueFormatted = valueFormatted.toLocaleString("en-US", {
                 maximumFractionDigits: maxFixed,
                 minimumFractionDigits: 2,
