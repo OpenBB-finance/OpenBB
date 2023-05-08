@@ -1,4 +1,5 @@
 import os
+from os import walk
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -10,7 +11,10 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
 
-def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
+# created dictionaries for personal and default routines with the structure
+# {"file_name" :["script","personal/default"]}
+# and stored dictionaries in list
+def download_routines(auth_header: str, silent: bool = False) -> list:
     """Download default and personal routines.
 
     Parameters
@@ -25,7 +29,8 @@ def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
     Dict[str, str]
         The routines.
     """
-    routines_dict = {}
+    personal_routines_dict = {}
+    default_routines_dict = {}
 
     try:
         response = Hub.get_default_routines(silent=silent)
@@ -35,7 +40,7 @@ def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
             for routine in data:
                 name = routine.get("name", "")
                 if name:
-                    routines_dict[name] = routine.get("script", "")
+                    default_routines_dict[name] = [routine.get("script", ""), "default"]
     except Exception:
         console.print("[red]\nFailed to download default routines.[/red]")
 
@@ -54,13 +59,17 @@ def download_routines(auth_header: str, silent: bool = False) -> Dict[str, str]:
             for routine in items:
                 name = routine.get("name", "")
                 if name:
-                    routines_dict[name] = routine.get("script", "")
+                    personal_routines_dict[name] = [
+                        routine.get("script", ""),
+                        "personal",
+                    ]
     except Exception:
         console.print("[red]\nFailed to download personal routines.[/red]")
 
-    return routines_dict
+    return [personal_routines_dict, default_routines_dict]
 
 
+# use os.walk to search subdirectories and then construct file path
 def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
     """Read the routine.
 
@@ -85,12 +94,12 @@ def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]
 
     try:
         user_folder = folder / "hub"
-        file_path = (
-            user_folder / file_name
-            if os.path.exists(user_folder / file_name)
-            else folder / file_name
-        )
-
+        for path, _, files in walk(user_folder):
+            file_path = (
+                folder / os.path.relpath(path, folder) / file_name
+                if file_name in files
+                else folder / file_name
+            )
         with open(file_path) as f:
             routine = "".join(f.readlines())
         return routine
@@ -99,9 +108,10 @@ def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]
         return None
 
 
+# created new directory structure to account for personal and default routines
 def save_routine(
     file_name: str,
-    routine: str,
+    routine: list,
     folder: Optional[Path] = None,
     force: bool = False,
     silent: bool = False,
@@ -134,6 +144,11 @@ def save_routine(
 
     try:
         user_folder = folder / "hub"
+        if routine[1] == "default":
+            user_folder = folder / "hub" / "default"
+        elif routine[1] == "personal":
+            user_folder = folder / "hub" / "personal"
+
         if not os.path.exists(user_folder):
             os.makedirs(user_folder)
 
@@ -141,7 +156,7 @@ def save_routine(
         if os.path.exists(file_path) and not force:
             return "File already exists"
         with open(file_path, "w") as f:
-            f.write(routine)
+            f.write(routine[0])
         return user_folder / file_name
     except Exception:
         console_print("[red]\nFailed to save routine.[/red]")
