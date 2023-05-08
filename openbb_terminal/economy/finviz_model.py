@@ -93,6 +93,7 @@ def get_valuation_data(
         group = GROUPS[group]
         df_group = valuation.Valuation().screener_view(group=group)
         df_group.columns = [col.replace(" ", "").strip() for col in df_group.columns]
+        df_group = df_group.rename(columns={'\n\nName': 'Name'})
         df_group = df_group.sort_values(by=sortby, ascending=ascend)
         df_group.fillna("", inplace=True)
 
@@ -144,6 +145,7 @@ def get_performance_data(
     try:
         group = GROUPS[group]
         df_group = performance.Performance().screener_view(group=group)
+        df_group = df_group.rename(columns={'\n\nName': 'Name'})
         df_group = df_group.rename(
             columns={
                 "Perf Week": "Week",
