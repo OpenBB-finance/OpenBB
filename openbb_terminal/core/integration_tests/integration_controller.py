@@ -506,7 +506,7 @@ def display_summary(
     """
 
     if fails:
-        console.print("\n" + to_section_title("integration test summary"))
+        console.print("\n" + to_section_title("Integration Test Summary"))
 
         for file, exception in fails.items():
             # Assuming the broken command is the last one called in the traceback
