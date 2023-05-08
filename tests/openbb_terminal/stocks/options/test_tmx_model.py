@@ -24,10 +24,10 @@ def test_underlying_price(recorder):
 
 
 @pytest.mark.vcr
-def test_underlying_price_bad_symbol(recorder):
+@pytest.mark.record_stdout
+def test_underlying_price_bad_symbol():
     result_df = tmx_model.get_underlying_price("BAD_SYMBOL")
     assert not result_df
-    recorder.capture(result_df)
 
 
 @pytest.mark.vcr
