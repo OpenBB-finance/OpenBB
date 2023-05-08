@@ -62,7 +62,9 @@ def get_coin_twitter_timeline(
     df["status"] = df["status"].apply(lambda x: x.replace("  ", ""))
     df["date"] = df["date"].apply(lambda x: x.replace("T", "\n"))
     df["date"] = df["date"].apply(lambda x: x.replace("Z", ""))
-    df["date"] = pd.to_datetime(df["date"], format="%Y-%m-%d\n%H:%M:%S").dt.strftime("%Y-%m-%d %H:%M:%S")
+    df["date"] = pd.to_datetime(df["date"], format="%Y-%m-%d\n%H:%M:%S").dt.strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
     df = df.sort_values(by=sortby, ascending=ascend)
     # Remove unicode chars (it breaks pretty tables)
     df["status"] = df["status"].apply(
