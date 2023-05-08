@@ -26,7 +26,6 @@ jobs:
       if: always()
 
     - name: Checkout code
-      if: github.event_name == 'push'
       uses: actions/checkout@v3
 
     - name: Checkout specific ref
