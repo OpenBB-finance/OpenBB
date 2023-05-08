@@ -11,8 +11,7 @@ def test_format_number():
     assert isinstance(fmt_number, float)
 
 
-@pytest.mark.record_http
-def test_get_debt():
+@pytest.mark.vcr
+def test_get_debt(recorder):
     df = commodity_model.get_debt()
-    assert df is not None
-    assert not df.empty
+    recorder.capture(df)
