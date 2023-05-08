@@ -25,61 +25,18 @@ def check_weekday(date: str) -> str:
     return date
 
 
-def get_options_listings(option_type: str = "Equity") -> pd.DataFrame:
-    """DataFrame of all TSX-listed instruments with options.
-    Parameters
-    ----------
-    option_type:str = 'Equity'
-        The type of underlying instrument.
-        ['ETF', 'Index', 'Equity', 'Currency', 'Weekly']
-
-    Returns
-    -------
-    pd.DataFrame:
-        DataFrame with the name of the underlying instrument, symbol, and option symbol.
-
-    Example
-    -------
-    >>> etf_options = options_listings(option_type = 'ETF')
-    """
-
-    OPTIONS_TYPES = {
-        "ETF": 0,
-        "Index": 1,
-        "Equity": 2,
-        "Currency": 3,
-        "Weekly": 4,
-    }
-
-    options_listings = pd.DataFrame()
-
-    if option_type not in OPTIONS_TYPES:
-        print("Invalid Choice. Choose from:", list(OPTIONS_TYPES.keys()))
-        options_listings = pd.DataFrame()
-        return options_listings
-
-    types_: int = OPTIONS_TYPES[option_type]
-    options_listings = pd.read_html("https://www.m-x.ca/en/trading/data/options-list")[
-        types_
-    ]
-
-    return options_listings
-
-
 def get_all_ticker_symbols() -> pd.DataFrame:
     """Returns a DataFrame with all valid ticker symbols."""
 
-    EQUITIES = get_options_listings("Equity")
-    ETFS = get_options_listings("ETF")
-    INDEXES = get_options_listings("Index")
-    CURRENCY = get_options_listings("Currency")
-    SYMBOLS = pd.concat([EQUITIES, ETFS, INDEXES, CURRENCY])
-
+    options_listings = pd.read_html("https://www.m-x.ca/en/trading/data/options-list")
+    listings = pd.concat(options_listings)
+    listings = listings.set_index("Option Symbol").drop_duplicates().sort_index()
+    SYMBOLS = listings[:-1]
     SYMBOLS = SYMBOLS.fillna(value="")
     SYMBOLS["Underlying Symbol"] = (
         SYMBOLS["Underlying Symbol"].str.replace(" u", ".UN").str.replace("––", "")
     )
-    return SYMBOLS.set_index("Option Symbol")
+    return SYMBOLS
 
 
 def get_underlying_price(symbol: str) -> pd.Series:
