@@ -22,7 +22,9 @@ from openbb_terminal.core.integration_tests.utils import (
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
 
-INTEGRATION_PATH = "./openbb_terminal/miscellaneous/integration_tests_scripts"
+INTEGRATION_PATH = os.path.join(
+    ".", "openbb_terminal", "miscellaneous", "integration_tests_scripts"
+)
 COMMAND_FILTERS = [
     "about",
     "cls",
@@ -45,8 +47,8 @@ COMMAND_FILTERS = [
 def find_controllers() -> list:
     """Find all controllers in the OpenBB Terminal."""
     controllers = []
-
-    for root, _, files in os.walk("./openbb_terminal"):
+    path = os.path.join(".", "openbb_terminal")
+    for root, _, files in os.walk(path):
         for file in files:
             if file.endswith("_controller.py") and "sdk" not in root:
                 controllers.append(os.path.join(root, file))
@@ -71,11 +73,28 @@ def find_integration_tests() -> list:
 
 def create_matching_dict() -> dict:
     """Fill the controller and integration test matches by outlier files."""
-    return {
-        "./openbb_terminal/mutual_funds/mutual_fund_controller.py": "/mutual_funds/test_mutual_fund.openbb",
-        "./openbb_terminal/stocks/options/screen/screener_controller.py": "/stocks/test_screen.openbb",
-        "./openbb_terminal/stocks/discovery/disc_controller.py": "/stocks/test_disc.openbb",
-    }
+    controller_paths = [
+        os.path.join(
+            ".", "openbb_terminal", "mutual_funds", "mutual_fund_controller.py"
+        ),
+        os.path.join(
+            ".",
+            "openbb_terminal",
+            "stocks",
+            "options",
+            "screen",
+            "screener_controller.py",
+        ),
+        os.path.join(
+            ".", "openbb_terminal", "stocks", "discovery", "disc_controller.py"
+        ),
+    ]
+    test_paths = [
+        os.path.join("mutual_funds", "test_mutual_fund.openbb"),
+        os.path.join("stocks", "test_screen.openbb"),
+        os.path.join("stocks", "test_disc.openbb"),
+    ]
+    return dict(zip(controller_paths, test_paths))
 
 
 def match_controller_with_test(controllers: list, tests: list) -> dict:
@@ -84,7 +103,7 @@ def match_controller_with_test(controllers: list, tests: list) -> dict:
 
     for key, value in matched.items():
         controllers.remove(key)
-        tests.remove(value)
+        tests = [i for i in tests if not re.search(value, i)]
 
     for controller in controllers:
         try:
@@ -376,7 +395,10 @@ def get_coverage_all_controllers(output_table: bool = True) -> None:
     matched = match_controller_with_test(controllers, tests)
 
     for controller, integration_test in matched.items():
-        path = controller.replace("/", ".")[2:-3]
+        if "/" in controller:
+            path = controller.replace("/", ".")[2:-3]
+        elif "\\" in controller:
+            path = controller.replace("\\", ".")[2:-3]
         try:
             module = get_module(path)
         except ModuleNotFoundError:
@@ -394,19 +416,21 @@ def get_coverage_all_controllers(output_table: bool = True) -> None:
             available_commands = get_commands_and_params(module, get_params=False)
         except TypeError:
             continue
-        tested_commands = get_tested_commands(INTEGRATION_PATH + integration_test)
 
+        file_path = os.path.join(INTEGRATION_PATH, integration_test)
+        if not os.path.isfile(file_path):
+            file_path = os.path.join(INTEGRATION_PATH, integration_test[1:])
+
+        tested_commands = get_tested_commands(file_path)
         command_coverage, untested_commands = calculate_command_coverage(
             tested_commands, available_commands
         )
 
         missing_params, coverage_dict = calculate_parameter_coverage(
-            tested_function=INTEGRATION_PATH + integration_test,
+            tested_function=file_path,
             module=module,
         )
-        missing_params = validate_missing_params(
-            missing_params, test_file=INTEGRATION_PATH + integration_test
-        )
+        missing_params = validate_missing_params(missing_params, test_file=file_path)
 
         try:
             average_parameter_coverage = round(
@@ -553,18 +577,21 @@ def get_coverage_single_controller(
     """
     module = get_module(controller, module_name=module_name)
     available_commands = get_commands_and_params(module, get_params=False)
-    tested_commands = get_tested_commands(INTEGRATION_PATH + integration_test)
+
+    file_path = os.path.join(INTEGRATION_PATH, integration_test)
+    if not os.path.isfile(file_path):
+        file_path = os.path.join(INTEGRATION_PATH, integration_test[1:])
+
+    tested_commands = get_tested_commands(file_path)
     command_coverage, untested_commands = calculate_command_coverage(
         tested_commands, available_commands
     )
 
     missing_params, coverage_dict = calculate_parameter_coverage(
-        tested_function=INTEGRATION_PATH + integration_test,
+        tested_function=file_path,
         module=module,
     )
-    missing_params = validate_missing_params(
-        missing_params, test_file=INTEGRATION_PATH + integration_test
-    )
+    missing_params = validate_missing_params(missing_params, test_file=file_path)
 
     try:
         average_parameter_coverage = round(
