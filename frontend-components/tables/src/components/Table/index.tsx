@@ -19,7 +19,7 @@ import {
   formatNumberNoMagnitude,
   includesPriceNames,
 } from "../../utils/utils";
-import DraggableColumnHeader from "./ColumnHeader";
+import DraggableColumnHeader, { magnitudeRegex } from "./ColumnHeader";
 import Pagination, { validatePageSize } from "./Pagination";
 import Export from "./Export";
 import Timestamp from "./Timestamp";
@@ -248,10 +248,7 @@ export default function Table({
           }
           if (
             valueType === "number" ||
-            value
-              ?.toString()
-              .replace(/[^a-zA-Z]/g, "")
-              .trim().length === 1
+            magnitudeRegex.test(value?.toString())
           ) {
             let valueFormatted = formatNumberMagnitude(value, column);
             const valueFormattedNoMagnitude = Number(

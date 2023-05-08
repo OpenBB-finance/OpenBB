@@ -5,15 +5,8 @@ import { formatNumberMagnitude, includesDateNames } from "../../utils/utils";
 import { useDrag, useDrop } from "react-dnd";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 
-function checkIfNumber(value: string | number | Date) {
-  return (value?.toString().replace(/[^0-9]/g, "") ?? "").trim().length !== 0 &&
-    value
-      ?.toString()
-      .replace(/[^a-zA-Z]/g, "" ?? "")
-      .trim().length === 1
-    ? value
-    : 0;
-}
+export const magnitudeRegex = new RegExp("^([0-9]+)(\\s)([kKmMbBtT])$");
+
 function Filter({
   column,
   table,
@@ -29,22 +22,16 @@ function Filter({
       row.getValue(column.id)
     );
 
-  const numberValues = values.map((value: string | number | Date) =>
-    checkIfNumber(value)
-  );
-
   const areAllValuesString = values.every(
     (value: null) => typeof value === "string" || value === null
   );
-  const areAllValuesNumber = numberValues.every(
+
+  const areAllValuesNumber = values.every(
     (value: null | number | string) =>
       typeof value === "number" ||
+      magnitudeRegex.test(value as string) ||
       value === null ||
-      ((value.toString().replace(/[^0-9]/g, "") ?? "").trim().length !== 0 &&
-        value
-          .toString()
-          .replace(/[^a-zA-Z]/g, "" ?? "")
-          .trim().length === 1)
+      value === ""
   );
 
   const valuesContainStringWithSpaces = values.some(
