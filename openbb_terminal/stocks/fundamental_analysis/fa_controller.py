@@ -1625,9 +1625,7 @@ class FundamentalAnalysisController(StockBaseController):
             default=False,
             help="Whether to replace a linear regression estimate with a growth estimate.",
         )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if ns_parser.ticker:

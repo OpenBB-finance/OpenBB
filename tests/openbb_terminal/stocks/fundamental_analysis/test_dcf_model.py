@@ -150,8 +150,7 @@ def test_frac():
 def test_generate_path():
     result = dcf_model.generate_path(
         n=1,
-        symbol="TSLA",
-        date="2021-10-31",
+        file_name="test_dcf_model",
     )
 
     assert isinstance(result, Path)
