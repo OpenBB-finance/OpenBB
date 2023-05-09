@@ -45,7 +45,7 @@ def show_options(
             "Please load in a dataset by using the 'load' command before using this feature."
         )
     else:
-        option_tables = econometrics_model.get_options(datasets, dataset_name)
+        option_tables = econometrics_model.get_options(datasets, dataset_name if dataset_name is not None else "")
 
         for dataset, data_values in option_tables.items():
             print_rich_table(
