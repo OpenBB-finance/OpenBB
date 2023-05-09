@@ -203,7 +203,6 @@ def open_openbb_documentation(
             "update",
             "wiki",
             "news",
-            "news_biztoc",
             "account",
         ]:
             path = "/guides"
