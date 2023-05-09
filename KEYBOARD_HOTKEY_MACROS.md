@@ -27,15 +27,15 @@ This allows to automate the process of investment research, and can improve user
 ## Supported Configurators
 
 1. [VIA](#via)
-   
 
 ## VIA
 
 This document will explain how you can set hotkeys on your customizable keyboard using [VIA](https://www.caniusevia.com/).
 
-Here is a list of VIA's supported keyboards: https://www.caniusevia.com/docs/supported_keyboards
+Here is a list of VIA's supported keyboards: [https://www.caniusevia.com/docs/supported_keyboards](https://www.caniusevia.com/docs/supported_keyboards)
 
-Note: We were in the market looking for a keyboard that could be highliy customizable for the needs of OpenBB power users. This is when we stumbled upon Keychron and the VIA configurator which allows users to intuitively remap any key on the keyboard, and create numerous macro commands, shortcuts, or key combinations. Here's a post from Keychron on VIA: [Why VIA is one of the most essential features for a custom keyboard?](https://www.keychron.com/blogs/news/why-qmk-via-is-one-of-the-most-essential-features-for-a-custom-keyboard)
+Note: We were in the market looking for a keyboard that could be highliy customizable for the needs of OpenBB power users. This is when we stumbled upon Keychron and the VIA configurator which allows users to intuitively remap any key on the keyboard, and create numerous macro commands, shortcuts, or key combinations. 
+Here's a post from Keychron on VIA: [Why VIA is one of the most essential features for a custom keyboard?](https://www.keychron.com/blogs/news/why-qmk-via-is-one-of-the-most-essential-features-for-a-custom-keyboard)
 
 For the purpose of this example, the command pipeline we are creating has the following sequence of commands: `dps/psi/../fa/pt/income/..`
 
@@ -64,7 +64,6 @@ For the purpose of this example, the command pipeline we are creating has the fo
 6. Finally, we are ready to test it on the [OpenBB Terminal](https://my.openbb.co/app/terminal). After going into `stocks` and doing `load AAPL`, I pressed "Fn2'+Z which lead to:
 
    <img width="1784" alt="Screenshot 2023-05-06 at 10 53 49 PM" src="https://user-images.githubusercontent.com/25267873/236660272-290fe586-7663-4cd6-bfc0-80b7f8f2efd1.png">
-
 
 PS: If you prefer to see this in video format, you can do so by checking the following video.
 
