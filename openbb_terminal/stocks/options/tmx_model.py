@@ -1,6 +1,6 @@
 """Model for retrieving public options data from the Montreal Options Exchange."""
-
 from datetime import timedelta
+from typing import Optional
 
 import pandas as pd
 import pandas_market_calendars as mcal
@@ -55,26 +55,27 @@ def get_underlying_price(symbol: str) -> pd.Series:
     data = response.json()["ticker"]
     data = pd.Series(data)[
         [
-            "Time",
-            "Last Price",
-            "Previous Closing Price",
-            "Opening Price",
-            "Days High Price",
-            "Days Low Price",
-            "Days VWAP",
-            "Net Change",
-            "Net Change Percentage",
-            "52 Week High",
-            "52 Week Low",
+            "time",
+            "lastPrice",
+            "previousClose",
+            "open",
+            "high",
+            "low",
+            "vwap",
+            "netChange",
+            "netChangePercentage",
+            "fiftyTwoWeekHigh",
+            "fiftyTwoWeekLow",
         ]
     ].rename(f"{symbol}")
 
     return data
 
 
-class Ticker:
+class Options:
     def __init__(self) -> None:
         self.SYMBOLS = get_all_ticker_symbols()
+        self.symbol: str = ""
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []
@@ -115,7 +116,7 @@ class Ticker:
         >>> ticker = tmx_model.Ticker().get_quotes("AC")
         >>> chains = ticker.chains
         """
-
+        self.symbol: str = ""
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []
@@ -143,8 +144,9 @@ class Ticker:
                 sep=None,
             )
             return self
+        self.symbol = symbol
 
-        QUOTES_URL = "https://www.m-x.ca/en/trading/data/quotes?symbol=" f"{symbol}" "*"
+        QUOTES_URL = "https://www.m-x.ca/en/trading/data/quotes?symbol=" f"{self.symbol}" "*"
 
         cols = [
             "expiration",
@@ -167,7 +169,7 @@ class Ticker:
 
         expirations = expirations.str.strip("(Weekly)")
 
-        self.expirations = list(pd.DatetimeIndex(expirations.unique()).astype(str))
+        self.expirations = list(pd.DatetimeIndex(expirations.unique()).astype(str).sort_values())
 
         strikes = (data["Unnamed: 7_level_0"].dropna().sort_values("Strike")).rename(
             columns={"Strike": "strike"}
@@ -176,13 +178,13 @@ class Ticker:
         self.strikes = list(strikes["strike"].unique())
 
         calls = pd.concat([expirations, strikes, data["Calls"]], axis=1)
-        calls["expiration"] = pd.DatetimeIndex(calls["expiration"])
+        calls["expiration"] = pd.DatetimeIndex(calls["expiration"]).astype(str)
         calls["optionType"] = "call"
         calls.columns = cols
         calls = calls.set_index(["expiration", "strike", "optionType"])
 
         puts = pd.concat([expirations, strikes, data["Puts"]], axis=1)
-        puts["expiration"] = pd.DatetimeIndex(puts["expiration"])
+        puts["expiration"] = pd.DatetimeIndex(puts["expiration"]).astype(str)
         puts["optionType"] = "put"
         puts.columns = cols
         puts = puts.set_index(["expiration", "strike", "optionType"])
@@ -198,11 +200,11 @@ class Ticker:
 
         self.chains = chains.reset_index()
 
-        self.underlying_name = self.SYMBOLS.loc[symbol]["Name of Underlying Instrument"]
+        self.underlying_name = self.SYMBOLS.loc[self.symbol]["Name of Underlying Instrument"]
 
         try:
-            self.underlying_price = get_underlying_price(symbol)
-            self.last_price = self.underlying_price["Last Price"]
+            self.underlying_price = get_underlying_price(self.symbol)
+            self.last_price = self.underlying_price["lastPrice"]
         except TypeError:
             self.last_price = 0
             self.underlying_price = 0
@@ -237,7 +239,7 @@ class Ticker:
         -------
         >>> xiu = Ticker().get_eodchains("XIU", "2009-01-01")
         """
-
+        self.symbol: str = ""
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []
@@ -259,8 +261,10 @@ class Ticker:
             )
             return self
 
+        self.symbol = symbol
+
         if date == "":
-            EOD_URL = BASE_URL + f"{symbol}" "&dnld=1#quotes"
+            EOD_URL = BASE_URL + f"{self.symbol}" "&dnld=1#quotes"
         if date != "":
             if pd.to_datetime(date) < pd.to_datetime("2009-01-01"):
                 print("Historical options data begins on 2009-01-02.")
@@ -272,7 +276,7 @@ class Ticker:
                 date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")
 
             EOD_URL = (
-                BASE_URL + f"{symbol}"
+                BASE_URL + f"{self.symbol}"
                 "&from="
                 f"{date}"
                 "&to="
@@ -333,13 +337,13 @@ class Ticker:
 
         self.strikes = list(data["strike"].iloc[1:].unique())
 
-        data["expiration"] = pd.to_datetime(data["expiration"])
-        data["date"] = pd.to_datetime(data["date"])
+        data["expiration"] = pd.to_datetime(data["expiration"]).astype(str)
+        data["date"] = pd.to_datetime(data["date"]).astype(str)
         data["impliedVolatility"] = 0.01 * data["impliedVolatility"]
         data = data.set_index(["expiration", "strike", "optionType"])
         data = data.sort_index()
 
-        self.underlying_name = self.SYMBOLS.loc[symbol]["Name of Underlying Instrument"]
+        self.underlying_name = self.SYMBOLS.loc[self.symbol]["Name of Underlying Instrument"]
 
         self.chains = data.reset_index()
 
@@ -361,3 +365,12 @@ class Ticker:
         self.chains = self.chains.iloc[:-1]
 
         return self
+
+def load_options(symbol: str, date: Optional[str] = "") -> object:
+    """Loads options data from TMX."""
+    options = Options()
+    if date != "":
+        options.get_eodchains(symbol, date)
+        return options
+    options.get_quotes(symbol)
+    return options

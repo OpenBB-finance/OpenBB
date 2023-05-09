@@ -14,6 +14,7 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
+# mypy: disable-error-code=no-redef
 
 call_cols = [
     "c_Last",
@@ -184,7 +185,7 @@ def option_expirations(symbol: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_last_price(symbol: str) -> float:
+def get_underlying_price(symbol: str) -> pd.Series:
     """Get the last price from nasdaq
 
     Parameters
@@ -197,6 +198,7 @@ def get_last_price(symbol: str) -> float:
     float
         Last price
     """
+    df = pd.Series(dtype = object)
     for asset in ["stocks", "index", "etf"]:
         url = f"https://api.nasdaq.com/api/quote/{symbol}/info?assetclass={asset}"
         response_json = request(
@@ -207,13 +209,15 @@ def get_last_price(symbol: str) -> float:
             },
         ).json()
         if response_json["status"]["rCode"] == 200:
-            return float(
-                response_json["data"]["primaryData"]["lastSalePrice"]
-                .strip("$")
-                .replace(",", "")
-            )
+            data = response_json["data"]
+            data = pd.Series(data)
+            df["companyName"] = data["companyName"]
+            df["lastPrice"] = float(data["primaryData"]["lastSalePrice"].strip("$"))
+            df["date"] = data["primaryData"]["lastTradeTimestamp"]
+            return df
+
     console.print(f"[red]Last price for {symbol} not found[/red]\n")
-    return np.nan
+    return pd.Series()
 
 
 # Ugh this doesn't get the full chain
@@ -250,3 +254,39 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
 
     console.print(f"[red]Greeks not found for {symbol} on {expiration}[/red].")
     return pd.DataFrame()
+
+
+class Options:
+    def __init__(self) -> None:
+        self.symbol: str = ""
+        self.chains = pd.DataFrame()
+        self.expirations:list = []
+        self.strikes: list = []
+        self.last_price: float = 0
+        self.underlying_name: str = ""
+        self.underlying_price = pd.Series(dtype = object)
+
+    def get_quotes(self, symbol: str) -> object:
+
+        self.symbol = symbol.upper()
+        self.expirations:list = []
+        self.strikes: list = []
+        self.last_price: float = 0
+        self.underlying_name: str = ""
+        self.underlying_price = pd.Series(dtype = object)
+        self.chains = get_full_option_chain(self.symbol)
+
+        if not self.chains.empty:
+            self.expirations = option_expirations(self.symbol)
+            self.strikes = pd.Series(self.chains["strike"]).sort_values().unique().tolist()
+            self.underlying_price = get_underlying_price(self.symbol)
+            self.last_price = self.underlying_price["lastPrice"]
+            self.underlying_name = self.underlying_price["companyName"]
+
+        return self
+
+def load_options(symbol: str) -> object:
+    """Loads options data from Nasdaq."""
+    ticker = Options()
+    ticker.get_quotes(symbol)
+    return ticker

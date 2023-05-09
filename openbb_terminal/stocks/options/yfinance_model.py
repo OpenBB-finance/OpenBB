@@ -286,7 +286,7 @@ def get_iv_surface(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_last_price(symbol: str) -> float:
+def get_underlying_price(symbol: str) -> pd.Series:
     """Get the last price from nasdaq
 
     Parameters
@@ -299,4 +299,50 @@ def get_last_price(symbol: str) -> float:
     float
         Last price
     """
-    return float(yf.Ticker(symbol).fast_info.last_price)
+    ticker = yf.Ticker(symbol).fast_info
+    df = pd.Series(dtype = object)
+    df["lastPrice"] = round(ticker["lastPrice"], 2)
+    df["previousClose"] = round(ticker["previousClose"], 2)
+    df["open"] = round(ticker["open"], 2)
+    df["high"] = round(ticker["dayHigh"], 2)
+    df["low"] = round(ticker["dayLow"], 2)
+    df["yearHigh"] = round(ticker["yearHigh"], 2)
+    df["yearLow"] = round(ticker["yearLow"], 2)
+    df["fiftyDayMA"] = round(ticker["fiftyDayAverage"], 2)
+    df["twoHundredDayMA"] = round(ticker["twoHundredDayAverage"], 2)
+
+    return df.rename(f"{symbol}")
+
+class Options:
+    def __init__(self) -> None:
+        self.symbol: str = ""
+        self.chains = pd.DataFrame()
+        self.expirations:list = []
+        self.strikes: list = []
+        self.last_price: float = 0
+        self.underlying_name: str = ""
+        self.underlying_price = pd.Series(dtype = object)
+
+    def get_quotes(self, symbol: str) -> object:
+
+        self.symbol = symbol.upper()
+        self.expirations:list = []
+        self.strikes: list = []
+        self.last_price: float = 0
+        self.underlying_name: str = self.symbol
+        self.underlying_price = pd.Series(dtype = object)
+        self.chains = get_full_option_chain(self.symbol)
+
+        if not self.chains.empty:
+            self.expirations = option_expirations(self.symbol)
+            self.strikes = pd.Series(self.chains["strike"]).sort_values().unique().tolist()
+            self.underlying_price = get_underlying_price(self.symbol)
+            self.last_price = self.underlying_price["lastPrice"]
+
+        return self
+
+def load_options(symbol: str) -> object:
+    """Loads options data from Nasdaq."""
+    ticker = Options()
+    ticker.get_quotes(symbol)
+    return ticker
