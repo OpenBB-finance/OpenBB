@@ -10,6 +10,7 @@ from pathlib import Path
 # IMPORT THIRD-PARTY
 import pandas as pd
 
+# IMPORT INTERNAL
 from openbb_terminal.core.integration_tests.utils import (
     SECTION_LENGTH,
     get_submodule_commands,
@@ -17,14 +18,11 @@ from openbb_terminal.core.integration_tests.utils import (
     to_section_title,
     validate_missing_params,
 )
-
-# IMPORT INTERNAL
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
 
-INTEGRATION_PATH = os.path.join(
-    ".", "openbb_terminal", "miscellaneous", "integration_tests_scripts"
-)
+INTEGRATION_PATH = os.path.join(MISCELLANEOUS_DIRECTORY, "integration_tests_scripts")
 COMMAND_FILTERS = [
     "about",
     "cls",
