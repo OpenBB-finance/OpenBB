@@ -34,7 +34,7 @@ This document will explain how you can set hotkeys on your customizable keyboard
 
 Here is a list of VIA's supported keyboards: [https://www.caniusevia.com/docs/supported_keyboards](https://www.caniusevia.com/docs/supported_keyboards)
 
-Note: We were in the market looking for a keyboard that could be highliy customizable for the needs of OpenBB power users. This is when we stumbled upon Keychron and the VIA configurator which allows users to intuitively remap any key on the keyboard, and create numerous macro commands, shortcuts, or key combinations. 
+Note: We were in the market looking for a keyboard that could be highliy customizable for the needs of OpenBB power users. This is when we stumbled upon Keychron and the VIA configurator which allows users to intuitively remap any key on the keyboard, and create numerous macro commands, shortcuts, or key combinations.
 Here's a post from Keychron on VIA: [Why VIA is one of the most essential features for a custom keyboard?](https://www.keychron.com/blogs/news/why-qmk-via-is-one-of-the-most-essential-features-for-a-custom-keyboard)
 
 For the purpose of this example, the command pipeline we are creating has the following sequence of commands: `dps/psi/../fa/pt/income/..`
