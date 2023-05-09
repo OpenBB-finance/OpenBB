@@ -64,7 +64,7 @@ def find_integration_tests() -> list:
                 test.append(os.path.join(root, file))
 
     test = [
-        re.sub(r"^\./openbb_terminal/miscellaneous/integration_tests_scripts", "", i)
+        re.sub(r"^\.\\openbb_terminal\\miscellaneous\\integration_tests_scripts", "", i)
         for i in test
     ]
     return test
@@ -77,20 +77,11 @@ def create_matching_dict() -> dict:
             ".", "openbb_terminal", "mutual_funds", "mutual_fund_controller.py"
         ),
         os.path.join(
-            ".",
-            "openbb_terminal",
-            "stocks",
-            "options",
-            "screen",
-            "screener_controller.py",
-        ),
-        os.path.join(
             ".", "openbb_terminal", "stocks", "discovery", "disc_controller.py"
         ),
     ]
     test_paths = [
         os.path.join("mutual_funds", "test_mutual_fund.openbb"),
-        os.path.join("stocks", "test_screen.openbb"),
         os.path.join("stocks", "test_disc.openbb"),
     ]
     return dict(zip(controller_paths, test_paths))
@@ -102,33 +93,17 @@ def match_controller_with_test(controllers: list, tests: list) -> dict:
 
     for key, value in matched.items():
         controllers.remove(key)
-        tests = [i for i in tests if not re.search(value, i)]
+        tests = [i for i in tests if value not in i]
 
     for controller in controllers:
-        try:
-            controller_name = re.search(  # type: ignore
-                r"(?<=/)[a-zA-Z]+(?=_controller)", controller
-            ).group(0)
-        except AttributeError:
-            controller_name = "mutual_fund"
+        controller_name = os.path.split(Path(controller))[-1].split("_controller.py")[0]
 
         for test in tests:
-            try:
-                test_name = re.search(r"(?<=/test_)[a-zA-Z]+(?=.openbb)", test).group(0)  # type: ignore
-            except AttributeError:
-                test_name = "mutual_fund"
+            test_name = os.path.split(Path(test))[-1][5:-7]
 
             if controller_name == test_name:
-                if controller_name in ["ta", "qa"]:
-                    controller_path = re.search(  # type: ignore
-                        r"(?<=openbb_terminal/)[a-zA-Z/]+(?=/)", controller
-                    ).group(0)
-                    if controller_path in test:
-                        matched[controller] = test
-                        tests.remove(test)
-                else:
-                    matched[controller] = test
-                    tests.remove(test)
+                matched[controller] = test
+                tests.remove(test)
 
     if len(tests) > 0:
         console.print(f"[red]Unmatched tests: {tests}[/red]")
@@ -617,3 +592,7 @@ def get_coverage_single_controller(
         coverage_dict,
         output_table,
     )
+
+
+if __name__ == "__main__":
+    get_coverage_all_controllers()
