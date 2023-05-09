@@ -73,6 +73,11 @@ class DataBento(BaseModel):
     def process_request(self, base_url, params, auth) -> pd.DataFrame:
         """Takes the request and returns the adjusted dataframe"""
         r = request(base_url, params=params, auth=auth)
+
+        if r.status_code == 422 and "Unprocessable" in r.text:
+            console.print(r.json()["detail"])
+            return pd.DataFrame()
+
         if r.status_code != 200:
             console.print(f"Error: Status Code {r.status_code}")
             return pd.DataFrame()
