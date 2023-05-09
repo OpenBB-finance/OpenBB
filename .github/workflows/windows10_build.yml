@@ -111,7 +111,7 @@ jobs:
         run: |
           dist\OpenBBTerminal\OpenBBTerminal.exe -t --coverage | tee result.txt
           echo. >> summary.txt
-          Select-String "================================ Integration Coverage Summary ================================" result.txt -Context 0,300 | Select-Object -Last 2000 >> summary.txt
+          Select-String "============================== Integration Coverage Summary ==============================" result.txt -Context 0,300 | Select-Object -Last 2000 >> summary.txt
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
