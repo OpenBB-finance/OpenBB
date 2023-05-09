@@ -1,139 +1,93 @@
 ,date,user_name,status,retweet_count,like_count
-45,"2017-02-13
-10:23:12",bitcoincoreorg,"An Interview with Bitcoin Core contributor, Eric Lombrozo @eric_lombrozo by
+45,2017-02-13 10:23:12,bitcoincoreorg,"An Interview with Bitcoin Core contributor, Eric Lombrozo @eric_lombrozo by
 @creationlayer https://t.co/fWKYkJLtdt",30,65
-44,"2017-02-20
-11:46:00",bitcoincoreorg,"Interview with Bitcoin Core contributor and maintainer, Jonas Schnelli
+44,2017-02-20 11:46:00,bitcoincoreorg,"Interview with Bitcoin Core contributor and maintainer, Jonas Schnelli
 @_jonasschnelli_ by @creationlayer https://t.co/tw97iUBx1j",47,91
-43,"2017-03-06
-13:42:01",bitcoincoreorg,"Fascinating interview with applied cryptographer, cypherpunk and Bitcoin
+43,2017-03-06 13:42:01,bitcoincoreorg,"Fascinating interview with applied cryptographer, cypherpunk and Bitcoin
 protocol researcher, Dr. Adam Back @adam3us https://t.co/xBfthopQg1",71,139
-42,"2017-03-08
-10:11:00",bitcoincoreorg,"Bitcoin Core 0.14.0 released with huge performance boost and many new features
+42,2017-03-08 10:11:00,bitcoincoreorg,"Bitcoin Core 0.14.0 released with huge performance boost and many new features
 and bugfixeshttps://t.co/1kiuVFzPki @orionwl https://t.co/FgJRgfbNvf",178,216
-41,"2017-03-13
-16:02:59",bitcoincoreorg,"On-chain scaling - a review of historical performance optimization made to
+41,2017-03-13 16:02:59,bitcoincoreorg,"On-chain scaling - a review of historical performance optimization made to
 Bitcoins reference software. Part 1 https://t.co/StwC3O6Wlc
 https://t.co/vED9A9Y8pq",85,117
-40,"2017-03-15
-10:22:15",_jonasschnelli_,"Reviewing, testing and maintenance are the most important duties to be done by a
+40,2017-03-15 10:22:15,_jonasschnelli_,"Reviewing, testing and maintenance are the most important duties to be done by a
 blockchain developer team. A slide from a recent talk: https://t.co/CSkIexgHsd",46,0
-39,"2017-03-15
-12:45:00",bitcoincoreorg,"What's new in Bitcoin Core 0.14, by Jonas Schnelli - Bitcoin Core Developer
+39,2017-03-15 12:45:00,bitcoincoreorg,"What's new in Bitcoin Core 0.14, by Jonas Schnelli - Bitcoin Core Developer
 @_jonasschnelli_",51,75
-38,"2017-03-20
-11:51:00",bitcoincoreorg,Bitcoin Core 0.14.0 Whats New? @BitcoinMagazine https://t.co/Pzy90ey8Wj,48,79
-37,"2017-03-23
-13:24:46",bitcoincoreorg,"Technology Roadmap - Schnorr Signatures and Signature Aggregation!
+38,2017-03-20 11:51:00,bitcoincoreorg,Bitcoin Core 0.14.0 Whats New? @BitcoinMagazine https://t.co/Pzy90ey8Wj,48,79
+37,2017-03-23 13:24:46,bitcoincoreorg,"Technology Roadmap - Schnorr Signatures and Signature Aggregation!
 https://t.co/syYhPMP8uT https://t.co/AApCeT6D6M",143,258
-36,"2017-04-03
-12:35:51",bitcoincoreorg,"Watch this amazing presentation by Pieter Wuille on his research into BCH/Bech32
+36,2017-04-03 12:35:51,bitcoincoreorg,"Watch this amazing presentation by Pieter Wuille on his research into BCH/Bech32
 addresses for SegWit #mbga @pwuille",58,117
-35,"2017-04-23
-08:21:12",bitcoincoreorg,Bitcoin Core 0.14.1 Released https://t.co/MBJ9JnVVFN,82,144
-34,"2017-06-17
-13:02:56",bitcoincoreorg,Bitcoin Core 0.14.2 Released! https://t.co/PuCEz3yNds,127,231
-33,"2017-08-09
-01:20:26",eric_lombrozo,"A toast to the man who made a concrete proposal for #SegWit and then implemented
+35,2017-04-23 08:21:12,bitcoincoreorg,Bitcoin Core 0.14.1 Released https://t.co/MBJ9JnVVFN,82,144
+34,2017-06-17 13:02:56,bitcoincoreorg,Bitcoin Core 0.14.2 Released! https://t.co/PuCEz3yNds,127,231
+33,2017-08-09 01:20:26,eric_lombrozo,"A toast to the man who made a concrete proposal for #SegWit and then implemented
 most of it. https://t.co/hm0bm17ILo",324,0
-32,"2017-08-28
-13:37:02",bitcoincoreorg,"The Bitcoin Core project rejected the pull request for NYA ""segwit2x""
+32,2017-08-28 13:37:02,bitcoincoreorg,"The Bitcoin Core project rejected the pull request for NYA ""segwit2x""
 https://t.co/t8d8BHFSCX",231,470
-31,"2017-08-30
-13:37:00",bitcoincoreorg,"Correcting misleading statements about btc1 and ""segwit2x""
+31,2017-08-30 13:37:00,bitcoincoreorg,"Correcting misleading statements about btc1 and ""segwit2x""
 https://t.co/S7AhfflyRZ",98,194
-30,"2017-09-15
-01:20:16",bitcoincoreorg,"Bitcoin Core 0.15.0 has been released. Read all about it!
+30,2017-09-15 01:20:16,bitcoincoreorg,"Bitcoin Core 0.15.0 has been released. Read all about it!
 https://t.co/zbHC41U5TB",172,372
-29,"2017-10-12
-06:44:20",bitcoincoreorg,"Please be aware of accounts trying to pass them self off as Bitcoin Core
+29,2017-10-12 06:44:20,bitcoincoreorg,"Please be aware of accounts trying to pass them self off as Bitcoin Core
 project's twitter account @bitcoincoreorg https://t.co/C53A5b4nVZ",92,179
-28,"2017-10-13
-00:43:45",bitcoincoreorg,"Thank you to @Twitter for verifying the Bitcoin Core project @bitcoincoreorg
+28,2017-10-13 00:43:45,bitcoincoreorg,"Thank you to @Twitter for verifying the Bitcoin Core project @bitcoincoreorg
 twitter account. https://t.co/C53A5b4nVZ",128,549
-27,"2018-01-10
-20:49:35",_jonasschnelli_,"Bitcoin Core Git Stats 2017:- Total pull requests created: 1'843 (~5 per day)
+27,2018-01-10 20:49:35,_jonasschnelli_,"Bitcoin Core Git Stats 2017:- Total pull requests created: 1'843 (~5 per day)
 - Merged pull requests: 1'195 (~3.27 per day)- GitHub comments/reviews: 21'153
 (~57.95 per day)- Commits: 3'277 (~8.98 per day)- Git contributors (merged
 code): 161- GitHub contributors: 713",492,0
-26,"2018-02-26
-11:00:14",bitcoincoreorg,Bitcoin Core 0.16.0 Released https://t.co/slIfNyPIVZ,713,1700
-25,"2018-06-15
-17:15:17",bitcoincoreorg,Bitcoin Core 0.16.1 Released https://t.co/HoP1IT3wkq,188,484
-24,"2018-06-16
-14:04:52",hrdng,"The @bitcoincoreorg download page now provides instructions to help you verify
+26,2018-02-26 11:00:14,bitcoincoreorg,Bitcoin Core 0.16.0 Released https://t.co/slIfNyPIVZ,713,1700
+25,2018-06-15 17:15:17,bitcoincoreorg,Bitcoin Core 0.16.1 Released https://t.co/HoP1IT3wkq,188,484
+24,2018-06-16 14:04:52,hrdng,"The @bitcoincoreorg download page now provides instructions to help you verify
 your Bitcoin Core download.https://t.co/msXZHlDCRMThanks to @kallerosenbaum
 for suggesting an improvement, and to PR reviewers @kallerosenbaum, @bitstein,
 @MarcoFalke, BlockchainBilly, &amp; @orionwl. https://t.co/1TUdCXn8Vu",72,0
-23,"2018-07-29
-17:11:39",bitcoincoreorg,Bitcoin Core 0.16.2 Released https://t.co/EfMhZ7GINx,230,693
-22,"2018-09-18
-21:26:20",bitcoincoreorg,"Bitcoin Core 0.16.3 was released: https://t.co/SsbsJsqSTo Upgrade recommended
+23,2018-07-29 17:11:39,bitcoincoreorg,Bitcoin Core 0.16.2 Released https://t.co/EfMhZ7GINx,230,693
+22,2018-09-18 21:26:20,bitcoincoreorg,"Bitcoin Core 0.16.3 was released: https://t.co/SsbsJsqSTo Upgrade recommended
 due to vulnerability fix",369,833
-21,"2018-09-29
-05:46:14",bitcoincoreorg,"Bitcoin Core 0.14.3 was released https://t.co/Fwl1mccqBA This is a backport
+21,2018-09-29 05:46:14,bitcoincoreorg,"Bitcoin Core 0.14.3 was released https://t.co/Fwl1mccqBA This is a backport
 release with CVE-2018-17144 vulnerability fix",42,112
-20,"2018-09-29
-05:46:36",bitcoincoreorg,"Bitcoin Core 0.15.2 was released https://t.co/Hppk5ZD9D5 This is a backport
+20,2018-09-29 05:46:36,bitcoincoreorg,"Bitcoin Core 0.15.2 was released https://t.co/Hppk5ZD9D5 This is a backport
 release with CVE-2018-17144 vulnerability fix",54,154
-19,"2018-10-03
-11:48:19",bitcoincoreorg,Bitcoin Core 0.17.0 Released https://t.co/ciwCREngon,261,654
-18,"2018-12-25
-09:48:34",bitcoincoreorg,Bitcoin Core 0.17.1 Released https://t.co/afp0glUdkD Happy holidays!,269,980
-17,"2019-05-02
-10:55:03",bitcoincoreorg,Bitcoin Core 0.18.0 Released! https://t.co/T2UPgqK9ga,431,1083
-16,"2019-08-09
-11:02:03",bitcoincoreorg,Bitcoin Core 0.18.1 Released! https://t.co/uSV3Mxfk6G,274,831
-15,"2019-11-24
-11:10:17",bitcoincoreorg,"Bitcoin Core 0.19.0(.1) was released! https://t.co/iE3Bd0H5pO Release notes:
+19,2018-10-03 11:48:19,bitcoincoreorg,Bitcoin Core 0.17.0 Released https://t.co/ciwCREngon,261,654
+18,2018-12-25 09:48:34,bitcoincoreorg,Bitcoin Core 0.17.1 Released https://t.co/afp0glUdkD Happy holidays!,269,980
+17,2019-05-02 10:55:03,bitcoincoreorg,Bitcoin Core 0.18.0 Released! https://t.co/T2UPgqK9ga,431,1083
+16,2019-08-09 11:02:03,bitcoincoreorg,Bitcoin Core 0.18.1 Released! https://t.co/uSV3Mxfk6G,274,831
+15,2019-11-24 11:10:17,bitcoincoreorg,"Bitcoin Core 0.19.0(.1) was released! https://t.co/iE3Bd0H5pO Release notes:
 https://t.co/741TxACPay",276,710
-14,"2020-03-09
-13:15:54",bitcoincoreorg,Bitcoin Core 0.19.1 was released! https://t.co/h0iR4Oqrps,225,713
-13,"2020-03-16
-11:10:26",bitcoincoreorg,"Translations for the upcoming 0.20 release have opened, please help with
+14,2020-03-09 13:15:54,bitcoincoreorg,Bitcoin Core 0.19.1 was released! https://t.co/h0iR4Oqrps,225,713
+13,2020-03-16 11:10:26,bitcoincoreorg,"Translations for the upcoming 0.20 release have opened, please help with
 localization of Bitcoin Core in your language: https://t.co/pzfvaYOMdZ",46,122
-12,"2020-06-03
-11:15:32",bitcoincoreorg,"Bitcoin Core 0.20.0 was released! It is available from https://t.co/WpMuMaejz1
+12,2020-06-03 11:15:32,bitcoincoreorg,"Bitcoin Core 0.20.0 was released! It is available from https://t.co/WpMuMaejz1
 Release mail: https://t.co/Q9X9tLIoFX",326,836
-11,"2020-08-01
-13:15:33",bitcoincoreorg,"Bitcoin Core 0.20.1 was released It is available from https://t.co/Uy9NJ11mih
+11,2020-08-01 13:15:33,bitcoincoreorg,"Bitcoin Core 0.20.1 was released It is available from https://t.co/Uy9NJ11mih
 (main website update pending) Release mail: https://t.co/95MXgRvN7Z",208,529
-10,"2021-01-14
-14:09:31",bitcoincoreorg,"Bitcoin Core 0.21.0 was released It is available from https://t.co/jnWN8LRX75
+10,2021-01-14 14:09:31,bitcoincoreorg,"Bitcoin Core 0.21.0 was released It is available from https://t.co/jnWN8LRX75
 Release mail: https://t.co/6dFNUj3K4d",282,892
-9,"2021-01-19
-20:59:02",achow101,"I'm launching a Bitcoin Core usage survey: https://t.co/O3mbn4vnCPThe survey
+9,2021-01-19 20:59:02,achow101,"I'm launching a Bitcoin Core usage survey: https://t.co/O3mbn4vnCPThe survey
 will help us learn about who, how, and why people use Bitcoin Core so that we
 can improve it in the future. If you have any feedback about the software you
 want to leave, this is the place to do it.",100,0
-8,"2021-04-19
-04:59:28",bitcoincoreorg,"Bitcoin Core 0.21.1 release candidate 1 available https://t.co/BSQjJiRuHw
+8,2021-04-19 04:59:28,bitcoincoreorg,"Bitcoin Core 0.21.1 release candidate 1 available https://t.co/BSQjJiRuHw
 https://t.co/KQMiZFHnZy",56,218
-7,"2021-05-02
-07:21:00",bitcoincoreorg,"Bitcoin Core 0.21.1 was released! It is available from https://t.co/WpMuMaejz1
+7,2021-05-02 07:21:00,bitcoincoreorg,"Bitcoin Core 0.21.1 was released! It is available from https://t.co/WpMuMaejz1
 Release mail: https://t.co/TuFxSkQABE",154,568
-6,"2021-06-03
-17:16:25",pwuille,"In version 0.21 @bitcoincoreorg added support for Tor V3:
+6,2021-06-03 17:16:25,pwuille,"In version 0.21 @bitcoincoreorg added support for Tor V3:
 https://t.co/yIUqYjqQnGFor the next major release we're dropping V2 support.
 Their usability will rapidly diminish the next few months, as they're deprecated
 and @torproject will soon remove support. https://t.co/XEUbSnVmCe",71,0
-5,"2021-07-03
-08:25:13",bitcoincoreorg,"A reminder that Bitcoin Core is available for download worldwide through
+5,2021-07-03 08:25:13,bitcoincoreorg,"A reminder that Bitcoin Core is available for download worldwide through
 https://t.co/WpMuMaejz1 . It is also available through BitTorrent.",191,567
-4,"2021-07-20
-21:51:31",LukeDashjr,"PSA: @BitcoinCoreOrg (#Bitcoin Core) is NOT soliciting or performing closed
+4,2021-07-20 21:51:31,LukeDashjr,"PSA: @BitcoinCoreOrg (#Bitcoin Core) is NOT soliciting or performing closed
 testing of any beta or other software.If you get an email inviting you, be
 aware it is spam and their ""testing version"" is almost certainly malware.Note:
 the ""From"" on emails is NOT secure and faked.",94,0
-3,"2021-09-13
-22:01:09",bitcoincoreorg,"Bitcoin Core 22.0 was released! It is available from https://t.co/WpMuMaejz1
+3,2021-09-13 22:01:09,bitcoincoreorg,"Bitcoin Core 22.0 was released! It is available from https://t.co/WpMuMaejz1
 Release mail: https://t.co/ZvZKXZ0iLD",348,1042
-2,"2021-10-27
-10:55:48",bitcoincoreorg,"Bitcoin Core 0.20.2 (backports) was released It is available from
+2,2021-10-27 10:55:48,bitcoincoreorg,"Bitcoin Core 0.20.2 (backports) was released It is available from
 https://t.co/ea0sMBjrp2 Release mail: https://t.co/KahVJFcZ9d",86,181
-1,"2022-04-25
-14:31:08",bitcoincoreorg,"Bitcoin Core 23.0 was released! It is available from https://t.co/hP6wtyct16
+1,2022-04-25 14:31:08,bitcoincoreorg,"Bitcoin Core 23.0 was released! It is available from https://t.co/hP6wtyct16
 Release mail: https://t.co/4Nmle1Fwcx",292,828
-0,"2022-06-09
-17:38:58",jonatack,"if you run a bitcoin node, do you change the default logging settings?(i.e.
+0,2022-06-09 17:38:58,jonatack,"if you run a bitcoin node, do you change the default logging settings?(i.e.
 with the -debug= config option or the logging rpc)",21,0
