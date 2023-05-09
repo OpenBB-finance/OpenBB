@@ -29,7 +29,7 @@ const Select = ({
     }[];
   }[];
 }) => {
-  const onlyOneGroup = groups.length === 1;
+  const onlyOneGroup = groups?.length === 1;
   return (
     <SelectPrimitive.Root value={value} onValueChange={onChange}>
       <SelectPrimitive.Group

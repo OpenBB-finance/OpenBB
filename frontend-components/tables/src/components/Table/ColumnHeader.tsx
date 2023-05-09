@@ -43,9 +43,9 @@ function Filter({
 
   const isProbablyDate = values.every((value: string) => {
     if (typeof value !== "string") return false;
-    const only_numbers = value.replace(/[^0-9]/g, "").trim();
+    const only_numbers = value?.replace(/[^0-9]/g, "").trim();
     return (
-      only_numbers.length >= 4 &&
+      only_numbers?.length >= 4 &&
       (includesDateNames(column.id) ||
         (column.id.toLowerCase() === "index" && !valuesContainStringWithSpaces))
     );
@@ -264,7 +264,7 @@ const DraggableColumnHeader: FC<{
               <Filter
                 column={header.column}
                 table={table}
-                numberOfColumns={columnOrder.length}
+                numberOfColumns={columnOrder?.length ?? 0}
               />
             </div>
           ) : null}
