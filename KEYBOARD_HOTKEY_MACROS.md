@@ -1,12 +1,6 @@
-# Keychron Macros
+# Keyboard Hotkey Macros
 
-This document will explain how you can set hotkeys on your Keychron keyboard which allow you to perform investment research in a few seconds. If you prefer to see this in video format, you can do so by checking the following video.
-
-<p align="center">
-   <a href="https://www.youtube.com/watch?v=cgeN3Ep2nEw" rel="Keychron x OpenBB Demo">
-      <img src="https://user-images.githubusercontent.com/25267873/236660025-581d0e4f-df5e-4461-b2b9-70154c1bdf89.png" alt="Didier demonstrating Keychron x OpenBB" width="100%"/>
-   </a>
-</p>
+This document will explain how you can set hotkeys macros on your customizable keyboard which allow you to perform investment research in a few seconds.
 
 ## Introduction to Routines
 
@@ -30,13 +24,18 @@ which would lead to:
 
 This allows to automate the process of investment research, and can improve user's experience by a significant margin.
 
-## Why Keychron
+## Supported Configurators
 
-We were in the market looking for a keyboard that could be highliy customizable for the needs of OpenBB power users. This is when we stumbled upon Keychron and the VIA configurator which allows users to intuitively remap any key on the keyboard, and create numerous macro commands, shortcuts, or key combinations.
+1. [VIA](#via)
+   
 
-[Why VIA is one of the most essential features for a custom keyboard?](https://www.keychron.com/blogs/news/why-qmk-via-is-one-of-the-most-essential-features-for-a-custom-keyboard)
+## VIA
 
-## Setting up hotkeys on a Keychron keyboard
+This document will explain how you can set hotkeys on your customizable keyboard using [VIA](https://www.caniusevia.com/).
+
+Here is a list of VIA's supported keyboards: https://www.caniusevia.com/docs/supported_keyboards
+
+Note: We were in the market looking for a keyboard that could be highliy customizable for the needs of OpenBB power users. This is when we stumbled upon Keychron and the VIA configurator which allows users to intuitively remap any key on the keyboard, and create numerous macro commands, shortcuts, or key combinations. Here's a post from Keychron on VIA: [Why VIA is one of the most essential features for a custom keyboard?](https://www.keychron.com/blogs/news/why-qmk-via-is-one-of-the-most-essential-features-for-a-custom-keyboard)
 
 For the purpose of this example, the command pipeline we are creating has the following sequence of commands: `dps/psi/../fa/pt/income/..`
 
@@ -66,4 +65,13 @@ For the purpose of this example, the command pipeline we are creating has the fo
 
    <img width="1784" alt="Screenshot 2023-05-06 at 10 53 49 PM" src="https://user-images.githubusercontent.com/25267873/236660272-290fe586-7663-4cd6-bfc0-80b7f8f2efd1.png">
 
-   Hope you enjoy this tutorial, and please let us know what type of MACROS are you setting up.
+
+PS: If you prefer to see this in video format, you can do so by checking the following video.
+
+<p align="center">
+   <a href="https://www.youtube.com/watch?v=cgeN3Ep2nEw" rel="Keychron x OpenBB Demo">
+      <img src="https://user-images.githubusercontent.com/25267873/236660025-581d0e4f-df5e-4461-b2b9-70154c1bdf89.png" alt="Didier demonstrating Keychron x OpenBB" width="100%"/>
+   </a>
+</p>
+
+Hope you enjoy this tutorial, and please let us know what type of MACROS are you setting up.
