@@ -10,6 +10,8 @@ from pathlib import Path
 # IMPORT THIRD-PARTY
 import pandas as pd
 
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+
 # IMPORT INTERNAL
 from openbb_terminal.core.integration_tests.utils import (
     SECTION_LENGTH,
@@ -18,7 +20,6 @@ from openbb_terminal.core.integration_tests.utils import (
     to_section_title,
     validate_missing_params,
 )
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
 
