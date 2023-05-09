@@ -1076,6 +1076,21 @@ def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
         Appended DataFrame with Heikin Ashi candle calculations.
     """
 
+    check_columns = ["Open", "High", "Low", "Close"]
+
+    data.rename(
+        columns={"open": "Open", "high": "High", "low": "Low", "close": "Close"},
+        inplace=True,
+    )
+
+    for item in check_columns:
+        if item not in data.columns:
+            raise ValueError(
+                "The expected column labels, "
+                f"{check_columns}"
+                ", were not found in DataFrame."
+            )
+
     ha = candles.ha(
         data["Open"],
         data["High"],
