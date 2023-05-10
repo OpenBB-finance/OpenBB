@@ -10,3 +10,6 @@ generate
 show
 revoke
 logout
+help
+reset
+exit
