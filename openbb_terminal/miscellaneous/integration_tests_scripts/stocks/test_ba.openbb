@@ -1,0 +1,30 @@
+stocks
+ba
+load ${ticker=aapl}
+headlines
+headlines --raw
+wsb
+wsb --new
+watchlist
+popular -l 5 -n 10
+spacc
+spac
+getdd
+redditsent
+trending
+stalker -l 3
+bullbear
+messages
+infer
+sentiment -d 3 -l 2
+mentions
+regions
+interest -w yolo
+queries
+rise
+jcdr
+jctr
+snews
+help
+reset
+exit
