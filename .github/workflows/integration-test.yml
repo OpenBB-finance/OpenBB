@@ -69,13 +69,13 @@ jobs:
         source $VENV
         python terminal.py -t | tee result.txt
         grep "================================ Integration Test Summary ================================" result.txt -A100 | tail --bytes=2000 > summary.txt
+        echo  >> summary.txt
 
     - name: Run Integration Tests Coverage Report
       id: integration-tests-coverage
       run: |
         source $VENV
         python terminal.py -t --coverage | tee result.txt
-        echo  >> summary.txt
         sed -n '/Integration Coverage Summary/,$p' result.txt >> summary.txt
 
     - name: Upload summary to Slack
