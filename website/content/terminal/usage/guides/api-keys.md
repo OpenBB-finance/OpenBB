@@ -843,3 +843,22 @@ Enter the key into the OpenBB Terminal by typing:
 ```
 
 </details>
+
+### BizToc
+
+> BizToc is the one-stop business and finance news hub, encapsulating the top 200 US news providers in real time.
+>
+<details>
+<summary>Instructions</summary>
+
+The BizToc API is hosted on RapidAPI.  To set up, go to: https://rapidapi.com/thma/api/biztoc.
+
+![BizToc](https://user-images.githubusercontent.com/1911913/229215125-e3419788-eef3-4389-a3bd-5c08f3333347.png)
+
+In the top right, select "Sign Up".  After answering some questions, you will be prompted to select one of their plans.  After signing up, navigate back to https://rapidapi.com/thma/api/biztoc.  If you are logged in, you will see a header called X-RapidAPI-Key.  Copy the key to the clipboard, and enter this key into the OpenBB Terminal with:
+
+```console
+/keys/biztoc REPLACE_WITH_KEY
+```
+
+</details>
