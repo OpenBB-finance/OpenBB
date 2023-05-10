@@ -1,0 +1,13 @@
+dashboards
+stocks -n
+correlation -n
+vsurf -n
+chains -n
+shortdata -n
+crypto -n
+futures -n
+forecast -n
+forecasting -n
+help
+reset
+exit
