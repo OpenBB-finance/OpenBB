@@ -222,7 +222,18 @@ curl -o docker-compose.x11.yaml https://raw.githubusercontent.com/OpenBB-finance
 docker compose -f docker-compose.yaml -f docker-compose.x11.yaml run openbb
 ```
 
-Note: if you're using remote docker host, you can connect with `ssh -X <FQDN/IP>`.
+:::note
+If you are experiencing issues with charts - launch the container with the following command:
+
+```console
+docker compose -f docker-compose.yaml -f docker-compose.x11.yaml run -e WEBKIT_DISABLE_COMPOSITING_MODE=1 openbb
+```
+
+:::
+
+:::note
+If you're using remote docker host, you can connect with `ssh -X <FQDN/IP>`.
+:::
 
 </TabItem>
 </Tabs>

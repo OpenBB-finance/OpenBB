@@ -1409,8 +1409,7 @@
         "GitHub"
       ]
     },
-    "hn": [
-      "HackerNews"
-    ]
-  }
+    "hn": ["HackerNews"]
+  },
+  "news" : ["Biztoc","Feedparser"]
 }
