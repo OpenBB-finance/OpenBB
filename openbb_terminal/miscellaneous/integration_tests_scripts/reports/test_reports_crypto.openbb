@@ -1,8 +1,0 @@
-reports
-
-## defaults
-crypto
-
-crypto --symbol ${crypto=BTC}
-
-exit

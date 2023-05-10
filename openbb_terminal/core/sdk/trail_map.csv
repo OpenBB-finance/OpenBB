@@ -189,6 +189,7 @@ econometrics.panel,econometrics_regression_model.get_regressions_results,econome
 econometrics.pols,econometrics_regression_model.get_pols,
 econometrics.re,econometrics_regression_model.get_re,
 econometrics.root,econometrics_model.get_root,econometrics_view.display_root
+econometrics.garch,econometrics_model.get_garch,econometrics_view.display_garch
 economy.available_indices,economy_yfinance_model.get_available_indices,
 economy.balance,economy_oecd_model.get_balance,economy_oecd_view.plot_balance
 economy.bigmac,economy_nasdaq_model.get_big_mac_indices,economy_nasdaq_view.display_big_mac_index
@@ -307,6 +308,7 @@ keys.glassnode,keys_model.set_glassnode_key,
 keys.messari,keys_model.set_messari_key,
 keys.mykeys,keys_model.get_keys,
 keys.news,keys_model.set_news_key,
+keys.biztoc,keys_model.set_biztoc_key,
 keys.oanda,keys_model.set_oanda_key,
 keys.polygon,keys_model.set_polygon_key,
 keys.quandl,keys_model.set_quandl_key,
@@ -324,7 +326,7 @@ keys.ultima,keys_model.set_ultima_key,
 keys.walert,keys_model.set_walert_key,
 login,sdk_session.login,
 logout,sdk_session.logout,
-news,common_feedparser_model.get_news,
+news,common_news_sdk_helper.news,
 portfolio.alloc.assets,portfolio_model.get_assets_allocation,
 portfolio.alloc.countries,portfolio_model.get_countries_allocation,
 portfolio.alloc.regions,portfolio_model.get_regions_allocation,

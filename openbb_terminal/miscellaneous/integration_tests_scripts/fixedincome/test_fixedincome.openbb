@@ -1,6 +1,11 @@
 fixedincome
 estr -s 2022-01-01 -e 2023-01-01
 sofr -s 2022-01-01 -e 2023-01-01
+sofr -s 2022-01-01 -e 2023-01-01 -p overnight
+sofr -s 2022-01-01 -e 2023-01-01 -p 30_day_average
+sofr -s 2022-01-01 -e 2023-01-01 -p 90_day_average
+sofr -s 2022-01-01 -e 2023-01-01 -p 180_day_average
+sofr -s 2022-01-01 -e 2023-01-01 -p index
 sonia -s 2022-01-01 -e 2023-01-01
 ameribor -s 2022-01-01 -e 2023-01-01
 fed -s 2022-01-01 -e 2023-01-01
@@ -8,16 +13,23 @@ iorb -s 2022-01-01 -e 2023-01-01
 projection
 dwpcr -s 2022-01-01 -e 2023-01-01
 ecb -s 2022-01-01 -e 2023-01-01
-treasury --short australia --long united_kingdom,united_states -s 2022-01-01 -e 2023-01-01
+treasury --short australia --long united_kingdom,united_states -s 2022-01-01 -e 2023-01-01 --forecast
 usrates -s 2022-01-01 -e 2023-01-01
-ycrv -d 2023-02-17
+ycrv -d 2023-02-17 --inflation-adjusted
 ecbycrv -d 2023-02-17
+ecbycrv -d 2023-02-17 --any-rating --raw
 icebofa -s 2022-01-01 -e 2023-01-01
-moody -s 2022-01-01 -e 2023-01-01
+moody -s 2022-01-01 -e 2023-01-01 --spread treasury --raw
 cp -s 2022-01-01 -e 2023-01-01
+cp -s 2022-01-01 -e 2023-01-01 -c asset_backend
+cp -s 2022-01-01 -e 2023-01-01 -c non_financial
+cp -s 2022-01-01 -e 2023-01-01 -c spread -o -d
 spot -s 2022-01-01 -e 2023-01-01
-hqm -d 2023-02-17
+hqm -d 2023-02-17 -p --raw
 icespread -s 2022-01-01 -e 2023-01-01
 tmc -s 2022-01-01 -e 2023-01-01
 ffrmc -s 2022-01-01 -e 2023-01-01
 tbffr -s 2022-01-01 -e 2023-01-01
+help
+reset
+exit
