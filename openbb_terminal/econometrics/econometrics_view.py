@@ -1,6 +1,8 @@
 """Econometrics View"""
 __docformat__ = "numpy"
 
+# pylint: disable=too-many-arguments
+
 import logging
 import os
 from typing import Dict, Optional, Union
@@ -43,7 +45,9 @@ def show_options(
             "Please load in a dataset by using the 'load' command before using this feature."
         )
     else:
-        option_tables = econometrics_model.get_options(datasets, dataset_name)
+        option_tables = econometrics_model.get_options(
+            datasets, dataset_name if dataset_name is not None else ""
+        )
 
         for dataset, data_values in option_tables.items():
             print_rich_table(
@@ -384,6 +388,77 @@ def display_root(
             results,
             sheet_name,
         )
+
+
+@log_start_end(log=logger)
+def display_garch(
+    dataset: pd.DataFrame,
+    column: str,
+    p: int = 1,
+    o: int = 0,
+    q: int = 1,
+    mean: str = "constant",
+    horizon: int = 1,
+    detailed: bool = False,
+    export: str = "",
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
+    """Plots the volatility forecasts based on GARCH
+
+    Parameters
+    ----------
+    dataset: pd.DataFrame
+        The dataframe to use
+    column: str
+        The column of the dataframe to use
+    p: int
+        Lag order of the symmetric innovation
+    o: int
+        Lag order of the asymmetric innovation
+    q: int
+        Lag order of lagged volatility or equivalent
+    mean: str
+        The name of the mean model
+    horizon: int
+        The horizon of the forecast
+    detailed: bool
+        Whether to display the details about the parameter fit, for instance the confidence interval
+    export: str
+        Format to export data
+    external_axes: bool
+        Whether to return the figure object or not, by default False
+    """
+    data = dataset[column]
+    result, garch_fit = econometrics_model.get_garch(data, p, o, q, mean, horizon)
+
+    fig = OpenBBFigure()
+
+    fig.add_scatter(x=list(range(1, horizon + 1)), y=result)
+    fig.set_title(
+        f"{f'GARCH({p}, {o}, {q})' if o != 0 else f'GARCH({p}, {q})'} volatility forecast"
+    )
+
+    if fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{column}_{dataset}_GARCH({p},{q})",
+            result,
+            figure=fig,
+        )
+
+    if not detailed:
+        print_rich_table(
+            garch_fit.params.to_frame(),
+            headers=["Values"],
+            show_index=True,
+            index_name="Parameters",
+            title=f"GARCH({p}, {o}, {q})" if o != 0 else f"GARCH({p}, {q})",
+            export=bool(export),
+        )
+    else:
+        console.print(garch_fit)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
