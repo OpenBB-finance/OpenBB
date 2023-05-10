@@ -1,0 +1,54 @@
+etf
+load spy
+ta
+ema
+ema --length 10 --offset 3
+sma
+sma --length 2 --offset 1
+wma
+wma --length 99 --offset 4
+hma
+hma --length 1 --offset 95
+zlma
+zlma --length 1 --offset 1
+vwap
+# vwap --offset 2 --start 2022-01-01 --end 2023-01-01
+cci
+cci --length 2 --scalar 10
+macd
+macd --fast 13 --slow 99 --signal 15
+rsi
+rsi --length 2 --scalar 10 --drift 7
+stoch
+stoch --fastkperiod 2 --slowdperiod 1
+fisher
+fisher --length 2
+cg
+cg --length 95
+clenow
+clenow --period 120
+demark
+demark --min 5
+adx
+adx --length 4 --scalar 10 --drift 2
+aroon
+aroon --length 2 --scalar 11
+bbands
+bbands --length 2 --std 0.25 --mamode zlma
+donchian
+donchian
+donchian --length_upper 2 --length_lower 1
+kc
+kc --length 2 --scalar 1 --mamode ema --offset 4
+atr
+atr --length 10 --mamode sma --offset 33
+ad
+ad --open
+adosc
+adosc --open --fast 2 --slow 1
+obv
+fib
+fib --period 30 --start 2021-01-01 --end 2023-01-01
+help
+reset
+exit

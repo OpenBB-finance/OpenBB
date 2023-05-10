@@ -1,7 +1,0 @@
-stocks
-load ${ticker=aapl}
-fa
-h
-help
-?
-exit

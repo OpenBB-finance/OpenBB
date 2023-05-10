@@ -1,0 +1,77 @@
+crypto
+load ${crypto=eth}
+qa
+
+# summary
+summary
+
+# normality
+normality
+
+# unitroot
+unitroot
+unitroot -r ct -k ct
+
+# line
+line
+line -l
+line -log
+line --log
+line --ml 2022-01-01 --ms 2022-06-06
+
+# hist
+hist
+hist -b 20
+
+# cdf
+cdf
+
+# bw
+bw
+bw -y
+
+# acf
+acf
+acf -l 20
+
+# qqplot
+qqplot
+
+# rolling
+rolling
+rolling -w 20
+
+# spread
+spread
+spread --window 20
+
+# qauntile
+quantile
+quantile -w 20 -q .1
+
+# skew
+skew
+skew -w 20
+
+# kurtosis
+kurtosis
+kurtosis -w 20
+
+# raw
+raw
+raw -l 3
+raw --sortby adjclose --reverse
+
+# decompose
+decompose
+decompose -m
+
+# cusum
+cusum
+cusum -t 120 -d 60
+
+pick -t Open
+
+help
+reset
+exit
