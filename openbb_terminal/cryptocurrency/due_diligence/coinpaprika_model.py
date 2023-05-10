@@ -60,8 +60,9 @@ def get_coin_twitter_timeline(
         lambda x: "\n".join(textwrap.wrap(x, width=80)) if isinstance(x, str) else x
     )
     df["status"] = df["status"].apply(lambda x: x.replace("  ", ""))
-    df["date"] = df["date"].apply(lambda x: x.replace("T", "\n"))
-    df["date"] = df["date"].apply(lambda x: x.replace("Z", ""))
+    df["date"] = pd.to_datetime(df["date"], format="%Y-%m-%dT%H:%M:%SZ").dt.strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
     df = df.sort_values(by=sortby, ascending=ascend)
     # Remove unicode chars (it breaks pretty tables)
     df["status"] = df["status"].apply(
@@ -121,13 +122,12 @@ def get_coin_events_by_id(
         lambda x: "\n".join(textwrap.wrap(x, width=40)) if isinstance(x, str) else x
     )
     data.drop(["id", "proof_image_link"], axis=1, inplace=True)
-    for col in ["date", "date_to"]:
-        data[col] = data[col].apply(
-            lambda x: x.replace("T", "\n") if isinstance(x, str) else x
-        )
-        data[col] = data[col].apply(
-            lambda x: x.replace("Z", "") if isinstance(x, str) else x
-        )
+    data["date"] = pd.to_datetime(
+        data["date"], format="%Y-%m-%dT%H:%M:%SZ"
+    ).dt.strftime("%Y-%m-%d %H:%M:%S")
+    data["date_to"] = pd.to_datetime(
+        data["date_to"], format="%Y-%m-%dT%H:%M:%SZ"
+    ).dt.strftime("%Y-%m-%d %H:%M:%S")
     data = data.sort_values(by=sortby, ascending=ascend)
 
     return data

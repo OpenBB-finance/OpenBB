@@ -292,7 +292,6 @@ class ComparisonAnalysisController(BaseController):
 
                         console.print(
                             f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
-                            "\n",
                         )
                 elif ns_parser.source == "Polygon":
                     self.similar = polygon_model.get_similar_companies(

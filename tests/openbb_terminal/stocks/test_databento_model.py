@@ -29,7 +29,7 @@ def test_databento_model():
 def test_stock_load(recorder):
     """Tests the stock load function."""
     result = databento_model.get_historical_stock(
-        symbol="AAPL", start_date="2022-08-01", end_date="2022-12-01"
+        symbol="AAPL", start_date="2022-08-01", end_date="2022-10-01"
     )
     assert result.empty is False
     recorder.capture(result)
