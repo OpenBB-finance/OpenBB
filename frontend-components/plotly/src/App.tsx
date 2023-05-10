@@ -14,7 +14,7 @@ declare global {
     Plotly: any;
     MODEBAR: HTMLElement;
     download_path: string;
-    ipc: any;
+    pywry: any;
   }
 }
 

@@ -26,7 +26,7 @@ export default function DownloadFinishedDialog({
                 href={`${userHomeDir}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  window.ipc.postMessage(`#OPEN:${userHomeDir}`);
+                  window.pywry.open_file(userHomeDir);
                 }}
               >
                 {userHomeDir}

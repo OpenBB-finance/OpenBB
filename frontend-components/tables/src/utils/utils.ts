@@ -25,7 +25,10 @@ export function formatNumberMagnitude(
   }
 
   if (number % 1 !== 0) {
-    const decimalPlaces = Math.max(2, number.toString().split(".")[1]?.length || 0);
+    const decimalPlaces = Math.max(
+      2,
+      number.toString().split(".")[1]?.length || 0
+    );
     const toFixed = Math.min(4, decimalPlaces);
     if (number < 1000) {
       return number.toFixed(toFixed) || 0;
@@ -240,10 +243,10 @@ export async function downloadData(
         // @ts-ignore
         saveToFile(blob, filename, fileHandle).then(async function () {
           await new Promise((resolve) => setTimeout(resolve, 1500));
+          await loadingOverlay("", true);
           if (!fileHandle) {
             downloadFinished(true);
           }
-          await loadingOverlay("", true);
         });
       }, 2)();
     } catch (error) {
@@ -291,10 +294,10 @@ export async function downloadImage(
         // @ts-ignore
         saveToFile(blob, filename, fileHandle).then(async function () {
           await new Promise((resolve) => setTimeout(resolve, 1500));
+          await loadingOverlay("", true);
           if (!fileHandle) {
             downloadFinished(true);
           }
-          await loadingOverlay("", true);
         });
       });
     }, 2)();

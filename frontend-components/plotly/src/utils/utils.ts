@@ -349,23 +349,23 @@ export async function downloadImage(
 
     if (["svg", "pdf"].includes(extension)) {
       await saveImage(id, filename, extension);
+      hidemodebar(false);
+      loading(false);
       if (!fileHandle) {
         downloadFinished(true);
       }
-      hidemodebar(false);
-      loading(false);
       return;
     }
 
     non_blocking(async function () {
       domtoimage.toBlob(chart).then(function (blob: Blob) {
         saveToFile(blob, filename, fileHandle).then(async function () {
-          if (!fileHandle) {
-            downloadFinished(true);
-          }
           await loadingOverlay("", true);
           hidemodebar(false);
           loading(false);
+          if (!fileHandle) {
+            downloadFinished(true);
+          }
         });
       });
     }, 2)();

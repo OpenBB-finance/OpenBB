@@ -58,7 +58,6 @@ export default async function autoScaling(
             let out = null;
             if (x >= x_min && x <= x_max) {
               if (trace2.y != undefined) {
-                console.log(trace2.name, trace2.type, trace2.yaxis);
                 out = y[i];
               }
               if (trace2.type == "candlestick") {

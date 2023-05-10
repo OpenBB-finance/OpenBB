@@ -338,8 +338,8 @@ export default function Chart({
         }
       }
 
-      // We check to see if window.save_png is defined and true
-      if (window.save_image != undefined && window.export_image) {
+      // We check to see if window.export_image is defined
+      if (window.export_image != undefined) {
         // We get the extension of the file and check if it is valid
         let filename = window.export_image.split("/").pop();
         const extension = filename.split(".").pop().replace("jpg", "jpeg");

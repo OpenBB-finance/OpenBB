@@ -16,7 +16,7 @@ declare global {
     json_data: any;
     title: string;
     download_path: string;
-    ipc: any;
+    pywry: any;
   }
 }
 
