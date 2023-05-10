@@ -36,7 +36,7 @@ Operating Cash Flow                                   9478000000          100900
 Capital Expenditure                                  -1436000000           -852000000           -602000000           -748000000          -1077000000
 Free Cash Flow                                        8042000000           9238000000           9210000000          11219000000           9726000000
                                                                                                            Final Link
-Fiscal Date Ending
+Fiscal Date Ending                                                                                                   
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/pm123118form10kwrapinclfsm.htm
 2019                    https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/pm123119form10kwrapinc.htm
 2020                               https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/pm-20201231.htm
@@ -44,7 +44,7 @@ Fiscal Date Ending
 2022                               https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/pm-20221231.htm
 
                                                                                                                  Link
-Fiscal Date Ending
+Fiscal Date Ending                                                                                                   
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/0001413329-19-000007-index.htm
 2019                https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/0001413329-20-000007-index.htm
 2020                https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/0001413329-21-000007-index.htm
