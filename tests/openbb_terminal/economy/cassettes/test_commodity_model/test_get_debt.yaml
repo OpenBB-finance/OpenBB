@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://en.wikipedia.org/wiki/List_of_countries_by_external_debt
   response:
@@ -857,7 +857,7 @@ interactions:
       accept-ranges:
       - bytes
       age:
-      - '28616'
+      - '29414'
       cache-control:
       - private, s-maxage=0, max-age=0, must-revalidate
       content-encoding:
@@ -894,7 +894,7 @@ interactions:
       vary:
       - Accept-Encoding,Cookie,Authorization
       x-cache:
-      - cp2039 hit, cp2027 hit/6
+      - cp2039 hit, cp2027 hit/7
       x-cache-status:
       - hit-front
       x-client-ip:
