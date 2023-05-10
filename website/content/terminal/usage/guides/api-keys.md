@@ -847,23 +847,22 @@ Enter the key into the OpenBB Terminal by typing:
 ### BizToc
 
 > BizToc is the one-stop business and finance news hub, encapsulating the top 200 US news providers in real time.
->
+
 <details>
 <summary>Instructions</summary>
 
 The BizToc API is hosted on RapidAPI.  To set up, go to: https://rapidapi.com/thma/api/biztoc.
 
-<img width="1359" alt="Screenshot 2023-05-10 at 7 54 07 AM" src="https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda">
+![biztoc0](https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda)
 
-In the top right, select "Sign Up".  After answering some questions, you will be prompted to select one of their plans.  
-  
-<img width="1277" alt="Screenshot 2023-05-10 at 7 56 18 AM" src="https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422">
-  
-After signing up, navigate back to https://rapidapi.com/thma/api/biztoc.  If you are logged in, you will see a header called X-RapidAPI-Key.  
-  
-<img width="486" alt="Screenshot 2023-05-10 at 7 57 48 AM" src="https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f">
+In the top right, select "Sign Up".  After answering some questions, you will be prompted to select one of their plans.
 
- 
+![biztoc1](https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422)
+
+After signing up, navigate back to https://rapidapi.com/thma/api/biztoc.  If you are logged in, you will see a header called X-RapidAPI-Key.
+
+![biztoc2](https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f)
+
 Copy the key to the clipboard, and enter this key into the OpenBB Terminal with:
 
 ```console
