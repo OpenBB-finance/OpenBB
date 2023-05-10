@@ -1,0 +1,114 @@
+crypto
+ov
+
+# global
+global
+global --pie
+
+# defi
+defi
+
+# stables
+stables
+stables -p
+stables --pie
+stables --sortbyby Price_[$] --reverse --limit 3
+
+# exchanges
+exchanges
+exchanges --source CoinGecko
+exchanges --source CoinPaprika
+exchanges --urls
+exchanges --vs ${crypto_vs=ETH}
+exchanges -vs ${crypto_vs=ETH}
+exchanges --source CoinGecko --limit 3 --sortby Trust_Score -r
+
+# exrates
+exrates
+exrates --sortby Value --reverse --limit 3
+
+# indexes
+indexes
+indexes --sortby Last --limit 3 -r
+
+# derivatives
+derivatives
+derivatives --sortby Basis --limit 3
+
+# categories
+categories
+categories --pie
+categories --sortby Market_Cap --limit 3
+
+# hold
+hold
+hold --bar
+hold --limit 1 --coin ethereum --bar
+
+# hm
+hm
+hm --category stablecoins --limit 3
+
+# info
+info
+info --vs ${crypto_vs=ETH} --sortby price --limit 3
+
+# markets
+markets
+markets --vs ${crypto_vs=ETH} --sortby price --limit 3
+
+# exmarkets
+exmarkets
+exmarkets --limit 3 --sortby quote_currency_name
+exmarkets --urls
+
+# platforms
+platforms
+
+# contracts
+contracts
+contracts --platform eth-ethereum --limit 3 --sortby type
+
+# pairs
+pairs
+
+# news
+news
+news --region es
+news --limit 3 --kind media --filter hot --sortby title
+
+# wf
+wf
+wf --limit 3
+
+# ewf
+ewf
+
+# wfpe
+wfpe
+wfpe -c ${crypto_full=ethereum}
+
+# altindex
+altindex
+altindex --period 30 --since 2020-10-25 --until 2021-12-01
+
+btcrb
+
+# ch
+ch
+ch --slug polynetwork-rekt
+ch -s wormhole-rekt
+ch --sortbyby Amount [$] -r --limit 3
+
+# cr
+cr
+cr -t borrow --limit 1
+cr --cryptocurrrencies ZRX
+cr --platforms Compound
+cr --cryptocurrrencies ZRX --platforms Compound
+
+fun --metric market_cap
+
+help
+reset
+exit
