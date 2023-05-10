@@ -215,6 +215,12 @@ To run the tests on installers you can use the same syntax as above, just substi
     /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t alternative/test_alt_covid.openbb
     ```
 
+- Get integration test coverage:
+
+    ```zsh
+    /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t --coverage
+    ```
+
 ## 4. Test report
 
 The console report has 3 sections: progress, failures and summary.

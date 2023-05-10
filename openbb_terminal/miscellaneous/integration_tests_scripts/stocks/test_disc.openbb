@@ -1,0 +1,35 @@
+stocks
+disc
+q
+disc
+..
+disc
+quit
+disc
+help
+h
+?
+filings
+pipo
+fipo
+gainers
+losers
+ugs -l 3
+gtech
+active
+ulc
+asc
+arkord
+arkord --fund ARKX -s Total
+upcoming
+trending
+cnews -t notable-calls
+lowfloat
+hotpenny
+rtat
+divcal -s Dividend -a
+divcal -d 2023-01-01 -s record_date -r
+heatmap
+reset
+r
+exit

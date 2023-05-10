@@ -1,0 +1,88 @@
+stocks
+load ${ticker=aapl}
+qa
+summary
+normality
+unitroot
+unitroot -r ct
+unitroot -r ctt
+hist
+hist -b 33
+cdf
+pick volume
+bw
+bw -y
+acf
+pick adjclose
+acf -l 3
+qqplot
+rolling -w 10
+spread
+quantile
+skew
+kurtosis
+raw
+raw --sortby adjclose -r
+decompose
+cusum
+capm
+beta
+beta -r MSFT
+var
+es
+sh
+so
+om
+load ${ticker=aapl} -i 1
+pick returns
+summary
+normality
+unitroot
+hist
+cdf
+bw
+qqplot
+rolling
+spread
+quantile
+skew
+kurtosis
+raw
+decompose
+cusum
+capm
+beta
+var
+es
+sh
+so
+om
+load ${ticker=aapl} --source Polygon
+pick returns
+summary
+normality
+unitroot
+hist
+cdf
+bw
+qqplot
+rolling
+spread
+quantile
+skew
+kurtosis
+raw
+decompose
+cusum
+capm
+beta
+var
+es
+sh
+so
+om
+line
+line --log
+help
+reset
+exit
