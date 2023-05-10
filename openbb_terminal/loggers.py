@@ -45,12 +45,13 @@ from openbb_terminal.core.session.current_system import (
     set_system_variable,
 )
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
-current_system = get_current_system()
+logging_verbosity = get_current_system().LOGGING_VERBOSITY
 
-logging.getLogger("requests").setLevel(current_system.LOGGING_VERBOSITY)
-logging.getLogger("urllib3").setLevel(current_system.LOGGING_VERBOSITY)
+logging.getLogger("requests").setLevel(logging_verbosity)
+logging.getLogger("urllib3").setLevel(logging_verbosity)
 
 
 def get_app_id() -> str:
@@ -81,8 +82,9 @@ def get_session_id() -> str:
 def get_commit_hash(use_env=True) -> str:
     """Get Commit Short Hash"""
 
-    if use_env and current_system.LOGGING_COMMIT_HASH != "REPLACE_ME":
-        return current_system.LOGGING_COMMIT_HASH
+    logging_commit_hash = get_current_system().LOGGING_COMMIT_HASH
+    if use_env and logging_commit_hash != "REPLACE_ME":
+        return logging_commit_hash
 
     git_dir = Path(__file__).parent.parent.joinpath(".git")
 
@@ -95,6 +97,34 @@ def get_commit_hash(use_env=True) -> str:
         commit_hash = "unknown-commit"
 
     return commit_hash
+
+
+def get_branch() -> str:
+    def get_branch_commit_hash(branch: str) -> str:
+        response = request(
+            url=f"https://api.github.com/repos/openbb-finance/openbbterminal/branches/{branch}"
+        )
+        return "sha:" + response.json()["commit"]["sha"][:8]
+
+    current_commit_hash = get_commit_hash()
+
+    for branch in ["main", "develop"]:
+        try:
+            if get_branch_commit_hash(branch) == current_commit_hash:
+                return branch
+        except Exception:
+            pass
+
+    git_dir = Path(__file__).parent.parent.joinpath(".git")
+    if WITH_GIT and git_dir.is_dir():
+        try:
+            repo = git.Repo(path=git_dir)
+            branch = repo.active_branch.name
+            return branch
+        except Exception:
+            pass
+
+    return "unknown-branch"
 
 
 class PosthogHandler(logging.Handler):
@@ -175,7 +205,8 @@ class PosthogHandler(logging.Handler):
             "commitHash": self.app_settings.commit_hash,
             "platform": platform(),
             "pythonVersion": python_version(),
-            "terminalVersion": current_system.VERSION,
+            "terminalVersion": get_current_system().VERSION,
+            "branch": get_current_system().LOGGING_BRANCH,
         }
 
         if get_user_uuid() != NO_USER_PLACEHOLDER:
@@ -276,6 +307,7 @@ def setup_logging(
     verbosity: Optional[int] = None,
 ) -> None:
     """Setup Logging"""
+    current_system = get_current_system()
 
     # AppSettings
     commit_hash = get_commit_hash()
@@ -283,9 +315,11 @@ def setup_logging(
     identifier = get_app_id()
     session_id = get_session_id()
     user_id = get_user_uuid()
+    branch = get_branch()
 
     set_system_variable("LOGGING_APP_ID", identifier)
     set_system_variable("LOGGING_COMMIT_HASH", commit_hash)
+    set_system_variable("LOGGING_BRANCH", branch)
 
     # AWSSettings
     aws_access_key_id = current_system.LOGGING_AWS_ACCESS_KEY_ID

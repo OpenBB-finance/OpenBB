@@ -36,6 +36,7 @@ class SystemModel(BaseModel):
     LOGGING_AWS_ACCESS_KEY_ID: str = "REPLACE_ME"
     LOGGING_AWS_SECRET_ACCESS_KEY: str = "REPLACE_ME"
     LOGGING_COMMIT_HASH: str = "REPLACE_ME"
+    LOGGING_BRANCH: str = "REPLACE_ME"
     LOGGING_FREQUENCY: Literal["D", "H", "M", "S"] = "H"
     LOGGING_HANDLERS: List[str] = Field(default_factory=lambda: ["file"])
     LOGGING_ROLLING_CLOCK: bool = False
@@ -65,6 +66,7 @@ class SystemModel(BaseModel):
         if (
             not any([values["TEST_MODE"], values["LOGGING_SUPPRESS"]])
             and values["LOG_COLLECT"]
+            and "posthog" not in values["LOGGING_HANDLERS"]
         ):
             values["LOGGING_HANDLERS"].append("posthog")
 
