@@ -11,10 +11,10 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://hist.databento.com/v0/timeseries.get_range?dataset=XNAS.ITCH&symbols=AAPL&schema=ohlcv-1d&start=2022-08-01&end=2022-12-01&stype_in=native&encoding=csv
+    uri: https://hist.databento.com/v0/timeseries.get_range?dataset=XNAS.ITCH&symbols=AAPL&schema=ohlcv-1d&start=2022-08-01&end=2022-10-01&stype_in=native&encoding=csv
   response:
     body:
-      string: 'ts_event,publisher_id,product_id,open,high,low,close,volume
+      string: 'ts_event,publisher_id,instrument_id,open,high,low,close,volume
 
         1659312000000000000,2,27,162200000000,163590000000,160830000000,161400000000,10045637
 
@@ -107,7 +107,7 @@ interactions:
         '
     headers:
       date:
-      - Mon, 17 Apr 2023 18:16:03 GMT
+      - Thu, 04 May 2023 19:33:41 GMT
       server:
       - uvicorn
       transfer-encoding:
