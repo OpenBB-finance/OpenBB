@@ -42,6 +42,7 @@ class SystemModel(BaseModel):
     LOGGING_VERBOSITY: int = 20
     LOGGING_SUB_APP: str = "terminal"
     LOGGING_SUPPRESS: bool = False
+    LOGGING_SEND_TO_S3: bool = True
     LOG_COLLECT: bool = True
 
     # Personalization section
@@ -59,7 +60,8 @@ class SystemModel(BaseModel):
         return super().__repr__()
 
     @root_validator
-    def add_additional_handlers(cls, values):  # pylint: disable=no-self-argument
+    @classmethod
+    def add_additional_handlers(cls, values):
         if (
             not any([values["TEST_MODE"], values["LOGGING_SUPPRESS"]])
             and values["LOG_COLLECT"]
@@ -68,8 +70,16 @@ class SystemModel(BaseModel):
 
         return values
 
+    @root_validator
+    @classmethod
+    def validate_send_to_s3(cls, values):
+        if "posthog" in values["LOGGING_HANDLERS"] or values["LOG_COLLECT"] is False:
+            values["LOGGING_SEND_TO_S3"] = False
+        return values
+
     @validator("LOGGING_HANDLERS")
-    def validate_logging_handlers(cls, v):  # pylint: disable=no-self-argument
+    @classmethod
+    def validate_logging_handlers(cls, v):
         for value in v:
             if value not in ["stdout", "stderr", "noop", "file", "posthog"]:
                 raise ValueError("Invalid logging handler")
