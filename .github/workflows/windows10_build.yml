@@ -105,13 +105,13 @@ jobs:
       - name: Run Integration Tests
         run: |
           dist\OpenBBTerminal\OpenBBTerminal.exe -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio forex etf stocks/test_stocks_fa.openbb | tee result.txt
-          Select-String "================================ Integration Test Summary ================================" result.txt -Context 0,100 | Select-Object -Last 2000 -Expand Line |  Out-File summary.txt
+          Select-String "================================ Integration Test Summary ================================" result.txt -Context 0,100 | Select-Object -Last 2000 | % { $_.line } |  Out-File summary.txt
           Write-output `n >> summary.txt
 
       - name: Run Integration Tests Coverage Report
         run: |
           dist\OpenBBTerminal\OpenBBTerminal.exe -t --coverage | tee result.txt
-          Select-String "============================== Integration Coverage Summary ==============================" result.txt -Context 0,300 | Select-Object -Last 2000 -Expand Line >> summary.txt
+          Select-String "============================== Integration Coverage Summary ==============================" result.txt -Context 0,300 | Select-Object -Last 2000 | % { $_.line } >> summary.txt
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
