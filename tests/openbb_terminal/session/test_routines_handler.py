@@ -74,9 +74,7 @@ def test_read_routine(mocker, test_user):
         current_user.preferences.USER_ROUTINES_DIRECTORY
         / "hub"
         / "personal"
-        / file_name,
-        encoding="utf-8",
-        newline="\n",
+        / file_name
     )
 
 
@@ -115,9 +113,7 @@ def test_read_routine_exception(mocker, test_user):
     )
     relpath_mock.assert_not_called()
     open_mock.assert_called_with(
-        current_user.preferences.USER_ROUTINES_DIRECTORY / file_name,
-        encoding="utf-8",
-        newline="\n",
+        current_user.preferences.USER_ROUTINES_DIRECTORY / file_name
     )
 
 
@@ -165,8 +161,6 @@ def test_save_routine(mocker, exists: bool, test_user):
             / "personal"
             / file_name,
             "w",
-            encoding="utf-8",
-            newline="\n",
         )
 
     assert exists_mock.call_count == 2
