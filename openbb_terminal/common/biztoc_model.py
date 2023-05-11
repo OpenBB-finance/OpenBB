@@ -18,7 +18,6 @@ os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
 os.environ["SSL_CERT_FILE"] = certifi.where()
 
 
-@check_api_key(["API_BIZTOC_TOKEN"])
 def get_sources() -> pd.DataFrame:
     """Get list of source ids to query for individual news articles via get_news. [Source: BizToc]
 
@@ -54,7 +53,6 @@ def get_sources() -> pd.DataFrame:
     return df
 
 
-@check_api_key(["API_BIZTOC_TOKEN"])
 def get_tags() -> pd.DataFrame:
     """Get list of trending tags to query for individual news articles via get_news. [Source: BizToc]
 
@@ -81,7 +79,6 @@ def get_tags() -> pd.DataFrame:
         df = pd.DataFrame(req.json(), columns=["tag"])
     elif hasattr(req, "status_code") and req.status_code != 200:
         # If data request failed
-        console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
         df = pd.DataFrame()
 
     return df
