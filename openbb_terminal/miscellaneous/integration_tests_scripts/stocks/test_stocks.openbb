@@ -11,6 +11,7 @@ candle
 candle -t --ma 5,10
 candle --raw
 candle --sort AdjClose -r --raw
+candle --ha
 codes
 news -l 3
 news -h
