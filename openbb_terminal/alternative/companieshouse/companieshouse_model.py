@@ -153,6 +153,24 @@ def get_company_info(company_number: str) -> Company:
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
 def get_officers(company_number: str) -> pd.DataFrame:
+    """Gets information on company officers
+
+    Parameters
+    ----------
+    company_number : str
+        The company number.  Use get_search_results() to lookup company numbers.
+
+    Returns
+    -------
+    pd.Dataframe
+        All officers for given company number
+
+    Example
+    -------
+    >>> companies = openbb.alt.companieshouse.get_search_results("AstraZeneca")
+    >>> officer_info = openbb.alt.companieshouse.get_officers("02723534")
+    """
+
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
@@ -183,6 +201,24 @@ def get_officers(company_number: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
 def get_persons_with_significant_control(company_number: str) -> pd.DataFrame:
+    """Gets information on persons with significant control over the company
+
+    Parameters
+    ----------
+    company_number : str
+        The company number.  Use get_search_results() to lookup company numbers.
+
+    Returns
+    -------
+    pd.Dataframe
+        All persons with significant control over given company number
+
+    Example
+    -------
+    >>> companies = openbb.alt.companieshouse.get_search_results("AstraZeneca")
+    >>> signif_control_info = openbb.alt.companieshouse.get_persons_with_significant_control("02723534")
+    """
+
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
@@ -213,6 +249,24 @@ def get_persons_with_significant_control(company_number: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
 def get_filings(company_number: str) -> pd.DataFrame:
+    """Gets information on filings for given company, e.g. accounts, etc
+
+    Parameters
+    ----------
+    company_number : str
+        The company number.  Use get_search_results() to lookup company numbers.
+
+    Returns
+    -------
+    pd.Dataframe
+        All information on all filings for company
+
+    Example
+    -------
+    >>> companies = openbb.alt.companieshouse.get_search_results("AstraZeneca")
+    >>> signif_control_info = openbb.alt.companieshouse.get_filings("02723534")
+    """
+
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
@@ -249,6 +303,38 @@ def get_filings(company_number: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
 def get_filing_document(company_number: str, transactionID: str) -> CompanyDocument:
+    """Download given filing document pdf
+
+    Parameters
+    ----------
+    company_number : str
+        The company number.  Use get_search_results() to lookup company numbers.
+    transactionID : str
+        The filing transaction id. Use get_filings() to get id for each document
+
+    Returns
+    -------
+    self.category: str
+        document category, e.g.confirmation-statement-with-updates, accounts-with-accounts-type-dormant, etc.
+    self.date: str
+        date document filed.
+    self.description: str
+        description of document files.
+    self.paper_filed: str
+        True if documents filed in paper format.
+    self.pages: str
+        Number of pages in document.
+    self.transaction_id: str
+        Document transaction id.
+    self.content: bytes
+        contents of the document.
+
+    Example
+    -------
+    >>> companies = openbb.alt.companieshouse.get_search_results("AstraZeneca")
+    >>> company_doc_info = openbb.alt.companieshouse.get_filing_document("02723534","MzM1NzQ0NzI5NWFkaXF6a2N4")
+    """
+
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
