@@ -745,8 +745,11 @@ class TerminalController(BaseController):
 
                         if matches:
                             for match in matches:
+                                if not match:
+                                    continue
                                 VAR_NAME = "$" + match[1]
-                                VAR_SLICE = match[2][1:-1] if match[2] else ""
+                                if match.group(2):
+                                    VAR_SLICE = match[2][1:-1] if match[2] else ""
 
                                 # Within a list refers to a single element
                                 if VAR_SLICE.isdigit():
@@ -827,7 +830,7 @@ class TerminalController(BaseController):
                 # to be confident that the script has no clear issues.
 
                 within_foreach = False
-                foreach_lines_loop = list()
+                foreach_lines_loop: List[str] = list()
 
                 final_lines = list()
                 for line in lines_with_vars_replaced:
