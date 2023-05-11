@@ -17,6 +17,7 @@ import pandas as pd
 import pytz
 import yfinance as yf
 from pandas.tseries.holiday import USFederalHolidayCalendar
+from pandas_ta import candles
 from requests.exceptions import ReadTimeout
 from scipy import stats
 
@@ -577,6 +578,7 @@ def display_candle(
     source: str = "YahooFinance",
     weekly: bool = False,
     monthly: bool = False,
+    ha: Optional[bool] = False,
     external_axes: bool = False,
     raw: bool = False,
     yscale: str = "linear",
@@ -611,6 +613,8 @@ def display_candle(
         Flag to get weekly data
     monthly: bool
         Flag to get monthly data
+    ha: bool
+        Flag to show Heikin Ashi candles.
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     raw : bool, optional
@@ -671,6 +675,14 @@ def display_candle(
         interval = int((data.index[1] - data.index[0]).seconds / 60)
 
     data.name = f"{asset_type} {symbol}"
+
+    if ha:
+        data_ = heikin_ashi(data)
+        data["Open"] = data_["HA Open"]
+        data["High"] = data_["HA High"]
+        data["Low"] = data_["HA Low"]
+        data["Close"] = data_["HA Close"]
+        data.name = f"{symbol} - Heikin Ashi Candles"
 
     fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
 
@@ -888,7 +900,10 @@ def clean_function(entry: str) -> Union[str, float]:
     return entry
 
 
-def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
+def show_quick_performance(
+    stock_df: pd.DataFrame,
+    ticker: str,
+) -> None:
     """Show quick performance stats of stock prices.
 
     Daily prices expected.
@@ -925,6 +940,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         )
 
     perf_df["Previous Close"] = str(round(closes[-1], 2))
+
     print_rich_table(
         perf_df,
         show_index=False,
@@ -1044,3 +1060,48 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
                 )
         return True
     return False
+
+
+def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
+    """Return OHLC data as Heikin Ashi Candles.
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        DataFrame containing OHLC data.
+
+    Returns
+    -------
+    pd.DataFrame
+        Appended DataFrame with Heikin Ashi candle calculations.
+    """
+
+    check_columns = ["Open", "High", "Low", "Close"]
+
+    data.rename(
+        columns={"open": "Open", "high": "High", "low": "Low", "close": "Close"},
+        inplace=True,
+    )
+
+    for item in check_columns:
+        if item not in data.columns:
+            raise ValueError(
+                "The expected column labels, "
+                f"{check_columns}"
+                ", were not found in DataFrame."
+            )
+
+    ha = candles.ha(
+        data["Open"],
+        data["High"],
+        data["Low"],
+        data["Close"],
+    )
+    ha.columns = [
+        "HA Open",
+        "HA High",
+        "HA Low",
+        "HA Close",
+    ]
+
+    return pd.concat([data, ha], axis=1)
