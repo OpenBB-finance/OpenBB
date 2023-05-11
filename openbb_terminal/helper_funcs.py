@@ -302,7 +302,8 @@ def print_rich_table(
     )
 
     show_index = not isinstance(df.index, pd.RangeIndex) and show_index
-    #turns df[col] of type 'praw.models.reddit.subreddit.Subreddit' into  str
+    # turns non-str that are not timestamp or int into str
+    # eg) praw.models.reddit.subreddit.Subreddit
     for col in df.columns:
         try:
             if isinstance(df[col].iloc[0], int):
