@@ -58,6 +58,7 @@ API_DICT: Dict = {
     "ultima": "ULTIMA",
     "fred": "FRED",
     "news": "NEWSAPI",
+    "biztoc": "BIZTOC",
     "tradier": "TRADIER",
     "cmc": "COINMARKETCAP",
     "finnhub": "FINNHUB",
@@ -682,6 +683,81 @@ def check_news_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("News API key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+def set_biztoc_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set BizToc key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.biztoc(key="example_key")
+    """
+
+    handle_credential("API_BIZTOC_TOKEN", key, persist)
+    return check_biztoc_key(show_output)
+
+
+def check_biztoc_key(show_output: bool = False) -> str:
+    """Check BizToc key
+
+    Parameters
+    ----------
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    if show_output:
+        console.print("Checking status...")
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_BIZTOC_TOKEN == "REPLACE_ME":  # nosec
+        logger.info("BizToc API key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        r = request(
+            "https://biztoc.p.rapidapi.com/pages",
+            headers={
+                "X-RapidAPI-Key": current_user.credentials.API_BIZTOC_TOKEN,
+                "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
+            },
+        )
+        if r.status_code in [401, 403, 404]:
+            logger.warning("BizToc API key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            logger.info("BizToc API key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("BizToc API key defined, test inconclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:

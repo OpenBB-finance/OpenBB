@@ -52,7 +52,7 @@ class OpenBBSDK:
     Attributes:
         `login`: Login and load user info.\n
         `logout`: Logout and clear session.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Access news from either feedparser or biztoc for a given term or from specified sources\n
         `whoami`: Display user info.\n
     """
 
@@ -62,7 +62,7 @@ class OpenBBSDK:
         SDKLogger()
         self.login = lib.sdk_session.login
         self.logout = lib.sdk_session.logout
-        self.news = lib.common_feedparser_model.get_news
+        self.news = lib.common_news_sdk_helper.news
         self.whoami = lib.sdk_session.whoami
         SDKLogger._try_to_login(self)
 
@@ -387,6 +387,7 @@ class OpenBBSDK:
             `av`: Set Alpha Vantage key\n
             `binance`: Set Binance key\n
             `bitquery`: Set Bitquery key\n
+            `biztoc`: Set BizToc key\n
             `cmc`: Set Coinmarketcap key\n
             `coinbase`: Set Coinbase key\n
             `coinglass`: Set Coinglass key.\n
