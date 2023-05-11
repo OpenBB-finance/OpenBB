@@ -1,5 +1,6 @@
 stocks
 search -c United States -s Consumer Cyclical -i Specialty Retail -e USA -l 5
+search -c united_states -m united_states
 load ${ticker=aapl} -i 5
 load ${ticker=aapl} -s 2022-10-01
 quote
@@ -13,6 +14,7 @@ candle --sort AdjClose -r --raw
 candle --ha
 codes
 news -l 3
+news -h
 th
 ..
 options
@@ -43,6 +45,11 @@ forecast
 ..
 res
 ..
+
+# below two submenus are deprecated
+dd
+sia
+
 help
 reset
 exit

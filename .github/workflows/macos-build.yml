@@ -70,7 +70,8 @@ jobs:
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
-        run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
+        run:
+          | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
           echo "Ensuring Keychain with same name does not exist"
           rm -rf /Users/openbb/Library/Keychains/build.keychain-db
           echo "Decoding certificate"
@@ -141,8 +142,14 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb | tee result.txt
-            grep "================================ integration test summary ================================" result.txt -A100 | tail --bytes=2000 > failed_tests.txt
+          extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb | tee result.txt
+          grep "================================ Integration Test Summary ================================" result.txt -A100 | tail --bytes=2000 > summary.txt
+
+      - name: Run Integration Tests Coverage Report
+        run: |
+          extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t --coverage | tee result.txt
+          echo  >> summary.txt
+          sed -n '/Integration Coverage Summary/,$p' result.txt >> summary.txt
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
@@ -150,7 +157,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           initial_comment: "MacOs Build Integration test summary"
           title: "MacOs Build Integration test summary"
-          path: failed_tests.txt
+          path: summary.txt
           channel: ${{ secrets.SLACK_CHANNEL_ID }}
 
       - name: Remove OpenBB Folder
@@ -159,7 +166,7 @@ jobs:
           rm -rf ~/Desktop/OPENBB-exports
           rm -rf extract/
 
-# Job to build the MacOS Intel version of the Terminal===================================
+  # Job to build the MacOS Intel version of the Terminal===================================
   Intel-MacOs-Build:
     name: Intel MacOS Build
     runs-on: [self-hosted, macos, x64]
@@ -216,7 +223,8 @@ jobs:
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
-        run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
+        run:
+          | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
           echo "Ensuring Keychain with same name does not exist"
           rm -rf /Users/openbb/Library/Keychains/build.keychain-db
           echo "Decoding certificate"
@@ -287,8 +295,14 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb | tee result.txt
-            grep "================================ integration test summary ================================" result.txt -A100 | tail --bytes=2000 > failed_tests.txt
+          extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb | tee result.txt
+          grep "================================ Integration Test Summary ================================" result.txt -A100 | tail --bytes=2000 > summary.txt
+          echo  >> summary.txt
+
+      - name: Run Integration Tests Coverage Report
+        run: |
+          extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t --coverage | tee result.txt
+          sed -n '/Integration Coverage Summary/,$p' result.txt >> summary.txt
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
@@ -296,7 +310,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           initial_comment: "MacOs Build Integration test summary"
           title: "Intel MacOs Build Integration test summary"
-          path: failed_tests.txt
+          path: summary.txt
           channel: ${{ secrets.SLACK_CHANNEL_ID }}
 
       - name: Remove OpenBB Folder

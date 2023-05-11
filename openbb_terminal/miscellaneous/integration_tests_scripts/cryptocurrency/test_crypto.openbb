@@ -2,7 +2,7 @@ crypto
 load ${crypto=eth}
 
 # # Find
-# find ${crypto=eth}
+find ${crypto=eth}
 # find ${crypto=eth} --key symbol
 # find ${crypto=eth} --key id
 # find ${crypto_full=ethereum} --key name
@@ -20,12 +20,12 @@ load ${crypto=eth}
 # price ${crypto=eth}
 
 # # Headlines
-# headlines
-# headlines ${crypto=ETH}
+headlines
+headlines ${crypto=ETH}
 
 # # Candle
-# candle
-# candle --log
+candle
+candle --log
 
 # PRT
 # prt --vs ${crypto_vs=btc}
@@ -34,4 +34,26 @@ load ${crypto=eth}
 # Bug where --price doesn't seem to do anything
 # prt --vs ${crypto_vs=btc} --price 1000
 
+dd
+..
+defi
+..
+disc
+..
+forecast
+..
+nft
+..
+onchain
+..
+ov
+..
+qa
+..
+ta
+..
+tools
+..
+help
+reset
 exit

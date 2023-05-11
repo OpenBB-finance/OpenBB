@@ -29,6 +29,11 @@ export default function FilterColumns({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  function clearFilters() {
+    table.resetColumnFilters();
+    setOpen(false);
+  }
+
   return (
     <DropdownMenuPrimitive.Root open={open}>
       {onlyIconTrigger ? (
@@ -76,6 +81,11 @@ export default function FilterColumns({
           ref={ref}
           className="z-50 bg-white/80 dark:bg-grey-900/80 backdrop-filter backdrop-blur flex flex-col gap-4 overflow-auto border-[1.5px] border-grey-700 rounded p-3 max-h-[500px]  text-black dark:text-white"
         >
+          <DropdownMenuPrimitive.Item>
+            <button className="_btn w-full" onClick={clearFilters}>
+              Clear Filters
+            </button>
+          </DropdownMenuPrimitive.Item>
           <DropdownMenuPrimitive.Item>
             <label className="flex items-center gap-2">
               <input

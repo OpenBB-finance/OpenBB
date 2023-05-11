@@ -1,0 +1,70 @@
+crypto
+load ${crypto=eth}
+ta
+
+tv
+
+###### Overlap
+ema
+ema -l 100 -o 10
+hma
+hma -l 100 -o 10
+sma
+sma -l 100 -o 10
+vwap
+wma
+wma -l 100 -o 10
+zlma
+zlma -l 100 -o 10
+
+###### Momentum
+cci
+cci --length 10 --scalar 10
+cg
+cg --length 10
+demark
+demark --min 10
+fisher
+fisher --length 10
+macd
+macd --fast 10 --slow 10 --signal 5
+rsi
+rsi -l 10 -s 10 -d 2
+stoch
+stoch -k 10 -d 10 --slowkperiod 2
+
+###### Trend
+adx
+adx -l 10 -s 10 -d 10
+aroon
+aroon -l 10 -s 10
+
+###### Volatility
+atr
+atr -l 10 -o 1 -m sma
+atr -m ema
+atr -m wma
+atr -m hma
+atr -m zlma
+bbands
+bbands -l 10 -s 0.5 -m ema
+cones
+cones --lower_q 0.3 --upper_q 0.7 --is_crypto --model Parkinson
+donchian
+donchian -u 10 -l 10
+kc
+kc -l 10 -s 10 -m sma -o 1
+
+###### Volume
+ad
+adosc
+adosc --open --fast 10 --slow 10
+obv
+
+###### Custom
+fib
+fib --period 10 --start 2022-01-01 --end 2022-03-03
+
+help
+reset
+exit
