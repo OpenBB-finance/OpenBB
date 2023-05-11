@@ -6,8 +6,7 @@ import os
 import textwrap
 from datetime import datetime
 from typing import Dict, Optional, Union
-
-import finviz
+from finvizfinance.screener.ticker import Ticker
 import pandas as pd
 import praw
 
@@ -182,21 +181,18 @@ def display_spac_community(limit: int = 10, popular: bool = False):
             )
             s_watchlist_tickers = ""
             n_tickers = 0
+            tickers = Ticker()
+            ticker_list = tickers.screener_view()
+            #check against a list of all tickers
             for t_ticker in lt_watchlist_sorted:
-                try:
-                    # If try doesn't trigger exception, it means that this stock exists on finviz
-                    # thus we can print it.
-                    finviz.get_stock(t_ticker[0])
+                if t_ticker[0] in ticker_list:
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except Exception:  # nosec
-                    # console.print(e, "\n")
-                    pass  # noqa
-
             if n_tickers:
                 console.print(
-                    "The following stock tickers have been mentioned more than once across the previous SPACs:"
+                    "The following stock tickers have been mentioned more than once across the previous posts on "
+                    "r/spaccs: "
                 )
                 console.print(s_watchlist_tickers[:-2])
 
