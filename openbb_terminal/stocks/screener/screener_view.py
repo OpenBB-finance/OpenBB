@@ -62,6 +62,7 @@ def display_presets(preset: str):
             with open(
                 path,
                 encoding="utf8",
+                newline="\n",
             ) as f:
                 description = ""
                 for line in f:

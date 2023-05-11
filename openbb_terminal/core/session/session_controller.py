@@ -16,7 +16,7 @@ from openbb_terminal.terminal_helper import bootup
 
 def display_welcome_message():
     """Display welcome message"""
-    with open(PACKAGE_DIRECTORY / "core" / "session" / "banner.txt") as f:
+    with open(PACKAGE_DIRECTORY / "core" / "session" / "banner.txt", newline="\n") as f:
         console.print(f"[menu]{f.read()}[/menu]\n")
         console.print(f"Register : [cmds]{REGISTER_URL}[/cmds]")
         console.print(f"Support  : [cmds]{SUPPORT_URL}[/cmds]")

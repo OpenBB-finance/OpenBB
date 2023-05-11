@@ -1776,7 +1776,7 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             filepath = "fundamental_analysis/key_metrics_explained.txt"
-            with open(filepath) as fp:
+            with open(filepath, newline="\n") as fp:
                 line = fp.readline()
                 while line:
                     console.print(f"{line.strip()}")

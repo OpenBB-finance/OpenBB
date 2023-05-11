@@ -183,7 +183,7 @@ def calculate_time_delta(date: dt.datetime) -> int:
 
 
 def get_eth_addresses_for_cg_coins(file) -> pd.DataFrame:  # pragma: no cover
-    with open(file, encoding="utf8") as f:
+    with open(file, encoding="utf8", newline="\n") as f:
         data = json.load(f)
         df = pd.DataFrame(data)
         df["ethereum"] = df["platforms"].apply(
