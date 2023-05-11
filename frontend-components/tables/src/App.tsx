@@ -11,10 +11,12 @@ import {
 } from "./data/mockup";
 
 declare global {
-  [Exposed=Window, SecureContext]
+  [(Exposed = Window), SecureContext];
   interface Window {
     json_data: any;
     title: string;
+    download_path: string;
+    pywry: any;
   }
 }
 
@@ -88,9 +90,7 @@ function App() {
                 ? "dark"
                 : "light"
             }
-            cmd={
-              data?.command_location ?? ""
-            }
+            cmd={data?.command_location ?? ""}
           />
         )}
       </DndProvider>

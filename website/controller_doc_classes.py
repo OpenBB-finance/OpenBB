@@ -16,6 +16,7 @@ from pandas.tseries.holiday import USFederalHolidayCalendar
 import openbb_terminal
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user  # noqa: F401
 from openbb_terminal.decorators import disable_check_api
 from openbb_terminal.helper_funcs import (
@@ -29,6 +30,8 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.sdk import openbb
 from openbb_terminal.stocks.comparison_analysis import finviz_compare_model
 
+set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 disable_check_api()
 
 

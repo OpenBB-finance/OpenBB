@@ -14,7 +14,7 @@ def news(term: str = "", sources: str = "", tag="", source="") -> pd.DataFrame:
     term : str, optional
         Term to sort for, by default ""
     sources : str, optional
-       News sources to include, by default ""
+        News sources to include, by default ""
     tag : str, optional
         Biztoc only selection for searching by a given tag, by default ""
     source : str, optional
