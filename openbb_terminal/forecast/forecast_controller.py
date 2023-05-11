@@ -1759,6 +1759,13 @@ class ForecastController(BaseController):
             type=str,
             default="xlsx",
         )
+        parser.add_argument(
+            "--sheet-name",
+            help="The name of the sheet to export to when type is XLSX.",
+            dest="sheet_name",
+            type=str,
+            default="",
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--dataset")

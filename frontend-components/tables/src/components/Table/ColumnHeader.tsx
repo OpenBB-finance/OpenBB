@@ -184,18 +184,18 @@ const DraggableColumnHeader: FC<{
         <>
           <div className="font-bold uppercase text-grey-700 dark:text-white tracking-widest flex gap-2 whitespace-nowrap justify-between">
             <div
-              onClick={header.column.getToggleSortingHandler()}
+              onClick={column.getToggleSortingHandler()}
               className={clsx("flex gap-1", {
-                "cursor-pointer select-none": header.column.getCanSort(),
+                "cursor-pointer select-none": column.getCanSort(),
               })}
             >
-              {flexRender(header.column.columnDef.header, header.getContext())}
-              {header.column.getCanSort() && (
+              {flexRender(column.columnDef.header, header.getContext())}
+              {column.getCanSort() && (
                 <div className="flex flex-col gap-0.5 items-center justify-center">
                   <button
                     className={clsx({
-                      "text-[#669DCB]": header.column.getIsSorted() === "asc",
-                      "text-grey-600": header.column.getIsSorted() !== "asc",
+                      "text-[#669DCB]": column.getIsSorted() === "asc",
+                      "text-grey-600": column.getIsSorted() !== "asc",
                     })}
                   >
                     <svg
@@ -249,10 +249,10 @@ const DraggableColumnHeader: FC<{
               </button>
             )}
           </div>
-          {advanced && header.column.getCanFilter() ? (
+          {advanced && column.getCanFilter() ? (
             <div>
               <Filter
-                column={header.column}
+                column={column}
                 table={table}
                 numberOfColumns={columnOrder.length}
               />

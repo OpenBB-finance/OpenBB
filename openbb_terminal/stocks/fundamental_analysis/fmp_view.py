@@ -337,8 +337,6 @@ def display_income_statement(
                 export=bool(export),
             )
 
-            pd.set_option("display.max_colwidth", None)
-
             console.print(income.loc["Final Link"].to_frame().to_string())
             console.print()
             console.print(income.loc["Link"].to_frame().to_string())
@@ -441,8 +439,6 @@ def display_balance_sheet(
                 export=bool(export),
             )
 
-            pd.set_option("display.max_colwidth", None)
-
             console.print(balance.loc["Final Link"].to_frame().to_string())
             console.print()
             console.print(balance.loc["Link"].to_frame().to_string())
@@ -544,8 +540,6 @@ def display_cash_flow(
                 show_index=True,
                 export=bool(export),
             )
-
-            pd.set_option("display.max_colwidth", None)
 
             console.print(cash.loc["Final Link"].to_frame().to_string())
             console.print()

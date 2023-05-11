@@ -1,0 +1,33 @@
+stocks
+gov
+lasttrades
+lasttrades house
+lasttrades senate
+lasttrades congress
+lasttrades -p Josh
+topbuys house
+topbuys senate
+topbuys congress
+topsells house
+topsells senate
+topsells congress
+topsells -l 2 --raw
+lastcontracts
+lastcontracts -l 2 -s
+qtrcontracts
+qtrcontracts -l 2 --raw
+qtrcontracts -l 2 -a downmom
+toplobbying
+toplobbying -l 4 --raw
+load ${ticker=aapl}
+gtrades
+gtrades senate
+gtrades house
+gtrades congress
+contracts
+histcont
+histcont --raw
+lobbying
+help
+reset
+exit
