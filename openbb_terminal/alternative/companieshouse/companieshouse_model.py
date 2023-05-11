@@ -20,21 +20,24 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
 def get_search_results(searchStr: str, limit: int = 20) -> pd.DataFrame:
-    """All scompanies with searchStr in their name.
+    """All companies with searchStr in their name.
 
     Parameters
     ----------
     searchStr : str
-        Postcode
-
+        The search string
     limit : int
         number of rows to return
-
 
     Returns
     -------
     pd.DataFrame
-        All sales with that postcode
+        All comapanies with the search string in their name.
+
+    Example
+    -------
+    >>> from openbb_terminal.sdk import openbb
+    >>> companies = openbb.alt.companieshouse.get_search_results("AstraZeneca")
     """
 
     df = pd.DataFrame()
@@ -70,6 +73,31 @@ def get_search_results(searchStr: str, limit: int = 20) -> pd.DataFrame:
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
 def get_company_info(company_number: str) -> Company:
+    """Gets company info by company number
+
+    Parameters
+    ----------
+    company_number : str
+        The company number.  Use get_search_results() to lookup company numbers.
+
+    Returns
+    -------
+    self.address: str
+        Company address.
+    self.name: str
+        Company name.
+    self.dataAvailable(): bool
+        True if data is available.
+    self.lastAccounts: str
+        Period start and end.
+
+    Example
+    -------
+    >>> companies = openbb.alt.companieshouse.get_search_results("AstraZeneca")
+    >>> company_info = openbb.alt.companieshouse.get_company_info("02723534")
+    >>> name = company_info.name
+    """
+
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
