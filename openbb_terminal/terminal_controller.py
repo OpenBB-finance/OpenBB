@@ -204,7 +204,6 @@ class TerminalController(BaseController):
             mt.add_cmd("update")
         mt.add_cmd("wiki")
         mt.add_cmd("news")
-        mt.add_cmd("news_biztoc")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         if is_auth_enabled():
