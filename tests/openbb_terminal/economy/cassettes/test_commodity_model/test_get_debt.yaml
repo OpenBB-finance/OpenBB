@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
+      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1
     method: GET
     uri: https://en.wikipedia.org/wiki/List_of_countries_by_external_debt
   response:
@@ -857,7 +857,7 @@ interactions:
       accept-ranges:
       - bytes
       age:
-      - '29414'
+      - '37423'
       cache-control:
       - private, s-maxage=0, max-age=0, must-revalidate
       content-encoding:
@@ -883,18 +883,18 @@ interactions:
       server-timing:
       - cache;desc="hit-front", host;desc="cp2027"
       set-cookie:
-      - WMF-Last-Access=10-May-2023;Path=/;HttpOnly;secure;Expires=Sun, 11 Jun 2023
-        12:00:00 GMT
-      - WMF-Last-Access-Global=10-May-2023;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Sun,
-        11 Jun 2023 12:00:00 GMT
-      - WMF-DP=141;Path=/;HttpOnly;secure;Expires=Thu, 11 May 2023 00:00:00 GMT
+      - WMF-Last-Access=11-May-2023;Path=/;HttpOnly;secure;Expires=Mon, 12 Jun 2023
+        00:00:00 GMT
+      - WMF-Last-Access-Global=11-May-2023;Path=/;Domain=.wikipedia.org;HttpOnly;secure;Expires=Mon,
+        12 Jun 2023 00:00:00 GMT
+      - WMF-DP=0a9;Path=/;HttpOnly;secure;Expires=Thu, 11 May 2023 00:00:00 GMT
       - GeoIP=US:TX:Lubbock:33.59:-101.86:v4; Path=/; secure; Domain=.wikipedia.org
       strict-transport-security:
       - max-age=106384710; includeSubDomains; preload
       vary:
       - Accept-Encoding,Cookie,Authorization
       x-cache:
-      - cp2039 hit, cp2027 hit/7
+      - cp2039 hit, cp2027 hit/10
       x-cache-status:
       - hit-front
       x-client-ip:

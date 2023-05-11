@@ -10,6 +10,7 @@ def test_format_large_numbers():
 
 
 @pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_http
 @pytest.mark.record_stdout
 def test_display_debt():
     commodity_view.display_debt()
