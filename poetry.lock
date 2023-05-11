@@ -2160,13 +2160,13 @@ requests = ">=2.22.0"
 
 [[package]]
 name = "finviz"
-version = "1.4.4"
+version = "1.4.6"
 description = "Unofficial API for FinViz.com"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "finviz-1.4.4.tar.gz", hash = "sha256:9772060a070d59e8d1045ffbe826553d15f189fab43074b50bf7a510b5360172"},
+    {file = "finviz-1.4.6.tar.gz", hash = "sha256:2ce364e6fa8b5f7cb588207a5409cda6c3555b1904de9fa650e2241a65bd490b"},
 ]
 
 [package.dependencies]
@@ -6498,25 +6498,25 @@ files = [
 
 [[package]]
 name = "pywry"
-version = "0.5.4"
+version = "0.5.5"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pywry-0.5.4-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:0192294f5b5fa279c759b5c57c7374e91c3d13f3bd752d9e5c5196171cb7be76"},
-    {file = "pywry-0.5.4-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:d88ec387d871a62f817984b90d2b0890628553f408e67239ddcb5d775b2db4f7"},
-    {file = "pywry-0.5.4-cp310-none-win_amd64.whl", hash = "sha256:6174fbb5632e616c315634ad73c876d508783d908ea3dbbaf4f57fa356fc70e1"},
-    {file = "pywry-0.5.4-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:0d231ae87154578bc23e92615bd79c5cbffb16a539e73d8da6f2bff568347099"},
-    {file = "pywry-0.5.4-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:3e9bc602ffe8c60eaa7427a066121d7dd09a843739b592939c58363875af5b6f"},
-    {file = "pywry-0.5.4-cp311-none-win_amd64.whl", hash = "sha256:07e77cabc2be8802c6555b39890e903cf5096407f1ce5632623970271e414345"},
-    {file = "pywry-0.5.4-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:d33dcefe147e5568d24debe1dbcbf068a6b33f3567fadc87b2147503eced72f9"},
-    {file = "pywry-0.5.4-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:e570cf10dde83536e1915d7a38eb1187edfc6ed3e921a90007c865243f7e3c46"},
-    {file = "pywry-0.5.4-cp38-none-win_amd64.whl", hash = "sha256:1a391fa08a0a02cf40b1e07e6f530b6a4debb68798b7b4bff88ea3f4328c7906"},
-    {file = "pywry-0.5.4-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:a6a5874b75a6d57666b4f63f5585f027f73cea924e0d7dd67995f6da02d68aba"},
-    {file = "pywry-0.5.4-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:8f97de26dffd7250f6d049458ce42d7ba4b3239b31b373fb53864a392bab17b2"},
-    {file = "pywry-0.5.4-cp39-none-win_amd64.whl", hash = "sha256:aea8cda4b45d7520d794e8771681ddafd7f13144ae1747d0b2421891852b062c"},
-    {file = "pywry-0.5.4.tar.gz", hash = "sha256:58bf9d1454916ea1a4845b8637c83df57743a16b592c94df5bd9d595238f5b49"},
+    {file = "pywry-0.5.5-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:f04d1d4aa997603f274682468b36c45684adb15a15d55acba2fcd257ab4c1099"},
+    {file = "pywry-0.5.5-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:132f13717ee07be3e46dfa555771483f0b4680ae0e9223df65211edae67de98e"},
+    {file = "pywry-0.5.5-cp310-none-win_amd64.whl", hash = "sha256:f616848417602ff7efe4195ee5f5a90e7a8815a318187c104f4e79b00a5554a5"},
+    {file = "pywry-0.5.5-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:64bfc85c926a27cb694b5638b974d4ac3d9315ceb81ba48c90f4252a22c21869"},
+    {file = "pywry-0.5.5-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:cacf22c675a0c7e701a18c4f7d8323cc563696bbcb0dcc8154e80ba19541abbb"},
+    {file = "pywry-0.5.5-cp311-none-win_amd64.whl", hash = "sha256:448472a0f2549c6c1a56862ff69c552d71e82af51d056dec58ab635da65f1140"},
+    {file = "pywry-0.5.5-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:83da0b5c0c3f6af10ed3b21e5dc469ceae5844f61d40fb9ae8b32db5e8cb7a22"},
+    {file = "pywry-0.5.5-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:4c04d137dde93c58998d6ca0b9343be68fa4f89fb12ec89e0f090b9de8b11072"},
+    {file = "pywry-0.5.5-cp38-none-win_amd64.whl", hash = "sha256:423d4d1e0d62e6d7019d5be517c2ea846b2d3f3ed47970436d8b7ea1c9fcec5d"},
+    {file = "pywry-0.5.5-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:93ddd0a79a1988c588c2fa1bfd7926cdedd5b2d57f6e4ea89d0edb708dacd63c"},
+    {file = "pywry-0.5.5-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:87d9e2f44d6e56d958e458234e41a4eeec496f8f98b3cc1d1c36535ceb71cf27"},
+    {file = "pywry-0.5.5-cp39-none-win_amd64.whl", hash = "sha256:4513b5b9880932fabbf0a4d853d6d030948df3867b944892ebd55c6bb5537153"},
+    {file = "pywry-0.5.5.tar.gz", hash = "sha256:d2ba7d2ca6587917a61b4fc4adb5b707e07e02cc240082e0d4a199e3282400d2"},
 ]
 
 [package.dependencies]
@@ -7989,14 +7989,14 @@ requests = "*"
 
 [[package]]
 name = "streamlit"
-version = "1.21.0"
-description = "The fastest way to build data apps in Python"
+version = "1.22.0"
+description = "A faster way to build and share data apps"
 category = "main"
 optional = false
 python-versions = ">=3.7, !=3.9.7"
 files = [
-    {file = "streamlit-1.21.0-py2.py3-none-any.whl", hash = "sha256:05862598952a9126e16652caa5bc88eeeea7b2773af252e2daccf1c84ceaaef4"},
-    {file = "streamlit-1.21.0.tar.gz", hash = "sha256:c72d9639508679c5e411d1f886d213777759501d01975285c049dc30db463c1a"},
+    {file = "streamlit-1.22.0-py2.py3-none-any.whl", hash = "sha256:520dd9b9e6efb559b5a9a22feadb48b1e6f0340ec83da3514810059fdecd4167"},
+    {file = "streamlit-1.22.0.tar.gz", hash = "sha256:5bef9bf8deef32814d9565c9df48331e6357eb0b90dabc3ec4f53c44fb34fc73"},
 ]
 
 [package.dependencies]
@@ -8008,7 +8008,7 @@ gitpython = "!=3.1.19"
 importlib-metadata = ">=1.4"
 numpy = "*"
 packaging = ">=14.1"
-pandas = ">=0.25,<2"
+pandas = ">=0.25,<3"
 pillow = ">=6.2.0"
 protobuf = ">=3.12,<4"
 pyarrow = ">=4.0"
@@ -8017,6 +8017,7 @@ pympler = ">=0.9"
 python-dateutil = "*"
 requests = ">=2.4"
 rich = ">=10.11.0"
+tenacity = ">=8.0.0,<9"
 toml = "*"
 tornado = ">=6.0.3"
 typing-extensions = ">=3.10.0.0"
@@ -8082,18 +8083,15 @@ dev = ["pip-tools", "pytest", "rpy2"]
 
 [[package]]
 name = "tenacity"
-version = "7.0.0"
+version = "8.2.2"
 description = "Retry code until it succeeds"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 files = [
-    {file = "tenacity-7.0.0-py2.py3-none-any.whl", hash = "sha256:a0ce48587271515db7d3a5e700df9ae69cce98c4b57c23a4886da15243603dd8"},
-    {file = "tenacity-7.0.0.tar.gz", hash = "sha256:5bd16ef5d3b985647fe28dfa6f695d343aa26479a04e8792b9d3c8f49e361ae1"},
+    {file = "tenacity-8.2.2-py3-none-any.whl", hash = "sha256:2f277afb21b851637e8f52e6a613ff08734c347dc19ade928e519d7d2d8569b0"},
+    {file = "tenacity-8.2.2.tar.gz", hash = "sha256:43af037822bd0029025877f3b2d97cc4d7bb0c2991000a3d59d71517c5c969e0"},
 ]
-
-[package.dependencies]
-six = ">=1.9.0"
 
 [package.extras]
 doc = ["reno", "sphinx", "tornado (>=4.5)"]
@@ -9691,4 +9689,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "285a6777a1f15a89712e6e48d45d0280caf90c868d2753edf9f0cfda68431e3f"
+content-hash = "841e7a9ecf473175234c5f05db6f7e7d61d3e3b7982a37e7c90158fa26dd8861"
