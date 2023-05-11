@@ -1,9 +1,11 @@
 import { flexRender } from "@tanstack/react-table";
 import clsx from "clsx";
 import { FC } from "react";
-import { includesDateNames } from "../../utils/utils";
+import { formatNumberMagnitude, includesDateNames } from "../../utils/utils";
 import { useDrag, useDrop } from "react-dnd";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+
+export const magnitudeRegex = new RegExp("^([0-9]+)(\\s)([kKmMbBtT])$");
 
 function Filter({
   column,
@@ -16,33 +18,41 @@ function Filter({
 }) {
   const values = table
     .getPreFilteredRowModel()
-    .flatRows.map((row) => row.getValue(column.id));
+    .flatRows.map((row: { getValue: (arg0: any) => any }) =>
+      row.getValue(column.id)
+    );
 
   const areAllValuesString = values.every(
-    (value) => typeof value === "string" || value === null
+    (value: null) => typeof value === "string" || value === null
   );
+
   const areAllValuesNumber = values.every(
-    (value) => typeof value === "number" || value === null
+    (value: null | number | string) =>
+      typeof value === "number" ||
+      magnitudeRegex.test(value as string) ||
+      value === null ||
+      value === ""
   );
 
   const valuesContainStringWithSpaces = values.some(
-    (value) => typeof value === "string" && value.includes(" ")
+    (value: string | string[]) =>
+      typeof value === "string" && value.includes(" ")
   );
 
   const columnFilterValue = column.getFilterValue();
 
-  const isProbablyDate = values.every((value) => {
+  const isProbablyDate = values.every((value: string) => {
     if (typeof value !== "string") return false;
-    const only_numbers = value.replace(/[^0-9]/g, "");
+    const only_numbers = value?.replace(/[^0-9]/g, "").trim();
     return (
-      only_numbers.length >= 4 &&
+      only_numbers?.length >= 4 &&
       (includesDateNames(column.id) ||
         (column.id.toLowerCase() === "index" && !valuesContainStringWithSpaces))
     );
   });
 
   if (isProbablyDate) {
-    function getTime(value) {
+    function getTime(value: string | number | Date) {
       if (!value) return null;
       const date = new Date(value);
       const year = date.getFullYear();
@@ -254,7 +264,7 @@ const DraggableColumnHeader: FC<{
               <Filter
                 column={column}
                 table={table}
-                numberOfColumns={columnOrder.length}
+                numberOfColumns={columnOrder?.length ?? 0}
               />
             </div>
           ) : null}

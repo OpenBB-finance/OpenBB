@@ -24,8 +24,8 @@ def main():
         "server.enableCORS": False,
         "server.enableXsrfProtection": False,
         "browser.serverAddress": "localhost",
-        "theme.font": "Fira Code, monospace",
         "theme.base": "dark",
+        "browser.gatherUsageStats": False,
     }
 
     streamlit.web.bootstrap.load_config_options(flag_options=flag_options)

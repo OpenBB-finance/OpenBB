@@ -8,8 +8,11 @@ from typing import Any, Dict, List, Optional, TextIO
 
 from openbb_terminal.core.sdk.sdk_helpers import get_sdk_imports_text
 from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.rich_config import console
 
+set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 REPO_ROOT = Path(__file__).parent.joinpath("openbb_terminal").resolve()
 
 sub_names = {

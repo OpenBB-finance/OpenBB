@@ -661,8 +661,9 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = False) -> pd.Dat
     for row, dt_type in date_rows.items():
         if row in data.index:
             data.loc[row] = pd.to_datetime(data.loc[row], format=dt_type)
-
-    data = data.applymap(lambda x: lambda_long_number_format(x))
+    # we dont want to format this going to pywry window
+    if not get_current_user().preferences.USE_INTERACTIVE_DF:
+        data = data.applymap(lambda x: lambda_long_number_format(x))
     clean_df_index(data)
     data.columns.name = "Fiscal Date Ending"
     data = data.rename(

@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
-import atexit
 import json
 import logging
 import re
@@ -38,6 +37,7 @@ from openbb_terminal.core.log.generation.settings import (
 )
 from openbb_terminal.core.log.generation.user_logger import (
     NO_USER_PLACEHOLDER,
+    get_current_user,
     get_user_uuid,
 )
 from openbb_terminal.core.session.current_system import (
@@ -104,7 +104,6 @@ class PosthogHandler(logging.Handler):
         self.settings = settings
         self.app_settings = settings.app_settings
         self.logged_in = False
-        atexit.register(openbb_posthog.shutdown)
 
     def emit(self, record: logging.LogRecord):
         try:
@@ -114,7 +113,7 @@ class PosthogHandler(logging.Handler):
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict"""
-        log_regex = r"(KEYS|PREFERENCES|SYSTEM|CMD|QUEUE): (.*)"
+        log_regex = r"(STARTUP|CMD): (.*)"
         log_dict: Dict[str, Any] = {}
 
         for log in re.findall(log_regex, log_info):
@@ -140,15 +139,23 @@ class PosthogHandler(logging.Handler):
 
         if log_dict := self.log_to_dict(log_info=log_line):
             event_name = f"log_{list(log_dict.keys())[0].lower()}"
+            log_dict = log_dict.get("STARTUP", log_dict)
 
             log_extra = {**log_extra, **log_dict}
             log_extra.pop("message", None)
 
-        if re.match(r"^(START|END|INPUT:)", log_line):
+        if re.match(r"^(QUEUE|START|END|INPUT:)", log_line) and not log_dict:
             return
 
-        if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
+        if (
+            not self.logged_in
+            and get_user_uuid() != NO_USER_PLACEHOLDER
+            and get_current_user().profile.remember
+        ):
             self.logged_in = True
+            openbb_posthog.identify(
+                get_user_uuid(), {"email": get_current_user().profile.email}
+            )
             openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
 
         openbb_posthog.capture(

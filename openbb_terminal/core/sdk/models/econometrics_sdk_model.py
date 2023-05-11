@@ -22,8 +22,8 @@ class EconometricsRoot(Category):
         `dwat_chart`: Show Durbin-Watson autocorrelation tests\n
         `fdols`: First differencing is an alternative to using fixed effects when there might be correlation.\n
         `fe`: When effects are correlated with the regressors the RE and BE estimators are not consistent.\n
-        `garch`: Calculates annualized volatility forecasts based on GARCH.\n
-        `garch_chart`: Plots the annualized volatility forecasts based on GARCH\n
+        `garch`: Calculates volatility forecasts based on GARCH.\n
+        `garch_chart`: Plots the volatility forecasts based on GARCH\n
         `get_regression_data`: This function creates a DataFrame with the required regression data as\n
         `granger`: Calculate granger tests\n
         `granger_chart`: Show granger tests\n
