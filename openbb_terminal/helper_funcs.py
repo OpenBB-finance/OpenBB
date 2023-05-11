@@ -299,12 +299,15 @@ def print_rich_table(
     )
 
     show_index = not isinstance(df.index, pd.RangeIndex) and show_index
-
+    #turns df[col] of type 'praw.models.reddit.subreddit.Subreddit' into  str
     for col in df.columns:
         try:
-            if not isinstance(df[col].iloc[0], pd.Timestamp):
+            if isinstance(df[col].iloc[0], int):
                 df[col] = pd.to_numeric(df[col])
-        except (ValueError, TypeError):
+            elif not isinstance(df[col].iloc[0], pd.Timestamp):
+                df[col] = df[col].astype(str)
+
+        except ValueError:
             pass
 
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
