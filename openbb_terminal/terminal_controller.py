@@ -745,11 +745,8 @@ class TerminalController(BaseController):
 
                         if matches:
                             for match in matches:
-                                if not match:
-                                    continue
                                 VAR_NAME = "$" + match[1]
-                                if match.group(2):
-                                    VAR_SLICE = match[2][1:-1] if match[2] else ""
+                                VAR_SLICE = match[2][1:-1] if match[2] else ""
 
                                 # Within a list refers to a single element
                                 if VAR_SLICE.isdigit():
