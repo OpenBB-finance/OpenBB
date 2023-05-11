@@ -12,7 +12,6 @@ def test_format_number():
 
 
 @pytest.mark.vcr
-@pytest.mark.record_http
 def test_get_debt(recorder):
     df = commodity_model.get_debt()
     recorder.capture(df)
