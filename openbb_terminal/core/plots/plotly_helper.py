@@ -78,6 +78,12 @@ class TerminalStyle:
 
     line_width: float = 1.5
 
+    def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
+        """Create a singleton."""
+        if not hasattr(cls, "instance"):
+            cls.instance = super().__new__(cls)  # pylint: disable=E1120
+        return cls.instance
+
     def __init__(
         self,
         plt_style: Optional[str] = "",
@@ -247,8 +253,9 @@ class TerminalStyle:
         list
             List of colors e.g. ["#00ACFF", "#FF0000"]
         """
-        self.apply_style()
-        colors = self.plotly_template.get("layout", {}).get("colorway", PLT_COLORWAY)
+        colors = (
+            self.plotly_template.get("layout", {}).get("colorway", PLT_COLORWAY).copy()
+        )
         if reverse:
             colors.reverse()
         return colors
@@ -1550,9 +1557,9 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=90, t=40, pad=0)
+            dict(l=80, r=60, b=80, t=40, pad=0)
             if not self._has_secondary_y or not self.has_subplots
-            else dict(l=60, r=50, b=95, t=40, pad=0)
+            else dict(l=60, r=50, b=85, t=40, pad=0)
         )
 
         # We adjust margins
