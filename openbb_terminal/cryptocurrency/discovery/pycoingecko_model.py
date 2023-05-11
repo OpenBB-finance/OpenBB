@@ -108,7 +108,7 @@ def read_file_data(file_name: str) -> dict:
 
     par_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     path = os.path.join(par_dir, "data", file_name)
-    with open(path, encoding="utf8", newline="\n") as f:
+    with open(path, encoding="utf8") as f:
         data = json.load(f)
     return data
 

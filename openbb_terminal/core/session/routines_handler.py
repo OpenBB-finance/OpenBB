@@ -100,7 +100,7 @@ def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]
                 if file_name in files
                 else folder / file_name
             )
-        with open(file_path, encoding="utf-8", newline="\n") as f:
+        with open(file_path) as f:
             routine = "".join(f.readlines())
         return routine
     except Exception:
@@ -155,7 +155,7 @@ def save_routine(
         file_path = user_folder / file_name
         if os.path.exists(file_path) and not force:
             return "File already exists"
-        with open(file_path, "w", encoding="utf-8", newline="\n") as f:
+        with open(file_path, "w") as f:
             f.write(routine[0])
         return user_folder / file_name
     except Exception:

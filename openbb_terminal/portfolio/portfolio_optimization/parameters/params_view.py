@@ -85,7 +85,7 @@ def save_file(path: str, params: dict) -> Path:
     for key, value in params.items():
         config_parser.set("OPENBB", key, value)
 
-    with open(filepath, "w", newline="\n") as configfile:
+    with open(filepath, "w") as configfile:
         config_parser.write(configfile)
 
     return filepath

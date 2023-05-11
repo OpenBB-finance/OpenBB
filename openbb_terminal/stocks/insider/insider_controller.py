@@ -193,7 +193,6 @@ class InsiderController(StockBaseController):
                     with open(
                         path,
                         encoding="utf8",
-                        newline="\n",
                     ) as f:
                         description = ""
                         for line in f:
