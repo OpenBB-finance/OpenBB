@@ -43,7 +43,7 @@ def test_app_settings():
 def test_log_settings(tmp_path):
     directory = tmp_path
     frequency = "MOCK_FREQUENCY"
-    handler_list = "MOCK_HANDLER_LIST"
+    handler_list = ["MOCK_HANDLER_LIST"]
     rolling_clock = "MOCK_ROLLING_CLOCK"
     verbosity = 20
 
@@ -65,7 +65,7 @@ def test_log_settings(tmp_path):
 def test_settings(tmp_path):
     directory = tmp_path
     frequency = "MOCK_FREQUENCY"
-    handler_list = "MOCK_HANDLER_LIST"
+    handler_list = ["MOCK_HANDLER_LIST"]
     rolling_clock = "MOCK_ROLLING_CLOCK"
     verbosity = 20
     log_settings = LogSettings(
