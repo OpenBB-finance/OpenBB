@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(reddit_requirements)
 def print_and_record_reddit_post(
-        submissions_dict: Dict, submission: praw.models.reddit.submission.Submission
+    submissions_dict: Dict, submission: praw.models.reddit.submission.Submission
 ):
     """Print reddit submission.
 
