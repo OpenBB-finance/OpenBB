@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(reddit_requirements)
 def print_and_record_reddit_post(
-    submissions_dict: Dict, submission: praw.models.reddit.submission.Submission
+        submissions_dict: Dict, submission: praw.models.reddit.submission.Submission
 ):
     """Print reddit submission.
 
@@ -117,11 +117,11 @@ def print_reddit_post(sub: tuple):
 @log_start_end(log=logger)
 @check_api_key(reddit_requirements)
 def display_popular_tickers(
-    limit: int = 10,
-    post_limit: int = 50,
-    subreddits: str = "",
-    export: str = "",
-    sheet_name: Optional[str] = None,
+        limit: int = 10,
+        post_limit: int = 50,
+        subreddits: str = "",
+        export: str = "",
+        sheet_name: Optional[str] = None,
 ):
     """Print table showing latest popular tickers. [Source: Reddit].
 
@@ -183,7 +183,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
             n_tickers = 0
             tickers = Ticker()
             ticker_list = tickers.screener_view()
-            #check against a list of all tickers
+            # validate against a list of all tickers
             for t_ticker in lt_watchlist_sorted:
                 if t_ticker[0] in ticker_list:
                     if int(t_ticker[1]) > 1:
@@ -219,7 +219,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
 @log_start_end(log=logger)
 @check_api_key(reddit_requirements)
 def display_due_diligence(
-    limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
+        limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
 ):
     """Print Reddit due diligence data for a given ticker.
 
@@ -244,17 +244,17 @@ def display_due_diligence(
 @log_start_end(log=logger)
 @check_api_key(reddit_requirements)
 def display_redditsent(
-    symbol: str,
-    sortby: str = "relevance",
-    limit: int = 100,
-    graphic: bool = False,
-    time_frame: str = "week",
-    full_search: bool = True,
-    subreddits: str = "all",
-    display: bool = False,
-    export: str = "",
-    sheet_name: Optional[str] = None,
-    external_axes: bool = False,
+        symbol: str,
+        sortby: str = "relevance",
+        limit: int = 100,
+        graphic: bool = False,
+        time_frame: str = "week",
+        full_search: bool = True,
+        subreddits: str = "all",
+        display: bool = False,
+        export: str = "",
+        sheet_name: Optional[str] = None,
+        external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plot Reddit sentiment about a search term. Prints table showing if display is True.
 
