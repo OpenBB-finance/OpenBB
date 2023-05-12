@@ -1,9 +1,11 @@
 import { flexRender } from "@tanstack/react-table";
 import clsx from "clsx";
 import { FC } from "react";
-import { includesDateNames } from "../../utils/utils";
+import { formatNumberMagnitude, includesDateNames } from "../../utils/utils";
 import { useDrag, useDrop } from "react-dnd";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+
+export const magnitudeRegex = new RegExp("^([0-9]+)(\\s)([kKmMbBtT])$");
 
 function Filter({
   column,
@@ -16,33 +18,41 @@ function Filter({
 }) {
   const values = table
     .getPreFilteredRowModel()
-    .flatRows.map((row) => row.getValue(column.id));
+    .flatRows.map((row: { getValue: (arg0: any) => any }) =>
+      row.getValue(column.id)
+    );
 
   const areAllValuesString = values.every(
-    (value) => typeof value === "string" || value === null
+    (value: null) => typeof value === "string" || value === null
   );
+
   const areAllValuesNumber = values.every(
-    (value) => typeof value === "number" || value === null
+    (value: null | number | string) =>
+      typeof value === "number" ||
+      magnitudeRegex.test(value as string) ||
+      value === null ||
+      value === ""
   );
 
   const valuesContainStringWithSpaces = values.some(
-    (value) => typeof value === "string" && value.includes(" ")
+    (value: string | string[]) =>
+      typeof value === "string" && value.includes(" ")
   );
 
   const columnFilterValue = column.getFilterValue();
 
-  const isProbablyDate = values.every((value) => {
+  const isProbablyDate = values.every((value: string) => {
     if (typeof value !== "string") return false;
-    const only_numbers = value.replace(/[^0-9]/g, "");
+    const only_numbers = value?.replace(/[^0-9]/g, "").trim();
     return (
-      only_numbers.length >= 4 &&
+      only_numbers?.length >= 4 &&
       (includesDateNames(column.id) ||
         (column.id.toLowerCase() === "index" && !valuesContainStringWithSpaces))
     );
   });
 
   if (isProbablyDate) {
-    function getTime(value) {
+    function getTime(value: string | number | Date) {
       if (!value) return null;
       const date = new Date(value);
       const year = date.getFullYear();
@@ -184,18 +194,18 @@ const DraggableColumnHeader: FC<{
         <>
           <div className="font-bold uppercase text-grey-700 dark:text-white tracking-widest flex gap-2 whitespace-nowrap justify-between">
             <div
-              onClick={header.column.getToggleSortingHandler()}
+              onClick={column.getToggleSortingHandler()}
               className={clsx("flex gap-1", {
-                "cursor-pointer select-none": header.column.getCanSort(),
+                "cursor-pointer select-none": column.getCanSort(),
               })}
             >
-              {flexRender(header.column.columnDef.header, header.getContext())}
-              {header.column.getCanSort() && (
+              {flexRender(column.columnDef.header, header.getContext())}
+              {column.getCanSort() && (
                 <div className="flex flex-col gap-0.5 items-center justify-center">
                   <button
                     className={clsx({
-                      "text-[#669DCB]": header.column.getIsSorted() === "asc",
-                      "text-grey-600": header.column.getIsSorted() !== "asc",
+                      "text-[#669DCB]": column.getIsSorted() === "asc",
+                      "text-grey-600": column.getIsSorted() !== "asc",
                     })}
                   >
                     <svg
@@ -249,12 +259,12 @@ const DraggableColumnHeader: FC<{
               </button>
             )}
           </div>
-          {advanced && header.column.getCanFilter() ? (
+          {advanced && column.getCanFilter() ? (
             <div>
               <Filter
-                column={header.column}
+                column={column}
                 table={table}
-                numberOfColumns={columnOrder.length}
+                numberOfColumns={columnOrder?.length ?? 0}
               />
             </div>
           ) : null}

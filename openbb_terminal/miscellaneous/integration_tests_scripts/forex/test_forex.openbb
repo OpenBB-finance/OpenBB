@@ -1,0 +1,24 @@
+forex
+load EURUSD --source YahooFinance
+load EURUSD --source Polygon
+load EURUSD --source AlphaVantage
+load ${currency=EUR}${currency_vs=USD}
+load -t ${currency=EUR}${currency_vs=USD} -r d -i 1day -s 2000-01-01
+load -t ${currency=EUR}${currency_vs=USD} -r i -i 30min
+fwd
+quote
+quote --source YahooFinance
+quote --source AlphaVantage
+candle --sort open -r --raw --limit 10
+candle -t
+candle --ma 14 --log
+help
+oanda
+qa
+..
+ta
+..
+forecast
+..
+reset
+exit

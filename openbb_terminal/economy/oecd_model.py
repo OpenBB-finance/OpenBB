@@ -550,7 +550,7 @@ def get_gdp(
         except KeyError:
             console.print(f"No data available for {country}.")
 
-    result.index = pd.to_datetime(result.index).year
+    result.index = pd.to_datetime(result.index, format="%Y")
     result.sort_index(inplace=True)
 
     return result
@@ -740,8 +740,9 @@ def get_gdp_forecast(
         result.index = (
             pd.PeriodIndex(result.index, freq="Q").to_timestamp().strftime("%Y-%m")
         )
+        result.index = pd.to_datetime(result.index, format="%Y-%m")
     else:
-        result.index = pd.to_datetime(result.index).year
+        result.index = pd.to_datetime(result.index, format="%Y")
 
     result.sort_index(inplace=True)
 
@@ -811,7 +812,7 @@ def get_debt(
         except KeyError:
             console.print(f"No data available for {country}.")
 
-    result.index = pd.to_datetime(result.index).year
+    result.index = pd.to_datetime(result.index, format="%Y")
     result.sort_index(inplace=True)
 
     return result
@@ -919,8 +920,9 @@ def get_cpi(
 
     if frequency in ["M", "Q"]:
         result.index = pd.to_datetime(result.index).strftime("%Y-%m")
+        result.index = pd.to_datetime(result.index, format="%Y-%m")
     else:
-        result.index = pd.to_datetime(result.index).year
+        result.index = pd.to_datetime(result.index, format="%Y")
 
     result.sort_index(inplace=True)
 
@@ -990,7 +992,7 @@ def get_balance(
         except KeyError:
             console.print(f"No data available for {country}.")
 
-    result.index = pd.to_datetime(result.index).year
+    result.index = pd.to_datetime(result.index, format="%Y")
     result.sort_index(inplace=True)
 
     return result
@@ -1073,7 +1075,7 @@ def get_revenue(
         except KeyError:
             console.print(f"No data available for {country}.")
 
-    result.index = pd.to_datetime(result.index).year
+    result.index = pd.to_datetime(result.index, format="%Y")
     result.sort_index(inplace=True)
 
     return result
@@ -1188,7 +1190,7 @@ def get_spending(
         except KeyError:
             console.print(f"No data available for {country}.")
 
-    result.index = pd.to_datetime(result.index).year
+    result.index = pd.to_datetime(result.index, format="%Y")
     result.sort_index(inplace=True)
 
     return result
@@ -1260,7 +1262,7 @@ def get_trust(
         except KeyError:
             console.print(f"No data available for {country}.")
 
-    result.index = pd.to_datetime(result.index).year
+    result.index = pd.to_datetime(result.index, format="%Y")
     result.sort_index(inplace=True)
 
     return result

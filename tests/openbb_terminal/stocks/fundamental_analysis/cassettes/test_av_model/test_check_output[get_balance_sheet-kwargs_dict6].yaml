@@ -23,7 +23,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 793ba65f4d52c2c0-VIE
+      - 7c557dd31b524798-DFW
       Connection:
       - keep-alive
       Content-Encoding:
@@ -33,13 +33,11 @@ interactions:
       Cross-Origin-Opener-Policy:
       - same-origin
       Date:
-      - Fri, 03 Feb 2023 13:52:56 GMT
+      - Wed, 10 May 2023 22:06:49 GMT
       Referrer-Policy:
       - same-origin
       Server:
       - cloudflare
-      Server-Timing:
-      - cf-q-config;dur=9.0000003183377e-06
       Transfer-Encoding:
       - chunked
       Vary:

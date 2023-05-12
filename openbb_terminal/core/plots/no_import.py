@@ -84,6 +84,9 @@ class DummyBackend:
     def start(self, debug: bool = False):  # pylint: disable=W0613
         pass
 
+    def send_outgoing(self, outgoing: dict):
+        pass
+
     async def check_backend(self):
         """Dummy check backend method to avoid errors and revert to browser."""
         raise Exception
