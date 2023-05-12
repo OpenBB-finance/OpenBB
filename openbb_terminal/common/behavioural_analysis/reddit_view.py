@@ -244,17 +244,17 @@ def display_due_diligence(
 @log_start_end(log=logger)
 @check_api_key(reddit_requirements)
 def display_redditsent(
-        symbol: str,
-        sortby: str = "relevance",
-        limit: int = 100,
-        graphic: bool = False,
-        time_frame: str = "week",
-        full_search: bool = True,
-        subreddits: str = "all",
-        display: bool = False,
-        export: str = "",
-        sheet_name: Optional[str] = None,
-        external_axes: bool = False,
+    symbol: str,
+    sortby: str = "relevance",
+    limit: int = 100,
+    graphic: bool = False,
+    time_frame: str = "week",
+    full_search: bool = True,
+    subreddits: str = "all",
+    display: bool = False,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plot Reddit sentiment about a search term. Prints table showing if display is True.
 
