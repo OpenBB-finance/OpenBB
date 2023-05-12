@@ -53,21 +53,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
         return data
 
     data = response.json()["ticker"]
-    data = pd.Series(data)[
-        [
-            "time",
-            "lastPrice",
-            "previousClose",
-            "open",
-            "high",
-            "low",
-            "vwap",
-            "netChange",
-            "netChangePercentage",
-            "fiftyTwoWeekHigh",
-            "fiftyTwoWeekLow",
-        ]
-    ].rename(f"{symbol}")
+    data = pd.Series(data).rename(f"{symbol}")
 
     return data
 
@@ -146,7 +132,9 @@ class Options:
             return self
         self.symbol = symbol
 
-        QUOTES_URL = "https://www.m-x.ca/en/trading/data/quotes?symbol=" f"{self.symbol}" "*"
+        QUOTES_URL = (
+            "https://www.m-x.ca/en/trading/data/quotes?symbol=" f"{self.symbol}" "*"
+        )
 
         cols = [
             "expiration",
@@ -169,7 +157,9 @@ class Options:
 
         expirations = expirations.str.strip("(Weekly)")
 
-        self.expirations = list(pd.DatetimeIndex(expirations.unique()).astype(str).sort_values())
+        self.expirations = list(
+            pd.DatetimeIndex(expirations.unique()).astype(str).sort_values()
+        )
 
         strikes = (data["Unnamed: 7_level_0"].dropna().sort_values("Strike")).rename(
             columns={"Strike": "strike"}
@@ -200,11 +190,13 @@ class Options:
 
         self.chains = chains.reset_index()
 
-        self.underlying_name = self.SYMBOLS.loc[self.symbol]["Name of Underlying Instrument"]
+        self.underlying_name = self.SYMBOLS.loc[self.symbol][
+            "Name of Underlying Instrument"
+        ]
 
         try:
             self.underlying_price = get_underlying_price(self.symbol)
-            self.last_price = self.underlying_price["lastPrice"]
+            self.last_price = self.underlying_price["Last Price"]
         except TypeError:
             self.last_price = 0
             self.underlying_price = 0
@@ -337,13 +329,15 @@ class Options:
 
         self.strikes = list(data["strike"].iloc[1:].unique())
 
-        data["expiration"] = pd.to_datetime(data["expiration"]).astype(str)
-        data["date"] = pd.to_datetime(data["date"]).astype(str)
+        data["expiration"] = pd.to_datetime(data["expiration"], format="%Y-%m-%d")
+        data["date"] = pd.to_datetime(data["date"], format="%Y-%m-%d")
         data["impliedVolatility"] = 0.01 * data["impliedVolatility"]
         data = data.set_index(["expiration", "strike", "optionType"])
         data = data.sort_index()
 
-        self.underlying_name = self.SYMBOLS.loc[self.symbol]["Name of Underlying Instrument"]
+        self.underlying_name = self.SYMBOLS.loc[self.symbol][
+            "Name of Underlying Instrument"
+        ]
 
         self.chains = data.reset_index()
 
@@ -365,6 +359,7 @@ class Options:
         self.chains = self.chains.iloc[:-1]
 
         return self
+
 
 def load_options(symbol: str, date: Optional[str] = "") -> object:
     """Loads options data from TMX."""

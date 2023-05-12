@@ -300,7 +300,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
         Last price
     """
     ticker = yf.Ticker(symbol).fast_info
-    df = pd.Series(dtype = object)
+    df = pd.Series(dtype=object)
     df["lastPrice"] = round(ticker["lastPrice"], 2)
     df["previousClose"] = round(ticker["previousClose"], 2)
     df["open"] = round(ticker["open"], 2)
@@ -313,33 +313,36 @@ def get_underlying_price(symbol: str) -> pd.Series:
 
     return df.rename(f"{symbol}")
 
+
 class Options:
     def __init__(self) -> None:
         self.symbol: str = ""
         self.chains = pd.DataFrame()
-        self.expirations:list = []
+        self.expirations: list = []
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = ""
-        self.underlying_price = pd.Series(dtype = object)
+        self.underlying_price = pd.Series(dtype=object)
 
     def get_quotes(self, symbol: str) -> object:
-
         self.symbol = symbol.upper()
-        self.expirations:list = []
+        self.expirations: list = []
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = self.symbol
-        self.underlying_price = pd.Series(dtype = object)
+        self.underlying_price = pd.Series(dtype=object)
         self.chains = get_full_option_chain(self.symbol)
 
         if not self.chains.empty:
             self.expirations = option_expirations(self.symbol)
-            self.strikes = pd.Series(self.chains["strike"]).sort_values().unique().tolist()
+            self.strikes = (
+                pd.Series(self.chains["strike"]).sort_values().unique().tolist()
+            )
             self.underlying_price = get_underlying_price(self.symbol)
             self.last_price = self.underlying_price["lastPrice"]
 
         return self
+
 
 def load_options(symbol: str) -> object:
     """Loads options data from Nasdaq."""

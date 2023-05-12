@@ -318,13 +318,15 @@ def get_greeks(
     return df
 
 
-def load_options(symbol: str, source: str = "YahooFinance", date: Optional[str] = "") -> object:
+def load_options(
+    symbol: str, source: str = "YahooFinance", date: Optional[str] = ""
+) -> object:
     """Loads options data from the list of sources."""
 
     sources = ["YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 
     if source not in sources:
-        print("Invalid choice. Choose from: ", list(sources), sep = None)
+        print("Invalid choice. Choose from: ", list(sources), sep=None)
         return
     if source == "Nasdaq":
         return nasdaq_model.load_options(symbol)
@@ -334,4 +336,7 @@ def load_options(symbol: str, source: str = "YahooFinance", date: Optional[str] 
         if date != "":
             return tmx_model.load_options(symbol, date)
         return tmx_model.load_options(symbol)
-
+    if source == "Intrinio":
+        if date != "":
+            return intrinio_model.load_options(symbol, date)
+        return intrinio_model.load_options(symbol)

@@ -198,7 +198,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
     float
         Last price
     """
-    df = pd.Series(dtype = object)
+    df = pd.Series(dtype=object)
     for asset in ["stocks", "index", "etf"]:
         url = f"https://api.nasdaq.com/api/quote/{symbol}/info?assetclass={asset}"
         response_json = request(
@@ -260,30 +260,32 @@ class Options:
     def __init__(self) -> None:
         self.symbol: str = ""
         self.chains = pd.DataFrame()
-        self.expirations:list = []
+        self.expirations: list = []
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = ""
-        self.underlying_price = pd.Series(dtype = object)
+        self.underlying_price = pd.Series(dtype=object)
 
     def get_quotes(self, symbol: str) -> object:
-
         self.symbol = symbol.upper()
-        self.expirations:list = []
+        self.expirations: list = []
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = ""
-        self.underlying_price = pd.Series(dtype = object)
+        self.underlying_price = pd.Series(dtype=object)
         self.chains = get_full_option_chain(self.symbol)
 
         if not self.chains.empty:
             self.expirations = option_expirations(self.symbol)
-            self.strikes = pd.Series(self.chains["strike"]).sort_values().unique().tolist()
+            self.strikes = (
+                pd.Series(self.chains["strike"]).sort_values().unique().tolist()
+            )
             self.underlying_price = get_underlying_price(self.symbol)
             self.last_price = self.underlying_price["lastPrice"]
             self.underlying_name = self.underlying_price["companyName"]
 
         return self
+
 
 def load_options(symbol: str) -> object:
     """Loads options data from Nasdaq."""

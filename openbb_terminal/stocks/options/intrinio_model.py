@@ -367,40 +367,42 @@ def get_historical_options(symbol: str) -> pd.DataFrame:
     )
     return historical
 
+
 class Options:
     def __init__(self) -> None:
         self.symbol: str = ""
         self.chains = pd.DataFrame()
-        self.expirations:list = []
+        self.expirations: list = []
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = ""
-        self.underlying_price = pd.Series(dtype = object)
+        self.underlying_price = pd.Series(dtype=object)
 
     def get_quotes(self, symbol: str) -> object:
-
         self.symbol = symbol.upper()
-        self.expirations:list = []
+        self.expirations: list = []
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = self.symbol
-        self.underlying_price = pd.Series(dtype = object)
+        self.underlying_price = pd.Series(dtype=object)
         self.chains = get_full_option_chain(self.symbol)
-        self.chains.rename(columns = {"code":"optionSymbol"}, inplace = True)
+        self.chains.rename(columns={"code": "optionSymbol"}, inplace=True)
 
         if not self.chains.empty:
             self.expirations = self.chains["expiration"].unique().tolist()
             self.strikes = self.chains["strike"].sort_values().unique().tolist()
             self.underlying_price = get_last_price(self.symbol)
-            #self.last_price = self.underlying_price["lastPrice"]
+            # self.last_price = self.underlying_price["lastPrice"]
 
         return self
 
-def load_options(symbol: str, date: Optional[str] = "") -> object:
+
+def load_options(symbol: str, date: str = "") -> object:
     """Loads options data from Intrinio."""
-    options = Options()
+    ticker = Options()
     if date != "":
-        get_full_chain_eod(symbol, date)
-        return options
-    options.get_quotes(symbol)
-    return options
+        ticker.get_full_chain_eod(symbol, date)
+        return ticker
+
+    ticker.get_quotes(symbol)
+    return ticker
