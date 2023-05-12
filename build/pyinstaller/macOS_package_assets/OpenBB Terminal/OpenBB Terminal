@@ -21,7 +21,7 @@ echo "$BOOTUP_MESSAGE"
 # Function to update the progress bar
 update_progress() {
   local progress=$1
-  local bar_length=30
+  local bar_length=100
   local completed_length=$(( progress * bar_length / 100 ))
   local remaining_length=$(( bar_length - completed_length ))
   local bar=$(printf '%*s' "$completed_length" | tr ' ' '#')
@@ -32,7 +32,7 @@ update_progress() {
 }
 
 # Simulating boot up process
-total_steps=10
+total_steps=100
 
 for ((i=1; i<=total_steps; i++)); do
   # Perform boot up task
@@ -45,6 +45,6 @@ for ((i=1; i<=total_steps; i++)); do
   update_progress "$progress"
 done
 
-echo "Boot up complete!"
+echo "\nStarting Momentarily!"
 
 "$SCRIPTDIR"/.OpenBB/OpenBBTerminal
