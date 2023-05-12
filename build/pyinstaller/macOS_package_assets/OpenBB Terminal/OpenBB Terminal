@@ -28,23 +28,28 @@ update_progress() {
   local space=$(printf '%*s' "$remaining_length" | tr ' ' ' ')
 
   # Print the progress bar
-  printf "[%-30s] %d%%\r" "$bar$space" "$progress"
+  printf "[%-30s] %d%%" "$bar$space" "$progress"
 }
 
 # Simulating boot up process
-total_steps=100
+total_steps=30
 
 for ((i=1; i<=total_steps; i++)); do
   # Perform boot up task
-  sleep 1  # Simulating a delay of 1 second
+  sleep .5  # Simulating a delay of 1 second
 
   # Calculate progress percentage
   progress=$(( i * 100 / total_steps ))
 
   # Update the progress bar
   update_progress "$progress"
+
+  # Print a newline character to separate progress bar from next output
+  printf "\n"
 done
 
-echo "\nStarting Momentarily!"
+echo "Starting Momentarily!"
+
+echo "Starting Momentarily!"
 
 "$SCRIPTDIR"/.OpenBB/OpenBBTerminal
