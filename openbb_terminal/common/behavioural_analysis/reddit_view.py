@@ -117,11 +117,11 @@ def print_reddit_post(sub: tuple):
 @log_start_end(log=logger)
 @check_api_key(reddit_requirements)
 def display_popular_tickers(
-        limit: int = 10,
-        post_limit: int = 50,
-        subreddits: str = "",
-        export: str = "",
-        sheet_name: Optional[str] = None,
+    limit: int = 10,
+    post_limit: int = 50,
+    subreddits: str = "",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Print table showing latest popular tickers. [Source: Reddit].
 
