@@ -1,5 +1,6 @@
 """Helper functions."""
 __docformat__ = "numpy"
+
 # pylint: disable=too-many-lines
 
 # IMPORTS STANDARD
@@ -71,6 +72,7 @@ MENU_RESET = 2
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
+
 
 # pylint: disable=R1702,R0912
 
@@ -299,17 +301,16 @@ def print_rich_table(
     )
 
     show_index = not isinstance(df.index, pd.RangeIndex) and show_index
-    # turns non-str that are not timestamp or int into str
+    #  non-str that are not timestamp or int into str
     # eg) praw.models.reddit.subreddit.Subreddit
     for col in df.columns:
         try:
-            if isinstance(df[col].iloc[0], int):
-                df[col] = pd.to_numeric(df[col])
-            elif not isinstance(df[col].iloc[0], pd.Timestamp):
-                df[col] = df[col].astype(str)
+            if not isinstance(df[col].iloc[0], pd.Timestamp):
+                pd.to_numeric(df[col].iloc[0])
 
         except ValueError:
-            pass
+            df[col] = df[col].astype(str)
+
 
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
         """Check if headers are valid and return them."""
