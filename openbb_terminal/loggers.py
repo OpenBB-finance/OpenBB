@@ -44,7 +44,6 @@ from openbb_terminal.core.session.current_system import (
     get_current_system,
     set_system_variable,
 )
-from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
