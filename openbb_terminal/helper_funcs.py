@@ -314,7 +314,6 @@ def print_rich_table(
         except ValueError:
             df[col] = df[col].astype(str)
 
-
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
         """Check if headers are valid and return them."""
         output = _headers
