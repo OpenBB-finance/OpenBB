@@ -1,20 +1,5 @@
 #!/bin/bash
 
-spinner()
-{
-    local pid=$1
-    local delay=0.1
-    local spinstr='|/-\'
-    while ps a | awk '{print $1}' | grep -q "$pid"; do
-        local temp=${spinstr#?}
-        printf " [%c]  " "$spinstr"
-        spinstr=$temp${spinstr%"$temp"}
-        sleep $delay
-        printf "\b\b\b\b\b\b"
-    done
-    printf "    \b\b\b\b"
-}
-
 clear
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -33,5 +18,33 @@ The boot up process might take a while. Please be patient...
 "
 echo "$BOOTUP_MESSAGE"
 
-"$SCRIPTDIR"/.OpenBB/OpenBBTerminal &
-spinner $!
+# Function to update the progress bar
+update_progress() {
+  local progress=$1
+  local bar_length=30
+  local completed_length=$(( progress * bar_length / 100 ))
+  local remaining_length=$(( bar_length - completed_length ))
+  local bar=$(printf '%*s' "$completed_length" | tr ' ' '#')
+  local space=$(printf '%*s' "$remaining_length" | tr ' ' ' ')
+
+  # Print the progress bar
+  printf "[%-30s] %d%%\r" "$bar$space" "$progress"
+}
+
+# Simulating boot up process
+total_steps=10
+
+for ((i=1; i<=total_steps; i++)); do
+  # Perform boot up task
+  sleep 1  # Simulating a delay of 1 second
+
+  # Calculate progress percentage
+  progress=$(( i * 100 / total_steps ))
+
+  # Update the progress bar
+  update_progress "$progress"
+done
+
+echo "Boot up complete!"
+
+"$SCRIPTDIR"/.OpenBB/OpenBBTerminal
