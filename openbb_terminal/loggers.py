@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
-import atexit
 import json
 import logging
 import re
@@ -38,18 +37,20 @@ from openbb_terminal.core.log.generation.settings import (
 )
 from openbb_terminal.core.log.generation.user_logger import (
     NO_USER_PLACEHOLDER,
+    get_current_user,
     get_user_uuid,
 )
 from openbb_terminal.core.session.current_system import (
     get_current_system,
-    set_current_system,
+    set_system_variable,
 )
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
-current_system = get_current_system()
+logging_verbosity = get_current_system().LOGGING_VERBOSITY
 
-logging.getLogger("requests").setLevel(current_system.LOGGING_VERBOSITY)
-logging.getLogger("urllib3").setLevel(current_system.LOGGING_VERBOSITY)
+logging.getLogger("requests").setLevel(logging_verbosity)
+logging.getLogger("urllib3").setLevel(logging_verbosity)
 
 
 def get_app_id() -> str:
@@ -80,8 +81,9 @@ def get_session_id() -> str:
 def get_commit_hash(use_env=True) -> str:
     """Get Commit Short Hash"""
 
-    if use_env and current_system.LOGGING_COMMIT_HASH != "REPLACE_ME":
-        return current_system.LOGGING_COMMIT_HASH
+    logging_commit_hash = get_current_system().LOGGING_COMMIT_HASH
+    if use_env and logging_commit_hash != "REPLACE_ME":
+        return logging_commit_hash
 
     git_dir = Path(__file__).parent.parent.joinpath(".git")
 
@@ -96,6 +98,34 @@ def get_commit_hash(use_env=True) -> str:
     return commit_hash
 
 
+def get_branch() -> str:
+    def get_branch_commit_hash(branch: str) -> str:
+        response = request(
+            url=f"https://api.github.com/repos/openbb-finance/openbbterminal/branches/{branch}"
+        )
+        return "sha:" + response.json()["commit"]["sha"][:8]
+
+    current_commit_hash = get_commit_hash()
+
+    for branch in ["main", "develop"]:
+        try:
+            if get_branch_commit_hash(branch) == current_commit_hash:
+                return branch
+        except Exception:
+            pass
+
+    git_dir = Path(__file__).parent.parent.joinpath(".git")
+    if WITH_GIT and git_dir.is_dir():
+        try:
+            repo = git.Repo(path=git_dir)
+            branch = repo.active_branch.name
+            return branch
+        except Exception:
+            pass
+
+    return "unknown-branch"
+
+
 class PosthogHandler(logging.Handler):
     """Posthog Handler"""
 
@@ -104,7 +134,6 @@ class PosthogHandler(logging.Handler):
         self.settings = settings
         self.app_settings = settings.app_settings
         self.logged_in = False
-        atexit.register(openbb_posthog.shutdown)
 
     def emit(self, record: logging.LogRecord):
         try:
@@ -114,7 +143,7 @@ class PosthogHandler(logging.Handler):
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict"""
-        log_regex = r"(KEYS|PREFERENCES|SYSTEM|CMD|QUEUE): (.*)"
+        log_regex = r"(STARTUP|CMD): (.*)"
         log_dict: Dict[str, Any] = {}
 
         for log in re.findall(log_regex, log_info):
@@ -140,15 +169,23 @@ class PosthogHandler(logging.Handler):
 
         if log_dict := self.log_to_dict(log_info=log_line):
             event_name = f"log_{list(log_dict.keys())[0].lower()}"
+            log_dict = log_dict.get("STARTUP", log_dict)
 
             log_extra = {**log_extra, **log_dict}
             log_extra.pop("message", None)
 
-        if re.match(r"^(START|END|INPUT:)", log_line):
+        if re.match(r"^(QUEUE|START|END|INPUT:)", log_line) and not log_dict:
             return
 
-        if not self.logged_in and get_user_uuid() != NO_USER_PLACEHOLDER:
+        if (
+            not self.logged_in
+            and get_user_uuid() != NO_USER_PLACEHOLDER
+            and get_current_user().profile.remember
+        ):
             self.logged_in = True
+            openbb_posthog.identify(
+                get_user_uuid(), {"email": get_current_user().profile.email}
+            )
             openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
 
         openbb_posthog.capture(
@@ -167,7 +204,8 @@ class PosthogHandler(logging.Handler):
             "commitHash": self.app_settings.commit_hash,
             "platform": platform(),
             "pythonVersion": python_version(),
-            "terminalVersion": current_system.VERSION,
+            "terminalVersion": get_current_system().VERSION,
+            "branch": get_current_system().LOGGING_BRANCH,
         }
 
         if get_user_uuid() != NO_USER_PLACEHOLDER:
@@ -238,7 +276,7 @@ def setup_handlers(settings: Settings):
         handlers=[],
     )
 
-    for handler_type in handler_list.split(","):
+    for handler_type in handler_list:
         if handler_type == "stdout":
             add_stdout_handler(settings=settings)
         elif handler_type == "stderr":
@@ -247,6 +285,8 @@ def setup_handlers(settings: Settings):
             add_noop_handler(settings=settings)
         elif handler_type == "file":
             add_file_handler(settings=settings)
+        elif handler_type == "posthog":
+            add_posthog_handler(settings=settings)
         else:
             logger.debug("Unknown log handler.")
 
@@ -259,12 +299,6 @@ def setup_handlers(settings: Settings):
         FormatterWithExceptions.LOGFORMAT.replace("|", "-"),
     )
 
-    if (
-        not any([current_system.TEST_MODE, current_system.LOGGING_SUPPRESS])
-        and current_system.LOG_COLLECT
-    ):
-        add_posthog_handler(settings=settings)
-
 
 def setup_logging(
     app_name: Optional[str] = None,
@@ -272,6 +306,7 @@ def setup_logging(
     verbosity: Optional[int] = None,
 ) -> None:
     """Setup Logging"""
+    current_system = get_current_system()
 
     # AppSettings
     commit_hash = get_commit_hash()
@@ -279,9 +314,11 @@ def setup_logging(
     identifier = get_app_id()
     session_id = get_session_id()
     user_id = get_user_uuid()
+    branch = get_branch()
 
-    current_system.LOGGING_APP_ID = identifier
-    set_current_system(current_system)
+    set_system_variable("LOGGING_APP_ID", identifier)
+    set_system_variable("LOGGING_COMMIT_HASH", commit_hash)
+    set_system_variable("LOGGING_BRANCH", branch)
 
     # AWSSettings
     aws_access_key_id = current_system.LOGGING_AWS_ACCESS_KEY_ID

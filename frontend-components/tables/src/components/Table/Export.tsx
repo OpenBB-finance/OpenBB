@@ -10,22 +10,24 @@ export default function Export({
   data,
   type,
   setType,
+  downloadFinished,
 }: {
   columns: any;
   data: any;
   type: any;
   setType: any;
+  downloadFinished: (change: boolean) => void;
 }) {
   const onExport = () => {
     switch (type) {
       case "csv":
-        downloadData("csv", columns, data);
+        downloadData("csv", columns, data, downloadFinished);
         break;
       case "xlsx":
-        downloadData("xlsx", columns, data);
+        downloadData("xlsx", columns, data, downloadFinished);
         break;
       case "png":
-        downloadImage("table");
+        downloadImage("table", downloadFinished);
         break;
     }
   };

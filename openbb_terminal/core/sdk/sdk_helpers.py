@@ -314,15 +314,15 @@ class OperationLogger:
         if func_module == "openbb_terminal.keys_model":
             # pylint: disable=C0415
 
-            from openbb_terminal.core.log.generation.settings_logger import (
-                log_credentials,
-            )
+            # from openbb_terminal.core.log.generation.settings_logger import (
+            #     log_credentials,
+            # )
 
             # remove key if defined
 
             function_args.pop("key", None)
 
-            log_credentials()
+            # log_credentials()
 
         return function_args
 

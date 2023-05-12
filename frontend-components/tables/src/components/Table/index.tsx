@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useVirtual } from "react-virtual";
 import Select from "../Select";
 import {
@@ -16,8 +16,10 @@ import {
   fuzzyFilter,
   isEqual,
   includesDateNames,
+  formatNumberNoMagnitude,
+  includesPriceNames,
 } from "../../utils/utils";
-import DraggableColumnHeader from "./ColumnHeader";
+import DraggableColumnHeader, { magnitudeRegex } from "./ColumnHeader";
 import Pagination, { validatePageSize } from "./Pagination";
 import Export from "./Export";
 import Timestamp from "./Timestamp";
@@ -28,26 +30,28 @@ import Toast from "../Toast";
 import useDarkMode from "../../utils/useDarkMode";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import CloseIcon from "../Icons/Close";
+import DownloadFinishedDialog from "./DownloadFinishedDialog";
 
 const date = new Date();
 
 const MAX_COLUMNS = 50;
 export const DEFAULT_ROWS_PER_PAGE = 30;
 
+//@ts-ignore
 function getCellWidth(row, column) {
   try {
     const indexLabel = row.hasOwnProperty("index")
       ? "index"
       : row.hasOwnProperty("Index")
-        ? "Index"
-        : null;
+      ? "Index"
+      : null;
     const indexValue = indexLabel ? row[indexLabel] : null;
     const value = row[column];
     const valueType = typeof value;
     const only_numbers = value?.toString().replace(/[^0-9]/g, "");
 
     const probablyDate =
-      only_numbers.length >= 4 &&
+      only_numbers?.length >= 4 &&
       (includesDateNames(column) ||
         column.toLowerCase() === "index" ||
         (indexValue &&
@@ -119,11 +123,13 @@ export default function Table({
   cmd?: string;
 }) {
   const [type, setType] = useLocalStorage("exportType", EXPORT_TYPES[0]);
+  const [downloadFinished, setDownloadFinished] = useState(false);
   const [colorTheme, setTheme] = useDarkMode(initialTheme);
   const [darkMode, setDarkMode] = useState(
     colorTheme === "dark" ? true : false
   );
   const toggleDarkMode = (checked: boolean) => {
+    //@ts-ignore
     setTheme(colorTheme);
     setDarkMode(checked);
   };
@@ -147,13 +153,15 @@ export default function Table({
     defaultVisibleColumns
   );
 
+  //@ts-ignore
   const getColumnWidth = (rows, accessor, headerText) => {
     const maxWidth = 200;
     const magicSpacing = 12;
     const cellLength = Math.max(
+      //@ts-ignore
       ...rows.map((row) => getCellWidth(row, accessor)),
-      headerText.length + 8
-    );
+      headerText?.length ? headerText?.length + 8 : 0
+      );
     return Math.min(maxWidth, cellLength * magicSpacing);
   };
 
@@ -169,14 +177,14 @@ export default function Table({
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
-              ? "Index"
-              : columns[0];
+            ? "Index"
+            : columns[0];
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
-          const only_numbers = value?.toString().replace(/[^0-9]/g, "");
+          const only_numbers = value?.toString().replace(/[^0-9]/g, "") ?? "";
           const probablyDate =
-            only_numbers.length >= 4 &&
+            only_numbers?.length >= 4 &&
             (includesDateNames(column) ||
               column.toLowerCase() === "index" ||
               (indexValue &&
@@ -197,11 +205,11 @@ export default function Table({
                 target="_blank"
                 rel="noreferrer"
               >
-                {value.length > 25 ? value.substring(0, 25) + "..." : value}
+                {value?.length > 25 ? value.substring(0, 25) + "..." : value}
               </a>
             );
           }
-          if (probablyDate) {
+          if (probablyDate && typeof value !== "number") {
             if (typeof value === "string") {
               const date = value.split("T")[0];
               const time = value.split("T")[1]?.split(".")[0];
@@ -213,12 +221,6 @@ export default function Table({
                   {date} {time}
                 </p>
               );
-            }
-
-            if (typeof value === "number") {
-              if (value < 1000000000000) {
-                return <p>{value}</p>;
-              }
             }
 
             try {
@@ -244,19 +246,38 @@ export default function Table({
               return <p>{value}</p>;
             }
           }
-          if (valueType === "number") {
-            const valueFormatted = formatNumberMagnitude(value);
+          if (
+            valueType === "number" ||
+            magnitudeRegex.test(value?.toString())
+          ) {
+            let valueFormatted = formatNumberMagnitude(value, column);
+            const valueFormattedNoMagnitude = Number(
+              formatNumberNoMagnitude(value)
+            );
+
+            if (
+              typeof indexValue === "string" &&
+              includesPriceNames(indexValue)
+            ) {
+              valueFormatted = Number(formatNumberNoMagnitude(value));
+              const maxFixed = valueFormatted < 2 ? 4 : 2;
+              valueFormatted = valueFormatted.toLocaleString("en-US", {
+                maximumFractionDigits: maxFixed,
+                minimumFractionDigits: 2,
+              });
+            }
+
             return (
               <p
                 className={clsx("whitespace-nowrap", {
                   "text-black dark:text-white": !colors,
-                  "text-[#16A34A]": value > 0 && colors,
-                  "text-[#F87171]": value < 0 && colors,
-                  "text-[#404040]": value === 0 && colors,
+                  "text-[#16A34A]": valueFormattedNoMagnitude > 0 && colors,
+                  "text-[#F87171]": valueFormattedNoMagnitude < 0 && colors,
+                  "text-[#404040]": valueFormattedNoMagnitude === 0 && colors,
                 })}
               >
-                {value !== 0
-                  ? value > 0
+                {valueFormattedNoMagnitude !== 0
+                  ? valueFormattedNoMagnitude > 0
                     ? `${valueFormatted}`
                     : `${valueFormatted}`
                   : valueFormatted}
@@ -312,7 +333,7 @@ export default function Table({
         pageSize:
           typeof currentPage === "string"
             ? currentPage.includes("All")
-              ? data.length
+              ? data?.length
               : parseInt(currentPage)
             : currentPage,
       },
@@ -322,6 +343,16 @@ export default function Table({
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const { rows } = table.getRowModel();
   const visibleColumns = table.getVisibleFlatColumns();
+
+  const [downloadFinishedDialogOpen, setDownloadFinishedDialogOpen] =
+    useState(false);
+
+  useEffect(() => {
+    if (downloadFinished) {
+      setDownloadFinished(false);
+      setDownloadFinishedDialogOpen(true);
+    }
+  }, [downloadFinished]);
 
   return (
     <>
@@ -336,6 +367,11 @@ export default function Table({
         open={open}
         setOpen={setOpen}
       />
+      <DownloadFinishedDialog
+        open={downloadFinishedDialogOpen}
+        close={() => setDownloadFinishedDialogOpen(false)}
+      />
+
       <div
         ref={tableContainerRef}
         className={clsx("overflow-x-hidden h-screen")}
@@ -451,7 +487,7 @@ export default function Table({
                     );
                   })}
                 </tbody>
-                {rows.length > 30 && visibleColumns.length > 4 && (
+                {rows?.length > 30 && visibleColumns?.length > 4 && (
                   <tfoot>
                     {table.getFooterGroups().map((footerGroup) => (
                       <tr key={footerGroup.id}>
@@ -467,9 +503,9 @@ export default function Table({
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                header.column.columnDef.footer,
-                                header.getContext()
-                              )}
+                                  header.column.columnDef.footer,
+                                  header.getContext()
+                                )}
                           </th>
                         ))}
                       </tr>
@@ -632,7 +668,13 @@ export default function Table({
             setCurrentPage={setCurrentPage}
             table={table}
           />
-          <Export setType={setType} type={type} columns={columns} data={data} />
+          <Export
+            setType={setType}
+            type={type}
+            columns={columns}
+            data={data}
+            downloadFinished={setDownloadFinished}
+          />
         </div>
       </div>
     </>
