@@ -325,6 +325,8 @@ class Options:
         self.last_price: float = 0
         self.underlying_name: str = ""
         self.underlying_price = pd.Series(dtype=object)
+        self.hasIV: bool
+        self.hasGreeks: bool
 
     def get_quotes(self, symbol: str) -> object:
         self.symbol = symbol.upper()
@@ -342,6 +344,8 @@ class Options:
             )
             self.underlying_price = get_underlying_price(self.symbol)
             self.last_price = self.underlying_price["lastPrice"]
+        self.hasIV = "impliedVolatility" in self.chains.columns
+        self.hasGreeks = "gamma" in self.chains.columns
 
         return self
 
