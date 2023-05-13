@@ -621,3 +621,47 @@ def display_cointegration_test(
         return fig.show(external=external_axes)
 
     return None
+
+
+@log_start_end(log=logger)
+def display_vif(
+    dataset: pd.DataFrame,
+    columns: list = None,
+    export: str = "",
+    sheet_name: str = None,
+):
+    """Displays the VIF (variance inflation factor), which tests for collinearity, values for each column.
+
+    Parameters
+    ----------
+    dataset: pd.Series
+        Dataset to calculate VIF on
+    columns: list
+        The columns to calculate to test for collinearity
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export data.
+    """
+    columns = dataset.columns if columns is None else columns
+    if any([dataset[column].dtype not in [int, float] for column in columns]):
+        console.print(
+            f"All column types must be numeric. Consider using the command 'type' to change this.\n"
+        )
+    else:
+        results = econometrics_model.get_vif(dataset, columns)
+
+        print_rich_table(
+            results,
+            headers=list(results.columns),
+            show_index=True,
+            title=f"Collinearity Test",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dataset}_{','.join(columns)}_vif",
+            results,
+            sheet_name,
+        )

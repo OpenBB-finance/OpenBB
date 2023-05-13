@@ -13,6 +13,8 @@ import pandas as pd
 import statsmodels.api as sm
 from arch import arch_model
 from scipy import stats
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from statsmodels.tools.tools import add_constant
 from statsmodels.tsa.stattools import adfuller, grangercausalitytests, kpss
 
 from openbb_terminal.rich_config import console
@@ -482,3 +484,47 @@ def get_engle_granger_two_step_cointegration_test(
     adfstat, pvalue, _, _, _ = adfuller(z, maxlag=1, autolag=None)
 
     return c, gamma, alpha, z, adfstat, pvalue
+
+
+def get_vif(dataset: pd.DataFrame, columns: list = None) -> pd.DataFrame:
+    r"""Calculates VIF (variance inflation factor), which tests collinearity.
+
+    It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square
+    root of the variance inflation factor indicates how much larger the standard error increases compared to if
+    that variable had 0 correlation to other predictor variables in the model.
+
+    It is defined as:
+
+    $ VIF_i = 1 / (1 - R_i^2) $
+    where $ R_i $ is the coefficient of determination of the regression equation with the column i being the result from the i:th series being the exogenous variable.
+
+    A VIF over 5 indicates a high collinearity and correlation. Values over 10 indicates causes problems, while a value of 1 indicates no correlation. Thus VIF values between 1 and 5 are most commonly considered acceptable. In order to improve the results one can often remove a column with high VIF.
+
+    For further information see: https://en.wikipedia.org/wiki/Variance_inflation_factor
+
+    Parameters
+    ----------
+    dataset: pd.Series
+        Dataset to calculate VIF on
+    columns: list
+        The columns to calculate to test for collinearity
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with the resulting VIF values for the selected columns
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> Text here
+    """
+    df = add_constant(dataset if columns is None else dataset[columns])
+    vif = pd.DataFrame(
+        {
+            "VIF Values": [
+                variance_inflation_factor(df.values, i) for i in range(df.shape[1])
+            ][1:]
+        },
+        index=df.columns[1:],
+    )
+    return vif
