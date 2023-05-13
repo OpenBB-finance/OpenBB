@@ -628,7 +628,7 @@ def display_vif(
     dataset: pd.DataFrame,
     columns: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Displays the VIF (variance inflation factor), which tests for collinearity, values for each column.
 
