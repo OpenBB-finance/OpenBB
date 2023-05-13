@@ -644,7 +644,7 @@ def display_vif(
         Format to export data.
     """
     columns = dataset.columns if columns is None else columns
-    if any([dataset[column].dtype not in [int, float] for column in columns]):
+    if any(dataset[column].dtype not in [int, float] for column in columns):
         console.print(
             "All column types must be numeric. Consider using the command 'type' to change this.\n"
         )
