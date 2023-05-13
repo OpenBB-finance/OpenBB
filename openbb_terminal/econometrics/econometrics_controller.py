@@ -2203,9 +2203,12 @@ class EconometricsController(BaseController):
             It is defined as:
 
             $ VIF_i = 1 / (1 - R_i^2) $
-            where $ R_i $ is the coefficient of determination of the regression equation with the column i being the result from the i:th series being the exogenous variable.
+            where $ R_i $ is the coefficient of determination of the regression equation with the column i being the 
+            result from the i:th series being the exogenous variable.
 
-            A VIF over 5 indicates a high collinearity and correlation. Values over 10 indicates causes problems, while a value of 1 indicates no correlation. Thus VIF values between 1 and 5 are most commonly considered acceptable. In order to improve the results one can often remove a column with high VIF.
+            A VIF over 5 indicates a high collinearity and correlation. Values over 10 indicates causes problems, 
+            while a value of 1 indicates no correlation. Thus VIF values between 1 and 5 are most commonly considered 
+            acceptable. In order to improve the results one can often remove a column with high VIF.
 
             For further information see: https://en.wikipedia.org/wiki/Variance_inflation_factor""",
         )

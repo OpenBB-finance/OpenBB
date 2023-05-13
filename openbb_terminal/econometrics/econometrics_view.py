@@ -646,7 +646,7 @@ def display_vif(
     columns = dataset.columns if columns is None else columns
     if any([dataset[column].dtype not in [int, float] for column in columns]):
         console.print(
-            f"All column types must be numeric. Consider using the command 'type' to change this.\n"
+            "All column types must be numeric. Consider using the command 'type' to change this.\n"
         )
     else:
         results = econometrics_model.get_vif(dataset, columns)
@@ -655,7 +655,7 @@ def display_vif(
             results,
             headers=list(results.columns),
             show_index=True,
-            title=f"Collinearity Test",
+            title="Collinearity Test",
         )
 
         export_data(
