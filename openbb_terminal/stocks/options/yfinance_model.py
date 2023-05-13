@@ -287,7 +287,7 @@ def get_iv_surface(symbol: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_underlying_price(symbol: str) -> pd.Series:
-    """Get the last price from nasdaq
+    """Get the price and performance of the underlying asset.
 
     Parameters
     ----------
@@ -296,9 +296,10 @@ def get_underlying_price(symbol: str) -> pd.Series:
 
     Returns
     -------
-    float
-        Last price
+    pd.Series
+        Pandas Series with the price and performance of the underlying asset.
     """
+
     ticker = yf.Ticker(symbol).fast_info
     df = pd.Series(dtype=object)
     df["lastPrice"] = round(ticker["lastPrice"], 2)
