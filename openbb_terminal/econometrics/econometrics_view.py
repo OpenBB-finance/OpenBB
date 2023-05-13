@@ -626,7 +626,7 @@ def display_cointegration_test(
 @log_start_end(log=logger)
 def display_vif(
     dataset: pd.DataFrame,
-    columns: list = None,
+    columns: Optional[list] = None,
     export: str = "",
     sheet_name: str = None,
 ):
@@ -636,9 +636,9 @@ def display_vif(
     ----------
     dataset: pd.Series
         Dataset to calculate VIF on
-    columns: list
+    columns: Optional[list]
         The columns to calculate to test for collinearity
-    sheet_name: str
+    sheet_name: Optional[str]
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data.

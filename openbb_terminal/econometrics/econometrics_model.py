@@ -486,7 +486,7 @@ def get_engle_granger_two_step_cointegration_test(
     return c, gamma, alpha, z, adfstat, pvalue
 
 
-def get_vif(dataset: pd.DataFrame, columns: list = None) -> pd.DataFrame:
+def get_vif(dataset: pd.DataFrame, columns: Optional[list] = None) -> pd.DataFrame:
     r"""Calculates VIF (variance inflation factor), which tests collinearity.
 
     It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square
@@ -509,7 +509,7 @@ def get_vif(dataset: pd.DataFrame, columns: list = None) -> pd.DataFrame:
     ----------
     dataset: pd.Series
         Dataset to calculate VIF on
-    columns: list
+    columns: Optional[list]
         The columns to calculate to test for collinearity
 
     Returns
@@ -519,7 +519,8 @@ def get_vif(dataset: pd.DataFrame, columns: list = None) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> Text here
+    >>> longley = openbb.econometrics.load("longley")
+    >>> openbb.econometrics.vif(longley, ["TOTEMP","UNEMP","ARMED"])
     """
     df = add_constant(dataset if columns is None else dataset[columns])
     vif = pd.DataFrame(
