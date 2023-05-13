@@ -15,6 +15,8 @@ from openbb_terminal.rich_config import console, optional_rich_track
 logger = logging.getLogger(__name__)
 intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)
 api = intrinio.OptionsApi()
+security = intrinio.SecurityApi()
+
 eod_columns_to_drop = [
     "open_ask",
     "open_bid",
@@ -368,8 +370,58 @@ def get_historical_options(symbol: str) -> pd.DataFrame:
     return historical
 
 
+def get_all_ticker_symbols() -> list[str]:
+    """Gets a list of all options tickers supported by Intrinio.
+
+    Returns
+    -------
+    list: str
+        List of all ticker symbols supported.
+    """
+
+    return api.get_all_options_tickers().tickers
+
+
+def get_ticker_info(symbol: str) -> pd.Series:
+    """Gets basic meta data for the ticker.
+
+    Parameters
+    ----------
+    symbol: str
+        The ticker symbol to lookup.
+
+    Returns
+    -------
+    pd.Series
+        Pandas Series object with meta data for the symbol.
+    """
+
+    info = security.get_security_by_id(symbol).to_dict()
+
+    return pd.Series(info)
+
+
+def get_underlying_price(symbol: str) -> pd.Series:
+    """Gets the real time bid/ask and last price for the symbol.
+
+    Parameters
+    ----------
+    symbol: str
+        The ticker symbol to lookup.
+
+    Returns
+    -------
+    pd.Series
+        Pandas Series object with real time bid/ask and last price for the symbol.
+
+    """
+    underlying_price = security.get_security_realtime_price(symbol).to_dict()
+
+    return pd.Series(underlying_price)
+
 class Options:
     def __init__(self) -> None:
+        self.SYMBOLS: list = get_all_ticker_symbols()
         self.symbol: str = ""
         self.chains = pd.DataFrame()
         self.expirations: list = []
@@ -377,31 +429,63 @@ class Options:
         self.last_price: float = 0
         self.underlying_name: str = ""
         self.underlying_price = pd.Series(dtype=object)
+        self.hasIV: bool
+        self.hasGreeks: bool
+
 
     def get_quotes(self, symbol: str) -> object:
         self.symbol = symbol.upper()
-        self.expirations: list = []
-        self.strikes: list = []
-        self.last_price: float = 0
-        self.underlying_name: str = self.symbol
-        self.underlying_price = pd.Series(dtype=object)
-        self.chains = get_full_option_chain(self.symbol)
+        self.underlying_name = get_ticker_info(self.symbol)["name"]
+        self.underlying_price = get_underlying_price(self.symbol)
+        self.last_price = self.underlying_price["last_price"]
+        self.chains = get_full_option_chain(self.symbol, quiet = True)
         self.chains.rename(columns={"code": "optionSymbol"}, inplace=True)
-
+        self.expirations = []
+        self.strikes = []
         if not self.chains.empty:
             self.expirations = self.chains["expiration"].unique().tolist()
             self.strikes = self.chains["strike"].sort_values().unique().tolist()
-            self.underlying_price = get_last_price(self.symbol)
-            # self.last_price = self.underlying_price["lastPrice"]
-
+        self.hasIV = "impliedVolatility" in self.chains.columns
+        self.hasGreeks = "gamma" in self.chains.columns
         return self
 
 
+    def get_eod_chains(self, symbol:str, date: str) -> object:
+        self.symbol = symbol.upper()
+        if self.symbol not in self.SYMBOLS:
+            print(f"{self.symbol}", "is not supported by Intrinio.")
+            return self
+        underlying = security.get_security_stock_prices(
+            self.symbol,
+            start_date=date,
+            end_date=date,
+            frequency="daily"
+        ).to_dict()
+        self.underlying_name = underlying["security"]["name"]
+        self.underlying_price = pd.Series(underlying["stock_prices"][0])
+        self.last_price = self.underlying_price["adj_close"]
+        self.chains = get_full_chain_eod(self.symbol, date, quiet = True)
+        self.expirations = []
+        self.strikes = []
+        if not self.chains.empty:
+            self.expirations = self.chains["expiration"].unique().tolist()
+            self.strikes = self.chains["strike"].sort_values().unique().tolist()
+        self.hasIV = "impliedVolatility" in self.chains.columns
+        self.hasGreeks = "gamma" in self.chains.columns
+
+        return self
+@check_api_key(["API_INTRINIO_KEY"])
 def load_options(symbol: str, date: str = "") -> object:
     """Loads options data from Intrinio."""
+
     ticker = Options()
+
+    if symbol.upper() not in ticker.SYMBOLS:
+        print(f"{symbol}", "is not supported by Intrinio.")
+        return ticker
+
     if date != "":
-        ticker.get_full_chain_eod(symbol, date)
+        ticker.get_eod_chains(symbol, date)
         return ticker
 
     ticker.get_quotes(symbol)
