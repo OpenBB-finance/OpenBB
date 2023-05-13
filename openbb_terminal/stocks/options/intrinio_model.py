@@ -423,6 +423,7 @@ class Options:
     def __init__(self) -> None:
         self.SYMBOLS: list = get_all_ticker_symbols()
         self.symbol: str = ""
+        self.source: str = "Intrinio"
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []

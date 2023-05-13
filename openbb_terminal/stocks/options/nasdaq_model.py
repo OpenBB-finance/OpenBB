@@ -259,6 +259,7 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
 class Options:
     def __init__(self) -> None:
         self.symbol: str = ""
+        self.source: str = "Nasdaq"
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []

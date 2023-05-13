@@ -62,6 +62,7 @@ class Options:
     def __init__(self) -> None:
         self.SYMBOLS = get_all_ticker_symbols()
         self.symbol: str = ""
+        self.source: str = "TMX"
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []

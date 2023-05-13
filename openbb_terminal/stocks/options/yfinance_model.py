@@ -317,6 +317,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
 class Options:
     def __init__(self) -> None:
         self.symbol: str = ""
+        self.source: str = "YahooFinance"
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []

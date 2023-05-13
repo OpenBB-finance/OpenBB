@@ -57,6 +57,19 @@ sorted_chain_columns = [
 ]
 
 
+@check_api_key(["API_TRADIER_TOKEN"])
+def lookup_company(symbol: str):
+
+    response = request("https://sandbox.tradier.com/v1/markets/lookup",
+    params={"q": f"{symbol}"},
+    headers={
+        "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+        "Accept": "application/json"
+    }
+    )
+    return response.json()
+
+
 @log_start_end(log=logger)
 @check_api_key(["API_TRADIER_TOKEN"])
 def get_historical_options(
@@ -352,11 +365,11 @@ def get_underlying_price(symbol: str) -> pd.Series:
         return None
 
 
-
 class Options:
     def __init__(self) -> None:
-        #self.SYMBOLS: list = []
+        self.SYMBOLS= pd.DataFrame(lookup_company("")["securities"]["security"])
         self.symbol: str = ""
+        self.source: str = "Tradier"
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []
@@ -369,6 +382,9 @@ class Options:
 
     def get_quotes(self, symbol: str) -> object:
         self.symbol = symbol.upper()
+        if self.symbol not in list(self.SYMBOLS["symbol"]):
+            print(f"{self.symbol} is not support by Tradier.")
+            return self
         self.underlying_price = get_underlying_price(self.symbol)
         self.underlying_name = self.underlying_price["description"]
         self.last_price = self.underlying_price["close"]
