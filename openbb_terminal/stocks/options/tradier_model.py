@@ -170,9 +170,10 @@ def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
     chain = pd.concat(options_dfs)
     chain = chain[sorted_chain_columns].rename(
         columns={
-            "mid_iv": "iv",
+            "mid_iv": "impliedVolatility",
             "open_interest": "openInterest",
             "option_type": "optionType",
+            "symbol": "optionSymbol",
         }
     )
     return chain
@@ -320,3 +321,68 @@ def get_last_price(symbol: str):
     else:
         console.print("Error getting last price")
         return None
+
+@check_api_key(["API_TRADIER_TOKEN"])
+def get_underlying_price(symbol: str) -> pd.Series:
+    """Gets the current price and performance of the underlying asset.
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker symbol
+
+    Returns
+    -------
+    pd.Series:
+        Series of current price and performance of the underlying asset.
+    """
+    r = request(
+        "https://sandbox.tradier.com/v1/markets/quotes",
+        params={"symbols": symbol, "includeAllRoots": "true", "strikes": "false"},
+        headers={
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+            "Accept": "application/json",
+        },
+    )
+    if r.status_code == 200:
+        underlying_price = r.json()["quotes"]["quote"]
+        return pd.Series(underlying_price)
+    else:
+        console.print("Error getting last price")
+        return None
+
+
+
+class Options:
+    def __init__(self) -> None:
+        #self.SYMBOLS: list = []
+        self.symbol: str = ""
+        self.chains = pd.DataFrame()
+        self.expirations: list = []
+        self.strikes: list = []
+        self.last_price: float = 0
+        self.underlying_name: str = ""
+        self.underlying_price = pd.Series(dtype=object)
+        self.hasIV: bool
+        self.hasGreeks: bool
+
+
+    def get_quotes(self, symbol: str) -> object:
+        self.symbol = symbol.upper()
+        self.underlying_price = get_underlying_price(self.symbol)
+        self.underlying_name = self.underlying_price["description"]
+        self.last_price = self.underlying_price["close"]
+        self.chains = get_full_option_chain(self.symbol, quiet=True)
+        if not self.chains.empty:
+            self.expirations = self.chains["expiration"].unique().tolist()
+            self.strikes = self.chains["strike"].sort_values().unique().tolist()
+        self.hasIV = "impliedVolatility" in self.chains.columns
+        self.hasGreeks = "gamma" in self.chains.columns
+        return self
+
+def load_options(symbol: str) -> object:
+    """Loads options data from Nasdaq."""
+    ticker = Options()
+    ticker.get_quotes(symbol)
+    return ticker
+

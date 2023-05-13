@@ -10,7 +10,7 @@ import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, optional_rich_track
 from openbb_terminal.stocks.options import (
     chartexchange_model,
     intrinio_model,
@@ -332,6 +332,8 @@ def load_options(
         return nasdaq_model.load_options(symbol)
     if source == "YahooFinance":
         return yfinance_model.load_options(symbol)
+    if source == "Tradier":
+        return tradier_model.load_options(symbol)
     if source == "TMX":
         if date != "":
             return tmx_model.load_options(symbol, date)
