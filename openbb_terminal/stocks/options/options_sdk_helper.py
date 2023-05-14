@@ -10,13 +10,11 @@ import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
-from openbb_terminal.rich_config import console, optional_rich_track
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import (
-    cboe_model,
     chartexchange_model,
     intrinio_model,
     nasdaq_model,
-    tmx_model,
     tradier_model,
     yfinance_model,
 )
@@ -65,14 +63,11 @@ def get_full_option_chain(
     elif source == "nasdaq":
         df = nasdaq_model.get_full_option_chain(symbol)
 
-    elif source == "yahoofinance":
-        df = yfinance_model.get_full_option_chain(symbol)
-
     elif source == "intrinio":
         df = intrinio_model.get_full_option_chain(symbol)
 
-    elif source == "tmx":
-        df = tmx_model.Ticker().get_quotes(symbol).chains
+    else:
+        df = yfinance_model.get_full_option_chain(symbol)
 
     if not isinstance(df, pd.DataFrame) or df.empty:
         logger.info("Invalid Source or Symbol")
@@ -317,31 +312,3 @@ def get_greeks(
     df = pd.DataFrame(strikes, columns=columns)
 
     return df
-
-
-def load_options(
-    symbol: str, source: str = "YahooFinance", date: Optional[str] = ""
-) -> object:
-    """Loads options data from the list of sources."""
-
-    sources = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
-
-    if source not in sources:
-        print("Invalid choice. Choose from: ", list(sources), sep=None)
-        return
-    if source == "CBOE":
-        return cboe_model.load_options(symbol)
-    if source == "Nasdaq":
-        return nasdaq_model.load_options(symbol)
-    if source == "YahooFinance":
-        return yfinance_model.load_options(symbol)
-    if source == "Tradier":
-        return tradier_model.load_options(symbol)
-    if source == "TMX":
-        if date != "":
-            return tmx_model.load_options(symbol, date)
-        return tmx_model.load_options(symbol)
-    if source == "Intrinio":
-        if date != "":
-            return intrinio_model.load_options(symbol, date)
-        return intrinio_model.load_options(symbol)

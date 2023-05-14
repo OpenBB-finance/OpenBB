@@ -17,6 +17,7 @@ __docformat__ = "numpy"
 cal = mcal.get_calendar(name="TSX")
 holidays = list(cal.regular_holidays.holidays().strftime("%Y-%m-%d"))
 
+
 def check_weekday(date: str) -> str:
     """Helper function to check if the input date is a weekday."""
 
@@ -128,7 +129,7 @@ class Options:
 
         if symbol not in self.SYMBOLS.index:
             print(
-                "The symbol, " f"{symbol}" ", does not have listed options.",
+                "The symbol, " f"{symbol}" ", is not a valid TMX listing.",
                 sep=None,
             )
             return self

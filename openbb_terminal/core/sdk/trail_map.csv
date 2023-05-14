@@ -518,7 +518,7 @@ stocks.options.grhist,stocks_options_screen_syncretism_model.get_historical_gree
 stocks.options.hist,stocks_options_sdk_helper.hist,
 stocks.options.info,stocks_options_barchart_model.get_options_info,stocks_options_barchart_view.print_options_data
 stocks.options.last_price,stocks_options_tradier_model.get_last_price,
-stocks.options.load_options,stocks_options_sdk_helper.load_options,
+stocks.options.load_options_chains,stocks_options_chains_model.load_options_chains,
 stocks.options.oi,stocks_options_view.plot_oi,
 stocks.options.pcr,stocks_options_alphaquery_model.get_put_call_ratio,stocks_options_alphaquery_view.display_put_call_ratio
 stocks.options.price,stocks_options_sdk_helper.get_option_current_price,

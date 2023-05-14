@@ -461,7 +461,7 @@ class Options:
         self.underlying_name = underlying["security"]["name"]
         self.underlying_price = pd.Series(underlying["stock_prices"][0])
         self.last_price = self.underlying_price["adj_close"]
-        self.chains = get_full_chain_eod(self.symbol, date, quiet=True)
+        self.chains = get_full_chain_eod(self.symbol, date)
         self.expirations = []
         self.strikes = []
         if not self.chains.empty:

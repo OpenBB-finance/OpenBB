@@ -388,7 +388,7 @@ class Options:
         self.underlying_price = get_underlying_price(self.symbol)
         self.underlying_name = self.underlying_price["description"]
         self.last_price = self.underlying_price["close"]
-        self.chains = get_full_option_chain(self.symbol, quiet=True)
+        self.chains = get_full_option_chain(self.symbol)
         if not self.chains.empty:
             self.expirations = self.chains["expiration"].unique().tolist()
             self.strikes = self.chains["strike"].sort_values().unique().tolist()

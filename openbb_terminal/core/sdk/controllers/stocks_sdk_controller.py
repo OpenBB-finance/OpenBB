@@ -272,7 +272,7 @@ class StocksController(model.StocksRoot):
             `info`: Scrape barchart for options info\n
             `info_chart`: Scrapes Barchart.com for the options information\n
             `last_price`: Makes api request for last price\n
-            `load_options`: Loads options data from the list of sources.\n
+            `load_options_chains`: Loads all options chains from a specific source, fields returned to each attribute will vary.\n
             `oi`: Plot open interest\n
             `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
             `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n

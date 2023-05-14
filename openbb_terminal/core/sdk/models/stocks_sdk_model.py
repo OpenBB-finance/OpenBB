@@ -462,7 +462,7 @@ class StocksOptions(Category):
         `info`: Scrape barchart for options info\n
         `info_chart`: Scrapes Barchart.com for the options information\n
         `last_price`: Makes api request for last price\n
-        `load_options`: Loads options data from the list of sources.\n
+        `load_options_chains`: Loads all options chains from a specific source, fields returned to each attribute will vary.\n
         `oi`: Plot open interest\n
         `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
         `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n
@@ -493,7 +493,7 @@ class StocksOptions(Category):
         self.info = lib.stocks_options_barchart_model.get_options_info
         self.info_chart = lib.stocks_options_barchart_view.print_options_data
         self.last_price = lib.stocks_options_tradier_model.get_last_price
-        self.load_options = lib.stocks_options_sdk_helper.load_options
+        self.load_options_chains = lib.stocks_options_chains_model.load_options_chains
         self.oi = lib.stocks_options_view.plot_oi
         self.pcr = lib.stocks_options_alphaquery_model.get_put_call_ratio
         self.pcr_chart = lib.stocks_options_alphaquery_view.display_put_call_ratio
