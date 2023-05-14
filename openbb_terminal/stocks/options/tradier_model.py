@@ -367,6 +367,34 @@ def get_underlying_price(symbol: str) -> pd.Series:
 
 
 class Options:
+    """Options data object for Tradier.
+
+    Attributes
+    ----------
+    SYMBOLS: pd.DataFrame
+        The symbol directory for Tradier.
+    symbol: str
+        The symbol entered by the user.
+    source: str
+        The source of the data, "Tradier".
+    chains: pd.DataFrame
+        The complete options chain for the ticker.
+    expirations: list[str]
+        List of unique expiration dates. (YYYY-MM-DD)
+    strikes: list[float]
+        List of unique strike prices.
+    last_price: float
+        The last price of the underlying asset.
+    underlying_name: str
+        The name of the underlying asset.
+    underlying_price: pd.Series
+        The price and recent performance of the underlying asset.
+    hasIV: bool
+        Implied volatility is returned.
+    hasGreeks: bool
+        Greeks data is returned.
+    """
+
     def __init__(self) -> None:
         self.SYMBOLS = pd.DataFrame(lookup_company("")["securities"]["security"])
         self.symbol: str = ""
@@ -381,6 +409,41 @@ class Options:
         self.hasGreeks: bool
 
     def get_quotes(self, symbol: str) -> object:
+        """Options data object for Tradier.
+
+        Parameters
+        ----------
+        symbol : str
+            The ticker symbol to load.
+        date: Optional[str]
+            The date for EOD chains data.
+
+        Returns
+        -------
+        SYMBOLS: pd.DataFrame
+            The symbol directory for Tradier.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "Tradier".
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Implied volatility is returned.
+        hasGreeks: bool
+            Greeks data is returned.
+        """
+
         self.symbol = symbol.upper()
         if self.symbol not in list(self.SYMBOLS["symbol"]):
             print(f"{self.symbol} is not support by Tradier.")

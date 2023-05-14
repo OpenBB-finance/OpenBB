@@ -290,6 +290,32 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
 
 
 class Options:
+    """Options data object for Nasdaq.
+
+    Attributes
+    ----------
+    symbol: str
+        The symbol entered by the user.
+    source: str
+        The source of the data, "Nasdaq".
+    chains: pd.DataFrame
+        The complete options chain for the ticker.
+    expirations: list[str]
+        List of unique expiration dates. (YYYY-MM-DD)
+    strikes: list[float]
+        List of unique strike prices.
+    last_price: float
+        The last price of the underlying asset.
+    underlying_name: str
+        The name of the underlying asset.
+    underlying_price: pd.Series
+        The price and recent performance of the underlying asset.
+    hasIV: bool
+        Implied volatility is not returned.
+    hasGreeks: bool
+        Greeks data is not returned.
+    """
+
     def __init__(self) -> None:
         self.symbol: str = ""
         self.source: str = "Nasdaq"
@@ -301,6 +327,8 @@ class Options:
         self.underlying_price = pd.Series(dtype=object)
 
     def get_quotes(self, symbol: str) -> object:
+        """Load options data for Nasdaq.  Parameters and attributes are the same as `load_options()`."""
+
         self.symbol = symbol.upper()
         self.expirations: list = []
         self.strikes: list = []
@@ -322,7 +350,37 @@ class Options:
 
 
 def load_options(symbol: str) -> object:
-    """Loads options data from Nasdaq."""
+    """Options data object for Nasdaq.
+
+    Parameters
+    ----------
+    symbol : str
+        The ticker symbol to load.
+
+    Returns
+    -------
+    symbol: str
+        The symbol entered by the user.
+    source: str
+        The source of the data, "Nasdaq".
+    chains: pd.DataFrame
+        The complete options chain for the ticker.
+    expirations: list[str]
+        List of unique expiration dates. (YYYY-MM-DD)
+    strikes: list[float]
+        List of unique strike prices.
+    last_price: float
+        The last price of the underlying asset.
+    underlying_name: str
+        The name of the underlying asset.
+    underlying_price: pd.Series
+        The price and recent performance of the underlying asset.
+    hasIV: bool
+        Implied volatility is not returned.
+    hasGreeks: bool
+        Greeks data is not returned.
+    """
+
     ticker = Options()
     ticker.get_quotes(symbol)
     return ticker

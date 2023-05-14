@@ -421,6 +421,34 @@ def get_underlying_price(symbol: str) -> pd.Series:
 
 
 class Options:
+    """Options data object for Intrinio
+
+    Attributes
+    ----------
+    SYMBOLS: list[str]
+        List of all ticker symbols supported by Intrinio.
+    symbol: str
+        The symbol entered by the user.
+    source: str
+        The source of the data, "Intrinio".
+    chains: pd.DataFrame
+        The complete options chain for the ticker.
+    expirations: list[str]
+        List of unique expiration dates. (YYYY-MM-DD)
+    strikes: list[float]
+        List of unique strike prices.
+    last_price: float
+        The last price of the underlying asset.
+    underlying_name: str
+        The name of the underlying asset.
+    underlying_price: pd.Series
+        The price and recent performance of the underlying asset.
+    hasIV: bool
+        Returns implied volatility.
+    hasGreeks: bool
+        True if greeks data is returned.
+    """
+
     def __init__(self) -> None:
         self.SYMBOLS: list = get_all_ticker_symbols()
         self.symbol: str = ""
@@ -475,7 +503,40 @@ class Options:
 
 @check_api_key(["API_INTRINIO_KEY"])
 def load_options(symbol: str, date: str = "") -> object:
-    """Loads options data from Intrinio."""
+    """Options data object for Intrinio.
+
+    Parameters
+    ----------
+    symbol : str
+        The ticker symbol to load.
+    date: Optional[str]
+        The date for EOD chains data.
+
+    Returns
+    -------
+    SYMBOLS: list[str]
+        List of all ticker symbols supported by Intrinio.
+    symbol: str
+        The symbol entered by the user.
+    source: str
+        The source of the data, "Intrinio".
+    chains: pd.DataFrame
+        The complete options chain for the ticker.
+    expirations: list[str]
+        List of unique expiration dates. (YYYY-MM-DD)
+    strikes: list[float]
+        List of unique strike prices.
+    last_price: float
+        The last price of the underlying asset.
+    underlying_name: str
+        The name of the underlying asset.
+    underlying_price: pd.Series
+        The price and recent performance of the underlying asset.
+    hasIV: bool
+        Returns implied volatility.
+    hasGreeks: bool
+        True if greeks data is returned.
+    """
 
     ticker = Options()
 

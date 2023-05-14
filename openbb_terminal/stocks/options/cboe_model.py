@@ -559,7 +559,39 @@ class Options:
 
 
 def load_options(symbol: str) -> object:
-    """Loads options data from CBOE."""
+    """Options data object for CBOE.
+
+    Parameters
+    ----------
+    symbol : str
+        The ticker symbol to load.
+
+    Returns
+    -------
+    SYMBOLS: list[str]
+        The CBOE symbol directory.
+    symbol: str
+        The symbol entered by the user.
+    source: str
+        The source of the data, "CBOE".
+    chains: pd.DataFrame
+        The complete options chain for the ticker.
+    expirations: list[str]
+        List of unique expiration dates. (YYYY-MM-DD)
+    strikes: list[float]
+        List of unique strike prices.
+    last_price: float
+        The last price of the underlying asset.
+    underlying_name: str
+        The name of the underlying asset.
+    underlying_price: pd.Series
+        The price and recent performance of the underlying asset.
+    hasIV: bool
+        Returns implied volatility.
+    hasGreeks: bool
+        Returns greeks data.
+    """
+
     options = Options()
     options.get_quotes(symbol)
 
