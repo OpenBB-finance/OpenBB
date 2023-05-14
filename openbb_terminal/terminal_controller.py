@@ -67,7 +67,7 @@ from openbb_terminal.terminal_helper import (
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
-
+# pylint: disable=too-many-statements,eval-used
 
 logger = logging.getLogger(__name__)
 
@@ -760,7 +760,7 @@ class TerminalController(BaseController):
                                                 values = eval(
                                                     f'ROUTINE_VARS["{VAR_NAME}"]'
                                                 )
-                                                if type(values) == list:
+                                                if isinstance(values, list):
                                                     templine = templine.replace(
                                                         match[0],
                                                         eval(f"values[{VAR_SLICE}]"),
