@@ -67,7 +67,7 @@ from openbb_terminal.terminal_helper import (
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
-# pylint: disable=too-many-statements,eval-used
+# pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
 
 logger = logging.getLogger(__name__)
 
