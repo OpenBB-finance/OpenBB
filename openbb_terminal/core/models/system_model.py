@@ -1,6 +1,7 @@
 import platform
-from typing import Literal
+from typing import List, Literal
 
+from pydantic import Field, root_validator, validator
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.models import BaseModel
@@ -35,12 +36,14 @@ class SystemModel(BaseModel):
     LOGGING_AWS_ACCESS_KEY_ID: str = "REPLACE_ME"
     LOGGING_AWS_SECRET_ACCESS_KEY: str = "REPLACE_ME"
     LOGGING_COMMIT_HASH: str = "REPLACE_ME"
+    LOGGING_BRANCH: str = "REPLACE_ME"
     LOGGING_FREQUENCY: Literal["D", "H", "M", "S"] = "H"
-    LOGGING_HANDLERS: Literal["stdout", "stderr", "noop", "file"] = "file"
+    LOGGING_HANDLERS: List[str] = Field(default_factory=lambda: ["file"])
     LOGGING_ROLLING_CLOCK: bool = False
     LOGGING_VERBOSITY: int = 20
     LOGGING_SUB_APP: str = "terminal"
     LOGGING_SUPPRESS: bool = False
+    LOGGING_SEND_TO_S3: bool = True
     LOG_COLLECT: bool = True
 
     # Personalization section
@@ -56,3 +59,30 @@ class SystemModel(BaseModel):
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()
+
+    @root_validator(allow_reuse=True)
+    @classmethod
+    def add_additional_handlers(cls, values):
+        if (
+            not any([values["TEST_MODE"], values["LOGGING_SUPPRESS"]])
+            and values["LOG_COLLECT"]
+            and "posthog" not in values["LOGGING_HANDLERS"]
+        ):
+            values["LOGGING_HANDLERS"].append("posthog")
+
+        return values
+
+    @root_validator(allow_reuse=True)
+    @classmethod
+    def validate_send_to_s3(cls, values):
+        if "posthog" in values["LOGGING_HANDLERS"] or values["LOG_COLLECT"] is False:
+            values["LOGGING_SEND_TO_S3"] = False
+        return values
+
+    @validator("LOGGING_HANDLERS", allow_reuse=True)
+    @classmethod
+    def validate_logging_handlers(cls, v):
+        for value in v:
+            if value not in ["stdout", "stderr", "noop", "file", "posthog"]:
+                raise ValueError("Invalid logging handler")
+        return v
