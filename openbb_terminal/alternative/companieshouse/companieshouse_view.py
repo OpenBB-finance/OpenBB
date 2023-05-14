@@ -159,17 +159,23 @@ def display_filings(company_number: str, export: str = "") -> None:
 def download_filing_document(
     company_number: str, company_name: str, transactionID: str, export: str = ""
 ) -> None:
-    """Display company's filing history.
+    """Download company's filing document.
 
     Parameters
     ----------
     company_number : str
         company_number to retrieve filing history for
 
+    company_name : str
+        company_name to retrieve filing document for, this is used to name the downloaded file for easy access
+
     transactionID : str
         transaction id for filing
 
+    >>> companies = openbb.alt.companieshouse.get_search_results("AstraZeneca")
+    >>> openbb.alt.companieshouse.get_filing_document("02723534","AstraZeneca","MzM1NzQ0NzI5NWFkaXF6a2N4")
     """
+
     results = companieshouse_model.get_filing_document(company_number, transactionID)
 
     if results.dataAvailable():
