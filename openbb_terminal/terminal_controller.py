@@ -11,7 +11,7 @@ import re
 import sys
 import time
 import webbrowser
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Match, Optional
 
@@ -73,12 +73,157 @@ logger = logging.getLogger(__name__)
 
 env_file = str(SETTINGS_ENV_FILE)
 
+# Necessary for OpenBB keywords
+MONTHS_VALUE = {
+    "JANUARY": 1,
+    "FEBRUARY": 2,
+    "MARCH": 3,
+    "APRIL": 4,
+    "MAY": 5,
+    "JUNE": 6,
+    "JULY": 7,
+    "AUGUST": 8,
+    "SEPTEMBER": 9,
+    "OCTOBER": 10,
+    "NOVEMBER": 11,
+    "DECEMBER": 12,
+}
+
+WEEKDAY_VALUE = {
+    "MONDAY": 0,
+    "TUESDAY": 1,
+    "WEDNESDAY": 2,
+    "THURSDAY": 3,
+    "FRIDAY": 4,
+    "SATURDAY": 5,
+    "SUNDAY": 6,
+}
+
 if is_installer():
     # Necessary for installer so that it can locate the correct certificates for
     # API calls and https
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
     os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     os.environ["SSL_CERT_FILE"] = certifi.where()
+
+
+def match_and_return_openbb_keyword_date(keyword: str) -> str:
+    """Return OpenBB keyword into date
+
+    Parameters
+    ----------
+    keyword : str
+        String with potential OpenBB keyword (e.g. 1MONTHAGO,LASTFRIDAY,3YEARSFROMNOW,NEXTTUESDAY)
+
+    Returns
+    ----------
+        str: Date with format YYYY-MM-DD
+    """
+    match = re.match(r"^\$(\d+)([A-Z]+)AGO$", keyword)
+    if match:
+        integer_value = int(match.group(1))
+        time_unit = match.group(2)
+        if time_unit == "DAYS":
+            return (datetime.today() - timedelta(days=integer_value)).strftime(
+                "%Y-%m-%d"
+            )
+        if time_unit == "MONTHS":
+            return (datetime.today() - timedelta(days=integer_value * 30)).strftime(
+                "%Y-%m-%d"
+            )
+        if time_unit == "YEARS":
+            return (datetime.today() - timedelta(days=integer_value * 365)).strftime(
+                "%Y-%m-%d"
+            )
+
+    match = re.match(r"^\$(\d+)([A-Z]+)FROMNOW$", keyword)
+    if match:
+        integer_value = int(match.group(1))
+        time_unit = match.group(2)
+        if time_unit == "DAYS":
+            return (datetime.today() + timedelta(days=integer_value)).strftime(
+                "%Y-%m-%d"
+            )
+        if time_unit == "MONTHS":
+            return (datetime.today() + timedelta(days=integer_value * 30)).strftime(
+                "%Y-%m-%d"
+            )
+        if time_unit == "YEARS":
+            return (datetime.today() + timedelta(days=integer_value * 365)).strftime(
+                "%Y-%m-%d"
+            )
+
+    match = re.search(r"\$LAST(\w+)", keyword)
+    if match:
+        time_unit = match.group(1)
+        # Check if it corresponds to a month
+        if time_unit in list(MONTHS_VALUE.keys()):
+            # Get the current month and year
+            now = datetime.now()
+
+            # Calculate the year and month for last month date
+            if now.month > MONTHS_VALUE[time_unit]:
+                # If the current month is greater than the last date month, it means it is this year
+                return datetime(now.year, MONTHS_VALUE[time_unit], 1).strftime(
+                    "%Y-%m-%d"
+                )
+
+            return datetime(now.year - 1, MONTHS_VALUE[time_unit], 1).strftime(
+                "%Y-%m-%d"
+            )
+
+        # Check if it corresponds to a week day
+        if time_unit in list(WEEKDAY_VALUE.keys()):
+            now = datetime.now()
+            if datetime.weekday(now) > WEEKDAY_VALUE[time_unit]:
+                return (
+                    now
+                    - timedelta(datetime.weekday(now))
+                    + timedelta(WEEKDAY_VALUE[time_unit])
+                ).strftime("%Y-%m-%d")
+            return (
+                now
+                - timedelta(7)
+                - timedelta(datetime.weekday(now))
+                + timedelta(WEEKDAY_VALUE[time_unit])
+            ).strftime("%Y-%m-%d")
+
+    match = re.search(r"\$NEXT(\w+)", keyword)
+    if match:
+        time_unit = match.group(1)
+        # Check if it corresponds to a month
+        if time_unit in list(MONTHS_VALUE.keys()):
+            # Get the current month and year
+            now = datetime.now()
+
+            # Calculate the year and month for next month date
+            if now.month < MONTHS_VALUE[time_unit]:
+                # If the current month is greater than the last date month, it means it is this year
+                return datetime(now.year, MONTHS_VALUE[time_unit], 1).strftime(
+                    "%Y-%m-%d"
+                )
+
+            return datetime(now.year + 1, MONTHS_VALUE[time_unit], 1).strftime(
+                "%Y-%m-%d"
+            )
+
+        # Check if it corresponds to a week day
+        if time_unit in list(WEEKDAY_VALUE.keys()):
+            now = datetime.now()
+            if datetime.weekday(now) < WEEKDAY_VALUE[time_unit]:
+                return (
+                    now
+                    - timedelta(datetime.weekday(now))
+                    + timedelta(WEEKDAY_VALUE[time_unit])
+                ).strftime("%Y-%m-%d")
+            return (
+                now
+                + timedelta(7)
+                - timedelta(datetime.weekday(now))
+                + timedelta(WEEKDAY_VALUE[time_unit])
+            ).strftime("%Y-%m-%d")
+
+    return ""
 
 
 class TerminalController(BaseController):
@@ -833,10 +978,24 @@ class TerminalController(BaseController):
                                                 ),
                                             )
                                         else:
-                                            console.print(
-                                                f"[red]Variable {VAR_NAME} not given for current routine script.[/red]"
+                                            # Check if this is an OpenBB keyword variable like
+                                            # 1MONTHAGO,LASTFRIDAY,3YEARSFROMNOW,NEXTTUESDAY
+                                            # and decode it into the right date if it exists
+                                            potential_date_match = (
+                                                match_and_return_openbb_keyword_date(
+                                                    VAR_NAME
+                                                )
                                             )
-                                            return
+                                            if potential_date_match:
+                                                templine = templine.replace(
+                                                    match[0], potential_date_match
+                                                )
+                                            else:
+                                                console.print(
+                                                    f"[red]Variable {VAR_NAME} not given for "
+                                                    "current routine script.[/red]"
+                                                )
+                                                return
 
                     lines_with_vars_replaced.append(templine)
 
