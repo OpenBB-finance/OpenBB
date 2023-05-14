@@ -158,7 +158,7 @@ class Momentum(PltTA):
             line=dict(color=self.inchart_colors[inchart_index], width=2),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         fig.add_annotation(
             xref="paper",
@@ -205,7 +205,7 @@ class Momentum(PltTA):
             textfont=dict(color=theme.down_color, size=14.5),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         fig.add_scatter(
             x=high.index,
@@ -217,7 +217,7 @@ class Momentum(PltTA):
             textfont=dict(color=theme.up_color, size=14.5),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
 
         fig.add_annotation(
@@ -554,7 +554,7 @@ class Momentum(PltTA):
             y=conversion_line,
             line=dict(color="orange", width=1),
             name="Tenkan-sen",
-            secondary_y=self.show_volume,
+            secondary_y=False,
             showlegend=True,
             opacity=1,
         )
@@ -563,7 +563,7 @@ class Momentum(PltTA):
             y=base_line,
             line=dict(color="blue", width=1),
             name="Kijun-sen",
-            secondary_y=self.show_volume,
+            secondary_y=False,
             showlegend=True,
             opacity=1,
         )
@@ -576,7 +576,7 @@ class Momentum(PltTA):
             fill="tonexty",
             fillcolor="rgba(0, 150, 0, 0.1)",
             name="Senkou Span A",
-            secondary_y=self.show_volume,
+            secondary_y=False,
             showlegend=False,
             opacity=0.2,
         )
@@ -588,7 +588,7 @@ class Momentum(PltTA):
             fillcolor="rgba(200, 0, 0, 0.1)",
             name="Senkou Span B",
             showlegend=False,
-            secondary_y=self.show_volume,
+            secondary_y=False,
             opacity=0.2,
         )
 
