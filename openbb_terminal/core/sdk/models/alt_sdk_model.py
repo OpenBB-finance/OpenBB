@@ -135,3 +135,6 @@ class AltCompaniesHouse(Category):
         self.get_filing_document = (
             lib.alt_companieshouse_companieshouse_model.get_filing_document
         )
+        self.download_filing_document = (
+            lib.alt_companieshouse_companieshouse_view.download_filing_document
+        )

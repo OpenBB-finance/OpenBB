@@ -23,6 +23,7 @@ import openbb_terminal.alternative.oss.runa_view as alt_oss_runa_view
 
 import openbb_terminal.alternative.realestate.landRegistry_model as alt_realestate_landRegistry_model
 import openbb_terminal.alternative.companieshouse.companieshouse_model as alt_companieshouse_companieshouse_model
+import openbb_terminal.alternative.companieshouse.companieshouse_view as alt_companieshouse_companieshouse_view
 
 
 # Crypto Helpers

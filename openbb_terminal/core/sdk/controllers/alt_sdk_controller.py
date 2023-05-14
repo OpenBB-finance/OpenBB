@@ -79,6 +79,7 @@ class AltController(model.AltRoot):
             `get_persons_with_significant_control`: Get people/organisations with significant control over company\n
             `get_filings`: Get company filing details\n
             `get_filing_document`: Get company filed document\n
+            `download_filing_document`: Download company filed document\n
         """
 
         return model.AltCompaniesHouse()
