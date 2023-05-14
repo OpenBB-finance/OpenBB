@@ -313,7 +313,6 @@ export const non_blocking = (func: Function, delay: number) => {
 	return function () {
 		// @ts-ignore
 		const context = this;
-		// rome-ignore lint/style/noArguments: <explanation>
 		const args = arguments;
 		clearTimeout(timeout);
 		timeout = setTimeout(() => func.apply(context, args), delay);
