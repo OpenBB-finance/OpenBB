@@ -98,7 +98,9 @@ class Options:
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = ""
-        self.underlying_price = pd.DataFrame()
+        self.underlying_price = pd.Series(dtype=object)
+        self.hasIV: bool
+        self.hasGreeks: bool
 
     def check_symbol(self, symbol: str) -> bool:
         """Checks if the symbol is valid."""
@@ -141,7 +143,7 @@ class Options:
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = ""
-        self.underlying_price = pd.DataFrame()
+        self.underlying_price = pd.Series(dtype=object)
 
         if symbol == "":
             print("Please enter a symbol.")
@@ -234,6 +236,9 @@ class Options:
             self.last_price = 0
             self.underlying_price = 0
 
+        self.hasIV = "impliedVolatility" in self.chains.columns
+        self.hasGreeks = "gamma" in self.chains.columns
+
         return self
 
     def get_eodchains(self, symbol: str = "", date: str = "") -> object:
@@ -272,7 +277,7 @@ class Options:
         self.strikes: list = []
         self.last_price: float = 0
         self.underlying_name: str = ""
-        self.underlying_price = pd.DataFrame()
+        self.underlying_price = pd.Series(dtype=object)
 
         symbol = symbol.upper()
         BASE_URL = "https://www.m-x.ca/en/trading/data/historical?symbol="
@@ -392,6 +397,9 @@ class Options:
         self.underlying_price.rename({"contractSymbol": "ticker"}, inplace=True)
         self.last_price = self.underlying_price["lastPrice"]
         self.chains = self.chains.iloc[:-1]
+
+        self.hasIV = "impliedVolatility" in self.chains.columns
+        self.hasGreeks = "gamma" in self.chains.columns
 
         return self
 
