@@ -1,4 +1,5 @@
 """Model for retrieving public options data from the Montreal Options Exchange."""
+
 from datetime import timedelta
 from typing import Optional
 
@@ -10,11 +11,11 @@ from openbb_terminal.helper_funcs import request
 
 __docformat__ = "numpy"
 
-cal = mcal.get_calendar(name="TSX")
-holidays = list(cal.regular_holidays.holidays().strftime("%Y-%m-%d"))
-
 # mypy: disable-error-code=no-redef
 
+
+cal = mcal.get_calendar(name="TSX")
+holidays = list(cal.regular_holidays.holidays().strftime("%Y-%m-%d"))
 
 def check_weekday(date: str) -> str:
     """Helper function to check if the input date is a weekday."""
@@ -249,7 +250,7 @@ class Options:
 
         if symbol not in self.SYMBOLS.index:
             print(
-                "The symbol, " f"{symbol}" ", does not have listed options.",
+                "The symbol, " f"{symbol}" ", was not found in the TMX listings.",
                 sep=None,
             )
             return self

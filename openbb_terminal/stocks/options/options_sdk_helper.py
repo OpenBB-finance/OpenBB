@@ -12,6 +12,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console, optional_rich_track
 from openbb_terminal.stocks.options import (
+    cboe_model,
     chartexchange_model,
     intrinio_model,
     nasdaq_model,
@@ -323,11 +324,13 @@ def load_options(
 ) -> object:
     """Loads options data from the list of sources."""
 
-    sources = ["YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
+    sources = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 
     if source not in sources:
         print("Invalid choice. Choose from: ", list(sources), sep=None)
         return
+    if source == "CBOE":
+        return cboe_model.load_options(symbol)
     if source == "Nasdaq":
         return nasdaq_model.load_options(symbol)
     if source == "YahooFinance":

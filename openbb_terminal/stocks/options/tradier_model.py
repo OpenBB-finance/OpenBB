@@ -59,13 +59,13 @@ sorted_chain_columns = [
 
 @check_api_key(["API_TRADIER_TOKEN"])
 def lookup_company(symbol: str):
-
-    response = request("https://sandbox.tradier.com/v1/markets/lookup",
-    params={"q": f"{symbol}"},
-    headers={
-        "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
-        "Accept": "application/json"
-    }
+    response = request(
+        "https://sandbox.tradier.com/v1/markets/lookup",
+        params={"q": f"{symbol}"},
+        headers={
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+            "Accept": "application/json",
+        },
     )
     return response.json()
 
@@ -335,6 +335,7 @@ def get_last_price(symbol: str):
         console.print("Error getting last price")
         return None
 
+
 @check_api_key(["API_TRADIER_TOKEN"])
 def get_underlying_price(symbol: str) -> pd.Series:
     """Gets the current price and performance of the underlying asset.
@@ -367,7 +368,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
 
 class Options:
     def __init__(self) -> None:
-        self.SYMBOLS= pd.DataFrame(lookup_company("")["securities"]["security"])
+        self.SYMBOLS = pd.DataFrame(lookup_company("")["securities"]["security"])
         self.symbol: str = ""
         self.source: str = "Tradier"
         self.chains = pd.DataFrame()
@@ -378,7 +379,6 @@ class Options:
         self.underlying_price = pd.Series(dtype=object)
         self.hasIV: bool
         self.hasGreeks: bool
-
 
     def get_quotes(self, symbol: str) -> object:
         self.symbol = symbol.upper()
@@ -396,9 +396,9 @@ class Options:
         self.hasGreeks = "gamma" in self.chains.columns
         return self
 
+
 def load_options(symbol: str) -> object:
     """Loads options data from Nasdaq."""
     ticker = Options()
     ticker.get_quotes(symbol)
     return ticker
-

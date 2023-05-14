@@ -419,6 +419,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
 
     return pd.Series(underlying_price)
 
+
 class Options:
     def __init__(self) -> None:
         self.SYMBOLS: list = get_all_ticker_symbols()
@@ -433,13 +434,12 @@ class Options:
         self.hasIV: bool
         self.hasGreeks: bool
 
-
     def get_quotes(self, symbol: str) -> object:
         self.symbol = symbol.upper()
         self.underlying_name = get_ticker_info(self.symbol)["name"]
         self.underlying_price = get_underlying_price(self.symbol)
         self.last_price = self.underlying_price["last_price"]
-        self.chains = get_full_option_chain(self.symbol, quiet = True)
+        self.chains = get_full_option_chain(self.symbol, quiet=True)
         self.chains.rename(columns={"code": "optionSymbol"}, inplace=True)
         self.expirations = []
         self.strikes = []
@@ -450,22 +450,18 @@ class Options:
         self.hasGreeks = "gamma" in self.chains.columns
         return self
 
-
-    def get_eod_chains(self, symbol:str, date: str) -> object:
+    def get_eod_chains(self, symbol: str, date: str) -> object:
         self.symbol = symbol.upper()
         if self.symbol not in self.SYMBOLS:
             print(f"{self.symbol}", "is not supported by Intrinio.")
             return self
         underlying = security.get_security_stock_prices(
-            self.symbol,
-            start_date=date,
-            end_date=date,
-            frequency="daily"
+            self.symbol, start_date=date, end_date=date, frequency="daily"
         ).to_dict()
         self.underlying_name = underlying["security"]["name"]
         self.underlying_price = pd.Series(underlying["stock_prices"][0])
         self.last_price = self.underlying_price["adj_close"]
-        self.chains = get_full_chain_eod(self.symbol, date, quiet = True)
+        self.chains = get_full_chain_eod(self.symbol, date, quiet=True)
         self.expirations = []
         self.strikes = []
         if not self.chains.empty:
@@ -475,6 +471,8 @@ class Options:
         self.hasGreeks = "gamma" in self.chains.columns
 
         return self
+
+
 @check_api_key(["API_INTRINIO_KEY"])
 def load_options(symbol: str, date: str = "") -> object:
     """Loads options data from Intrinio."""
