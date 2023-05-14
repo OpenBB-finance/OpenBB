@@ -13,7 +13,7 @@ import time
 import webbrowser
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Match, Optional
 
 import certifi
 import pandas as pd
@@ -683,12 +683,13 @@ class TerminalController(BaseController):
                 ]
 
                 ROUTINE_VARS = dict()
-                # Capture ARGV either as list if args separated by commas or as single value
-                ROUTINE_VARS["$ARGV"] = (
-                    ns_parser.routine_args
-                    if "," not in ns_parser.routine_args
-                    else ns_parser.routine_args.split(",")
-                )
+                if ns_parser.routine_args:
+                    # Capture ARGV either as list if args separated by commas or as single value
+                    ROUTINE_VARS["$ARGV"] = (
+                        ns_parser.routine_args
+                        if "," not in ns_parser.routine_args
+                        else ns_parser.routine_args.split(",")
+                    )
 
                 ## LOOK FOR NEW VARIABLES BEING DECLARED FROM USERS
                 lines_without_declarations = list()
@@ -741,75 +742,101 @@ class TerminalController(BaseController):
                         pattern = r"(?<!\$)(\$(\w+)(\[[^]]*\])?)(?![^\[]*\])"
 
                         # Find all matches of the pattern in the line
-                        matches = re.findall(pattern, line)
+                        matches: Optional[List[Match[str]]] = re.findall(pattern, line)
 
                         if matches:
                             for match in matches:
-                                VAR_NAME = "$" + match[1]
-                                VAR_SLICE = match[2][1:-1] if match[2] else ""
+                                if match:
+                                    VAR_NAME = "$" + match[1]
+                                    VAR_SLICE = match[2][1:-1] if match[2] else ""
 
-                                # Within a list refers to a single element
-                                if VAR_SLICE.isdigit():
-                                    # This is an edge case for when the user has a variable such as $DATE = 2022-01-01
-                                    # We want the user to be able to access it with $DATE or $DATE[0] and the latest
-                                    # in python will only take the first '2'
-                                    if VAR_SLICE == "0":
-                                        values = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
-                                        if type(values) == list:
-                                            templine = templine.replace(
-                                                match[0], eval(f"values[{VAR_SLICE}]")
-                                            )
+                                    # Within a list refers to a single element
+                                    if VAR_SLICE.isdigit():
+                                        # This is an edge case for when the user has a variable such as $DATE = 2022-01-01
+                                        # We want the user to be able to access it with $DATE or $DATE[0] and the latest
+                                        # in python will only take the first '2'
+                                        if VAR_SLICE == "0":
+                                            if VAR_NAME in ROUTINE_VARS:
+                                                values = eval(
+                                                    f'ROUTINE_VARS["{VAR_NAME}"]'
+                                                )
+                                                if type(values) == list:
+                                                    templine = templine.replace(
+                                                        match[0],
+                                                        eval(f"values[{VAR_SLICE}]"),
+                                                    )
+                                                else:
+                                                    templine = templine.replace(
+                                                        match[0], values
+                                                    )
+                                            else:
+                                                console.print(
+                                                    f"[red]Variable {VAR_NAME} not given "
+                                                    "for current routine script.[/red]"
+                                                )
+                                                return
+
                                         else:
-                                            templine = templine.replace(
-                                                match[0], values
-                                            )
+                                            if VAR_NAME in ROUTINE_VARS:
+                                                templine = templine.replace(
+                                                    match[0],
+                                                    eval(
+                                                        f'ROUTINE_VARS["{VAR_NAME}"][{VAR_SLICE}]'
+                                                    ),
+                                                )
+                                            else:
+                                                console.print(
+                                                    f"[red]Variable {VAR_NAME} not given "
+                                                    "for current routine script.[/red]"
+                                                )
+                                                return
 
-                                    else:
+                                    # Involves slicing which is a bit more tricky to use eval on
+                                    elif (
+                                        ":" in VAR_SLICE
+                                        and len(VAR_SLICE.split(":")) == 2
+                                        and (
+                                            VAR_SLICE.split(":")[0].isdigit()
+                                            or VAR_SLICE.split(":")[1].isdigit()
+                                        )
+                                    ):
+                                        slicing_tuple = "slice("
+                                        slicing_tuple += (
+                                            VAR_SLICE.split(":")[0]
+                                            if VAR_SLICE.split(":")[0].isdigit()
+                                            else "None"
+                                        )
+                                        slicing_tuple += ","
+                                        slicing_tuple += (
+                                            VAR_SLICE.split(":")[1]
+                                            if VAR_SLICE.split(":")[1].isdigit()
+                                            else "None"
+                                        )
+                                        slicing_tuple += ")"
+
                                         templine = templine.replace(
                                             match[0],
-                                            eval(
-                                                f'ROUTINE_VARS["{VAR_NAME}"][{VAR_SLICE}]'
+                                            ",".join(
+                                                eval(
+                                                    f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
+                                                )
                                             ),
                                         )
 
-                                # Involves slicing which is a bit more tricky to use eval on
-                                elif (
-                                    ":" in VAR_SLICE
-                                    and len(VAR_SLICE.split(":")) == 2
-                                    and (
-                                        VAR_SLICE.split(":")[0].isdigit()
-                                        or VAR_SLICE.split(":")[1].isdigit()
-                                    )
-                                ):
-                                    slicing_tuple = "slice("
-                                    slicing_tuple += (
-                                        VAR_SLICE.split(":")[0]
-                                        if VAR_SLICE.split(":")[0].isdigit()
-                                        else "None"
-                                    )
-                                    slicing_tuple += ","
-                                    slicing_tuple += (
-                                        VAR_SLICE.split(":")[1]
-                                        if VAR_SLICE.split(":")[1].isdigit()
-                                        else "None"
-                                    )
-                                    slicing_tuple += ")"
-
-                                    templine = templine.replace(
-                                        match[0],
-                                        ",".join(
-                                            eval(
-                                                f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
+                                    # Just replace value without slicing or list
+                                    else:
+                                        if VAR_NAME in ROUTINE_VARS:
+                                            templine = templine.replace(
+                                                match[0],
+                                                ",".join(
+                                                    eval(f'ROUTINE_VARS["{VAR_NAME}"]')
+                                                ),
                                             )
-                                        ),
-                                    )
-
-                                # Just replace value without slicing or list
-                                else:
-                                    templine = templine.replace(
-                                        match[0],
-                                        ",".join(eval(f'ROUTINE_VARS["{VAR_NAME}"]')),
-                                    )
+                                        else:
+                                            console.print(
+                                                f"[red]Variable {VAR_NAME} not given for current routine script.[/red]"
+                                            )
+                                            return
 
                     lines_with_vars_replaced.append(templine)
 
