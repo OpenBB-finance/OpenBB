@@ -17,16 +17,16 @@ interactions:
         1189000000,\n    \"deferredIncomeTax\": -234000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 162000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": -1287000000,\n    \"accountsPayables\": 719000000,\n
-        \   \"otherWorkingCapital\": 1601000000,\n    \"otherNonCashItems\": 252000000,\n
+        \   \"otherWorkingCapital\": 730000000,\n    \"otherNonCashItems\": 159000000,\n
         \   \"netCashProvidedByOperatingActivities\": 10803000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        0,\n    \"acquisitionsNet\": -13996000000,\n    \"purchasesOfInvestments\":
+        -1077000000,\n    \"acquisitionsNet\": -13996000000,\n    \"purchasesOfInvestments\":
         0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        -890000000,\n    \"netCashUsedForInvestingActivites\": -15679000000,\n    \"debtRepayment\":
+        -606000000,\n    \"netCashUsedForInvestingActivites\": -15679000000,\n    \"debtRepayment\":
         -7519000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         -209000000,\n    \"dividendsPaid\": -7812000000,\n    \"otherFinancingActivites\":
-        -2349000000,\n    \"netCashUsedProvidedByFinancingActivities\": 3806000000,\n
+        19346000000,\n    \"netCashUsedProvidedByFinancingActivities\": 3806000000,\n
         \   \"effectOfForexChangesOnCash\": -213000000,\n    \"netChangeInCash\":
-        3806000000,\n    \"cashAtEndOfPeriod\": 3217000000,\n    \"cashAtBeginningOfPeriod\":
+        -1283000000,\n    \"cashAtEndOfPeriod\": 3217000000,\n    \"cashAtBeginningOfPeriod\":
         4500000000,\n    \"operatingCashFlow\": 10803000000,\n    \"capitalExpenditure\":
         -1077000000,\n    \"freeCashFlow\": 9726000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/0001413329-23-000025-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/pm-20221231.htm\"\n
@@ -37,30 +37,30 @@ interactions:
         998000000,\n    \"deferredIncomeTax\": -17000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 1367000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": 549000000,\n    \"accountsPayables\": 653000000,\n
-        \   \"otherWorkingCapital\": 363000000,\n    \"otherNonCashItems\": -69000000,\n
+        \   \"otherWorkingCapital\": 165000000,\n    \"otherNonCashItems\": -91000000,\n
         \   \"netCashProvidedByOperatingActivities\": 11967000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        0,\n    \"acquisitionsNet\": -2145000000,\n    \"purchasesOfInvestments\":
+        -748000000,\n    \"acquisitionsNet\": -2145000000,\n    \"purchasesOfInvestments\":
         0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        69000000,\n    \"netCashUsedForInvestingActivites\": -2358000000,\n    \"debtRepayment\":
+        535000000,\n    \"netCashUsedForInvestingActivites\": -2358000000,\n    \"debtRepayment\":
         -3042000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         -775000000,\n    \"dividendsPaid\": -7580000000,\n    \"otherFinancingActivites\":
         -580000000,\n    \"netCashUsedProvidedByFinancingActivities\": -11977000000,\n
         \   \"effectOfForexChangesOnCash\": -417000000,\n    \"netChangeInCash\":
-        -11977000000,\n    \"cashAtEndOfPeriod\": 4500000000,\n    \"cashAtBeginningOfPeriod\":
+        -2785000000,\n    \"cashAtEndOfPeriod\": 4500000000,\n    \"cashAtBeginningOfPeriod\":
         7285000000,\n    \"operatingCashFlow\": 11967000000,\n    \"capitalExpenditure\":
         -748000000,\n    \"freeCashFlow\": 11219000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm\"\n
         \ },\n  {\n    \"date\": \"2020-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2021-02-09\",\n
         \   \"acceptedDate\": \"2021-02-09 16:20:37\",\n    \"calendarYear\": \"2020\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 8056000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 8592000000,\n    \"depreciationAndAmortization\":
         981000000,\n    \"deferredIncomeTax\": -143000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 128000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": -165000000,\n    \"accountsPayables\": 406000000,\n
-        \   \"otherWorkingCapital\": -139000000,\n    \"otherNonCashItems\": 790000000,\n
+        \   \"otherWorkingCapital\": -113000000,\n    \"otherNonCashItems\": 254000000,\n
         \   \"netCashProvidedByOperatingActivities\": 9812000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        0,\n    \"acquisitionsNet\": -47000000,\n    \"purchasesOfInvestments\": 0,\n
-        \   \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -602000000,\n    \"acquisitionsNet\": -47000000,\n    \"purchasesOfInvestments\":
+        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
         -1107000000,\n    \"netCashUsedForInvestingActivites\": -1154000000,\n    \"debtRepayment\":
         -4114000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         0,\n    \"dividendsPaid\": -7364000000,\n    \"otherFinancingActivites\":
@@ -73,15 +73,15 @@ interactions:
         \ },\n  {\n    \"date\": \"2019-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2020-02-07\",\n
         \   \"acceptedDate\": \"2020-02-07 06:47:13\",\n    \"calendarYear\": \"2019\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 7185000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 7728000000,\n    \"depreciationAndAmortization\":
         964000000,\n    \"deferredIncomeTax\": -141000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 755000000,\n    \"accountsReceivables\":
         -331000000,\n    \"inventory\": -548000000,\n    \"accountsPayables\": 451000000,\n
-        \   \"otherWorkingCapital\": 1183000000,\n    \"otherNonCashItems\": 1327000000,\n
+        \   \"otherWorkingCapital\": 1183000000,\n    \"otherNonCashItems\": 784000000,\n
         \   \"netCashProvidedByOperatingActivities\": 10090000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -852000000,\n    \"acquisitionsNet\": -1346000000,\n    \"purchasesOfInvestments\":
+        -852000000,\n    \"acquisitionsNet\": -1377000000,\n    \"purchasesOfInvestments\":
         0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        387000000,\n    \"netCashUsedForInvestingActivites\": -1811000000,\n    \"debtRepayment\":
+        -434000000,\n    \"netCashUsedForInvestingActivites\": -1811000000,\n    \"debtRepayment\":
         -5351000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         0,\n    \"dividendsPaid\": -7161000000,\n    \"otherFinancingActivites\":
         4451000000,\n    \"netCashUsedProvidedByFinancingActivities\": -8061000000,\n
@@ -93,15 +93,15 @@ interactions:
         \ },\n  {\n    \"date\": \"2018-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2019-02-07\",\n
         \   \"acceptedDate\": \"2019-02-07 15:09:20\",\n    \"calendarYear\": \"2018\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 7911000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 8286000000,\n    \"depreciationAndAmortization\":
         989000000,\n    \"deferredIncomeTax\": -100000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 164000000,\n    \"accountsReceivables\":
         53000000,\n    \"inventory\": -613000000,\n    \"accountsPayables\": -51000000,\n
-        \   \"otherWorkingCapital\": 775000000,\n    \"otherNonCashItems\": 514000000,\n
+        \   \"otherWorkingCapital\": 775000000,\n    \"otherNonCashItems\": 139000000,\n
         \   \"netCashProvidedByOperatingActivities\": 9478000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -1436000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
-        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        438000000,\n    \"netCashUsedForInvestingActivites\": -998000000,\n    \"debtRepayment\":
+        0,\n    \"acquisitionsNet\": -63000000,\n    \"purchasesOfInvestments\": 0,\n
+        \   \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -935000000,\n    \"netCashUsedForInvestingActivites\": -998000000,\n    \"debtRepayment\":
         -2484000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         0,\n    \"dividendsPaid\": -6885000000,\n    \"otherFinancingActivites\":
         -282000000,\n    \"netCashUsedProvidedByFinancingActivities\": -9651000000,\n
@@ -113,15 +113,15 @@ interactions:
         \ },\n  {\n    \"date\": \"2017-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2018-02-13\",\n
         \   \"acceptedDate\": \"2018-02-13 08:07:16\",\n    \"calendarYear\": \"2017\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 6035000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 6341000000,\n    \"depreciationAndAmortization\":
         875000000,\n    \"deferredIncomeTax\": -501000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 1879000000,\n    \"accountsReceivables\":
         -92000000,\n    \"inventory\": 730000000,\n    \"accountsPayables\": 425000000,\n
-        \   \"otherWorkingCapital\": 816000000,\n    \"otherNonCashItems\": 624000000,\n
+        \   \"otherWorkingCapital\": 816000000,\n    \"otherNonCashItems\": 318000000,\n
         \   \"netCashProvidedByOperatingActivities\": 8912000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -1548000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        0,\n    \"acquisitionsNet\": -111000000,\n    \"purchasesOfInvestments\":
         0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        -1466000000,\n    \"netCashUsedForInvestingActivites\": -3014000000,\n    \"debtRepayment\":
+        -2903000000,\n    \"netCashUsedForInvestingActivites\": -3014000000,\n    \"debtRepayment\":
         -4312000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         0,\n    \"dividendsPaid\": -6520000000,\n    \"otherFinancingActivites\":
         8063000000,\n    \"netCashUsedProvidedByFinancingActivities\": -2769000000,\n
@@ -133,15 +133,15 @@ interactions:
         \ },\n  {\n    \"date\": \"2016-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2017-02-14\",\n
         \   \"acceptedDate\": \"2017-02-14 08:22:52\",\n    \"calendarYear\": \"2016\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 6967000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 7250000000,\n    \"depreciationAndAmortization\":
         743000000,\n    \"deferredIncomeTax\": 182000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": -63000000,\n    \"accountsReceivables\":
         -1009000000,\n    \"inventory\": -695000000,\n    \"accountsPayables\": 373000000,\n
-        \   \"otherWorkingCapital\": 1268000000,\n    \"otherNonCashItems\": 248000000,\n
+        \   \"otherWorkingCapital\": 1268000000,\n    \"otherNonCashItems\": -35000000,\n
         \   \"netCashProvidedByOperatingActivities\": 8077000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -1172000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
-        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        204000000,\n    \"netCashUsedForInvestingActivites\": -968000000,\n    \"debtRepayment\":
+        0,\n    \"acquisitionsNet\": -41000000,\n    \"purchasesOfInvestments\": 0,\n
+        \   \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -927000000,\n    \"netCashUsedForInvestingActivites\": -968000000,\n    \"debtRepayment\":
         -2405000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         0,\n    \"dividendsPaid\": -6378000000,\n    \"otherFinancingActivites\":
         3370000000,\n    \"netCashUsedProvidedByFinancingActivities\": -5413000000,\n
@@ -153,15 +153,15 @@ interactions:
         \ },\n  {\n    \"date\": \"2015-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2016-02-17\",\n
         \   \"acceptedDate\": \"2016-02-17 10:25:14\",\n    \"calendarYear\": \"2015\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 6873000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 7032000000,\n    \"depreciationAndAmortization\":
         754000000,\n    \"deferredIncomeTax\": -18000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 66000000,\n    \"accountsReceivables\":
         647000000,\n    \"inventory\": -841000000,\n    \"accountsPayables\": 310000000,\n
-        \   \"otherWorkingCapital\": -50000000,\n    \"otherNonCashItems\": 190000000,\n
+        \   \"otherWorkingCapital\": -50000000,\n    \"otherNonCashItems\": 31000000,\n
         \   \"netCashProvidedByOperatingActivities\": 7865000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -960000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
-        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        252000000,\n    \"netCashUsedForInvestingActivites\": -708000000,\n    \"debtRepayment\":
+        0,\n    \"acquisitionsNet\": -55000000,\n    \"purchasesOfInvestments\": 0,\n
+        \   \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -653000000,\n    \"netCashUsedForInvestingActivites\": -708000000,\n    \"debtRepayment\":
         -1495000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         -48000000,\n    \"dividendsPaid\": -6250000000,\n    \"otherFinancingActivites\":
         3057000000,\n    \"netCashUsedProvidedByFinancingActivities\": -4736000000,\n
@@ -173,15 +173,15 @@ interactions:
         \ },\n  {\n    \"date\": \"2014-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2015-02-20\",\n
         \   \"acceptedDate\": \"2015-02-20 08:39:54\",\n    \"calendarYear\": \"2014\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 7493000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 7658000000,\n    \"depreciationAndAmortization\":
         889000000,\n    \"deferredIncomeTax\": -62000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": -918000000,\n    \"accountsReceivables\":
         -463000000,\n    \"inventory\": 105000000,\n    \"accountsPayables\": 177000000,\n
-        \   \"otherWorkingCapital\": -737000000,\n    \"otherNonCashItems\": 337000000,\n
+        \   \"otherWorkingCapital\": -737000000,\n    \"otherNonCashItems\": 172000000,\n
         \   \"netCashProvidedByOperatingActivities\": 7739000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -1153000000,\n    \"acquisitionsNet\": -110000000,\n    \"purchasesOfInvestments\":
+        0,\n    \"acquisitionsNet\": -139000000,\n    \"purchasesOfInvestments\":
         0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        267000000,\n    \"netCashUsedForInvestingActivites\": -996000000,\n    \"debtRepayment\":
+        -857000000,\n    \"netCashUsedForInvestingActivites\": -996000000,\n    \"debtRepayment\":
         -3327000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         -3833000000,\n    \"dividendsPaid\": -6035000000,\n    \"otherFinancingActivites\":
         6356000000,\n    \"netCashUsedProvidedByFinancingActivities\": -6839000000,\n
@@ -193,15 +193,15 @@ interactions:
         \ },\n  {\n    \"date\": \"2013-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2014-02-21\",\n
         \   \"acceptedDate\": \"2014-02-21 08:40:56\",\n    \"calendarYear\": \"2013\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 8576000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 8850000000,\n    \"depreciationAndAmortization\":
         882000000,\n    \"deferredIncomeTax\": -28000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": -210000000,\n    \"accountsReceivables\":
         -449000000,\n    \"inventory\": -1413000000,\n    \"accountsPayables\": 103000000,\n
-        \   \"otherWorkingCapital\": 1549000000,\n    \"otherNonCashItems\": 915000000,\n
+        \   \"otherWorkingCapital\": 1549000000,\n    \"otherNonCashItems\": 641000000,\n
         \   \"netCashProvidedByOperatingActivities\": 10135000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -1200000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        0,\n    \"acquisitionsNet\": -1418000000,\n    \"purchasesOfInvestments\":
         0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        -1480000000,\n    \"netCashUsedForInvestingActivites\": -2680000000,\n    \"debtRepayment\":
+        -1262000000,\n    \"netCashUsedForInvestingActivites\": -2680000000,\n    \"debtRepayment\":
         -4686000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
         -5963000000,\n    \"dividendsPaid\": -5720000000,\n    \"otherFinancingActivites\":
         8154000000,\n    \"netCashUsedProvidedByFinancingActivities\": -8215000000,\n
@@ -213,35 +213,34 @@ interactions:
         \ },\n  {\n    \"date\": \"2012-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2013-02-22\",\n
         \   \"acceptedDate\": \"2013-02-22 12:13:08\",\n    \"calendarYear\": \"2012\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 8800000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 9154000000,\n    \"depreciationAndAmortization\":
         898000000,\n    \"deferredIncomeTax\": -248000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": -661000000,\n    \"accountsReceivables\":
         -398000000,\n    \"inventory\": -728000000,\n    \"accountsPayables\": 10000000,\n
-        \   \"otherWorkingCapital\": 455000000,\n    \"otherNonCashItems\": 632000000,\n
+        \   \"otherWorkingCapital\": 455000000,\n    \"otherNonCashItems\": 278000000,\n
         \   \"netCashProvidedByOperatingActivities\": 9421000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -1056000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
-        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        64000000,\n    \"netCashUsedForInvestingActivites\": -992000000,\n    \"debtRepayment\":
-        -3457000000,\n    \"commonStockIssued\": 1000000,\n    \"commonStockRepurchased\":
-        -6525000000,\n    \"dividendsPaid\": -5404000000,\n    \"otherFinancingActivites\":
-        7285000000,\n    \"netCashUsedProvidedByFinancingActivities\": -8100000000,\n
-        \   \"effectOfForexChangesOnCash\": 104000000,\n    \"netChangeInCash\": 433000000,\n
-        \   \"cashAtEndOfPeriod\": 2983000000,\n    \"cashAtBeginningOfPeriod\": 2550000000,\n
-        \   \"operatingCashFlow\": 9421000000,\n    \"capitalExpenditure\": -1056000000,\n
-        \   \"freeCashFlow\": 8365000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332913000019/0001413329-13-000019-index.htm\",\n
+        0,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": 0,\n    \"salesMaturitiesOfInvestments\":
+        0,\n    \"otherInvestingActivites\": -992000000,\n    \"netCashUsedForInvestingActivites\":
+        -992000000,\n    \"debtRepayment\": -3457000000,\n    \"commonStockIssued\":
+        1000000,\n    \"commonStockRepurchased\": -6525000000,\n    \"dividendsPaid\":
+        -5404000000,\n    \"otherFinancingActivites\": 7285000000,\n    \"netCashUsedProvidedByFinancingActivities\":
+        -8100000000,\n    \"effectOfForexChangesOnCash\": 104000000,\n    \"netChangeInCash\":
+        433000000,\n    \"cashAtEndOfPeriod\": 2983000000,\n    \"cashAtBeginningOfPeriod\":
+        2550000000,\n    \"operatingCashFlow\": 9421000000,\n    \"capitalExpenditure\":
+        -1056000000,\n    \"freeCashFlow\": 8365000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332913000019/0001413329-13-000019-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332913000019/pm1231201210-k.htm\"\n
         \ },\n  {\n    \"date\": \"2011-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2012-02-24\",\n
         \   \"acceptedDate\": \"2012-02-24 09:29:03\",\n    \"calendarYear\": \"2011\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 8591000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 8879000000,\n    \"depreciationAndAmortization\":
         993000000,\n    \"deferredIncomeTax\": 15000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 834000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": -36000000,\n    \"accountsPayables\": 199000000,\n
-        \   \"otherWorkingCapital\": 65000000,\n    \"otherNonCashItems\": 96000000,\n
+        \   \"otherWorkingCapital\": 0,\n    \"otherNonCashItems\": -192000000,\n
         \   \"netCashProvidedByOperatingActivities\": 10529000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -897000000,\n    \"acquisitionsNet\": -80000000,\n    \"purchasesOfInvestments\":
-        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        -55000000,\n    \"netCashUsedForInvestingActivites\": -1032000000,\n    \"debtRepayment\":
+        0,\n    \"acquisitionsNet\": -80000000,\n    \"purchasesOfInvestments\": 0,\n
+        \   \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -952000000,\n    \"netCashUsedForInvestingActivites\": -1032000000,\n    \"debtRepayment\":
         -2630000000,\n    \"commonStockIssued\": 75000000,\n    \"commonStockRepurchased\":
         -5372000000,\n    \"dividendsPaid\": -4788000000,\n    \"otherFinancingActivites\":
         4377000000,\n    \"netCashUsedProvidedByFinancingActivities\": -8338000000,\n
@@ -253,15 +252,15 @@ interactions:
         \ },\n  {\n    \"date\": \"2010-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2011-02-25\",\n
         \   \"acceptedDate\": \"2011-02-25 12:11:25\",\n    \"calendarYear\": \"2010\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 7259000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 7498000000,\n    \"depreciationAndAmortization\":
         932000000,\n    \"deferredIncomeTax\": 101000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 1255000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": 1071000000,\n    \"accountsPayables\": -72000000,\n
-        \   \"otherWorkingCapital\": 952000000,\n    \"otherNonCashItems\": -110000000,\n
+        \   \"otherWorkingCapital\": 0,\n    \"otherNonCashItems\": -349000000,\n
         \   \"netCashProvidedByOperatingActivities\": 9437000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -713000000,\n    \"acquisitionsNet\": -83000000,\n    \"purchasesOfInvestments\":
-        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        86000000,\n    \"netCashUsedForInvestingActivites\": -710000000,\n    \"debtRepayment\":
+        0,\n    \"acquisitionsNet\": -83000000,\n    \"purchasesOfInvestments\": 0,\n
+        \   \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -627000000,\n    \"netCashUsedForInvestingActivites\": -710000000,\n    \"debtRepayment\":
         -183000000,\n    \"commonStockIssued\": 229000000,\n    \"commonStockRepurchased\":
         -5030000000,\n    \"dividendsPaid\": -4423000000,\n    \"otherFinancingActivites\":
         829000000,\n    \"netCashUsedProvidedByFinancingActivities\": -8578000000,\n
@@ -273,15 +272,15 @@ interactions:
         \ },\n  {\n    \"date\": \"2009-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2010-02-26\",\n
         \   \"acceptedDate\": \"2010-02-26 08:23:45\",\n    \"calendarYear\": \"2009\",\n
-        \   \"period\": \"FY\",\n    \"netIncome\": 6342000000,\n    \"depreciationAndAmortization\":
+        \   \"period\": \"FY\",\n    \"netIncome\": 6552000000,\n    \"depreciationAndAmortization\":
         853000000,\n    \"deferredIncomeTax\": 129000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 552000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": 660000000,\n    \"accountsPayables\": -116000000,\n
-        \   \"otherWorkingCapital\": 3504000000,\n    \"otherNonCashItems\": 8000000,\n
+        \   \"otherWorkingCapital\": 0,\n    \"otherNonCashItems\": -202000000,\n
         \   \"netCashProvidedByOperatingActivities\": 7884000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -715000000,\n    \"acquisitionsNet\": -429000000,\n    \"purchasesOfInvestments\":
+        0,\n    \"acquisitionsNet\": -429000000,\n    \"purchasesOfInvestments\":
         0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        46000000,\n    \"netCashUsedForInvestingActivites\": -1098000000,\n    \"debtRepayment\":
+        -669000000,\n    \"netCashUsedForInvestingActivites\": -1098000000,\n    \"debtRepayment\":
         -101000000,\n    \"commonStockIssued\": 177000000,\n    \"commonStockRepurchased\":
         -5625000000,\n    \"dividendsPaid\": -4327000000,\n    \"otherFinancingActivites\":
         2965000000,\n    \"netCashUsedProvidedByFinancingActivities\": -6911000000,\n
@@ -297,82 +296,80 @@ interactions:
         842000000,\n    \"deferredIncomeTax\": 5000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": -133000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": -914000000,\n    \"accountsPayables\": -90000000,\n
-        \   \"otherWorkingCapital\": 4795000000,\n    \"otherNonCashItems\": 331000000,\n
-        \   \"netCashProvidedByOperatingActivities\": 7935000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -1099000000,\n    \"acquisitionsNet\": -1663000000,\n    \"purchasesOfInvestments\":
-        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        -399000000,\n    \"netCashUsedForInvestingActivites\": -3161000000,\n    \"debtRepayment\":
-        -5736000000,\n    \"commonStockIssued\": 118000000,\n    \"commonStockRepurchased\":
-        -5256000000,\n    \"dividendsPaid\": -5079000000,\n    \"otherFinancingActivites\":
-        11775000000,\n    \"netCashUsedProvidedByFinancingActivities\": -4178000000,\n
-        \   \"effectOfForexChangesOnCash\": -566000000,\n    \"netChangeInCash\":
+        \   \"otherWorkingCapital\": 0,\n    \"otherNonCashItems\": 331000000,\n    \"netCashProvidedByOperatingActivities\":
+        7935000000,\n    \"investmentsInPropertyPlantAndEquipment\": 0,\n    \"acquisitionsNet\":
+        -1663000000,\n    \"purchasesOfInvestments\": 0,\n    \"salesMaturitiesOfInvestments\":
+        0,\n    \"otherInvestingActivites\": -1498000000,\n    \"netCashUsedForInvestingActivites\":
+        -3161000000,\n    \"debtRepayment\": -5736000000,\n    \"commonStockIssued\":
+        118000000,\n    \"commonStockRepurchased\": -5256000000,\n    \"dividendsPaid\":
+        -5079000000,\n    \"otherFinancingActivites\": 11775000000,\n    \"netCashUsedProvidedByFinancingActivities\":
+        -4178000000,\n    \"effectOfForexChangesOnCash\": -566000000,\n    \"netChangeInCash\":
         30000000,\n    \"cashAtEndOfPeriod\": 1531000000,\n    \"cashAtBeginningOfPeriod\":
         1501000000,\n    \"operatingCashFlow\": 7935000000,\n    \"capitalExpenditure\":
         -1099000000,\n    \"freeCashFlow\": 6836000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312509038765/0001193125-09-038765-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312509038765/d10k.htm\"\n
         \ },\n  {\n    \"date\": \"2007-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2007-12-31\",\n
-        \   \"acceptedDate\": \"2007-12-30 19:00:00\",\n    \"calendarYear\": \"2007\",\n
+        \   \"acceptedDate\": \"2007-12-31 00:00:00\",\n    \"calendarYear\": \"2007\",\n
         \   \"period\": \"FY\",\n    \"netIncome\": 6026000000,\n    \"depreciationAndAmortization\":
         748000000,\n    \"deferredIncomeTax\": -21000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": -1547000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": -1264000000,\n    \"accountsPayables\": 38000000,\n
-        \   \"otherWorkingCapital\": 6501000000,\n    \"otherNonCashItems\": 383000000,\n
-        \   \"netCashProvidedByOperatingActivities\": 5589000000,\n    \"investmentsInPropertyPlantAndEquipment\":
-        -1072000000,\n    \"acquisitionsNet\": -1432000000,\n    \"purchasesOfInvestments\":
-        0,\n    \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
-        -82000000,\n    \"netCashUsedForInvestingActivites\": -2586000000,\n    \"debtRepayment\":
-        -3381000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
-        0,\n    \"dividendsPaid\": -6560000000,\n    \"otherFinancingActivites\":
-        6572000000,\n    \"netCashUsedProvidedByFinancingActivities\": -3369000000,\n
-        \   \"effectOfForexChangesOnCash\": 346000000,\n    \"netChangeInCash\": -20000000,\n
-        \   \"cashAtEndOfPeriod\": 1656000000,\n    \"cashAtBeginningOfPeriod\": 1676000000,\n
-        \   \"operatingCashFlow\": 5589000000,\n    \"capitalExpenditure\": -1072000000,\n
-        \   \"freeCashFlow\": 4517000000,\n    \"link\": \"\",\n    \"finalLink\":
-        \"\"\n  },\n  {\n    \"date\": \"2006-12-31\",\n    \"symbol\": \"PM\",\n
+        \   \"otherWorkingCapital\": 0,\n    \"otherNonCashItems\": 383000000,\n    \"netCashProvidedByOperatingActivities\":
+        5589000000,\n    \"investmentsInPropertyPlantAndEquipment\": 0,\n    \"acquisitionsNet\":
+        -1432000000,\n    \"purchasesOfInvestments\": 0,\n    \"salesMaturitiesOfInvestments\":
+        0,\n    \"otherInvestingActivites\": -1154000000,\n    \"netCashUsedForInvestingActivites\":
+        -2586000000,\n    \"debtRepayment\": -3381000000,\n    \"commonStockIssued\":
+        0,\n    \"commonStockRepurchased\": 0,\n    \"dividendsPaid\": -6560000000,\n
+        \   \"otherFinancingActivites\": 6572000000,\n    \"netCashUsedProvidedByFinancingActivities\":
+        -3369000000,\n    \"effectOfForexChangesOnCash\": 346000000,\n    \"netChangeInCash\":
+        -20000000,\n    \"cashAtEndOfPeriod\": 1656000000,\n    \"cashAtBeginningOfPeriod\":
+        1676000000,\n    \"operatingCashFlow\": 5589000000,\n    \"capitalExpenditure\":
+        -1072000000,\n    \"freeCashFlow\": 4517000000,\n    \"link\": null,\n    \"finalLink\":
+        null\n  },\n  {\n    \"date\": \"2006-12-31\",\n    \"symbol\": \"PM\",\n
         \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\":
-        \"2006-12-31\",\n    \"acceptedDate\": \"2006-12-30 19:00:00\",\n    \"calendarYear\":
+        \"2006-12-31\",\n    \"acceptedDate\": \"2006-12-31 00:00:00\",\n    \"calendarYear\":
         \"2006\",\n    \"period\": \"FY\",\n    \"netIncome\": 6146000000,\n    \"depreciationAndAmortization\":
         658000000,\n    \"deferredIncomeTax\": 226000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": -730000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": -1077000000,\n    \"accountsPayables\": 0,\n    \"otherWorkingCapital\":
-        4936000000,\n    \"otherNonCashItems\": -64000000,\n    \"netCashProvidedByOperatingActivities\":
+        0,\n    \"otherNonCashItems\": -64000000,\n    \"netCashProvidedByOperatingActivities\":
         6236000000,\n    \"investmentsInPropertyPlantAndEquipment\": -886000000,\n
-        \   \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": 0,\n    \"salesMaturitiesOfInvestments\":
-        0,\n    \"otherInvestingActivites\": 447000000,\n    \"netCashUsedForInvestingActivites\":
-        -439000000,\n    \"debtRepayment\": 0,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
-        0,\n    \"dividendsPaid\": -2780000000,\n    \"otherFinancingActivites\":
-        -2637000000,\n    \"netCashUsedProvidedByFinancingActivities\": -5417000000,\n
-        \   \"effectOfForexChangesOnCash\": 87000000,\n    \"netChangeInCash\": 467000000,\n
-        \   \"cashAtEndOfPeriod\": 1676000000,\n    \"cashAtBeginningOfPeriod\": 1209000000,\n
-        \   \"operatingCashFlow\": 6236000000,\n    \"capitalExpenditure\": -886000000,\n
-        \   \"freeCashFlow\": 5350000000,\n    \"link\": \"\",\n    \"finalLink\":
-        \"\"\n  },\n  {\n    \"date\": \"2005-12-31\",\n    \"symbol\": \"PM\",\n
+        \   \"acquisitionsNet\": 516000000,\n    \"purchasesOfInvestments\": 0,\n
+        \   \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        -69000000,\n    \"netCashUsedForInvestingActivites\": -439000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\": 0,\n    \"dividendsPaid\":
+        -2780000000,\n    \"otherFinancingActivites\": -2637000000,\n    \"netCashUsedProvidedByFinancingActivities\":
+        -5417000000,\n    \"effectOfForexChangesOnCash\": 87000000,\n    \"netChangeInCash\":
+        467000000,\n    \"cashAtEndOfPeriod\": 1676000000,\n    \"cashAtBeginningOfPeriod\":
+        1209000000,\n    \"operatingCashFlow\": 6236000000,\n    \"capitalExpenditure\":
+        -886000000,\n    \"freeCashFlow\": 5350000000,\n    \"link\": null,\n    \"finalLink\":
+        null\n  },\n  {\n    \"date\": \"2005-12-31\",\n    \"symbol\": \"PM\",\n
         \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\":
-        \"2005-12-31\",\n    \"acceptedDate\": \"2005-12-30 19:00:00\",\n    \"calendarYear\":
+        \"2005-12-31\",\n    \"acceptedDate\": \"2005-12-31 00:00:00\",\n    \"calendarYear\":
         \"2005\",\n    \"period\": \"FY\",\n    \"netIncome\": 5620000000,\n    \"depreciationAndAmortization\":
         527000000,\n    \"deferredIncomeTax\": -746000000,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": -370000000,\n    \"accountsReceivables\":
         0,\n    \"inventory\": -441000000,\n    \"accountsPayables\": 0,\n    \"otherWorkingCapital\":
-        3691000000,\n    \"otherNonCashItems\": 127000000,\n    \"netCashProvidedByOperatingActivities\":
+        0,\n    \"otherNonCashItems\": 127000000,\n    \"netCashProvidedByOperatingActivities\":
         5158000000,\n    \"investmentsInPropertyPlantAndEquipment\": -736000000,\n
-        \   \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": 0,\n    \"salesMaturitiesOfInvestments\":
-        0,\n    \"otherInvestingActivites\": -4886000000,\n    \"netCashUsedForInvestingActivites\":
-        -5622000000,\n    \"debtRepayment\": 0,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
-        0,\n    \"dividendsPaid\": -7682000000,\n    \"otherFinancingActivites\":
-        4718000000,\n    \"netCashUsedProvidedByFinancingActivities\": -2964000000,\n
-        \   \"effectOfForexChangesOnCash\": -359000000,\n    \"netChangeInCash\":
+        \   \"acquisitionsNet\": -4932000000,\n    \"purchasesOfInvestments\": 0,\n
+        \   \"salesMaturitiesOfInvestments\": 0,\n    \"otherInvestingActivites\":
+        46000000,\n    \"netCashUsedForInvestingActivites\": -5622000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\": 0,\n    \"dividendsPaid\":
+        -7682000000,\n    \"otherFinancingActivites\": 4718000000,\n    \"netCashUsedProvidedByFinancingActivities\":
+        -2964000000,\n    \"effectOfForexChangesOnCash\": -359000000,\n    \"netChangeInCash\":
         -3787000000,\n    \"cashAtEndOfPeriod\": 1209000000,\n    \"cashAtBeginningOfPeriod\":
         4996000000,\n    \"operatingCashFlow\": 5158000000,\n    \"capitalExpenditure\":
-        -736000000,\n    \"freeCashFlow\": 4422000000,\n    \"link\": \"\",\n    \"finalLink\":
-        \"\"\n  },\n  {\n    \"date\": \"2003-12-31\",\n    \"symbol\": \"PM\",\n
+        -736000000,\n    \"freeCashFlow\": 4422000000,\n    \"link\": null,\n    \"finalLink\":
+        null\n  },\n  {\n    \"date\": \"2003-12-31\",\n    \"symbol\": \"PM\",\n
         \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\":
-        \"2003-12-31\",\n    \"acceptedDate\": \"2003-12-30 19:00:00\",\n    \"calendarYear\":
-        \"2003\",\n    \"period\": \"FY\",\n    \"netIncome\": 3975000000,\n    \"depreciationAndAmortization\":
+        \"2003-12-31\",\n    \"acceptedDate\": \"2003-12-31 00:00:00\",\n    \"calendarYear\":
+        \"2003\",\n    \"period\": \"FY\",\n    \"netIncome\": 0,\n    \"depreciationAndAmortization\":
         370000000,\n    \"deferredIncomeTax\": 0,\n    \"stockBasedCompensation\":
         0,\n    \"changeInWorkingCapital\": 0,\n    \"accountsReceivables\": 0,\n
         \   \"inventory\": 0,\n    \"accountsPayables\": 0,\n    \"otherWorkingCapital\":
-        11053000000,\n    \"otherNonCashItems\": 285000000,\n    \"netCashProvidedByOperatingActivities\":
+        0,\n    \"otherNonCashItems\": 4260000000,\n    \"netCashProvidedByOperatingActivities\":
         4630000000,\n    \"investmentsInPropertyPlantAndEquipment\": 0,\n    \"acquisitionsNet\":
         0,\n    \"purchasesOfInvestments\": 0,\n    \"salesMaturitiesOfInvestments\":
         0,\n    \"otherInvestingActivites\": -1509000000,\n    \"netCashUsedForInvestingActivites\":
@@ -381,8 +378,8 @@ interactions:
         \   \"netCashUsedProvidedByFinancingActivities\": -2601000000,\n    \"effectOfForexChangesOnCash\":
         0,\n    \"netChangeInCash\": 0,\n    \"cashAtEndOfPeriod\": 0,\n    \"cashAtBeginningOfPeriod\":
         0,\n    \"operatingCashFlow\": 4630000000,\n    \"capitalExpenditure\": -586000000,\n
-        \   \"freeCashFlow\": 4044000000,\n    \"link\": \"\",\n    \"finalLink\":
-        \"\"\n  }\n]"
+        \   \"freeCashFlow\": 4044000000,\n    \"link\": null,\n    \"finalLink\":
+        null\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -398,15 +395,15 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '30135'
+      - '30061'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 07 Mar 2023 17:09:14 GMT
+      - Wed, 10 May 2023 22:06:29 GMT
       ETag:
-      - W/"75b7-WgWMx6yP1zFZWeWdPEMX/vvnLmI"
+      - W/"756d-dhjqSDXBCNtUSFj9R/X8+y+xVAU"
       Server:
-      - nginx/1.14.0 (Ubuntu)
+      - nginx/1.18.0 (Ubuntu)
       Vary:
       - Accept-Encoding
       X-Frame-Options:

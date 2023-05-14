@@ -29,7 +29,7 @@ const Select = ({
     }[];
   }[];
 }) => {
-  const onlyOneGroup = groups.length === 1;
+  const onlyOneGroup = groups?.length === 1;
   return (
     <SelectPrimitive.Root value={value} onValueChange={onChange}>
       <SelectPrimitive.Group
@@ -60,6 +60,7 @@ const Select = ({
             {onlyOneGroup ? (
               <SelectPrimitive.Group>
                 {groups[0].items.map((item) => (
+                  //@ts-ignore
                   <SelectItem value={item.value} disabled={item.disabled}>
                     {item.label}
                   </SelectItem>
@@ -72,6 +73,7 @@ const Select = ({
                     {group.label}
                   </SelectPrimitive.Label>
                   {group.items.map((item) => (
+                    //@ts-ignore
                     <SelectItem
                       key={item.value}
                       value={item.value}
@@ -94,6 +96,7 @@ const Select = ({
 };
 
 const SelectItem = forwardRef(
+  //@ts-ignore
   ({ children, className, ...props }, forwardedRef) => {
     return (
       <SelectPrimitive.Item
@@ -102,6 +105,7 @@ const SelectItem = forwardRef(
           className
         )}
         {...props}
+        //@ts-ignore
         ref={forwardedRef}
       >
         <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

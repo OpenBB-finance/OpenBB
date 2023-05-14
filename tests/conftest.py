@@ -39,6 +39,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 
 
 class Record:
@@ -58,12 +59,16 @@ class Record:
         else:
             raise AttributeError(f"Unsupported type : {type(data)}")
 
-        return string_value
+        return string_value.replace("\r\n", "\n")
 
     @staticmethod
     def load_string(path: str) -> Optional[str]:
         if os.path.exists(path):
-            with open(file=path, encoding="utf-8") as f:
+            with open(
+                file=path,
+                encoding="utf-8",
+                newline="\n",  # Windows: newline="\r\n" Which is BAD
+            ) as f:
                 return f.read()
         else:
             return None
@@ -124,7 +129,12 @@ class Record:
             pathlib.Path(record_dir_name).mkdir(parents=True, exist_ok=True)
 
         # SAVE FILE
-        with open(file=record_path, mode="w", encoding="utf-8") as f:
+        with open(
+            file=record_path,
+            mode="w",
+            encoding="utf-8",
+            newline="\n",  # Windows: newline="\r\n" Which is BAD
+        ) as f:
             f.write(captured)
 
         # RELOAD RECORDED CONTENT

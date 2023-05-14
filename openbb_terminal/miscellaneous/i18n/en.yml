@@ -7,7 +7,6 @@ en:
   update: attempt to update the terminal automatically (GitHub version)
   wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
   news: display news articles based on term and data sources
-  news_biztoc: display trending and search news articles from BizToc (https://biztoc.com)
   keys: set API keys and check their validity
   featflags: enable and disable feature flags
   sources: select your preferred data sources

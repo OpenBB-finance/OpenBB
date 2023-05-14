@@ -8,6 +8,7 @@ from typing import List, Optional
 
 import pandas as pd
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -196,7 +197,7 @@ def screener(
                     console.print(
                         f"Wrong sort column provided! Provide one of these: {', '.join(d_cols_to_sort[data_type])}"
                     )
-
+        df_original = df_screen.copy()
         df_screen = df_screen.fillna("")
 
         if data_type == "ownership":
@@ -235,9 +236,12 @@ def screener(
                 lambda x: lambda_long_number_format(x, 1)
             )
 
+        if not get_current_user().preferences.USE_INTERACTIVE_DF:
+            df_original = df_screen
+
         print_rich_table(
-            df_screen,
-            headers=list(df_screen.columns),
+            df_original,
+            headers=list(df_original.columns),
             show_index=False,
             title="Finviz Screener",
             export=bool(export),
@@ -248,7 +252,7 @@ def screener(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             data_type,
-            df_screen,
+            df_original,
             sheet_name,
         )
 
