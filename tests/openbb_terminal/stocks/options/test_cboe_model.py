@@ -71,7 +71,5 @@ def test_hasGreeks_hasIV():
     ticker = cboe_model.Options()
     assert ticker.chains.empty
     ticker = cboe_model.load_options("TSLA")
-    ticker.hasGreeks
-    ticker.hasIV
     assert ticker.hasGreeks is True
     assert ticker.hasIV is True

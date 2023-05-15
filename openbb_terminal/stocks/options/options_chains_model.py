@@ -103,6 +103,5 @@ def load_options_chains(
         if date != "":
             return load_intrinio(symbol, date)
         return load_intrinio(symbol)
-    else:
-        source == "CBOE"
-        return load_cboe(symbol)
+
+    return load_cboe(symbol)
