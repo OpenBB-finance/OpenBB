@@ -147,7 +147,7 @@ export async function downloadCSV(
 			});
 		}
 
-		if (trace.type === "scatter") {
+		if (["scatter", "bar"].includes(trace.type)) {
 			if (columns.length === 0) {
 				columns.push(xaxis);
 			}
@@ -378,4 +378,5 @@ export async function downloadImage(
 		hidemodebar(false);
 		loading(false);
 	}
+	loading(false);
 }
