@@ -24,7 +24,7 @@ export default function Pagination({
   currentPage: number;
   setCurrentPage: (value: number) => void;
 }) {
-  const totalRows = table.getFilteredRowModel().rows.length;
+  const totalRows = table.getFilteredRowModel().rows.length || 0;
 
   return (
     <div className="hidden md:flex items-center gap-8">

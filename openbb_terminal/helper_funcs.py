@@ -43,10 +43,7 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-from openbb_terminal import (
-    OpenBBFigure,
-    plots_backend,
-)
+from openbb_terminal import OpenBBFigure, plots_backend
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.core.session.current_system import get_current_system
@@ -616,7 +613,7 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
 
 
 def check_positive_float(value) -> float:
-    """Argparse type to check positive int."""
+    """Argparse type to check positive float."""
     new_value = float(value)
     if new_value <= 0:
         log_and_raise(

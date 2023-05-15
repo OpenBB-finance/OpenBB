@@ -1,56 +1,56 @@
-Fiscal Date Ending                           2018     2019     2020     2021     2022
-Period                                         FY       FY       FY       FY       FY
-Current ratio                               1.131    1.089    1.096    0.920    1.905
-Quick ratio                                 0.591    0.562    0.563    0.438    1.905
-Cash ratio                                  0.384    0.364    0.371    0.233    1.905
-Days of sales outstanding                  43.911   45.519   47.842   45.792        0
-Days of inventory outstanding             298.704  320.629  365.839  317.328        0
-Operating cycle                           342.615  366.149  413.681  363.120        0
-Days of payables outstanding               70.164   79.819  106.040  121.218        0
-Cash conversion cycle                     272.452  286.330  307.640  241.902        0
-Gross profit margin                         0.637    0.647    0.667    0.681    0.641
-Operating profit margin                     0.384    0.353    0.407    0.409    0.385
-Pretax profit margin                        0.360    0.331    0.382    0.389    0.366
-Net profit margin                           0.267    0.241    0.281    0.290    0.285
-Effective tax rate                          0.229    0.232    0.217    0.218    0.193
-Return on assets                            0.199    0.168    0.180    0.221    0.222
-Return on equity                           -0.635   -0.621   -0.641   -0.901   -0.990
-Return on capital employed                  0.503    0.438    0.463    0.584    0.322
-Net income per EBT                          0.741    0.728    0.736    0.745    0.778
-Ebt per ebit                                0.938    0.937    0.939    0.951    0.952
-Ebit per revenue                            0.384    0.353    0.407    0.409    0.385
-Debt ratio                                  1.270    1.224    1.237    1.199    1.182
-Debt equity ratio                          -4.057   -4.533   -4.412   -4.898   -5.266
-Long term debt to capitalization            1.858    1.768    1.806    1.689    1.724
-Total debt to capitalization                1.646    1.595    1.663    1.571    1.592
-Interest coverage                          13.306   13.230   16.027   17.449   15.914
-Cash flow to debt ratio                     0.298    0.325    0.311    0.430    0.440
-Company equity multiplier                  -3.195   -3.703   -3.566   -4.086   -4.456
-Receivables turnover                        8.312    8.019    7.629    7.971        0
-Payables turnover                           5.202    4.573    3.442    3.011        0
-Inventory turnover                          1.222    1.138    0.998    1.150        0
-Fixed asset turnover                        4.114    4.495    4.508    5.092    5.662
-Asset turnover                              0.744    0.695    0.640    0.761    0.780
-Operating cash flow per share               6.095    6.489    6.302    7.681    6.938
-Free cash flow per share                    5.172    5.941    5.915    7.201    6.247
-Cash per share                              4.240    4.412    4.676    2.886    3.448
-Payout ratio                                0.870    0.997    0.914    0.832    0.863
-Operating cash flow sales ratio             0.320    0.339    0.342    0.381    0.340
-Free cash flow operating cash flow ratio    0.848    0.916    0.939    0.937    0.900
-Cash flow coverage ratios                   0.298    0.325    0.311    0.430    0.440
-Short term coverage ratios                  1.981    2.299    2.913    3.959    3.834
-Capital expenditure coverage ratio         -6.600  -11.843  -16.299  -15.999  -10.031
-Dividend paid and capex coverage ratio      1.739    1.599    1.451    1.752    1.604
-Dividend payout ratio                       0.870    0.997    0.914    0.832    0.863
-Price book value ratio                     -8.332  -11.429  -10.257  -14.646  -14.145
-Price to book ratio                        -8.332  -11.429  -10.257  -14.646  -14.145
-Price to sales ratio                        3.504    4.439    4.492    4.713    4.069
-Price earnings ratio                       13.122   18.415   16.001   16.249   14.285
-Price to free cash flows ratio             12.909   14.323   13.996   13.193   13.289
-Price to operating cash flows ratio        10.953   13.113   13.137   12.368   11.964
-Price cash flow ratio                      10.953   13.113   13.137   12.368   11.964
-Price earnings to growth ratio              0.424   -1.990    1.341    1.251  -41.639
-Price sales ratio                           3.504    4.439    4.492    4.713    4.069
-Dividend yield                              0.066    0.054    0.057    0.051    0.060
-Enterprise value multiple                  10.572   13.926   12.614   12.266   10.923
-Price fair value                           -8.332  -11.429  -10.257  -14.646  -14.145
+Fiscal Date Ending                              2018        2019        2020        2021        2022
+Period                                            FY          FY          FY          FY          FY
+Current ratio                               1.130941    1.089258    1.095692    0.920125    0.717698
+Quick ratio                                 0.590832    0.561674    0.562886     0.43812    0.291301
+Cash ratio                                  0.383515    0.364307    0.371145    0.233498    0.117318
+Days of sales outstanding                  43.910886   45.519376   47.841535   45.792071   54.654619
+Days of inventory outstanding              298.70422  320.629221  365.839168  317.328016  316.469918
+Operating cycle                           342.615106  366.148597  413.680703  363.120087  371.124536
+Days of payables outstanding               70.163599   79.818796  106.040339  121.217846  130.480617
+Cash conversion cycle                     272.451507  286.329801  307.640364  241.902241  240.643919
+Gross profit margin                         0.636861    0.647274    0.666516    0.680624    0.641018
+Operating profit margin                     0.384034     0.35333    0.406636    0.413151    0.385555
+Pretax profit margin                        0.360203     0.33122    0.381717    0.389492    0.366287
+Net profit margin                           0.267038    0.241067    0.280756    0.290049    0.284869
+Effective tax rate                          0.229126    0.232273    0.217018    0.218362    0.192883
+Return on assets                            0.198764     0.16758    0.179761     0.22061     0.14669
+Return on equity                           -0.634963   -0.620627   -0.641044   -0.901346    -1.01016
+Return on capital employed                  0.503184    0.438025    0.463016    0.588836    0.356558
+Net income per EBT                          0.741355    0.727816    0.735506    0.744686     0.77772
+Ebt per ebit                                0.937945    0.937423    0.938721    0.942736    0.950024
+Ebit per revenue                            0.384034     0.35333    0.406636    0.413151    0.385555
+Debt ratio                                  1.269817    1.223883     1.23722    1.198789    1.102317
+Debt equity ratio                          -2.549081    -2.68161   -2.509429   -2.751435   -4.814447
+Long term debt to capitalization            1.858294    1.767756    1.805525     1.68856     1.34559
+Total debt to capitalization                1.645544    1.594668    1.662502     1.57096    1.262161
+Interest coverage                          13.306433   18.475439   18.880259   17.605156   15.945312
+Cash flow to debt ratio                     0.298435    0.325012    0.311136    0.430375    0.250516
+Company equity multiplier                  -3.194558   -3.703464   -3.566086   -4.085692   -6.886346
+Receivables turnover                         8.31229    8.018563    7.629354    7.970812    6.678301
+Payables turnover                           5.202128    4.572858    3.442086    3.011108     2.79735
+Inventory turnover                          1.221945    1.138387    0.997706    1.150229    1.153348
+Fixed asset turnover                        4.114012    4.494797    4.508091    5.091602    4.733532
+Asset turnover                              0.744328     0.69516    0.640277    0.760596     0.51494
+Operating cash flow per share               6.095177    6.488746    6.301863    7.681001    6.938343
+Free cash flow per share                    5.171704    5.940836    5.915222    7.200899    6.246628
+Cash per share                              4.239871    4.412219    4.675658    2.885751     2.05973
+Payout ratio                                0.870307     0.99666    0.914101    0.832144    0.863395
+Operating cash flow sales ratio             0.319932    0.338534    0.341953    0.381054    0.340123
+Free cash flow operating cash flow ratio    0.848491     0.91556    0.938647    0.937495    0.900305
+Cash flow coverage ratios                   0.298435    0.325012    0.311136    0.430375    0.250516
+Short term coverage ratios                  1.981187    2.298929    2.913302     3.95865    1.309772
+Capital expenditure coverage ratio         -6.600279  -11.842723  -16.299003  -15.998663  -10.030641
+Dividend paid and capex coverage ratio      1.739402    1.599303     1.45105     1.75161    1.604009
+Dividend payout ratio                       0.870307     0.99666    0.914101    0.832144    0.863395
+Price book value ratio                     -8.332274  -11.429122  -10.257343  -14.645755  -17.593387
+Price to book ratio                        -8.332274  -11.429122  -10.257343  -14.645755  -17.593387
+Price to sales ratio                        3.504196    4.439354    4.492369    4.712944    4.961399
+Price earnings ratio                       13.122462   18.415442   16.000997   16.248765   17.416442
+Price to free cash flows ratio             12.908704     14.3229   13.996094   13.192798   16.202341
+Price to operating cash flows ratio        10.952923   13.113474   13.137386   12.368179   14.587056
+Price cash flow ratio                      10.952923   13.113474   13.137386   12.368179   14.587056
+Price earnings to growth ratio              0.425386   -1.952804    1.341174    1.215125  -25.471547
+Price sales ratio                           3.504196    4.439354    4.492369    4.712944    4.961399
+Dividend yield                              0.066322    0.054121    0.057128    0.051213    0.049574
+Enterprise value multiple                  10.571951   14.893315   13.153558   12.676286   14.906783
+Price fair value                           -8.332274  -11.429122  -10.257343  -14.645755  -17.593387

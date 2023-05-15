@@ -25,11 +25,13 @@ set_system_variable("LOGGING_SUPPRESS", True)
 
 
 pd.options.plotting.backend = "plotly"
+
 st.set_page_config(
     layout="wide",
     page_title="Indicators",
     initial_sidebar_state="expanded",
 )
+st_helpers.set_current_page("Indicators")
 st_helpers.set_css()
 
 logger = st.empty()
@@ -426,6 +428,11 @@ class Handler:
                 "length": st.session_state[f"{indicator}_length"]
             }
 
+    async def on_update(self):
+        """Handle the update button"""
+        st.session_state["indicators_dfs"] = {}
+        await self.async_on_ticker_change()
+
     async def run(self):
         """Run the app"""
 
@@ -473,7 +480,8 @@ class Handler:
             )
 
         st.sidebar.markdown("""---""")
-        if st.sidebar.button("Plot Data"):
+        plot_data, reset_data = st.sidebar.columns([1, 1])
+        if plot_data.button("Plot", use_container_width=True):
             if ticker:
                 await self.handle_changes(
                     start_date,
@@ -484,6 +492,15 @@ class Handler:
             else:
                 with logger.container():
                     logger.error("Please enter a ticker", icon="❗")
+        if reset_data.button("Update", use_container_width=True):
+            await self.on_update()
+            if ticker:
+                await self.handle_changes(
+                    start_date,
+                    end_date,
+                    ticker,
+                    indicators,
+                )
 
 
 if __name__ == "__main__":

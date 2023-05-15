@@ -25,7 +25,7 @@ def settings(tmp_path):
         log_settings=LogSettings(
             directory=tmp_path,
             frequency="H",
-            handler_list="file",
+            handler_list=["file"],
             rolling_clock=False,
             verbosity=20,
         ),

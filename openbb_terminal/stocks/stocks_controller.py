@@ -26,7 +26,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import MenuText, console, translate
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
 
@@ -197,8 +197,7 @@ class StocksController(StockBaseController):
             help="Search by sector to find stocks matching the criteria",
         )
         parser.add_argument(
-            "-g",
-            "--industry-group",
+            "--industrygroup",
             default="",
             choices=stocks_helper.format_parse_choices(self.industry_group),
             type=str.lower,
@@ -227,8 +226,7 @@ class StocksController(StockBaseController):
             help="Search by a specific exchange to find stocks matching the criteria",
         )
         parser.add_argument(
-            "-m",
-            "--exchange-country",
+            "--exchangecountry",
             default="",
             choices=stocks_helper.format_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
@@ -248,13 +246,12 @@ class StocksController(StockBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
             limit=10,
-        )
-        if ns_parser:
+        ):
             # Mapping
             sector = stocks_helper.map_parse_choices(self.sector)[ns_parser.sector]
             industry = stocks_helper.map_parse_choices(self.industry)[
@@ -296,7 +293,7 @@ class StocksController(StockBaseController):
             "--ticker",
             action="store",
             dest="s_ticker",
-            required=not any(x in other_args for x in ["-h", "--help"])
+            required=all(x not in other_args for x in ["-h", "--help"])
             and not self.ticker,
             help="Ticker to get data for",
         )
@@ -311,10 +308,8 @@ class StocksController(StockBaseController):
 
         if not self.ticker and other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
-            ticker = ns_parser.s_ticker if ns_parser.s_ticker else self.ticker
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
+            ticker = ns_parser.s_ticker or self.ticker
             cboe_view.display_top_of_book(ticker, ns_parser.exchange)
 
     @log_start_end(log=logger)
@@ -324,7 +319,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="quote",
-            description="Current quote for stock ticker",
+            description="Current quote for the loaded stock ticker.",
         )
         parser.add_argument(
             "-t",
@@ -332,7 +327,8 @@ class StocksController(StockBaseController):
             action="store",
             dest="s_ticker",
             required=False,
-            help=translate("stocks/QUOTE_ticker"),
+            default=self.ticker,
+            help="Get a quote for a specific ticker, or comma-separated list of tickers.",
         )
 
         # For the case where a user uses: 'quote BB'
@@ -342,12 +338,13 @@ class StocksController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if ns_parser.s_ticker:
+            tickers = ns_parser.s_ticker.split(",")
+            if ns_parser.s_ticker and len(tickers) == 1:
                 self.ticker = ns_parser.s_ticker
                 self.custom_load_wrapper([self.ticker])
 
             stocks_view.display_quote(
-                self.ticker,
+                tickers,
                 ns_parser.export,
                 " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
@@ -386,13 +383,13 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="candle",
-            description="Shows historic data for a stock",
+            description="Shows historic price and volume for the asset.",
         )
         parser.add_argument(
             "-t",
             "--ticker",
             dest="ticker",
-            help="Ticker to analyze",
+            help="Ticker to analyze.",
             type=str,
             default=None,
             required=not any(x in other_args for x in ["-h", "--help"])
@@ -404,7 +401,7 @@ class StocksController(StockBaseController):
             action="store_true",
             default=False,
             dest="prepost",
-            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
+            help="Pre/After market hours. Only works for intraday data.",
         )
         parser.add_argument(
             "--sort",
@@ -431,13 +428,13 @@ class StocksController(StockBaseController):
             action="store_true",
             dest="raw",
             default=False,
-            help="Shows raw data instead of chart.",
+            help="Shows raw data instead of a chart.",
         )
         parser.add_argument(
             "--trend",
             action="store_true",
             default=False,
-            help="Flag to add high and low trends to candle",
+            help="Flag to add high and low trends to candle.",
             dest="trendlines",
         )
         parser.add_argument(
@@ -449,6 +446,13 @@ class StocksController(StockBaseController):
                 "Value for ma (moving average) keyword needs to be greater than 1."
             ),
             default=None,
+        )
+        parser.add_argument(
+            "--ha",
+            dest="ha",
+            action="store_true",
+            default=False,
+            help="Flag to show Heikin Ashi candles.",
         )
         parser.add_argument(
             "--log",
@@ -501,8 +505,9 @@ class StocksController(StockBaseController):
                         data=data,
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        ha=ns_parser.ha,
                         prepost=ns_parser.prepost,
-                        asset_type="Stock",
+                        asset_type="",
                         yscale="log" if ns_parser.logy else "linear",
                         external_axes=ns_parser.is_image,
                     )

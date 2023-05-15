@@ -185,7 +185,17 @@ class BaseController(metaclass=ABCMeta):
         self.SUPPORT_CHOICES = support_choices
 
         # Add in news options
-        news_choices = ["--term", "-t", "--sources", "-s", "--help", "-h"]
+        news_choices = [
+            "--term",
+            "-t",
+            "--sources",
+            "-s",
+            "--help",
+            "-h",
+            "--tag",
+            "--taglist",
+            "--sourcelist",
+        ]
         self.NEWS_CHOICES = {c: None for c in news_choices}
 
     def check_path(self) -> None:
@@ -300,10 +310,9 @@ class BaseController(metaclass=ABCMeta):
         if self.queue:
             joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
             if not self.contains_keys(joined_queue):
+                queue = {"path": self.PATH, "queue": joined_queue}
                 logger.info(
-                    "QUEUE: {'path': '%s', 'queue': '%s'}",
-                    self.PATH,
-                    joined_queue,
+                    "QUEUE: %s", json.dumps(queue, default=str, ensure_ascii=False)
                 )
 
     def log_cmd_and_queue(

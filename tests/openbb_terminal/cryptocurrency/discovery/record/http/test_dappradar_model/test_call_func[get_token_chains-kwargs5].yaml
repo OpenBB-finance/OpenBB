@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      X-BLOBR-KEY:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://api.dappradar.com/4tsxo4vuhotaojtl/tokens/chains
+  response:
+    body:
+      string: '{"success":true,"chains":["algorand","arbitrum","astar","aurora","avalanche","binancechain","bitcoin","bitcoincash","bora","binance-smart-chain","cardano","celo","cosmos","cronos","defikingdoms","dep","elysium","eos","ethereum","everscale","evmos","fantom","flow","fuse","fusion","harmony","heco","hedera","hive","immutablex","iost","iotex","kardiachain","klaytn","kusama","litecoin","loom","polygon","mooi","moonbeam","moonriver","near","neo","ninechronicles","notblockchain","oasis","oasyschainverse","oasyshomeverse","oasysmainnet","oasysmchverse","oasyssaakuruverse","oasystcgverse","oec","ontology","optimism","platon","polkadot","rangers","ripple","ronin","rsk","shiden","skale","skalecalypso","skaleeuropa","skaleomnus","skalerazor","solana","stacks","stargaze","steem","sxnetwork","telos","telosevm","tezos","theta","thundercore","tron","vechain","vulcanforged","waves","wax","zcash","zilliqa"]}'
+    headers:
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - '*'
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '903'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Apr 2023 13:32:48 GMT
+      Etag:
+      - W/"387-N4MidH2QEjnbzNiLplkhnV9FxGs"
+      Via:
+      - 1.1 19cd9c9f4eb51e9e5c75add1d4b6f304.cloudfront.net (CloudFront)
+      X-Amz-Apigw-Id:
+      - ECfsKFCeFiAFWZA=
+      X-Amz-Cf-Id:
+      - MYSqTav0oYOQbg7jFUDJV3U6okQslXt0kjJJa8ZyT3iVbCai11PTpQ==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Amzn-Remapped-Connection:
+      - keep-alive
+      X-Amzn-Remapped-Content-Length:
+      - '903'
+      X-Amzn-Remapped-Date:
+      - Thu, 27 Apr 2023 13:32:48 GMT
+      X-Amzn-Remapped-Server:
+      - nginx/1.23.3
+      X-Amzn-Requestid:
+      - d6c1a1fa-4f7b-4edb-b5ad-e682e0caf120
+      X-Amzn-Trace-Id:
+      - Root=1-00000000-000000000000000000000000
+      X-Blobr-Request-Id:
+      - 1682602368698177666-YXdzLWV1LXdlc3QtMQ==-20336dad9c1d4a5eab7c4df4f6be8099ec00f8fb65c74e86a36ae6580aeccabf
+      X-Blobr-Version:
+      - 2.9.0
+      X-Cache:
+      - Miss from cloudfront
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

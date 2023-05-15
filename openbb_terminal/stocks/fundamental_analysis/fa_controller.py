@@ -92,7 +92,7 @@ class FundamentalAnalysisController(StockBaseController):
     PATH = "/stocks/fa/"
 
     SHRS_CHOICES = ["major", "institutional", "mutualfund"]
-    ESTIMATE_CHOICES = ["annualrevenue", "annualearnings", "quarterearnings"]
+    ESTIMATE_CHOICES = ["annual_earnings", "quarter_earnings", "quarter_revenues"]
     CHOICES_GENERATION = True
 
     def __init__(
@@ -1625,9 +1625,7 @@ class FundamentalAnalysisController(StockBaseController):
             default=False,
             help="Whether to replace a linear regression estimate with a growth estimate.",
         )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if ns_parser.ticker:
@@ -1858,7 +1856,7 @@ class FundamentalAnalysisController(StockBaseController):
             help="Estimates to get",
             dest="estimate",
             choices=self.ESTIMATE_CHOICES,
-            default="annualearnings",
+            default="annual_earnings",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED

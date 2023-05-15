@@ -14,6 +14,7 @@ class StocksRoot(Category):
         `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
+        `quote_chart`: Financial Modeling Prep ticker(s) quote.\n
         `search`: Search selected query for tickers.\n
         `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
     """
@@ -27,6 +28,7 @@ class StocksRoot(Category):
         self.news = lib.common_ultima_newsmonitor_model.get_news
         self.process_candle = lib.stocks_helper.process_candle
         self.quote = lib.stocks_model.get_quote
+        self.quote_chart = lib.stocks_view.display_quote
         self.search = lib.stocks_helper.search
         self.tob = lib.stocks_cboe_model.get_top_of_book
 
@@ -156,7 +158,6 @@ class StocksDiscovery(Category):
         `ipo`: Get IPO calendar\n
         `losers`: Get top losers. [Source: Yahoo Finance]\n
         `lowfloat`: Returns low float DataFrame\n
-        `news`: Gets news. [Source: SeekingAlpha]\n
         `pipo`: Past IPOs dates. [Source: Finnhub]\n
         `rtat`: Gets the top 10 retail stocks per day\n
         `trending`: Returns a list of trending articles\n
@@ -182,7 +183,6 @@ class StocksDiscovery(Category):
         self.ipo = lib.stocks_disc_finnhub_model.get_ipo_calendar
         self.losers = lib.stocks_disc_yahoofinance_model.get_losers
         self.lowfloat = lib.stocks_disc_shortinterest_model.get_low_float
-        self.news = lib.stocks_disc_seeking_alpha_model.get_news
         self.pipo = lib.stocks_disc_finnhub_model.get_past_ipo
         self.rtat = lib.stocks_disc_nasdaq_model.get_retail_tickers
         self.trending = lib.stocks_disc_seeking_alpha_model.get_trending_list
@@ -451,7 +451,7 @@ class StocksOptions(Category):
 
     Attributes:
         `chains`: Get Option Chain For A Stock.  No greek data is returned\n
-        `dte`: Gets days to expiration from yfinance option date\n
+        `dte`: Returns a new column containing the DTE as an integer, including 0.\n
         `eodchain`: Get full EOD option date across all expirations\n
         `expirations`: Get Option Chain Expirations\n
         `generate_data`: Gets x values, and y values before and after premiums\n
@@ -479,7 +479,7 @@ class StocksOptions(Category):
     def __init__(self):
         super().__init__()
         self.chains = lib.stocks_options_sdk_helper.get_full_option_chain
-        self.dte = lib.stocks_options_yfinance_model.get_dte
+        self.dte = lib.stocks_options_helpers.get_dte
         self.eodchain = lib.stocks_options_intrinio_model.get_full_chain_eod
         self.expirations = lib.stocks_options_sdk_helper.get_option_expirations
         self.generate_data = lib.stocks_options_yfinance_model.generate_data

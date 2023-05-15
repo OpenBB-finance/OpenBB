@@ -1,6 +1,6 @@
 ---
 title: Discovery
-keywords: [stocks, discovery, disc, menu, submenu, pipo, fipo, gainers, losers, ugs, gtech, active, ulc, asc, ford, arkord, upcoming, trending, cnews, lowfloat, hotpenny, rtat, divcal, dividends, short, trending, news, how to, usage, examples, filings, screener, overview]
+keywords: [stocks, discovery, disc, menu, submenu, pipo, fipo, gainers, losers, ugs, gtech, active, ulc, asc, ford, arkord, upcoming, trending, lowfloat, hotpenny, rtat, divcal, dividends, short, trending, news, how to, usage, examples, filings, screener, overview]
 description: Introducing the Discovery menu, within the Stocks menu. This guide will empower the user to get the most out of this set of features.
 ---
 

@@ -8,6 +8,7 @@ from pathlib import Path
 from textwrap import shorten
 from typing import Dict, List, TextIO, Union
 
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 from website.controller_doc_classes import (
@@ -16,6 +17,8 @@ from website.controller_doc_classes import (
     sub_names_full as subnames,
 )
 
+set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 website_path = Path(__file__).parent.absolute()
 
 reference_import = """
