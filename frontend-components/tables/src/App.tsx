@@ -50,9 +50,9 @@ function App() {
   const transformData = (data: any) => {
     if (!data) return null;
 
-    let filename = data.title?.replace(/<b>|<\/b>/g, "").replace(/ /g, "_");
-    let date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-    let time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
+    const filename = data.title?.replace(/<b>|<\/b>/g, "").replace(/ /g, "_");
+    const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+    const time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
     window.title = `openbb_${filename}_${date}_${time}`;
 
     const columns = data.columns;
@@ -62,7 +62,7 @@ function App() {
       const transformedRow = {};
       row.forEach((value: any, index: number) => {
         //@ts-ignore
-        transformedRow[columns[index]] = value || "";
+        transformedRow[columns[index]] = value ? value : value === 0 ? 0 : "";
       });
       return transformedRow;
     });
