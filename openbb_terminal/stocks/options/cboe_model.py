@@ -459,8 +459,9 @@ def get_quotes(symbol: str) -> pd.DataFrame:
             "C", "Call"
         ).str.replace("P", "Put")
         option_df_index.strike = [ele.lstrip("0") for ele in option_df_index.strike]
-        option_df_index.strike = option_df_index.strike.astype(float)
+        option_df_index.strike = pd.Series(option_df_index.strike).astype(float)
         option_df_index.strike = option_df_index.strike * (1 / 1000)
+        option_df_index.strike = option_df_index.strike.to_list()
         option_df_index.expiration = [
             ele.lstrip("1") for ele in option_df_index.expiration
         ]
@@ -517,7 +518,7 @@ class Options:
     """
 
     def __init__(self) -> None:
-        self.SYMBOLS: list = get_cboe_directory()
+        self.SYMBOLS: pd.DataFrame = get_cboe_directory()
         self.symbol: str = ""
         self.source: str = "CBOE"
         self.chains = pd.DataFrame()
