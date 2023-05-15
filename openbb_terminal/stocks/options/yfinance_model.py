@@ -286,6 +286,36 @@ def get_iv_surface(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+def get_last_price(symbol: str) -> pd.Series:
+    """Get the price and performance of the underlying asset.
+
+    Parameters
+    ----------
+    symbol: str
+        Symbol to get quote for
+
+    Returns
+    -------
+    pd.Series
+        Pandas Series with the price and performance of the underlying asset.
+    """
+
+    ticker = yf.Ticker(symbol).fast_info
+    df = pd.Series(dtype=object)
+    df["lastPrice"] = round(ticker["lastPrice"], 2)
+    df["previousClose"] = round(ticker["previousClose"], 2)
+    df["open"] = round(ticker["open"], 2)
+    df["high"] = round(ticker["dayHigh"], 2)
+    df["low"] = round(ticker["dayLow"], 2)
+    df["yearHigh"] = round(ticker["yearHigh"], 2)
+    df["yearLow"] = round(ticker["yearLow"], 2)
+    df["fiftyDayMA"] = round(ticker["fiftyDayAverage"], 2)
+    df["twoHundredDayMA"] = round(ticker["twoHundredDayAverage"], 2)
+
+    return df.loc["lastPrice"]
+
+
+@log_start_end(log=logger)
 def get_underlying_price(symbol: str) -> pd.Series:
     """Get the price and performance of the underlying asset.
 
