@@ -50,6 +50,8 @@ function App() {
       title: "",
     };
     let filename = data.layout?.title?.text
+      .replace(/ -/g, "")
+      .replace(/-/g, "")
       .replace(/<b>|<\/b>/g, "")
       .replace(/ /g, "_");
     let date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
