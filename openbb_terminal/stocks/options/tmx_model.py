@@ -66,7 +66,7 @@ class Options:
     Attributes
     ----------
     SYMBOLS: pd.DataFrame
-        The avaialble symbols and company names.
+        The available symbols and company names.
     symbol: str
         The symbol entered by the user.
     source: str
@@ -417,7 +417,7 @@ def load_options(symbol: str, date: Optional[str] = "") -> object:
     Returns
     -------
     SYMBOLS: pd.DataFrame
-        The avaialble symbols and company names.
+        The available symbols and company names.
     symbol: str
         The symbol entered by the user.
     source: str
