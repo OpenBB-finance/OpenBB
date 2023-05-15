@@ -237,6 +237,8 @@ Login with an access token with the syntax:
 openbb.login(token = "REPLACE_WITH_THE_PERSONAL_ACCESS_TOKEN")
 ```
 
+The token can be revoked from the OpenBB Hub API Keys page, by clicking on the `Regenerate` button, which will invalidate the current one.
+
 ## How to Use the SDK
 
 The syntax examples provided assume that the SDK has already been imported.
