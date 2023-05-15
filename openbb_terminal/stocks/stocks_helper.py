@@ -687,9 +687,9 @@ def display_candle(
     fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
 
     if add_trend:
-        fig.add_trend(data, secondary_y=True)
+        fig.add_trend(data, secondary_y=False)
 
-    fig.update_layout(yaxis2=dict(type=yscale))
+    fig.update_layout(yaxis=dict(type=yscale))
 
     return fig.show(external=external_axes)
 

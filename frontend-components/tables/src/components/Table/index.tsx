@@ -56,7 +56,7 @@ function getCellWidth(row, column) {
         column.toLowerCase() === "index" ||
         (indexValue &&
           indexValue &&
-          typeof indexValue == "string" &&
+          typeof indexValue === "string" &&
           (indexValue.toLowerCase().includes("date") ||
             indexValue.toLowerCase().includes("day") ||
             indexValue.toLowerCase().includes("time") ||
@@ -88,9 +88,7 @@ function getCellWidth(row, column) {
         } else {
           dateFormatted = date.toISOString();
           dateFormatted =
-            dateFormatted.split("T")[0] +
-            " " +
-            dateFormatted.split("T")[1].split(".")[0];
+            `${dateFormatted.split("T")[0]} ${dateFormatted.split("T")[1].split(".")[0]}`;
         }
 
         return dateFormatted?.toString().length ?? 0;
@@ -188,7 +186,7 @@ export default function Table({
             (includesDateNames(column) ||
               column.toLowerCase() === "index" ||
               (indexValue &&
-                typeof indexValue == "string" &&
+                typeof indexValue === "string" &&
                 (indexValue.toLowerCase().includes("date") ||
                   indexValue.toLowerCase().includes("time") ||
                   indexValue.toLowerCase().includes("timestamp") ||
@@ -236,9 +234,7 @@ export default function Table({
               } else {
                 dateFormatted = date.toISOString();
                 dateFormatted =
-                  dateFormatted.split("T")[0] +
-                  " " +
-                  dateFormatted.split("T")[1].split(".")[0];
+                  `${dateFormatted.split("T")[0]} ${dateFormatted.split("T")[1].split(".")[0]}`;
               }
 
               return <p>{dateFormatted}</p>;
