@@ -81,7 +81,7 @@ conda activate obb
 jupyter notebook
 ```
 
-This will launch the Jupyter server and open a browswer window with the application.
+This will launch the Jupyter server and open a browser window with the application.
 
 ![Jupyter Lab](jupyter1.png)
 
