@@ -933,11 +933,11 @@ class OpenBBFigure(go.Figure):
             row=row,
             col=col,
             opacity=0.7,
-            secondary_y=False,
+            secondary_y=True,
         )
         ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
-            yaxis=dict(
+            yaxis2=dict(
                 fixedrange=True,
                 side="left",
                 nticks=10,
@@ -947,15 +947,15 @@ class OpenBBFigure(go.Figure):
                 showline=False,
                 zeroline=False,
                 tickfont=dict(size=ticksize),
+                overlaying="y",
             ),
-            yaxis2=dict(
+            yaxis=dict(
                 autorange=True,
                 automargin=True,
                 side="right",
                 fixedrange=False,
                 anchor="x",
                 layer="above traces",
-                overlaying="y",
             ),
         )
 
