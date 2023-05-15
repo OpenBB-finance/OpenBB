@@ -325,6 +325,8 @@ class Options:
         self.last_price: float = 0
         self.underlying_name: str = ""
         self.underlying_price = pd.Series(dtype=object)
+        self.hasIV: bool
+        self.hasGreeks: bool
 
     def get_quotes(self, symbol: str) -> object:
         """Load options data for Nasdaq.  Parameters and attributes are the same as `load_options()`."""
@@ -335,8 +337,10 @@ class Options:
         self.last_price: float = 0
         self.underlying_name: str = ""
         self.underlying_price = pd.Series(dtype=object)
-        self.chains = get_full_option_chain(self.symbol)
-
+        try:
+            self.chains = get_full_option_chain(self.symbol)
+        except Exception:
+            return self
         if not self.chains.empty:
             self.expirations = option_expirations(self.symbol)
             self.strikes = (
@@ -345,6 +349,9 @@ class Options:
             self.underlying_price = get_underlying_price(self.symbol)
             self.last_price = self.underlying_price["lastPrice"]
             self.underlying_name = self.underlying_price["companyName"]
+
+        self.hasIV = "impliedVolatility" in self.chains.columns
+        self.hasGreeks = "gamma" in self.chains.columns
 
         return self
 
