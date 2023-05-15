@@ -18,7 +18,7 @@ cal = mcal.get_calendar(name="TSX")
 holidays = list(cal.regular_holidays.holidays().strftime("%Y-%m-%d"))
 
 
-def check_weekday(date: str) -> str:
+def check_weekday(date) -> str:
     """Helper function to check if the input date is a weekday."""
 
     if pd.to_datetime(date).weekday() not in range(0, 5):
@@ -241,7 +241,7 @@ class Options:
 
         return self
 
-    def get_eodchains(self, symbol: str = "", date: str = "") -> object:
+    def get_eodchains(self, symbol: str = "", date: Optional[str] = "") -> object:
         """Gets the complete options chain for the EOD on a specific date.
         Open Interest values are from the previous day.
 

@@ -11,6 +11,8 @@ import yfinance as yf
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console, optional_rich_track
 
+# mypy: disable-error-code=no-redef
+
 logger = logging.getLogger(__name__)
 
 sorted_chain_columns = [

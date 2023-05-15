@@ -87,9 +87,8 @@ def load_options_chains(
 
     if source not in SOURCES:
         print("Invalid choice. Choose from: ", list(SOURCES), sep=None)
-        return
-    if source == "CBOE":
-        return load_cboe(symbol)
+        return None
+
     if source == "Nasdaq":
         return load_nasdaq(symbol)
     if source == "YahooFinance":
@@ -104,3 +103,6 @@ def load_options_chains(
         if date != "":
             return load_intrinio(symbol, date)
         return load_intrinio(symbol)
+    else:
+        source == "CBOE"
+        return load_cboe(symbol)
