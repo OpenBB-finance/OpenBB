@@ -23,7 +23,7 @@ SOURCES = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 
 @log_start_end(log=logger)
 def load_options_chains(
-    symbol: str, source: str = "CBOE", date: Optional[str] = ""
+    symbol: str, source: str = "CBOE", date: Optional[str] = "", pydantic: bool = True
 ) -> object:
     """Loads all options chains from a specific source, fields returned to each attribute will vary.
 
@@ -36,32 +36,34 @@ def load_options_chains(
     date: str
         The date for the EOD option chain.  Format: YYYY-MM-DD.
         This parameter is only available for "TMX" or "Intrinio".
+    pydantic: bool
+        Whether to return the object as a Pydantic Model or a Pandas object.  Default is True.
 
     Returns
     -------
-    object: A standardized object containing the options data.
+    Pydantic
 
-        self.chains: pd.DataFrame
+        chains: dict
             All options chains data from a specific source.
-        self.expirations: list[str]
+        expirations: list[str]
             List of all unique expiration dates.
-        self.hasGreeks: bool
+        hasGreeks: bool
             True if the source returns greeks with the chains data.
-        self.hasIV: bool
+        hasIV: bool
             True if the source returns implied volatility with the chains data.
-        self.last_price: float
+        last_price: float
             The last price (or the price at the EOD for the date.of the EOD option chain).
-        self.source: str
+        source: str
             The source that was entered in the input.
-        self.strikes: list[float]
+        strikes: list[float]
             List of all unique strike prices.
-        self.symbol: str
+        symbol: str
             The symbol that was entered in the input.
-        self.SYMBOLS: pd.DataFrame
+        SYMBOLS: dict
             The symbol directory to the selected source, when available.
-        self.underlying_name: str
+        underlying_name: str
             The name of the underlying asset.
-        self.underlying_price: pd.Series
+        underlying_price: dict
             A Pandas Series containing the underlying asset's price and performance.
 
     Examples
@@ -69,8 +71,10 @@ def load_options_chains(
     Loads SPY data from CBOE and display the longest dates expiration chain.
 
     >>> from openbb_terminal.sdk import openbb
+    >>> import pandas as pd
     >>> data = openbb.stocks.options.load_options_chains("SPY")
-    >>> data.chains[data.chains["expiration"] == data.expirations[-1]]
+    >>> chains = pd.DataFrame(data.chains)
+    >>> chains[chains["expiration"] == data.expirations[-1]]
 
     Loads XIU data from TMX and displays the 25 highest open interest options.
 
@@ -104,4 +108,4 @@ def load_options_chains(
             return load_intrinio(symbol, date)
         return load_intrinio(symbol)
 
-    return load_cboe(symbol)
+    return load_cboe(symbol, pydantic)
