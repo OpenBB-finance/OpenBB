@@ -350,6 +350,18 @@ from openbb_terminal.core.plots import OpenBBFigure
 fig = OpenBBFigure()
 ```
 
+### Changing Data Sources
+
+The source of the data can be specified - where more than one is available - by including the `source` argument in the syntax.
+
+```python
+polygon = openbb.stocks.load("SPY", source = "Polygon")
+eodhd = openbb.stocks.load("SPY", source = "EODHD")
+av = openbb.stocks.load("SPY", source = "AlphaVantage")
+intrinio = openbb.stocks.load("SPY", source = "Intrinio")
+databento = openbb.stocks.load("SPY", source = "DataBento")
+```
+
 ## Support and Bug Reports
 
 Issues can be raised through the [support page](https://my.openbb.co/app/sdk/support) or on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose).  You can also chat with the community on [Discord](https://openbb.co/discord) to find help or inspiration.  Feedback is always welcome.
