@@ -120,6 +120,11 @@ def match_controller_with_test(controllers: list, tests: list) -> dict:
                 matched[controller] = test
                 tests.remove(test)
 
+    for i in tests:
+        # Handle edge case as two controllers share the same integration test
+        if re.search(r"test_ca.openbb", i):
+            tests.remove(i)
+
     if len(tests) > 0:
         console.print(f"[red]Unmatched tests: {tests}[/red]")
 
