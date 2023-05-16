@@ -88,12 +88,16 @@ def create_matching_dict() -> dict:
             "screener_controller.py",
         ),
         os.path.join(".", "openbb_terminal", "terminal_controller.py"),
+        os.path.join(
+            ".", "openbb_terminal", "stocks", "comparison_analysis", "ca_controller.py"
+        ),
     ]
     test_paths = [
         os.path.join("mutual_funds", "test_mutual_fund.openbb"),
         os.path.join("stocks", "test_disc.openbb"),
         os.path.join("stocks", "test_options_screen_ca.openbb"),
         os.path.join("terminal", "test_news.openbb"),
+        os.path.join("stocks", "test_ca.openbb"),
     ]
     return dict(zip(controller_paths, test_paths))
 
