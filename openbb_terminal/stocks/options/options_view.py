@@ -473,14 +473,10 @@ def display_chains(
         Optionally specify the name of the sheet to export to
     """
     min_strike, max_strike = get_strikes(min_sp, max_sp, chain)
-    print("before")
-    print(chain)
 
     chain = chain[chain["strike"] >= min_strike]
     chain = chain[chain["strike"] <= max_strike]
 
-    print("after")
-    print(chain)
     calls, puts = get_calls_and_puts(chain)
     # Tradier provides the greeks, so calculate them if they are not present
     if "delta" not in chain.columns:
