@@ -355,6 +355,8 @@ class Options:
         self.hasIV = "impliedVolatility" in self.chains.columns
         self.hasGreeks = "gamma" in self.chains.columns
 
+        return self
+
     def get_available_greeks(self, expiration: str = "") -> pd.DataFrame:
         """Get available greeks for a specific expiration.
         This function will return data for strike prices near the money only.
