@@ -3024,7 +3024,7 @@ def set_companieshouse_key(
         )
     """
 
-    handle_credential("OPENBB_API_COMPANIESHOUSE_KEY", key, persist)
+    handle_credential("API_COMPANIESHOUSE_KEY", key, persist)
     return check_companieshouse_key(show_output)
 
 
