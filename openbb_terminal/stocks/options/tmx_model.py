@@ -286,6 +286,9 @@ class Options:
             print("Please enter a symbol.")
             return self
 
+        if ".TO" in symbol:
+            symbol = symbol.replace(".TO", "")
+
         if symbol not in self.SYMBOLS.index:
             print(
                 "The symbol, " f"{symbol}" ", was not found in the TMX listings.",
