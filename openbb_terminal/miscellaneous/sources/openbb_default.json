@@ -158,9 +158,6 @@
       "trending": [
         "SeekingAlpha"
       ],
-      "cnews": [
-        "SeekingAlpha"
-      ],
       "lowfloat": [
         "Fidelity"
       ],
@@ -542,12 +539,6 @@
         "FinancialModelingPrep",
         "YahooFinance"
       ],
-      "overview": [
-        "YahooFinance",
-        "Finviz",
-        "FinancialModelingPrep",
-        "AlphaVantage"
-      ],
       "divs": [
         "YahooFinance"
       ],
@@ -561,14 +552,8 @@
       "rot": [
         "Finnhub"
       ],
-      "score": [
-        "FinancialModelingPrep"
-      ],
       "warnings": [
         "MarketWatch"
-      ],
-      "mgmt": [
-        "BusinessInsider"
       ],
       "shrs": [
         "YahooFinance"
@@ -640,9 +625,6 @@
       ],
       "sec": [
         "Nasdaq"
-      ],
-      "analysis": [
-        "Elect"
       ],
       "earnings": [
         "AlphaVantage",
@@ -744,16 +726,28 @@
       "search": [
         "CoinPaprika"
       ],
-      "nft": [
+      "nft_mktp_chains": [
         "DappRadar"
       ],
-      "games": [
+      "nft_mktp": [
         "DappRadar"
       ],
       "dapps": [
         "DappRadar"
       ],
-      "dex": [
+      "dapp_categories": [
+        "DappRadar"
+      ],
+      "dapp_chains": [
+        "DappRadar"
+      ],
+      "dapp_metrics": [
+        "DappRadar"
+      ],
+      "defi_chains": [
+        "DappRadar"
+      ],
+      "tokens": [
         "DappRadar"
       ]
     },
@@ -873,13 +867,7 @@
       "baas": [
         "BitQuery"
       ],
-      "dt": [
-        "Shroom"
-      ],
-      "ds": [
-        "Shroom"
-      ],
-      "tvl": [
+      "query": [
         "Shroom"
       ],
       "address": [
@@ -1421,8 +1409,7 @@
         "GitHub"
       ]
     },
-    "hn": [
-      "HackerNews"
-    ]
-  }
+    "hn": ["HackerNews"]
+  },
+  "news" : ["Biztoc","Feedparser"]
 }

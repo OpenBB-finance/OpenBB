@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      X-BLOBR-KEY:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://api.dappradar.com/4tsxo4vuhotaojtl/dapps/categories
+  response:
+    body:
+      string: '{"success":true,"categories":["games","defi","gambling","exchanges","collectibles","marketplaces","social","other","high-risk"]}'
+    headers:
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - '*'
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '128'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Apr 2023 13:32:48 GMT
+      Etag:
+      - W/"80-l4BgmpYzZEMJNeksc1dNIvBvlUk"
+      Via:
+      - 1.1 4ca98b546b8d71c72caf6a3d8f75dc24.cloudfront.net (CloudFront)
+      X-Amz-Apigw-Id:
+      - ECfsGEweliAFioQ=
+      X-Amz-Cf-Id:
+      - iJ4uZ1DW4l89xGvZSagfbQ0KwCqUe04-sr9o99e9TEIz5V64VZdBHQ==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Amzn-Remapped-Connection:
+      - keep-alive
+      X-Amzn-Remapped-Content-Length:
+      - '128'
+      X-Amzn-Remapped-Date:
+      - Thu, 27 Apr 2023 13:32:48 GMT
+      X-Amzn-Remapped-Server:
+      - nginx/1.23.3
+      X-Amzn-Requestid:
+      - c4401f6c-c23e-4786-97c3-f67d7f46b9e2
+      X-Amzn-Trace-Id:
+      - Root=1-00000000-000000000000000000000000
+      X-Blobr-Request-Id:
+      - 1682602368294166500-YXdzLWV1LXdlc3QtMQ==-41b898e33f9e40b29e56a9514040b5aa9f08c15d461f4892b90f48a6f175d990
+      X-Blobr-Version:
+      - 2.9.0
+      X-Cache:
+      - Miss from cloudfront
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

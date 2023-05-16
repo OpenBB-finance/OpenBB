@@ -1,0 +1,81 @@
+crypto
+load ${crypto=eth}
+dd
+
+info
+
+ath --vs ${currency_vs=usd}
+atl --vs ${currency_vs=usd}
+
+web
+bc
+pi
+gov
+basic
+
+stats
+stats --vs ${currency_vs=GBP}
+
+desc
+market
+
+mkt
+mkt --urls
+mkt --vs ${crypto_vs=ETH} --limit 3 --sort volume --urls
+mkt --vs {crypto_vs=ETH} --limit 3 --sort volume --urls
+mkt --vs {crypto_vs=BTC} -s volume -r
+
+ex
+ex --limit 3 --sort adjusted_volume_24h_share
+
+balance
+
+trades
+trades -e aax
+trades --vs ${currency_vs=GBP}
+
+ob
+ob -e aax
+ob --vs ${currency_vs=GBP}
+
+ps
+ps --vs ${currency_vs=ETH}
+
+mcapdom
+mt
+team
+inv
+tk
+fr
+rm
+
+
+events
+events --limit 3 --sort name --urls
+events --sort date -r
+
+news
+news --limit 3 -k media -r en --filter bullish
+news --sort published_at --reverse
+
+links
+
+twitter
+twitter --limit 3 --sort retweet_count
+twitter --sort date -r
+
+active -s 2021-05-02 -u 2021-10-10
+active -s 2021-05-02 -u 2021-10-10 -i 1w
+active -s 2021-05-02 -u 2021-10-10 -i 1month
+change -s 2021-05-02 -u 2021-10-10
+eb -s 2021-05-02 -u 2021-10-10
+nonzero -s 2021-05-02 -u 2021-10-10
+
+social
+score
+dev
+gh
+
+help
+reset
+exit

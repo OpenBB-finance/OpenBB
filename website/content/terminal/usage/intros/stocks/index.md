@@ -212,7 +212,7 @@ Loading Daily data for MSFT with starting period 2020-04-08.
 
 ![stocks/candle](https://user-images.githubusercontent.com/85772166/231903835-a0157626-1329-4d5a-80a1-8d21b71adcb1.png)
 
-The help dialogue for the `candle` command shows how this chart can be supplemented with additional data; specifically, `-t` for trend, `--ma` for moving averages, and `--log` for a log scale.
+The help dialogue for the `candle` command shows how this chart can be supplemented with additional data; specifically, `-t` for trend, `--ma` for moving averages, `--log` for a log scale, and `--ha` to convert the candles to a Heikin Ashi pattern.
 
 ```console
 candle -h
@@ -221,21 +221,22 @@ candle -h
 Which prints to screen:
 
 ```console
-usage: candle [-t TICKER] [-p] [--sort {open,high,low,close,adjclose,volume,dividends,stock_splits}] [-r] [--raw] [--trend] [--ma MOV_AVG] [--log] [-h] [--export EXPORT]
+usage: candle [-t TICKER] [-p] [--sort {open,high,low,close,adjclose,volume,dividends,stock_splits}] [-r] [--raw] [--trend] [--ma MOV_AVG] [--ha] [--log] [-h] [--export EXPORT]
               [--sheet-name SHEET_NAME [SHEET_NAME ...]] [-l LIMIT]
 
-Shows historic data for a stock
+Shows historic price and volume for the asset.
 
 options:
   -t TICKER, --ticker TICKER
-                        Ticker to analyze (default: None)
-  -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
+                        Ticker to analyze. (default: None)
+  -p, --prepost         Pre/After market hours. Only works for intraday data. (default: False)
   --sort {open,high,low,close,adjclose,volume,dividends,stock_splits}
                         Choose a column to sort by. Only works when raw data is displayed. (default: )
   -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
-  --raw                 Shows raw data instead of chart. (default: False)
-  --trend               Flag to add high and low trends to candle (default: False)
+  --raw                 Shows raw data instead of a chart. (default: False)
+  --trend               Flag to add high and low trends to candle. (default: False)
   --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1. (default: None)
+  --ha                  Flag to show Heikin Ashi candles. (default: False)
   --log                 Plot with y axis on log scale (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )

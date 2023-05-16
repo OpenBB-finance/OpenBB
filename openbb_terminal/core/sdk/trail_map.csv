@@ -91,13 +91,17 @@ crypto.disc.coin_list,crypto_disc_pycoingecko_model.get_coin_list,
 crypto.disc.coins,crypto_disc_pycoingecko_model.get_coins,crypto_disc_pycoingecko_view.display_coins
 crypto.disc.coins_for_given_exchange,crypto_disc_pycoingecko_model.get_coins_for_given_exchange,
 crypto.disc.cpsearch,crypto_disc_coinpaprika_model.get_search_results,crypto_disc_coinpaprika_view.display_search_results
+crypto.disc.dapp_categories,crypto_disc_dappradar_model.get_dapp_categories,crypto_disc_dappradar_view.display_dapp_categories
+crypto.disc.dapp_chains,crypto_disc_dappradar_model.get_dapp_chains,crypto_disc_dappradar_view.display_dapp_chains
+crypto.disc.dapp_metrics,crypto_disc_dappradar_model.get_dapp_metrics,crypto_disc_dappradar_view.display_dapp_metrics
+crypto.disc.dapps,crypto_disc_dappradar_model.get_dapps,crypto_disc_dappradar_view.display_dapps
+crypto.disc.defi_chains,crypto_disc_dappradar_model.get_defi_chains,crypto_disc_dappradar_view.display_defi_chains
 crypto.disc.gainers,crypto_disc_pycoingecko_model.get_gainers,crypto_disc_pycoingecko_view.display_gainers
 crypto.disc.losers,crypto_disc_pycoingecko_model.get_losers,crypto_disc_pycoingecko_view.display_losers
+crypto.disc.nft_mktp,crypto_disc_dappradar_model.get_nft_marketplaces,crypto_disc_dappradar_view.display_nft_marketplaces
+crypto.disc.nft_mktp_chains,crypto_disc_dappradar_model.get_nft_marketplace_chains,crypto_disc_dappradar_view.display_nft_marketplace_chains
+crypto.disc.tokens,crypto_disc_dappradar_model.get_token_chains,crypto_disc_dappradar_view.display_token_chains
 crypto.disc.top_coins,crypto_disc_sdk_helpers.top_coins,
-crypto.disc.top_dapps,crypto_disc_dappradar_model.get_top_dapps,crypto_disc_dappradar_view.display_top_dapps
-crypto.disc.top_dexes,crypto_disc_dappradar_model.get_top_dexes,crypto_disc_dappradar_view.display_top_dexes
-crypto.disc.top_games,crypto_disc_dappradar_model.get_top_games,crypto_disc_dappradar_view.display_top_games
-crypto.disc.top_nfts,crypto_disc_dappradar_model.get_top_nfts,crypto_disc_dappradar_view.display_top_nfts
 crypto.disc.trending,crypto_disc_pycoingecko_model.get_trending_coins,crypto_disc_pycoingecko_view.display_trending
 crypto.find,crypto_models.find,
 crypto.load,crypto_helpers.load,
@@ -119,6 +123,7 @@ crypto.onchain.hr,crypto_dd_glassnode_model.get_hashrate,crypto_dd_glassnode_vie
 crypto.onchain.info,crypto_onchain_ethplorer_model.get_token_info,crypto_onchain_ethplorer_view.display_token_info
 crypto.onchain.lt,crypto_onchain_bitquery_model.get_dex_trades_by_exchange,crypto_onchain_bitquery_view.display_dex_trades
 crypto.onchain.prices,crypto_onchain_ethplorer_model.get_token_historical_price,crypto_onchain_ethplorer_view.display_token_historical_prices
+crypto.onchain.query,crypto_onchain_shroom_model.get_query_data,crypto_onchain_shroom_view.display_query
 crypto.onchain.query_graph,crypto_onchain_bitquery_model.query_graph,
 crypto.onchain.th,crypto_onchain_ethplorer_model.get_token_history,crypto_onchain_ethplorer_view.display_token_history
 crypto.onchain.token_decimals,crypto_onchain_ethplorer_model.get_token_decimals,
@@ -178,6 +183,7 @@ econometrics.panel,econometrics_regression_model.get_regressions_results,econome
 econometrics.pols,econometrics_regression_model.get_pols,
 econometrics.re,econometrics_regression_model.get_re,
 econometrics.root,econometrics_model.get_root,econometrics_view.display_root
+econometrics.garch,econometrics_model.get_garch,econometrics_view.display_garch
 economy.available_indices,economy_yfinance_model.get_available_indices,
 economy.balance,economy_oecd_model.get_balance,economy_oecd_view.plot_balance
 economy.bigmac,economy_nasdaq_model.get_big_mac_indices,economy_nasdaq_view.display_big_mac_index
@@ -296,6 +302,7 @@ keys.glassnode,keys_model.set_glassnode_key,
 keys.messari,keys_model.set_messari_key,
 keys.mykeys,keys_model.get_keys,
 keys.news,keys_model.set_news_key,
+keys.biztoc,keys_model.set_biztoc_key,
 keys.oanda,keys_model.set_oanda_key,
 keys.polygon,keys_model.set_polygon_key,
 keys.quandl,keys_model.set_quandl_key,
@@ -313,7 +320,7 @@ keys.ultima,keys_model.set_ultima_key,
 keys.walert,keys_model.set_walert_key,
 login,sdk_session.login,
 logout,sdk_session.logout,
-news,common_feedparser_model.get_news,
+news,common_news_sdk_helper.news,
 portfolio.alloc.assets,portfolio_model.get_assets_allocation,
 portfolio.alloc.countries,portfolio_model.get_countries_allocation,
 portfolio.alloc.regions,portfolio_model.get_regions_allocation,
@@ -418,7 +425,6 @@ stocks.disc.hotpenny,stocks_disc_shortinterest_model.get_today_hot_penny_stocks,
 stocks.disc.ipo,stocks_disc_finnhub_model.get_ipo_calendar,
 stocks.disc.losers,stocks_disc_yahoofinance_model.get_losers,
 stocks.disc.lowfloat,stocks_disc_shortinterest_model.get_low_float,
-stocks.disc.news,stocks_disc_seeking_alpha_model.get_news,
 stocks.disc.pipo,stocks_disc_finnhub_model.get_past_ipo,
 stocks.disc.rtat,stocks_disc_nasdaq_model.get_retail_tickers,
 stocks.disc.trending,stocks_disc_seeking_alpha_model.get_trending_list,
@@ -503,7 +509,7 @@ stocks.ins.stats,stocks_insider_sdk_helper.stats,
 stocks.load,stocks_helper.load,
 stocks.news,common_ultima_newsmonitor_model.get_news,
 stocks.options.chains,stocks_options_sdk_helper.get_full_option_chain,
-stocks.options.dte,stocks_options_yfinance_model.get_dte,
+stocks.options.dte,stocks_options_helpers.get_dte,
 stocks.options.eodchain,stocks_options_intrinio_model.get_full_chain_eod,
 stocks.options.expirations,stocks_options_sdk_helper.get_option_expirations,
 stocks.options.generate_data,stocks_options_yfinance_model.generate_data,
@@ -526,7 +532,7 @@ stocks.qa.beta,stocks_qa_beta_model.beta_model,stocks_qa_beta_view.beta_view
 stocks.qa.capm,stocks_qa_factors_model.capm_information,
 stocks.qa.fama_raw,stocks_qa_factors_model.get_fama_raw,
 stocks.qa.historical_5,stocks_qa_factors_model.get_historical_5,
-stocks.quote,stocks_model.get_quote,
+stocks.quote,stocks_model.get_quote,stocks_view.display_quote
 stocks.screener.screener_data,stocks_screener_finviz_model.get_screener_data,stocks_screener_finviz_view.screener
 stocks.search,stocks_helper.search,
 stocks.ta.recom,stocks_ta_tradingview_model.get_tradingview_recommendation,stocks_ta_tradingview_view.print_recommendation

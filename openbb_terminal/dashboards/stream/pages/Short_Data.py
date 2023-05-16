@@ -49,6 +49,7 @@ st.markdown(middle_html, unsafe_allow_html=True)
 
 MAIN_LOOP: asyncio.AbstractEventLoop = None  # type: ignore
 
+st_helpers.set_current_page("Short Data")
 st_helpers.set_css()
 
 
@@ -133,7 +134,7 @@ class FinraShortData:
             )
             fig.update_layout(
                 title=f"Top {self.count_slider} Short Volume in Last {self.days_slider} Days",
-                margin=dict(l=5),
+                margin=dict(l=30),
                 xaxis_title="Volume",
                 yaxis_title="Ticker",
                 barmode="stack",
@@ -171,7 +172,7 @@ class FinraShortData:
         )
         fig2.update_layout(
             title=f"Stock Volume and Short Volume for {self.stock_input.upper()}",
-            margin=dict(l=5),
+            margin=dict(l=30),
             xaxis_title="Date",
             yaxis_title="Volume",
         )
