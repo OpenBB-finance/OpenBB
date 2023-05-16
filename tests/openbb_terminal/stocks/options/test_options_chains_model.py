@@ -1,7 +1,6 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
