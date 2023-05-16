@@ -128,6 +128,7 @@ crypto.onchain.query_graph,crypto_onchain_bitquery_model.query_graph,
 crypto.onchain.th,crypto_onchain_ethplorer_model.get_token_history,crypto_onchain_ethplorer_view.display_token_history
 crypto.onchain.token_decimals,crypto_onchain_ethplorer_model.get_token_decimals,
 crypto.onchain.top,crypto_onchain_ethplorer_model.get_top_tokens,crypto_onchain_ethplorer_view.display_top_tokens
+crypto.onchain.topledger,crypto_onchain_topledger_model.get_topledger_data,crypto_onchain_topledger_view.display_topledger_data
 crypto.onchain.ttcp,crypto_onchain_bitquery_model.get_most_traded_pairs,crypto_onchain_bitquery_view.display_most_traded_pairs
 crypto.onchain.tv,crypto_onchain_bitquery_model.get_token_volume_on_dexes,crypto_onchain_bitquery_view.display_dex_volume_for_token
 crypto.onchain.tx,crypto_onchain_ethplorer_model.get_tx_info,crypto_onchain_ethplorer_view.display_tx_info
@@ -173,6 +174,7 @@ econometrics.comparison,econometrics_regression_model.get_comparison,
 econometrics.dwat,econometrics_regression_model.get_dwat,econometrics_regression_view.display_dwat
 econometrics.fdols,econometrics_regression_model.get_fdols,
 econometrics.fe,econometrics_regression_model.get_fe,
+econometrics.garch,econometrics_model.get_garch,econometrics_view.display_garch
 econometrics.get_regression_data,econometrics_regression_model.get_regression_data,
 econometrics.granger,econometrics_model.get_granger_causality,econometrics_view.display_granger
 econometrics.load,common_model.load,
@@ -286,6 +288,7 @@ futures.search,futures_yfinance_model.get_search_futures,
 keys.av,keys_model.set_av_key,
 keys.binance,keys_model.set_binance_key,
 keys.bitquery,keys_model.set_bitquery_key,
+keys.biztoc,keys_model.set_biztoc_key,
 keys.cmc,keys_model.set_cmc_key,
 keys.coinbase,keys_model.set_coinbase_key,
 keys.coinglass,keys_model.set_coinglass_key,
@@ -303,7 +306,6 @@ keys.glassnode,keys_model.set_glassnode_key,
 keys.messari,keys_model.set_messari_key,
 keys.mykeys,keys_model.get_keys,
 keys.news,keys_model.set_news_key,
-keys.biztoc,keys_model.set_biztoc_key,
 keys.oanda,keys_model.set_oanda_key,
 keys.polygon,keys_model.set_polygon_key,
 keys.quandl,keys_model.set_quandl_key,

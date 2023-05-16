@@ -896,6 +896,9 @@
       ],
       "tx": [
         "Ethplorer"
+      ],
+      "solana": [
+        "Topledger"
       ]
     },
     "defi": {

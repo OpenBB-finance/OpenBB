@@ -23,8 +23,9 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethplorer_model,
     ethplorer_view,
     shroom_view,
+    topledger_view,
     whale_alert_model,
-    whale_alert_view,
+    whale_alert_view
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -82,6 +83,7 @@ class OnchainController(BaseController):
         "btcct",
         "btcblockdata",
         "query",
+        "topledger",
     ]
 
     PATH = "/crypto/onchain/"
@@ -110,6 +112,7 @@ class OnchainController(BaseController):
         mt.add_cmd("btcblockdata")
         mt.add_cmd("gwei")
         mt.add_cmd("whales")
+        mt.add_cmd("topledger")
         mt.add_cmd("lt")
         mt.add_cmd("dvcp")
         mt.add_cmd("tv")
@@ -421,6 +424,50 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 show_address=ns_parser.address,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_topledger(self, other_args: List[str]):
+        """Process topledger command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="topledger",
+            description="""
+                    Display on-chain data from topledger.
+                    [Source: https://docs.topledger.xyz/]
+                """,
+        )
+
+        parser.add_argument(
+            "-o",
+            "--org",
+            dest="org_slug",
+            type=str,
+            help="Organization Slug [tensor]",
+            default=None,
+        )
+        parser.add_argument(
+            "-q",
+            "--query",
+            dest="query_slug",
+            type=str,
+            help="Query Slug [daily-transactions/weekly-transactions/monthly-transactions"
+            "/daily-users/monthly-users/weekly-users/daily-gmv-sol/weekly-gmv/"
+            "monthly-gmv/daily-tvl/weekly-tvl/monthly-tvl/top-traders-by-gmv]",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            topledger_view.display_topledger_data(
+                org_slug=ns_parser.org_slug,
+                query_slug=ns_parser.query_slug,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name

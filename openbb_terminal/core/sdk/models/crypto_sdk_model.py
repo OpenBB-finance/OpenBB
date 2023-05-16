@@ -529,6 +529,8 @@ class CryptoOnChain(Category):
         self.token_decimals = lib.crypto_onchain_ethplorer_model.get_token_decimals
         self.top = lib.crypto_onchain_ethplorer_model.get_top_tokens
         self.top_chart = lib.crypto_onchain_ethplorer_view.display_top_tokens
+        self.topledger = lib.crypto_onchain_topledger_model.get_topledger_data
+        self.topledger_chart = lib.crypto_onchain_topledger_view.display_topledger_data
         self.ttcp = lib.crypto_onchain_bitquery_model.get_most_traded_pairs
         self.ttcp_chart = lib.crypto_onchain_bitquery_view.display_most_traded_pairs
         self.tv = lib.crypto_onchain_bitquery_model.get_token_volume_on_dexes
