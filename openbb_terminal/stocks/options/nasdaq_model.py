@@ -314,6 +314,8 @@ class Options:
         Implied volatility is not returned.
     hasGreeks: bool
         Greeks data is not returned.
+    get_ntm_greeks: Callable
+        Function to return available greeks data for a specific expiration date.
     """
 
     def __init__(self) -> None:
@@ -353,7 +355,36 @@ class Options:
         self.hasIV = "impliedVolatility" in self.chains.columns
         self.hasGreeks = "gamma" in self.chains.columns
 
-        return self
+    def get_available_greeks(self, expiration: str = "") -> pd.DataFrame:
+        """Get available greeks for a specific expiration.
+        This function will return data for strike prices near the money only.
+
+        Parameters
+        ----------
+        expiration: str
+            The expiration date to return the data.  Default is the first available date. (YYYY-MM-DD)
+
+        Returns
+        -------
+        pd.DataFrame
+            Dataframe with option greeks and strike prices.
+        """
+
+        if expiration == "":
+            expiration = self.expirations[0]
+
+        if expiration not in self.expirations:
+            print(
+                f"{expiration}",
+                " is not a valid expiration.  Choose from, ",
+                self.expirations,
+                sep="",
+            )
+            return self
+
+        greeks = get_option_greeks(self.symbol, expiration)
+
+        return greeks
 
 
 def load_options(symbol: str) -> object:
