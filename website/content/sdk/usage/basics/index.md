@@ -362,6 +362,22 @@ intrinio = openbb.stocks.load("SPY", source = "Intrinio")
 databento = openbb.stocks.load("SPY", source = "DataBento")
 ```
 
+## Chart and Table Themes
+
+The themes used by the charting and tables libraries are accessible in the SDK through a separate import statement.
+
+```python
+from openbb_terminal import theme
+```
+
+Print the path to the location of the style sheets with:
+
+```python
+theme.plt_styles_available
+```
+
+Refer to the [Plotly documentation](https://plotly.com/python/templates/) for details on customizing style sheets.
+
 ## Support and Bug Reports
 
 Issues can be raised through the [support page](https://my.openbb.co/app/sdk/support) or on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose).  You can also chat with the community on [Discord](https://openbb.co/discord) to find help or inspiration.  Feedback is always welcome.
