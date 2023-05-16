@@ -20,11 +20,12 @@ logger = logging.getLogger(__name__)
 
 
 def get_strikes(
-    min_sp: float, max_sp: float, current_price: float
+    min_sp: float, max_sp: float, chain: pd.DataFrame
 ) -> Tuple[float, float]:
-    min_strike = 0.75 * current_price if min_sp == -1 else min_sp
+    """Function to get the min and max strikes for a given expiry"""
 
-    max_strike = 1.25 * current_price if max_sp == -1 else max_sp
+    min_strike = chain["strike"].min() if min_sp == -1 else min_sp
+    max_strike = chain["strike"].max() if max_sp == -1 else max_sp
 
     return min_strike, max_strike
 
