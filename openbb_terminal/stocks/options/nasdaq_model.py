@@ -368,6 +368,16 @@ class Options:
         -------
         pd.DataFrame
             Dataframe with option greeks and strike prices.
+
+        Examples
+        --------
+        Near-the-Money Greeks for the closest expiration date.
+
+        >>> greeks = self.get_available_greeks()
+
+        Get the last expiration date.
+
+        >>> greeks = self.get_available_greeks(self.expirations[-1])
         """
 
         if expiration == "":
