@@ -276,35 +276,35 @@ files = [
 
 [[package]]
 name = "arch"
-version = "5.3.1"
+version = "5.5.0"
 description = "ARCH for Python"
 category = "main"
-optional = true
-python-versions = ">=3.7"
+optional = false
+python-versions = ">=3.8"
 files = [
-    {file = "arch-5.3.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:75fa6f9386ecc2df81bcbf5d055a290a697482ca51e0b3459dab183d288993cb"},
-    {file = "arch-5.3.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:f9c9220d331618322517e0f2b3b3529f9c51f5e5a891441da4a107fd2d6d7fce"},
-    {file = "arch-5.3.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3c503acacf88786a78c0ea6606e292c7bfa66e42603c72b7d9fe8dca021a9ddf"},
-    {file = "arch-5.3.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:92dbbae9bc19aa38492a1b5968d855e7f69f18e626bfba3dd42e43182ea7907d"},
-    {file = "arch-5.3.1-cp310-cp310-win_amd64.whl", hash = "sha256:522e19656759a9b8408cda652ddadaf8e65e23aff433c4b22a11ea79bd3c2b67"},
-    {file = "arch-5.3.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:4c23b5138198127bc1a7ec432139fbe855d399e51f6391125b5dc3ab2f4a7860"},
-    {file = "arch-5.3.1-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:aadb88a0199b51c6134634618fd074ffbb430a5d3c43126da0b6d259447e1f36"},
-    {file = "arch-5.3.1-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:96eb779fd90f16787376bc3ada24f3e162bc74f746d1fc3fb809ec36f954007e"},
-    {file = "arch-5.3.1-cp37-cp37m-win32.whl", hash = "sha256:7694ea6085bf817e09ddc8fcb4a871a0f255d3b6b486696cfa16121df591fdb9"},
-    {file = "arch-5.3.1-cp37-cp37m-win_amd64.whl", hash = "sha256:32df883248a7d6f7ee204bf9ccb4a141ece43ab3b06ee22627cb84c8b4b7d24b"},
-    {file = "arch-5.3.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:ef94fd5738fc0bccc4ee8a27871d5d7052b3962d784b397acf7f7bcc3afc34f4"},
-    {file = "arch-5.3.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:74e629d33ff41ab2a0917f475703826fd3c0976a3dc236873b19b41f719afe5b"},
-    {file = "arch-5.3.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:84c3944a47d28923bad70a7a6a11081d55482b80ef6abb8581a7f98e05ec9584"},
-    {file = "arch-5.3.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b862462dd22297073b772e08144f31b7be05080b4063de5ce794c969d0348a94"},
-    {file = "arch-5.3.1-cp38-cp38-win32.whl", hash = "sha256:ae2e8026085ca841e6c31144913462e79706c8604e46deda4558ec252a4c5833"},
-    {file = "arch-5.3.1-cp38-cp38-win_amd64.whl", hash = "sha256:0cb9b0c5751a3a0ecefe47842b40a04dae393d7754489128ec22df0649d49b52"},
-    {file = "arch-5.3.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:03a5cb976ffb230f59d827242e072cf605f70a993be0e7069d30378e13cb60f5"},
-    {file = "arch-5.3.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:38857f8b2ca2fc46c7e1ac7889354eb4f16e7360283586a3730004097648b539"},
-    {file = "arch-5.3.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:fd37af7633ae1d5d5719b5eaa7ed97b9a3450f2ed699e188c2c67f7e88ca7b44"},
-    {file = "arch-5.3.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:236a8dc7414d557a59cae5dd39efff4fb49ab3fb792b68212f6c03a0c088d947"},
-    {file = "arch-5.3.1-cp39-cp39-win32.whl", hash = "sha256:aabfc7b96416d6b3054164292ee364d1e86d2906a152faf1489562ba1669b2df"},
-    {file = "arch-5.3.1-cp39-cp39-win_amd64.whl", hash = "sha256:bed3352ab7d4ae79a206acb618f786a3f4bc4080e1b90f8c0b19c5a070a365a0"},
-    {file = "arch-5.3.1.tar.gz", hash = "sha256:106f15c8770a34f71239b6c88f8517814e6b7fea3b8f2e009b3a8a23fd7e77c2"},
+    {file = "arch-5.5.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:86054f219a3e2cd0c20cc97be242df2aa3b5f87b0fe33630603c8eab06077905"},
+    {file = "arch-5.5.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:3122186c244851184c931d4c09e692f4d8456b1376c72474056582022b6638ee"},
+    {file = "arch-5.5.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0dc1701408751502d621a717431526072dfe0cdbce726d8d3ae7321440d9086e"},
+    {file = "arch-5.5.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f195c4e213d7dcf611c7e0313bc03c749e8e375028a66b4895a161fdb9e32aa2"},
+    {file = "arch-5.5.0-cp310-cp310-win_amd64.whl", hash = "sha256:2efe238224660296f4933a5d4b172ad24837f873084471d687991be6c12d7c81"},
+    {file = "arch-5.5.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:e4be0f70d22742597750161bfb001a2b8eaa0e9986e25976c395cb99d8a8f098"},
+    {file = "arch-5.5.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:e6e64fdb1f64028763a506a9b7b08d2645995f42f0166789625c8ad77213778d"},
+    {file = "arch-5.5.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9c6619a9cfde66b356a762387951ff8e5b41a5124fca1adabddd17fad3f62f92"},
+    {file = "arch-5.5.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dd5a08cc0813827570b72dbb003a0d27e1203c3efb9110bf23a3a8c9ba0ef9a5"},
+    {file = "arch-5.5.0-cp311-cp311-win_amd64.whl", hash = "sha256:2f3281bbcbf211f7da46315badd3d475d44b53809d4170ffd6c70ecb5f3a4245"},
+    {file = "arch-5.5.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:2bd928df3d222eacae19ddb4d9dfda16a1a9438ecb10a68ecdc126d727921eb8"},
+    {file = "arch-5.5.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:e36efe894805c79617b06d21268c15eacf0d7faf6fc20b5c28fcd30e8464edca"},
+    {file = "arch-5.5.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d5672bf8550783a0f80a985563d353f050840dbc19e427cd4169654819553413"},
+    {file = "arch-5.5.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ef012be009675e12922463feebecf20f1aff660202a18dbccf2bc9908f6695e5"},
+    {file = "arch-5.5.0-cp38-cp38-win32.whl", hash = "sha256:fa31869f6d24641457b509d2cfc733fd2e3e4ed43ca6976f91055b76100adc51"},
+    {file = "arch-5.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:651d19519e3cf75d8681fe3add8bb403e8e4394b281da029a2ce912065da83fb"},
+    {file = "arch-5.5.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:1cfdf15e84a0e58020c04cc10c6edbabe540ffe0a4feface810fb7702221a904"},
+    {file = "arch-5.5.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:fb092711e70e73cd76076224b80636c8162ea75bab82b6fdad60a803c7402ea7"},
+    {file = "arch-5.5.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f1378b1cde193bed518243f14076b458e4533e89790dc10716743a3f877543bc"},
+    {file = "arch-5.5.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4225c9f75eb604ed7136e48e64a45fd25907cd6cd0837a1b07ee23c2f4d37d19"},
+    {file = "arch-5.5.0-cp39-cp39-win32.whl", hash = "sha256:c0bca2dc84ae3039f710b7ce52ab90c37e7bafff1fbb17040603ebce00589068"},
+    {file = "arch-5.5.0-cp39-cp39-win_amd64.whl", hash = "sha256:3a4e28dcf4af285fa636314946efaaedcfdfb72802910ea84456d07608ebaf37"},
+    {file = "arch-5.5.0.tar.gz", hash = "sha256:00f64304c6fae83ce9e38e54b5cad273ee1171dc8347c793a7a66212c5205848"},
 ]
 
 [package.dependencies]
@@ -9689,4 +9689,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "c2ba310454b7626d63d1096907ebb4d3de618f71b96bf554e0c828bf005463e0"
+content-hash = "935a7f7394d9a634c2aa1a23e0951a5351cd6e883b75eca95033d3bcd481e0c0"

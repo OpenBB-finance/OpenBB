@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "3.0.1"
+version = "3.0.1c"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -115,6 +115,7 @@ yt-dlp = {version = "^2023.2.17", optional = true}
 pydantic = "^1.10.5"
 posthog = "^3.0.1"
 reportlab = "<4" #Pinning due to build error on MacOs
+arch = "^5.5.0"
 
 
 
