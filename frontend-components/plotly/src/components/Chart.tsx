@@ -54,13 +54,13 @@ function CreateDataXrange(data: Plotly.PlotData[], xrange?: any) {
 			const new_trace = { ...trace };
 			const data_keys = ["x", "y", "low", "high", "open", "close", "text"];
 			data_keys.forEach((key) => {
-				if (trace[key]) {
+				if (trace[key] && Array.isArray(trace[key])) {
 					new_trace[key] = trace[key].filter((_, i) => chunk.includes(i));
 				}
 			});
 			const color_keys = ["marker", "line"];
 			color_keys.forEach((key) => {
-				if (trace[key]?.color) {
+				if (trace[key]?.color && Array.isArray(trace[key].color)) {
 					new_trace[key] = { ...trace[key] };
 					new_trace[key].color = trace[key].color.filter((_, i) =>
 						chunk.includes(i),
@@ -575,8 +575,8 @@ export default function Chart({
 					<p className="font-bold w-1/3 flex flex-col gap-0.5 items-center">
 						{chartTitle}
 						{/* {source && (
-            <span className="font-normal text-[10px]">{`[${source}]`}</span>
-          )} */}
+						<span className="font-normal text-[10px]">{`[${source}]`}</span>
+					)} */}
 					</p>
 					<p className="w-1/3 text-right text-xs">
 						{new Intl.DateTimeFormat("en-GB", {
@@ -589,10 +589,10 @@ export default function Chart({
 						<span className="text-grey-400">{cmd}</span>
 					</p>
 					{/* {source && typeof source === "string" && source.includes("*") && (
-          <p className="text-[8px] absolute bottom-0 right-4">
-            *not affiliated
-          </p>
-        )} */}
+					<p className="text-[8px] absolute bottom-0 right-4">
+						*not affiliated
+					</p>
+				)} */}
 				</div>
 				<div
 					className={clsx("w-full sm:pb-12", {
