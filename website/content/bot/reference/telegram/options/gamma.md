@@ -8,6 +8,12 @@ description: OpenBB Telegram Command
 
 This command allows the user to view the Options Gamma Levels for a particular stock. Options Gamma Levels are important to understanding the rate of change for the option's Delta when the underlying stock price changes. Knowing this information can help traders make informed decisions about which options to purchase.
 
+| Name | Description |
+| ---- | ----------- |
+| Zero Gamma | Point closest to net zero of Call and Put Gamma |
+| Put Wall | Strike with the largest NET Put Gamma |
+| Call Wall | Strike with the largest NET Call Gamma |
+
 ### Usage
 
 ```python wordwrap

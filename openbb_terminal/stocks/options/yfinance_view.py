@@ -387,7 +387,7 @@ def show_greeks(
     chain = get_option_chain(symbol, expiry)
 
     min_strike, max_strike = op_helpers.get_strikes(
-        min_sp=mini, max_sp=maxi, current_price=current_price
+        min_sp=mini, max_sp=maxi, chain=chain.puts
     )
 
     for option in ["calls", "puts"]:
