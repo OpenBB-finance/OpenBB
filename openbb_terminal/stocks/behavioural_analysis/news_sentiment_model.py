@@ -3,15 +3,14 @@
 import logging
 import requests
 import pandas as pd
+import datetime
 
-from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.current_user import get_current_user
 
 logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
-@check_api_key(["API_ALTHUB_TOKEN"])
 def get_data(
     ticker: str = "",
     start_date: str = "",
@@ -41,7 +40,6 @@ def get_data(
 
     headers = {
         "accept": "application/json",
-        "Authorization": f"token {get_current_user().credentials.API_ALTHUB_TOKEN}",
     }
 
     df = pd.DataFrame(data=None)
@@ -63,8 +61,12 @@ def get_data(
             return df
 
     if date:
+        date = datetime.datetime.strptime(date, '%Y-%m-%d')
         query_params["published_on"] = date
         if start_date:
+            if date < start_date:
+                console.print("date must be grater than or equal to start_date")
+                return df
             del query_params["published_on__gte"]
         if end_date:
             del query_params["published_on__lte"]
@@ -78,9 +80,15 @@ def get_data(
         "https://althub-backend.invisagealpha.com/api/OnclusiveSentiment/",
         headers=headers,
         params=query_params,
-    ).json()
+    )
+    if response.status_code != 200:
+        console.print("Please check your API Key")
+        return df
+    else:
+        response = response.json()
     df = pd.DataFrame(data=response["results"])
-    df['adjusted_sentiment'] = df['adjusted_sentiment'].astype(float)
+    if not df.empty:
+        df['adjusted_sentiment'] = df['adjusted_sentiment'].astype(float)
 
     def condition(x):
         if x >= 250:
@@ -94,7 +102,7 @@ def get_data(
         else:
             return "Super Negative"
 
-    sentiment = {50:"Positive",-50:"Negative",0:"Neutral"}
+    sentiment = {50:"Positive",-50:"Negative",0:"Neutral",None:'Neutral'}
 
     if not df.empty:
         df['raw_sentiment'] = df['raw_sentiment'].map(sentiment)

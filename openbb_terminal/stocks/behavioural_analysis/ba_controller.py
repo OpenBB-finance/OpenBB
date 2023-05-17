@@ -108,7 +108,7 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("interest", self.ticker)
         mt.add_cmd("queries", self.ticker)
         mt.add_cmd("rise", self.ticker)
-        mt.add_cmd("ns", "Althub Platform")
+        mt.add_cmd("ns")
         console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")
 
     def custom_reset(self):
@@ -841,14 +841,6 @@ class BehaviouralAnalysisController(StockBaseController):
             description="Shows the News Sentiment articles data",
         )
         parser.add_argument(
-            "-t",
-            "--ticker",
-            dest="ticker",
-            help="Ticker to analyze",
-            type=str,
-            default=None,
-        )
-        parser.add_argument(
             "-s",
             "--start_date",
             dest="start_date",
@@ -877,7 +869,7 @@ class BehaviouralAnalysisController(StockBaseController):
         parser.add_argument(
             "-l",
             "--limit",
-            default=100,
+            default=10,
             dest="limit",
             type=check_non_negative,
             help="Number of news articles to be displayed.",
@@ -896,8 +888,11 @@ class BehaviouralAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            ticker = None
+            if self.ticker:
+                    ticker=self.ticker
             news_sentiment_view.display_articles_data(
-                ticker=ns_parser.ticker,
+                ticker = ticker,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 date=ns_parser.date,

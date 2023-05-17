@@ -55,7 +55,6 @@ logger = logging.getLogger(__name__)
 
 API_DICT: Dict = {
     "av": "ALPHA_VANTAGE",
-    "althub": "ALTHUB",
     "fmp": "FINANCIAL_MODELING_PREP",
     "quandl": "QUANDL",
     "polygon": "POLYGON",
@@ -2853,75 +2852,6 @@ def check_ultima_key(show_output: bool = False) -> str:
             logger.warning("Ultima Insights key defined, test inconclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-def set_althub_key(key: str, persist: bool = False, show_output: bool = False) -> str:
-    """Set althub key
-    Parameters
-    ----------
-    key: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-    Returns
-    -------
-    str
-        Status of key set
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.althub(key="example_key")
-    """
-
-    handle_credential("API_ALTHUB_TOKEN", key, persist)
-    return check_althub_key(show_output)
-
-def check_althub_key(show_output: bool = False) -> str:
-    """Check Polygon key
-    Parameters
-    ----------
-    show_output: bool
-        Display status string or not. By default, False.
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    current_user = get_current_user()
-
-    if current_user.credentials.API_ALTHUB_TOKEN == "REPLACE_ME":
-        logger.info("Althub key not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        headers = {
-            "accept": "application/json",
-            "Authorization": f"token {current_user.credentials.API_ALTHUB_TOKEN}",
-        }
-        params = {"limit":1,"all_feilds":False}
-
-        BASE_URL = "https://althub-backend.invisagealpha.com/api/OnclusiveSentiment/?all_feilds=False&limit=1"
-        
-        r = request(
-            url=f"{BASE_URL}sdk/token", method="GET", headers=headers, params=params
-        )
-        if r.status_code in [403, 401, 429 , 511]:
-            logger.warning("Althub key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-        elif r.status_code == 200:
-            logger.info("Althub key defined, test passed")
-            status = KeyStatus.DEFINED_TEST_PASSED
-        else:
-            logger.warning("Althub key defined, test inconclusive")
-            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
-        
     if show_output:
         console.print(status.colorize())
 
