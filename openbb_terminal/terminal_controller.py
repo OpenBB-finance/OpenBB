@@ -840,8 +840,7 @@ class TerminalController(BaseController):
                 lines_without_declarations = list()
                 for line in raw_lines:
                     # Check if this line has a variable attribution
-                    # This currently allows user to override ARGV parameter, we may want to protect it in the future?
-                    # This doesn't implement protection against $$, should we add it?
+                    # This currently allows user to override ARGV parameter
                     if "$" in line and "=" in line:
                         match = re.search(r"\$(\w+)\s*=\s*([\d,-.\s]+)", line)
                         if match:
