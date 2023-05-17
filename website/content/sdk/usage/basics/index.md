@@ -350,6 +350,32 @@ from openbb_terminal.core.plots import OpenBBFigure
 fig = OpenBBFigure()
 ```
 
+### Chart Themes
+
+Themes used by the charting and tables libraries are accessible in the SDK through a separate import statement.
+
+```python
+from openbb_terminal import theme
+```
+
+Print the path to the location of the style files with:
+
+```python
+theme.plt_styles_available
+```
+
+Set the charts theme as light or dark:
+
+```python
+theme.apply_style('light')
+```
+
+Refer to the [Plotly documentation](https://plotly.com/python/templates/) for details on customizing style sheets.
+
+### Chart Cheat Sheet
+
+![OpenBB Chart Cheat Sheet](https://user-images.githubusercontent.com/85772166/234313541-3d725e1c-ce48-4413-9267-b03571e0eccd.png)
+
 ### Changing Data Sources
 
 The source of the data can be specified - where more than one is available - by including the `source` argument in the syntax.
@@ -362,22 +388,6 @@ intrinio = openbb.stocks.load("SPY", source = "Intrinio")
 databento = openbb.stocks.load("SPY", source = "DataBento")
 ```
 
-## Chart and Table Themes
-
-The themes used by the charting and tables libraries are accessible in the SDK through a separate import statement.
-
-```python
-from openbb_terminal import theme
-```
-
-Print the path to the location of the style sheets with:
-
-```python
-theme.plt_styles_available
-```
-
-Refer to the [Plotly documentation](https://plotly.com/python/templates/) for details on customizing style sheets.
-
-## Support and Bug Reports
+## Support, Bug Reports & Feedback
 
 Issues can be raised through the [support page](https://my.openbb.co/app/sdk/support) or on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose).  You can also chat with the community on [Discord](https://openbb.co/discord) to find help or inspiration.  Feedback is always welcome.
