@@ -10,7 +10,7 @@ The Behavioural Analysis menu offers the user tools for gauging the overall publ
 
 ### How to use
 
-Some data sources will require a valid API key, which can be obtained for free and then set using the [Keys menu](https://docs.openbb.co/terminal/quickstart/api-keys). As with every command, using the `-h` argument displays the help dialogue. Running the <a href="/terminal/reference/stocks/ba/headlines/" target="_blank" rel="noreferrer noopener">headlines</a> command returns the following:
+Some data sources will require a valid API key, which can be obtained for free and then set using the [Keys menu](https://docs.openbb.co/terminal/usage/guides/api-keys). As with every command, using the `-h` argument displays the help dialogue. Running the <a href="/terminal/reference/stocks/ba/headlines/" target="_blank" rel="noreferrer noopener">headlines</a> command returns the following:
 
 ```
 (🦋) /stocks/ba/ $ headlines
