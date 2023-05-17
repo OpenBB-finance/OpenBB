@@ -1,7 +1,15 @@
 # GUEST
-
 whoami
 account
-
-# AUTHENTICATED USER
-# Not implemented
+clear
+list
+upload
+download
+delete
+generate
+show
+revoke
+logout
+help
+reset
+exit

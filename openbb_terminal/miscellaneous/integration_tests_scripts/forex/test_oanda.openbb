@@ -1,0 +1,72 @@
+forex
+oanda -h
+oanda -argument
+oanda
+from -h
+from -argument
+from ${currency=usd}
+to -h
+to -argument
+to ${currency_vs=chf}
+price -h
+price -argument
+price
+from ${currency=eur}
+price
+from ${currency=ils}
+price
+summary -h
+summary
+from usd
+to ${currency_vs=chf}
+orderbook -h
+orderbook
+list -h
+list
+order
+order -h
+order -argument
+order -u 3 -p 0.8
+list
+cancel
+cancel -h
+cancel -argument
+cancel -i
+cancel -i 5
+positions
+positions -h
+positions -argument
+pending
+pending -h
+pending -argument
+trades
+trades -h
+trades -argument
+closetrade
+closetrade -h
+closetrade -argument
+closetrade -i 5
+candles
+candles -h
+candles -v
+candles -a -b -c -e -v
+calendar
+calendar -h
+calendar -argument
+from ${currency=eur}
+to ${currency_vs=jpy}
+calendar
+to gbp
+calendar
+h
+help
+?
+q
+oanda
+..
+..
+forex
+oanda
+quit
+oanda
+exit

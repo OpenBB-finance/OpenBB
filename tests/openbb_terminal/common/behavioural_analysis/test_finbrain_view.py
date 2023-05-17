@@ -25,7 +25,7 @@ def test_display_sentiment_analysis(color, mocker):
     )
 
     # MOCK OBBFF
-    preferences = PreferencesModel(USE_ION=True)
+    preferences = PreferencesModel()
     mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
         target="openbb_terminal.core.session.current_user.__current_user",
@@ -52,7 +52,7 @@ def test_display_sentiment_analysis_empty_df(mocker):
     )
 
     # MOCK OBBFF
-    preferences = PreferencesModel(USE_ION=True)
+    preferences = PreferencesModel()
     mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
         target="openbb_terminal.core.session.current_user.__current_user",

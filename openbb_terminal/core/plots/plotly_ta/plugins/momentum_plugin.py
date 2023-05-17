@@ -12,7 +12,7 @@ class Momentum(PltTA):
     """Momentum technical indicators"""
 
     __subplots__ = ["rsi", "macd", "stoch", "cci", "fisher", "cg"]
-    __inchart__ = ["clenow", "demark"]
+    __inchart__ = ["clenow", "demark", "ichimoku"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -158,16 +158,16 @@ class Momentum(PltTA):
             line=dict(color=self.inchart_colors[inchart_index], width=2),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         fig.add_annotation(
             xref="paper",
             yref="paper",
             text="<b>CLenow</b>",
             x=0,
-            xanchor="left",
+            xanchor="right",
+            xshift=-6,
             yshift=-inchart_index * 18,
-            xshift=-60,
             y=0.98,
             font_size=14,
             font_color=self.inchart_colors[inchart_index],
@@ -205,7 +205,7 @@ class Momentum(PltTA):
             textfont=dict(color=theme.down_color, size=14.5),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         fig.add_scatter(
             x=high.index,
@@ -217,7 +217,7 @@ class Momentum(PltTA):
             textfont=dict(color=theme.up_color, size=14.5),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
 
         fig.add_annotation(
@@ -225,9 +225,9 @@ class Momentum(PltTA):
             yref="paper",
             text="<b>Demark</b>",
             x=0,
-            xanchor="left",
+            xanchor="right",
+            xshift=-6,
             yshift=-inchart_index * 18,
-            xshift=-60,
             y=0.98,
             font_size=14,
             font_color=self.inchart_colors[inchart_index],
@@ -510,3 +510,100 @@ class Momentum(PltTA):
         fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1
+
+    @indicator()
+    def plot_ichimoku(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
+        # Calculate Ichimoku indicator
+        conversion_period = (
+            self.params["ichimoku"].get_argument_values("conversion_period") or 9
+        )
+        base_period = self.params["ichimoku"].get_argument_values("base_period") or 26
+        lagging_line_period = (
+            self.params["ichimoku"].get_argument_values("lagging_line_period") or 52
+        )
+        displacement = self.params["ichimoku"].get_argument_values("displacement") or 26
+
+        # Tenkan-sen (Conversion Line)
+        conversion_line = (
+            df_ta["High"].rolling(window=conversion_period).max()
+            + df_ta["Low"].rolling(window=conversion_period).min()
+        ) / 2
+
+        # Kijun-sen (Base Line)
+        base_line = (
+            df_ta["High"].rolling(window=base_period).max()
+            + df_ta["Low"].rolling(window=base_period).min()
+        ) / 2
+
+        # Senkou Span A (Leading Span A)
+        leading_span_a = ((conversion_line + base_line) / 2).shift(displacement)
+
+        # Senkou Span B (Leading Span B)
+        lagging_line = df_ta[self.close_column].shift(-lagging_line_period)  # type: ignore
+        leading_span_b = (
+            (
+                lagging_line.rolling(window=base_period).max()
+                + lagging_line.rolling(window=base_period).min()
+            )
+            / 2
+        ).shift(displacement)
+
+        # Plot Tenkan-sen and Kijun-sen
+        fig.add_scatter(
+            x=df_ta.index,
+            y=conversion_line,
+            line=dict(color="orange", width=1),
+            name="Tenkan-sen",
+            secondary_y=False,
+            showlegend=True,
+            opacity=1,
+        )
+        fig.add_scatter(
+            x=df_ta.index,
+            y=base_line,
+            line=dict(color="blue", width=1),
+            name="Kijun-sen",
+            secondary_y=False,
+            showlegend=True,
+            opacity=1,
+        )
+
+        # Plot Senkou Span A and Senkou Span B as a filled area
+        fig.add_scatter(
+            x=df_ta.index,
+            y=leading_span_a,
+            line=dict(color="#009600", width=1),
+            fill="tonexty",
+            fillcolor="rgba(0, 150, 0, 0.1)",
+            name="Senkou Span A",
+            secondary_y=False,
+            showlegend=False,
+            opacity=0.2,
+        )
+        fig.add_scatter(
+            x=df_ta.index,
+            y=leading_span_b,
+            line=dict(color="#c80000", width=1),
+            fill="tonexty",
+            fillcolor="rgba(200, 0, 0, 0.1)",
+            name="Senkou Span B",
+            showlegend=False,
+            secondary_y=False,
+            opacity=0.2,
+        )
+
+        fig.add_annotation(
+            xref="paper",
+            yref="paper",
+            text="<b><span style='color:#009600'>Ichi</span>"
+            "<span style='color:#c80000'>moku</span></b>",
+            x=0,
+            xanchor="right",
+            xshift=-6,
+            yshift=-inchart_index * 18,
+            y=0.98,
+            font_size=14,
+            opacity=1,
+        )
+
+        return fig, inchart_index + 1

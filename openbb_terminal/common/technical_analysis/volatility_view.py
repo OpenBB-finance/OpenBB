@@ -53,7 +53,7 @@ def display_bbands(
     ta = PlotlyTA()
     fig = ta.plot(
         data,
-        dict(bbands=dict(length=window, scalar=n_std, mamode=mamode)),
+        dict(bbands=dict(length=window, std=n_std, mamode=mamode)),
         f"{symbol.upper()} Bollinger Bands",
         False,
         volume=False,

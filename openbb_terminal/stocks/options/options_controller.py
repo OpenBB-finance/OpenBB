@@ -132,28 +132,26 @@ class OptionsController(BaseController):
         self.selected_date = expiration or ""
         self.chain: pd.DataFrame = pd.DataFrame()
         self.full_chain: pd.DataFrame = pd.DataFrame()
-
+        self.expiry_dates: List[str] = []
         self.current_price = 0.0
+        self.is_eod = False
         # Keeps track of initial source of load so we can use correct commands later
-        self.source = ""
-
+        self.source = get_ordered_list_sources(f"{self.PATH}load")[0]
         if ticker:
-            if (
-                get_current_user().credentials.API_TRADIER_TOKEN == "REPLACE_ME"
-            ):  # nosec
-                console.print("Loaded expiry dates from Yahoo Finance")
-                self.expiry_dates = yfinance_model.option_expirations(self.ticker)
-            else:
-                console.print("Loaded expiry dates from Tradier")
-                self.expiry_dates = tradier_model.option_expirations(self.ticker)
-                self.source = "Tradier"
-
             self.set_option_chain()
             self.set_current_price()
+            self.set_expiry_dates()
+            self.selected_date = ""
+
+            if not self.expiry_dates and not self.chain.empty:
+                console.print(
+                    f"""[red]Issue loading options for "{self.ticker}" from source "{self.source}".[/red]"""
+                )
+                console.print("Defaulting to YahooFinance now.")
+                self.expiry_dates = nasdaq_model.option_expirations(self.ticker)
+
         else:
             self.expiry_dates = []
-
-        self.default_chain = get_ordered_list_sources(f"{self.PATH}chains")[0]
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
@@ -161,6 +159,8 @@ class OptionsController(BaseController):
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.update_runtime_choices()
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
@@ -655,6 +655,7 @@ class OptionsController(BaseController):
         ):
             self.ticker = ns_parser.ticker.upper()
             self.source = ns_parser.source
+            self.is_eod = False
 
             self.set_option_chain()
             self.set_current_price()
@@ -726,7 +727,6 @@ class OptionsController(BaseController):
                     self.selected_date = expiry_date
 
                 if self.selected_date:
-                    self.source = ns_parser.source
                     self.chain = self.full_chain[
                         self.full_chain["expiration"] == self.selected_date
                     ]
@@ -926,9 +926,11 @@ class OptionsController(BaseController):
                     df_chain = self.chain.copy()
                     needed = ["symbol", "code", "optionType", "expiration", "strike"]
                     needed = [col for col in needed if col in df_chain.columns]
-
                     if ns_parser.to_display:
                         to_display = ns_parser.to_display.split(",")
+                        if self.is_eod:
+                            for col in ["contractSymbol", "lastPrice", "bid", "ask"]:
+                                to_display.remove(col)
                         display = [col for col in to_display if col not in needed]
                         df_chain = df_chain[needed + display]
 
@@ -1449,3 +1451,4 @@ class OptionsController(BaseController):
             self.full_chain = intrinio_model.get_full_chain_eod(
                 self.ticker, datetime.strftime(ns_parser.date, "%Y-%m-%d")
             )
+            self.is_eod = True

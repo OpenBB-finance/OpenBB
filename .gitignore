@@ -41,9 +41,8 @@ website/functions
 website/terminaltest
 !build/docker/compose.env
 openbb_terminal/core/plots/assets/plotly*.js
-openbb_terminal/core/plots/plotly_temp.html
-openbb_terminal/core/plots/table_temp.html
 .dccache
+*rome.json
 
 # pyinstaller artifacts
 *.pyo
@@ -52,6 +51,7 @@ build/terminal
 build/nsis/app
 DMG/*
 *.dmg
+*.sh
 
 # User stylesheets
 openbb_terminal/miscellaneous/styles/user/hub.richstyle.json

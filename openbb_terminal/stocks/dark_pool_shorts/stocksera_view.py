@@ -8,6 +8,7 @@ from typing import Optional, Union
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure, theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -105,9 +106,10 @@ def cost_to_borrow(
     fig = plot_cost_to_borrow(symbol, df_cost_to_borrow, True)
 
     if raw:
-        df_cost_to_borrow["Available"] = df_cost_to_borrow["Available"].apply(
-            lambda x: lambda_long_number_format(x)
-        )
+        if not get_current_user().preferences.USE_INTERACTIVE_DF:
+            df_cost_to_borrow["Available"] = df_cost_to_borrow["Available"].apply(
+                lambda x: lambda_long_number_format(x)
+            )
         print_rich_table(
             df_cost_to_borrow,
             headers=list(df_cost_to_borrow.columns),
@@ -125,4 +127,4 @@ def cost_to_borrow(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

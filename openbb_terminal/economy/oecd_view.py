@@ -5,9 +5,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional
-
-import pandas as pd
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
@@ -17,6 +15,19 @@ from openbb_terminal.helper_funcs import console, export_data, print_rich_table
 logger = logging.getLogger(__name__)
 
 # pylint: disable=too-many-arguments, too-many-function-args
+
+
+YAXIS_TITLES = {
+    "AGRWTH": "Annual Growth Rate (%)",
+    "IDX": "Index (Base = 2015)",
+    "IDX2015": "Index (Base = 2015)",
+    "MLN_USD": "Millions of US Dollars",
+    "PC_CHGPY": "Same Quarter of the Previous Year (% Change)",
+    "PC_CHGPP": "Previous Quarter (% Change)",
+    "PC_GDP": "Percentage of GDP (%)",
+    "THND_USD_CAP": "Thousands of USD per Capita",
+    "USD_CAP": "US Dollars per Capita",
+}
 
 
 @log_start_end(log=logger)
@@ -29,7 +40,7 @@ def plot_gdp(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
-) -> pd.DataFrame:
+) -> Union[OpenBBFigure, None]:
     """
     Gross domestic product (GDP) is the standard measure of the value added created
     through the production of goods and services in a country during a certain period.
@@ -54,11 +65,19 @@ def plot_gdp(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     if units not in ["USD_CAP", "MLN_USD"]:
         return console.print(
@@ -68,45 +87,43 @@ def plot_gdp(
 
     df = oecd_model.get_gdp(countries, units, start_date, end_date)
 
-    if not df.empty:
-        if units == "USD_CAP":
-            fig = OpenBBFigure(yaxis_title="US Dollars per Capita")
-        else:
-            fig = OpenBBFigure(yaxis_title="Millions of US Dollars")
+    if df.empty:
+        return None
 
-        for country in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[country],
-                name=country.replace("_", " ").title(),
-                mode="lines",
-                line_width=2.5,
-                showlegend=True,
-            )
+    fig = OpenBBFigure(yaxis_title=YAXIS_TITLES[units])
 
-        title = "Nominal Gross Domestic Product (GDP)"
-        fig.set_title(title)
-
-        if raw:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=title,
-                export=bool(export),
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"nominal_gdp_{units}",
-            df,
-            sheet_name,
-            fig,
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
         )
 
-        return fig.show(external=external_axes)
-    return None
+    title = "Nominal Gross Domestic Product (GDP)"
+    fig.set_title(title)
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            export=bool(export),
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"nominal_gdp_{units}",
+        df,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -119,7 +136,7 @@ def plot_real_gdp(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
-) -> pd.DataFrame:
+) -> Union[OpenBBFigure, None]:
     """
     Gross domestic product (GDP) is the standard measure of the value added
     created through the production of goods and services in a country during
@@ -146,11 +163,19 @@ def plot_real_gdp(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     if units not in ["PC_CHGPP", "PC_CHGPY", "IDX"]:
         return console.print(
@@ -162,50 +187,48 @@ def plot_real_gdp(
 
     df = oecd_model.get_real_gdp(countries, units, start_date, end_date)
 
-    if not df.empty:
-        if units == "PC_CHGPP":
-            fig = OpenBBFigure(yaxis_title="Previous Quarter (% Change)")
-        elif units == "PC_CHGPY":
-            fig = OpenBBFigure(
-                yaxis_title="Same Quarter of the Previous Year (% Change)",
-                yaxis_title_font_size=13,
-            )
-        else:
-            fig = OpenBBFigure(yaxis_title="Index (Base = 2015)")
+    if df.empty:
+        return None
 
-        for country in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[country],
-                name=country.replace("_", " ").title(),
-                mode="lines",
-                line_width=2.5,
-                showlegend=True,
-            )
+    kwargs: Dict[str, Any] = {"yaxis_title": YAXIS_TITLES[units]}
 
-        title = "Real Gross Domestic Product (GDP)"
-        fig.set_title(title)
+    if units == "PC_CHGPY":
+        kwargs["yaxis_title_font_size"] = 14
 
-        if raw:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=title,
-                export=bool(export),
-            )
+    fig = OpenBBFigure(**kwargs)
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"real_gdp_{units}",
-            df if units == "IDX" else df / 100,
-            sheet_name,
-            fig,
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
         )
 
-        return fig.show(external=external_axes)
-    return None
+    title = "Real Gross Domestic Product (GDP)"
+    fig.set_title(title)
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            export=bool(export),
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"real_gdp_{units}",
+        df if units == "IDX" else df / 100,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -219,7 +242,7 @@ def plot_gdp_forecast(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
-) -> pd.DataFrame:
+) -> Union[OpenBBFigure, None]:
     """
     Real gross domestic product (GDP) is GDP given in constant prices and
     refers to the volume level of GDP. Constant price estimates of GDP are
@@ -242,11 +265,19 @@ def plot_gdp_forecast(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     if types not in ["real", "nominal"]:
         return console.print("Use either 'real' or 'nominal' for type")
@@ -254,60 +285,59 @@ def plot_gdp_forecast(
     units = "Q" if quarterly else "A"
     df = oecd_model.get_gdp_forecast(countries, types, units, start_date, end_date)
 
-    if not df.empty:
-        fig = OpenBBFigure(yaxis_title="Growth rates Compared to Previous Year (%)")
+    if df.empty:
+        return None
 
-        future_dates = df[
-            df.index > str(datetime.now())
-            if units == "Q"
-            else df.index >= datetime.now().year
-        ]
-        for country in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[country],
-                name=country.replace("_", " ").title(),
-                mode="lines",
-                line_width=2.5,
-                showlegend=True,
-            )
+    fig = OpenBBFigure(yaxis_title="Growth rates Compared to Previous Year (%)")
 
-        if not future_dates.empty:
-            fig.add_vrect(
-                x0=future_dates.index[0],
-                x1=future_dates.index[-1],
-                annotation_text="Forecast",
-                fillcolor="yellow",
-                opacity=0.20,
-                line_width=0,
-            )
-
-        title = (
-            f"Forecast of {'Quarterly' if units == 'Q' else 'Annual'} "
-            f"{'Real' if types == 'real' else 'Nominal'} Gross Domestic Product (GDP)"
-        )
-        fig.set_title(title, font_size=20)
-
-        if raw:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=title,
-                export=bool(export),
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "forecast_gdp",
-            df / 100,
-            sheet_name,
-            fig,
+    future_dates = df[
+        df.index > str(datetime.now()) if units == "Q" else df.index >= datetime.now()
+    ]
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
         )
 
-        return fig.show(external=external_axes)
-    return None
+    if not future_dates.empty:
+        fig.add_vrect(
+            x0=future_dates.index[0],
+            x1=future_dates.index[-1],
+            annotation_text="Forecast",
+            fillcolor="yellow",
+            opacity=0.20,
+            line_width=0,
+        )
+
+    title = (
+        f"Forecast of {'Quarterly' if units == 'Q' else 'Annual'} "
+        f"{'Real' if types == 'real' else 'Nominal'} Gross Domestic Product (GDP)"
+    )
+    fig.set_title(title, font_size=20)
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            export=bool(export),
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "forecast_gdp",
+        df / 100,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -322,7 +352,7 @@ def plot_cpi(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
-) -> pd.DataFrame:
+) -> Union[OpenBBFigure, None]:
     """
     Inflation measured by consumer price index (CPI) is defined as the change in the prices
     of a basket of goods and services that are typically purchased by specific groups of
@@ -355,63 +385,68 @@ def plot_cpi(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_cpi(
         countries, perspective, frequency, units, start_date, end_date
     )
 
-    if not df.empty:
-        fig = OpenBBFigure(
-            yaxis_title="Annual Growth Rate (%)"
-            if units == "AGRWTH"
-            else "Index (2015 = 100)"
+    if df.empty:
+        return None
+
+    fig = OpenBBFigure(yaxis_title=YAXIS_TITLES[units])
+
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
         )
 
-        for country in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[country],
-                name=country.replace("_", " ").title(),
-                mode="lines",
-                line_width=2.5,
-                showlegend=True,
-            )
+    perspective_naming = {
+        "FOOD": "Food",
+        "ENRG": "Energy",
+        "TOT": "Total",
+        "TOT_FOODENRG": "Total Excluding Food and Energy",
+    }
 
-        perspective_naming = {
-            "FOOD": "Food",
-            "ENRG": "Energy",
-            "TOT": "Total",
-            "TOT_FOODENRG": "Total Excluding Food and Energy",
-        }
+    title = f"Consumer Price Index (CPI) ({perspective_naming[perspective]})"
+    fig.set_title(title)
 
-        title = f"Consumer Price Index (CPI) ({perspective_naming[perspective]})"
-        fig.set_title(title)
-
-        if raw:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=title,
-                export=bool(export),
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "cpi",
-            df / 100 if units == "AGRWTH" else df,
-            sheet_name,
-            fig,
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            export=bool(export),
         )
 
-        return fig.show(external=external_axes)
-    return None
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cpi",
+        df / 100 if units == "AGRWTH" else df,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -423,7 +458,7 @@ def plot_balance(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
-) -> pd.DataFrame:
+) -> Union[OpenBBFigure, None]:
     """
     General government balance is defined as the balance of income and expenditure of government,
     including capital income and capital expenditures. "Net lending" means that governmen
@@ -441,50 +476,59 @@ def plot_balance(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_balance(countries, start_date, end_date)
 
-    if not df.empty:
-        fig = OpenBBFigure(yaxis_title="Percentage of GDP (%)")
+    if df.empty:
+        return None
 
-        for country in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[country],
-                name=country.replace("_", " ").title(),
-                mode="lines",
-                line_width=2.5,
-                showlegend=True,
-            )
+    fig = OpenBBFigure(yaxis_title="Percentage of GDP (%)")
 
-        title = "Government Defict or Suplus"
-        fig.set_title(title)
-
-        if raw:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=title,
-                export=bool(export),
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "balance_percentage_gdp",
-            df / 100,
-            sheet_name,
-            fig,
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
         )
 
-        return fig.show(external=external_axes)
-    return None
+    title = "Government Defict or Suplus"
+    fig.set_title(title)
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            export=bool(export),
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "balance_percentage_gdp",
+        df / 100,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -497,7 +541,7 @@ def plot_revenue(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
-) -> pd.DataFrame:
+) -> Union[OpenBBFigure, None]:
     """
     Governments collect revenues mainly for two purposes: to finance the goods
     and services they provide to citizens and businesses, and to fulfil their
@@ -515,17 +559,25 @@ def plot_revenue(
     countries: list
         List of countries to get data for
     units: str
-        Units to get data in. Either 'PC_GDP' or 'THOUSAND_USD_PER_CAPITA'.
+        Units to get data in. Either 'PC_GDP' or 'THND_USD_CAP'.
         Default is Percentage of GDP.
     start_date: str
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     if units not in ["THND_USD_CAP", "PC_GDP"]:
         return console.print(
@@ -535,45 +587,43 @@ def plot_revenue(
 
     df = oecd_model.get_revenue(countries, units, start_date, end_date)
 
-    if not df.empty:
-        if units == "THND_USD_CAP":
-            fig = OpenBBFigure(yaxis_title="Thousands of USD per Capita")
-        else:
-            fig = OpenBBFigure(yaxis_title="Percentage of GDP (%)")
+    if df.empty:
+        return None
 
-        for country in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[country],
-                name=country.replace("_", " ").title(),
-                mode="lines",
-                line_width=2.5,
-                showlegend=True,
-            )
+    fig = OpenBBFigure(yaxis_title=YAXIS_TITLES[units])
 
-        title = "Government Revenue"
-        fig.set_title(title)
-
-        if raw:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=title,
-                export=bool(export),
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"revenue_{units}",
-            df / 100 if units == "PC_GDP" else df,
-            sheet_name,
-            fig,
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
         )
 
-        return fig.show(external=external_axes)
-    return None
+    title = "Government Revenue"
+    fig.set_title(title)
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            export=bool(export),
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"revenue_{units}",
+        df / 100 if units == "PC_GDP" else df,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -587,7 +637,7 @@ def plot_spending(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
-) -> pd.DataFrame:
+) -> Union[OpenBBFigure, None]:
     """
     General government spending provides an indication of the size
     of government across countries. The large variation in this indicator
@@ -603,73 +653,79 @@ def plot_spending(
     countries: list
         List of countries to get data for
     units: str
-        Units to get data in. Either 'PC_GDP' or 'THOUSAND_USD_PER_CAPITA'.
+        Units to get data in. Either 'PC_GDP' or 'THND_USD_CAP'.
         Default is Percentage of GDP.
     start_date: str
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_spending(countries, perspective, units, start_date, end_date)
 
-    if not df.empty:
-        if units == "THND_USD_CAP":
-            fig = OpenBBFigure(yaxis_title="Thousands of USD per Capita")
-        else:
-            fig = OpenBBFigure(yaxis_title="Percentage of GDP (%)")
+    if df.empty:
+        return None
 
-        for country in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[country],
-                name=country.replace("_", " ").title(),
-                mode="lines",
-                line_width=2.5,
-                showlegend=True,
-            )
+    fig = OpenBBFigure(yaxis_title=YAXIS_TITLES[units])
 
-        perspective_naming = {
-            "TOT": "Total",
-            "RECULTREL": "Recreation, culture and religion)",
-            "HOUCOMM": "Housing and community amenities",
-            "PUBORD": "Public order and safety)",
-            "EDU": "Education",
-            "ENVPROT": "Environmental protection",
-            "GRALPUBSER": "General public services)",
-            "SOCPROT": "Social protection",
-            "ECOAFF": "Economic affairs",
-            "DEF": "Defence",
-            "HEALTH": "Health",
-        }
-
-        title = f"Government Spending ({perspective_naming[perspective]})"
-        fig.set_title(title)
-
-        if raw:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=title,
-                export=bool(export),
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"spending_{units}_{perspective}",
-            df / 100 if units == "PC_GDP" else df,
-            sheet_name,
-            fig,
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
         )
 
-        return fig.show(external=external_axes)
-    return None
+    perspective_naming = {
+        "TOT": "Total",
+        "RECULTREL": "Recreation, culture and religion)",
+        "HOUCOMM": "Housing and community amenities",
+        "PUBORD": "Public order and safety)",
+        "EDU": "Education",
+        "ENVPROT": "Environmental protection",
+        "GRALPUBSER": "General public services)",
+        "SOCPROT": "Social protection",
+        "ECOAFF": "Economic affairs",
+        "DEF": "Defence",
+        "HEALTH": "Health",
+    }
+
+    title = f"Government Spending ({perspective_naming[perspective]})"
+    fig.set_title(title)
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            export=bool(export),
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"spending_{units}_{perspective}",
+        df / 100 if units == "PC_GDP" else df,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -681,7 +737,7 @@ def plot_debt(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
-) -> pd.DataFrame:
+) -> Union[OpenBBFigure, None]:
     """
     General government debt-to-GDP ratio measures the gross debt of the general
     government as a percentage of GDP. It is a key indicator for the sustainability
@@ -698,50 +754,59 @@ def plot_debt(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_debt(countries, start_date, end_date)
 
-    if not df.empty:
-        fig = OpenBBFigure(yaxis_title="Percentage of GDP (%)")
+    if df.empty:
+        return None
 
-        for country in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[country],
-                name=country.replace("_", " ").title(),
-                mode="lines",
-                line_width=2.5,
-                showlegend=True,
-            )
+    fig = OpenBBFigure(yaxis_title="Percentage of GDP (%)")
 
-        title = "Government Debt-to-GDP Ratio"
-        fig.set_title(title)
-
-        if raw:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=title,
-                export=bool(export),
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "debt_to_gdp",
-            df / 100,
-            sheet_name,
-            fig,
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
         )
 
-        return fig.show(external=external_axes)
-    return None
+    title = "Government Debt-to-GDP Ratio"
+    fig.set_title(title)
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            export=bool(export),
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "debt_to_gdp",
+        df / 100,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -753,7 +818,7 @@ def plot_trust(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
-) -> pd.DataFrame:
+) -> Union[OpenBBFigure, None]:
     """
     Trust in government refers to the share of people who report having confidence in
     the national government. The data shown reflect the share of respondents answering
@@ -773,47 +838,56 @@ def plot_trust(
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        Whether to display raw data in a table
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with the interest rate data
+    Union[OpenBBFigure, None]
+        OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
     df = oecd_model.get_trust(countries, start_date, end_date)
 
-    if not df.empty:
-        fig = OpenBBFigure(yaxis_title="Percentage of all Survey Respondents (%)")
+    if df.empty:
+        return None
 
-        for country in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[country],
-                name=country.replace("_", " ").title(),
-                mode="lines",
-                line_width=2.5,
-                showlegend=True,
-            )
+    fig = OpenBBFigure(yaxis_title="Percentage of all Survey Respondents (%)")
 
-        title = "Trust in the Government"
-        fig.set_title(title)
-
-        if raw:
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=title,
-                export=bool(export),
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "trust",
-            df / 100,
-            sheet_name,
-            fig,
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
         )
 
-        return fig.show(external=external_axes)
-    return None
+    title = "Trust in the Government"
+    fig.set_title(title)
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            export=bool(export),
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "trust",
+        df / 100,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)

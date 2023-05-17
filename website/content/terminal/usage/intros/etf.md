@@ -1,9 +1,14 @@
 ---
 title: ETF
-keywords: [etfs, exchange traded funds, fund, basket, retail, stocks, openbb terminal]
-description: The ETF menu enables you to lookup any ETF and obtain an overview about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to compare companies within the ETF, discover gainers and losers within discovery and apply advanced technical indicators. Lastly, it also has the option to export multiple ETFs to Excel.
+keywords: [etfs, exchange traded funds, fund, basket, retail, stocks, openbb terminal, how to, example, holdings, weights, news, compare, discovery, indicators]
+description: A brief introduciton to the ETF menu. It includes a guide on the functionality, commands, data, and examples in context.
 
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ETF - Terminal | OpenBB Docs" />
+
 The ETF menu enables you to lookup any ETF and obtain an <a href="/terminal/reference/etf/overview" target="_blank" rel="noreferrer noopener">overview</a>, <a href="/terminal/reference/etf/holdings" target="_blank" rel="noreferrer noopener">holdings</a>, <a href="/terminal/reference/etf/weights" target="_blank" rel="noreferrer noopener">weights</a> and <a href="/terminal/reference/etf/news" target="_blank" rel="noreferrer noopener">news</a> about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to <a href="/terminal/usage/intros/stocks/comparison" target="_blank" rel="noreferrer noopener">compare companies</a> within the ETF, discover gainers and losers within <a href="/terminal/reference#disc" target="_blank" rel="noreferrer noopener">discovery</a> and apply advanced <a href="/terminal/usage/intros/common/ta" target="_blank" rel="noreferrer noopener">technical indicators</a> and <a href="/terminal/usage/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a>. Lastly, it also has the option to export multiple ETFs to Excel with <a href="/terminal/reference/etf/pir" target="_blank" rel="noreferrer noopener">pir</a>.
 
 ### How to use
@@ -17,7 +22,7 @@ You now have the ability to look up any ETF. With the example below, the `load` 
 ```
 (🦋) /etf/ $ load voo
 
-Loading Daily data for VOO with starting period 2022-02-08. 
+Loading Daily data for VOO with starting period 2022-02-08.
 ```
 
 Now we can use `holdings` to see the makeup of VOO
@@ -114,7 +119,7 @@ It seems Vanguard Total Stock Market Index Fund ETF Shares (VTI) is by far the l
 ```
 (🦋) /etf/ $ load VTI -s 2010-01-01
 
-Loading Daily data for VTI with starting period 2010-01-01. 
+Loading Daily data for VTI with starting period 2010-01-01.
 ```
 
 We can now plot the corresponding ETF chart with <a href="/terminal/reference/etf/candle" target="_blank" rel="noreferrer noopener">candle</a> which shows the company's historical data from `2010-01-01` until the current date. We are also adding in trendlines with `-t`.
@@ -130,7 +135,7 @@ Now we can go ahead and explore more about the ETF by running <a href="/terminal
 ```
 (🦋) /etf/ $ holdings
 
-                           ETF Holdings                           
+                           ETF Holdings
 ┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
 ┃       ┃ Name                            ┃ % Of Etf ┃ Shares    ┃
 ┡━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
@@ -160,7 +165,7 @@ And <a href="/terminal/reference/etf/weights" target="_blank" rel="noreferrer no
 ```
 (🦋) /etf/ $ weights --raw
 
-   Sector Weightings Allocation    
+   Sector Weightings Allocation
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
 ┃ Sector                 ┃ Weight ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩

@@ -1,60 +1,140 @@
 ---
 sidebar_position: 5
 title: Customization
-description: To adjust the lay-out and settings of the OpenBB Terminal you can access the settings menu. This menu allows you to tweak how the terminal behaves. Next to that, to enable or disable certain functionalities of the terminal you can use the featflags menu.
+description: The settings and feature flags menus are for altering the behaviour and presentation of the Terminal, both are accessed from the main menu.
 keywords: [settings, featflags, feature flags, lay-out, advanced, customizing, openbb terminal]
 ---
+The OpenBB Terminal contains two menus for altering the behaviour and presentation of the Terminal, Settings and FeatFlags, both of which are accessed from the main menu.
 
-Since the code is open source you are able to adjust anything you like. However, to make it easy for you we have created a settings and featflags menu that include the most requested features that users like to have control over. 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-## Using the Settings Menu
+<HeadTitle title="Customization - Terminal | OpenBB Docs" />
+## The Settings Menu
 
-To adjust the lay-out and settings of the OpenBB Terminal you can access the `settings` menu. This menu allows you to tweak how the terminal behaves. 
+The `/settings` menu provides methods for customizing the look of the Terminal.  Enter the menu from anywhere in the Terminal with:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/225057498-723a0310-da28-4079-8726-214618b5d5a2.png"></img>
+```console
+/settings
+```
 
-This menu includes the following:
+| Function Key |                                                      Description |
+| :----------- | ---------------------------------------------------------------: |
+| chart        |                                          Select the chart style. |
+| colors       |                        Sets the color scheme for Terminal fonts. |
+| dt           |      Add or remove date and time from the Terminal command line. |
+| flair        |                                 Sets the flair emoji to be used. |
+| height       |                                     Set the default plot height. |
+| lang         |         Select the language for the Terminal menus and commands. |
+| source       | Use an alternate data sources file. (Not recommended to change.) |
+| table        |                                          Select the table style. |
+| tz           |                                               Select a timezone. |
+| userdata     |              Change the local path to the OpenBBUserData folder. |
+| width        |                                      Set the default plot width. |
 
-- `colors` define the colors you wish to use within the OpenBB Terminal.
-- `dt` adds or removes the datetime from the flair (which is next to the flair).
-- `flair` allows you to change the emoji that is used.
-- `lang` gives the ability to change the terminal language. At this moment, the terminal is only available in English.
-- `userdata` defines the folder you wish to export data you acquire from the terminal. Use quotes for custom locations.
-- `tz` allows you to change the timezone if this is incorrectly displayed for you.
-- `autoscaling` automatically scales plots for you if enabled (when green).
-    - if `autoscaling` is enabled:
-        - `pheight` sets the percentage height of the plot (graphs) displayed (if autoscaling is enabled).
-        - `pwidth` sets the percentage width of the plot (graphs) displayed (if autoscaling is enabled).
-    - if `autoscaling` is disabled:
-        - `height` sets the height of the plot (graphs) displayed (if autoscaling is disabled).
-        - `width` sets the width of the plot (graphs) displayed (if autoscaling is disabled).
-- `dpi` refers to the resolution that is used for the plot (graphs)
-- `backend` allows you to change the backend that is used for the graphs
-- `monitor` choose which monitors to scale the plot (graphs) to if applicable
-- `source` allows you to select a different source file in which the default data sources are written down
-- `tbnews` whether to include the Twitter news toolbar.
+### Examples
 
-## Using the Feature Flags Menu
+#### Styles
 
-To enable or disable certain functionalities of the terminal you can use the `featflags` menu.
+Set charts and tables styles as light or dark mode.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/225058457-507a7d0e-48a8-47f7-afa1-6967931f2255.png"></img>
+```console
+/settings/table -s light
+```
 
-By entering one of the commands on this page you are able to turn the feature flag on or off. This menu includes the following:
+```console
+/settings/chart -s dark
+```
 
-- `retryload` whenever you misspell commands, try to use the `load` command with it first (default is off).
-- `tab` whether to use tabulate to print DataFrames, to prettify these DataFrames (default is on).
-- `cls` whether to clear the command window after each command (default is off).
-- `color` whether to use colors within the terminal (default is on).
-- `promptkit` whether you wish to enable autocomplete and history (default is on).
-- `thoughts` whether to receive a thought of the day (default is off).
-- `reporthtml` whether to open reports as HTML instead of Jupyter Notebooks (default is on).
-- `exithelp` whether to automatically print the help message when you use `q` (default is off).
-- `rcontext` whether to remember loaded tickers and similar while switching menus (default is on).
-- `rich` whether to apply a colorful rich terminal (default is on).
-- `richpanel` whether to apply a colorful rich terminal panel (default is on).
-- `ion` whether to enable interactive mode of MATPLOTLIB (default is on).
-- `watermark` whether to include the watermark of OpenBB Terminal in figures (default is on).
-- `cmdloc` whether the location of the command is displayed in figures (default is on).
-- `tbhint` whether usage hints are displayed in the bottom toolbar (default is on).
-- `overwrite` whether to automatically overwrite Excel files if prompted to (default is off).
+#### tz
+
+Set the local timezone for the Terminal
+
+```console
+
+/settings/tz Africa/Johannesburg
+```
+
+## The Feature Flags Menu
+
+The `/featflags` menu provides methods for altering the behaviour and responses with environment variables.  These configurations are on/off, and the status is indicated by the red/green text of each.  Each parameter is listed below.
+
+| Function Key |                                                                                     Description |
+| :----------- | ----------------------------------------------------------------------------------------------: |
+| cls          |                                     Clear the screen after each command.  Default state is off. |
+| exithelp     |           Automatically print the screen after navigating back one menu.  Default state is off. |
+| interactive  | Enable/disable interactive tables.  Disabling prints the table directly on the Terminal screen. |
+| overwrite    |               Automatically overwrite exported files with the same name.  Default state is off. |
+| promptkit    |                                         Enable auto complete and history.  Default state is on. |
+| rcontext     |                            Remember loaded tickers while switching menus.  Default state is on. |
+| retryload    |                Retries misspelled commands with the load function first.  Default state is off. |
+| reporthtml   |                                           Generate reports as HTML files.  Default state is on. |
+| richpanel    |                                           Displays a border around menus.  Default state is on. |
+| tbhint       |                                Display usage hints in the bottom toolbar.  Default state is on. |
+| version      |                     Displays the currently installed version number in the bottom right corner. |
+
+### Examples
+
+#### interactive
+
+When it is off, the Terminal displays all tables directly on the screen instead of opening a window.
+
+```console
+(🦋) /stocks/ $ quote spy
+
+                    SPY Quote                   
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Info                  ┃ Value                  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Symbol                │ SPY                    │
+├───────────────────────┼────────────────────────┤
+│ Name                  │ SPDR S&P 500 ETF Trust │
+├───────────────────────┼────────────────────────┤
+│ Price                 │ 412.43                 │
+├───────────────────────┼────────────────────────┤
+│ Changes percentage    │ 0.06                   │
+├───────────────────────┼────────────────────────┤
+│ Change                │ 0.23                   │
+├───────────────────────┼────────────────────────┤
+│ Day low               │ 410.60                 │
+├───────────────────────┼────────────────────────┤
+│ Day high              │ 413.06                 │
+├───────────────────────┼────────────────────────┤
+│ Year high             │ 431.73                 │
+├───────────────────────┼────────────────────────┤
+│ Year low              │ 348.11                 │
+├───────────────────────┼────────────────────────┤
+│ Market cap            │ 378.521 B              │
+├───────────────────────┼────────────────────────┤
+│ Price avg50           │ 402.47                 │
+├───────────────────────┼────────────────────────┤
+│ Price avg200          │ 394.88                 │
+├───────────────────────┼────────────────────────┤
+│ Exchange              │ AMEX                   │
+├───────────────────────┼────────────────────────┤
+│ Volume                │ 44.621 M               │
+├───────────────────────┼────────────────────────┤
+│ Avg volume            │ 89774263               │
+├───────────────────────┼────────────────────────┤
+│ Open                  │ 411.99                 │
+├───────────────────────┼────────────────────────┤
+│ Previous close        │ 412.20                 │
+├───────────────────────┼────────────────────────┤
+│ Eps                   │ 19.85                  │
+├───────────────────────┼────────────────────────┤
+│ Pe                    │ 20.78                  │
+├───────────────────────┼────────────────────────┤
+│ Earnings announcement │ 2017-11-29 17:00:00    │
+├───────────────────────┼────────────────────────┤
+│ Shares outstanding    │ 917.782 M              │
+├───────────────────────┼────────────────────────┤
+│ Timestamp             │ 2023-04-24 12:34:22    │
+└───────────────────────┴────────────────────────┘
+```
+
+#### overwrite
+
+Enable this feature flag to remove the prompt when exporting a file with the same name.  This will only overwrite an existing `XLSX` file if the `--sheet-name` is not defined.
+
+#### exithelp
+
+Enabling this prints the parent menu on the screen when going back from a sub-menu.

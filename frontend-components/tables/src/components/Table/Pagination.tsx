@@ -2,19 +2,17 @@ import clsx from "clsx";
 import Select from "../Select";
 import { DEFAULT_ROWS_PER_PAGE } from ".";
 
-export function validatePageSize(
-  pageSize: any
-) {
+export function validatePageSize(pageSize: any) {
   if (typeof pageSize !== "number") {
     if (typeof pageSize === "string" && pageSize.includes("All")) {
-      return pageSize
+      return pageSize;
     }
-    return DEFAULT_ROWS_PER_PAGE
+    return DEFAULT_ROWS_PER_PAGE;
   }
   if (pageSize < 1) {
-    return DEFAULT_ROWS_PER_PAGE
+    return DEFAULT_ROWS_PER_PAGE;
   }
-  return pageSize
+  return pageSize;
 }
 
 export default function Pagination({
@@ -26,15 +24,14 @@ export default function Pagination({
   currentPage: number;
   setCurrentPage: (value: number) => void;
 }) {
-  const totalRows = table.getFilteredRowModel().rows.length;
+  const totalRows = table.getFilteredRowModel().rows.length || 0;
 
   return (
-    <div className="flex items-center gap-8">
+    <div className="hidden md:flex items-center gap-8">
       <Select
         value={currentPage}
         onChange={(value) => {
-          const newValue = validatePageSize(value)
-          console.log(newValue)
+          const newValue = validatePageSize(value);
           setCurrentPage(newValue);
           if (newValue.toString().includes("All")) table.setPageSize(totalRows);
           else table.setPageSize(newValue);
@@ -71,7 +68,7 @@ export default function Pagination({
             className="_input"
           />
           </span>*/}
-      <div>
+      <div className="hidden lg:block">
         <button
           className={clsx("px-2", {
             "text-grey-400 dark:text-grey-700": !table.getCanPreviousPage(),

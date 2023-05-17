@@ -173,19 +173,27 @@ class CryptoController(model.CryptoRoot):
             `coins_for_given_exchange`: Helper method to get all coins available on binance exchange [Source: CoinGecko]\n
             `cpsearch`: Search CoinPaprika. [Source: CoinPaprika]\n
             `cpsearch_chart`: Prints table showing Search over CoinPaprika. [Source: CoinPaprika]\n
+            `dapp_categories`: Get dapp categories [Source: https://dappradar.com/]\n
+            `dapp_categories_chart`: Prints table showing dapp categories [Source: https://dappradar.com/]\n
+            `dapp_chains`: Get dapp chains [Source: https://dappradar.com/]\n
+            `dapp_chains_chart`: Prints table showing dapp chains [Source: https://dappradar.com/]\n
+            `dapp_metrics`: Get dapp metrics [Source: https://dappradar.com/]\n
+            `dapp_metrics_chart`: Prints table showing dapp metrics [Source: https://dappradar.com/]\n
+            `dapps`: Get dapps [Source: https://dappradar.com/]\n
+            `dapps_chart`: Prints table showing dapps [Source: https://dappradar.com/]\n
+            `defi_chains`: Get defi chains [Source: https://dappradar.com/]\n
+            `defi_chains_chart`: Prints table showing defi chains [Source: https://dappradar.com/]\n
             `gainers`: Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
             `gainers_chart`: Prints table showing Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
             `losers`: Shows Largest Losers - coins which lose the most in given period. [Source: CoinGecko]\n
             `losers_chart`: Prints table showing Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]\n
+            `nft_mktp`: Get top nft collections [Source: https://dappradar.com/]\n
+            `nft_mktp_chart`: Prints table showing nft marketplaces [Source: https://dappradar.com/]\n
+            `nft_mktp_chains`: Get nft marketplaces chains [Source: https://dappradar.com/]\n
+            `nft_mktp_chains_chart`: Prints table showing nft marketplaces chains [Source: https://dappradar.com/]\n
+            `tokens`: Get chains that support tokens [Source: https://dappradar.com/]\n
+            `tokens_chart`: Prints table showing chains that support tokens [Source: https://dappradar.com/]\n
             `top_coins`: Get top cryptp coins.\n
-            `top_dapps`: Get top decentralized applications by daily volume and users [Source: https://dappradar.com/]\n
-            `top_dapps_chart`: Prints table showing top decentralized exchanges [Source: https://dappradar.com/]\n
-            `top_dexes`: Get top dexes by daily volume and users [Source: https://dappradar.com/]\n
-            `top_dexes_chart`: Prints table showing top decentralized exchanges [Source: https://dappradar.com/]\n
-            `top_games`: Get top blockchain games by daily volume and users [Source: https://dappradar.com/]\n
-            `top_games_chart`: Prints table showing top blockchain games [Source: https://dappradar.com/]\n
-            `top_nfts`: Get top nft collections [Source: https://dappradar.com/]\n
-            `top_nfts_chart`: Prints table showing top nft collections [Source: https://dappradar.com/]\n
             `trending`: Returns trending coins [Source: CoinGecko]\n
             `trending_chart`: Prints table showing trending coins [Source: CoinGecko]\n
         """
@@ -240,6 +248,8 @@ class CryptoController(model.CryptoRoot):
             `lt_chart`: Prints table showing Trades on Decentralized Exchanges aggregated by DEX or Month\n
             `prices`: Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]\n
             `prices_chart`: Display token historical prices with volume and market cap, and average price.\n
+            `query`: Get query data\n
+            `query_chart`: Display query results from shroom\n
             `query_graph`: Helper methods for querying graphql api. [Source: https://bitquery.io/]\n
             `th`: Get info about token historical transactions. [Source: Ethplorer]\n
             `th_chart`: Display info about token history. [Source: Ethplorer]\n

@@ -4,8 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OpenBB Interactive Tables</title>
-    <meta name="color-scheme" content="dark light" />
     <script>
+      if (window.json_data && JSON.parse(window.json_data)?.posthog?.collect_logs) {
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init("phc_vhssDAMod5qIplznQ75Kdgz4aB1qPFmeVmfEOZ4hkRw", {
+          api_host: "https://app.posthog.com",
+          autocapture: {
+            css_selector_allowlist: [".ph-capture"],
+          },
+          capture_pageview: false,
+          loaded: function (posthog) {
+            if (window.json_data) {
+              const data = JSON.parse(window.json_data);
+
+              const log_id = data?.log_id || "";
+              if (log_id != "" && log_id != "REPLACE_ME") {
+                posthog.identify(log_id);
+              }
+
+              posthog.capture("table", {
+                INFO: {
+                  command: data.command_location,
+                  title: data.title,
+                  python_version: data.python_version,
+                  pywry_version: data.pywry_version,
+                  terminal_version: data.terminal_version,
+                },
+              });
+            }
+            posthog.onFeatureFlags(function () {
+              if (
+                !posthog.isFeatureEnabled("record-pywry", { send_event: false })
+              ) {
+                posthog.stopSessionRecording();
+              }
+              if (
+                !posthog.isFeatureEnabled("collect-logs-pywry", {
+                  send_event: false,
+                })
+              ) {
+                posthog.opt_out_capturing();
+              } else if (posthog.has_opted_out_capturing()) {
+                posthog.opt_in_capturing();
+              }
+            });
+          },
+        });
+      }
+
       if (
         // check if user had saved dark as their
         // theme when accessing page before

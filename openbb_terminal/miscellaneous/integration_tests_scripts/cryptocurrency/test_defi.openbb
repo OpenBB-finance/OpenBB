@@ -1,0 +1,80 @@
+crypto
+defi
+
+# newsletter
+newsletter
+newsletter --limit 3
+
+# dpi BROKEN
+
+# vaults
+vaults
+vaults --chain ${crypto_full=ethereum} --protocol aave --kind stable --top 3 --links
+vaults --chain ${crypto_full=ethereum} -s apy -r
+
+# tokens
+tokens # this is running into a timeout issue
+tokens --skip 3 --limit 3 --sort totalLiquidity
+tokens --sort txCount --reverse
+
+# stats
+stats
+
+lcsc -d 2 -l 10
+
+# pairs
+pairs --limit 3 --vol 150 --tx 150 --days 15 --sort volumeUSD
+pairs --sort volumeUSD -r
+
+# pools
+pools
+pools --limit 3 --sort volumeUSD
+pools --sort volumeUSD --reverse
+
+# swaps
+swaps --limit 3 --sort amountUSD
+swaps --sort Datetime -r
+
+# ldapps
+ldapps
+ldapps --limit 3 --sort tvl
+ldapps --sort change_7d -r
+
+# gdapps
+gdapps
+gdapps --limit 3
+
+# stvl
+stvl
+stvl --limit 3
+
+# dtvl
+dtvl --dapps anchor
+
+# sinfo
+sinfo -a terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz -l 10
+
+# validators
+validators --sort validatorName --reverse
+
+# gacc
+gacc
+gacc --cumulative --limit 200 --kind active
+
+# sreturn
+sreturn
+sreturn --limit 200
+
+# lcsc
+
+# anchor
+anchor --address terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz
+anchor --address terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz --transactions
+
+help
+reset
+exit
+
+# TERRA ADDRESSES FOR EXAMPLES
+# terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8
+# terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz

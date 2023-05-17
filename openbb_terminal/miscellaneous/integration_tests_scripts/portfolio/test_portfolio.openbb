@@ -117,4 +117,10 @@ es -p 50
 om
 om --start 0.05 --end 0.2
 q
+bro
+..
+po
+..
+help
+reset
 exit

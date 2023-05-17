@@ -213,6 +213,32 @@ def test_set_news_key(args: List[str], persist: bool, show_output: bool, mocker)
         ),
     ],
 )
+def test_set_biztoc_key(args: List[str], persist: bool, show_output: bool, mocker):
+    mock_check = mocker.patch("openbb_terminal.keys_model.check_biztoc_key")
+    keys_model.set_biztoc_key(
+        key=args[0],
+        persist=persist,
+        show_output=show_output,
+    )
+    mock_check.assert_called_once_with(show_output)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "args, persist, show_output",
+    [
+        (
+            ["test_key"],
+            False,
+            True,
+        ),
+        (
+            ["test_key"],
+            False,
+            False,
+        ),
+    ],
+)
 def test_set_tradier_key(args: List[str], persist: bool, show_output: bool, mocker):
     mock_check = mocker.patch("openbb_terminal.keys_model.check_tradier_key")
     keys_model.set_tradier_key(

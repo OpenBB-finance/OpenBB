@@ -70,6 +70,7 @@ def print_raw(
             show_index=False,
             title=table_title,
             export=bool(export),
+            floatfmt=".6f",
         )
 
     for opt_type, only in zip(["call", "put"], [puts_only, calls_only]):
@@ -81,6 +82,7 @@ def print_raw(
                 show_index=False,
                 title=f"{title} - {opt_type.title()}s",
                 export=bool(export),
+                floatfmt=".4f",
             )
 
     return None
@@ -143,7 +145,7 @@ def plot_vol(
     """
     calls, puts = get_calls_and_puts(chain)
 
-    min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
+    min_strike, max_strike = get_strikes(min_sp, max_sp, chain)
     title = f"Volume for {symbol.upper()} expiring {expiry}"
 
     if raw:
@@ -177,7 +179,7 @@ def plot_vol(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -236,7 +238,7 @@ def plot_oi(
     """
     calls, puts = get_calls_and_puts(chain)
 
-    min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
+    min_strike, max_strike = get_strikes(min_sp, max_sp, chain)
     max_pain = get_max_pain(calls, puts)
     title = f"Open Interest for {symbol.upper()} expiring {expiry}"
 
@@ -280,7 +282,7 @@ def plot_oi(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -334,7 +336,7 @@ def plot_voi(
     get_current_user()
     calls, puts = get_calls_and_puts(chain)
 
-    min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
+    min_strike, max_strike = get_strikes(min_sp, max_sp, chain)
     max_pain = get_max_pain(calls, puts)
     title = f"Volume and Open Interest for {symbol.upper()} expiring {expiry}"
 
@@ -414,7 +416,7 @@ def plot_voi(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -470,12 +472,11 @@ def display_chains(
     sheet_name: str
         Optionally specify the name of the sheet to export to
     """
-    min_strike, max_strike = get_strikes(
-        min_sp=min_sp, max_sp=max_sp, current_price=current_price
-    )
+    min_strike, max_strike = get_strikes(min_sp, max_sp, chain)
 
     chain = chain[chain["strike"] >= min_strike]
     chain = chain[chain["strike"] <= max_strike]
+
     calls, puts = get_calls_and_puts(chain)
     # Tradier provides the greeks, so calculate them if they are not present
     if "delta" not in chain.columns:

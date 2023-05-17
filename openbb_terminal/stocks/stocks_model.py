@@ -286,19 +286,32 @@ def load_stock_polygon(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_quote(symbol: str) -> pd.DataFrame:
+def get_quote(symbols: list[str]) -> pd.DataFrame:
     """Gets ticker quote from FMP
 
     Parameters
     ----------
-    symbol : str
-        Stock ticker symbol
+    symbols : List[str]
+        A list of Stock ticker symbols
 
     Returns
     -------
     pd.DataFrame
         Dataframe of ticker quote
+
+    Examples
+    --------
+
+    A single ticker must be entered as a list.
+
+    >>> df = openbb.stocks.quote(["AAPL"])
+
+    Multiple tickers can be retrieved.
+
+    >>> df = openbb.stocks.quote(["AAPL","MSFT","GOOG","NFLX","META","AMZN","NVDA"])
     """
+
+    symbol = symbols if isinstance(symbols, list) is False else ",".join(symbols)
 
     df_fa = pd.DataFrame()
 
@@ -315,25 +328,33 @@ def get_quote(symbol: str) -> pd.DataFrame:
 
     if not df_fa.empty:
         clean_df_index(df_fa)
-        df_fa.loc["Market cap"][0] = lambda_long_number_format(
-            df_fa.loc["Market cap"][0]
-        )
-        df_fa.loc["Shares outstanding"][0] = lambda_long_number_format(
-            df_fa.loc["Shares outstanding"][0]
-        )
-        df_fa.loc["Volume"][0] = lambda_long_number_format(df_fa.loc["Volume"][0])
-        # Check if there is a valid earnings announcement
-        if df_fa.loc["Earnings announcement"][0]:
-            earning_announcement = datetime.strptime(
-                df_fa.loc["Earnings announcement"][0][0:19], "%Y-%m-%dT%H:%M:%S"
-            )
-            df_fa.loc["Earnings announcement"][
-                0
-            ] = f"{earning_announcement.date()} {earning_announcement.time()}"
-        # Check if there is a valid timestamp and convert it to a readable format
-        if "Timestamp" in df_fa.index and df_fa.loc["Timestamp"][0]:
-            df_fa.loc["Timestamp"][0] = datetime.fromtimestamp(
-                df_fa.loc["Timestamp"][0]
-            ).strftime("%Y-%m-%d %H:%M:%S")
+        for c in df_fa.columns:
+            if not get_current_user().preferences.USE_INTERACTIVE_DF:
+                df_fa.loc["Market cap"][c] = lambda_long_number_format(
+                    df_fa.loc["Market cap"][c]
+                )
+                df_fa.loc["Shares outstanding"][c] = lambda_long_number_format(
+                    df_fa.loc["Shares outstanding"][c]
+                )
+                df_fa.loc["Volume"][c] = lambda_long_number_format(
+                    df_fa.loc["Volume"][c]
+                )
+            # Check if there is a valid earnings announcement
+            if df_fa.loc["Earnings announcement"][c]:
+                earning_announcement = datetime.strptime(
+                    df_fa.loc["Earnings announcement"][c][0:19], "%Y-%m-%dT%H:%M:%S"
+                )
+                df_fa.loc["Earnings announcement"][
+                    c
+                ] = f"{earning_announcement.date()} {earning_announcement.time()}"
+            # Check if there is a valid timestamp and convert it to a readable format
+            if "Timestamp" in df_fa.index and df_fa.loc["Timestamp"][c]:
+                df_fa.loc["Timestamp"][c] = datetime.fromtimestamp(
+                    df_fa.loc["Timestamp"][c]
+                ).strftime("%Y-%m-%d %H:%M:%S")
+
+        df_fa.columns = df_fa.loc["Symbol"][:]
+        df_fa = df_fa.drop("Symbol", axis=0)
+        df_fa.index = df_fa.index.str.title()
 
     return df_fa

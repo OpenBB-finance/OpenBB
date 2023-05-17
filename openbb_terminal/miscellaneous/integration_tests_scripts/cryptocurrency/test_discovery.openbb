@@ -1,0 +1,36 @@
+crypto
+disc
+
+# gctop
+top
+top -c stablecoins -s Volume [$] -l 5
+top -s Market Cap -r
+
+# cgtrending
+trending
+
+# cggainers
+# gainers # bugged -> takes too long
+# gainers -s Price [$] -l 5 -i 14d # bugged -> takes too long
+
+# cglosers
+#losers # bugged -> takes too long
+# losers -s Price [$] -l 5 -i 14d # bugged -> takes too long
+
+# cpsearch CURRENTLY BUGGY
+search ${crypto=bitcoin}
+search -q ${crypto=bitcoin} -s name
+search -q ${crypto=bitcoin} -c exchanges -l 2
+
+nft_mktp_chains
+nft_mktp
+dapps
+dapp_categories
+dapp_chains
+dapp_metrics --dappId 3
+defi_chains
+tokens
+
+help
+reset
+exit

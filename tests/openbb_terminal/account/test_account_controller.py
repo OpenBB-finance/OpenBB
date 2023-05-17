@@ -32,7 +32,6 @@ TEST_SESSION = {
 
 CONFIGS = {
     "features_settings": {
-        "USE_WATERMARK": "False",
         "TIMEZONE": "Europe/London",
         "PLOT_DPI": "95",
         "PLOT_HEIGHT_PERCENTAGE": "50.5",
@@ -46,9 +45,24 @@ CONFIGS = {
 
 ROUTINES = {
     "items": [
-        {"name": "scrip1", "description": "abc"},
-        {"name": "script2", "description": "def"},
-        {"name": "script3", "description": "ghi"},
+        {
+            "name": "scrip1",
+            "description": "abc",
+            "version": "0.0.0",
+            "updated_date": "2021-01-01",
+        },
+        {
+            "name": "script2",
+            "description": "def",
+            "version": "0.0.1",
+            "updated_date": "2022-01-01",
+        },
+        {
+            "name": "script3",
+            "description": "ghi",
+            "version": "0.0.2",
+            "updated_date": "2023-01-01",
+        },
     ],
     "total": 3,
     "page": 1,
@@ -68,6 +82,15 @@ def vcr_config():
             ("apiKey", "MOCK_API_KEY"),
         ],
     }
+
+
+@pytest.fixture(autouse=True)
+def fetch_routines(mocker):
+    path_controller = "openbb_terminal.account.account_controller"
+    mocker.patch(
+        target=f"{path_controller}.AccountController.fetch_default_routines",
+        return_value=[],
+    )
 
 
 @pytest.fixture(name="test_user")
@@ -187,11 +210,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help(mocker, test_user):
-    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
+        target=f"{path_controller}.get_current_user",
         return_value=test_user,
     )
+    controller = account_controller.AccountController(queue=None)
     controller.print_help()
 
 
@@ -459,8 +483,7 @@ def test_call_download(mocker, test_user):
         name="script1",
     )
     mock_save_routine.assert_called_once_with(
-        file_name="script1.openbb",
-        routine="do something",
+        file_name="script1.openbb", routine=["do something", "personal"]
     )
 
 
