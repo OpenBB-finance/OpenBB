@@ -19,7 +19,7 @@ import DownloadFinishedDialog from "./Dialogs/DownloadFinishedDialog";
 
 const Plot = createPlotlyComponent(Plotly);
 
-function CreateDataXrangeChunks(data: any, xrange?: any) {
+function CreateDataXrangeChunks(data: Plotly.PlotData[], xrange?: any) {
 	const chunks = [];
 	let chunk = [];
 	const XDATA = data.filter(
@@ -40,10 +40,10 @@ function CreateDataXrangeChunks(data: any, xrange?: any) {
 	return chunks;
 }
 
-function CreateDataXrange(data: any, xrange?: any) {
+function CreateDataXrange(data: Plotly.PlotData[], xrange?: any) {
 	if (!xrange) {
 		xrange = [
-			data[0]?.x[data[0].x.length - 800],
+			data[0]?.x[data[0].x.length - 1000],
 			data[0]?.x[data[0].x.length - 1],
 		];
 	}
@@ -52,48 +52,26 @@ function CreateDataXrange(data: any, xrange?: any) {
 	chunks.forEach((chunk) => {
 		data.forEach((trace) => {
 			const new_trace = { ...trace };
-			if (trace.x) {
-				new_trace.x = trace.x.filter((x, i) => chunk.includes(i));
-			}
-			if (trace.y) {
-				new_trace.y = trace.y.filter((y, i) => chunk.includes(i));
-			}
-			if (trace.low) {
-				new_trace.low = trace.low.filter((y, i) => chunk.includes(i));
-			}
-			if (trace.high) {
-				new_trace.high = trace.high.filter((y, i) => chunk.includes(i));
-			}
-			if (trace.open) {
-				new_trace.open = trace.open.filter((y, i) => chunk.includes(i));
-			}
-			if (trace.close) {
-				new_trace.close = trace.close.filter((y, i) => chunk.includes(i));
-			}
-			if (trace.text) {
-				new_trace.text = trace.text.filter((y, i) => chunk.includes(i));
-			}
-			if (trace.marker) {
-				new_trace.marker = { ...trace.marker };
-				if (trace.marker.color) {
-					new_trace.marker.color = trace.marker.color.filter((y, i) =>
+			const data_keys = ["x", "y", "low", "high", "open", "close", "text"];
+			data_keys.forEach((key) => {
+				if (trace[key]) {
+					new_trace[key] = trace[key].filter((_, i) => chunk.includes(i));
+				}
+			});
+			const color_keys = ["marker", "line"];
+			color_keys.forEach((key) => {
+				if (trace[key]?.color) {
+					new_trace[key] = { ...trace[key] };
+					new_trace[key].color = trace[key].color.filter((_, i) =>
 						chunk.includes(i),
 					);
 				}
-			}
-			if (trace.line) {
-				new_trace.line = { ...trace.line };
-				if (trace.line.color) {
-					new_trace.line.color = trace.line.color.filter((y, i) =>
-						chunk.includes(i),
-					);
-				}
-			}
+			});
 			new_data.push(new_trace);
 		});
 	});
 
-  if (new_data.length === 0) return data;
+	if (new_data.length === 0) return data;
 
 	return new_data;
 }
@@ -112,11 +90,11 @@ async function DynamicLoad({
 		);
 
 		if (XDATA.length === 0) return figure;
-		// We get the xaxis range, if no event is passed, we get the last 800 points
+		// We get the xaxis range, if no event is passed, we get the last 1000 points
 		const xaxis_range = event
 			? [event["xaxis.range[0]"], event["xaxis.range[1]"]]
 			: [
-					XDATA[0]?.x[XDATA[0].x.length - 800],
+					XDATA[0]?.x[XDATA[0].x.length - 1000],
 					XDATA[0]?.x[XDATA[0].x.length - 1],
 			  ];
 
@@ -188,7 +166,7 @@ export default function Chart({
 		if (!plotLoaded) {
 			if (
 				originalData.data[0]?.x !== undefined &&
-				originalData.data[0]?.x.length <= 800
+				originalData.data[0]?.x.length <= 1000
 			)
 				return;
 			const new_data = CreateDataXrange(originalData.data);
