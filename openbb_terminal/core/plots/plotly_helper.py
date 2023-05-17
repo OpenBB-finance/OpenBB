@@ -125,8 +125,7 @@ class TerminalStyle:
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
-        if not style:
-            style = get_current_user().preferences.CHART_STYLE
+        style = style or self.plt_style
 
         if style != self.plt_style:
             self.load_style(style)
@@ -933,11 +932,11 @@ class OpenBBFigure(go.Figure):
             row=row,
             col=col,
             opacity=0.7,
-            secondary_y=False,
+            secondary_y=True,
         )
         ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
-            yaxis=dict(
+            yaxis2=dict(
                 fixedrange=True,
                 side="left",
                 nticks=10,
@@ -947,15 +946,15 @@ class OpenBBFigure(go.Figure):
                 showline=False,
                 zeroline=False,
                 tickfont=dict(size=ticksize),
+                overlaying="y",
             ),
-            yaxis2=dict(
+            yaxis=dict(
                 autorange=True,
                 automargin=True,
                 side="right",
                 fixedrange=False,
                 anchor="x",
                 layer="above traces",
-                overlaying="y",
             ),
         )
 
@@ -1055,7 +1054,6 @@ class OpenBBFigure(go.Figure):
         if kwargs.pop("margin", True):
             self._adjust_margins()
 
-        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -1381,7 +1379,6 @@ class OpenBBFigure(go.Figure):
                 full_html=False,
             )
         )
-        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 

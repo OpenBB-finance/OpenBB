@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "3.0.0"
+version = "3.0.1"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -101,7 +101,7 @@ jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
 streamlit = "^1.22.0"
-pywry = "^0.5.5"
+pywry = "^0.5.8"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
@@ -114,6 +114,8 @@ transformers = {version = "^4.26.1", optional = true}
 yt-dlp = {version = "^2023.2.17", optional = true}
 pydantic = "^1.10.5"
 posthog = "^3.0.1"
+reportlab = "<4" #Pinning due to build error on MacOs
+arch = "^5.5.0"
 
 
 

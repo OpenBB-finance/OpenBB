@@ -12,8 +12,8 @@ export default function DownloadFinishedDialog({
   return (
     <DialogPrimitive.Root open={open} onOpenChange={close}>
       <div id="loading" className="saving">
-        <div id="loading_text" className="loading_text"></div>
-        <div id="loader" className="loader"></div>
+        <div id="loading_text" className="loading_text" />
+        <div id="loader" className="loader" />
       </div>
       <DialogPrimitive.Overlay onClick={close} className="_modal-overlay" />
       <DialogPrimitive.Content className="_modal">
