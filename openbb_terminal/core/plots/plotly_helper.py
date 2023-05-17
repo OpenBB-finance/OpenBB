@@ -125,8 +125,7 @@ class TerminalStyle:
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
-        if not style:
-            style = get_current_user().preferences.CHART_STYLE
+        style = style or self.plt_style
 
         if style != self.plt_style:
             self.load_style(style)
