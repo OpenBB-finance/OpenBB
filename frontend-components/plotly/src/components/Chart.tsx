@@ -93,6 +93,8 @@ function CreateDataXrange(data: any, xrange?: any) {
 		});
 	});
 
+  if (new_data.length === 0) return data;
+
 	return new_data;
 }
 
@@ -108,6 +110,8 @@ async function DynamicLoad({
 			(trace) =>
 				trace.x !== undefined && trace.x.length > 0 && trace.x[0] !== undefined,
 		);
+
+		if (XDATA.length === 0) return figure;
 		// We get the xaxis range, if no event is passed, we get the last 800 points
 		const xaxis_range = event
 			? [event["xaxis.range[0]"], event["xaxis.range[1]"]]
@@ -182,6 +186,11 @@ export default function Chart({
 
 	useEffect(() => {
 		if (!plotLoaded) {
+			if (
+				originalData.data[0]?.x !== undefined &&
+				originalData.data[0]?.x.length <= 800
+			)
+				return;
 			const new_data = CreateDataXrange(originalData.data);
 			setPlotData({ ...originalData, data: new_data });
 		}
