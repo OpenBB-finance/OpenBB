@@ -102,7 +102,7 @@ openbb.stocks.ins.act('wmt')
 | 2023-03-28 00:00:00 | 267,874.00    | 247,215,555.00 |  144.7 | Sell | No     | WALTON S ROBSON |
 | 2023-03-28 00:00:00 | 1,640,457.00  | 247,483,429.00 | 144.06 | Sell | No     | WALTON ALICE L  |
 
-Other functions in this module return all tickers, based on the lastest SEC Form-4 filings.
+Other functions in this module return all tickers, based on the latest SEC Form-4 filings.
 
 ### lpsb
 
