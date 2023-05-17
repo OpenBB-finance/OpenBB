@@ -39,7 +39,7 @@ def get_data(
     """
 
     headers = {
-        "accept": "application/json",
+        "accept": "application/json"
     }
 
     df = pd.DataFrame(data=None)
@@ -61,8 +61,8 @@ def get_data(
             return df
 
     if date:
-        date = datetime.datetime.strptime(date, '%Y-%m-%d')
-        query_params["published_on"] = date
+        date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
+        query_params["published_on"] = str(date)
         if start_date:
             if date < start_date:
                 console.print("date must be grater than or equal to start_date")
@@ -80,12 +80,7 @@ def get_data(
         "https://althub-backend.invisagealpha.com/api/OnclusiveSentiment/",
         headers=headers,
         params=query_params,
-    )
-    if response.status_code != 200:
-        console.print("Please check your API Key")
-        return df
-    else:
-        response = response.json()
+    ).json()
     df = pd.DataFrame(data=response["results"])
     if not df.empty:
         df['adjusted_sentiment'] = df['adjusted_sentiment'].astype(float)

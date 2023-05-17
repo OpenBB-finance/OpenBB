@@ -7,7 +7,7 @@ import os
 from typing import Optional
 
 
-from openbb_terminal.decorators import log_start_end,check_api_key
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
@@ -18,7 +18,6 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-@check_api_key(["API_ALTHUB_TOKEN"])
 def display_articles_data(
     ticker: str = "",
     start_date: str = "",
