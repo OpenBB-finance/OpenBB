@@ -53,8 +53,10 @@ def get_cboe_index_directory() -> pd.DataFrame:
     CBOE_INDEXES = get_cboe_index_directory(
     """
 
-    CBOE_INDEXES: pd.DataFrame = pd.read_json(
-        "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json"
+    CBOE_INDEXES: pd.DataFrame = pd.DataFrame(
+        pd.read_json(
+            "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json"
+        )
     )
 
     CBOE_INDEXES = CBOE_INDEXES.rename(
@@ -94,6 +96,7 @@ def get_cboe_index_directory() -> pd.DataFrame:
 
 # Gets the list of indexes for parsing the ticker symbol properly.
 INDEXES = get_cboe_index_directory().index.tolist()
+SYMBOLS = get_cboe_directory()
 
 
 def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
@@ -519,7 +522,7 @@ class Options:
     """
 
     def __init__(self) -> None:
-        self.SYMBOLS: pd.DataFrame = get_cboe_directory()
+        self.SYMBOLS: pd.DataFrame = SYMBOLS
         self.symbol: str = ""
         self.source: str = "CBOE"
         self.chains = pd.DataFrame()
@@ -540,11 +543,13 @@ class Options:
         if not info.empty:
             iv = get_ticker_iv(self.symbol)
             info = pd.concat([info, iv])
-            self.underlying_name = self.SYMBOLS.reset_index().query(
-                "`Symbol` == @self.symbol"
-            )["Company Name"]
+            self.underlying_name = (
+                self.SYMBOLS.reset_index()
+                .query("`Symbol` == @self.symbol")["Company Name"]
+                .iloc[0]
+            )
             self.underlying_price = info
-            self.last_price = info.loc["Current Price"]
+            self.last_price = info.loc["Current Price"].iloc[0]
             self.chains = get_quotes(self.symbol)
             self.expirations = []
             self.strikes = []
@@ -557,31 +562,31 @@ class Options:
             self.hasGreeks = "gamma" in self.chains.columns
 
             return self
-        return self
+        return None
 
 
-def load_options(symbol: str, pydantic: bool = True) -> object:
+def load_options(symbol: str, pydantic: bool = False) -> object:
     """Options data object for CBOE.
 
     Parameters
     ----------
-    symbol : str
+    symbol: str
         The ticker symbol to load.
     pydantic: bool
-        Whether to return the object as a Pydantic model or a Pandas object.  Default is True.
+        Whether to return the object as a Pydantic Model or a subscriptable Pandas Object.  Default is False.
 
     Returns
     -------
-    Pydantic: OptionsChains
+    object: Options
 
-        SYMBOLS: dict
-            The CBOE symbol directory.
+        SYMBOLS: pd.DataFrame
+            The CBOE symbol directory.  Only returned if pydantic is False.
         symbol: str
             The symbol entered by the user.
         source: str
             The source of the data, "CBOE".
         chains: dict
-            The complete options chain for the ticker.
+            The complete options chain for the ticker.  Returns as a Pandas DataFrame if pydantic is False.
         expirations: list[str]
             List of unique expiration dates. (YYYY-MM-DD)
         strikes: list[float]
@@ -591,7 +596,7 @@ def load_options(symbol: str, pydantic: bool = True) -> object:
         underlying_name: str
             The name of the underlying asset.
         underlying_price: dict
-            The price and recent performance of the underlying asset.
+            The price and recent performance of the underlying asset.  Returns as a Pandas Series if pydantic is False.
         hasIV: bool
             Returns implied volatility.
         hasGreeks: bool
@@ -604,60 +609,58 @@ def load_options(symbol: str, pydantic: bool = True) -> object:
     if not pydantic:
         return options
 
-    class OptionsChains(BaseModel):
+    class OptionsChains(BaseModel):  # pylint: disable=too-few-public-methods
         """Pydantic model for CBOE options chains.
 
         Returns
         -------
         Pydantic: OptionsChains
 
-            SYMBOLS: dict
-                The CBOE symbol directory.
-            symbol: str
-                The symbol entered by the user.
             source: str
                 The source of the data, "CBOE".
-            chains: dict
-                The complete options chain for the ticker.
+            symbol: str
+                The symbol entered by the user.
+            underlying_name: str
+                The name of the underlying asset.
+            last_price: float
+                The last price of the underlying asset.
             expirations: list[str]
                 List of unique expiration dates. (YYYY-MM-DD)
             strikes: list[float]
                 List of unique strike prices.
-            last_price: float
-                The last price of the underlying asset.
-            underlying_name: str
-                The name of the underlying asset.
             underlying_price: dict
                 The price and recent performance of the underlying asset.
             hasIV: bool
                 Returns implied volatility.
             hasGreeks: bool
                 Returns greeks data.
+            chains: dict
+                The complete options chain for the ticker.
         """
 
-        SYMBOLS: dict = {}
-        symbol: str = Field(default= "")
         source: str = "CBOE"
-        chains: dict = {}
+        symbol: str = Field(default=options.symbol)
+        underlying_name: str = Field(default="")
+        last_price: float = 0
         expirations: list = []
         strikes: list = []
-        last_price: float = 0
-        underlying_name: str = Field(default = "")
-        underlying_price: dict = {}
         hasIV: bool = False
         hasGreeks: bool = False
+        underlying_price: dict = {}
+        chains: dict = {}
 
-    options_chains = OptionsChains(
-        symbol = options.symbol,
-        SYMBOLS = options.SYMBOLS.to_dict(),
-        source = options.source,
-        chains = options.chains.to_dict(),
-        expirations = options.expirations,
-        strikes = options.strikes,
-        last_price = options.last_price,
-        underlying_name = options.underlying_name.reset_index()["Company Name"].iloc[0],
-        underlying_price = options.underlying_price.to_dict(),
-        hasIV = options.hasIV,
-        hasGreeks = options.hasGreeks
-    )
-    return options_chains
+    if not options.chains.empty:
+        options_chains = OptionsChains(
+            source=options.source,
+            symbol=options.symbol,
+            underlying_name=options.underlying_name,
+            last_price=options.last_price,
+            expirations=options.expirations,
+            strikes=options.strikes,
+            hasIV=options.hasIV,
+            hasGreeks=options.hasGreeks,
+            underlying_price=options.underlying_price.to_dict(),
+            chains=options.chains.to_dict(),
+        )
+        return options_chains
+    return None

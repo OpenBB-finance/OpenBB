@@ -23,7 +23,10 @@ SOURCES = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 
 @log_start_end(log=logger)
 def load_options_chains(
-    symbol: str, source: str = "CBOE", date: Optional[str] = "", pydantic: bool = True
+    symbol: str,
+    source: str = "CBOE",
+    date: Optional[str] = "",
+    pydantic: bool = False,
 ) -> object:
     """Loads all options chains from a specific source, fields returned to each attribute will vary.
 
@@ -33,18 +36,18 @@ def load_options_chains(
         The underlying asset's symbol.
     source: str
         The source of the data. Choices are "CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", or "TMX".
-    date: str
+    date: Optional[str]
         The date for the EOD option chain.  Format: YYYY-MM-DD.
         This parameter is only available for "TMX" or "Intrinio".
     pydantic: bool
-        Whether to return the object as a Pydantic Model or a Pandas object.  Default is True.
+        Whether to return the object as a Pydantic Model or a subscriptable Pandas object.  Default is False.
 
     Returns
     -------
-    Pydantic
+    object: Options
 
         chains: dict
-            All options chains data from a specific source.
+            All options chains data from a specific source.  Returns as a Pandas DataFrame if pydantic is False.
         expirations: list[str]
             List of all unique expiration dates.
         hasGreeks: bool
@@ -59,12 +62,12 @@ def load_options_chains(
             List of all unique strike prices.
         symbol: str
             The symbol that was entered in the input.
-        SYMBOLS: dict
-            The symbol directory to the selected source, when available.
+        SYMBOLS: pd.DataFrame
+            The symbol directory to the selected source, when available.  Only returned when pydantic is False.
         underlying_name: str
             The name of the underlying asset.
         underlying_price: dict
-            A Pandas Series containing the underlying asset's price and performance.
+            The underlying asset's price and performance.  Returns as a Pandas Series if pydantic is False.
 
     Examples
     --------
@@ -72,7 +75,7 @@ def load_options_chains(
 
     >>> from openbb_terminal.sdk import openbb
     >>> import pandas as pd
-    >>> data = openbb.stocks.options.load_options_chains("SPY")
+    >>> data = openbb.stocks.options.load_options_chains("SPY", pydantic = True)
     >>> chains = pd.DataFrame(data.chains)
     >>> chains[chains["expiration"] == data.expirations[-1]]
 
