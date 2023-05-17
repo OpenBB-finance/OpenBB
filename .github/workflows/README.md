@@ -1,232 +1,658 @@
-# OpenBB Workflows
-This directory contains the workflows for the OpenBB 🦋 Project. The workflows are:
+# OpenBB Terminal Github Actions Workflow
+## This document aims to describe/define the functional requirements for GitHub Action workflows in OpenBBTerminal Repo.
+
+*   [1\. OpenBB Terminal Github Processes](#GitHubActionsFunctionalRequirements-1.OpenBBTerminalGithubProcesses)
+    *   [1.1. Release Process](#GitHubActionsFunctionalRequirements-1.1.ReleaseProcess)
+    *   [1.2. Nightly Build](#GitHubActionsFunctionalRequirements-1.2.NightlyBuild)
+    *   [1.3. Adding a feature](#GitHubActionsFunctionalRequirements-1.3.Addingafeature)
+    *   [1.4. Adding a hotfix](#GitHubActionsFunctionalRequirements-1.4.Addingahotfix)
+    *   [1.5. Manual Installer Build (Developer Testing)](#GitHubActionsFunctionalRequirements-1.5.ManualInstallerBuild(DeveloperTesting))
+*   [2\. List of the workflows](#GitHubActionsFunctionalRequirements-2.Listoftheworkflows)
+    *   [2.1. Branch Name Check DONE](#GitHubActionsFunctionalRequirements-2.1.BranchNameCheckDOneGreen)
+    *   [2.2. Build & Release DONE](#GitHubActionsFunctionalRequirements-2.2.Build&ReleaseDoneGreen)
+    *   [2.3. Build and Publish Docker DONE](#GitHubActionsFunctionalRequirements-2.3.BuildandPublishDockerDoneGreen)
+    *   [2.4. Release Drafter DONE](#GitHubActionsFunctionalRequirements-2.4.ReleaseDrafterDONEGreen)
+    *   [2.5. Deploy to GitHub Pages DONE](#GitHubActionsFunctionalRequirements-2.5.DeploytoGitHubPagesDOneGreen)
+    *   [2.6. Integration Tests](#GitHubActionsFunctionalRequirements-2.6.IntegrationTests)
+    *   [2.7. General Linting DONE](#GitHubActionsFunctionalRequirements-2.7.GeneralLintingDoneGreen)
+    *   [2.8. MacOS M1 and Intel Build DONE](#GitHubActionsFunctionalRequirements-2.8.MacOSM1andIntelBuildDoneGreen)
+    *   [2.9. Mac OS X Full Clean Build with ML](#GitHubActionsFunctionalRequirements-2.9.MacOSXFullCleanBuildwithML)
+    *   [2.10. Nightly Build on develop branch DONE](#GitHubActionsFunctionalRequirements-2.10.NightlyBuildondevelopbranchDONEGreen)
+    *   [2.11. Deploy to PyPI - Nightly DONE](#GitHubActionsFunctionalRequirements-2.11.DeploytoPyPI-NightlyDONEGreen)
+    *   [2.12. Deploy to PyPI DONE](#GitHubActionsFunctionalRequirements-2.12.DeploytoPyPIDoneGreen)
+    *   [2.13. Unit Test DONE](#GitHubActionsFunctionalRequirements-2.13.UnitTestDOneGreen)
+    *   [2.14. Windows 10 Full Clean Build with ML DONE](#GitHubActionsFunctionalRequirements-2.14.Windows10FullCleanBuildwithMLDoneGreen)
+    *   [2.15. Windows10 Build DONE](#GitHubActionsFunctionalRequirements-2.15.Windows10BuildDONEGreen)
+    *   [2.16. Reviewpad](#GitHubActionsFunctionalRequirements-2.16.Reviewpad)
+
+1\. OpenBB Terminal Github Processes
+------------------------------------
+
+### 1.1. Release Process
+
+**Purpose**  
+This process is a guide on how to build a new version of the OpenBB Installer.
+
+**Steps**
+
+*   The user will Create a branch for release from `develop` branch which follows the GitFlow naming convention i.e. `release/x.y.z`
+    
+*   The user will increment the version number in 3 files: `pyproject.toml` `setup.nsis` `feature_flags.py` and commit the changes
+    
+*   The [Build & Release](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.2.-Build-%26-Release-Done) workflow will be triggered on `push`. This will trigger the workflows to build the installers, publish the docker image and deploy to Pypi.
+    
+*   The User merges the `release` branch to the `main` and `develop` branch once the release process is completed successfully.
+    
+
+**Related Workflows**
+
+*   [Build and Publish Docker](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.3.-Build-and-Publish-Docker-Done)
+    
+*   Release Drafter
+    
+*   Deploy to GitHub Pages
+    
+*   Integration Tests
+    
+*   General Linting
+    
+*   Unit Test
+    
+
+### 1.2. Nightly Build
+
+**Purpose**  
+This process is a guide on how to build a beta version of the OpenBB Installer daily. The nightly build is made from the default development branch `develop` and would provide a usable version of the terminal for macOS, windows, docker, and Pypi.
+
+**Steps**
+
+*   This is a workflow that doesn’t require any manual input.
+    
+*   The User can download terminal installers from the workflow page to get access to daily builds of the current development process
+    
+
+**How to use nightly build**
+
+*   SDK - `pip install openbb-nightly`
+    
+*   Windows Installer:
+    
+    *   Go to the Nightly Build GitHub Actions Page - [https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml)
+        
+        ![](/images/nightly.png)
+    *   Select the latest nightly build action and click on the `trigger-windows-build` job
+        
+        ![](/images/nightly-windows.png)
+    *   Click on the workflow link
+        
+        ![](/images/nightly-windows1.png)
+    *   Download the installer
+        
+        ![](/images/nightly-windows2.png)
+        
+*   MacOs Installer:
+    
+    *   Go to the Nightly Build GitHub Actions Page - [https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml)
+        
+        ![](/images/nightly.png)
+    *   Select the latest nightly build action and click on the `trigger-macos-build` job
+        
+        ![](/images/nightly-macos.png)
+    *   Click on the workflow link
+        
+        ![](/images/nightly-macos1.png)
+    *   Download the installer
+        
+        ![](/images/nightly-macos2.png)
+        
+
+**Related Workflows**
+
+*   [Nightly Build](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.10.-Nightly-Build-on-develop-branch-DONE)
+    
+
+### 1.3. Adding a feature
+
+*   The user will create a branch from `develop` branch with the name format `feature/new-feature`
+    
+*   The user can commit changes to their feature branch to trigger the linting test workflow on their branch
+    
+*   The user will create a pull request to add their feature to the terminal. This will trigger the unit test workflow. When a PR is created, the following CI is triggered  
+    \- branch name check  
+    \- Linting (markdown & Code linting)  
+    \- Unit Test (based on PR state - Merged/Open)
+    
+    ![](/images/pr.png)
+    
+    The PR must pass all these checks before it can be merged. The CI will be triggered automatically once the PR process starts (create → merged)
+    
 
-| Workflows   | Summary |   Branches
-| :-------------------- |:------------------ | :------------------
-| branch-name-check.yml | Checks if the branch name is valid and follows the naming convention.                     | all branches
-| build-release.yml     | Builds the project and runs the tests.                                                    | main, release/*
-| docker-build.yml      | Builds the docker image and pushes it to the docker hub.                                  | all branches (only pushes to docker hub on main)
-| draft-release.yml     | Creates a draft release when a new tag is pushed.                                         | -
-| gh-pages.yml          | Builds the documentation and deploy to github pages.                                      | main and release/*
-| integration-test.yml  | Runs the integration tests.                                                               | all branches
-| labels-issue.yml      | Creates an issue when a new bug is reported.                                              | -
-| labels-PR.yml         | Adds labels to the issues and pull requests.                                              | -
-| linting.yml           | Runs the linters.                                                                         | all branches
-| macos-build.yml       | Builds the project on M1 Macs.                                                            | develop, main, release/*
-| macos-ml.yml          | Builds the project on Mac OS X Full Clean Build with ML.                                  | main
-| nightly-build.yml     | Builds the project and runs the integration tests every night on the `develop` branch.    | develop
-| pypi.yml              | Publishes the package to PyPI.                                                            | all branches (only pushes to PyPI on main)
-| pypi-nightly.yml      | Publishes the package to PyPI every night on the `develop` branch.                        | develop
-| unit-test.yml         | Runs the unit tests.                                                                      | all branches
-| windows_ml.yml        | Builds the project on Windows 10 Full Clean Build with ML.                                | main
-| windows10_build.yml   | Builds the project on Windows 10.                                                         | all branches
+**Related Workflows**
 
-## Branch Name Check Workflow
-Objective: To check if pull request branch names follow the GitFlow naming convention before merging.
+*   Branch Name Check
+    
+*   Unit Test
+    
+*   General Linting
+    
 
-Triggered by: A pull request event where the target branch is either develop or main.
+### 1.4. Adding a hotfix
 
-Branches checked: The source branch of a pull request and the target branch of a pull request.
+*   The user will create a branch from develop branch with the name format `hotfix/new-hotfix`
+    
+*   The user can commit changes to their hotfix branch to trigger the linting test workflow on their branch
+    
+*   The user will create a pull request to add their hotfix to the main branch. When a PR is created from the hotfix branch to the main branch, the following CI is triggered  
+    \- branch name check  
+    \- Linting (markdown & Code linting)  
+    \- Unit Test (based on PR state - Merged/Open)
+    
+    ![](/images/pr.png)
+    
+    The PR must pass all these checks before it can be merged. The CI is triggered automatically once the PR process starts (create → merged).
+    
+*   The user will merge the successful hotfix branch to the main will trigger the build & release workflow to build the install and deploy docker image and publish it to PyPI.
+    
 
-Steps:
+**Related Workflows**
 
-1.  Extract branch names: Using the jq tool, the source and target branch names are extracted from the pull request event. The branch names are then stored in environment variables and printed as output.
+*   Branch Name Check
+    
+*   Unit Test
+    
+*   General Linting
+    
 
-2.  Show Output result for source-branch and target-branch: The source and target branch names are printed to the console.
+### 1.5. Manual Installer Build (Developer Testing)
 
-3.  Check branch name for develop PRs: If the target branch is develop, then the source branch is checked against a regular expression to ensure that it follows the GitFlow naming convention. If the branch name is invalid, a message is printed to the console and the workflow exits with a status code of 1.
+**Purpose**  
+Developers/Contributors can use this process to quickly test a feature they are working on with a standalone installer. The build can be triggered on any branch as shown below
 
-4.  Check branch name for main PRs: If the target branch is main, then the source branch is checked against a regular expression to ensure that it is either a hotfix or a release branch. If the branch name is invalid, a message is printed to the console and the workflow exits with a status code of 1.
+![](/images/installer-build1.png)
 
-Note: The GitFlow naming convention for branches is as follows:
+**Steps**
 
--   Feature branches: feature/<feature-name>
--   Hotfix branches: hotfix/<hotfix-name>
--   Release branches: release/<major.minor.patch>(rc<number>)
+*   The user will select the workflow based on the operating system that will be tested  
+    \- [Windows CI](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/windows10_build.yml)  
+    \- [MacOS CI](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/macos-build.yml)
+    
+*   The user will select the branch that will be used to build the installer and run the workflow
+    
+    ![](/images/installer-build.png)
+*   A standalone installer will be generated on completion of the workflow which can then be installed on the user machine
+    
+    ![](/images/nightly-macos2.png)
 
-## Build Release Workflow
-This GitHub Actions workflow is responsible for building and releasing software for multiple platforms (Windows, M1 MacOS, Intel MacOS, and Docker).
-The workflow has four jobs:
+2\. List of the workflows
+-------------------------
 
--   `trigger-windows-build`
--   `trigger-macos-build`
--   `trigger-intel-build`
--   `trigger-docker-build`
+### 2.1. Branch Name Check DONE
 
-Each job uses the `aurelien-baudet/workflow-dispatch` action to trigger another workflow, respectively `windows10_build.yml`, `m1_macos_build.yml`, `intel_macos_build.yml`, and `docker.yml`. The `GITHUB_TOKEN` is passed as a secret so that the triggered workflows have access to the necessary permissions. The `wait-for-completion-timeout` is set to 2 hours, which is the maximum amount of time the job will wait for the triggered workflow to complete.
+**Workflow Url:** [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/branch-name-check.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/branch-name-check.yml)
 
-## Docker Workflow
-This GitHub Actions workflow is responsible for building and pushing the docker image to the itHub Container Registry. This workflow is triggered when a new change is pushed to the main branch of the repository, and the Docker image is published to the GitHub Container Registry.
+**Description**: This workflow checks the branch names of pull requests to ensure they follow the GitFlow naming convention. Pull requests to the 'develop' branch must come from the 'main', 'feature/\*', 'hotfix/\*', or 'release/\*' branches. Pull requests to the 'main' branch must come from the 'hotfix/\*' or 'release/\*' branches.
 
-Steps
------
+**Triggers**: The workflow will be triggered on pull requests for the 'develop' and 'main' branches. The trigger event types include: opened, synchronize, and edited.
 
-1.  Checkout Code: This step checks out the code from the GitHub repository.
+**Artifacts**: None
 
-2.  Login to GitHub Container Registry: This step logs into the GitHub Container Registry using the GitHub Actions token.
+**Conditions**: The workflow will only run if the following conditions are met:
 
-3.  Setup Commit Hash: This step sets the commit hash of the code that is being built.
+*   The pull request targets the 'develop' or 'main' branch.
+    
+*   The source branch follows the GitFlow naming convention.
+    
 
-4.  Build Env File: This step builds the environment file for the Docker image.
+**Inputs**: The workflow does not require any inputs.
 
-5.  Building the Docker Image: This step builds the Docker image using the scripts in the `build/docker` directory.
+**Outputs**:
 
-6.  Publishing the Docker Image: This step publishes the Docker image to the GitHub Container Registry. The Docker image is only pushed to the registry if the branch being built is `main`.
+*   The action will provide clear feedback on the branch name validation process, including success or failure messages.
+    
+*   The action will display the source and target branch names in the output.
+    
 
-## Release Drafter Workflow
-This GitHub Actions workflow is designed to automatically generate and update draft releases in a GitHub repository. The workflow is triggered when it is manually dispatched, allowing you to control when the draft releases are updated.
+### 2.2. Build & Release DONE
 
-## GH Pages Workflow
-This GitHub Actions workflow is responsible for building the documentation and deploying it to GitHub Pages. This workflow is triggered when a new change is pushed to the `main` or `release` branch of the repository, and the documentation is published to GitHub Pages.
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/build-release.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/build-release.yml)
 
-## Integration Test Workflow
-This GitHub Action is used to run integration tests on your code repository. It is triggered on pushes to the `release/*` or `main` branches, and it runs on the latest version of Ubuntu.
+**Description**: This workflow triggers builds for Windows, MacOS (Intel & M1), and Docker environments. It dispatches separate workflows for each build environment and waits for their completion.
 
-The workflow consists of the following steps:
+**Triggers**: The workflow will be triggered on pushes to the 'release/\*' and 'main' branches.
 
-1.  Check out the code from the repository
-2.  Set up Python 3.9
-3.  Install Poetry, a package and dependency manager for Python
-4.  Load a cached virtual environment created by Poetry, to speed up the process if possible
-5.  Install dependencies specified in the `poetry.lock` file
-6.  Run the integration tests using the `terminal.py` script
-7.  Upload a summary of the test results to Slack
+**Artifacts**: Installers will be provided for the Windows and macOS builds on completion
 
-The results of the tests are captured in a file called `result.txt`. The summary of the tests, including information about failed tests, is then uploaded to Slack using the `adrey/slack-file-upload-action` GitHub Action.
+**Conditions**: The workflow will only run if the following conditions are met:
 
-## Linting Workflow
-This GitHub Actions workflow is responsible for running linting checks on the codebase. This workflow is triggered on pull request events such as `opened`, `synchronize`, and `edited`, and push events on branches with names that start with `feature/`, `hotfix/`, or `release/`. The workflow also sets a number of environment variables and uses Github Actions caching to improve performance.
+*   The push event occurs on the 'release/\*' or 'main' branch.
+    
 
-It consists of two jobs: `code-linting` and `markdown-link-check`.
+**Inputs**: The workflow does not require any inputs.
 
-The first job, `code-linting`, runs on an Ubuntu machine and performs several linting tasks on the code in the repository, including:
+**Outputs**:
 
--   Checking out the code from the repository
--   Setting up Python 3.9
--   Installing a number of Python packages necessary for the linting tasks
--   Running `bandit` to check for security vulnerabilities
--   Running `black` to check the code formatting
--   Running `codespell` to check the spelling of comments, strings, and variable names
--   Running `ruff` to check the use of Python
--   Running `mypy` to check the type annotations
--   Running `pyupgrade` to upgrade Python 2 code to Python 3
--   Running `pylint` to perform static analysis of the code
+*   The action will trigger Windows, MacOS, and Docker builds by dispatching separate workflows.
+    
+*   The action will wait for the completion of each build with a timeout of 2 hours.
+    
 
-The second job, `markdown-link-check`, runs on an Ubuntu machine and performs linting of the markdown files in the repository. It uses a Docker container `avtodev/markdown-lint` to perform the linting.
+### 2.3. Build and Publish Docker DONE
 
-## MacOS Build Workflow
-This GitHub Actions workflow is used to build a version of the OpenBB Terminal for M1 MacOS. The build process includes installing necessary dependencies, building the terminal application using PyInstaller, creating a DMG file for distribution, and running integration tests on the built application.
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/docker-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/docker-build.yml)
 
-Jobs
-----
+**Description**: This workflow builds and publishes a Docker image of the application to the GitHub Container Registry. The image is built using the provided Dockerfile and .env configuration. It publishes a release version of the image when the workflow is triggered on the 'main' branch and also publishes the latest version of the image.
 
-The workflow consists of a single job named `Build` which runs on self-hosted MacOS systems with ARM64 architecture. The job performs the following steps:
+**Triggers**: The workflow will be triggered manually using the `workflow_dispatch` event or when triggered by other workflows e.g. Build/Release or Nightly Build Workflows.
 
-1.  Checkout: The main branch of the repository is checked out, allowing for the commit hashes to line up.
-2.  Git Log: The log of the Git repository is displayed.
-3.  Install create-dmg: The `create-dmg` tool is installed using Homebrew.
-4.  Clean Previous Path: The previous PATH environment variable is cleared and restored to its default values.
-5.  Setup Conda Caching: The miniconda environment is set up using a caching mechanism for faster workflow execution after the first run.
-6.  Setup Miniconda: Miniconda is set up using the `conda-3-9-env-full.yaml` environment file, with channels `conda-forge` and `defaults`, and with the `build_env` environment activated.
-7.  Run Poetry: Poetry is used to install the dependencies for the project.
-8.  Install PyInstaller: PyInstaller is installed using Poetry.
-9.  Poetry Install Portfolio Optimization and Forecasting Toolkits: The portfolio optimization and forecasting toolkits are installed using Poetry.
-10. Install Specific Papermill: A specific version of Papermill is installed using pip.
-11. Build Bundle: The terminal application is built using PyInstaller, with icons and assets copied to the DMG directory.
-12. Create DMG: The DMG file is created using the `create-dmg` tool.
-13. Clean up Build Artifacts: The build artifacts such as the terminal directory and DMG directory are removed.
-14. Save Build Artifact DMG: The DMG file is saved as a build artifact.
-15. Convert & Mount DMG: The DMG file is converted and mounted.
-16. Directory Change: The current directory is changed to the mounted DMG file.
-17. Unmount DMG: The mounted DMG file is unmounted.
-18. Run Integration Tests: The built terminal application is run with integration tests, and the results are displayed.
+**Artifacts**: None
 
-Finally, the integration tests are run and the results are logged. The workflow is configured to run only when triggered by a workflow dispatch event and runs in a concurrent group, with the ability to cancel in-progress jobs.
+**Conditions**: The workflow will only run if the following conditions are met:
 
-## Nightly Build Workflow
-This code is a GitHub Actions workflow configuration file that is used to trigger other workflows when certain events occur. The main purpose of this workflow is to trigger builds on different platforms when a release is made or a pull request is made to the main branch.
+*   The workflow is manually triggered.
+    
+*   The workflow is called from another workflow.
+    
 
-This workflow is triggered at UTC+0 daily by the GitHub Action schedule event.
+**Inputs**: The workflow does not require any inputs.
 
-The job includes the following steps:
+**Outputs**:
 
-1.  Trigger Windows Build: This step uses the `aurelien-baudet/workflow-dispatch` action to trigger the windows10_build.yml workflow.
+*   The action will build the Docker image based on the provided Dockerfile and .env configuration.
+    
+*   The action will publish the Docker image to the GitHub Container Registry:
+    
+    *   A release version of the image will be published if the workflow is triggered on the 'main' branch.
+        
+    *   The latest version of the image will also be published if the workflow is triggered on the 'main' branch.
+        
 
-2.  Trigger macOS Build: This step uses the `aurelien-baudet/workflow-dispatch` action to trigger the m1_macos_build.yml workflow
+### 2.4. Release Drafter DONE
 
-3.  Trigger Intel Build: This step uses the `aurelien-baudet/workflow-dispatch` action to trigger the intel_macos_build.yml workflow
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/draft-release.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/draft-release.yml)
 
-4.  Trigger Docker Build: This step uses the `aurelien-baudet/workflow-dispatch` action to trigger the docker.yml workflow
+**Description**: This workflow automatically creates or updates a draft release based on the latest changes in the repository using the Release Drafter action. It helps in maintaining a consistent format for release notes and eases the process of creating release notes for new releases.
 
-This workflow also uses a concurrency setting that groups the jobs by the workflow and ref, and cancels any in-progress jobs.
+**Triggers**: The workflow will be triggered manually using the `workflow_dispatch` event.
 
-## Nightly PyPI Publish Workflow
-This workflow is used to publish the latest version of the OpenBB Terminal to PyPI. The workflow is triggered at UTC+0 daily by the GitHub Action schedule event.
+**Artifacts**: None
 
-It does this by first updating the `pyproject.toml` file with a pre-determined version string of the form `<currentVersion>.dev<date>`, where `<date>` represents the current day's date as a 8 digit number.
+**Conditions**: The workflow will only run if the following conditions are met:
 
-Then, the code installs `pypa/build` and uses `python -m build` to create a binary wheel and a source tarball in the `dist/` directory.
+*   The workflow is manually triggered.
+    
 
-Finally, it uses the PyPA specific action `gh-action-pypi-publish` to publish the created files to PyPI. 
+**Inputs**: The workflow does not require any inputs.
 
-## PYPI publish Workflow
-The Github Action code `Deploy to PyPI` is used to deploy a Python project to PyPI (Python Package Index) and TestPyPI, which is a separate package index for testing purposes. The code is triggered on two events:
+**Outputs**:
 
-1.  Push event: The code is triggered whenever there is a push to the `release/*` and `main` branches.
+*   The action will create or update a draft release based on the latest changes in the repository.
+    
+*   The draft release will follow a pre-defined format as specified in the Release Drafter configuration file.
+    
 
-2.  Workflow dispatch event: The code can be manually triggered by the workflow dispatch event.
+### 2.5. Deploy to GitHub Pages DONE
 
-The code sets the concurrency to the `group` and the option `cancel-in-progress` is set to `true` to ensure that the running jobs in the same `group` are cancelled in case another job is triggered.
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/gh-pages.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/gh-pages.yml)
 
-The code contains two jobs, `deploy-test-pypi` and `deploy-pypi`, both of which have the same steps with slight variations.
+**Description**: This workflow generates and deploys the project documentation to GitHub Pages. It builds the website using Python and Node.js and then deploys the generated static files to the `gh-pages` branch.
 
-The `deploy-test-pypi` job is triggered only if the pushed branch starts with `refs/heads/release/`. This job sets up the Python environment, installs the `build` package using `pip`, builds binary wheel and source tarball using `build`, and finally, publishes the distributions to TestPyPI using the `pypa/gh-action-pypi-publish@release/v1` Github Action. The `password` to access TestPyPI is stored as a secret named `TEST_PYPI_API_TOKEN`.
+**Triggers**: The workflow will be triggered on pushes to the 'main' and 'release/\*' branches.
 
-Similarly, the `deploy-pypi` job is triggered only if the pushed branch starts with `refs/heads/main`. This job follows the same steps as `deploy-test-pypi`, but the distributions are published to PyPI instead of TestPyPI. The `password` to access PyPI is stored as a secret named `PYPI_API_TOKEN`.
+**Artifacts**: None
 
-Note: The code uses the `pypa/build` package for building the binary wheel and source tarball, and the `pypa/gh-action-pypi-publish@release/v1` Github Action for publishing the distributions to PyPI and TestPyPI.
+**Conditions**: The workflow will only run if the following conditions are met:
 
-## Unit Tests Workflow
-This workflow is used to run unit tests on the OpenBB Terminal. The workflow is triggered on the following events:
-The events this workflow will respond to are:
+*   The push event occurs on the 'main' or 'release/\*' branch.
+    
 
-1.  Pull requests that are opened, synchronized, edited, or closed. The pull request must be made to the `develop` or `main` branches.
+**Inputs**: The workflow does not require any inputs.
 
-2.  Pushes to the `release/*` branches.
+**Outputs**:
 
-Each job in the workflow specifies a set of steps that are executed in order.
+*   The action will generate the project documentation using Python and Node.js.
+    
+*   The action will build the website using the provided configuration and assets.
+    
+*   The action will deploy the generated static files to the `gh-pages` branch on GitHub Pages.
+    
 
-The first job, `check-files-changed`, checks whether there are any changes to certain file types in the repository, such as Python files and lockfiles. If there are changes, then the `check-changes` output variable is set to `true`.
+### 2.6. Integration Tests
 
-The next job, `base-test`, runs a series of tests if `check-changes` is `true` and the base branch of the pull request is `develop`. This job sets up a Python 3.9 environment, installs Poetry, and then runs tests using `pytest`. Finally, it starts the terminal and exits.
+**Workflow-Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/integration-test.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/integration-test.yml)
 
-The next job, `tests-python`, runs tests for different versions of Python (3.8, 3.9, and 3.10) on the `ubuntu-latest` operating system. It sets up the specified Python version, installs Poetry and dependencies, and then runs tests using `pytest`.
+**Description**: This workflow runs integration tests on the application, and then reports the test results to a specified Slack channel. The test results are posted as a file attachment along with a summary message in the Slack channel.
 
-The next job, `full-test`, uses the GitHub Actions `checkout` action to checkout the code, followed by the `setup-python` action to set up the specified version of Python. Then, the `install-poetry` action is used to install the package manager Poetry, and a cache is set up using the `actions/cache` action to avoid re-installing dependencies. After that, the dependencies are installed using Poetry, and a list of installed packages is displayed. Then, the tests are run using `pytest`, and finally, the `terminal.py` script is started and exited.
+**Triggers**: The workflow will be triggered on pushes to the 'main' and 'release/\*' branches, and can also be manually triggered using the 'workflow\_dispatch' event.
 
-The last job, `tests-conda`, sets up a Miniconda environment using the `setup-miniconda` action. The environment is specified using a YAML file and is activated. Then, the tests are run.
+**Artifacts**: None
 
-## Windows 10 Build Workflow
-This is a GitHub Actions workflow file that automates the build and testing process for the OpenBB Terminal on Windows 10. The workflow consists of two jobs:
+**Conditions**: The workflow will only run if the following conditions are met:
 
-1.  Windows-Build
-2.  Build-Exe
+*   The push event occurs on the 'main' or 'release/\*' branch, or the 'workflow\_dispatch' event is triggered.
+    
 
--   The Windows-Build job does the following:
-    -   Sets up the Windows Git configuration for long file paths.
-    -   Checks out the repository code.
-    -   Sets up Python 3.9 and creates an OpenBB environment using poetry.
-    -   Installs necessary packages and builds the terminal using PyInstaller.
-    -   Uploads the built artifact to GitHub as an artifact.
--   The Build-Exe job does the following:
-    -   Sets up the Windows Git configuration for long file paths.
-    -   Checks out the repository code.
-    -   Downloads the built artifact from the previous Windows-Build job.
-    -   Copies the files into an app folder for building the EXE file.
-    -   Builds the EXE file using NSIS.
-    -   Uploads the built EXE as an artifact to GitHub.
-    -   Runs integration tests on the terminal and saves the results to a text file.
-    -   Uploads the test results summary to Slack.
-    -   Cleans up previous build files and artifacts.
+**Inputs**: The workflow does not require any inputs.
 
-This workflow is triggered by the `workflow_dispatch` event and runs in concurrency with other workflows in the same group, with the ability to cancel in-progress builds. The concurrency group is defined as `${{ github.workflow }}-${{ github.ref }}`.
+**Outputs**:
+
+*   The action will run integration tests on the application.
+    
+*   The action will post a summary message to the specified Slack channel, along with the test results as a file attachment.
+    
+*   The action will send a notification to the Slack channel when the workflow starts, and another notification with the workflow's success or failure status.
+    
+
+### 2.7. General Linting DONE
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/linting.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/linting.yml)
+
+**Description**: This workflow performs general code linting and Markdown linting to maintain code quality and consistency in the project. It checks for code issues, formatting inconsistencies, spelling errors, and broken links in the Markdown files.
+
+**Triggers**: The workflow is triggered on the following events:
+
+*   Pull requests (on opening, synchronizing, and editing).
+    
+*   Pushes to the `feature/`_,_ `hotfix/`, and `release/*` branches.
+    
+*   Merge group checks (when requested).
+    
+
+**Artifacts**: None
+
+**Conditions**: The workflow will only run if the specified triggers are met.
+
+**Inputs**: The workflow does not require any inputs.
+
+**Outputs**:
+
+*   The action will perform code linting using tools such as Bandit, Black, Codespell, Mypy, Pylint, and Ruff.
+    
+*   The action will perform Markdown linting using the `avtodev/markdown-lint` Docker image.
+    
+*   The action will report linting errors and warnings, if any, to help maintain code quality and consistency in the project.
+    
+
+### 2.8. MacOS M1 and Intel Build DONE
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/macos-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/macos-build.yml)
+
+**Description**: This workflow triggers separate builds for MacOS M1 (ARM64) and Intel (x64) architectures. It dispatches separate jobs for each architecture and waits for their completion. It runs integration tests, signs the package, notarizes it, and uploads the test summary to a Slack channel
+
+**Triggers**: Manual trigger using "workflow\_dispatch" event.
+
+**Artifacts**: Installers will be provided for the M1 and Intel MacOS builds on completion.
+
+**Conditions**: The workflow will only run if the following conditions are met:
+
+*   The workflow will run if manually triggered using the "workflow\_dispatch" event.
+    
+*   The application is intended for the MacOS platform.
+    
+*   Triggered by other workflows.
+    
+
+**Inputs**: The workflow does not require any inputs.
+
+**Outputs**:
+
+*   The action will trigger separate builds for MacOS M1 and Intel architectures by dispatching separate jobs.
+    
+*   The action will wait for the completion of each build with a timeout of 2 hours.
+    
+*   The action will produce installers for the M1 and Intel MacOS builds on completion.
+    
+
+### 2.9. Mac OS X Full Clean Build with ML
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/macos-ml.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/macos-ml.yml)
+
+**Description**: This workflow will perform a complete clean build of the project on MacOS with Python 3.9 using Miniconda, and run tests for the application.
+
+**Triggers**: The workflow will be triggered on pushes to the main branch and can also be manually triggered using workflow\_dispatch.
+
+**Artifacts**: No specific artifacts are generated.
+
+**Conditions**: The workflow will only run if the following conditions are met:
+
+*   The branch that was pushed to is the main branch.
+    
+*   The Checkout, Setup caching for conda packages, Setup Miniconda, Get pip cache dir, pip cache, Uninstall Brotlipy, Install dependencies (Bash), List installed packages (Bash), and Run tests (Bash) jobs succeed.
+    
+
+**Inputs**: The workflow requires input for the workflow\_dispatch trigger:
+
+*   comments (required): A description of the test scenario tags.
+    
+
+**Outputs**:
+
+*   The action will run tests using pytest on the tests/ directory.
+    
+*   The action will display information about the conda environment, conda packages, and pip packages.
+    
+*   The action will start the terminal using [terminal.py](http://terminal.py) and then exit.
+    
+
+### 2.10. Nightly Build on develop branch DONE
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/nightly-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/nightly-build.yml)
+
+**Description**: This workflow triggers nightly builds for Windows, macOS, Docker, and PyPI environments.
+
+**Triggers**: The workflow is scheduled to run every day at 00:00 UTC on the develop branch.
+
+**Artifacts**:
+
+*   Windows build artifacts
+    
+*   macOS build artifacts (M1 & Intel)
+    
+
+**Conditions**: The workflow will run if the following conditions are met:
+
+*   The scheduled time is reached (00:00 UTC daily).
+    
+
+**Inputs**: The workflow does not require any inputs.
+
+**Outputs**:
+
+*   Trigger Windows build using the `windows10_build.yml` workflow.
+    
+*   Trigger macOS build (both M1 and Intel) using the `macos-build.yml` workflow.
+    
+*   Trigger Docker build using the `docker-build.yml` workflow.
+    
+*   Trigger PyPI build using the `pypi-nightly.yml` workflow.
+    
+
+### 2.11. Deploy to PyPI - Nightly DONE
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/pypi-nightly.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/pypi-nightly.yml)
+
+**Description**: This workflow builds and publishes nightly distributions of the project to PyPI as an "openbb-nightly" package.
+
+**Triggers**: The workflow is triggered manually using the "workflow\_dispatch" event.
+
+**Artifacts**:
+
+*   Binary wheel distribution
+    
+*   Source tarball distribution
+    
+
+**Conditions**: The workflow will run if the following conditions are met:
+
+*   The workflow is manually triggered using the "workflow\_dispatch" event.
+    
+
+**Inputs**: The workflow does not require any inputs.
+
+**Outputs**:
+
+*   Update the package name in the `pyproject.toml` file to "openbb-nightly".
+    
+*   Update the package version in the `pyproject.toml` file to include the current date as a development version (e.g., "1.0.0.dev20220418").
+    
+*   Update the installation instructions in the `./website/pypi.md` file to use the "openbb-nightly" package.
+    
+*   Install the pypa/build package to build the distributions.
+    
+*   Build a binary wheel and a source tarball distribution.
+    
+*   Publish the distributions to PyPI using the "openbb-nightly" package name.
+    
+
+### 2.12. Deploy to PyPI DONE
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/pypi.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/pypi.yml)
+
+**Description**: This workflow will build and publish the package to TestPyPI and PyPI repositories.
+
+**Triggers**:
+
+1.  The workflow will be triggered on pushes to branches with the pattern `release/*` or `main`.
+    
+2.  The workflow can also be triggered manually using `workflow_dispatch`.
+    
+
+**Artifacts**: None
+
+**Conditions**: The workflow will only run if the following conditions are met:
+
+1.  The build process for the binary wheel and source tarball succeeds.
+    
+
+**Inputs**: The workflow does not require any inputs.
+
+**Outputs**:
+
+1.  The action will build a binary wheel and a source tarball for the package.
+    
+2.  The action will publish the package to TestPyPI if the current branch matches the pattern `release/*`.
+    
+3.  If the current branch is main, the action will publish the package to PyPI.
+    
+
+### 2.13. Unit Test DONE
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/unit-test.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/unit-test.yml)
+
+**Description**: This workflow will run unit tests for the project on various operating systems and Python versions using Poetry and Miniconda for dependency management.
+
+**Triggers**: The workflow will be triggered on pull requests to the `develop` and main branches, on pushes to release/\* branches, and when checks are requested.
+
+**Artifacts**: No specific artifacts are generated, but the workflow uploads coverage reports to Codecov.
+
+**Conditions**: The workflow will only run if the following conditions are met:
+
+*   A pull request is not merged, not a draft, and the event is not a push.
+    
+*   The base branch for the pull request is 'develop'.
+    
+*   The check-files-changed, base-test, tests-python, full-test, and tests-conda jobs succeed.
+    
+*   Runs the full test suite on Ubuntu-latest and macOS-latest with Python 3.8, 3.9, and 3.10 using Poetry when a PR is merged or a push to release/\* branch is made.
+    
+*   Runs test on Ubuntu, Windows, and macOS using Anaconda Python (Python 3.9) and Conda for dependency management when a PR is merged or a push to release/\* branch is made.
+    
+
+**Inputs**: The workflow does not require any inputs.
+
+**Outputs**:
+
+*   The action will run tests using pytest with specified flags and coverage options.
+    
+*   The action will display information about the installed pip and conda packages.
+    
+*   The action will start the terminal using [terminal.py](http://terminal.py) and then exit.
+    
+
+### 2.14. Windows 10 Full Clean Build with ML DONE
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/windows\_ml.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/windows_ml.yml)
+
+**Description**: This workflow performs a full clean build of the project on a Windows 10 environment with Python 3.9 and runs tests on the build.
+
+**Triggers**:
+
+1.  Pushes to the "main" branch.
+    
+2.  Manual trigger using "workflow\_dispatch" event with a required "comments" input describing the test scenario tags.
+    
+
+**Artifacts**: None.
+
+**Conditions**: The workflow will run if the following conditions are met:
+
+*   The workflow is triggered by a push to the "main" branch or manually using the "workflow\_dispatch" event.
+    
+
+**Inputs**:
+
+*   Test scenario tags (required) - Description of the test scenario when manually triggering the workflow using "workflow\_dispatch".
+    
+
+**Outputs**:
+
+*   The successful completion of the workflow will indicate that the build and tests have passed, and the environment has been set up correctly.
+    
+
+### 2.15. Windows10 Build DONE
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/windows10\_build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/windows10_build.yml)
+
+**Description**: This workflow will build and deploy the OpenBBTerminal application for Windows 10.
+
+**Triggers**: The workflow will be triggered manually using `workflow_dispatch`.
+
+**Artifacts**:
+
+1.  OpenBB-Windows10-ENV: The OpenBBTerminal application built for Windows 10, compressed as a zip file.
+    
+2.  Windows EXE Artifact: The OpenBB Terminal Setup.exe file, an NSIS installer for the OpenBBTerminal application.
+    
+
+**Conditions**: The workflow will only run if the following conditions are met:
+
+1.  The Windows-Build job succeeds.
+    
+2.  The Build-Exe job succeeds.
+    
+
+**Inputs**: The workflow does not require any inputs.
+
+**Outputs**:
+
+1.  The action will run integration tests on the application.
+    
+2.  The action will post a summary message to the specified Slack channel, along with the test results as a file attachment.
+    
+3.  The action will send a notification to the Slack channel when the workflow starts and another notification with the workflow's success or failure status.
+    
+
+### **2.16. Reviewpad**
+
+**Name**: Automated PR Review
+
+**Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/reviewpad.yaml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/reviewpad.yaml)
+
+**Description**: This workflow automates the review process of pull requests by checking for size, sanity, dependency changes, and end-of-file (EOF) line endings. It adds or removes labels based on the size of the PR, verifies that the PR is reviewable, checks for image files, validates dependency changes, and ensures correct line endings.
+
+**Triggers**: The workflow will be triggered on pull requests.
+
+**Artifacts**: None
+
+**Conditions**: The workflow will run on every pull request.
+
+**Inputs**: The workflow does not require any inputs.
+
+**Outputs**:
+
+1.  The action will add or remove labels based on the size of the PR.
+    
+2.  The action will fail the PR if it is too large or contains image files.
+    
+3.  The action will request changes or warn if there are issues with dependency files.
+    
+4.  The action will warn if files have CRLF line endings instead of LF.
