@@ -1,6 +1,7 @@
 # OpenBB Terminal Github Actions Workflow
 ## This document aims to describe/define the functional requirements for GitHub Action workflows in OpenBBTerminal Repo.
 
+## Table of Contents
 *   [1\. OpenBB Terminal Github Processes](#GitHubActionsFunctionalRequirements-1.OpenBBTerminalGithubProcesses)
     *   [1.1. Release Process](#GitHubActionsFunctionalRequirements-1.1.ReleaseProcess)
     *   [1.2. Nightly Build](#GitHubActionsFunctionalRequirements-1.2.NightlyBuild)
@@ -25,7 +26,7 @@
     *   [2.15. Windows10 Build](#GitHubActionsFunctionalRequirements-2.15.Windows10BuilGreen)
     *   [2.16. Reviewpad](#GitHubActionsFunctionalRequirements-2.16.Reviewpad)
 
-1\. OpenBB Terminal Github Processes
+###  1\. OpenBB Terminal Github Processes
 ------------------------------------
 
 ### 1.1. Release Process
