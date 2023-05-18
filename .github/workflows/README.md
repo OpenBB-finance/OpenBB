@@ -7,22 +7,22 @@
     *   [1.3. Adding a feature](#GitHubActionsFunctionalRequirements-1.3.Addingafeature)
     *   [1.4. Adding a hotfix](#GitHubActionsFunctionalRequirements-1.4.Addingahotfix)
     *   [1.5. Manual Installer Build (Developer Testing)](#GitHubActionsFunctionalRequirements-1.5.ManualInstallerBuild(DeveloperTesting))
-*   [2\. List of the workflows](#GitHubActionsFunctionalRequirements-2.Listoftheworkflows)
-    *   [2.1. Branch Name Check DONE](#GitHubActionsFunctionalRequirements-2.1.BranchNameCheckDOneGreen)
-    *   [2.2. Build & Release DONE](#GitHubActionsFunctionalRequirements-2.2.Build&ReleaseDoneGreen)
-    *   [2.3. Build and Publish Docker DONE](#GitHubActionsFunctionalRequirements-2.3.BuildandPublishDockerDoneGreen)
-    *   [2.4. Release Drafter DONE](#GitHubActionsFunctionalRequirements-2.4.ReleaseDrafterDONEGreen)
-    *   [2.5. Deploy to GitHub Pages DONE](#GitHubActionsFunctionalRequirements-2.5.DeploytoGitHubPagesDOneGreen)
+*   [2\. List of the workflows](https://github.com/OpenBB-finance/OpenBBTerminal/tree/feature/improve-workflow-readme/.github/workflows#2-list-of-the-workflows)
+    *   [2.1. Branch Name Check](https://github.com/OpenBB-finance/OpenBBTerminal/tree/feature/improve-workflow-readme/.github/workflows#21-branch-name-check-done)
+    *   [2.2. Build & Release](#GitHubActionsFunctionalRequirements-2.2.Build&ReleasGreen)
+    *   [2.3. Build and Publish Docker](#GitHubActionsFunctionalRequirements-2.3.BuildandPublishDockeGreen)
+    *   [2.4. Release Drafter](#GitHubActionsFunctionalRequirements-2.4.ReleaseDrafteGreen)
+    *   [2.5. Deploy to GitHub Pages](#GitHubActionsFunctionalRequirements-2.5.DeploytoGitHubPageGreen)
     *   [2.6. Integration Tests](#GitHubActionsFunctionalRequirements-2.6.IntegrationTests)
-    *   [2.7. General Linting DONE](#GitHubActionsFunctionalRequirements-2.7.GeneralLintingDoneGreen)
-    *   [2.8. MacOS M1 and Intel Build DONE](#GitHubActionsFunctionalRequirements-2.8.MacOSM1andIntelBuildDoneGreen)
+    *   [2.7. General Linting](#GitHubActionsFunctionalRequirements-2.7.GeneralLintinGreen)
+    *   [2.8. MacOS M1 and Intel Build](#GitHubActionsFunctionalRequirements-2.8.MacOSM1andIntelBuilGreen)
     *   [2.9. Mac OS X Full Clean Build with ML](#GitHubActionsFunctionalRequirements-2.9.MacOSXFullCleanBuildwithML)
-    *   [2.10. Nightly Build on develop branch DONE](#GitHubActionsFunctionalRequirements-2.10.NightlyBuildondevelopbranchDONEGreen)
-    *   [2.11. Deploy to PyPI - Nightly DONE](#GitHubActionsFunctionalRequirements-2.11.DeploytoPyPI-NightlyDONEGreen)
-    *   [2.12. Deploy to PyPI DONE](#GitHubActionsFunctionalRequirements-2.12.DeploytoPyPIDoneGreen)
-    *   [2.13. Unit Test DONE](#GitHubActionsFunctionalRequirements-2.13.UnitTestDOneGreen)
-    *   [2.14. Windows 10 Full Clean Build with ML DONE](#GitHubActionsFunctionalRequirements-2.14.Windows10FullCleanBuildwithMLDoneGreen)
-    *   [2.15. Windows10 Build DONE](#GitHubActionsFunctionalRequirements-2.15.Windows10BuildDONEGreen)
+    *   [2.10. Nightly Build on develop branch](#GitHubActionsFunctionalRequirements-2.10.NightlyBuildondevelopbrancGreen)
+    *   [2.11. Deploy to PyPI - Nightly](#GitHubActionsFunctionalRequirements-2.11.DeploytoPyPI-NightlGreen)
+    *   [2.12. Deploy to PyPI](#GitHubActionsFunctionalRequirements-2.12.DeploytoPyPGreen)
+    *   [2.13. Unit Test](#GitHubActionsFunctionalRequirements-2.13.UnitTesGreen)
+    *   [2.14. Windows 10 Full Clean Build with ML](#GitHubActionsFunctionalRequirements-2.14.Windows10FullCleanBuildwithMGreen)
+    *   [2.15. Windows10 Build](#GitHubActionsFunctionalRequirements-2.15.Windows10BuilGreen)
     *   [2.16. Reviewpad](#GitHubActionsFunctionalRequirements-2.16.Reviewpad)
 
 1\. OpenBB Terminal Github Processes
@@ -39,14 +39,14 @@ This process is a guide on how to build a new version of the OpenBB Installer.
     
 *   The user will increment the version number in 3 files: `pyproject.toml` `setup.nsis` `feature_flags.py` and commit the changes
     
-*   The [Build & Release](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.2.-Build-%26-Release-Done) workflow will be triggered on `push`. This will trigger the workflows to build the installers, publish the docker image and deploy to Pypi.
+*   The [Build & Release](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.2.-Build-%26-Release) workflow will be triggered on `push`. This will trigger the workflows to build the installers, publish the docker image and deploy to Pypi.
     
 *   The User merges the `release` branch to the `main` and `develop` branch once the release process is completed successfully.
     
 
 **Related Workflows**
 
-*   [Build and Publish Docker](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.3.-Build-and-Publish-Docker-Done)
+*   [Build and Publish Docker](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.3.-Build-and-Publish-Docker)
     
 *   Release Drafter
     
@@ -108,7 +108,7 @@ This process is a guide on how to build a beta version of the OpenBB Installer d
 
 **Related Workflows**
 
-*   [Nightly Build](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.10.-Nightly-Build-on-develop-branch-DONE)
+*   [Nightly Build](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.10.-Nightly-Build-on-develop-branch)
     
 
 ### 1.3. Adding a feature
@@ -186,7 +186,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 2\. List of the workflows
 -------------------------
 
-### 2.1. Branch Name Check DONE
+### 2.1. Branch Name Check
 
 **Workflow Url:** [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/branch-name-check.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/branch-name-check.yml)
 
@@ -212,7 +212,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   The action will display the source and target branch names in the output.
     
 
-### 2.2. Build & Release DONE
+### 2.2. Build & Release
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/build-release.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/build-release.yml)
 
@@ -236,7 +236,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   The action will wait for the completion of each build with a timeout of 2 hours.
     
 
-### 2.3. Build and Publish Docker DONE
+### 2.3. Build and Publish Docker
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/docker-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/docker-build.yml)
 
@@ -266,7 +266,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
     *   The latest version of the image will also be published if the workflow is triggered on the 'main' branch.
         
 
-### 2.4. Release Drafter DONE
+### 2.4. Release Drafter
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/draft-release.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/draft-release.yml)
 
@@ -290,7 +290,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   The draft release will follow a pre-defined format as specified in the Release Drafter configuration file.
     
 
-### 2.5. Deploy to GitHub Pages DONE
+### 2.5. Deploy to GitHub Pages
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/gh-pages.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/gh-pages.yml)
 
@@ -342,7 +342,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   The action will send a notification to the Slack channel when the workflow starts, and another notification with the workflow's success or failure status.
     
 
-### 2.7. General Linting DONE
+### 2.7. General Linting
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/linting.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/linting.yml)
 
@@ -372,7 +372,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   The action will report linting errors and warnings, if any, to help maintain code quality and consistency in the project.
     
 
-### 2.8. MacOS M1 and Intel Build DONE
+### 2.8. MacOS M1 and Intel Build
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/macos-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/macos-build.yml)
 
@@ -433,7 +433,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   The action will start the terminal using [terminal.py](http://terminal.py) and then exit.
     
 
-### 2.10. Nightly Build on develop branch DONE
+### 2.10. Nightly Build on develop branch
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/nightly-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/nightly-build.yml)
 
@@ -466,7 +466,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   Trigger PyPI build using the `pypi-nightly.yml` workflow.
     
 
-### 2.11. Deploy to PyPI - Nightly DONE
+### 2.11. Deploy to PyPI - Nightly
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/pypi-nightly.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/pypi-nightly.yml)
 
@@ -503,7 +503,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   Publish the distributions to PyPI using the "openbb-nightly" package name.
     
 
-### 2.12. Deploy to PyPI DONE
+### 2.12. Deploy to PyPI
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/pypi.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/pypi.yml)
 
@@ -534,7 +534,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 3.  If the current branch is main, the action will publish the package to PyPI.
     
 
-### 2.13. Unit Test DONE
+### 2.13. Unit Test
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/unit-test.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/unit-test.yml)
 
@@ -568,7 +568,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   The action will start the terminal using [terminal.py](http://terminal.py) and then exit.
     
 
-### 2.14. Windows 10 Full Clean Build with ML DONE
+### 2.14. Windows 10 Full Clean Build with ML
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/windows\_ml.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/windows_ml.yml)
 
@@ -598,7 +598,7 @@ Developers/Contributors can use this process to quickly test a feature they are 
 *   The successful completion of the workflow will indicate that the build and tests have passed, and the environment has been set up correctly.
     
 
-### 2.15. Windows10 Build DONE
+### 2.15. Windows10 Build
 
 **Workflow Url**: [https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/windows10\_build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/.github/workflows/windows10_build.yml)
 
