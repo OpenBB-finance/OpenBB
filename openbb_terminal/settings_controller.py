@@ -284,6 +284,7 @@ class SettingsController(BaseController):
                     auth_header=get_current_user().profile.get_auth_header(),
                 )
                 console.print("")
+            theme.apply_style(ns_parser.style)
             console.print("Chart theme updated.\n")
 
     @log_start_end(log=logger)
