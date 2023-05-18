@@ -25,6 +25,7 @@ export default function Chart({
   cmd,
   title,
   globals,
+  theme,
   info,
 }: {
   // @ts-ignore
@@ -33,6 +34,7 @@ export default function Chart({
   cmd: string;
   title: string;
   globals: any;
+  theme: string;
   info?: any;
 }) {
   const posthog = usePostHog();
@@ -219,7 +221,7 @@ export default function Chart({
         const TRACES = plotData?.data.filter((trace) =>
           trace?.name?.startsWith("Volume")
         );
-        let darkmode = !darkMode;
+        const darkmode = !darkMode;
 
         window.document.body.style.backgroundColor = darkmode ? "#000" : "#fff";
 
@@ -240,15 +242,19 @@ export default function Chart({
           .getElementsByTagName("svg")[0]
           .setAttribute("viewBox", changeIcon.viewBox);
 
-        const volumeColors = {
-          "#e4003a": "#c80000",
-          "#00ACFF": "#009600",
+        const volumeColorsDark = {
           "#009600": "#00ACFF",
           "#c80000": "#e4003a",
         };
+        const volumeColorsLight = {
+          "#e4003a": "#c80000",
+          "#00ACFF": "#009600",
+        };
+
+        const volumeColors = darkmode ? volumeColorsDark : volumeColorsLight;
 
         TRACES.forEach((trace) => {
-          if (trace.type == "bar")
+          if (trace.type === "bar")
             trace.marker.color = trace.marker.color.map((color) => {
               return volumeColors[color] || color;
             });
@@ -367,6 +373,10 @@ export default function Chart({
           Plotly.relayout(plotDiv, layout_update);
         }
       });
+
+      if (theme !== "dark") {
+        setChangeTheme(true);
+      }
     }
   }, [plotLoaded]);
 

@@ -50,6 +50,8 @@ function App() {
       title: "",
     };
     let filename = data.layout?.title?.text
+      .replace(/ -/g, "")
+      .replace(/-/g, "")
       .replace(/<b>|<\/b>/g, "")
       .replace(/ /g, "_");
     let date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
@@ -96,6 +98,7 @@ function App() {
       python_version: data.python_version,
       pywry_version: data.pywry_version,
       terminal_version: data.terminal_version,
+	  theme: data.theme,
       title,
     };
   };
@@ -153,6 +156,7 @@ function App() {
         cmd={transformedData.cmd}
         title={transformedData.title}
         globals={transformedData.globals}
+		theme={transformedData.theme}
         info={info}
       />
     );

@@ -203,7 +203,7 @@ class Backend(PyWry):
         json_data.update(self.get_json_update(command_location))
 
         outgoing = dict(
-            html_path=self.get_plotly_html(),
+            html=self.get_plotly_html(),
             json_data=json_data,
             export_image=export_image,
             **self.get_kwargs(command_location),
@@ -300,7 +300,7 @@ class Backend(PyWry):
         )
 
         outgoing = dict(
-            html_path=self.get_table_html(),
+            html=self.get_table_html(),
             json_data=json.dumps(json_data),
             width=width,
             height=self.HEIGHT - 100,
@@ -335,7 +335,7 @@ class Backend(PyWry):
         </script>
         """
         outgoing = dict(
-            html_str=script,
+            html=script,
             **self.get_kwargs(title),
             width=width or self.WIDTH,
             height=height or self.HEIGHT,
@@ -350,7 +350,7 @@ class Backend(PyWry):
             "download_path": str(get_current_user().preferences.USER_EXPORTS_DIRECTORY),
         }
 
-    def start(self, debug: bool = False):
+    def start(self, debug: bool = False):  # pylint: disable=W0221
         """Start the backend WindowManager process."""
         if self.isatty:
             super().start(debug)
@@ -359,7 +359,7 @@ class Backend(PyWry):
         """Override to check if isatty."""
         if self.isatty:
             message = (
-                "[bold red]PyWry version 0.5.5 or higher is required to use the "
+                "[bold red]PyWry version 0.5.6 or higher is required to use the "
                 "OpenBB Plots backend.[/]\n"
                 "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
             )
@@ -374,7 +374,7 @@ class Backend(PyWry):
 
                 PyWry.__version__ = pywry_version  # pylint: disable=W0201
 
-            if version.parse(PyWry.__version__) < version.parse("0.5.5"):
+            if version.parse(PyWry.__version__) < version.parse("0.5.6"):
                 console.print(message)
                 self.max_retries = 0  # pylint: disable=W0201
                 return
@@ -385,7 +385,7 @@ class Backend(PyWry):
         if reset:
             self.max_retries = 50  # pylint: disable=W0201
 
-        super().close(reset)
+        super().close()
 
 
 async def download_plotly_js():

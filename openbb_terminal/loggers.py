@@ -276,6 +276,7 @@ def setup_handlers(settings: Settings):
         handlers=[],
     )
 
+    posthog_active: bool = False
     for handler_type in handler_list:
         if handler_type == "stdout":
             add_stdout_handler(settings=settings)
@@ -286,7 +287,7 @@ def setup_handlers(settings: Settings):
         elif handler_type == "file":
             add_file_handler(settings=settings)
         elif handler_type == "posthog":
-            add_posthog_handler(settings=settings)
+            posthog_active = True
         else:
             logger.debug("Unknown log handler.")
 
@@ -298,6 +299,15 @@ def setup_handlers(settings: Settings):
         FormatterWithExceptions.LOGPREFIXFORMAT.replace("|", "-"),
         FormatterWithExceptions.LOGFORMAT.replace("|", "-"),
     )
+
+    if (
+        posthog_active
+        and not any(
+            [get_current_system().TEST_MODE, get_current_system().LOGGING_SUPPRESS]
+        )
+        and get_current_system().LOG_COLLECT
+    ):
+        add_posthog_handler(settings=settings)
 
 
 def setup_logging(
