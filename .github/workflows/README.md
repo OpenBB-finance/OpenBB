@@ -1,7 +1,6 @@
 # OpenBB Terminal Github Actions Workflow
 ## This document aims to describe/define the functional requirements for GitHub Action workflows in OpenBBTerminal Repo.
 
-## Table of Contents
 *   [1\. OpenBB Terminal Github Processes](#GitHubActionsFunctionalRequirements-1.OpenBBTerminalGithubProcesses)
     *   [1.1. Release Process](#GitHubActionsFunctionalRequirements-1.1.ReleaseProcess)
     *   [1.2. Nightly Build](#GitHubActionsFunctionalRequirements-1.2.NightlyBuild)
@@ -40,14 +39,14 @@ This process is a guide on how to build a new version of the OpenBB Installer.
     
 *   The user will increment the version number in 3 files: `pyproject.toml` `setup.nsis` `feature_flags.py` and commit the changes
     
-*   The [Build & Release](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.2.-Build-%26-Release) workflow will be triggered on `push`. This will trigger the workflows to build the installers, publish the docker image and deploy to Pypi.
+*   The [Build & Release]() workflow will be triggered on `push`. This will trigger the workflows to build the installers, publish the docker image and deploy to Pypi.
     
 *   The User merges the `release` branch to the `main` and `develop` branch once the release process is completed successfully.
     
 
 **Related Workflows**
 
-*   [Build and Publish Docker](https://openbb.atlassian.net/wiki/spaces/ENG/pages/239829001/GitHub+Actions+Functional+Requirements#2.3.-Build-and-Publish-Docker)
+*   [Build and Publish Docker]()
     
 *   Release Drafter
     
@@ -78,33 +77,40 @@ This process is a guide on how to build a beta version of the OpenBB Installer d
     
 *   Windows Installer:
     
-    *   Go to the Nightly Build GitHub Actions Page - [https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml)
-        
-        ![](/images/nightly.png)
+    *   Go to the Nightly Build GitHub Actions Page - [nightly-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml)
+    
+        ![b5731729ad94eb32b25ea0270a4aba4b](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/164b8a4b-79a3-4ef0-8783-d6240850de52)
+
     *   Select the latest nightly build action and click on the `trigger-windows-build` job
         
-        ![](/images/nightly-windows.png)
+        ![cfc565b9f75baf4df3d43e5b0155d4b8](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/ff433f3a-7514-4769-ae4e-4ae5940aa989)
+
     *   Click on the workflow link
         
-        ![](/images/nightly-windows1.png)
+        ![4be51dee07a1c12be7b6363e95fbdce2](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/bd76f804-ec16-48ce-b3c5-a2cdfe02a05a)
+
     *   Download the installer
         
-        ![](/images/nightly-windows2.png)
+        ![8ce8253fe95d31db131728bb9bef758e](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/0ee31de8-b18c-485b-a594-82148d4cf712)
         
 *   MacOs Installer:
     
-    *   Go to the Nightly Build GitHub Actions Page - [https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml)
+    *   Go to the Nightly Build GitHub Actions Page - [nightly-build.yml](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/nightly-build.yml)
         
-        ![](/images/nightly.png)
+        ![b5731729ad94eb32b25ea0270a4aba4b](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/164b8a4b-79a3-4ef0-8783-d6240850de52)
+        
     *   Select the latest nightly build action and click on the `trigger-macos-build` job
         
-        ![](/images/nightly-macos.png)
+       ![04f1f25056409b263a75cb2b7b40cfde](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/0a8f8791-60d5-4831-a16a-56cf82b836da)
+
     *   Click on the workflow link
         
-        ![](/images/nightly-macos1.png)
+        ![b1e09bb940a29d61e926b16abfe444ac](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/18a6f00f-45a1-4149-bf76-53fae71924c0)
+
     *   Download the installer
         
-        ![](/images/nightly-macos2.png)
+        ![6f13ea952d62a64953c9142929d6f523](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/9af89dd0-7922-4f9a-8d16-fadfa506ec88)
+
         
 
 **Related Workflows**
