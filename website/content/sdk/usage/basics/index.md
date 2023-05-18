@@ -328,7 +328,7 @@ openbb.stocks.quote(tickers)
 ytd_returns = openbb.stocks.ca.hist(tickers, start_date = '2023-01-01', candle_type = 'r')
 date = ytd_returns.idxmax()
 returns = ytd_returns.max()
-max_returns = pd.concat([index,returns], axis = 1)
+max_returns = pd.concat([date,returns], axis = 1)
 max_returns.columns = ["Date", "Returns"]
 
 max_returns
