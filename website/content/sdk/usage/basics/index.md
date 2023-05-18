@@ -10,7 +10,28 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Overview
 
-The OpenBB SDK provides programmatic access to nearly all Terminal commands, allowing custom scripts and functions to power creations built on top of the core platform.  It is easy to use and as flexible as one's imagination.  The sections below will outline how to get started using it.  If it isn't already installed, follow the instructions to install via [PyPi (pip)](https://docs.openbb.co/terminal/installation/pypi) or from the [source code](https://docs.openbb.co/terminal/installation/source).
+The OpenBB SDK provides programmatic access to nearly all Terminal commands, allowing custom scripts and functions to power creations built on top of the core platform.  It is easy to use and as flexible as one's imagination.  The sections below will outline how to get started using it.  If it isn't already installed, follow the instructions to install via [PyPi (pip)](https://docs.openbb.co/terminal/installation/pypi) or from the [source code](https://docs.openbb.co/terminal/installation/source).  Alternatively, less the Forecasting library, the OpenBB SDK can be installed in some cloud-based developer environments, such as Google Colab, Kaggle, GitHub Codespaces, and more.
+
+## Cloud Installation
+
+:::note
+**Cloud installations are experimental and cannot be guaranteed to work.  Results may vary by host.**
+
+The steps below assume that the developer container is Ubuntu-based.  If using Google Colab, remove `sudo` from the commands.
+
+**Step 1**: `sudo apt update && sudo apt upgrade`
+**Step 2**: `sudo apt install libwebkit2gtk-4.0-dev`
+**Step 3**: `pip install openbb`, or,  `pip install openbb[optimization]`
+
+As of writing, the Forecast/ML toolkits are not compatible with off-the-shelf cloud deployments.  Do not attempt to resolve this warning message:
+
+```console
+In [1]: from openbb_terminal.sdk import openbb
+Forecasting Toolkit is disabled. To use the Forecasting features please install the toolkit following the instructions here: https://my.openbb.co/app/sdk/installation
+```
+
+**Step 4**: From the Codespaces Terminal, launch Jupyter: `jupyter lab`
+:::
 
 ## Importing the OpenBB SDK
 
