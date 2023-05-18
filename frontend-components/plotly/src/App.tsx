@@ -98,6 +98,7 @@ function App() {
       python_version: data.python_version,
       pywry_version: data.pywry_version,
       terminal_version: data.terminal_version,
+	  theme: data.theme,
       title,
     };
   };
@@ -155,6 +156,7 @@ function App() {
         cmd={transformedData.cmd}
         title={transformedData.title}
         globals={transformedData.globals}
+		theme={transformedData.theme}
         info={info}
       />
     );
