@@ -101,7 +101,7 @@ This process is a guide on how to build a beta version of the OpenBB Installer d
         
     *   Select the latest nightly build action and click on the `trigger-macos-build` job
         
-       ![04f1f25056409b263a75cb2b7b40cfde](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/0a8f8791-60d5-4831-a16a-56cf82b836da)
+        ![04f1f25056409b263a75cb2b7b40cfde](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/0a8f8791-60d5-4831-a16a-56cf82b836da)
 
     *   Click on the workflow link
         
@@ -125,11 +125,11 @@ This process is a guide on how to build a beta version of the OpenBB Installer d
 *   The user can commit changes to their feature branch to trigger the linting test workflow on their branch
     
 *   The user will create a pull request to add their feature to the terminal. This will trigger the unit test workflow. When a PR is created, the following CI is triggered  
-    \- branch name check  
-    \- Linting (markdown & Code linting)  
+    \- Branch name check  
+    \- General Linting (Markdown & Code linting)  
     \- Unit Test (based on PR state - Merged/Open)
     
-    ![](/images/pr.png)
+    ![ffa6cc23007a98a69409110db7921b26](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/9db9ad87-bf05-4084-ab5a-adfcad74dcef)
     
     The PR must pass all these checks before it can be merged. The CI will be triggered automatically once the PR process starts (create → merged)
     
@@ -154,7 +154,7 @@ This process is a guide on how to build a beta version of the OpenBB Installer d
     \- Linting (markdown & Code linting)  
     \- Unit Test (based on PR state - Merged/Open)
     
-    ![](/images/pr.png)
+    ![ffa6cc23007a98a69409110db7921b26](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/9db9ad87-bf05-4084-ab5a-adfcad74dcef)
     
     The PR must pass all these checks before it can be merged. The CI is triggered automatically once the PR process starts (create → merged).
     
@@ -175,7 +175,7 @@ This process is a guide on how to build a beta version of the OpenBB Installer d
 **Purpose**  
 Developers/Contributors can use this process to quickly test a feature they are working on with a standalone installer. The build can be triggered on any branch as shown below
 
-![](/images/installer-build1.png)
+   ![9d53d5c05f6ed522aa55fd9a22f0f96a](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/d2e26aa0-be9a-4c9e-9bb5-fefd766f1f82)
 
 **Steps**
 
@@ -185,10 +185,10 @@ Developers/Contributors can use this process to quickly test a feature they are 
     
 *   The user will select the branch that will be used to build the installer and run the workflow
     
-    ![](/images/installer-build.png)
 *   A standalone installer will be generated on completion of the workflow which can then be installed on the user machine
-    
-    ![](/images/nightly-macos2.png)
+
+    ![6f13ea952d62a64953c9142929d6f523](https://github.com/OpenBB-finance/OpenBBTerminal/assets/22626993/5fcdd224-e56f-4853-a75d-ea7f6236be19)
+
 
 2\. List of the workflows
 -------------------------
