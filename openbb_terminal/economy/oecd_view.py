@@ -291,9 +291,7 @@ def plot_gdp_forecast(
     fig = OpenBBFigure(yaxis_title="Growth rates Compared to Previous Year (%)")
 
     future_dates = df[
-        df.index > str(datetime.now())
-        if units == "Q"
-        else df.index >= datetime.now().year
+        df.index > str(datetime.now()) if units == "Q" else df.index >= datetime.now()
     ]
     for country in df.columns:
         fig.add_scatter(

@@ -2,7 +2,6 @@ from typing import Dict
 
 from pydantic.dataclasses import dataclass
 
-from openbb_terminal.base_helpers import openbb_posthog
 from openbb_terminal.core.models import BaseModel
 
 
@@ -35,7 +34,6 @@ class ProfileModel(BaseModel):
         self.email = email
         self.username = self.email[: self.email.find("@")]
         self.remember = remember
-        openbb_posthog.identify(self.uuid, {"email": self.email})
 
     def get_uuid(self) -> str:
         """Get uuid.

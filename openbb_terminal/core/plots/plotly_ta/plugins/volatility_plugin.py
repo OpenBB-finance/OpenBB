@@ -59,7 +59,7 @@ class Volatility(PltTA):
             line=dict(width=1, color=theme.up_color),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'BBL')[0]}",
@@ -70,7 +70,7 @@ class Volatility(PltTA):
             line=dict(width=1, color=theme.down_color),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'BBM')[0]}",
@@ -81,7 +81,7 @@ class Volatility(PltTA):
             line=dict(width=1, color=theme.get_colors()[1], dash="dash"),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         bbands_text = (
             columns_regex(df_ta, "BBL")[0].replace("BBL_", "BB").replace("_", ",")
@@ -93,9 +93,9 @@ class Volatility(PltTA):
             yref="paper",
             text=f"<b>{bbands_text}</b>",
             x=0,
-            xanchor="left",
+            xanchor="right",
+            xshift=-6,
             yshift=-inchart_index * 18,
-            xshift=-60,
             y=0.98,
             font_size=14,
             font_color=theme.get_colors()[1],
@@ -124,7 +124,7 @@ class Volatility(PltTA):
             line=dict(width=0.3, color="#EF6689"),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'DCL')[0]}",
@@ -137,7 +137,7 @@ class Volatility(PltTA):
             fillcolor=fillcolor,
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
 
         donchian_text = (
@@ -152,9 +152,9 @@ class Volatility(PltTA):
             yref="paper",
             text=f"<b>{donchian_text}</b>",
             x=0,
-            xanchor="left",
+            xanchor="right",
+            xshift=-6,
             yshift=-inchart_index * 18,
-            xshift=-60,
             y=0.98,
             font_size=14,
             font_color="#B47DA0",
@@ -184,7 +184,7 @@ class Volatility(PltTA):
             line=dict(width=0.3, color="#EF6689"),
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'KCL')[0]}",
@@ -197,7 +197,7 @@ class Volatility(PltTA):
             fillcolor=fillcolor,
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         kctext = (
             columns_regex(df_ta, "KCL")[0]
@@ -210,9 +210,9 @@ class Volatility(PltTA):
             yref="paper",
             text=f"<b>{kctext}</b>",
             x=0,
-            xanchor="left",
+            xanchor="right",
+            xshift=-6,
             yshift=-inchart_index * 18,
-            xshift=-60,
             y=0.98,
             font_size=14,
             font_color="#B47DA0",

@@ -112,7 +112,9 @@ def get_key_metrics(symbol: str) -> pd.DataFrame:
 
         df_fa = pd.json_normalize(result_json)
         df_fa = df_fa[list(result_json.keys())].T
-        df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
+
+        if not get_current_user().preferences.USE_INTERACTIVE_DF:
+            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
         clean_df_index(df_fa)
         df_fa = df_fa.rename(
             index={
