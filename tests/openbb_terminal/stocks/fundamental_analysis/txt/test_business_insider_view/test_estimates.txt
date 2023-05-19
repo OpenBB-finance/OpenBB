@@ -1,29 +1,29 @@
-                                   2023     2024     2025     2026     2027
-YEARLY ESTIMATES                                                           
-Revenue                         103,418  135,351  168,507  194,661  295,169
-Dividend                           0.00     0.00     0.00        -        -
-Dividend Yield (in %)                 -        -        -        -        -
-EPS                                4.07     5.65     6.91     5.83     6.89
-P/E Ratio                         50.51    36.42    29.74    35.29    29.83
-EBIT                             14,555   21,972   27,741   30,025   43,704
-EBITDA                           19,519   27,962   38,066   37,741   38,504
-Net Profit                       13,506   19,372   23,768   21,372   25,801
-Net Profit Adjusted              13,533   19,368   23,752   21,372   25,801
-Pre-Tax Profit                   14,454   22,034   28,932   29,404   31,787
-Net Profit (Adjusted)            14,363   22,392   29,878   29,404   31,787
-EPS (Non-GAAP) ex. SOE             4.07     5.65     6.91     5.83     6.89
-EPS (GAAP)                         3.47     5.25     6.18     5.72     6.54
-Gross Income                     23,115   32,466   40,982   37,942   41,972
-Cash Flow from Investing         -7,935   -9,482  -10,201  -12,681        -
-Cash Flow from Operations        19,523   24,129   27,935   29,376   35,875
-Cash Flow from Financing           -478     -810      100        -        -
-Cash Flow per Share                4.92     7.39     6.94        -        -
-Free Cash Flow                   10,541   14,300   15,203   18,405   22,501
-Free Cash Flow per Share           2.84     4.55     4.61     6.10        -
-Book Value per Share              17.00    22.50    28.90    31.25        -
-Net Debt                        -24,814  -36,525  -52,052        -        -
-Research & Development Exp.       3,555    4,325    4,846    5,179    5,162
-Capital Expenditure               7,672    8,522    8,950    9,832        -
-Selling, General & Admin. Exp.    4,618    5,572    6,500    6,160    5,755
-Shareholder’s Equity             57,825   76,028   97,431   99,807        -
-Total Assets                     99,781  126,117  153,798  155,216        -
+                                  2023    2024    2025    2026    2027
+YEARLY ESTIMATES                                                      
+Revenue                         103418  135351  168507  194661  295169
+Dividend                          0.00    0.00    0.00       -       -
+Dividend Yield (in %)                -       -       -       -       -
+EPS                               4.07    5.65    6.91    5.83    6.89
+P/E Ratio                        50.51   36.42   29.74   35.29   29.83
+EBIT                             14555   21972   27741   30025   43704
+EBITDA                           19519   27962   38066   37741   38504
+Net Profit                       13506   19372   23768   21372   25801
+Net Profit Adjusted              13533   19368   23752   21372   25801
+Pre-Tax Profit                   14454   22034   28932   29404   31787
+Net Profit (Adjusted)            14363   22392   29878   29404   31787
+EPS (Non-GAAP) ex. SOE            4.07    5.65    6.91    5.83    6.89
+EPS (GAAP)                        3.47    5.25    6.18    5.72    6.54
+Gross Income                     23115   32466   40982   37942   41972
+Cash Flow from Investing         -7935   -9482  -10201  -12681       -
+Cash Flow from Operations        19523   24129   27935   29376   35875
+Cash Flow from Financing          -478    -810     100       -       -
+Cash Flow per Share               4.92    7.39    6.94       -       -
+Free Cash Flow                   10541   14300   15203   18405   22501
+Free Cash Flow per Share          2.84    4.55    4.61    6.10       -
+Book Value per Share             17.00   22.50   28.90   31.25       -
+Net Debt                        -24814  -36525  -52052       -       -
+Research & Development Exp.       3555    4325    4846    5179    5162
+Capital Expenditure               7672    8522    8950    9832       -
+Selling, General & Admin. Exp.    4618    5572    6500    6160    5755
+Shareholder’s Equity             57825   76028   97431   99807       -
+Total Assets                     99781  126117  153798  155216       -

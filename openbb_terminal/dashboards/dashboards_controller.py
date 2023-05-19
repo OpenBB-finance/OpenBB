@@ -133,7 +133,7 @@ class DashboardsController(BaseController):
             port = re.findall(r"--port=(\d+)", cmdline)
             port = port[0] if port else ""
 
-            if re.findall(r"-m\s+.*streamlit|streamlit", cmdline):
+            if re.findall(r"-m\s+.*streamlit_run|streamlit", cmdline):
                 return f"http://localhost:{port}/{name}"
 
         return ""
@@ -185,7 +185,7 @@ class DashboardsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            streamlit_run = Path(__file__).parent / "streamlit.py"
+            streamlit_run = Path(__file__).parent / "streamlit_run.py"
             python_path = streamlit_run.relative_to(self.parent_path).with_suffix("")
             cmd = (
                 [sys.executable, "-m", ".".join(python_path.parts)]

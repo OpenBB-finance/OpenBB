@@ -30,7 +30,17 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_quote():
-    stocks_view.display_quote("GME")
+    stocks_view.display_quote(["GME"])
+
+
+@pytest.mark.vcr
+def test_multi_quote() -> None:
+    stocks_view.display_quote(["AAPL", "MSFT", "AMZN", "TSLA", "BTCUSD"])
+
+
+@pytest.mark.vcr
+def test_quote_bad_ticker() -> None:
+    stocks_view.display_quote(["F", "GM", "RIVN", "VW", "69420"])
 
 
 @pytest.mark.default_cassette("test_search")
@@ -53,6 +63,7 @@ def test_search(mocker, use_tab):
         sector="",
         industry="",
         industry_group="",
+        exchange="",
         exchange_country="",
         all_exchanges=False,
         limit=5,

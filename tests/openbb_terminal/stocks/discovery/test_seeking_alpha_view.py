@@ -33,13 +33,3 @@ def test_news():
         limit=2,
         export="",
     )
-
-
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-def test_display_news():
-    seeking_alpha_view.display_news(
-        news_type="Crypto",
-        limit=2,
-        export="",
-    )

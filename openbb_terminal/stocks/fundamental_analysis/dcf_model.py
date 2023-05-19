@@ -584,7 +584,7 @@ def frac(num: float, denom: float) -> Union[str, float]:
 
 
 @log_start_end(log=logger)
-def generate_path(n: int, symbol: str, date: str) -> Path:
+def generate_path(n: int, file_name: str) -> Path:
     """
     Create the path to save an excel file to
 
@@ -592,10 +592,8 @@ def generate_path(n: int, symbol: str, date: str) -> Path:
     ----------
     n: int
         The try number
-    symbol: str
-        The ticker symbol to be saved
-    date: str
-        The date the dcf was generated
+    file_name: str
+        The name of the file to save
 
     Returns
     -------
@@ -606,7 +604,7 @@ def generate_path(n: int, symbol: str, date: str) -> Path:
     export_folder = compose_export_path(
         func_name="dcf", dir_path=os.path.abspath(os.path.dirname(__file__))
     ).parent
-    trypath = export_folder / symbol / date / val
+    trypath = export_folder / file_name / val
     trypath = str(trypath) + ".xlsx"  # type: ignore
 
     return Path(trypath)

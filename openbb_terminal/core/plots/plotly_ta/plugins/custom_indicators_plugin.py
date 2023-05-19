@@ -94,7 +94,7 @@ class Custom(PltTA):
                         showlegend=False,
                         row=1,
                         col=1,
-                        secondary_y=self.show_volume,
+                        secondary_y=False,
                     )
             elif is_resistance(df_ta2, i):
                 lv = df_ta2["High"][i]
@@ -117,7 +117,7 @@ class Custom(PltTA):
                         showlegend=False,
                         row=1,
                         col=1,
-                        secondary_y=self.show_volume,
+                        secondary_y=False,
                     )
 
         return fig
@@ -160,7 +160,7 @@ class Custom(PltTA):
             showlegend=False,
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
         )
         df_ta2 = df_ta.copy()
         interval = 1440
@@ -201,7 +201,7 @@ class Custom(PltTA):
                 showlegend=False,
                 row=1,
                 col=1,
-                secondary_y=self.show_volume,
+                secondary_y=False,
             )
 
         return fig

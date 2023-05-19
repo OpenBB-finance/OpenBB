@@ -129,21 +129,21 @@ en:
   stocks/candle: view a candle chart for a specific stock ticker
   stocks/news: latest news of the company
   stocks/codes: FIGI, SIK and SIC codes codes
-  stocks/th: trading hours,                check open markets
-  stocks/options: options menu,                 chains, open interest, greeks, parity
-  stocks/disc: discover trending stocks,     map, sectors, high short interest
-  stocks/dps: dark pool and short data,     darkpool, short interest, ftd
-  stocks/scr: screener stocks,              overview/performance, using preset filters
-  stocks/ins: insider trading,              latest penny stock buys, top officer purchases
-  stocks/gov: government menu,              house trading, contracts, corporate lobbying
-  stocks/ba: behavioural analysis,         from reddit, stocktwits, twitter, google
-  stocks/ca: comparison analysis,          get similar, historical, correlation, financials
-  stocks/fa: fundamental analysis,         income, balance, cash, ratios, earnings, expectations
-  stocks/res: research web page,            macroaxis, yahoo finance, fool
-  stocks/bt: strategy backtester,          simple ema, ema cross, rsi strategies
-  stocks/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
-  stocks/qa: quantitative analysis,        decompose, cusum, residuals analysis
-  stocks/forecast: forecast techniques,          rnn, nbeats, transformer, block rnn
+  stocks/th: trading hours                 check open markets
+  stocks/options: options menu                  chains, open interest, greeks, parity
+  stocks/disc: discover trending stocks      map, sectors, high short interest
+  stocks/dps: dark pool and short data      darkpool, short interest, ftd
+  stocks/scr: screener stocks               overview/performance, using preset filters
+  stocks/ins: insider trading               latest penny stock buys, top officer purchases
+  stocks/gov: government menu               house trading, contracts, corporate lobbying
+  stocks/ba: behavioural analysis          from reddit, stocktwits, twitter, google
+  stocks/ca: comparison analysis           get similar, historical, correlation, financials
+  stocks/fa: fundamental analysis          income, balance, cash, ratios, earnings, expectations
+  stocks/res: research web page             macroaxis, yahoo finance, fool
+  stocks/bt: strategy backtester           simple ema, ema cross, rsi strategies
+  stocks/ta: technical analysis            ema, macd, rsi, adx, bbands, obv
+  stocks/qa: quantitative analysis         decompose, cusum, residuals analysis
+  stocks/forecast: forecast techniques           rnn, nbeats, transformer, block rnn
   stocks/options/unu: show unusual options activity
   stocks/options/calc: basic call/put PnL calculator
   stocks/options/screen: screens tickers based on preset
@@ -202,7 +202,6 @@ en:
   stocks/disc/arkord: orders by ARK Investment Management LLC
   stocks/disc/upcoming: upcoming earnings release dates
   stocks/disc/trending: trending news
-  stocks/disc/cnews: customized news (buybacks, ipos, spacs, healthcare, politics)
   stocks/disc/lowfloat: low float stocks under 10M shares float
   stocks/disc/hotpenny: today's hot penny stocks
   stocks/disc/rtat: top 10 retail traded stocks per day
@@ -489,25 +488,29 @@ en:
   crypto/headlines: crypto sentiment from 15+ major news headlines
   crypto/candle: view a candle chart for a specific cryptocurrency
   crypto/prt: potential returns (e.g. upside if ETH reaches BTC market cap)
-  crypto/disc: discover trending cryptocurrencies,     top gainers, losers, top sentiment
-  crypto/ov: overview of the cryptocurrencies,       market cap, DeFi, latest news, top exchanges, stables
-  crypto/onchain: information on different blockchains,   eth gas fees, whale alerts, DEXes info
-  crypto/defi: decentralized finance information,      dpi, llama, tvl, lending, borrow, funding
+  crypto/disc: discover trending cryptocurrencies      top gainers, losers, top sentiment
+  crypto/ov: overview of the cryptocurrencies        market cap, DeFi, latest news, top exchanges, stables
+  crypto/onchain: information on different blockchains    eth gas fees, whale alerts, DEXes info
+  crypto/defi: decentralized finance information       dpi, llama, tvl, lending, borrow, funding
   crypto/tools: explore different tools                 apytoapr, il
-  crypto/nft: non-fungible tokens,                    today drops
-  crypto/dd: due-diligence for loaded coin,          coin information, social media, market stats
-  crypto/ta: technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv
-  crypto/forecast: forecast techniques,                    rnn, nbeats, transformer, block rnn
+  crypto/nft: non-fungible tokens                     today drops
+  crypto/dd: due-diligence for loaded coin           coin information, social media, market stats
+  crypto/ta: technical analysis for loaded coin      ema, macd, rsi, adx, bbands, obv
+  crypto/forecast: forecast techniques                     rnn, nbeats, transformer, block rnn
   crypto/qa: quantitative analysis                   decompose, cusum, residuals analysis
   crypto/disc/top: top coins
   crypto/disc/trending: trending coins
   crypto/disc/gainers: top gainers
   crypto/disc/losers: top losers
   crypto/disc/search: search for coins
-  crypto/disc/nft: top non fungible tokens
-  crypto/disc/games: top blockchain games
-  crypto/disc/dapps: top decentralized apps
-  crypto/disc/dex: top decentralized exchanges
+  crypto/disc/nft_mktp_chains: nft marketplace chains
+  crypto/disc/nft_mktp: nft marketplaces
+  crypto/disc/dapps: available decentralized apps
+  crypto/disc/dapp_categories: show available dapp categories
+  crypto/disc/dapp_chains: show available dapp chains
+  crypto/disc/dapp_metrics: show dapp metrics
+  crypto/disc/defi_chains: show available defi chains
+  crypto/disc/tokens: show chains that support tokens
   crypto/ov/global: global crypto market statistics
   crypto/ov/defi: global DeFi market info
   crypto/ov/stables: stablecoins
@@ -544,9 +547,7 @@ en:
   crypto/onchain/ueat: unique ethereum addresses which made a transaction
   crypto/onchain/ttcp: top traded crypto pairs on given decentralized exchange
   crypto/onchain/baas: bid, ask prices, average spread for given crypto pair
-  crypto/onchain/dt: daily transactions of eth tokens
-  crypto/onchain/ds: stats of eth platform (daily users; fees)
-  crypto/onchain/tvl: total value locked of ERC20 tokens
+  crypto/onchain/query: flipsidecrypto query
   crypto/onchain/_address: Ethereum address
   crypto/onchain/_type: Address type
   crypto/onchain/_ethereum_: Ethereum
@@ -697,16 +698,16 @@ en:
   etf/load: load ETF data
   etf/_symbol: Symbol
   etf/_major_holdings: Major holdings
-  etf/ca: comparison analysis,          get similar, historical, correlation, financials
-  etf/disc: discover ETFs,                gainers/decliners/active
-  etf/scr: screener ETFs,                overview/performance, using preset filters
+  etf/ca: comparison analysis           get similar, historical, correlation, financials
+  etf/disc: discover ETFs                 gainers/decliners/active
+  etf/scr: screener ETFs                 overview/performance, using preset filters
   etf/overview: get overview
   etf/holdings: top company holdings
   etf/weights: sector weights allocation
   etf/candle: view a candle chart for ETF
   etf/news: latest news of the company
   etf/compare: compare multiple different ETFs
-  etf/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
+  etf/ta: technical analysis            ema, macd, rsi, adx, bbands, obv
   etf/disc/gainers: top gainers
   etf/disc/decliners: top decliners
   etf/disc/active: most active
@@ -834,8 +835,8 @@ en:
   forex/load: get historical data
   forex/candle: show candle plot for loaded pair
   forex/fwd: get forward rates for loaded pair
-  forex/ta: technical analysis,          ema, macd, rsi, adx, bbands, obv
-  forex/qa: quantitative analysis,       decompose, cusum, residuals analysis
+  forex/ta: technical analysis           ema, macd, rsi, adx, bbands, obv
+  forex/qa: quantitative analysis        decompose, cusum, residuals analysis
   forex/forex: Forex brokerages
   forex/forecast: forecast techniques
   forex/oanda: Oanda menu
@@ -921,9 +922,9 @@ en:
   funds/exclusion: exclusion policy
   funds/_country_ms: Current Country MorningStar
   alternative/hn: Hacker News most popular stories
-  alternative/covid: COVID menu,                 cases, deaths, rates
-  alternative/oss: Open Source menu,           star history, repos information
-  alternative/realestate: Real Estate menu,           sold prices, HPIs
+  alternative/covid: COVID menu                  cases, deaths, rates
+  alternative/oss: Open Source menu            star history, repos information
+  alternative/realestate: Real Estate menu            sold prices, HPIs
   alternative/covid/slopes: get countries with highest slope in cases
   alternative/covid/country: select country for data
   alternative/covid/_country: Country
@@ -965,21 +966,23 @@ en:
   econometrics/combine: Combine columns from different datasets
   econometrics/rename: Rename column from dataset
   econometrics/lag: Add lag to a variable by shifting a column
-  econometrics/_regression_: Regression
-  econometrics/_regression_tests_: Regression Tests
+  econometrics/_panel_: Panel
+  econometrics/_residuals_: Residuals
   econometrics/ols: fit a (multi) linear regression model
   econometrics/norm: perform normality tests on a column of a dataset
   econometrics/root: perform unitroot tests (ADF & KPSS) on a column of a dataset
   econometrics/panel: estimate model based on various regression techniques
   econometrics/compare: compare results of all estimated models
-  econometrics/_tests_: Tests
+  econometrics/_time_series_: Time Series
   econometrics/dwat: Durbin-Watson autocorrelation test on the residuals of the regression
   econometrics/bgod: Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
   econometrics/bpag: Breusch-Pagan heteroscedasticity test on the residuals of the regression
   econometrics/granger: Granger causality tests on two columns
   econometrics/coint: co-integration test on a multitude of columns
-  portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
-  portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
+  econometrics/garch: estimate future volatility with GARCH
+  econometrics/ret: calculate returns for the given time series
+  portfolio/bro: brokers holdings    supports robinhood, ally, degiro, coinbase
+  portfolio/po: portfolio optimization   optimize your portfolio weights efficiently
   portfolio/load: load transactions into the portfolio (use load --example for an example)
   portfolio/_loaded: Loaded transactions
   portfolio/_riskfreerate: Risk Free Rate

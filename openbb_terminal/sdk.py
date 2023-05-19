@@ -1,32 +1,48 @@
 """OpenBB Terminal SDK."""
+
 # ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
+
 # flake8: noqa
+
 # pylint: disable=unused-import,wrong-import-order
+
 # pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
+
 import logging
 
 import openbb_terminal.config_terminal as cfg
+
 from openbb_terminal import helper_funcs as helper  # noqa: F401
+
 from openbb_terminal.core.plots.plotly_helper import theme  # noqa: F401
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
+
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
+
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
+
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
+
 from openbb_terminal.reports.reports_controller import ReportController
 
 import openbb_terminal.core.sdk.sdk_init as lib
+
 from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
+
 from openbb_terminal.core.session.current_system import get_current_system
+
 from openbb_terminal.core.session.current_user import is_local
+
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 cfg.setup_config_terminal(is_sdk=True)
 
 logger = logging.getLogger(__name__)
+
 cfg.theme.applyMPLstyle()
 
 
@@ -36,7 +52,7 @@ class OpenBBSDK:
     Attributes:
         `login`: Login and load user info.\n
         `logout`: Logout and clear session.\n
-        `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `news`: Access news from either feedparser or biztoc for a given term or from specified sources\n
         `whoami`: Display user info.\n
     """
 
@@ -46,7 +62,7 @@ class OpenBBSDK:
         SDKLogger()
         self.login = lib.sdk_session.login
         self.logout = lib.sdk_session.logout
-        self.news = lib.common_feedparser_model.get_news
+        self.news = lib.common_news_sdk_helper.news
         self.whoami = lib.sdk_session.whoami
         SDKLogger._try_to_login(self)
 
@@ -107,6 +123,8 @@ class OpenBBSDK:
             `dwat_chart`: Show Durbin-Watson autocorrelation tests\n
             `fdols`: First differencing is an alternative to using fixed effects when there might be correlation.\n
             `fe`: When effects are correlated with the regressors the RE and BE estimators are not consistent.\n
+            `garch`: Calculates volatility forecasts based on GARCH.\n
+            `garch_chart`: Plots the volatility forecasts based on GARCH\n
             `get_regression_data`: This function creates a DataFrame with the required regression data as\n
             `granger`: Calculate granger tests\n
             `granger_chart`: Show granger tests\n
@@ -369,6 +387,7 @@ class OpenBBSDK:
             `av`: Set Alpha Vantage key\n
             `binance`: Set Binance key\n
             `bitquery`: Set Bitquery key\n
+            `biztoc`: Set BizToc key\n
             `cmc`: Set Coinmarketcap key\n
             `coinbase`: Set Coinbase key\n
             `coinglass`: Set Coinglass key.\n
@@ -518,6 +537,7 @@ class OpenBBSDK:
             `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Gets ticker quote from FMP\n
+            `quote_chart`: Financial Modeling Prep ticker(s) quote.\n
             `search`: Search selected query for tickers.\n
             `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
         """

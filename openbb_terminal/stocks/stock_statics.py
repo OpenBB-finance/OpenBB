@@ -321,6 +321,9 @@ BALANCE_PLOT = {
         "accumulated_other_comprehensive_income": "accumulated_other_comprehensive_income",
         "total_stockholders'_equity": "total_shareholder_equity",
         "total_liabilities_and_stockholders'_equity": "total_liabilities_and_stockholders_equity",
+        "goodwill": "goodwill",
+        "intangible_assets": "intangible_assets_excluding_goodwill",
+        "taxes_payable": "taxes_payable",
     },
     "FinancialModelingPrep": {
         "reported_currency": "reported_currency",

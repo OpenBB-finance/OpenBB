@@ -11,64 +11,73 @@ interactions:
   response:
     body:
       string: "[\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2022-12-31\",\n    \"stockPrice\":
-        103.83,\n    \"numberOfShares\": 1557000000,\n    \"marketCapitalization\":
-        161663310000,\n    \"minusCashAndCashEquivalents\": 3207000000,\n    \"addTotalDebt\":
-        43123000000,\n    \"enterpriseValue\": 201579310000\n  },\n  {\n    \"symbol\":
-        \"PM\",\n    \"date\": \"2022-09-30\",\n    \"stockPrice\": 92.5299988,\n
-        \   \"numberOfShares\": 0,\n    \"marketCapitalization\": 0,\n    \"minusCashAndCashEquivalents\":
-        5368000000,\n    \"addTotalDebt\": 24580000000,\n    \"enterpriseValue\":
-        19212000000\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2021-12-31\",\n
-        \   \"stockPrice\": 103.5199966,\n    \"numberOfShares\": 1558000000,\n    \"marketCapitalization\":
-        161284154702.8,\n    \"minusCashAndCashEquivalents\": 4496000000,\n    \"addTotalDebt\":
-        27806000000,\n    \"enterpriseValue\": 184594154702.8\n  },\n  {\n    \"symbol\":
-        \"PM\",\n    \"date\": \"2020-12-31\",\n    \"stockPrice\": 79.6500015,\n
-        \   \"numberOfShares\": 1557000000,\n    \"marketCapitalization\": 124015052335.5,\n
-        \   \"minusCashAndCashEquivalents\": 7280000000,\n    \"addTotalDebt\": 31536000000,\n
-        \   \"enterpriseValue\": 148271052335.5\n  },\n  {\n    \"symbol\": \"PM\",\n
-        \   \"date\": \"2019-12-31\",\n    \"stockPrice\": 84.3300018,\n    \"numberOfShares\":
-        1555000000,\n    \"marketCapitalization\": 131133152799.00002,\n    \"minusCashAndCashEquivalents\":
+        101.21,\n    \"numberOfShares\": 1557000000,\n    \"marketCapitalization\":
+        157583970000,\n    \"minusCashAndCashEquivalents\": 3207000000,\n    \"addTotalDebt\":
+        43123000000,\n    \"enterpriseValue\": 197499970000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2021-12-31\",\n    \"stockPrice\": 95,\n    \"numberOfShares\":
+        1558000000,\n    \"marketCapitalization\": 148010000000,\n    \"minusCashAndCashEquivalents\":
+        4496000000,\n    \"addTotalDebt\": 27806000000,\n    \"enterpriseValue\":
+        171320000000\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2020-12-31\",\n
+        \   \"stockPrice\": 82.79,\n    \"numberOfShares\": 1557000000,\n    \"marketCapitalization\":
+        128904030000.00002,\n    \"minusCashAndCashEquivalents\": 7280000000,\n    \"addTotalDebt\":
+        31536000000,\n    \"enterpriseValue\": 153160030000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2019-12-31\",\n    \"stockPrice\": 85.09,\n    \"numberOfShares\":
+        1555000000,\n    \"marketCapitalization\": 132314950000,\n    \"minusCashAndCashEquivalents\":
         6861000000,\n    \"addTotalDebt\": 31045000000,\n    \"enterpriseValue\":
-        155317152799\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2018-12-31\",\n
-        \   \"stockPrice\": 74.4800034,\n    \"numberOfShares\": 1555000000,\n    \"marketCapitalization\":
-        115816405287,\n    \"minusCashAndCashEquivalents\": 6593000000,\n    \"addTotalDebt\":
-        31759000000,\n    \"enterpriseValue\": 140982405287\n  },\n  {\n    \"symbol\":
-        \"PM\",\n    \"date\": \"2017-12-31\",\n    \"stockPrice\": 107.9400024,\n
-        \   \"numberOfShares\": 1552000000,\n    \"marketCapitalization\": 167522883724.8,\n
-        \   \"minusCashAndCashEquivalents\": 8447000000,\n    \"addTotalDebt\": 34339000000,\n
-        \   \"enterpriseValue\": 193414883724.8\n  },\n  {\n    \"symbol\": \"PM\",\n
-        \   \"date\": \"2016-12-31\",\n    \"stockPrice\": 95.9599991,\n    \"numberOfShares\":
-        1551000000,\n    \"marketCapitalization\": 148833958604.1,\n    \"minusCashAndCashEquivalents\":
-        4239000000,\n    \"addTotalDebt\": 29067000000,\n    \"enterpriseValue\":
-        173661958604.1\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2015-12-31\",\n
-        \   \"stockPrice\": 90.0100021,\n    \"numberOfShares\": 1549000000,\n    \"marketCapitalization\":
-        139425493252.9,\n    \"minusCashAndCashEquivalents\": 3417000000,\n    \"addTotalDebt\":
-        28480000000,\n    \"enterpriseValue\": 164488493252.9\n  },\n  {\n    \"symbol\":
-        \"PM\",\n    \"date\": \"2014-12-31\",\n    \"stockPrice\": 80.2399979,\n
-        \   \"numberOfShares\": 1566000000,\n    \"marketCapitalization\": 125655836711.40001,\n
-        \   \"minusCashAndCashEquivalents\": 1682000000,\n    \"addTotalDebt\": 29455000000,\n
-        \   \"enterpriseValue\": 153428836711.40002\n  },\n  {\n    \"symbol\": \"PM\",\n
-        \   \"date\": \"2013-12-31\",\n    \"stockPrice\": 79.0899963,\n    \"numberOfShares\":
-        1622000000,\n    \"marketCapitalization\": 128283973998.59999,\n    \"minusCashAndCashEquivalents\":
+        156498950000\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2018-12-31\",\n
+        \   \"stockPrice\": 66.76,\n    \"numberOfShares\": 1555000000,\n    \"marketCapitalization\":
+        103811800000.00002,\n    \"minusCashAndCashEquivalents\": 6593000000,\n    \"addTotalDebt\":
+        31759000000,\n    \"enterpriseValue\": 128977800000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2017-12-31\",\n    \"stockPrice\": 105.65,\n    \"numberOfShares\":
+        1552000000,\n    \"marketCapitalization\": 163968800000,\n    \"minusCashAndCashEquivalents\":
+        8447000000,\n    \"addTotalDebt\": 34339000000,\n    \"enterpriseValue\":
+        189860800000\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2016-12-31\",\n
+        \   \"stockPrice\": 91.49,\n    \"numberOfShares\": 1551000000,\n    \"marketCapitalization\":
+        141900990000,\n    \"minusCashAndCashEquivalents\": 4239000000,\n    \"addTotalDebt\":
+        29067000000,\n    \"enterpriseValue\": 166728990000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2015-12-31\",\n    \"stockPrice\": 87.91,\n    \"numberOfShares\":
+        1549000000,\n    \"marketCapitalization\": 136172590000,\n    \"minusCashAndCashEquivalents\":
+        3417000000,\n    \"addTotalDebt\": 28480000000,\n    \"enterpriseValue\":
+        161235590000\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2014-12-31\",\n
+        \   \"stockPrice\": 81.45,\n    \"numberOfShares\": 1566000000,\n    \"marketCapitalization\":
+        127550700000,\n    \"minusCashAndCashEquivalents\": 1682000000,\n    \"addTotalDebt\":
+        29455000000,\n    \"enterpriseValue\": 155323700000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2013-12-31\",\n    \"stockPrice\": 87.13,\n    \"numberOfShares\":
+        1622000000,\n    \"marketCapitalization\": 141324860000,\n    \"minusCashAndCashEquivalents\":
         2154000000,\n    \"addTotalDebt\": 27678000000,\n    \"enterpriseValue\":
-        153807973998.59998\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2012-12-31\",\n
-        \   \"stockPrice\": 87.6500015,\n    \"numberOfShares\": 1692000000,\n    \"marketCapitalization\":
-        148303802538,\n    \"minusCashAndCashEquivalents\": 2983000000,\n    \"addTotalDebt\":
-        22839000000,\n    \"enterpriseValue\": 168159802538\n  },\n  {\n    \"symbol\":
-        \"PM\",\n    \"date\": \"2011-12-31\",\n    \"stockPrice\": 74.9000015,\n
-        \   \"numberOfShares\": 1725908666,\n    \"marketCapitalization\": 129270561672.263,\n
-        \   \"minusCashAndCashEquivalents\": 2550000000,\n    \"addTotalDebt\": 18545000000,\n
-        \   \"enterpriseValue\": 145265561672.263\n  },\n  {\n    \"symbol\": \"PM\",\n
-        \   \"date\": \"2010-12-31\",\n    \"stockPrice\": 56.5999985,\n    \"numberOfShares\":
-        1839000000,\n    \"marketCapitalization\": 104087397241.5,\n    \"minusCashAndCashEquivalents\":
-        1703000000,\n    \"addTotalDebt\": 16502000000,\n    \"enterpriseValue\":
-        118886397241.5\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2009-12-31\",\n
-        \   \"stockPrice\": 45.5099983,\n    \"numberOfShares\": 1943000000,\n    \"marketCapitalization\":
-        88425926696.9,\n    \"minusCashAndCashEquivalents\": 1540000000,\n    \"addTotalDebt\":
-        15416000000,\n    \"enterpriseValue\": 102301926696.9\n  },\n  {\n    \"symbol\":
-        \"PM\",\n    \"date\": \"2008-12-31\",\n    \"stockPrice\": 37.1500015,\n
-        \   \"numberOfShares\": 2068000000,\n    \"marketCapitalization\": 76826203102,\n
-        \   \"minusCashAndCashEquivalents\": 1531000000,\n    \"addTotalDebt\": 11961000000,\n
-        \   \"enterpriseValue\": 87256203102\n  }\n]"
+        166848860000\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2012-12-31\",\n
+        \   \"stockPrice\": 83.64,\n    \"numberOfShares\": 1692000000,\n    \"marketCapitalization\":
+        141518880000,\n    \"minusCashAndCashEquivalents\": 2983000000,\n    \"addTotalDebt\":
+        22839000000,\n    \"enterpriseValue\": 161374880000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2011-12-31\",\n    \"stockPrice\": 78.48,\n    \"numberOfShares\":
+        1725908666,\n    \"marketCapitalization\": 135449312107.68001,\n    \"minusCashAndCashEquivalents\":
+        2550000000,\n    \"addTotalDebt\": 18545000000,\n    \"enterpriseValue\":
+        151444312107\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2010-12-31\",\n
+        \   \"stockPrice\": 58.53,\n    \"numberOfShares\": 1839000000,\n    \"marketCapitalization\":
+        107636670000,\n    \"minusCashAndCashEquivalents\": 1703000000,\n    \"addTotalDebt\":
+        16502000000,\n    \"enterpriseValue\": 122435670000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2009-12-31\",\n    \"stockPrice\": 48.19,\n    \"numberOfShares\":
+        1943000000,\n    \"marketCapitalization\": 93633170000,\n    \"minusCashAndCashEquivalents\":
+        1540000000,\n    \"addTotalDebt\": 15416000000,\n    \"enterpriseValue\":
+        107509170000\n  },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2008-12-31\",\n
+        \   \"stockPrice\": 43.51,\n    \"numberOfShares\": 2068000000,\n    \"marketCapitalization\":
+        89978680000,\n    \"minusCashAndCashEquivalents\": 1531000000,\n    \"addTotalDebt\":
+        11961000000,\n    \"enterpriseValue\": 100408680000\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2007-12-31\",\n    \"stockPrice\": 24.3858204516,\n
+        \   \"numberOfShares\": 2101000000,\n    \"marketCapitalization\": 51234608768.8116,\n
+        \   \"minusCashAndCashEquivalents\": 1656000000,\n    \"addTotalDebt\": 6307000000,\n
+        \   \"enterpriseValue\": 55885608768\n  },\n  {\n    \"symbol\": \"PM\",\n
+        \   \"date\": \"2006-12-31\",\n    \"stockPrice\": 24.3858204516,\n    \"numberOfShares\":
+        2109313033,\n    \"marketCapitalization\": 51437328898.957825,\n    \"minusCashAndCashEquivalents\":
+        1676000000,\n    \"addTotalDebt\": 2786000000,\n    \"enterpriseValue\": 52547328898\n
+        \ },\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2005-12-31\",\n    \"stockPrice\":
+        24.3858204516,\n    \"numberOfShares\": 2109313033,\n    \"marketCapitalization\":
+        51437328898.957825,\n    \"minusCashAndCashEquivalents\": 1209000000,\n    \"addTotalDebt\":
+        4909000000,\n    \"enterpriseValue\": 55137328898\n  },\n  {\n    \"symbol\":
+        \"PM\",\n    \"date\": \"2003-12-31\",\n    \"stockPrice\": 24.3858204516,\n
+        \   \"numberOfShares\": 2028000000,\n    \"marketCapitalization\": 49454443875.8448,\n
+        \   \"minusCashAndCashEquivalents\": 3161000000,\n    \"addTotalDebt\": 0,\n
+        \   \"enterpriseValue\": 46293443875\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -84,13 +93,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '4474'
+      - '5220'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 07 Mar 2023 17:08:42 GMT
+      - Tue, 02 May 2023 14:20:54 GMT
       ETag:
-      - W/"117a-pnWpP1iblLh3xBbpIxvyqkWL/xQ"
+      - W/"1464-t0NuVW6Xkzoda4bq7fkXt6hdXrM"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

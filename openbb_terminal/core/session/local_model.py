@@ -198,6 +198,10 @@ def set_chart_style_from_hub(configs: dict):
             chart_style = terminal_style.get("chart", None)
             if chart_style:
                 set_preference("CHART_STYLE", chart_style)
+                # pylint: disable=import-outside-toplevel
+                from openbb_terminal import theme
+
+                theme.apply_style(chart_style)
 
 
 def set_table_style_from_hub(configs: dict):

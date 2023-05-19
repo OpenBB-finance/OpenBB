@@ -3,7 +3,9 @@
         "up_color": "#009600",
         "down_color": "#c80000",
         "color": "#0d0887",
-        "width": 1.5
+        "width": 1.5,
+        "down_color_transparent": "rgba(200, 0, 0, 0.4)",
+        "up_color_transparent": "rgba(0, 150, 0, 0.4)"
     },
     "data": {
         "barpolar": [
