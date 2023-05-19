@@ -242,7 +242,6 @@ def get_full_chain_eod(symbol: str, date: str, quiet: bool = False) -> pd.DataFr
     for exp in optional_rich_track(
         expirations, suppress_output=quiet, desc="Getting Option Chain"
     ):
-
         temp = get_eod_chain_at_expiry_given_date(symbol, exp, date)
         if not temp.empty:
             full_chain = pd.concat([full_chain, temp])
