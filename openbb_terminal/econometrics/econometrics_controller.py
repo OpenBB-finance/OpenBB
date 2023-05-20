@@ -223,7 +223,6 @@ class EconometricsController(BaseController):
                 "panel",
                 "delete",
                 "garch",
-                "vif",
             ]:
                 self.choices[feature] = dataset_columns
             for feature in [
@@ -238,12 +237,14 @@ class EconometricsController(BaseController):
             ]:
                 self.choices[feature] = {c: {} for c in self.files}
 
-            self.choices["type"] = {
-                c: {} for c in self.files + list(dataset_columns.keys())
-            }
-            self.choices["desc"] = {
-                c: {} for c in self.files + list(dataset_columns.keys())
-            }
+            for feature in ["type", "desc", "vif"]:
+                self.choices[feature] = {
+                    c: {} for c in self.files + list(dataset_columns.keys())
+                }
+            self.choices["vif"] = dict(
+                self.choices["vif"],
+                **{"-d": self.choices["vif"], "--data": self.choices["vif"]},
+            )
 
             pairs_timeseries = list()
             for dataset_col in list(dataset_columns.keys()):
@@ -2213,34 +2214,47 @@ class EconometricsController(BaseController):
             For further information see: https://en.wikipedia.org/wiki/Variance_inflation_factor""",
         )
         parser.add_argument(
-            "-c",
-            "--columns",
-            help="The columns we want to add <dataset.column>,<dataset.column2>",
-            dest="columns",
+            "-d",
+            "--data",
+            help="The datasets and columns we want to add <dataset>,<dataset2.column>,<dataset2.column2>",
+            dest="data",
             type=check_list_values(self.choices["vif"]),
+            default=None,
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
+            other_args.insert(0, "-d")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         data = pd.DataFrame()
         if ns_parser:
-            for option in ns_parser.columns:
-                dataset, column = option.split(".")
+            if ns_parser.data is None:
+                console.print("[red]Please enter a dataset to calculate vif for.[/red]")
+                return
+            print(ns_parser.data)
+            for option in ns_parser.data:
+                if "." in option:
+                    dataset, column = option.split(".")
+                else:
+                    dataset = option
+                    column = None
 
                 if dataset not in self.datasets:
                     console.print(
-                        f"Not able to find the dataset {dataset}. Please choose one of "
-                        f"the following: {', '.join(self.datasets)}"
+                        f"[red]Not able to find the dataset {dataset}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}[/red]"
                     )
-                elif column not in self.datasets[dataset]:
-                    console.print(
-                        f"Not able to find the column {column}. Please choose one of "
-                        f"the following: {', '.join(self.datasets[dataset].columns)}"
-                    )
+                elif column is not None:
+                    if column not in self.datasets[dataset]:
+                        console.print(
+                            f"[red]Not able to find the column {column}. Please choose one of "
+                            f"the following: {', '.join(self.datasets[dataset].data)}[/red]"
+                        )
+                    else:
+                        data[f"{dataset}_{column}"] = self.datasets[dataset][column]
                 else:
-                    data[f"{dataset}_{column}"] = self.datasets[dataset][column]
+                    for column in list(self.datasets[dataset].columns):
+                        data[f"{dataset}_{column}"] = self.datasets[dataset][column]
 
             econometrics_view.display_vif(data)
