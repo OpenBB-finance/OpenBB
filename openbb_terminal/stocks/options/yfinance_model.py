@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Tuple
 
 import pandas as pd
 import yfinance as yf
+from pydantic import BaseModel, Field
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console, optional_rich_track
@@ -409,37 +410,102 @@ class Options:
         return self
 
 
-def load_options(symbol: str) -> object:
-    """Options data object for YahooFinance.
+def load_options(symbol: str, pydantic: bool = False) -> object:
+    """Options data object for Nasdaq.
 
     Parameters
     ----------
-    symbol : str
+    symbol: str
         The ticker symbol to load.
+    pydantic: bool
+        Whether to return the object as a Pydantic Model or a subscriptable Pandas Object.  Default is False.
 
     Returns
     -------
-    symbol: str
-        The symbol entered by the user.
-    source: str
-        The source of the data, "YahooFinance".
-    chains: pd.DataFrame
-        The complete options chain for the ticker.
-    expirations: list[str]
-        List of unique expiration dates. (YYYY-MM-DD)
-    strikes: list[float]
-        List of unique strike prices.
-    last_price: float
-        The last price of the underlying asset.
-    underlying_name: str
-        The name of the underlying asset.
-    underlying_price: pd.Series
-        The price and recent performance of the underlying asset.
-    hasIV: bool
-        Implied volatility is returned.
-    hasGreeks: bool
-        Greeks data is not returned.
+    object: Options
+
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "YahooFinance".
+        chains: dict
+            The complete options chain for the ticker.  Returns as a Pandas DataFrame if pydantic is False.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: dict
+            The price and recent performance of the underlying asset.  Returns as a Pandas Series if pydantic is False.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Does not return greeks data.
     """
-    ticker = Options()
-    ticker.get_quotes(symbol)
-    return ticker
+    options = Options()
+    options.get_quotes(symbol)
+
+    if not pydantic:
+        return options
+
+    class OptionsChains(BaseModel):  # pylint: disable=too-few-public-methods
+        """Pydantic model for Nasdaq options chains.
+
+        Returns
+        -------
+        Pydantic: OptionsChains
+
+            source: str
+                The source of the data, "YahooFinance".
+            symbol: str
+                The symbol entered by the user.
+            underlying_name: str
+                The name of the underlying asset.
+            last_price: float
+                The last price of the underlying asset.
+            expirations: list[str]
+                List of unique expiration dates. (YYYY-MM-DD)
+            strikes: list[float]
+                List of unique strike prices.
+            underlying_price: dict
+                The price and recent performance of the underlying asset.
+            hasIV: bool
+                Returns implied volatility.
+            hasGreeks: bool
+                Does not return greeks data.
+            chains: dict
+                The complete options chain for the ticker.
+        """
+
+        source: str = "YahooFinance"
+        symbol: str = Field(default=options.symbol)
+        underlying_name: str = Field(default="")
+        last_price: float = 0
+        expirations: list = []
+        strikes: list = []
+        hasIV: bool = False
+        hasGreeks: bool = False
+        underlying_price: dict = {}
+        chains: dict = {}
+
+    if not options.chains.empty:
+        if options.last_price is None:
+            options.last_price = 0
+            print("No last price for " + options.symbol)
+        options_chains = OptionsChains(
+            source=options.source,
+            symbol=options.symbol,
+            underlying_name=options.underlying_name,
+            last_price=options.last_price,
+            expirations=options.expirations,
+            strikes=options.strikes,
+            hasIV=options.hasIV,
+            hasGreeks=options.hasGreeks,
+            underlying_price=options.underlying_price.to_dict(),
+            chains=options.chains.to_dict(),
+        )
+        return options_chains
+    return None

@@ -22,7 +22,7 @@ delisted,False
 primary_listing,True
 primary_security,True
 first_stock_price,1980-12-12
-last_stock_price,2023-05-15
+last_stock_price,2023-05-19
 last_stock_price_adjustment,2023-05-12
 last_corporate_action,2023-05-11
 previous_tickers,[]

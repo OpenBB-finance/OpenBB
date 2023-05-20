@@ -7,15 +7,17 @@ from typing import List
 import intrinio_sdk as intrinio
 import numpy as np
 import pandas as pd
+from pydantic import BaseModel, Field
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console, optional_rich_track
 
+# mypy: disable-error-code=no-redef
+
 logger = logging.getLogger(__name__)
-intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)
+intrinio.ApiClient().set_api_key(key = get_current_user().credentials.API_INTRINIO_KEY)
 api = intrinio.OptionsApi()
-security = intrinio.SecurityApi()
 
 eod_columns_to_drop = [
     "open_ask",
@@ -39,6 +41,8 @@ columns_to_drop = [
     "next_day_open_interest",
     "implied_volatility_change",
 ]
+
+TICKER_EXCEPTIONS = ["SPX", "NDX", "VIX", "RUT"]
 
 
 def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
@@ -395,8 +399,11 @@ def get_ticker_info(symbol: str) -> pd.Series:
     pd.Series
         Pandas Series object with meta data for the symbol.
     """
-
-    info = security.get_security_by_id(symbol).to_dict()
+    try:
+        info = intrinio.SecurityApi().get_security_by_id(symbol).to_dict()
+    except Exception:
+        print("Security not found")
+        return {}
 
     return pd.Series(info)
 
@@ -415,12 +422,14 @@ def get_underlying_price(symbol: str) -> pd.Series:
         Pandas Series object with real time bid/ask and last price for the symbol.
 
     """
-    underlying_price = security.get_security_realtime_price(symbol).to_dict()
+    underlying_price = (
+        intrinio.SecurityApi().get_security_realtime_price(symbol).to_dict()
+    )
 
     return pd.Series(underlying_price)
 
 
-class Options:
+class Options: #pylint: disable=too-many-instance-attributes
     """Options data object for Intrinio
 
     Attributes
@@ -453,6 +462,7 @@ class Options:
         self.SYMBOLS: list = get_all_ticker_symbols()
         self.symbol: str = ""
         self.source: str = "Intrinio"
+        self.date: str = ""
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []
@@ -464,10 +474,22 @@ class Options:
 
     def get_quotes(self, symbol: str) -> object:
         self.symbol = symbol.upper()
-        self.underlying_name = get_ticker_info(self.symbol)["name"]
-        self.underlying_price = get_underlying_price(self.symbol)
-        self.last_price = self.underlying_price["last_price"]
-        self.chains = get_full_option_chain(self.symbol, quiet=True)
+        if self.symbol not in TICKER_EXCEPTIONS:
+            underlying = (
+                intrinio.SecurityApi()
+                .get_security_stock_prices(self.symbol, frequency="daily")
+                .to_dict()
+            )
+            self.underlying_name = underlying["security"]["name"]
+            self.underlying_price = pd.Series(underlying["stock_prices"][0])
+            self.last_price = self.underlying_price["adj_close"]
+        else:
+            self.underlying_name = self.symbol
+            self.underlying_price = pd.Series(dtype=object)
+            self.last_price = 0
+        if self.symbol in TICKER_EXCEPTIONS:
+            self.symbol = "$" + self.symbol
+        self.chains = get_full_option_chain(self.symbol)
         self.chains.rename(columns={"code": "optionSymbol"}, inplace=True)
         self.expirations = []
         self.strikes = []
@@ -483,26 +505,41 @@ class Options:
         if self.symbol not in self.SYMBOLS:
             print(f"{self.symbol}", "is not supported by Intrinio.")
             return self
-        underlying = security.get_security_stock_prices(
-            self.symbol, start_date=date, end_date=date, frequency="daily"
-        ).to_dict()
-        self.underlying_name = underlying["security"]["name"]
-        self.underlying_price = pd.Series(underlying["stock_prices"][0])
-        self.last_price = self.underlying_price["adj_close"]
+        if self.symbol not in TICKER_EXCEPTIONS:
+            underlying = (
+                intrinio.SecurityApi()
+                .get_security_stock_prices(
+                    self.symbol, start_date=date, end_date=date, frequency="daily"
+                )
+                .to_dict()
+            )
+            self.underlying_name = underlying["security"]["name"]
+            self.underlying_price = pd.Series(underlying["stock_prices"][0])
+            self.last_price = self.underlying_price["adj_close"]
+        else:
+            self.underlying_name = self.symbol
+            self.underlying_price = pd.Series(dtype=object)
+            self.last_price = 0
+        if self.symbol in TICKER_EXCEPTIONS:
+            self.symbol = "$" + self.symbol
         self.chains = get_full_chain_eod(self.symbol, date)
+        self.chains.rename(columns={"code": "optionSymbol"}, inplace=True)
         self.expirations = []
         self.strikes = []
         if not self.chains.empty:
             self.expirations = self.chains["expiration"].unique().tolist()
             self.strikes = self.chains["strike"].sort_values().unique().tolist()
-        self.hasIV = "impliedVolatility" in self.chains.columns
-        self.hasGreeks = "gamma" in self.chains.columns
+        self.hasIV = (
+            "impliedVolatility" in self.chains.columns
+            and self.chains.impliedVolatility.sum() > 0
+        )
+        self.hasGreeks = "gamma" in self.chains.columns and self.chains.gamma.sum() > 0
 
         return self
 
 
 @check_api_key(["API_INTRINIO_KEY"])
-def load_options(symbol: str, date: str = "") -> object:
+def load_options(symbol: str, date: str = "", pydantic=False) -> object:
     """Options data object for Intrinio.
 
     Parameters
@@ -538,15 +575,134 @@ def load_options(symbol: str, date: str = "") -> object:
         True if greeks data is returned.
     """
 
-    ticker = Options()
+    options = Options()
 
-    if symbol.upper() not in ticker.SYMBOLS:
+    if symbol.upper() not in options.SYMBOLS:
         print(f"{symbol}", "is not supported by Intrinio.")
-        return ticker
+        return options
 
     if date != "":
-        ticker.get_eod_chains(symbol, date)
-        return ticker
+        options.get_eod_chains(symbol, date)
+        options.date = date
+        if not pydantic:
+            return options
 
-    ticker.get_quotes(symbol)
-    return ticker
+        class OptionsChains(BaseModel):  # pylint: disable=too-few-public-methods
+            """Pydantic model for Intrinio EOD options chains.
+
+            Returns
+            -------
+            Pydantic: OptionsChains
+
+                source: str
+                    The source of the data, "Intrinio".
+                symbol: str
+                    The symbol entered by the user.
+                date: str
+                    The date for EOD chains data entered by the user.
+                underlying_name: str
+                    The name of the underlying asset.
+                last_price: float
+                    The last price of the underlying asset.
+                expirations: list[str]
+                    List of unique expiration dates. (YYYY-MM-DD)
+                strikes: list[float]
+                    List of unique strike prices.
+                underlying_price: dict
+                    The price and recent performance of the underlying asset.
+                hasIV: bool
+                    Does not return implied volatility.
+                hasGreeks: bool
+                    Does not return greeks data.
+                chains: dict
+                    The complete options chain for the ticker.
+            """
+
+            source: str = "Intrinio"
+            symbol: str = Field(default=options.symbol)
+            date: str = Field(default="")
+            underlying_name: str = Field(default="")
+            last_price: float = 0
+            expirations: list = []
+            strikes: list = []
+            hasIV: bool = False
+            hasGreeks: bool = False
+            underlying_price: dict = {}
+            chains: dict = {}
+
+        if not options.chains.empty:
+            options_chains = OptionsChains(
+                source=options.source,
+                symbol=options.symbol,
+                date=options.date,
+                underlying_name=options.underlying_name,
+                last_price=options.last_price,
+                expirations=options.expirations,
+                strikes=options.strikes,
+                hasIV=options.hasIV,
+                hasGreeks=options.hasGreeks,
+                underlying_price=options.underlying_price.to_dict(),
+                chains=options.chains.to_dict(),
+            )
+            return options_chains
+        return None
+
+    options.get_quotes(symbol)
+    if not pydantic:
+        return options
+
+    class OptionsChains(BaseModel):  # pylint: disable=too-few-public-methods,function-redefined
+        """Pydantic model for Intrinio options chains.
+
+        Returns
+        -------
+        Pydantic: OptionsChains
+
+            source: str
+                The source of the data, "Intrinio".
+            symbol: str
+                The symbol entered by the user.
+            underlying_name: str
+                The name of the underlying asset.
+            last_price: float
+                The last price of the underlying asset.
+            expirations: list[str]
+                List of unique expiration dates. (YYYY-MM-DD)
+            strikes: list[float]
+                List of unique strike prices.
+            underlying_price: dict
+                The price and recent performance of the underlying asset.
+            hasIV: bool
+                Does not return implied volatility.
+            hasGreeks: bool
+                Does not return greeks data.
+            chains: dict
+                The complete options chain for the ticker.
+        """
+
+        source: str = "Intrinio"
+        symbol: str = Field(default=options.symbol)
+        underlying_name: str = Field(default="")
+        last_price: float = 0
+        expirations: list = []
+        strikes: list = []
+        hasIV: bool = False
+        hasGreeks: bool = False
+        underlying_price: dict = {}
+        chains: dict = {}
+
+    if not options.chains.empty:
+        options_chains = OptionsChains(
+            source=options.source,
+            symbol=options.symbol,
+            underlying_name=options.underlying_name,
+            last_price=options.last_price,
+            expirations=options.expirations,
+            strikes=options.strikes,
+            hasIV=options.hasIV,
+            hasGreeks=options.hasGreeks,
+            underlying_price=options.underlying_price.to_dict(),
+            chains=options.chains.to_dict(),
+        )
+        return options_chains
+    return None

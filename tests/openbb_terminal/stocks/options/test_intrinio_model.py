@@ -89,3 +89,18 @@ def test_get_ticker_info(recorder):
     data = intrinio_model.load_options("AAPL")
     assert df.loc["name"] == data.underlying_name
     assert data.symbol in data.SYMBOLS
+
+
+@pytest.mark.vcr
+def test_load_options(recorder):
+    data = intrinio_model.load_options("AAPL")
+    assert data.symbol == "AAPL"
+    assert data.hasIV is True
+    assert isinstance(data.underlying_price, pd.Series)
+    assert not data.chains.empty
+    data = intrinio_model.load_options("BAD_SYMBOL")
+    assert data.underlying_name == ""
+    data = intrinio_model.load_options("AAPL", date="2022-01-03", pydantic=True)
+    assert data.source == "Intrinio"
+    assert data.date == "2022-01-03"
+    recorder.capture(data.chains)

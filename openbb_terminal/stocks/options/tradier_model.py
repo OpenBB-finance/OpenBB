@@ -6,6 +6,7 @@ from typing import List, Optional
 
 import pandas as pd
 import requests
+from pydantic import BaseModel, Field
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
@@ -460,8 +461,104 @@ class Options:
         return self
 
 
-def load_options(symbol: str) -> object:
-    """Loads options data from Nasdaq."""
-    ticker = Options()
-    ticker.get_quotes(symbol)
-    return ticker
+def load_options(symbol: str, pydantic: bool = False) -> object:
+    """Options data object for CBOE.
+
+    Parameters
+    ----------
+    symbol: str
+        The ticker symbol to load.
+    pydantic: bool
+        Whether to return the object as a Pydantic Model or a subscriptable Pandas Object.  Default is False.
+
+    Returns
+    -------
+    object: Options
+
+        SYMBOLS: pd.DataFrame
+            The Tradier symbol directory.  Only returned if pydantic is False.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "Tradier".
+        chains: dict
+            The complete options chain for the ticker.  Returns as a Pandas DataFrame if pydantic is False.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: dict
+            The price and recent performance of the underlying asset.  Returns as a Pandas Series if pydantic is False.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks data.
+    """
+    options = Options()
+    options.get_quotes(symbol)
+
+    if not pydantic:
+        return options
+
+    class OptionsChains(BaseModel):  # pylint: disable=too-few-public-methods
+        """Pydantic model for Tradier options chains.
+
+        Returns
+        -------
+        Pydantic: OptionsChains
+
+            source: str
+                The source of the data, "Tradier".
+            symbol: str
+                The symbol entered by the user.
+            underlying_name: str
+                The name of the underlying asset.
+            last_price: float
+                The last price of the underlying asset.
+            expirations: list[str]
+                List of unique expiration dates. (YYYY-MM-DD)
+            strikes: list[float]
+                List of unique strike prices.
+            underlying_price: dict
+                The price and recent performance of the underlying asset.
+            hasIV: bool
+                Returns implied volatility.
+            hasGreeks: bool
+                Returns greeks data.
+            chains: dict
+                The complete options chain for the ticker.
+        """
+
+        source: str = "Tradier"
+        symbol: str = Field(default=options.symbol)
+        underlying_name: str = Field(default="")
+        last_price: float = 0
+        expirations: list = []
+        strikes: list = []
+        hasIV: bool = False
+        hasGreeks: bool = False
+        underlying_price: dict = {}
+        chains: dict = {}
+
+    if not options.chains.empty:
+        if options.last_price is None:
+            options.last_price = 0
+            print("No last price for " + options.symbol)
+        options_chains = OptionsChains(
+            source=options.source,
+            symbol=options.symbol,
+            underlying_name=options.underlying_name,
+            last_price=options.last_price,
+            expirations=options.expirations,
+            strikes=options.strikes,
+            hasIV=options.hasIV,
+            hasGreeks=options.hasGreeks,
+            underlying_price=options.underlying_price.to_dict(),
+            chains=options.chains.to_dict(),
+        )
+        return options_chains
+    return None

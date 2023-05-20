@@ -1,11 +1,11 @@
 """Model for retrieving public options data from the Montreal Options Exchange."""
 
 from datetime import timedelta
-from typing import Optional
 
 import pandas as pd
 import pandas_market_calendars as mcal
 from pandas.tseries.holiday import next_workday
+from pydantic import BaseModel, Field
 
 from openbb_terminal.helper_funcs import request
 
@@ -60,7 +60,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
     return data
 
 
-class Options:
+class Options: # pylint: disable=too-many-instance-attributes
     """Options data object for TMX.
 
     Attributes
@@ -71,6 +71,8 @@ class Options:
         The symbol entered by the user.
     source: str
         The source of the data, "TMX".
+    date: str
+        The date for the EOD chains data, entered by the user. (YYYY-MM-DD)
     chains: pd.DataFrame
         The complete options chain for the ticker.
     expirations: list[str]
@@ -93,6 +95,7 @@ class Options:
         self.SYMBOLS = get_all_ticker_symbols()
         self.symbol: str = ""
         self.source: str = "TMX"
+        self.date: str = ""
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []
@@ -241,7 +244,7 @@ class Options:
 
         return self
 
-    def get_eodchains(self, symbol: str = "", date: Optional[str] = "") -> object:
+    def get_eodchains(self, symbol: str = "", date: str = "") -> object:
         """Gets the complete options chain for the EOD on a specific date.
         Open Interest values are from the previous day.
 
@@ -254,24 +257,31 @@ class Options:
 
         Returns
         -------
-        self.chains: pd.DataFrame
-            DataFrame with the complete options chain for the chosen date.
-        self.expirations: list
-            List of all expiration dates available on the date.
-        self.strikes: list
-            List of all strike prices for that date.
-        self.underlying_price: pd.Series
-            Series of the price and performance of the underlying asset on the date.
-        self.last_price: float
-            The last price of the underlying asset on the date.
-        self.underlying_name: str
-            The name of the underlying asset.
+
+        object
+            symbol: str
+                The ticker symbol entered by the user.
+            date: str
+                The date entered by the user.
+            chains: pd.DataFrame
+                DataFrame with the complete options chain for the chosen date.
+            expirations: list
+                List of all expiration dates available on the date.
+            strikes: list
+                List of all strike prices for that date.
+            underlying_price: pd.Series
+                Series of the price and performance of the underlying asset on the date.
+            last_price: float
+                The last price of the underlying asset on the date.
+            underlying_name: str
+                The name of the underlying asset.
 
         Example
         -------
         >>> xiu = Ticker().get_eodchains("XIU", "2009-01-01")
         """
         self.symbol: str = ""
+        self.date: str = date
         self.chains = pd.DataFrame()
         self.expirations: list = []
         self.strikes: list = []
@@ -407,7 +417,9 @@ class Options:
         return self
 
 
-def load_options(symbol: str, date: Optional[str] = "") -> object:
+def load_options(
+    symbol: str, date: str = "", pydantic: bool = False
+) -> object:
     """Options data object for TMX.
 
     Parameters
@@ -416,36 +428,159 @@ def load_options(symbol: str, date: Optional[str] = "") -> object:
         The ticker symbol to load.
     date: Optional[str]
         The date for EOD chains data.
+    pydantic: bool
+        Whether to return the object as a Pydantic Model or a subscriptable Pandas Object.  Default is False.
 
     Returns
     -------
-    SYMBOLS: pd.DataFrame
-        The available symbols and company names.
-    symbol: str
-        The symbol entered by the user.
-    source: str
-        The source of the data, "TMX".
-    chains: pd.DataFrame
-        The complete options chain for the ticker.
-    expirations: list[str]
-        List of unique expiration dates. (YYYY-MM-DD)
-    strikes: list[float]
-        List of unique strike prices.
-    last_price: float
-        The last price of the underlying asset.
-    underlying_name: str
-        The name of the underlying asset.
-    underlying_price: pd.Series
-        The price and recent performance of the underlying asset.
-    hasIV: bool
-        True if implied volatility is returned.
-    hasGreeks: bool
-        Greeks data is not returned.
+    object: Options
+
+        SYMBOLS: pd.DataFrame
+            The available symbols and company names.  Only returned if pydantic is False.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "TMX".
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            True if implied volatility is returned.
+        hasGreeks: bool
+            Greeks data is not returned.
     """
 
     options = Options()
     if date != "":
         options.get_eodchains(symbol, date)
-        return options
+        if not pydantic:
+            return options
+
+        class OptionsChains(BaseModel):  # pylint: disable=too-few-public-methods
+            """Pydantic model for TMX EOD options chains.
+
+            Returns
+            -------
+            Pydantic: OptionsChains
+
+                source: str
+                    The source of the data, "TMX".
+                symbol: str
+                    The symbol entered by the user.
+                date: str
+                    The date for EOD chains data entered by the user.
+                underlying_name: str
+                    The name of the underlying asset.
+                last_price: float
+                    The last price of the underlying asset.
+                expirations: list[str]
+                    List of unique expiration dates. (YYYY-MM-DD)
+                strikes: list[float]
+                    List of unique strike prices.
+                underlying_price: dict
+                    The price and recent performance of the underlying asset.
+                hasIV: bool
+                    Does not return implied volatility.
+                hasGreeks: bool
+                    Does not return greeks data.
+                chains: dict
+                    The complete options chain for the ticker.
+            """
+
+            source: str = "TMX"
+            symbol: str = Field(default=options.symbol)
+            date: str = Field(default="")
+            underlying_name: str = Field(default="")
+            last_price: float = 0
+            expirations: list = []
+            strikes: list = []
+            hasIV: bool = False
+            hasGreeks: bool = False
+            underlying_price: dict = {}
+            chains: dict = {}
+
+        if not options.chains.empty:
+            options_chains = OptionsChains(
+                source=options.source,
+                symbol=options.symbol,
+                date=options.date,
+                underlying_name=options.underlying_name,
+                last_price=options.last_price,
+                expirations=options.expirations,
+                strikes=options.strikes,
+                hasIV=options.hasIV,
+                hasGreeks=options.hasGreeks,
+                underlying_price=options.underlying_price.to_dict(),
+                chains=options.chains.to_dict(),
+            )
+            return options_chains
+        return None
+
     options.get_quotes(symbol)
-    return options
+    if not pydantic:
+        return options
+
+    class OptionsChains(BaseModel):  # pylint: disable=too-few-public-methods,function-redefined
+        """Pydantic model for TMX options chains.
+
+        Returns
+        -------
+        Pydantic: OptionsChains
+
+            source: str
+                The source of the data, "TMX".
+            symbol: str
+                The symbol entered by the user.
+            underlying_name: str
+                The name of the underlying asset.
+            last_price: float
+                The last price of the underlying asset.
+            expirations: list[str]
+                List of unique expiration dates. (YYYY-MM-DD)
+            strikes: list[float]
+                List of unique strike prices.
+            underlying_price: dict
+                The price and recent performance of the underlying asset.
+            hasIV: bool
+                Does not return implied volatility.
+            hasGreeks: bool
+                Does not return greeks data.
+            chains: dict
+                The complete options chain for the ticker.
+        """
+
+        source: str = "TMX"
+        symbol: str = Field(default=options.symbol)
+        underlying_name: str = Field(default="")
+        last_price: float = 0
+        expirations: list = []
+        strikes: list = []
+        hasIV: bool = False
+        hasGreeks: bool = False
+        underlying_price: dict = {}
+        chains: dict = {}
+
+    if not options.chains.empty:
+        options_chains = OptionsChains(
+            source=options.source,
+            symbol=options.symbol,
+            underlying_name=options.underlying_name,
+            last_price=options.last_price,
+            expirations=options.expirations,
+            strikes=options.strikes,
+            hasIV=options.hasIV,
+            hasGreeks=options.hasGreeks,
+            underlying_price=options.underlying_price.to_dict(),
+            chains=options.chains.to_dict(),
+        )
+        return options_chains
+    return None

@@ -4,9 +4,6 @@ __docformat__ = "numpy"
 # IMPORTATION STANDARD
 import logging
 
-# IMPORTATION THIRDPARTY
-from typing import Optional
-
 # IMPORTATION INTERNAL
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.options.cboe_model import load_options as load_cboe
@@ -25,7 +22,7 @@ SOURCES = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 def load_options_chains(
     symbol: str,
     source: str = "CBOE",
-    date: Optional[str] = "",
+    date: str = "",
     pydantic: bool = False,
 ) -> object:
     """Loads all options chains from a specific source, fields returned to each attribute will vary.
@@ -71,13 +68,23 @@ def load_options_chains(
 
     Examples
     --------
-    Loads SPY data from CBOE and display the longest dates expiration chain.
+    Loads SPY data from CBOE, returns as a Pydantic Model, and displays the longest-dated expiration chain.
 
     >>> from openbb_terminal.sdk import openbb
     >>> import pandas as pd
     >>> data = openbb.stocks.options.load_options_chains("SPY", pydantic = True)
     >>> chains = pd.DataFrame(data.chains)
     >>> chains[chains["expiration"] == data.expirations[-1]]
+
+    Loads QQQ data from Tradier as a Pydantic Model.
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> data = openbb.stocks.options.load_options_chains("QQQ", source = "Tradier", pydantic = True)
+
+    Loads VIX data from YahooFinance as a Pandas object.
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> data = openbb.stocks.options.load_options_chains("^VIX", source = "YahooFinance")
 
     Loads XIU data from TMX and displays the 25 highest open interest options.
 
@@ -97,18 +104,18 @@ def load_options_chains(
         return None
 
     if source == "Nasdaq":
-        return load_nasdaq(symbol)
+        return load_nasdaq(symbol, pydantic)
     if source == "YahooFinance":
-        return load_yfinance(symbol)
+        return load_yfinance(symbol, pydantic)
     if source == "Tradier":
-        return load_tradier(symbol)
+        return load_tradier(symbol, pydantic)
     if source == "TMX":
         if date != "":
-            return load_tmx(symbol, date)
-        return load_tmx(symbol)
+            return load_tmx(symbol, date, pydantic)
+        return load_tmx(symbol, pydantic=pydantic)
     if source == "Intrinio":
         if date != "":
-            return load_intrinio(symbol, date)
-        return load_intrinio(symbol)
+            return load_intrinio(symbol, date, pydantic)
+        return load_intrinio(symbol, pydantic=pydantic)
 
     return load_cboe(symbol, pydantic)
