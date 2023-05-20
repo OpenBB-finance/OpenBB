@@ -219,7 +219,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
 @log_start_end(log=logger)
 @check_api_key(reddit_requirements)
 def display_due_diligence(
-        limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
+    limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
 ):
     """Print Reddit due diligence data for a given ticker.
 
