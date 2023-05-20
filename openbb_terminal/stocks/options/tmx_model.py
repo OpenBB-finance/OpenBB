@@ -60,7 +60,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
     return data
 
 
-class Options: # pylint: disable=too-many-instance-attributes
+class Options:  # pylint: disable=too-many-instance-attributes
     """Options data object for TMX.
 
     Attributes
@@ -417,9 +417,7 @@ class Options: # pylint: disable=too-many-instance-attributes
         return self
 
 
-def load_options(
-    symbol: str, date: str = "", pydantic: bool = False
-) -> object:
+def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
     """Options data object for TMX.
 
     Parameters
@@ -529,7 +527,9 @@ def load_options(
     if not pydantic:
         return options
 
-    class OptionsChains(BaseModel):  # pylint: disable=too-few-public-methods,function-redefined
+    class OptionsChains(
+        BaseModel
+    ):  # pylint: disable=too-few-public-methods,function-redefined
         """Pydantic model for TMX options chains.
 
         Returns

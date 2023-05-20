@@ -16,7 +16,7 @@ from openbb_terminal.rich_config import console, optional_rich_track
 # mypy: disable-error-code=no-redef
 
 logger = logging.getLogger(__name__)
-intrinio.ApiClient().set_api_key(key = get_current_user().credentials.API_INTRINIO_KEY)
+intrinio.ApiClient().set_api_key(key=get_current_user().credentials.API_INTRINIO_KEY)
 api = intrinio.OptionsApi()
 
 eod_columns_to_drop = [
@@ -429,7 +429,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
     return pd.Series(underlying_price)
 
 
-class Options: #pylint: disable=too-many-instance-attributes
+class Options:  # pylint: disable=too-many-instance-attributes
     """Options data object for Intrinio
 
     Attributes
@@ -651,7 +651,9 @@ def load_options(symbol: str, date: str = "", pydantic=False) -> object:
     if not pydantic:
         return options
 
-    class OptionsChains(BaseModel):  # pylint: disable=too-few-public-methods,function-redefined
+    class OptionsChains(
+        BaseModel
+    ):  # pylint: disable=too-few-public-methods,function-redefined
         """Pydantic model for Intrinio options chains.
 
         Returns
