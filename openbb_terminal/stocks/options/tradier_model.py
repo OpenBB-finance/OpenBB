@@ -64,7 +64,7 @@ def lookup_company(symbol: str):
         "https://sandbox.tradier.com/v1/markets/lookup",
         params={"q": f"{symbol}"},
         headers={
-            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN }",  # type: ignore[attr-defined]
             "Accept": "application/json",
         },
     )
@@ -121,7 +121,7 @@ def get_historical_options(
         "https://sandbox.tradier.com/v1/markets/history",
         params={"symbol": {symbol}, "interval": "daily"},
         headers={
-            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",  # type: ignore[attr-defined]
             "Accept": "application/json",
         },
     )
@@ -212,7 +212,7 @@ def option_expirations(symbol: str) -> List[str]:
         "https://sandbox.tradier.com/v1/markets/options/expirations",
         params={"symbol": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
-            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",  # type: ignore[attr-defined]
             "Accept": "application/json",
         },
     )
@@ -249,7 +249,7 @@ def get_option_chain(symbol: str, expiry: str) -> pd.DataFrame:
     params = {"symbol": symbol, "expiration": expiry, "greeks": "true"}
 
     headers = {
-        "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+        "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",  # type: ignore[attr-defined]
         "Accept": "application/json",
     }
 
@@ -323,7 +323,7 @@ def get_last_price(symbol: str):
         "https://sandbox.tradier.com/v1/markets/quotes",
         params={"symbols": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
-            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",  # type: ignore[attr-defined]
             "Accept": "application/json",
         },
     )
@@ -355,7 +355,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
         "https://sandbox.tradier.com/v1/markets/quotes",
         params={"symbols": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
-            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",  # type: ignore[attr-defined]
             "Accept": "application/json",
         },
     )
@@ -497,7 +497,19 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
             Returns implied volatility.
         hasGreeks: bool
             Returns greeks data.
+
+    Examples
+    --------
+    Get current options chains for AAPL.
+    >>> from openbb_terminal.stocks.options.tradier_model import load_options
+    >>> data = load_options("AAPL")
+    >>> chains = data.chains
+
+    Return the object as a Pydantic Model.
+    >>> from openbb_terminal.stocks.options.tradier_model import load_options
+    >>> data = load_options("AAPL", pydantic=True)
     """
+
     options = Options()
     options.get_quotes(symbol)
 

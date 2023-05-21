@@ -16,7 +16,7 @@ from openbb_terminal.rich_config import console, optional_rich_track
 # mypy: disable-error-code=no-redef
 
 logger = logging.getLogger(__name__)
-intrinio.ApiClient().set_api_key(key=get_current_user().credentials.API_INTRINIO_KEY)
+intrinio.ApiClient().set_api_key(key=get_current_user().credentials.API_INTRINIO_KEY)  # type: ignore[attr-defined]
 api = intrinio.OptionsApi()
 
 eod_columns_to_drop = [
@@ -42,7 +42,20 @@ columns_to_drop = [
     "implied_volatility_change",
 ]
 
-TICKER_EXCEPTIONS = ["SPX", "NDX", "VIX", "RUT"]
+# These tickers are equity indexes that trade options and return data, but require modifying the API call.
+TICKER_EXCEPTIONS = [
+    "SPX",
+    "XSP",
+    "XEO",
+    "NDX",
+    "XND",
+    "VIX",
+    "RUT",
+    "MRUT",
+    "DJX",
+    "XAU",
+    "OEX",
+]
 
 
 def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
@@ -421,6 +434,11 @@ def get_underlying_price(symbol: str) -> pd.Series:
     pd.Series
         Pandas Series object with real time bid/ask and last price for the symbol.
 
+    Example
+    -------
+    >>> from openbb_terminal.stocks.options.intrinio_model import get_underlying_price
+    >>> underlying = get_underlying_price("AAPL")
+
     """
     underlying_price = (
         intrinio.SecurityApi().get_security_realtime_price(symbol).to_dict()
@@ -475,18 +493,15 @@ class Options:  # pylint: disable=too-many-instance-attributes
     def get_quotes(self, symbol: str) -> object:
         self.symbol = symbol.upper()
         if self.symbol not in TICKER_EXCEPTIONS:
-            underlying = (
-                intrinio.SecurityApi()
-                .get_security_stock_prices(self.symbol, frequency="daily")
-                .to_dict()
-            )
-            self.underlying_name = underlying["security"]["name"]
-            self.underlying_price = pd.Series(underlying["stock_prices"][0])
-            self.last_price = self.underlying_price["adj_close"]
+            self.underlying_name = get_ticker_info(self.symbol)["name"]
+            self.underlying_price = get_underlying_price(self.symbol)
+            self.last_price = self.underlying_price["last_price"]
+        # If the ticker is not an index, it will not return underlying data.
         else:
             self.underlying_name = self.symbol
             self.underlying_price = pd.Series(dtype=object)
             self.last_price = 0
+        # If the symbol is an index, it needs to be preceeded with, $.
         if self.symbol in TICKER_EXCEPTIONS:
             self.symbol = "$" + self.symbol
         self.chains = get_full_option_chain(self.symbol)
@@ -516,10 +531,12 @@ class Options:  # pylint: disable=too-many-instance-attributes
             self.underlying_name = underlying["security"]["name"]
             self.underlying_price = pd.Series(underlying["stock_prices"][0])
             self.last_price = self.underlying_price["adj_close"]
+        # If the ticker is not an index, it will not return underlying data.
         else:
             self.underlying_name = self.symbol
             self.underlying_price = pd.Series(dtype=object)
             self.last_price = 0
+        # If the symbol is an index, it needs to be preceeded with, $.
         if self.symbol in TICKER_EXCEPTIONS:
             self.symbol = "$" + self.symbol
         self.chains = get_full_chain_eod(self.symbol, date)
@@ -573,6 +590,22 @@ def load_options(symbol: str, date: str = "", pydantic=False) -> object:
         Returns implied volatility.
     hasGreeks: bool
         True if greeks data is returned.
+
+    Examples
+    --------
+    Get current options chains for AAPL.
+    >>> from openbb_terminal.stocks.options.intrinio_model import load_options
+    >>> data = load_options("AAPL")
+    >>> chains = data.chains
+
+    Get options chains for AAPL for a specific date.
+    >>> from openbb_terminal.stocks.options.intrinio_model import load_options
+    >>> data = load_options("AAPL", "2022-01-03")
+    >>> chains = data.chains
+
+    Return the object as a Pydantic Model.
+    >>> from openbb_terminal.stocks.options.intrinio_model import load_options
+    >>> data = load_options("AAPL", pydantic=True)
     """
 
     options = Options()

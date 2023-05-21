@@ -85,9 +85,9 @@ def test_option_chain_bad_symbol(recorder):
 def test_get_ticker_info(recorder):
     df = intrinio_model.get_ticker_info("AAPL")
     recorder.capture(df)
-    assert df.loc["ticker"] == "AAPL"
+    assert df["ticker"] == "AAPL"
     data = intrinio_model.load_options("AAPL")
-    assert df.loc["name"] == data.underlying_name
+    assert df["name"] == data.underlying_name
     assert data.symbol in data.SYMBOLS
 
 

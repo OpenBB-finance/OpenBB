@@ -601,6 +601,17 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
             Returns implied volatility.
         hasGreeks: bool
             Returns greeks data.
+
+    Examples
+    --------
+    Get current options chains for AAPL.
+    >>> from openbb_terminal.stocks.options.cboe_model import load_options
+    >>> data = load_options("AAPL")
+    >>> chains = data.chains
+
+    Return the object as a Pydantic Model.
+    >>> from openbb_terminal.stocks.options.cboe_model import load_options
+    >>> data = load_options("AAPL", pydantic=True)
     """
 
     options = Options()

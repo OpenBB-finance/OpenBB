@@ -455,6 +455,22 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
             True if implied volatility is returned.
         hasGreeks: bool
             Greeks data is not returned.
+
+    Examples
+    --------
+    Get current options chains for RY.
+    >>> from openbb_terminal.stocks.options.tmx_model import load_options
+    >>> data = load_options("RY")
+    >>> chains = data.chains
+
+    Get options chains for RY for a specific date.
+    >>> from openbb_terminal.stocks.options.tmx_model import load_options
+    >>> data = load_options("RY", "2022-01-03")
+    >>> chains = data.chains
+
+    Return the object as a Pydantic Model.
+    >>> from openbb_terminal.stocks.options.tmx_model import load_options
+    >>> data = load_options("RY", pydantic=True)
     """
 
     options = Options()
