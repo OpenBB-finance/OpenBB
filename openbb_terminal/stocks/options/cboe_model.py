@@ -125,6 +125,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
 
     stock = "stock"
     index = "index"
+    symbol = symbol.upper()
     new_ticker: str = ""
     ticker_details = pd.DataFrame()
     ticker_expirations: list = []
@@ -146,6 +147,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
         )
 
         symbol_info = request(symbol_info_url)
+        symbol_info_json = symbol_info.json()
         symbol_info_json = pd.Series(symbol_info.json())
 
         if symbol_info_json.success is False:
@@ -263,7 +265,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
                     .set_index(keys="Symbol")
                     .dropna(axis=1)
                     .transpose()
-                )
+                ).rename(columns={f"{new_ticker}": f"{symbol}"})
 
     except HTTPError:
         print("There was an error with the request'\n")
