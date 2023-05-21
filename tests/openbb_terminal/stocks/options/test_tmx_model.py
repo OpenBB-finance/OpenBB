@@ -27,7 +27,7 @@ def test_underlying_price(recorder):
 @pytest.mark.record_stdout
 def test_underlying_price_bad_symbol():
     result_df = tmx_model.get_underlying_price("BAD_SYMBOL")
-    assert not result_df
+    assert result_df.empty
 
 
 @pytest.mark.vcr

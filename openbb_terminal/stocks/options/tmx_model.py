@@ -19,7 +19,24 @@ holidays = list(cal.regular_holidays.holidays().strftime("%Y-%m-%d"))
 
 
 def check_weekday(date) -> str:
-    """Helper function to check if the input date is a weekday."""
+    """Helper function to check if the input date is a weekday, and if not, returns the next weekday.
+
+    Parameters
+    ----------
+    date: str
+        The date to check in YYYY-MM-DD format.
+
+    Returns
+    -------
+    str
+        Date in YYYY-MM-DD format.  If the date is a weekend, returns the date of the next weekday.
+
+    Examples
+    --------
+    >>> from openbb_terminal.stocks.options import tmx_model
+    >>> tmx_model.check_weekday("2023-05-20")
+    >>> tmx_model.check_weekday("2023-05-22")
+    """
 
     if pd.to_datetime(date).weekday() not in range(0, 5):
         date_ = next_workday(pd.to_datetime(date)).strftime("%Y-%m-%d")
@@ -42,9 +59,22 @@ def get_all_ticker_symbols() -> pd.DataFrame:
 
 
 def get_underlying_price(symbol: str) -> pd.Series:
-    """Gets the current price and performance of the underlying asset from the Canadian Securities Exchange."""
+    """Gets the current price and performance of the underlying asset from the Canadian Securities Exchange.
 
-    data: object = ()
+    Note: Volume is CSE only and is not a consolidated value.
+
+    Parameters
+    ----------
+    symbol: str
+        The ticker symbol of the underlying asset.
+
+    Returns
+    -------
+    pd.Series
+        Series of the current price and performance of the underlying asset.
+    """
+
+    data = pd.Series(dtype=object)
     symbol = symbol.upper()
     URL = f"https://webapi.thecse.com/trading/other/securities/{symbol}.json"
 
@@ -55,40 +85,61 @@ def get_underlying_price(symbol: str) -> pd.Series:
         return data
 
     data = response.json()["ticker"]
-    data = pd.Series(data).rename(f"{symbol}")
-
+    data = (
+        pd.Series(data)
+        .rename(f"{symbol}")
+        .drop(["Composite Index Contribution", "CSE25 Index Contribution"])
+    )
+    data.rename(
+        {
+            "Previous Closing Price": "Previous Close",
+            "Trade Count": "Transactions",
+            "Trading Volume": "Volume",
+            "Trading Value": "Value",
+            "Trading Value (CAD)": "Value (CAD)",
+            "Opening Price": "Open",
+            "Last Price": "Price",
+            "Net Change": "Change",
+            "Net Change Percentage": "Change Percent",
+            "Days Low Price": "Low",
+            "Days High Price": "High",
+            "Days VWAP": "VWAP",
+        },
+        inplace=True,
+    )
     return data
 
 
 class Options:  # pylint: disable=too-many-instance-attributes
     """Options data object for TMX.
 
-    Attributes
-    ----------
-    SYMBOLS: pd.DataFrame
-        The available symbols and company names.
-    symbol: str
-        The symbol entered by the user.
-    source: str
-        The source of the data, "TMX".
-    date: str
-        The date for the EOD chains data, entered by the user. (YYYY-MM-DD)
-    chains: pd.DataFrame
-        The complete options chain for the ticker.
-    expirations: list[str]
-        List of unique expiration dates. (YYYY-MM-DD)
-    strikes: list[float]
-        List of unique strike prices.
-    last_price: float
-        The last price of the underlying asset.
-    underlying_name: str
-        The name of the underlying asset.
-    underlying_price: pd.Series
-        The price and recent performance of the underlying asset.
-    hasIV: bool
-        True if implied volatility is returned.
-    hasGreeks: bool
-        Greeks data is not returned.
+    Returns
+    -------
+    object: Options
+        SYMBOLS: pd.DataFrame
+            The available symbols and company names.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "TMX".
+        date: str
+            The date for the EOD chains data, entered by the user. (YYYY-MM-DD)
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            True if implied volatility is returned.
+        hasGreeks: bool
+            Greeks data is not returned.
     """
 
     def __init__(self) -> None:
@@ -106,7 +157,23 @@ class Options:  # pylint: disable=too-many-instance-attributes
         self.hasGreeks: bool
 
     def check_symbol(self, symbol: str) -> bool:
-        """Checks if the symbol is valid."""
+        """Checks if the symbol is valid.  This function is used as an internal helper.
+
+        Parameters
+        ----------
+        symbol: str
+            The ticker symbol to check.
+
+        Returns
+        -------
+        bool: True if the symbol is valid, False otherwise.
+
+        Examples
+        --------
+        >>> from openbb_terminal.stocks.options import tmx_model
+        >>> tmx_model.Options().check_symbol("AC")
+        >>> tmx_model.Options().check_symbol("SPX")
+        """
         symbol = symbol.upper()
         return len(self.SYMBOLS.query("`Underlying Symbol` == @symbol")) == 1
 
@@ -122,18 +189,19 @@ class Options:  # pylint: disable=too-many-instance-attributes
 
         Returns
         -------
-        self.chains: pd.DataFrame
-            DataFrame with current quotes for the complete options chain.
-        self.expirations: list
-            List of all expiration dates.
-        self.strikes: list
-            List of all strike prices.
-        self.underlying_price: pd.Series
-            Series of the current price and performance of the underlying asset.
-        self.last_price: float
-            The last price of the underlying asset.
-        self.underlying_name: str
-            The name of the underlying asset.
+        object: Options
+            chains: pd.DataFrame
+                DataFrame with current quotes for the complete options chain.
+            expirations: list
+                List of all expiration dates.
+            strikes: list
+                List of all strike prices.
+            underlying_price: pd.Series
+                Series of the current price and performance of the underlying asset.
+            last_price: float
+                The last price of the underlying asset.
+            underlying_name: str
+                The name of the underlying asset.
 
         Example
         -------
@@ -234,7 +302,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
 
         try:
             self.underlying_price = get_underlying_price(self.symbol)
-            self.last_price = self.underlying_price["Last Price"]
+            self.last_price = self.underlying_price["Price"]
         except TypeError:
             self.last_price = 0
             self.underlying_price = 0
@@ -258,7 +326,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
         Returns
         -------
 
-        object
+        object: Options
             symbol: str
                 The ticker symbol entered by the user.
             date: str
@@ -276,9 +344,10 @@ class Options:  # pylint: disable=too-many-instance-attributes
             underlying_name: str
                 The name of the underlying asset.
 
-        Example
-        -------
-        >>> xiu = Ticker().get_eodchains("XIU", "2009-01-01")
+        Examples
+        --------
+        >>> from openbb_terminal.stocks.options import tmx_model
+        >>> xiu = tmx_model.Options().get_eodchains("XIU", "2009-01-01")
         """
         self.symbol: str = ""
         self.date: str = date
@@ -407,8 +476,25 @@ class Options:  # pylint: disable=too-many-instance-attributes
             )
         ).rename(f"{self.underlying_name}")
 
-        self.underlying_price.rename({"contractSymbol": "ticker"}, inplace=True)
-        self.last_price = self.underlying_price["lastPrice"]
+        self.underlying_price.rename(
+            {
+                "date": "Date",
+                "bid": "Bid",
+                "ask": "Ask",
+                "lastPrice": "Price",
+                "volume": "Volume",
+                "previousClose": "Previous Close",
+                "change": "Change",
+                "open": "Open",
+                "high": "High",
+                "low": "Low",
+                "totalValue": "Value (CAD)",
+                "transactions": "Transactions",
+                "contractSymbol": "Symbol",
+            },
+            inplace=True,
+        )
+        self.last_price = self.underlying_price["Price"]
         self.chains = self.chains.iloc[:-1]
 
         self.hasIV = "impliedVolatility" in self.chains.columns
@@ -432,7 +518,6 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
     Returns
     -------
     object: Options
-
         SYMBOLS: pd.DataFrame
             The available symbols and company names.  Only returned if pydantic is False.
         symbol: str
@@ -440,7 +525,7 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
         source: str
             The source of the data, "TMX".
         chains: pd.DataFrame
-            The complete options chain for the ticker.
+            The complete options chain for the ticker.  Returns as a dictionary if pydantic is True.
         expirations: list[str]
             List of unique expiration dates. (YYYY-MM-DD)
         strikes: list[float]
@@ -450,7 +535,7 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
         underlying_name: str
             The name of the underlying asset.
         underlying_price: pd.Series
-            The price and recent performance of the underlying asset.
+            The price and recent performance of the underlying asset.  Returns as a dictionary if pydantic is True.
         hasIV: bool
             True if implied volatility is returned.
         hasGreeks: bool
@@ -510,11 +595,11 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
                     The complete options chain for the ticker.
             """
 
-            source: str = "TMX"
+            source: str = Field(default="TMX")
             symbol: str = Field(default=options.symbol)
             date: str = Field(default="")
             underlying_name: str = Field(default="")
-            last_price: float = 0
+            last_price: float = Field(default=0)
             expirations: list = []
             strikes: list = []
             hasIV: bool = False
@@ -574,10 +659,10 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
                 The complete options chain for the ticker.
         """
 
-        source: str = "TMX"
+        source: str = Field(default="TMX")
         symbol: str = Field(default=options.symbol)
         underlying_name: str = Field(default="")
-        last_price: float = 0
+        last_price: float = Field(default=0)
         expirations: list = []
         strikes: list = []
         hasIV: bool = False
