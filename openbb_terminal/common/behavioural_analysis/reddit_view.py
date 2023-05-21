@@ -6,9 +6,10 @@ import os
 import textwrap
 from datetime import datetime
 from typing import Dict, Optional, Union
-from finvizfinance.screener.ticker import Ticker
+
 import pandas as pd
 import praw
+from finvizfinance.screener.ticker import Ticker
 
 from openbb_terminal import OpenBBFigure, rich_config
 from openbb_terminal.common.behavioural_analysis import reddit_model
