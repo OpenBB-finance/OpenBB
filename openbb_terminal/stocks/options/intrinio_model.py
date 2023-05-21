@@ -498,6 +498,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
             self.last_price = self.underlying_price["last_price"]
         # If the ticker is not an index, it will not return underlying data.
         else:
+            print("Warning: Index options do not currently return underlying data.")
             self.underlying_name = self.symbol
             self.underlying_price = pd.Series(dtype=object)
             self.last_price = 0
@@ -533,6 +534,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
             self.last_price = self.underlying_price["adj_close"]
         # If the ticker is not an index, it will not return underlying data.
         else:
+            print("Warning: Index options do not currently return underlying data.")
             self.underlying_name = self.symbol
             self.underlying_price = pd.Series(dtype=object)
             self.last_price = 0
