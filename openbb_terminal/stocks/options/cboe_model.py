@@ -17,17 +17,19 @@ TICKER_EXCEPTIONS: list[str] = ["NDX", "RUT"]
 
 
 def get_cboe_directory() -> pd.DataFrame:
-    """Gets the US Listings Directory for the CBOE
+    """Gets the US Listings Directory for the CBOE.
 
     Returns
     -------
     pd.DataFrame: CBOE_DIRECTORY
         DataFrame of the CBOE listings directory
 
-    Example
+    Examples
     -------
-    CBOE_DIRECTORY = get_cboe_directory()
+    >>> from openbb_terminal.stocks.options import cboe_model
+    >>> CBOE_DIRECTORY = cboe_model.get_cboe_directory()
     """
+
     CBOE_DIRECTORY: pd.DataFrame = pd.read_csv(
         "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
     )
@@ -48,9 +50,10 @@ def get_cboe_index_directory() -> pd.DataFrame:
     -------
     pd.DataFrame: CBOE_INDEXES
 
-    Example
+    Examples
     -------
-    CBOE_INDEXES = get_cboe_index_directory(
+    >>> from openb_terminal.stocks.options import cboe_model
+    >>> CBOE_INDEXES = cboe_model.get_cboe_index_directory()
     """
 
     CBOE_INDEXES: pd.DataFrame = pd.DataFrame(
@@ -109,14 +112,17 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
 
     Returns
     -------
-    Tuple[pd.DataFrame, pd.Series]: ticker_details,ticker_expirations
+    Tuple: [pd.DataFrame, pd.Series]
+        ticker_details
+        ticker_expirations
 
     Examples
     --------
-    ticker_details,ticker_expirations = get_ticker_info('AAPL')
-
-    ticker_details,ticker_expirations = get_ticker_info('VIX')
+    >>> from openbb_terminal.stocks.options import cboe_model
+    >>> ticker_details,ticker_expirations = cboe_model.get_ticker_info('AAPL')
+    >>> vix_details,vix_expirations = cboe_model.get_ticker_info('VIX')
     """
+
     stock = "stock"
     index = "index"
     new_ticker: str = ""
@@ -282,9 +288,9 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
 
     Examples
     --------
-    ticker_iv = get_ticker_iv('AAPL')
-
-    ticker_iv = get_ticker_iv('NDX')
+    >>> from openbb_terminal.stocks.options import cboe_model
+    >>> ticker_iv = cboe_model.get_ticker_iv('AAPL')
+    >>> ndx_iv = cboe_model.get_ticker_iv('NDX')
     """
 
     # Checks ticker to determine if ticker is an index or an exception that requires modifying the request's URLs
@@ -315,33 +321,10 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
             print("No data found for the symbol: " f"{symbol}" "")
             return pd.DataFrame()
 
-        h_iv_json = pd.DataFrame(h_iv.json())
-        h_columns = [
-            "annual_high",
-            "annual_low",
-            "hv30_annual_high",
-            "hv30_annual_low",
-            "hv60_annual_high",
-            "hv60_annual_low",
-            "hv90_annual_high",
-            "hv90_annual_low",
-            "iv30_annual_high",
-            "iv30_annual_low",
-            "iv60_annual_high",
-            "iv60_annual_low",
-            "iv90_annual_high",
-            "iv90_annual_low",
-            "symbol",
-        ]
-        h_data = h_iv_json[1:]
-        h_data = pd.DataFrame(h_iv_json).transpose()
-        h_data = h_data[1:2]
-        quotes_iv_df = pd.DataFrame(data=h_data, columns=h_columns).reset_index()
-
-        quotes_iv_df = quotes_iv_df.rename(
-            columns={
-                "annual_high": "1Y High",
-                "annual_low": "1Y Low",
+        data = h_iv.json()
+        h_data = pd.DataFrame(data)[2:-1]["data"].rename(f"{symbol}")
+        h_data.rename(
+            {
                 "hv30_annual_high": "HV30 1Y High",
                 "hv30_annual_low": "HV30 1Y Low",
                 "hv60_annual_high": "HV60 1Y High",
@@ -354,11 +337,9 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
                 "iv60_annual_low": "IV60 1Y Low",
                 "iv90_annual_high": "IV90 1Y High",
                 "iv90_annual_low": "IV90 1Y Low",
-                "symbol": "Symbol",
             },
+            inplace=True,
         )
-
-        quotes_iv_df = quotes_iv_df.set_index(keys="Symbol")
 
         iv_order = [
             "IV30 1Y High",
@@ -368,20 +349,18 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
             "IV60 1Y High",
             "HV60 1Y High",
             "IV60 1Y Low",
-            "HV60 1Y low",
+            "HV60 1Y Low",
             "IV90 1Y High",
             "HV90 1Y High",
             "IV90 1Y Low",
-            "HV 90 1Y Low",
+            "HV90 1Y Low",
         ]
 
-        ticker_iv = (
-            pd.DataFrame(quotes_iv_df, columns=iv_order).fillna(value="N/A").transpose()
-        )
+        ticker_iv = pd.DataFrame(h_data).transpose()
     except HTTPError:
         print("There was an error with the request'\n")
 
-    return ticker_iv
+    return pd.DataFrame(ticker_iv, columns=iv_order).transpose()
 
 
 def get_quotes(symbol: str) -> pd.DataFrame:
@@ -397,11 +376,13 @@ def get_quotes(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with all active options contracts for the underlying symbol.
 
-    Example
-    -------
-    >>> chains = get_quotes('SPX')
+    Examples
+    --------
+    >>> from openbb_terminal.stocks.options import cboe_model
+    >>> xsp = cboe_model.Options().get_chains('XSP')
+    >>> xsp_chains = xsp.chains
     """
-    # Checks ticker to determine if ticker is an index or an exception that requires modifying the request's URLs
+    # Checks ticker to determine if ticker is an index or an exception that requires modifying the request's URLs.
 
     try:
         if symbol in TICKER_EXCEPTIONS:
@@ -495,30 +476,31 @@ def get_quotes(symbol: str) -> pd.DataFrame:
 class Options:
     """Options data object for CBOE.
 
-    Attributes
-    ----------
-    SYMBOLS: pd.DataFrame
-        The CBOE symbol directory
-    symbol: str
-        The symbol entered by the user.
-    source: str
-        The source of the data, "CBOE".
-    chains: pd.DataFrame
-        The complete options chain for the ticker.
-    expirations: list[str]
-        List of unique expiration dates. (YYYY-MM-DD)
-    strikes: list[float]
-        List of unique strike prices.
-    last_price: float
-        The last price of the underlying asset.
-    underlying_name: str
-        The name of the underlying asset.
-    underlying_price: pd.Series
-        The price and recent performance of the underlying asset.
-    hasIV: bool
-        Returns implied volatility.
-    hasGreeks: bool
-        Returns greeks.
+    Returns
+    -------
+    object: Options
+        SYMBOLS: pd.DataFrame
+            The CBOE symbol directory
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "CBOE".
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks.
     """
 
     def __init__(self) -> None:
@@ -534,7 +516,37 @@ class Options:
         self.hasIV: bool
         self.hasGreeks: bool
 
-    def get_quotes(self, symbol: str) -> object:
+    def get_chains(self, symbol: str) -> object:
+        """Gets the complete options chain from CBOE.
+
+        Parameters
+        ----------
+        symbol: str
+            The ticker symbol of the underlying asset.
+
+        Returns
+        -------
+        object: Options
+            chains: pd.DataFrame
+                The complete options chain for the ticker.
+            expirations: list[str]
+                List of unique expiration dates. (YYYY-MM-DD)
+            strikes: list[float]
+                List of unique strike prices.
+            last_price: float
+                The last price of the underlying asset.
+            underlying_name: str
+                The name of the underlying asset.
+            underlying_price: pd.Series
+                The price and recent performance of the underlying asset.
+
+        Examples
+        --------
+        >>> from openbb_terminal.stocks.options import cboe_model
+        >>> data = cboe_model.Options().get_chains("AAPL")
+        >>> chains = data.chains
+        """
+
         self.symbol = symbol.upper()
         if self.symbol not in self.SYMBOLS.index:
             print("The symbol, " f"{symbol}" ", was not found in the CBOE directory.")
@@ -578,7 +590,6 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     Returns
     -------
     object: Options
-
         SYMBOLS: pd.DataFrame
             The CBOE symbol directory.  Only returned if pydantic is False.
         symbol: str
@@ -615,7 +626,7 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     """
 
     options = Options()
-    options.get_quotes(symbol)
+    options.get_chains(symbol)
 
     if not pydantic:
         return options
@@ -626,7 +637,6 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
         Returns
         -------
         Pydantic: OptionsChains
-
             source: str
                 The source of the data, "CBOE".
             symbol: str
@@ -649,10 +659,10 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
                 The complete options chain for the ticker.
         """
 
-        source: str = "CBOE"
+        source: str = Field(default="CBOE")
         symbol: str = Field(default=options.symbol)
         underlying_name: str = Field(default="")
-        last_price: float = 0
+        last_price: float = Field(default=0)
         expirations: list = []
         strikes: list = []
         hasIV: bool = False
