@@ -64,7 +64,7 @@ def get_data(
         date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
         query_params["published_on"] = str(date)
         if start_date:
-            if date < start_date:
+            if str(date) < start_date:
                 console.print("date must be grater than or equal to start_date")
                 return df
             del query_params["published_on__gte"]
