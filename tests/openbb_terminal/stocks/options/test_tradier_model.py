@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 import requests
 
@@ -149,3 +150,20 @@ def test_get_historical_greeks_invalid_status(mocker):
     result = tradier_model.get_last_price(symbol="AAPL")
 
     assert result is None
+
+
+@pytest.mark.vcr
+def test_load_options(recorder):
+    results = tradier_model.load_options(symbol="AAPL")
+    results1 = tradier_model.load_options(symbol="AAPL", pydantic=True)
+    assert isinstance(results.chains, pd.DataFrame)
+    recorder.capture(results.chains)
+    assert isinstance(results.underlying_price, pd.Series)
+    recorder.capture(results.underlying_price)
+    assert isinstance(results.expirations, list)
+    recorder.capture(results.expirations)
+    assert results.hasGreeks
+    assert isinstance(results.underlying_name, str)
+    recorder.capture(results.underlying_name)
+    assert isinstance(results1.chains, dict)
+    assert results.chains["volume"].sum() == pd.DataFrame(results1.chains)["volume"].sum()

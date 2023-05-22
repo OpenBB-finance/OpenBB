@@ -190,7 +190,11 @@ def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
             "symbol": "optionSymbol",
         }
     )
-    return chain
+    chain["openInterest"] = chain["openInterest"].astype(int)
+    chain["volume"] = chain["volume"].astype(int)
+    chain = chain.set_index(["expiration", "strike", "optionType"]).sort_index()
+
+    return chain.reset_index()
 
 
 @log_start_end(log=logger)
@@ -570,7 +574,7 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
             hasIV=options.hasIV,
             hasGreeks=options.hasGreeks,
             underlying_price=options.underlying_price.to_dict(),
-            chains=options.chains.to_dict(),
+            chains=options.chains.copy().to_dict(),
         )
         return options_chains
     return None
