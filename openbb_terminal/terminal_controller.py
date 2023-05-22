@@ -81,6 +81,7 @@ if is_installer():
     os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
+
 class TerminalController(BaseController):
     """Terminal Controller class."""
 

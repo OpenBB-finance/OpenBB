@@ -2126,6 +2126,7 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+
 from typing import Dict, List, Optional, Tuple, Union, Match
 import re
 
@@ -2311,9 +2312,7 @@ def parse_openbb_script(
                 VAR_NAME = match.group(1)
                 VAR_VALUES = match.group(2)
                 ROUTINE_VARS["$" + VAR_NAME] = (
-                    VAR_VALUES
-                    if "," not in VAR_VALUES
-                    else VAR_VALUES.split(",")
+                    VAR_VALUES if "," not in VAR_VALUES else VAR_VALUES.split(",")
                 )
             else:
                 lines_without_declarations.append(line)
@@ -2337,7 +2336,7 @@ def parse_openbb_script(
                 return (
                     "[red]The script has a foreach loop that terminates before it gets started."
                     "Add the keyword 'foreach' to explicitly start loop[/red]",
-                    []
+                    [],
                 )
             foreach_loop_found = False
 
@@ -2365,23 +2364,19 @@ def parse_openbb_script(
                             # in python will only take the first '2'
                             if VAR_SLICE == "0":
                                 if VAR_NAME in ROUTINE_VARS:
-                                    values = eval(
-                                        f'ROUTINE_VARS["{VAR_NAME}"]'
-                                    )
+                                    values = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
                                     if isinstance(values, list):
                                         templine = templine.replace(
                                             match[0],
                                             eval(f"values[{VAR_SLICE}]"),
                                         )
                                     else:
-                                        templine = templine.replace(
-                                            match[0], values
-                                        )
+                                        templine = templine.replace(match[0], values)
                                 else:
                                     return (
                                         f"[red]Variable {VAR_NAME} not given "
                                         "for current routine script.[/red]",
-                                        []
+                                        [],
                                     )
 
                             # Only enters here when any other index from 0 is used
@@ -2399,7 +2394,7 @@ def parse_openbb_script(
                                             f"[red]Variable {VAR_NAME} only has "
                                             f"{length_variable} elements and there "
                                             f"was an attempt to access it with index {VAR_SLICE}.[/red]",
-                                            []
+                                            [],
                                         )
                                     else:
                                         templine = templine.replace(
@@ -2410,7 +2405,7 @@ def parse_openbb_script(
                                     return (
                                         f"[red]Variable {VAR_NAME} not given "
                                         "for current routine script.[/red]",
-                                        []
+                                        [],
                                     )
 
                         # Involves slicing which is a bit more tricky to use eval on
@@ -2439,9 +2434,7 @@ def parse_openbb_script(
                             templine = templine.replace(
                                 match[0],
                                 ",".join(
-                                    eval(
-                                        f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
-                                    )
+                                    eval(f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]')
                                 ),
                             )
 
@@ -2450,7 +2443,7 @@ def parse_openbb_script(
                             if VAR_SLICE and int(VAR_SLICE) < 0:
                                 return (
                                     f"[red]Negative index on {VAR_NAME} is not allowed[/red]",
-                                    []
+                                    [],
                                 )
                             if VAR_NAME in ROUTINE_VARS:
                                 templine = templine.replace(
@@ -2462,9 +2455,7 @@ def parse_openbb_script(
                                 # 1MONTHAGO,LASTFRIDAY,3YEARSFROMNOW,NEXTTUESDAY
                                 # and decode it into the right date if it exists
                                 potential_date_match = (
-                                    match_and_return_openbb_keyword_date(
-                                        VAR_NAME
-                                    )
+                                    match_and_return_openbb_keyword_date(VAR_NAME)
                                 )
                                 if potential_date_match:
                                     templine = templine.replace(
@@ -2474,7 +2465,7 @@ def parse_openbb_script(
                                     return (
                                         f"[red]Variable {VAR_NAME} not given for "
                                         "current routine script.[/red]",
-                                        []
+                                        [],
                                     )
 
         lines_with_vars_replaced.append(templine)
@@ -2484,7 +2475,7 @@ def parse_openbb_script(
         return (
             "[red]The script has a foreach loop that doesn't terminate. "
             "Add the keyword 'end' to explicitly terminate loop[/red]",
-            []
+            [],
         )
 
     # Finally the only remaining thing to address are the foreach loops. For that we'll go through
@@ -2498,9 +2489,7 @@ def parse_openbb_script(
     final_lines = list()
     for line in lines_with_vars_replaced:
         # Found 'foreach' header associated with loop
-        match = re.search(
-            r"(?<=foreach \$\$VAR in )([A-Z,]+)", line, re.IGNORECASE
-        )
+        match = re.search(r"(?<=foreach \$\$VAR in )([A-Z,]+)", line, re.IGNORECASE)
         if match:
             foreach_loop = match.group(1).split(",")
             within_foreach = True
