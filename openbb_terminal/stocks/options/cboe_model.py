@@ -443,8 +443,8 @@ def get_quotes(symbol: str) -> pd.DataFrame:
             columns=["match", "level_0"]
         )
         option_df_index.optionType = option_df_index.optionType.str.replace(
-            "C", "Call"
-        ).str.replace("P", "Put")
+            "C", "call"
+        ).str.replace("P", "put")
         option_df_index.strike = [ele.lstrip("0") for ele in option_df_index.strike]
         option_df_index.strike = pd.Series(option_df_index.strike).astype(float)
         option_df_index.strike = option_df_index.strike * (1 / 1000)
