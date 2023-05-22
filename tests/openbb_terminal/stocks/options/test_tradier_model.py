@@ -166,4 +166,6 @@ def test_load_options(recorder):
     assert isinstance(results.underlying_name, str)
     recorder.capture(results.underlying_name)
     assert isinstance(results1.chains, dict)
-    assert results.chains["volume"].sum() == pd.DataFrame(results1.chains)["volume"].sum()
+    assert (
+        results.chains["volume"].sum() == pd.DataFrame(results1.chains)["volume"].sum()
+    )
