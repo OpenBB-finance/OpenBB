@@ -502,7 +502,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
             self.underlying_name = self.symbol
             self.underlying_price = pd.Series(dtype=object)
             self.last_price = 0
-        # If the symbol is an index, it needs to be preceeded with, $.
+        # If the symbol is an index, it needs to be preceded with, $.
         if self.symbol in TICKER_EXCEPTIONS:
             self.symbol = "$" + self.symbol
         self.chains = get_full_option_chain(self.symbol)
@@ -538,7 +538,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
             self.underlying_name = self.symbol
             self.underlying_price = pd.Series(dtype=object)
             self.last_price = 0
-        # If the symbol is an index, it needs to be preceeded with, $.
+        # If the symbol is an index, it needs to be preceded with, $.
         if self.symbol in TICKER_EXCEPTIONS:
             self.symbol = "$" + self.symbol
         self.chains = get_full_chain_eod(self.symbol, date)
