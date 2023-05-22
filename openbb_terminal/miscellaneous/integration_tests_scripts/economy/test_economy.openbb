@@ -29,13 +29,17 @@ performance -group energy --sortby YTD --reverse
 gdp
 rgdp
 fgdp
-debt
+debt --countries australia --export csv
+debt --help
+debt --raw
 cpi
 ccpi
 balance
 revenue
 spending
 trust
+trust --export csv
+trust --help
 gdp --units USD_CAP
 rgdp --units IDX
 fgdp --quarterly
@@ -45,12 +49,13 @@ ccpi --perspective FOOD
 balance --countries austria,belgium,canada
 revenue --countries united_states,germany,japan
 spending --perspective ENVPROT
-trust --countries belgium --start 2010-01-01
+trust --countries belgium --start 2010-01-01 --end 2020-01-01 --raw
 macro
 macro -p RGDP,CPI
-macro -p URATE -c Netherlands,Germany
-macro -p URATE -c United_States  --start 2008-01-01
-macro -p GDP --countries Portugal,France,United_Kingdom,Spain,Italy,Poland --start 2000-01-10
+macro -p URATE -c Netherlands,Germany --transform TOYA
+macro -p URATE -c United_States  --start 2008-01-01 --end 2010-01-01 --raw
+macro -p GDP --countries Portugal,France,United_Kingdom,Spain,Italy,Poland --start 2000-01-10 --export csv
+macro --help
 treasury
 treasury --maturity 20y --type nominal
 treasury --raw
@@ -61,9 +66,11 @@ fred -q treasury
 fred -p T10Y2Y,FII10 -s 2005-01-01
 fred -p T5YIEM,T10YIEM,T20YIEM,T30YIEM
 fred -h
-index -i nasdaq,dow_djus,sp500 -s 2005-01-01
+index -i nasdaq,dow_djus,sp500 -s 2005-01-01 --column Close
 macro -p URATE -c Netherlands,Germany -s 2005-01-01
-index -i sp500 -s 2005-01-01
+index -i sp500 -s 2005-01-01 -e 2017-01-01 --export csv
+index -i sp500 --raw
+index -q ftse --limit 30
 plot --y1 T10Y2Y --y2 T5YIEM
 plot --y1 T10Y2Y,T20YIEM
 rtps
@@ -94,5 +101,7 @@ raw --limit 2 --reverse
 cusum --threshold 10 --drift 10
 decompose
 help
+..
 reset
+quit
 exit
