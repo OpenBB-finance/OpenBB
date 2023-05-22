@@ -450,6 +450,7 @@ class StocksOptions(Category):
         `screen`: Screen Module
 
     Attributes:
+        `calculate_chains_stats`: Calculates basic statistics for the options chains, like OI and Vol/OI ratios.\n
         `chains`: Get Option Chain For A Stock.  No greek data is returned\n
         `dte`: Returns a new column containing the DTE as an integer, including 0.\n
         `eodchain`: Get full EOD option date across all expirations\n
@@ -479,6 +480,9 @@ class StocksOptions(Category):
 
     def __init__(self):
         super().__init__()
+        self.calculate_chains_stats = (
+            lib.stocks_options_options_chains_model.calculate_stats
+        )
         self.chains = lib.stocks_options_sdk_helper.get_full_option_chain
         self.dte = lib.stocks_options_helpers.get_dte
         self.eodchain = lib.stocks_options_intrinio_model.get_full_chain_eod
@@ -493,7 +497,9 @@ class StocksOptions(Category):
         self.info = lib.stocks_options_barchart_model.get_options_info
         self.info_chart = lib.stocks_options_barchart_view.print_options_data
         self.last_price = lib.stocks_options_tradier_model.get_last_price
-        self.load_options_chains = lib.stocks_options_chains_model.load_options_chains
+        self.load_options_chains = (
+            lib.stocks_options_options_chains_model.load_options_chains
+        )
         self.oi = lib.stocks_options_view.plot_oi
         self.pcr = lib.stocks_options_alphaquery_model.get_put_call_ratio
         self.pcr_chart = lib.stocks_options_alphaquery_view.display_put_call_ratio

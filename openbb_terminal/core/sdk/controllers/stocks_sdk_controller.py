@@ -260,6 +260,7 @@ class StocksController(model.StocksRoot):
             `screen`: Screen Module
 
         Attributes:
+            `calculate_chains_stats`: Calculates basic statistics for the options chains, like OI and Vol/OI ratios.\n
             `chains`: Get Option Chain For A Stock.  No greek data is returned\n
             `dte`: Returns a new column containing the DTE as an integer, including 0.\n
             `eodchain`: Get full EOD option date across all expirations\n

@@ -474,7 +474,7 @@ from openbb_terminal.stocks.options import (
     intrinio_view as stocks_options_intrinio_view,
     nasdaq_model as stocks_options_nasdaq_model,
     op_helpers as stocks_options_helpers,
-    options_chains_model as stocks_options_chains_model,
+    options_chains_model as stocks_options_options_chains_model,
     options_sdk_helper as stocks_options_sdk_helper,
     options_view as stocks_options_view,
     tradier_model as stocks_options_tradier_model,
@@ -482,6 +482,7 @@ from openbb_terminal.stocks.options import (
     yfinance_model as stocks_options_yfinance_model,
     yfinance_view as stocks_options_yfinance_view,
 )
+
 
 from openbb_terminal.stocks.options.screen import (
     syncretism_model as stocks_options_screen_syncretism_model,
