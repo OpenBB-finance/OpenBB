@@ -319,7 +319,7 @@ def print_rich_table(
         return output
 
     if enable_interactive and not print_to_console:
-        df_outgoing = df.copy()
+        df_outgoing = df.copy().iloc[:limit]
         # If headers are provided, use them
         if headers is not None:
             # We check if headers are valid
