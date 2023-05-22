@@ -36,13 +36,19 @@ This process is a guide on how to build a new version of the OpenBB Installer.
 **Steps**
 
 *   The user will Create a branch for release from `develop` branch which follows the GitFlow naming convention i.e. `release/x.y.z`
-    
+
 *   The user will increment the version number in 3 files: `pyproject.toml` `setup.nsis` `feature_flags.py` and commit the changes
-    
-*   The [Build & Release]() workflow will be triggered on `push`. This will trigger the workflows to build the installers, publish the docker image and deploy to Pypi.
-    
+
+*   The Build & Release workflow will be triggered on `push`. This will trigger the workflows to build the installers, publish the docker image and deploy to Pypi.
+
+*   The user will test the installer and docker image to ensure that the release is working as expected.
+
+*   The user will create a pull request from the `release` branch to the `main` branch.
+
 *   The User merges the `release` branch to the `main` and `develop` branch once the release process is completed successfully.
-    
+
+*   The user will trigger the release drafter to update the chnagelog.
+
 
 **Related Workflows**
 
