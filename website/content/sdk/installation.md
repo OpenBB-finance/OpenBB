@@ -12,5 +12,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 The OpenBB SDK provides programmatic access to all Terminal functions and much more. This layer of code allows users to build their own tools and applications on top of the existing architecture.
 
 :::note
-The OpenBB SDK is a part of the OpenBB Terminal available from source code and PyPI. Please refer to the installation instructions [here](/terminal/installation/source).
+The OpenBB SDK is a part of the OpenBB Terminal when installed via [source code](/terminal/installation/source) or [PyPI](/terminal/installation/pypi).
 :::
