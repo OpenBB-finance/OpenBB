@@ -22,14 +22,17 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_int_range,
+    check_non_negative,
     check_positive,
     valid_date,
-    check_non_negative,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.stocks.behavioural_analysis import finnhub_view,news_sentiment_view
+from openbb_terminal.stocks.behavioural_analysis import (
+    finnhub_view,
+    news_sentiment_view,
+)
 
 # pylint:disable=R0904,C0302
 
@@ -831,7 +834,6 @@ class BehaviouralAnalysisController(StockBaseController):
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-
     def call_ns(self, other_args: List[str]):
         """Process ns command."""
         parser = argparse.ArgumentParser(
@@ -839,6 +841,14 @@ class BehaviouralAnalysisController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ns",
             description="Shows the News Sentiment articles data",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            type=str,
+            default=None,
+            help="Ticker to search for.",
         )
         parser.add_argument(
             "-s",
@@ -863,7 +873,7 @@ class BehaviouralAnalysisController(StockBaseController):
             type=str,
             default=None,
             help="""Shows the news articles data on this day (format YYYY-MM-DD).
-                    If you use this Argument start date and end date will be ignored 
+                    If you use this Argument start date and end date will be ignored
                 """,
         )
         parser.add_argument(
@@ -888,11 +898,11 @@ class BehaviouralAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            ticker = None
-            if self.ticker:
-                    ticker=self.ticker
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+
             news_sentiment_view.display_articles_data(
-                ticker = ticker,
+                ticker=self.ticker,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 date=ns_parser.date,
@@ -902,4 +912,4 @@ class BehaviouralAnalysisController(StockBaseController):
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
-                )
+            )

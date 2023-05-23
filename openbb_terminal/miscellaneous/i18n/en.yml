@@ -347,7 +347,7 @@ en:
   stocks/ba/hist: plot historical RHI and AHI data by hour
   stocks/ba/jcdr: Jim Cramer's daily recommendations
   stocks/ba/jctr: Jim Cramer's recommendations by ticker
-  stocks/ba/ns: Top news articles and associated sentiment for stock tickers provided by Onclusive
+  stocks/ba/ns: Top news articles and sentiment provided by Onclusive
   stocks/fa/load: load a specific stock ticker for analysis
   stocks/fa/_ticker: Ticker
   stocks/fa/_company_overview: Company Overview
