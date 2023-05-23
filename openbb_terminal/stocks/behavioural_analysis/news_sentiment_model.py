@@ -16,7 +16,7 @@ def get_data(
     limit: int = 100,
     offset: int = 0,
 ) -> pd.DataFrame:
-    """Getting Onclusive Data. [Source: Invisage Plotform]
+    """Getting Onclusive Data. [Source: Invisage Platform]
 
     Parameters
     ----------
