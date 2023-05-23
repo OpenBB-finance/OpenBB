@@ -236,7 +236,7 @@ pip install "openbb[all]" --no-cache-dir
 ```
 
 :::info
-The `pip install openbb` isn't yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK. We are working on a solution to this problem and will update this section once it is resolved.
+`pip install openbb[all]` is not yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK.  It may be possible to install without the extra toolkits, but we currently do not officially support this type of installation.  We are working on a solution to this problem and will update this section once it is resolved.
 :::
 
 ## Verify Installation
@@ -256,8 +256,8 @@ openbb.__version__
 
 You should see the version number displayed, for example:
 
-```python
-'2.5.1'
+```console
+'3.0.1'
 ```
 
 That's it!
