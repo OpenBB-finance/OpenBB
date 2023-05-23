@@ -12,12 +12,12 @@ sofr --help
 sonia -s 2022-01-01 -e 2023-01-01
 sonia --parameter total_nominal_value
 sonia --help
-ameribor -s 2022-01-01 -e 2023-01-01 --parameter 90_day_average
+ameribor -s 2022-01-01 -e 2023-01-01 --parameter 90_day_ma
 ameribor --help
 fed -s 2022-01-01 -e 2023-01-01
 fed --parameter volume --target --quantiles
 fed --help
-iorb -s 2022-01-01 -e 2023-01-01 --export
+iorb -s 2022-01-01 -e 2023-01-01 --export xlsx --sheet-name IORB
 iorb --help
 projection --long-run
 projection --help
@@ -33,7 +33,7 @@ usrates --parameter cmn --maturity 7_year
 usrates --help
 ycrv -d 2023-02-17 --inflation-adjusted
 ycrv --raw -d 2022-03-31
-ycrv --export
+ycrv --export csv
 ycrv --help
 ecbycrv -d 2023-02-17
 ecbycrv -d 2023-02-17 --any-rating --raw
@@ -48,7 +48,7 @@ moody -s 2022-01-01 -e 2023-01-01 --spread treasury --raw
 moody --type aaa
 moody --help
 cp -s 2022-01-01 -e 2023-01-01
-cp -s 2022-01-01 -e 2023-01-01 -c asset_backend
+cp -s 2022-01-01 -e 2023-01-01 -c asset_backed
 cp -s 2022-01-01 -e 2023-01-01 -c non_financial
 cp -s 2022-01-01 -e 2023-01-01 -c spread -o -d
 cp --maturity overnight
@@ -72,6 +72,7 @@ tbffr -s 2022-01-01 -e 2023-01-01 --parameter 3_month
 tbffr --help
 help
 ..
-quit
 reset
+fixedincome
+quit
 exit
