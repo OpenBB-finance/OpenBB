@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
@@ -34,3 +35,28 @@ def test_load_options_pydantic(recorder):
     assert df.underlying_name == df1.underlying_name
     recorder.capture(df1.underlying_price)
     recorder.capture(df.underlying_price)
+
+
+@pytest.mark.vcr
+def test_calculate_stats(recorder):
+    df = options_chains_model.load_options_chains("SPY")
+    stats = options_chains_model.calculate_stats(df)
+    assert isinstance(stats, pd.DataFrame)
+    recorder.capture(stats)
+    stats1 = options_chains_model.calculate_stats(df, "strike")
+    assert isinstance(stats1, pd.DataFrame)
+    recorder.capture(stats1)
+    stats2 = options_chains_model.calculate_stats(df.expirations, "strike")
+    assert stats2.empty
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_calculate_stats_bad_input():
+    df = options_chains_model.load_options_chains("SPY", source="TMX")
+    options_chains_model.calculate_stats(df)
+    options_chains_model.calculate_stats(df.SYMBOLS)
+    df = options_chains_model.load_options_chains("SPY", source="Nasdaq")
+    options_chains_model.calculate_stats(df.underlying_price)
+    options_chains_model.calculate_stats(df.last_price)
+    options_chains_model.calculate_stats(df.underlying_name)
