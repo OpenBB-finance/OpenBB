@@ -125,8 +125,7 @@ class TerminalStyle:
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
-        if not style:
-            style = get_current_user().preferences.CHART_STYLE
+        style = style or self.plt_style
 
         if style != self.plt_style:
             self.load_style(style)
@@ -1055,7 +1054,6 @@ class OpenBBFigure(go.Figure):
         if kwargs.pop("margin", True):
             self._adjust_margins()
 
-        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -1381,7 +1379,6 @@ class OpenBBFigure(go.Figure):
                 full_html=False,
             )
         )
-        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 

@@ -141,12 +141,7 @@ class StocksController(StockBaseController):
     def custom_reset(self):
         """Class specific component of reset command."""
         if self.ticker:
-            return [
-                "stocks",
-                f"load {self.ticker}.{self.suffix}"
-                if self.suffix
-                else f"load {self.ticker}",
-            ]
+            return ["stocks", f"load {self.ticker}"]
         return []
 
     def custom_load_wrapper(self, other_args: List[str]):
@@ -735,9 +730,7 @@ class StocksController(StockBaseController):
 
         self.queue = self.load_class(
             ca_controller.ComparisonAnalysisController,
-            [f"{self.ticker}.{self.suffix}" if self.suffix else self.ticker]
-            if self.ticker
-            else "",
+            [f"{self.ticker}"] if self.ticker else "",
             self.queue,
         )
 
@@ -752,7 +745,6 @@ class StocksController(StockBaseController):
             self.start,
             self.interval,
             self.stock,
-            self.suffix,
             self.queue,
         )
 
