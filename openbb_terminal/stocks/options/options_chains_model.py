@@ -128,7 +128,7 @@ def load_options_chains(
 
 
 @log_start_end(log=logger)
-def calculate_stats(options: object, type: str = "expiration") -> pd.DataFrame:
+def calculate_stats(options: object, by: str = "expiration") -> pd.DataFrame:
     """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
 
     Parameters
@@ -137,7 +137,7 @@ def calculate_stats(options: object, type: str = "expiration") -> pd.DataFrame:
         The OptionsChains data object.
         Accepts both Pydantic and Pandas object types, as defined by `load_options_chains()`.
         A Pandas DataFrame, or dictionary, with the options chains data is also accepted.
-    type: str
+    by: str
         Whether to calculate by strike or expiration.  Default is expiration.
 
     Returns
@@ -156,7 +156,7 @@ def calculate_stats(options: object, type: str = "expiration") -> pd.DataFrame:
 
     types = ["expiration", "strike"]
     try:
-        if type not in types:
+        if by not in types:
             print("Invalid choice. Choose from: expiration, strike")
             return pd.DataFrame()
 
@@ -193,13 +193,13 @@ def calculate_stats(options: object, type: str = "expiration") -> pd.DataFrame:
     stats = pd.DataFrame()
     stats["Puts OI"] = (
         chains[chains["optionType"] == "put"]
-        .groupby(f"{type}")
+        .groupby(f"{by}")
         .sum(numeric_only=True)[["openInterest"]]
         .astype(int)
     )
     stats["Calls OI"] = (
         chains[chains["optionType"] == "call"]
-        .groupby(f"{type}")
+        .groupby(f"{by}")
         .sum(numeric_only=True)[["openInterest"]]
         .astype(int)
     )
@@ -207,13 +207,13 @@ def calculate_stats(options: object, type: str = "expiration") -> pd.DataFrame:
     stats["OI Ratio"] = round(stats["Puts OI"] / stats["Calls OI"], 2)
     stats["Puts Volume"] = (
         chains[chains["optionType"] == "put"]
-        .groupby(f"{type}")
+        .groupby(f"{by}")
         .sum(numeric_only=True)[["volume"]]
         .astype(int)
     )
     stats["Calls Volume"] = (
         chains[chains["optionType"] == "call"]
-        .groupby(f"{type}")
+        .groupby(f"{by}")
         .sum(numeric_only=True)[["volume"]]
         .astype(int)
     )
@@ -224,7 +224,7 @@ def calculate_stats(options: object, type: str = "expiration") -> pd.DataFrame:
     return stats.replace([np.nan, np.inf], "")
 
 
-class OptionsChains:
+class OptionsChains:  # pylint: disable=too-few-public-methods
     """Class for Options Chains."""
 
     def __init__(self) -> None:
