@@ -45,6 +45,6 @@ This notebook demonstrates how to query the Federal Reserve Economic Database an
 - Search FRED for series IDs.
 - Load multiple series as a single call.
 - Unpacking the data response from the FRED query.
-- Perform arithmatic operations on a DataFrame.
+- Perform arithmetic operations on a DataFrame.
 - Normalization methods for a series or DataFrame.
 - Simple processes for creating charts.
