@@ -149,8 +149,8 @@ async def plot_indicators(
             showline=False,
             zeroline=False,
             title_text="% Change",
-            ticksuffix=f"{'':>20}",
             side="left",
+            title_standoff=5,
             tickformat=".2%",
             overlaying="y",
         )
@@ -172,6 +172,15 @@ async def plot_indicators(
         title=dict(x=0.5, xanchor="center", yanchor="top", y=0.99, text=title),
         showlegend=True,
         height=550 + (20 * rows),
+        legend=dict(
+            bgcolor="rgba(0,0,0,0.5)",
+            bordercolor="#F5EFF3",
+            borderwidth=1,
+            x=0.01,
+            y=0.01,
+            xanchor="left",
+            yanchor="bottom",
+        ),
     )
 
     return fig
