@@ -247,8 +247,15 @@ def get_underlying_price(symbol: str) -> pd.Series:
             data = pd.Series(data)
             df["companyName"] = data["companyName"]
             df["lastPrice"] = float(data["primaryData"]["lastSalePrice"].strip("$"))
-            df["date"] = data["primaryData"]["lastTradeTimestamp"]
-            return df
+            df["change"] = float(data["primaryData"]["netChange"])
+            df["changePercent"] = float(
+                data["primaryData"]["percentageChange"].replace("%", "")
+            )
+            df["volume"] = int(data["primaryData"]["volume"].replace(",", ""))
+            df["date"] = pd.to_datetime(
+                data["primaryData"]["lastTradeTimestamp"], yearfirst=True
+            ).strftime("%Y-%m-%d")
+            return df.rename(symbol)
 
     console.print(f"[red]Last price for {symbol} not found[/red]\n")
     return pd.Series()
