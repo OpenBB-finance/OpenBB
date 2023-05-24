@@ -102,7 +102,7 @@ async def plot_indicators(
         main_ticker,
         candles=not tickers,
         volume=not tickers,
-        volume_ticks_x=5,
+        volume_ticks_x=7,
     )
 
     fig.update_traces(showlegend=False)
@@ -167,10 +167,8 @@ async def plot_indicators(
     y_min -= y_range * 0.05
     y_max += y_range * 0.05
 
-    yaxis = "yaxis" if tickers else "yaxis2"
-
     fig.update_layout(
-        {yaxis: dict(range=[y_min, y_max], autorange=False)},
+        yaxis=dict(range=[y_min, y_max], autorange=False),
         title=dict(x=0.5, xanchor="center", yanchor="top", y=0.99, text=title),
         showlegend=True,
         height=550 + (20 * rows),
