@@ -79,11 +79,13 @@ def display_news(
     top_headlines = ultima_newsmonitor_model.get_top_headlines(term)["summary"]
     if "Ultima Insights was unable to identify" in top_headlines:
         console.print(
-            f"[red]Relevant articles for {term} - {dt.datetime.now().strftime('%Y-%m-%d')}\n{top_headlines}[/red]"
+            f"[red]Most Relevant Articles for {term} - {dt.datetime.now().strftime('%Y-%m-%d')}\n{top_headlines}[/red]"
         )
     else:
         split = top_headlines.split("\n")
         header = split[0]
+        if "Most" not in header:
+            header = f'Most Relevant Articles for {term} - {dt.datetime.now().strftime("%Y-%m-%d")}'
         console.print(f"[purple]{header}[/purple]")
         for idx, row in enumerate(split[1:]):
             if len(row) > 0:
