@@ -13,7 +13,7 @@ def patch_now(monkeypatch):
         def now(cls):
             return TEST_TIME
 
-    monkeypatch.setattr(datetime, "datetime", mydatetime)
+    monkeypatch.setattr("datetime.datetime", mydatetime)
 
 def test_days_ago(patch_now):
     assert match_and_return_openbb_keyword_date("$1DAYSAGO") == "2023-05-23"
@@ -24,3 +24,8 @@ def test_months_ago(patch_now):
     assert match_and_return_openbb_keyword_date("$1MONTHSAGO") == "2023-04-24"
     assert match_and_return_openbb_keyword_date("$10MONTHSAGO") == "2022-07-24"
     assert match_and_return_openbb_keyword_date("$-5MONTHSAGO") == ""
+
+def test_years_ago(patch_now):
+    assert match_and_return_openbb_keyword_date("$1YEARSAGO") == "2022-05-24"
+    assert match_and_return_openbb_keyword_date("$10YEARSAGO") == "2013-05-24"
+    assert match_and_return_openbb_keyword_date("$-5YEARSAGO") == ""
