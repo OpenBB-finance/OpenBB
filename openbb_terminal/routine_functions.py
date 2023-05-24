@@ -2,6 +2,8 @@ import re
 from datetime import datetime, timedelta
 from typing import List, Match, Optional, Tuple
 
+from dateutil.relativedelta import relativedelta
+
 # Necessary for OpenBB keywords
 MONTHS_VALUE = {
     "JANUARY": 1,
@@ -50,11 +52,11 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
                 "%Y-%m-%d"
             )
         if time_unit == "MONTHS":
-            return (datetime.today() - timedelta(days=integer_value * 30)).strftime(
+            return (datetime.today() - relativedelta(months=integer_value)).strftime(
                 "%Y-%m-%d"
             )
         if time_unit == "YEARS":
-            return (datetime.today() - timedelta(days=integer_value * 365)).strftime(
+            return (datetime.today() - relativedelta(years=integer_value)).strftime(
                 "%Y-%m-%d"
             )
 
@@ -67,11 +69,11 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
                 "%Y-%m-%d"
             )
         if time_unit == "MONTHS":
-            return (datetime.today() + timedelta(days=integer_value * 30)).strftime(
+            return (datetime.today() + relativedelta(months=integer_value)).strftime(
                 "%Y-%m-%d"
             )
         if time_unit == "YEARS":
-            return (datetime.today() + timedelta(days=integer_value * 365)).strftime(
+            return (datetime.today() + relativedelta(years=integer_value)).strftime(
                 "%Y-%m-%d"
             )
 
