@@ -184,7 +184,11 @@ class PosthogHandler(logging.Handler):
         ):
             self.logged_in = True
             openbb_posthog.identify(
-                get_user_uuid(), {"email": get_current_user().profile.email}
+                get_user_uuid(),
+                {
+                    "email": get_current_user().profile.email,
+                    "primaryUsage": get_current_user().profile.primary_usage,
+                },
             )
             openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
 
