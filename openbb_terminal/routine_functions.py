@@ -152,8 +152,6 @@ def parse_openbb_script(
     List[str]
         Processed lines from .openbb script that can be run by the OpenBB Terminal
     """
-    print(raw_lines)
-    print(script_inputs)
     ROUTINE_VARS = dict()
     if script_inputs:
         ROUTINE_VARS["$ARGV"] = script_inputs
