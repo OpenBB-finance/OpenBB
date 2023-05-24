@@ -1510,7 +1510,6 @@ def plot_spot(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-    pd.read_csv(spot_rates_path)
     df = fred_model.get_spot(
         maturity=maturity, category=category, start_date=start_date, end_date=end_date
     )
