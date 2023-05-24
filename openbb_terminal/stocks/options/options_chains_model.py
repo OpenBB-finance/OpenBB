@@ -143,7 +143,7 @@ def calculate_stats(options: object, type: str = "expiration") -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-        Pandas DataFrame with the calcualted statistics.
+        Pandas DataFrame with the calculated statistics.
 
     Examples
     --------
