@@ -88,7 +88,7 @@ def display_historical(
         name=f"{symbol} OHLC",
         row=1,
         col=1,
-        secondary_y=True,
+        secondary_y=False,
     )
     fig.add_inchart_volume(df_hist)
     fig.hide_holidays()
