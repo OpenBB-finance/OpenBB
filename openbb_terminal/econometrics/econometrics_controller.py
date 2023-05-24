@@ -2232,7 +2232,9 @@ class EconometricsController(BaseController):
             if ns_parser.data is None:
                 console.print("[red]Please enter a dataset to calculate vif for.[/red]")
                 return
-            print(ns_parser.data)
+            if len(ns_parser.data) == 1 and "." in ns_parser.data[0]:
+                console.print("[red]Please enter at least a dataset or two columns to calculate vif for."
+                              "vif can only be calculated for at least two columns.[/red]")
             for option in ns_parser.data:
                 if "." in option:
                     dataset, column = option.split(".")
