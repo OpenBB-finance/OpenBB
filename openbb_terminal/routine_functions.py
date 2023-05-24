@@ -44,47 +44,33 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
         str: Date with format YYYY-MM-DD
     """
     match = re.match(r"^\$(\d+)([A-Z]+)AGO$", keyword)
+    now = datetime.now()
     if match:
         integer_value = int(match.group(1))
         time_unit = match.group(2)
         if time_unit == "DAYS":
-            return (datetime.today() - timedelta(days=integer_value)).strftime(
-                "%Y-%m-%d"
-            )
+            return (now - timedelta(days=integer_value)).strftime("%Y-%m-%d")
         if time_unit == "MONTHS":
-            return (datetime.today() - relativedelta(months=integer_value)).strftime(
-                "%Y-%m-%d"
-            )
+            return (now - relativedelta(months=integer_value)).strftime("%Y-%m-%d")
         if time_unit == "YEARS":
-            return (datetime.today() - relativedelta(years=integer_value)).strftime(
-                "%Y-%m-%d"
-            )
+            return (now - relativedelta(years=integer_value)).strftime("%Y-%m-%d")
 
     match = re.match(r"^\$(\d+)([A-Z]+)FROMNOW$", keyword)
     if match:
         integer_value = int(match.group(1))
         time_unit = match.group(2)
         if time_unit == "DAYS":
-            return (datetime.today() + timedelta(days=integer_value)).strftime(
-                "%Y-%m-%d"
-            )
+            return (now + timedelta(days=integer_value)).strftime("%Y-%m-%d")
         if time_unit == "MONTHS":
-            return (datetime.today() + relativedelta(months=integer_value)).strftime(
-                "%Y-%m-%d"
-            )
+            return (now + relativedelta(months=integer_value)).strftime("%Y-%m-%d")
         if time_unit == "YEARS":
-            return (datetime.today() + relativedelta(years=integer_value)).strftime(
-                "%Y-%m-%d"
-            )
+            return (now + relativedelta(years=integer_value)).strftime("%Y-%m-%d")
 
     match = re.search(r"\$LAST(\w+)", keyword)
     if match:
         time_unit = match.group(1)
         # Check if it corresponds to a month
         if time_unit in list(MONTHS_VALUE.keys()):
-            # Get the current month and year
-            now = datetime.now()
-
             # Calculate the year and month for last month date
             if now.month > MONTHS_VALUE[time_unit]:
                 # If the current month is greater than the last date month, it means it is this year
@@ -98,7 +84,6 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
 
         # Check if it corresponds to a week day
         if time_unit in list(WEEKDAY_VALUE.keys()):
-            now = datetime.now()
             if datetime.weekday(now) > WEEKDAY_VALUE[time_unit]:
                 return (
                     now
@@ -117,9 +102,6 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
         time_unit = match.group(1)
         # Check if it corresponds to a month
         if time_unit in list(MONTHS_VALUE.keys()):
-            # Get the current month and year
-            now = datetime.now()
-
             # Calculate the year and month for next month date
             if now.month < MONTHS_VALUE[time_unit]:
                 # If the current month is greater than the last date month, it means it is this year
@@ -133,7 +115,6 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
 
         # Check if it corresponds to a week day
         if time_unit in list(WEEKDAY_VALUE.keys()):
-            now = datetime.now()
             if datetime.weekday(now) < WEEKDAY_VALUE[time_unit]:
                 return (
                     now
@@ -257,7 +238,11 @@ def parse_openbb_script(
                             else:
                                 if VAR_NAME in ROUTINE_VARS:
                                     variable = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
-                                    length_variable = len(variable) if isinstance(variable, list) else 1
+                                    length_variable = (
+                                        len(variable)
+                                        if isinstance(variable, list)
+                                        else 1
+                                    )
 
                                     # We use <= because we are using 0 index based lists
                                     if length_variable <= int(VAR_SLICE):
