@@ -148,10 +148,12 @@ def parse_openbb_script(
     Returns
     -------
     str
-        Error that ocurred - if empty means no error
+        Error that occurred - if empty means no error
     List[str]
         Processed lines from .openbb script that can be run by the OpenBB Terminal
     """
+    print(raw_lines)
+    print(script_inputs)
     ROUTINE_VARS = dict()
     if script_inputs:
         ROUTINE_VARS["$ARGV"] = script_inputs
@@ -374,5 +376,5 @@ def parse_openbb_script(
 
         else:
             final_lines.append(line)
-
+    print(final_lines)
     return "", final_lines

@@ -1,8 +1,9 @@
-import datetime
-
 from freezegun import freeze_time
 
-from openbb_terminal.routine_functions import match_and_return_openbb_keyword_date
+from openbb_terminal.routine_functions import (
+    match_and_return_openbb_keyword_date,
+    parse_openbb_script,
+)
 
 
 @freeze_time("2023-05-17")
@@ -57,3 +58,52 @@ def test_others():
     assert match_and_return_openbb_keyword_date("$LASTDECEMBER") == "2022-12-01"
     assert match_and_return_openbb_keyword_date("$NEXTTUESDAY") == "2023-05-23"
     assert match_and_return_openbb_keyword_date("$NEXTSEPTEMBER") == "2023-09-01"
+
+
+@freeze_time("2023-05-17")
+def test_parse_openbb_script():
+    raw_lines = [
+        "stocks",
+        "foreach $$VAR in PLTR,BB",
+        "    load $$VAR --start $LASTJANUARY",
+        "    candle",
+        "END",
+    ]
+    test_out = parse_openbb_script(raw_lines)
+    assert test_out[1] == [
+        "stocks",
+        "load PLTR --start 2023-01-01",
+        "candle",
+        "load BB --start 2023-01-01",
+        "candle",
+    ]
+
+    raw_lines2 = [
+        "$DATE = 2022-01-01",
+        "$DATES = 2022-01-01,2023-01-01",
+        "stocks",
+        "load $ARGV[0]",
+        "ta/ema/..",
+        "foreach $$VAR in $ARGV[1:]",
+        "    load $$VAR --start $DATE[0]",
+        "    candle",
+        "end",
+        "ca/set $ARGV[2:]/historical/..",
+        "FOREACH $$VAR in $ARGV",
+        "load $$VAR --start $DATES[0] --end $DATES[1]",
+        "candle",
+        " end",
+        "foreach $$VAR in $ARGV[1:3]",
+        "    load $$VAR --start 2022-01-01",
+        "        candle",
+        "END",
+        "foreach $$VAR in PLTR,BB",
+        "    load $$VAR --start 2022-01-01",
+        "        candle",
+        "END",
+    ]
+    test_out2 = parse_openbb_script(raw_lines2, None)
+    assert (
+        test_out2[0]
+        == "[red]Variable $ARGV not given for current routine script.[/red]"
+    )
