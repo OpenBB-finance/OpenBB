@@ -11,9 +11,9 @@ import re
 import sys
 import time
 import webbrowser
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Match, Optional
+from typing import Any, Dict, List, Optional
 
 import certifi
 import pandas as pd
@@ -46,12 +46,12 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_and_split_input,
-    parse_openbb_script,
 )
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.routine_functions import parse_openbb_script
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
