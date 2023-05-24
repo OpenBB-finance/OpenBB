@@ -1592,6 +1592,7 @@ class OpenBBFigure(go.Figure):
                 xref="paper",
                 x=1,
                 y=0,
+                showarrow=False,
                 text="OpenBB Terminal",
                 font_size=17,
                 font_color="gray",
