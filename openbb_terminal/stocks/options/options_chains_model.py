@@ -168,9 +168,9 @@ def calculate_stats(options: object, type: str = "expiration") -> pd.DataFrame:
 
         elif isinstance(options, object) and not isinstance(options, pd.DataFrame):
             chains = (
-                pd.DataFrame(options.chains) # type: ignore[attr-defined]
-                if isinstance(options.chains, dict) # type: ignore[attr-defined]
-                else options.chains.copy() # type: ignore[attr-defined]
+                pd.DataFrame(options.chains)  # type: ignore[attr-defined]
+                if isinstance(options.chains, dict)  # type: ignore[attr-defined]
+                else options.chains.copy()  # type: ignore[attr-defined]
             )
 
             if options is None or chains.empty:
