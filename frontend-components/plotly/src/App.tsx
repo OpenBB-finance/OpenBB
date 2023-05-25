@@ -5,17 +5,17 @@ import Chart from "./components/Chart";
 import { plotlyMockup, candlestickMockup } from "./data/mockup";
 
 declare global {
-  [(Exposed = Window), SecureContext];
-  interface Window {
-    json_data: any;
-    export_image: string;
-    save_image: boolean;
-    title: string;
-    Plotly: any;
-    MODEBAR: HTMLElement;
-    download_path: string;
-    pywry: any;
-  }
+	[Exposed === Window, SecureContext];
+	interface Window {
+		json_data: any;
+		export_image: string;
+		save_image: boolean;
+		title: string;
+		Plotly: any;
+		MODEBAR: HTMLElement;
+		download_path: string;
+		pywry: any;
+	}
 }
 
 function App() {

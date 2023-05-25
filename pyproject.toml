@@ -101,7 +101,7 @@ jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
 streamlit = "^1.22.0"
-pywry = "^0.5.8"
+pywry = "^0.5.9"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
@@ -116,6 +116,7 @@ pydantic = "^1.10.5"
 posthog = "^3.0.1"
 reportlab = "<4" #Pinning due to build error on MacOs
 arch = "^5.5.0"
+urllib3 = "<=2.0"
 
 
 

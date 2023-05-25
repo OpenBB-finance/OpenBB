@@ -1,4 +1,5 @@
 import asyncio
+from queue import Queue
 from typing import List
 
 import dotenv
@@ -42,6 +43,7 @@ class DummyBackend:
     debug = False
     shell = False
     base = None
+    recv = Queue()
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
         """Create a singleton instance of the backend."""

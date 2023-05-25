@@ -4,7 +4,12 @@ from prompt_toolkit import PromptSession
 
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
-from openbb_terminal.core.session.constants import REGISTER_URL, SUPPORT_URL
+from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.constants import (
+    REGISTER_URL,
+    SUPPORT_URL,
+)
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.session_model import (
     LoginStatus,
     create_session,
@@ -14,12 +19,13 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import bootup
 
 
-def display_welcome_message():
+def display_welcome_message(links: bool = True) -> None:
     """Display welcome message"""
     with open(PACKAGE_DIRECTORY / "core" / "session" / "banner.txt") as f:
         console.print(f"[menu]{f.read()}[/menu]\n")
-        console.print(f"Register : [cmds]{REGISTER_URL}[/cmds]")
-        console.print(f"Support  : [cmds]{SUPPORT_URL}[/cmds]")
+        if links:
+            console.print(f"Register : [cmds]{REGISTER_URL}[/cmds]")
+            console.print(f"Support  : [cmds]{SUPPORT_URL}[/cmds]")
 
 
 def get_user_input() -> Tuple[str, str, bool]:
@@ -37,7 +43,7 @@ def get_user_input() -> Tuple[str, str, bool]:
     s: PromptSession = PromptSession()
 
     email = s.prompt(
-        message="> Email: ",
+        message="> Email/Username: ",
     )
     if not email:
         return "", "", False
@@ -53,7 +59,35 @@ def get_user_input() -> Tuple[str, str, bool]:
     return email, password, remember
 
 
-def prompt(welcome=True):
+def pywry_login(welcome: bool = True):
+    """Login using PyWry window and launch terminal if login is successful.
+
+    Parameters
+    ----------
+    welcome : bool, optional
+        Display welcome message, by default True
+    """
+    bootup()
+
+    plots_backend().start(get_current_system().DEBUG_MODE)
+    if plots_backend().isatty:
+        if welcome:
+            display_welcome_message(False)
+        response = plots_backend().show_login_window()
+    else:
+        return prompt(welcome)
+
+    if response is None:
+        return launch_terminal()
+
+    if isinstance(response, dict) and response:
+        response.update(dict(token_type="bearer", information_complete="complete"))
+        return login_and_launch(response, response.get("remember", False))
+
+    return pywry_login(welcome=False)
+
+
+def prompt(welcome: bool = True):
     """Prompt and launch terminal if login is successful.
 
     Parameters
@@ -94,19 +128,21 @@ def login_and_launch(session: dict, remember: bool = False):
         Remember the session, by default False
     """
     status = login(session, remember)
+    plots_backend().close()
     if status in [LoginStatus.SUCCESS, LoginStatus.NO_RESPONSE]:
         launch_terminal()
     elif status == LoginStatus.FAILED:
-        prompt(welcome=False)
+        pywry_login(welcome=False)
     else:
-        prompt(welcome=True)
+        pywry_login(welcome=True)
 
 
 def main(session: Optional[Dict] = None):
     """Main function"""
+
     local_session = Local.get_session() if session is None else session
     if not local_session:
-        prompt()
+        pywry_login()
     else:
         login_and_launch(session=local_session, remember=True)
 

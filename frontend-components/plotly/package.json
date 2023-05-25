@@ -21,10 +21,9 @@
     "dom-to-image": "^2.6.0",
     "plotly.js-dist-min": "^2.21.0",
     "posthog-js": "^1.55.0",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-plotly.js": "^2.6.0",
-    "xlsx": "^0.18.5",
     "xss": "^1.0.14"
   },
   "devDependencies": {
@@ -39,12 +38,13 @@
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.13",
     "clsx": "^1.2.1",
-    "posthog-js": "^1.55.0",
     "postcss": "^8.4.21",
+    "posthog-js": "^1.55.0",
     "react-hotkeys-hook": "^4.4.0",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.9.3",
     "vite": "^4.1.0",
-    "vite-plugin-singlefile": "^0.13.3"
+    "vite-plugin-singlefile": "^0.13.3",
+    "vite-plugin-static-copy": "^0.15.0"
   }
 }

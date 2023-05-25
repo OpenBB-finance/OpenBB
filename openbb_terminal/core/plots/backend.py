@@ -387,6 +387,44 @@ class Backend(PyWry):
 
         super().close()
 
+    async def get_results(self, task: str) -> dict:
+        """Wait for completion of interactive task and return the data."""
+        console.print(
+            f"[green]{task}[/]\n\n"
+            "[yellow]If the window is closed you can continue by pressing Ctrl+C.[/]"
+        )
+        while True:
+            try:
+                data: dict = self.recv.get(block=False) or {}
+                if data.get("result", False):
+                    return json.loads(data["result"])
+            except Exception:  # pylint: disable=W0703
+                pass
+
+            await asyncio.sleep(1)
+
+    def show_login_window(self) -> Optional[dict]:
+        """Show the login window."""
+        self.loop.run_until_complete(self.check_backend())
+
+        outgoing = dict(
+            json_data=dict(url="https://my.openbb.dev/login?pywry=true"),
+            **self.get_kwargs("Login"),
+            width=800,
+            height=600,
+        )
+        self.send_outgoing(outgoing)
+
+        try:
+            return self.loop.run_until_complete(
+                self.get_results(
+                    "Welcome to OpenBB Terminal! Please login to continue."
+                )
+            )
+        except KeyboardInterrupt:
+            console.print("\n[red]Login cancelled. Continuing as guest.[/red]")
+            return None
+
 
 async def download_plotly_js():
     """Download or updates plotly.js to the assets folder."""
