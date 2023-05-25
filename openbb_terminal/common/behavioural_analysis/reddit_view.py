@@ -172,10 +172,6 @@ def display_spac_community(limit: int = 10, popular: bool = False):
     """
     subs, d_watchlist_tickers = reddit_model.get_spac_community(limit, popular)
     if not subs.empty:
-        for sub in subs.iterrows():
-            print_reddit_post(sub)
-            console.print("")
-
         if d_watchlist_tickers:
             lt_watchlist_sorted = sorted(
                 d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
@@ -196,6 +192,9 @@ def display_spac_community(limit: int = 10, popular: bool = False):
                     "r/spaccs: "
                 )
                 console.print(s_watchlist_tickers[:-2])
+        for sub in subs.iterrows():
+            print_reddit_post(sub)
+            console.print("")
 
 
 @log_start_end(log=logger)

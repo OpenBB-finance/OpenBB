@@ -308,7 +308,7 @@ def print_rich_table(
             if not isinstance(df[col].iloc[0], pd.Timestamp):
                 pd.to_numeric(df[col].iloc[0])
 
-        except ValueError:
+        except (ValueError, TypeError):
             df[col] = df[col].astype(str)
 
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
