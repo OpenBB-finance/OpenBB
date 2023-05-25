@@ -82,18 +82,17 @@ def pywry_login(welcome: bool = True):
 
     if isinstance(response, dict) and response:
         response["token_type"] = "bearer"
+
         for r_key, new_key in zip(
             ["status", "accessToken", "primaryUsage"],
             ["information_complete", "access_token", "primary_usage"],
         ):
             response[new_key] = response.pop(r_key, None)
 
-        remember = response.get("remember", False)
-        if remember:
+        if remember := response.get("remember_me", False):
             Local.save_session(response)
-        return login_and_launch(response, remember)
 
-    return pywry_login(welcome=False)
+        return login_and_launch(response, remember)
 
 
 def prompt(welcome: bool = True):
