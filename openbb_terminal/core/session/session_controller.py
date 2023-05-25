@@ -81,7 +81,14 @@ def pywry_login(welcome: bool = True):
         return launch_terminal()
 
     if isinstance(response, dict) and response:
-        response.update(dict(token_type="bearer", information_complete="complete"))
+        response.update(
+            dict(
+                token_type="bearer",
+                information_complete=response.get("status", ""),
+                access_token=response.get("accessToken", ""),
+                primary_usage=response.get("primaryUsage", "personal"),
+            )
+        )
         return login_and_launch(response, response.get("remember", False))
 
     return pywry_login(welcome=False)

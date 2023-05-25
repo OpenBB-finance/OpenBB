@@ -211,7 +211,7 @@ def fetch_user_configs(
         The response from the get request.
     """
     token_type = session.get("token_type", "")
-    token = session.get("access_token", "") or session.get("accessToken", "")
+    token = session.get("access_token", "")
 
     try:
         response = requests.get(
