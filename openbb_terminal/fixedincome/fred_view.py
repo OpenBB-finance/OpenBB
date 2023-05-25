@@ -1510,7 +1510,6 @@ def plot_spot(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-    series = pd.read_csv(spot_rates_path)
     df = fred_model.get_spot(
         maturity=maturity, category=category, start_date=start_date, end_date=end_date
     )
@@ -1547,9 +1546,25 @@ def plot_spot(
         )
 
     if description:
-        for title, description_text in series[["Title", "Description"]].values:
-            console.print(f"\n[bold]{title}[/bold]")
-            console.print(description_text)
+        header1 = "T-Year High Quality Market (HQM) Corporate Bond Spot Rate"
+        message1 = (
+            "The spot rate for T-Year High Quality Market (HQM) Corporate Bond Spot Rate"
+            " is defined as the yield on a bond that gives a single payment after T year."
+            " This is called a zero coupon bond. Because high quality zero coupon bonds are"
+            " not generally available, the HQM methodology computes the spot rates so as to"
+            " make them consistent with the yields on other high quality bonds. The HQM"
+            " yield curve uses data from a set of high quality corporate bonds rated AAA"
+            ", AA, or A that accurately represent the high quality corporate bond market."
+        )
+        header2 = "T-Year High Quality Market (HQM) Corporate Bond Par Yield"
+        message2 = (
+            "The par yield for T-Year High Quality Market (HQM) Corporate Bond Par"
+            " Yield is the coupon rate at which bond prices are zero."
+        )
+        console.print(f"\n[bold]{header1}[/bold]")
+        console.print(message1)
+        console.print(f"\n[bold]{header2}[/bold]")
+        console.print(message2)
 
     export_data(
         export,
