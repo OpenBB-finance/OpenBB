@@ -140,6 +140,7 @@ class OpenBBSDK:
             `re`: The random effects model is virtually identical to the pooled OLS model except that is accounts for the\n
             `root`: Calculate test statistics for unit roots\n
             `root_chart`: Determine the normality of a timeseries.\n
+            `vif`: Determine the vif, which tests for collinearity.\n
         """
 
         return model.EconometricsRoot()
