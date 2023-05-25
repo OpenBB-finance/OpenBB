@@ -38,6 +38,7 @@ def plot_chart(
     OpenBBFigure
         Plotly figure object
     """
+    titles_list = ["Historical", symbol, price, option_type.title()]
 
     fig = OpenBBFigure.create_subplots(
         rows=1,
@@ -45,7 +46,7 @@ def plot_chart(
         vertical_spacing=0.06,
         specs=[[{"secondary_y": True}]],
     )
-    fig.set_title(f"Historical {symbol} {price} {option_type.title()}")
+    fig.set_title(" ".join(str(x) for x in titles_list if x))
 
     fig.add_candlestick(
         open=df.Open,
@@ -56,7 +57,7 @@ def plot_chart(
         name=f"{price} {option_type.title()} OHLC",
         row=1,
         col=1,
-        secondary_y=True,
+        secondary_y=False,
     )
     fig.add_inchart_volume(df)
     fig.hide_holidays()

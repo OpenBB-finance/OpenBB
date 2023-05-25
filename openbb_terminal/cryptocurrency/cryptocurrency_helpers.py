@@ -915,12 +915,12 @@ def plot_candles(  # pylint: disable=too-many-arguments
         name=f"{symbol} OHLC",
         row=1,
         col=1,
-        secondary_y=volume,
+        secondary_y=False,
     )
     if volume:
         fig.add_inchart_volume(data)
 
-    fig.set_yaxis_title("Price", row=1, col=1, secondary_y=volume, type=yscale)
+    fig.set_yaxis_title("Price", row=1, col=1, secondary_y=False, type=yscale)
     fig.update_layout(showlegend=False)
 
     return fig.show(external=external_axes)
