@@ -94,6 +94,8 @@ def pywry_login(welcome: bool = True):
 
         return login_and_launch(response, remember)
 
+    return pywry_login(welcome=False)
+
 
 def prompt(welcome: bool = True):
     """Prompt and launch terminal if login is successful.
