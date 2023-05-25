@@ -39,6 +39,7 @@ class EconometricsRoot(Category):
         `re`: The random effects model is virtually identical to the pooled OLS model except that is accounts for the\n
         `root`: Calculate test statistics for unit roots\n
         `root_chart`: Determine the normality of a timeseries.\n
+        `vif`: Determine the vif, which tests for collinearity.\n
     """
 
     _location_path = "econometrics"
@@ -75,3 +76,4 @@ class EconometricsRoot(Category):
         self.re = lib.econometrics_regression_model.get_re
         self.root = lib.econometrics_model.get_root
         self.root_chart = lib.econometrics_view.display_root
+        self.vif = lib.econometrics_model.get_vif
