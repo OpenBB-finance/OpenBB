@@ -410,8 +410,8 @@ class Backend(PyWry):
         outgoing = dict(
             json_data=dict(url="https://my.openbb.dev/login?pywry=true"),
             **self.get_kwargs("Login"),
-            width=800,
-            height=600,
+            width=900,
+            height=800,
         )
         self.send_outgoing(outgoing)
 
