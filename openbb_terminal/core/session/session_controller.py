@@ -128,7 +128,6 @@ def login_and_launch(session: dict, remember: bool = False):
         Remember the session, by default False
     """
     status = login(session, remember)
-    plots_backend().close()
     if status in [LoginStatus.SUCCESS, LoginStatus.NO_RESPONSE]:
         launch_terminal()
     elif status == LoginStatus.FAILED:
