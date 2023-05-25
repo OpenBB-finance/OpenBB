@@ -89,7 +89,10 @@ def pywry_login(welcome: bool = True):
                 primary_usage=response.get("primaryUsage", "personal"),
             )
         )
-        return login_and_launch(response, response.get("remember", False))
+        remember = response.get("remember", False)
+        if remember:
+            Local.save_session(response)
+        return login_and_launch(response, remember)
 
     return pywry_login(welcome=False)
 
