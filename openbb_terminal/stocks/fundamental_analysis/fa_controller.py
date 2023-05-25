@@ -7,6 +7,7 @@ from typing import List, Optional
 
 from pandas.core.frame import DataFrame
 
+from openbb_terminal import plots_backend
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -1345,6 +1346,10 @@ class FundamentalAnalysisController(StockBaseController):
     @log_start_end(log=logger)
     def call_earnings(self, other_args: List[str]):
         """Process earnings command."""
+        current_user = get_current_user()
+        enable_interactive = (
+                current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
+        )
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1370,15 +1375,16 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="Number of latest info",
-        )
+        if not enable_interactive:
+            parser.add_argument(
+                "-l",
+                "--limit",
+                action="store",
+                dest="limit",
+                type=check_positive,
+                default=5,
+                help="Number of latest info",
+            )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -1395,7 +1401,7 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.source == "AlphaVantage":
                 av_view.display_earnings(
                     symbol=self.ticker,
-                    limit=ns_parser.limit,
+                    limit=ns_parser.limit if not enable_interactive else None,
                     quarterly=ns_parser.b_quarter,
                     export=ns_parser.export,
                     sheet_name=" ".join(ns_parser.sheet_name)
@@ -1404,7 +1410,9 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_earnings(
-                    symbol=self.ticker, limit=ns_parser.limit, export=ns_parser.export
+                    symbol=self.ticker,
+                    limit=ns_parser.limit if not enable_interactive else None,
+                    export=ns_parser.export
                 )
 
     @log_start_end(log=logger)
