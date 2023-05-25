@@ -1452,9 +1452,36 @@ def plot_cp(
         )
 
     if description:
-        for title, description_text in series[["Title", "Description"]].values:
-            console.print(f"\n[bold]{title}[/bold]")
-            console.print(description_text)
+        message = (
+            "To calculate CP interest rate indexes, the Federal Reserve Board uses DTCC's data for certain trades"
+            " to estimate a relation between interest rates on the traded securities and their maturities. In this"
+            " calculation, the trades represent sales of CP by dealers or direct issuers to investors (that is,"
+            " the offer side) and are weighted according to the face value of the CP so that larger trades have"
+            " a greater effect on the resulting index. With the relation between interest rates and maturities"
+            " established, the reported interest rates represent the estimated interest rates for the specified"
+            " maturities.\n\n"
+            "Interest rates calculated through the process described above are a statistical aggregation"
+            " of numerous data reflecting many trades for different issuers, maturities, and so forth."
+            " Accordingly, the reported interest rates purport to reflect activity in certain segments"
+            " of the market, but they may not equal interest rates for any specific trade. As with other"
+            " statistical processes, this one is designed to minimize the difference between the interest"
+            " rates at which actual trades occur and the estimated interest rates.\n\n"
+            "CP trades included in the calculation are chosen according to the specifications listed in the"
+            " table below. Data to assess CP trades relative to these criteria are updated daily from numerous"
+            " publicly available sources. Standard Industrial Classification (SIC) code classifications are"
+            " taken from the Securities and Exchange Commission (SEC) Directory of Companies Required to File"
+            ' Annual Reports with the SEC. When an issuer"s primary SIC code is not reported in the SEC'
+            ' directory, the primary SIC code reported in the issuer"s financial reports is used; otherwise,'
+            " SIC codes are determined upon consultation with the Office of Management and Budget's Standard "
+            "Industrial Classification Manual or its Supplement.\n\n"
+            "For a discussion of econometric techniques for fitting the term structure of interest rates, including"
+            ' bibliographic information, see, for example, William S. Cleveland, 1979, "Robust Locally'
+            ' Weighted Regression and Smoothing Scatterplots," Journal of the American Statistical Association,'
+            " 74, 829-36, or William S. Cleveland, Susan J. Devlin, and Eric Grosse, 1988,"
+            ' "Regression by Local Fitting," Journal of Econometrics, 37, 87-114.\n\n'
+            "Source: https://www.federalreserve.gov/releases/cp/about.htm"
+        )
+        console.print(message)
 
     export_data(
         export,
