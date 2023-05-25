@@ -73,7 +73,7 @@ def pywry_login(welcome: bool = True):
     if plots_backend().isatty:
         if welcome:
             display_welcome_message(False)
-        response = plots_backend().show_login_window()
+        response = plots_backend().call_hub()
     else:
         return prompt(welcome)
 

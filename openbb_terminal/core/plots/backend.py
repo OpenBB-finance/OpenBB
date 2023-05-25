@@ -387,10 +387,21 @@ class Backend(PyWry):
 
         super().close()
 
-    async def get_results(self, task: str) -> dict:
-        """Wait for completion of interactive task and return the data."""
+    async def get_results(self, description: str) -> dict:
+        """Wait for completion of interactive task and return the data.
+
+        Parameters
+        ----------
+        description : str
+            Description of the task to console print while waiting.
+
+        Returns
+        -------
+        dict
+            The data returned from pywry backend.
+        """
         console.print(
-            f"[green]{task}[/]\n\n"
+            f"[green]{description}[/]\n\n"
             "[yellow]If the window is closed you can continue by pressing Ctrl+C.[/]"
         )
         while True:
@@ -403,26 +414,46 @@ class Backend(PyWry):
 
             await asyncio.sleep(1)
 
-    def show_login_window(self) -> Optional[dict]:
-        """Show the login window."""
+    def call_hub(self, login: bool = True) -> Optional[dict]:
+        """Call the hub to login or logout.
+
+        Parameters
+        ----------
+        login : bool, optional
+            Whether to login or logout, by default True
+
+        Returns
+        -------
+        Optional[dict]
+            The user data if login was successful, None otherwise.
+        """
         self.loop.run_until_complete(self.check_backend())
+        endpoint = {True: "login", False: "logout"}[login]
 
         outgoing = dict(
-            json_data=dict(url="https://my.openbb.dev/login?pywry=true"),
-            **self.get_kwargs("Login"),
+            json_data=dict(url=f"https://my.openbb.dev/{endpoint}?pywry=true"),
+            **self.get_kwargs(endpoint.title()),
             width=900,
             height=800,
         )
         self.send_outgoing(outgoing)
 
+        messages_dict = dict(
+            login=dict(
+                message="Welcome to OpenBB Terminal! Please login to continue.",
+                interrupt="Login cancelled. Continuing as guest.",
+            ),
+            logout=dict(
+                message="Sending logout request", interrupt="Continuing as guest."
+            ),
+        )
+
         try:
             return self.loop.run_until_complete(
-                self.get_results(
-                    "Welcome to OpenBB Terminal! Please login to continue."
-                )
+                self.get_results(messages_dict[endpoint]["message"])
             )
         except KeyboardInterrupt:
-            console.print("\n[red]Login cancelled. Continuing as guest.[/red]")
+            console.print(f"\n[red]{messages_dict[endpoint]['interrupt']}[/red]")
             return None
 
 

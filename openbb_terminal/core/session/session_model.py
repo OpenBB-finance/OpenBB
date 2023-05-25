@@ -10,6 +10,7 @@ import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import remove_log_handlers
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
 from openbb_terminal.core.models.user_model import ProfileModel, SourcesModel, UserModel
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_current_user,
@@ -189,8 +190,9 @@ def logout(
         return
 
     success = True
-    r = Hub.delete_session(auth_header, token)
-    if not r or r.status_code != 200:
+    r = plots_backend().call_hub(False)
+
+    if not r:
         success = False
 
     if not Local.remove(SESSION_FILE_PATH):
