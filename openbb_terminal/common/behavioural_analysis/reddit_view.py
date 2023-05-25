@@ -192,9 +192,11 @@ def display_spac_community(limit: int = 10, popular: bool = False):
                     "r/spaccs: "
                 )
                 console.print(s_watchlist_tickers[:-2])
-        for sub in subs.iterrows():
-            print_reddit_post(sub)
-            console.print("")
+        print_rich_table(
+            pd.DataFrame(subs),
+            show_index=False,
+            title="Reddit Submission",
+        )
 
 
 @log_start_end(log=logger)
