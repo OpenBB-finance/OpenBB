@@ -81,14 +81,13 @@ def pywry_login(welcome: bool = True):
         return launch_terminal()
 
     if isinstance(response, dict) and response:
-        response.update(
-            dict(
-                token_type="bearer",
-                information_complete=response.get("status", ""),
-                access_token=response.get("accessToken", ""),
-                primary_usage=response.get("primaryUsage", "personal"),
-            )
-        )
+        response["token_type"] = "bearer"
+        for r_key, new_key in zip(
+            ["status", "accessToken", "primaryUsage"],
+            ["information_complete", "access_token", "primary_usage"],
+        ):
+            response[new_key] = response.pop(r_key, None)
+
         remember = response.get("remember", False)
         if remember:
             Local.save_session(response)
