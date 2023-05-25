@@ -43,7 +43,7 @@ class DummyBackend:
     debug = False
     shell = False
     base = None
-    recv = Queue()
+    recv: Queue = Queue()
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
         """Create a singleton instance of the backend."""
