@@ -1209,6 +1209,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
+                    if "." not in self.ticker:
+                        self.ticker = ns_parser.ticker.upper()
                 else:
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""

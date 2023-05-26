@@ -350,7 +350,7 @@ class Backend(PyWry):
             "download_path": str(get_current_user().preferences.USER_EXPORTS_DIRECTORY),
         }
 
-    def start(self, debug: bool = False):
+    def start(self, debug: bool = False):  # pylint: disable=W0221
         """Start the backend WindowManager process."""
         if self.isatty:
             super().start(debug)
