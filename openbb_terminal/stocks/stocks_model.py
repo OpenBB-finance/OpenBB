@@ -1,6 +1,7 @@
 import logging
 import os
 from datetime import datetime
+from typing import List
 from urllib.error import HTTPError
 
 import fundamentalanalysis as fa  # Financial Modeling Prep
@@ -286,7 +287,7 @@ def load_stock_polygon(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_quote(symbols: list[str]) -> pd.DataFrame:
+def get_quote(symbols: List[str]) -> pd.DataFrame:
     """Gets ticker quote from FMP
 
     Parameters
