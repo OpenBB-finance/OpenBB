@@ -183,6 +183,7 @@ econometrics.panel,econometrics_regression_model.get_regressions_results,econome
 econometrics.pols,econometrics_regression_model.get_pols,
 econometrics.re,econometrics_regression_model.get_re,
 econometrics.root,econometrics_model.get_root,econometrics_view.display_root
+econometrics.vif,econometrics_model.get_vif,
 econometrics.garch,econometrics_model.get_garch,econometrics_view.display_garch
 economy.available_indices,economy_yfinance_model.get_available_indices,
 economy.balance,economy_oecd_model.get_balance,economy_oecd_view.plot_balance

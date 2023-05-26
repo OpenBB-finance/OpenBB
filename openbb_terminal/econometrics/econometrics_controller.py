@@ -77,6 +77,7 @@ class EconometricsController(BaseController):
         "garch",
         "granger",
         "coint",
+        "vif",
     ]
     CHOICES_MENUS: List[str] = [
         "qa",
@@ -189,6 +190,7 @@ class EconometricsController(BaseController):
                 "corr",
                 "season",
                 "lag",
+                "vif",
             ]:
                 choices[feature] = dict()
 
@@ -235,12 +237,14 @@ class EconometricsController(BaseController):
             ]:
                 self.choices[feature] = {c: {} for c in self.files}
 
-            self.choices["type"] = {
-                c: {} for c in self.files + list(dataset_columns.keys())
-            }
-            self.choices["desc"] = {
-                c: {} for c in self.files + list(dataset_columns.keys())
-            }
+            for feature in ["type", "desc", "vif"]:
+                self.choices[feature] = {
+                    c: {} for c in self.files + list(dataset_columns.keys())
+                }
+            self.choices["vif"] = dict(
+                self.choices["vif"],
+                **{"-d": self.choices["vif"], "--data": self.choices["vif"]},
+            )
 
             pairs_timeseries = list()
             for dataset_col in list(dataset_columns.keys()):
@@ -286,20 +290,21 @@ class EconometricsController(BaseController):
         mt.add_cmd("lag", self.files)
         mt.add_cmd("ret", self.files)
         mt.add_cmd("export", self.files)
-        mt.add_info("time_series_")
+        mt.add_info("_assumption_testing_")
         mt.add_cmd("norm", self.files)
-        mt.add_cmd("ols", self.files)
         mt.add_cmd("granger", self.files)
         mt.add_cmd("root", self.files)
         mt.add_cmd("coint", self.files)
+        mt.add_cmd("vif", self.files)
+        mt.add_cmd("dwat", self.files and self.regression["OLS"]["model"])
+        mt.add_cmd("bgod", self.files and self.regression["OLS"]["model"])
+        mt.add_cmd("bpag", self.files and self.regression["OLS"]["model"])
+        mt.add_info("_time_series_")
+        mt.add_cmd("ols", self.files)
         mt.add_cmd("garch", self.files)
         mt.add_info("_panel_")
         mt.add_cmd("panel", self.files)
         mt.add_cmd("compare", self.files)
-        mt.add_info("_residuals_")
-        mt.add_cmd("dwat", self.files and self.regression["OLS"]["model"])
-        mt.add_cmd("bgod", self.files and self.regression["OLS"]["model"])
-        mt.add_cmd("bpag", self.files and self.regression["OLS"]["model"])
 
         console.print(text=mt.menu_text, menu="Econometrics")
         console.print()
@@ -1884,7 +1889,7 @@ class EconometricsController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="bgod",
             description=(
-                "Show Breusch-Godfrey autocorrelation test results."
+                "Show Breusch-Godfrey autocorrelation test results. "
                 "Needs OLS to be run in advance with independent and dependent variables"
             ),
         )
@@ -2182,3 +2187,78 @@ class EconometricsController(BaseController):
                 console.print(
                     "[red]More than one dataset.column must be provided.\n[/red]"
                 )
+
+    @log_start_end(log=logger)
+    def call_vif(self, other_args: List[str]):
+        """Process vif command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vif",
+            description=r"""Calculates VIF (variance inflation factor), which tests collinearity.
+
+            It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square
+            root of the variance inflation factor indicates how much larger the standard error increases compared to if
+            that variable had 0 correlation to other predictor variables in the model.
+
+            It is defined as:
+
+            $ VIF_i = 1 / (1 - R_i^2) $
+            where $ R_i $ is the coefficient of determination of the regression equation with the column i being the
+            result from the i:th series being the exogenous variable.
+
+            A VIF over 5 indicates a high collinearity and correlation. Values over 10 indicates causes problems,
+            while a value of 1 indicates no correlation. Thus VIF values between 1 and 5 are most commonly considered
+            acceptable. In order to improve the results one can often remove a column with high VIF.
+
+            For further information see: https://en.wikipedia.org/wiki/Variance_inflation_factor""",
+        )
+        parser.add_argument(
+            "-d",
+            "--data",
+            help="The datasets and columns we want to add <dataset>,<dataset2.column>,<dataset2.column2>",
+            dest="data",
+            type=check_list_values(self.choices["vif"]),
+            default=None,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        data = pd.DataFrame()
+        if ns_parser:
+            if ns_parser.data is None:
+                console.print("[red]Please enter a dataset to calculate vif for.[/red]")
+                return
+            if len(ns_parser.data) == 1 and "." in ns_parser.data[0]:
+                console.print(
+                    "[red]Please enter at least a dataset or two columns to calculate vif for."
+                    "vif can only be calculated for at least two columns.[/red]"
+                )
+            for option in ns_parser.data:
+                if "." in option:
+                    dataset, column = option.split(".")
+                else:
+                    dataset = option
+                    column = None
+
+                if dataset not in self.datasets:
+                    console.print(
+                        f"[red]Not able to find the dataset {dataset}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}[/red]"
+                    )
+                elif column is not None:
+                    if column not in self.datasets[dataset]:
+                        console.print(
+                            f"[red]Not able to find the column {column}. Please choose one of "
+                            f"the following: {', '.join(self.datasets[dataset].data)}[/red]"
+                        )
+                    else:
+                        data[f"{dataset}_{column}"] = self.datasets[dataset][column]
+                else:
+                    for column in list(self.datasets[dataset].columns):
+                        data[f"{dataset}_{column}"] = self.datasets[dataset][column]
+
+            econometrics_view.display_vif(data)
