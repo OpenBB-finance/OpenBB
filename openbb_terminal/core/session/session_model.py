@@ -190,10 +190,15 @@ def logout(
         return
 
     success = True
-    r = plots_backend().call_hub(False)
 
-    if not r:
-        success = False
+    if plots_backend().isatty:
+        r = plots_backend().call_hub(False)
+        if not r:
+            success = False
+    else:
+        r = Hub.delete_session(auth_header, token)
+        if not r or r.status_code != 200:
+            success = False
 
     if not Local.remove(SESSION_FILE_PATH):
         success = False
