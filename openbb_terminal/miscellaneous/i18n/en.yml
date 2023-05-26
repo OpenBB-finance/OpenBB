@@ -989,6 +989,8 @@ en:
   econometrics/coint: co-integration test on a multitude of columns
   econometrics/garch: estimate future volatility with GARCH
   econometrics/ret: calculate returns for the given time series
+  econometrics/vif: perform collinearity test (VIF)
+  econometrics/_assumption_testing_: Assumption Testing
   portfolio/bro: brokers holdings    supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization   optimize your portfolio weights efficiently
   portfolio/load: load transactions into the portfolio (use load --example for an example)
