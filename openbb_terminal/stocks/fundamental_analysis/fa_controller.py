@@ -7,7 +7,6 @@ from typing import List, Optional
 
 from pandas.core.frame import DataFrame
 
-from openbb_terminal import plots_backend
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -1348,7 +1347,7 @@ class FundamentalAnalysisController(StockBaseController):
         """Process earnings command."""
         current_user = get_current_user()
         enable_interactive = (
-                current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
+                current_user.preferences.USE_INTERACTIVE_DF
         )
         parser = argparse.ArgumentParser(
             add_help=False,
