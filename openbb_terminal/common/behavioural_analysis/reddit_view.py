@@ -213,9 +213,9 @@ def display_wsb_community(limit: int = 10, new: bool = False):
     """
     subs = reddit_model.get_wsb_community(limit, new)
     if not subs.empty:
-        for sub in subs.iterrows():
-            print_reddit_post(sub)
-            console.print("")
+        # for sub in subs.iterrows():
+        #     print_reddit_post(sub)
+        print(print_rich_table(subs))
 
 
 @log_start_end(log=logger)
