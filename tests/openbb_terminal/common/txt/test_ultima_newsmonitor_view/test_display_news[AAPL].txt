@@ -1,10 +1,6 @@
 
-Uncategorized Breaking News (Bloomberg, Reuters, WSJ, CNBC):
-> 2023-05-25 12:50:02+00:00 - Nvidia nears elite trillion-dollar market cap club of Apple, Microsoft, Alphabet and Amazon - CNBC
-https://news.google.com/rss/articles/CBMifmh0dHBzOi8vd3d3LmNuYmMuY29tLzIwMjMvMDUvMjUvbnZpZGlhLW5lYXJzLWVsaXRlLXRyaWxsaW9uLWRvbGxhci1tYXJrZXQtY2FwLWNsdWItb2YtYXBwbGUtbWljcm9zb2Z0LWFscGhhYmV0LWFuZC1hbWF6b24uaHRtbNIBggFodHRwczovL3d3dy5jbmJjLmNvbS9hbXAvMjAyMy8wNS8yNS9udmlkaWEtbmVhcnMtZWxpdGUtdHJpbGxpb24tZG9sbGFyLW1hcmtldC1jYXAtY2x1Yi1vZi1hcHBsZS1taWNyb3NvZnQtYWxwaGFiZXQtYW5kLWFtYXpvbi5odG1s?oc=5
+[purple][bold]Most Relevant Articles for AAPL - 2023-05-26[/bold][/purple]
 
-------------------------
-[purple]Most Relevant Articles for AAPL - 2023-05-25[/purple]
 [green]Regulatory Risk[/green] ([3mThe U.S. solicitor general has urged the Supreme Court to reject an appeal by Apple and Broadcom in their $1.1 billion trial loss to the California Institute of Technology (Caltech) over a patent infringement case. The solicitor general argued that the U.S. Court of Appeals for the Federal Circuit was correct in ruling that the companies could not seek to invalidate Caltech's patents in court after Apple failed to raise its invalidity arguments at the U.S. Patent Office. Caltech has also sued Microsoft, Samsung, Dell, and HP for infringing the same patents in separate cases that are still pending - Reuters (https://www.reuters.com/legal/biden-administration-urges-supreme-court-not-hear-apple-caltech-patent-case-2023-05-24/)[0m)
 
 
@@ -13,7 +9,10 @@ https://news.google.com/rss/articles/CBMifmh0dHBzOi8vd3d3LmNuYmMuY29tLzIwMjMvMDU
 
 [green]Financial Risk[/green] ([3mApple has signed a multi-billion dollar deal with Broadcom for 5G parts. The deal is expected to strengthen Apple's position in the 5G market and help the company compete with other smartphone manufacturers - Bloomberg (https://www.bloomberg.com/news/articles/2023-05-23/apple-signs-multibillion-dollar-deal-with-broadcom-for-5g-parts)[0m)
 ------------------------
-[purple]News for Apple:[/purple]
+
+[purple][bold]News for Apple:[/bold][/purple]
+
+
 > 2023-05-24 14:32:41 - Listen to Odd Lots on Apple Podcasts ... According to the Treasury Department, we're just days away from the so called "X-date" (when a US default would...
 [purple]Relevancy score: 4.59/5 Stars[/purple]
 [green]Financial Risk[/green] ([3mApple faces financial risks from currency fluctuations due to the fact that it operates in multiple countries and has to convert its profits into US dollars. Changes in consumer demand can also affect Apple's financial performance, as consumer preferences can shift quickly and unexpectedly. Apple also faces competition from other technology companies, which can lead to decreased market share and decreased profits. Additionally, Apple is exposed to the risk of litigation, which can lead to costly settlements or judgments. Finally, Apple is exposed to the risk of product recalls, which can lead to significant losses due to the cost of the recall and the potential for reputational damage.[0m)

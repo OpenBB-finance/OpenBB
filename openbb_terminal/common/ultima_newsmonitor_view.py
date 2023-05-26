@@ -86,7 +86,7 @@ def display_news(
         header = split[0]
         if "Most" not in header:
             header = f'Most Relevant Articles for {term} - {dt.datetime.now().strftime("%Y-%m-%d")}'
-        console.print(f"[purple]{header}[/purple]")
+        console.print(f"[purple][bold]{header}[/bold][/purple]\n")
         for idx, row in enumerate(split[1:]):
             if len(row) > 0:
                 inner_split = row.split(" - ")
@@ -98,7 +98,7 @@ def display_news(
     console.print("------------------------")
     articles = ultima_newsmonitor_model.get_news(term, sort)
     articles = articles.head(limit).sort_values(by="relevancyScore", ascending=False)
-    console.print(f"[purple]News for {company_name}:[/purple]")
+    console.print(f"\n[purple][bold]News for {company_name}:[/bold][/purple]\n\n")
     for _, row in articles.iterrows():
         console.print(
             f"> {row['articlePublishedDate']} - {row['articleHeadline']}\n"
