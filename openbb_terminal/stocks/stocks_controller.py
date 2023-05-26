@@ -582,7 +582,7 @@ class StocksController(StockBaseController):
                     query = str(self.ticker).upper()
                     if query not in ultima_newsmonitor_view.supported_terms():
                         console.print(
-                            "[red]Ticker not supported by Ultima Insights News Monitor[/red]"
+                            "[red]Ticker not supported by Ultima Insights News Monitor. Falling back to default.\n[/red]"
                         )
                         feedparser_view.display_news(
                             term=query,

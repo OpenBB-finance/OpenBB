@@ -77,7 +77,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         hierarchy = "\n        ".join(list(map(str, reversed(reading_order))))
         return hierarchy if is_local() else f"{KEYS_URL}\n        {hierarchy}"
 
-    def print_help(self, update_status: bool = False, reevaluate: bool = False):
+    def print_help(self, update_status: bool = True, reevaluate: bool = True):
         """Print help"""
         self.check_keys_status(reevaluate=reevaluate)
         mt = MenuText("keys/")

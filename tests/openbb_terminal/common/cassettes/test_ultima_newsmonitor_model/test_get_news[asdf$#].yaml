@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
     method: GET
     uri: https://api.ultimainsights.ai/v1/supportedTickers
   response:
@@ -58,7 +58,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Sat, 08 Apr 2023 04:00:41 GMT
+      - Thu, 25 May 2023 17:35:48 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
