@@ -336,7 +336,12 @@ def get_historical_options(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of historical option chain
     """
-    historical = pd.DataFrame(api.get_options_prices_eod(symbol).to_dict()["prices"])
+    try:
+        historical = pd.DataFrame(
+            api.get_options_prices_eod(symbol).to_dict()["prices"]
+        )
+    except Exception:
+        return pd.DataFrame()
     historical = historical[
         [
             "date",
