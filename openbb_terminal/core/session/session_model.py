@@ -192,8 +192,7 @@ def logout(
     success = True
 
     if plots_backend().isatty:
-        r = plots_backend().call_hub(False)
-        if not r:
+        if not plots_backend().call_hub(False):
             success = False
     else:
         r = Hub.delete_session(auth_header, token)
