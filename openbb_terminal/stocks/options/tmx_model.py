@@ -1,7 +1,8 @@
 """Model for retrieving public options data from the Montreal Options Exchange."""
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 
+import numpy as np
 import pandas as pd
 import pandas_market_calendars as mcal
 from pandas.tseries.holiday import next_workday
@@ -295,6 +296,10 @@ class Options:  # pylint: disable=too-many-instance-attributes
         chains = chains.sort_index()
 
         self.chains = chains.reset_index()
+        now = datetime.now()
+        temp = pd.DatetimeIndex(self.chains.expiration)
+        temp_ = (temp - now).days + 1
+        self.chains["dte"] = temp_
 
         self.underlying_name = self.SYMBOLS.loc[self.symbol][
             "Name of Underlying Instrument"
@@ -454,6 +459,11 @@ class Options:  # pylint: disable=too-many-instance-attributes
         data["expiration"] = pd.to_datetime(data["expiration"], format="%Y-%m-%d")
         data["date"] = pd.to_datetime(data["date"], format="%Y-%m-%d")
         data["impliedVolatility"] = 0.01 * data["impliedVolatility"]
+
+        date_ = pd.to_datetime(date, format="%Y-%m-%d")
+        temp = pd.DatetimeIndex(data.expiration)
+        temp_ = pd.Series((temp - date_).days)
+        data["dte"] = pd.to_numeric(temp_)
         data = data.set_index(["expiration", "strike", "optionType"])
         data = data.sort_index()
 
@@ -496,7 +506,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
         )
         self.last_price = self.underlying_price["Price"]
         self.chains = self.chains.iloc[:-1]
-
+        self.chains.dte = self.chains.dte.astype(int)
         self.hasIV = "impliedVolatility" in self.chains.columns
         self.hasGreeks = "gamma" in self.chains.columns
 

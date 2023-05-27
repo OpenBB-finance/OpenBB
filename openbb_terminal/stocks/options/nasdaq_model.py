@@ -349,6 +349,10 @@ class Options:
         self.underlying_price = pd.Series(dtype=object)
         try:
             self.chains = get_full_option_chain(self.symbol)
+            now = datetime.now()
+            temp = pd.DatetimeIndex(self.chains.expiration)
+            temp_ = (temp - now).days + 1
+            self.chains["dte"] = temp_
         except Exception:
             return self
         if not self.chains.empty:

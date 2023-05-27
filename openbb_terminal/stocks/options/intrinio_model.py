@@ -546,13 +546,18 @@ class Options:  # pylint: disable=too-many-instance-attributes
         # If the symbol is an index, it needs to be preceded with, $.
         if self.symbol in TICKER_EXCEPTIONS:
             self.symbol = "$" + self.symbol
-        chains = (
-            get_full_option_chain(self.symbol)
-            .set_index(["expiration", "strike", "optionType"])
-            .sort_index()
-        )
+        chains = get_full_option_chain(self.symbol)
         chains.rename(columns={"code": "optionSymbol"}, inplace=True)
+
+        now = datetime.now()
+        temp = pd.DatetimeIndex(chains.expiration)
+        temp_ = (temp - now).days + 1
+        chains["dte"] = temp_
+
         chains["close"] = round(chains["close"], 2)
+
+        chains = chains.set_index(["expiration", "strike", "optionType"]).sort_index()
+
         self.chains = chains.reset_index()
         self.expirations = []
         self.strikes = []

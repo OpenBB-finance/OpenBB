@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+from datetime import datetime
 from typing import List, Optional
 
 import pandas as pd
@@ -460,6 +461,12 @@ class Options:
         if not self.chains.empty:
             self.expirations = self.chains["expiration"].unique().tolist()
             self.strikes = self.chains["strike"].sort_values().unique().tolist()
+
+        now = datetime.now()
+        temp = pd.DatetimeIndex(self.chains.expiration)
+        temp_ = (temp - now).days + 1
+        self.chains["dte"] = temp_
+
         self.hasIV = "impliedVolatility" in self.chains.columns
         self.hasGreeks = "gamma" in self.chains.columns
         return self

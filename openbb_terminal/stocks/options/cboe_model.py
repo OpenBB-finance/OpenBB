@@ -1,5 +1,6 @@
 """Model for retrieving public options data from the CBOE."""
 
+from datetime import datetime
 from typing import Tuple
 
 import pandas as pd
@@ -460,6 +461,12 @@ def get_quotes(symbol: str) -> pd.DataFrame:
         # Joins the parsed symbol into the dataframe.
 
         quotes = option_df_index.join(options_df)
+
+        now = datetime.now()
+        temp = pd.DatetimeIndex(quotes.expiration)
+        temp_ = (temp - now).days + 1
+        quotes["dte"] = temp_
+
         quotes = quotes.set_index(
             keys=["expiration", "strike", "optionType"]
         ).sort_index()
@@ -467,6 +474,8 @@ def get_quotes(symbol: str) -> pd.DataFrame:
         quotes["volume"] = quotes["volume"].astype(int)
         quotes["bidSize"] = quotes["bidSize"].astype(int)
         quotes["askSize"] = quotes["askSize"].astype(int)
+        quotes["previousClose"] = round(quotes["previousClose"], 2)
+        quotes["percentChange"] = round(quotes["percentChange"], 2)
 
     except HTTPError:
         print("There was an error with the request'\n")

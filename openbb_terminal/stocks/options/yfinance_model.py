@@ -404,6 +404,11 @@ class Options:
             )
             self.underlying_price = get_underlying_price(self.symbol)
             self.last_price = self.underlying_price["lastPrice"]
+            now = datetime.now()
+            temp = pd.DatetimeIndex(self.chains.expiration)
+            temp_ = (temp - now).days + 1
+            self.chains["dte"] = temp_
+
         self.hasIV = "impliedVolatility" in self.chains.columns
         self.hasGreeks = "gamma" in self.chains.columns
 
