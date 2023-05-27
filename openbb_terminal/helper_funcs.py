@@ -2314,6 +2314,16 @@ def parse_openbb_script(
                 ROUTINE_VARS["$" + VAR_NAME] = (
                     VAR_VALUES if "," not in VAR_VALUES else VAR_VALUES.split(",")
                 )
+
+                # Just throw a warning when user uses wrong convention
+                numdollars = len(re.findall(r'\$', line))
+                if numdollars > 1:
+                    print(
+                        f"The variable {VAR_NAME} should not be declared as "
+                        f"{'$' * numdollars}{VAR_NAME}. Instead it will be "
+                        f"converted into ${VAR_NAME}."
+                    )
+
             else:
                 lines_without_declarations.append(line)
         else:
