@@ -127,6 +127,74 @@ def load_options_chains(
     return load_cboe(symbol, pydantic)
 
 
+def validate_object(options: object, scope: str = "chains"):
+    """This is an internal helper function for validating the OptionsChains data object passed through the input of
+    functions defined in the OptionsChains class.  The purpose is to handle multi-type inputs with backwards compatibility
+    and provide robust error handling.  The return is the portion of the object that is required to perform the operation.
+
+    Parameters
+    ----------
+    options : object
+        The OptionsChains data object.
+        Accepts both Pydantic and Pandas object types, as defined by `load_options_chains()`.
+        A Pandas DataFrame, or dictionary, with the options chains data is also accepted.
+    scope: str
+        The scope of the data needing to be validated.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with the validated data.
+
+    Example
+    -------
+    >>> chains = validate_object(options, scope="chains")
+    """
+
+    scopes = ["chains"]
+
+    if scope not in scopes:
+        print("Invalid choice.  The supported methods are: [chains]")
+        return pd.DataFrame()
+
+    if scope == "chains":
+        try:
+            if isinstance(options, pd.DataFrame):
+                chains = options.copy()
+
+            if isinstance(options, dict):
+                chains = pd.DataFrame(options)
+
+            elif isinstance(options, object) and not isinstance(options, pd.DataFrame):
+                chains = (
+                    pd.DataFrame(options.chains)  # type: ignore[attr-defined]
+                    if isinstance(options.chains, dict)  # type: ignore[attr-defined]
+                    else options.chains.copy()  # type: ignore[attr-defined]
+                )
+
+                if options is None or chains.empty:
+                    print(
+                        "No options chains data found in the supplied object.  Use load_options_chains()."
+                    )
+                    return pd.DataFrame()
+
+            if "openInterest" not in chains.columns:
+                print("Expected column, openInterest, not found.")
+                return pd.DataFrame()
+
+            if "volume" not in chains.columns:
+                print("Expected column, volume, not found.")
+                return pd.DataFrame()
+        except AttributeError:
+            print("Error: Invalid data type supplied.")
+            return pd.DataFrame()
+
+        return chains
+
+    print("This scope has not been defined. The supported scopes are: [chains]")
+    return pd.DataFrame()
+
+
 @log_start_end(log=logger)
 def calculate_stats(options: object, by: str = "expiration") -> pd.DataFrame:
     """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
@@ -154,41 +222,10 @@ def calculate_stats(options: object, by: str = "expiration") -> pd.DataFrame:
     >>> OptionsChains().calculate_stats(data.chains, "expiration")
     """
 
-    types = ["expiration", "strike"]
-    try:
-        if by not in types:
-            print("Invalid choice. Choose from: expiration, strike")
-            return pd.DataFrame()
+    chains = validate_object(options, scope="chains")
 
-        if isinstance(options, pd.DataFrame):
-            chains = options.copy()
-
-        if isinstance(options, dict):
-            chains = pd.DataFrame(options)
-
-        elif isinstance(options, object) and not isinstance(options, pd.DataFrame):
-            chains = (
-                pd.DataFrame(options.chains)  # type: ignore[attr-defined]
-                if isinstance(options.chains, dict)  # type: ignore[attr-defined]
-                else options.chains.copy()  # type: ignore[attr-defined]
-            )
-
-            if options is None or chains.empty:
-                print(
-                    "No options chains data found in the supplied object.  Use load_options_chains()."
-                )
-                return pd.DataFrame()
-
-        if "openInterest" not in chains.columns:
-            print("Expected column, openInterest, not found.")
-            return pd.DataFrame()
-
-        if "volume" not in chains.columns:
-            print("Expected column, volume, not found.")
-            return pd.DataFrame()
-    except AttributeError:
-        print("Error: Invalid data type supplied.")
-        return pd.DataFrame()
+    if chains.empty or chains is None:
+        return chains == pd.DataFrame()
 
     stats = pd.DataFrame()
     stats["Puts OI"] = (
