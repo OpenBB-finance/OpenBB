@@ -127,7 +127,7 @@ def load_options_chains(
     return load_cboe(symbol, pydantic)
 
 
-def validate_object(options: object, scope: str = "chains"):
+def validate_object(options: object, scope: str = "chains") -> pd.DataFrame:
     """This is an internal helper function for validating the OptionsChains data object passed through the input of
     functions defined in the OptionsChains class.  The purpose is to handle multi-type inputs with backwards compatibility
     and provide robust error handling.  The return is the portion of the object that is required to perform the operation.
