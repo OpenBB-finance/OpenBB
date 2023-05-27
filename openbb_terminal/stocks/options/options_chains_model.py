@@ -222,6 +222,10 @@ def calculate_stats(options: object, by: str = "expiration") -> pd.DataFrame:
     >>> OptionsChains().calculate_stats(data.chains, "expiration")
     """
 
+    if by not in ["expiration", "strike"]:
+        print("Invalid choice.  The supported methods are: [expiration, strike]")
+        return pd.DataFrame()
+
     chains = validate_object(options, scope="chains")
 
     if chains.empty or chains is None:
