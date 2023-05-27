@@ -412,13 +412,37 @@ def get_ticker_info(symbol: str) -> pd.Series:
     pd.Series
         Pandas Series object with meta data for the symbol.
     """
+
+    symbol = symbol.upper()
+
     try:
         info = intrinio.SecurityApi().get_security_by_id(symbol).to_dict()
     except Exception:
         print("Security not found")
         return {}
 
-    return pd.Series(info)
+    info = pd.Series(info).rename(
+        {
+            "company_id": "companyID",
+            "share_class": "shareClass",
+            "round_lot_size": "roundLotSize",
+            "exchange_ticker": "exchangeTicker",
+            "composite_ticker": "compositeTicker",
+            "alternate_tickers": "alternateTickers",
+            "composite_figi": "compositeFIGI",
+            "share_class_figi": "shareClassFIGI",
+            "figi_uniqueid": "figiUniqueID",
+            "primary_listing": "primaryListing",
+            "first_stock_price": "firstStockPrice",
+            "last_stock_price": "lastStockPrice",
+            "last_stock_price_adjustment": "lastStockPriceAdjustment",
+            "last_corporate_action": "lastCorporateAction",
+            "previous_tickers": "previousTickers",
+            "listing_exchange_mic": "listingExchangeMIC",
+        }
+    )
+
+    return info.rename(info["ticker"])
 
 
 def get_underlying_price(symbol: str) -> pd.Series:
@@ -440,11 +464,28 @@ def get_underlying_price(symbol: str) -> pd.Series:
     >>> underlying = get_underlying_price("AAPL")
 
     """
-    underlying_price = (
-        intrinio.SecurityApi().get_security_realtime_price(symbol).to_dict()
+    data = intrinio.SecurityApi().get_security_realtime_price(symbol).to_dict()
+
+    underlying_price = pd.Series(data).rename(
+        {
+            "last_price": "lastPrice",
+            "last_time": "timestamp",
+            "last_size": "lastSize",
+            "bid_price": "bidPrice",
+            "bid_size": "bidSize",
+            "ask_price": "askPrice",
+            "ask_size": "askSize",
+            "open_price": "open",
+            "close_price": "close",
+            "high_price": "high",
+            "low_price": "low",
+            "exchange_volume": "volume",
+            "market_volume": "marketVolume",
+            "updated_on": "lastUpdated",
+        }
     )
 
-    return pd.Series(underlying_price)
+    return underlying_price.rename(underlying_price["security"]["ticker"])
 
 
 class Options:  # pylint: disable=too-many-instance-attributes
@@ -495,7 +536,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
         if self.symbol not in TICKER_EXCEPTIONS:
             self.underlying_name = get_ticker_info(self.symbol)["name"]
             self.underlying_price = get_underlying_price(self.symbol)
-            self.last_price = self.underlying_price["last_price"]
+            self.last_price = self.underlying_price["lastPrice"]
         # If the ticker is not an index, it will not return underlying data.
         else:
             print("Warning: Index options do not currently return underlying data.")
@@ -505,8 +546,14 @@ class Options:  # pylint: disable=too-many-instance-attributes
         # If the symbol is an index, it needs to be preceded with, $.
         if self.symbol in TICKER_EXCEPTIONS:
             self.symbol = "$" + self.symbol
-        self.chains = get_full_option_chain(self.symbol)
-        self.chains.rename(columns={"code": "optionSymbol"}, inplace=True)
+        chains = (
+            get_full_option_chain(self.symbol)
+            .set_index(["expiration", "strike", "optionType"])
+            .sort_index()
+        )
+        chains.rename(columns={"code": "optionSymbol"}, inplace=True)
+        chains["close"] = round(chains["close"], 2)
+        self.chains = chains.reset_index()
         self.expirations = []
         self.strikes = []
         if not self.chains.empty:
@@ -530,9 +577,23 @@ class Options:  # pylint: disable=too-many-instance-attributes
                 .to_dict()
             )
             self.underlying_name = underlying["security"]["name"]
-            self.underlying_price = pd.Series(underlying["stock_prices"][0])
-            self.last_price = self.underlying_price["adj_close"]
-        # If the ticker is not an index, it will not return underlying data.
+            underlying = pd.Series(underlying["stock_prices"][0])
+            underlying = underlying.rename(
+                {
+                    "adj_close": "adjClose",
+                    "adj_high": "adjHigh",
+                    "adj_low": "adjLow",
+                    "adj_open": "adjOpen",
+                    "adj_volume": "adjVolume",
+                    "split_ratio": "splitRatio",
+                    "percent_change": "changePercent",
+                    "fifty_two_week_high": "fiftyTwoWeekHigh",
+                    "fifty_two_week_low": "fiftyTwoWeekLow",
+                }
+            )
+            self.underlying_price = underlying.rename(self.symbol)
+            self.last_price = underlying["adjClose"]
+        # If the ticker is an index, it will not return underlying data.
         else:
             print("Warning: Index options do not currently return underlying data.")
             self.underlying_name = self.symbol
@@ -541,8 +602,15 @@ class Options:  # pylint: disable=too-many-instance-attributes
         # If the symbol is an index, it needs to be preceded with, $.
         if self.symbol in TICKER_EXCEPTIONS:
             self.symbol = "$" + self.symbol
-        self.chains = get_full_chain_eod(self.symbol, date)
-        self.chains.rename(columns={"code": "optionSymbol"}, inplace=True)
+        chains = get_full_chain_eod(self.symbol, date)
+        chains.rename(
+            columns={"code": "optionSymbol", "close_bid": "bid", "close_ask": "ask"},
+            inplace=True,
+        )
+        chains.set_index(["expiration", "strike", "optionType"]).sort_index(
+            inplace=True
+        )
+        self.chains = chains.drop(columns=["ticker"])
         self.expirations = []
         self.strikes = []
         if not self.chains.empty:
