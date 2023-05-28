@@ -63,7 +63,7 @@ def display_historical(
 
     if df_hist.empty:
         console.print(f"[red]No data found for {chain_id}[/red]")
-        return
+        return None
 
     if raw:
         print_rich_table(
