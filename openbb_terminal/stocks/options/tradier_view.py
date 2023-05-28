@@ -62,9 +62,9 @@ def display_historical(
     if df_hist.empty:
         if chain_id:
             console.print(f"No historical data found for {chain_id} ")
-            return
+            return None
         console.print(f"No historical data found for {symbol} {expiry} ")
-        return
+        return None
 
     if raw:
         print_rich_table(
