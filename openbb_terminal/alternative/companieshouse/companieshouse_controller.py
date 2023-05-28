@@ -8,7 +8,7 @@ from typing import List, Optional
 from openbb_terminal.alternative.companieshouse import companieshouse_view
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -64,6 +64,7 @@ class CompaniesHouseController(BaseController):
         console.print(text=mt.menu_text, menu="UK Companies House Data")
 
     @log_start_end(log=logger)
+    @check_api_key(["API_COMPANIESHOUSE_KEY"])
     def call_search(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -115,6 +116,7 @@ class CompaniesHouseController(BaseController):
                 console.print("[red]No entries found for search string[/red]\n")
 
     @log_start_end(log=logger)
+    @check_api_key(["API_COMPANIESHOUSE_KEY"])
     def call_load(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -160,6 +162,7 @@ class CompaniesHouseController(BaseController):
                 )
 
     @log_start_end(log=logger)
+    @check_api_key(["API_COMPANIESHOUSE_KEY"])
     def call_officers(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -195,6 +198,7 @@ class CompaniesHouseController(BaseController):
             companieshouse_view.display_officers(companyNo, export=ns_parser.export)
 
     @log_start_end(log=logger)
+    @check_api_key(["API_COMPANIESHOUSE_KEY"])
     def call_signifcontrol(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -236,6 +240,7 @@ class CompaniesHouseController(BaseController):
             #     console.print("[red]No data found for company number[/red]\n")
 
     @log_start_end(log=logger)
+    @check_api_key(["API_COMPANIESHOUSE_KEY"])
     def call_filings(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -271,6 +276,7 @@ class CompaniesHouseController(BaseController):
             companieshouse_view.display_filings(companyNo, export=ns_parser.export)
 
     @log_start_end(log=logger)
+    @check_api_key(["API_COMPANIESHOUSE_KEY"])
     def call_filingdocument(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
