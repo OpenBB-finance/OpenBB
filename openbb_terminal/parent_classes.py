@@ -697,9 +697,10 @@ class BaseController(metaclass=ABCMeta):
             if not is_local():
                 routine = read_routine(file_name=routine_file)
                 if routine is not None:
+                    name = SESSION_RECORDED_NAME.split(sep=".openbb", maxsplit=-1)[0]
                     response = Hub.upload_routine(
                         auth_header=current_user.profile.get_auth_header(),
-                        name=SESSION_RECORDED_NAME,
+                        name=name,
                         routine=routine,
                     )
                     if response is not None and response.status_code == 409:
@@ -711,7 +712,7 @@ class BaseController(metaclass=ABCMeta):
                         if i.lower() in ["y", "yes"]:
                             response = Hub.upload_routine(
                                 auth_header=current_user.profile.get_auth_header(),
-                                name=SESSION_RECORDED_NAME,
+                                name=name,
                                 routine=routine,
                                 override=True,
                             )
