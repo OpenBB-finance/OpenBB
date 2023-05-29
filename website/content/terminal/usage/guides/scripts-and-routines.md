@@ -167,6 +167,8 @@ When declared as a list, the user needs to use the indexing to access the elemen
 
 When a single element is defined, then the user can access it through the variable name or indexing the first position equally, i.e. `$DATE` = `$DATE[0]`.
 
+Note that slicing is also possible, and the same convention as python is utilized. If the user has defined inputs `AAPL,MSFT,TSLA,NVDA,GOOG` then by selecting `$ARGV[1:3]` the tickers `MSFT,TSLA` are selected.
+
 ## Relative time kewyword variables
 
 The previous input variables are very powerful and can be used for a wide range of functionalities - one of them being dates. E.g. a typical example could be running a script routine with `exe myscript -i TSLA,2010-01-01` where `$ARGV[1]=2010-01-01` and thus it denotes an instant of time.
@@ -212,7 +214,7 @@ FOREACH $$VAR in $ARGV
 ```
 
 ```
-# Iterates through ARGV elements in position 1,2,3
+# Iterates through ARGV elements in position 1,2
 foreach $$VAR in $ARGV[1:3]
     load $$VAR --start 2022-01-01
     ba
