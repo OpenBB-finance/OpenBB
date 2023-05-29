@@ -124,6 +124,17 @@ def test_parse_openbb_script():
     [
         (
             """
+# This is a comment that will be ignored
+stocks/load aapl/candle
+/
+            """,
+            None,
+            "",
+            "/stocks/load aapl/candle/home",
+        ),
+        #############################
+        (
+            """
 # Set variable
 $DATE = 2022-01-01
 
@@ -288,6 +299,30 @@ stocks/load $ARGV[0]/candle --start $1MONTHSAGO
             "TSLA,MSFT".split(","),
             "",
             "/stocks/load TSLA/candle --start 2023-05-04",
+        ),
+        #############################
+        (
+            """
+# cool beans this is a comment that should be ignored
+
+stocks/ca/set $ARGV[1:]/historical
+..
+            """,
+            "TSLA,MSFT,AAPL,NVDA".split(","),
+            "",
+            "/stocks/ca/set MSFT,AAPL,NVDA/historical/..",
+        ),
+        #############################
+        (
+            """
+# cool beans this is a comment that should be ignored
+
+stocks/ca/set $ARGV/historical
+/
+            """,
+            "TSLA,MSFT,AAPL,NVDA".split(","),
+            "",
+            "/stocks/ca/set TSLA,MSFT,AAPL,NVDA/historical/home",
         ),
     ],
 )

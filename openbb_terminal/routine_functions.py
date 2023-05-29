@@ -445,5 +445,10 @@ def parse_openbb_script(
         parsed_script = f"/{'/'.join([line.rstrip() for line in final_lines])}".replace(
             "//", "/home/"
         )
+        # If the script finishes with // it means that we converted it to /home/
+        # This means that we are expecting a command to follow, but since this is
+        # the end of the script, we need to remove the trailing /
+        if parsed_script.endswith("/home/"):
+            parsed_script = parsed_script[:-1]
 
     return "", parsed_script
