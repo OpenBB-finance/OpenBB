@@ -19,27 +19,6 @@ import DownloadFinishedDialog from "./Dialogs/DownloadFinishedDialog";
 
 const Plot = createPlotlyComponent(Plotly);
 
-function CreateDataXrangeChunks(data: Plotly.PlotData[], xrange?: any) {
-	const chunks = [];
-	let chunk = [];
-	const XDATA = data.filter(
-		(trace) =>
-			trace.x !== undefined && trace.x.length > 0 && trace.x[0] !== undefined,
-	);
-	const xaxis = XDATA[0]?.x ? XDATA[0].x : XDATA[1].x ? XDATA[1].x : [];
-	for (let i = 0; i < xaxis.length; i++) {
-		if (xaxis[i] >= xrange[0] && xaxis[i] <= xrange[1]) {
-			chunk.push(i);
-		} else if (chunk.length > 0) {
-			chunks.push(chunk);
-			chunk = [];
-		}
-	}
-
-	if (chunk.length > 0) chunks.push(chunk);
-	return chunks;
-}
-
 function CreateDataXrange(data: Plotly.PlotData[], xrange?: any) {
 	if (!xrange) {
 		xrange = [
@@ -47,28 +26,41 @@ function CreateDataXrange(data: Plotly.PlotData[], xrange?: any) {
 			data[0]?.x[data[0].x.length - 1],
 		];
 	}
-	const chunks = CreateDataXrangeChunks(data, xrange);
 	const new_data = [];
-	chunks.forEach((chunk) => {
-		data.forEach((trace) => {
-			const new_trace = { ...trace };
-			const data_keys = ["x", "y", "low", "high", "open", "close", "text"];
-			data_keys.forEach((key) => {
-				if (trace[key] && Array.isArray(trace[key])) {
-					new_trace[key] = trace[key].filter((_, i) => chunk.includes(i));
-				}
-			});
-			const color_keys = ["marker", "line"];
-			color_keys.forEach((key) => {
-				if (trace[key]?.color && Array.isArray(trace[key].color)) {
-					new_trace[key] = { ...trace[key] };
-					new_trace[key].color = trace[key].color.filter((_, i) =>
-						chunk.includes(i),
-					);
-				}
-			});
-			new_data.push(new_trace);
+	data.forEach((trace) => {
+		const new_trace = { ...trace };
+		const data_keys = [
+			"x",
+			"y",
+			"low",
+			"high",
+			"open",
+			"close",
+			"text",
+			"customdata",
+		];
+		const xaxis = trace.x ? trace.x : [];
+		const chunks = [];
+		for (let i = 0; i < xaxis.length; i++) {
+			if (xaxis[i] >= xrange[0] && xaxis[i] <= xrange[1]) {
+				chunks.push(i);
+			}
+		}
+		data_keys.forEach((key) => {
+			if (trace[key] && Array.isArray(trace[key])) {
+				new_trace[key] = trace[key].filter((_, i) => chunks.includes(i));
+			}
 		});
+		const color_keys = ["marker", "line"];
+		color_keys.forEach((key) => {
+			if (trace[key]?.color && Array.isArray(trace[key].color)) {
+				new_trace[key] = { ...trace[key] };
+				new_trace[key].color = trace[key].color.filter((_, i) =>
+					chunks.includes(i),
+				);
+			}
+		});
+		new_data.push(new_trace);
 	});
 
 	if (new_data.length === 0) return data;
@@ -475,18 +467,30 @@ export default function Chart({
 				non_blocking(async function (eventdata) {
 					if (eventdata["xaxis.range[0]"] === undefined) return;
 					const data = { ...originalData };
-					const to_update = DynamicLoad({
+					await DynamicLoad({
 						event: eventdata,
 						figure: data,
+					}).then(async (to_update) => {
+						setPlotData(to_update);
+						Plotly.react(plotDiv, to_update.data, to_update.layout);
+						const scaled = await autoScaling(eventdata, plotDiv);
+						Plotly.update(plotDiv, {}, scaled);
 					});
-					const newPlotData = await to_update;
-					setPlotData(newPlotData);
-
-					Plotly.react(plotDiv, newPlotData.data, newPlotData.layout);
-					const scaled = await autoScaling(eventdata, plotDiv);
-					Plotly.update(plotDiv, {}, scaled);
+				}, 100),
+			);
+			plotDiv.on(
+				"plotly_click",
+				non_blocking(async function (eventdata) {
+					const point = eventdata.points[0];
+					if (point === undefined) return;
+					if (point?.customdata === undefined) return;
+					const data = point.customdata;
+					if (data.length > 1 && data[1].startsWith("https://")) {
+						window.open(data[1], "_blank");
+					}
 				}, 10),
 			);
+
 			if (theme !== "dark") {
 				setChangeTheme(true);
 			}
