@@ -89,7 +89,7 @@ def pywry_login(welcome: bool = True):
         ):
             response[new_key] = response.pop(r_key, None)
 
-        if remember := response.get("remember_me", False):
+        if remember := response.get("remember", False):
             Local.save_session(response)
 
         return login_and_launch(response, remember)
