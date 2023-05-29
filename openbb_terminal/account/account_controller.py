@@ -7,7 +7,7 @@ from openbb_terminal.account.account_view import (
     display_default_routines,
     display_personal_routines,
 )
-from openbb_terminal.account.reloop import set_reloop
+from openbb_terminal.account.show_prompt import set_show_prompt
 from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -150,7 +150,7 @@ class AccountController(BaseController):
             console.print("[info]You are already logged in.[/info]")
         else:
             if ns_parser:
-                set_reloop(True)
+                set_show_prompt(True)
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
@@ -173,7 +173,7 @@ class AccountController(BaseController):
                     cls=True,
                 )
                 if is_installer():
-                    set_reloop(True)
+                    set_show_prompt(True)
                 else:
                     self.print_help()
 
