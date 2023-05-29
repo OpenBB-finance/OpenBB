@@ -1,6 +1,7 @@
 import re
 from datetime import datetime, timedelta
 from typing import Dict, List, Match, Optional, Tuple, Union
+from openbb_terminal.rich_config import console
 
 from dateutil.relativedelta import relativedelta
 
@@ -206,7 +207,7 @@ def parse_openbb_script(
                 # Just throw a warning when user uses wrong convention
                 numdollars = len(re.findall(r"\$", line))
                 if numdollars > 1:
-                    print(
+                    console.print(
                         f"The variable {VAR_NAME} should not be declared as "
                         f"{'$' * numdollars}{VAR_NAME}. Instead it will be "
                         f"converted into ${VAR_NAME}."
@@ -408,6 +409,7 @@ def parse_openbb_script(
     parsed_script = ""
     final_lines = list()
     varname = "VAR"
+    varused_inside = False
     for line in lines_with_vars_replaced:
         # Found 'foreach' header associated with loop
         match = re.search(r"foreach \$\$([A-Za-z\_]+) in ([A-Za-z0-9,-]+)", line, re.IGNORECASE)
@@ -427,9 +429,20 @@ def parse_openbb_script(
                 for var in foreach_loop:
                     # Iterate through all lines within foreach and end loop
                     for foreach_line_loop in foreach_lines_loop:
-                        final_lines.append(
-                            foreach_line_loop.replace(f"$${varname}", var).strip()
-                        )
+                        if f"$${varname}" in foreach_line_loop:
+                            final_lines.append(
+                                foreach_line_loop.replace(f"$${varname}", var).strip()
+                            )
+                            varused_inside = True
+                        else:
+                            final_lines.append(foreach_line_loop.strip())
+
+                if not varused_inside:
+                    console.print(
+                        f"The variable {varname} was used in foreach header "
+                        "but it wasn't used inside the loop."
+                    )
+                    varused_inside = False
 
                 # Since this has been processed we reset the foreach loop lines
                 within_foreach = False
