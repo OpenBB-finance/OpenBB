@@ -1,6 +1,6 @@
 import re
 from datetime import datetime, timedelta
-from typing import List, Match, Optional, Tuple, Dict, Union
+from typing import Dict, List, Match, Optional, Tuple, Union
 
 from dateutil.relativedelta import relativedelta
 
