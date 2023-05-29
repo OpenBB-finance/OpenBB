@@ -118,6 +118,7 @@ def test_parse_openbb_script():
     )
 
 
+@freeze_time("2023-06-04")
 @pytest.mark.parametrize(
     "routine, input_args, expected_error, expected_queue",
     [
@@ -278,6 +279,15 @@ stocks/load $ARGV[a]
             "TSLA,MSFT".split(","),
             "[red]Index 'a' is not a value[/red]",
             "",
+        ),
+        #############################
+        (
+            """
+stocks/load $ARGV[0]/candle --start $1MONTHSAGO
+            """,
+            "TSLA,MSFT".split(","),
+            "",
+            "/stocks/load TSLA/candle --start 2023-05-04",
         ),
     ],
 )
