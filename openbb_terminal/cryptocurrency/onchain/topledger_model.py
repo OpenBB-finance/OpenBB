@@ -186,7 +186,7 @@ MAPPING = {
 
 @log_start_end(log=logger)
 def make_request(org_slug=None, query_slug=None) -> Tuple[Optional[int], Any]:
-    """Helper methods for requests [Source: https://docs.topledger.xyz/]
+    """Helper methods for requests to topledger's query results [Source: Topledger]
 
     Parameters
     ----------
@@ -218,6 +218,16 @@ def make_request(org_slug=None, query_slug=None) -> Tuple[Optional[int], Any]:
 
     query = query_items[0]
     query_id = query["id"]
+
+    """
+    Api Documentation
+    ----------
+    :param string org_slug: Slug of Organization
+    :param string query_id: the ID of the query to fetch result of
+    :param string api_key: Authentication Key to fetch result
+
+    API Format: HOST/<org_slug>/api/queries/<query_id>/results.json?api_key=<api_key>
+    """
 
     url = f"https://analytics.topledger.xyz/{org_slug}/api/queries/{query_id}/results.json?api_key={BASE_API_KEY}"
     try:

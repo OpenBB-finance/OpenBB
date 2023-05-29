@@ -460,7 +460,7 @@ class CryptoOnChain(Category):
         `top`: Get top 50 tokens. [Source: Ethplorer]\n
         `top_chart`: Display top ERC20 tokens [Source: Ethplorer]\n
         `topledger`: Returns Topledger's Data for the given Organization's Slug[org_slug] based on Query Slug[query_slug] [Source: Topledger]\n
-        `topledger_chart`: Display on-chain data from Topledger. [Source: https://docs.topledger.xyz/]\n
+        `topledger_chart`: Display on-chain data from Topledger. [Source: Topledger]\n
         `ttcp`: Get most traded crypto pairs on given decentralized exchange in chosen time period.\n
         `ttcp_chart`: Prints table showing most traded crypto pairs on given decentralized exchange in chosen time period.\n
         `tv`: Get token volume on different Decentralized Exchanges. [Source: https://graphql.bitquery.io/]\n

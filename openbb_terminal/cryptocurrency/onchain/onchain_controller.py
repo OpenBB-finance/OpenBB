@@ -440,7 +440,7 @@ class OnchainController(BaseController):
             prog="topledger",
             description="""
                     Display on-chain data from topledger.
-                    [Source: https://docs.topledger.xyz/]
+                    [Source: Topledger]
                 """,
         )
 

@@ -23,7 +23,7 @@ def display_topledger_data(
     export: str = "",
     sheet_name: Optional[str] = None,
 ) -> None:
-    """Display on-chain data from Topledger. [Source: https://docs.topledger.xyz/]
+    """Display on-chain data from Topledger. [Source: Topledger]
 
     Parameters
     ----------
