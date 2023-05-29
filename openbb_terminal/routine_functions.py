@@ -5,7 +5,7 @@ from typing import Dict, List, Match, Optional, Tuple, Union
 from dateutil.relativedelta import relativedelta
 
 # pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
-# pylint: too-many-branches,too-many-return-statements
+# pylint: disable=too-many-branches,too-many-return-statements
 
 # Necessary for OpenBB keywords
 MONTHS_VALUE = {
