@@ -448,7 +448,8 @@ foreach $$X in PLTR,BB
     load $$X --start $LASTJANUARY
             """,
             "",
-            "[red]The script has a foreach loop that doesn't terminate. Add the keyword 'end' to explicitly terminate loop[/red]",
+            "[red]The script has a foreach loop that doesn't terminate. "
+            "Add the keyword 'end' to explicitly terminate loop[/red]",
             "",
         ),
         #############################
@@ -460,7 +461,8 @@ stocks
 end
             """,
             "",
-            "[red]The script has a foreach loop that terminates before it gets started. Add the keyword 'foreach' to explicitly start loop[/red]",
+            "[red]The script has a foreach loop that terminates before it gets started. "
+            "Add the keyword 'foreach' to explicitly start loop[/red]",
             "",
         ),
         #############################
