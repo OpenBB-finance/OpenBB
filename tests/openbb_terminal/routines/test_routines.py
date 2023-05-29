@@ -343,6 +343,76 @@ stocks/ca/set $ARGV[1:3]/historical
             "",
             "/home/stocks/ca/set MSFT,AAPL/historical",
         ),
+        #############################
+        (
+            """
+
+# Set list of fixed variables
+$DATES = 2022-01-01,2023-01-01
+
+# Charts from all ARGV elements from position 1 onwards
+stocks
+foreach $$VAR in $ARGV[1:]
+    load $$VAR --start $DATES[0] --end $DATES[1]/dps/psi/..
+end
+            """,
+            "TSLA,MSFT,NVDA".split(","),
+            "",
+            "/stocks/load MSFT --start 2022-01-01 --end 2023-01-01/dps/psi/../load NVDA --start 2022-01-01 --end 2023-01-01/dps/psi/..",
+        ),
+        #############################
+        (
+            """
+# Set list of fixed variables
+$DATE = 2022-01-01
+
+# Charts from all ARGV elements from position 1 onwards
+stocks
+FOREACH $$VAR in $ARGV
+     load $$VAR --start $DATE[0]/ins/stats/..
+  end
+            """,
+            "TSLA,MSFT".split(","),
+            "",
+            "/stocks/load TSLA --start 2022-01-01/ins/stats/../load MSFT --start 2022-01-01/ins/stats/..",
+        ),
+        #############################
+        (
+            """
+# Set list of fixed variables
+$DATE = 2022-01-01
+
+# Charts from all ARGV elements from position 1 onwards
+stocks
+# Charts elements in positions 1 and 3 of ARGV
+    foreach $$VAR in $ARGV[1:3]
+        load $$VAR --start $DATE
+        ba
+        regions
+        ..
+END
+            """,
+            "TSLA,MSFT,AAPL,PLTR".split(","),
+            "",
+            "/stocks/load MSFT --start 2022-01-01/ba/regions/../load AAPL --start 2022-01-01/ba/regions/..",
+        ),
+        #############################
+        (
+            """
+stocks
+
+# Charts for PLTR and BB
+foreach $$VAR in PLTR,BB
+    load $$VAR --start $LASTJANUARY
+    candle
+END
+
+home
+            """,
+            "",
+            "",
+            "/stocks/load PLTR --start 2023-01-01/candle/load BB --start 2023-01-01/candle/home",
+        ),
     ],
 )
 def test_openbb_routines(routine, input_args, expected_error, expected_queue):
