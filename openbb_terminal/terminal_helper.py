@@ -263,6 +263,7 @@ def print_guest_block_msg():
 
 def is_installer() -> bool:
     """Tell whether or not it is a packaged version (Windows or Mac installer"""
+    return True
     return getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
 
 

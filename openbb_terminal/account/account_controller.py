@@ -7,6 +7,7 @@ from openbb_terminal.account.account_view import (
     display_default_routines,
     display_personal_routines,
 )
+from openbb_terminal.account.reloop import set_reloop
 from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -25,35 +26,9 @@ from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.terminal_helper import print_guest_block_msg
+from openbb_terminal.terminal_helper import is_installer, print_guest_block_msg
 
 logger = logging.getLogger(__name__)
-
-
-__login_called = False
-
-
-def get_login_called():
-    """Get the login/logout called flag.
-
-    Returns
-    -------
-    bool
-        The login/logout called flag.
-    """
-    return __login_called
-
-
-def set_login_called(value: bool):
-    """Set the login/logout called flag.
-
-    Parameters
-    ----------
-    value : bool
-        The login/logout called flag.
-    """
-    global __login_called  # pylint: disable=global-statement
-    __login_called = value
 
 
 class AccountController(BaseController):
@@ -175,7 +150,7 @@ class AccountController(BaseController):
             console.print("[info]You are already logged in.[/info]")
         else:
             if ns_parser:
-                set_login_called(True)
+                set_reloop(True)
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
@@ -197,7 +172,10 @@ class AccountController(BaseController):
                     token=current_user.profile.get_token(),
                     cls=True,
                 )
-                self.print_help()
+                if is_installer():
+                    set_reloop(True)
+                else:
+                    self.print_help()
 
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):

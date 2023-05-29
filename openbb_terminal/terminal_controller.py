@@ -23,9 +23,9 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.account.account_controller import (
-    get_login_called,
-    set_login_called,
+from openbb_terminal.account.reloop import (
+    get_reloop,
+    set_reloop,
 )
 from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
@@ -873,7 +873,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 break
 
         try:
-            if an_input in "login" and get_login_called() and is_auth_enabled():
+            if an_input in ("login", "logout") and get_reloop() and is_auth_enabled():
                 break
 
             # Process the input command
@@ -919,8 +919,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if an_input in "login" and get_login_called() and is_auth_enabled():
-        set_login_called(False)
+    if an_input in ("login", "logout") and get_reloop() and is_auth_enabled():
+        set_reloop(False)
         return session_controller.main()
 
 
