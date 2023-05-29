@@ -313,7 +313,7 @@ def check_for_updates() -> None:
                 )
                 if current_version < latest_version:
                     console.print(
-                        "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+                        "[yellow]Check for updates at https://my.openbb.co/app/terminal/download[/yellow]"
                     )
 
                 else:
