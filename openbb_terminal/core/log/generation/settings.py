@@ -3,6 +3,7 @@ from copy import deepcopy
 from pathlib import Path
 
 # IMPORTATION THIRDPARTY
+from typing import List
 
 # IMPORTATION INTERNAL
 
@@ -84,7 +85,7 @@ class LogSettings:
         return self.__frequency
 
     @property
-    def handler_list(self) -> str:
+    def handler_list(self) -> List[str]:
         return self.__handler_list
 
     @property
@@ -99,7 +100,7 @@ class LogSettings:
         self,
         directory: Path,
         frequency: str,
-        handler_list: str,
+        handler_list: List[str],
         rolling_clock: bool,
         verbosity: int,
     ):
@@ -107,7 +108,7 @@ class LogSettings:
         Args:
             directory (Path): Directory used to store log files.
             frequency (str): Frequency of the log files rotation.
-            handler_list (str) : Comma separated list of handlers : stdout,stderr,noop,file.
+            handler_list (List[str]) : list of handlers : stdout,stderr,noop,file,posthog.
             rolling_clock (bool): Whether or not to start a Thread to rotate logs even when inactive.
             verbosity (str): Verbosity level as defined in Python `logging` module.
         """

@@ -1,0 +1,10 @@
+alternative
+oss
+rs ${repo=openbb-finance/openbbterminal}
+sh ${repo=openbb-finance/openbbterminal}
+tr
+rossidx
+rossidx --sortby Raised [$M] --reverse
+help
+reset
+exit

@@ -105,7 +105,13 @@ jobs:
       - name: Run Integration Tests
         run: |
           dist\OpenBBTerminal\OpenBBTerminal.exe -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb | tee result.txt
-          Select-String "================================ integration test summary ================================" result.txt -Context 0,100 | Select-Object -Last 2000 | Out-File failed_tests.txt
+          Select-String "================================ Integration Test Summary ================================" result.txt -Context 0,100 | Select-Object -Last 2000 | Out-File summary.txt
+          Write-output `n >> summary.txt
+
+      - name: Run Integration Tests Coverage Report
+        run: |
+          dist\OpenBBTerminal\OpenBBTerminal.exe -t --coverage | tee result.txt
+          Select-String "============================== Integration Coverage Summary ==============================" result.txt -Context 0,300 | Select-Object -Last 2000 >> summary.txt
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
@@ -113,7 +119,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           initial_comment: "Windows Build Integration test summary"
           title: "Windows Build Integration test summary"
-          path: failed_tests.txt
+          path: summary.txt
           channel: ${{ secrets.SLACK_CHANNEL_ID }}
 
       # Cleaning ------------------------

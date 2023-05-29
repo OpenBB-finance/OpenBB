@@ -1,0 +1,43 @@
+reports
+h
+help
+?
+q
+reports
+..
+reports
+
+crypto
+crypto --symbol ${crypto=BTC}
+
+economy
+
+equity
+equity --symbol ${ticker=AAPL}
+
+
+etf
+etf --symbol VEA
+etf --symbol VWCE
+etf --symbol ABCEF
+
+forecast
+forecast --symbol AAPL
+forecast --symbol NXPI
+forecast --symbol PETR3.SA
+
+forex
+forex --symbol USDEUR
+forex --symbol USDVND
+forex --symbol USDABCXYZ
+
+portfolio --transactions holdings_example.xlsx
+portfolio --transactions holdings_test.xlsx
+
+run
+run --file dummyfile.csv
+run --file dummyfile.ipynb
+
+help
+reset
+exit

@@ -1,0 +1,10 @@
+alternative
+realestate
+sales -p CV67EB --limit 3
+?
+regionstats -r york
+townsales -t London -s 2022-01-01 -e 2022-01-03
+townsales -town London -startdate 2022-01-01 -enddate 2022-01-03 -limit 3
+reset
+help
+exit

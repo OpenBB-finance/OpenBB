@@ -74,6 +74,7 @@ def fixture_get_bitcoin(mocker):
     with open(
         "tests/openbb_terminal/cryptocurrency/json/test_cryptocurrency_helpers/btc_usd_test_data.json",
         encoding="utf8",
+        newline="\n",
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return

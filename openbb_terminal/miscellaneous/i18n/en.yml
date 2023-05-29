@@ -967,19 +967,23 @@ en:
   econometrics/combine: Combine columns from different datasets
   econometrics/rename: Rename column from dataset
   econometrics/lag: Add lag to a variable by shifting a column
-  econometrics/_regression_: Regression
-  econometrics/_regression_tests_: Regression Tests
+  econometrics/_panel_: Panel
+  econometrics/_residuals_: Residuals
   econometrics/ols: fit a (multi) linear regression model
   econometrics/norm: perform normality tests on a column of a dataset
   econometrics/root: perform unitroot tests (ADF & KPSS) on a column of a dataset
   econometrics/panel: estimate model based on various regression techniques
   econometrics/compare: compare results of all estimated models
-  econometrics/_tests_: Tests
+  econometrics/_time_series_: Time Series
   econometrics/dwat: Durbin-Watson autocorrelation test on the residuals of the regression
   econometrics/bgod: Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
   econometrics/bpag: Breusch-Pagan heteroscedasticity test on the residuals of the regression
   econometrics/granger: Granger causality tests on two columns
   econometrics/coint: co-integration test on a multitude of columns
+  econometrics/garch: estimate future volatility with GARCH
+  econometrics/ret: calculate returns for the given time series
+  econometrics/vif: perform collinearity test (VIF)
+  econometrics/_assumption_testing_: Assumption Testing
   portfolio/bro: brokers holdings    supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization   optimize your portfolio weights efficiently
   portfolio/load: load transactions into the portfolio (use load --example for an example)

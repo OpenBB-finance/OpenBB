@@ -1,0 +1,83 @@
+stocks
+load ${ticker=aapl}
+fa
+income -l 2 --source YahooFinance
+income -l 2 --source Polygon --quarter
+income -l 2 --source AlphaVantage --ratios
+income -l 2 --source FinancialModelingPrep
+income -l 2 --ticker AMZN --source EODHD
+balance -l 2 --source YahooFinance --ratios
+balance -l 2 --source Polygon --quarter
+balance -l 2 --ticker DDS --source AlphaVantage
+balance -l 2 --source FinancialModelingPrep
+balance -l 2 --source EODHD
+cash -l 2 --source YahooFinance
+cash -l 2 --source Polygon --quarter
+cash -l 2 --source AlphaVantage --ratios
+cash -l 2 --source FinancialModelingPrep
+cash -l 2 --ticker GOOG --source EODHD
+income -l 2 --source YahooFinance --plot gross_profit
+income -l 2 --source Polygon --plot gross_profit
+income -l 2 --source AlphaVantage --plot gross_profit
+income -l 2 --source FinancialModelingPrep --plot gross_profit
+income -l 2 --source EODHD --plot gross_profit
+balance -l 2 --source YahooFinance --plot total_assets
+balance -l 2 --source Polygon --plot total_assets
+balance -l 2 --source AlphaVantage --plot total_assets
+balance -l 2 --source FinancialModelingPrep --plot total_assets
+balance -l 2 --source EODHD --plot total_assets
+cash -l 2 --source YahooFinance --plot operating_cash_flow
+cash -l 2 --source Polygon --plot operating_cash_flow
+cash -l 2 --source AlphaVantage --plot operating_cash_flow
+cash -l 2 --source FinancialModelingPrep --plot operating_cash_flow
+cash -l 2 --source EODHD --plot operating_cash_flow
+mgmt
+analysis
+score
+enterprise
+enterprise --source FinancialModelingPrep
+enterprise --source YahooFinance
+mktcap --ticker MSFT
+mktcap --method enterprise_value
+mktcap --help
+mktcap --quarter
+metrics
+ratios
+growth
+warnings
+warnings -d
+dcfc
+mktcap --source YahooFinance --start 1980-01-01 --end 2023-05-01
+shrs
+shrs major
+shrs mutualfund
+divs
+divs -p
+splits
+overview
+earnings --ticker DDS --source YahooFinance
+earnings --source AlphaVantage --quarter --limit 1
+fraud
+dupont
+epsfc
+revfc
+analysis
+rating
+rot
+rot -l 3 --raw
+pt --ticker GOOG
+pt -l 3 --raw
+est
+est -e annualrevenue
+est -e annualearnings
+est -e quarterearnings
+sec
+supplier
+customer
+load ${ticker=tsla}
+arktrades
+dcf -t aapl -g -a --no-filter
+help
+quit
+reset
+exit

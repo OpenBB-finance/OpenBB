@@ -36,54 +36,23 @@ class DataBento(BaseModel):
         Note that only nonadjusted data is available."""
         self.exchange = "XNAS.ITCH"
         self.stype = "native"
-        if not self.validate_symbol():
-            return pd.DataFrame()
         return self.get_historical()
-
-    def validate_symbol(self):
-        """Validates the symbol is supported by DataBento.  There is no API for this, so we will use their
-        Symbology endpoint to see if something exists.  Doing a long time range can make this request on the order of
-        one minute, so try to keep smaller requests."""
-        base_url = "https://hist.databento.com/v0/symbology.resolve"
-        params = {
-            "dataset": self.exchange,
-            "symbols": self.symbol,
-            "start_date": self.start,
-            "end_date": self.end,
-            "stype_in": "smart",
-            "stype_out": "product_id",
-        }
-        auth = requests.auth.HTTPBasicAuth(
-            get_current_user().credentials.API_DATABENTO_KEY, ""
-        )
-        # This seems to only work for futures? Assume the user is entering correct stock ticker
-        if self.exchange == "XNAS.ITCH":
-            return True
-        result = request(base_url, params=params, auth=auth, timeout=30)
-        if "message" not in result.json():
-            console.print(
-                "Issue validating symbol in the date range. Please check with DataBento for symbology."
-            )
-            return False
-        return result.json()["message"] != "Not found"
 
     def get_historical_futures(self):
         """Gets historical EODfutures data from DataBento.  Currently, just CME is supported.
         Note this gets the highest volume contract each day"""
         self.exchange = "GLBX.MDP3"
-        self.stype = "smart"
-        if not self.validate_symbol():
-            return pd.DataFrame()
+        self.stype = "continuous"
         return self.get_historical()
 
     @log_start_end(log=logger)
     @check_api_key(["API_DATABENTO_KEY"])
     def get_historical(self) -> pd.DataFrame:
         """Prepares the request to be made.  I am using their https interface instead of their python client.
-        Their next update will change symbol.V.0 to symbol.C.0"""
+        This updated to .C.0"""
 
         base_url = "https://hist.databento.com/v0/timeseries.get_range"
-        symbol = self.symbol + ".V.0" if self.exchange == "GLBX.MDP3" else self.symbol
+        symbol = self.symbol + ".C.0" if self.exchange == "GLBX.MDP3" else self.symbol
         params = {
             "dataset": self.exchange,
             "symbols": symbol,
@@ -98,20 +67,24 @@ class DataBento(BaseModel):
         )
         data = self.process_request(base_url, params, auth)
         if data.empty:
-            console.print(f"No data found for symbol `{self.symbol}`.")
+            return pd.DataFrame()
         return data
 
     def process_request(self, base_url, params, auth) -> pd.DataFrame:
         """Takes the request and returns the adjusted dataframe"""
         r = request(base_url, params=params, auth=auth)
+
+        if r.status_code == 422 and "Unprocessable" in r.text:
+            console.print(r.json()["detail"])
+            return pd.DataFrame()
+
         if r.status_code != 200:
-            raise Exception(f"Error: Status Code {r.status_code}")
+            console.print(f"Error: Status Code {r.status_code}")
+            return pd.DataFrame()
         df = pd.read_csv(StringIO(r.text))
         df["time"] = pd.to_datetime(df.ts_event, unit="ns")
         df[["open", "high", "low", "close"]] /= 1_000_000_000
-        df = df.drop(columns=["ts_event", "publisher_id", "product_id"]).set_index(
-            "time"
-        )
+        df = df.drop(columns=["ts_event", "publisher_id"]).set_index("time")
         df = df.rename(
             columns={
                 "open": "Open",

@@ -185,7 +185,17 @@ class BaseController(metaclass=ABCMeta):
         self.SUPPORT_CHOICES = support_choices
 
         # Add in news options
-        news_choices = ["--term", "-t", "--sources", "-s", "--help", "-h"]
+        news_choices = [
+            "--term",
+            "-t",
+            "--sources",
+            "-s",
+            "--help",
+            "-h",
+            "--tag",
+            "--taglist",
+            "--sourcelist",
+        ]
         self.NEWS_CHOICES = {c: None for c in news_choices}
 
     def check_path(self) -> None:
@@ -1199,6 +1209,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
+                    if "." not in self.ticker:
+                        self.ticker = ns_parser.ticker.upper()
                 else:
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""

@@ -38,7 +38,7 @@ def load_data_files() -> Dict[str, Path]:
     Dict[str, Path]
         The dictionary of filenames and their paths
     """
-    default_path = paths.MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
+    default_path = paths.MISCELLANEOUS_DIRECTORY / "portfolio"
     custom_exports = (
         get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
     )
@@ -46,7 +46,7 @@ def load_data_files() -> Dict[str, Path]:
     for directory in [default_path, custom_exports]:
         for file_type in ["xlsx", "ini"]:
             for filepath in Path(directory).rglob(f"*.{file_type}"):
-                if filepath.is_file():
+                if filepath.is_file() and "example" not in filepath.name:
                     data_files[filepath.name] = filepath
 
     return data_files

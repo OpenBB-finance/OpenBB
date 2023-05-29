@@ -483,8 +483,7 @@ def test_call_download(mocker, test_user):
         name="script1",
     )
     mock_save_routine.assert_called_once_with(
-        file_name="script1.openbb",
-        routine="do something",
+        file_name="script1.openbb", routine=["do something", "personal"]
     )
 
 

@@ -102,7 +102,7 @@ async def plot_indicators(
         main_ticker,
         candles=not tickers,
         volume=not tickers,
-        volume_ticks_x=5,
+        volume_ticks_x=7,
     )
 
     fig.update_traces(showlegend=False)
@@ -149,8 +149,8 @@ async def plot_indicators(
             showline=False,
             zeroline=False,
             title_text="% Change",
-            ticksuffix=f"{'':>20}",
             side="left",
+            title_standoff=5,
             tickformat=".2%",
             overlaying="y",
         )
@@ -167,13 +167,20 @@ async def plot_indicators(
     y_min -= y_range * 0.05
     y_max += y_range * 0.05
 
-    yaxis = "yaxis" if tickers else "yaxis2"
-
     fig.update_layout(
-        {yaxis: dict(range=[y_min, y_max], autorange=False)},
+        yaxis=dict(range=[y_min, y_max], autorange=False),
         title=dict(x=0.5, xanchor="center", yanchor="top", y=0.99, text=title),
         showlegend=True,
         height=550 + (20 * rows),
+        legend=dict(
+            bgcolor="rgba(0,0,0,0.5)",
+            bordercolor="#F5EFF3",
+            borderwidth=1,
+            x=0.01,
+            y=0.01,
+            xanchor="left",
+            yanchor="bottom",
+        ),
     )
 
     return fig
@@ -428,6 +435,11 @@ class Handler:
                 "length": st.session_state[f"{indicator}_length"]
             }
 
+    async def on_update(self):
+        """Handle the update button"""
+        st.session_state["indicators_dfs"] = {}
+        await self.async_on_ticker_change()
+
     async def run(self):
         """Run the app"""
 
@@ -475,7 +487,8 @@ class Handler:
             )
 
         st.sidebar.markdown("""---""")
-        if st.sidebar.button("Plot Data"):
+        plot_data, reset_data = st.sidebar.columns([1, 1])
+        if plot_data.button("Plot", use_container_width=True):
             if ticker:
                 await self.handle_changes(
                     start_date,
@@ -486,6 +499,15 @@ class Handler:
             else:
                 with logger.container():
                     logger.error("Please enter a ticker", icon="❗")
+        if reset_data.button("Update", use_container_width=True):
+            await self.on_update()
+            if ticker:
+                await self.handle_changes(
+                    start_date,
+                    end_date,
+                    ticker,
+                    indicators,
+                )
 
 
 if __name__ == "__main__":

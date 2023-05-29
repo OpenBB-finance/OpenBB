@@ -377,7 +377,7 @@ class PlotlyTA(PltTA):
                 showlegend=False,
                 row=1,
                 col=1,
-                secondary_y=self.show_volume,
+                secondary_y=False,
             )
         else:
             fig.add_scatter(
@@ -387,7 +387,7 @@ class PlotlyTA(PltTA):
                 connectgaps=True,
                 row=1,
                 col=1,
-                secondary_y=self.show_volume,
+                secondary_y=False,
             )
             fig.update_layout(yaxis=dict(nticks=15))
             self.inchart_colors = theme.get_colors()[1:]
@@ -452,12 +452,12 @@ class PlotlyTA(PltTA):
                     if indicator in self.ma_mode:
                         if ma_done:
                             continue
-                        indicator, ma_done = "ma", True
+                        indicator, ma_done = "ma", True  # noqa
 
                     figure, inchart_index = getattr(self, f"plot_{indicator}")(
                         figure, self.df_ta, inchart_index
                     )
-                elif indicator in ["fib", "srlines", "demark", "clenow"]:
+                elif indicator in ["fib", "srlines", "demark", "clenow", "ichimoku"]:
                     figure = getattr(self, f"plot_{indicator}")(figure, self.df_ta)
                 else:
                     raise ValueError(f"Unknown indicator: {indicator}")
@@ -486,7 +486,7 @@ class PlotlyTA(PltTA):
         figure.update_yaxes(
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
             nticks=15 if subplot_row < 3 else 10,
             tickfont=dict(size=16),
         )
@@ -553,8 +553,7 @@ class PlotlyTA(PltTA):
         for trace in fig.select_traces():
             xref, yref = trace.xaxis, trace.yaxis
             row, col = subplots[xref][yref][0]
-            secondary_y = not row > 1 if self.show_volume else False
-            new_subplot.add_trace(trace, row=row, col=col, secondary_y=secondary_y)
+            new_subplot.add_trace(trace, row=row, col=col, secondary_y=False)
 
         fig_json = fig.to_plotly_json()["layout"]
         for layout in fig_json:

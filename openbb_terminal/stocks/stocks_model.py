@@ -1,6 +1,7 @@
 import logging
 import os
 from datetime import datetime
+from typing import List
 from urllib.error import HTTPError
 
 import fundamentalanalysis as fa  # Financial Modeling Prep
@@ -286,7 +287,7 @@ def load_stock_polygon(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_quote(symbols: list[str]) -> pd.DataFrame:
+def get_quote(symbols: List[str]) -> pd.DataFrame:
     """Gets ticker quote from FMP
 
     Parameters
@@ -329,13 +330,16 @@ def get_quote(symbols: list[str]) -> pd.DataFrame:
     if not df_fa.empty:
         clean_df_index(df_fa)
         for c in df_fa.columns:
-            df_fa.loc["Market cap"][c] = lambda_long_number_format(
-                df_fa.loc["Market cap"][c]
-            )
-            df_fa.loc["Shares outstanding"][c] = lambda_long_number_format(
-                df_fa.loc["Shares outstanding"][c]
-            )
-            df_fa.loc["Volume"][c] = lambda_long_number_format(df_fa.loc["Volume"][c])
+            if not get_current_user().preferences.USE_INTERACTIVE_DF:
+                df_fa.loc["Market cap"][c] = lambda_long_number_format(
+                    df_fa.loc["Market cap"][c]
+                )
+                df_fa.loc["Shares outstanding"][c] = lambda_long_number_format(
+                    df_fa.loc["Shares outstanding"][c]
+                )
+                df_fa.loc["Volume"][c] = lambda_long_number_format(
+                    df_fa.loc["Volume"][c]
+                )
             # Check if there is a valid earnings announcement
             if df_fa.loc["Earnings announcement"][c]:
                 earning_announcement = datetime.strptime(
