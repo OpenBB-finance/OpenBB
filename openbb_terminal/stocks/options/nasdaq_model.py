@@ -246,12 +246,14 @@ def get_underlying_price(symbol: str) -> pd.Series:
             data = response_json["data"]
             data = pd.Series(data)
             df["companyName"] = data["companyName"]
-            df["lastPrice"] = float(data["primaryData"]["lastSalePrice"].strip("$"))
+            df["lastPrice"] = float(
+                data["primaryData"]["lastSalePrice"].strip("$").replace(",", "")
+            )
             df["change"] = float(data["primaryData"]["netChange"])
             df["changePercent"] = float(
                 data["primaryData"]["percentageChange"].replace("%", "")
             )
-            df["volume"] = int(data["primaryData"]["volume"].replace(",", ""))
+            df["volume"] = data["primaryData"]["volume"].replace(",", "")
             df["date"] = pd.to_datetime(
                 data["primaryData"]["lastTradeTimestamp"], yearfirst=True
             ).strftime("%Y-%m-%d")

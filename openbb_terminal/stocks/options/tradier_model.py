@@ -364,12 +364,41 @@ def get_underlying_price(symbol: str) -> pd.Series:
             "Accept": "application/json",
         },
     )
-    if r.status_code == 200:
-        underlying_price = r.json()["quotes"]["quote"]
-        return pd.Series(underlying_price)
-    else:
+    if r.status_code != 200:
         console.print("Error getting last price")
-        return None
+        return pd.DataFrame()
+    underlying_price = pd.Series(r.json()["quotes"]["quote"])
+    underlying_price = underlying_price.rename(
+        {
+            "description": "name",
+            "change_percentage": "changePercent",
+            "average_volume": "avgVolume",
+            "last_volume": "volume",
+            "trade_date": "lastTradeDate",
+            "prevclose": "previousClose",
+            "week_52_high": "fiftyTwoWeekHigh",
+            "week_52_low": "fiftyTwoWeekLow",
+            "bidsize": "bidSize",
+            "bidexch": "bidExchange",
+            "bid_date": "bidDate",
+            "asksize": "askSize",
+            "askexch": "askExchange",
+            "ask_date": "askDate",
+            "root_symbols": "rootSymbols",
+        }
+    )
+
+    underlying_price["lastTradeDate"] = (
+        pd.to_datetime(underlying_price["lastTradeDate"], unit="ms").tz_localize("EST")
+    ).strftime("%Y-%m-%d")
+    underlying_price["bidDate"] = (
+        pd.to_datetime(underlying_price["bidDate"], unit="ms").tz_localize("EST")
+    ).strftime("%Y-%m-%d")
+    underlying_price["askDate"] = (
+        pd.to_datetime(underlying_price["askDate"], unit="ms").tz_localize("EST")
+    ).strftime("%Y-%m-%d")
+
+    return underlying_price
 
 
 class Options:
@@ -455,7 +484,7 @@ class Options:
             print(f"{self.symbol} is not support by Tradier.")
             return self
         self.underlying_price = get_underlying_price(self.symbol)
-        self.underlying_name = self.underlying_price["description"]
+        self.underlying_name = self.underlying_price["name"]
         self.last_price = self.underlying_price["close"]
         self.chains = get_full_option_chain(self.symbol)
         if not self.chains.empty:

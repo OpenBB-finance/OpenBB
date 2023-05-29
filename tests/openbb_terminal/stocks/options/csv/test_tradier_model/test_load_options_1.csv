@@ -1,6 +1,6 @@
 ,0
 symbol,AAPL
-description,Apple Inc
+name,Apple Inc
 exch,Q
 type,stock
 last,175.16
@@ -12,17 +12,17 @@ low,174.94
 close,175.16
 bid,175.09
 ask,175.13
-change_percentage,0.07
-average_volume,58237230
-last_volume,5020850
-trade_date,1684526400185
-prevclose,175.05
-week_52_high,176.39
-week_52_low,124.17
-bidsize,1
-bidexch,Q
-bid_date,1684540791000
-asksize,3
-askexch,P
-ask_date,1684540798000
-root_symbols,AAPL
+changePercent,0.07
+avgVolume,58237230
+volume,5020850
+lastTradeDate,2023-05-19
+previousClose,175.05
+fiftyTwoWeekHigh,176.39
+fiftyTwoWeekLow,124.17
+bidSize,1
+bidExchange,Q
+bidDate,2023-05-19
+askSize,3
+askExchange,P
+askDate,2023-05-19
+rootSymbols,AAPL

@@ -169,54 +169,46 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
                 stock_details = symbol_details
                 ticker_details = pd.DataFrame(stock_details).rename(
                     columns={
-                        "symbol": "Symbol",
-                        "current_price": "Current Price",
-                        "bid": "Bid",
-                        "ask": "Ask",
-                        "bid_size": "Bid Size",
-                        "ask_size": "Ask Size",
-                        "open": "Open",
-                        "high": "High",
-                        "low": "Low",
-                        "close": "Close",
-                        "volume": "Volume",
-                        "iv30": "IV30",
-                        "prev_day_close": "Previous Close",
-                        "price_change": "Change",
-                        "price_change_percent": "Change %",
-                        "iv30_change": "IV30 Change",
-                        "iv30_percent_change": "IV30 Change %",
-                        "last_trade_time": "Last Trade Time",
-                        "exchange_id": "Exchange ID",
-                        "tick": "Tick",
-                        "security_type": "Type",
+                        "current_price": "price",
+                        "bid_size": "bidSize",
+                        "ask_size": "askSize",
+                        "iv30": "ivThirty",
+                        "prev_day_close": "previousClose",
+                        "price_change": "change",
+                        "price_change_percent": "changePercent",
+                        "iv30_change": "ivThirtyChange",
+                        "iv30_percent_change": "ivThirtyChangePercent",
+                        "last_trade_time": "lastTradeTimestamp",
+                        "exchange_id": "exchangeID",
+                        "tick": "tick",
+                        "security_type": "type",
                     }
                 )
                 details_columns = [
-                    "Symbol",
-                    "Type",
-                    "Tick",
-                    "Bid",
-                    "Bid Size",
-                    "Ask Size",
-                    "Ask",
-                    "Current Price",
-                    "Open",
-                    "High",
-                    "Low",
-                    "Close",
-                    "Volume",
-                    "Previous Close",
-                    "Change",
-                    "Change %",
-                    "IV30",
-                    "IV30 Change",
-                    "IV30 Change %",
-                    "Last Trade Time",
+                    "symbol",
+                    "type",
+                    "tick",
+                    "bid",
+                    "bidSize",
+                    "askSize",
+                    "ask",
+                    "price",
+                    "open",
+                    "high",
+                    "low",
+                    "close",
+                    "volume",
+                    "previousClose",
+                    "change",
+                    "changePercent",
+                    "ivThirty",
+                    "ivThirtyChange",
+                    "ivThirtyChangePercent",
+                    "lastTradeTimestamp",
                 ]
                 ticker_details = (
                     pd.DataFrame(ticker_details, columns=details_columns)
-                    .set_index(keys="Symbol")
+                    .set_index(keys="symbol")
                     .dropna(axis=1)
                     .transpose()
                 )
@@ -225,45 +217,40 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
                 index_details = symbol_details
                 ticker_details = pd.DataFrame(index_details).rename(
                     columns={
-                        "symbol": "Symbol",
-                        "security_type": "Type",
-                        "current_price": "Current Price",
-                        "price_change": "Change",
-                        "price_change_percent": "Change %",
-                        "tick": "Tick",
-                        "open": "Open",
-                        "high": "High",
-                        "low": "Low",
-                        "close": "Close",
-                        "prev_day_close": "Previous Close",
-                        "iv30": "IV30",
-                        "iv30_change": "IV30 Change",
-                        "iv30_change_percent": "IV30 Change %",
-                        "last_trade_time": "Last Trade Time",
+                        "symbol": "symbol",
+                        "security_type": "type",
+                        "current_price": "price",
+                        "price_change": "change",
+                        "price_change_percent": "changePercent",
+                        "prev_day_close": "previousClose",
+                        "iv30": "ivThirty",
+                        "iv30_change": "ivThirtyChange",
+                        "iv30_change_percent": "ivThirtyChangePercent",
+                        "last_trade_time": "lastTradeTimestamp",
                     }
                 )
 
                 index_columns = [
-                    "Symbol",
-                    "Type",
-                    "Tick",
-                    "Current Price",
-                    "Open",
-                    "High",
-                    "Low",
-                    "Close",
-                    "Previous Close",
-                    "Change",
-                    "Change %",
-                    "IV30",
-                    "IV30 Change",
-                    "IV30 Change %",
-                    "Last Trade Time",
+                    "symbol",
+                    "type",
+                    "tick",
+                    "price",
+                    "open",
+                    "high",
+                    "low",
+                    "close",
+                    "previousClose",
+                    "change",
+                    "changePercent",
+                    "ivThirty",
+                    "ivThirtyChange",
+                    "ivThirtyChangePercent",
+                    "lastTradeTimestamp",
                 ]
 
                 ticker_details = (
                     pd.DataFrame(ticker_details, columns=index_columns)
-                    .set_index(keys="Symbol")
+                    .set_index(keys="symbol")
                     .dropna(axis=1)
                     .transpose()
                 ).rename(columns={f"{new_ticker}": f"{symbol}"})
@@ -328,35 +315,35 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
         h_data = pd.DataFrame(data)[2:-1]["data"].rename(f"{symbol}")
         h_data.rename(
             {
-                "hv30_annual_high": "HV30 1Y High",
-                "hv30_annual_low": "HV30 1Y Low",
-                "hv60_annual_high": "HV60 1Y High",
-                "hv60_annual_low": "HV60 1Y Low",
-                "hv90_annual_high": "HV90 1Y High",
-                "hv90_annual_low": "HV90 1Y Low",
-                "iv30_annual_high": "IV30 1Y High",
-                "iv30_annual_low": "IV30 1Y Low",
-                "iv60_annual_high": "IV60 1Y High",
-                "iv60_annual_low": "IV60 1Y Low",
-                "iv90_annual_high": "IV90 1Y High",
-                "iv90_annual_low": "IV90 1Y Low",
+                "hv30_annual_high": "hvThirtyOneYearHigh",
+                "hv30_annual_low": "hvThirtyOneYearLow",
+                "hv60_annual_high": "hvSixtyOneYearHigh",
+                "hv60_annual_low": "hvsixtyOneYearLow",
+                "hv90_annual_high": "hvNinetyOneYearHigh",
+                "hv90_annual_low": "hvNinetyOneYearLow",
+                "iv30_annual_high": "ivThirtyOneYearHigh",
+                "iv30_annual_low": "ivThirtyOneYearLow",
+                "iv60_annual_high": "ivSixtyOneYearHigh",
+                "iv60_annual_low": "ivSixtyOneYearLow",
+                "iv90_annual_high": "ivNinetyOneYearHigh",
+                "iv90_annual_low": "ivNinetyOneYearLow",
             },
             inplace=True,
         )
 
         iv_order = [
-            "IV30 1Y High",
-            "HV30 1Y High",
-            "IV30 1Y Low",
-            "HV30 1Y Low",
-            "IV60 1Y High",
-            "HV60 1Y High",
-            "IV60 1Y Low",
-            "HV60 1Y Low",
-            "IV90 1Y High",
-            "HV90 1Y High",
-            "IV90 1Y Low",
-            "HV90 1Y Low",
+            "ivThirtyOneYearHigh",
+            "hvThirtyOneYearHigh",
+            "ivThirtyOneYearLow",
+            "hvThirtyOneYearLow",
+            "ivSixtyOneYearHigh",
+            "hvSixtyOneYearHigh",
+            "ivSixtyOneYearLow",
+            "hvsixtyOneYearLow",
+            "ivNinetyOneYearHigh",
+            "hvNinetyOneYearHigh",
+            "ivNinetyOneYearLow",
+            "hvNinetyOneYearLow",
         ]
 
         ticker_iv = pd.DataFrame(h_data).transpose()
@@ -430,7 +417,7 @@ def get_quotes(symbol: str) -> pd.DataFrame:
                 "theo": "theoretical",
                 "last_trade_price": "lastTradePrice",
                 "last_trade_time": "lastTradeTimestamp",
-                "percent_change": "percentChange",
+                "percent_change": "changePercent",
                 "prev_day_close": "previousClose",
             }
         )
@@ -475,7 +462,7 @@ def get_quotes(symbol: str) -> pd.DataFrame:
         quotes["bidSize"] = quotes["bidSize"].astype(int)
         quotes["askSize"] = quotes["askSize"].astype(int)
         quotes["previousClose"] = round(quotes["previousClose"], 2)
-        quotes["percentChange"] = round(quotes["percentChange"], 2)
+        quotes["changePercent"] = round(quotes["changePercent"], 2)
 
     except HTTPError:
         print("There was an error with the request'\n")
@@ -572,7 +559,7 @@ class Options:
                 .iloc[0]
             )
             self.underlying_price = info
-            self.last_price = info.loc["Current Price"].iloc[0]
+            self.last_price = info.loc["price"].iloc[0]
             self.chains = get_quotes(self.symbol)
             self.expirations = []
             self.strikes = []

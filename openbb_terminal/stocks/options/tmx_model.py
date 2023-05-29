@@ -2,7 +2,6 @@
 
 from datetime import datetime, timedelta
 
-import numpy as np
 import pandas as pd
 import pandas_market_calendars as mcal
 from pandas.tseries.holiday import next_workday
@@ -93,18 +92,22 @@ def get_underlying_price(symbol: str) -> pd.Series:
     )
     data.rename(
         {
-            "Previous Closing Price": "Previous Close",
-            "Trade Count": "Transactions",
-            "Trading Volume": "Volume",
-            "Trading Value": "Value",
-            "Trading Value (CAD)": "Value (CAD)",
-            "Opening Price": "Open",
-            "Last Price": "Price",
-            "Net Change": "Change",
-            "Net Change Percentage": "Change Percent",
-            "Days Low Price": "Low",
-            "Days High Price": "High",
-            "Days VWAP": "VWAP",
+            "Previous Closing Price": "previousClose",
+            "Trade Count": "transactions",
+            "Trading Volume": "volume",
+            "Trading Value": "value",
+            "Trading Value (CAD)": "valueCAD",
+            "Opening Price": "open",
+            "Last Price": "price",
+            "Net Change": "change",
+            "Net Change Percentage": "changePercent",
+            "Days Low Price": "low",
+            "Days High Price": "high",
+            "Days VWAP": "vwap",
+            "Last Tick": "tick",
+            "52 Week High": "fiftyTwoWeekHigh",
+            "52 Week Low": "fiftyTwoWeekLow",
+            "Time": "time",
         },
         inplace=True,
     )
@@ -307,7 +310,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
 
         try:
             self.underlying_price = get_underlying_price(self.symbol)
-            self.last_price = self.underlying_price["Price"]
+            self.last_price = self.underlying_price["price"]
         except TypeError:
             self.last_price = 0
             self.underlying_price = 0
@@ -402,9 +405,13 @@ class Options:  # pylint: disable=too-many-instance-attributes
                 f"{date}"
                 "&dnld=1#quotes"
             )
-
         data = pd.read_csv(EOD_URL)
-
+        if data.empty:
+            print(
+                "No data found.  Check the date to ensure the ticker was listed before that date."
+            )
+            return self
+        self.date = str(date)
         contractSymbol = []
 
         for i in data.index:
@@ -466,6 +473,7 @@ class Options:  # pylint: disable=too-many-instance-attributes
         data["dte"] = pd.to_numeric(temp_)
         data = data.set_index(["expiration", "strike", "optionType"])
         data = data.sort_index()
+        data["date"] = data["date"].astype(str)
 
         self.underlying_name = self.SYMBOLS.loc[self.symbol][
             "Name of Underlying Instrument"
@@ -482,29 +490,21 @@ class Options:  # pylint: disable=too-many-instance-attributes
                     "settlementPrice",
                     "openInterest",
                     "expiration",
+                    "dte",
                 ]
             )
         ).rename(f"{self.underlying_name}")
 
         self.underlying_price.rename(
             {
-                "date": "Date",
-                "bid": "Bid",
-                "ask": "Ask",
-                "lastPrice": "Price",
-                "volume": "Volume",
-                "previousClose": "Previous Close",
-                "change": "Change",
-                "open": "Open",
-                "high": "High",
-                "low": "Low",
-                "totalValue": "Value (CAD)",
-                "transactions": "Transactions",
-                "contractSymbol": "Symbol",
+                "lastPrice": "price",
+                "totalValue": "valueCAD",
+                "transactions": "transactions",
+                "contractSymbol": "symbol",
             },
             inplace=True,
         )
-        self.last_price = self.underlying_price["Price"]
+        self.last_price = self.underlying_price["price"]
         self.chains = self.chains.iloc[:-1]
         self.chains.dte = self.chains.dte.astype(int)
         self.hasIV = "impliedVolatility" in self.chains.columns
