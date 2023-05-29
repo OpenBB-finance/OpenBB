@@ -358,7 +358,8 @@ end
             """,
             "TSLA,MSFT,NVDA".split(","),
             "",
-            "/stocks/load MSFT --start 2022-01-01 --end 2023-01-01/dps/psi/../load NVDA --start 2022-01-01 --end 2023-01-01/dps/psi/..",
+            "/stocks/load MSFT --start 2022-01-01 --end 2023-01-01/dps/psi/../"
+            "load NVDA --start 2022-01-01 --end 2023-01-01/dps/psi/..",
         ),
         #############################
         (
