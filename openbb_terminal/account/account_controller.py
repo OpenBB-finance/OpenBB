@@ -331,7 +331,7 @@ class AccountController(BaseController):
         else:
             if ns_parser:
                 routine = read_routine(file_name=" ".join(ns_parser.file))
-                if routine:
+                if routine is not None:
                     description = " ".join(ns_parser.description)
 
                     name = (
