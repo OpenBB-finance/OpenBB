@@ -4,6 +4,9 @@ from typing import Dict, List, Match, Optional, Tuple, Union
 
 from dateutil.relativedelta import relativedelta
 
+# pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
+# pylint: too-many-branches,too-many-return-statements
+
 # Necessary for OpenBB keywords
 MONTHS_VALUE = {
     "JANUARY": 1,
@@ -292,11 +295,10 @@ def parse_openbb_script(
                                             f"was an attempt to access it with index {VAR_SLICE}.[/red]",
                                             "",
                                         )
-                                    else:
-                                        templine = templine.replace(
-                                            match[0],
-                                            variable[int(VAR_SLICE)],
-                                        )
+                                    templine = templine.replace(
+                                        match[0],
+                                        variable[int(VAR_SLICE)],
+                                    )
                                 else:
                                     return (
                                         f"[red]Variable {VAR_NAME} not given "

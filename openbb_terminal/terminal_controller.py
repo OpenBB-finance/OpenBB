@@ -67,7 +67,6 @@ from openbb_terminal.terminal_helper import (
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
-# pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
 
 logger = logging.getLogger(__name__)
 
@@ -672,7 +671,7 @@ class TerminalController(BaseController):
                 return
 
             with open(routine_path) as fp:
-                raw_lines = [x for x in fp]
+                raw_lines = list(fp)
 
                 # Capture ARGV either as list if args separated by commas or as single value
                 if ns_parser.routine_args:
