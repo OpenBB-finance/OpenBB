@@ -442,9 +442,19 @@ def parse_openbb_script(
     # If the list is non null, then we want to convert this into a parsed string that is
     # recognized by the OpenBB Terminal
     if final_lines:
-        parsed_script = f"/{'/'.join([line.rstrip() for line in final_lines])}".replace(
+        parsed_script = f"{'/'.join([line.rstrip() for line in final_lines])}".replace(
             "//", "/home/"
         )
+        if parsed_script[0] == "/":
+            # If the user had added a / at the beginning, then it was converted to //home/
+            # and we need to remove it
+            if parsed_script.startswith("//home"):
+                parsed_script = parsed_script[6:]
+        else:
+            # We want the script to start from the home menu, hence we add it if the user
+            # didn't add it
+            parsed_script = "/" + parsed_script
+
         # If the script finishes with // it means that we converted it to /home/
         # This means that we are expecting a command to follow, but since this is
         # the end of the script, we need to remove the trailing /

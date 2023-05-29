@@ -324,6 +324,25 @@ stocks/ca/set $ARGV/historical
             "",
             "/stocks/ca/set TSLA,MSFT,AAPL,NVDA/historical/home",
         ),
+        #############################
+        (
+            """
+/stocks/ca/set $ARGV[1:3]/historical
+            """,
+            "TSLA,MSFT,AAPL,NVDA".split(","),
+            "",
+            "/stocks/ca/set MSFT,AAPL/historical",
+        ),
+        #############################
+        (
+            """
+/
+stocks/ca/set $ARGV[1:3]/historical
+            """,
+            "TSLA,MSFT,AAPL,NVDA".split(","),
+            "",
+            "/home/stocks/ca/set MSFT,AAPL/historical",
+        ),
     ],
 )
 def test_openbb_routines(routine, input_args, expected_error, expected_queue):
