@@ -232,7 +232,7 @@ def parse_openbb_script(
             # Check whether the foreach loop has started or not
             if not foreach_loop_found:
                 return (
-                    "[red]The script has a foreach loop that terminates before it gets started."
+                    "[red]The script has a foreach loop that terminates before it gets started. "
                     "Add the keyword 'foreach' to explicitly start loop[/red]",
                     "",
                 )
@@ -410,7 +410,7 @@ def parse_openbb_script(
     varname = "VAR"
     for line in lines_with_vars_replaced:
         # Found 'foreach' header associated with loop
-        match = re.search(r"foreach \$\$([A-Z_]+) in ([A-Z,]+)", line, re.IGNORECASE)
+        match = re.search(r"foreach \$\$([A-Za-z\_]+) in ([A-Za-z0-9,-]+)", line, re.IGNORECASE)
         if match:
             varname = match.group(1)
             foreach_loop = match.group(2).split(",")

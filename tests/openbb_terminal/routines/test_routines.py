@@ -418,18 +418,74 @@ home
         (
             """
 stocks
-
 # Charts for PLTR and BB
 foreach $$SOMETHING in PLTR,BB
     load $$SOMETHING --start $LASTJANUARY
     candle
 END
-
-home
             """,
             "",
             "",
-            "/stocks/load PLTR --start 2023-01-01/candle/load BB --start 2023-01-01/candle/home",
+            "/stocks/load PLTR --start 2023-01-01/candle/load BB --start 2023-01-01/candle",
+        ),
+        #############################
+        (
+            """
+stocks
+# forgetting the end on purpose
+foreach $$X in PLTR,BB
+    load $$X --start $LASTJANUARY
+            """,
+            "",
+            "[red]The script has a foreach loop that doesn't terminate. Add the keyword 'end' to explicitly terminate loop[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+stocks
+# pretending I forgot the header
+    load $$X --start $LASTJANUARY
+end
+            """,
+            "",
+            "[red]The script has a foreach loop that terminates before it gets started. Add the keyword 'foreach' to explicitly start loop[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+stocks
+foreach $$X in PLTR,BB
+end
+            """,
+            "",
+            "",
+            "/stocks",
+        ),
+        #############################
+        (
+            """
+stocks
+foreach $$D in 2022-01-01,2023-01-01
+    load AAPL --start $$D
+end
+            """,
+            "",
+            "",
+            "/stocks/load AAPL --start 2022-01-01/load AAPL --start 2023-01-01",
+        ),
+        #############################
+        (
+            """
+stocks
+foreach $$UNUSED in 1,2
+    load AAPL
+end
+            """,
+            "",
+            "",
+            "/stocks/load AAPL/load AAPL",
         ),
     ],
 )
