@@ -1,9 +1,18 @@
+from typing import List
+
+import pytest
 from freezegun import freeze_time
 
 from openbb_terminal.routine_functions import (
     match_and_return_openbb_keyword_date,
     parse_openbb_script,
 )
+
+
+def cleanup_script(script: str) -> List[str]:
+    raw_lines = [x for x in script.split("\n") if ("#" not in x) and x]
+    raw_lines = [raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")]
+    return raw_lines
 
 
 @freeze_time("2023-05-17")
@@ -107,3 +116,173 @@ def test_parse_openbb_script():
         test_out2[0]
         == "[red]Variable $ARGV not given for current routine script.[/red]"
     )
+
+
+@pytest.mark.parametrize(
+    "routine, input_args, expected_error, expected_queue",
+    [
+        (
+            """
+# Set variable
+$DATE = 2022-01-01
+
+stocks/load AAPL --start $DATE
+            """,
+            None,
+            "",
+            "/stocks/load AAPL --start 2022-01-01",
+        ),
+        #############################
+        (
+            """
+# Set variable
+$DATE = 2022-01-01
+
+stocks/load AAPL --start $DATE[0]
+            """,
+            None,
+            "",
+            "/stocks/load AAPL --start 2022-01-01",
+        ),
+        #############################
+        (
+            """
+# Set variable
+$DATE = 2022-01-01,2024-01-01
+
+stocks/load AAPL --start $DATE[0]
+            """,
+            None,
+            "",
+            "/stocks/load AAPL --start 2022-01-01",
+        ),
+        #############################
+        (
+            """
+# Set variable
+$DATE = 2022-01-01,2024-01-01
+
+stocks/load AAPL --start $DATE[0] --end $DATE[1]
+            """,
+            None,
+            "",
+            "/stocks/load AAPL --start 2022-01-01 --end 2024-01-01",
+        ),
+        #############################
+        (
+            """
+# Set variable
+$DATE = 2022-01-01
+
+stocks/load AAPL --start $DATE[1]
+            """,
+            None,
+            "[red]Variable $DATE only has 1 elements and there was an attempt to access it with index 1.[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+# Set variable
+$DATE = 2022-01-01,2023-01-01
+
+stocks/load AAPL --start $DATE[2]
+            """,
+            None,
+            "[red]Variable $DATE only has 2 elements and there was an attempt to access it with index 2.[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+# Set variable
+$DATE = 2022-01-01,2023-01-01
+
+stocks/load AAPL --start $DATE[5]
+            """,
+            None,
+            "[red]Variable $DATE only has 2 elements and there was an attempt to access it with index 5.[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+# Set variable
+$DATE = 2022-01-01
+
+stocks/load AAPL --start $DATE[5]
+            """,
+            None,
+            "[red]Variable $DATE only has 1 elements and there was an attempt to access it with index 5.[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+# Set variable
+$DATE = 2022-01-01
+
+stocks/load AAPL --start $DATE[-2]
+            """,
+            None,
+            "[red]Negative index on $DATE is not allowed[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+# Set variable
+$DATE = 2022-01-01,2024-01-01
+
+stocks/load AAPL --start $DATE[-1]
+            """,
+            None,
+            "[red]Negative index on $DATE is not allowed[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+# Set variable
+DATE = 2022-01-01,2024-01-01
+
+stocks/load AAPL --start $DATE[0]
+            """,
+            None,
+            "[red]Variable $DATE not given for current routine script.[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+stocks/load $ARGV[3]
+            """,
+            "TSLA,MSFT".split(","),
+            "[red]Variable $ARGV only has 2 elements and there was an attempt to access it with index 3.[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+stocks/load $ARGV[-1]
+            """,
+            "TSLA,MSFT".split(","),
+            "[red]Negative index on $ARGV is not allowed[/red]",
+            "",
+        ),
+        #############################
+        (
+            """
+stocks/load $ARGV[a]
+            """,
+            "TSLA,MSFT".split(","),
+            "[red]Index 'a' is not a value[/red]",
+            "",
+        ),
+    ],
+)
+def test_openbb_routines(routine, input_args, expected_error, expected_queue):
+    err, queue = parse_openbb_script(routine.split("\n"), input_args)
+
+    assert err == expected_error
+    assert queue == expected_queue

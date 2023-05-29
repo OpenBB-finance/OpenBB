@@ -51,14 +51,13 @@ from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.routine_functions import parse_openbb_script
+from openbb_terminal.routine_functions import is_reset, parse_openbb_script
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
     first_time_user,
     is_auth_enabled,
     is_installer,
-    is_reset,
     print_goodbye,
     reset,
     suppress_stdout,
@@ -669,19 +668,11 @@ class TerminalController(BaseController):
                     )
                 else:
                     routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
-
             else:
                 return
 
             with open(routine_path) as fp:
-                raw_lines = [
-                    x for x in fp if (not is_reset(x)) and ("#" not in x) and x
-                ]
-                raw_lines = [
-                    raw_line.strip("\n")
-                    for raw_line in raw_lines
-                    if raw_line.strip("\n")
-                ]
+                raw_lines = [x for x in fp]
 
                 # Capture ARGV either as list if args separated by commas or as single value
                 if ns_parser.routine_args:
@@ -691,23 +682,22 @@ class TerminalController(BaseController):
                         else ns_parser.routine_args.split(",")
                     )
 
-                err, final_lines = parse_openbb_script(
+                err, parsed_script = parse_openbb_script(
                     raw_lines=raw_lines,
                     script_inputs=script_inputs if ns_parser.routine_args else None,
                 )
 
+                # If there err output is not an empty string then it means there was an
+                # issue in parsing the routine and therefore we don't want to feed it
+                # to the terminal
                 if err:
                     console.print(err)
                     return
 
-                simulate_argv = f"/{'/'.join([line.rstrip() for line in final_lines])}"
-                file_cmds = simulate_argv.replace("//", "/home/").split()
-                file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-                cmds_with_params = " ".join(file_cmds)
                 self.queue = [
                     val
                     for val in parse_and_split_input(
-                        an_input=cmds_with_params, custom_filters=[]
+                        an_input=parsed_script, custom_filters=[]
                     )
                     if val
                 ]
@@ -949,6 +939,7 @@ def run_scripts(
         if not test_mode:
             terminal()
 
+    # THIS NEEDS TO BE REFACTORED!!! - ITS USED FOR TESTING
     with path.open() as fp:
         raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
         raw_lines = [
@@ -979,6 +970,7 @@ def run_scripts(
         if test_mode and "exit" not in lines[-1]:
             lines.append("exit")
 
+        # Deals with the export with a path with "/" in it
         export_folder = ""
         if "export" in lines[0]:
             export_folder = lines[0].split("export ")[1].rstrip()

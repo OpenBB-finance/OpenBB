@@ -31,6 +31,28 @@ WEEKDAY_VALUE = {
 }
 
 
+def is_reset(command: str) -> bool:
+    """Test whether a command is a reset command
+
+    Parameters
+    ----------
+    command : str
+        The command to test
+
+    Returns
+    -------
+    answer : bool
+        Whether the command is a reset command
+    """
+    if "reset" in command:
+        return True
+    if command == "r":
+        return True
+    if command == "r\n":
+        return True
+    return False
+
+
 def match_and_return_openbb_keyword_date(keyword: str) -> str:
     """Return OpenBB keyword into date
 
@@ -134,7 +156,7 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
 def parse_openbb_script(
     raw_lines: List[str],
     script_inputs: List[str] = None,
-) -> Tuple[str, List[str]]:
+) -> Tuple[str, str]:
     """
     Parse .openbb script
 
@@ -149,12 +171,20 @@ def parse_openbb_script(
     -------
     str
         Error that occurred - if empty means no error
-    List[str]
-        Processed lines from .openbb script that can be run by the OpenBB Terminal
+    str
+        Processed string from .openbb script that can be run by the OpenBB Terminal
     """
     ROUTINE_VARS = dict()
     if script_inputs:
         ROUTINE_VARS["$ARGV"] = script_inputs
+
+    ## PRE PROCESSING
+    # Remove reset commands, comments, empty lines and trailing/leading whitespaces
+    raw_lines = [
+        x.strip()
+        for x in raw_lines
+        if (not is_reset(x)) and ("#" not in x) and x.strip()
+    ]
 
     ## LOOK FOR NEW VARIABLES BEING DECLARED FROM USERS
     lines_without_declarations = list()
@@ -169,6 +199,16 @@ def parse_openbb_script(
                 ROUTINE_VARS["$" + VAR_NAME] = (
                     VAR_VALUES if "," not in VAR_VALUES else VAR_VALUES.split(",")
                 )
+
+                # Just throw a warning when user uses wrong convention
+                numdollars = len(re.findall(r"\$", line))
+                if numdollars > 1:
+                    print(
+                        f"The variable {VAR_NAME} should not be declared as "
+                        f"{'$' * numdollars}{VAR_NAME}. Instead it will be "
+                        f"converted into ${VAR_NAME}."
+                    )
+
             else:
                 lines_without_declarations.append(line)
         else:
@@ -191,7 +231,7 @@ def parse_openbb_script(
                 return (
                     "[red]The script has a foreach loop that terminates before it gets started."
                     "Add the keyword 'foreach' to explicitly start loop[/red]",
-                    [],
+                    "",
                 )
             foreach_loop_found = False
 
@@ -231,7 +271,7 @@ def parse_openbb_script(
                                     return (
                                         f"[red]Variable {VAR_NAME} not given "
                                         "for current routine script.[/red]",
-                                        [],
+                                        "",
                                     )
 
                             # Only enters here when any other index from 0 is used
@@ -250,7 +290,7 @@ def parse_openbb_script(
                                             f"[red]Variable {VAR_NAME} only has "
                                             f"{length_variable} elements and there "
                                             f"was an attempt to access it with index {VAR_SLICE}.[/red]",
-                                            [],
+                                            "",
                                         )
                                     else:
                                         templine = templine.replace(
@@ -261,7 +301,7 @@ def parse_openbb_script(
                                     return (
                                         f"[red]Variable {VAR_NAME} not given "
                                         "for current routine script.[/red]",
-                                        [],
+                                        "",
                                     )
 
                         # Involves slicing which is a bit more tricky to use eval on
@@ -296,16 +336,37 @@ def parse_openbb_script(
 
                         # Just replace value without slicing or list
                         else:
-                            if VAR_SLICE and int(VAR_SLICE) < 0:
-                                return (
-                                    f"[red]Negative index on {VAR_NAME} is not allowed[/red]",
-                                    [],
-                                )
+                            if VAR_SLICE:
+                                # Check if the string starts with a minus sign
+                                if VAR_SLICE.startswith("-"):
+                                    if not VAR_SLICE[1:].isdigit():
+                                        return (
+                                            f"[red]Index '{VAR_SLICE}' is not a value[/red]",
+                                            "",
+                                        )
+                                    if int(VAR_SLICE) < 0:
+                                        return (
+                                            f"[red]Negative index on {VAR_NAME} is not allowed[/red]",
+                                            "",
+                                        )
+                                if not VAR_SLICE.isdigit():
+                                    return (
+                                        f"[red]Index '{VAR_SLICE}' is not a value[/red]",
+                                        "",
+                                    )
+
                             if VAR_NAME in ROUTINE_VARS:
-                                templine = templine.replace(
-                                    match[0],
-                                    eval(f'ROUTINE_VARS["{VAR_NAME}"]'),
-                                )
+                                value = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
+
+                                # If the value is a list, we want to replace it with the whole list
+                                if isinstance(value, list):
+                                    templine = templine.replace(
+                                        match[0],
+                                        ",".join(value),
+                                    )
+                                else:
+                                    templine = templine.replace(match[0], value)
+
                             else:
                                 # Check if this is an OpenBB keyword variable like
                                 # 1MONTHAGO,LASTFRIDAY,3YEARSFROMNOW,NEXTTUESDAY
@@ -321,7 +382,7 @@ def parse_openbb_script(
                                     return (
                                         f"[red]Variable {VAR_NAME} not given for "
                                         "current routine script.[/red]",
-                                        [],
+                                        "",
                                     )
 
         lines_with_vars_replaced.append(templine)
@@ -331,7 +392,7 @@ def parse_openbb_script(
         return (
             "[red]The script has a foreach loop that doesn't terminate. "
             "Add the keyword 'end' to explicitly terminate loop[/red]",
-            [],
+            "",
         )
 
     # Finally the only remaining thing to address are the foreach loops. For that we'll go through
@@ -342,6 +403,7 @@ def parse_openbb_script(
     within_foreach = False
     foreach_lines_loop: List[str] = list()
 
+    parsed_script = ""
     final_lines = list()
     for line in lines_with_vars_replaced:
         # Found 'foreach' header associated with loop
@@ -374,5 +436,12 @@ def parse_openbb_script(
 
         else:
             final_lines.append(line)
-    print(final_lines)
-    return "", final_lines
+
+    # If the list is non null, then we want to convert this into a parsed string that is
+    # recognized by the OpenBB Terminal
+    if final_lines:
+        parsed_script = f"/{'/'.join([line.rstrip() for line in final_lines])}".replace(
+            "//", "/home/"
+        )
+
+    return "", parsed_script
