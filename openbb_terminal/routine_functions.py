@@ -1,6 +1,6 @@
 import re
 from datetime import datetime, timedelta
-from typing import List, Match, Optional, Tuple
+from typing import List, Match, Optional, Tuple, Dict, Union
 
 from dateutil.relativedelta import relativedelta
 
@@ -155,7 +155,7 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
 
 def parse_openbb_script(
     raw_lines: List[str],
-    script_inputs: List[str] = None,
+    script_inputs: Optional[List[str]] = None,
 ) -> Tuple[str, str]:
     """
     Parse .openbb script
@@ -174,7 +174,7 @@ def parse_openbb_script(
     str
         Processed string from .openbb script that can be run by the OpenBB Terminal
     """
-    ROUTINE_VARS = dict()
+    ROUTINE_VARS: Dict[str, Union[str, List[str]]] = dict()
     if script_inputs:
         ROUTINE_VARS["$ARGV"] = script_inputs
 
