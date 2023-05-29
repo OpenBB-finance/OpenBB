@@ -434,6 +434,20 @@ def parse_openbb_script(
                                 foreach_line_loop.replace(f"$${varname}", var).strip()
                             )
                             varused_inside = True
+                        elif "$$" in foreach_line_loop:
+
+                            # Regular expression pattern to match variables starting with $
+                            pattern = r"(?<!\$\$)(\$\$(\w+)(\[[^]]*\])?)(?![^\[]*\])"
+
+                            # Find all matches of the pattern in the line
+                            matches: Optional[List[Match[str]]] = re.findall(pattern, line)
+
+                            return (
+                                "[red]The script has a foreach loop that iterates through "
+                                f"{','.join(foreach_loop)} with variable $${varname} "
+                                "but another var name is being utilized instead[/red]",
+                                "",
+                            )
                         else:
                             final_lines.append(foreach_line_loop.strip())
 

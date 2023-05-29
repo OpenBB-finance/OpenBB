@@ -207,6 +207,17 @@ stocks/load AAPL --start $DATE[2]
         #############################
         (
             """
+stocks/load AAPL --start $DATE[1]
+            # Set variable
+$DATE = 2022-01-01,2023-01-01
+            """,
+            None,
+            "",
+            "/stocks/load AAPL --start 2023-01-01",
+        ),
+        #############################
+        (
+            """
 # Set variable
 $DATE = 2022-01-01,2023-01-01
 
@@ -486,6 +497,20 @@ end
             "",
             "",
             "/stocks/load AAPL/load AAPL",
+        ),
+        #############################
+        (
+            """
+stocks
+foreach $$UNUSED in 1,2
+    load $$TYPO
+end
+            """,
+            "",
+            "[red]The script has a foreach loop that iterates through "
+            "1,2 with variable $$UNUSED but another var name is being "
+            "utilized instead[/red]",
+            "",
         ),
     ],
 )
