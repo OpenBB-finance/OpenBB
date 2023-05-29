@@ -23,6 +23,17 @@ def display_topledger_data(
     export: str = "",
     sheet_name: Optional[str] = None,
 ) -> None:
+    """Display on-chain data from Topledger. [Source: https://docs.topledger.xyz/]
+
+    Parameters
+    ----------
+    org_slug: str
+        Organization Slug
+    query_slug: str
+        Query Slug
+    export: str
+        Export dataframe data to csv,json,xlsx file
+    """
     df = topledger_model.get_topledger_data(org_slug, query_slug)
     if df.empty:
         console.print("Failed to retrieve data.")
@@ -33,14 +44,14 @@ def display_topledger_data(
         df,
         headers=list(df.columns),
         show_index=False,
-        title=f"Topledger Query Result for [{org_slug} {query_slug}]",
+        title=f"Topledger Query Result {query_slug} for {org_slug}",
         export=bool(export),
     )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "topledger-query-result",
+        f"{query_slug} for {org_slug}",
         df_data,
         sheet_name,
     )

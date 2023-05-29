@@ -23,9 +23,10 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethplorer_model,
     ethplorer_view,
     shroom_view,
+    topledger_model,
     topledger_view,
     whale_alert_model,
-    whale_alert_view
+    whale_alert_view,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -448,7 +449,8 @@ class OnchainController(BaseController):
             "--org",
             dest="org_slug",
             type=str,
-            help="Organization Slug [tensor]",
+            help="Organization Slug",
+            choices=list(topledger_model.MAPPING.keys()),
             default=None,
         )
         parser.add_argument(
@@ -456,9 +458,13 @@ class OnchainController(BaseController):
             "--query",
             dest="query_slug",
             type=str,
-            help="Query Slug [daily-transactions/weekly-transactions/monthly-transactions"
-            "/daily-users/monthly-users/weekly-users/daily-gmv-sol/weekly-gmv/"
-            "monthly-gmv/daily-tvl/weekly-tvl/monthly-tvl/top-traders-by-gmv]",
+            help="Query Slug",
+            choices=[
+                query.get("slug")
+                for section in topledger_model.MAPPING.values()
+                for query in section.get("queries", [])
+                if query.get("slug")
+            ],
             default=None,
         )
         ns_parser = self.parse_known_args_and_warn(
