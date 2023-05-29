@@ -1,6 +1,7 @@
 
 [purple][bold]Most Relevant Articles for FCX - 2023-05-29[/bold][/purple]
 
+
 [green]Economic Risk[/green] ([3mCopper prices have declined 13% over the last six weeks to US$3.65 per pound, primarily due to weaker than expected demand in China. The country's economy has not recovered as rapidly as projected after it ended its zero-COVID policy around the start of 2023. Additionally, rising global supply has contributed to the falling price trajectory, with First Quantum Minerals resuming copper shipments from its Cobre Panama mine and China's CMOC Group set to begin producing copper in the Democratic Republic of Congo. This decline in copper prices could negatively impact Freeport-McMoRan's financial performance. - The Deep Dive (https://thedeepdive.ca/copper-declines-on-weak-china-macro-data-little-reason-to-expect-a-near-term-rebound/)[0m)
 
 
@@ -34,3 +35,5 @@ Read more: https://investingnews.com/element79-gold-announces-execution-of-agree
 [purple]Relevancy score: 3.86/5 Stars[/purple]
 [green]Operational Risk[/green] ([3mOperational risk is the risk of loss resulting from inadequate or failed internal processes, people, and systems, or from external events. Freeport-McMoRan is subject to operational risks due to its large-scale operations and the complexity of its processes, which can lead to significant losses if not managed properly. Additionally, the company is subject to ESG risks, such as reputational damage, increased costs, and loss of social license to operate, if it fails to meet investor or stakeholder expectations.[0m)
 Read more: https://www.valuewalk.com/the-dirty-secret-behind-the-clean-car-revolution-and-a-new-way-to-profit/
+
+
