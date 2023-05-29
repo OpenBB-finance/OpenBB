@@ -197,7 +197,7 @@ def parse_openbb_script(
         # Check if this line has a variable attribution
         # This currently allows user to override ARGV parameter
         if "$" in line and "=" in line:
-            match = re.search(r"\$(\w+)\s*=\s*([\d,-.\s]+)", line)
+            match = re.search(r"\$(\w+)\s*=\s*([\w\d,-.\s]+)", line)
             if match:
                 VAR_NAME = match.group(1)
                 VAR_VALUES = match.group(2)

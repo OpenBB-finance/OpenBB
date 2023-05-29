@@ -514,6 +514,29 @@ end
             "utilized instead[/red]",
             "",
         ),
+        #############################
+        (
+            """
+        # Defining variables
+$TICKERS = AAPL,TSLA,MSFT
+$DATES = 2020-01-01,2021-01-01
+
+stocks/load $TICKERS[0] --start $DATES[1]/candle
+
+foreach $$VAR in $TICKERS
+    load $$VAR/fa/income
+    ..
+    dps/psi/..
+end
+
+load $ARGV[0]/ta/ema -l 50,100,200
+            """,
+            "NVDA",
+            "",
+            "/stocks/load AAPL --start 2021-01-01/candle/load AAPL/fa/income/../dps/psi/"
+            "../load TSLA/fa/income/../dps/psi/../load MSFT/fa/income/../dps/psi/../"
+            "load NVDA/ta/ema -l 50,100,200",
+        ),
     ],
 )
 def test_openbb_routines(routine, input_args, expected_error, expected_queue):
