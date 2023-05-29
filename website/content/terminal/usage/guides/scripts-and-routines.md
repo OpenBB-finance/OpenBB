@@ -191,7 +191,7 @@ To be a powerful scripting language, we needed to introduce the concept of forea
 
 In order to create a foreach loop all you need to do is:
 
-1. Create the header `foreach $$VAR in X` where `X` can be an argument or a list of variables. Note that the `$$VAR` variable is a requirement.
+1. Create the header `foreach $$VAR in X` where `X` can be an argument or a list of variables. Note that the `$$VAR` can take other naming as long as the `$$` convention is kept.
 
 2. Insert commands you are interested in repeating in the following lines
 
@@ -208,8 +208,8 @@ end
 
 ```
 # Loops through all $ARGV variables
-FOREACH $$VAR in $ARGV
-    load $$VAR --start $DATE[0]/ins/stats/..
+FOREACH $$SOMETHING in $ARGV
+    load $$SOMETHING --start $DATE[0]/ins/stats/..
  end
 ```
 
@@ -225,8 +225,8 @@ END
 
 ```
 # Loops through PLTR and BB
-foreach $$VAR in PLTR,BB
-    load $$VAR --start $LASTJANUARY
+foreach $$X in PLTR,BB
+    load $$X --start $LASTJANUARY
     candle
 END
 ```

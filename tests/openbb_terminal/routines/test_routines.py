@@ -414,6 +414,23 @@ home
             "",
             "/stocks/load PLTR --start 2023-01-01/candle/load BB --start 2023-01-01/candle/home",
         ),
+        #############################
+        (
+            """
+stocks
+
+# Charts for PLTR and BB
+foreach $$SOMETHING in PLTR,BB
+    load $$SOMETHING --start $LASTJANUARY
+    candle
+END
+
+home
+            """,
+            "",
+            "",
+            "/stocks/load PLTR --start 2023-01-01/candle/load BB --start 2023-01-01/candle/home",
+        ),
     ],
 )
 def test_openbb_routines(routine, input_args, expected_error, expected_queue):

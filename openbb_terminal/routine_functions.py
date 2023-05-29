@@ -407,11 +407,13 @@ def parse_openbb_script(
 
     parsed_script = ""
     final_lines = list()
+    varname = "VAR"
     for line in lines_with_vars_replaced:
         # Found 'foreach' header associated with loop
-        match = re.search(r"(?<=foreach \$\$VAR in )([A-Z,]+)", line, re.IGNORECASE)
+        match = re.search(r"foreach \$\$([A-Z_]+) in ([A-Z,]+)", line, re.IGNORECASE)
         if match:
-            foreach_loop = match.group(1).split(",")
+            varname = match.group(1)
+            foreach_loop = match.group(2).split(",")
             within_foreach = True
 
         # We are inside a loop and this is a line that we will want to replicate,
@@ -426,7 +428,7 @@ def parse_openbb_script(
                     # Iterate through all lines within foreach and end loop
                     for foreach_line_loop in foreach_lines_loop:
                         final_lines.append(
-                            foreach_line_loop.replace("$$VAR", var).strip()
+                            foreach_line_loop.replace(f"$${varname}", var).strip()
                         )
 
                 # Since this has been processed we reset the foreach loop lines
