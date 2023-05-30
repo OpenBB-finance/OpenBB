@@ -12,10 +12,10 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-BASE_API_KEY = "8eSjJnSuOC7uLWkrTQoWADStkNS2ZIy94pH5CsNn"
-
 MAPPING = {
     "tensor": {
+        "api_key": "8eSjJnSuOC7uLWkrTQoWADStkNS2ZIy94pH5CsNn",
+        "tl_org_slug": "tensor",
         "queries": [
             {"id": 846, "slug": "daily-transactions"},
             {"id": 847, "slug": "weekly-transactions"},
@@ -30,9 +30,11 @@ MAPPING = {
             {"id": 1111, "slug": "weekly-tvl"},
             {"id": 1112, "slug": "monthly-tvl"},
             {"id": 1115, "slug": "top-traders-by-gmv"},
-        ]
+        ],
     },
     "genopets": {
+        "api_key": "67F9IFzXma0iusqMAb2VynopTfHqzri2zTeacQnh",
+        "tl_org_slug": "genopets",
         "queries": [
             {"id": 1206, "slug": "daily-users"},
             {"id": 1207, "slug": "weekly-users"},
@@ -58,9 +60,11 @@ MAPPING = {
             {"id": 1239, "slug": "gsp-weekly-instruction-type-split"},
             {"id": 1242, "slug": "harvestki-daily"},
             {"id": 1245, "slug": "withdrawki-daily"},
-        ]
+        ],
     },
     "staratlas": {
+        "api_key": "l8Q9sOseZRAoFVqvTExxWJ8W9j4ETySHiDFGIHg3",
+        "tl_org_slug": "staratlas",
         "queries": [
             {"id": 1033, "slug": "daily-users"},
             {"id": 1026, "slug": "weekly-users"},
@@ -79,9 +83,11 @@ MAPPING = {
             {"id": 1038, "slug": "daily-gas-fee"},
             {"id": 1046, "slug": "weekly-gas-fee"},
             {"id": 1027, "slug": "monthly-gas-fee"},
-        ]
+        ],
     },
     "aurory": {
+        "api_key": "LzJODEsQnkySsqbCoRxPqj8KuN5x8SGK3AESatgm",
+        "tl_org_slug": "aurory",
         "queries": [
             {"id": 1147, "slug": "daily-users"},
             {"id": 1132, "slug": "weekly-users"},
@@ -97,9 +103,11 @@ MAPPING = {
             {"id": 1151, "slug": "daily-xaury-volume"},
             {"id": 1150, "slug": "weekly-xaury-volume"},
             {"id": 1152, "slug": "monthly-xaury-volume"},
-        ]
+        ],
     },
     "sol_casino": {
+        "api_key": "biEGK5IM7ciI3GCOJ0QJVrHWHMYflGsAcfcCixcP",
+        "tl_org_slug": "tl",
         "queries": [
             {"id": 1468, "slug": "daily-transactions"},
             {"id": 1471, "slug": "weekly-transactions"},
@@ -111,9 +119,11 @@ MAPPING = {
             {"id": 1485, "slug": "daily-sol-deposits"},
             {"id": 1486, "slug": "daily-usdc-usdt-deposits"},
             {"id": 1488, "slug": "daily-bonk-deposits"},
-        ]
+        ],
     },
     "exchange_art": {
+        "api_key": "biEGK5IM7ciI3GCOJ0QJVrHWHMYflGsAcfcCixcP",
+        "tl_org_slug": "tl",
         "queries": [
             {"id": 1331, "slug": "daily-transactions"},
             {"id": 1332, "slug": "weekly-transactions"},
@@ -136,9 +146,11 @@ MAPPING = {
             {"id": 1427, "slug": "daily-secondary-gmv"},
             {"id": 1428, "slug": "weekly-secondary-gmv"},
             {"id": 1429, "slug": "monthly-secondary-gmv"},
-        ]
+        ],
     },
     "xNFT_Backpack": {
+        "api_key": "biEGK5IM7ciI3GCOJ0QJVrHWHMYflGsAcfcCixcP",
+        "tl_org_slug": "tl",
         "queries": [
             {"id": 2318, "slug": "xnft-installed"},
             {"id": 1738, "slug": "daily-xnft-installed"},
@@ -149,9 +161,11 @@ MAPPING = {
             {"id": 1764, "slug": "mad-lad-nft"},
             {"id": 1757, "slug": "users-by-xnft"},
             {"id": 1731, "slug": "cumulative-xnft-installed"},
-        ]
+        ],
     },
     "bonk": {
+        "api_key": "biEGK5IM7ciI3GCOJ0QJVrHWHMYflGsAcfcCixcP",
+        "tl_org_slug": "tl",
         "queries": [
             {"id": 486, "slug": "bonk-transaction-fee"},
             {"id": 506, "slug": "daily-bonk-burn"},
@@ -166,9 +180,11 @@ MAPPING = {
             {"id": 484, "slug": "top-100-bonk-holders"},
             {"id": 485, "slug": "top-wallets-by-transactions"},
             {"id": 492, "slug": "daily-users-split-by-dex"},
-        ]
+        ],
     },
     "light_protocol": {
+        "api_key": "De2qJPBJKt19Yh24Z2n6kezIlaEBA4UYkBBjdbXn",
+        "tl_org_slug": "luminouslabs",
         "queries": [
             {"id": 1846, "slug": "hourly-transactions"},
             {"id": 1506, "slug": "daily-transactions"},
@@ -179,7 +195,7 @@ MAPPING = {
             {"id": 1699, "slug": "weekly-shielded-and-unshielded-volume"},
             {"id": 1700, "slug": "monthly-shielded-and-unshielded-volume"},
             {"id": 1701, "slug": "shielded-and-unshielded-transactions-by-wallets"},
-        ]
+        ],
     },
 }
 
@@ -218,18 +234,20 @@ def make_request(org_slug=None, query_slug=None) -> Tuple[Optional[int], Any]:
 
     query = query_items[0]
     query_id = query["id"]
+    api_key = org["api_key"]
+    tl_org_slug = org["tl_org_slug"]
 
     """
-    Api Documentation
+    API Documentation
     ----------
-    :param string org_slug: Slug of Organization
+    :param string tl_org_slug: Slug of Topledger Organization
     :param string query_id: the ID of the query to fetch result of
     :param string api_key: Authentication Key to fetch result
 
-    API Format: HOST/<org_slug>/api/queries/<query_id>/results.json?api_key=<api_key>
+    API Format: HOST/<tl_org_slug>/api/queries/<query_id>/results.json?api_key=<api_key>
     """
 
-    url = f"https://analytics.topledger.xyz/{org_slug}/api/queries/{query_id}/results.json?api_key={BASE_API_KEY}"
+    url = f"https://analytics.topledger.xyz/{tl_org_slug}/api/queries/{query_id}/results.json?api_key={api_key}"
     try:
         response = request(url)
     except Exception:
