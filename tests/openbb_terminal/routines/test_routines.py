@@ -79,7 +79,7 @@ def test_parse_openbb_script():
         "END",
     ]
     test_out = parse_openbb_script(raw_lines)
-    assert test_out[1] == [
+    assert test_out[1].split("/")[1:] == [
         "stocks",
         "load PLTR --start 2023-01-01",
         "candle",
