@@ -61,6 +61,10 @@ def display_historical(
         chain_id = f"{symbol}{''.join(expiry[2:].split('-'))}{'P' if put else 'C'}{str(int(1000*strike)).zfill(8)}"
         df_hist = intrinio_model.get_historical_options(chain_id)
 
+    if df_hist.empty:
+        console.print(f"[red]No data found for {chain_id}[/red]")
+        return None
+
     if raw:
         print_rich_table(
             df_hist,
