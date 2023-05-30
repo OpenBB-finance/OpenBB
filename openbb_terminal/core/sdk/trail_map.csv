@@ -185,7 +185,6 @@ econometrics.pols,econometrics_regression_model.get_pols,
 econometrics.re,econometrics_regression_model.get_re,
 econometrics.root,econometrics_model.get_root,econometrics_view.display_root
 econometrics.vif,econometrics_model.get_vif,
-econometrics.garch,econometrics_model.get_garch,econometrics_view.display_garch
 economy.available_indices,economy_yfinance_model.get_available_indices,
 economy.balance,economy_oecd_model.get_balance,economy_oecd_view.plot_balance
 economy.bigmac,economy_nasdaq_model.get_big_mac_indices,economy_nasdaq_view.display_big_mac_index
@@ -511,11 +510,14 @@ stocks.ins.stats,stocks_insider_sdk_helper.stats,
 stocks.load,stocks_helper.load,
 stocks.news,common_ultima_newsmonitor_model.get_news,
 stocks.options.calculate_chains_stats,stocks_options_options_chains_model.calculate_stats,
+stocks.options.calculate_straddle,stocks_options_options_chains_model.calculate_straddle,
+stocks.options.calculate_strangle,stocks_options_options_chains_model.calculate_strangle,
 stocks.options.chains,stocks_options_sdk_helper.get_full_option_chain,
 stocks.options.dte,stocks_options_helpers.get_dte,
 stocks.options.eodchain,stocks_options_intrinio_model.get_full_chain_eod,
 stocks.options.expirations,stocks_options_sdk_helper.get_option_expirations,
 stocks.options.generate_data,stocks_options_yfinance_model.generate_data,
+stocks.options.get_strategies,stocks_options_options_chains_model.get_strategies,
 stocks.options.greeks,stocks_options_sdk_helper.get_greeks,
 stocks.options.grhist,stocks_options_screen_syncretism_model.get_historical_greeks,stocks_options_screen_syncretism_view.view_historical_greeks
 stocks.options.hist,stocks_options_sdk_helper.hist,

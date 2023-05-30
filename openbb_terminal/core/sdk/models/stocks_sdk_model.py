@@ -451,11 +451,14 @@ class StocksOptions(Category):
 
     Attributes:
         `calculate_chains_stats`: Calculates basic statistics for the options chains, like OI and Vol/OI ratios.\n
+        `calculate_straddle`: Calculates the cost of a straddle and its payoff profile.  Requires the OptionsChains data object.\n
+        `calculate_strangle`: Calculates the cost of a straddle and its payoff profile.  Requires the OptionsChains data object.\n
         `chains`: Get Option Chain For A Stock.  No greek data is returned\n
         `dte`: Returns a new column containing the DTE as an integer, including 0.\n
         `eodchain`: Get full EOD option date across all expirations\n
         `expirations`: Get Option Chain Expirations\n
         `generate_data`: Gets x values, and y values before and after premiums\n
+        `get_strategies`: Gets options strategies for all, or a list of, DTE(s). Currently supports straddles and strangles.\n
         `greeks`: Gets the greeks for a given option\n
         `grhist`: Get histoical option greeks\n
         `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
@@ -483,11 +486,18 @@ class StocksOptions(Category):
         self.calculate_chains_stats = (
             lib.stocks_options_options_chains_model.calculate_stats
         )
+        self.calculate_straddle = (
+            lib.stocks_options_options_chains_model.calculate_straddle
+        )
+        self.calculate_strangle = (
+            lib.stocks_options_options_chains_model.calculate_strangle
+        )
         self.chains = lib.stocks_options_sdk_helper.get_full_option_chain
         self.dte = lib.stocks_options_helpers.get_dte
         self.eodchain = lib.stocks_options_intrinio_model.get_full_chain_eod
         self.expirations = lib.stocks_options_sdk_helper.get_option_expirations
         self.generate_data = lib.stocks_options_yfinance_model.generate_data
+        self.get_strategies = lib.stocks_options_options_chains_model.get_strategies
         self.greeks = lib.stocks_options_sdk_helper.get_greeks
         self.grhist = lib.stocks_options_screen_syncretism_model.get_historical_greeks
         self.grhist_chart = (
