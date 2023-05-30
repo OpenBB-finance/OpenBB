@@ -745,6 +745,7 @@ class StocksController(StockBaseController):
             self.start,
             self.interval,
             self.stock,
+            self.suffix,
             self.queue,
         )
 
