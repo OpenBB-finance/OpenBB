@@ -16,6 +16,7 @@ import ResizeHandler from "./ResizeHandler";
 import ChangeColor from "./ChangeColor";
 import clsx from "clsx";
 import DownloadFinishedDialog from "./Dialogs/DownloadFinishedDialog";
+import AlertDialog from "./Dialogs/AlertDialog";
 
 const Plot = createPlotlyComponent(Plotly);
 
@@ -156,11 +157,24 @@ export default function Chart({
 
 	useEffect(() => {
 		if (!plotLoaded) {
+			const traceTypes = originalData.data.map(
+				(trace) => trace.type === "candlestick",
+			);
 			if (
-				originalData.data[0]?.x !== undefined &&
-				originalData.data[0]?.x.length <= 1000
-			)
+				(originalData.data[0]?.x !== undefined &&
+					originalData.data[0]?.x.length <= 1000) ||
+				!traceTypes.includes(true)
+			) {
 				return;
+			}
+			setModal({
+				name: "alertDialog",
+				data: {
+					title: "Warning",
+					content: `Data has been truncated to 1000 points for performance reasons.
+						Please use the zoom tool to see more data.`,
+				},
+			});
 			const new_data = CreateDataXrange(originalData.data);
 			setPlotData({ ...originalData, data: new_data });
 		}
@@ -463,22 +477,6 @@ export default function Chart({
 				}
 			});
 			plotDiv.on(
-				"plotly_relayout",
-				non_blocking(async function (eventdata) {
-					if (eventdata["xaxis.range[0]"] === undefined) return;
-					const data = { ...originalData };
-					await DynamicLoad({
-						event: eventdata,
-						figure: data,
-					}).then(async (to_update) => {
-						setPlotData(to_update);
-						Plotly.react(plotDiv, to_update.data, to_update.layout);
-						const scaled = await autoScaling(eventdata, plotDiv);
-						Plotly.update(plotDiv, {}, scaled);
-					});
-				}, 100),
-			);
-			plotDiv.on(
 				"plotly_click",
 				non_blocking(async function (eventdata) {
 					const point = eventdata.points[0];
@@ -494,6 +492,32 @@ export default function Chart({
 			if (theme !== "dark") {
 				setChangeTheme(true);
 			}
+
+			const traceTypes = originalData.data.map(
+				(trace) => trace.type === "candlestick",
+			);
+			if (
+				(originalData.data[0]?.x !== undefined &&
+					originalData.data[0]?.x.length <= 1000) ||
+				!traceTypes.includes(true)
+			)
+				return;
+			plotDiv.on(
+				"plotly_relayout",
+				non_blocking(async function (eventdata) {
+					if (eventdata["xaxis.range[0]"] === undefined) return;
+					const data = { ...originalData };
+					await DynamicLoad({
+						event: eventdata,
+						figure: data,
+					}).then(async (to_update) => {
+						setPlotData(to_update);
+						Plotly.react(plotDiv, to_update.data, to_update.layout);
+						const scaled = await autoScaling(eventdata, plotDiv);
+						Plotly.update(plotDiv, {}, scaled);
+					});
+				}, 100),
+			);
 		}
 	}, [plotLoaded]);
 
@@ -527,6 +551,12 @@ export default function Chart({
 				<div id="loading_text" className="loading_text" />
 				<div id="loader" className="loader" />
 			</div>
+			<AlertDialog
+				title={modal?.data?.title}
+				content={modal?.data?.content}
+				open={modal.name === "alertDialog"}
+				close={onClose}
+			/>
 			<OverlayChartDialog
 				addOverlay={(overlay) => {
 					console.log(overlay);
