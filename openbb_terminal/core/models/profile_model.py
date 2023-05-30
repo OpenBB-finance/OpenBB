@@ -34,7 +34,7 @@ class ProfileModel(BaseModel):
         self.token = session.get("access_token", "")
         self.uuid = session.get("uuid", "")
         self.email = email
-        self.username = session.get("username", "")
+        self.username = session.get("username", email.split("@").pop(0))
         self.primary_usage = session.get("primary_usage", "")
         self.remember = remember
 
