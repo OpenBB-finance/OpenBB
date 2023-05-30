@@ -1,4 +1,4 @@
     stats              collection stats                  [OpenSea]
-    fp                 collection sales/floor price      [NFTPriceFloor]
+    fp                 collection floor price            [NFTPriceFloor]
     collections        top ethereum collections          [NFTPriceFloor]
 
