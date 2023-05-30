@@ -5,6 +5,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.sdk import openbb
 from openbb_terminal.stocks.options import options_chains_model
 
 
@@ -60,3 +61,98 @@ def test_calculate_stats_bad_input():
     options_chains_model.calculate_stats(df.underlying_price)
     options_chains_model.calculate_stats(df.last_price)
     options_chains_model.calculate_stats(df.underlying_name)
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_validate_object():
+    df = options_chains_model.load_options_chains("SPY")
+    assert options_chains_model.validate_object(df, scope="object")
+    assert options_chains_model.validate_object(df, scope="strategies")
+    assert isinstance(
+        options_chains_model.validate_object(df, scope="chains"), pd.DataFrame
+    )
+    assert isinstance(
+        options_chains_model.validate_object(df.chains, scope="chains"), pd.DataFrame
+    )
+    df = options_chains_model.load_options_chains("NDX", source="Nasdaq")
+    assert isinstance(
+        options_chains_model.validate_object(df, scope="chains"), pd.DataFrame
+    )
+    options_chains_model.validate_object(df, scope="strategies")
+    options_chains_model.validate_object(df, scope="object")
+    options_chains_model.validate_object(df.expirations, scope="chains")
+    df = openbb.stocks.load("AAPL")
+    options_chains_model.validate_object(df)
+    options_chains_model.validate_object(df, scope="strategies")
+    df = options_chains_model.load_options_chains("BAD_SYMBOL")
+    options_chains_model.validate_object(df)
+    options_chains_model.validate_object(df.symbol)
+
+
+@pytest.mark.vcr
+def test_get_nearest_dte(recorder):
+    df = options_chains_model.load_options_chains("OXY")
+    nearest_dte = options_chains_model.get_nearest_dte(df, 23)
+    recorder.capture(int(nearest_dte))
+
+
+@pytest.mark.vcr
+def test_get_nearest_call_strike(recorder):
+    df = options_chains_model.load_options_chains("OXY")
+    nearest_call_strike = options_chains_model.get_nearest_call_strike(df)
+    assert isinstance(nearest_call_strike, float)
+    recorder.capture(nearest_call_strike)
+
+
+@pytest.mark.vcr
+def test_get_nearest_put_strike(recorder):
+    df = options_chains_model.load_options_chains("OXY")
+    nearest_put_strike = options_chains_model.get_nearest_put_strike(df)
+    assert isinstance(nearest_put_strike, float)
+    recorder.capture(nearest_put_strike)
+
+
+@pytest.mark.vcr
+def test_get_nearest_otm_strike(recorder):
+    df = options_chains_model.load_options_chains("OXY")
+    nearest_otm_strike = options_chains_model.get_nearest_otm_strike(df)
+    assert isinstance(nearest_otm_strike, dict)
+    recorder.capture(nearest_otm_strike)
+
+
+@pytest.mark.vcr
+def test_calculate_straddle(recorder):
+    df = options_chains_model.load_options_chains("OXY")
+    assert isinstance(
+        options_chains_model.calculate_straddle(df, payoff=True), pd.DataFrame
+    )
+    recorder.capture(options_chains_model.calculate_straddle(df))
+    recorder.capture(options_chains_model.calculate_straddle(df, payoff=True))
+
+
+@pytest.mark.vcr
+def test_calculate_strangle(recorder):
+    df = options_chains_model.load_options_chains("OXY")
+    assert isinstance(
+        options_chains_model.calculate_strangle(df, payoff=True), pd.DataFrame
+    )
+    recorder.capture(options_chains_model.calculate_strangle(df))
+    recorder.capture(options_chains_model.calculate_strangle(df, payoff=True))
+
+
+@pytest.mark.vcr
+def test_get_strategies(recorder):
+    df = options_chains_model.load_options_chains("OXY")
+    assert isinstance(options_chains_model.get_strategies(df), pd.DataFrame)
+    recorder.capture(options_chains_model.get_strategies(df))
+    recorder.capture(options_chains_model.get_strategies(df, strangle=True))
+    recorder.capture(
+        options_chains_model.get_strategies(
+            df,
+            days=[1, 5, 10],
+            moneyness=[0.5, 2.5, 5, 10],
+            straddle=True,
+            strangle=True,
+        )
+    )
