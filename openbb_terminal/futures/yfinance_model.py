@@ -174,18 +174,26 @@ def get_curve_futures(
 
     futures_index = list()
     futures_curve = list()
-    for i in range(36):
+    i = 0
+    empty_count = 0
+    # Loop through until we find 12 consecutive empty years
+    while empty_count < 12:
         future = today + relativedelta(months=i)
         future_symbol = (
             f"{symbol}{MONTHS[future.month]}{str(future.year)[-2:]}.{exchange}"
         )
-
         with HiddenPrints():
             data = yf.download(future_symbol, progress=False, ignore_tz=True)
 
-        if not data.empty:
+        if data.empty:
+            empty_count += 1
+
+        else:
+            empty_count = 0
             futures_index.append(future.strftime("%b-%Y"))
             futures_curve.append(data["Adj Close"].values[-1])
+
+        i += 1
 
     if not futures_index:
         return pd.DataFrame()

@@ -205,7 +205,7 @@ def open_openbb_documentation(
             "news",
             "account",
         ]:
-            path = "/guides"
+            path = "/usage"
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/usage?path=/usage/intros/common/{command}"
@@ -313,7 +313,7 @@ def check_for_updates() -> None:
                 )
                 if current_version < latest_version:
                     console.print(
-                        "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+                        "[yellow]Check for updates at https://my.openbb.co/app/terminal/download[/yellow]"
                     )
 
                 else:

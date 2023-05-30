@@ -832,10 +832,7 @@ class OptionsController(BaseController):
                     else None,
                 )
 
-            if (
-                ns_parser.source == "Tradier"
-                and get_current_user().credentials.API_TRADIER_TOKEN != "REPLACE_ME"
-            ):  # nosec
+            if ns_parser.source == "Tradier":  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,
                     expiry=self.selected_date,
