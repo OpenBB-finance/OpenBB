@@ -422,28 +422,6 @@ def suppress_stdout():
             sys.stderr = old_stderr
 
 
-def is_reset(command: str) -> bool:
-    """Test whether a command is a reset command
-
-    Parameters
-    ----------
-    command : str
-        The command to test
-
-    Returns
-    -------
-    answer : bool
-        Whether the command is a reset command
-    """
-    if "reset" in command:
-        return True
-    if command == "r":
-        return True
-    if command == "r\n":
-        return True
-    return False
-
-
 def first_time_user() -> bool:
     """Whether a user is a first time user. A first time user is someone with an empty .env file.
     If this is true, it also adds an env variable to make sure this does not run again.
