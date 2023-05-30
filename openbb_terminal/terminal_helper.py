@@ -205,7 +205,7 @@ def open_openbb_documentation(
             "news",
             "account",
         ]:
-            path = "/guides"
+            path = "/usage"
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/usage?path=/usage/intros/common/{command}"
