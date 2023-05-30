@@ -209,6 +209,10 @@ Create the environment by copying the code below into the command line and agree
 conda env create -n obb --file build/conda/conda-3-9-env.yaml
 ```
 
+:::note
+Additional `YAML` files provide support for Python versions 3.8 and 3.10.  Substitute the `9`, in the command above, with the desired version.
+:::
+
 After the obb environment is created, activate it by entering:
 
 ```shell
