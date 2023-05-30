@@ -63,3 +63,22 @@ def test_get_available_greeks(recorder):
     results_df = df.get_available_greeks(df.expirations[-1])
     assert isinstance(results_df, pd.DataFrame)
     recorder.capture(results_df)
+
+
+@pytest.mark.vcr
+def test_load_options(recorder):
+    data = nasdaq_model.load_options(symbol="OXY")
+    assert isinstance(data.chains, pd.DataFrame)
+    assert isinstance(data.last_price, float)
+    assert isinstance(data.underlying_price, pd.Series)
+    df1 = data.chains
+    data = nasdaq_model.load_options(symbol="OXY", pydantic=True)
+    assert isinstance(data.chains, dict)
+    assert isinstance(data.underlying_price, dict)
+    assert isinstance(data.expirations, list)
+    assert isinstance(data.strikes, list)
+    df2 = pd.DataFrame(data.chains)
+    assert df1.equals(df2)
+    recorder.capture(data.chains)
+    recorder.capture(data.underlying_price)
+    recorder.capture(data.last_price)
