@@ -45,7 +45,7 @@ def get_user_input() -> Tuple[str, str, bool]:
     email = s.prompt(
         message="> Email: ",
     )
-    if not email and not is_installer():
+    if not email:
         return "", "", False
 
     password = s.prompt(
@@ -59,7 +59,7 @@ def get_user_input() -> Tuple[str, str, bool]:
     return email, password, remember
 
 
-def prompt(welcome=True):
+def prompt(welcome: bool = True):
     """Prompt and launch terminal if login is successful.
 
     Parameters
@@ -74,8 +74,9 @@ def prompt(welcome=True):
 
     while True:
         email, password, remember = get_user_input()
-        if not email and not is_installer():
-            return launch_terminal()
+        if not email:
+            return prompt(welcome=False) if is_installer() else launch_terminal()
+
         session = create_session(email, password, remember)
         if isinstance(session, dict) and session:
             return login_and_launch(session, remember)
