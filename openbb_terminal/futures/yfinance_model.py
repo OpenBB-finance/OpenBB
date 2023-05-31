@@ -148,7 +148,6 @@ def get_historical_futures(
         )
 
     return df
-# print(get_historical_futures(["ZN","ZB"], start_date="2023-04-01"))
 
 @log_start_end(log=logger)
 def get_curve_futures(
@@ -197,7 +196,7 @@ def get_curve_futures(
             futures_index.append(future.strftime("%b-%Y"))
             futures_curve.append(data["Adj Close"].values[-1])
             if not as_of == "":
-                historical_curve.append(data["Adj Close"].loc[as_of])
+                historical_curve.append(data['Adj Close'].get(as_of, None))
 
         i += 1
 
@@ -205,7 +204,8 @@ def get_curve_futures(
         return pd.DataFrame()
 
     if historical_curve:
+        if None in historical_curve:
+            console.print("[yellow]No pricing data for selected as-of date.[/yellow]")
         return pd.DataFrame(index=futures_index, data=zip(futures_curve, historical_curve), columns=["Last Price", as_of])
     else:
         return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Last Price"])
-# print(get_curve_futures("ES", as_of="2023-05-15"))
