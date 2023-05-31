@@ -191,6 +191,7 @@ def display_historical(
 @log_start_end(log=logger)
 def display_curve(
     symbol: str,
+    as_of: Optional[str] = "",
     raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
@@ -202,8 +203,10 @@ def display_curve(
     ----------
     symbol: str
         Curve future symbol to display
+    as_of: str
+        Optionally include historical futures prices for each contract 
     raw: bool
-        Display futures timeseries in raw format
+        Display futures prices in raw format
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
     export: str
@@ -214,7 +217,10 @@ def display_curve(
     if symbol not in yfinance_model.FUTURES_DATA["Ticker"].unique().tolist():
         return console.print(f"[red]'{symbol}' is not a valid symbol[/red]")
 
-    df = yfinance_model.get_curve_futures(symbol)
+    if as_of == "":
+        df = yfinance_model.get_curve_futures(symbol)
+    else:
+        df = yfinance_model.get_curve_futures(symbol, as_of)
 
     if df.empty:
         return console.print("[red]No future data found to generate curve.[/red]\n")

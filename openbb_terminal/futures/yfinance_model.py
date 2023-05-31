@@ -153,6 +153,7 @@ def get_historical_futures(
 @log_start_end(log=logger)
 def get_curve_futures(
     symbol: str = "",
+    as_of: Optional[str] = "",
 ) -> pd.DataFrame:
     """Get curve futures [Source: Yahoo Finance]
 
@@ -160,6 +161,8 @@ def get_curve_futures(
     ----------
     symbol: str
         symbol to get forward curve
+    as_of: str
+        optionally include historical price for each contract
 
     Returns
     -------
@@ -174,9 +177,10 @@ def get_curve_futures(
 
     futures_index = list()
     futures_curve = list()
+    historical_curve = list()
     i = 0
     empty_count = 0
-    # Loop through until we find 12 consecutive empty years
+    # Loop through until we find 12 consecutive empty months
     while empty_count < 12:
         future = today + relativedelta(months=i)
         future_symbol = (
@@ -192,10 +196,15 @@ def get_curve_futures(
             empty_count = 0
             futures_index.append(future.strftime("%b-%Y"))
             futures_curve.append(data["Adj Close"].values[-1])
+            if not as_of == "":
+                historical_curve.append(data["Adj Close"].loc[as_of])
 
         i += 1
 
     if not futures_index:
         return pd.DataFrame()
 
-    return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Last Price"])
+    if historical_curve:
+        return pd.DataFrame(index=futures_index, data=zip(futures_curve, historical_curve), columns=["Last Price", as_of])
+    else:
+        return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Last Price"])
