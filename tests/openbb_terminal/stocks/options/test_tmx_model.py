@@ -39,7 +39,7 @@ def test_underlying_price(recorder):
 @pytest.mark.record_stdout
 def test_underlying_price_bad_symbol(mocker):
     mock_response = requests.Response()
-    mock_response.status_code = 200
+    mock_response.status_code = 400
     mocker.patch(
         target="openbb_terminal.helper_funcs.requests.get",
         new=mocker.Mock(return_value=mock_response),
