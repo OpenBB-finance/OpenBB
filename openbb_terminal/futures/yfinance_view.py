@@ -231,7 +231,8 @@ def display_curve(
         "Description"
     ].values[0]
 
-    fig.add_scatter(
+    if as_of == "":
+        fig.add_scatter(
         x=df.index,
         y=df.iloc[:, 0],
         mode="lines+markers",
@@ -239,8 +240,18 @@ def display_curve(
         line=dict(dash="dash", width=4),
         marker=dict(size=10),
     )
+    else:
+        for col in df.columns.tolist():
+            fig.add_scatter(
+                x=df.index,
+                y=df[col],
+                mode="lines+markers",
+                name=col,
+                line=dict(dash="dash", width=4),
+                marker=dict(size=10),
+            )
     fig.set_title(name)
-
+ 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
