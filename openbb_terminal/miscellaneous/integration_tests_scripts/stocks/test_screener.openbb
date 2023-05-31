@@ -2,17 +2,16 @@ stocks
 scr
 view
 view rosenwald
-historical
-historical -l 3 -n
-overview -p golden_cross.ini -l 5
-valuation -l 5
-financial -l 3
+overview -p golden_cross
+valuation
+financial
 ownership
-performance
 technical
 set --preset cheap_dividend
+performance
 ca
-exit
+quit
 help
 reset
+..
 exit
