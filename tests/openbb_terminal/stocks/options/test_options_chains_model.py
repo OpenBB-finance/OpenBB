@@ -62,7 +62,7 @@ def test_calculate_stats(recorder):
     assert stats2.empty
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_calculate_stats_bad_input():
     df = options_chains_model.load_options_chains("SPY", source="TMX")

@@ -1,13 +1,13 @@
 ,Strangle
 Symbol,OXY
-Underlying Price,58.94
+Underlying Price,57.6795
 Expiration,2023-06-30
 DTE,30
-Call Strike,62.0
-Put Strike,56.0
-Call Premium,1.13
-Put Premium,1.2
-Cost,2.33
-Cost Percent,3.9532
-Breakeven Upper,64.33
-Breakeven Lower,53.67
+Call Strike,61.0
+Put Strike,55.0
+Call Premium,0.88
+Put Premium,1.14
+Cost,2.02
+Cost Percent,3.5021
+Breakeven Upper,63.02
+Breakeven Lower,52.98
