@@ -3,9 +3,21 @@
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
+import requests
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.options import nasdaq_model
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("before", "MOCK_BEFORE"),
+            ("after", "MOCK_AFTER"),
+        ],
+    }
 
 
 @pytest.mark.vcr
@@ -50,9 +62,15 @@ def test_underlying_price(recorder):
     recorder.capture(result_df.underlying_price)
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_load_options_bad_symbol():
+def test_load_options_bad_symbol(mocker):
+    mock_response = requests.Response()
+    mock_response.status_code = 400
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
     result_df = nasdaq_model.load_options("BAD_SYMBOL")
     assert result_df.chains.empty
 

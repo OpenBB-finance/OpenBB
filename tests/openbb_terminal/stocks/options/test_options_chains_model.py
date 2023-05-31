@@ -3,15 +3,33 @@
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
+import requests
 
 # IMPORTATION INTERNAL
 from openbb_terminal.sdk import openbb
 from openbb_terminal.stocks.options import options_chains_model
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("before", "MOCK_BEFORE"),
+            ("after", "MOCK_AFTER"),
+        ],
+    }
+
+
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_load_options_chains_bad_source():
+def test_load_options_chains_bad_source(mocker):
+    mock_response = requests.Response()
+    mock_response.status_code = 200
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
     options_chains_model.load_options_chains("AAPL", source="BAD_SOURCE")
 
 
@@ -29,7 +47,7 @@ def test_load_options_chains_compare_sources(recorder):
     recorder.capture(df3.chains)
 
 
-@pytest.mark.vrc
+@pytest.mark.vcr
 def test_load_options_pydantic(recorder):
     df = options_chains_model.load_options_chains("SPY", pydantic=True)
     df1 = options_chains_model.load_options_chains("SPY")
@@ -51,9 +69,15 @@ def test_calculate_stats(recorder):
     assert stats2.empty
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_calculate_stats_bad_input():
+def test_calculate_stats_bad_input(mocker):
+    mock_response = requests.Response()
+    mock_response.status_code = 200
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
     df = options_chains_model.load_options_chains("SPY", source="TMX")
     options_chains_model.calculate_stats(df)
     options_chains_model.calculate_stats(df.SYMBOLS)

@@ -13,6 +13,10 @@ from openbb_terminal.stocks.options import tradier_model
 def vcr_config():
     return {
         "filter_headers": [("Authorization", "MOCK_TOKEN")],
+        "filter_query_parameters": [
+            ("before", "MOCK_BEFORE"),
+            ("after", "MOCK_AFTER"),
+        ],
     }
 
 
