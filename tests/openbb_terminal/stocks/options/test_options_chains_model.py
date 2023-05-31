@@ -3,7 +3,6 @@
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
-import requests
 
 # IMPORTATION INTERNAL
 from openbb_terminal.sdk import openbb
@@ -23,13 +22,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_load_options_chains_bad_source(mocker):
-    mock_response = requests.Response()
-    mock_response.status_code = 200
-    mocker.patch(
-        target="openbb_terminal.helper_funcs.requests.get",
-        new=mocker.Mock(return_value=mock_response),
-    )
+def test_load_options_chains_bad_source():
     options_chains_model.load_options_chains("AAPL", source="BAD_SOURCE")
 
 
@@ -71,13 +64,7 @@ def test_calculate_stats(recorder):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_calculate_stats_bad_input(mocker):
-    mock_response = requests.Response()
-    mock_response.status_code = 200
-    mocker.patch(
-        target="openbb_terminal.helper_funcs.requests.get",
-        new=mocker.Mock(return_value=mock_response),
-    )
+def test_calculate_stats_bad_input():
     df = options_chains_model.load_options_chains("SPY", source="TMX")
     options_chains_model.calculate_stats(df)
     options_chains_model.calculate_stats(df.SYMBOLS)
