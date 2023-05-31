@@ -251,7 +251,7 @@ def display_curve(
                 marker=dict(size=10),
             )
     fig.set_title(name)
- 
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
