@@ -149,6 +149,7 @@ def get_historical_futures(
 
     return df
 
+
 @log_start_end(log=logger)
 def get_curve_futures(
     symbol: str = "",
