@@ -376,13 +376,17 @@ def combine_similar_financials(
             datasets[similar[0]].columns
         ).index(timeframe)
 
-        for symbol in similar[1:]:
+        for symbol in similar:
+            nums = list(range(len(similar) + 1))
+            nums.remove(0)
             report_quarter_date = list(datasets[symbol].columns)[-idx]
             earnings_dates.append(report_quarter_date)
-            compare_financials[symbol] = datasets[symbol][report_quarter_date]
+            compare_financials[symbol + " (" + report_quarter_date + ")"] = datasets[
+                symbol
+            ][report_quarter_date]
 
-        compare_financials.columns = pd.MultiIndex.from_tuples(
-            zip(earnings_dates, compare_financials.columns),
+        compare_financials.drop(
+            columns=compare_financials.columns[0], axis=1, inplace=True
         )
 
     else:
@@ -392,4 +396,4 @@ def combine_similar_financials(
         for symbol in similar[1:]:
             compare_financials[symbol] = datasets[symbol][timeframe]
 
-    return compare_financials
+    return compare_financials.fillna("-").replace("-", "")
