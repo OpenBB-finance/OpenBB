@@ -1,5 +1,3 @@
-# %%
-
 """ Options Chains Module """
 __docformat__ = "numpy"
 
@@ -26,7 +24,7 @@ logger = logging.getLogger(__name__)
 SOURCES = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 
 # mypy: disable-error-code=attr-defined
-# pylint: disable=too-many-return-statements
+# pylint: disable=too-many-return-statements,too-many-lines
 
 
 @log_start_end(log=logger)
@@ -578,7 +576,6 @@ def calculate_straddle(
     payoff_df["Long Put Payoff"] = payoff_put
     payoff_df["Long Straddle Payoff"] = payoff_straddle
     payoff_df = payoff_df.set_index("Price at Expiration")
-    print("\n", straddle.transpose(), "\n")
 
     return payoff_df
 
@@ -710,9 +707,141 @@ def calculate_strangle(
     payoff_df["Long Put Payoff"] = payoff_put
     payoff_df["Long Strangle Payoff"] = payoff_straddle
     payoff_df = payoff_df.set_index("Price at Expiration")
-    print("\n", strangle.transpose(), "\n")
 
     return payoff_df
+
+
+def calculate_vertical_call_spread(
+    options: object,
+    days: int = 30,
+    sold_strike: float = 0,
+    bought_strike: float = 0,
+) -> pd.DataFrame:
+    """Calculates the vertical call spread for the target DTE.
+
+    Parameters
+    ----------
+    options : object
+        The OptionsChains data object. Use load_options_chains() to load the data.
+    days: int
+        The target number of days until expiry. This value will be used to get the nearest valid DTE.
+        Default is 30 days.
+    sold_strike: float
+        The target strike price for the short leg of the vertical call spread.
+    bought_strike: float
+        The target strike price for the long leg of the vertical call spread.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with the results.
+
+    Examples
+    --------
+    Load the data:
+    >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains()
+    >>> op = OptionsChains()
+    >>> data = op.load_options_chains("QQQ")
+
+    For a bull call spread:
+    >>> op.calculate_vertical_call_spread(data, days=10, sold_strike=355, bought_strike=350)
+
+    For a bear call spread:
+    >>> op.calculate_vertical_call_spread(data, days=10, sold_strike=350, bought_strike=355)
+    """
+
+    if validate_object(options, scope="object") is False:
+        return pd.DataFrame()
+
+    if validate_object(options, scope="strategies") is False:
+        print("`last_price` was not found in the OptionsChain data object.")
+        return pd.DataFrame()
+
+    if isinstance(options.chains, dict):
+        options.chains = pd.DataFrame(options.chains)
+
+    # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
+    if options.source == "TMX" and options.date != "":
+        options.chains = options.chains[options.chains["dte"] > 0]
+
+    dte_estimate = get_nearest_dte(options, days)  # noqa:F841
+
+    sold = get_nearest_call_strike(options, days, sold_strike)
+    bought = get_nearest_call_strike(options, days, bought_strike)
+
+    # When the source is Intrinio and it is not EOD data, there is no bid/ask column.  Substituting "close".
+    if options.source == "Intrinio" and options.date == "":
+        sold_premium = options.chains.query(
+            "`strike` == @sold and `dte` == @dte_estimate and `optionType` == 'call'"
+        )["close"].values
+        bought_premium = options.chains.query(
+            "`strike` == @bought and `dte` == @dte_estimate and `optionType` == 'call'"
+        )["close"].values
+    else:
+        sold_premium = options.chains.query(
+            "`strike` == @sold and `dte` == @dte_estimate and `optionType` == 'call'"
+        )["bid"].values
+        bought_premium = options.chains.query(
+            "`strike` == @bought and `dte` == @dte_estimate and `optionType` == 'call'"
+        )["ask"].values
+
+    spread_cost = bought_premium - sold_premium
+    breakeven_price = bought + spread_cost[0]
+    max_profit = sold - bought - spread_cost[0]
+    call_spread = {}
+
+    # Includees the as-of date if it is historical EOD data.
+    if (
+        options.source == "Intrinio"
+        and options.date != ""
+        or options.source == "TMX"
+        and options.date != ""
+    ):
+        call_spread.update({"Date": options.date})
+
+    call_spread.update(
+        {
+            "Symbol": options.symbol,
+            "Underlying Price": options.last_price,
+            "Expiration": options.chains.query("`dte` == @dte_estimate")[
+                "expiration"
+            ].unique()[0],
+            "DTE": dte_estimate,
+            "Sold Strike": sold,
+            "Bought Strike": bought,
+            "Sold Strike Premium": sold_premium[0],
+            "Bought Strike Premium": bought_premium[0],
+            "Cost": spread_cost[0],
+            "Cost Percent": round(spread_cost[0] / options.last_price * 100, ndigits=4),
+            "Breakeven": breakeven_price,
+            "Breakeven Percent": round(
+                (breakeven_price / options.last_price * 100) - 100, ndigits=4
+            ),
+            "Max Profit": max_profit,
+            "Max Loss": spread_cost[0] * -1,
+        }
+    )
+
+    call_spread = pd.DataFrame(
+        data=call_spread.values(), index=call_spread.keys()
+    ).rename(columns={0: "Bull Call Spread"})
+    if call_spread.loc["Cost"][0] < 0:
+        call_spread.loc["Max Profit"][0] = call_spread.loc["Cost"][0] * -1
+        call_spread.loc["Max Loss"][0] = -1 * (
+            bought - sold + call_spread.loc["Cost"][0]
+        )
+        lower = bought if sold > bought else sold
+        call_spread.loc["Breakeven"][0] = lower + call_spread.loc["Max Profit"][0]
+        call_spread.rename(
+            columns={"Bull Call Spread": "Bear Call Spread"}, inplace=True
+        )
+
+    call_spread.loc["Payoff Ratio"] = round(
+        abs(call_spread.loc["Max Profit"][0] / call_spread.loc["Max Loss"][0]),
+        ndigits=4,
+    )
+
+    return call_spread
 
 
 @log_start_end(log=logger)
@@ -922,9 +1051,7 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
     def __init__(self) -> None:
         self.load_options_chains: Callable = load_options_chains
         self.calculate_stats: Callable = calculate_stats
+        self.calculate_vertical_call_spread: Callable = calculate_vertical_call_spread
         self.calculate_straddle: Callable = calculate_straddle
         self.calculate_strangle: Callable = calculate_strangle
         self.get_strategies: Callable = get_strategies
-
-
-# %%
