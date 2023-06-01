@@ -217,10 +217,7 @@ def display_curve(
     if symbol not in yfinance_model.FUTURES_DATA["Ticker"].unique().tolist():
         return console.print(f"[red]'{symbol}' is not a valid symbol[/red]")
 
-    if date == "":
-        df = yfinance_model.get_curve_futures(symbol)
-    else:
-        df = yfinance_model.get_curve_futures(symbol, date)
+    df = yfinance_model.get_curve_futures(symbol) if date == "" else yfinance_model.get_curve_futures(symbol, date)
 
     if df.empty:
         return console.print("[red]No future data found to generate curve.[/red]\n")

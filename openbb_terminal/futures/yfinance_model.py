@@ -196,7 +196,7 @@ def get_curve_futures(
             empty_count = 0
             futures_index.append(future.strftime("%b-%Y"))
             futures_curve.append(data["Adj Close"].values[-1])
-            if not date == "":
+            if date != "":
                 historical_curve.append(data["Adj Close"].get(date, None))
 
         i += 1
