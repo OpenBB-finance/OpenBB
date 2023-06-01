@@ -212,7 +212,4 @@ def get_curve_futures(
             data=zip(futures_curve, historical_curve),
             columns=["Last Price", date],
         )
-    else:
-        return pd.DataFrame(
-            index=futures_index, data=futures_curve, columns=["Last Price"]
-        )
+    return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Last Price"])
