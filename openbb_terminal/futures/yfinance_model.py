@@ -153,7 +153,7 @@ def get_historical_futures(
 @log_start_end(log=logger)
 def get_curve_futures(
     symbol: str = "",
-    as_of: Optional[str] = "",
+    date: Optional[str] = "",
 ) -> pd.DataFrame:
     """Get curve futures [Source: Yahoo Finance]
 
@@ -161,7 +161,7 @@ def get_curve_futures(
     ----------
     symbol: str
         symbol to get forward curve
-    as_of: str
+    date: str
         optionally include historical price for each contract
 
     Returns
@@ -196,8 +196,8 @@ def get_curve_futures(
             empty_count = 0
             futures_index.append(future.strftime("%b-%Y"))
             futures_curve.append(data["Adj Close"].values[-1])
-            if not as_of == "":
-                historical_curve.append(data['Adj Close'].get(as_of, None))
+            if not date == "":
+                historical_curve.append(data["Adj Close"].get(date, None))
 
         i += 1
 
@@ -206,7 +206,13 @@ def get_curve_futures(
 
     if historical_curve:
         if None in historical_curve:
-            console.print("[yellow]No pricing data for selected as-of date.[/yellow]")
-        return pd.DataFrame(index=futures_index, data=zip(futures_curve, historical_curve), columns=["Last Price", as_of])
+            console.print("[yellow]No pricing data for selected date.[/yellow]")
+        return pd.DataFrame(
+            index=futures_index,
+            data=zip(futures_curve, historical_curve),
+            columns=["Last Price", date],
+        )
     else:
-        return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Last Price"])
+        return pd.DataFrame(
+            index=futures_index, data=futures_curve, columns=["Last Price"]
+        )

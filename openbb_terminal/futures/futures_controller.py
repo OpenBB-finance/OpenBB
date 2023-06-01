@@ -238,11 +238,12 @@ class FuturesController(BaseController):
             choices=self.all_tickers,
         )
         parser.add_argument(
-            "--as-of",
-            dest="as_of",
+            "-d",
+            "--date",
+            dest="date",
             type=valid_date,
             help="Include the curve as of a previous date with format YYYY-MM-DD",
-            metavar="AS OF DATE",
+            metavar="DATE",
             default=None,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -255,10 +256,10 @@ class FuturesController(BaseController):
         )
 
         if ns_parser:
-            if ns_parser.as_of:
+            if ns_parser.date:
                 yfinance_view.display_curve(
                     symbol=ns_parser.ticker.upper(),
-                    as_of=ns_parser.as_of.strftime("%Y-%m-%d"),
+                    date=ns_parser.date.strftime("%Y-%m-%d"),
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                     sheet_name=" ".join(ns_parser.sheet_name)
