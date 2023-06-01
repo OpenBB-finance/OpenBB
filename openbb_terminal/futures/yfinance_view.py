@@ -5,6 +5,8 @@ import logging
 import os
 from typing import List, Optional
 
+import pandas as pd
+
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.futures import yfinance_model
@@ -232,6 +234,8 @@ def display_curve(
         "Description"
     ].values[0]
 
+    df.index = pd.to_datetime(df.index, format="%b-%Y")
+
     if date == "":
         fig.add_scatter(
             x=df.index,
@@ -252,6 +256,7 @@ def display_curve(
                 marker=dict(size=10),
             )
     fig.set_title(name)
+    fig.update_layout(xaxis=dict(tickformat="%b-%Y"))
 
     export_data(
         export,
