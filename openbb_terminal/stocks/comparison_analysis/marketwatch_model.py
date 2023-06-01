@@ -377,8 +377,6 @@ def combine_similar_financials(
         ).index(timeframe)
 
         for symbol in similar:
-            nums = list(range(len(similar) + 1))
-            nums.remove(0)
             report_quarter_date = list(datasets[symbol].columns)[-idx]
             earnings_dates.append(report_quarter_date)
             compare_financials[symbol + " (" + report_quarter_date + ")"] = datasets[
