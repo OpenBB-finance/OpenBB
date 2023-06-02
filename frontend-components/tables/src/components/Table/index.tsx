@@ -55,7 +55,6 @@ function getCellWidth(row, column) {
       (includesDateNames(column) ||
         column.toLowerCase() === "index" ||
         (indexValue &&
-          indexValue &&
           typeof indexValue === "string" &&
           (indexValue.toLowerCase().includes("date") ||
             indexValue.toLowerCase().includes("day") ||
@@ -68,6 +67,7 @@ function getCellWidth(row, column) {
             indexValue.toLowerCase().includes("minute"))));
 
     const probablyLink = valueType === "string" && value.startsWith("http");
+
     if (probablyLink) {
       return value?.toString().length ?? 0;
     }
@@ -207,7 +207,10 @@ export default function Table({
               </a>
             );
           }
-          if (probablyDate && typeof value !== "number") {
+          if (probablyDate) {
+            if (typeof value === "number") {
+              return <p>{value}</p>;
+            }
             if (typeof value === "string") {
               const date = value.split("T")[0];
               const time = value.split("T")[1]?.split(".")[0];
