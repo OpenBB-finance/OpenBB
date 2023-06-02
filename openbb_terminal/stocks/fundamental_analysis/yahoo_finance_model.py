@@ -358,14 +358,11 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
     df = df.replace("k", "", regex=True)
     df = df.astype("float")
 
-    # Data except EPS is returned in thousands, convert it
-    (df, _) = transform_by_denomination(
-        df,
-        "Thousands",
-        "Units",
-        axis=1,
-        skipPredicate=lambda row: re.search("eps", row.name, re.IGNORECASE) is not None,
-    )
+    not_skipped = ~df.reset_index()["Breakdown"].str.contains("EPS", case = False)
+    skipped = df.reset_index()["Breakdown"].str.contains("EPS", case = False)
+    skipped_df = df.reset_index()[skipped].set_index("Breakdown")
+    transformed = df.reset_index()[not_skipped].set_index("Breakdown") * 1000
+    df = pd.concat([transformed,skipped_df])
 
     if ratios:
         types = df.copy().applymap(lambda x: isinstance(x, (float, int)))
