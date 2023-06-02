@@ -415,7 +415,7 @@ def display_fundamentals(
         else:
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                fig.scatter(
+                fig.add_scatter(
                     x=fundamentals_plot_data.index,
                     y=fundamentals_plot_data[plot[i]],
                     name=plot[i].replace("_", " "),
