@@ -23,6 +23,7 @@ from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
 import openbb_terminal.core.session.local_model as Local
+from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_model as Hub
@@ -1027,10 +1028,8 @@ class BaseController(metaclass=ABCMeta):
                 # Process the input command
                 self.queue = self.switch(an_input)
 
-                if is_local() and an_input == "login":
-                    return ["login"]
-                if not is_local() and an_input == "logout":
-                    return ["logout"]
+                if get_show_prompt() and an_input in ("login", "logout"):
+                    return [an_input]
 
             except SystemExit:
                 if not self.contains_keys(an_input):
