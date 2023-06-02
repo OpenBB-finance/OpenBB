@@ -12,8 +12,6 @@ from pathlib import Path
 from platform import platform, python_version
 from typing import Any, Dict, Optional
 
-from openbb_terminal.core.log.generation.settings_logger import get_startup
-
 # IMPORTATION THIRDPARTY
 try:
     import git
@@ -37,6 +35,7 @@ from openbb_terminal.core.log.generation.settings import (
     LogSettings,
     Settings,
 )
+from openbb_terminal.core.log.generation.settings_logger import get_startup
 from openbb_terminal.core.log.generation.user_logger import (
     NO_USER_PLACEHOLDER,
     get_current_user,
