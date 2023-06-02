@@ -10,6 +10,7 @@ export default async function autoScaling(
       const x_min = eventdata["xaxis.range[0]"];
       const x_max = eventdata["xaxis.range[1]"];
       const to_update = {};
+      const yaxis_fixedrange = [];
       let y_min;
       let y_max;
 
@@ -134,13 +135,15 @@ export default async function autoScaling(
             y_max = graphs.layout[yaxis].range[1];
           }
           to_update[`${yaxis}.range`] = [y_min, y_max];
+          to_update[`${yaxis}.fixedrange`] = true;
+          yaxis_fixedrange.push(yaxis);
         }
       });
 
-      return to_update;
+      return {to_update, yaxis_fixedrange};
     }
   } catch (e) {
     console.log(`Error in AutoScaling: ${e}`);
   }
-  return {};
+  return {to_update: {}, yaxis_fixedrange: []};
 }

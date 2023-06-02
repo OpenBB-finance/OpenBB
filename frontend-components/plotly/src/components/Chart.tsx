@@ -142,6 +142,7 @@ export default function Chart({
 	const [volumeBars, setVolumeBars] = useState({ old_nticks: {} });
 	const [maximizePlot, setMaximizePlot] = useState(false);
 	const [downloadFinished, setDownloadFinished] = useState(false);
+	const [dateSliced, setDateSliced] = useState(false);
 
 	const [plotData, setPlotData] = useState(originalData);
 	const [annotations, setAnnotations] = useState([]);
@@ -152,33 +153,9 @@ export default function Chart({
 	const [colorActive, setColorActive] = useState(false);
 	const [onAnnotationClick, setOnAnnotationClick] = useState({});
 	const [ohlcAnnotation, setOhlcAnnotation] = useState([]);
+	const [yaxisFixedRange, setYaxisFixedRange] = useState({});
 
 	const onClose = () => setModal({ name: "" });
-
-	useEffect(() => {
-		if (!plotLoaded) {
-			const traceTypes = originalData.data.map(
-				(trace) => trace.type === "candlestick",
-			);
-			if (
-				(originalData.data[0]?.x !== undefined &&
-					originalData.data[0]?.x.length <= 1000) ||
-				!traceTypes.includes(true)
-			) {
-				return;
-			}
-			setModal({
-				name: "alertDialog",
-				data: {
-					title: "Warning",
-					content: `Data has been truncated to 1000 points for performance reasons.
-						Please use the zoom tool to see more data.`,
-				},
-			});
-			const new_data = CreateDataXrange(originalData.data);
-			setPlotData({ ...originalData, data: new_data });
-		}
-	}, [plotLoaded]);
 
 	// @ts-ignore
 	function onDeleteAnnotation(annotation) {
@@ -272,20 +249,57 @@ export default function Chart({
 		let active = true;
 
 		if (button.style.border === "transparent") {
+			plotDiv.removeAllListeners("plotly_relayout");
 			active = false;
 			plotDiv.on(
 				"plotly_relayout",
 				non_blocking(async function (eventdata) {
 					if (eventdata["xaxis.range[0]"] === undefined) return;
-
-					const to_update = await autoScaling(eventdata, plotDiv);
-					Plotly.update(plotDiv, {}, to_update);
+					if (dateSliced) {
+						const data = { ...originalData };
+						await DynamicLoad({
+							event: eventdata,
+							figure: data,
+						}).then(async (to_update) => {
+							setPlotData(to_update);
+							Plotly.react(plotDiv, to_update.data, to_update.layout);
+							const scaled = await autoScaling(eventdata, plotDiv);
+							setYaxisFixedRange(scaled.yaxis_fixedrange);
+							Plotly.update(plotDiv, {}, scaled.to_update);
+						});
+					} else {
+						const scaled = await autoScaling(eventdata, plotDiv);
+						setYaxisFixedRange(scaled.yaxis_fixedrange);
+						Plotly.update(plotDiv, {}, scaled.to_update);
+					}
 				}, 100),
 			);
 		}
 		// If the button isn't active, we remove the listener so
 		// the graphs don't autoscale anymore
-		else plotDiv.removeAllListeners("plotly_relayout");
+		else {
+			plotDiv.removeAllListeners("plotly_relayout");
+			yaxisFixedRange.forEach((yaxis) => {
+				plotDiv.layout[yaxis].fixedrange = false;
+			});
+			setYaxisFixedRange({});
+			if (dateSliced) {
+				plotDiv.on(
+					"plotly_relayout",
+					non_blocking(async function (eventdata) {
+						if (eventdata["xaxis.range[0]"] === undefined) return;
+						const data = { ...originalData };
+						await DynamicLoad({
+							event: eventdata,
+							figure: data,
+						}).then(async (to_update) => {
+							setPlotData(to_update);
+							Plotly.react(plotDiv, to_update.data, to_update.layout);
+						});
+					}, 100),
+				);
+			}
+		}
 
 		button_pressed(title, active);
 	}
@@ -476,18 +490,6 @@ export default function Chart({
 					Plotly.relayout(plotDiv, layout_update);
 				}
 			});
-			plotDiv.on(
-				"plotly_click",
-				non_blocking(async function (eventdata) {
-					const point = eventdata.points[0];
-					if (point === undefined) return;
-					if (point?.customdata === undefined) return;
-					const data = point.customdata;
-					if (data.length > 1 && data[1].startsWith("https://")) {
-						window.open(data[1], "_blank");
-					}
-				}, 10),
-			);
 
 			if (theme !== "dark") {
 				setChangeTheme(true);
@@ -502,22 +504,18 @@ export default function Chart({
 				!traceTypes.includes(true)
 			)
 				return;
-			plotDiv.on(
-				"plotly_relayout",
-				non_blocking(async function (eventdata) {
-					if (eventdata["xaxis.range[0]"] === undefined) return;
-					const data = { ...originalData };
-					await DynamicLoad({
-						event: eventdata,
-						figure: data,
-					}).then(async (to_update) => {
-						setPlotData(to_update);
-						Plotly.react(plotDiv, to_update.data, to_update.layout);
-						const scaled = await autoScaling(eventdata, plotDiv);
-						Plotly.update(plotDiv, {}, scaled);
-					});
-				}, 100),
-			);
+			setModal({
+				name: "alertDialog",
+				data: {
+					title: "Warning",
+					content: `Data has been truncated to 1000 points for performance reasons.
+						Please use the zoom tool to see more data.`,
+				},
+			});
+			const new_data = CreateDataXrange(originalData.data);
+			setPlotData({ ...originalData, data: new_data });
+			setDateSliced(true);
+			setAutoScaling(true);
 		}
 	}, [plotLoaded]);
 
