@@ -12,6 +12,8 @@ from pathlib import Path
 from platform import platform, python_version
 from typing import Any, Dict, Optional
 
+from openbb_terminal.core.log.generation.settings_logger import get_startup
+
 # IMPORTATION THIRDPARTY
 try:
     import git
@@ -188,6 +190,7 @@ class PosthogHandler(logging.Handler):
                 {
                     "email": get_current_user().profile.email,
                     "primaryUsage": get_current_user().profile.primary_usage,
+                    **get_startup(),
                 },
             )
             openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
