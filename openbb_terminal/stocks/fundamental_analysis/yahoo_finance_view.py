@@ -417,7 +417,7 @@ def display_fundamentals(
         if rows_plot == 1:
             fig.add_scatter(
                 x=df_rounded.index,
-                y=df_rounded[plot[0]],
+                y=df_rounded[plot[0]] * 1000,
                 name=plot[0].replace("_", " "),
             )
             title = (
@@ -431,7 +431,7 @@ def display_fundamentals(
             for i in range(rows_plot):
                 fig.scatter(
                     x=df_rounded.index,
-                    y=df_rounded[plot[i]],
+                    y=df_rounded[plot[i]] * 1000,
                     name=plot[i].replace("_", " "),
                     row=i + 1,
                     col=1,
