@@ -415,7 +415,7 @@ def display_fundamentals(
             denomination = ""
 
         if rows_plot == 1:
-            fig.add_bar(
+            fig.add_scatter(
                 x=df_rounded.index,
                 y=df_rounded[plot[0]],
                 name=plot[0].replace("_", " "),
@@ -429,7 +429,7 @@ def display_fundamentals(
         else:
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                fig.add_bar(
+                fig.scatter(
                     x=df_rounded.index,
                     y=df_rounded[plot[i]],
                     name=plot[i].replace("_", " "),
