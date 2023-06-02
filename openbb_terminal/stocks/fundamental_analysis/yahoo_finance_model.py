@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import logging
-import re
 import ssl
 from datetime import datetime
 from typing import Optional, Tuple
@@ -15,7 +14,6 @@ from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
