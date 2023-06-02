@@ -8,6 +8,7 @@ from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
+from pydantic import BaseModel, Field
 from scipy.stats import norm
 
 from openbb_terminal.decorators import log_start_end
@@ -608,3 +609,92 @@ def get_dte(chain: pd.DataFrame) -> pd.DataFrame:
     chain["dte"] = temp_
 
     return chain
+
+
+class Options:  # pylint: disable=too-few-public-methods
+    """The OptionsChains data object.
+
+    Returns
+    -------
+    object: OptionsChains
+        SYMBOLS: pd.DataFrame
+            The symbol directory, if available, from the selected source.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The selected source of the data.
+        date: str
+            The date for the historical EOD chains requested.
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks.
+    """
+
+    SYMBOLS: pd.DataFrame
+    symbol: str
+    source: str
+    date: str = ""
+    chains = pd.DataFrame
+    expirations: list
+    strikes: list
+    last_price: float
+    underlying_name: str
+    underlying_price: pd.Series
+    hasIV: bool
+    hasGreeks: bool
+
+
+class PydanticOptions(BaseModel):  # pylint: disable=too-few-public-methods
+    """Pydantic model for the OptionsChains data object.
+
+    Returns
+    -------
+    Pydantic: OptionsChains
+        source: str
+            The selected source of the data.
+        symbol: str
+            The symbol entered by the user.
+        date: str
+            The date for the historical EOD chains requested.
+        underlying_name: str
+            The name of the underlying asset.
+        last_price: float
+            The last price of the underlying asset.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        underlying_price: dict
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility if True.
+        hasGreeks: bool
+            Returns greeks data if True.
+        chains: dict
+            The complete options chain for the ticker.
+    """
+
+    source: str = Field(default=None)
+    symbol: str = Field(default=None)
+    underlying_name: str = Field(default=None)
+    date: str = Field(default="")
+    last_price: float = Field(default=None)
+    expirations: list = Field(default=None)
+    strikes: list = Field(default=None)
+    hasIV: bool = Field(default=False)
+    hasGreeks: bool = Field(default=False)
+    underlying_price: dict = Field(default=None)
+    chains: dict = Field(default=None)

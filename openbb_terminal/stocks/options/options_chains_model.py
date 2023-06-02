@@ -26,7 +26,6 @@ SOURCES = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 # mypy: disable-error-code=attr-defined
 # pylint: disable=too-many-return-statements,too-many-lines
 
-
 @log_start_end(log=logger)
 def load_options_chains(
     symbol: str,
@@ -316,10 +315,6 @@ def get_nearest_call_strike(
 
     dte_estimate = get_nearest_dte(options, days)
 
-    # When Intrinio data is not EOD, there is no "ask" column, renaming "close".
-    if options.source == "Intrinio" and options.date == "":
-        options.chains.rename(columns={"close": "ask"}, inplace=True)
-
     nearest = (
         (
             options.chains[options.chains["dte"] == dte_estimate]
@@ -377,10 +372,6 @@ def get_nearest_put_strike(
         strike_price = options.last_price
 
     dte_estimate = get_nearest_dte(options, days)
-
-    # When Intrinio data is not EOD, there is no "ask" column, renaming "close".
-    if options.source == "Intrinio" and options.date == "":
-        options.chains.rename(columns={"close": "ask"}, inplace=True)
 
     nearest = (
         (
@@ -495,14 +486,24 @@ def calculate_straddle(
     if isinstance(options.chains, dict):
         options.chains = pd.DataFrame(options.chains)
 
+    dte_estimate = get_nearest_dte(options, days)  # noqa:F841
+
+    # When Intrinio data is not EOD, there is no "ask" column, renaming "close".
+    if options.source == "Intrinio" and options.date == "":
+        options.chains["ask"] = options.chains["close"]
+
     # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
     if options.source == "TMX" and options.date != "":
         options.chains = options.chains[options.chains["dte"] > 0]
 
+    if options.source == "TMX" and options.chains.query("`dte` == @dte_estimate")["ask"].sum() == 0:
+        options.chains["ask"] = options.chains["lastPrice"]
+    if options.source == "TMX" and options.chains.query("`dte` == @dte_estimate")["bid"].sum() == 0:
+        options.chains["bid"] = options.chains["lastPrice"]
+
     if strike_price == 0:
         strike_price = options.last_price
 
-    dte_estimate = get_nearest_dte(options, days)  # noqa:F841
     call_strike_estimate = get_nearest_call_strike(
         options, dte_estimate, strike_price
     )  # noqa:F841
@@ -623,9 +624,21 @@ def calculate_strangle(
     if isinstance(options.chains, dict):
         options.chains = pd.DataFrame(options.chains)
 
+    dte_estimate = get_nearest_dte(options, days)  # noqa:F841
+
+    # When Intrinio data is not EOD, there is no "ask" column, renaming "close".
+    if options.source == "Intrinio" and options.date == "":
+        options.chains["ask"] = options.chains["close"]
+        options.chains["bid"] = options.chains["close"]
+
     # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
     if options.source == "TMX" and options.date != "":
         options.chains = options.chains[options.chains["dte"] > 0]
+
+    if options.source == "TMX" or "YahooFinance" and options.chains.query("`dte` == @dte_estimate")["ask"].sum() == 0:
+        options.chains["ask"] = options.chains["lastPrice"]
+    if options.source == "TMX" or "YahooFinance" and options.chains.query("`dte` == @dte_estimate")["bid"].sum() == 0:
+        options.chains["bid"] = options.chains["lastPrice"]
 
     if moneyness > 100 or moneyness < 0:
         print("Error: Moneyness must be between 0 and 100.")
@@ -633,7 +646,6 @@ def calculate_strangle(
 
     strikes = get_nearest_otm_strike(options, moneyness)
 
-    dte_estimate = get_nearest_dte(options, days)  # noqa:F841
     call_strike_estimate = get_nearest_call_strike(
         options, dte_estimate, strikes["call"]
     )  # noqa:F841
@@ -760,11 +772,16 @@ def calculate_vertical_call_spread(
     if isinstance(options.chains, dict):
         options.chains = pd.DataFrame(options.chains)
 
+    dte_estimate = get_nearest_dte(options, days)  # noqa:F841
+
     # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
     if options.source == "TMX" and options.date != "":
         options.chains = options.chains[options.chains["dte"] > 0]
 
-    dte_estimate = get_nearest_dte(options, days)  # noqa:F841
+    if options.source == "TMX" or "YahooFinance" and options.chains.query("`dte` == @dte_estimate")["ask"].sum() == 0:
+        options.chains["ask"] = options.chains["lastPrice"]
+    if options.source == "TMX" or "YahooFinance" and options.chains.query("`dte` == @dte_estimate")["bid"].sum() == 0:
+        options.chains["bid"] = options.chains["lastPrice"]
 
     sold = get_nearest_call_strike(options, days, sold_strike)
     bought = get_nearest_call_strike(options, days, bought_strike)
@@ -917,7 +934,7 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
 @log_start_end(log=logger)
 def get_strategies(  # pylint: disable=dangerous-default-value
     options: object,
-    days: list[int] = [],
+    days: list[int] = None,
     strike_price: Optional[float] = 0,
     moneyness: list[float] = [5, 10],
     straddle: Optional[bool] = False,
@@ -963,9 +980,6 @@ def get_strategies(  # pylint: disable=dangerous-default-value
         )
     """
 
-    if days == []:
-        days = options.chains["dte"].unique().tolist()
-
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
 
@@ -979,6 +993,9 @@ def get_strategies(  # pylint: disable=dangerous-default-value
     if not straddle and not strangle:
         print("No strategy chosen, defaulting to straddle")
         straddle = True
+
+    if days is None:
+        days = options.chains["dte"].unique().tolist()
 
     # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
     if options.source == "TMX" and options.date != "":

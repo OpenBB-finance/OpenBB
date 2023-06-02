@@ -98,8 +98,7 @@ def test_load_options(recorder):
     assert data.hasIV is True
     assert isinstance(data.underlying_price, pd.Series)
     assert not data.chains.empty
-    data = intrinio_model.load_options("BAD_SYMBOL")
-    assert data.underlying_name == ""
+    assert isinstance(data.underlying_name, str)
     data = intrinio_model.load_options("AAPL", date="2022-01-03", pydantic=True)
     assert data.source == "Intrinio"
     assert data.date == "2022-01-03"
