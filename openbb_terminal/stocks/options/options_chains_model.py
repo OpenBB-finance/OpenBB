@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import logging
+from copy import deepcopy
 
 # IMPORTATION THIRDPARTY
 from typing import Any, Callable, Optional
@@ -25,6 +26,7 @@ SOURCES = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 
 # mypy: disable-error-code=attr-defined
 # pylint: disable=too-many-return-statements,too-many-lines
+
 
 @log_start_end(log=logger)
 def load_options_chains(
@@ -129,7 +131,9 @@ def load_options_chains(
     return load_cboe(symbol, pydantic)
 
 
-def validate_object(options: object, scope: Optional[str] = "object") -> Any:
+def validate_object(
+    options: object, scope: Optional[str] = "object", days: Optional[int] = None
+) -> Any:
     """This is an internal helper function for validating the OptionsChains data object passed
     through the input of functions defined in the OptionsChains class.  The purpose is to handle
     multi-type inputs with backwards compatibility and provide robust error handling.  The return
@@ -142,7 +146,9 @@ def validate_object(options: object, scope: Optional[str] = "object") -> Any:
         Accepts both Pydantic and Pandas object types, as defined by `load_options_chains()`.
         A Pandas DataFrame, or dictionary, with the options chains data is also accepted.
     scope: str
-        The scope of the data needing to be validated.  Choices are: ["chains", "object", "strategies"]
+        The scope of the data needing to be validated.  Choices are: ["chains", "object", "strategies", "nonZeroPrices"]
+    days: int
+        The number of target number of days until the expiration.
 
     Returns
     -------
@@ -162,7 +168,7 @@ def validate_object(options: object, scope: Optional[str] = "object") -> Any:
     >>> options_chains_model.validate_object(options, scope="object")
     """
 
-    scopes = ["chains", "object", "strategies"]
+    scopes = ["chains", "object", "strategies", "nonZeroPrices"]
 
     valid: bool = True
 
@@ -231,9 +237,38 @@ def validate_object(options: object, scope: Optional[str] = "object") -> Any:
 
         return chains
 
+    if scope == "nonZeroPrices":
+        dte_estimate = get_nearest_dte(
+            options, days
+        )  # noqa:F841 pylint: disable=unused-variable
+        # When Intrinio data is not EOD, there is no "ask" column, renaming "close".
+        if options.source == "Intrinio" and options.date == "":
+            options.chains["ask"] = options.chains["close"]
+            options.chains["bid"] = options.chains["close"]
+
+        # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
+        if options.source == "TMX" and options.date != "":
+            options.chains = options.chains[options.chains["dte"] > 0]
+
+        if (
+            options.source == "TMX"
+            or options.source == "YahooFinance"
+            and options.chains.query("`dte` == @dte_estimate")["ask"].sum() == 0
+        ):
+            options.chains["ask"] = options.chains["lastPrice"]
+        if (
+            options.source == "TMX"
+            or options.source == "YahooFinance"
+            and options.chains.query("`dte` == @dte_estimate")["bid"].sum() == 0
+        ):
+            options.chains["bid"] = options.chains["lastPrice"]
+
+        return options
+
     print(
         "Error: No valid data supplied. Check the input to ensure it is not empty or None."
     )
+
     return not valid
 
 
@@ -476,9 +511,13 @@ def calculate_straddle(
     >>> openbb.stocks.options.calculate_straddle(data)
     >>> payoff = openbb.stocks.options.calculate_straddle(data, payoff = True)
     """
+    options = deepcopy(options)
+    if not days:
+        days = 30
 
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
+
     if validate_object(options, scope="strategies") is False:
         print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
@@ -488,20 +527,9 @@ def calculate_straddle(
 
     dte_estimate = get_nearest_dte(options, days)  # noqa:F841
 
-    # When Intrinio data is not EOD, there is no "ask" column, renaming "close".
-    if options.source == "Intrinio" and options.date == "":
-        options.chains["ask"] = options.chains["close"]
+    options = validate_object(options, "nonZeroPrices", dte_estimate)
 
-    # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
-    if options.source == "TMX" and options.date != "":
-        options.chains = options.chains[options.chains["dte"] > 0]
-
-    if options.source == "TMX" and options.chains.query("`dte` == @dte_estimate")["ask"].sum() == 0:
-        options.chains["ask"] = options.chains["lastPrice"]
-    if options.source == "TMX" and options.chains.query("`dte` == @dte_estimate")["bid"].sum() == 0:
-        options.chains["bid"] = options.chains["lastPrice"]
-
-    if strike_price == 0:
+    if not strike_price:
         strike_price = options.last_price
 
     call_strike_estimate = get_nearest_call_strike(
@@ -613,6 +641,10 @@ def calculate_strangle(
     >>> openbb.stocks.options.calculate_strangle(data)
     >>> payoff = openbb.stocks.options.calculate_strangle(data, days = 10, moneyness = 0.5, payoff = True)
     """
+    options = deepcopy(options)
+
+    if not days:
+        days = 30
 
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
@@ -626,19 +658,7 @@ def calculate_strangle(
 
     dte_estimate = get_nearest_dte(options, days)  # noqa:F841
 
-    # When Intrinio data is not EOD, there is no "ask" column, renaming "close".
-    if options.source == "Intrinio" and options.date == "":
-        options.chains["ask"] = options.chains["close"]
-        options.chains["bid"] = options.chains["close"]
-
-    # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
-    if options.source == "TMX" and options.date != "":
-        options.chains = options.chains[options.chains["dte"] > 0]
-
-    if options.source == "TMX" or "YahooFinance" and options.chains.query("`dte` == @dte_estimate")["ask"].sum() == 0:
-        options.chains["ask"] = options.chains["lastPrice"]
-    if options.source == "TMX" or "YahooFinance" and options.chains.query("`dte` == @dte_estimate")["bid"].sum() == 0:
-        options.chains["bid"] = options.chains["lastPrice"]
+    options = validate_object(options, "nonZeroPrices", dte_estimate)
 
     if moneyness > 100 or moneyness < 0:
         print("Error: Moneyness must be between 0 and 100.")
@@ -725,9 +745,9 @@ def calculate_strangle(
 
 def calculate_vertical_call_spread(
     options: object,
-    days: int = 30,
-    sold_strike: float = 0,
-    bought_strike: float = 0,
+    days: Optional[int] = 30,
+    sold_strike: Optional[float] = 0,
+    bought_strike: Optional[float] = 0,
 ) -> pd.DataFrame:
     """Calculates the vertical call spread for the target DTE.
 
@@ -740,8 +760,9 @@ def calculate_vertical_call_spread(
         Default is 30 days.
     sold_strike: float
         The target strike price for the short leg of the vertical call spread.
+        Default is the 5% OTM above the last price of the underlying.
     bought_strike: float
-        The target strike price for the long leg of the vertical call spread.
+        The target strike price for the long leg of the vertical call spread. Default is the last price of the underlying.
 
     Returns
     -------
@@ -761,6 +782,16 @@ def calculate_vertical_call_spread(
     For a bear call spread:
     >>> op.calculate_vertical_call_spread(data, days=10, sold_strike=350, bought_strike=355)
     """
+    options = deepcopy(options)
+
+    if not days:
+        days = 30
+
+    if not bought_strike:
+        bought_strike = options.last_price
+
+    if not sold_strike:
+        sold_strike = options.last_price * 1.05
 
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
@@ -774,33 +805,17 @@ def calculate_vertical_call_spread(
 
     dte_estimate = get_nearest_dte(options, days)  # noqa:F841
 
-    # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
-    if options.source == "TMX" and options.date != "":
-        options.chains = options.chains[options.chains["dte"] > 0]
-
-    if options.source == "TMX" or "YahooFinance" and options.chains.query("`dte` == @dte_estimate")["ask"].sum() == 0:
-        options.chains["ask"] = options.chains["lastPrice"]
-    if options.source == "TMX" or "YahooFinance" and options.chains.query("`dte` == @dte_estimate")["bid"].sum() == 0:
-        options.chains["bid"] = options.chains["lastPrice"]
+    options = validate_object(options, "nonZeroPrices", dte_estimate)
 
     sold = get_nearest_call_strike(options, days, sold_strike)
     bought = get_nearest_call_strike(options, days, bought_strike)
 
-    # When the source is Intrinio and it is not EOD data, there is no bid/ask column.  Substituting "close".
-    if options.source == "Intrinio" and options.date == "":
-        sold_premium = options.chains.query(
-            "`strike` == @sold and `dte` == @dte_estimate and `optionType` == 'call'"
-        )["close"].values
-        bought_premium = options.chains.query(
-            "`strike` == @bought and `dte` == @dte_estimate and `optionType` == 'call'"
-        )["close"].values
-    else:
-        sold_premium = options.chains.query(
-            "`strike` == @sold and `dte` == @dte_estimate and `optionType` == 'call'"
-        )["bid"].values
-        bought_premium = options.chains.query(
-            "`strike` == @bought and `dte` == @dte_estimate and `optionType` == 'call'"
-        )["ask"].values
+    sold_premium = options.chains.query(
+        "`strike` == @sold and `dte` == @dte_estimate and `optionType` == 'call'"
+    )["bid"].values
+    bought_premium = options.chains.query(
+        "`strike` == @bought and `dte` == @dte_estimate and `optionType` == 'call'"
+    )["ask"].values
 
     spread_cost = bought_premium - sold_premium
     breakeven_price = bought + spread_cost[0]
@@ -934,7 +949,7 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
 @log_start_end(log=logger)
 def get_strategies(  # pylint: disable=dangerous-default-value
     options: object,
-    days: list[int] = None,
+    days: list[int] = [0],
     strike_price: Optional[float] = 0,
     moneyness: list[float] = [5, 10],
     straddle: Optional[bool] = False,
@@ -979,6 +994,7 @@ def get_strategies(  # pylint: disable=dangerous-default-value
             .get_strategies(data, days = [10,30,60,90], moneyness = [2.5,5,10,20], strangle = True, straddle = True)
         )
     """
+    options = deepcopy(options)
 
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
@@ -994,20 +1010,11 @@ def get_strategies(  # pylint: disable=dangerous-default-value
         print("No strategy chosen, defaulting to straddle")
         straddle = True
 
-    if days is None:
+    if days[0] == 0:
         days = options.chains["dte"].unique().tolist()
-
-    # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
-    if options.source == "TMX" and options.date != "":
-        options.chains = options.chains[options.chains["dte"] > 0]
-    # Error handling for thin TMX data, this avoids looping errors where there are no "ask" prices.
-    if options.source == "TMX" and options.date == "":
-        options.chains["ask"] = options.chains["lastPrice"]
 
     if strike_price == 0:
         strike_price = options.last_price
-
-    options.chains = options.chains[options.chains["ask"] > 0]
 
     days_list = []
 

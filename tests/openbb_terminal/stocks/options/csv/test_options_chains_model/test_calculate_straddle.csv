@@ -1,13 +1,13 @@
 ,Straddle
 Symbol,OXY
-Underlying Price,57.6795
+Underlying Price,59.73
 Expiration,2023-06-30
-DTE,30
-Call Strike,58.0
-Put Strike,58.0
-Call Premium,2.05
-Put Premium,2.28
-Cost,4.33
-Cost Percent,7.507
-Breakeven Upper,62.33
-Breakeven Lower,53.67
+DTE,28
+Call Strike,60.0
+Put Strike,60.0
+Call Premium,1.87
+Put Premium,2.1
+Cost,3.97
+Cost Percent,6.6466
+Breakeven Upper,63.97
+Breakeven Lower,56.03

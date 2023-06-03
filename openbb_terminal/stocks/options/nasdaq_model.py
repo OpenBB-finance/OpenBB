@@ -304,7 +304,9 @@ class Chains(Options):
     """OptionsChains data object for Nasdaq."""
 
     def __init__(self) -> None:
-        self.SYMBOLS: pd.DataFrame = pandas_datareader.nasdaq_trader.get_nasdaq_symbols()
+        self.SYMBOLS: pd.DataFrame = (
+            pandas_datareader.nasdaq_trader.get_nasdaq_symbols()
+        )
         self.source: str = "Nasdaq"
 
     def get_chains(self, symbol: str) -> object:
@@ -319,7 +321,7 @@ class Chains(Options):
         self.expirations = []
         self.strikes = []
 
-        if self.symbol not in self.SYMBOLS.index:
+        if self.symbol not in self.SYMBOLS.index and self.symbol != "NDX":
             print(self.symbol, "was not found in the Nasdaq directory")
             return self
 

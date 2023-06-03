@@ -529,7 +529,7 @@ class Chains(Options):
                 .iloc[0]
             )
             self.underlying_price = info
-            self.last_price = info.loc["price"].iloc[0]
+            self.last_price = round(info.loc["price"].iloc[0], 2)
             self.chains = get_quotes(self.symbol)
             if not self.chains.empty:
                 self.expirations = (

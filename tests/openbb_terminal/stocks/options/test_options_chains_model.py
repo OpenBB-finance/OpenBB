@@ -10,16 +10,6 @@ from openbb_terminal.stocks.options import options_chains_model
 
 
 @pytest.fixture(scope="module")
-def vcr_config():
-    return {
-        "filter_headers": [("User-Agent", None)],
-        "filter_query_parameters": [
-            ("before", "MOCK_BEFORE"),
-            ("after", "MOCK_AFTER"),
-        ],
-    }
-
-
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_load_options_chains_bad_source():

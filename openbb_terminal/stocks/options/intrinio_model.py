@@ -502,7 +502,6 @@ class Chains(Options):  # pylint: disable=too-many-instance-attributes
         self.source: str = "Intrinio"
 
     def get_chains(self, symbol: str) -> object:
-
         self.symbol = symbol.upper()
         self.chains = pd.DataFrame()
         self.underlying_name = ""
@@ -549,7 +548,6 @@ class Chains(Options):  # pylint: disable=too-many-instance-attributes
         return self
 
     def get_eod_chains(self, symbol: str, date: str) -> object:
-
         self.source = "Intrinio"
         self.symbol = symbol.upper()
         self.date = date
