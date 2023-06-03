@@ -1,7 +1,9 @@
 No options chains data found in the supplied object.  Use load_options_chains().
 Error: No valid data supplied. Check the input to ensure it is not empty or None.
 Error: Invalid data type supplied.
-Loading Daily data for AAPL with starting period 2020-05-28.
+
+1 Failed download:
+- AAPL: No data found for this date range, symbol may be delisted
 Error: Invalid data type supplied.  The OptionsChains data object is required.  Use load_options_chains() first.
 `last_price` was not found in the OptionsChainsData object and is required for this operation.
 The symbol, BAD_SYMBOL, was not found in the CBOE directory.

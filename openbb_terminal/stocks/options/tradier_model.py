@@ -377,7 +377,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
             "change_percentage": "changePercent",
             "average_volume": "avgVolume",
             "last_volume": "volume",
-            "trade_date": "lastTradeDate",
+            "trade_date": "lastTradeTimestamp",
             "prevclose": "previousClose",
             "week_52_high": "fiftyTwoWeekHigh",
             "week_52_low": "fiftyTwoWeekLow",
@@ -390,9 +390,10 @@ def get_underlying_price(symbol: str) -> pd.Series:
             "root_symbols": "rootSymbols",
         }
     )
-    underlying_price = pd.DataFrame(underlying_price)
-    underlying_price["lastTradeDate"] = (
-        pd.to_datetime(underlying_price["lastTradeDate"], unit="ms").tz_localize("EST")
+    underlying_price["lastTradeTimestamp"] = (
+        pd.to_datetime(underlying_price["lastTradeTimestamp"], unit="ms").tz_localize(
+            "EST"
+        )
     ).strftime("%Y-%m-%d")
     underlying_price["bidDate"] = (
         pd.to_datetime(underlying_price["bidDate"], unit="ms").tz_localize("EST")
