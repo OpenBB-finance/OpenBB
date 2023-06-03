@@ -1,3 +1,4 @@
+# pylint: disable=C0302, R0911
 """ Options Chains Module """
 __docformat__ = "numpy"
 
@@ -25,7 +26,6 @@ logger = logging.getLogger(__name__)
 SOURCES = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 
 # mypy: disable-error-code=attr-defined
-# pylint: disable=too-many-return-statements,too-many-lines
 
 
 @log_start_end(log=logger)
