@@ -238,9 +238,9 @@ def validate_object(
         return chains
 
     if scope == "nonZeroPrices":
-        dte_estimate = get_nearest_dte(  # noqa:F841
+        dte_estimate = get_nearest_dte(  # noqa:F841 pylint: disable=unused-variable
             options, days
-        )  # noqa:F841 pylint: disable=unused-variable
+        )
         # When Intrinio data is not EOD, there is no "ask" column, renaming "close".
         if options.source == "Intrinio" and options.date == "":
             options.chains["ask"] = options.chains["close"]
