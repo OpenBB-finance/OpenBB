@@ -10,6 +10,7 @@ from openbb_terminal.stocks.options import tmx_model
 
 # pylint: disable=no-member
 
+
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
