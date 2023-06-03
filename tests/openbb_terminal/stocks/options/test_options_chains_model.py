@@ -9,6 +9,13 @@ from openbb_terminal.sdk import openbb
 from openbb_terminal.stocks.options import options_chains_model
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+    }
+
+
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_load_options_chains_bad_source():

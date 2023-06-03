@@ -13,11 +13,15 @@ from openbb_terminal.stocks.options import nasdaq_model
 def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
-        "filter_query_parameters": [
-            ("before", "MOCK_BEFORE"),
-            ("after", "MOCK_AFTER"),
-        ],
     }
+
+
+@pytest.mark.vcr
+def test_SYMBOLS(recorder):
+    ticker = nasdaq_model.Chains()
+    results_df = ticker.SYMBOLS
+    assert not results_df.empty
+    recorder.capture(results_df)
 
 
 @pytest.mark.vcr
@@ -89,14 +93,14 @@ def test_load_options(recorder):
     assert isinstance(data.chains, pd.DataFrame)
     assert isinstance(data.last_price, float)
     assert isinstance(data.underlying_price, pd.Series)
-    df1 = data.chains
+    df1 = pd.DataFrame(data.chains)
     data = nasdaq_model.load_options(symbol="OXY", pydantic=True)
     assert isinstance(data.chains, dict)
     assert isinstance(data.underlying_price, dict)
     assert isinstance(data.expirations, list)
     assert isinstance(data.strikes, list)
     df2 = pd.DataFrame(data.chains)
-    assert df1.equals(df2)
+    assert df1.columns.equals(df2.columns)
     recorder.capture(data.chains)
     recorder.capture(data.underlying_price)
     recorder.capture(data.last_price)

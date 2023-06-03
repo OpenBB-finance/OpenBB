@@ -12,13 +12,6 @@ from openbb_terminal.stocks.options import tmx_model
 
 @pytest.fixture(scope="module")
 @pytest.mark.vcr
-def test_get_all_symbols(recorder):
-    result_df = tmx_model.get_all_ticker_symbols()
-    recorder.capture(result_df)
-    assert isinstance(result_df, pd.DataFrame)
-
-
-@pytest.mark.vcr
 def test_underlying_price(recorder):
     result_df = tmx_model.get_underlying_price("XIU")
     result_df2 = tmx_model.Chains().get_chains("XIU").underlying_price

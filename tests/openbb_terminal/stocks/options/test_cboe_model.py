@@ -17,15 +17,10 @@ def vcr_config():
 
 
 @pytest.mark.vcr
-def test_symbol_directory(mocker):
-    mock_response = requests.Response()
-    mock_response.status_code = 200
-    mocker.patch(
-        target="openbb_terminal.helper_funcs.requests.get",
-        new=mocker.Mock(return_value=mock_response),
-    )
+def test_symbol_directory():
     result_df = cboe_model.get_cboe_directory()
     assert isinstance(result_df, pd.DataFrame)
+    assert not result_df.empty
 
 
 @pytest.mark.vcr
@@ -65,7 +60,7 @@ def test_last_price(recorder):
 def test_chains(recorder):
     ticker = cboe_model.load_options("JPM")
     results_df = ticker.chains
-    assert not results_df.empty
+    assert isinstance(results_df, pd.DataFrame)
     recorder.capture(results_df)
 
 

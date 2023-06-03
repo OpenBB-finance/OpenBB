@@ -157,6 +157,14 @@ def test_get_historical_greeks_invalid_status(mocker):
 
 
 @pytest.mark.vcr
+def test_SYMBOLS(recorder):
+    ticker = tradier_model.Chains()
+    results_df = ticker.SYMBOLS
+    assert not results_df.empty
+    recorder.capture(results_df)
+
+
+@pytest.mark.vcr
 def test_load_options(recorder):
     results = tradier_model.load_options(symbol="AAPL")
     results1 = tradier_model.load_options(symbol="AAPL", pydantic=True)
