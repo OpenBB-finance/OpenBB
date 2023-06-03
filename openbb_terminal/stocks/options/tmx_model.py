@@ -330,7 +330,6 @@ class Chains(Options):  # pylint: disable=too-many-instance-attributes
         self.strikes = []
         self.chains = pd.DataFrame()
 
-
         symbol = symbol.upper()
         BASE_URL = "https://www.m-x.ca/en/trading/data/historical?symbol="
 
