@@ -123,7 +123,7 @@ def get_historical_options(
             "https://sandbox.tradier.com/v1/markets/history",
             params={"symbol": {symbol}, "interval": "daily"},
             headers={
-                "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",# type: ignore[attr-defined]
+                "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",  # type: ignore[attr-defined]
                 "Accept": "application/json",
             },
         )
