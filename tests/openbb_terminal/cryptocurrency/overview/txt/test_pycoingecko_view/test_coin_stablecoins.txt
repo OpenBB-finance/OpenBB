@@ -1,18 +1,18 @@
-First 15 stablecoins have a total 142.810 Bdollars of market cap.
+First 15 stablecoins have a total 142809968943dollars of market cap.
 
-   Symbol             Name Price [$] Market Cap [$] Market Cap Rank Change 7d [%] Change 24h [%] Volume [$] Percentage [%] of top 15
-0    usdt           Tether         1       65.385 B               3        -0.075         -0.049   35.504 B                   45.785
-1    usdc         USD Coin     1.001       43.800 B               5        -0.287         -0.064    3.142 B                   30.670
-2    busd      Binance USD     1.002       22.888 B               6         0.025          0.049    8.769 B                   16.027
-3     dai              Dai     1.001        5.250 B              16        -0.251         -0.062  380.626 M                    3.676
-4    frax             Frax     1.000        1.178 B              39        -0.281         -0.027    6.424 M                    0.825
-5    usdp       Pax Dollar     0.998      907.655 M              46        -0.551         -0.244    3.965 M                    0.636
-6    tusd          TrueUSD     1.001      746.543 M              55        -0.127          0.110   43.635 M                    0.523
-7    usdd             USDD     0.994      720.700 M              56         0.750          0.068   46.836 M                    0.505
-8    gusd    Gemini Dollar     1.001      607.845 M              62         0.007          0.091    4.173 M                    0.426
-9    xaut      Tether Gold   1.714 K      422.540 M              84        -0.013          0.684  657.825 K                    0.296
-10   eurt      Euro Tether     1.039      214.294 M             138         0.277          0.914    1.282 M                    0.150
-11   ustc  TerraClassicUSD     0.021      204.076 M             142        -5.280          1.723   17.618 M                    0.143
-12   lusd      Liquity USD     1.037      185.708 M             156        -0.610         -0.192    4.368 M                    0.130
-13  alusd     Alchemix USD     0.994      173.836 M             165        -0.063          0.000  185.773 K                    0.122
-14   eurs      STASIS EURO     1.005      124.997 M             198         0.931          1.514  539.630 K                    0.088
+   Symbol             Name    Price [$]  Market Cap [$]  Market Cap Rank  Change 7d [%]  Change 24h [%]   Volume [$]  Percentage [%] of top 15
+0    usdt           Tether     1.000000     65384908822                3      -0.074662       -0.048728  35504422009                 45.784555
+1    usdc         USD Coin     1.001000     43800047783                5      -0.286894       -0.064427   3141619787                 30.670161
+2    busd      Binance USD     1.002000     22888071354                6       0.025472        0.049228   8768929925                 16.026942
+3     dai              Dai     1.001000      5250263003               16      -0.251129       -0.061830    380626360                  3.676398
+4    frax             Frax     0.999623      1178483199               39      -0.280988       -0.027444      6423995                  0.825211
+5    usdp       Pax Dollar     0.998137       907655040               46      -0.551370       -0.243870      3965233                  0.635568
+6    tusd          TrueUSD     1.001000       746543442               55      -0.127132        0.110113     43635273                  0.522753
+7    usdd             USDD     0.993614       720700218               56       0.750491        0.068477     46836136                  0.504657
+8    gusd    Gemini Dollar     1.001000       607845237               62       0.006888        0.091143      4173173                  0.425632
+9    xaut      Tether Gold  1713.990000       422540472               84      -0.012743        0.684261       657825                  0.295876
+10   eurt      Euro Tether     1.039000       214294189              138       0.277004        0.914059      1281909                  0.150055
+11   ustc  TerraClassicUSD     0.020811       204075671              142      -5.280254        1.722720     17617864                  0.142900
+12   lusd      Liquity USD     1.037000       185707629              156      -0.609642       -0.192283      4368025                  0.130038
+13  alusd     Alchemix USD     0.994051       173835833              165      -0.063122        0.000081       185773                  0.121725
+14   eurs      STASIS EURO     1.005000       124997051              198       0.931439        1.513562       539630                  0.087527

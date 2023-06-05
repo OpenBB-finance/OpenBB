@@ -1,0 +1,46 @@
+                                                                       name                         family category_group   category
+symbol                                                                                                                              
+AQWA                                               Global X Clean Water ETF                 Global X Funds      Materials  Materials
+NANR                          SPDR S&P North American Natural Resources ETF   State Street Global Advisors      Materials  Materials
+PHO                                             Invesco Water Resources ETF  Invesco Investment Management      Materials  Materials
+PIO                                                Invesco Global Water ETF  Invesco Investment Management      Materials  Materials
+PSCM                                     Invesco S&P SmallCap Materials ETF  Invesco Investment Management      Materials  Materials
+PYZ                                Invesco DWA Basic Materials Momentum ETF  Invesco Investment Management      Materials  Materials
+REMX                         VanEck Vectors Rare Earth/Strategic Metals ETF        VanEck Asset Management       Equities  Materials
+RING                                    iShares MSCI Global Gold Miners ETF     BlackRock Asset Management       Equities  Materials
+RTM                              Invesco S&P 500 Equal Weight Materials ETF  Invesco Investment Management      Materials  Materials
+MXI                                            iShares Global Materials ETF     BlackRock Asset Management      Materials  Materials
+SGDJ                                          Sprott Junior Gold Miners ETF                         Sprott       Equities  Materials
+SIL                                              Global X Silver Miners ETF                 Global X Funds       Equities  Materials
+SILJ                                   ETFMG Prime Junior Silver Miners ETF                 ETF Management       Equities  Materials
+SLVP                       iShares MSCI Global Silver and Metals Miners ETF     BlackRock Asset Management       Equities  Materials
+URA                                                    Global X Uranium ETF                 Global X Funds      Materials  Materials
+URNM                                  North Shore Global Uranium Mining ETF       Exchange Traded Concepts      Materials  Materials
+VAW                                Vanguard Materials Index Fund ETF Shares      Vanguard Asset Management      Materials  Materials
+VEGI                          iShares MSCI Global Agriculture Producers ETF     BlackRock Asset Management      Materials  Materials
+WOOD                                   iShares Global Timber & Forestry ETF     BlackRock Asset Management      Materials  Materials
+SGDM                                                 Sprott Gold Miners ETF                         Sprott       Equities  Materials
+MOO                                         VanEck Vectors Agribusiness ETF        VanEck Asset Management      Materials  Materials
+LIT                                     Global X Lithium & Battery Tech ETF                 Global X Funds      Materials  Materials
+JGLD                                    Amplify Pure Junior Gold Miners ETF                   Amplify ETFs       Equities  Materials
+CGW                                      Invesco S&P Global Water Index ETF  Invesco Investment Management      Materials  Materials
+COPX                                             Global X Copper Miners ETF                 Global X Funds      Materials  Materials
+CUT                                          Invesco MSCI Global Timber ETF  Invesco Investment Management      Materials  Materials
+EBLU                                           Ecofin Global Water ESG Fund                         Ecofin      Materials  Materials
+FIW                                                   First Trust Water ETF           First Trust Advisors      Materials  Materials
+FMAT                                      Fidelity MSCI Materials Index ETF           Fidelity Investments      Materials  Materials
+FTAG                               First Trust Indxx Global Agriculture ETF           First Trust Advisors      Materials  Materials
+FTRI                  First Trust Indxx Global Natural Resources Income ETF           First Trust Advisors      Materials  Materials
+FXZ                                     First Trust Materials AlphaDEX Fund           First Trust Advisors      Materials  Materials
+GDX                                          VanEck Vectors Gold Miners ETF        VanEck Asset Management       Equities  Materials
+GDXJ                                  VanEck Vectors Junior Gold Miners ETF        VanEck Asset Management       Equities  Materials
+GNR                                   SPDR S&P Global Natural Resources ETF   State Street Global Advisors      Materials  Materials
+GOAU                      U.S. Global GO GOLD and Precious Metal Miners ETF          U.S. Global Investors       Equities  Materials
+GOEX                                            Global X Gold Explorers ETF                 Global X Funds       Equities  Materials
+GRES                                                IQ Global Resources ETF                        IndexIQ      Materials  Materials
+GUNR    FlexShares Morningstar Global Upstream Natural Resources Index Fund               Flexshares Trust      Materials  Materials
+HAP                                    VanEck Vectors Natural Resources ETF        VanEck Asset Management      Materials  Materials
+IGE                            iShares North American Natural Resources ETF     BlackRock Asset Management      Materials  Materials
+IYM                                        iShares U.S. Basic Materials ETF     BlackRock Asset Management      Materials  Materials
+XLB                                       Materials Select Sector SPDR Fund   State Street Global Advisors      Materials  Materials
+XME                                          SPDR S&P Metals and Mining ETF   State Street Global Advisors      Materials  Materials

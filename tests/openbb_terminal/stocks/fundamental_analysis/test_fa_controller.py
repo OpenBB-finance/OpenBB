@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+
 import os
 
 import pandas as pd
@@ -7,6 +8,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.stocks.fundamental_analysis import fa_controller
 
 
@@ -47,9 +49,11 @@ def test_menu_with_queue(expected, mocker, queue):
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -60,10 +64,11 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=fa_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.stocks.fundamental_analysis.fa_controller.session",
@@ -93,10 +98,11 @@ def test_menu_without_queue_completion(mocker):
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=fa_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.stocks.fundamental_analysis.fa_controller.session",
@@ -521,7 +527,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_warnings",
-            "market_watch_view.display_sean_seah_warnings",
+            "marketwatch_view.display_sean_seah_warnings",
             ["--debug"],
             {"symbol": "TSLA", "debug": True},
         ),
@@ -551,7 +557,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_pt",
-            "business_insider_view.price_target_from_analysts",
+            "business_insider_view.display_price_target_from_analysts",
             ["--limit=10"],
             {
                 "symbol": "TSLA",
@@ -565,11 +571,11 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_est",
-            "business_insider_view.estimates",
+            "business_insider_view.display_estimates",
             [],
             {
                 "symbol": "TSLA",
-                "estimate": "annualearnings",
+                "estimate": "annual_earnings",
                 "export": "",
                 "sheet_name": None,
             },
@@ -599,13 +605,15 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_sec",
-            "marketwatch_view.sec_filings",
+            "nasdaq_view.sec_filings",
             ["--limit=10"],
             {
                 "symbol": "TSLA",
                 "limit": 10,
                 "export": "",
                 "sheet_name": None,
+                "year": None,
+                "form_group": None,
             },
         ),
         (
@@ -651,7 +659,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_analysis",
         "call_mgmt",
         "call_overview",
-        "call_enterprise",
+        "call_mktcap",
         "call_score",
         "call_shrs",
         "call_growth",

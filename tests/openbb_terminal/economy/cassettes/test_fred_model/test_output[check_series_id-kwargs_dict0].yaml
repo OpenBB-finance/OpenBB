@@ -13,16 +13,18 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0jUw1jUyVNJByKbmpaDLFacWZaYWFytZ
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jUw1jUyUNJByKbmpaDLFacWZaYWFytZ
         RVcrZYJkXdyDTZH1kGxiSWZJTqqSlZJvYlF2aolCZGZqTopCfp5CqF6wnkJIUWpicWlRpUJwanJp
-        UWZJZmqxQmKJgqluZGpikYJzfl5xSWJeiYJvYglItlJJRyk/qTi1qCyxJDM/D+47Q0szI10DQ10D
-        IzQFqB40NFfSUUorSi0sTc1LrlSyUnJJzMwBmQkXiy/OyC8ChZeLko5SaV5mSbGSlVJAalFyal4J
-        TASuRlVJR6k4NbE4Py8xJz4xJau0uCQXpM5KyS+/RCEYKpNTqeAIlktNwa4ebp5fsKOSjlJOYnFJ
-        fGlBSmJJKij4YRFnaKFgaGplZGJlYqxrAIqQgvyC0pzEosySSiUrczMdpbz8klSQa93yixTSSotK
-        MlKLFDLz0vKLcsFhpVCUmp5YlJKZl65QAgvzZFjw5kKDVyElsSRRR6EgJzWxOFWhKDUttUihJF+h
-        JCNVwSk/sShFIT9NwT2/LLUoL7+oWEEjo6SkwCpGP0a/vLxcLy01JbUoMacoFRQ9qXrp+WUx+kWp
-        YJOKY/QzDE1j9JNLi4pS80rAPL2ClDRNhcS8FLDp8GSAaibMpTDTivNLi5JTdUGxkVoUow9yrW5y
-        RmJRCVwoM68ktSi1uES3KLEktThGPyAxHURVghIdYLmpJRn5KXqJxQUVmnpKtbG1ANQh0WEoAwAA
+        UWZJZmqxQmKJgqluZGpikYJzfl5xSWJeiYJvYglItlJHIbA0vyQVrD8xT8Ezryy1uCQ3Na9EwSmx
+        OLNYSUcpP6k4tagssSQzPw/ueUNLMyNdA0NdAyM0Baj+NzRT0lFKK0otLE3NS65UslJySczMqUQW
+        iy/OyC8CBaeLko5SaV5mSbGSlVJAalFyal4JTASuRlVJR6k4NbE4Py8xJz4xJasU4lIlKyW//BKF
+        YKhMTqWCI1guNQW7erh5fsGOSjpKOYnFJfGlBSmJJamg2IHFq6G5gqGplZGplaGBrgEovgryC0pz
+        EosySyqVrMzNdZTy8ktSQa51yy9SSCstKslILVLIzEvLL8oFh5VCUWp6YlFKZl66QgksSpJhoZ8L
+        DX2FlMSSRB2FgpzUxOJUhaLUtNQihZJ8hZKMVAUPPUNTheCSxJLM4pLM5MQchaBUiCqwvQoaGSUl
+        BcVWMfox+uXl5XppqSmpRYk5RamguErVS88vi9EvgmgojtHPMDSN0U9JTUsszSnRyyjJ1VRIzEsB
+        2wJPLZBE5FxaVJaq4JtakpGfkp+Tn16JbE9Gfm6qHswvECsK8nMykyt1M4uLS1OLY/TTMvMS85Iz
+        89J1SzJSddPzy1KL8kBpKUY/M68ktSi1uES3KLEkVbcY5q3iGH2YgbqVoGSsmwxygW4uwgWAaeop
+        1cbWAgA8286ZgQMAAA==
     headers:
       Accept-Ranges:
       - bytes
@@ -31,18 +33,19 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '570'
+      - '640'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Mon, 21 Mar 2022 11:04:21 GMT
+      - Mon, 20 Mar 2023 14:47:54 GMT
       Expires:
-      - Mon, 21 Mar 2022 11:05:21 GMT
+      - Mon, 20 Mar 2023 14:48:54 GMT
       Last-Modified:
-      - Fri, 18 Mar 2022 20:24:43 GMT
+      - Fri, 17 Mar 2023 20:25:10 GMT
       Set-Cookie:
-      - cookiesession1=678A3E1FCD2B52BC94FB0A1F60F713D4;Expires=Tue, 21 Mar 2023 11:04:14
-        GMT;Path=/;HttpOnly
+      - ak_bmsc=AC3FDDC398A3EE00FDFA4E92A744AA58~000000000000000000000000000000~YAAQ7xjdWMSASPOGAQAAZLd9/xOhenCyKu2rmmjYiP1nBO0Q8zcko35Ld7a+A1DGRp6kNxYnJEME94RPBMic5i2MxoTj/bRrA7yLhB3bUzBFKoBfXqonJKJ3TkMJgWg6ceOWBcYTSRkFioGVQQvclJr10UpIzAX04U5bQ/0GqWm/hlDE05vmdR/ID2b0I3Y1dystY7A6FDZwjb2ptFZGn7kE5Tk8Vo2tFTs4e6OdJQ46CPqmzem5E3Q9JUri35jTww95zUihBIWnVLya78TEqepFskR24Xz8ic6C571qmQGF7vjMDIibpkxBv05IonRia6KjIdcjAArokYAgYn8MbFwzvKmAFi/xn02mgeJnrTk37pdlw5F1bqmKexavTzIoNQ==;
+        Domain=.stlouisfed.org; Path=/; Expires=Mon, 20 Mar 2023 16:47:54 GMT; Max-Age=7200;
+        HttpOnly
       Vary:
       - Accept-Encoding
       x-rate-limit-limit:

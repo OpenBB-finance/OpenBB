@@ -4,6 +4,8 @@ from pathlib import Path
 from queue import SimpleQueue
 from threading import Thread
 
+# IMPORTATION THIRDPARTY
+# IMPORTATION INTERNAL
 from openbb_terminal.core.log.collection.s3_sender import send_to_s3
 from openbb_terminal.core.log.constants import (
     ARCHIVES_FOLDER_NAME,
@@ -11,10 +13,7 @@ from openbb_terminal.core.log.constants import (
     TMP_FOLDER_NAME,
 )
 from openbb_terminal.core.log.generation.settings import Settings
-
-# IMPORTATION THIRDPARTY
-# IMPORTATION INTERNAL
-from openbb_terminal.feature_flags import LOG_COLLECTION
+from openbb_terminal.core.session.current_system import get_current_system
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 
@@ -42,8 +41,7 @@ class LogSender(Thread):
     @staticmethod
     def start_required() -> bool:
         """Check if it makes sense to start a LogsSender instance ."""
-
-        return LOG_COLLECTION
+        return get_current_system().LOG_COLLECT
 
     @property
     def settings(self) -> Settings:
@@ -68,7 +66,7 @@ class LogSender(Thread):
         identifier = app_settings.identifier
 
         while True:
-            item: QueueItem = queue.get()
+            item: QueueItem = queue.get()  # type: ignore
             file = item.path
             last = item.last
 
@@ -117,6 +115,7 @@ class LogSender(Thread):
             self.start_required()
             and not self.max_fails_reached()
             and not self.max_size_exceeded(file=file)
+            and get_current_system().LOGGING_SEND_TO_S3
         )
 
     def fails_increment(self):

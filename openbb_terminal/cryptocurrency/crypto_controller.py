@@ -5,9 +5,9 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
 from openbb_terminal.cryptocurrency.crypto_views import find
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
@@ -82,11 +82,11 @@ class CryptoController(CryptoBaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             choices["load"] = {
@@ -165,7 +165,7 @@ class CryptoController(CryptoBaseController):
             help="Coin to compare with",
             dest="vs",
             type=str,
-            # required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             default=None,
         )
         parser.add_argument(
@@ -187,11 +187,9 @@ class CryptoController(CryptoBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--vs")
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
+        ):
             if self.symbol:
                 num_args = 0
                 for arg in vars(ns_parser):
@@ -240,7 +238,7 @@ class CryptoController(CryptoBaseController):
         parser.add_argument(
             "-s",
             "--symbol",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             type=str,
             dest="symbol",
             help="Symbol of coin to load data for, ~100 symbols are available",
@@ -250,13 +248,11 @@ class CryptoController(CryptoBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
             upper_symbol = ns_parser.symbol.upper()
             if "-USD" not in ns_parser.symbol:
                 upper_symbol += "-USD"
-            if upper_symbol in pyth_model.ASSETS.keys():
+            if upper_symbol in pyth_model.ASSETS:
                 console.print(
                     "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
                 )
@@ -283,22 +279,13 @@ class CryptoController(CryptoBaseController):
             dest="logy",
         )
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
+        ):
             if not self.symbol:
                 console.print("No coin loaded. First use `load {symbol}`\n")
                 return
-            export_data(
-                ns_parser.export,
-                os.path.join(os.path.dirname(os.path.abspath(__file__))),
-                f"{self.symbol}",
-                self.current_df,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-            )
-
-            plot_chart(
+            figure = plot_chart(
                 exchange=self.exchange,
                 source=self.source,
                 to_symbol=self.symbol,
@@ -306,6 +293,15 @@ class CryptoController(CryptoBaseController):
                 prices_df=self.current_df,
                 interval=self.current_interval,
                 yscale="log" if ns_parser.logy else "linear",
+                external_axes=ns_parser.is_image,
+            )
+            export_data(
+                ns_parser.export,
+                os.path.join(os.path.dirname(os.path.abspath(__file__))),
+                f"{self.symbol}",
+                self.current_df,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                figure=figure,
             )
 
     @log_start_end(log=logger)
@@ -384,11 +380,9 @@ class CryptoController(CryptoBaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
+        ):
             finbrain_crypto_view.display_crypto_sentiment_analysis(
                 symbol=ns_parser.coin, export=ns_parser.export
             )
@@ -473,7 +467,7 @@ class CryptoController(CryptoBaseController):
             "--coin",
             help="Symbol Name or Id of Coin",
             dest="coin",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             type=str,
         )
         parser.add_argument(
@@ -503,7 +497,7 @@ class CryptoController(CryptoBaseController):
             choices=range(1, 300),
             metavar="SKIP",
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(

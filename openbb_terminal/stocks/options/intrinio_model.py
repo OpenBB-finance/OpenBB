@@ -8,12 +8,12 @@ import intrinio_sdk as intrinio
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console, optional_rich_track
 
 logger = logging.getLogger(__name__)
-intrinio.ApiClient().set_api_key(cfg.API_INTRINIO_KEY)
+intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)
 api = intrinio.OptionsApi()
 eod_columns_to_drop = [
     "open_ask",
@@ -39,7 +39,6 @@ columns_to_drop = [
 ]
 
 
-@log_start_end(log=logger)
 def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
     """Adds a column calculating the difference between expiration and the date data is from
 
@@ -63,8 +62,7 @@ def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
         lambda row: (
             datetime.strptime(row["expiration"], "%Y-%m-%d")
             - datetime.strptime(row["date"], "%Y-%m-%d")
-        ).days
-        / 365,
+        ).days,
         axis=1,
     )
     return chain_df
@@ -234,7 +232,7 @@ def get_full_chain_eod(symbol: str, date: str, quiet: bool = False) -> pd.DataFr
     >>> eod_chain = openbb.stocks.options.eodchain("AAPL", date="2022-12-23")
 
     """
-    expirations = get_expiration_dates(symbol)
+    expirations = get_expiration_dates(symbol, start=date)
     # Since we can't have expirations in the past, lets do something fun:
     # Note that there is an issue with using >= in that when the date = expiration, the dte will be 0, so iv*dte = 0*0
     expirations = list(filter(lambda x: x > date, expirations))
@@ -338,7 +336,12 @@ def get_historical_options(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of historical option chain
     """
-    historical = pd.DataFrame(api.get_options_prices_eod(symbol).to_dict()["prices"])
+    try:
+        historical = pd.DataFrame(
+            api.get_options_prices_eod(symbol).to_dict()["prices"]
+        )
+    except Exception:
+        return pd.DataFrame()
     historical = historical[
         [
             "date",

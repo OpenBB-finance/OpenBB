@@ -1,0 +1,16 @@
+stocks
+options
+load AAPL
+exp --index 0
+hedge
+pick --pick 50_long_call
+list
+add -i 0 --short
+add -i 1 --short --put
+rmv Option A
+sop
+plot
+
+help
+reset
+exit

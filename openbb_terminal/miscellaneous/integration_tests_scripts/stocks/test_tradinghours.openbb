@@ -1,0 +1,12 @@
+stocks
+load ${ticker=aapl}
+th
+open
+closed
+all
+exchange
+holidays
+symbol ${ticker=MSFT}
+help
+reset
+exit

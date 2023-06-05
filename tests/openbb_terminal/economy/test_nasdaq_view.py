@@ -22,9 +22,6 @@ def vcr_config():
 )
 @pytest.mark.record_stdout
 def test_display_big_mac_index(mocker, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.economy.nasdaq_view.export_data")
 

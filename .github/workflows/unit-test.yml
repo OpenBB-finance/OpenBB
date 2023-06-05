@@ -3,11 +3,11 @@ name: Unit Test
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECT: false
-  OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   OPENBB_FILE_OVERWRITE: true
   OPENBB_ENABLE_CHECK_API: false
-  OPENBB_PREVIOUS_USER: true
+  OPENBB_PREVIOUS_USE: true
+  OPENBB_USE_INTERACTIVE_DF: false
   PIP_DEFAULT_TIMEOUT: 100
 
 on:
@@ -29,13 +29,13 @@ jobs:
   check-files-changed:
     name: Check for changes
     runs-on: ubuntu-latest
-    # Run this job only if the PR is not merged and the event is not a push
-    if: github.event.pull_request.merged == false && github.event_name != 'push'
+    # Run this job only if the PR is not merged, PR != draft and the event is not a push
+    if: github.event.pull_request.merged == false && github.event_name != 'push' && github.event.pull_request.draft == false
     outputs:
       check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v1 # v1 is used to preserve the git history and works with the git diff command
         with:
           fetch-depth: 100
           # The GitHub token is preserved by default but this job doesn't need
@@ -46,20 +46,16 @@ jobs:
       - name: Check for changes to files to trigger unit test
         id: check-changes
         run: |
-          source_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
-          target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
+          current_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
 
-          if git diff --name-only origin/$target_branch HEAD | grep -E ".py$|openbb_terminal\/.*|pyproject.toml|poetry.lock|requirements.txt|requirements-full.txt"; then
+          if git diff --name-only origin/$current_branch HEAD | grep -E ".py$|openbb_terminal\/.*|pyproject.toml|poetry.lock|requirements.txt|requirements-full.txt"; then
             echo "check-changes=true" >> $GITHUB_OUTPUT
           else
             echo "check-changes=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Show output of previous step
-        run: |
-          # echo "python-changes=${{ steps.python-changes.outputs.python-changes }}"
-          # echo "folder-changes=${{ steps.folder-changes.outputs.folder-changes }}"
-          echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
+        run:  echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
 
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
@@ -79,9 +75,16 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.3.2
+          version: 1.4.0
           virtualenvs-create: true
           virtualenvs-in-project: true
+
+      - name: Setup sudo apt installs for ubuntu-latest
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+              libgtk-3-dev \
+              libwebkit2gtk-4.0-dev
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -94,12 +97,12 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction -E optimization
 
-      - name: Run tests
+      - name: Run tests and coverage test
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --autodoc
+          pytest tests/ --optimization --cov --cov-fail-under=50 --autodoc -n auto --durations=10 --timeout=30 --cov-report=xml
 
       - name: Start Terminal and exit
         run: |
@@ -131,9 +134,16 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.3.2
+          version: 1.4.0
           virtualenvs-create: true
           virtualenvs-in-project: true
+
+      - name: Setup sudo apt installs for ubuntu-latest
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+              libgtk-3-dev \
+              libwebkit2gtk-4.0-dev
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -157,7 +167,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --autodoc
+          pytest tests/ --optimization --autodoc -n auto --timeout=30
 
       - name: Start Terminal and exit
         run: |
@@ -190,9 +200,17 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.3.2
+          version: 1.4.0
           virtualenvs-create: true
           virtualenvs-in-project: true
+
+      - name: Setup sudo apt installs for ubuntu-latest
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+              libgtk-3-dev \
+              libwebkit2gtk-4.0-dev
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -222,7 +240,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --autodoc
+          pytest tests/ --optimization --autodoc -n auto --timeout=30
 
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
@@ -250,6 +268,14 @@ jobs:
         run: |
           git config --global core.autocrlf false
           git config --global core.eol lf
+
+      - name: Setup sudo apt installs for ubuntu-latest
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+              libgtk-3-dev \
+              libwebkit2gtk-4.0-dev
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -307,6 +333,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pip install --requirement requirements-full.txt
+          pip uninstall Brotli -y
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
@@ -318,8 +345,7 @@ jobs:
         env:
           MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not linux" --optimization
-
+        run: pytest tests/ -m "not linux" --optimization -n auto --timeout=30
       - name: Start Terminal and exit
         shell: bash -l {0}
         run: python terminal.py

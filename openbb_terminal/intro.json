@@ -1,0 +1,155 @@
+{
+    "prompts": [
+        {
+            "header": "Welcome to the OpenBB Terminal.",
+            "content": [
+                "\nThe following walkthrough will guide you towards making the most out of the OpenBB Terminal.\n\n",
+                "Press [param]Enter[/param] to continue or [param]'q'[/param] followed by [param]Enter[/param] to exit."
+            ]
+        },
+        {
+            "header": "#1 - Commands vs menu.",
+            "content": [
+                "\nMenus are a collection of 'commands' and 'sub-menus'.\n",
+                "You can identify them through their distinct color and a '>' at the beginning of the line\n\n",
+                "For instance:\n",
+                "[menu]>   stocks             access historical pricing data, options, sector [/menu]",
+                "[menu]and industry, and overall due diligence [/menu]\n\n",
+                "Commands are expected to return data either as a chart or table.\n",
+                "You can identify them through their distinct color\n\n",
+                "For instance:\n",
+                "[cmds]    news               display news articles based on term and data sources [/cmds]"
+            ]
+        },
+        {
+            "header": "#2 - Using commands",
+            "content": [
+                "\nCommands throughout the terminal can have additional arguments.\n\n",
+                "Let's say that in the current menu, you want to have more information about the command [param]'news'[/param]. \n\n",
+                "You can either see the available arguments in the terminal, using: [param]news -h[/param]\n\n",
+                "or you can find out more about it with an output example on the browser, using: [param]about news[/param]"
+            ]
+        },
+        {
+            "header": "#3 - Setting API Keys",
+            "content": [
+                "\nThe OpenBB Terminal does not own any of the data you have access to.\n\n",
+                "Instead, we provide the infrastructure to access over 100 different data sources ",
+                "from a single location.\n\n",
+                "Thus, it is necessary for each user to set their own API keys for the various third party sources\n\n",
+                "You can find more about this on OpenBB Hub at: [param]https://my.openbb.co/app/terminal/data-sources[/param] ",
+                "or go into the '[param]/keys[/param]' menu.\n\n",
+                "For many commands, there are multiple data sources that can be selected.\n\n",
+                "The help menu shows the data sources supported by each command.\n\n",
+                "For instance:\n",
+                "[cmds]    load               load a specific stock ticker and additional info for analysis   [/cmds]",
+                "[src][YahooFinance, AlphaVantage, Polygon, EODHD] [/src]\n\n",
+                "This shows that [src]YahooFinance[/src] is default data source but [src]AlphaVantage, Polygon, EODHD[/src] are also supported.\n\n",
+                "If you want to try a different data source you could do '[param]load MSFT --source Polygon[/param]'\n\n",
+                "If you are interested in changing the default permanently, you can do it through OpenBB Hub at ",
+                "[param]https://my.openbb.co/app/terminal/data-sources[/param] ",
+                "or go into the '[param]/sources[/param]' menu and select their preferred default data source"
+            ]
+        },
+        {
+            "header": "#4 - Symbol dependent menus and commands",
+            "content": [
+                "\nThroughout the terminal, you will see commands and menus greyed out.\n\n",
+                "These menus or commands cannot be accessed until an object is loaded.\n\n",
+                "Let's take as an example the '[param]/stocks/ta[/param]' menu.\n\n",
+                "You will see that the command '[param]/stocks/ta/load[/param]' is available as you can access it to load a ticker:\n",
+                "[cmds]load               load a specific stock ticker for analysis             [YahooFinance, AlphaVantage, Polygon, EODHD][/cmds]\n\n",
+                "On the other hand, '[param]/stocks/ta/ema[/param]' cmd to perform exponential moving average requires a ticker to be loaded.\n\n",
+                "And therefore, appears as:\n",
+                "[dim]ema                exponential moving average[/dim]\n\n",
+                "Once a ticker is loaded with: [param]load TSLA[/param]\n\n",
+                "The '[param]ema[/param]' command will be available as:\n",
+                "[cmds]ema                exponential moving average [/cmds]"
+            ]
+        },
+        {
+            "header": "#5 - Terminal Navigation",
+            "content": [
+                "\nThe terminal has a tree like structure, where menus branch off into new menus.\n\n",
+                "The users current location is displayed before the text prompt.\n\n",
+                "For instance, if the user is inside the menu disc which is inside stocks, the following prompt ",
+                "will appear: \n2022 Oct 18, 21:53 (\ud83e\udd8b) [param]/stocks/disc/[/param] $\n\n",
+                "If the user wants to go back to the menu above, all they need to do is type '[param]q[/param]'.\n\n",
+                "If the user wants to go back to the home of the terminal, they can type '[param]/[/param]' instead.\n\n",
+                "Note: Always type '[param]h[/param]' to know what commands are available in each menu"
+            ]
+        },
+        {
+            "header": "#6 - Command Pipeline",
+            "content": [
+                "\nThe terminal offers the capability of allowing users to speed up their ",
+                "navigation and command execution.",
+                "\n\nTherefore, typing the following prompt is valid:\n",
+                "2022 Oct 18, 21:53 (\ud83e\udd8b) / $ [param]stocks/load TSLA/dd/pt[/param]\n\n",
+                "In this example, the terminal - in a single action - will go into '[param]stocks[/param]' menu, ",
+                "run command '[param]load[/param]' with '[param]TSLA[/param]' as input, \n",
+                "go into sub-menu '[param]dd[/param]' (due diligence) and run the command ",
+                "'[param]pt[/param]' (price target)."
+            ]
+        },
+        {
+            "header": "#7 - OpenBB Scripts",
+            "content": [
+                "\nThe command pipeline capability is nice but the user experience wasn't great having to copy-paste large ",
+                "lists of commands.\n\n",
+                "We allow the user to create a text file of the form [param]FOLDER_PATH/my_script.openbb[/param] with following content:\n\n",
+                "stocks\nload TSLA\ndd\npt\n\n",
+                "which can be run through the '[param]exe[/param]' command in the home menu, with:\n",
+                "2022 Oct 18, 22:33 (\ud83e\udd8b) / $ [param]exe FOLDER_PATH/my_script.openbb[/param]\n\n"
+            ]
+        },
+        {
+            "header": "#8 - OpenBB Scripts with Arguments",
+            "content": [
+                "\nThe user can create a script that includes arguments for the commands.\n\n",
+                "For instance, [param]FOLDER_PATH/my_script_with_variable_input.openbb[/param] may contain:\n\n",
+                "stocks\n# this is a comment\nload $ARGV[0]\ndd\npt\nq\nload $ARGV[1]\ncandle\n\n",
+                "and then, if this script is run with:\n",
+                "2022 Oct 18, 22:33 (\ud83e\udd8b) / $ [param]exe FOLDER_PATH/my_script_with_variable_input.openbb ",
+                "-i AAPL,MSFT[/param]\n\n",
+                "This means that the [param]pt[/param] will run on [param]AAPL[/param] while ",
+                "[param]candle[/param] on [param]MSFT[/param]"
+            ]
+        },
+        {
+            "header": "#9 - OpenBB Script Generation",
+            "content": [
+                "\nTo make it easier for users to create scripts, we have created a ",
+                "command that 'records' user commands ",
+                "directly into a script.\n\n",
+                "From the home menu, the user can run:\n",
+                "2022 Oct 18, 22:33 (\ud83e\udd8b) / $ [param]record[/param]\n\n",
+                "and then perform your typical investment research workflow before entering\n\n",
+                "2022 Oct 18, 22:33 (\ud83e\udd8b) / $ [param]stop[/param]\n\n",
+                "After stopping, the script will be saved to the 'scripts' folder."
+            ]
+        },
+        {
+            "header": "#10 - Terminal Customization",
+            "content": [
+                "\nUsers should explore the [param]settings[/param] and [param]featflags[/param] menus ",
+                "to configure their terminal.\n\n",
+                "The fact that our terminal is fully open source allows users to be able to customize ",
+                "anything they want.\n\n",
+                "If you are interested in contributing to the project, please check:\n",
+                "[param]https://github.com/OpenBB-finance/OpenBBTerminal[/param]"
+            ]
+        },
+        {
+            "header": "#11 - Support",
+            "content": [
+                "\nWe are nothing without our community, hence we put a lot of effort in being here for you.\n\n",
+                "If you find any bug that you wish to report to improve the terminal you can do so with:\n",
+                "2022 Oct 18, 22:33 (\ud83e\udd8b) / $ [param]support CMD[/param]\n\n",
+                "which should open a form in your browser where you can report the bug in said 'CMD'.\n\n",
+                "If you want to know more, or have any further question. Please join us on Discord: ",
+                "[param]https://openbb.co/discord[/param]"
+            ]
+        }
+    ]
+}

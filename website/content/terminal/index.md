@@ -1,11 +1,34 @@
 ---
 sidebar_position: 1
-title: Introduction
-keywords: [getting started, openbb, api, beginner guide, how to use openbb, openbb keys, openbb terminal, introduction, intro, how-to, how to, openbb, terminal]
+keywords:
+  [
+    getting started,
+    openbb,
+    api,
+    beginner guide,
+    how to use openbb,
+    openbb keys,
+    openbb terminal,
+    introduction,
+    intro,
+    how-to,
+    how to,
+    openbb,
+    terminal,
+	free,
+	open source,
+	forks,
+	stars,
+	github,
+	contributor,
+	python
+  ]
 description: The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built financial terminal that will help you make more informed decisions, faster.
 ---
 
 import Card from "@site/src/components/General/Card";
+
+# OpenBB Terminal
 
 OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data. We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
@@ -46,7 +69,7 @@ Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/O
 	proprietary features on top of our infrastructure."
  />
 
- <Card
+<Card
 	title="Why Python?"
 	description="Python is one of the most used programming languages due to its simplified
 	syntax and shallow learning curve. On top of this, it is highly used in data
@@ -58,11 +81,11 @@ Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/O
 
 ---
 
-Want to learn how to install the OpenBB Terminal? Check out our [Installation](/terminal/quickstart/installation) guide.
+Want to learn how to install the OpenBB Terminal? Check out our [Installation](/terminal/installation) guide.
 
-Want to know how to import and export data? Check out our [Data Import/Export](/terminal/guides/advanced/data)
+Want to know how to import and export data? Check out our [Data Import/Export](/terminal/usage/guides/data)
 
-Looking for personalized routines? Check out our [User Routines](/terminal/guides/advanced/scripts-and-routines)
+Looking for personalized routines? Check out our [User Routines](/terminal/usage/guides/scripts-and-routines)
 
 [contributors-shield]: https://img.shields.io/github/contributors/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
 [contributors-url]: https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors

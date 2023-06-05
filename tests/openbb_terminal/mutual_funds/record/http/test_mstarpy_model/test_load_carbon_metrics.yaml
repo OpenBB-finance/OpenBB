@@ -1,0 +1,109 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      user-agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:25.0) Gecko/20100101 Firefox/25.0
+    method: GET
+    uri: https://tools.morningstar.co.uk/api/rest.svc/klr5zyak8x/security/screener?page=1&pageSize=1&sortOrder=LegalName+asc&outputType=json&version=1&universeIds=FOUSA%24%24ALL&currencyId=EUR&securityDataPoints=SecId%7CTenforeId%7CLegalName&term=Vanguard
+  response:
+    body:
+      string: '{"total": 306,"page": 1,"pageSize": 1,"rows": [{"SecId": "FOUSA00L8W","TenforeId":
+        "52.8.VFIAX","LegalName": "Vanguard 500 Index Fund Admiral Shares"}] }'
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Accept,Origin
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '153'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Mar 2023 12:02:05 GMT
+      Set-Cookie:
+      - ASP.NET_SessionId=dkhxgzz3qj2o5relatbrnn3a; path=/; secure; HttpOnly; SameSite=None
+      Strict-Transport-Security:
+      - max-age=7200; includeSubDomains
+      Via:
+      - 1.1 8ce530783de74227d43f4646291541dc.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - _Czkcnvri94cXBhnGgypgMFljt9LqVpXNrQm_0a8jMxMlDAnpXqGDg==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Cache:
+      - Miss from cloudfront
+      p3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+      apikey:
+      - lstzFDEOhfFNMLikKa0am9mgEKLBl49T
+    method: GET
+    uri: https://api-global.morningstar.com/sal-service/v1/fund/esg/carbonMetrics/FOUSA00L8W/data
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAI2SbUvDMBDHv4rk9RbSrg9r32mHKAwt0y+QtdcYliWSdBURv7vXdQilqwby5u5+
+        9889fZGK273RpbFtY5Q0henAcgFl1ZKcZBmN1mRxgXbSHV4qYwEjKY3SaaDgLQhjP28HkTOXxvPc
+        gxRvCIVrmq3mqa35QCigyf8/btDsBVkYLoNwuQpeWZIzho8yxubTd1wfhpajZEp5qA4y3uATP/bg
+        llsBN3cKdI3Bxjgn1f0J1KPujOrgCLrFqq5NNY7/SOg3R1nkIXlZQBrQMPDAh030zSAsHZrFeVLo
+        bLhyMJIowVaYjhU/N+P7gprk+qTUgrz/+q9cWDZehY+edBtwUmist55W9/0DojsixO8CAAA=
+    headers:
+      Accept-Encoding:
+      - gzip
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Fri, 17 Mar 2023 12:02:06 GMT
+      Host:
+      - salservice.morningstar.com
+      RequestId:
+      - 08688a7b-326d-4327-99f5-f4fd25981cdf
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - X-SAL-ContentType,Origin,Accept-Encoding
+      Via:
+      - 1.1 4a5fd700eeb5cfa099084cd70fa5bf54.cloudfront.net (CloudFront), 1.1 4a5fd700eeb5cfa099084cd70fa5bf54.cloudfront.net
+        (CloudFront)
+      X-Amz-Cf-Id:
+      - l0CPeWu0qu1phDDIRZ5uGnEum8HJcDtyJrITIH85-37mIsnFnjeoYQ==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Cache:
+      - Miss from cloudfront
+      X-Forwarded-Port:
+      - '9001'
+      X-Forwarded-Proto:
+      - http
+    status:
+      code: 200
+      message: OK
+version: 1

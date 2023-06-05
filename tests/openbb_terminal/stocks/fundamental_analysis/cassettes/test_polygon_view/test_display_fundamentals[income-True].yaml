@@ -12,25 +12,24 @@ interactions:
     uri: https://api.polygon.io/vX/reference/financials?apiKey=MOCK_API_KEY&filing_date.gte=1980-01-01&limit=100&ticker=AAPL&timeframe=quarterly
   response:
     body:
-      string: '{"status":"ERROR","request_id":"18e8815598da5f111995cfd4cd1c748a","error":"You''ve
-        exceeded the maximum requests per minute, please wait or upgrade your subscription
-        to continue. https://polygon.io/pricing"}'
+      string: '{"status":"ERROR","request_id":"6b04752c5441b72d7a2d6ddb0ac6c08c","error":"Unknown
+        API Key"}'
     headers:
       Connection:
       - keep-alive
       Content-Length:
-      - '206'
+      - '92'
       Content-Type:
       - application/json
       Date:
-      - Fri, 03 Feb 2023 13:54:59 GMT
+      - Mon, 20 Feb 2023 22:58:52 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
       - max-age=15724800; includeSubDomains
       X-Request-Id:
-      - 18e8815598da5f111995cfd4cd1c748a
+      - 6b04752c5441b72d7a2d6ddb0ac6c08c
     status:
-      code: 429
-      message: Too Many Requests
+      code: 401
+      message: Unauthorized
 version: 1

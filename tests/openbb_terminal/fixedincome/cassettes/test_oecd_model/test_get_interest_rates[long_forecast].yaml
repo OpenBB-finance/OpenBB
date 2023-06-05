@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - stats.oecd.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.LTINTFORECAST.TOT.PC_PA.Q/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod=2022-Q1&endPeriod=2022-Q1
+  response:
+    body:
+      string: "\uFEFF\"LOCATION\",\"INDICATOR\",\"SUBJECT\",\"MEASURE\",\"FREQUENCY\",\"TIME\",\"Value\",\"Flag
+        Codes\"\r\n\"AUS\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",2.16333333333333,\r\n\"AUT\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.480363333333333,\r\n\"BEL\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.546666666666667,\r\n\"CAN\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",1.923549199,\r\n\"CZE\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",3.22666666666667,\r\n\"DNK\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.379,\r\n\"FIN\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.468575797,\r\n\"FRA\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.59,\r\n\"DEU\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.105659075,\r\n\"GRC\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",2.23,\r\n\"HUN\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",5.16333333333333,\r\n\"ISL\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",4.69,\r\n\"IRL\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.6949,\r\n\"JPN\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.173341818495514,\r\n\"KOR\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",2.65533333333333,\r\n\"LUX\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.303333333333333,\r\n\"MEX\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",7.52092733885445,\r\n\"NLD\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.160666666666667,\r\n\"NZL\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",2.79,\r\n\"NOR\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",2.08666666666667,\r\n\"POL\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",4.26,\r\n\"PRT\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.933333333333333,\r\n\"SVK\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.65265,\r\n\"ESP\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",1.00067387866667,\r\n\"SWE\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.5956,\r\n\"CHE\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.329333333333333,\r\n\"GBR\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",1.4133,\r\n\"USA\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",1.94,\r\n\"CHL\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",5.93606380333333,\r\n\"IND\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",6.79327333333333,\r\n\"ISR\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",1.76666666666667,\r\n\"ITA\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",1.6646,\r\n\"ZAF\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",9.86,\r\n\"SVN\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.713333333333334,\r\n\"LVA\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.79,\r\n\"LTU\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",1.00589603174603,\r\n\"EA17\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.642850336674733,\r\n\"BGR\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",0.756666666666667,\r\n\"COL\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",9.71249107700806,\r\n\"HRV\",\"LTINTFORECAST\",\"TOT\",\"PC_PA\",\"Q\",\"2022-Q1\",1.33333333333333,\r\n"
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST,GET,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - close
+      Content-Disposition:
+      - attachment;filename=DP_LIVE_06032023232909938.csv
+      Content-Type:
+      - text/csv
+      Date:
+      - Mon, 06 Mar 2023 22:29:09 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

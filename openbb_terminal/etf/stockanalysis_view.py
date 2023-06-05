@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import stockanalysis_model
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def view_overview(symbol: str, export: str = "", sheet_name: str = None):
+def view_overview(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Print etf overview information
 
     Parameters
@@ -36,6 +36,7 @@ def view_overview(symbol: str, export: str = "", sheet_name: str = None):
         headers=list(data.columns),
         title="ETF Overview Information",
         show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -49,7 +50,7 @@ def view_overview(symbol: str, export: str = "", sheet_name: str = None):
 
 @log_start_end(log=logger)
 def view_holdings(
-    symbol: str, limit: int = 10, export: str = "", sheet_name: str = None
+    symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
 ):
     """
 
@@ -67,10 +68,12 @@ def view_holdings(
 
     data = stockanalysis_model.get_etf_holdings(symbol)
     print_rich_table(
-        data[:limit],
+        data,
         headers=list(data.columns),
         title="ETF Holdings",
         show_index=True,
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -83,7 +86,9 @@ def view_holdings(
 
 
 @log_start_end(log=logger)
-def view_comparisons(symbols: List[str], export: str = "", sheet_name: str = None):
+def view_comparisons(
+    symbols: List[str], export: str = "", sheet_name: Optional[str] = None
+):
     """Show ETF comparisons
 
     Parameters
@@ -107,7 +112,11 @@ def view_comparisons(symbols: List[str], export: str = "", sheet_name: str = Non
         console.print("No data found for given ETFs\n")
         return
     print_rich_table(
-        data, headers=list(data.columns), title="ETF Comparisons", show_index=True
+        data,
+        headers=list(data.columns),
+        title="ETF Comparisons",
+        show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -121,7 +130,7 @@ def view_comparisons(symbols: List[str], export: str = "", sheet_name: str = Non
 
 @log_start_end(log=logger)
 def display_etf_by_name(
-    name: str, limit: int = 10, export: str = "", sheet_name: str = None
+    name: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
 ):
     """Display ETFs matching search string. [Source: StockAnalysis]
 
@@ -140,9 +149,11 @@ def display_etf_by_name(
     matching_etfs = stockanalysis_model.get_etfs_by_name(name)
 
     print_rich_table(
-        matching_etfs.head(limit),
+        matching_etfs,
         show_index=False,
         title="ETF Search Result",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

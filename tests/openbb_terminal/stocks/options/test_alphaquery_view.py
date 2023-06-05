@@ -10,10 +10,7 @@ from openbb_terminal.stocks.options import alphaquery_view
 
 
 @pytest.mark.vcr
-def test_display_put_call_ratio(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_display_put_call_ratio():
     alphaquery_view.display_put_call_ratio(
         symbol="PM",
         window=10,

@@ -4,30 +4,21 @@ __docformat__ = "numpy"
 import logging
 import os
 import textwrap
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import fred_model
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
 
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,inconsistent-return-statements
 
 
 @log_start_end(log=logger)
@@ -49,7 +40,12 @@ def format_units(num: int) -> str:
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def notes(search_query: str, limit: int = 10):
+def notes(
+    search_query: str,
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+):
     """Display series notes. [Source: FRED]
 
     Parameters
@@ -58,8 +54,12 @@ def notes(search_query: str, limit: int = 10):
         Text query to search on fred series notes database
     limit : int
         Maximum number of series notes to display
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    sheet_name : Optional[str]
+        The name of the sheet
     """
-    df_search = fred_model.get_series_notes(search_query, limit)
+    df_search = fred_model.get_series_notes(search_query)
 
     if df_search.empty:
         return
@@ -69,6 +69,15 @@ def notes(search_query: str, limit: int = 10):
         title=f"[bold]Search results for {search_query}[/bold]",
         show_index=False,
         headers=["Series ID", "Title", "Description"],
+        limit=limit,
+        export=bool(export),
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "fred",
+        df_search,
+        sheet_name,
     )
 
 
@@ -82,8 +91,8 @@ def display_fred_series(
     get_data: bool = False,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
@@ -101,8 +110,10 @@ def display_fred_series(
         Output only raw data
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    sheet_name : Optional[str]
+        The name of the sheet
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     data, detail = fred_model.get_aggregated_series_data(
@@ -111,63 +122,183 @@ def display_fred_series(
 
     if data.empty:
         logger.error("No data")
-        console.print("[red]No data available.[/red]\n")
-    else:
-        # Try to get everything onto the same 0-10 scale.
-        # To do so, think in scientific notation.  Divide the data by whatever the E would be
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return None
+        return console.print("[red]No data available.[/red]\n")
 
-        for s_id, sub_dict in detail.items():
-            data_to_plot, title = format_data_to_plot(data[s_id], sub_dict)
+    # Try to get everything onto the same 0-10 scale.
+    # To do so, think in scientific notation.  Divide the data by whatever the E would be
 
-            ax.plot(
-                data_to_plot.index,
-                data_to_plot,
-                label="\n".join(textwrap.wrap(title, 80))
-                if len(series_ids) < 5
-                else title,
-            )
-
-        ax.legend(
-            bbox_to_anchor=(0, 0.40, 1, -0.52),
-            loc="upper right",
-            mode="expand",
-            borderaxespad=0,
-            prop={"size": 9},
+    fig = OpenBBFigure(title="FRED Series")
+    for s_id, sub_dict in detail.items():
+        data_to_plot, title = format_data_to_plot(data[s_id], sub_dict)
+        title = title.replace(
+            "Assets: Total Assets: Total Assets", "Assets: Total Assets"
         )
 
-        ax.set_xlim(data.index[0], data.index[-1])
-        theme.style_primary_axis(ax)
-        if external_axes is None:
-            theme.visualize_output()
+        fig.add_scatter(
+            x=data_to_plot.index,
+            y=data_to_plot,
+            showlegend=len(series_ids) > 1,
+            name="<br>".join(textwrap.wrap(title, 80))
+            if len(series_ids) < 5
+            else title,
+        )
+        if len(series_ids) == 1:
+            fig.set_title(title)
 
-        data.index = [x.strftime("%Y-%m-%d") for x in data.index]
+    fig.update_layout(
+        margin=dict(b=20),
+        legend=dict(yanchor="top", y=-0.06, xanchor="left", x=0),
+    )
+    data.index = [x.strftime("%Y-%m-%d") for x in data.index]
 
-        if raw:
-            print_rich_table(
-                data.tail(limit),
-                headers=list(data.columns),
-                show_index=True,
-                index_name="Date",
-            )
-
+    if export:
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "fred",
             data,
             sheet_name,
+            fig,
         )
+        return None, None
+
+    if raw:
+        data = data.sort_index(ascending=False)
+        print_rich_table(
+            data,
+            headers=list(data.columns),
+            show_index=True,
+            index_name="Date",
+            export=bool(export),
+            limit=limit,
+        )
+        return None, None
 
     if get_data:
+        fig.show(external=external_axes)
         return data, detail
 
-    return None
+    return fig.show(external=external_axes)
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_cpi(
+    countries: list,
+    units: str = "growth_same",
+    frequency: str = "monthly",
+    harmonized: bool = False,
+    smart_select: bool = True,
+    options: bool = False,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    raw: bool = False,
+    export: str = "",
+    sheet_name: str = "",
+    external_axes: bool = False,
+    limit: int = 10,
+) -> Union[None, OpenBBFigure]:
+    """
+    Inflation measured by consumer price index (CPI) is defined as the change in
+    the prices of a basket of goods and services that are typically purchased by
+    specific groups of households. Inflation is measured in terms of the annual
+    growth rate and in index, 2015 base year with a breakdown for food, energy
+    and total excluding food and energy. Inflation measures the erosion of living standards.
+    [Source: FRED / OECD]
+
+    Parameters
+    ----------
+    countries: list
+        List of countries to plot
+    units: str
+        Units of the data, either "growth_same", "growth_previous", "index_2015"
+    frequency: str
+        Frequency of the data, either "monthly", "quarterly" or "annual"
+    harmonized: bool
+        Whether to use harmonized data
+    smart_select: bool
+        Whether to automatically select the best series
+    options: bool
+        Whether to show options
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    raw: bool
+        Show raw data
+    export: str
+        Export data to csv or excel file
+    sheet_name: str
+        Name of the sheet to export to
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
+    """
+    series = (
+        pd.read_csv(fred_model.harmonized_cpi_path)
+        if harmonized
+        else pd.read_csv(fred_model.cpi_path)
+    )
+
+    df = fred_model.get_cpi(
+        countries=countries,
+        units=units,
+        frequency=frequency,
+        harmonized=harmonized,
+        smart_select=smart_select,
+        options=options,
+        start_date=start_date,
+        end_date=end_date,
+    )
+
+    if options:
+        return print_rich_table(series.drop(["series_id"], axis=1))
+
+    ylabel_dict = {
+        "growth_same": "Growth Same Period of Previous Year (%)",
+        "growth_previous": "Growth Previous Period (%)",
+    }
+
+    country = str(countries[0]).replace("_", " ").title()
+    title = f"{'Harmonized ' if harmonized else ''} Consumer Price"
+    title += (
+        " Indices"
+        if len(df.columns) > 1
+        else f" Index for {country}"
+        if country
+        else ""
+    )
+
+    fig = OpenBBFigure(yaxis_title=ylabel_dict.get(units, "Index (2015=100)"))
+    fig.set_title(title)
+
+    for column in df.columns:
+        country, frequency, units = column.split("-")
+        label = f"{str(country).replace('_', ' ').title()}"
+
+        fig.add_scatter(x=df.index, y=df[column].values, name=label)
+
+    if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
+        print_rich_table(
+            df,
+            title=title,
+            show_index=True,
+            floatfmt=".3f",
+            export=bool(export),
+            limit=limit,
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "CP",
+        df / 100,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:
@@ -182,62 +313,3 @@ def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame,
     data_to_plot.index = pd.to_datetime(data_to_plot.index)
 
     return data_to_plot, title
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def display_yield_curve(
-    date: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-    raw: bool = False,
-    export: str = "",
-    sheet_name: str = None,
-):
-    """Display yield curve based on US Treasury rates for a specified date.
-
-    Parameters
-    ----------
-    date: str
-        Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
-    raw : bool
-        Output only raw data
-    export : str
-        Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    """
-    rates, date_of_yield = fred_model.get_yield_curve(date, True)
-    if rates.empty:
-        console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
-        return
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    ax.plot(rates["Maturity"], rates["Rate"], "-o")
-    ax.set_xlabel("Maturity")
-    ax.set_ylabel("Rate (%)")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        ax.set_title(f"US Yield Curve for {date_of_yield} ")
-        theme.visualize_output()
-
-    if raw:
-        print_rich_table(
-            rates,
-            headers=list(rates.columns),
-            show_index=False,
-            title=f"United States Yield Curve for {date_of_yield}",
-            floatfmt=".3f",
-        )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "ycrv",
-        rates,
-        sheet_name,
-    )

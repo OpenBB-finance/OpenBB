@@ -21,11 +21,11 @@ from openbb_terminal.cryptocurrency import crypto_models
             "CoinGecko",
             "symbol",
         ],
-        [
-            "doge",
-            "CoinGecko",
-            "name",
-        ],
+        # [ TOO SLOW
+        #     "doge",
+        #     "CoinGecko",
+        #     "name",
+        # ],
         [
             "bitcoin",
             "CoinPaprika",
@@ -41,11 +41,11 @@ from openbb_terminal.cryptocurrency import crypto_models
             "CoinPaprika",
             "name",
         ],
-        [
-            "btc",
-            "Binance",
-            "id",
-        ],
+        # [ TOO SLOW
+        #     "btc",
+        #     "Binance",
+        #     "id",
+        # ],
         [
             "polka",
             "Binance",
@@ -56,11 +56,11 @@ from openbb_terminal.cryptocurrency import crypto_models
             "Binance",
             "id",
         ],
-        [
-            "btc",
-            "Coinbase",
-            "id",
-        ],
+        # [ TOO SLOW
+        #     "btc",
+        #     "Coinbase",
+        #     "id",
+        # ],
         [
             "polka",
             "Coinbase",

@@ -1,10 +1,12 @@
 # IMPORTATION STANDARD
+
 import os
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.cryptocurrency.discovery import discovery_controller
 
 
@@ -39,9 +41,11 @@ def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.cryptocurrency.discovery.discovery_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -52,10 +56,11 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=discovery_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -79,10 +84,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.cryptocurrency.discovery.discovery_controller"
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=discovery_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -200,30 +206,23 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_dapps",
+            "call_dapp_categories",
             [],
-            "dappradar_view.display_top_dapps",
-            [],
-            dict(),
-        ),
-        (
-            "call_games",
-            [],
-            "dappradar_view.display_top_games",
+            "dappradar_view.display_dapp_categories",
             [],
             dict(),
         ),
         (
-            "call_dex",
+            "call_dapp_chains",
             [],
-            "dappradar_view.display_top_dexes",
+            "dappradar_view.display_dapp_chains",
             [],
             dict(),
         ),
         (
-            "call_nft",
+            "call_nft_mktp",
             [],
-            "dappradar_view.display_top_nfts",
+            "dappradar_view.display_nft_marketplaces",
             [],
             dict(),
         ),
@@ -259,6 +258,27 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_search",
             ["MOCK_QUERY"],
             "coinpaprika_view.display_search_results",
+            [],
+            dict(),
+        ),
+        (
+            "call_nft_mktp_chains",
+            [],
+            "dappradar_view.display_nft_marketplace_chains",
+            [],
+            dict(),
+        ),
+        (
+            "call_defi_chains",
+            [],
+            "dappradar_view.display_defi_chains",
+            [],
+            dict(),
+        ),
+        (
+            "call_tokens",
+            [],
+            "dappradar_view.display_token_chains",
             [],
             dict(),
         ),

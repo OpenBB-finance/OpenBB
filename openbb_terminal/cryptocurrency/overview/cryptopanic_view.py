@@ -25,7 +25,7 @@ def display_news(
     ascend: bool = False,
     links: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display recent posts from CryptoPanic news aggregator platform.
     [Source: https://cryptopanic.com/]
@@ -66,10 +66,12 @@ def display_news(
             df = df[["title", "link"]]
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Recent CryptoPanic Posts",
+            export=bool(export),
+            limit=limit,
         )
 
         export_data(

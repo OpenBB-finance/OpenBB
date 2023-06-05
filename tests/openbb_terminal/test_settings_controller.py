@@ -1,5 +1,14 @@
+# IMPORTATION STANDARD
+
+
+# IMPORTATION THIRDPARTY
 import pytest
 
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.settings_controller import SettingsController
 
 # pylint: disable=W0621
@@ -7,18 +16,21 @@ from openbb_terminal.settings_controller import SettingsController
 
 @pytest.fixture()
 def controller(mocker):
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        "openbb_terminal.settings_controller.obbff.USE_PROMPT_TOOLKIT",
-        True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
+
+    mocker.patch(
+        target="openbb_terminal.settings_controller.set_preference",
+    )
+    mocker.patch(
+        target="openbb_terminal.settings_controller.write_to_dotenv",
+    )
+
     mocker.patch("openbb_terminal.settings_controller.session", True)
-    mocker.patch("openbb_terminal.settings_controller.SettingsController.set_cfg_plot")
-    mocker.patch(
-        "openbb_terminal.settings_controller.SettingsController.set_path_config"
-    )
-    mocker.patch(
-        "openbb_terminal.settings_controller.obbff_ctrl.FeatureFlagsController.set_feature_flag"
-    )
     return SettingsController()
 
 
@@ -37,15 +49,6 @@ def test_call_dt(controller):
     controller.call_dt(None)
 
 
-def test_call_autoscaling(controller):
-    controller.call_autoscaling(None)
-
-
-@pytest.mark.parametrize("other", [["45"], ["-v", "45"]])
-def test_call_dpi(controller, other):
-    controller.call_dpi(other)
-
-
 @pytest.mark.parametrize("other", [["45"], ["-v", "45"]])
 def test_call_height(controller, other):
     controller.call_height(other)
@@ -54,26 +57,6 @@ def test_call_height(controller, other):
 @pytest.mark.parametrize("other", [["45"], ["-v", "45"]])
 def test_call_width(controller, other):
     controller.call_width(other)
-
-
-@pytest.mark.parametrize("other", [["45"], ["-v", "45"]])
-def test_call_pheight(controller, other):
-    controller.call_pheight(other)
-
-
-@pytest.mark.parametrize("other", [["45"], ["-v", "45"]])
-def test_call_pwidth(controller, other):
-    controller.call_pwidth(other)
-
-
-@pytest.mark.parametrize("other", [["45"], ["-v", "45"]])
-def test_call_monitor(controller, other):
-    controller.call_monitor(other)
-
-
-@pytest.mark.parametrize("other", [["GTK3Agg"], ["-v", "GTK3Agg"], ["None"]])
-def test_call_backend(controller, other):
-    controller.call_backend(other)
 
 
 def test_call_flair(controller):

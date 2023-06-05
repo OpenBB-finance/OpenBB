@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import pandas as pd
 
@@ -16,7 +17,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
-def display_sentiment_stats(ticker: str, export: str = "", sheet_name: str = None):
+def display_sentiment_stats(
+    ticker: str, export: str = "", sheet_name: Optional[str] = None
+):
     """
     Prints Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
     bullish vs bearish percentages, sector average bullish percentage, and sector average news score

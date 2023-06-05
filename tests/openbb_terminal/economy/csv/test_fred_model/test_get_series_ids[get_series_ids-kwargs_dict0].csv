@@ -3,999 +3,999 @@ UNRATE,Unemployment Rate
 SAHMREALTIME,Real-time Sahm Rule Recession Indicator
 NROU,Noncyclical Rate of Unemployment
 LNS14000006,Unemployment Rate - Black or African American
-LNS14000031,"Unemployment Rate - 20 Yrs. & over, Black or African American Men"
 UNRATENSA,Unemployment Rate
-CAUR,Unemployment Rate in California
-M0892AUSM156SNBR,Unemployment Rate for United States
 NROUST,Natural Rate of Unemployment (Short-Term) (DISCONTINUED)
-U2RATE,Unemployment Rate - Job Losers (U-2)
+M0892AUSM156SNBR,Unemployment Rate for United States
+CAUR,Unemployment Rate in California
+LNS14000031,"Unemployment Rate - 20 Yrs. & over, Black or African American Men"
 FLUR,Unemployment Rate in Florida
-LRUNTTTTCAM156S,Unemployment Rate: Aged 15 and over: All Persons for Canada
+U2RATE,Unemployment Rate - Job Losers (U-2)
+LNS14000002,Unemployment Rate - Women
+NYUR,Unemployment Rate in New York
 LNS14000024,Unemployment Rate - 20 Yrs. & over
 TXUR,Unemployment Rate in Texas
-NYUR,Unemployment Rate in New York
-CALOSA7URN,"Unemployment Rate in Los Angeles County, CA"
 AURUKM,Unemployment Rate in the United Kingdom
-LNS14000002,Unemployment Rate - Women
-CGBD2534,"Unemployment Rate - College Graduates - Bachelor's Degree, 25 to 34 years"
+LRUNTTTTCAM156S,Unemployment Rate: Aged 15 and over: All Persons for Canada
 LNU04032231,"Unemployment Rate - Construction Industry, Private Wage and Salary Workers"
-LNS14000009,Unemployment Rate - Hispanic or Latino
-LRUN64TTJPM156S,Unemployment Rate: Aged 15-64: All Persons for Japan
-OHUR,Unemployment Rate in Ohio
+CALOSA7URN,"Unemployment Rate in Los Angeles County, CA"
 LNS14000001,Unemployment Rate - Men
-UNRATEMD,"FOMC Summary of Economic Projections for the Civilian Unemployment Rate, Median"
-LNS14000003,Unemployment Rate - White
-LNU04032232,"Unemployment Rate - Manufacturing Industry, Private Wage and Salary Workers"
-LNS14027662,"Unemployment Rate - Bachelor's Degree and Higher, 25 Yrs. & over"
-LMUNRRTTDEM156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
-CASANF0URN,"Unemployment Rate in San Francisco County/City, CA"
-Q0892BUSQ156SNBR,Unemployment Rate for United States
-LRHUTTTTEZM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
 PAUR,Unemployment Rate in Pennsylvania
-UNRTUKA,Unemployment Rate in the United Kingdom
-FLMIAM6URN,"Unemployment Rate in Miami-Dade County, FL"
+LRUN64TTJPM156S,Unemployment Rate: Aged 15-64: All Persons for Japan
+LMUNRRTTDEM156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
+LNS14027662,"Unemployment Rate - Bachelor's Degree and Higher, 25 Yrs. & over"
+LNS14000009,Unemployment Rate - Hispanic or Latino
+CGBD2534,"Unemployment Rate - College Graduates - Bachelor's Degree, 25 to 34 years"
+LMUNRRTTCNQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for China (People's Republic Of)
+LNS14000003,Unemployment Rate - White
+LRHUTTTTFRM156S,Harmonized Unemployment Rate: Total: All Persons for France
+OHUR,Unemployment Rate in Ohio
 LNS14027660,"Unemployment Rate - High School Graduates, No College, 25 Yrs. & over"
 ALUR,Unemployment Rate in Alabama
-LNS14000028,"Unemployment Rate - 20 Yrs. & over, White Men"
-U4RATE,"Total Unemployed Plus Discouraged Workers, as a Percent of the Civilian Labor Force Plus Discouraged Workers (U-4)"
-LRHUTTTTFRM156S,Harmonized Unemployment Rate: Total: All Persons for France
-IURSA,Insured Unemployment Rate
-SEAT653URN,"Unemployment Rate in Seattle-Tacoma-Bellevue, WA (MSA)"
-MIUR,Unemployment Rate in Michigan
-COUR,Unemployment Rate in Colorado
-MAUR,Unemployment Rate in Massachusetts
-AUST448URN,"Unemployment Rate in Austin-Round Rock, TX (MSA)"
-CHIC917URN,"Unemployment Rate in Chicago-Naperville-Elgin, IL-IN-WI (MSA)"
-LMUNRRTTCNQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for China (People's Republic Of)
-IAUR,Unemployment Rate in Iowa
-GAUR,Unemployment Rate in Georgia
-WAUR,Unemployment Rate in Washington
-VAUR,Unemployment Rate in Virginia
-WIUR,Unemployment Rate in Wisconsin
-CGMD25O,"Unemployment Rate - College Graduates - Master's Degree, 25 years and over"
-INUR,Unemployment Rate in Indiana
-LRHUTTTTGBM156S,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
-LRUN64TTUSQ156S,Unemployment Rate: Aged 15-64: All Persons for the United States
-TNUR,Unemployment Rate in Tennessee
-MOUR,Unemployment Rate in Missouri
-SLUEM1524ZSIND,Youth Unemployment Rate for India
-ARUR,Unemployment Rate in Arkansas
-ATLA013URN,"Unemployment Rate in Atlanta-Sandy Springs-Roswell, GA (MSA)"
-WVUR,Unemployment Rate in West Virginia
-IURNSA,Insured Unemployment Rate
-UNRATECTM,"FOMC Summary of Economic Projections for the Civilian Unemployment Rate, Central Tendency, Midpoint"
-DALL148URN,"Unemployment Rate in Dallas-Fort Worth-Arlington, TX (MSA)"
-NCUR,Unemployment Rate in North Carolina
-AZUR,Unemployment Rate in Arizona
-HOUS448URN,"Unemployment Rate in Houston-The Woodlands-Sugar Land, TX (MSA)"
-ORUR,Unemployment Rate in Oregon
-STLUR,"Unemployment Rate in St. Louis, MO-IL (MSA)"
-MDBALT5URN,"Unemployment Rate in Baltimore City, MD"
-LNU04032183,Unemployment Rate - Asian
-PHOE004UR,"Unemployment Rate in Phoenix-Mesa-Scottsdale, AZ (MSA)"
-NJURN,Unemployment Rate in New Jersey
-U5RATE,"Total Unemployed, Plus Discouraged Workers, Plus All Other Persons Marginally Attached to the Labor Force, as a Percent of the Civilian Labor Force Plus All Persons Marginally Attached to the Labor Force (U-5)"
-SCUR,Unemployment Rate in South Carolina
-LNS14027659,"Unemployment Rate - Less Than a High School Diploma, 25 Yrs. & over"
-CASAND5URN,"Unemployment Rate in San Diego County, CA"
-LNS14000012,Unemployment Rate - 16-19 Yrs.
-CGDD25O,"Unemployment Rate - College Graduates - Doctoral Degree, 25 years and over"
-NVUR,Unemployment Rate in Nevada
-MNUR,Unemployment Rate in Minnesota
-NASH947URN,"Unemployment Rate in Nashville-Davidson--Murfreesboro, TN (MSA)"
-TAMP312URN,"Unemployment Rate in Tampa-St. Petersburg-Clearwater, FL (MSA)"
-MSUR,Unemployment Rate in Mississippi
-LNU04000006,Unemployment Rate - Black or African American
-ILURN,Unemployment Rate in Illinois
-NMUR,Unemployment Rate in New Mexico
-PAPHIL5URN,"Unemployment Rate in Philadelphia County/City, PA"
-OKUR,Unemployment Rate in Oklahoma
-LNS14024887,Unemployment Rate - 16-24 Yrs.
-MDUR,Unemployment Rate in Maryland
-KYURN,Unemployment Rate in Kentucky
-LRUNTTTTDEQ156S,Unemployment Rate: Aged 15 and over: All Persons for Germany
-ILUR,Unemployment Rate in Illinois
-LNU04074597,"Unemployment Rate - With a Disability, 16 Years and over"
-LRHUTTTTEUM156S,Harmonized Unemployment Rate: Total: All Persons for the European Union
-CAORAN7URN,"Unemployment Rate in Orange County, CA"
-ILCOOK1URN,"Unemployment Rate in Cook County, IL"
-UTUR,Unemployment Rate in Utah
-U4RATENSA,"Total Unemployed Plus Discouraged Workers, as a Percent of the Civilian Labor Force Plus Discouraged Workers (U-4)"
+CASANF0URN,"Unemployment Rate in San Francisco County/City, CA"
+Q0892BUSQ156SNBR,Unemployment Rate for United States
 LRHUTTTTITM156S,Harmonized Unemployment Rate: Total: All Persons for Italy
-LRUN64TTGRQ156S,Unemployment Rate: Aged 15-64: All Persons for Greece
-U6UNEM6CA,"Total Unemployed, Plus All Marginally Attached Workers, Plus Total Employed Part Time for Economic Reasons, as a Percent of the Civilian Labor Force Plus All Marginally Attached Workers for California"
-NJUR,Unemployment Rate in New Jersey
-BOST625URN,"Unemployment Rate in Boston-Cambridge-Nashua, MA-NH (NECTA)"
-CHAR737URN,"Unemployment Rate in Charlotte-Concord-Gastonia, NC-SC (MSA)"
-DETR826URN,"Unemployment Rate in Detroit-Warren-Dearborn, MI (MSA)"
-NEWY636URN,"Unemployment Rate in New York-Newark-Jersey City, NY-NJ-PA (MSA)"
-INELKH0URN,"Unemployment Rate in Elkhart County, IN"
-DENV708URN,"Unemployment Rate in Denver-Aurora-Lakewood, CO (MSA)"
-LAUR,Unemployment Rate in Louisiana
-SLUEM1524ZSUSA,Youth Unemployment Rate for the United States
-LNS14000018,"Unemployment Rate - 16-19 Yrs., Black or African American"
-LNU04032230,"Unemployment Rate - Mining, Quarrying, and Oil and Gas Extraction, Nonagricultural Private Wage and Salary Workers"
-LRUN64TTGBQ156S,Unemployment Rate: Aged 15-64: All Persons for the United Kingdom
-JACK212URN,"Unemployment Rate in Jacksonville, FL (MSA)"
-CASANT5URN,"Unemployment Rate in Santa Clara County, CA"
-WASH911URN,"Unemployment Rate in Washington-Arlington-Alexandria, DC-VA-MD-WV (MSA)"
-UNRATEMDLR,"Longer Run FOMC Summary of Economic Projections for the Civilian Unemployment Rate, Median"
-LNU04032238,"Unemployment Rate - Financial Activities Industry, Private Wage and Salary Workers"
-WYUR,Unemployment Rate in Wyoming
-INDI918URN,"Unemployment Rate in Indianapolis-Carmel-Anderson, IN (MSA)"
-CAALAM1URN,"Unemployment Rate in Alameda County, CA"
-FLPALM2URN,"Unemployment Rate in Palm Beach County, FL"
-NYNEWY1URN,"Unemployment Rate in New York County, NY"
-NCURN,Unemployment Rate in North Carolina
-SANA748UR,"Unemployment Rate in San Antonio-New Braunfels, TX (MSA)"
-WIMILW5URN,"Unemployment Rate in Milwaukee County, WI"
-LAUST060000000000003A,Unemployment Rate in California
-M0892BUSM156SNBR,Unemployment Rate for United States
-LNU04000024,Unemployment Rate - 20 Yrs. & over
-LNU04032241,"Unemployment Rate - Leisure and Hospitality, Private Wage and Salary Workers"
-TXDALL3URN,"Unemployment Rate in Dallas County, TX"
-CASANB1URN,"Unemployment Rate in San Bernardino County, CA"
-LMUNRRTTDEQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
-LOSA106UR,"Unemployment Rate in Los Angeles-Long Beach-Anaheim, CA (MSA)"
-LRUN64TTZAQ156S,Unemployment Rate: Aged 15-64: All Persons for South Africa
-LRHUTTTTESM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
-LRUNTTTTKRM156S,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
-NDUR,Unemployment Rate in North Dakota
-DEUR,Unemployment Rate in Delaware
-NYBRON5URN,"Unemployment Rate in Bronx County, NY"
-CARIVE5URN,"Unemployment Rate in Riverside County, CA"
-KANS129UR,"Unemployment Rate in Kansas City, MO-KS (MSA)"
-MPHUR,"Unemployment Rate in Memphis, TN-MS-AR (MSA)"
-CAMARI3URN,"Unemployment Rate in Mariposa County, CA"
-AZMARI3URN,"Unemployment Rate in Maricopa County, AZ"
-WAKING5URN,"Unemployment Rate in King County, WA"
-TXHARR1URN,"Unemployment Rate in Harris County, TX"
-MDMONT0URN,"Unemployment Rate in Montgomery County, MD"
-LRUN64TTESQ156S,Unemployment Rate: Aged 15-64: All Persons for Spain
-LRHUTTTTAUM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
-NEUR,Unemployment Rate in Nebraska
-MEUR,Unemployment Rate in Maine
-LNU04035109,Unemployment Rate - Agricultural and Related Private Wage and Salary Workers
-LNU04032235,"Unemployment Rate - Wholesale and Retail Trade, Private Wage and Salary Workers"
+UNRATEMD,"FOMC Summary of Economic Projections for the Civilian Unemployment Rate, Median"
+LNU04032232,"Unemployment Rate - Manufacturing Industry, Private Wage and Salary Workers"
+MIUR,Unemployment Rate in Michigan
+U4RATE,"Total Unemployed Plus Discouraged Workers, as a Percent of the Civilian Labor Force Plus Discouraged Workers (U-4)"
+LRHUTTTTEZM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
 LRHUTTTTDEM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Germany
-LNS14000060,Unemployment Rate - 25-54 Yrs.
-HIUR,Unemployment Rate in Hawaii
-LNS14032183,Unemployment Rate - Asian
-MINN427URN,"Unemployment Rate in Minneapolis-St. Paul-Bloomington, MN-WI (MSA)"
-LASV832URN,"Unemployment Rate in Las Vegas-Henderson-Paradise, NV (MSA)"
-CTUR,Unemployment Rate in Connecticut
-TUCS004URN,"Unemployment Rate in Tucson, AZ (MSA)"
-SLUEM1524ZSCHN,Youth Unemployment Rate for China
-CINC139URN,"Unemployment Rate in Cincinnati, OH-KY-IN (MSA)"
-MOSLURN,"Unemployment Rate in St. Louis County, MO"
-VAFAIR5URN,"Unemployment Rate in Fairfax County, VA"
-LNU04032236,"Unemployment Rate - Transportation and Utilities Industry, Private Wage and Salary Workers"
-MTUR,Unemployment Rate in Montana
-RALE537URN,"Unemployment Rate in Raleigh, NC (MSA)"
-MIURN,Unemployment Rate in Michigan
-LMUNRRTTNOM156S,Registered Unemployment Rate for Norway
-LRHUTTTTSEM156S,Harmonized Unemployment Rate: Total: All Persons for Sweden
-DCUR,Unemployment Rate in the District of Columbia
-PORT941UR,"Unemployment Rate in Portland-Vancouver-Hillsboro, OR-WA (MSA)"
-MNURN,Unemployment Rate in Minnesota
-SANF806URN,"Unemployment Rate in San Francisco-Oakland-Hayward, CA (MSA)"
-RICH051URN,"Unemployment Rate in Richmond, VA (MSA)"
-KYUR,Unemployment Rate in Kentucky
-SANF806UR,"Unemployment Rate in San Francisco-Oakland-Hayward, CA (MSA)"
-FLORAN0URN,"Unemployment Rate in Orange County, FL"
-GACOBB0URN,"Unemployment Rate in Cobb County, GA"
-LRUN74TTFRQ156S,Unemployment Rate: Aged 15-74: All Persons for France
-CAFRES9URN,"Unemployment Rate in Fresno County, CA"
-SCGREE5URN,"Unemployment Rate in Greenville County, SC"
-UTCACH0URN,"Unemployment Rate in Cache County, UT"
-CASACR5URN,"Unemployment Rate in Sacramento County, CA"
-NYALBA1URN,"Unemployment Rate in Albany County, NY"
-LNU04032240,"Unemployment Rate - Education and Health Services, Private Wage and Salary Workers"
-LNS14000089,Unemployment Rate - 25-34 Yrs.
+CHIC917URN,"Unemployment Rate in Chicago-Naperville-Elgin, IL-IN-WI (MSA)"
 AKUR,Unemployment Rate in Alaska
-LRHUTTTTGRM156S,Harmonized Unemployment Rate: Total: All Persons for Greece
-LNU04000003,Unemployment Rate - White
-LRUNTTTTCAQ156S,Unemployment Rate: Aged 15 and over: All Persons for Canada
-LRUN64TTJPQ156S,Unemployment Rate: Aged 15-64: All Persons for Japan
-LNU04027662,"Unemployment Rate - Bachelor's Degree and Higher, 25 Yrs. & over"
-PAALLE3URN,"Unemployment Rate in Allegheny County, PA"
-OHCUYA5URN,"Unemployment Rate in Cuyahoga County, OH"
-NVCLAR3URN,"Unemployment Rate in Clark County, NV"
-CGBD25O,"Unemployment Rate - College Graduates - Bachelor's Degree, 25 years and over"
-CMWRUR,Unemployment Rate in Midwest Census Region
-RIUR,Unemployment Rate in Rhode Island
-FLBROW5URN,"Unemployment Rate in Broward County, FL"
+VAUR,Unemployment Rate in Virginia
+UNRTUKA,Unemployment Rate in the United Kingdom
+ARUR,Unemployment Rate in Arkansas
+SLUEM1524ZSIND,Youth Unemployment Rate for India
+COUR,Unemployment Rate in Colorado
+IURSA,Insured Unemployment Rate
+U5RATE,"Total Unemployed, Plus Discouraged Workers, Plus All Other Persons Marginally Attached to the Labor Force, as a Percent of the Civilian Labor Force Plus All Persons Marginally Attached to the Labor Force (U-5)"
+CGMD25O,"Unemployment Rate - College Graduates - Master's Degree, 25 years and over"
+KYURN,Unemployment Rate in Kentucky
+WVUR,Unemployment Rate in West Virginia
+LRHUTTTTGBM156S,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
+TNUR,Unemployment Rate in Tennessee
+WIUR,Unemployment Rate in Wisconsin
+GAUR,Unemployment Rate in Georgia
+PAPHIL5URN,"Unemployment Rate in Philadelphia County/City, PA"
+SEAT653URN,"Unemployment Rate in Seattle-Tacoma-Bellevue, WA (MSA)"
+IAUR,Unemployment Rate in Iowa
+ILURN,Unemployment Rate in Illinois
+LNS14000012,Unemployment Rate - 16-19 Yrs.
+FLMIAM6URN,"Unemployment Rate in Miami-Dade County, FL"
+SCUR,Unemployment Rate in South Carolina
+MOUR,Unemployment Rate in Missouri
+WAUR,Unemployment Rate in Washington
+HOUS448URN,"Unemployment Rate in Houston-The Woodlands-Sugar Land, TX (MSA)"
+LNS14027659,"Unemployment Rate - Less Than a High School Diploma, 25 Yrs. & over"
+NDUR,Unemployment Rate in North Dakota
+INUR,Unemployment Rate in Indiana
+NVUR,Unemployment Rate in Nevada
+ORUR,Unemployment Rate in Oregon
+LRUN64TTUSQ156S,Unemployment Rate: Aged 15-64: All Persons for the United States
+MAUR,Unemployment Rate in Massachusetts
+AZUR,Unemployment Rate in Arizona
+NCURN,Unemployment Rate in North Carolina
+U4RATENSA,"Total Unemployed Plus Discouraged Workers, as a Percent of the Civilian Labor Force Plus Discouraged Workers (U-4)"
 LRUN64TTITQ156S,Unemployment Rate: Aged 15-64: All Persons for Italy
-OHFRAN0URN,"Unemployment Rate in Franklin County, OH"
+DALL148URN,"Unemployment Rate in Dallas-Fort Worth-Arlington, TX (MSA)"
+MNUR,Unemployment Rate in Minnesota
+LNU04032183,Unemployment Rate - Asian
+AUST448URN,"Unemployment Rate in Austin-Round Rock, TX (MSA)"
+SLUEM1524ZSUSA,Youth Unemployment Rate for the United States
+OKUR,Unemployment Rate in Oklahoma
+LAUR,Unemployment Rate in Louisiana
+JACK212URN,"Unemployment Rate in Jacksonville, FL (MSA)"
+LRUN64TTZAQ156S,Unemployment Rate: Aged 15-64: All Persons for South Africa
+NMUR,Unemployment Rate in New Mexico
+NJURN,Unemployment Rate in New Jersey
+CASAND5URN,"Unemployment Rate in San Diego County, CA"
+NASH947URN,"Unemployment Rate in Nashville-Davidson--Murfreesboro, TN (MSA)"
+NCUR,Unemployment Rate in North Carolina
+LRHUTTTTESM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
+LRUNTTTTDEQ156S,Unemployment Rate: Aged 15 and over: All Persons for Germany
+DETR826URN,"Unemployment Rate in Detroit-Warren-Dearborn, MI (MSA)"
+M0892BUSM156SNBR,Unemployment Rate for United States
+ATLA013URN,"Unemployment Rate in Atlanta-Sandy Springs-Roswell, GA (MSA)"
+LRUN74TTFRQ156S,Unemployment Rate: Aged 15-74: All Persons for France
+KYUR,Unemployment Rate in Kentucky
+CAORAN7URN,"Unemployment Rate in Orange County, CA"
+UNRATECTM,"FOMC Summary of Economic Projections for the Civilian Unemployment Rate, Central Tendency, Midpoint"
+WASH911URN,"Unemployment Rate in Washington-Arlington-Alexandria, DC-VA-MD-WV (MSA)"
+UTUR,Unemployment Rate in Utah
+U6UNEM6CA,"Total Unemployed, Plus All Marginally Attached Workers, Plus Total Employed Part Time for Economic Reasons, as a Percent of the Civilian Labor Force Plus All Marginally Attached Workers for California"
+LRUNTTTTKRM156S,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
+MSUR,Unemployment Rate in Mississippi
+IURNSA,Insured Unemployment Rate
 LRUNTTTTBRM156S,Unemployment Rate: Aged 15 and over: All Persons for Brazil
-GRAN326URN,"Unemployment Rate in Grand Rapids-Wyoming, MI (MSA)"
-CLEV439URN,"Unemployment Rate in Cleveland-Elyria, OH (MSA)"
-LNU04000032,"Unemployment Rate - 20 Yrs. & over, Black or African American Women"
-ORLA712URN,"Unemployment Rate in Orlando-Kissimmee-Sanford, FL (MSA)"
-DAYT339URN,"Unemployment Rate in Dayton, OH (MSA)"
-LNU04000009,Unemployment Rate - Hispanic or Latino
-MIAM112URN,"Unemployment Rate in Miami-Fort Lauderdale-West Palm Beach, FL (MSA)"
-LRUNTTTTMXM156S,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
-VTUR,Unemployment Rate in Vermont
-NYKING7URN,"Unemployment Rate in Kings County, NY"
-LNS14000036,Unemployment Rate - 20-24 Yrs.
-LRHUTTTTFRM156N,Harmonized Unemployment Rate: Total: All Persons for France
-LRUN64TTSEQ156S,Unemployment Rate: Aged 15-64: All Persons for Sweden
-SLUEM1524ZSETH,Youth Unemployment Rate for Ethiopia
-CASANM0URN,"Unemployment Rate in San Mateo County, CA"
-FLDUVA0URN,"Unemployment Rate in Duval County, FL"
-GAFULT1URN,"Unemployment Rate in Fulton County, GA"
-NCWAKE3URN,"Unemployment Rate in Wake County, NC"
-LOIUR,"Unemployment Rate in Louisville-Jefferson County, KY-IN (MSA)"
-NMURN,Unemployment Rate in New Mexico
-LMUNRRTTRUM156S,Registered Unemployment Rate for the Russian Federation
-LRUNTTTTAUM156S,Unemployment Rate: Aged 15 and over: All Persons for Australia
-SANJ906URN,"Unemployment Rate in San Jose-Sunnyvale-Santa Clara, CA (MSA)"
-MIWAYN3URN,"Unemployment Rate in Wayne County, MI"
-OKLA440UR,"Unemployment Rate in Oklahoma City, OK (MSA)"
-BOIS216URN,"Unemployment Rate in Boise City, ID (MSA)"
-KSUR,Unemployment Rate in Kansas
-LNU04073413,Unemployment Rate - Native Born
-LRHUTTTTCAM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
-LNU04032239,"Unemployment Rate - Professional and Business Services Industry, Private Wage and Salary Workers"
-FLBREV3URN,"Unemployment Rate in Brevard County, FL"
-BATO922URN,"Unemployment Rate in Baton Rouge, LA (MSA)"
-SLUEM1524ZSEGY,Youth Unemployment Rate for Egypt
-LRUN64TTPTQ156S,Unemployment Rate: Aged 15-64: All Persons for Portugal
-TNSHURN,"Unemployment Rate in Shelby County, TN"
-OHHAMI1URN,"Unemployment Rate in Hamilton County, OH"
-TNKNOX5URN,"Unemployment Rate in Knox County, TN"
-GAGWIN7URN,"Unemployment Rate in Gwinnett County, GA"
-FLSTJO9URN,"Unemployment Rate in St. Johns County, FL"
-CAURN,Unemployment Rate in California
-PRUR,Unemployment Rate in Puerto Rico
-LRHUTTTTJPM156S,Harmonized Unemployment Rate: Total: All Persons for Japan
-IDUR,Unemployment Rate in Idaho
-SDUR,Unemployment Rate in South Dakota
-FLURN,Unemployment Rate in Florida
-PITT342UR,"Unemployment Rate in Pittsburgh, PA (MSA)"
-LRHUTTTTUSM156S,Harmonized Unemployment Rate: Total: All Persons for the United States
-LRUN64TTTRQ156S,Unemployment Rate: Aged 15-64: All Persons for Turkey
-LRUNTTTTCLM156S,Unemployment Rate: Aged 15 and over: All Persons for Chile
-SALT649URN,"Unemployment Rate in Salt Lake City, UT (MSA)"
-LOSA106URN,"Unemployment Rate in Los Angeles-Long Beach-Anaheim, CA (MSA)"
-LMUNRRTTPLM156S,Registered Unemployment Rate for Poland
-CAMARI5URN,"Unemployment Rate in Marin County, CA"
-OHMONT3URN,"Unemployment Rate in Montgomery County, OH"
-LNU04027660,"Unemployment Rate - High School Graduates, No College, 25 Yrs. & over"
-CACONT3URN,"Unemployment Rate in Contra Costa County, CA"
-NCDURH8URN,"Unemployment Rate in Durham County, NC"
-TXDENT2URN,"Unemployment Rate in Denton County, TX"
-LRHUTTTTGBQ156S,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
-LNU04032237,"Unemployment Rate - Information Industry, Private Wage and Salary Workers"
-LNU04073395,Unemployment Rate - Foreign Born
-KSURN,Unemployment Rate in Kansas
-MOSSURN,"Unemployment Rate in St. Louis City, MO"
-NEIM156SFRBRIC,Hornstein-Kudlyak-Lange Non-Employment Index
-LNU04000060,Unemployment Rate - 25-54 Yrs.
-FLHILL7URN,"Unemployment Rate in Hillsborough County, FL"
-LNS14000029,"Unemployment Rate - 20 Yrs. & over, White Women"
-LRUNTTTTGBQ156S,Unemployment Rate: Aged 15 and Over: All Persons for the United Kingdom
-SLUEM1524ZSARG,Youth Unemployment Rate for Argentina
-BIRM801URN,"Unemployment Rate in Birmingham-Hoover, AL (MSA)"
-LNS14024230,Unemployment Rate - 55 Yrs. & over
-KANS129URN,"Unemployment Rate in Kansas City, MO-KS (MSA)"
-CWSTUR,Unemployment Rate in West Census Region
-LNS14027689,"Unemployment Rate - Some College or Associate Degree, 25 Yrs. & over"
-MDBALT0URN,"Unemployment Rate in Baltimore County, MD"
-FLPINE5URN,"Unemployment Rate in Pinellas County, FL"
-FLLEEC7URN,"Unemployment Rate in Lee County, FL"
-MNHENN3URN,"Unemployment Rate in Hennepin County, MN"
-LRHUTTTTNLM156S,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
-NHUR,Unemployment Rate in New Hampshire
-M0892CUSM156NNBR,Unemployment Rate for United States
-ROCH336URN,"Unemployment Rate in Rochester, NY (MSA)"
-FLIN426URN,"Unemployment Rate in Flint, MI (MSA)"
-TXURN,Unemployment Rate in Texas
-AZURN,Unemployment Rate in Arizona
-UTURN,Unemployment Rate in Utah
-NEURN,Unemployment Rate in Nebraska
-LRUN64TTEZQ156S,Unemployment Rate: Aged 15-64: All Persons for the Euro Area (19 Countries)
-LASMT391746000000003,"Unemployment Rate in Cleveland-Elyria, OH (MSA)"
-KSJOHN1URN,"Unemployment Rate in Johnson County, KS"
-TNFAURN,"Unemployment Rate in Fayette County, TN"
-TULS140URN,"Unemployment Rate in Tulsa, OK (MSA)"
-SHRE322URN,"Unemployment Rate in Shreveport-Bossier City, LA (MSA)"
-MIOTTA0URN,"Unemployment Rate in Ottawa County, MI"
-INSTJO7URN,"Unemployment Rate in St. Joseph County, IN"
-CAVENT2URN,"Unemployment Rate in Ventura County, CA"
-LRSUR,"Unemployment Rate in Little Rock-North Little Rock-Conway, AR (MSA)"
-FLPOLK5URN,"Unemployment Rate in Polk County, FL"
-HUNT601URN,"Unemployment Rate in Huntsville, AL (MSA)"
-ELPA348URN,"Unemployment Rate in El Paso, TX (MSA)"
-BUFF336URN,"Unemployment Rate in Buffalo-Cheektowaga-Niagara Falls, NY (MSA)"
-RENO932URN,"Unemployment Rate in Reno, NV (MSA)"
-LRHUTTTTEZA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
-PHOE004URN,"Unemployment Rate in Phoenix-Mesa-Scottsdale, AZ (MSA)"
-COLU139URN,"Unemployment Rate in Columbus, OH (MSA)"
-ILLAKE7URN,"Unemployment Rate in Lake County, IL"
-CHAR745URN,"Unemployment Rate in Charleston-North Charleston-Summerville, SC (MSA)"
-COWELD3URN,"Unemployment Rate in Weld County, CO"
-CAIMPE5URN,"Unemployment Rate in Imperial County, CA"
-FLPASC5URN,"Unemployment Rate in Pasco County, FL"
-CTHART3URN,"Unemployment Rate in Hartford County, CT"
-PACHES5URN,"Unemployment Rate in Chester County, PA"
-NJHUDS7URN,"Unemployment Rate in Hudson County, NJ"
-SCCHAR9URN,"Unemployment Rate in Charleston County, SC"
-FLVOLU7URN,"Unemployment Rate in Volusia County, FL"
-NJATLA2URN,"Unemployment Rate in Atlantic County, NJ"
-PAURN,Unemployment Rate in Pennsylvania
-LAUST120000000000003A,Unemployment Rate in Florida
-MIKENT1URN,"Unemployment Rate in Kent County, MI"
-LMUNRRTTCNA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for China (People's Republic Of)
-WIFOND0URN,"Unemployment Rate in Fond du Lac County, WI"
-LNS14000315,Unemployment Rate - Married Women
-U5UNEM5WI,"Total Unemployed, Plus Discouraged Workers, Plus All Other Marginally Attached Workers, as a Percent of the Civilian Labor Force Plus All Marginally Attached Workers for Wisconsin"
-FASUR,"Unemployment Rate in Fayetteville-Springdale-Rogers, AR-MO (MSA)"
-LRUN64TTCAM156S,Unemployment Rate: Aged 15-64: All Persons for Canada
-NMEDDY5URN,"Unemployment Rate in Eddy County, NM"
-PORT941URN,"Unemployment Rate in Portland-Vancouver-Hillsboro, OR-WA (MSA)"
-LRUNTTTTUSQ156S,Unemployment Rate: Aged 15 and Over: All Persons for the United States
-SLUEM1524ZSCOD,Youth Unemployment Rate for the Democratic Republic of the Congo
-LAUST280000000000003A,Unemployment Rate in Mississippi
-LMUNRRTTCHM156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
+ILUR,Unemployment Rate in Illinois
+LRUN64TTGRQ156S,Unemployment Rate: Aged 15-64: All Persons for Greece
+LNS14000018,"Unemployment Rate - 16-19 Yrs., Black or African American"
+DENV708URN,"Unemployment Rate in Denver-Aurora-Lakewood, CO (MSA)"
+STLUR,"Unemployment Rate in St. Louis, MO-IL (MSA)"
+MDUR,Unemployment Rate in Maryland
+SLUEM1524ZSCHN,Youth Unemployment Rate for China
+LRUN64TTGBQ156S,Unemployment Rate: Aged 15-64: All Persons for the United Kingdom
+HIUR,Unemployment Rate in Hawaii
+LASV832URN,"Unemployment Rate in Las Vegas-Henderson-Paradise, NV (MSA)"
+WIMILW5URN,"Unemployment Rate in Milwaukee County, WI"
+PHOE004UR,"Unemployment Rate in Phoenix-Mesa-Scottsdale, AZ (MSA)"
+MINN427URN,"Unemployment Rate in Minneapolis-St. Paul-Bloomington, MN-WI (MSA)"
 PRURN,Unemployment Rate in Puerto Rico
-LRUN64TTUSA156S,Unemployment Rate: Aged 15-64: All Persons for the United States
-LRUN64TTUSQ156N,Unemployment Rate: Aged 15-64: All Persons for the United States
-LRUN64TTUSM156S,Unemployment Rate: Aged 15-64: All Persons for the United States
-NYMONR5URN,"Unemployment Rate in Monroe County, NY"
-KNOX947UR,"Unemployment Rate in Knoxville, TN (MSA)"
-SCDORC7URN,"Unemployment Rate in Dorchester County, SC"
-TXTARR9URN,"Unemployment Rate in Tarrant County, TX"
-INALLE3URN,"Unemployment Rate in Allen County, IN"
-OMAH531UR,"Unemployment Rate in Omaha-Council Bluffs, NE-IA (MSA)"
-TNDAVI5URN,"Unemployment Rate in Davidson County, TN"
-SLUEM1524ZSPHL,Youth Unemployment Rate for the Philippines
-ASHE737UR,"Unemployment Rate in Asheville, NC (MSA)"
-NYURN,Unemployment Rate in New York
-NEWO322UR,"Unemployment Rate in New Orleans-Metairie, LA (MSA)"
-LRHUTTTTMXM156S,Harmonized Unemployment Rate: Total: All Persons for Mexico
-LMUNRRTTBEM156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Belgium
-NCMECK9URN,"Unemployment Rate in Mecklenburg County, NC"
-ALBU735UR,"Unemployment Rate in Albuquerque, NM (MSA)"
-LAUST180000000000003A,Unemployment Rate in Indiana
-ARGAURN,"Unemployment Rate in Garland County, AR"
-WASPOK2URN,"Unemployment Rate in Spokane County, WA"
-INMARI0URN,"Unemployment Rate in Marion County, IN"
-COLU139UR,"Unemployment Rate in Columbus, OH (MSA)"
-LAORLE0URN,"Unemployment Rate in Orleans Parish, LA"
-CODENV5URN,"Unemployment Rate in Denver County/City, CO"
-MOMCDO9URN,"Unemployment Rate in McDonald County, MO"
-CAMERC0URN,"Unemployment Rate in Merced County, CA"
-VAACCO1URN,"Unemployment Rate in Accomack County, VA"
-ILWILL7URN,"Unemployment Rate in Will County, IL"
-ORKLAM5URN,"Unemployment Rate in Klamath County, OR"
-TNMONT5URN,"Unemployment Rate in Montgomery County, TN"
-FLLAKE4URN,"Unemployment Rate in Lake County, FL"
-AKRO439URN,"Unemployment Rate in Akron, OH (MSA)"
-FLSARA5URN,"Unemployment Rate in Sarasota County, FL"
-MAWORC7URN,"Unemployment Rate in Worcester County, MA"
-COEAGL7URN,"Unemployment Rate in Eagle County, CO"
-OHSUMM3URN,"Unemployment Rate in Summit County, OH"
-NCBUNC1URN,"Unemployment Rate in Buncombe County, NC"
-TXMONT0URN,"Unemployment Rate in Montgomery County, TX"
-STLURN,"Unemployment Rate in St. Louis, MO-IL (MSA)"
-LNU04032222,"Unemployment Rate - Natural Resources, Construction, and Maintenance Occupations"
-FAYE137URN,"Unemployment Rate in Fayetteville, NC (MSA)"
-LNU04024933,Unemployment Rate - 30-34 Yrs.
-LNU04049526,"Unemployment Rate - Total Veterans, 18 Years and over"
+LNS14024887,Unemployment Rate - 16-24 Yrs.
+LNU04074597,"Unemployment Rate - With a Disability, 16 Years and over"
+ILCOOK1URN,"Unemployment Rate in Cook County, IL"
+LAUST060000000000003A,Unemployment Rate in California
+CGDD25O,"Unemployment Rate - College Graduates - Doctoral Degree, 25 years and over"
+CAALAM1URN,"Unemployment Rate in Alameda County, CA"
+LRHUTTTTAUM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
+MEUR,Unemployment Rate in Maine
+LNS14032183,Unemployment Rate - Asian
+CINC139URN,"Unemployment Rate in Cincinnati, OH-KY-IN (MSA)"
+SDUR,Unemployment Rate in South Dakota
+TAMP312URN,"Unemployment Rate in Tampa-St. Petersburg-Clearwater, FL (MSA)"
+MDBALT5URN,"Unemployment Rate in Baltimore City, MD"
+MTUR,Unemployment Rate in Montana
+MNURN,Unemployment Rate in Minnesota
+LRHUTTTTEUM156S,Harmonized Unemployment Rate: Total: All Persons for the European Union
+INDI918URN,"Unemployment Rate in Indianapolis-Carmel-Anderson, IN (MSA)"
+CAMARI3URN,"Unemployment Rate in Mariposa County, CA"
+LNS14000036,Unemployment Rate - 20-24 Yrs.
+LNU04032240,"Unemployment Rate - Education and Health Services, Private Wage and Salary Workers"
+LNU04035109,Unemployment Rate - Agricultural and Related Private Wage and Salary Workers
+LRUNTTTTMXM156S,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
+WYUR,Unemployment Rate in Wyoming
+BIRM801URN,"Unemployment Rate in Birmingham-Hoover, AL (MSA)"
+CARIVE5URN,"Unemployment Rate in Riverside County, CA"
+INELKH0URN,"Unemployment Rate in Elkhart County, IN"
+LRHUTTTTSEM156S,Harmonized Unemployment Rate: Total: All Persons for Sweden
+LNS14000061,"Unemployment Rate - 25-54 Yrs., Men"
+LMUNRRTTCNA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for China (People's Republic Of)
+ORLA712URN,"Unemployment Rate in Orlando-Kissimmee-Sanford, FL (MSA)"
+LOSA106UR,"Unemployment Rate in Los Angeles-Long Beach-Anaheim, CA (MSA)"
+LNU04000006,Unemployment Rate - Black or African American
+DCUR,Unemployment Rate in the District of Columbia
+LMUNRRTTRUM156S,Registered Unemployment Rate for the Russian Federation
+LNU04032235,"Unemployment Rate - Wholesale and Retail Trade, Private Wage and Salary Workers"
+FLPALM2URN,"Unemployment Rate in Palm Beach County, FL"
+LNS14000028,"Unemployment Rate - 20 Yrs. & over, White Men"
+NEWY636URN,"Unemployment Rate in New York-Newark-Jersey City, NY-NJ-PA (MSA)"
+LRUN64TTTRQ156S,Unemployment Rate: Aged 15-64: All Persons for Turkey
+LOIUR,"Unemployment Rate in Louisville-Jefferson County, KY-IN (MSA)"
+SCGREE5URN,"Unemployment Rate in Greenville County, SC"
+CASACR5URN,"Unemployment Rate in Sacramento County, CA"
+MIURN,Unemployment Rate in Michigan
+LRUN64TTESQ156S,Unemployment Rate: Aged 15-64: All Persons for Spain
+LMUNRRTTDEQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
+LNU04032241,"Unemployment Rate - Leisure and Hospitality, Private Wage and Salary Workers"
+PAALLE3URN,"Unemployment Rate in Allegheny County, PA"
+NYBRON5URN,"Unemployment Rate in Bronx County, NY"
+LNU04032230,"Unemployment Rate - Mining, Quarrying, and Oil and Gas Extraction, Nonagricultural Private Wage and Salary Workers"
 CGBD2024,"Unemployment Rate - College Graduates - Bachelor's Degree, 20 to 24 years"
-MDFRED5URN,"Unemployment Rate in Frederick County, MD"
-VAALEX5URN,"Unemployment Rate in Alexandria City, VA"
-OHURN,Unemployment Rate in Ohio
-LMUNRRTTDEA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
-ALBALD0URN,"Unemployment Rate in Baldwin County, AL"
-HIHAWA0URN,"Unemployment Rate in Hawaii County, HI"
-OHMERC7URN,"Unemployment Rate in Mercer County, OH"
-COADAM1URN,"Unemployment Rate in Adams County, CO"
-AZPIMA9URN,"Unemployment Rate in Pima County, AZ"
-FLSTLU5URN,"Unemployment Rate in St. Lucie County, FL"
-PALANC0URN,"Unemployment Rate in Lancaster County, PA"
-UNRATERH,"FOMC Summary of Economic Projections for the Civilian Unemployment Rate, Range, High"
-HIURN,Unemployment Rate in Hawaii
-MPHURN,"Unemployment Rate in Memphis, TN-MS-AR (MSA)"
-LRUNTTTTNLQ156S,Unemployment Rate: Aged 15 and Over: All Persons for the Netherlands
-COELPA0URN,"Unemployment Rate in El Paso County, CO"
-LRUN64TTKRM156S,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
-NYSUFF0URN,"Unemployment Rate in Suffolk County, NY"
-TXCOLL5URN,"Unemployment Rate in Collin County, TX"
-HARR442URN,"Unemployment Rate in Harrisburg-Carlisle, PA (MSA)"
-DESM719URN,"Unemployment Rate in Des Moines-West Des Moines, IA (MSA)"
-MADI555UR,"Unemployment Rate in Madison, WI (MSA)"
-AUGU213URN,"Unemployment Rate in Augusta-Richmond County, GA-SC (MSA)"
-COLO808UR,"Unemployment Rate in Colorado Springs, CO (MSA)"
-SLUEM1524ZSTZA,Youth Unemployment Rate for the United Republic of Tanzania
-UNRATECTMLR,"Longer Run FOMC Summary of Economic Projections for the Civilian Unemployment Rate, Central Tendency, Midpoint"
-TXFORT5URN,"Unemployment Rate in Fort Bend County, TX"
-HIHONO7URN,"Unemployment Rate in Honolulu County/City, HI"
-LRUN64TTFIQ156S,Unemployment Rate: Aged 15-64: All Persons for Finland
+BOST625URN,"Unemployment Rate in Boston-Cambridge-Nashua, MA-NH (NECTA)"
+TXURN,Unemployment Rate in Texas
+GAFULT1URN,"Unemployment Rate in Fulton County, GA"
+LNU04027660,"Unemployment Rate - High School Graduates, No College, 25 Yrs. & over"
+SALT649URN,"Unemployment Rate in Salt Lake City, UT (MSA)"
+MIAM112URN,"Unemployment Rate in Miami-Fort Lauderdale-West Palm Beach, FL (MSA)"
+LNU04032238,"Unemployment Rate - Financial Activities Industry, Private Wage and Salary Workers"
+ROCH336URN,"Unemployment Rate in Rochester, NY (MSA)"
+LMUNRRTTNOM156S,Registered Unemployment Rate for Norway
+LNU04000024,Unemployment Rate - 20 Yrs. & over
+NJUR,Unemployment Rate in New Jersey
+CAURN,Unemployment Rate in California
+WAKING5URN,"Unemployment Rate in King County, WA"
+CASANT5URN,"Unemployment Rate in Santa Clara County, CA"
+NMURN,Unemployment Rate in New Mexico
+SANA748UR,"Unemployment Rate in San Antonio-New Braunfels, TX (MSA)"
+AZMARI3URN,"Unemployment Rate in Maricopa County, AZ"
+TULS140URN,"Unemployment Rate in Tulsa, OK (MSA)"
+CHAR737URN,"Unemployment Rate in Charlotte-Concord-Gastonia, NC-SC (MSA)"
+BUFF336URN,"Unemployment Rate in Buffalo-Cheektowaga-Niagara Falls, NY (MSA)"
+NYNEWY1URN,"Unemployment Rate in New York County, NY"
+CTUR,Unemployment Rate in Connecticut
+LRUN64TTDEQ156S,Unemployment Rate: Aged 15-64: All Persons for Germany
+CAFRES9URN,"Unemployment Rate in Fresno County, CA"
+VAFAIR5URN,"Unemployment Rate in Fairfax County, VA"
+TXHARR1URN,"Unemployment Rate in Harris County, TX"
+PITT342UR,"Unemployment Rate in Pittsburgh, PA (MSA)"
+LNS14024230,Unemployment Rate - 55 Yrs. & over
+NEWO322UR,"Unemployment Rate in New Orleans-Metairie, LA (MSA)"
 MDPRIN5URN,"Unemployment Rate in Prince George's County, MD"
-RIVE106URN,"Unemployment Rate in Riverside-San Bernardino-Ontario, CA (MSA)"
-MOJACK5URN,"Unemployment Rate in Jackson County, MO"
-LRHUTTTTFRQ156S,Harmonized Unemployment Rate: Total: All Persons for France
-DENEWC3URN,"Unemployment Rate in New Castle County, DE"
-LRUN64TTJPA156S,Unemployment Rate: Aged 15-64: All Persons for Japan
-SEAT653UR,"Unemployment Rate in Seattle-Tacoma-Bellevue, WA (MSA)"
-NYQUEE1URN,"Unemployment Rate in Queens County, NY"
-HIKAUA7URN,"Unemployment Rate in Kauai County, HI"
-MAMIDD7URN,"Unemployment Rate in Middlesex County, MA"
-CASANJ8URN,"Unemployment Rate in San Joaquin County, CA"
-LRUNTTTTIDQ156N,Unemployment Rate: Aged 15 and Over: All Persons for Indonesia
-LRUNTTTTNZQ156S,Unemployment Rate: Aged 15 and Over: All Persons for New Zealand
-MANC933URN,"Unemployment Rate in Manchester, NH (NECTA)"
-GREE637URN,"Unemployment Rate in Greensboro-High Point, NC (MSA)"
-GAWHIT5URN,"Unemployment Rate in Whitfield County, GA"
-LRHUTTTTIEM156S,Harmonized Unemployment Rate: Total: All Persons for Ireland
-SAVA313URN,"Unemployment Rate in Savannah, GA (MSA)"
-LMUNRRTTGBQ156S,Registered Unemployment Rate for the United Kingdom
-LRUN64TTUSA156N,Unemployment Rate: Aged 15-64: All Persons for the United States
-LMUNRRTTGBM156S,Registered Unemployment Rate for the United Kingdom
-CNERURN,Unemployment Rate in Northeast Census Region
-SAND706URN,"Unemployment Rate in San Diego-Carlsbad, CA (MSA)"
-SYRA036URN,"Unemployment Rate in Syracuse, NY (MSA)"
-CHAT847UR,"Unemployment Rate in Chattanooga, TN-GA (MSA)"
-SDURN,Unemployment Rate in South Dakota
-SANA748URN,"Unemployment Rate in San Antonio-New Braunfels, TX (MSA)"
-PHIL942URN,"Unemployment Rate in Philadelphia-Camden-Wilmington, PA-NJ-DE-MD (MSA)"
-COARAP0URN,"Unemployment Rate in Arapahoe County, CO"
-ALURN,Unemployment Rate in Alabama
-LAUST480000000000003A,Unemployment Rate in Texas
-LRHUTTTTITQ156S,Harmonized Unemployment Rate: Total: All Persons for Italy
-LAUCN060370000000003A,"Unemployment Rate in Los Angeles County, CA"
+IDUR,Unemployment Rate in Idaho
+NEUR,Unemployment Rate in Nebraska
+LRHUTTTTJPM156S,Harmonized Unemployment Rate: Total: All Persons for Japan
+MDMONT0URN,"Unemployment Rate in Montgomery County, MD"
+NVCLAR3URN,"Unemployment Rate in Clark County, NV"
+LRUN64TTSEQ156S,Unemployment Rate: Aged 15-64: All Persons for Sweden
 LRUNTTTTJPM156S,Unemployment Rate: Aged 15 and Over: All Persons for Japan
-LRUN64TTFIQ156N,Unemployment Rate: Aged 15-64: All Persons for Finland
-MDURN,Unemployment Rate in Maryland
-RENO932UR,"Unemployment Rate in Reno, NV (MSA)"
-BAKE506URN,"Unemployment Rate in Bakersfield, CA (MSA)"
-OHLORA3URN,"Unemployment Rate in Lorain County, OH"
-LMUNRRTTDKM156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Denmark
-LRHUTTTTESQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
-LRHUTTTTEZQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
-LRHUTTTTAUQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
-JACK212UR,"Unemployment Rate in Jacksonville, FL (MSA)"
-LAUST530000000000003A,Unemployment Rate in Washington
-LASMT261982000000003,"Unemployment Rate in Detroit-Warren-Dearborn, MI (MSA)"
-U2RATENSA,Unemployment Rate - Job Losers (U-2)
-TAMP312UR,"Unemployment Rate in Tampa-St. Petersburg-Clearwater, FL (MSA)"
+MIWAYN3URN,"Unemployment Rate in Wayne County, MI"
+CASANB1URN,"Unemployment Rate in San Bernardino County, CA"
+LMUNRRTTPLM156S,Registered Unemployment Rate for Poland
+SLUEM1524ZSEGY,Youth Unemployment Rate for Egypt
+LNS14027689,"Unemployment Rate - Some College or Associate Degree, 25 Yrs. & over"
+ELPA348URN,"Unemployment Rate in El Paso, TX (MSA)"
+NEIM156SFRBRIC,Hornstein-Kudlyak-Lange Non-Employment Index
+TXDALL3URN,"Unemployment Rate in Dallas County, TX"
+KANS129UR,"Unemployment Rate in Kansas City, MO-KS (MSA)"
+LNU04000032,"Unemployment Rate - 20 Yrs. & over, Black or African American Women"
+LNS14000060,Unemployment Rate - 25-54 Yrs.
+KSUR,Unemployment Rate in Kansas
+LMUNRRTTCHM156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
+MIOAKL5URN,"Unemployment Rate in Oakland County, MI"
+LRHUTTTTIEM156S,Harmonized Unemployment Rate: Total: All Persons for Ireland
+LRUN64TTFIQ156S,Unemployment Rate: Aged 15-64: All Persons for Finland
+LNU04000003,Unemployment Rate - White
+MOSLURN,"Unemployment Rate in St. Louis County, MO"
+LNU04032239,"Unemployment Rate - Professional and Business Services Industry, Private Wage and Salary Workers"
+FLBROW5URN,"Unemployment Rate in Broward County, FL"
+FLVOLU7URN,"Unemployment Rate in Volusia County, FL"
+NHUR,Unemployment Rate in New Hampshire
+DEUR,Unemployment Rate in Delaware
+FLHILL7URN,"Unemployment Rate in Hillsborough County, FL"
+PORT941UR,"Unemployment Rate in Portland-Vancouver-Hillsboro, OR-WA (MSA)"
+LRUN64TTCAM156S,Unemployment Rate: Aged 15-64: All Persons for Canada
+RALE537URN,"Unemployment Rate in Raleigh, NC (MSA)"
+RIUR,Unemployment Rate in Rhode Island
+SLUEM1524ZSETH,Youth Unemployment Rate for Ethiopia
+INMARI0URN,"Unemployment Rate in Marion County, IN"
+SANJ906URN,"Unemployment Rate in San Jose-Sunnyvale-Santa Clara, CA (MSA)"
+NYKING7URN,"Unemployment Rate in Kings County, NY"
+DAYT339URN,"Unemployment Rate in Dayton, OH (MSA)"
+CGBD25O,"Unemployment Rate - College Graduates - Bachelor's Degree, 25 years and over"
+LRUNTTTTIDQ156N,Unemployment Rate: Aged 15 and Over: All Persons for Indonesia
+ALURN,Unemployment Rate in Alabama
+FLURN,Unemployment Rate in Florida
+LRUN64TTJPQ156S,Unemployment Rate: Aged 15-64: All Persons for Japan
+RICH051URN,"Unemployment Rate in Richmond, VA (MSA)"
+SLUEM1524ZSPAK,Youth Unemployment Rate for Pakistan
+LRUNTTTTAUM156S,Unemployment Rate: Aged 15 and over: All Persons for Australia
+SLUEM1524ZSARG,Youth Unemployment Rate for Argentina
+LRUN64TTFRQ156S,Unemployment Rate: Aged 15-64: All Persons for France
+LRUNTTTTCAQ156S,Unemployment Rate: Aged 15 and over: All Persons for Canada
+FASUR,"Unemployment Rate in Fayetteville-Springdale-Rogers, AR-MO (MSA)"
+MPHUR,"Unemployment Rate in Memphis, TN-MS-AR (MSA)"
+LNS14000029,"Unemployment Rate - 20 Yrs. & over, White Women"
+VTUR,Unemployment Rate in Vermont
+SANF806UR,"Unemployment Rate in San Francisco-Oakland-Hayward, CA (MSA)"
+LNU04032237,"Unemployment Rate - Information Industry, Private Wage and Salary Workers"
+NYROCK5URN,"Unemployment Rate in Rockland County, NY"
+LNU04000009,Unemployment Rate - Hispanic or Latino
+WASPOK2URN,"Unemployment Rate in Spokane County, WA"
+TXCOLL5URN,"Unemployment Rate in Collin County, TX"
+LNU04027662,"Unemployment Rate - Bachelor's Degree and Higher, 25 Yrs. & over"
+RENO932URN,"Unemployment Rate in Reno, NV (MSA)"
 LNS14000032,"Unemployment Rate - 20 Yrs. & over, Black or African American Women"
-LRUNTTTTCAA156N,Unemployment Rate: Aged 15 and over: All Persons for Canada
-LRUNTTTTCAM156N,Unemployment Rate: Aged 15 and over: All Persons for Canada
-CLHUR,"Unemployment Rate in Clarksville, TN-KY (MSA)"
-LRHUTTTTDKM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Denmark
-PITT342URN,"Unemployment Rate in Pittsburgh, PA (MSA)"
-LRUN74TTESA156N,Unemployment Rate: Aged 15-74: All Persons for Spain
-LRUNTTTTUSM156S,Unemployment Rate: Aged 15 and Over: All Persons for the United States
-LMUNRRTTATM156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
-LOIURN,"Unemployment Rate in Louisville-Jefferson County, KY-IN (MSA)"
-LMUNRRTTCHQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
-ORURN,Unemployment Rate in Oregon
-NHURN,Unemployment Rate in New Hampshire
-HOUS448UR,"Unemployment Rate in Houston-The Woodlands-Sugar Land, TX (MSA)"
+CODENV5URN,"Unemployment Rate in Denver County/City, CO"
+LNU04032216,"Unemployment Rate - Management, Business, and Financial Operations Occupations"
 LAUST010000000000003A,Unemployment Rate in Alabama
-LAUST260000000000003A,Unemployment Rate in Michigan
-LRHUTTTTAUA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
-LRHUTTTTSEQ156S,Harmonized Unemployment Rate: Total: All Persons for Sweden
-LNU04027659,"Unemployment Rate - Less Than a High School Diploma, 25 Yrs. & over"
-GAURN,Unemployment Rate in Georgia
-LRUNTTTTMXQ156S,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
-TNURN,Unemployment Rate in Tennessee
-SCURN,Unemployment Rate in South Carolina
-MOURN,Unemployment Rate in Missouri
-LAUMT063108000000003A,"Unemployment Rate in Los Angeles-Long Beach-Anaheim, CA (MSA)"
+SDURN,Unemployment Rate in South Dakota
+BALT524URN,"Unemployment Rate in Baltimore-Columbia-Towson, MD (MSA)"
+LRUNTTTTFRQ156S,Unemployment Rate: Aged 15 and Over: All Persons for France
+NEIPTERM156SFRBRIC,Hornstein-Kudlyak-Lange Non-Employment Index including People Working Part-Time for Economic Reasons
+SLUEM1524ZSTZA,Youth Unemployment Rate for the United Republic of Tanzania
+SANF806URN,"Unemployment Rate in San Francisco-Oakland-Hayward, CA (MSA)"
+CMWRUR,Unemployment Rate in Midwest Census Region
+LRUN24TTUSM156S,Unemployment Rate: Aged 15-24: All Persons for the United States
+UNRATEMDLR,"Longer Run FOMC Summary of Economic Projections for the Civilian Unemployment Rate, Median"
+FLPINE5URN,"Unemployment Rate in Pinellas County, FL"
+LRHUTTTTGRM156S,Harmonized Unemployment Rate: Total: All Persons for Greece
+ALBU735UR,"Unemployment Rate in Albuquerque, NM (MSA)"
+LRHUTTTTESQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
+MIKENT1URN,"Unemployment Rate in Kent County, MI"
+CLEV439URN,"Unemployment Rate in Cleveland-Elyria, OH (MSA)"
+CASANM0URN,"Unemployment Rate in San Mateo County, CA"
+LAORLE0URN,"Unemployment Rate in Orleans Parish, LA"
+TNDAVI5URN,"Unemployment Rate in Davidson County, TN"
+ALMADI9URN,"Unemployment Rate in Madison County, AL"
+NYALBA1URN,"Unemployment Rate in Albany County, NY"
+LNU04032222,"Unemployment Rate - Natural Resources, Construction, and Maintenance Occupations"
+LAUST120000000000003A,Unemployment Rate in Florida
+KSURN,Unemployment Rate in Kansas
 COURN,Unemployment Rate in Colorado
-LRUN64TTGBQ156N,Unemployment Rate: Aged 15-64: All Persons for the United Kingdom
-RALE537UR,"Unemployment Rate in Raleigh, NC (MSA)"
-IAURN,Unemployment Rate in Iowa
-LRUN64TTGRA156N,Unemployment Rate: Aged 15-64: All Persons for Greece
-GRAN326UR,"Unemployment Rate in Grand Rapids-Wyoming, MI (MSA)"
-LMUNRRTTDEM156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
-LRHUTTTTEZA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
-LMUNRRTTPLQ156S,Registered Unemployment Rate for Poland
-LRHUTTTTNLQ156S,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
+KANS129URN,"Unemployment Rate in Kansas City, MO-KS (MSA)"
+LRUN64TTUSM156S,Unemployment Rate: Aged 15-64: All Persons for the United States
+LNU04049526,"Unemployment Rate - Total Veterans, 18 Years and over"
+NCMECK9URN,"Unemployment Rate in Mecklenburg County, NC"
+LNU04000035,"Unemployment Rate - 20 Yrs. & over, Hispanic or Latino Women"
+LRUN64TTUSA156N,Unemployment Rate: Aged 15-64: All Persons for the United States
+MOSSURN,"Unemployment Rate in St. Louis City, MO"
+TNSHURN,"Unemployment Rate in Shelby County, TN"
+TXTRAV3URN,"Unemployment Rate in Travis County, TX"
+NCWAKE3URN,"Unemployment Rate in Wake County, NC"
+LRHUTTTTUSM156S,Harmonized Unemployment Rate: Total: All Persons for the United States
+OHURN,Unemployment Rate in Ohio
+MOURN,Unemployment Rate in Missouri
+LRUN64TTEZQ156S,Unemployment Rate: Aged 15-64: All Persons for the Euro Area (19 Countries)
+LRHUTTTTFRM156N,Harmonized Unemployment Rate: Total: All Persons for France
+LRUN64TTCHQ156S,Unemployment Rate: Aged 15-64: All Persons for Switzerland
+LNU04000060,Unemployment Rate - 25-54 Yrs.
+BOIS216URN,"Unemployment Rate in Boise City, ID (MSA)"
+SCRA542URN,"Unemployment Rate in Scranton--Wilkes-Barre--Hazleton, PA (MSA)"
 IDURN,Unemployment Rate in Idaho
-LRUN74TTFRQ156N,Unemployment Rate: Aged 15-74: All Persons for France
-LMUNRRTTCNQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for China (People's Republic Of)
-LRUN74TTESQ156S,Unemployment Rate: Aged 15-74: All Persons for Spain
-LAUMT363562000000003A,"Unemployment Rate in New York-Newark-Jersey City, NY-NJ-PA (MSA)"
-WIURN,Unemployment Rate in Wisconsin
-OKLA440URN,"Unemployment Rate in Oklahoma City, OK (MSA)"
-CLEV439UR,"Unemployment Rate in Cleveland-Elyria, OH (MSA)"
-LNU04000012,Unemployment Rate - 16-19 Yrs.
-LAUCN371830000000003A,"Unemployment Rate in Wake County, NC"
-LAUCN131210000000003A,"Unemployment Rate in Fulton County, GA"
-MINN427UR,"Unemployment Rate in Minneapolis-St. Paul-Bloomington, MN-WI (MSA)"
-LRHUTTTTESM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
-LRUNTTTTUSQ156N,Unemployment Rate: Aged 15 and Over: All Persons for the United States
-LAUST250000000000003A,Unemployment Rate in Massachusetts
-INURN,Unemployment Rate in Indiana
-LAUST220000000000003A,Unemployment Rate in Louisiana
-LAUST360000000000003A,Unemployment Rate in New York
-LMUNRRTTGBM156N,Registered Unemployment Rate for the United Kingdom
-LRUNTTTTAUQ156S,Unemployment Rate: Aged 15 and over: All Persons for Australia
-LRUNTTTTNZA156S,Unemployment Rate: Aged 15 and Over: All Persons for New Zealand
-LRUNTTTTCAA156S,Unemployment Rate: Aged 15 and over: All Persons for Canada
-MEURN,Unemployment Rate in Maine
-LRSURN,"Unemployment Rate in Little Rock-North Little Rock-Conway, AR (MSA)"
-LNU04000031,"Unemployment Rate - 20 Yrs. & over, Black or African American Men"
-LRHUTTTTESA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
-WASH911UR,"Unemployment Rate in Washington-Arlington-Alexandria, DC-VA-MD-WV (MSA)"
-LRHUTTTTGBQ156N,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
-MSURN,Unemployment Rate in Mississippi
-CNERUR,Unemployment Rate in Northeast Census Region
-LMUNRRTTATA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
-BAKE506UR,"Unemployment Rate in Bakersfield, CA (MSA)"
-BOST625UR,"Unemployment Rate in Boston-Cambridge-Nashua, MA-NH (NECTA)"
-LRHUTTTTDEQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Germany
-NEWY636UR,"Unemployment Rate in New York-Newark-Jersey City, NY-NJ-PA (MSA)"
-LAUCN371190000000003A,"Unemployment Rate in Mecklenburg County, NC"
-ATLA013UR,"Unemployment Rate in Atlanta-Sandy Springs-Roswell, GA (MSA)"
-LRUNTTTTKRQ156S,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
-LAUMT364038000000003A,"Unemployment Rate in Rochester, NY (MSA)"
-LAUMT262242000000003A,"Unemployment Rate in Flint, MI (MSA)"
-LRUNTTTTMXQ156N,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
-CTURN,Unemployment Rate in Connecticut
-VAURN,Unemployment Rate in Virginia
-LAUST390000000000003A,Unemployment Rate in Ohio
-LAUST370000000000003A,Unemployment Rate in North Carolina
-ORLA712UR,"Unemployment Rate in Orlando-Kissimmee-Sanford, FL (MSA)"
-LAUCN481570000000003A,"Unemployment Rate in Fort Bend County, TX"
-LNU04000001,Unemployment Rate - Men
-LAUST420000000000003A,Unemployment Rate in Pennsylvania
-LRUN64TTUSM156N,Unemployment Rate: Aged 15-64: All Persons for the United States
-LAUST340000000000003A,Unemployment Rate in New Jersey
-LRUN74TTFRA156S,Unemployment Rate: Aged 15-74: All Persons for France
-LRUNTTTTCAQ156N,Unemployment Rate: Aged 15 and over: All Persons for Canada
-LAUST510000000000003A,Unemployment Rate in Virginia
-LAUST210000000000003A,Unemployment Rate in Kentucky
-LRUNTTTTDEQ156N,Unemployment Rate: Aged 15 and over: All Persons for Germany
-LRUNTTTTDEA156N,Unemployment Rate: Aged 15 and over: All Persons for Germany
-LAUST320000000000003A,Unemployment Rate in Nevada
-LRHUTTTTITQ156N,Harmonized Unemployment Rate: Total: All Persons for Italy
-LRUN64TTJPA156N,Unemployment Rate: Aged 15-64: All Persons for Japan
-LAUST470000000000003A,Unemployment Rate in Tennessee
-LRUN74TTFRA156N,Unemployment Rate: Aged 15-74: All Persons for France
-CHIC917UR,"Unemployment Rate in Chicago-Naperville-Elgin, IL-IN-WI (MSA)"
-LAUCN291890000000003A,"Unemployment Rate in St. Louis County, MO"
-ALBU735URN,"Unemployment Rate in Albuquerque, NM (MSA)"
-LMUNRRTTCHM156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
-LASV832UR,"Unemployment Rate in Las Vegas-Henderson-Paradise, NV (MSA)"
-RIVE106UR,"Unemployment Rate in Riverside-San Bernardino-Ontario, CA (MSA)"
-MADI555URN,"Unemployment Rate in Madison, WI (MSA)"
-LMUNRRTTATQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
-LNU04000028,"Unemployment Rate - 20 Yrs. & over, White Men"
-LRUN64TTTRA156S,Unemployment Rate: Aged 15-64: All Persons for Turkey
-MIAM112UR,"Unemployment Rate in Miami-Fort Lauderdale-West Palm Beach, FL (MSA)"
-LAUST090000000000003A,Unemployment Rate in Connecticut
-DCDIST5URN,Unemployment Rate in the District of Columbia
-LAUST110000000000003A,Unemployment Rate in the District of Columbia
-LAUCN110010000000003A,Unemployment Rate in the District of Columbia
-NDURN,Unemployment Rate in North Dakota
-LRHUTTTTFRA156S,Harmonized Unemployment Rate: Total: All Persons for France
-LRUN64TTCAQ156S,Unemployment Rate: Aged 15-64: All Persons for Canada
-LNU04027689,"Unemployment Rate - Some College or Associate Degree, 25 Yrs. & over"
-ELPA348UR,"Unemployment Rate in El Paso, TX (MSA)"
-LAUMT012662000000003A,"Unemployment Rate in Huntsville, AL (MSA)"
-LAUMT361538000000003A,"Unemployment Rate in Buffalo-Cheektowaga-Niagara Falls, NY (MSA)"
-LAUMT182690000000003A,"Unemployment Rate in Indianapolis-Carmel-Anderson, IN (MSA)"
-LRHUTTTTEZM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
-LMUNRRTTCNA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for China (People's Republic Of)
-DENV708UR,"Unemployment Rate in Denver-Aurora-Lakewood, CO (MSA)"
+MILW355URN,"Unemployment Rate in Milwaukee-Waukesha-West Allis, WI (MSA)"
+CNERURN,Unemployment Rate in Northeast Census Region
+LNU04032236,"Unemployment Rate - Transportation and Utilities Industry, Private Wage and Salary Workers"
+FORT018URN,"Unemployment Rate in Fort Wayne, IN (MSA)"
+LNS14000315,Unemployment Rate - Married Women
+TUCS004URN,"Unemployment Rate in Tucson, AZ (MSA)"
+LNU04024933,Unemployment Rate - 30-34 Yrs.
+FLLEEC7URN,"Unemployment Rate in Lee County, FL"
 NEWO322URN,"Unemployment Rate in New Orleans-Metairie, LA (MSA)"
-ASHE737URN,"Unemployment Rate in Asheville, NC (MSA)"
-OMAH531URN,"Unemployment Rate in Omaha-Council Bluffs, NE-IA (MSA)"
-LAUST150000000000003A,Unemployment Rate in Hawaii
-LRHUTTTTGBM156N,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
-LAUST170000000000003A,Unemployment Rate in Illinois
-LAUST080000000000003A,Unemployment Rate in Colorado
-CHAR737UR,"Unemployment Rate in Charlotte-Concord-Gastonia, NC-SC (MSA)"
-ROCH336UR,"Unemployment Rate in Rochester, NY (MSA)"
-SALT649UR,"Unemployment Rate in Salt Lake City, UT (MSA)"
-LAUMT534266000000003A,"Unemployment Rate in Seattle-Tacoma-Bellevue, WA (MSA)"
-LAUST380000000000003A,Unemployment Rate in North Dakota
-DETR826UR,"Unemployment Rate in Detroit-Warren-Dearborn, MI (MSA)"
-LAUCN120110000000003A,"Unemployment Rate in Broward County, FL"
-LAUMT391938000000003A,"Unemployment Rate in Dayton, OH (MSA)"
-LAUMT043806000000003A,"Unemployment Rate in Phoenix-Mesa-Scottsdale, AZ (MSA)"
-LRHUTTTTITA156S,Harmonized Unemployment Rate: Total: All Persons for Italy
-LAUCN060730000000003A,"Unemployment Rate in San Diego County, CA"
-LAUST040000000000003A,Unemployment Rate in Arizona
-LAUST130000000000003A,Unemployment Rate in Georgia
-AUST448UR,"Unemployment Rate in Austin-Round Rock, TX (MSA)"
-LAUST490000000000003A,Unemployment Rate in Utah
-DALL148UR,"Unemployment Rate in Dallas-Fort Worth-Arlington, TX (MSA)"
-LRUNTTTTAUA156S,Unemployment Rate: Aged 15 and over: All Persons for Australia
-LRUNTTTTBRQ156S,Unemployment Rate: Aged 15 and over: All Persons for Brazil
-LRUN64TTJPM156N,Unemployment Rate: Aged 15-64: All Persons for Japan
-LNU04000002,Unemployment Rate - Women
-LAUST240000000000003A,Unemployment Rate in Maryland
-LAUST550000000000003A,Unemployment Rate in Wisconsin
-LMUNRRTTDEA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
-LRHUTTTTGRQ156S,Harmonized Unemployment Rate: Total: All Persons for Greece
-LAUST020000000000003A,Unemployment Rate in Alaska
-LAUST160000000000003A,Unemployment Rate in Idaho
-LAUMT514006000000003A,"Unemployment Rate in Richmond, VA (MSA)"
-LAUST330000000000003A,Unemployment Rate in New Hampshire
-LRHUTTTTUSQ156S,Harmonized Unemployment Rate: Total: All Persons for the United States
-LRHUTTTTDEA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Germany
-LRHUTTTTAUA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
-LAUST310000000000003A,Unemployment Rate in Nebraska
-OKURN,Unemployment Rate in Oklahoma
-LRHUTTTTDKQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Denmark
-LAUCN390930000000003A,"Unemployment Rate in Lorain County, OH"
-SAND706UR,"Unemployment Rate in San Diego-Carlsbad, CA (MSA)"
-LAUST050000000000003A,Unemployment Rate in Arkansas
-LAUST190000000000003A,Unemployment Rate in Iowa
-ARURN,Unemployment Rate in Arkansas
-PHIL942UR,"Unemployment Rate in Philadelphia-Camden-Wilmington, PA-NJ-DE-MD (MSA)"
-SANJ906UR,"Unemployment Rate in San Jose-Sunnyvale-Santa Clara, CA (MSA)"
-CLHURN,"Unemployment Rate in Clarksville, TN-KY (MSA)"
-LAUST270000000000003A,Unemployment Rate in Minnesota
-LRHUTTTTITM156N,Harmonized Unemployment Rate: Total: All Persons for Italy
-INDI918UR,"Unemployment Rate in Indianapolis-Carmel-Anderson, IN (MSA)"
-LRUNTTTTIDA156N,Unemployment Rate: Aged 15 and Over: All Persons for Indonesia
-LAUCN060770000000003A,"Unemployment Rate in San Joaquin County, CA"
-LAUCN080050000000003A,"Unemployment Rate in Arapahoe County, CO"
-MANC933UR,"Unemployment Rate in Manchester, NH (NECTA)"
-LAUST200000000000003A,Unemployment Rate in Kansas
-BIRM801UR,"Unemployment Rate in Birmingham-Hoover, AL (MSA)"
-LAUCN060750000000003A,"Unemployment Rate in San Francisco County/City, CA"
-MTURN,Unemployment Rate in Montana
-LRHUTTTTFRQ156N,Harmonized Unemployment Rate: Total: All Persons for France
-HUNT601UR,"Unemployment Rate in Huntsville, AL (MSA)"
-LNU04024230,Unemployment Rate - 55 Yrs. & over
-LNU04000029,"Unemployment Rate - 20 Yrs. & over, White Women"
-LRUNTTTTNZQ156N,Unemployment Rate: Aged 15 and Over: All Persons for New Zealand
-LRUN64TTCAA156S,Unemployment Rate: Aged 15-64: All Persons for Canada
-LAUST410000000000003A,Unemployment Rate in Oregon
-LAUST350000000000003A,Unemployment Rate in New Mexico
-WVURN,Unemployment Rate in West Virginia
-LAUMT131206000000003A,"Unemployment Rate in Atlanta-Sandy Springs-Roswell, GA (MSA)"
-LAUST540000000000003A,Unemployment Rate in West Virginia
-LRHUTTTTFRA156N,Harmonized Unemployment Rate: Total: All Persons for France
-LNU04024887,Unemployment Rate - 16-24 Yrs.
-NVURN,Unemployment Rate in Nevada
-LRHUTTTTITA156N,Harmonized Unemployment Rate: Total: All Persons for Italy
-LAURN,Unemployment Rate in Louisiana
-LRUN64TTGBA156S,Unemployment Rate: Aged 15-64: All Persons for the United Kingdom
-COLO808URN,"Unemployment Rate in Colorado Springs, CO (MSA)"
-LRHUTTTTGBA156S,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
-AUGU213UR,"Unemployment Rate in Augusta-Richmond County, GA-SC (MSA)"
-DESM719UR,"Unemployment Rate in Des Moines-West Des Moines, IA (MSA)"
-HARR442UR,"Unemployment Rate in Harrisburg-Carlisle, PA (MSA)"
-LAUCN530630000000003A,"Unemployment Rate in Spokane County, WA"
-LRHUTTTTIEA156S,Harmonized Unemployment Rate: Total: All Persons for Ireland
-LMUNRRTTDKA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Denmark
-LMUNRRTTDKQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Denmark
-LAUMT124530000000003A,"Unemployment Rate in Tampa-St. Petersburg-Clearwater, FL (MSA)"
-LRHUTTTTEUQ156S,Harmonized Unemployment Rate: Total: All Persons for the European Union
-LMUNRRTTATM156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
-LAUCN121050000000003A,"Unemployment Rate in Polk County, FL"
-KNOX947URN,"Unemployment Rate in Knoxville, TN (MSA)"
-LRHUTTTTEUM156N,Harmonized Unemployment Rate: Total: All Persons for the European Union
-LAUST400000000000003A,Unemployment Rate in Oklahoma
-LAUCN060590000000003A,"Unemployment Rate in Orange County, CA"
-LAUMT122726000000003A,"Unemployment Rate in Jacksonville, FL (MSA)"
-LAUST450000000000003A,Unemployment Rate in South Carolina
-LAUMT257165000000003A,"Unemployment Rate in Boston-Cambridge-Nashua, MA-NH (NECTA)"
-LAUMT481910000000003A,"Unemployment Rate in Dallas-Fort Worth-Arlington, TX (MSA)"
-LAUST290000000000003A,Unemployment Rate in Missouri
-LAUCN180390000000003A,"Unemployment Rate in Elkhart County, IN"
-LRUNTTTTDEA156S,Unemployment Rate: Aged 15 and over: All Persons for Germany
-LAUCN245100000000003A,"Unemployment Rate in Baltimore City, MD"
-LAUCN421010000000003A,"Unemployment Rate in Philadelphia County/City, PA"
-WAURN,Unemployment Rate in Washington
-LAUMT481242000000003A,"Unemployment Rate in Austin-Round Rock, TX (MSA)"
-LAUMT171698000000003A,"Unemployment Rate in Chicago-Naperville-Elgin, IL-IN-WI (MSA)"
-LMUNRRTTBEA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Belgium
-LRHUTTTTMXA156N,Harmonized Unemployment Rate: Total: All Persons for Mexico
-LRHUTTTTMXM156N,Harmonized Unemployment Rate: Total: All Persons for Mexico
-LAUCN061110000000003A,"Unemployment Rate in Ventura County, CA"
-LAUCN181410000000003A,"Unemployment Rate in St. Joseph County, IN"
-CHAR745UR,"Unemployment Rate in Charleston-North Charleston-Summerville, SC (MSA)"
-TULS140UR,"Unemployment Rate in Tulsa, OK (MSA)"
-MAURN,Unemployment Rate in Massachusetts
-TUCS004UR,"Unemployment Rate in Tucson, AZ (MSA)"
-SAVA313UR,"Unemployment Rate in Savannah, GA (MSA)"
-LRUNTTTTKRA156N,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
-LRUN64TTTRA156N,Unemployment Rate: Aged 15-64: All Persons for Turkey
-BOIS216UR,"Unemployment Rate in Boise City, ID (MSA)"
-DEURN,Unemployment Rate in Delaware
-LAUMT373958000000003A,"Unemployment Rate in Raleigh, NC (MSA)"
-LAUCN060650000000003A,"Unemployment Rate in Riverside County, CA"
-LAUST100000000000003A,Unemployment Rate in Delaware
-LAUCN060010000000003A,"Unemployment Rate in Alameda County, CA"
-LMUNRRTTDEQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
-LRHUTTTTSEQ156N,Harmonized Unemployment Rate: Total: All Persons for Sweden
-LAUST720000000000003A,Unemployment Rate in Puerto Rico
-LMUNRRTTCHA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
-LAUST440000000000003A,Unemployment Rate in Rhode Island
-LMUNRRTTCHA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
-LMUNRRTTCHQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
-LRHUTTTTJPQ156S,Harmonized Unemployment Rate: Total: All Persons for Japan
-LRUNTTTTCLM156N,Unemployment Rate: Aged 15 and over: All Persons for Chile
-BATO922UR,"Unemployment Rate in Baton Rouge, LA (MSA)"
-LAUST500000000000003A,Unemployment Rate in Vermont
-LAUMT323990000000003A,"Unemployment Rate in Reno, NV (MSA)"
-LNU04000036,Unemployment Rate - 20-24 Yrs.
-LRUN64TTITQ156N,Unemployment Rate: Aged 15-64: All Persons for Italy
-LMUNRRTTRUM156N,Registered Unemployment Rate for the Russian Federation
-LMUNRRTTRUQ156N,Registered Unemployment Rate for the Russian Federation
-LMUNRRTTRUA156N,Registered Unemployment Rate for the Russian Federation
-LMUNRRTTNOQ156S,Registered Unemployment Rate for Norway
-CMWRURN,Unemployment Rate in Midwest Census Region
-FLIN426UR,"Unemployment Rate in Flint, MI (MSA)"
-LRUN64TTZAA156N,Unemployment Rate: Aged 15-64: All Persons for South Africa
-LRUNTTTTMXA156N,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
-LRUNTTTTMXA156S,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
-RICH051UR,"Unemployment Rate in Richmond, VA (MSA)"
-BUFF336UR,"Unemployment Rate in Buffalo-Cheektowaga-Niagara Falls, NY (MSA)"
-LRHUTTTTCAQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
-LRHUTTTTNLQ156N,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
-LRUNTTTTAUA156N,Unemployment Rate: Aged 15 and over: All Persons for Australia
+LRHUTTTTCAM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
+U5UNEM5WI,"Total Unemployed, Plus Discouraged Workers, Plus All Other Marginally Attached Workers, as a Percent of the Civilian Labor Force Plus All Marginally Attached Workers for Wisconsin"
+LNS14200000,Unemployment Rate Part-Time Workers
+YOUN639URN,"Unemployment Rate in Youngstown-Warren-Boardman, OH-PA (MSA)"
+RIVE106URN,"Unemployment Rate in Riverside-San Bernardino-Ontario, CA (MSA)"
+LMUNRRTTATM156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
 LRUNTTTTBRA156S,Unemployment Rate: Aged 15 and over: All Persons for Brazil
-LMUNRRTTGBQ156N,Registered Unemployment Rate for the United Kingdom
-LRUN64TTJPQ156N,Unemployment Rate: Aged 15-64: All Persons for Japan
-LAUST300000000000003A,Unemployment Rate in Montana
-DCURN,Unemployment Rate in the District of Columbia
-LAUST560000000000003A,Unemployment Rate in Wyoming
-CINC139UR,"Unemployment Rate in Cincinnati, OH-KY-IN (MSA)"
-LAUMT391714000000003A,"Unemployment Rate in Cincinnati, OH-KY-IN (MSA)"
+MDURN,Unemployment Rate in Maryland
+FLORAN0URN,"Unemployment Rate in Orange County, FL"
+NYSUFF0URN,"Unemployment Rate in Suffolk County, NY"
+OHCUYA5URN,"Unemployment Rate in Cuyahoga County, OH"
+GACOBB0URN,"Unemployment Rate in Cobb County, GA"
+LRUNTTTTGBQ156S,Unemployment Rate: Aged 15 and Over: All Persons for the United Kingdom
+LRUNTTTTNZQ156S,Unemployment Rate: Aged 15 and Over: All Persons for New Zealand
+OKLA440UR,"Unemployment Rate in Oklahoma City, OK (MSA)"
+LRUNTTTTNLQ156S,Unemployment Rate: Aged 15 and Over: All Persons for the Netherlands
+GRAN326UR,"Unemployment Rate in Grand Rapids-Wyoming, MI (MSA)"
+SLUEM1524ZSUGA,Youth Unemployment Rate for Uganda
+SLUEM1524ZSPHL,Youth Unemployment Rate for the Philippines
+LRHUTTTTMXM156S,Harmonized Unemployment Rate: Total: All Persons for Mexico
+NYURN,Unemployment Rate in New York
+LRUN64TTKRM156S,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
+CTHART3URN,"Unemployment Rate in Hartford County, CT"
+UTURN,Unemployment Rate in Utah
+OHFRAN0URN,"Unemployment Rate in Franklin County, OH"
+WACLAR1URN,"Unemployment Rate in Clark County, WA"
+WIDANE5URN,"Unemployment Rate in Dane County, WI"
+PAURN,Unemployment Rate in Pennsylvania
+KNOX947UR,"Unemployment Rate in Knoxville, TN (MSA)"
+LRHUTTTTHUM156S,Harmonized Unemployment Rate: Total: All Persons for Hungary
+LRUN74TTRUM156N,Unemployment Rate: Aged 15-74: All Persons for the Russian Federation
+LRUNTTTTCAA156S,Unemployment Rate: Aged 15 and over: All Persons for Canada
+LRHUTTTTDKM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Denmark
+BATO922URN,"Unemployment Rate in Baton Rouge, LA (MSA)"
+GRAN326URN,"Unemployment Rate in Grand Rapids-Wyoming, MI (MSA)"
+LUBB148UR,"Unemployment Rate in Lubbock, TX (MSA)"
+LRUNTTTTDEA156N,Unemployment Rate: Aged 15 and over: All Persons for Germany
+LRUNTTTTDEQ156N,Unemployment Rate: Aged 15 and over: All Persons for Germany
+VAURN,Unemployment Rate in Virginia
+PRUR,Unemployment Rate in Puerto Rico
+HIURN,Unemployment Rate in Hawaii
+TNURN,Unemployment Rate in Tennessee
+LAUST470000000000003A,Unemployment Rate in Tennessee
+LRUN64TTPTQ156S,Unemployment Rate: Aged 15-64: All Persons for Portugal
+LAUST480000000000003A,Unemployment Rate in Texas
+SANA748URN,"Unemployment Rate in San Antonio-New Braunfels, TX (MSA)"
+LASMT391746000000003,"Unemployment Rate in Cleveland-Elyria, OH (MSA)"
+FLIN426URN,"Unemployment Rate in Flint, MI (MSA)"
+LAUST080000000000003A,Unemployment Rate in Colorado
+LRUNTTTTCLM156S,Unemployment Rate: Aged 15 and over: All Persons for Chile
+WACOWL5URN,"Unemployment Rate in Cowlitz County, WA"
+NHURN,Unemployment Rate in New Hampshire
+LRUN64TTIEQ156S,Unemployment Rate: Aged 15-64: All Persons for Ireland
+GAGWIN7URN,"Unemployment Rate in Gwinnett County, GA"
+UNRATECTMLR,"Longer Run FOMC Summary of Economic Projections for the Civilian Unemployment Rate, Central Tendency, Midpoint"
+MIGENE9URN,"Unemployment Rate in Genesee County, MI"
+OMAH531UR,"Unemployment Rate in Omaha-Council Bluffs, NE-IA (MSA)"
+NYQUEE1URN,"Unemployment Rate in Queens County, NY"
+ORMULT1URN,"Unemployment Rate in Multnomah County, OR"
+LRHUTTTTSEQ156S,Harmonized Unemployment Rate: Total: All Persons for Sweden
+PHOE004URN,"Unemployment Rate in Phoenix-Mesa-Scottsdale, AZ (MSA)"
+LOSA106URN,"Unemployment Rate in Los Angeles-Long Beach-Anaheim, CA (MSA)"
+NEURN,Unemployment Rate in Nebraska
+TNKNOX5URN,"Unemployment Rate in Knox County, TN"
+NJBURL0URN,"Unemployment Rate in Burlington County, NJ"
+MTGALL1URN,"Unemployment Rate in Gallatin County, MT"
+VANEWP5URN,"Unemployment Rate in Newport News City, VA"
+AZURN,Unemployment Rate in Arizona
+LRUN64TTUSA156S,Unemployment Rate: Aged 15-64: All Persons for the United States
+SCCHAR9URN,"Unemployment Rate in Charleston County, SC"
+FLSARA5URN,"Unemployment Rate in Sarasota County, FL"
+HIKAUA7URN,"Unemployment Rate in Kauai County, HI"
+OHHAMI1URN,"Unemployment Rate in Hamilton County, OH"
+NCDURH8URN,"Unemployment Rate in Durham County, NC"
+NCNEWH9URN,"Unemployment Rate in New Hanover County, NC"
+GREE637URN,"Unemployment Rate in Greensboro-High Point, NC (MSA)"
+LNS14000062,"Unemployment Rate - 25-54 Yrs., Women"
+HIMAUI5URN,"Unemployment Rate in Maui County, HI"
+ALAUTA1URN,"Unemployment Rate in Autauga County, AL"
+FLBREV3URN,"Unemployment Rate in Brevard County, FL"
+CSOUUR,Unemployment Rate in South Census Region
+LAUST370000000000003A,Unemployment Rate in North Carolina
+ILWILL7URN,"Unemployment Rate in Will County, IL"
+TXBEXA9URN,"Unemployment Rate in Bexar County, TX"
+OKOKLA9URN,"Unemployment Rate in Oklahoma County, OK"
+LAUST420000000000003A,Unemployment Rate in Pennsylvania
+M0892CUSM156NNBR,Unemployment Rate for United States
+HUNT601URN,"Unemployment Rate in Huntsville, AL (MSA)"
+TOLE739URN,"Unemployment Rate in Toledo, OH (MSA)"
+LAUST360000000000003A,Unemployment Rate in New York
+LRHUTTTTEZQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
+LAUST260000000000003A,Unemployment Rate in Michigan
+COLU139URN,"Unemployment Rate in Columbus, OH (MSA)"
+LMUNRRTTGBM156S,Registered Unemployment Rate for the United Kingdom
+LMUNRRTTGBM156N,Registered Unemployment Rate for the United Kingdom
+CAIMPE5URN,"Unemployment Rate in Imperial County, CA"
+SAVA313URN,"Unemployment Rate in Savannah, GA (MSA)"
+COLU139UR,"Unemployment Rate in Columbus, OH (MSA)"
+PORT941URN,"Unemployment Rate in Portland-Vancouver-Hillsboro, OR-WA (MSA)"
+LMUNRRTTCHQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
+LRUN64TTBEQ156S,Unemployment Rate: Aged 15-64: All Persons for Belgium
+WIURN,Unemployment Rate in Wisconsin
+AUGU213URN,"Unemployment Rate in Augusta-Richmond County, GA-SC (MSA)"
+WACO348URN,"Unemployment Rate in Waco, TX (MSA)"
+COLO808UR,"Unemployment Rate in Colorado Springs, CO (MSA)"
+LAUST020000000000003A,Unemployment Rate in Alaska
+LRHUTTTTGBQ156S,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
+LAURN,Unemployment Rate in Louisiana
+PHIL942URN,"Unemployment Rate in Philadelphia-Camden-Wilmington, PA-NJ-DE-MD (MSA)"
+WICH620UR,"Unemployment Rate in Wichita, KS (MSA)"
 LAUST460000000000003A,Unemployment Rate in South Dakota
-DAYT339UR,"Unemployment Rate in Dayton, OH (MSA)"
-LAUMT123674000000003A,"Unemployment Rate in Orlando-Kissimmee-Sanford, FL (MSA)"
-LAUST230000000000003A,Unemployment Rate in Maine
-LRUNTTTTBRA156N,Unemployment Rate: Aged 15 and over: All Persons for Brazil
-LRHUTTTTEUA156S,Harmonized Unemployment Rate: Total: All Persons for the European Union
-LRHUTTTTEUQ156N,Harmonized Unemployment Rate: Total: All Persons for the European Union
-LRHUTTTTEUA156N,Harmonized Unemployment Rate: Total: All Persons for the European Union
-LRHUTTTTAUQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
-LRHUTTTTAUM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
-LAUMT322982000000003A,"Unemployment Rate in Las Vegas-Henderson-Paradise, NV (MSA)"
-LNU04000089,Unemployment Rate - 25-34 Yrs.
-LRUNTTTTUSA156S,Unemployment Rate: Aged 15 and Over: All Persons for the United States
-LMUNRRTTDKA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Denmark
-LMUNRRTTDKQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Denmark
-LMUNRRTTDKM156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Denmark
-LRHUTTTTIEA156N,Harmonized Unemployment Rate: Total: All Persons for Ireland
-LRHUTTTTIEQ156S,Harmonized Unemployment Rate: Total: All Persons for Ireland
-LRHUTTTTIEM156N,Harmonized Unemployment Rate: Total: All Persons for Ireland
-LRHUTTTTIEQ156N,Harmonized Unemployment Rate: Total: All Persons for Ireland
-LRUNTTTTNLQ156N,Unemployment Rate: Aged 15 and Over: All Persons for the Netherlands
-LRUNTTTTNLA156S,Unemployment Rate: Aged 15 and Over: All Persons for the Netherlands
-RIURN,Unemployment Rate in Rhode Island
-LAUMT423830000000003A,"Unemployment Rate in Pittsburgh, PA (MSA)"
-LRUNTTTTUSM156N,Unemployment Rate: Aged 15 and Over: All Persons for the United States
-LRUNTTTTUSA156N,Unemployment Rate: Aged 15 and Over: All Persons for the United States
-LAUCN060670000000003A,"Unemployment Rate in Sacramento County, CA"
-LAUCN490050000000003A,"Unemployment Rate in Cache County, UT"
-LAUCN450450000000003A,"Unemployment Rate in Greenville County, SC"
-LAUCN060190000000003A,"Unemployment Rate in Fresno County, CA"
-LRUN64TTITA156S,Unemployment Rate: Aged 15-64: All Persons for Italy
-LAUMT261982000000003A,"Unemployment Rate in Detroit-Warren-Dearborn, MI (MSA)"
-LRUN64TTKRA156S,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
-LRHUTTTTESQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
-LRHUTTTTESA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
-LRUN64TTITA156N,Unemployment Rate: Aged 15-64: All Persons for Italy
-LMUNRRTTRUA156S,Registered Unemployment Rate for the Russian Federation
-LMUNRRTTRUQ156S,Registered Unemployment Rate for the Russian Federation
-LRHUTTTTUSQ156N,Harmonized Unemployment Rate: Total: All Persons for the United States
-LRHUTTTTUSA156S,Harmonized Unemployment Rate: Total: All Persons for the United States
-LRHUTTTTUSA156N,Harmonized Unemployment Rate: Total: All Persons for the United States
-LRHUTTTTUSM156N,Harmonized Unemployment Rate: Total: All Persons for the United States
-LAUCN360010000000003A,"Unemployment Rate in Albany County, NY"
-LAUMT064194000000003A,"Unemployment Rate in San Jose-Sunnyvale-Santa Clara, CA (MSA)"
-LAUMT403642000000003A,"Unemployment Rate in Oklahoma City, OK (MSA)"
-LRUNTTTTNLA156N,Unemployment Rate: Aged 15 and Over: All Persons for the Netherlands
-LAUCN180970000000003A,"Unemployment Rate in Marion County, IN"
-LRUN64TTKRM156N,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
-LRHUTTTTGRQ156N,Harmonized Unemployment Rate: Total: All Persons for Greece
-LMUNRRTTPLQ156N,Registered Unemployment Rate for Poland
-LMUNRRTTPLA156N,Registered Unemployment Rate for Poland
-LMUNRRTTPLA156S,Registered Unemployment Rate for Poland
-LMUNRRTTPLM156N,Registered Unemployment Rate for Poland
-LRHUTTTTGRM156N,Harmonized Unemployment Rate: Total: All Persons for Greece
-LRHUTTTTGRA156N,Harmonized Unemployment Rate: Total: All Persons for Greece
-LRHUTTTTGRA156S,Harmonized Unemployment Rate: Total: All Persons for Greece
-LAUMT262434000000003A,"Unemployment Rate in Grand Rapids-Wyoming, MI (MSA)"
-LRHUTTTTNLA156N,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
-LRHUTTTTNLM156N,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
-LRHUTTTTNLA156S,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
-LAUCN510590000000003A,"Unemployment Rate in Fairfax County, VA"
-U5RATENSA,"Total Unemployed, Plus Discouraged Workers, Plus All Other Persons Marginally Attached to the Labor Force, as a Percent of the Civilian Labor Force Plus All Persons Marginally Attached to the Labor Force (U-5)"
-LAUCN120950000000003A,"Unemployment Rate in Orange County, FL"
-LAUMT044606000000003A,"Unemployment Rate in Tucson, AZ (MSA)"
-LAUCN060430000000003A,"Unemployment Rate in Mariposa County, CA"
-LRUN64TTKRQ156N,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
-LRUNTTTTBRQ156N,Unemployment Rate: Aged 15 and over: All Persons for Brazil
-LMUNRRTTGBA156S,Registered Unemployment Rate for the United Kingdom
-LMUNRRTTGBA156N,Registered Unemployment Rate for the United Kingdom
-LRUN64TTESA156N,Unemployment Rate: Aged 15-64: All Persons for Spain
-LRUN64TTESQ156N,Unemployment Rate: Aged 15-64: All Persons for Spain
-LRUN64TTESA156S,Unemployment Rate: Aged 15-64: All Persons for Spain
-LRUNTTTTBRM156N,Unemployment Rate: Aged 15 and over: All Persons for Brazil
-LRUNTTTTAUM156N,Unemployment Rate: Aged 15 and over: All Persons for Australia
-LAUCN040130000000003A,"Unemployment Rate in Maricopa County, AZ"
-LRUNTTTTAUQ156N,Unemployment Rate: Aged 15 and over: All Persons for Australia
-LAUCN240310000000003A,"Unemployment Rate in Montgomery County, MD"
-LAUCN482010000000003A,"Unemployment Rate in Harris County, TX"
-LAUCN530330000000003A,"Unemployment Rate in King County, WA"
-LAUMT482642000000003A,"Unemployment Rate in Houston-The Woodlands-Sugar Land, TX (MSA)"
-LAUMT294118000000003A,"Unemployment Rate in St. Louis, MO-IL (MSA)"
-LAUCN130670000000003A,"Unemployment Rate in Cobb County, GA"
-AKURN,Unemployment Rate in Alaska
-LAUMT391814000000003A,"Unemployment Rate in Columbus, OH (MSA)"
-LAUMT273346000000003A,"Unemployment Rate in Minneapolis-St. Paul-Bloomington, MN-WI (MSA)"
-LAUCN360550000000003A,"Unemployment Rate in Monroe County, NY"
-LAUCN350150000000003A,"Unemployment Rate in Eddy County, NM"
-LAUCN450350000000003A,"Unemployment Rate in Dorchester County, SC"
-LAUCN361030000000003A,"Unemployment Rate in Suffolk County, NY"
-LAUCN291190000000003A,"Unemployment Rate in McDonald County, MO"
-LAUCN080310000000003A,"Unemployment Rate in Denver County/City, CO"
-LAUCN180030000000003A,"Unemployment Rate in Allen County, IN"
-LAUCN060710000000003A,"Unemployment Rate in San Bernardino County, CA"
-LAUCN470370000000003A,"Unemployment Rate in Davidson County, TN"
-LAURD910000000000003A,Unemployment Rate in Northeast Census Region
-LAUCN484390000000003A,"Unemployment Rate in Tarrant County, TX"
-LAUCN220710000000003A,"Unemployment Rate in Orleans Parish, LA"
-LRUN64TTKRA156N,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
-LRUN64TTKRQ156S,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
-LAUCN260810000000003A,"Unemployment Rate in Kent County, MI"
-LAUCN480850000000003A,"Unemployment Rate in Collin County, TX"
-LAUCN550390000000003A,"Unemployment Rate in Fond du Lac County, WI"
-LAUMT422542000000003A,"Unemployment Rate in Harrisburg-Carlisle, PA (MSA)"
-LAUMT191978000000003A,"Unemployment Rate in Des Moines-West Des Moines, IA (MSA)"
-LAUMT064174000000003A,"Unemployment Rate in San Diego-Carlsbad, CA (MSA)"
-LAUMT131226000000003A,"Unemployment Rate in Augusta-Richmond County, GA-SC (MSA)"
-LAUMT081782000000003A,"Unemployment Rate in Colorado Springs, CO (MSA)"
-LAUMT061254000000003A,"Unemployment Rate in Bakersfield, CA (MSA)"
-LMUNRRTTNOQ156N,Registered Unemployment Rate for Norway
-LMUNRRTTNOA156N,Registered Unemployment Rate for Norway
-LMUNRRTTNOA156S,Registered Unemployment Rate for Norway
-LMUNRRTTNOM156N,Registered Unemployment Rate for Norway
-LRUN64TTZAQ156N,Unemployment Rate: Aged 15-64: All Persons for South Africa
-LRUN64TTZAA156S,Unemployment Rate: Aged 15-64: All Persons for South Africa
-LRUNTTTTMXM156N,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
-LAUCN481130000000003A,"Unemployment Rate in Dallas County, TX"
-LAUMT064186000000003A,"Unemployment Rate in San Francisco-Oakland-Hayward, CA (MSA)"
-LAUCN121270000000003A,"Unemployment Rate in Volusia County, FL"
-LAUCN360050000000003A,"Unemployment Rate in Bronx County, NY"
-LAUCN060850000000003A,"Unemployment Rate in Santa Clara County, CA"
-LAUMT484170000000003A,"Unemployment Rate in San Antonio-New Braunfels, TX (MSA)"
-LAUMT391746000000003A,"Unemployment Rate in Cleveland-Elyria, OH (MSA)"
-VTURN,Unemployment Rate in Vermont
-LRHUTTTTEZQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
+CTURN,Unemployment Rate in Connecticut
+LAUST340000000000003A,Unemployment Rate in New Jersey
+LRHUTTTTNLM156S,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
+NAPL912UR,"Unemployment Rate in Naples-Immokalee-Marco Island, FL (MSA)"
+AMAR148URN,"Unemployment Rate in Amarillo, TX (MSA)"
+ATHE013URN,"Unemployment Rate in Athens-Clarke County, GA (MSA)"
+GAURN,Unemployment Rate in Georgia
+LAUST410000000000003A,Unemployment Rate in Oregon
+LAUST530000000000003A,Unemployment Rate in Washington
+AKRO439URN,"Unemployment Rate in Akron, OH (MSA)"
+TALL212UR,"Unemployment Rate in Tallahassee, FL (MSA)"
+WASH911UR,"Unemployment Rate in Washington-Arlington-Alexandria, DC-VA-MD-WV (MSA)"
+LAUST390000000000003A,Unemployment Rate in Ohio
+MAURN,Unemployment Rate in Massachusetts
+LAUST170000000000003A,Unemployment Rate in Illinois
+MINN427UR,"Unemployment Rate in Minneapolis-St. Paul-Bloomington, MN-WI (MSA)"
+OKLA440URN,"Unemployment Rate in Oklahoma City, OK (MSA)"
+LRHUTTTTAUQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
+ORLA712UR,"Unemployment Rate in Orlando-Kissimmee-Sanford, FL (MSA)"
+LMUNRRTTCNQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for China (People's Republic Of)
+DCDIST5URN,Unemployment Rate in the District of Columbia
+LNU04027659,"Unemployment Rate - Less Than a High School Diploma, 25 Yrs. & over"
+LMUNRRTTDEA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
+LAUST040000000000003A,Unemployment Rate in Arizona
+LNU04000029,"Unemployment Rate - 20 Yrs. & over, White Women"
+ALLE942UR,"Unemployment Rate in Allentown-Bethlehem-Easton, PA-NJ (MSA)"
+ROME613URN,"Unemployment Rate in Rome, GA (MSA)"
+LASMT261982000000003,"Unemployment Rate in Detroit-Warren-Dearborn, MI (MSA)"
+LRUNTTTTCAA156N,Unemployment Rate: Aged 15 and over: All Persons for Canada
+CHAT847UR,"Unemployment Rate in Chattanooga, TN-GA (MSA)"
+WILM937URN,"Unemployment Rate in Wilmington, NC (MSA)"
+STLURN,"Unemployment Rate in St. Louis, MO-IL (MSA)"
+INURN,Unemployment Rate in Indiana
+LRUNTTTTMXQ156S,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
+NDURN,Unemployment Rate in North Dakota
+MPHURN,"Unemployment Rate in Memphis, TN-MS-AR (MSA)"
+ASHE737UR,"Unemployment Rate in Asheville, NC (MSA)"
+LRUNTTTTCAM156N,Unemployment Rate: Aged 15 and over: All Persons for Canada
+ASHE737URN,"Unemployment Rate in Asheville, NC (MSA)"
+LRUNTTTTUSQ156S,Unemployment Rate: Aged 15 and Over: All Persons for the United States
+SCURN,Unemployment Rate in South Carolina
+LAUST250000000000003A,Unemployment Rate in Massachusetts
+MTURN,Unemployment Rate in Montana
+IAURN,Unemployment Rate in Iowa
+LAUST280000000000003A,Unemployment Rate in Mississippi
+WVURN,Unemployment Rate in West Virginia
+LAUST380000000000003A,Unemployment Rate in North Dakota
+SEAT653UR,"Unemployment Rate in Seattle-Tacoma-Bellevue, WA (MSA)"
+LRHUTTTTFIM156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Finland
+LRUN74TTRUA156S,Unemployment Rate: Aged 15-74: All Persons for the Russian Federation
+ARURN,Unemployment Rate in Arkansas
+LAUST130000000000003A,Unemployment Rate in Georgia
+OKURN,Unemployment Rate in Oklahoma
+LRUN74TTFRA156N,Unemployment Rate: Aged 15-74: All Persons for France
+HOUS448UR,"Unemployment Rate in Houston-The Woodlands-Sugar Land, TX (MSA)"
+LAUST510000000000003A,Unemployment Rate in Virginia
+VIRG251URN,"Unemployment Rate in Virginia Beach-Norfolk-Newport News, VA-NC (MSA)"
+HARR442URN,"Unemployment Rate in Harrisburg-Carlisle, PA (MSA)"
+LAUST400000000000003A,Unemployment Rate in Oklahoma
+LOIURN,"Unemployment Rate in Louisville-Jefferson County, KY-IN (MSA)"
 WYURN,Unemployment Rate in Wyoming
-LAUMT413890000000003A,"Unemployment Rate in Portland-Vancouver-Hillsboro, OR-WA (MSA)"
-LRUNTTTTKRQ156N,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
-LAUMT391042000000003A,"Unemployment Rate in Akron, OH (MSA)"
-LRUNTTTTKRM156N,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
-LRUNTTTTKRA156S,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
-LAUMT114790000000003A,"Unemployment Rate in Washington-Arlington-Alexandria, DC-VA-MD-WV (MSA)"
-LNU04000018,"Unemployment Rate - 16-19 Yrs., Black or African American"
-LAUMT473282000000003A,"Unemployment Rate in Memphis, TN-MS-AR (MSA)"
-LAUMT011382000000003A,"Unemployment Rate in Birmingham-Hoover, AL (MSA)"
-LAUMT081974000000003A,"Unemployment Rate in Denver-Aurora-Lakewood, CO (MSA)"
-LAUCN170310000000003A,"Unemployment Rate in Cook County, IL"
-LAUMT494162000000003A,"Unemployment Rate in Salt Lake City, UT (MSA)"
-LAUMT123310000000003A,"Unemployment Rate in Miami-Fort Lauderdale-West Palm Beach, FL (MSA)"
-LAUCN360470000000003A,"Unemployment Rate in Kings County, NY"
-LAUCN320030000000003A,"Unemployment Rate in Clark County, NV"
-LAUCN390350000000003A,"Unemployment Rate in Cuyahoga County, OH"
-LAUCN420030000000003A,"Unemployment Rate in Allegheny County, PA"
-LAURD920000000000003A,Unemployment Rate in Midwest Census Region
-LAUCN390490000000003A,"Unemployment Rate in Franklin County, OH"
-LRUNTTTTCLA156S,Unemployment Rate: Aged 15 and over: All Persons for Chile
-LRUNTTTTCLQ156N,Unemployment Rate: Aged 15 and over: All Persons for Chile
+LAUST090000000000003A,Unemployment Rate in Connecticut
+GRAN238UR,"Unemployment Rate in Grand Forks, ND-MN (MSA)"
+LAUST350000000000003A,Unemployment Rate in New Mexico
+LAUST550000000000003A,Unemployment Rate in Wisconsin
+FARG038UR,"Unemployment Rate in Fargo, ND-MN (MSA)"
+JACK212UR,"Unemployment Rate in Jacksonville, FL (MSA)"
+LRHUTTTTITQ156S,Harmonized Unemployment Rate: Total: All Persons for Italy
+LRUNTTTTKRA156N,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
+DENV708UR,"Unemployment Rate in Denver-Aurora-Lakewood, CO (MSA)"
+LAUST310000000000003A,Unemployment Rate in Nebraska
+LAUST110000000000003A,Unemployment Rate in the District of Columbia
+LRUNTTTTCAQ156N,Unemployment Rate: Aged 15 and over: All Persons for Canada
+LAUST050000000000003A,Unemployment Rate in Arkansas
+OMAH531URN,"Unemployment Rate in Omaha-Council Bluffs, NE-IA (MSA)"
+LRHUTTTTFRQ156S,Harmonized Unemployment Rate: Total: All Persons for France
+ORURN,Unemployment Rate in Oregon
+LRHUTTTTFIQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Finland
+WICH620URN,"Unemployment Rate in Wichita, KS (MSA)"
+NVURN,Unemployment Rate in Nevada
+DALL148UR,"Unemployment Rate in Dallas-Fort Worth-Arlington, TX (MSA)"
+LAUST320000000000003A,Unemployment Rate in Nevada
 LRUNTTTTCLA156N,Unemployment Rate: Aged 15 and over: All Persons for Chile
+MSURN,Unemployment Rate in Mississippi
+LAUST180000000000003A,Unemployment Rate in Indiana
 LRUNTTTTCLQ156S,Unemployment Rate: Aged 15 and over: All Persons for Chile
-LRUN64TTSEQ156N,Unemployment Rate: Aged 15-64: All Persons for Sweden
-LRUN64TTSEA156S,Unemployment Rate: Aged 15-64: All Persons for Sweden
+FLIN426UR,"Unemployment Rate in Flint, MI (MSA)"
+KNOX947URN,"Unemployment Rate in Knoxville, TN (MSA)"
+LMUNRRTTPLQ156S,Registered Unemployment Rate for Poland
+LRUN64TTUSQ156N,Unemployment Rate: Aged 15-64: All Persons for the United States
+WAURN,Unemployment Rate in Washington
+LAUCN420030000000003A,"Unemployment Rate in Allegheny County, PA"
+MEURN,Unemployment Rate in Maine
+LMUNRRTTGBQ156S,Registered Unemployment Rate for the United Kingdom
+LMUNRRTTCNA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for China (People's Republic Of)
+LMUNRRTTRUQ156S,Registered Unemployment Rate for the Russian Federation
+TAMP312UR,"Unemployment Rate in Tampa-St. Petersburg-Clearwater, FL (MSA)"
+LAUMT124530000000003A,"Unemployment Rate in Tampa-St. Petersburg-Clearwater, FL (MSA)"
+LASV832UR,"Unemployment Rate in Las Vegas-Henderson-Paradise, NV (MSA)"
+VIRG251UR,"Unemployment Rate in Virginia Beach-Norfolk-Newport News, VA-NC (MSA)"
+LAUST330000000000003A,Unemployment Rate in New Hampshire
+AKURN,Unemployment Rate in Alaska
+FASURN,"Unemployment Rate in Fayetteville-Springdale-Rogers, AR-MO (MSA)"
+LAUST210000000000003A,Unemployment Rate in Kentucky
+LAUCN060750000000003A,"Unemployment Rate in San Francisco County/City, CA"
+LAUST270000000000003A,Unemployment Rate in Minnesota
+LRHUTTTTGBM156N,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
+LAUST490000000000003A,Unemployment Rate in Utah
+CINC139UR,"Unemployment Rate in Cincinnati, OH-KY-IN (MSA)"
+CLEV439UR,"Unemployment Rate in Cleveland-Elyria, OH (MSA)"
+LNU04000028,"Unemployment Rate - 20 Yrs. & over, White Men"
+LAUST100000000000003A,Unemployment Rate in Delaware
+LAUST220000000000003A,Unemployment Rate in Louisiana
+PITT342URN,"Unemployment Rate in Pittsburgh, PA (MSA)"
+LMUNRRTTATQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
+LRUNTTTTUSM156S,Unemployment Rate: Aged 15 and Over: All Persons for the United States
+LAUCN371830000000003A,"Unemployment Rate in Wake County, NC"
+LRUN64TTJPA156N,Unemployment Rate: Aged 15-64: All Persons for Japan
+LAUST290000000000003A,Unemployment Rate in Missouri
+LAUST450000000000003A,Unemployment Rate in South Carolina
+BALT524UR,"Unemployment Rate in Baltimore-Columbia-Towson, MD (MSA)"
+LRUN64TTJPA156S,Unemployment Rate: Aged 15-64: All Persons for Japan
+LAUMT063108000000003A,"Unemployment Rate in Los Angeles-Long Beach-Anaheim, CA (MSA)"
+LAUST300000000000003A,Unemployment Rate in Montana
+LNU04000001,Unemployment Rate - Men
+LRUNTTTTBRA156N,Unemployment Rate: Aged 15 and over: All Persons for Brazil
+LAUST190000000000003A,Unemployment Rate in Iowa
+LRUN74TTRUQ156S,Unemployment Rate: Aged 15-74: All Persons for the Russian Federation
+LAUMT241258000000003A,"Unemployment Rate in Baltimore-Columbia-Towson, MD (MSA)"
+LAUMT124522000000003A,"Unemployment Rate in Tallahassee, FL (MSA)"
+LRHUTTTTUSQ156S,Harmonized Unemployment Rate: Total: All Persons for the United States
+LAUMT044606000000003A,"Unemployment Rate in Tucson, AZ (MSA)"
+LRUN64TTKRA156N,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
+LRUN64TTKRA156S,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
+LRUN74TTRUA156N,Unemployment Rate: Aged 15-74: All Persons for the Russian Federation
+ALLE942URN,"Unemployment Rate in Allentown-Bethlehem-Easton, PA-NJ (MSA)"
+LAUST560000000000003A,Unemployment Rate in Wyoming
+HARR442UR,"Unemployment Rate in Harrisburg-Carlisle, PA (MSA)"
+LAUST540000000000003A,Unemployment Rate in West Virginia
+LAUST160000000000003A,Unemployment Rate in Idaho
+LNU04000012,Unemployment Rate - 16-19 Yrs.
+LRUN74TTFRQ156N,Unemployment Rate: Aged 15-74: All Persons for France
+DETR826UR,"Unemployment Rate in Detroit-Warren-Dearborn, MI (MSA)"
+LAUMT123674000000003A,"Unemployment Rate in Orlando-Kissimmee-Sanford, FL (MSA)"
+LMUNRRTTRUQ156N,Registered Unemployment Rate for the Russian Federation
+AUST448UR,"Unemployment Rate in Austin-Round Rock, TX (MSA)"
+LRUN64TTITQ156N,Unemployment Rate: Aged 15-64: All Persons for Italy
+NEWY636UR,"Unemployment Rate in New York-Newark-Jersey City, NY-NJ-PA (MSA)"
+ATLA013UR,"Unemployment Rate in Atlanta-Sandy Springs-Roswell, GA (MSA)"
+LAUMT131206000000003A,"Unemployment Rate in Atlanta-Sandy Springs-Roswell, GA (MSA)"
+LNU04000031,"Unemployment Rate - 20 Yrs. & over, Black or African American Men"
+U2RATENSA,Unemployment Rate - Job Losers (U-2)
+LAUST240000000000003A,Unemployment Rate in Maryland
+LRUN64TTGBA156S,Unemployment Rate: Aged 15-64: All Persons for the United Kingdom
+LAUCN060370000000003A,"Unemployment Rate in Los Angeles County, CA"
+LAUST150000000000003A,Unemployment Rate in Hawaii
+CHIC917UR,"Unemployment Rate in Chicago-Naperville-Elgin, IL-IN-WI (MSA)"
+LNU04000002,Unemployment Rate - Women
+LRHUTTTTEZM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
+DEURN,Unemployment Rate in Delaware
+LRHUTTTTEZA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
+LAUST500000000000003A,Unemployment Rate in Vermont
+VTURN,Unemployment Rate in Vermont
+LNU04027689,"Unemployment Rate - Some College or Associate Degree, 25 Yrs. & over"
+BOST625UR,"Unemployment Rate in Boston-Cambridge-Nashua, MA-NH (NECTA)"
+SALT649UR,"Unemployment Rate in Salt Lake City, UT (MSA)"
 LRUN64TTSEA156N,Unemployment Rate: Aged 15-64: All Persons for Sweden
-LAUMT482134000000003A,"Unemployment Rate in El Paso, TX (MSA)"
-LRHUTTTTCAA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
-LAUCN240050000000003A,"Unemployment Rate in Baltimore County, MD"
-LRHUTTTTCAA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
+RIURN,Unemployment Rate in Rhode Island
+LAUST440000000000003A,Unemployment Rate in Rhode Island
+LRUN64TTTRA156S,Unemployment Rate: Aged 15-64: All Persons for Turkey
+LRUNTTTTKRQ156S,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
+LRHUTTTTITA156S,Harmonized Unemployment Rate: Total: All Persons for Italy
+LRHUTTTTITM156N,Harmonized Unemployment Rate: Total: All Persons for Italy
+LAUMT391042000000003A,"Unemployment Rate in Akron, OH (MSA)"
+LAUST720000000000003A,Unemployment Rate in Puerto Rico
+LRUN64TTJPM156N,Unemployment Rate: Aged 15-64: All Persons for Japan
+PHIL942UR,"Unemployment Rate in Philadelphia-Camden-Wilmington, PA-NJ-DE-MD (MSA)"
+LRHUTTTTDEA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Germany
+LRHUTTTTITA156N,Harmonized Unemployment Rate: Total: All Persons for Italy
+LRUN64TTBEA156S,Unemployment Rate: Aged 15-64: All Persons for Belgium
+LRHUTTTTDEQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Germany
+LRHUTTTTEZQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
+LRHUTTTTEZA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for the Euro Area (19 Countries)
+LRUN64TTUSM156N,Unemployment Rate: Aged 15-64: All Persons for the United States
+LAUMT534266000000003A,"Unemployment Rate in Seattle-Tacoma-Bellevue, WA (MSA)"
+LRUNTTTTBRQ156S,Unemployment Rate: Aged 15 and over: All Persons for Brazil
+LRHUTTTTESA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
+LMUNRRTTDEM156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
+LRHUTTTTNLQ156S,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
+LRUN64TTGBQ156N,Unemployment Rate: Aged 15-64: All Persons for the United Kingdom
+LRUNTTTTNLA156S,Unemployment Rate: Aged 15 and Over: All Persons for the Netherlands
+LMUNRRTTDEQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
+LRUN64TTFIQ156N,Unemployment Rate: Aged 15-64: All Persons for Finland
+LAUST230000000000003A,Unemployment Rate in Maine
+LMUNRRTTCHM156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
+LMUNRRTTCHA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
+LAUST200000000000003A,Unemployment Rate in Kansas
+LNU04000061,"Unemployment Rate - 25-54 Yrs., Men"
+BUFF336UR,"Unemployment Rate in Buffalo-Cheektowaga-Niagara Falls, NY (MSA)"
+LRUN64TTCAA156N,Unemployment Rate: Aged 15-64: All Persons for Canada
+LRUN64TTCHA156S,Unemployment Rate: Aged 15-64: All Persons for Switzerland
+LRUN64TTCAA156S,Unemployment Rate: Aged 15-64: All Persons for Canada
+LRUN64TTESA156N,Unemployment Rate: Aged 15-64: All Persons for Spain
+MIAM112UR,"Unemployment Rate in Miami-Fort Lauderdale-West Palm Beach, FL (MSA)"
+ROCH336UR,"Unemployment Rate in Rochester, NY (MSA)"
+CHAR737UR,"Unemployment Rate in Charlotte-Concord-Gastonia, NC-SC (MSA)"
+ALBU735URN,"Unemployment Rate in Albuquerque, NM (MSA)"
+LRUN64TTCHA156N,Unemployment Rate: Aged 15-64: All Persons for Switzerland
+CNERUR,Unemployment Rate in Northeast Census Region
+LRHUTTTTFRA156S,Harmonized Unemployment Rate: Total: All Persons for France
+FARG038URN,"Unemployment Rate in Fargo, ND-MN (MSA)"
+LMUNRRTTRUA156S,Registered Unemployment Rate for the Russian Federation
+LMUNRRTTRUM156N,Registered Unemployment Rate for the Russian Federation
+LRUNTTTTUSA156S,Unemployment Rate: Aged 15 and Over: All Persons for the United States
+LAUMT422542000000003A,"Unemployment Rate in Harrisburg-Carlisle, PA (MSA)"
+LAUMT382422000000003A,"Unemployment Rate in Grand Forks, ND-MN (MSA)"
+LAUMT134066000000003A,"Unemployment Rate in Rome, GA (MSA)"
+TUCS004UR,"Unemployment Rate in Tucson, AZ (MSA)"
+LRUN64TTGRA156N,Unemployment Rate: Aged 15-64: All Persons for Greece
+CHAT847URN,"Unemployment Rate in Chattanooga, TN-GA (MSA)"
+LRUNTTTTAUQ156S,Unemployment Rate: Aged 15 and over: All Persons for Australia
+RALE537UR,"Unemployment Rate in Raleigh, NC (MSA)"
+WILM937UR,"Unemployment Rate in Wilmington, NC (MSA)"
+SANJ906UR,"Unemployment Rate in San Jose-Sunnyvale-Santa Clara, CA (MSA)"
+LAUCN295100000000003A,"Unemployment Rate in St. Louis City, MO"
+LAUCN130670000000003A,"Unemployment Rate in Cobb County, GA"
+LRHUTTTTHUM156N,Harmonized Unemployment Rate: Total: All Persons for Hungary
+RIVE106UR,"Unemployment Rate in Riverside-San Bernardino-Ontario, CA (MSA)"
+LRHUTTTTMXM156N,Harmonized Unemployment Rate: Total: All Persons for Mexico
+LAUMT391814000000003A,"Unemployment Rate in Columbus, OH (MSA)"
+RICH051UR,"Unemployment Rate in Richmond, VA (MSA)"
+GREE637UR,"Unemployment Rate in Greensboro-High Point, NC (MSA)"
+MILW355UR,"Unemployment Rate in Milwaukee-Waukesha-West Allis, WI (MSA)"
+YOUN639UR,"Unemployment Rate in Youngstown-Warren-Boardman, OH-PA (MSA)"
+CMWRURN,Unemployment Rate in Midwest Census Region
+RENO932UR,"Unemployment Rate in Reno, NV (MSA)"
+LRUN64TTEZA156N,Unemployment Rate: Aged 15-64: All Persons for the Euro Area (19 Countries)
+LRHUTTTTCAM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
+LRHUTTTTGRQ156S,Harmonized Unemployment Rate: Total: All Persons for Greece
+LRUNTTTTIDA156N,Unemployment Rate: Aged 15 and Over: All Persons for Indonesia
+LAUMT262242000000003A,"Unemployment Rate in Flint, MI (MSA)"
+LRHUTTTTUSM156N,Harmonized Unemployment Rate: Total: All Persons for the United States
+LAUMT223538000000003A,"Unemployment Rate in New Orleans-Metairie, LA (MSA)"
+LMUNRRTTATA156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
+BOIS216UR,"Unemployment Rate in Boise City, ID (MSA)"
+LRHUTTTTSEM156N,Harmonized Unemployment Rate: Total: All Persons for Sweden
+LAUMT043806000000003A,"Unemployment Rate in Phoenix-Mesa-Scottsdale, AZ (MSA)"
+LAUMT273346000000003A,"Unemployment Rate in Minneapolis-St. Paul-Bloomington, MN-WI (MSA)"
+LMUNRRTTRUA156N,Registered Unemployment Rate for the Russian Federation
+LAUCN110010000000003A,Unemployment Rate in the District of Columbia
+LAUMT081974000000003A,"Unemployment Rate in Denver-Aurora-Lakewood, CO (MSA)"
+LRHUTTTTDKQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Denmark
+LRUNTTTTMXQ156N,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
+LAUCN170310000000003A,"Unemployment Rate in Cook County, IL"
+LMUNRRTTCHA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
+LAUCN550790000000003A,"Unemployment Rate in Milwaukee County, WI"
+LAUMT363562000000003A,"Unemployment Rate in New York-Newark-Jersey City, NY-NJ-PA (MSA)"
+HUNT601UR,"Unemployment Rate in Huntsville, AL (MSA)"
+LRHUTTTTEUQ156S,Harmonized Unemployment Rate: Total: All Persons for the European Union
+INDI918UR,"Unemployment Rate in Indianapolis-Carmel-Anderson, IN (MSA)"
+BIRM801UR,"Unemployment Rate in Birmingham-Hoover, AL (MSA)"
+LAUMT011382000000003A,"Unemployment Rate in Birmingham-Hoover, AL (MSA)"
+LMUNRRTTNOQ156S,Registered Unemployment Rate for Norway
+LMUNRRTTNOQ156N,Registered Unemployment Rate for Norway
+LMUNRRTTGBQ156N,Registered Unemployment Rate for the United Kingdom
+LAUMT423830000000003A,"Unemployment Rate in Pittsburgh, PA (MSA)"
+LAUMT494162000000003A,"Unemployment Rate in Salt Lake City, UT (MSA)"
+LAUMT257165000000003A,"Unemployment Rate in Boston-Cambridge-Nashua, MA-NH (NECTA)"
+LRHUTTTTJPM156N,Harmonized Unemployment Rate: Total: All Persons for Japan
+SAVA313UR,"Unemployment Rate in Savannah, GA (MSA)"
+TOLE739UR,"Unemployment Rate in Toledo, OH (MSA)"
+LAUCN450450000000003A,"Unemployment Rate in Greenville County, SC"
+LRUNTTTTDEA156S,Unemployment Rate: Aged 15 and over: All Persons for Germany
+LMUNRRTTDEA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Germany
+LRUN64TTJPQ156N,Unemployment Rate: Aged 15-64: All Persons for Japan
+LRHUTTTTITQ156N,Harmonized Unemployment Rate: Total: All Persons for Italy
 LRHUTTTTDEM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Germany
 LRHUTTTTDEA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Germany
-LRHUTTTTDEQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Germany
-LAUMT221294000000003A,"Unemployment Rate in Baton Rouge, LA (MSA)"
-LAUMT053078000000003A,"Unemployment Rate in Little Rock-North Little Rock-Conway, AR (MSA)"
-LAUMT161426000000003A,"Unemployment Rate in Boise City, ID (MSA)"
-LAUCN120090000000003A,"Unemployment Rate in Brevard County, FL"
-LAUCN060810000000003A,"Unemployment Rate in San Mateo County, CA"
-LAUCN261630000000003A,"Unemployment Rate in Wayne County, MI"
-LAUCN120310000000003A,"Unemployment Rate in Duval County, FL"
-LRUN64TTFIA156S,Unemployment Rate: Aged 15-64: All Persons for Finland
-LRUN64TTFIA156N,Unemployment Rate: Aged 15-64: All Persons for Finland
-LRHUTTTTCAQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
-LRHUTTTTCAM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
-LRUN64TTPTQ156N,Unemployment Rate: Aged 15-64: All Persons for Portugal
-LAUCN121030000000003A,"Unemployment Rate in Pinellas County, FL"
-LRUN64TTPTA156S,Unemployment Rate: Aged 15-64: All Persons for Portugal
-LRUN64TTPTA156N,Unemployment Rate: Aged 15-64: All Persons for Portugal
-LRUN64TTCAA156N,Unemployment Rate: Aged 15-64: All Persons for Canada
-LRUN64TTCAM156N,Unemployment Rate: Aged 15-64: All Persons for Canada
-LRUN64TTCAQ156N,Unemployment Rate: Aged 15-64: All Persons for Canada
-LRUNTTTTNZA156N,Unemployment Rate: Aged 15 and Over: All Persons for New Zealand
-LAUCN471570000000003A,"Unemployment Rate in Shelby County, TN"
-LAURD940000000000003A,Unemployment Rate in West Census Region
-LAUCN121090000000003A,"Unemployment Rate in St. Johns County, FL"
-LAUCN131350000000003A,"Unemployment Rate in Gwinnett County, GA"
-LAUCN470930000000003A,"Unemployment Rate in Knox County, TN"
-LAUCN390610000000003A,"Unemployment Rate in Hamilton County, OH"
-LAUCN270530000000003A,"Unemployment Rate in Hennepin County, MN"
-LAUCN120710000000003A,"Unemployment Rate in Lee County, FL"
-LRUN64TTTRQ156N,Unemployment Rate: Aged 15-64: All Persons for Turkey
-LRHUTTTTJPQ156N,Harmonized Unemployment Rate: Total: All Persons for Japan
-LMUNRRTTBEQ156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Belgium
-LAUCN081230000000003A,"Unemployment Rate in Weld County, CO"
+LRHUTTTTGBA156S,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
+LRHUTTTTGBQ156N,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
+LAUMT171698000000003A,"Unemployment Rate in Chicago-Naperville-Elgin, IL-IN-WI (MSA)"
+LRHUTTTTESM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
+LRUNTTTTBRQ156N,Unemployment Rate: Aged 15 and over: All Persons for Brazil
+LRUNTTTTBRM156N,Unemployment Rate: Aged 15 and over: All Persons for Brazil
+U5RATENSA,"Total Unemployed, Plus Discouraged Workers, Plus All Other Persons Marginally Attached to the Labor Force, as a Percent of the Civilian Labor Force Plus All Persons Marginally Attached to the Labor Force (U-5)"
+LAUMT114790000000003A,"Unemployment Rate in Washington-Arlington-Alexandria, DC-VA-MD-WV (MSA)"
+LAUCN421010000000003A,"Unemployment Rate in Philadelphia County/City, PA"
 LAUCN120860000000003A,"Unemployment Rate in Miami-Dade County, FL"
-LRHUTTTTSEM156N,Harmonized Unemployment Rate: Total: All Persons for Sweden
-LRHUTTTTSEA156S,Harmonized Unemployment Rate: Total: All Persons for Sweden
-LRHUTTTTSEA156N,Harmonized Unemployment Rate: Total: All Persons for Sweden
-LAUCN120990000000003A,"Unemployment Rate in Palm Beach County, FL"
-LAUCN360610000000003A,"Unemployment Rate in New York County, NY"
-LAUCN550790000000003A,"Unemployment Rate in Milwaukee County, WI"
-LMUNRRTTATQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
-LMUNRRTTATA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
-LRUN74TTESA156S,Unemployment Rate: Aged 15-74: All Persons for Spain
-LRUN74TTESQ156N,Unemployment Rate: Aged 15-74: All Persons for Spain
-LAUCN470470000000003A,"Unemployment Rate in Fayette County, TN"
-LAUCN200910000000003A,"Unemployment Rate in Johnson County, KS"
-LAUCN170970000000003A,"Unemployment Rate in Lake County, IL"
-LAUCN450190000000003A,"Unemployment Rate in Charleston County, SC"
-LRUN64TTGRA156S,Unemployment Rate: Aged 15-64: All Persons for Greece
-LAUCN060250000000003A,"Unemployment Rate in Imperial County, CA"
-LAUCN121010000000003A,"Unemployment Rate in Pasco County, FL"
-LAUCN090030000000003A,"Unemployment Rate in Hartford County, CT"
-LAUCN340010000000003A,"Unemployment Rate in Atlantic County, NJ"
-LAUCN340170000000003A,"Unemployment Rate in Hudson County, NJ"
-LAUCN420290000000003A,"Unemployment Rate in Chester County, PA"
-LAUCN050510000000003A,"Unemployment Rate in Garland County, AR"
-LAUMT351074000000003A,"Unemployment Rate in Albuquerque, NM (MSA)"
-LAUMT553154000000003A,"Unemployment Rate in Madison, WI (MSA)"
-LAUMT064014000000003A,"Unemployment Rate in Riverside-San Bernardino-Ontario, CA (MSA)"
-LAUMT472894000000003A,"Unemployment Rate in Knoxville, TN (MSA)"
-FASURN,"Unemployment Rate in Fayetteville-Springdale-Rogers, AR-MO (MSA)"
-LAUMT052222000000003A,"Unemployment Rate in Fayetteville-Springdale-Rogers, AR-MO (MSA)"
+LRUN74TTFRA156S,Unemployment Rate: Aged 15-74: All Persons for France
+LAUMT481242000000003A,"Unemployment Rate in Austin-Round Rock, TX (MSA)"
+LAUMT481910000000003A,"Unemployment Rate in Dallas-Fort Worth-Arlington, TX (MSA)"
+LRUN64TTITA156S,Unemployment Rate: Aged 15-64: All Persons for Italy
+NAPL912URN,"Unemployment Rate in Naples-Immokalee-Marco Island, FL (MSA)"
+GRAN238URN,"Unemployment Rate in Grand Forks, ND-MN (MSA)"
+LRHUTTTTAUM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
+LRHUTTTTAUA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
+LRHUTTTTAUA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
+LRUNTTTTJPA156N,Unemployment Rate: Aged 15 and Over: All Persons for Japan
+DCURN,Unemployment Rate in the District of Columbia
+SCRA542UR,"Unemployment Rate in Scranton--Wilkes-Barre--Hazleton, PA (MSA)"
+LAUMT391938000000003A,"Unemployment Rate in Dayton, OH (MSA)"
+LRUN64TTCAQ156S,Unemployment Rate: Aged 15-64: All Persons for Canada
+LRHUTTTTIEA156N,Harmonized Unemployment Rate: Total: All Persons for Ireland
+LAUMT403642000000003A,"Unemployment Rate in Oklahoma City, OK (MSA)"
+LRUN64TTFIA156N,Unemployment Rate: Aged 15-64: All Persons for Finland
+AUGU213UR,"Unemployment Rate in Augusta-Richmond County, GA-SC (MSA)"
+LAUMT484738000000003A,"Unemployment Rate in Waco, TX (MSA)"
+LRUNTTTTAUA156N,Unemployment Rate: Aged 15 and over: All Persons for Australia
+LAUMT373958000000003A,"Unemployment Rate in Raleigh, NC (MSA)"
+LAUMT064194000000003A,"Unemployment Rate in San Jose-Sunnyvale-Santa Clara, CA (MSA)"
+ELPA348UR,"Unemployment Rate in El Paso, TX (MSA)"
+DAYT339UR,"Unemployment Rate in Dayton, OH (MSA)"
+COLO808URN,"Unemployment Rate in Colorado Springs, CO (MSA)"
 AKRO439UR,"Unemployment Rate in Akron, OH (MSA)"
-LRHUTTTTGBA156N,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
-LRUN64TTGRQ156N,Unemployment Rate: Aged 15-64: All Persons for Greece
-LMUNRRTTBEA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Belgium
-LAUCN060130000000003A,"Unemployment Rate in Contra Costa County, CA"
-LMUNRRTTBEM156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Belgium
-LMUNRRTTBEQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Belgium
+BATO922UR,"Unemployment Rate in Baton Rouge, LA (MSA)"
+TULS140UR,"Unemployment Rate in Tulsa, OK (MSA)"
+LAUCN060850000000003A,"Unemployment Rate in Santa Clara County, CA"
+LUBB148URN,"Unemployment Rate in Lubbock, TX (MSA)"
+LRHUTTTTNLQ156N,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
+LRUN64TTPTQ156N,Unemployment Rate: Aged 15-64: All Persons for Portugal
+LRHUTTTTFIQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Finland
+LAUCN120950000000003A,"Unemployment Rate in Orange County, FL"
+LAUCN361030000000003A,"Unemployment Rate in Suffolk County, NY"
 LRHUTTTTMXQ156S,Harmonized Unemployment Rate: Total: All Persons for Mexico
+LRHUTTTTNLM156N,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
+LRHUTTTTNLA156N,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
+LRHUTTTTMXA156N,Harmonized Unemployment Rate: Total: All Persons for Mexico
 LRHUTTTTMXA156S,Harmonized Unemployment Rate: Total: All Persons for Mexico
+LRUN64TTPTA156N,Unemployment Rate: Aged 15-64: All Persons for Portugal
 LRHUTTTTMXQ156N,Harmonized Unemployment Rate: Total: All Persons for Mexico
-LRUNTTTTGBQ156N,Unemployment Rate: Aged 15 and Over: All Persons for the United Kingdom
-LRUNTTTTGBA156N,Unemployment Rate: Aged 15 and Over: All Persons for the United Kingdom
-LRUNTTTTGBA156S,Unemployment Rate: Aged 15 and Over: All Persons for the United Kingdom
-LRUN64TTEZA156N,Unemployment Rate: Aged 15-64: All Persons for the Euro Area (19 Countries)
-LRUN64TTEZQ156N,Unemployment Rate: Aged 15-64: All Persons for the Euro Area (19 Countries)
-LRUN64TTEZA156S,Unemployment Rate: Aged 15-64: All Persons for the Euro Area (19 Countries)
-LAUCN295100000000003A,"Unemployment Rate in St. Louis City, MO"
-LAUCN120570000000003A,"Unemployment Rate in Hillsborough County, FL"
-LAUCN391130000000003A,"Unemployment Rate in Montgomery County, OH"
+LRUN64TTPTA156S,Unemployment Rate: Aged 15-64: All Persons for Portugal
+LRHUTTTTDKA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Denmark
+LRHUTTTTFIM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Finland
+LRUN64TTIEQ156N,Unemployment Rate: Aged 15-64: All Persons for Ireland
+LRHUTTTTFIA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Finland
+LRHUTTTTFIA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Finland
+LRHUTTTTDKQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Denmark
+LRUN64TTIEA156N,Unemployment Rate: Aged 15-64: All Persons for Ireland
+LRUN64TTBEQ156N,Unemployment Rate: Aged 15-64: All Persons for Belgium
+LRHUTTTTDKA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Denmark
+LRUN64TTIEA156S,Unemployment Rate: Aged 15-64: All Persons for Ireland
 LAUCN370630000000003A,"Unemployment Rate in Durham County, NC"
-LRUN64TTGBA156N,Unemployment Rate: Aged 15-64: All Persons for the United Kingdom
-LAUCN481210000000003A,"Unemployment Rate in Denton County, TX"
-LAUCN060410000000003A,"Unemployment Rate in Marin County, CA"
-LAUCN261390000000003A,"Unemployment Rate in Ottawa County, MI"
-LAUMT223538000000003A,"Unemployment Rate in New Orleans-Metairie, LA (MSA)"
+LRHUTTTTDKM156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Denmark
+LAUCN371290000000003A,"Unemployment Rate in New Hanover County, NC"
+LAUCN150090000000003A,"Unemployment Rate in Maui County, HI"
+LAUCN450190000000003A,"Unemployment Rate in Charleston County, SC"
+LAUCN121150000000003A,"Unemployment Rate in Sarasota County, FL"
+LRHUTTTTNLA156S,Harmonized Unemployment Rate: Total: All Persons for the Netherlands
+LAUCN360010000000003A,"Unemployment Rate in Albany County, NY"
+LRUN64TTBEA156N,Unemployment Rate: Aged 15-64: All Persons for Belgium
+LAUCN484530000000003A,"Unemployment Rate in Travis County, TX"
+LAUCN120710000000003A,"Unemployment Rate in Lee County, FL"
+LAUCN390610000000003A,"Unemployment Rate in Hamilton County, OH"
+LAUCN120090000000003A,"Unemployment Rate in Brevard County, FL"
+LAUCN530150000000003A,"Unemployment Rate in Cowlitz County, WA"
+LAUMT204862000000003A,"Unemployment Rate in Wichita, KS (MSA)"
 LAUMT371170000000003A,"Unemployment Rate in Asheville, NC (MSA)"
-SHRE322UR,"Unemployment Rate in Shreveport-Bossier City, LA (MSA)"
-LAUMT224334000000003A,"Unemployment Rate in Shreveport-Bossier City, LA (MSA)"
+LAUMT483118000000003A,"Unemployment Rate in Lubbock, TX (MSA)"
+LAUMT221294000000003A,"Unemployment Rate in Baton Rouge, LA (MSA)"
+FORT018UR,"Unemployment Rate in Fort Wayne, IN (MSA)"
+LAUMT182306000000003A,"Unemployment Rate in Fort Wayne, IN (MSA)"
+TALL212URN,"Unemployment Rate in Tallahassee, FL (MSA)"
+LAUMT423798000000003A,"Unemployment Rate in Philadelphia-Camden-Wilmington, PA-NJ-DE-MD (MSA)"
+LAUMT081782000000003A,"Unemployment Rate in Colorado Springs, CO (MSA)"
+WACO348UR,"Unemployment Rate in Waco, TX (MSA)"
+LAUMT131226000000003A,"Unemployment Rate in Augusta-Richmond County, GA-SC (MSA)"
+LAUMT372466000000003A,"Unemployment Rate in Greensboro-High Point, NC (MSA)"
+LAUMT161426000000003A,"Unemployment Rate in Boise City, ID (MSA)"
+LAUMT424254000000003A,"Unemployment Rate in Scranton--Wilkes-Barre--Hazleton, PA (MSA)"
+LAUCN390350000000003A,"Unemployment Rate in Cuyahoga County, OH"
+LAUCN550250000000003A,"Unemployment Rate in Dane County, WI"
+LAUCN010010000000003A,"Unemployment Rate in Autauga County, AL"
+LAUCN530110000000003A,"Unemployment Rate in Clark County, WA"
+LRUNTTTTGBA156N,Unemployment Rate: Aged 15 and Over: All Persons for the United Kingdom
+LRUNTTTTFRQ156N,Unemployment Rate: Aged 15 and Over: All Persons for France
+LRUNTTTTFRA156S,Unemployment Rate: Aged 15 and Over: All Persons for France
+LRUNTTTTNLQ156N,Unemployment Rate: Aged 15 and Over: All Persons for the Netherlands
+LRUNTTTTNLA156N,Unemployment Rate: Aged 15 and Over: All Persons for the Netherlands
+LRUNTTTTNZQ156N,Unemployment Rate: Aged 15 and Over: All Persons for New Zealand
+LRUNTTTTNZA156S,Unemployment Rate: Aged 15 and Over: All Persons for New Zealand
+LRUNTTTTNZA156N,Unemployment Rate: Aged 15 and Over: All Persons for New Zealand
+LRUNTTTTGBQ156N,Unemployment Rate: Aged 15 and Over: All Persons for the United Kingdom
+LRUNTTTTGBA156S,Unemployment Rate: Aged 15 and Over: All Persons for the United Kingdom
+LAUCN390490000000003A,"Unemployment Rate in Franklin County, OH"
+LAUCN260810000000003A,"Unemployment Rate in Kent County, MI"
+LAUCN010890000000003A,"Unemployment Rate in Madison County, AL"
+LAUCN371190000000003A,"Unemployment Rate in Mecklenburg County, NC"
+LAUCN471570000000003A,"Unemployment Rate in Shelby County, TN"
+LAUCN470370000000003A,"Unemployment Rate in Davidson County, TN"
+LAUCN220710000000003A,"Unemployment Rate in Orleans Parish, LA"
+LAUCN060810000000003A,"Unemployment Rate in San Mateo County, CA"
+LAUCN090030000000003A,"Unemployment Rate in Hartford County, CT"
+LRUNTTTTFRA156N,Unemployment Rate: Aged 15 and Over: All Persons for France
+LMUNRRTTNOM156N,Registered Unemployment Rate for Norway
+LAUMT553334000000003A,"Unemployment Rate in Milwaukee-Waukesha-West Allis, WI (MSA)"
+LRUN64TTESQ156N,Unemployment Rate: Aged 15-64: All Persons for Spain
+LAUMT123310000000003A,"Unemployment Rate in Miami-Fort Lauderdale-West Palm Beach, FL (MSA)"
+LAUMT413890000000003A,"Unemployment Rate in Portland-Vancouver-Hillsboro, OR-WA (MSA)"
+LNU04000036,Unemployment Rate - 20-24 Yrs.
+LAUCN120990000000003A,"Unemployment Rate in Palm Beach County, FL"
+LAUCN360050000000003A,"Unemployment Rate in Bronx County, NY"
+LAUCN060430000000003A,"Unemployment Rate in Mariposa County, CA"
+LAUCN060650000000003A,"Unemployment Rate in Riverside County, CA"
+LRUN64TTESA156S,Unemployment Rate: Aged 15-64: All Persons for Spain
+LMUNRRTTGBA156N,Registered Unemployment Rate for the United Kingdom
+LMUNRRTTPLQ156N,Registered Unemployment Rate for Poland
+LMUNRRTTGBA156S,Registered Unemployment Rate for the United Kingdom
+LMUNRRTTNOA156N,Registered Unemployment Rate for Norway
+LMUNRRTTNOA156S,Registered Unemployment Rate for Norway
+LAUMT064186000000003A,"Unemployment Rate in San Francisco-Oakland-Hayward, CA (MSA)"
+LAUMT182690000000003A,"Unemployment Rate in Indianapolis-Carmel-Anderson, IN (MSA)"
+LAUCN180390000000003A,"Unemployment Rate in Elkhart County, IN"
+LRHUTTTTEUA156S,Harmonized Unemployment Rate: Total: All Persons for the European Union
+LRHUTTTTEUQ156N,Harmonized Unemployment Rate: Total: All Persons for the European Union
+LAUMT364038000000003A,"Unemployment Rate in Rochester, NY (MSA)"
+LMUNRRTTPLA156S,Registered Unemployment Rate for Poland
+LRHUTTTTIEA156S,Harmonized Unemployment Rate: Total: All Persons for Ireland
+LRUNTTTTJPM156N,Unemployment Rate: Aged 15 and Over: All Persons for Japan
+LAUMT262434000000003A,"Unemployment Rate in Grand Rapids-Wyoming, MI (MSA)"
+LAUMT473282000000003A,"Unemployment Rate in Memphis, TN-MS-AR (MSA)"
 LAUMT404614000000003A,"Unemployment Rate in Tulsa, OK (MSA)"
-LAUMT313654000000003A,"Unemployment Rate in Omaha-Council Bluffs, NE-IA (MSA)"
-LRHUTTTTJPM156N,Harmonized Unemployment Rate: Total: All Persons for Japan
+LAUMT371674000000003A,"Unemployment Rate in Charlotte-Concord-Gastonia, NC-SC (MSA)"
+LAUCN530330000000003A,"Unemployment Rate in King County, WA"
+LAUCN040130000000003A,"Unemployment Rate in Maricopa County, AZ"
+LAUCN060670000000003A,"Unemployment Rate in Sacramento County, CA"
+LRUNTTTTJPA156S,Unemployment Rate: Aged 15 and Over: All Persons for Japan
+LRUNTTTTJPQ156N,Unemployment Rate: Aged 15 and Over: All Persons for Japan
+LMUNRRTTPLA156N,Registered Unemployment Rate for Poland
+LRUNTTTTJPQ156S,Unemployment Rate: Aged 15 and Over: All Persons for Japan
+LRUN64TTSEA156S,Unemployment Rate: Aged 15-64: All Persons for Sweden
+LRUN64TTSEQ156N,Unemployment Rate: Aged 15-64: All Persons for Sweden
+LRHUTTTTJPQ156N,Harmonized Unemployment Rate: Total: All Persons for Japan
 LRHUTTTTJPA156S,Harmonized Unemployment Rate: Total: All Persons for Japan
 LRHUTTTTJPA156N,Harmonized Unemployment Rate: Total: All Persons for Japan
-LAUMT371674000000003A,"Unemployment Rate in Charlotte-Concord-Gastonia, NC-SC (MSA)"
+LRHUTTTTJPQ156S,Harmonized Unemployment Rate: Total: All Persons for Japan
+LMUNRRTTPLM156N,Registered Unemployment Rate for Poland
+LRHUTTTTEUM156N,Harmonized Unemployment Rate: Total: All Persons for the European Union
+LRHUTTTTEUA156N,Harmonized Unemployment Rate: Total: All Persons for the European Union
+LRUN64TTTRA156N,Unemployment Rate: Aged 15-64: All Persons for Turkey
+LRUNTTTTKRQ156N,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
+LAUCN060730000000003A,"Unemployment Rate in San Diego County, CA"
+LRUN64TTZAA156S,Unemployment Rate: Aged 15-64: All Persons for South Africa
+LRUN64TTZAQ156N,Unemployment Rate: Aged 15-64: All Persons for South Africa
+LRUN64TTZAA156N,Unemployment Rate: Aged 15-64: All Persons for South Africa
+LRHUTTTTAUQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Australia
+LAUMT122726000000003A,"Unemployment Rate in Jacksonville, FL (MSA)"
+LRUNTTTTKRM156N,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
+LRUNTTTTKRA156S,Unemployment Rate: Aged 15 and Over: All Persons for the Republic of Korea
+LRUN64TTITA156N,Unemployment Rate: Aged 15-64: All Persons for Italy
+LRUN64TTTRQ156N,Unemployment Rate: Aged 15-64: All Persons for Turkey
+LAUMT261982000000003A,"Unemployment Rate in Detroit-Warren-Dearborn, MI (MSA)"
+LAUMT482642000000003A,"Unemployment Rate in Houston-The Woodlands-Sugar Land, TX (MSA)"
+LRHUTTTTESQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
+LRHUTTTTESA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Spain
+LRHUTTTTGBA156N,Harmonized Unemployment Rate: Total: All Persons for the United Kingdom
+LRHUTTTTDEQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Germany
+LRHUTTTTFRQ156N,Harmonized Unemployment Rate: Total: All Persons for France
+LRHUTTTTFRA156N,Harmonized Unemployment Rate: Total: All Persons for France
+LAUMT294118000000003A,"Unemployment Rate in St. Louis, MO-IL (MSA)"
+LRHUTTTTSEA156S,Harmonized Unemployment Rate: Total: All Persons for Sweden
+LRHUTTTTSEA156N,Harmonized Unemployment Rate: Total: All Persons for Sweden
+LRHUTTTTSEQ156N,Harmonized Unemployment Rate: Total: All Persons for Sweden
+LAUMT391746000000003A,"Unemployment Rate in Cleveland-Elyria, OH (MSA)"
+LAUCN245100000000003A,"Unemployment Rate in Baltimore City, MD"
+LAUCN060010000000003A,"Unemployment Rate in Alameda County, CA"
+LNU04024887,Unemployment Rate - 16-24 Yrs.
+LAUMT391714000000003A,"Unemployment Rate in Cincinnati, OH-KY-IN (MSA)"
 LAUMT292814000000003A,"Unemployment Rate in Kansas City, MO-KS (MSA)"
-CWSTURN,Unemployment Rate in West Census Region
+LAUMT484170000000003A,"Unemployment Rate in San Antonio-New Braunfels, TX (MSA)"
+LMUNRRTTCHQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Switzerland
+LNU04000018,"Unemployment Rate - 16-19 Yrs., Black or African American"
+LRUNTTTTMXM156N,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
+LRUNTTTTMXA156S,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
+LRUNTTTTMXA156N,Unemployment Rate: Aged 15 and Over: All Persons for Mexico
+LAUMT322982000000003A,"Unemployment Rate in Las Vegas-Henderson-Paradise, NV (MSA)"
+LRUN64TTGRA156S,Unemployment Rate: Aged 15-64: All Persons for Greece
+LRUN64TTGRQ156N,Unemployment Rate: Aged 15-64: All Persons for Greece
+LAUCN060590000000003A,"Unemployment Rate in Orange County, CA"
+LRUN64TTGBA156N,Unemployment Rate: Aged 15-64: All Persons for the United Kingdom
+LRHUTTTTIEQ156S,Harmonized Unemployment Rate: Total: All Persons for Ireland
+LRHUTTTTIEM156N,Harmonized Unemployment Rate: Total: All Persons for Ireland
+LAUMT394966000000003A,"Unemployment Rate in Youngstown-Warren-Boardman, OH-PA (MSA)"
+LAUCN120110000000003A,"Unemployment Rate in Broward County, FL"
+LRHUTTTTCAQ156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
+LRHUTTTTGRQ156N,Harmonized Unemployment Rate: Total: All Persons for Greece
+LRHUTTTTGRA156S,Harmonized Unemployment Rate: Total: All Persons for Greece
+LRHUTTTTGRA156N,Harmonized Unemployment Rate: Total: All Persons for Greece
+LRHUTTTTGRM156N,Harmonized Unemployment Rate: Total: All Persons for Greece
+LAUMT472894000000003A,"Unemployment Rate in Knoxville, TN (MSA)"
+LAUMT323990000000003A,"Unemployment Rate in Reno, NV (MSA)"
+LAUCN121270000000003A,"Unemployment Rate in Volusia County, FL"
+LAUCN120570000000003A,"Unemployment Rate in Hillsborough County, FL"
+LRHUTTTTCAQ156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
+LAUCN360470000000003A,"Unemployment Rate in Kings County, NY"
+LAUCN180970000000003A,"Unemployment Rate in Marion County, IN"
+LRUNTTTTCLA156S,Unemployment Rate: Aged 15 and over: All Persons for Chile
+LRUNTTTTCLQ156N,Unemployment Rate: Aged 15 and over: All Persons for Chile
+LRUNTTTTCLM156N,Unemployment Rate: Aged 15 and over: All Persons for Chile
+LRHUTTTTHUA156N,Harmonized Unemployment Rate: Total: All Persons for Hungary
+LRHUTTTTHUA156S,Harmonized Unemployment Rate: Total: All Persons for Hungary
+LRHUTTTTHUQ156N,Harmonized Unemployment Rate: Total: All Persons for Hungary
+LRHUTTTTCAA156N,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
+LRHUTTTTCAA156S,Harmonised Unemployment - Monthly Rates: Total: All Persons for Canada
+LRHUTTTTIEQ156N,Harmonized Unemployment Rate: Total: All Persons for Ireland
+LAUCN080310000000003A,"Unemployment Rate in Denver County/City, CO"
+LAUMT064014000000003A,"Unemployment Rate in Riverside-San Bernardino-Ontario, CA (MSA)"
+LRUN24TTUSA156N,Unemployment Rate: Aged 15-24: All Persons for the United States
+LRUN24TTUSA156S,Unemployment Rate: Aged 15-24: All Persons for the United States
+LRUN24TTUSM156N,Unemployment Rate: Aged 15-24: All Persons for the United States
+LRUN24TTUSQ156N,Unemployment Rate: Aged 15-24: All Persons for the United States
+LRUN24TTUSQ156S,Unemployment Rate: Aged 15-24: All Persons for the United States
+LAUCN121030000000003A,"Unemployment Rate in Pinellas County, FL"
+LAURD920000000000003A,Unemployment Rate in Midwest Census Region
+LAUCN480850000000003A,"Unemployment Rate in Collin County, TX"
+LRUN64TTFRQ156N,Unemployment Rate: Aged 15-64: All Persons for France
+LAUCN360870000000003A,"Unemployment Rate in Rockland County, NY"
+LAURD910000000000003A,Unemployment Rate in Northeast Census Region
+LAUCN530630000000003A,"Unemployment Rate in Spokane County, WA"
+LRUN64TTEZA156S,Unemployment Rate: Aged 15-64: All Persons for the Euro Area (19 Countries)
+LRUN64TTEZQ156N,Unemployment Rate: Aged 15-64: All Persons for the Euro Area (19 Countries)
+LRUN64TTCHQ156N,Unemployment Rate: Aged 15-64: All Persons for Switzerland
+LRUN64TTFRA156N,Unemployment Rate: Aged 15-64: All Persons for France
+LRUN64TTFRA156S,Unemployment Rate: Aged 15-64: All Persons for France
+LRHUTTTTHUQ156S,Harmonized Unemployment Rate: Total: All Persons for Hungary
+LAUMT052222000000003A,"Unemployment Rate in Fayetteville-Springdale-Rogers, AR-MO (MSA)"
+LAUMT351074000000003A,"Unemployment Rate in Albuquerque, NM (MSA)"
+LRUN64TTDEQ156N,Unemployment Rate: Aged 15-64: All Persons for Germany
+LAUCN360610000000003A,"Unemployment Rate in New York County, NY"
+LAUCN482010000000003A,"Unemployment Rate in Harris County, TX"
+LAUCN510590000000003A,"Unemployment Rate in Fairfax County, VA"
+LAUCN060190000000003A,"Unemployment Rate in Fresno County, CA"
+LRUNTTTTAUM156N,Unemployment Rate: Aged 15 and over: All Persons for Australia
+LRUNTTTTAUQ156N,Unemployment Rate: Aged 15 and over: All Persons for Australia
+LRUNTTTTAUA156S,Unemployment Rate: Aged 15 and over: All Persons for Australia
+LRUN64TTDEA156N,Unemployment Rate: Aged 15-64: All Persons for Germany
+LRUN64TTDEA156S,Unemployment Rate: Aged 15-64: All Persons for Germany
+LRUNTTTTUSQ156N,Unemployment Rate: Aged 15 and Over: All Persons for the United States
+LAUMT361538000000003A,"Unemployment Rate in Buffalo-Cheektowaga-Niagara Falls, NY (MSA)"
+LAUCN131210000000003A,"Unemployment Rate in Fulton County, GA"
+LRUN64TTKRQ156N,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
+LRUN64TTKRQ156S,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
+LRUN64TTKRM156N,Unemployment Rate: Aged 15-64: All Persons for the Republic of Korea
+LRUN64TTFIA156S,Unemployment Rate: Aged 15-64: All Persons for Finland
+LRUN64TTCAQ156N,Unemployment Rate: Aged 15-64: All Persons for Canada
+LRUN64TTCAM156N,Unemployment Rate: Aged 15-64: All Persons for Canada
+LAUCN240330000000003A,"Unemployment Rate in Prince George's County, MD"
+LAUCN240310000000003A,"Unemployment Rate in Montgomery County, MD"
+LAUCN481130000000003A,"Unemployment Rate in Dallas County, TX"
+LAUMT482134000000003A,"Unemployment Rate in El Paso, TX (MSA)"
+LRUNTTTTUSA156N,Unemployment Rate: Aged 15 and Over: All Persons for the United States
+LRUNTTTTUSM156N,Unemployment Rate: Aged 15 and Over: All Persons for the United States
+LAUMT514006000000003A,"Unemployment Rate in Richmond, VA (MSA)"
+LAUMT313654000000003A,"Unemployment Rate in Omaha-Council Bluffs, NE-IA (MSA)"
+LRHUTTTTUSA156S,Harmonized Unemployment Rate: Total: All Persons for the United States
+LRHUTTTTUSA156N,Harmonized Unemployment Rate: Total: All Persons for the United States
+LRHUTTTTUSQ156N,Harmonized Unemployment Rate: Total: All Persons for the United States
+LAUCN261250000000003A,"Unemployment Rate in Oakland County, MI"
+LAUCN291890000000003A,"Unemployment Rate in St. Louis County, MO"
+LAUCN261630000000003A,"Unemployment Rate in Wayne County, MI"
+LAUCN060710000000003A,"Unemployment Rate in San Bernardino County, CA"
+LAUCN320030000000003A,"Unemployment Rate in Clark County, NV"
+LRUN74TTRUQ156N,Unemployment Rate: Aged 15-74: All Persons for the Russian Federation
+LMUNRRTTATA156S,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
+LMUNRRTTATQ156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
+LMUNRRTTATM156N,Labour - Other Labour Market Measures: Registered Unemployment: Rate: Total for Austria
+LNU04024230,Unemployment Rate - 55 Yrs. & over
+LAURD930000000000003A,Unemployment Rate in South Census Region

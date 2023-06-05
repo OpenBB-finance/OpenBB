@@ -1,21 +1,51 @@
 ,GitHub,Company,Country,City,Founded,Raised [$M],Language,Stars,Forks,Stars AGR [%],Forks AGR [%],SG,FG
-0,builderio/partytown,Builder,USA,San Francisco,2018,17.3,TypeScript,6830,158,3104,16196,31.0,162.0
-1,tooljet/tooljet,ToolJet,India,Bengaluru,2021,1.6,JavaScript,8856,657,1656,1034,16.6,10.3
-2,gravitl/netmaker,Netmaker,USA,Asheville,2021,0.1,Go,3546,213,1422,1532,14.2,15.3
-3,supertokens/supertokens-core,SuperTokens,India,Mumbai,2019,1.5,Java,5343,180,1018,585,10.2,5.9
-4,safing/portmaster,Safing,Austria,Baden,2017,,Go,2429,80,1016,357,10.2,3.6
-5,medusajs/medusa,Medusa,Denmark,Copenhagen,2021,1.0,JavaScript,9833,500,863,1135,8.6,11.4
-6,amplication/amplication,Amplication,Israel,Tel Aviv,2020,6.6,TypeScript,6296,319,812,667,8.1,6.7
-7,charmbracelet/soft-serve,Charm,USA,New York,2019,3.0,Go,1831,33,729,1784,7.3,17.8
-8,withfig/autocomplete,Fig,USA,San Francisco,2020,2.4,TypeScript,14329,3425,716,486,7.2,4.9
-9,growthbook/growthbook,GrowthBook,USA,Palo Alto,2020,0.5,TypeScript,2791,109,503,824,5.0,8.2
-10,slint-ui/slint,Slint,Germany,Berlin,2020,,Rust,4115,122,470,483,4.7,4.8
-11,nhost/nhost,Nhost,Sweden,Stockholm,2019,3.1,TypeScript,2081,109,453,503,4.5,5.0
-12,mindsdb/mindsdb,MindsDB,USA,Berkeley,2017,7.9,Python,6384,670,437,104,4.4,1.0
-13,penpot/penpot,Penpot,Spain,Madrid,2019,,Clojure,9832,480,432,330,4.3,3.3
-14,remix-run/remix,Remix,USA,Salt Lake City,2020,3.0,TypeScript,14876,1112,391,1172,3.9,11.7
-15,orchest/orchest,Orchest,Netherlands,Rotterdam,2020,4.2,Python,2528,142,385,119,3.9,1.2
-16,coqui-ai/tts,Coqui,Germany,Berlin,2020,,Python,4394,439,381,763,3.8,7.6
-17,mattermost/focalboard,Mattermost,USA,Palo Alto,2015,70.0,TypeScript,10501,788,379,254,3.8,2.5
-18,prabhatsharma/zinc,Zinc,USA,San Francisco,2021,,Go,6687,290,376,421,3.8,4.2
-19,serverless-stack/serverless-stack,Serverless Stack,USA,San Francisco,2017,1.0,TypeScript,5821,454,351,1272,3.5,12.7
+0,builderio/qwik,Builder,USA,San Francisco,2018,17.3,TypeScript,14134,623,968,1528,9.7,15.3
+1,novuhq/novu,Novu,Israel,Tel Aviv,2021,6.6,TypeScript,16085,982,446,1111,4.5,11.1
+2,refinedev/refine,refine,Turkey,Istanbul,2022,1.0,TypeScript,6566,470,395,1017,4.0,10.2
+3,safing/portmaster,Safing,Austria,Baden,2017,,Go,5958,174,345,299,3.5,3.0
+4,nhost/nhost,Nhost,Sweden,Stockholm,2019,3.1,TypeScript,5460,286,300,442,3.0,4.4
+5,tooljet/tooljet,ToolJet,India,Bengaluru,2021,1.6,JavaScript,15559,1408,256,413,2.6,4.1
+6,gravitl/netmaker,Netmaker,USA,Asheville,2021,2.3,Go,5819,398,221,384,2.2,3.8
+7,icewhaletech/casaos,IceWhale Technology,China,Shanghai,2020,0.4,Go,8012,534,212,552,2.1,5.5
+8,penpot/penpot,Penpot,Spain,Madrid,2019,8.0,Clojure,19674,895,202,225,2.0,2.3
+9,mindsdb/mindsdb,MindsDB,USA,Berkeley,2017,7.9,Python,12182,1417,189,204,1.9,2.0
+10,zinclabs/zinc,ZincSearch,USA,San Francisco,2021,3.6,Go,13110,565,188,263,1.9,2.6
+11,medusajs/medusa,Medusa,Denmark,Copenhagen,2021,1.0,TypeScript,15893,1056,183,417,1.8,4.2
+12,quickwit-oss/quickwit,Quickwit,USA,San Francisco,2020,2.6,Rust,2857,145,181,259,1.8,2.6
+13,getumbrel/umbrel,Umbrel,India,,2020,3.0,Shell,3800,382,177,89,1.8,0.9
+14,nuxt/framework,NuxtLabs,France,Bordeaux,2017,2.0,TypeScript,11045,1167,175,457,1.8,4.6
+15,withastro/astro,Astro,USA,Oakland,2019,7.0,TypeScript,23814,1129,172,231,1.7,2.3
+16,supertokens/supertokens-core,SuperTokens,India,Mumbai,2019,1.5,Java,7793,268,165,185,1.7,1.9
+17,charmbracelet/soft-serve,Charm,USA,New York,2019,3.0,Go,2884,67,165,458,1.7,4.6
+18,obsidianmd/obsidian-releases,Obsidian,Canada,Oakville,2020,,JavaScript,3828,877,165,145,1.7,1.5
+19,serverless-stack/sst,SST,USA,San Francisco,2017,1.0,TypeScript,10593,895,164,391,1.6,3.9
+20,deepfence/threatmapper,Deepfence,USA,Palo Alto,2017,10.5,Go,2615,260,153,126,1.5,1.3
+21,coqui-ai/tts,Coqui,Germany,Berlin,2020,,Python,7519,851,152,319,1.5,3.2
+22,amplication/amplication,Amplication,Israel,Tel Aviv,2020,6.6,TypeScript,9140,762,150,420,1.5,4.2
+23,bytebase/bytebase,Bytebase,China,Shanghai,2021,3.0,Go,4593,304,150,267,1.5,2.7
+24,rustdesk/rustdesk,RustDesk,Singapore,Singapore,2020,,Rust,35185,3100,147,158,1.5,1.6
+25,withfig/autocomplete,Fig,USA,San Francisco,2020,2.4,TypeScript,20991,4797,146,153,1.5,1.5
+26,pipedreamhq/pipedream,Pipedream,USA,San Francisco,2019,22.0,JavaScript,5186,3769,143,219,1.4,2.2
+27,apify/crawlee,Apify,Czech Republic,Prague,2015,0.5,TypeScript,7371,331,133,63,1.3,0.6
+28,netbirdio/netbird,NetBird,Germany,Berlin,2022,0.2,Go,3977,141,128,231,1.3,2.3
+29,logseq/logseq,Logseq,China,Hangzhou,2020,,Clojure,19366,1168,126,165,1.3,1.7
+30,anchore/syft,Anchore,USA,Santa Barbara,2016,29.0,Go,3528,314,125,202,1.3,2.0
+31,openreplay/openreplay,OpenReplay,France,Paris,2018,6.2,Python,6652,305,124,248,1.2,2.5
+32,growthbook/growthbook,GrowthBook,USA,Palo Alto,2020,0.5,TypeScript,3959,226,121,364,1.2,3.6
+33,gildas-lormeau/singlefile,SEO4Ajax,France,Rennes,2015,,JavaScript,9865,710,120,85,1.2,0.9
+34,codesandbox/sandpack,CodeSandbox,Netherlands,Amsterdam,2017,15.1,TypeScript,2874,200,119,259,1.2,2.6
+35,appsmithorg/appsmith,Appsmith,India,Bengaluru ,2019,51.5,TypeScript,23750,2109,117,156,1.2,1.6
+36,livekit/livekit,LiveKit,USA,San Francisco,2021,7.0,Go,4356,331,116,186,1.2,1.9
+37,appflowy-io/appflowy,AppFlowy,USA,San Francisco,2021,,Dart,30517,1733,115,224,1.2,2.2
+38,orchest/orchest,Orchest,Netherlands,Rotterdam,2020,4.2,Python,3616,213,111,105,1.1,1.1
+39,openbb-finance/openbbterminal,OpenBB,USA,Franconia,2021,8.5,Python,18516,1928,110,125,1.1,1.3
+40,budibase/budibase,Budibase,UK,Belfast,2020,9.2,TypeScript,16843,1020,105,174,1.1,1.7
+41,slint-ui/slint,Slint,Germany,Berlin,2020,,Rust,5457,175,104,160,1.0,1.6
+42,starrocks/starrocks,StarRocks,USA,San Francisco,2021,,Java,3749,819,103,175,1.0,1.8
+43,dailydotdev/daily,daily.dev,Israel,Tel Aviv,2020,,,9839,341,103,75,1.0,0.8
+44,signoz/signoz,Signoz,India,Bengaluru,2020,,TypeScript,10882,578,98,107,1.0,1.1
+45,mattermost/focalboard,Mattermost,USA,Palo Alto,2015,70.0,TypeScript,13973,1132,96,125,1.0,1.3
+46,automaapp/automa,Automa,Indonesia,Jakarta,2021,,Vue,6030,580,95,153,1.0,1.5
+47,projectdiscovery/interactsh,Project Discovery,India,Mumbai,2019,26.7,Go,2080,256,92,134,0.9,1.3
+48,appwrite/appwrite,Appwrite,Israel,Tel Aviv,2019,,TypeScript,28135,2332,91,100,0.9,1.0
+49,dendronhq/dendron,Dendron,USA,Seattle,2019,2.0,TypeScript,5031,188,89,92,0.9,0.9

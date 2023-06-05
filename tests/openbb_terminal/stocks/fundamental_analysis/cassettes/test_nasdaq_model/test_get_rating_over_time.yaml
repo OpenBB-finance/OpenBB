@@ -1,0 +1,73 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.nasdaq.com/api/company/TSLA/sec-filings?IsQuoteMedia=true&Year=2020&formGroup=Annual+Reports&limit=20&sortColumn=filed&sortOrder=desc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAM1WbW/aMBD+K5Glok1JyAsUKBKaUigdKi0vYVulqh8MMW00Y6e2U0CI/75zAlXT
+        qlq1FakfSM7ne3vOzzlsUIQVRs0NkuvFlFPURJOwHyALKa4wHZMZF5FETc9CFCsiFWrebECcEm3q
+        ufYFmD5imhJY3iuVyKbj4CQpP6RckQWJYlye8YWjszgRXzLKcdSNaczuvi3JdIGlIqIXtU7cql8p
+        CTJveV7dd91avVZS64S0vk8u+6W8tpaurATREszWV3hBWhMiKTZ7bFYuzblYTLSDrilbdYiciThR
+        MWetgLEUU1OQhAtlJqmQKWbKVNwMyUxbmF7F5ML0jo/8RnTkn5SgYAJ1kqjlu37Fdj274qGtVcA+
+        OgB2163Xa41/xz56hf2cMCIAvNbrh/mQYgGZ6XrXD2mmLCLifa3wbUjiV9H21kL3BIOf1Ox5Vhk0
+        o52vjGxpoX19sNMF0chkUOuYWpe9LZQQEXOtGOYCNDcmS1j/1K9t5gB1DzJYMiPineBpAhYBpbs8
+        Kstzc6uP6mk3O31jnKMtGu45HIxDVHAa7bv0tt+o6DEUfBUTaWAWGT0250aosOYBe+U7vPaqQe0c
+        tJ2zrgFyLgVaKoTsMRlDi42JwEziWQ68GKsK6wr8wrbhVc6dFwEa9gXUr0c3euEHO0XTMbmLpRJY
+        J3m79ND2dDLb0zVX/eqpzt/9NcyUjWJEoIEOYfSJUponxUhXAyNoT0D5Y9gfBB0Q2oPx+CwcQhAg
+        l+DL/IyL1Mpob2jag0POX5inwRI4DrtFsu2Ods8z13e8igMcdp+T7YlmG5jhBe3H7PfHjXO13mh4
+        J/8xzh9+lbm2CyOsCRPx2QHBdgbtT4Q1ieYHxDrsdD8R1tVUvMIav8Qq0ySh2YA78wypdGL4CKzK
+        yX3yPtDXp+O/sPnId9+NG2xz5CDssYOoODx2+EHyKvDgQkvHX6Kvb3UghhbQNmcK4OUTvqLygOd/
+        3Q8/0/mfChqm0w6faezbLVzJaEGkxHdwJ7KUUgtJuN3T7Lst2jwCNfzjstBUy5dFy4g8Esrhsizo
+        t9s/ie2KSTgKAAA=
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '809'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 13 Apr 2023 12:16:19 GMT
+      Expires:
+      - Thu, 13 Apr 2023 12:16:19 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - ak_bmsc=E791E1EC53F3760DC538C1BE44F88D36~000000000000000000000000000000~YAAQGFUQYABWFnOHAQAAWI+LehOvntfK2SKzPxANIyI2GTV9vS1CsuU3muqjf6nex3NsRfylTwStFxFU2antSz5B9QOhTXQ+l9kZaw/EYisPRhdnP3s7kGBoT0u7uJzxjRjs2oh1nKSoN2KGVQKq5hsDoMWVTkey/+nRZgGTLkJTt5iW3Rc8G60J8GZ3z8zHQQsTn82FMnrf//0jTraD/JOKBKOyH/3CLGZuQeWcw0eI1w4Gwg91jpRiU4i/9Ynirm+CWZrX4YuFLzjAGGiQAimixIuISMXYQ3BGIswTofj07eZCuZ7oqm6KRPEuHBrwIHBht7JL42gq9A6bECmJPVn2n1CyAbBwW94M846S+5nN1YMcdxg37CMJTvWEqg==;
+        Domain=.nasdaq.com; Path=/; Expires=Thu, 13 Apr 2023 14:16:18 GMT; Max-Age=7199;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '29'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '439'
+      gid:
+      - '103'
+      lang:
+      - en
+      rid:
+      - e75a1d91-66cc-4695-ba56-d5fb3d7b0e4b
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -7,20 +7,20 @@ interactions:
       Host:
       - financialmodelingprep.com
       User-Agent:
-      - Python-urllib/3.9
+      - Python-urllib/3.10
     method: GET
     uri: https://financialmodelingprep.com/api/v3/quote/GME?apikey=MOCK_API_KEY
   response:
     body:
       string: "[\n  {\n    \"symbol\": \"GME\",\n    \"name\": \"GameStop Corp.\",\n
-        \   \"price\": 21.87,\n    \"changesPercentage\": 2.9177,\n    \"change\":
-        0.62,\n    \"dayLow\": 21.3,\n    \"dayHigh\": 22.05,\n    \"yearHigh\": 49.8525,\n
-        \   \"yearLow\": 15.41,\n    \"marketCap\": 6661120510,\n    \"priceAvg50\":
-        21.7288,\n    \"priceAvg200\": 28.340763,\n    \"exchange\": \"NYSE\",\n    \"volume\":
-        3088223,\n    \"avgVolume\": 4894362,\n    \"open\": 21.41,\n    \"previousClose\":
-        21.25,\n    \"eps\": -6.292,\n    \"pe\": -3.48,\n    \"earningsAnnouncement\":
-        \"2023-03-15T10:59:00.000+0000\",\n    \"sharesOutstanding\": 304577984,\n
-        \   \"timestamp\": 1675198814\n  }\n]"
+        \   \"price\": 18.55,\n    \"changesPercentage\": -3.8362,\n    \"change\":
+        -0.74,\n    \"dayLow\": 18.46,\n    \"dayHigh\": 19.25,\n    \"yearHigh\":
+        47.99,\n    \"yearLow\": 15.41,\n    \"marketCap\": 5651721398,\n    \"priceAvg50\":
+        20.2712,\n    \"priceAvg200\": 25.07525,\n    \"exchange\": \"NYSE\",\n    \"volume\":
+        2337859,\n    \"avgVolume\": 4985721,\n    \"open\": 19.16,\n    \"previousClose\":
+        19.29,\n    \"eps\": -1.05,\n    \"pe\": -17.67,\n    \"earningsAnnouncement\":
+        \"2023-05-30T10:59:00.000+0000\",\n    \"sharesOutstanding\": 304675008,\n
+        \   \"timestamp\": 1682971202\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -40,9 +40,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 01 Feb 2023 12:15:42 GMT
+      - Mon, 01 May 2023 22:58:54 GMT
       ETag:
-      - W/"24e-uSlHdwAYr3QAyWBVX2/udlyjuuA"
+      - W/"24e-XRtJPSt+45Q/tN8/AO8qQev8aT8"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

@@ -9,6 +9,62 @@ interactions:
       Connection:
       - keep-alive
     method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/EURUSD=X?interval=1d&range=1d
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"EURUSD=X","exchangeName":"CCY","instrumentType":"CURRENCY","firstTradeDate":1070236800,"regularMarketTime":1683048111,"gmtoffset":3600,"timezone":"BST","exchangeTimezoneName":"Europe/London","regularMarketPrice":1.1001,"chartPreviousClose":1.0978,"priceHint":4,"currentTradingPeriod":{"pre":{"timezone":"BST","end":1682982000,"start":1682982000,"gmtoffset":3600},"regular":{"timezone":"BST","end":1683068340,"start":1682982000,"gmtoffset":3600},"post":{"timezone":"BST","end":1683068340,"start":1683068340,"gmtoffset":3600}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1683048111],"indicators":{"quote":[{"low":[1.0946906805038452],"close":[1.1001100540161133],"volume":[0],"open":[1.0976948738098145],"high":[1.1008366346359253]}],"adjclose":[{"adjclose":[1.1001100540161133]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '3'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '935'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Tue, 02 May 2023 17:22:34 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '3'
+      x-request-id:
+      - 60cc9651-a9a7-4d60-ade6-b5a6c867d14f
+      x-yahoo-request-id:
+      - 25gig1ti52hmq
+      y-rid:
+      - 25gig1ti52hmq
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
     uri: https://query2.finance.yahoo.com/v8/finance/chart/EURUSD=X?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
@@ -29,7 +85,7 @@ interactions:
       Referrer-Policy:
       - no-referrer-when-downgrade
       Strict-Transport-Security:
-      - max-age=15552000
+      - max-age=31536000
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -41,21 +97,21 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 31 Jan 2023 14:15:44 GMT
+      - Tue, 02 May 2023 17:22:35 GMT
       server:
       - ATS
       vary:
       - Origin
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '1'
       x-request-id:
-      - 90afb8d9-2632-4d48-af5e-1136c9513d00
+      - b19387e4-7512-4837-af31-a537e013db65
       x-yahoo-request-id:
-      - 0uvbk5lhti8kg
+      - fq3pgsli52hmr
       y-rid:
-      - 0uvbk5lhti8kg
+      - fq3pgsli52hmr
     status:
       code: 400
       message: Bad Request

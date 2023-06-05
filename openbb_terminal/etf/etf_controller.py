@@ -5,22 +5,22 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import yfinance as yf
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import (
     financedatabase_view,
     fmp_view,
+    stockanalysis_model,
     stockanalysis_view,
 )
 from openbb_terminal.etf.discovery import disc_controller
-from openbb_terminal.etf.screener import screener_controller
 from openbb_terminal.etf.technical_analysis import ta_controller
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -77,7 +77,7 @@ class ETFController(BaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -86,7 +86,7 @@ class ETFController(BaseController):
         self.etf_holdings: List = list()
         self.TRY_RELOAD = True
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -260,8 +260,16 @@ class ETFController(BaseController):
 
             console.print(
                 f"Loading Daily data for {self.etf_name} with starting period {ns_parser.start.strftime('%Y-%m-%d')}.",
-                "\n",
             )
+
+            try:
+                self.etf_holdings = list(
+                    stockanalysis_model.get_etf_holdings(self.etf_name)[
+                        : ns_parser.limit
+                    ].index
+                )
+            except Exception as e:
+                console.print(f"Error: {e}")
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
@@ -462,6 +470,7 @@ class ETFController(BaseController):
             raw=True,
         )
         if ns_parser:
+            figure = None
             if not self.etf_name:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
                 return
@@ -494,14 +503,13 @@ class ETFController(BaseController):
                                 "greater than 1.[/red]\n"
                             )
 
-                stocks_helper.display_candle(
+                figure = stocks_helper.display_candle(
                     symbol=self.etf_name,
                     data=data,
-                    use_matplotlib=ns_parser.plotly,
-                    intraday=False,
                     add_trend=ns_parser.trendlines,
                     ma=mov_avgs,
                     asset_type="ETF",
+                    external_axes=True,
                 )
 
             export_data(
@@ -510,7 +518,10 @@ class ETFController(BaseController):
                 f"{self.etf_name}",
                 self.etf_data,
                 ns_parser.sheet_name,
+                figure=figure,
             )
+            if figure:
+                figure.show()  # type: ignore
 
     @log_start_end(log=logger)
     def call_weights(self, other_args: List[str]):
@@ -556,21 +567,31 @@ class ETFController(BaseController):
             console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
-    def call_ca(self, _):
+    def call_ca(self, other_args: List[str]):
         """Process ca command"""
-        if len(self.etf_holdings) > 0:
-            self.queue = ca_controller.ComparisonAnalysisController(
-                self.etf_holdings, self.queue
-            ).menu(custom_path_menu_above="/stocks/")
-        else:
-            console.print(
-                "Load a ticker with major holdings to compare them on this menu\n"
-            )
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ca",
+            description="Compare ETF's holdings with each other",
+        )
 
-    @log_start_end(log=logger)
-    def call_scr(self, _):
-        """Process scr command"""
-        self.queue = self.load_class(screener_controller.ScreenerController, self.queue)
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+        )
+
+        if ns_parser:
+            if len(self.etf_holdings) == 0:
+                console.print(
+                    "Load a ticker with major holdings to compare them on this menu\n"
+                )
+            elif len(self.etf_holdings) > 0:
+                self.queue = ca_controller.ComparisonAnalysisController(
+                    self.etf_holdings, self.queue
+                ).menu(custom_path_menu_above="/stocks/")
 
     @log_start_end(log=logger)
     def call_disc(self, _):

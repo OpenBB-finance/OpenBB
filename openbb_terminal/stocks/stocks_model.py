@@ -1,6 +1,7 @@
 import logging
 import os
 from datetime import datetime
+from typing import List
 from urllib.error import HTTPError
 
 import fundamentalanalysis as fa  # Financial Modeling Prep
@@ -9,7 +10,7 @@ import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 def load_stock_intrinio(
     symbol: str, start_date: datetime, end_date: datetime
 ) -> pd.DataFrame:
-    intrinio.ApiClient().set_api_key(cfg.API_INTRINIO_KEY)
+    intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)
     api = intrinio.SecurityApi()
     stock = api.get_security_stock_prices(
         symbol.upper(),
@@ -67,10 +68,13 @@ def load_stock_av(
     interval_min: str = "1min",
 ) -> pd.DataFrame:
     try:
-        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+        ts = TimeSeries(
+            key=get_current_user().credentials.API_KEY_ALPHAVANTAGE,
+            output_format="pandas",
+        )
         if interval == "Minute":
             df_stock_candidate: pd.DataFrame = ts.get_intraday(
-                symbol=symbol, interval=interval_min
+                symbol=symbol, interval=interval_min, outputsize="full"
             )[0]
         elif interval == "Daily":
             df_stock_candidate = ts.get_daily_adjusted(
@@ -99,15 +103,15 @@ def load_stock_av(
         console.print("No data found.")
         return pd.DataFrame()
 
-    df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
-
     df_stock_candidate.sort_index(ascending=True, inplace=True)
 
-    # Slice dataframe from the starting date YYYY-MM-DD selected
+    df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+
     df_stock_candidate = df_stock_candidate[
-        (df_stock_candidate.index >= start_date.strftime("%Y-%m-%d"))
-        & (df_stock_candidate.index <= end_date.strftime("%Y-%m-%d"))
+        (df_stock_candidate.index >= start_date)
+        & (df_stock_candidate.index <= end_date)
     ]
+
     return df_stock_candidate
 
 
@@ -129,6 +133,9 @@ def load_stock_yf(
         start_date = datetime(
             1970, 1, 2
         )  # 1 day buffer in case of timezone adjustments
+
+    # add 1 day to end_date to include the last day
+    end_date = end_date + pd.Timedelta(days=1)
 
     # Adding a dropna for weekly and monthly because these include weird NaN columns.
     df_stock_candidate = yf.download(
@@ -164,21 +171,31 @@ def load_stock_yf(
 
 
 def load_stock_eodhd(
-    symbol: str, start_date: datetime, end_date: datetime, weekly: bool, monthly: bool
+    symbol: str,
+    start_date: datetime,
+    end_date: datetime,
+    weekly: bool,
+    monthly: bool,
+    intraday: bool = False,
 ) -> pd.DataFrame:
+    request_url = "https://eodhistoricaldata.com/api/eod/"
+
     int_ = "d"
     if weekly:
         int_ = "w"
     elif monthly:
         int_ = "m"
+    elif intraday:
+        int_ = "1m"
+        request_url = "https://eodhistoricaldata.com/api/intraday/"
 
     request_url = (
-        f"https://eodhistoricaldata.com/api/eod/"
+        f"{request_url}"
         f"{symbol.upper()}?"
-        f"{start_date.strftime('%Y-%m-%d')}&"
+        f"from={start_date.strftime('%Y-%m-%d')}&"
         f"to={end_date.strftime('%Y-%m-%d')}&"
         f"period={int_}&"
-        f"api_token={cfg.API_EODHD_KEY}&"
+        f"api_token={get_current_user().credentials.API_EODHD_KEY}&"
         f"fmt=json&"
         f"order=d"
     )
@@ -234,7 +251,7 @@ def load_stock_polygon(
         f"https://api.polygon.io/v2/aggs/ticker/"
         f"{symbol.upper()}/range/1/{timespan}/"
         f"{start_date.strftime('%Y-%m-%d')}/{end_date.strftime('%Y-%m-%d')}?adjusted=true"
-        f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+        f"&sort=desc&limit=49999&apiKey={get_current_user().credentials.API_POLYGON_KEY}"
     )
     r = request(request_url)
     if r.status_code != 200:
@@ -270,24 +287,39 @@ def load_stock_polygon(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_quote(symbol: str) -> pd.DataFrame:
+def get_quote(symbols: List[str]) -> pd.DataFrame:
     """Gets ticker quote from FMP
 
     Parameters
     ----------
-    symbol : str
-        Stock ticker symbol
+    symbols : List[str]
+        A list of Stock ticker symbols
 
     Returns
     -------
     pd.DataFrame
         Dataframe of ticker quote
+
+    Examples
+    --------
+
+    A single ticker must be entered as a list.
+
+    >>> df = openbb.stocks.quote(["AAPL"])
+
+    Multiple tickers can be retrieved.
+
+    >>> df = openbb.stocks.quote(["AAPL","MSFT","GOOG","NFLX","META","AMZN","NVDA"])
     """
+
+    symbol = symbols if isinstance(symbols, list) is False else ",".join(symbols)
 
     df_fa = pd.DataFrame()
 
     try:
-        df_fa = fa.quote(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa = fa.quote(
+            symbol, get_current_user().credentials.API_KEY_FINANCIALMODELINGPREP
+        )
     # Invalid API Keys
     except ValueError:
         console.print("[red]Invalid API Key[/red]\n")
@@ -297,19 +329,33 @@ def get_quote(symbol: str) -> pd.DataFrame:
 
     if not df_fa.empty:
         clean_df_index(df_fa)
-        df_fa.loc["Market cap"][0] = lambda_long_number_format(
-            df_fa.loc["Market cap"][0]
-        )
-        df_fa.loc["Shares outstanding"][0] = lambda_long_number_format(
-            df_fa.loc["Shares outstanding"][0]
-        )
-        df_fa.loc["Volume"][0] = lambda_long_number_format(df_fa.loc["Volume"][0])
-        # Check if there is a valid earnings announcement
-        if df_fa.loc["Earnings announcement"][0]:
-            earning_announcement = datetime.strptime(
-                df_fa.loc["Earnings announcement"][0][0:19], "%Y-%m-%dT%H:%M:%S"
-            )
-            df_fa.loc["Earnings announcement"][
-                0
-            ] = f"{earning_announcement.date()} {earning_announcement.time()}"
+        for c in df_fa.columns:
+            if not get_current_user().preferences.USE_INTERACTIVE_DF:
+                df_fa.loc["Market cap"][c] = lambda_long_number_format(
+                    df_fa.loc["Market cap"][c]
+                )
+                df_fa.loc["Shares outstanding"][c] = lambda_long_number_format(
+                    df_fa.loc["Shares outstanding"][c]
+                )
+                df_fa.loc["Volume"][c] = lambda_long_number_format(
+                    df_fa.loc["Volume"][c]
+                )
+            # Check if there is a valid earnings announcement
+            if df_fa.loc["Earnings announcement"][c]:
+                earning_announcement = datetime.strptime(
+                    df_fa.loc["Earnings announcement"][c][0:19], "%Y-%m-%dT%H:%M:%S"
+                )
+                df_fa.loc["Earnings announcement"][
+                    c
+                ] = f"{earning_announcement.date()} {earning_announcement.time()}"
+            # Check if there is a valid timestamp and convert it to a readable format
+            if "Timestamp" in df_fa.index and df_fa.loc["Timestamp"][c]:
+                df_fa.loc["Timestamp"][c] = datetime.fromtimestamp(
+                    df_fa.loc["Timestamp"][c]
+                ).strftime("%Y-%m-%d %H:%M:%S")
+
+        df_fa.columns = df_fa.loc["Symbol"][:]
+        df_fa = df_fa.drop("Symbol", axis=0)
+        df_fa.index = df_fa.index.str.title()
+
     return df_fa

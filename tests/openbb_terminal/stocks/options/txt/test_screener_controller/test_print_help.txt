@@ -1,7 +1,7 @@
     view               view available presets (or one in particular)                   [Syncretism]
     set                set one of the available presets
 
-Preset: high_IV
+Preset: high_iv.ini
 
     scr                screen data from this preset                                    [Syncretism]
 

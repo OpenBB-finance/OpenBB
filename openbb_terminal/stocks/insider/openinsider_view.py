@@ -1,12 +1,13 @@
 import itertools
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
 
 from openbb_terminal import rich_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -106,7 +107,10 @@ def lambda_green_highlight(values):
 
 @log_start_end(log=logger)
 def print_insider_data(
-    type_insider: str = "lcb", limit: int = 10, export: str = "", sheet_name: str = None
+    type_insider: str = "lcb",
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Print insider data
 
@@ -125,10 +129,12 @@ def print_insider_data(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=[x.title() for x in df.columns],
             show_index=False,
             title="Insider Data",
+            export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -154,7 +160,7 @@ def print_insider_filter(
     limit: int = 10,
     links: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Print insider filter based on loaded preset. [Source: OpenInsider]
 
@@ -171,10 +177,11 @@ def print_insider_filter(
     export : str
         Format to export data
     """
-    if symbol:
-        link = f"http://openinsider.com/screener?s={symbol}"
-    else:
-        link = get_open_insider_link(preset)
+    link = (
+        f"http://openinsider.com/screener?s={symbol}"
+        if symbol
+        else get_open_insider_link(preset)
+    )
 
     if not link:
         return
@@ -195,7 +202,11 @@ def print_insider_filter(
             columns=["Filing Link", "Ticker Link", "Insider Link"]
         ).head(limit)
 
-    if rich_config.USE_COLOR and not links:
+    if (
+        rich_config.USE_COLOR
+        and not links
+        and not get_current_user().preferences.USE_INTERACTIVE_DF
+    ):
         new_df_insider = df_insider.copy()
         if not new_df_insider[new_df_insider["Trade Type"] == "S - Sale"].empty:
             new_df_insider[new_df_insider["Trade Type"] == "S - Sale"] = new_df_insider[
@@ -233,6 +244,7 @@ def print_insider_filter(
         new_df_insider,
         headers=[x.title() for x in new_df_insider.columns],
         title="Insider filtered",
+        export=bool(export),
     )
 
     if not links:
@@ -249,10 +261,7 @@ def print_insider_filter(
             console.print(d_trade_types[tradetype])
 
     if export:
-        if symbol:
-            cmd = "stats"
-        else:
-            cmd = "filter"
+        cmd = "stats" if symbol else "filter"
 
         export_data(
             export,

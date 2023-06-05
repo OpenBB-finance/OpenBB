@@ -4,7 +4,7 @@ from typing import Tuple
 
 import pandas as pd
 
-from openbb_terminal.core.config import paths
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_statics
@@ -36,10 +36,7 @@ def load_file(path: str = "") -> Tuple[dict, str]:
         params_obj.optionxform = str  # type: ignore
         params: dict = dict(params_obj["OPENBB"].items())
 
-        if "technique" in params:
-            current_model = params["technique"]
-        else:
-            current_model = ""
+        current_model = params["technique"] if "technique" in params else ""
 
     elif str(path).endswith(".xlsx"):
         params, _ = excel_model.load_configuration(path)
@@ -50,7 +47,7 @@ def load_file(path: str = "") -> Tuple[dict, str]:
 
     converted_parameters = check_convert_parameters(received_parameters=params)
 
-    max_len = max(len(k) for k in converted_parameters.keys())
+    max_len = max(len(k) for k in converted_parameters)
     help_text = "[info]Parameters:[/info]\n"
 
     if current_model:
@@ -76,7 +73,9 @@ def save_file(path: str, params: dict) -> Path:
     if not path.endswith(".ini"):
         console.print("[red]File to be saved needs to be a .ini file.[/red]\n")
     # Create file if it does not exist
-    base_path = paths.USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
+    base_path = (
+        get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
+    )
     if not base_path.is_dir():
         base_path.mkdir()
     filepath = base_path / path

@@ -5,32 +5,31 @@ import logging
 import os
 import textwrap
 from datetime import datetime, timedelta
-from typing import List, Optional
+from functools import partial
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
+import pandas as pd
 from pandas.core.frame import DataFrame
-from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
+from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.fundamental_analysis import business_insider_model
+from openbb_terminal.stocks.fundamental_analysis import (
+    business_insider_model,
+    yahoo_finance_model,
+)
 from openbb_terminal.stocks.stocks_helper import load
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
-
 
 @log_start_end(log=logger)
-def display_management(symbol: str, export: str = "", sheet_name: str = None):
+def display_management(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Display company's managers
 
     Parameters
@@ -53,6 +52,7 @@ def display_management(symbol: str, export: str = "", sheet_name: str = None):
             headers=list(df_new.columns),
             show_index=True,
             index_name="Name",
+            export=bool(export),
         )
 
         export_data(
@@ -66,17 +66,19 @@ def display_management(symbol: str, export: str = "", sheet_name: str = None):
         logger.error("Data not available")
 
 
+# pylint: disable=R0913
 @log_start_end(log=logger)
-def price_target_from_analysts(
+def display_price_target_from_analysts(
     symbol: str,
     data: Optional[DataFrame] = None,
     start_date: Optional[str] = None,
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+    adjust_for_splits: bool = True,
+) -> Union[OpenBBFigure, None]:
     """Display analysts' price targets for a given stock. [Source: Business Insider]
 
     Parameters
@@ -95,14 +97,23 @@ def price_target_from_analysts(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes: bool, optional
+        Whether to return the figure object or not, by default False
+    adjust_for_splits: bool
+        Whether to adjust analyst price targets for stock splits, by default True
 
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.fa.pt_chart(symbol="AAPL")
     """
+
+    def adjust_splits(row, splits: pd.DataFrame):
+        original_value = row["Price Target"]
+        for index, sub_row in splits.iterrows():
+            if row.name < index:
+                original_value = original_value / sub_row["Stock Splits"]
+        return round(original_value, 2)
 
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
@@ -112,59 +123,53 @@ def price_target_from_analysts(
 
     df_analyst_data = business_insider_model.get_price_target_from_analysts(symbol)
     if df_analyst_data.empty:
-        console.print("[red]Could not get data for ticker.[/red]\n")
-        return
+        return console.print("[red]Could not get data for ticker.[/red]\n")
+    if adjust_for_splits:
+        df_splits = yahoo_finance_model.get_splits(symbol)
+        if not df_splits.empty:
+            df_splits.index = df_splits.index.tz_convert(None)
+            adjusted_splits = partial(adjust_splits, splits=df_splits)
+            df_analyst_data["Price Target"] = df_analyst_data.apply(
+                adjusted_splits, axis=1
+            )
 
-    if raw:
-        df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
-        print_rich_table(
-            df_analyst_data.sort_index(ascending=False).head(limit),
-            headers=list(df_analyst_data.columns),
-            show_index=True,
-            title="Analyst Price Targets",
-        )
+    fig = OpenBBFigure(yaxis_title="Share Price").set_title(
+        f"{symbol} (Time Series) and Price Target"
+    )
+    close_col = ta_helpers.check_columns(data, False, False)
+    df_analyst_plot = df_analyst_data.copy()
 
-    else:
-        # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+    # Slice start of ratings
+    if start_date:
+        df_analyst_plot = df_analyst_plot[start_date:]  # type: ignore
 
-        # Slice start of ratings
-        if start_date:
-            df_analyst_data = df_analyst_data[start_date:]  # type: ignore
+    fig.add_scatter(
+        x=data.index,
+        y=data[close_col].values,
+        name="Close",
+        line_width=2,
+    )
 
-        plot_column = "Close"
-        legend_price_label = "Close"
+    df_grouped = df_analyst_plot.groupby(by=["Date"]).mean(numeric_only=True)
 
-        ax.plot(data.index, data[plot_column].values)
+    fig.add_scatter(
+        x=df_grouped.index,
+        y=df_grouped.values,
+        name="Average Price Target",
+    )
 
-        if start_date:
-            ax.plot(df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True)[start_date:])  # type: ignore
-        else:
-            ax.plot(df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True))
-
-        ax.scatter(
-            df_analyst_data.index,
-            df_analyst_data["Price Target"],
+    fig.add_scatter(
+        x=df_analyst_plot.index,
+        y=df_analyst_plot["Price Target"].values,
+        name="Price Target",
+        mode="markers+lines",
+        marker=dict(
             color=theme.down_color,
-            edgecolors=theme.up_color,
-            zorder=2,
-        )
-
-        ax.legend([legend_price_label, "Average Price Target", "Price Target"])
-
-        ax.set_title(f"{symbol} (Time Series) and Price Target")
-        ax.set_xlim(data.index[0], data.index[-1])
-        ax.set_ylabel("Share Price")
-
-        theme.style_primary_axis(ax)
-
-        if not external_axes:
-            theme.visualize_output()
+            line=dict(color=theme.up_color, width=1),
+            size=10,
+        ),
+        line=dict(color=theme.get_colors()[1]),
+    )
 
     export_data(
         export,
@@ -172,11 +177,27 @@ def price_target_from_analysts(
         "pt",
         df_analyst_data,
         sheet_name,
+        fig,
     )
+
+    if raw:
+        df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
+        return print_rich_table(
+            df_analyst_data.sort_index(ascending=False),
+            headers=list(df_analyst_data.columns),
+            show_index=True,
+            title="Analyst Price Targets",
+            export=bool(export),
+            limit=limit,
+        )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
-def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = None):
+def display_estimates(
+    symbol: str, estimate: str, export: str = "", sheet_name: Optional[str] = None
+):
     """Display analysts' estimates for a given ticker. [Source: Business Insider]
 
     Parameters
@@ -194,12 +215,13 @@ def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = No
         df_quarter_revenues,
     ) = business_insider_model.get_estimates(symbol)
 
-    if estimate == "annualearnings":
+    if estimate == "annual_earnings":
         print_rich_table(
             df_year_estimates,
             headers=list(df_year_estimates.columns),
             show_index=True,
             title="Annual Earnings Estimates",
+            export=bool(export),
         )
         export_data(
             export,
@@ -209,12 +231,13 @@ def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = No
             sheet_name,
         )
 
-    elif estimate == "quarterearnings":
+    elif estimate == "quarter_earnings":
         print_rich_table(
             df_quarter_earnings,
             headers=list(df_quarter_earnings.columns),
             show_index=True,
             title="Quarterly Earnings Estimates",
+            export=bool(export),
         )
         export_data(
             export,
@@ -224,12 +247,13 @@ def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = No
             sheet_name,
         )
 
-    elif estimate == "annualrevenue":
+    elif estimate == "quarter_revenues":
         print_rich_table(
             df_quarter_revenues,
             headers=list(df_quarter_revenues.columns),
             show_index=True,
             title="Quarterly Revenue Estimates",
+            export=bool(export),
         )
 
         export_data(

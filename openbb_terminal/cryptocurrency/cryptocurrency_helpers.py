@@ -1,24 +1,20 @@
 """Cryptocurrency helpers"""
-# pylint: disable=too-many-lines,too-many-return-statements
+# pylint: disable=C0302,too-many-return-statements
 
 import difflib
 import json
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 import ccxt
-import matplotlib.pyplot as plt
-import mplfinance as mpf
 import numpy as np
 import pandas as pd
 import yfinance as yf
-from matplotlib.ticker import LogLocator, ScalarFormatter
 from pycoingecko import CoinGeckoAPI
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.discovery import pycoingecko_model
 from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
@@ -27,10 +23,7 @@ from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
 )
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     lambda_long_number_format,
-    lambda_long_number_format_y_axis,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
@@ -114,7 +107,7 @@ YF_CURRENCY = [
 
 
 def check_datetime(
-    ck_date: Union[datetime, Union[str, None]] = None, start: bool = True
+    ck_date: Optional[Union[datetime, Union[str, None]]] = None, start: bool = True
 ) -> datetime:
     """Checks if given argument is string and attempts to convert to datetime.
 
@@ -325,6 +318,7 @@ def load_from_ccxt(
     interval: str = "1440",
     exchange: str = "binance",
     to_symbol: str = "usdt",
+    end_date: datetime = datetime.now(),
 ) -> pd.DataFrame:
     """Load crypto currency data [Source: https://github.com/ccxt/ccxt]
 
@@ -341,6 +335,8 @@ def load_from_ccxt(
         The exchange to get data from.
     to_symbol: str
         Quote Currency (Defaults to usdt)
+    end_date: datetime
+        The datetime to stop at
 
     Returns
     -------
@@ -351,6 +347,11 @@ def load_from_ccxt(
     pair = f"{symbol.upper()}/{to_symbol.upper()}"
 
     try:
+        if interval not in list(CCXT_INTERVAL_MAP):
+            console.print(
+                f"\nInvalid interval chosen for source, "
+                f"available intervals: {', '.join(list(CCXT_INTERVAL_MAP))}\n"
+            )
         df = fetch_ccxt_ohlc(
             exchange,
             3,
@@ -361,6 +362,19 @@ def load_from_ccxt(
         )
         if df.empty:
             console.print(f"\nPair {pair} not found in {exchange}\n")
+            return pd.DataFrame()
+        i = 0
+        for date in df.index:
+            if date > end_date:
+                break
+            i += 1
+        first_date = pd.to_datetime(str(df.index.values[0]))
+        df = df.iloc[0:i]
+        if df.empty:
+            console.print(
+                f"\nThe first data point retrieved was {first_date.strftime('%Y-%m-%d')}, "
+                f"thus the end date ({end_date.strftime('%Y-%m-%d')}) filtered out all of the data.\n"
+            )
             return pd.DataFrame()
     except Exception:
         console.print(f"\nPair {pair} not found on {exchange}\n")
@@ -438,7 +452,7 @@ def load_from_yahoofinance(
     to_symbol: str
         Quote Currency (Defaults to usdt)
     end_date: datetime
-       The datetime to end at
+        The datetime to end at
 
     Returns
     -------
@@ -487,14 +501,22 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: Union[datetime, Union[str, None]] = None,
+    start_date: Optional[Union[datetime, Union[str, None]]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
-    to_symbol: str = "usdt",
-    end_date: Union[datetime, Union[str, None]] = None,
-    source: str = "CCXT",
+    to_symbol: str = "usd",
+    end_date: Optional[Union[datetime, Union[str, None]]] = None,
+    source: str = "YahooFinance",
 ) -> pd.DataFrame:
-    """Load crypto currency to get data for
+    """
+    Load crypto currency to get data for
+    Note:
+        take into consideration that the data might not be found if the data provider
+        (example) uses `usd` instead of `usdt` as the quote currency, so you might need to adjust
+        the `to_symbol` parameter.
+        For `CCXT` a valid pair would be: "BTC/USDT"
+        For `CoinGecko` a valid pair would be: "BTC-USD"
+        For `YahooFinance` a valid pair would be: "BTC-USD"
 
     Parameters
     ----------
@@ -528,7 +550,7 @@ def load(
     if isinstance(interval, int):
         interval = str(interval)
     if start_date is None:
-        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
 
     if end_date is None:
         end_date = datetime.now().strftime("%Y-%m-%d")
@@ -537,7 +559,9 @@ def load(
     end_date = check_datetime(end_date, start=False)
 
     if source == "CCXT":
-        return load_from_ccxt(symbol, start_date, interval, exchange, to_symbol)
+        return load_from_ccxt(
+            symbol, start_date, interval, exchange, to_symbol, end_date
+        )
     if source == "CoinGecko":
         return load_from_coingecko(symbol, start_date, to_symbol)
     if source == "YahooFinance":
@@ -606,7 +630,7 @@ def show_quick_performance(
                 ),
             )
     except Exception:
-        pass
+        pass  # noqa
 
     exchange_str = f"in {exchange.capitalize()}" if source == "ccxt" else ""
     print_rich_table(
@@ -614,6 +638,7 @@ def show_quick_performance(
         show_index=False,
         headers=df.columns,
         title=f"{symbol.upper()}/{current_currency.upper()} Performance {exchange_str}",
+        print_to_console=True,
     )
     console.print()
 
@@ -681,10 +706,7 @@ def display_all_coins(
 
     if show_all:
         coins_func = coins_func_map.get(source)
-        if coins_func:
-            df = coins_func()
-        else:
-            df = prepare_all_coins_df()
+        df = coins_func() if coins_func else prepare_all_coins_df()
 
     elif not source or source not in sources:
         df = prepare_all_coins_df()
@@ -743,6 +765,7 @@ def display_all_coins(
         headers=list(df.columns),
         show_index=False,
         title="Similar Coins",
+        export=bool(export),
     )
 
     export_data(
@@ -761,9 +784,9 @@ def plot_chart(
     source: str = "",
     exchange: str = "",
     interval: str = "",
-    external_axes: Union[List[plt.Axes], None] = None,
+    external_axes: bool = False,
     yscale: str = "linear",
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Load data for Technical Analysis
 
     Parameters
@@ -776,6 +799,8 @@ def plot_chart(
         Currency (only used for chart title), by default ""
     yscale: str
         Scale for y axis of plot Either linear or log
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -786,8 +811,7 @@ def plot_chart(
     del interval
 
     if prices_df.empty:
-        console.print("There is not data to plot chart\n")
-        return
+        return console.print("There is not data to plot chart\n")
 
     exchange_str = f"/{exchange}" if source == "ccxt" else ""
     title = (
@@ -796,39 +820,33 @@ def plot_chart(
         f"to {prices_df.index[-1].strftime('%Y/%m/%d')}"
     )
 
-    volume_mean = prices_df["Volume"].mean()
-    if volume_mean > 1_000_000:
-        prices_df["Volume"] = prices_df["Volume"] / 1_000_000
+    console.print()
 
-    plot_candles(
+    return plot_candles(
         symbol=to_symbol,
         data=prices_df,
         title=title,
         volume=True,
-        ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
         external_axes=external_axes,
         yscale=yscale,
     )
 
-    console.print()
-
 
 def plot_candles(  # pylint: disable=too-many-arguments
     symbol: str,
-    data: pd.DataFrame = None,
-    start_date: Union[datetime, Union[str, None]] = None,
-    end_date: Union[datetime, Union[str, None]] = None,
+    data: Optional[pd.DataFrame] = None,
+    start_date: Optional[Union[datetime, Union[str, None]]] = None,
+    end_date: Optional[Union[datetime, Union[str, None]]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
     to_symbol: str = "usdt",
     source: str = "CCXT",
     volume: bool = True,
-    ylabel: str = "",
     title: str = "",
-    external_axes: Union[List[plt.Axes], None] = None,
+    external_axes: bool = False,
     yscale: str = "linear",
     raw: bool = False,
-) -> Optional[pd.DataFrame]:
+) -> Union[OpenBBFigure, Optional[pd.DataFrame], None]:
     """Plot candle chart from dataframe. [Source: Binance]
 
     Parameters
@@ -855,8 +873,8 @@ def plot_candles(  # pylint: disable=too-many-arguments
         Y-label of the graph, by default ""
     title: str
         Title of graph, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     yscale : str
         Scaling for y axis.  Either linear or log
 
@@ -881,71 +899,38 @@ def plot_candles(  # pylint: disable=too-many-arguments
     if raw:
         return data
 
-    candle_chart_kwargs = {
-        "type": "candle",
-        "style": theme.mpf_style,
-        "volume": volume,
-        "xrotation": theme.xticks_rotation,
-        "ylabel_lower": ylabel,
-        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        "update_width_config": {
-            "candle_linewidth": 0.6,
-            "candle_width": 0.8,
-            "volume_linewidth": 0.8,
-            "volume_width": 0.8,
-        },
-        "warn_too_much_data": 10000,
-        "yscale": yscale,
-    }
+    fig = OpenBBFigure.create_subplots(
+        rows=1,
+        cols=1,
+        vertical_spacing=0,
+        specs=[[{"secondary_y": True}]],
+    ).set_title(f"\n{symbol if title == '' else title}")
 
-    # This plot has 2 axes
-    if external_axes is None:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, ax = mpf.plot(data, **candle_chart_kwargs)
+    fig.add_candlestick(
+        open=data.Open,
+        high=data.High,
+        low=data.Low,
+        close=data.Close,
+        x=data.index,
+        name=f"{symbol} OHLC",
+        row=1,
+        col=1,
+        secondary_y=False,
+    )
+    if volume:
+        fig.add_inchart_volume(data)
 
-        fig.suptitle(
-            f"\n{symbol if title == '' else title}",
-            horizontalalignment="left",
-            verticalalignment="top",
-            x=0.05,
-            y=1,
-        )
-        if volume:
-            lambda_long_number_format_y_axis(data, "Volume", ax)
-        if yscale == "log":
-            ax[0].yaxis.set_major_formatter(ScalarFormatter())
-            ax[0].yaxis.set_major_locator(
-                LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
-            )
-            ax[0].ticklabel_format(style="plain", axis="y")
-        theme.visualize_output(force_tight_layout=False)
-    else:
-        nr_external_axes = 2 if volume else 1
-        if not is_valid_axes_count(external_axes, nr_external_axes):
-            return None
+    fig.set_yaxis_title("Price", row=1, col=1, secondary_y=False, type=yscale)
+    fig.update_layout(showlegend=False)
 
-        if volume:
-            (ax, volume) = external_axes
-            candle_chart_kwargs["volume"] = volume
-        else:
-            ax = external_axes[0]
-
-        candle_chart_kwargs["ax"] = ax
-
-        mpf.plot(data, **candle_chart_kwargs)
-
-    return None
+    return fig.show(external=external_axes)
 
 
 def plot_order_book(
     bids: np.ndarray,
     asks: np.ndarray,
     coin: str,
-    external_axes: Union[List[plt.Axes], None] = None,
-) -> None:
+) -> OpenBBFigure:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
 
@@ -957,32 +942,33 @@ def plot_order_book(
         array of asks with columns: price, size, cumulative size
     coin : str
         Coin being plotted
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
     """
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
 
-    ax.plot(bids[:, 0], bids[:, 2], color=theme.up_color, label="bids")
-    ax.fill_between(bids[:, 0], bids[:, 2], color=theme.up_color, alpha=0.4)
+    fig = OpenBBFigure(xaxis_title="Price", yaxis_title="Size (Coins)").set_title(
+        f"Order Book for {coin}"
+    )
 
-    ax.plot(asks[:, 0], asks[:, 2], color=theme.down_color, label="asks")
-    ax.fill_between(asks[:, 0], asks[:, 2], color=theme.down_color, alpha=0.4)
+    fig.add_scatter(
+        x=bids[:, 0],
+        y=bids[:, 2],
+        mode="lines",
+        name="bids",
+        line=dict(color=theme.up_color),
+        fill="tozeroy",
+        fillcolor=theme.up_color_transparent,
+    )
+    fig.add_scatter(
+        x=asks[:, 0],
+        y=asks[:, 2],
+        mode="lines",
+        name="asks",
+        line=dict(color=theme.down_color),
+        fill="tozeroy",
+        fillcolor=theme.down_color_transparent,
+    )
+    fig.add_hline(y=0, line=dict(width=0, color="rgba(0, 0, 0, 0)"))
 
-    ax.legend()
-    ax.set_xlabel("Price")
-    ax.set_ylabel("Size (Coins)")
-    ax.set_title(f"Order Book for {coin}")
-
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output(force_tight_layout=False)
+    return fig
 
 
 def check_cg_id(symbol: str):

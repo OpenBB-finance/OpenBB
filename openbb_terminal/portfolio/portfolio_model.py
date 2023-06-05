@@ -272,7 +272,7 @@ def get_yearly_returns(
 def get_monthly_returns(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Get monthly returns
 
     Parameters
@@ -334,41 +334,29 @@ def get_monthly_returns(
                 breturns_val.append(breturns_year_month_val.values[-1])
         breturns_month_val.append(breturns_val)
 
+    columns = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ]
     monthly_returns = pd.DataFrame(
         creturns_month_val,
         index=sorted(list(set(portfolio_returns.index.year))),
-        columns=[
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
+        columns=columns,
     )
     bench_monthly_returns = pd.DataFrame(
         breturns_month_val,
         index=sorted(list(set(benchmark_returns.index.year))),
-        columns=[
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
+        columns=columns,
     )
 
     years = [

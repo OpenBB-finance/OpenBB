@@ -1,14 +1,14 @@
 [tool.poetry]
 name = "openbb"
-version = "2.4.0"
+version = "3.0.1"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
-include = ["terminal.py"]
-readme = "website/content/sdk/quickstart/installation.md"
+include = ["terminal.py", "openbb_terminal/.env"]
+readme = "website/pypi.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
 documentation = "https://docs.openbb.co/sdk"
@@ -23,15 +23,15 @@ iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
 requests = "^2.25.1"
 alpha-vantage = "^2.3.1"
-finviz = "^1.3.4, !=1.4.5"
+finviz = "^1.4.6"
 bs4 = "^0.0.1"
-yfinance = "^0.2.9"
-psaw = "^0.0.12"
+yfinance = "^0.2.12"
+pmaw = "^3.0.0"
 praw = "^7.1.4"
 Quandl = "^3.6.0"
-pytrends = "^4.7.3"
+pytrends = "4.9.2"
 matplotlib = "^3.3.3"
-plotly = "^5.0.0"
+plotly = "^5.14.1"
 prompt-toolkit = "^3.0.16"
 jupyterlab = "^3.2.4"
 mplfinance = "^0.12.7-alpha.7"
@@ -39,8 +39,7 @@ seaborn = "^0.11.0"
 fredapi = "^0.4.3"
 screeninfo = "^0.6.7"
 robin-stocks = "^2.0.3"
-pyally = "^1.1.2"
-pycoingecko = "^2.2.0"
+pycoingecko = "^3.1.0"
 detecta = "^0.0.5"
 tradingview-ta = "^3.2.3"
 finvizfinance = "^0.14.0"
@@ -52,20 +51,18 @@ bt = "^0.2.9"
 vaderSentiment = "3.3.2"
 GitPython = "^3.1.17"
 fred = "^3.1"
-financedatabase = "1.0.2"
+financedatabase = "^2.0.9"
 holidays = "^0.14.2"
 degiro-connector = "^2.0.3"
 python-binance = "^1.0.15"
 python-i18n = "^0.3.9"
 thepassiveinvestor = "^1.1.2"
 pandas-ta = "^0.3.14-beta.0"
-pyrsistent = "^0.18.0"
+pyrsistent = "^0.19.3"
 openpyxl = "^3.0.9"
-jsonschema = "^3.2.0"
 pandas = "^1.5.0"
 pandas-market-calendars = "~3.2"
 ipympl = "^0.8.2"
-voila = ">=0.3.0"
 rich = "^12.6.0"
 dnspython = "^2.1.0"
 python-dotenv = "^0.19.2"
@@ -86,39 +83,57 @@ jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.40.0", optional = true}
 tokenterminal = "^1.0.1"
 torch = {version = "~1.11.0", optional = true}
-charset-normalizer = "2.1.1"
 watchdog = "^2.1.9"
 pythclient = "^0.1.2"
-ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
 setuptools = "<65.5.0"
 numpy = "1.23.4"
-papermill = "^2.4.0"
+papermill = "2.4"
 stocksera = "^0.1.21"
-ipython = "8.5.0"
+ipython = "8.11.0"
 protobuf = "3.20.1"
 pytorch-lightning = {version = "1.6.5", optional = true}
 u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
-lightgbm = {version = "3.3.3", optional = true}  # locked because this is the latest version available on conda intel mac
+lightgbm = {version = "3.3.5", optional = true}  # locked because this is the latest version available on conda intel mac
 docstring-parser = {version = "^0.15", optional = true}
 grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
-rapidfuzz = "^2.13.7"
-streamlit = "^1.17.0"
+streamlit = "^1.22.0"
+pywry = "^0.5.8"
+svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
 psutil = "!=5.9.4"  # Forecasting menu and IPyKernel dependency broken on MacOs
-tenacity = "<8.0.0"  # Finviz, papermill and plotly dep. Pinned to avoid pip resolution conflict due to finviz 1.4.5 release bug
 intrinio-sdk = "^6.22.2"
+yahooquery = "^2.3.0"
+openai-whisper = {version = "^20230124", optional = true}
+setuptools-rust = {version = "^1.5.2", optional = true}
+transformers = {version = "^4.26.1", optional = true}
+yt-dlp = {version = "^2023.2.17", optional = true}
+pydantic = "^1.10.5"
+posthog = "^3.0.1"
+reportlab = "<4" #Pinning due to build error on MacOs
+arch = "^5.5.0"
 
-[tool.poetry.dev-dependencies]
+
+
+[tool.poetry.extras]
+forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
+optimization = ["Riskfolio-Lib"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
+jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
+installer = ["pyinstaller"]
+doc = ["docstring-parser"]
+
+[tool.poetry.group.dev.dependencies]
+pytest-xdist = "^3.2.0"
 pytest = "^6.2.2"
-pylint = "2.15.2"
-mypy = "^0.930"
+pylint = "2.17.0"
+mypy = "^1.1.1"
 mock = "^4.0.3"
-codespell = "^2.0.0"
+codespell = "^2.2.4"
 pydocstyle = "^6.3.0"
 sphinx = "^4.5.0"
 myst-parser = "^0.15.2"
@@ -137,15 +152,10 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.236"
-
-[tool.poetry.extras]
-prediction = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
-optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
-jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
-installer = ["pyinstaller"]
-doc = ["docstring-parser"]
+ruff = "^0.0.256"
+pytest-timeout = "^2.1.0"
+pytest-recorder = "^0.2.1"
+freezegun = "^1.2.2"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
@@ -154,6 +164,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.pydocstyle]
 convention = "numpy"
 match = '((?!test_).)*\.py'
+ignore = "D401"
 
 
 [tool.ruff]
@@ -162,9 +173,9 @@ target-version = "py38"
 # This is an introductory addition of ruff. We should look to adding:
 # D: pydocstyle, PD: pandas-vet
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
-select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW"]
+select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM"]
 # These ignores should be seen as temporary solutions to problems that will NEED fixed
-ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915"]
+ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915", "SIM114", "SIM105", "SIM117", "PLC1901", "PLR5501","PLW2901","PLW0603"]
 
 [tool.ruff.per-file-ignores]
 "tests/*" = ["S101"]

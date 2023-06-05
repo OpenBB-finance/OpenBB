@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, List, Optional, Type
+from typing import Any, List, Optional
 
 # pylint: disable=unidiomatic-typecheck
 
@@ -21,7 +21,7 @@ class Parameter:
     """
 
     name: str
-    type_: Type
+    type_: Any
     default: Any
     choices: Optional[List[Any]] = None
 
@@ -48,12 +48,13 @@ class Parameter:
             raise TypeError(
                 f"Default for '{self.name}' must be of type '{self.type_.__name__}'."
             )
-        if self.choices is not None:
-            if not all(self.validate_type(choice) for choice in self.choices):
-                raise TypeError(
-                    f"Choices must be of the same type as the parameter.\n"
-                    f"'{self.name}': '{self.choices}' -> '{self.type_.__name__}'"
-                )
+        if self.choices is not None and not all(
+            self.validate_type(choice) for choice in self.choices
+        ):
+            raise TypeError(
+                f"Choices must be of the same type as the parameter.\n"
+                f"'{self.name}': '{self.choices}' -> '{self.type_.__name__}'"
+            )
         if self.choices is not None and self.default not in self.choices:
             raise ValueError(
                 f"Parameter '{self.name}' must be one of type '{self.choices}'."

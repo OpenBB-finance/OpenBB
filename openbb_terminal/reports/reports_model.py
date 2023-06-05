@@ -5,24 +5,21 @@ import logging
 
 # pylint: disable=R1732, R0912
 import os
-import webbrowser
-from ast import literal_eval
 from datetime import datetime
 from pathlib import Path
 from threading import Thread
 from typing import Any, Dict, List, Union
 
+import nbformat
 import pandas as pd
 import papermill as pm
 from ipykernel.kernelapp import IPKernelApp
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    USER_CUSTOM_REPORTS_DIRECTORY,
-    USER_PORTFOLIO_DATA_DIRECTORY,
-    USER_REPORTS_DIRECTORY,
 )
+from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex.forex_controller import FX_TICKERS
 from openbb_terminal.rich_config import console
@@ -35,7 +32,9 @@ REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
 USER_REPORTS = {
     filepath.name: filepath
     for file_type in ["ipynb"]
-    for filepath in USER_CUSTOM_REPORTS_DIRECTORY.rglob(f"*.{file_type}")
+    for filepath in get_current_user().preferences.USER_CUSTOM_REPORTS_DIRECTORY.rglob(
+        f"*.{file_type}"
+    )
 }
 
 # TODO: Trim available choices to avoid errors in notebooks.
@@ -52,7 +51,9 @@ STOCKS_TICKERS = pd.read_csv(stocks_data_path).iloc[:, 0].to_list()
 PORTFOLIO_HOLDINGS_FILES = {
     filepath.name: filepath
     for file_type in ["xlsx", "csv"]
-    for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "holdings").rglob(f"*.{file_type}")
+    for filepath in (
+        get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "holdings"
+    ).rglob(f"*.{file_type}")
 }
 
 PORTFOLIO_HOLDINGS_FILES.update(
@@ -84,6 +85,7 @@ REPORT_CHOICES = {
         "--symbol": {c: None for c in STOCKS_TICKERS + ETF_TICKERS},
     },
 }
+TARGET_TAG = "parameters"
 
 
 @log_start_end(log=logger)
@@ -102,9 +104,8 @@ def get_arg_choices(report_name: str, arg_name: str) -> Union[List[str], None]:
     """
 
     choices = None
-    if report_name in ("forex", "portfolio"):
-        if "--" + arg_name in REPORT_CHOICES[report_name]:  # type: ignore
-            choices = list(REPORT_CHOICES[report_name]["--" + arg_name].keys())  # type: ignore
+    if report_name in ("forex", "portfolio") and "--" + arg_name in REPORT_CHOICES[report_name]:  # type: ignore
+        choices = list(REPORT_CHOICES[report_name]["--" + arg_name].keys())  # type: ignore
     return choices
 
 
@@ -157,43 +158,34 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
 
     input_path = add_ipynb_extension(input_path)
 
-    with open(input_path, encoding="utf-8") as file:
-        notebook_content = file.read()
+    with open(input_path) as f:
+        nb = nbformat.read(f, as_version=nbformat.NO_CONVERT)
 
-    # Look for the metadata cell to understand if there are parameters required by the report
-    metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
+    target_tag = TARGET_TAG
 
-    # Locate position of the data of interest and get parameters
-    if notebook_content.find(metadata_cell) >= 0:
-        position = notebook_content.find(metadata_cell)
-    else:
-        return {}
+    cell_lines = []
+    for cell in nb.cells:
+        # Filter cells by tag
+        if target_tag in cell.metadata.get("tags", []):
+            # Split cell source into separate lines
+            lines = cell.source.split("\n")
+            # Remove empty and commented lines
+            lines = [
+                line for line in lines if line.strip() and not line.startswith("#")
+            ]
+            cell_lines.extend(lines)
 
-    metadata = notebook_content[position:]  # noqa: E203
-    cell_start = 'source": '
-    cell_end = "]"
-    start_position = metadata.find(cell_start)
-    params = metadata[
-        start_position : metadata.find(cell_end, start_position) + 1  # noqa: E203
-    ]
+    parameters_dict = {}
+    for line in cell_lines:
+        # Extract key and value from each line
+        key, value = line.split("=")
+        key = key.strip()
+        value = value.strip()
+        # Add key-value pair to dictionary and remove quotes
+        parameters_dict[key] = value.replace('"', "")
 
-    # Make sure that the parameters provided are relevant
-    if "parameters" in notebook_content:
-        parameters_names = [
-            param.split("=")[0][:-1]
-            for param in literal_eval(params.strip('source": '))
-            if param[0] not in ["#", "\n"]
-        ]
-        parameters_values = [
-            param.split("=")[1][2:-2]
-            for param in literal_eval(params.strip('source": '))
-            if param[0] not in ["#", "\n"]
-        ]
-
-    if "report_name" in parameters_names:
-        parameters_names.remove("report_name")
-
-    parameters_dict = dict(zip(parameters_names, parameters_values))
+    if "report_name" in parameters_dict:
+        parameters_dict.pop("report_name")
 
     return parameters_dict
 
@@ -282,8 +274,10 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         + "_"
         + f"{report_name}{args_to_output}"
     )
-    output_path = report_output_name.replace(".", "_")
-    output_path = str(USER_REPORTS_DIRECTORY / report_output_name)
+    report_output_name = report_output_name.replace(".", "_")
+    output_path = str(
+        get_current_user().preferences.USER_REPORTS_DIRECTORY / report_output_name
+    )
 
     return output_path
 
@@ -314,11 +308,15 @@ def execute_notebook(input_path, parameters, output_path):
 
         if not result["metadata"]["papermill"]["exception"]:
             console.print(f"\n[green]Notebook:[/green] {output_path}.ipynb")
-            if obbff.OPEN_REPORT_AS_HTML:
+            if get_current_user().preferences.OPEN_REPORT_AS_HTML:
                 report_output_path = os.path.join(
                     os.path.abspath(os.path.join(".")), output_path + ".html"
                 )
-                webbrowser.open(f"file://{report_output_path}")
+                report_output_path = Path(report_output_path)
+
+                plots_backend().send_url(
+                    url=f"/{report_output_path.as_uri()}", title="Reports"
+                )
                 console.print(f"\n[green]Report:[/green] {report_output_path}\n")
             else:
                 console.print("\n")

@@ -1,0 +1,1415 @@
+{
+  "stocks": {
+    "search": [
+      "FinanceDatabase"
+    ],
+    "quote": [
+      "FinancialModelingPrep"
+    ],
+    "tob": [
+      "CBOE"
+    ],
+    "candle": [],
+    "codes": [
+      "Polygon"
+    ],
+    "news": [
+      "Feedparser",
+      "NewsApi",
+      "Ultima"
+    ],
+    "load": [
+      "YahooFinance",
+      "AlphaVantage",
+      "Polygon",
+      "EODHD",
+      "Intrinio",
+      "DataBento"
+    ],
+    "th": {
+      "open": [
+        "Bursa"
+      ],
+      "closed": [
+        "Bursa"
+      ],
+      "all": [
+        "Bursa"
+      ],
+      "exchange": [
+        "Bursa"
+      ],
+      "holidays": [
+        "PandasMarketCalendars"
+      ],
+      "symbol": [
+        "FinanceDatabase"
+      ]
+    },
+    "options": {
+      "unu": [
+        "FDScanner"
+      ],
+      "calc": [],
+      "screen": {
+        "view": [
+          "Syncretism"
+        ],
+        "set": [],
+        "scr": [
+          "Syncretism"
+        ]
+      },
+      "load": [
+        "YahooFinance",
+        "Tradier",
+        "Nasdaq",
+        "Intrinio"
+      ],
+      "pcr": [
+        "AlphaQuery"
+      ],
+      "info": [
+        "Barchart"
+      ],
+      "hist": [
+        "ChartExchange",
+        "Tradier",
+        "Intrinio"
+      ],
+      "vsurf": [
+        "YahooFinance"
+      ],
+      "grhist": [
+        "Syncretism",
+        "Intrinio"
+      ],
+      "plot": [
+        "YahooFinance"
+      ],
+      "parity": [
+        "YahooFinance"
+      ],
+      "binom": [
+        "YahooFinance"
+      ],
+      "greeks": [
+        "YahooFinance"
+      ],
+      "eodchain": [
+        "Intrinio"
+      ],
+      "pricing": {
+        "add": [],
+        "rmv": [],
+        "show": [],
+        "rnval": [
+          "YahooFinance"
+        ]
+      },
+      "hedge": {
+        "list": [],
+        "pick": [],
+        "add": [],
+        "rmv": [],
+        "sop": [],
+        "plot": [
+          "YahooFinance"
+        ]
+      }
+    },
+    "disc": {
+      "filings": [
+        "FinancialModelingPrep"
+      ],
+      "pipo": [
+        "Finnhub"
+      ],
+      "fipo": [
+        "Finnhub"
+      ],
+      "gainers": [
+        "YahooFinance"
+      ],
+      "losers": [
+        "YahooFinance"
+      ],
+      "ugs": [
+        "YahooFinance"
+      ],
+      "gtech": [
+        "YahooFinance"
+      ],
+      "active": [
+        "YahooFinance"
+      ],
+      "ulc": [
+        "YahooFinance"
+      ],
+      "asc": [
+        "YahooFinance"
+      ],
+      "arkord": [
+        "CathiesArk"
+      ],
+      "upcoming": [
+        "SeekingAlpha"
+      ],
+      "trending": [
+        "SeekingAlpha"
+      ],
+      "lowfloat": [
+        "Fidelity"
+      ],
+      "hotpenny": [
+        "YahooFinance",
+        "Shortinterest"
+      ],
+      "rtat": [
+        "Nasdaq"
+      ],
+      "divcal": [
+        "Nasdaq"
+      ]
+    },
+    "sia": {
+      "select": [
+        "YahooFinance"
+      ],
+      "clear": [],
+      "industry": [
+        "FinanceDatabase"
+      ],
+      "sector": [
+        "FinanceDatabase"
+      ],
+      "country": [
+        "FinanceDatabase"
+      ],
+      "mktcap": [
+        "FinanceDatabase"
+      ],
+      "exchange": [
+        "FinanceDatabase"
+      ],
+      "period": [
+        "StockAnalysis"
+      ],
+      "cps": [
+        "FinanceDatabase"
+      ],
+      "cpic": [
+        "FinanceDatabase"
+      ],
+      "cpis": [
+        "FinanceDatabase"
+      ],
+      "cpcs": [
+        "FinanceDatabase"
+      ],
+      "cpci": [
+        "FinanceDatabase"
+      ],
+      "metric": [
+        "YahooFinance"
+      ],
+      "vis": [
+        "StockAnalysis"
+      ]
+    },
+    "dps": {
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
+      ],
+      "shorted": [
+        "YahooFinance"
+      ],
+      "ctb": [
+        "InteractiveBrokers",
+        "Stocksera"
+      ],
+      "hsi": [
+        "Shortinterest"
+      ],
+      "prom": [
+        "FINRA"
+      ],
+      "pos": [
+        "Stockgrid"
+      ],
+      "sidtc": [
+        "Stockgrid"
+      ],
+      "dpotc": [
+        "FINRA"
+      ],
+      "ftd": [
+        "SEC"
+      ],
+      "spos": [
+        "Stockgrid"
+      ],
+      "psi": [
+        "Stockgrid",
+        "Quandl"
+      ]
+    },
+    "scr": {
+      "view": [],
+      "set": [],
+      "historical": [
+        "YahooFinance"
+      ],
+      "overview": [
+        "Finviz"
+      ],
+      "valuation": [
+        "Finviz"
+      ],
+      "financial": [
+        "Finviz"
+      ],
+      "ownership": [
+        "Finviz"
+      ],
+      "performance": [
+        "Finviz"
+      ],
+      "technical": [
+        "Finviz"
+      ],
+      "arktrades": [
+        "Cathiesark"
+      ]
+    },
+    "ins": {
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
+      ],
+      "view": [],
+      "set": [],
+      "filter": [
+        "OpenInsider"
+      ],
+      "lcb": [
+        "OpenInsider"
+      ],
+      "lpsb": [
+        "OpenInsider"
+      ],
+      "lit": [
+        "OpenInsider"
+      ],
+      "lip": [
+        "OpenInsider"
+      ],
+      "blip": [
+        "OpenInsider"
+      ],
+      "blop": [
+        "OpenInsider"
+      ],
+      "blcp": [
+        "OpenInsider"
+      ],
+      "lis": [
+        "OpenInsider"
+      ],
+      "blis": [
+        "OpenInsider"
+      ],
+      "blos": [
+        "OpenInsider"
+      ],
+      "blcs": [
+        "OpenInsider"
+      ],
+      "topt": [
+        "OpenInsider"
+      ],
+      "toppw": [
+        "OpenInsider"
+      ],
+      "toppm": [
+        "OpenInsider"
+      ],
+      "tipt": [
+        "OpenInsider"
+      ],
+      "tippw": [
+        "OpenInsider"
+      ],
+      "tippm": [
+        "OpenInsider"
+      ],
+      "tist": [
+        "OpenInsider"
+      ],
+      "tispw": [
+        "OpenInsider"
+      ],
+      "tispm": [
+        "OpenInsider"
+      ],
+      "stats": [
+        "OpenInsider"
+      ],
+      "act": [
+        "BusinessInsider"
+      ],
+      "lins": [
+        "Finviz"
+      ]
+    },
+    "gov": {
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
+      ],
+      "lasttrades": [
+        "QuiverQuant"
+      ],
+      "topbuys": [
+        "QuiverQuant"
+      ],
+      "topsells": [
+        "QuiverQuant"
+      ],
+      "lastcontracts": [
+        "QuiverQuant"
+      ],
+      "qtrcontracts": [
+        "QuiverQuant"
+      ],
+      "toplobbying": [
+        "QuiverQuant"
+      ],
+      "gtrades": [
+        "QuiverQuant"
+      ],
+      "contracts": [
+        "QuiverQuant"
+      ],
+      "histcont": [
+        "QuiverQuant"
+      ],
+      "lobbying": [
+        "QuiverQuant"
+      ]
+    },
+    "ba": {
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
+      ],
+      "headlines": [
+        "FinBrain"
+      ],
+      "snews": [
+        "Finnhub"
+      ],
+      "wsb": [
+        "Reddit"
+      ],
+      "spacc": [
+        "Reddit"
+      ],
+      "redditsent": [
+        "Reddit"
+      ],
+      "popular": [
+        "Reddit"
+      ],
+      "getdd": [
+        "Reddit"
+      ],
+      "trending": [
+        "Stocktwits"
+      ],
+      "stalker": [
+        "Stocktwits"
+      ],
+      "bullbear": [
+        "Stocktwits"
+      ],
+      "messages": [
+        "Stocktwits"
+      ],
+      "infer": [
+        "Twitter"
+      ],
+      "sentiment": [
+        "Twitter"
+      ],
+      "mentions": [
+        "Google"
+      ],
+      "regions": [
+        "Google"
+      ],
+      "interest": [
+        "Google"
+      ],
+      "queries": [
+        "Google"
+      ],
+      "rise": [
+        "Google"
+      ]
+    },
+    "ca": {
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
+      ],
+      "tsne": [
+        "YahooFinance"
+      ],
+      "get": [
+        "Finviz",
+        "Polygon",
+        "Finnhub"
+      ],
+      "set": [],
+      "add": [],
+      "rmv": [],
+      "historical": [
+        "YahooFinance"
+      ],
+      "hcorr": [
+        "YahooFinance"
+      ],
+      "volume": [
+        "YahooFinance"
+      ],
+      "income": [
+        "MarketWatch"
+      ],
+      "balance": [
+        "MarketWatch"
+      ],
+      "cashflow": [
+        "MarketWatch"
+      ],
+      "sentiment": [
+        "FinBrain"
+      ],
+      "scorr": [
+        "FinBrain"
+      ],
+      "overview": [
+        "Finviz"
+      ],
+      "valuation": [
+        "Finviz"
+      ],
+      "financial": [
+        "Finviz"
+      ],
+      "ownership": [
+        "Finviz"
+      ],
+      "performance": [
+        "Finviz"
+      ],
+      "technical": [
+        "Finviz"
+      ]
+    },
+    "fa": {
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
+      ],
+      "enterprise": [
+        "FinancialModelingPrep",
+        "YahooFinance"
+      ],
+      "divs": [
+        "YahooFinance"
+      ],
+      "splits": [
+        "YahooFinance"
+      ],
+      "rating": [
+        "Finviz",
+        "FinancialModelingPrep"
+      ],
+      "rot": [
+        "Finnhub"
+      ],
+      "warnings": [
+        "MarketWatch"
+      ],
+      "shrs": [
+        "YahooFinance"
+      ],
+      "supplier": [
+        "CSIMarket"
+      ],
+      "customer": [
+        "CSIMarket"
+      ],
+      "income": [
+        "FinancialModelingPrep",
+        "Polygon",
+        "AlphaVantage",
+        "EODHD",
+        "YahooFinance"
+      ],
+      "balance": [
+        "FinancialModelingPrep",
+        "Polygon",
+        "AlphaVantage",
+        "EODHD",
+        "YahooFinance"
+      ],
+      "cash": [
+        "FinancialModelingPrep",
+        "Polygon",
+        "AlphaVantage",
+        "EODHD",
+        "YahooFinance"
+      ],
+      "overview": [
+        "Finviz",
+        "FinancialModelingPrep",
+        "AlphaVantage",
+        "YahooFinance"
+      ],
+      "mgmt": [
+        "BusinessInsider"
+      ],
+      "analysis": [
+        "Elect"
+      ],
+      "score": [
+        "FinancialModelingPrep"
+      ],
+      "quote": [
+        "FinancialModelingPrep"
+      ],
+      "mktcap": [
+        "FinancialModelingPrep",
+        "YahooFinance"
+      ],
+      "growth": [
+        "FinancialModelingPrep"
+      ],
+      "metrics": [
+        "FinancialModelingPrep",
+        "AlphaVantage"
+      ],
+      "ratios": [
+        "FinancialModelingPrep"
+      ],
+      "dupont": [
+        "AlphaVantage"
+      ],
+      "fraud": [
+        "AlphaVantage"
+      ],
+      "sec": [
+        "Nasdaq"
+      ],
+      "earnings": [
+        "AlphaVantage",
+        "YahooFinance"
+      ],
+      "epsfc": [
+        "SeekingAlpha"
+      ],
+      "revfc": [
+        "SeekingAlpha"
+      ],
+      "est": [
+        "BusinessInsider"
+      ],
+      "pt": [
+        "BusinessInsider",
+        "FinancialModelingPrep"
+      ],
+      "dcf": [
+        "StockAnalysis"
+      ],
+      "dcfc": [
+        "FinancialModelingPrep"
+      ]
+    },
+    "bt": {
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
+      ],
+      "whatif": [
+        "YahooFinance"
+      ]
+    },
+    "ta": {
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
+      ],
+      "recom": [
+        "TradingView"
+      ],
+      "summary": [
+        "FinBrain"
+      ],
+      "tv": [
+        "TradingView"
+      ]
+    },
+    "qa": {
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD"
+      ]
+    }
+  },
+  "crypto": {
+    "price": [
+      "Pyth"
+    ],
+    "load": [
+      "YahooFinance",
+      "CoinGecko",
+      "CCXT"
+    ],
+    "find": [
+      "CoinGecko",
+      "CoinPaprika",
+      "Binance",
+      "Coinbase",
+      "YahooFinance"
+    ],
+    "headlines": [
+      "FinBrain"
+    ],
+    "prt": [
+      "CoinGecko"
+    ],
+    "disc": {
+      "top": [
+        "CoinGecko",
+        "CoinMarketCap"
+      ],
+      "trending": [
+        "CoinGecko"
+      ],
+      "gainers": [
+        "CoinGecko"
+      ],
+      "losers": [
+        "CoinGecko"
+      ],
+      "search": [
+        "CoinPaprika"
+      ],
+      "nft_mktp_chains": [
+        "DappRadar"
+      ],
+      "nft_mktp": [
+        "DappRadar"
+      ],
+      "dapps": [
+        "DappRadar"
+      ],
+      "dapp_categories": [
+        "DappRadar"
+      ],
+      "dapp_chains": [
+        "DappRadar"
+      ],
+      "dapp_metrics": [
+        "DappRadar"
+      ],
+      "defi_chains": [
+        "DappRadar"
+      ],
+      "tokens": [
+        "DappRadar"
+      ]
+    },
+    "ov": {
+      "global": [
+        "CoinGecko",
+        "CoinPaprika"
+      ],
+      "defi": [
+        "CoinGecko"
+      ],
+      "stables": [
+        "CoinGecko"
+      ],
+      "exchanges": [
+        "CoinGecko",
+        "CoinPaprika"
+      ],
+      "exrates": [
+        "CoinGecko"
+      ],
+      "indexes": [
+        "CoinGecko"
+      ],
+      "derivatives": [
+        "CoinGecko"
+      ],
+      "categories": [
+        "CoinGecko"
+      ],
+      "hold": [
+        "CoinGecko"
+      ],
+      "hm": [
+        "CoinGecko"
+      ],
+      "info": [
+        "CoinPaprika"
+      ],
+      "markets": [
+        "CoinPaprika"
+      ],
+      "exmarkets": [
+        "CoinPaprika"
+      ],
+      "platforms": [
+        "CoinPaprika"
+      ],
+      "contracts": [
+        "CoinPaprika"
+      ],
+      "pairs": [
+        "Coinbase"
+      ],
+      "news": [
+        "CryptoPanic"
+      ],
+      "wf": [
+        "WithdrawalFees"
+      ],
+      "ewf": [
+        "WithdrawalFees"
+      ],
+      "wfpe": [
+        "WithdrawalFees"
+      ],
+      "altindex": [
+        "BlockchainCenter"
+      ],
+      "btcrb": [
+        "BlockchainCenter"
+      ],
+      "ch": [
+        "Rekt"
+      ],
+      "cr": [
+        "LoanScan"
+      ],
+      "fun": [
+        "TokenTerminal"
+      ]
+    },
+    "onchain": {
+      "hr": [
+        "Glassnode"
+      ],
+      "btccp": [
+        "Blockchain"
+      ],
+      "btcct": [
+        "Blockchain"
+      ],
+      "btcblockdata": [
+        "Blockchain"
+      ],
+      "gwei": [
+        "ETHGasStations"
+      ],
+      "whales": [
+        "WhaleAlert"
+      ],
+      "lt": [
+        "BitQuery"
+      ],
+      "dvcp": [
+        "BitQuery"
+      ],
+      "tv": [
+        "BitQuery"
+      ],
+      "ueat": [
+        "BitQuery"
+      ],
+      "ttcp": [
+        "BitQuery"
+      ],
+      "baas": [
+        "BitQuery"
+      ],
+      "query": [
+        "Shroom"
+      ],
+      "address": [
+        "Ethplorer"
+      ],
+      "top": [
+        "Ethplorer"
+      ],
+      "balance": [
+        "Ethplorer"
+      ],
+      "hist": [
+        "Ethplorer"
+      ],
+      "info": [
+        "Ethplorer"
+      ],
+      "holders": [
+        "Ethplorer"
+      ],
+      "th": [
+        "Ethplorer"
+      ],
+      "prices": [
+        "Ethplorer"
+      ],
+      "tx": [
+        "Ethplorer"
+      ]
+    },
+    "defi": {
+      "newsletter": [
+        "Substack"
+      ],
+      "vaults": [
+        "Coindix"
+      ],
+      "tokens": [
+        "TheGraph"
+      ],
+      "stats": [
+        "TheGraph"
+      ],
+      "pairs": [
+        "TheGraph"
+      ],
+      "pools": [
+        "TheGraph"
+      ],
+      "swaps": [
+        "TheGraph"
+      ],
+      "ldapps": [
+        "DeFiLlama"
+      ],
+      "gdapps": [
+        "DeFiLlama"
+      ],
+      "stvl": [
+        "DeFiLlama"
+      ],
+      "dtvl": [
+        "DeFiLlama"
+      ],
+      "sinfo": [
+        "TerraFCD"
+      ],
+      "validators": [
+        "TerraFCD"
+      ],
+      "gacc": [
+        "TerraFCD"
+      ],
+      "sreturn": [
+        "TerraFCD"
+      ],
+      "lcsc": [
+        "Smartstake"
+      ],
+      "anchor": [
+        "CryptoSaurio"
+      ]
+    },
+    "tools": {
+      "aprtoapy": [],
+      "il": []
+    },
+    "nft": {
+      "stats": [
+        "OpenSea"
+      ],
+      "fp": [
+        "NFTPriceFloor"
+      ],
+      "collections": [
+        "NFTPriceFloor"
+      ]
+    },
+    "dd": {
+      "load": [
+        "YahooFinance",
+        "CoinGecko",
+        "CCXT"
+      ],
+      "info": [
+        "CoinGecko"
+      ],
+      "ath": [
+        "CoinGecko"
+      ],
+      "atl": [
+        "CoinGecko"
+      ],
+      "web": [
+        "CoinGecko"
+      ],
+      "bc": [
+        "CoinGecko"
+      ],
+      "pi": [
+        "Messari"
+      ],
+      "gov": [
+        "Messari"
+      ],
+      "basic": [
+        "CoinPaprika"
+      ],
+      "stats": [
+        "Coinbase"
+      ],
+      "desc": [
+        "TokenTerminal"
+      ],
+      "market": [
+        "CoinGecko"
+      ],
+      "mkt": [
+        "CoinPaprika"
+      ],
+      "ex": [
+        "CoinPaprika"
+      ],
+      "balance": [
+        "Binance"
+      ],
+      "oi": [
+        "Coinglass"
+      ],
+      "fundrate": [
+        "Coinglass"
+      ],
+      "liquidations": [
+        "Coinglass"
+      ],
+      "eb": [
+        "Coinglass"
+      ],
+      "trades": [
+        "CCXT"
+      ],
+      "ob": [
+        "CCXT"
+      ],
+      "active": [
+        "Glassnode"
+      ],
+      "nonzero": [
+        "Glassnode"
+      ],
+      "change": [
+        "Glassnode"
+      ],
+      "ps": [
+        "CoinPaprika"
+      ],
+      "mcapdom": [
+        "Messari"
+      ],
+      "mt": [
+        "Messari"
+      ],
+      "funot": [
+        "TokenTerminal"
+      ],
+      "team": [
+        "Messari"
+      ],
+      "inv": [
+        "Messari"
+      ],
+      "tk": [
+        "Messari"
+      ],
+      "fr": [
+        "Messari"
+      ],
+      "rm": [
+        "Messari"
+      ],
+      "events": [
+        "CoinPaprika"
+      ],
+      "news": [
+        "CryptoPanic"
+      ],
+      "links": [
+        "Messari"
+      ],
+      "twitter": [
+        "CoinPaprika"
+      ],
+      "social": [
+        "CoinGecko"
+      ],
+      "score": [
+        "CoinGecko"
+      ],
+      "dev": [
+        "CoinGecko"
+      ],
+      "gh": [
+        "Santiment"
+      ]
+    },
+    "ta": {
+      "load": [
+        "YahooFinance",
+        "CoinGecko",
+        "CCXT"
+      ],
+      "tv": [
+        "TradingView"
+      ]
+    },
+    "qa": {
+      "load": [
+        "YahooFinance",
+        "CoinGecko",
+        "CCXT"
+      ]
+    }
+  },
+  "etf": {
+    "search": [
+      "FinanceDatabase",
+      "StockAnalysis"
+    ],
+    "load": [
+      "YahooFinance"
+    ],
+    "disc": {
+      "gainers": [
+        "WallStreetJournal"
+      ],
+      "decliners": [
+        "WallStreetJournal"
+      ],
+      "active": [
+        "WallStreetJournal"
+      ]
+    },
+    "overview": [
+      "StockAnalysis"
+    ],
+    "holdings": [
+      "StockAnalysis"
+    ],
+    "weights": [
+      "FinancialModelingPrep"
+    ],
+    "news": [
+      "NewsApi"
+    ],
+    "compare": [
+      "StockAnalysis"
+    ]
+  },
+  "economy": {
+    "overview": [
+      "WallStreetJournal"
+    ],
+    "futures": [
+      "WallStreetJournal",
+      "Finviz"
+    ],
+    "map": [
+      "Finviz"
+    ],
+    "bigmac": [
+      "Nasdaq"
+    ],
+    "events": [
+      "Nasdaq"
+    ],
+    "edebt": [
+      "Wikipedia"
+    ],
+    "rtps": [
+      "AlphaVantage"
+    ],
+    "valuation": [
+      "Finviz"
+    ],
+    "performance": [
+      "Finviz"
+    ],
+    "gdp": [
+      "OECD"
+    ],
+    "rgdp": [
+      "OECD"
+    ],
+    "fgdp": [
+      "OECD"
+    ],
+    "debt": [
+      "OECD"
+    ],
+    "cpi": [
+      "FRED"
+    ],
+    "ccpi": [
+      "OECD"
+    ],
+    "balance": [
+      "OECD"
+    ],
+    "revenue": [
+      "OECD"
+    ],
+    "spending": [
+      "OECD"
+    ],
+    "trust": [
+      "OECD"
+    ],
+    "treasury": [
+      "EconDB"
+    ],
+    "fred": [
+      "FRED"
+    ],
+    "index": [
+      "YahooFinance"
+    ]
+  },
+  "forex": {
+    "load": [
+      "YahooFinance",
+      "AlphaVantage",
+      "Polygon"
+    ],
+    "quote": [
+      "YahooFinance",
+      "AlphaVantage"
+    ],
+    "fwd": [
+      "FXEmpire"
+    ]
+  },
+  "funds": {
+    "country": [
+      "MorningStar"
+    ],
+    "search": [
+      "MorningStar"
+    ],
+    "load": [
+      "MorningStar"
+    ],
+    "info": [
+      "MorningStar"
+    ],
+    "plot": [
+      "MorningStar"
+    ],
+    "sector": [
+      "MorningStar"
+    ],
+    "carbon": [
+      "MorningStar"
+    ],
+    "exclusion": [
+      "MorningStar"
+    ],
+    "holdings": [
+      "MorningStar"
+    ],
+    "alswe": [
+      "Avanza"
+    ],
+    "infoswe": [
+      "Avanza"
+    ]
+  },
+  "futures": {
+    "search": [
+      "YahooFinance"
+    ],
+    "historical": [
+      "YahooFinance",
+      "DataBento"
+    ],
+    "curve": [
+      "YahooFinance"
+    ]
+  },
+  "fixedincome": {
+    "estr": [
+      "FRED",
+      "ECB"
+    ],
+    "sofr": [
+      "FRED"
+    ],
+    "sonia": [
+      "FRED"
+    ],
+    "ameribor": [
+      "FRED"
+    ],
+    "fed": [
+      "FRED"
+    ],
+    "iorb": [
+      "FRED"
+    ],
+    "projection": [
+      "FRED"
+    ],
+    "dwpcr": [
+      "FRED"
+    ],
+    "ecb": [
+      "FRED"
+    ],
+    "treasury": [
+      "OECD"
+    ],
+    "usrates": [
+      "FRED"
+    ],
+    "ycrv": [
+      "FRED"
+    ],
+    "ecbycrv": [
+      "ECB"
+    ],
+    "icebofa": [
+      "FRED"
+    ],
+    "moody": [
+      "FRED"
+    ],
+    "spot": [
+      "FRED"
+    ],
+    "cp": [
+      "FRED"
+    ],
+    "hqm": [
+      "FRED"
+    ],
+    "icespread": [
+      "FRED"
+    ],
+    "tmc": [
+      "FRED"
+    ],
+    "ffrmc": [
+      "FRED"
+    ],
+    "tbffr": [
+      "FRED"
+    ]
+  },
+  "portfolio": {
+    "po": {
+      "maxsharpe": [
+        "YahooFinance"
+      ],
+      "minrisk": [
+        "YahooFinance"
+      ],
+      "maxutil": [
+        "YahooFinance"
+      ],
+      "maxret": [
+        "YahooFinance"
+      ],
+      "maxdiv": [
+        "YahooFinance"
+      ],
+      "maxdecorr": [
+        "YahooFinance"
+      ],
+      "blacklitterman": [
+        "FinancialModelingPrep"
+      ],
+      "ef": [
+        "YahooFinance"
+      ],
+      "riskparity": [
+        "YahooFinance"
+      ],
+      "relriskparity": [
+        "YahooFinance"
+      ],
+      "hrp": [
+        "YahooFinance"
+      ],
+      "herc": [
+        "YahooFinance"
+      ],
+      "nco": [
+        "YahooFinance"
+      ],
+      "equal": [
+        "YahooFinance"
+      ],
+      "mktcap": [
+        "FinancialModelingPrep"
+      ]
+    }
+  },
+  "alternative": {
+    "oss": {
+      "rossidx": [
+        "RunaCapital"
+      ],
+      "rs": [
+        "GitHub"
+      ],
+      "sh": [
+        "GitHub"
+      ],
+      "tr": [
+        "GitHub"
+      ]
+    },
+    "hn": ["HackerNews"]
+  },
+  "news" : ["Biztoc","Feedparser"]
+}

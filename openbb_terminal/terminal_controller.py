@@ -13,7 +13,7 @@ import time
 import webbrowser
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import certifi
 import pandas as pd
@@ -21,38 +21,43 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
-from rich import panel
 
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.common import feedparser_view
+import openbb_terminal.config_terminal as cfg
+from openbb_terminal.account.show_prompt import (
+    get_show_prompt,
+    set_show_prompt,
+)
+from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
-    USER_DATA_DIRECTORY,
-    USER_ENV_FILE,
-    USER_ROUTINES_DIRECTORY,
+    SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
+from openbb_terminal.core.session import session_controller
+from openbb_terminal.core.session.current_system import set_system_variable
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    set_preference,
+)
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     get_flair,
     parse_and_split_input,
 )
-from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.session import session_controller
-from openbb_terminal.session.user import User
+from openbb_terminal.routine_functions import is_reset, parse_openbb_script
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
+    first_time_user,
     is_auth_enabled,
     is_installer,
-    is_reset,
     print_goodbye,
     reset,
     suppress_stdout,
@@ -65,7 +70,7 @@ from openbb_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-env_file = str(USER_ENV_FILE)
+env_file = str(SETTINGS_ENV_FILE)
 
 if is_installer():
     # Necessary for installer so that it can locate the correct certificates for
@@ -103,6 +108,7 @@ class TerminalController(BaseController):
         "sources",
         "forecast",
         "futures",
+        "fixedincome",
         "funds",
     ]
 
@@ -117,8 +123,13 @@ class TerminalController(BaseController):
     GUESS_CORRECTLY = 0
     CHOICES_GENERATION = False
 
-    def __init__(self, jobs_cmds: List[str] = None):
+    def __init__(self, jobs_cmds: Optional[List[str]] = None):
         """Construct terminal controller."""
+        self.ROUTINE_FILES: Dict[str, str] = dict()
+        self.ROUTINE_DEFAULT_FILES: Dict[str, str] = dict()
+        self.ROUTINE_PERSONAL_FILES: Dict[str, str] = dict()
+        self.ROUTINE_CHOICES: Dict[str, Any] = dict()
+
         super().__init__(jobs_cmds)
 
         self.queue: List[str] = list()
@@ -136,10 +147,28 @@ class TerminalController(BaseController):
         """Update runtime choices."""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
+            for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
+                "*.openbb"
+            )
         }
+        if get_current_user().profile.get_token():
+            self.ROUTINE_DEFAULT_FILES = {
+                filepath.name: filepath
+                for filepath in Path(
+                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                    / "hub"
+                    / "default"
+                ).rglob("*.openbb")
+            }
+            self.ROUTINE_PERSONAL_FILES = {
+                filepath.name: filepath
+                for filepath in Path(
+                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                    / "hub"
+                    / "personal"
+                ).rglob("*.openbb")
+            }
 
-        self.ROUTINE_CHOICES = {}
         self.ROUTINE_CHOICES["--file"] = {
             filename: None for filename in self.ROUTINE_FILES
         }
@@ -150,11 +179,15 @@ class TerminalController(BaseController):
         self.ROUTINE_CHOICES["--help"] = None
         self.ROUTINE_CHOICES["--h"] = None
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["support"] = self.SUPPORT_CHOICES
             choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
+            choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
+
+            if biztoc_model.BIZTOC_TAGS:
+                choices["news"]["--tag"] = {c: {} for c in biztoc_model.BIZTOC_TAGS}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -191,6 +224,7 @@ class TerminalController(BaseController):
         mt.add_menu("economy")
         mt.add_menu("forex")
         mt.add_menu("futures")
+        mt.add_menu("fixedincome")
         mt.add_menu("alternative")
         mt.add_menu("funds")
         mt.add_raw("\n")
@@ -226,33 +260,92 @@ class TerminalController(BaseController):
             type=str,
             help="sources from where to get news from (separated by comma)",
         )
+        parse.add_argument(
+            "--tag",
+            dest="tag",
+            default="",
+            type=str,
+            help="display news for an individual tag [Biztoc only]",
+        )
+        parse.add_argument(
+            "--sourcelist",
+            dest="sourcelist",
+            action="store_true",
+            help="list all available sources from where to get news from [Biztoc only]",
+        )
+        parse.add_argument(
+            "--taglist",
+            dest="taglist",
+            action="store_true",
+            help="list all trending tags [Biztoc only]",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         news_parser = self.parse_known_args_and_warn(
-            parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
+            parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=25
         )
         if news_parser:
-            feedparser_view.display_news(
-                term=" ".join(news_parser.term),
-                sources=news_parser.sources,
-                limit=news_parser.limit,
-                export=news_parser.export,
-                sheet_name=news_parser.sheet_name,
-            )
+            if news_parser.source == "Feedparser":
+                # If biztoc options passed to feedparser source, let the user know
+                to_return = False
+                if news_parser.taglist:
+                    console.print("--taglist only available for Biztoc.\n")
+                    to_return = True
+                if news_parser.sourcelist:
+                    console.print("--sourcelist only available for Biztoc.\n")
+                    to_return = True
+                if news_parser.tag:
+                    console.print("--tag only available for Biztoc.\n")
+                    to_return = True
+
+                if to_return:
+                    return
+
+                query = " ".join(news_parser.term)
+                feedparser_view.display_news(
+                    term=query,
+                    sources=news_parser.sources,
+                    limit=news_parser.limit,
+                    export=news_parser.export,
+                    sheet_name=news_parser.sheet_name,
+                )
+            if news_parser.source == "Biztoc":
+                query = " ".join(news_parser.term)
+                if news_parser.sourcelist and news_parser.sourcelist is True:
+                    biztoc_view.display_sources(
+                        export=news_parser.export,
+                        sheet_name=news_parser.sheet_name,
+                    )
+                elif news_parser.taglist and news_parser.taglist is True:
+                    biztoc_view.display_tags(
+                        export=news_parser.export,
+                        sheet_name=news_parser.sheet_name,
+                    )
+                else:
+                    biztoc_view.display_news(
+                        term=query,
+                        tag=news_parser.tag,
+                        source=news_parser.sources,
+                        limit=news_parser.limit,
+                        export=news_parser.export,
+                        sheet_name=news_parser.sheet_name,
+                    )
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
         import json
         import random
 
+        current_user = get_current_user()
+
         if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
-            parser_exe = argparse.ArgumentParser(
+            parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                 prog="guess",
                 description="Guess command to achieve task successfully.",
             )
-            parser_exe.add_argument(
+            parser.add_argument(
                 "-l",
                 "--limit",
                 type=check_positive,
@@ -262,7 +355,7 @@ class TerminalController(BaseController):
             )
             if other_args and "-" not in other_args[0][0]:
                 other_args.insert(0, "-l")
-                ns_parser_guess = self.parse_simple_args(parser_exe, other_args)
+                ns_parser_guess = self.parse_simple_args(parser, other_args)
 
                 if self.GUESS_TOTAL_TRIES == 0:
                     self.GUESS_NUMBER_TRIES_LEFT = ns_parser_guess.limit
@@ -270,7 +363,7 @@ class TerminalController(BaseController):
                     self.GUESS_TOTAL_TRIES = ns_parser_guess.limit
 
         try:
-            with open(obbff.GUESS_EASTER_EGG_FILE) as f:
+            with open(current_user.preferences.GUESS_EASTER_EGG_FILE) as f:
                 # Load the file as a JSON document
                 json_doc = json.load(f)
 
@@ -279,10 +372,11 @@ class TerminalController(BaseController):
 
                 start = time.time()
                 console.print(f"\n[yellow]{task}[/yellow]\n")
-                if isinstance(session, PromptSession):
-                    an_input = session.prompt("GUESS / $ ")
-                else:
-                    an_input = ""
+                an_input = (
+                    session.prompt("GUESS / $ ")
+                    if isinstance(session, PromptSession)
+                    else ""
+                )
                 time_dif = time.time() - start
 
                 # When there are multiple paths to same solution
@@ -345,7 +439,7 @@ class TerminalController(BaseController):
         except Exception as e:
             console.print(
                 f"[red]Failed to load guess game from file: "
-                f"{obbff.GUESS_EASTER_EGG_FILE}[/red]"
+                f"{current_user.preferences.GUESS_EASTER_EGG_FILE}[/red]"
             )
             console.print(f"[red]{e}[/red]")
 
@@ -368,9 +462,6 @@ class TerminalController(BaseController):
         """Process account command."""
         from openbb_terminal.account.account_controller import AccountController
 
-        if User.is_guest():
-            User.print_guest_message()
-            return
         self.queue = self.load_class(AccountController, self.queue)
 
     def call_keys(self, _):
@@ -429,17 +520,11 @@ class TerminalController(BaseController):
 
     def call_dashboards(self, _):
         """Process dashboards command."""
-        if not is_installer():
-            from openbb_terminal.dashboards.dashboards_controller import (
-                DashboardsController,
-            )
+        from openbb_terminal.dashboards.dashboards_controller import (
+            DashboardsController,
+        )
 
-            self.queue = self.load_class(DashboardsController, self.queue)
-        else:
-            console.print("This feature is coming soon.")
-            console.print(
-                "Use the source code and an Anaconda environment if you are familiar with Python."
-            )
+        self.queue = self.load_class(DashboardsController, self.queue)
 
     def call_alternative(self, _):
         """Process alternative command."""
@@ -479,6 +564,14 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FuturesController, self.queue)
 
+    def call_fixedincome(self, _):
+        """Process fixedincome command."""
+        from openbb_terminal.fixedincome.fixedincome_controller import (
+            FixedIncomeController,
+        )
+
+        self.queue = self.load_class(FixedIncomeController, self.queue)
+
     def call_funds(self, _):
         """Process etf command"""
         from openbb_terminal.mutual_funds.mutual_fund_controller import FundController
@@ -487,180 +580,17 @@ class TerminalController(BaseController):
 
     def call_intro(self, _):
         """Process intro command."""
-        console.print(panel.Panel("[purple]Welcome to the OpenBB Terminal.[/purple]"))
-        console.print(
-            "\nThe following walkthrough will guide you towards making the most out of the OpenBB Terminal.\n\n"
-            "Press Enter to continue or 'q' followed by Enter to exit."
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
+        webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
+        # import json
 
-        console.print(panel.Panel("[purple]#1 - Commands vs menu.[/purple]"))
-        console.print(
-            "\nMenus are a collection of 'commands' and 'sub-menus'.\n"
-            "You can identify them through their distinct color and a '>' at the beginning of the line\n\n"
-            "For instance:\n"
-            "[menu]>   stocks             access historical pricing data, options, sector [/menu]"
-            "[menu]and industry, and overall due diligence [/menu]\n\n\n"
-            "Commands are expected to return data either as a chart or table.\n"
-            "You can identify them through their distinct color\n\n"
-            "For instance:\n"
-            "[cmds]>   news               display news articles based on term and data sources [/cmds]"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
+        # intro: dict = json.load((Path(__file__).parent / "intro.json").open())  # type: ignore
 
-        console.print(panel.Panel("[purple]#2 - Using commands[/purple]"))
-        console.print(
-            "\nCommands throughout the terminal can have additional arguments.\n\n"
-            "Let's say that in the current menu, you want to have more information about the command 'news'. \n\n"
-            "You can either see the available arguments in the terminal, using: [param]news -h[/param]\n\n",
-            "or you can find out more about it with an output example on the browser, using: [param]about news[/param]",
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#3 - Setting API Keys[/purple]"))
-        console.print(
-            "\nThe OpenBB Terminal does not own any of the data you have access to.\n\n"
-            "Instead, we provide the infrastructure to access over 100 different data sources "
-            "from a single location.\n\n"
-            "Thus, it is necessary for each user to set their own API keys for the various third party sources\n\n"
-            "You can find more about this on the '[param]keys[/param]' menu.\n\n"
-            "For many commands, there are multiple data sources that can be selected.\n\n"
-            "The help menu shows the data sources supported by each command.\n\n"
-            "For instance:\n"
-            "[cmds]    load               load a specific stock ticker and additional info for analysis   [/cmds]"
-            "[src][YahooFinance, AlphaVantage, Polygon, EODHD] [/src]\n\n"
-            "The user can go into the '[param]sources[/param]' menu and select their preferred default data source."
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(
-            panel.Panel("[purple]#4 - Symbol dependent menus and commands[/purple]")
-        )
-        console.print(
-            "\nThroughout the terminal, you will see commands and menus greyed out.\n\n"
-            "These menus or commands cannot be accessed until an object is loaded.\n\n"
-            "Let's take as an example the '[param]stocks[/param]' menu.\n\n"
-            "You will see that the command '[param]disc[/param]' is available as its goal is to discover new tickers:\n"
-            "[menu]>   stocks             access historical pricing data, options, sector [/menu]\n\n"
-            "On the other hand, '[param]fa[/param]' menu (fundamental analysis) requires a ticker to be loaded.\n\n"
-            "And therefore, appears as:\n"
-            "[dim]>   fa                 fundamental analysis of loaded ticker [/dim]\n\n"
-            "Once a ticker is loaded with: [param]load TSLA[/param]\n\n"
-            "The '[param]fa[/param]' menu will be available as:\n"
-            "[menu]>   fa                 fundamental analysis of loaded ticker [/menu]"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#5 - Terminal Navigation[/purple]"))
-        console.print(
-            "\nThe terminal has a tree like structure, where menus branch off into new menus.\n\n"
-            "The users current location is displayed before the text prompt.\n\n"
-            "For instance, if the user is inside the menu disc which is inside stocks, the following prompt "
-            "will appear: \n2022 Oct 18, 21:53 (🦋) [param]/stocks/disc/[/param] $\n\n"
-            "If the user wants to go back to the menu above, all they need to do is type '[param]q[/param]'.\n\n"
-            "If the user wants to go back to the home of the terminal, they can type '[param]/[/param]' instead.\n\n"
-            "Note: Always type '[param]h[/param]' to know what commands are available in each menu"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#6 - Command Pipeline[/purple]"))
-        console.print(
-            "\nThe terminal offers the capability of allowing users to speed up their "
-            "navigation and command execution."
-            "\n\nTherefore, typing the following prompt is valid:\n"
-            "2022 Oct 18, 21:53 (🦋) / $ [param]stocks/load TSLA/dd/pt[/param]\n\n"
-            "In this example, the terminal - in a single action - will go into '[param]stocks[/param]' menu, "
-            "run command '[param]load[/param]' with '[param]TSLA[/param]' as input, \n"
-            "go into sub-menu '[param]dd[/param]' (due diligence) and run the command "
-            "'[param]pt[/param]' (price target)."
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#6 - OpenBB Scripts[/purple]"))
-        console.print(
-            "\nThe command pipeline capability is great, but the user experience wasn't great copy-pasting large "
-            "lists of commands.\n\n"
-            "We allow the user to create a text file of the form:\n\n"
-            "[param]FOLDER_PATH/my_script.openbb[/param]\n"
-            "stocks\nload TSLA\ndd\npt\n\n"
-            "which can be run through the '[param]exe[/param]' command in the home menu, with:\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script.openbb[/param]\n\n"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(
-            panel.Panel("[purple]#7 - OpenBB Scripts with Arguments[/purple]")
-        )
-        console.print(
-            "\nThe user can create a script that includes arguments for the commands.\n\n"
-            "Example:\n\n"
-            "[param]FOLDER_PATH/my_script_with_variable_input.openbb[/param]\n"
-            "stocks\n# this is a comment\nload $ARGV[0]\ndd\npt\nq\nload $ARGV[1]\ncandle\n\n"
-            "and then, if this script is run with:\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script_with_variable_input.openbb "
-            "-i AAPL,MSFT[/param]\n\n"
-            "This means that the [param]pt[/param] will run on [param]AAPL[/param] while "
-            "[param]candle[/param] on [param]MSFT[/param]"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#8 - OpenBB Script Generation/purple]"))
-        console.print(
-            "\n"
-            "To make it easier for users to create scripts, we have created a "
-            "command that 'records' user commands "
-            "directly into a script.\n\n"
-            "From the home menu, the user can run:\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]record[/param]\n\n"
-            "and then perform your typical investment research workflow before entering\n\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]stop[/param]\n\n"
-            "After stopping, the script will be saved to the 'scripts' folder."
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#9 - Terminal Customization[/purple]"))
-        console.print(
-            "\nUsers should explore the [param]settings[/param] and [param]featflags[/param] menus "
-            "to configure their terminal.\n\n"
-            "The fact that our terminal is fully open source allows users to be able to customize "
-            "anything they want.\n\n"
-            "If you are interested in contributing to the project, please check:\n"
-            "[param]https://github.com/OpenBB-finance/OpenBBTerminal[/param]"
-        )
-        if input("") == "q":
-            return
-        console.print("\n")
-
-        console.print(panel.Panel("[purple]#10 - Support[/purple]"))
-        console.print(
-            "\n"
-            "We are nothing without our community, hence we put a lot of effort in being here for you.\n\n"
-            "If you find any bug that you wish to report to improve the terminal you can do so with:\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]support CMD[/param]\n\n"
-            "which should open a form in your browser where you can report the bug in said 'CMD'.\n\n"
-            "If you want to know more, or have any further question. Please join us on Discord:\n"
-            "[param]https://openbb.co/discord[/param]"
-        )
+        # for prompt in intro.get("prompts", []):
+        #     console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
+        #     console.print("".join(prompt["content"]))
+        #     if input("") == "q":
+        #         break
+        #     console.print("\n")
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""
@@ -669,32 +599,12 @@ class TerminalController(BaseController):
 
         if not other_args:
             console.print(
-                "[red]Provide a path to the routine you wish to execute. For an example, please use "
+                "[info]Provide a path to the routine you wish to execute. For an example, please use "
                 "`exe --example` and for documentation and to learn how create your own script "
-                "type `about exe`.\n[/red]"
+                "type `about exe`.\n[/info]"
             )
             return
-
-        full_input = " ".join(other_args)
-        if " " in full_input:
-            other_args_processed = full_input.split(" ")
-        else:
-            other_args_processed = [full_input]
-        self.queue = []
-
-        path_routine = ""
-        args = list()
-        for idx, path_dir in enumerate(other_args_processed):
-            if path_dir in ("-i", "--input"):
-                args = [path_routine[1:]] + other_args_processed[idx:]
-                break
-            if path_dir not in ("--file"):
-                path_routine += f"/{path_dir}"
-
-        if not args:
-            args = [path_routine[1:]]
-
-        parser_exe = argparse.ArgumentParser(
+        parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
@@ -702,20 +612,25 @@ class TerminalController(BaseController):
             "`exe --example` and for documentation and to learn how create your own script "
             "type `about exe`.",
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "--file",
             help="The path or .openbb file to run.",
-            dest="path",
-            default=None,
+            dest="file",
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and "-e" not in other_args
+            and "--example" not in other_args,
+            type=str,
+            nargs="+",
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "-i",
             "--input",
             help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
             dest="routine_args",
             type=lambda s: [str(item) for item in s.split(",")],
         )
-        parser_exe.add_argument(
+        parser.add_argument(
             "-e",
             "--example",
             help="Run an example script to understand how routines can be used.",
@@ -723,115 +638,100 @@ class TerminalController(BaseController):
             action="store_true",
             default=False,
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--file")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if not args[0]:
-            return console.print("[red]Please select an .openbb routine file.[/red]\n")
-
-        if args and "-" not in args[0][0]:
-            args.insert(0, "--file")
-        ns_parser_exe = self.parse_simple_args(parser_exe, args)
-        if ns_parser_exe:
-            if ns_parser_exe.path or ns_parser_exe.example:
-                if ns_parser_exe.example:
-                    path = (
-                        MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
+        if ns_parser:
+            if ns_parser.example:
+                routine_path = (
+                    MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
+                )
+                console.print(
+                    "[info]Executing an example, please type `about exe` "
+                    "to learn how to create your own script.[/info]\n"
+                )
+                time.sleep(3)
+            elif ns_parser.file:
+                # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
+                file_path = " ".join(ns_parser.file)
+                full_path = file_path
+                hub_routine = file_path.split("/")
+                if hub_routine[0] == "default":
+                    routine_path = Path(
+                        self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
                     )
-                    console.print(
-                        "[green]Executing an example, please type `about exe` "
-                        "to learn how to create your own script.[/green]\n"
+                elif hub_routine[0] == "personal":
+                    routine_path = Path(
+                        self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
                     )
-                    time.sleep(3)
-                elif ns_parser_exe.path in self.ROUTINE_CHOICES["--file"]:
-                    path = self.ROUTINE_FILES[ns_parser_exe.path]
                 else:
-                    path = ns_parser_exe.path
+                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
+            else:
+                return
 
-                with open(path) as fp:
-                    raw_lines = [
-                        x for x in fp if (not is_reset(x)) and ("#" not in x) and x
-                    ]
-                    raw_lines = [
-                        raw_line.strip("\n")
-                        for raw_line in raw_lines
-                        if raw_line.strip("\n")
-                    ]
+            with open(routine_path) as fp:
+                raw_lines = list(fp)
 
-                    lines = list()
-                    for rawline in raw_lines:
-                        templine = rawline
-
-                        # Check if dynamic parameter exists in script
-                        if "$ARGV" in rawline:
-                            # Check if user has provided inputs through -i or --input
-                            if ns_parser_exe.routine_args:
-                                for i, arg in enumerate(ns_parser_exe.routine_args):
-                                    # Check what is the location of the ARGV to be replaced
-                                    if f"$ARGV[{i}]" in templine:
-                                        templine = templine.replace(f"$ARGV[{i}]", arg)
-
-                                # Check if all ARGV have been removed, otherwise means that there are less inputs
-                                # when running the script than the script expects
-                                if "$ARGV" in templine:
-                                    console.print(
-                                        "[red]Not enough inputs were provided to fill in dynamic variables. "
-                                        "E.g. --input VAR1,VAR2,VAR3[/red]\n"
-                                    )
-                                    return
-
-                                lines.append(templine)
-                            # The script expects a parameter that the user has not provided
-                            else:
-                                console.print(
-                                    "[red]The script expects parameters, "
-                                    "run the script again with --input defined.[/red]\n"
-                                )
-                                return
-                        else:
-                            lines.append(templine)
-
-                    simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
-                    file_cmds = simulate_argv.replace("//", "/home/").split()
-                    file_cmds = (
-                        insert_start_slash(file_cmds) if file_cmds else file_cmds
+                # Capture ARGV either as list if args separated by commas or as single value
+                if ns_parser.routine_args:
+                    script_inputs = (
+                        ns_parser.routine_args
+                        if "," not in ns_parser.routine_args
+                        else ns_parser.routine_args.split(",")
                     )
-                    cmds_with_params = " ".join(file_cmds)
-                    self.queue = [
-                        val
-                        for val in parse_and_split_input(
-                            an_input=cmds_with_params, custom_filters=[]
+
+                err, parsed_script = parse_openbb_script(
+                    raw_lines=raw_lines,
+                    script_inputs=script_inputs if ns_parser.routine_args else None,
+                )
+
+                # If there err output is not an empty string then it means there was an
+                # issue in parsing the routine and therefore we don't want to feed it
+                # to the terminal
+                if err:
+                    console.print(err)
+                    return
+
+                self.queue = [
+                    val
+                    for val in parse_and_split_input(
+                        an_input=parsed_script, custom_filters=[]
+                    )
+                    if val
+                ]
+
+                if "export" in self.queue[0]:
+                    export_path = self.queue[0].split(" ")[1]
+                    # If the path selected does not start from the user root, give relative location from root
+                    if export_path[0] == "~":
+                        export_path = export_path.replace(
+                            "~", HOME_DIRECTORY.as_posix()
                         )
-                        if val
-                    ]
+                    elif export_path[0] != "/":
+                        export_path = os.path.join(
+                            os.path.dirname(os.path.abspath(__file__)), export_path
+                        )
 
-                    if "export" in self.queue[0]:
-                        export_path = self.queue[0].split(" ")[1]
-                        # If the path selected does not start from the user root, give relative location from root
-                        if export_path[0] == "~":
-                            export_path = export_path.replace(
-                                "~", HOME_DIRECTORY.as_posix()
-                            )
-                        elif export_path[0] != "/":
-                            export_path = os.path.join(
-                                os.path.dirname(os.path.abspath(__file__)), export_path
-                            )
-
-                        # Check if the directory exists
-                        if os.path.isdir(export_path):
-                            console.print(
-                                f"Export data to be saved in the selected folder: '{export_path}'"
-                            )
-                        else:
-                            os.makedirs(export_path)
-                            console.print(
-                                f"[green]Folder '{export_path}' successfully created.[/green]"
-                            )
-                        obbff.EXPORT_FOLDER_PATH = export_path
-                        self.queue = self.queue[1:]
+                    # Check if the directory exists
+                    if os.path.isdir(export_path):
+                        console.print(
+                            f"Export data to be saved in the selected folder: '{export_path}'"
+                        )
+                    else:
+                        os.makedirs(export_path)
+                        console.print(
+                            f"[green]Folder '{export_path}' successfully created.[/green]"
+                        )
+                    set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
+                    self.queue = self.queue[1:]
 
 
 # pylint: disable=global-statement
-def terminal(jobs_cmds: List[str] = None, test_mode=False):
+def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
+
+    current_user = get_current_user()
 
     log_terminal(test_mode=test_mode)
 
@@ -867,7 +767,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
             console.print(
                 f"[green]Folder '{export_path}' successfully created.[/green]"
             )
-        obbff.EXPORT_FOLDER_PATH = export_path
+        set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
 
     bootup()
     if not jobs_cmds:
@@ -875,16 +775,16 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
 
         if first_time_user():
             try:
-                t_controller.call_intro(None)
+                # t_controller.call_intro(None)
+                webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
                 # TDDO: Fix the CI
             except EOFError:
                 pass
-
         t_controller.print_help()
         check_for_updates()
 
     while ret_code:
-        if obbff.ENABLE_QUICK_EXIT:
+        if current_user.preferences.ENABLE_QUICK_EXIT:
             console.print("Quick exit enabled")
             break
 
@@ -905,10 +805,11 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
 
         # Get input command from user
         else:
-            # Get input from user using auto-completion
-            if session and obbff.USE_PROMPT_TOOLKIT:
-                try:
-                    if obbff.TOOLBAR_HINT:
+            try:
+                # Get input from user using auto-completion
+                if session and current_user.preferences.USE_PROMPT_TOOLKIT:
+                    # Check if toolbar hint was enabled
+                    if current_user.preferences.TOOLBAR_HINT:
                         an_input = session.prompt(
                             f"{get_flair()} / $ ",
                             completer=t_controller.completer,
@@ -919,7 +820,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                                 '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
                                 '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                 "see usage and available options    "
-                                '<style bg="ansiblack" fg="ansiwhite">[about]</style> Getting Started Documentation'
+                                '<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
                             ),
                             style=Style.from_dict(
                                 {
@@ -933,17 +834,24 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                             completer=t_controller.completer,
                             search_ignore_case=True,
                         )
-                except (KeyboardInterrupt, EOFError):
-                    print_goodbye()
-                    break
-            elif is_papermill():
-                pass
-            else:
+
+                elif is_papermill():
+                    pass
+
                 # Get input from user without auto-completion
-                an_input = input(f"{get_flair()} / $ ")
+                else:
+                    an_input = input(f"{get_flair()} / $ ")
+
+            except (KeyboardInterrupt, EOFError):
+                print_goodbye()
+                break
 
         try:
-            if an_input == "logout" and is_auth_enabled():
+            if (
+                an_input in ("login", "logout")
+                and get_show_prompt()
+                and is_auth_enabled()
+            ):
                 break
 
             # Process the input command
@@ -955,10 +863,8 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
 
             # Check if the user wants to reset application
             if an_input in ("r", "reset") or t_controller.update_success:
-                ret_code = reset(t_controller.queue if t_controller.queue else [])
-                if ret_code != 0:
-                    print_goodbye()
-                    break
+                reset(t_controller.queue if t_controller.queue else [])
+                break
 
         except SystemExit:
             logger.exception(
@@ -991,7 +897,8 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if an_input == "logout" and is_auth_enabled():
+    if an_input in ("login", "logout") and get_show_prompt() and is_auth_enabled():
+        set_show_prompt(False)
         return session_controller.main()
 
 
@@ -1008,7 +915,7 @@ def run_scripts(
     path: Path,
     test_mode: bool = False,
     verbose: bool = False,
-    routines_args: List[str] = None,
+    routines_args: Optional[List[str]] = None,
     special_arguments: Optional[Dict[str, str]] = None,
     output: bool = True,
 ):
@@ -1035,6 +942,7 @@ def run_scripts(
         if not test_mode:
             terminal()
 
+    # THIS NEEDS TO BE REFACTORED!!! - ITS USED FOR TESTING
     with path.open() as fp:
         raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
         raw_lines = [
@@ -1065,6 +973,7 @@ def run_scripts(
         if test_mode and "exit" not in lines[-1]:
             lines.append("exit")
 
+        # Deals with the export with a path with "/" in it
         export_folder = ""
         if "export" in lines[0]:
             export_folder = lines[0].split("export ")[1].rstrip()
@@ -1073,10 +982,11 @@ def run_scripts(
         simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
         file_cmds = simulate_argv.replace("//", "/home/").split()
         file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-        if export_folder:
-            file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
-        else:
-            file_cmds = [" ".join(file_cmds)]
+        file_cmds = (
+            [f"export {export_folder}{' '.join(file_cmds)}"]
+            if export_folder
+            else [" ".join(file_cmds)]
+        )
 
         if not test_mode or verbose:
             terminal(file_cmds, test_mode=True)
@@ -1091,9 +1001,8 @@ def run_scripts(
                     first_cmd = file_cmds[0].split("/")[1]
                     with open(
                         whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
-                    ) as output_file:
-                        with contextlib.redirect_stdout(output_file):
-                            terminal(file_cmds, test_mode=True)
+                    ) as output_file, contextlib.redirect_stdout(output_file):
+                        terminal(file_cmds, test_mode=True)
                 else:
                     terminal(file_cmds, test_mode=True)
 
@@ -1122,9 +1031,11 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
     return default
 
 
-def run_routine(file: str, routines_args=List[str]):
+def run_routine(file: str, routines_args=Optional[str]):
     """Execute command routine from .openbb file."""
-    user_routine_path = USER_DATA_DIRECTORY / "routines" / file
+    user_routine_path = (
+        get_current_user().preferences.USER_DATA_DIRECTORY / "routines" / file
+    )
     default_routine_path = MISCELLANEOUS_DIRECTORY / "routines" / file
 
     if user_routine_path.exists():
@@ -1140,7 +1051,7 @@ def run_routine(file: str, routines_args=List[str]):
 def main(
     debug: bool,
     path_list: List[str],
-    routines_args: List[str] = None,
+    routines_args: Optional[List[str]] = None,
     **kwargs,
 ):
     """Run the terminal with various options.
@@ -1162,10 +1073,13 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
     if kwargs["module"] == "ipykernel_launcher":
+        bootup()
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:
-        os.environ["DEBUG_MODE"] = "true"
+        set_system_variable("DEBUG_MODE", True)
+
+    cfg.start_plot_backend()
 
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
         run_routine(file=path_list[0], routines_args=routines_args)

@@ -7,25 +7,14 @@ from typing import List, Optional
 
 import numpy as np
 import pandas as pd
-import seaborn as sns
-from matplotlib import pyplot as plt
-from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.comparison_analysis import finbrain_model
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
@@ -33,8 +22,8 @@ def display_sentiment_compare(
     similar: List[str],
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ):
     """Display sentiment for all ticker. [Source: FinBrain].
 
@@ -48,74 +37,78 @@ def display_sentiment_compare(
         Output raw values, by default False
     export : str, optional
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_sentiment = finbrain_model.get_sentiments(similar)
     if df_sentiment.empty:
-        console.print("No sentiments found.")
+        return console.print("No sentiments found.")
 
-    else:
-        # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+    fig = OpenBBFigure(yaxis_title="Sentiment")
+    fig.set_title(f"FinBrain's Sentiment Analysis since {df_sentiment.index[0]}")
 
-        for idx, tick in enumerate(similar):
-            offset = 2 * idx
-            ax.axhline(y=offset, color="white", linestyle="--", lw=1)
-            ax.axhline(y=offset + 1, color="white", linestyle="--", lw=1)
+    # we need to remove the tickers that are not in the df_sentiment dataframe
+    similar = [tick for tick in similar if tick in df_sentiment.columns]
 
-            senValues = np.array(pd.to_numeric(df_sentiment[tick].values))
-            senNone = np.array(0 * len(df_sentiment))
-            ax.fill_between(
-                df_sentiment.index,
-                pd.to_numeric(df_sentiment[tick].values) + offset,
-                offset,
-                where=(senValues < senNone),
-                color=theme.down_color,
-                interpolate=True,
-            )
+    for idx, tick in enumerate(similar):
+        offset = 2 * idx
+        fig.add_hline(y=offset + 1, line=dict(color="white", dash="dash"))
 
-            ax.fill_between(
-                df_sentiment.index,
-                pd.to_numeric(df_sentiment[tick].values) + offset,
-                offset,
-                where=(senValues >= senNone),
-                color=theme.up_color,
-                interpolate=True,
-            )
+        senValues = np.array(pd.to_numeric(df_sentiment[tick].values))
+        senNone = np.array(0 * len(df_sentiment))
+        negative_yloc = np.where(senValues < senNone)[0]
+        positive_yloc = np.where(senValues > senNone)[0]
 
-        ax.set_ylabel("Sentiment")
-
-        ax.axhline(y=-1, color="white", linestyle="--", lw=1)
-        ax.set_yticks(np.arange(len(similar)) * 2)
-        ax.set_yticklabels(similar)
-        ax.set_xlim(df_sentiment.index[0], df_sentiment.index[-1])
-        ax.set_title(f"FinBrain's Sentiment Analysis since {df_sentiment.index[0]}")
-
-        theme.style_primary_axis(ax)
-
-        if not external_axes:
-            theme.visualize_output()
-
-        if raw:
-            print_rich_table(
-                df_sentiment,
-                headers=list(df_sentiment.columns),
-                title="Ticker Sentiment",
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "sentiment",
-            df_sentiment,
-            sheet_name,
+        fig.add_scatter(
+            x=df_sentiment.index[positive_yloc],
+            y=pd.to_numeric(df_sentiment[tick].values)[positive_yloc] + offset,
+            mode="lines",
+            line_width=0,
+            name=tick,
         )
+        fig.add_scatter(
+            x=[df_sentiment.index[0], df_sentiment.index[-1]],
+            y=[offset, offset],
+            fillcolor=theme.up_color,
+            line=dict(color="white", dash="dash"),
+            fill="tonexty",
+            mode="lines",
+            name=tick,
+        )
+        fig.add_scatter(
+            x=df_sentiment.index[negative_yloc],
+            y=pd.to_numeric(df_sentiment[tick].values)[negative_yloc] + offset,
+            fill="tonexty",
+            fillcolor=theme.down_color,
+            line_width=0,
+            mode="lines",
+            name=tick,
+        )
+
+    fig.add_hline(y=-1, line=dict(color="white", dash="dash"))
+    fig.update_traces(showlegend=False)
+    fig.update_yaxes(ticktext=similar, tickvals=np.arange(len(similar)) * 2)
+
+    if raw:
+        print_rich_table(
+            df_sentiment,
+            headers=list(df_sentiment.columns),
+            show_index=True,
+            index_name="Date",
+            title="Ticker Sentiment",
+            export=bool(export),
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sentiment",
+        df_sentiment,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -123,8 +116,8 @@ def display_sentiment_correlation(
     similar: List[str],
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ):
     """Plot correlation sentiments heatmap across similar companies. [Source: FinBrain].
 
@@ -138,57 +131,69 @@ def display_sentiment_correlation(
         Output raw values, by default False
     export : str, optional
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     corrs, df_sentiment = finbrain_model.get_sentiment_correlation(similar)
 
     if df_sentiment.empty:
-        console.print("No sentiments found.")
+        return console.print("No sentiments found.")
 
-    else:
-        # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+    similar_string = ",".join(similar)
+    fig = OpenBBFigure().set_title(
+        f"Sentiment correlation heatmap across {similar_string}"
+    )
 
-        mask = np.zeros((len(similar), len(similar)), dtype=bool)
-        mask[np.triu_indices(len(mask))] = True
+    mask = np.zeros((len(similar), len(similar)), dtype=bool)
+    mask[np.triu_indices(len(mask))] = True
+    df_corr = corrs.mask(mask)
 
-        sns.heatmap(
+    df_corr.fillna("", inplace=True)
+
+    fig.add_heatmap(
+        x=df_corr.columns,
+        y=df_corr.index,
+        z=df_corr.values.tolist(),
+        zmin=-1,
+        zmax=1,
+        hoverongaps=False,
+        showscale=True,
+        colorscale="RdYlGn",
+        text=df_corr.to_numpy(),
+        textfont=dict(color="black"),
+        texttemplate="%{text:.2f}",
+        colorbar=dict(
+            thickness=20,
+            thicknessmode="pixels",
+            x=1.15,
+            y=1,
+            xanchor="right",
+            yanchor="top",
+            xpad=10,
+        ),
+        xgap=1,
+        ygap=1,
+    )
+    fig.update_layout(
+        margin=dict(l=0, r=20, t=20, b=0),
+        yaxis=dict(autorange="reversed"),
+    )
+
+    if raw:
+        print_rich_table(
             corrs,
-            cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
-            cmap="RdYlGn",
-            linewidths=1,
-            annot=True,
-            vmin=-1,
-            vmax=1,
-            mask=mask,
-            ax=ax,
-        )
-        similar_string = ",".join(similar)
-        ax.set_title(
-            f"Sentiment correlation heatmap across \n{similar_string}", fontsize=11
+            headers=list(corrs.columns),
+            show_index=True,
+            title="Correlation Sentiments",
+            export=bool(export),
         )
 
-        if not external_axes:
-            theme.visualize_output()
-
-        if raw:
-            print_rich_table(
-                corrs,
-                headers=list(corrs.columns),
-                show_index=True,
-                title="Correlation Sentiments",
-            )
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "scorr",
-            corrs,
-            sheet_name,
-        )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "scorr",
+        corrs,
+        sheet_name,
+        fig,
+    )
+    return fig.show(external=raw or external_axes)

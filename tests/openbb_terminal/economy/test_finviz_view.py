@@ -1,11 +1,14 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pytest
 
-from openbb_terminal import helper_funcs
-
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.economy import finviz_view
 
 
@@ -28,8 +31,14 @@ def vcr_config():
 )
 def test_display_valuation(mocker, tab):
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=tab,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
@@ -54,8 +63,14 @@ def test_display_valuation(mocker, tab):
 )
 def test_display_performance(mocker, tab):
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=tab,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
@@ -66,31 +81,6 @@ def test_display_performance(mocker, tab):
         ascend=True,
         export="",
     )
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_display_spectrum(mocker):
-    # MOCK GET_SPECTRUM_DATA
-    mocker.patch(
-        target="openbb_terminal.economy.finviz_view.finviz_model.get_spectrum_data"
-    )
-
-    # MOCK EXPORT_DATA
-    mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")
-
-    # MOCK OPEN
-    mock_image = mocker.Mock()
-    mocker.patch(
-        target="openbb_terminal.economy.finviz_view.Image",
-        new=mock_image,
-    )
-
-    finviz_view.display_spectrum(
-        group="sector",
-        export="jpg",
-    )
-
-    mock_image.open().show.assert_called_once()
 
 
 @pytest.mark.default_cassette("test_display_future")
@@ -105,8 +95,14 @@ def test_display_spectrum(mocker):
 )
 def test_display_future(mocker, tab):
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=tab,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.economy.finviz_view.export_data")

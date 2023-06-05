@@ -1,0 +1,90 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.github.v3.star+json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_AUTHORIZATION
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.github.com/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5VWy27jMAy85yuCHHoKqnuAop9iKDZja1e2XIlukQr591KisrHdbWVd8gBmxOGQ
+        Gtvv9vtDPVkLA1aTA1tNVh9O+0OHOLqTEHJUz63Cbjo/16YXAXI4fiPJCTtj1adEZQZXddjr9UGz
+        QxwgqqF1ojbDAHXkUKFRq5oP8KLWKihSzY2rrQr8LnIJTnJNA5UDaeturWzVIoNIWwOvby/+bQJ7
+        vfmnUbZwHMmg+MMZi0djG7BJIJnTKyysECiuoAj0UmmX0R9GJBjJrUNv/qgci0GJ8E7eZwkRxIQL
+        QJPDR0yCG63NB9gcJXZyuYPnXNqeLS4wl8BeoLQtYBpWq1y2v4jxInw91pCuQaYuIViocm4q27jI
+        KFkHJmQEMYg1/YXrJs8DjhlankEXbXVkzLp4sjAap9DYK/n44hd/1/cqzWcwqC73MMj0t8CyaGNb
+        OaQwyrAJ6oSnz1R5Qf0nVUHOtsc5IrL8K15HyotvofG/OgiyLygQ4dzpOJ0pNKvN+yyYwGQrESqt
+        Qmz9nqcPYCI+JpohBiDZ+zFQToo4+tT/bAtKQnk+kYLcXDzgCqYaA2jTPB3li4UmY2Q8L0G9YFt8
+        LJBsuR+zfaCJwYNBM9I2lBgaGT9nTpK18cWARh2Qc9L8PuVWPLoTLhI3E4sWDuuuYNvQYoUStwLh
+        Z7MWLwW72+4L1rGgQFwJAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 30 Mar 2023 19:49:05 GMT
+      ETag:
+      - W/"d1c24c1c278617a978f7c1c7e9bb61810a7bd79b2118239508a4a41a1424dffc"
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Accepted-OAuth-Scopes:
+      - ''
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; param=star; format=json
+      X-GitHub-Request-Id:
+      - 6D6D:8C76:F719C:FB4EE:6425E7B1
+      X-OAuth-Scopes:
+      - gist, notifications, project, repo, workflow
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4998'
+      X-RateLimit-Reset:
+      - '1680208663'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '2'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2023-05-29 19:47:59 UTC
+      x-github-api-version-selected:
+      - '2022-11-28'
+    status:
+      code: 200
+      message: OK
+version: 1

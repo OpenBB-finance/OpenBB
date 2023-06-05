@@ -90,7 +90,7 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
         pytrend.build_payload(kw_list=[symbol])
         df = pytrend.related_queries()
         df = df[symbol]["top"].head(limit)
-        df["value"] = df["value"].apply(lambda x: str(x) + "%")
+        df["value"] = df["value"].apply(lambda x: f"{str(x)}%")
         return df
 
     except Exception as e:

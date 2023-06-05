@@ -1,7 +1,33 @@
                                    Name % Of Etf   Shares
 Symbol                                                   
-ZM      Zoom Video Communications, Inc.    8.24%  1216922
-TSLA                        Tesla, Inc.    8.16%   455122
-COIN              Coinbase Global, Inc.    7.53%  1245412
-ROKU                         Roku, Inc.    6.64%  1489131
-SQ                          Block, Inc.    6.07%  1263217
+ROKU                         Roku, Inc.    8.14%  1466535
+SQ                          Block, Inc.    7.20%  1224537
+TSLA                        Tesla, Inc.    6.92%   427124
+ZM      Zoom Video Communications, Inc.    6.90%  1166126
+COIN              Coinbase Global, Inc.    6.84%  1386677
+DKNG                    DraftKings Inc.    6.00%  3809363
+SHOP                       Shopify Inc.    5.94%  1753707
+GBTC      Grayscale Bitcoin Trust (BTC)    5.17%  5534574
+TWLO                        Twilio Inc.    5.16%   969641
+PATH                        UiPath Inc.    4.50%  3670751
+TDOC               Teladoc Health, Inc.    4.02%  1693235
+U                   Unity Software Inc.    3.69%  1208983
+RBLX                 Roblox Corporation    3.66%  1207367
+PD                      PagerDuty, Inc.    3.19%  1337052
+MNDY                    monday.com Ltd.    2.76%   223282
+MELI                 MercadoLibre, Inc.    2.69%    29788
+HOOD            Robinhood Markets, Inc.    2.63%  3281013
+GENI              Genius Sports Limited    1.98%  4733992
+ADBE                         Adobe Inc.    1.52%    54008
+VCYT                     Veracyte, Inc.    1.47%   762889
+NET                    Cloudflare, Inc.    1.43%   289413
+VUZI                  Vuzix Corporation    1.31%  3616246
+NVDA                 NVIDIA Corporation    1.10%    65976
+CRWD         CrowdStrike Holdings, Inc.    1.09%   114399
+ADYEY                        Adyen N.V.    0.92%   767203
+EDR       Endeavor Group Holdings, Inc.    0.89%   498918
+TWOU                           2U, Inc.    0.81%  1082164
+KIND            Nextdoor Holdings, Inc.    0.80%  4567145
+NU                     Nu Holdings Ltd.    0.56%  1438547
+AMD        Advanced Micro Devices, Inc.    0.45%    72999
+N/A           DREYFUS GOVT CASH MAN INS    0.26%  3182116

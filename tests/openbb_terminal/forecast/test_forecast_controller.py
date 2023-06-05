@@ -4,6 +4,8 @@ from typing import List
 import pandas as pd
 import pytest
 
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import copy_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 try:
@@ -39,14 +41,24 @@ def test_check_greater_than_one_invalid():
 
 def test_forecast_controller(mocker):
     mocker.patch(base + "session", True)
-    mocker.patch(base + "obbff.USE_PROMPT_TOOLKIT", True)
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
     cont = fc.ForecastController(data=df, ticker="TSLA")
     assert isinstance(cont.files, List)
 
 
 def test_fc_update_runtime_choices(mocker):
     mocker.patch(base + "session", True)
-    mocker.patch(base + "obbff.USE_PROMPT_TOOLKIT", True)
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
     cont = fc.ForecastController()
     cont.datasets = {"stonks": df}
     cont.update_runtime_choices()

@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   deploy-test-pypi:
-    name: Build and publish distributions 📦 to PyPI and TestPyPI
+    name: Build and publish 📦 to TestPyPI
     if: startsWith(github.ref, 'refs/heads/release/')
     runs-on: ubuntu-latest
 
@@ -47,7 +47,7 @@ jobs:
         repository_url: https://test.pypi.org/legacy/
 
   deploy-pypi:
-    name: Build and publish distributions 📦 to PyPI and TestPyPI
+    name: Build and publish 📦 to PyPI
     if: startsWith(github.ref, 'refs/heads/main')
     runs-on: ubuntu-latest
 

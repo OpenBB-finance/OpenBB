@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 from finvizfinance.screener import (
@@ -22,7 +22,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_similar_companies(symbol: str, compare_list: List[str] = None) -> List[str]:
+def get_similar_companies(
+    symbol: str, compare_list: Optional[List[str]] = None
+) -> List[str]:
     """Get similar companies from Finviz.
 
     Parameters
@@ -39,9 +41,9 @@ def get_similar_companies(symbol: str, compare_list: List[str] = None) -> List[s
     """
     try:
         compare_list = ["Sector", "Industry"] if compare_list is None else compare_list
-        similar = (
-            Overview().compare(symbol, compare_list, verbose=0)["Ticker"].to_list()
-        )
+        similar = Overview().compare(symbol, compare_list, verbose=0)
+        similar.columns = [x.strip() for x in similar.columns]
+        return similar.Ticker.to_list()
     except Exception as e:
         logger.exception(str(e))
         console.print(e)

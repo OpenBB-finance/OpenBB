@@ -10,8 +10,19 @@
   !define NAME "OpenBB Terminal"
   !define COMPANY "OpenBB"
   !define APPFILE "OpenBBTerminal.exe"
-  !define VERSION "2.4.0"
+  !define VERSION "3.0.1"
   !define SLUG "${NAME} v${VERSION}"
+
+;--------------------------------
+; Info for Installer.exe
+  VIProductVersion 3.0.1.0
+  VIAddVersionKey ProductName "OpenBB Terminal"
+  VIAddVersionKey Comments "An installer for OpenBB Terminal. For additional details, visit OpenBB.co"
+  VIAddVersionKey CompanyName OpenBB.co
+  VIAddVersionKey FileDescription "OpenBB Terminal Program"
+  VIAddVersionKey FileVersion 3.0.1.0
+  VIAddVersionKey ProductVersion 3.0.1.0
+  VIAddVersionKey InternalName "OpenBB Terminal"
 
 ;--------------------------------
 ; General
@@ -31,6 +42,10 @@
   !define MUI_ABORTWARNING
   !define MUI_WELCOMEPAGE_TITLE "${SLUG} Setup"
   !define UninstId "OpenBBTerminal" ; You might want to use a GUID here
+  !define MUI_FINISHPAGE_RUN
+  !define MUI_FINISHPAGE_RUN_NOTCHECKED
+  !define MUI_FINISHPAGE_RUN_TEXT "Start OpenBB Terminal"
+  !define MUI_FINISHPAGE_RUN_FUNCTION "StartOpenBB"
 
 ;--------------------------------
 ; Pages
@@ -72,6 +87,12 @@ Var STR_CONTAINS_VAR_2
 Var STR_CONTAINS_VAR_3
 Var STR_CONTAINS_VAR_4
 Var STR_RETURN_VAR
+
+
+Function StartOpenBB
+  Exec "$InstDir\OpenBBTerminal.exe"
+FunctionEnd
+
 
 Function StrContains
   Exch $STR_NEEDLE

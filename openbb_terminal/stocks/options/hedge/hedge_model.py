@@ -88,10 +88,9 @@ def calc_hedge(
         if side == "Call":
             # Short call position
             delta_multiplier = -1
-    elif side == "Put":
-        if sign == 1:
-            # Long put position
-            delta_multiplier = -1
+    elif side == "Put" and sign == 1:
+        # Long put position
+        delta_multiplier = -1
 
     options_array = np.array(
         [[option_a_gamma, option_b_gamma], [option_a_vega, option_b_vega]]

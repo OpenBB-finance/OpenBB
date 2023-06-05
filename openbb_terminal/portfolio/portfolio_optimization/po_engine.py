@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 
@@ -16,9 +16,9 @@ class PoEngine:
 
     def __init__(
         self,
-        symbols_categories: Dict[str, Dict[str, str]] = None,
-        symbols_file_path: str = None,
-        parameters_file_path: str = None,
+        symbols_categories: Optional[Dict[str, Dict[str, str]]] = None,
+        symbols_file_path: Optional[str] = None,
+        parameters_file_path: Optional[str] = None,
     ):
         """Initialize the engine
 
@@ -104,7 +104,7 @@ class PoEngine:
             symbols = []
             for item in symbols_categories.items():
                 _, values = item
-                for v in values.keys():
+                for v in values:
                     symbols.append(v)
 
             return list(set(symbols))
@@ -133,7 +133,7 @@ class PoEngine:
 
         return available_categories
 
-    def get_category(self, category: str = None) -> Dict[str, str]:
+    def get_category(self, category: Optional[str] = None) -> Dict[str, str]:
         """Get the category
 
         Parameters
@@ -168,7 +168,7 @@ class PoEngine:
             return {}
         return self._categories
 
-    def get_category_df(self, category: str = None) -> pd.DataFrame:
+    def get_category_df(self, category: Optional[str] = None) -> pd.DataFrame:
         """Get the category df
 
         Returns

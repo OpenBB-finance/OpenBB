@@ -1,13 +1,13 @@
+# type: ignore
 """ Parameters Controller Module """
 __docformat__ = "numpy"
-
 # pylint: disable=C0302, no-else-return
 
 import argparse
 import logging
 from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -64,7 +64,7 @@ class ParametersController(BaseController):
     def __init__(
         self,
         file: str,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
         params: Optional[dict] = None,
         current_model=None,
     ):
@@ -77,7 +77,7 @@ class ParametersController(BaseController):
         self.description: Optional[str] = None
         self.DATA_FILES = params_helpers.load_data_files()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["set"] = {c: None for c in self.models}
             choices["set"]["--model"] = {c: None for c in self.models}
@@ -98,7 +98,7 @@ class ParametersController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.DATA_FILES = params_helpers.load_data_files()
             self.choices["load"]["--file"] = {c: {} for c in self.DATA_FILES}
             self.completer = NestedCompleter.from_nested_dict(self.choices)
@@ -120,7 +120,7 @@ class ParametersController(BaseController):
             mt.add_raw("\n")
             mt.add_info("_parameters_")
             if self.current_model:
-                max_len = max(len(k) for k in self.params.keys())
+                max_len = max(len(k) for k in self.params)
                 for k, v in self.params.items():
                     v = params_helpers.booltostr(v)
                     all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
@@ -129,7 +129,7 @@ class ParametersController(BaseController):
                             f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
                         )
             else:
-                max_len = max(len(k) for k in self.params.keys())
+                max_len = max(len(k) for k in self.params)
                 for k, v in self.params.items():
                     v = params_helpers.booltostr(v)
                     mt.add_raw(
@@ -306,11 +306,10 @@ class ParametersController(BaseController):
                 argument = ns_parser.argument[0]
                 value = ns_parser.argument[1]
 
-                if self.current_model:
-                    if argument not in self.params:
-                        console.print(
-                            "[red]The parameter you are trying to access is unused in this model.[/red]\n"
-                        )
+                if self.current_model and argument not in self.params:
+                    console.print(
+                        "[red]The parameter you are trying to access is unused in this model.[/red]\n"
+                    )
 
                 try:
                     value = float(value)

@@ -5,11 +5,11 @@ import argparse
 import logging
 import random
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import yfinance as yf
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -73,7 +73,9 @@ class ComparisonAnalysisController(BaseController):
     PATH = "/stocks/ca/"
     CHOICES_GENERATION = True
 
-    def __init__(self, similar: List[str] = None, queue: List[str] = None):
+    def __init__(
+        self, similar: Optional[List[str]] = None, queue: Optional[List[str]] = None
+    ):
         """Constructor"""
         super().__init__(queue)
 
@@ -87,7 +89,7 @@ class ComparisonAnalysisController(BaseController):
         else:
             self.similar = []
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -262,10 +264,11 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.ticker:
                 if ns_parser.source == "Finviz":
-                    if ns_parser.b_no_country:
-                        compare_list = ["Sector", "Industry"]
-                    else:
-                        compare_list = ["Sector", "Industry", "Country"]
+                    compare_list = (
+                        ["Sector", "Industry"]
+                        if ns_parser.b_no_country
+                        else ["Sector", "Industry", "Country"]
+                    )
 
                     self.similar = finviz_compare_model.get_similar_companies(
                         self.ticker, compare_list
@@ -289,7 +292,6 @@ class ComparisonAnalysisController(BaseController):
 
                         console.print(
                             f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
-                            "\n",
                         )
                 elif ns_parser.source == "Polygon":
                     self.similar = polygon_model.get_similar_companies(
@@ -343,7 +345,8 @@ class ComparisonAnalysisController(BaseController):
                     )
             else:
                 console.print(
-                    "You need to 'set' a ticker to get similar companies from first!"
+                    "You need to 'set' a ticker to get similar companies from first! This is "
+                    "for example done by running 'ticker aapl'"
                 )
 
     @log_start_end(log=logger)

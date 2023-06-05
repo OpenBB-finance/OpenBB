@@ -7,7 +7,7 @@ from typing import List, Optional
 import pandas as pd
 import requests
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console, optional_rich_track
@@ -103,14 +103,17 @@ def get_historical_options(
     else:
         symbol = chain_id
 
-    response = request(
-        "https://sandbox.tradier.com/v1/markets/history",
-        params={"symbol": {symbol}, "interval": "daily"},
-        headers={
-            "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
-            "Accept": "application/json",
-        },
-    )
+    try:
+        response = request(
+            "https://sandbox.tradier.com/v1/markets/history",
+            params={"symbol": {symbol}, "interval": "daily"},
+            headers={
+                "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+                "Accept": "application/json",
+            },
+        )
+    except requests.exceptions.ReadTimeout:
+        return pd.DataFrame()
 
     if response.status_code != 200:
         console.print("Error with request")
@@ -156,7 +159,7 @@ def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-       Dataframe of all option chains
+        Dataframe of all option chains
     """
 
     expirations = option_expirations(symbol)
@@ -197,7 +200,7 @@ def option_expirations(symbol: str) -> List[str]:
         "https://sandbox.tradier.com/v1/markets/options/expirations",
         params={"symbol": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
-            "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
             "Accept": "application/json",
         },
     )
@@ -234,7 +237,7 @@ def get_option_chain(symbol: str, expiry: str) -> pd.DataFrame:
     params = {"symbol": symbol, "expiration": expiry, "greeks": "true"}
 
     headers = {
-        "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
+        "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
         "Accept": "application/json",
     }
 
@@ -308,7 +311,7 @@ def get_last_price(symbol: str):
         "https://sandbox.tradier.com/v1/markets/quotes",
         params={"symbols": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
-            "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
+            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
             "Accept": "application/json",
         },
     )

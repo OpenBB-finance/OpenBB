@@ -6,11 +6,9 @@ import logging
 import os
 
 # pylint: disable=R1732, R0912
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
-import openbb_terminal.config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_CUSTOM_REPORTS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -43,7 +41,7 @@ class ReportController(BaseController):
     REPORTS = sorted(list(set(CHOICES_COMMANDS).intersection(REPORTS)))
     PARAMETERS_DICT: Dict[str, Any] = {}
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
 
         super().__init__(queue)
@@ -58,8 +56,8 @@ class ReportController(BaseController):
                 str(reports_model.REPORTS_FOLDER / report_name)
             )
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices: dict = {c: {} for c in self.controller_choices}
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            self.choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             self.choices["run"] = {
                 "--file": {c: None for c in reports_model.USER_REPORTS},
                 "-f": "--file",
@@ -140,12 +138,9 @@ class ReportController(BaseController):
 
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
-        # if is_packaged_application():
-        #     console.print("This report is disabled for the installed version")
-        #     return
-
         try:
-            import darts  # pyright: reportMissingImports=false # noqa: F401, E501 # pylint: disable=C0415, W0611
+            # noqa: F401, E501 # pylint: disable=C0415,W0611
+            import darts  # noqa # pyright: reportMissingImports=false
 
             FORECASTING_TOOLKIT_ENABLED = True
         except ImportError:
@@ -154,7 +149,7 @@ class ReportController(BaseController):
                 "[yellow]"
                 "Forecasting Toolkit is disabled. "
                 "To use the Forecasting features please install the toolkit following the "
-                "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+                "instructions here: https://my.openbb.co/app/sdk/installation"
                 "\n"
                 "[/yellow]"
             )
@@ -195,14 +190,17 @@ class ReportController(BaseController):
             ns_parser = self.parse_simple_args(parser, other_args)
 
             if ns_parser:
-                cfg.LOGGING_SUPPRESS = True
+                if report_name == "equity" and "." in ns_parser.symbol:
+                    console.print(
+                        "[red]Cannot currently handle tickers with a '.' in them[/red]\n"
+                    )
+                    return
                 parameters = vars(ns_parser)
                 parameters.pop("help")
                 reports_model.render_report(
                     input_path=str(reports_model.REPORTS_FOLDER / report_name),
                     args_dict=parameters,
                 )
-                cfg.LOGGING_SUPPRESS = False
 
         else:
             console.print("[red]Notebook not found![/red]\n")
@@ -214,7 +212,8 @@ class ReportController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="run",
-            description=f"Run a notebook from this folder: '{str(USER_CUSTOM_REPORTS_DIRECTORY)}'.",
+            description="Run a notebook from this folder: '"
+            f"{str(get_current_user().preferences.USER_CUSTOM_REPORTS_DIRECTORY)}'.",
         )
         parser.add_argument(
             "-f",
@@ -253,7 +252,10 @@ class ReportController(BaseController):
                         )
 
             if ns_parser.file:
-                complete_file_path = str(USER_CUSTOM_REPORTS_DIRECTORY / ns_parser.file)
+                complete_file_path = str(
+                    get_current_user().preferences.USER_CUSTOM_REPORTS_DIRECTORY
+                    / ns_parser.file
+                )
                 if os.path.exists(complete_file_path):
                     reports_model.render_report(
                         input_path=complete_file_path, args_dict=parameters_dict

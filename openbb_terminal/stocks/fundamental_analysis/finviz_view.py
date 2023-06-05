@@ -3,17 +3,22 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal import rich_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import finviz_model
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_screen_data(symbol: str, export: str = "", sheet_name: str = None):
+def display_screen_data(
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
+):
     """FinViz ticker screener
 
     Parameters
@@ -25,7 +30,13 @@ def display_screen_data(symbol: str, export: str = "", sheet_name: str = None):
     """
     fund_data = finviz_model.get_data(symbol)
 
-    print_rich_table(fund_data, title="Ticker Screener", show_index=True)
+    if fund_data.empty:
+        console.print(f"No data found for {symbol}", style="bold red")
+        return
+
+    print_rich_table(
+        fund_data, title="Ticker Screener", show_index=True, export=bool(export)
+    )
 
     export_data(
         export,
@@ -60,7 +71,7 @@ def lambda_category_color_red_green(val: str) -> str:
 
 
 @log_start_end(log=logger)
-def analyst(symbol: str, export: str = "", sheet_name: str = None):
+def analyst(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Display analyst ratings. [Source: Finviz]
 
     Parameters
@@ -72,11 +83,15 @@ def analyst(symbol: str, export: str = "", sheet_name: str = None):
     """
     df = finviz_model.get_analyst_data(symbol)
 
-    if rich_config.USE_COLOR:
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df["category"] = df["category"].apply(lambda_category_color_red_green)
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=True, title="Display Analyst Ratings"
+        df,
+        headers=list(df.columns),
+        show_index=True,
+        title="Display Analyst Ratings",
+        export=bool(export),
     )
 
     export_data(

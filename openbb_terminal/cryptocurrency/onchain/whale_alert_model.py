@@ -8,7 +8,7 @@ from typing import Any, Optional, Tuple
 import numpy as np
 import pandas as pd
 
-import openbb_terminal.config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
@@ -55,7 +55,7 @@ def make_request(params: Optional[dict] = None) -> Tuple[Optional[int], Any]:
         status code, response from api request
     """
 
-    api_key = cfg.API_WHALE_ALERT_KEY or ""
+    api_key = get_current_user().credentials.API_WHALE_ALERT_KEY or ""
     url = "https://api.whale-alert.io/v1/transactions?api_key=" + api_key
     try:
         response = request(url, params=params)

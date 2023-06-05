@@ -3,9 +3,8 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
@@ -21,7 +20,7 @@ def display_tcn_forecast(
     target_column: str = "close",
     dataset_name: str = "",
     n_predict: int = 5,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     input_chunk_length: int = 14,
@@ -37,7 +36,7 @@ def display_tcn_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
@@ -45,7 +44,7 @@ def display_tcn_forecast(
     naive: bool = False,
     export_pred_raw: bool = False,
     metric: str = "mape",
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Display TCN forecast
 
@@ -109,15 +108,15 @@ def display_tcn_forecast(
         Whether to export the raw predicted values. Defaults to False.
     metric: str
         The metric to use for the model. Defaults to "mape".
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     data = helpers.clean_data(
         data, start_date, end_date, target_column, past_covariates
     )
     if not helpers.check_data(data, target_column, past_covariates):
-        return
+        return None
     output_chunk_length = helpers.check_output(
         output_chunk_length, n_predict, bool(past_covariates)
     )
@@ -149,10 +148,10 @@ def display_tcn_forecast(
         metric=metric,
     )
     if ticker_series == []:
-        return
+        return None
 
     probabilistic = False
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name="TCN",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -177,3 +176,5 @@ def display_tcn_forecast(
         helpers.plot_residuals(
             _model, past_covariates, ticker_series, forecast_horizon=forecast_horizon
         )
+
+    return fig

@@ -1,222 +1,44 @@
-import csv  # noqa: I001
-import importlib
 import inspect
 import json
-import os
 import shutil
 from pathlib import Path
-from types import FunctionType
-from typing import Any, Callable, Dict, ForwardRef, List, Literal, Optional, Union
+from textwrap import shorten
+from typing import Any, Dict, List, Literal, TextIO
 
-import pandas as pd
 from docstring_parser import parse
 
-from openbb_terminal.core.library.trail_map import (
-    FORECASTING_TOOLKIT_ENABLED as FORECASTING,
-    MISCELLANEOUS_DIRECTORY,
-    OPTIMIZATION_TOOLKIT_ENABLED as OPTIMIZATION,
-)
-from openbb_terminal.rich_config import console
-from website.controller_doc_classes import sub_names_full as subnames
+from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
+from openbb_terminal.core.session.current_system import set_system_variable
 
-MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
-MAP_FORECASTING_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map_forecasting.csv"
-MAP_OPTIMIZATION_PATH = (
-    MISCELLANEOUS_DIRECTORY / "library" / "trail_map_optimization.csv"
-)
+set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 website_path = Path(__file__).parent.absolute()
 
+reference_import = """
+import ReferenceCard from "@site/src/components/General/ReferenceCard";
 
-def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
-    """Clean the attribute description."""
-    if attr.__doc__ is None:
-        return None
-    return (
-        attr.__doc__.splitlines()[1].lstrip()
-        if not attr.__doc__.splitlines()[0]
-        else attr.__doc__.splitlines()[0].lstrip()
-        if attr.__doc__
-        else ""
-    )
-
-
-def get_signature_parameters(
-    function: Callable[..., Any], globalns: Dict[str, Any]
-) -> Dict[str, inspect.Parameter]:
-    signature = inspect.signature(function)
-    params = {}
-    cache: dict[str, Any] = {}
-    for name, parameter in signature.parameters.items():
-        annotation = parameter.annotation
-        if annotation is parameter.empty:
-            params[name] = parameter
-            continue
-        if annotation is None:
-            params[name] = parameter.replace(annotation=type(None))
-            continue
-
-        if isinstance(annotation, ForwardRef):
-            annotation = annotation.__forward_arg__
-
-        if isinstance(annotation, str):
-            annotation = eval(annotation, globalns, cache)  # pylint: disable=W0123
-
-        params[name] = parameter.replace(annotation=annotation)
-
-    return params
-
-
-class Trailmap:
-    def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
-        tmap = trailmap.split(".")
-        if len(tmap) == 1:
-            tmap = ["", tmap[0]]
-        self.class_attr: str = tmap.pop(-1)
-        self.location_path = tmap
-        self.model = model
-        self.view = view if view else None
-        self.short_doc: Dict[str, Optional[str]] = {}
-        self.long_doc: Dict[str, str] = {}
-        self.lineon: Dict[str, int] = {}
-        self.full_path: Dict[str, str] = {}
-        self.func_def: Dict[str, str] = {}
-        self.func_attr: Dict[str, FunctionType] = {}
-        self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
-        self.get_docstrings()
-
-    def get_docstrings(self) -> None:
-        """Gets the function docstrings. We get the short and long docstrings."""
-
-        for key, func in zip(["model", "view"], [self.model, self.view]):
-            if func:
-                module_path, function_name = func.rsplit(".", 1)
-                module = importlib.import_module(module_path)
-
-                func_attr = getattr(module, function_name)
-                add_juan = 0
-                if hasattr(func_attr, "__wrapped__"):
-                    func_attr = func_attr.__wrapped__
-                    if hasattr(func_attr, "__wrapped__"):
-                        func_attr = func_attr.__wrapped__
-                    add_juan = 1
-
-                self.func_attr[key] = func_attr
-                self.lineon[key] = inspect.getsourcelines(func_attr)[1] + add_juan
-
-                self.long_doc[key] = func_attr.__doc__
-                self.short_doc[key] = clean_attr_desc(func_attr)
-
-                self.params[key] = {}
-                for k, p in get_signature_parameters(
-                    func_attr, func_attr.__globals__
-                ).items():
-                    self.params[key][k] = p
-
-                self.func_def[key] = self.get_definition(key)
-                full_path = (
-                    inspect.getfile(self.func_attr[key])
-                    .replace("\\", "/")
-                    .split("openbb_terminal/")[1]
-                )
-                self.full_path[key] = f"openbb_terminal/{full_path}"
-
-    def get_definition(self, key: str) -> str:
-        """Creates the function definition to be used in SDK docs."""
-        funcspec = self.params[key]
-        definition = ""
-        added_comma = False
-        for arg in funcspec:
-            annotation = (
-                (
-                    str(funcspec[arg].annotation)
-                    .replace("<class '", "")
-                    .replace("'>", "")
-                    .replace("typing.", "")
-                    .replace("pandas.core.frame.", "pd.")
-                    .replace("pandas.core.series.", "pd.")
-                    .replace("openbb_terminal.portfolio.", "")
-                )
-                if funcspec[arg].annotation != inspect.Parameter.empty
-                else "Any"
-            )
-
-            default = ""
-            if funcspec[arg].default is not funcspec[arg].empty:
-                arg_default = (
-                    funcspec[arg].default
-                    if funcspec[arg].default is not inspect.Parameter.empty
-                    else "None"
-                )
-                default = (
-                    f" = {arg_default}"
-                    if not isinstance(arg_default, str)
-                    else f' = "{arg_default}"'
-                )
-            definition += f"{arg}: {annotation}{default}, "
-            added_comma = True
-
-        if added_comma:
-            definition = definition[:-2]
-
-        trail = ".".join([t for t in self.location_path if t != ""])
-        sdk_name = self.class_attr if key != "view" else f"{self.class_attr}_chart"
-        sdk_path = f"{f'openbb.{trail}' if trail else 'openbb'}.{sdk_name}"
-
-        definition = f"{sdk_path}({definition })"
-        return definition
-
-
-def get_trailmaps() -> List[Trailmap]:
-    trailmaps = []
-
-    def sort_csv(path: Path) -> None:
-        columns = ["trail", "model", "view"]
-        df = pd.read_csv(path, usecols=columns, keep_default_na=False)
-        df.set_index("trail", inplace=True)
-        df.sort_index(inplace=True)
-        df.to_csv(path, index=True)
-
-    for tmap_csv in [MAP_PATH, MAP_FORECASTING_PATH, MAP_OPTIMIZATION_PATH]:
-        sort_csv(tmap_csv)
-        if tmap_csv == MAP_FORECASTING_PATH and not FORECASTING:
-            console.print(
-                "[bold red]Forecasting is disabled. Forecasting will not be included in the Generation of Docs[/bold red]"
-            )
-            break
-        if tmap_csv == MAP_OPTIMIZATION_PATH and not OPTIMIZATION:
-            console.print(
-                "[bold red]Optimization is disabled. Optimization will not be included in the Generation of Docs[/bold red]"  # noqa: E501
-            )
-            break
-        with open(tmap_csv) as csvfile:
-            reader = csv.reader(csvfile, delimiter=",")
-            next(reader)
-            for row in reader:
-                trailmaps.append(Trailmap(*row))
-
-    return trailmaps
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+"""
 
 
 def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     """Gets the function meta data."""
-    if trailmap.func_attr[trail_type] is None:
+    func_attr = trailmap.func_attrs[trail_type]
+    if not func_attr.func_unwrapped:
         return None
-    doc_parsed = parse(trailmap.long_doc[trail_type])
-    line = trailmap.lineon[trail_type]
-    path = trailmap.full_path[trail_type]
-    func_def = trailmap.func_def[trail_type]
+    doc_parsed = parse(func_attr.long_doc)  # type: ignore
+    line = func_attr.lineon
+    path = func_attr.full_path
+    func_def = func_attr.func_def
     source_code_url = (
-        "https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/"
-        + path
-        + "#L"
-        + str(line)
+        f"https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/{path}#L{line}"
     )
     function_name = trailmap.view if trail_type == "view" else trailmap.model
     params = []
     for param in doc_parsed.params:
         arg_default = (
-            trailmap.params[trail_type][param.arg_name].default
-            if param.arg_name in trailmap.params[trail_type]
+            func_attr.params[param.arg_name].default
+            if param.arg_name in func_attr.params
             else None
         )
         params.append(
@@ -243,7 +65,10 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
 
     for example in doc_parsed.examples:
         examples.append(
-            {"snippet": example.snippet, "description": example.description.strip()}
+            {
+                "snippet": example.snippet,
+                "description": example.description.strip(),  # type: ignore
+            }
         )
 
     return {
@@ -303,7 +128,7 @@ def generate_markdown_section(meta: Dict[str, Any]):
         markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
         for param in meta["params"]:
             description = param["doc"].replace("\n", "<br/>") if param["doc"] else ""
-            markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"  # noqa: E501
+            markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"  # noqa
         markdown += "\n\n"
     else:
         markdown += "This function does not take any parameters.\n\n"
@@ -343,58 +168,81 @@ def generate_markdown_section(meta: Dict[str, Any]):
     return markdown
 
 
-def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
-    """Adds the trailmap to the dictionary. A trailmap is a path to a function
-    in the sdk. This function creates the dictionary paths to the function."""
+def create_nested_menus_card(folder: Path, url: str) -> str:
+    sub_categories = [
+        sub.stem
+        for sub in folder.glob("**/**/*.md*")
+        if sub.is_file() and sub.stem != "index"
+    ]
+    categories = shorten(", ".join(sub_categories), width=116, placeholder="...")
+    url = f"/sdk/reference/{url}/{folder.name}".replace("//", "/")
 
-    if location_path[0] not in d:
-        d[location_path[0]] = {}
-
-    if len(location_path) > 1:
-        add_todict(d[location_path[0]], location_path[1:], tmap)
-    else:
-        d[location_path[0]][tmap.class_attr] = (
-            f"/sdk/reference/{'/'.join(tmap.location_path)}/{tmap.class_attr}"
-        ).replace("//", "/")
-
-    return d
-
-
-def get_nested_dict(d: dict, path: Path) -> Union[dict, None]:
-    """Returns the nested dictionary for the given key."""
-    root, sub = path.parent.name, path.name
-
-    if sub in d:
-        return d[sub]
-    if root in d and sub in d[root]:
-        return d[root][sub]
-    for v in d.values():
-        if isinstance(v, dict):
-            item = get_nested_dict(v, path)
-            if item is not None:
-                return item
-
-    return None
+    index_card = f"""<ReferenceCard
+        title="{folder.name}"
+        description="{categories}"
+        url="{url}"
+    />\n"""
+    return index_card
 
 
-def get_subname(name: str) -> str:
-    """Returns the subname of the given name."""
-    if name != "reference":
-        subname = (
-            name.title() if name.lower() not in subnames else subnames[name.lower()]
-        )
-        return subname
-    return ""
+def create_cmd_cards(cmd_text: List[Dict[str, str]]) -> str:
+    cmd_cards = ""
+    for cmd in cmd_text:
+        url = f"/sdk/reference/{cmd['url']}/{cmd['title']}".replace("//", "/")
+        description = shorten(f"{cmd['description']}", width=116, placeholder="...")
+        cmd_cards += f"""<ReferenceCard
+    title="{cmd["title"]}"
+    description="{description}"
+    url="{url}"
+    command="true"
+/>\n"""
+    return cmd_cards
+
+
+def write_reference_index(
+    reference_cards: Dict[Path, List[Dict[str, str]]],
+    fname: str,
+    path: Path,
+    rel_path: Path,
+    f: TextIO,
+) -> None:
+    """Write to the corresponding index.mdx file for a given folder, with the
+    appropriate nested menus and command cards.
+
+    Parameters
+    ----------
+    reference_cards : Dict[Path, List[Dict[str, str]]]
+        Dictionary of command cards to be written to the index.mdx file.
+    fname : str
+        Name of the index.mdx file.
+    path : Path
+        Path to the folder to be written.
+    rel_path : Path
+        Relative path to the folder to be written.
+    f : TextIO
+        File to write to.
+    """
+    f.write(f"# {fname}\n{reference_import}")
+    for folder in path.glob("*"):
+        if folder.is_dir():
+            f.write(create_nested_menus_card(folder, "/".join(rel_path.parts)))
+
+    folder_cmd_cards: List[Dict[str, str]] = reference_cards.get(path, {})  # type: ignore
+    if folder_cmd_cards:
+        f.write(create_cmd_cards(folder_cmd_cards))
+
+    f.write("</ul>\n")
 
 
 def main() -> bool:
+    """Generate markdown files for OpenBB SDK Documentation."""
     print("Loading trailmaps...")
     trailmaps = get_trailmaps()
     kwargs = {"encoding": "utf-8", "newline": "\n"}
 
     print("Generating markdown files...")
     content_path = website_path / "content/sdk/reference"
-    functions_dict: dict = {}
+    reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 
     for file in content_path.glob("*"):
         if file.is_file():
@@ -403,9 +251,9 @@ def main() -> bool:
             shutil.rmtree(file)
     for trailmap in trailmaps:
         try:
-            functions_dict = add_todict(
-                functions_dict, trailmap.location_path, trailmap
-            )
+            if trailmap.location_path[0] == "root":
+                trailmap.location_path[0] = ""
+
             model_meta = (
                 get_function_meta(trailmap, "model") if trailmap.model else None
             )
@@ -415,33 +263,51 @@ def main() -> bool:
             if trailmap.class_attr == "index":
                 trailmap.class_attr = "index_cmd"
 
-            filepath = f"{str(content_path)}/{'/'.join(trailmap.location_path)}/{trailmap.class_attr}.md"
-            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+            filepath = (
+                content_path
+                / "/".join(trailmap.location_path)
+                / f"{trailmap.class_attr}.md"
+            )
+            func = trailmap.func_attrs.get(
+                "model", trailmap.func_attrs.get("view", None)
+            )
+
+            reference_cards.setdefault(filepath.parent, []).append(
+                dict(
+                    title=trailmap.class_attr,
+                    description=func.short_doc,  # type: ignore
+                    url="/".join(trailmap.location_path),
+                )
+            )
+
+            filepath.parent.mkdir(parents=True, exist_ok=True)
             with open(filepath, "w", **kwargs) as f:  # type: ignore
                 f.write(markdown)
+
         except Exception as e:
-            print(f"Error generating {trailmap.class_attr} - {e}")
+            print(
+                f"Error generating {trailmap.location_path} {trailmap.class_attr} - {e}"
+            )
             return False
 
-    functions_dict = {
-        k: dict(sorted(v.items(), key=lambda item: item[0]))
-        for k, v in sorted(functions_dict.items(), key=lambda item: item[0])
-    }
-    index_markdown = (
-        f"# OpenBB SDK Reference\n\n{generate_index_markdown('', functions_dict, 2)}"
-    )
-    with open(content_path / "index.md", "w", **kwargs) as f:  # type: ignore
-        f.write(index_markdown)
+    # Sort reference_cards
+    reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
+
+    with open(content_path / "index.mdx", "w", **kwargs) as f:  # type: ignore
+        fname = "OpenBB SDK Reference"
+        rel_path = content_path.relative_to(content_path)
+        write_reference_index(reference_cards, fname, content_path, rel_path, f)
 
     with open(content_path / "_category_.json", "w", **kwargs) as f:  # type: ignore
+        """Generate category json"""
         f.write(json.dumps({"label": "SDK Reference", "position": 4}, indent=2))
 
     def gen_category_json(fname: str, path: Path):
         """Generate category json"""
-        fdict = {fname: get_nested_dict(functions_dict, path)}
 
-        with open(path / "index.md", "w", **kwargs) as f:  # type: ignore
-            f.write(f"# {fname}\n\n{generate_index_markdown('', fdict, 2, path)}")
+        with open(path / "index.mdx", "w", **kwargs) as f:  # type: ignore
+            rel_path = path.relative_to(content_path)
+            write_reference_index(reference_cards, fname, path, rel_path, f)
 
     def gen_category_recursive(nested_path: Path):
         """Generate category json recursively"""
@@ -454,23 +320,6 @@ def main() -> bool:
     print("Markdown files generated, check the functions folder")
 
     return True
-
-
-def generate_index_markdown(
-    markdown: str, d: dict, level: int, path: Path = None
-) -> str:
-    """Generates the index markdown for the given dictionary."""
-    if path is None:
-        path = Path()
-    for key in d:
-        if isinstance(d[key], dict):
-            if path and path.name != key:
-                if key != "":
-                    markdown += f"\n{'#' * level} {key}\n"
-            markdown = generate_index_markdown(markdown, d[key], level + 1, path)
-        else:
-            markdown += f"- [{key}]({d[key]})\n"
-    return markdown
 
 
 if __name__ == "__main__":

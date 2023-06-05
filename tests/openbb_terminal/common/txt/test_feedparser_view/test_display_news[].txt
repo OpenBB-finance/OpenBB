@@ -1,19 +1,8 @@
 [yellow]Fetching data. Please be patient
 [/yellow]
-
-> 2022-09-22 13:04:47+00:00 - Microsoft unveils new research and technology to bridge the disconnect between leaders and employees so companies can thrive amid economic uncertainty - Stories - Microsoft
-https://news.microsoft.com/2022/09/22/microsoft-unveils-new-research-and-technology-to-bridge-the-disconnect-between-leaders-and-employees-so-companies-can-thrive-amid-economic-uncertainty/
-
-> 2022-09-22 13:01:36+00:00 - Apple Watch Ultra and next-generation AirPods Pro available in stores Friday - apple.com
-https://www.apple.com/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/
-
-> 2022-09-22 12:49:20+00:00 - Letter from the Chancellor of the Exchequer to the Governor of the Bank of England 22/09/2022 - GOV.UK
-https://www.gov.uk/government/publications/letter-from-the-chancellor-of-the-exchequer-to-the-governor-of-the-bank-of-england-22092022
-
-> 2022-09-22 12:30:00+00:00 - William Shatner Admits His Masked Singer Performance as Knight 'Went to Hell' - PEOPLE
-https://people.com/tv/masked-singer-william-shatner-says-knight-performance-went-to-hell/
-
-> 2022-09-22 12:20:20+00:00 - Building Safety: Levelling Up Secretary's op-ed for The Telegraph - GOV.UK
-https://www.gov.uk/government/news/building-safety-levelling-up-secretarys-op-ed-for-the-telegraph
-
-
+                   Date                                                                           Description                                                                                                                                                                                                                                URL
+14  2023-04-05 01:00:49               Donald Trump gives teen son Baron a VERY gracious shoutout - Daily Mail                                  https://news.google.com/rss/articles/CBMiamh0dHBzOi8vd3d3LmRhaWx5bWFpbC5jby51ay9uZXdzL2FydGljbGUtMTE5NDAwMjMvRG9uYWxkLVRydW1wLWdpdmVzLXRlZW4tc29uLUJhcm9uLWdyYWNpb3VzLXNob3V0b3V0Lmh0bWzSAQA?oc=5
+16  2023-04-05 00:36:35    Three Florida teens shot and killed may be victims of 'wannabe gangs' - Daily Mail           https://news.google.com/rss/articles/CBMie2h0dHBzOi8vd3d3LmRhaWx5bWFpbC5jby51ay9uZXdzL2FydGljbGUtMTE5MzkxMDkvVGhyZWUtdGVlbmFnZXJzLXNob3Qta2lsbGVkLUZsb3JpZGEtdmljdGltcy13YW5uYWJlLWdhbmdzLXBvbGljZS1zYXkuaHRtbNIBAA?oc=5
+17  2023-04-05 00:32:33  Donald Trump rages 'there is no crime' after arrest in first public ... - The Mirror                                                                     https://news.google.com/rss/articles/CBMiUGh0dHBzOi8vd3d3Lm1pcnJvci5jby51ay9uZXdzL3VzLW5ld3MvYnJlYWtpbmctZG9uYWxkLXRydW1wLXJhZ2VzLXRoZXJlLTI5NjMyNDY50gEA?oc=5
+22  2023-04-04 23:46:45           Deadly virus from tick bites found in three patients in the UK - Daily Mail              https://news.google.com/rss/articles/CBMieWh0dHBzOi8vd3d3LmRhaWx5bWFpbC5jby51ay9uZXdzL2FydGljbGUtMTE5Mzk4MDMvRGVhZGx5LXZpcnVzLXRpY2stYml0ZXMtY2F1c2VzLWZsdS1saWtlLXN5bXB0b21zLXRocmVlLXBhdGllbnRzLVVLLmh0bWzSAQA?oc=5
+0   2023-04-04 23:32:06   Trump insists there's still no case as he faces one of his darkest day - Daily Mail  https://news.google.com/rss/articles/CBMigQFodHRwczovL3d3dy5kYWlseW1haWwuY28udWsvbmV3cy9hcnRpY2xlLTExOTM5NzkzL1RydW1wLWluc2lzdHMtdGhlcmVzLW5vLWNhc2UtZGVzcGl0ZS1leHBsb3NpdmUtaW5kaWN0bWVudC1vbmUtZGFya2VzdC1kYXlzLmh0bWzSAQA?oc=5

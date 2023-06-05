@@ -25,6 +25,11 @@ RUN apt-get -y install --no-install-recommends \
     libxt6 \
     libgl1-mesa-glx \
     libpng16-16 \
+    libwebkit2gtk-4.0-dev \
+    build-essential \
+    libssl-dev \
+    librsvg2-dev \
+    ffmpeg \
     python3-tk
 
 RUN apt-get clean
@@ -40,7 +45,7 @@ FROM debian as poetry
 ENV PATH="/home/python/.local/bin:${PATH}"
 
 RUN pip install --upgrade pip wheel
-RUN pip install poetry==1.3.2
+RUN pip install poetry==1.4.0
 
 # SETUP OPENBB IMAGE
 FROM poetry as repository
@@ -50,8 +55,8 @@ COPY --chown=python:python pyproject.toml poetry.lock terminal.py ./
 RUN mkdir openbb_terminal
 COPY --chown=python:python openbb_terminal openbb_terminal
 
-RUN mkdir -p website/content/sdk/quickstart
-COPY --chown=python:python ./website/content/sdk/quickstart/installation.md ./website/content/sdk/quickstart
+RUN mkdir -p website/content/sdk
+COPY --chown=python:python ./website/content/sdk/installation.md ./website/content/sdk
 
 RUN mkdir OpenBBUserData
 RUN chown python:python OpenBBUserData
@@ -62,7 +67,7 @@ RUN chown python:python .openbb_terminal
 # SETUP OPENBB IMAGE
 FROM repository as dependencies
 
-RUN poetry install --no-root --no-dev --extras optimization --extras prediction
+RUN poetry install --no-root --no-dev --extras optimization --extras forecast
 
 # SETUP OPENBB IMAGE
 FROM dependencies as openbb

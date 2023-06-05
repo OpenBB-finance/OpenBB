@@ -3,20 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import timedelta
-from typing import List, Optional
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
 
@@ -29,7 +20,7 @@ def dark_pool_short_positions(
     sortby: str = "dpp_dollar",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -51,6 +42,7 @@ def dark_pool_short_positions(
 
     dp_date = df["Date"].values[0]
     df = df.drop(columns=["Date"])
+
     df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
     df["Short Volume"] = df["Short Volume"] / 1_000_000
     df["Net Short Volume"] = df["Net Short Volume"] / 1_000_000
@@ -69,10 +61,12 @@ def dark_pool_short_positions(
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
     print_rich_table(
-        df.iloc[:limit],
+        df,
         headers=list(df.columns),
         show_index=False,
         title=f"Data for: {dp_date}",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -86,7 +80,10 @@ def dark_pool_short_positions(
 
 @log_start_end(log=logger)
 def short_interest_days_to_cover(
-    limit: int = 10, sortby: str = "float", export: str = "", sheet_name: str = None
+    limit: int = 10,
+    sortby: str = "float",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Print short interest and days to cover. [Source: Stockgrid]
 
@@ -107,10 +104,12 @@ def short_interest_days_to_cover(
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
     print_rich_table(
-        df.iloc[:limit],
+        df,
         headers=list(df.columns),
         show_index=False,
         title=f"Data for: {dp_date}",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -128,9 +127,9 @@ def short_interest_volume(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plot price vs short interest volume. [Source: Stockgrid]
 
     Parameters
@@ -143,100 +142,122 @@ def short_interest_volume(
         Flag to print raw data instead
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     """
 
     df, prices = stockgrid_model.get_short_interest_volume(symbol)
     if df.empty:
-        console.print("[red]No data available[/red]\n")
-        return
+        return console.print("[red]No data available[/red]\n")
 
     if raw:
-        df.date = df.date.dt.date
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "shortint(stockgrid)",
+            df,
+            sheet_name,
+        )
 
-        print_rich_table(
-            df.iloc[:limit],
+        df.date = df.date.dt.date
+        return print_rich_table(
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Price vs Short Volume",
-        )
-    else:
-        # This plot has 3 axes
-        if not external_axes:
-            _, axes = plt.subplots(
-                2,
-                1,
-                sharex=True,
-                figsize=plot_autoscale(),
-                dpi=PLOT_DPI,
-                gridspec_kw={"height_ratios": [2, 1]},
-            )
-            (ax, ax1) = axes
-            ax2 = ax.twinx()
-        elif is_valid_axes_count(external_axes, 3):
-            (ax, ax1, ax2) = external_axes
-        else:
-            return
-
-        ax.bar(
-            df["date"],
-            df["Total Vol. [1M]"],
-            width=timedelta(days=1),
-            color=theme.up_color,
-            label="Total Volume",
-        )
-        ax.bar(
-            df["date"],
-            df["Short Vol. [1M]"],
-            width=timedelta(days=1),
-            color=theme.down_color,
-            label="Short Volume",
+            export=bool(export),
+            limit=limit,
         )
 
-        ax.set_ylabel("Volume [1M]")
+    fig = OpenBBFigure.create_subplots(
+        rows=2,
+        cols=1,
+        shared_xaxes=True,
+        vertical_spacing=0.06,
+        horizontal_spacing=0,
+        row_width=[0.3, 0.6],
+        specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
+    )
+    fig.set_title(f"Price vs Short Volume Interest for {symbol}")
 
-        ax2.plot(
-            df["date"].values,
-            prices[len(prices) - len(df) :],  # noqa: E203
-            label="Price",
-        )
-        ax2.set_ylabel("Price ($)")
+    # pycodestyle: disable=E501,E203
+    fig.add_scatter(
+        name=symbol,
+        x=df["date"],
+        y=prices[len(prices) - len(df) :],  # pycodestyle: disable=E501,E203
+        line=dict(color="#fdc708", width=2),
+        connectgaps=True,
+        yaxis="y2",
+        opacity=1,
+        showlegend=False,
+        row=1,
+        col=1,
+        secondary_y=True,
+    )
+    fig.add_bar(
+        x=df["date"],
+        y=df["Total Vol. [1M]"],
+        name="Total Volume",
+        marker_color=theme.up_color,
+        row=1,
+        col=1,
+        secondary_y=False,
+    )
+    fig.add_bar(
+        x=df["date"],
+        y=df["Short Vol. [1M]"],
+        name="Short Volume",
+        marker_color=theme.down_color,
+        row=1,
+        col=1,
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        name="Short Vol. %",
+        x=df["date"],
+        y=df["Short Vol. %"],
+        line=dict(width=2),
+        connectgaps=True,
+        opacity=1,
+        showlegend=False,
+        row=2,
+        col=1,
+        secondary_y=False,
+    )
 
-        lines, labels = ax.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax2.legend(lines + lines2, labels + labels2, loc="upper left")
+    fig.update_traces(hovertemplate="%{y:.2f}")
+    fig.update_layout(
+        margin=dict(t=30),
+        yaxis2_title="Stock Price ($)",
+        yaxis_title="FINRA Volume [M]",
+        yaxis3_title="Short Vol. %",
+        yaxis=dict(
+            side="left",
+            fixedrange=False,
+            showgrid=False,
+            nticks=15,
+            layer="above traces",
+        ),
+        yaxis2=dict(
+            side="right",
+            fixedrange=False,
+            anchor="x",
+            overlaying="y",
+            nticks=10,
+            layer="below traces",
+            title_standoff=10,
+        ),
+        yaxis3=dict(
+            fixedrange=False,
+            nticks=10,
+        ),
+        hovermode="x unified",
+        spikedistance=1,
+        hoverdistance=1,
+    )
 
-        ax.set_xlim(
-            df["date"].values[max(0, len(df) - limit)],
-            df["date"].values[len(df) - 1],
-        )
-
-        ax.ticklabel_format(style="plain", axis="y")
-        ax.set_title(f"Price vs Short Volume Interest for {symbol}")
-
-        ax1.plot(
-            df["date"].values,
-            df["Short Vol. %"],
-            label="Short Vol. %",
-        )
-
-        ax1.set_xlim(
-            df["date"].values[max(0, len(df) - limit)],
-            df["date"].values[len(df) - 1],
-        )
-        ax1.set_ylabel("Short Vol. %")
-
-        lines, labels = ax1.get_legend_handles_labels()
-        ax1.legend(lines, labels, loc="upper left")
-        ax1.set_ylim([0, 100])
-
-        theme.style_twin_axes(ax, ax2)
-        theme.style_primary_axis(ax1)
-
-        if not external_axes:
-            theme.visualize_output()
+    fig.hide_holidays()
 
     export_data(
         export,
@@ -244,7 +265,10 @@ def short_interest_volume(
         "shortint(stockgrid)",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -253,9 +277,9 @@ def net_short_position(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plot net short position. [Source: Stockgrid]
 
     Parameters
@@ -268,68 +292,92 @@ def net_short_position(
         Flag to print raw data instead
     export : str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     """
 
     df = stockgrid_model.get_net_short_position(symbol)
     if df.empty:
-        console.print("[red]No data available[/red]\n")
-        return
+        return console.print("[red]No data available[/red]\n")
 
     if raw:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "shortpos",
+            df,
+            sheet_name,
+        )
+
         df["dates"] = df["dates"].dt.date
 
-        print_rich_table(
-            df.iloc[:limit],
+        return print_rich_table(
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Net Short Positions",
+            export=bool(export),
+            limit=limit,
         )
 
-    else:
-        # This plot has 2 axes
-        if not external_axes:
-            _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            ax2 = ax1.twinx()
-        elif is_valid_axes_count(external_axes, 2):
-            (ax1, ax2) = external_axes
-        else:
-            return
+    df = df.sort_values(by=["dates"])
 
-        df = df.sort_values(by=["dates"])
-        ax1.bar(
-            df["dates"],
-            df["Net Short Vol. (1k $)"],
-            color=theme.down_color,
-            label="Net Short Vol. (1k $)",
-        )
-        ax1.set_ylabel("Net Short Vol. (1k $)")
+    fig = OpenBBFigure.create_subplots(
+        rows=1,
+        cols=1,
+        shared_xaxes=True,
+        specs=[[{"secondary_y": True}]],
+    )
+    fig.set_title(f"Net Short Vol. vs Position for {symbol}")
 
-        ax2.plot(
-            df["dates"].values,
-            df["Position (1M $)"],
-            c=theme.up_color,
-            label="Position (1M $)",
-        )
-        ax2.set_ylabel("Position (1M $)")
+    fig.add_bar(
+        x=df["dates"],
+        y=df["Net Short Vol. (1k $)"],
+        name="Net Short Vol. (1k $)",
+        marker_color=theme.down_color,
+        row=1,
+        col=1,
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        name="Position (1M $)",
+        x=df["dates"],
+        y=df["Position (1M $)"],
+        connectgaps=True,
+        marker_color=theme.up_color,
+        row=1,
+        col=1,
+        secondary_y=True,
+        yaxis="y2",
+    )
+    fig.update_traces(hovertemplate="%{y:.2f}")
+    fig.update_layout(
+        margin=dict(l=40),
+        yaxis2_title="Net Short Vol. (1k $)",
+        yaxis_title="Position (1M $)",
+        yaxis=dict(
+            side="left",
+            fixedrange=False,
+            showgrid=False,
+            nticks=15,
+            layer="above traces",
+        ),
+        yaxis2=dict(
+            side="right",
+            fixedrange=False,
+            anchor="x",
+            overlaying="y",
+            nticks=10,
+            layer="below traces",
+            title_standoff=10,
+        ),
+        hovermode="x unified",
+        spikedistance=1,
+        hoverdistance=1,
+    )
 
-        lines, labels = ax1.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax2.legend(lines + lines2, labels + labels2, loc="upper left")
-
-        ax1.set_xlim(
-            df["dates"].values[max(0, len(df) - limit)],
-            df["dates"].values[len(df) - 1],
-        )
-
-        ax1.set_title(f"Net Short Vol. vs Position for {symbol}")
-
-        theme.style_twin_axes(ax1, ax2)
-
-        if not external_axes:
-            theme.visualize_output()
+    fig.hide_holidays()
 
     export_data(
         export,
@@ -337,4 +385,7 @@ def net_short_position(
         "shortpos",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

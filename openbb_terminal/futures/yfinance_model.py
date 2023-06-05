@@ -40,7 +40,7 @@ MONTHS = {
 class HiddenPrints:
     def __enter__(self):
         self._original_stdout = sys.stdout
-        sys.stdout = open(os.devnull, "w")
+        sys.stdout = open(os.devnull, "w")  # noqa: SIM115
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.close()
@@ -99,7 +99,7 @@ def get_historical_futures(
     Returns
     -------
     pd.DataFrame
-        Dictionary with sector weightings allocation
+        Historical futures data
     """
 
     if start_date is None:
@@ -153,6 +153,7 @@ def get_historical_futures(
 @log_start_end(log=logger)
 def get_curve_futures(
     symbol: str = "",
+    date: Optional[str] = "",
 ) -> pd.DataFrame:
     """Get curve futures [Source: Yahoo Finance]
 
@@ -160,6 +161,8 @@ def get_curve_futures(
     ----------
     symbol: str
         symbol to get forward curve
+    date: str
+        optionally include historical price for each contract
 
     Returns
     -------
@@ -174,22 +177,39 @@ def get_curve_futures(
 
     futures_index = list()
     futures_curve = list()
-    for i in range(36):
+    historical_curve = list()
+    i = 0
+    empty_count = 0
+    # Loop through until we find 12 consecutive empty months
+    while empty_count < 12:
         future = today + relativedelta(months=i)
         future_symbol = (
             f"{symbol}{MONTHS[future.month]}{str(future.year)[-2:]}.{exchange}"
         )
-
         with HiddenPrints():
             data = yf.download(future_symbol, progress=False, ignore_tz=True)
 
-        if not data.empty:
-            futures_index.append(future.strftime("%Y-%b"))
+        if data.empty:
+            empty_count += 1
+
+        else:
+            empty_count = 0
+            futures_index.append(future.strftime("%b-%Y"))
             futures_curve.append(data["Adj Close"].values[-1])
+            if date != "":
+                historical_curve.append(data["Adj Close"].get(date, None))
+
+        i += 1
 
     if not futures_index:
         return pd.DataFrame()
 
-    futures_index = pd.to_datetime(futures_index)
-
-    return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Futures"])
+    if historical_curve:
+        if None in historical_curve:
+            console.print("[yellow]No pricing data for selected date.[/yellow]")
+        return pd.DataFrame(
+            index=futures_index,
+            data=zip(futures_curve, historical_curve),
+            columns=["Last Price", date],
+        )
+    return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Last Price"])

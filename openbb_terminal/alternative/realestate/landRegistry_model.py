@@ -138,11 +138,11 @@ def get_towns_sold_prices(
                 prefix skos: <http://www.w3.org/2004/02/skos/core#>
                 prefix lrcommon: <http://landregistry.data.gov.uk/def/common/>
 
-                SELECT ?paon ?saon ?street   ?county ?postcode ?amount ?date ?category 
+                SELECT ?paon ?saon ?street   ?county ?postcode ?amount ?date ?category
                 WHERE
                 {{
                 VALUES ?town {{"{town}"^^xsd:string}}
-                
+
                 ?addr lrcommon:town ?town ;
                         lrcommon:postcode ?postcode.
 
@@ -150,7 +150,7 @@ def get_towns_sold_prices(
                         lrppi:pricePaid ?amount ;
                         lrppi:transactionDate ?date ;
                         lrppi:transactionCategory/skos:prefLabel ?category.
-                
+
                 FILTER (
                     ?date > "{start_date}"^^xsd:date &&
                     ?date < "{end_date}"^^xsd:date
@@ -220,13 +220,13 @@ def get_region_stats(
                 prefix skos: <http://www.w3.org/2004/02/skos/core#>
                 prefix lrcommon: <http://landregistry.data.gov.uk/def/common/>
 
-                SELECT  ?month ?avgPrice ?avgPriceCash ?totalSalesVolume ?avgPriceExistingProperty 
-                ?avgPriceFirstTimeBuyer 
-                ?avgPriceDetached ?hpi  ?detachedhpi ?newbuildhpi 
+                SELECT  ?month ?avgPrice ?avgPriceCash ?totalSalesVolume ?avgPriceExistingProperty
+                ?avgPriceFirstTimeBuyer
+                ?avgPriceDetached ?hpi  ?detachedhpi ?newbuildhpi
                 {{
                     values ?refRegion {{<http://landregistry.data.gov.uk/id/region/{region}>}}
                     ?region ukhpi:refPeriodStart ?month ;
-                            ukhpi:housePriceIndex ?hpi ; 
+                            ukhpi:housePriceIndex ?hpi ;
                             ukhpi:refRegion ?refRegion ;
                             ukhpi:averagePrice ?avgPrice ;
                             ukhpi:averagePriceCash ?avgPriceCash ;
@@ -242,7 +242,7 @@ def get_region_stats(
                         ?month > "{start_date}"^^xsd:date &&
                         ?month < "{end_date}"^^xsd:date
                     )
-                    
+
                     OPTIONAL {{?region ukhpi:housePriceIndexDetached ?detachedhpi}}
                     OPTIONAL {{?region ukhpi:housePriceIndexNewBuild ?newbuildhpi }}
                     OPTIONAL {{?region ukhpi:averagePrice ?averagePrice }}

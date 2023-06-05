@@ -4,32 +4,28 @@ __docformat__ = "numpy"
 import logging
 import os
 from fractions import Fraction
-from typing import List, Optional
+from typing import Optional, Union
 
-import matplotlib.dates as mdates
-import matplotlib.pyplot as plt
 import pandas as pd
 import yfinance as yf
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_valid_axes_count,
     lambda_long_number_format,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_info(symbol: str, export: str = "", sheet_name: str = None):
+def display_info(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Yahoo Finance ticker info
     Parameters
     ----------
@@ -52,6 +48,7 @@ def display_info(symbol: str, export: str = "", sheet_name: str = None):
             headers=list(df_info.columns),
             show_index=True,
             title=f"{symbol.upper()} Info",
+            export=bool(export),
         )
     else:
         logger.error("Invalid data")
@@ -73,7 +70,10 @@ def display_info(symbol: str, export: str = "", sheet_name: str = None):
 
 @log_start_end(log=logger)
 def display_shareholders(
-    symbol: str, holder: str = "institutional", export: str = "", sheet_name: str = None
+    symbol: str,
+    holder: str = "institutional",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Yahoo Finance ticker shareholders
     Parameters
@@ -100,6 +100,7 @@ def display_shareholders(
         headers=list(df.columns),
         show_index=False,
         title=f"{symbol.upper()} {title}",
+        export=bool(export),
     )
 
     export_data(
@@ -117,9 +118,9 @@ def display_dividends(
     limit: int = 12,
     plot: bool = True,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display historical dividends
 
     Parameters
@@ -134,8 +135,8 @@ def display_dividends(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Examples
     --------
@@ -144,48 +145,18 @@ def display_dividends(
     """
     div_history = yahoo_finance_model.get_dividends(symbol)
     if div_history.empty:
-        return
+        return None
 
-    if plot:
-        # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
-
-        ax.plot(
-            div_history.index,
-            div_history["Dividends"],
-            ls="-",
-            linewidth=0.75,
-            marker=".",
-            markersize=4,
-            mfc=theme.down_color,
-            mec=theme.down_color,
-            alpha=1,
-            label="Dividends Payout",
-        )
-        ax.set_ylabel("Amount Paid ($)")
-        ax.set_title(f"Dividend History for {symbol}")
-        ax.set_xlim(div_history.index[-1], div_history.index[0])
-        ax.legend()
-        theme.style_primary_axis(ax)
-
-        if not external_axes:
-            theme.visualize_output()
-
-    else:
-        div_history.index = pd.to_datetime(div_history.index, format="%Y%m%d").strftime(
-            "%Y-%m-%d"
-        )
-        print_rich_table(
-            div_history.head(limit),
-            headers=["Amount Paid ($)", "Change"],
-            title=f"{symbol.upper()} Historical Dividends",
-            show_index=True,
-        )
+    fig = OpenBBFigure(yaxis_title="Amount Paid ($)")
+    fig.set_title(f"Dividend History for {symbol}")
+    fig.add_scatter(
+        x=div_history.index,
+        y=div_history["Dividends"],
+        mode="markers+lines",
+        name="Dividends Payout",
+        marker_color=theme.down_color,
+        line_color=theme.get_colors()[0],
+    )
 
     export_data(
         export,
@@ -193,16 +164,32 @@ def display_dividends(
         "divs",
         div_history,
         sheet_name,
+        fig,
     )
+
+    if not plot:
+        div_history.index = pd.to_datetime(div_history.index, format="%Y%m%d").strftime(
+            "%Y-%m-%d"
+        )
+        return print_rich_table(
+            div_history,
+            headers=["Amount Paid ($)", "Change"],
+            title=f"{symbol.upper()} Historical Dividends",
+            show_index=True,
+            export=bool(export),
+            limit=limit,
+        )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
 def display_splits(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display splits and reverse splits events. [Source: Yahoo Finance]
 
     Parameters
@@ -213,64 +200,59 @@ def display_splits(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df_splits = yahoo_finance_model.get_splits(symbol)
     if df_splits.empty:
-        console.print("No splits or reverse splits events found.\n")
-        return
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+        return console.print("No splits or reverse splits events found.\n")
 
     # Get all stock data since IPO
     df_data = yf.download(symbol, progress=False, threads=False)
     if df_data.empty:
-        console.print("No stock price data available.\n")
-        return
+        return console.print("No stock price data available.\n")
 
-    ax.plot(df_data.index, df_data["Adj Close"], color="#FCED00")
-    ax.set_ylabel("Price")
-    ax.set_title(f"{symbol} splits and reverse splits events")
+    fig = OpenBBFigure(yaxis_title="Price")
+    fig.set_title(f"{symbol} splits and reverse splits events")
 
-    ax.plot(df_data.index, df_data["Adj Close"].values)
+    fig.add_scatter(
+        x=df_data.index,
+        y=df_data["Adj Close"],
+        mode="lines",
+        name="Price",
+        line_color="#FCED00",
+    )
+
     for index, row in df_splits.iterrows():
         val = row.values[0]
         frac = Fraction(val).limit_denominator(1000000)
         if val > 1:
-            ax.axvline(index, color=theme.up_color)
-            ax.annotate(
-                f"{frac.numerator}:{frac.denominator}",
-                (mdates.date2num(index), df_data["Adj Close"].max()),
-                xytext=(10, 0),
-                textcoords="offset points",
-                color=theme.up_color,
+            fig.add_annotation(
+                x=index,
+                y=df_data["Adj Close"].max(),
+                text=f"{frac.numerator}:{frac.denominator}",
+                xshift=20,
+                font=dict(color=theme.up_color),
             )
+            fig.add_vline(x=index, line_width=2, line_color=theme.up_color)
         else:
-            ax.axvline(index, color=theme.down_color)
-            ax.annotate(
-                f"{frac.numerator}:{frac.denominator}",
-                (mdates.date2num(index), df_data["Adj Close"].max()),
-                xytext=(10, 0),
-                textcoords="offset points",
-                color=theme.down_color,
+            fig.add_annotation(
+                x=index,
+                y=df_data["Adj Close"].max(),
+                text=f"{frac.numerator}:{frac.denominator}",
+                xshift=20,
+                font_color=theme.down_color,
             )
+            fig.add_vline(x=index, line_width=2, line_color=theme.down_color)
 
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
-
+    df_splits.index = pd.to_datetime(df_splits.index, format="%Y%m%d").strftime(
+        "%Y-%m-%d"
+    )
     print_rich_table(
         df_splits,
         title=f"{symbol.upper()} splits and reverse splits",
         show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -279,17 +261,22 @@ def display_splits(
         "splits",
         df_splits,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
 def display_mktcap(
     symbol: str,
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display market cap over time. [Source: Yahoo Finance]
 
     Parameters
@@ -297,36 +284,41 @@ def display_mktcap(
     symbol: str
         Stock ticker symbol
     start_date: Optional[str]
-        Initial date (e.g., 2021-10-01). Defaults to 3 years back
+        Initial date (e.g., 2021-10-01). If not provided, the earliest date available is used.
+    end_date: Optional[str]
+        End date (e.g., 2021-10-01). If not provided, the latest date available is used.
+    raw: bool
+        Whether to return the raw data or not
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-
-    df_mktcap, currency = yahoo_finance_model.get_mktcap(symbol, start_date)
+    df_mktcap, currency = yahoo_finance_model.get_mktcap(symbol, start_date, end_date)
     if df_mktcap.empty:
-        console.print("No Market Cap data available.\n")
-        return
+        return console.print("No Market Cap data available.\n")
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title=f"Market Cap in Billion ({currency})")
+    fig.set_title(f"{symbol} Market Cap")
+    fig.add_scatter(
+        x=df_mktcap.index,
+        y=df_mktcap.values / 1e9,
+        mode="lines",
+        name="Market Cap",
+        line_color=theme.up_color,
+        stackgroup="one",
+    )
 
-    ax.stackplot(df_mktcap.index, df_mktcap.values / 1e9, colors=[theme.up_color])
-    ax.set_ylabel(f"Market Cap in Billion ({currency})")
-    ax.set_title(f"{symbol} Market Cap")
-    ax.set_xlim(df_mktcap.index[0], df_mktcap.index[-1])
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    if raw:
+        print_rich_table(
+            pd.DataFrame(df_mktcap).tail(10),
+            headers=["Market Cap"],
+            title=f"{symbol} Market Cap",
+            show_index=True,
+            export=bool(export),
+        )
 
     export_data(
         export,
@@ -334,7 +326,10 @@ def display_mktcap(
         "mktcap",
         df_mktcap,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -343,9 +338,9 @@ def display_fundamentals(
     statement: str,
     limit: int = 12,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tickers balance sheet, income statement or cash-flow
 
@@ -371,22 +366,31 @@ def display_fundamentals(
     export: str
         Format to export data
     """
-
+    fig = OpenBBFigure()
     fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
+
+    if fundamentals is None or fundamentals.empty:
+        # The empty data frame error handling done in model
+        return None
 
     if statement == "balance-sheet":
         title_str = "Balance Sheet"
+        fundamentals.index = [
+            stocks_helper.BALANCE_PLOT["YahooFinance"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
     elif statement == "financials":
         title_str = "Income Statement"
+        fundamentals.index = [
+            stocks_helper.INCOME_PLOT["YahooFinance"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
     elif statement == "cash-flow":
         title_str = "Cash Flow Statement"
-
-    if fundamentals is None:
-        return
-
-    if fundamentals.empty:
-        # The empty data frame error handling done in model
-        return
+        fundamentals.index = [
+            stocks_helper.CASH_PLOT["YahooFinance"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
 
     symbol_currency = yahoo_finance_model.get_currency(symbol)
 
@@ -400,7 +404,7 @@ def display_fundamentals(
         fundamentals_plot_data = fundamentals_plot_data.sort_index()
 
         if not ratios:
-            maximum_value = fundamentals_plot_data[plot[0].replace("_", " ")].max()
+            maximum_value = fundamentals_plot_data[plot[0]].max()
             (df_rounded, denomination) = transform_by_denomination(
                 fundamentals_plot_data, maxValue=maximum_value
             )
@@ -411,25 +415,32 @@ def display_fundamentals(
             denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            ax.bar(df_rounded.index, df_rounded[plot[0].replace("_", " ")])
+            fig.add_bar(
+                x=df_rounded.index,
+                y=df_rounded[plot[0]],
+                name=plot[0].replace("_", " "),
+            )
             title = (
                 f"{plot[0].replace('_', ' ').capitalize()} QoQ Growth of {symbol.upper()}"
                 if ratios
                 else f"{plot[0].replace('_', ' ').capitalize()} of {symbol.upper()} {denomination}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
+            fig.set_title(title)
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].bar(
-                    df_rounded.index, df_rounded[plot[i].replace("_", " ")], width=0.5
+                fig.add_bar(
+                    x=df_rounded.index,
+                    y=df_rounded[plot[i]],
+                    name=plot[i].replace("_", " "),
+                    row=i + 1,
+                    col=1,
                 )
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                title = f"{plot[i].replace('_', ' ')} {denomination}"
+                fig.add_annotation(x=0.5, y=1, row=i + 1, col=1, text=title)
+
+        fig.show(external=fig.is_image_export(export))
+
     else:
         # Snake case to english
         fundamentals.index = fundamentals.index.to_series().apply(
@@ -438,9 +449,11 @@ def display_fundamentals(
         # Readable numbers
         formatted_df = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(
-            formatted_df.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
+            formatted_df.applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
             title=f"{symbol} {title_str} Currency: {symbol_currency}",
+            export=bool(export),
+            limit=limit,
         )
     export_data(
         export,
@@ -448,11 +461,16 @@ def display_fundamentals(
         statement,
         fundamentals,
         sheet_name,
+        fig,
     )
+
+    return None
 
 
 @log_start_end(log=logger)
-def display_earnings(symbol: str, limit: int, export: str = "", sheet_name: str = None):
+def display_earnings(
+    symbol: str, limit: int, export: str = "", sheet_name: Optional[str] = None
+):
     """
 
     Parameters
@@ -471,9 +489,11 @@ def display_earnings(symbol: str, limit: int, export: str = "", sheet_name: str 
     if earnings.empty:
         return
     print_rich_table(
-        earnings.head(limit),
+        earnings,
         headers=earnings.columns,
         title=f"Historical Earnings for {symbol}",
+        export=bool(export),
+        limit=limit,
     )
     export_data(
         export,

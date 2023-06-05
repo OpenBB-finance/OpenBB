@@ -3,7 +3,7 @@ export default function InstallerButton({ href, label, type }) {
   return (
     <a
       href={href}
-      className="button button--primary !no-underline inline-flex gap-4 h-10 items-center"
+      className="_btn text-sm !no-underline inline-flex gap-4 h-10 items-center"
       rel="noreferrer noopener"
       target="_blank"
     >

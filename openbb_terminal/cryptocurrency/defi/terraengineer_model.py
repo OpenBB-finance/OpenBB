@@ -36,7 +36,7 @@ def get_history_asset_from_terra_address(
     """
 
     if asset.lower() not in ASSETS:
-        raise Exception(f"Select a valid asset from {', '.join(ASSETS)}")
+        raise Exception(f"Select a valid asset from {', '.join(ASSETS)}")  # noqa: S608
 
     if not address.startswith("terra"):
         raise Exception(

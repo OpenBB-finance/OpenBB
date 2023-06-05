@@ -89,7 +89,6 @@ def get_global_deaths(country: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_covid_ov(
     country: str,
-    limit: int = 100,
 ) -> pd.DataFrame:
     """Get historical cases and deaths by country.
 
@@ -97,8 +96,6 @@ def get_covid_ov(
     ----------
     country: str
         Country to get data for
-    limit: int
-        Number of raw data to show
 
     Returns
     -------
@@ -113,15 +110,14 @@ def get_covid_ov(
         return pd.DataFrame()
     data = pd.concat([cases, deaths], axis=1)
     data.columns = ["Cases", "Deaths"]
-    data.index = [x.strftime("%Y-%m-%d") for x in data.index]
-    return data.tail(limit)
+    data.index = pd.to_datetime(data.index, format="%Y-%m-%d")
+    return data
 
 
 @log_start_end(log=logger)
 def get_covid_stat(
     country: str,
     stat: str = "cases",
-    limit: int = 10,
 ) -> pd.DataFrame:
     """Show historical cases and deaths by country.
 
@@ -131,8 +127,6 @@ def get_covid_stat(
         Country to get data for
     stat: str
         Statistic to get.  Either "cases", "deaths" or "rates"
-    limit: int
-        Number of raw data to show
 
     Returns
     -------
@@ -151,13 +145,12 @@ def get_covid_stat(
         console.print("Invalid stat selected.\n")
         return pd.DataFrame()
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
-    return data.tail(limit)
+    return data
 
 
 @log_start_end(log=logger)
 def get_case_slopes(
     days_back: int = 30,
-    limit: int = 50,
     threshold: int = 10000,
     ascend: bool = False,
 ) -> pd.DataFrame:
@@ -167,8 +160,6 @@ def get_case_slopes(
     ----------
     days_back: int
         Number of historical days to consider
-    limit: int
-        Number of rows to show
     threshold: int
         Threshold for total number of cases
     ascend: bool
@@ -199,8 +190,9 @@ def get_case_slopes(
         lambda x: np.polyfit(np.arange(days_back), x, 1)[0], axis=1
     )
     hist_slope = pd.DataFrame(hist["Slope"])
+
     if ascend:
         hist_slope.sort_values(by="Slope", ascending=ascend, inplace=True)
     else:
         hist_slope.sort_values(by="Slope", ascending=ascend, inplace=True)
-    return hist_slope.head(limit)
+    return hist_slope

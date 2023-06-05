@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, List
+from datetime import date, timedelta
 
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -36,40 +36,64 @@ def get_earnings_html(url_next_earnings: str) -> str:
     return earnings_html
 
 
+def get_filters(date_str: str) -> str:
+    text = f"?filter[selected_date]={date_str}&filter[with_rating]=false&filter[currency]=USD"
+    return text
+
+
 @log_start_end(log=logger)
-def get_next_earnings(limit: int = 10) -> DataFrame:
+def get_next_earnings(limit: int = 5, start_date: date = date.today()) -> DataFrame:
     """Returns a DataFrame with upcoming earnings
 
     Parameters
     ----------
     limit : int
-        Number of pages
+        Number of days to look ahead
+    start_date: date
+        Date to start from. Defaults to today
 
     Returns
     -------
     DataFrame
         Upcoming earnings DataFrame
     """
-    earnings = []
-    url_next_earnings = "https://seekingalpha.com/earnings/earnings-calendar"
+    base_url = "https://seekingalpha.com/api/v3/earnings_calendar/tickers"
+    df_earnings = pd.DataFrame()
 
-    for idx in range(0, limit):
-        text_soup_earnings = BeautifulSoup(
-            get_earnings_html(url_next_earnings),
-            "lxml",
-        )
+    for _ in range(0, limit):
+        start_date = pd.to_datetime(start_date)
+        date_str = str(start_date.strftime("%Y-%m-%d"))
+        response = request(base_url + get_filters(date_str), timeout=10)
+        json = response.json()
+        try:
+            data = json["data"]
+            cleaned_data = [x["attributes"] for x in data]
+            temp_df = pd.DataFrame.from_records(cleaned_data)
+            temp_df = temp_df.drop(columns=["sector_id"])
+            temp_df["Date"] = start_date  # pylint: disable=E1137
+            df_earnings = pd.concat(
+                [df_earnings, temp_df], join="outer", ignore_index=True
+            )
+            start_date = start_date + timedelta(days=1)
+        except KeyError:
+            pass
 
-        for stock_rows in text_soup_earnings.findAll("tr", {"data-exchange": "NASDAQ"}):
-            stocks = [a_stock.text for a_stock in stock_rows.contents[:3]]
-            earnings.append(stocks)
+    df_earnings = df_earnings.rename(
+        columns={
+            "slug": "Ticker",
+            "name": "Name",
+            "release_time": "Release Time",
+            "exchange": "Exchange",
+        }
+    )
 
-        url_next_earnings = (
-            f"https://seekingalpha.com/earnings/earnings-calendar/{idx+1}"
-        )
+    if df_earnings.empty:
+        console.print("No earnings found. Try adjusting the date.\n")
+        return pd.DataFrame()
 
-    df_earnings = pd.DataFrame(earnings, columns=["Ticker", "Name", "Date"])
-    df_earnings["Date"] = pd.to_datetime(df_earnings["Date"])
-    df_earnings = df_earnings.set_index("Date")
+    df_earnings = df_earnings[
+        df_earnings["Date"] <= pd.to_datetime(start_date + timedelta(days=limit))
+    ]
 
     return df_earnings
 
@@ -188,40 +212,3 @@ def get_news_html(news_type: str = "Top-News") -> dict:
     articles_html = request(sa_url, headers={"User-Agent": get_user_agent()}).json()
 
     return articles_html
-
-
-@log_start_end(log=logger)
-def get_news(news_type: str = "Top-News", limit: int = 5) -> List:
-    """Gets news. [Source: SeekingAlpha]
-
-    Parameters
-    ----------
-    news_type : str
-        From: Top-News, On-The-Move, Market-Pulse, Notable-Calls, Buybacks, Commodities, Crypto, Issuance, Global,
-        Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
-    limit : int
-        Number of news to display
-
-    Returns
-    -------
-    List[dict]
-        List of dict news
-    """
-    news_articles: Dict = get_news_html(news_type)
-    news_to_display = list()
-
-    if "data" in news_articles:
-        for idx, news in enumerate(news_articles["data"]):
-            if idx > limit:
-                break
-
-            news_to_display.append(
-                {
-                    "publishOn": news["attributes"]["publishOn"].replace("T", " ")[:-6],
-                    "id": news["id"],
-                    "title": news["attributes"]["title"],
-                    "url": news["links"]["canonical"],
-                }
-            )
-
-    return news_to_display

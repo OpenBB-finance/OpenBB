@@ -1,3 +1,26 @@
-  Symbol                   Name  Price (Intraday)  Change % Change   Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
-0   AAPL             Apple Inc.            177.75    3.19   +1.83%  68.982M            84.53M     2.916T          31.68
-1   AFRM  Affirm Holdings, Inc.            113.51   -5.62   -4.72%   4.266M           14.768M    31.897B               
+   Symbol                             Name  Price (Intraday)  Change % Change   Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
+0    AAPL                       Apple Inc.            177.75    3.19   +1.83%  68.982M            84.53M     2.916T          31.68
+1    AFRM            Affirm Holdings, Inc.            113.51   -5.62   -4.72%   4.266M           14.768M    31.897B               
+2     AMD     Advanced Micro Devices, Inc.            137.60   -0.50   -0.36%  30.216M           52.585M   166.167B          42.44
+3    NVDA               NVIDIA Corporation            299.90   -5.00   -1.64%  35.012M           36.193M   747.351B          92.48
+4      MU          Micron Technology, Inc.             84.80   -0.13   -0.15%   6.783M            18.48M     94.99B           16.5
+5      ZM  Zoom Video Communications, Inc.            185.21   -3.06   -1.63%   1.194M            4.407M    55.192B          49.22
+6      ON     ON Semiconductor Corporation             64.37    1.07   +1.69%   2.647M            5.906M    27.733B          42.02
+7    AMAT          Applied Materials, Inc.            152.10   -0.54   -0.36%       3M            7.437M    137.34B          23.77
+8      SQ                     Square, Inc.            180.38   -6.37   -3.41%   4.555M            7.513M    83.205B         180.92
+9      DM              Desktop Metal, Inc.              5.81   -0.09   -1.53%   2.567M            6.439M     1.807B               
+10    NET                 Cloudflare, Inc.            143.18   -7.01   -4.67%   3.099M            4.068M    46.069B               
+11   LSPD         Lightspeed Commerce Inc.             43.72   -2.08   -4.54%   654345            1.765M     6.511B               
+12   DDOG                    Datadog, Inc.            173.83   -1.58   -0.90%    1.72M            2.985M    54.238B               
+13   CRWD       CrowdStrike Holdings, Inc.            197.82   -3.45   -1.71%   2.015M            3.501M    45.369B               
+14   COIN            Coinbase Global, Inc.            253.72  -10.19   -3.86%   3.741M              5.1M    66.449B          19.09
+15   BILL          Bill.com Holdings, Inc.            251.11   -3.41   -1.34%   914155            1.705M    25.752B               
+16    RNG                RingCentral, Inc.            185.04   -1.17   -0.63%   961482             1.32M    17.291B               
+17   HIMX         Himax Technologies, Inc.             11.53    0.47   +4.25%   2.296M            2.963M     2.007B           6.12
+18    WIT                    Wipro Limited              8.69   -0.02   -0.17%   870748            1.879M    47.507B          30.09
+19     AI                      C3.ai, Inc.             33.42    1.33   +4.14%  14.844M            3.085M      3.51B               
+20     ZS                    Zscaler, Inc.            303.86    0.82   +0.27%   1.141M            2.004M    42.556B               
+21   SWKS         Skyworks Solutions, Inc.            162.20    1.18   +0.74%   867285            1.701M    26.827B          18.08
+22     DQ            Daqo New Energy Corp.             43.23   -0.84   -1.91%   756756            1.641M     3.178B           4.81
+23   TEAM        Atlassian Corporation Plc            370.89   -4.55   -1.21%   364887            1.074M    93.743B               
+24    STX  Seagate Technology Holdings plc            102.37   -0.56   -0.54%   615944            2.439M    22.791B          15.07

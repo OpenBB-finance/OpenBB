@@ -4,6 +4,7 @@ logs/
 .DS_Store
 *.env
 .venv
+venv*/
 venv
 .vscode
 *.ipynb
@@ -39,8 +40,10 @@ website/functions
 *_sdk_audit.csv
 website/terminaltest
 !build/docker/compose.env
+openbb_terminal/core/plots/assets/plotly*.js
 .dccache
-
+*rome.json
+**/node_modules/*
 # pyinstaller artifacts
 *.pyo
 dist/*
@@ -48,9 +51,10 @@ build/terminal
 build/nsis/app
 DMG/*
 *.dmg
+*.sh
 
 # User stylesheets
-styles/user
+openbb_terminal/miscellaneous/styles/user/hub.richstyle.json
 
 # the file containing the API keys for the web version
 openbb_terminal_web/setenv
@@ -61,6 +65,9 @@ darts_logs/
 # User data
 custom_imports/*.csv
 custom_imports/*/*.csv
+
+# cache
+cache/
 
 # lightning logs
 lightning_logs/

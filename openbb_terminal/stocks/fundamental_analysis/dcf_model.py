@@ -5,7 +5,7 @@ import logging
 import os
 from io import BytesIO
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.request import urlopen
 from zipfile import ZipFile
 
@@ -139,7 +139,6 @@ CURRENCIES = [
 ]
 
 
-@log_start_end(log=logger)
 def string_float(string: str) -> float:
     """Convert a string to a float
 
@@ -190,16 +189,15 @@ def insert_row(
     return df
 
 
-@log_start_end(log=logger)
 def set_cell(
     ws: worksheet,
     cell: str,
-    text: Union[int, str, float] = None,
-    font: str = None,
-    border: str = None,
-    fill: str = None,
-    alignment: str = None,
-    num_form: str = None,
+    text: Optional[Union[int, str, float]] = None,
+    font: Optional[str] = None,
+    border: Optional[str] = None,
+    fill: Optional[str] = None,
+    alignment: Optional[str] = None,
+    num_form: Optional[str] = None,
 ):
     """Set the value for a cell
 
@@ -245,7 +243,7 @@ def get_fama_raw() -> pd.DataFrame:
     df : pd.DataFrame
         Fama French data
     """
-    with urlopen(  # nosec
+    with urlopen(  # noqa: SIM117
         "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
         # Download Zipfile and create pandas DataFrame
@@ -293,6 +291,7 @@ def get_historical_5(symbol: str) -> pd.DataFrame:
     df = df.drop(["Dividends", "Stock Splits"], axis=1)
     df = df.dropna()
     df.index = [d.replace(tzinfo=None) for d in df.index]
+
     return df
 
 
@@ -332,7 +331,11 @@ def get_fama_coe(symbol: str) -> float:
 
 @log_start_end(log=logger)
 def others_in_sector(
-    symbol: str, sector: str, industry: str, no_filter: bool = False
+    symbol: str,
+    sector: str,
+    industry_group: str,
+    industry: str,
+    no_filter: bool = False,
 ) -> List[str]:
     """Get other stocks in a ticker's sector
 
@@ -355,15 +358,18 @@ def others_in_sector(
     industry = industry.replace("—", " - ")
     industry = industry.replace("/", " ")
 
-    similars = fd.select_equities(sector=sector, industry=industry)
+    equities = fd.Equities()
+    similars = equities.select(
+        sector=sector, industry_group=industry_group, industry=industry
+    )
 
     # This filters similars to match market cap and removes ticker analyzed
-    if symbol in similars:
-        market_cap = similars[symbol]["market_cap"]
-        similars.pop(symbol, None)
+    if symbol in similars.index:
+        market_cap = similars.loc[symbol]["market_cap"]
+        similars.drop([symbol], inplace=True)
         if not no_filter:
             similars = {
-                k: v for (k, v) in similars.items() if v["market_cap"] == market_cap
+                k: v for k, v in similars.iterrows() if v["market_cap"] == market_cap
             }
     similars = list(similars)
     return similars
@@ -419,7 +425,7 @@ def create_dataframe(symbol: str, statement: str, period: str = "annual"):
 
     soup = BeautifulSoup(r.content, "html.parser")
     phrase = soup.find(
-        "div", attrs={"class": "hidden pb-1 text-sm text-gray-600 lg:block"}
+        "div", attrs={"class": "hidden pb-1 text-sm text-faded lg:block"}
     )
     phrase = phrase.get_text().lower() if phrase else ""
 
@@ -478,7 +484,7 @@ def get_similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filter: bool =
     symbol : str
         The ticker symbol to create a dataframe for
     into : Dict[str,Any]
-        The dictionary produced from the yfinance.info function
+        The dictionary based on info collected from fd.Equities()
     n : int
         The number of similar companies to produce
     no_filter : bool
@@ -489,7 +495,9 @@ def get_similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filter: bool =
     new_list : List[str, pd.DataFrame]
         A list of similar companies
     """
-    similars = others_in_sector(symbol, info["sector"], info["industry"], no_filter)
+    similars = others_in_sector(
+        symbol, info["sector"], info["industry_group"], info["industry"], no_filter
+    )
     i = 0
     new_list = []
     while i < n and similars:
@@ -556,7 +564,6 @@ def get_value(df: pd.DataFrame, row: str, column: int) -> Tuple[float, float]:
     return fin_val1, fin_val2
 
 
-@log_start_end(log=logger)
 def frac(num: float, denom: float) -> Union[str, float]:
     """
     Converts a numerator and a denominator in a fraction, checking for invalid denominators
@@ -577,7 +584,7 @@ def frac(num: float, denom: float) -> Union[str, float]:
 
 
 @log_start_end(log=logger)
-def generate_path(n: int, symbol: str, date: str) -> Path:
+def generate_path(n: int, file_name: str) -> Path:
     """
     Create the path to save an excel file to
 
@@ -585,10 +592,8 @@ def generate_path(n: int, symbol: str, date: str) -> Path:
     ----------
     n: int
         The try number
-    symbol: str
-        The ticker symbol to be saved
-    date: str
-        The date the dcf was generated
+    file_name: str
+        The name of the file to save
 
     Returns
     -------
@@ -599,7 +604,7 @@ def generate_path(n: int, symbol: str, date: str) -> Path:
     export_folder = compose_export_path(
         func_name="dcf", dir_path=os.path.abspath(os.path.dirname(__file__))
     ).parent
-    trypath = export_folder / symbol / date / val
+    trypath = export_folder / file_name / val
     trypath = str(trypath) + ".xlsx"  # type: ignore
 
     return Path(trypath)

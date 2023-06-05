@@ -28,7 +28,7 @@ def parameterize_from_file(test_namespace: str, parameter_file: str) -> Callable
         test_file_base_path = pathlib.Path(__file__).parent.absolute()
         data_file_full_path = pathlib.Path(test_file_base_path, parameter_file)
 
-        with open(data_file_full_path, encoding="utf-8") as file:
+        with open(data_file_full_path, encoding="utf-8", newline="\n") as file:
             parameter_data = yaml.full_load(file)
 
         idlist = []
@@ -39,7 +39,7 @@ def parameterize_from_file(test_namespace: str, parameter_file: str) -> Callable
             idlist.append(scenario)
             argnames = []
             tempvalues = []
-            for argname in parameter_data[test_namespace][scenario].keys():
+            for argname in parameter_data[test_namespace][scenario]:
                 argnames.append(argname)
                 tempvalues.append(parameter_data[test_namespace][scenario][argname])
             argvalues.append(tempvalues)

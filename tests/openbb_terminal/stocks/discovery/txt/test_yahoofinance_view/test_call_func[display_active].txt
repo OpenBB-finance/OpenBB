@@ -1,3 +1,26 @@
-  Symbol                Name  Price (Intraday)  Change % Change   Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
-0      F  Ford Motor Company             20.96    1.39   +7.10%  92.959M           89.354M    83.762B           29.4
-1   LCID   Lucid Group, Inc.             37.69    1.17   +3.19%  79.307M           72.438M    62.043B               
+   Symbol                                            Name  Price (Intraday)  Change % Change   Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
+0       F                              Ford Motor Company            20.960   1.390   +7.10%  92.959M           89.354M    83.762B           29.4
+1    LCID                               Lucid Group, Inc.            37.690   1.170   +3.19%  79.307M           72.438M    62.043B               
+2    AAPL                                      Apple Inc.           177.720   3.160   +1.81%  68.975M            84.53M     2.916T          31.68
+3     AMC                AMC Entertainment Holdings, Inc.            26.510  -2.950  -10.01%  44.769M           43.357M    13.608B               
+4     BBD                             Banco Bradesco S.A.             3.565  -0.055   -1.52%  35.946M           37.617M    34.543B           8.14
+5    ORCL                              Oracle Corporation           102.680  13.910  +15.66%  35.427M           10.002M   280.682B          21.75
+6    NVDA                              NVIDIA Corporation           299.800  -5.100   -1.67%   35.01M           36.193M   747.102B          92.45
+7     AMD                    Advanced Micro Devices, Inc.           137.560  -0.540   -0.39%  30.213M           52.585M   166.119B          42.43
+8    SOFI                         SoFi Technologies, Inc.            14.980  -0.680   -4.34%  29.397M           30.433M    11.978B               
+9    GRAB                           Grab Holdings Limited             7.050  -1.030  -12.69%  29.105M            6.092M    26.393B               
+10    EDU  New Oriental Education & Technology Group Inc.             2.305   0.095   +4.30%  27.017M           38.337M     3.981B          11.53
+11    NIO                                        NIO Inc.            33.990  -0.060   -0.18%  24.082M           40.507M    54.063B               
+12   MSFT                           Microsoft Corporation           340.400   7.300   +2.19%  23.199M           25.792M     2.556T          38.08
+13    CCL                      Carnival Corporation & plc            19.190   0.000   +0.02%  22.565M           36.449M    22.376B               
+14      T                                       AT&T Inc.            22.830  -0.110   -0.50%  22.177M            46.64M   162.993B         176.94
+15    BAC                     Bank of America Corporation            44.390  -0.100   -0.22%  22.106M           46.324M    363.29B          13.29
+16   ITUB                      Itaú Unibanco Holding S.A.             3.875  -0.005   -0.13%  19.834M           40.748M    37.897B           7.23
+17   PLTR                      Palantir Technologies Inc.            18.890  -0.320   -1.69%  19.213M           45.544M    37.861B               
+18    AAL                    American Airlines Group Inc.            17.900  -0.240   -1.35%  18.843M           34.305M    11.587B               
+19      C                                  Citigroup Inc.            60.620  -1.520   -2.45%  18.776M           20.667M   120.277B           5.74
+20   PTON                       Peloton Interactive, Inc.            38.060  -2.650   -6.50%  17.347M           12.892M    12.566B               
+21    KGC                        Kinross Gold Corporation             5.300   0.030   +0.66%  15.773M           13.063M     6.674B           6.64
+22   TSLA                                     Tesla, Inc.          1016.930  13.130   +1.31%  15.129M           25.743M     1.021T         332.11
+23  CMCSA                             Comcast Corporation            48.420   0.610   +1.28%  14.986M           19.374M   221.227B          15.57
+24     AI                                     C3.ai, Inc.            33.420   1.330   +4.14%  14.844M            3.085M      3.51B               

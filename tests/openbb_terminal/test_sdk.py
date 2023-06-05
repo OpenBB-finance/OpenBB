@@ -1,13 +1,12 @@
 # pylint: disable=import-outside-toplevel
 
 
-def test_openbb(mocker):
-    """Test the openbb function"""
-    mock = mocker.patch("openbb_terminal.base_helpers.load_dotenv_and_reload_configs")
-    from openbb_terminal.sdk import openbb
+# def test_openbb():
+#     """Test the openbb function"""
+#     from openbb_terminal.sdk import openbb
 
-    mock.assert_called_once()
-    assert "stocks" in dir(openbb)
+#     assert "stocks" in dir(openbb)
+#     assert "economy" in dir(openbb)
 
 
 # from importlib import import_module

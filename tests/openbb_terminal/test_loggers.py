@@ -16,6 +16,7 @@ settings = Settings(
         name="MOCK_COMMIT_HASH",
         identifier="MOCK_COMMIT_HASH",
         session_id="MOCK_SESSION_ID",
+        user_id="MOCK_USER_ID",
     ),
     aws_settings=AWSSettings(
         aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",
@@ -24,7 +25,7 @@ settings = Settings(
     log_settings=LogSettings(
         directory=Path("."),
         frequency="H",
-        handler_list="file",
+        handler_list=["file"],
         rolling_clock=False,
         verbosity=20,
     ),
@@ -66,7 +67,14 @@ def test_get_commit_hash(mocker, git):
 
 
 def test_get_commit_hash_obff(mocker):
-    mocker.patch("openbb_terminal.loggers.LOGGING_COMMIT_HASH", "MOCKING_COMMIT_HASH")
+    class MockSystem:  # pylint: disable=too-few-public-methods
+        def __init__(self):
+            self.LOGGING_COMMIT_HASH = "MOCK_COMMIT_HASH"
+
+    mocker.patch(
+        "openbb_terminal.loggers.get_current_system",
+        MockSystem,
+    )
     value = loggers.get_commit_hash()
     assert value
 

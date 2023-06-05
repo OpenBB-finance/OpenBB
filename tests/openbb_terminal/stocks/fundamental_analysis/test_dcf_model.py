@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+from pathlib import Path
 
 # IMPORTATION THIRDPARTY
 import numpy as np
@@ -111,6 +112,45 @@ def test_get_fama_coe():
 @pytest.mark.vcr
 def test_others_in_sector():
     data = dcf_model.others_in_sector(
-        symbol="PM", sector="Consumer Defensive", industry="Tobacco"
+        symbol="PM",
+        sector="Consumer Staples",
+        industry_group="Food, Beverage & Tobacco",
+        industry="Tobacco",
     )
     assert len(data) > 0
+
+
+def test_clean_dataframes():
+    df1 = pd.DataFrame(
+        data={"col1": [1, 2], "col2": [3, 4]},
+        index=["one", "two"],
+    )
+    df2 = pd.DataFrame(
+        data={"col1": [1, 2, 3], "col2": [3, 4, 5]},
+        index=["one", "two", "three"],
+    )
+    df3 = pd.DataFrame(
+        data={"col1": [1, 2], "col2": [3, 4]},
+        index=["one", "two"],
+    )
+
+    result = dcf_model.clean_dataframes(df1, df2, df3)
+
+    assert len(result[0]) == 2
+    assert len(result[1]) == 3
+    assert len(result[2]) == 2
+
+
+def test_frac():
+    result = dcf_model.frac(1, 2)
+
+    assert result == 0.5
+
+
+def test_generate_path():
+    result = dcf_model.generate_path(
+        n=1,
+        file_name="test_dcf_model",
+    )
+
+    assert isinstance(result, Path)

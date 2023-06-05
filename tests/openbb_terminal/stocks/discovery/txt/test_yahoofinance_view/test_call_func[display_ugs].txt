@@ -1,3 +1,26 @@
-  Symbol                         Name  Price (Intraday)  Change % Change   Volume Avg Vol (3 month) Market Cap  PE Ratio (TTM)
-0    BAC  Bank of America Corporation             44.38   -0.11   -0.24%  22.108M           46.324M    363.25B           13.29
-1    PFE                  Pfizer Inc.             52.72    0.63   +1.22%  14.668M           34.487M   295.882B           15.06
+   Symbol                                 Name  Price (Intraday)  Change % Change   Volume Avg Vol (3 month) Market Cap  PE Ratio (TTM)
+0     BAC          Bank of America Corporation            44.380  -0.110   -0.24%  22.108M           46.324M    363.25B           13.29
+1     PFE                          Pfizer Inc.            52.720   0.630   +1.22%  14.668M           34.487M   295.882B           15.06
+2       C                       Citigroup Inc.            60.630  -1.510   -2.43%  18.788M           20.667M   120.306B            5.74
+3    VALE                            Vale S.A.            13.440  -0.060   -0.48%   10.22M           38.861M    67.498B            3.95
+4     WFC                Wells Fargo & Company            50.070   0.380   +0.76%  11.162M            25.94M   199.641B           11.94
+5      GM               General Motors Company            62.130   2.510   +4.21%  12.887M           18.586M    90.204B            8.32
+6    ATUS                     Altice USA, Inc.            14.910  -0.110   -0.70%   3.338M            8.025M     6.781B            6.77
+7      MU              Micron Technology, Inc.            84.810  -0.120   -0.14%   6.783M            18.48M    95.002B           16.50
+8    HBAN   Huntington Bancshares Incorporated            15.290  -0.140   -0.91%   4.083M           11.176M    22.546B           17.14
+9     UMC  United Microelectronics Corporation            11.260  -0.070   -0.66%   3.263M            7.609M    28.336B           16.92
+10   VIAC                       ViacomCBS Inc.            30.930  -0.140   -0.45%   4.812M            11.21M     20.16B            6.05
+11  CMCSA                  Comcast Corporation            48.420   0.610   +1.28%  14.991M           19.374M   221.227B           15.57
+12    LYG             Lloyds Banking Group plc             2.415   0.005   +0.21%   2.715M            7.255M    43.735B         7453.70
+13    GFI                  Gold Fields Limited             9.740  -0.470   -4.62%    5.93M            5.163M      8.81B            9.24
+14    HPQ                              HP Inc.            36.030  -0.120   -0.32%   5.259M           10.015M    41.531B            6.76
+15     RF        Regions Financial Corporation            22.150  -0.150   -0.65%   4.168M            7.698M     21.11B            8.30
+16   NYCB     New York Community Bancorp, Inc.            12.310   0.060   +0.53%   4.384M            5.492M     5.727B            9.57
+17    KEY                              KeyCorp            23.000   0.010   +0.02%   2.993M            7.848M     21.41B            8.96
+18    USB                         U.S. Bancorp            57.650   0.440   +0.78%   2.071M            5.358M    85.491B           11.57
+19   FITB                  Fifth Third Bancorp            43.620  -0.130   -0.31%   1.624M            4.695M    29.767B           12.06
+20    RKT               Rocket Companies, Inc.            16.270  -0.040   -0.22%   2.352M            4.289M    32.342B            5.37
+21    ING                       ING Groep N.V.            13.840  -0.020   -0.14%   2.042M            2.984M    53.179B           10.44
+22    BHP                            BHP Group            57.260   0.200   +0.35%   1.095M            3.703M   146.367B           12.84
+23    SYF                  Synchrony Financial            47.740  -0.150   -0.31%   1.645M             4.98M    26.126B            6.75
+24    NUE                    Nucor Corporation           112.330  -0.560   -0.50%   1.088M            3.459M    32.104B            6.78

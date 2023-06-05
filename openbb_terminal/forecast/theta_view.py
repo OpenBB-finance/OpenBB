@@ -3,9 +3,8 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
@@ -27,7 +26,7 @@ def display_theta_forecast(
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
@@ -35,7 +34,7 @@ def display_theta_forecast(
     naive: bool = False,
     export_pred_raw: bool = False,
     metric: str = "mape",
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Display Theta forecast
 
@@ -78,13 +77,13 @@ def display_theta_forecast(
         Whether to export the raw predicted values. Defaults to False.
     metric: str
         The metric to use for backtesting. Defaults to "mape".
-    external_axes:Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):
-        return
+        return None
     (
         ticker_series,
         historical_fcast,
@@ -103,10 +102,10 @@ def display_theta_forecast(
         metric=metric,
     )
     if ticker_series == []:
-        return
+        return None
 
     probabilistic = False
-    helpers.plot_forecast(
+    fig = helpers.plot_forecast(
         name=f"THETA_{best_theta:.2f}",
         target_col=target_column,
         historical_fcast=historical_fcast,
@@ -133,3 +132,5 @@ def display_theta_forecast(
         console.print(
             "[red]Theta residual is currently not supported. Please stay tuned![/red]"
         )
+
+    return fig

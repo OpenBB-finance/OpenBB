@@ -3,8 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-
-from PIL import Image
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import finviz_model
@@ -33,7 +32,7 @@ def display_valuation(
     sortby: str = "Name",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display group (sectors, industry or country) valuation data. [Source: Finviz]
 
@@ -58,6 +57,7 @@ def display_valuation(
         show_index=False,
         headers=list(df_group.columns),
         title="Group Valuation Data",
+        export=bool(export),
     )
 
     export_data(
@@ -75,7 +75,7 @@ def display_performance(
     sortby: str = "Name",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """View group (sectors, industry or country) performance data. [Source: Finviz]
 
@@ -100,6 +100,7 @@ def display_performance(
         show_index=False,
         headers=df_group.columns,
         title="Group Performance Data",
+        export=bool(export),
     )
 
     export_data(
@@ -112,40 +113,12 @@ def display_performance(
 
 
 @log_start_end(log=logger)
-def display_spectrum(group: str = "sector", export: str = "", sheet_name: str = None):
-    """Display finviz spectrum in system viewer [Source: Finviz]
-
-    Parameters
-    ----------
-    group: str
-        Group by category. Available groups can be accessed through get_groups().
-    sheet_name: str
-        Optionally specify the name of the sheet the data is exported to.
-    export: str
-        Format to export data
-    """
-    finviz_model.get_spectrum_data(group)
-
-    group = finviz_model.GROUPS[group]
-    img = Image.open(group + ".jpg")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "spectrum",
-        sheet_name,
-    )
-
-    img.show()
-
-
-@log_start_end(log=logger)
 def display_future(
     future_type: str = "Indices",
     sortby: str = "ticker",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display table of a particular future type. [Source: Finviz]
 
@@ -167,6 +140,7 @@ def display_future(
         show_index=True,
         headers=["prevClose", "last", "change (%)"],
         title="Future Table [Source: FinViz]",
+        export=bool(export),
     )
 
     export_data(

@@ -1,40 +1,20 @@
 # IMPORTATION STANDARD
+
 import os
-from datetime import datetime
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.screener import screener_controller
 
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
-
-PRICES = pd.DataFrame(data={"Price": [11.0, 12.0], "Chance": [0.2, 0.8]})
-
-
-@pytest.mark.vcr(record_mode="none")
-@pytest.mark.parametrize(
-    "queue, expected",
-    [
-        (["load", "help"], ["help"]),
-        (["quit", "help"], ["help"]),
-    ],
-)
-def test_menu_with_queue(expected, mocker, queue):
-    path_controller = "openbb_terminal.stocks.screener.screener_controller"
-
-    # MOCK SWITCH
-    mocker.patch(
-        target=f"{path_controller}.ScreenerController.switch",
-        return_value=["quit"],
-    )
-    result_menu = screener_controller.ScreenerController(queue=queue).menu()
-
-    assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -42,9 +22,11 @@ def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.stocks.screener.screener_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -55,10 +37,11 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=screener_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -66,50 +49,6 @@ def test_menu_without_queue_completion(mocker):
     mocker.patch(
         target=f"{path_controller}.session.prompt",
         return_value="quit",
-    )
-
-    result_menu = screener_controller.ScreenerController(queue=None).menu()
-
-    assert result_menu == ["help"]
-
-
-@pytest.mark.vcr(record_mode="none")
-@pytest.mark.parametrize(
-    "mock_input",
-    ["help", "homee help", "home help", "mock"],
-)
-def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "openbb_terminal.stocks.screener.screener_controller"
-
-    # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=screener_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
-    )
-    mocker.patch(
-        target=f"{path_controller}.session",
-        return_value=None,
-    )
-
-    # MOCK USER INPUT
-    mocker.patch("builtins.input", return_value=mock_input)
-
-    # MOCK SWITCH
-    class SystemExitSideEffect:
-        def __init__(self):
-            self.first_call = True
-
-        def __call__(self, *args, **kwargs):
-            if self.first_call:
-                self.first_call = False
-                raise SystemExit()
-            return ["quit"]
-
-    mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
-    mocker.patch(
-        target=f"{path_controller}.ScreenerController.switch",
-        new=mock_switch,
     )
 
     result_menu = screener_controller.ScreenerController(queue=None).menu()
@@ -249,26 +188,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_historical",
-            [
-                "1",
-                "--no-scale",
-                "--start=2022-01-03",
-                "--type=o",
-                "--export=csv",
-            ],
-            "yahoofinance_view.historical",
-            [
-                "top_gainers",
-                1,
-                datetime.strptime("2022-01-03", "%Y-%m-%d"),
-                "o",
-                True,
-                "csv",
-            ],
-            dict(),
-        ),
-        (
             "call_overview",
             [
                 "1",
@@ -399,19 +318,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "ca_controller.ComparisonAnalysisController.menu",
             [],
             dict(),
-        ),
-        (
-            "call_arktrades",
-            ["TSLA"],
-            "ark_view.display_ark_trades",
-            [],
-            {
-                "symbol": "TSLA",
-                "limit": 10,
-                "export": "",
-                "show_symbol": False,
-                "sheet_name": None,
-            },
         ),
     ],
 )

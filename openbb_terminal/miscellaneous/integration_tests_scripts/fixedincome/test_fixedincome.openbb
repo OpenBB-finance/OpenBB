@@ -1,0 +1,78 @@
+fixedincome
+estr -s 2022-01-01 -e 2023-01-01
+estr --parameter share_of_volume_of_the_5_largest_active_banks
+estr --help
+sofr -s 2022-01-01 -e 2023-01-01
+sofr -s 2022-01-01 -e 2023-01-01 -p overnight
+sofr -s 2022-01-01 -e 2023-01-01 -p 30_day_average
+sofr -s 2022-01-01 -e 2023-01-01 -p 90_day_average
+sofr -s 2022-01-01 -e 2023-01-01 -p 180_day_average
+sofr -s 2022-01-01 -e 2023-01-01 -p index
+sofr --help
+sonia -s 2022-01-01 -e 2023-01-01
+sonia --parameter total_nominal_value
+sonia --help
+ameribor -s 2022-01-01 -e 2023-01-01 --parameter 90_day_ma
+ameribor --help
+fed -s 2022-01-01 -e 2023-01-01
+fed --parameter volume --target --quantiles
+fed --help
+iorb -s 2022-01-01 -e 2023-01-01 --export xlsx --sheet-name IORB
+iorb --help
+projection --long-run
+projection --help
+dwpcr -s 2022-01-01 -e 2023-01-01 --parameter weekly
+dwpcr --help
+ecb -s 2022-01-01 -e 2023-01-01 --type refinancing
+ecb --help
+treasury --short australia --long united_kingdom,united_states -s 2022-01-01 -e 2023-01-01 --forecast
+treasury --help
+usrates -s 2022-01-01 -e 2023-01-01
+usrates --options
+usrates --parameter cmn --maturity 7_year
+usrates --help
+ycrv -d 2023-02-17 --inflation-adjusted
+ycrv --raw -d 2022-03-31
+ycrv --export csv
+ycrv --help
+ecbycrv -d 2023-02-17
+ecbycrv -d 2023-02-17 --any-rating --raw
+ecbycrv --detailed --parameter instantaneous_forward
+ecbycrv --help
+icebofa -s 2022-01-01 -e 2023-01-01 --type total_return
+icebofa --options
+icebofa --grade ccc --type yield_to_worst --category usd
+icebofa --area emea --description
+icebofa --help
+moody -s 2022-01-01 -e 2023-01-01 --spread treasury --raw
+moody --type aaa
+moody --help
+cp -s 2022-01-01 -e 2023-01-01
+cp -s 2022-01-01 -e 2023-01-01 -c asset_backed
+cp -s 2022-01-01 -e 2023-01-01 -c non_financial
+cp -s 2022-01-01 -e 2023-01-01 -c spread -o -d
+cp --maturity overnight
+cp --raw
+cp --grade a2_p2
+cp --help
+spot -s 2022-01-01 -e 2023-01-01 --maturity 3y
+spot --raw
+spot --help
+hqm -d 2023-02-17 -p --raw
+hqm --help
+icespread -s 2022-01-01 -e 2023-01-01
+icespread --options
+icespread --category duration
+icespread --help 
+tmc -s 2022-01-01 -e 2023-01-01 --parameter 2_year
+tmc --help
+ffrmc -s 2022-01-01 -e 2023-01-01 --parameter 10_year
+ffrmc --help
+tbffr -s 2022-01-01 -e 2023-01-01 --parameter 3_month
+tbffr --help
+help
+..
+reset
+fixedincome
+quit
+exit

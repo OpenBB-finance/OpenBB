@@ -178,10 +178,7 @@ def process_stocks(
     stock_closes = None
 
     if start_date != "":
-        if end_date == "":
-            end_ = date.today()
-        else:
-            end_ = date.fromisoformat(end_date)
+        end_ = date.today() if end_date == "" else date.fromisoformat(end_date)
 
         # Check if end date is on weekend
         if end_.weekday() >= 5:
@@ -384,12 +381,13 @@ def process_returns(
     elif freq.upper() in ["W", "M"]:
         last_day = stock_returns.index[-1]
         stock_returns = stock_returns.resample(freq).last()
-        if freq.upper() == ["W"]:
-            if last_day.weekday() < 4:
-                stock_returns = stock_returns.iloc[:-1, :]
-        if freq.upper() == ["M"]:
-            if monthrange(last_day.year, last_day.month)[1] - last_day.day <= 5:
-                stock_returns = stock_returns.iloc[:-1, :]
+        if freq.upper() == ["W"] and last_day.weekday() < 4:
+            stock_returns = stock_returns.iloc[:-1, :]
+        if (
+            freq.upper() == ["M"]
+            and monthrange(last_day.year, last_day.month)[1] - last_day.day <= 5
+        ):
+            stock_returns = stock_returns.iloc[:-1, :]
 
     # Calculate returns
     if log_returns is True:

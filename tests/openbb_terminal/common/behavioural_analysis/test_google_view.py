@@ -77,9 +77,6 @@ def get_queries_response():
     ],
 )
 def test_display_queries(mocker, symbol, limit, export, get_queries_response):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     # MOCK GOOGLE_MODEL
     mocker.patch(
         target="openbb_terminal.common.behavioural_analysis.google_model.get_queries",

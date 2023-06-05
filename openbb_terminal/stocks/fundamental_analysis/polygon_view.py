@@ -2,19 +2,16 @@
 __docformat__ = "numpy"
 import logging
 import os
+from typing import Optional
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
-    plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import polygon_model
 
 logger = logging.getLogger(__name__)
@@ -28,9 +25,9 @@ def display_fundamentals(
     limit: int = 10,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tickers balance sheet or income statement
 
@@ -53,6 +50,8 @@ def display_fundamentals(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     fundamentals = polygon_model.get_financials(symbol, statement, quarterly, ratios)
     title_str = {
         "balance": "Balance Sheet",
@@ -65,44 +64,52 @@ def display_fundamentals(
 
     fundamentals = fundamentals.iloc[:, :limit]
     fundamentals = fundamentals[fundamentals.columns[::-1]]
+    if statement == "income":
+        fundamentals.index = [
+            stocks_helper.INCOME_PLOT["Polygon"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
+    elif statement == "balance":
+        fundamentals.index = [
+            stocks_helper.BALANCE_PLOT["Polygon"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
+    elif statement == "cash":
+        fundamentals.index = [
+            stocks_helper.CASH_PLOT["Polygon"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
 
     if plot:
         fundamentals_plot_data = fundamentals.copy().fillna(-1)
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals_plot_data.transpose()
-        fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()
-        fundamentals_plot_data.columns = [
-            x.replace("_", "") for x in list(fundamentals_plot_data.columns)
-        ]
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(
-                fundamentals_plot_data
-            )
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = fundamentals_plot_data
-            denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
+            fig.add_scatter(
+                x=fundamentals_plot_data.index,
+                y=fundamentals_plot_data[plot[0]],
+                name=plot[0].replace("_", " "),
+            )
             title = (
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
+            fig.set_title(title)
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.add_scatter(
+                    x=fundamentals_plot_data.index,
+                    y=fundamentals_plot_data[plot[i]],
+                    name=plot[i].replace("_", " "),
+                    row=i + 1,
+                    col=1,
+                )
+                fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
+
+        fig.show(external=fig.is_image_export(export))
     else:
         # Snake case to english
         fundamentals.index = fundamentals.index.to_series().apply(
@@ -117,6 +124,7 @@ def display_fundamentals(
             title=f"{symbol} {title_str}"
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} {title_str}",
+            export=bool(export),
         )
 
     export_data(
@@ -125,4 +133,5 @@ def display_fundamentals(
         statement,
         fundamentals,
         sheet_name,
+        fig,
     )

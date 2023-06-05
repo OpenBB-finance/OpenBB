@@ -1,0 +1,74 @@
+stocks
+load aapl
+fa
+income --source YahooFinance
+income --source Polygon --quarter
+income --source AlphaVantage --ratios
+income --source FinancialModelingPrep
+income --ticker AMZN --source EODHD
+balance --source YahooFinance --ratios
+balance --source Polygon --quarter
+balance --ticker DDS --source AlphaVantage
+balance --source FinancialModelingPrep
+balance --source EODHD
+cash --source YahooFinance
+cash --source Polygon --quarter
+cash --source AlphaVantage --ratios
+cash --source FinancialModelingPrep
+cash --ticker GOOG --source EODHD
+income --source YahooFinance --plot gross_profit
+income --source Polygon --plot gross_profit
+income --source AlphaVantage --plot gross_profit
+income --source FinancialModelingPrep --plot gross_profit
+balance --source YahooFinance --plot total_assets
+balance --source Polygon --plot total_assets
+balance --source AlphaVantage --plot total_assets
+balance --source FinancialModelingPrep --plot total_assets
+cash --source YahooFinance --plot operating_cash_flow
+cash --source Polygon --plot operating_cash_flow
+cash --source AlphaVantage --plot operating_cash_flow
+cash --source FinancialModelingPrep --plot operating_cash_flow
+mgmt
+analysis
+score
+mktcap --ticker MSFT
+mktcap --method enterprise_value
+mktcap --quarter
+mktcap --source YahooFinance --start 1980-01-01 --end 2023-05-01
+metrics
+ratios
+growth
+warnings
+warnings -d
+dcfc
+shrs
+shrs major
+shrs mutualfund
+divs
+divs -p
+splits
+overview
+earnings --ticker DDS --source YahooFinance
+earnings --source AlphaVantage --quarter
+fraud
+dupont
+epsfc
+revfc
+analysis
+rating
+rot
+rot --raw
+pt --ticker GOOG
+pt --raw
+est
+est -e quarter_revenue
+est -e annual_earnings
+est -e quarter_earnings
+sec
+supplier
+customer
+dcf -t aapl -g -a --no-filter
+help
+quit
+reset
+exit

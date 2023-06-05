@@ -1,15 +1,15 @@
 """Technical Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R0904,C0201
+# pylint:disable=too-many-lines,R0904,C0201,C0302
 
 import argparse
+import json
 import logging
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.technical_analysis import (
     custom_indicators_view,
     momentum_view,
@@ -20,13 +20,17 @@ from openbb_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_indicator_parameters,
     check_positive,
+    check_positive_float,
     check_positive_list,
     valid_date,
 )
@@ -35,7 +39,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_view,
-    finviz_view,
     rsp_view,
     tradingview_model,
     tradingview_view,
@@ -64,6 +67,7 @@ class TechnicalAnalysisController(StockBaseController):
         "zlma",
         "cci",
         "macd",
+        "ichimoku",
         "rsi",
         "rsp",
         "stoch",
@@ -81,6 +85,8 @@ class TechnicalAnalysisController(StockBaseController):
         "clenow",
         "demark",
         "atr",
+        "multi",
+        "cones",
     ]
     PATH = "/stocks/ta/"
     CHOICES_GENERATION = True
@@ -91,7 +97,7 @@ class TechnicalAnalysisController(StockBaseController):
         start: datetime,
         interval: str,
         stock: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -100,9 +106,17 @@ class TechnicalAnalysisController(StockBaseController):
         self.start = start
         self.interval = interval
         self.stock = stock
+        ta_cls = PlotlyTA()
+        indicators: dict = {
+            c.name.replace("plot_", ""): {} for c in ta_cls if c.name != "plot_ma"
+        }
+        indicators.update({c: {} for c in ta_cls.ma_mode})
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
+
+            choices["multi"]["--indicators"] = dict(sorted(indicators.items()))
+            choices["multi"]["-i"] = "--indicators"
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -117,44 +131,49 @@ class TechnicalAnalysisController(StockBaseController):
             stock_str = f"{s_intraday} {self.ticker}"
 
         mt = MenuText("stocks/ta/", 90)
-        mt.add_param("_ticker", stock_str)
+        mt.add_cmd("load")
         mt.add_raw("\n")
-        mt.add_cmd("tv")
-        mt.add_cmd("recom")
-        mt.add_cmd("view")
-        mt.add_cmd("summary")
+        mt.add_param(
+            "_ticker", stock_str if not self.stock.empty else "No ticker loaded"
+        )
+        mt.add_raw("\n")
+        mt.add_cmd("recom", not self.stock.empty)
+        mt.add_cmd("summary", not self.stock.empty)
         mt.add_raw("\n")
         mt.add_info("_overlap_")
-        mt.add_cmd("ema")
-        mt.add_cmd("sma")
-        mt.add_cmd("wma")
-        mt.add_cmd("hma")
-        mt.add_cmd("zlma")
-        mt.add_cmd("vwap")
+        mt.add_cmd("ema", not self.stock.empty)
+        mt.add_cmd("hma", not self.stock.empty)
+        mt.add_cmd("sma", not self.stock.empty)
+        mt.add_cmd("wma", not self.stock.empty)
+        mt.add_cmd("vwap", not self.stock.empty)
+        mt.add_cmd("zlma", not self.stock.empty)
         mt.add_info("_momentum_")
-        mt.add_cmd("cci")
-        mt.add_cmd("macd")
-        mt.add_cmd("rsi")
-        mt.add_cmd("rsp")
-        mt.add_cmd("stoch")
-        mt.add_cmd("fisher")
-        mt.add_cmd("cg")
-        mt.add_cmd("clenow")
-        mt.add_cmd("demark")
+        mt.add_cmd("cci", not self.stock.empty)
+        mt.add_cmd("cg", not self.stock.empty)
+        mt.add_cmd("clenow", not self.stock.empty)
+        mt.add_cmd("demark", not self.stock.empty)
+        mt.add_cmd("macd", not self.stock.empty)
+        mt.add_cmd("fisher", not self.stock.empty)
+        mt.add_cmd("ichimoku", not self.stock.empty)
+        mt.add_cmd("rsi", not self.stock.empty)
+        mt.add_cmd("rsp", not self.stock.empty)
+        mt.add_cmd("stoch", not self.stock.empty)
         mt.add_info("_trend_")
-        mt.add_cmd("adx")
-        mt.add_cmd("aroon")
+        mt.add_cmd("adx", not self.stock.empty)
+        mt.add_cmd("aroon", not self.stock.empty)
         mt.add_info("_volatility_")
-        mt.add_cmd("bbands")
-        mt.add_cmd("donchian")
-        mt.add_cmd("kc")
-        mt.add_cmd("atr")
+        mt.add_cmd("atr", not self.stock.empty)
+        mt.add_cmd("bbands", not self.stock.empty)
+        mt.add_cmd("cones", not self.stock.empty)
+        mt.add_cmd("donchian", not self.stock.empty)
+        mt.add_cmd("kc", not self.stock.empty)
         mt.add_info("_volume_")
-        mt.add_cmd("ad")
-        mt.add_cmd("adosc")
-        mt.add_cmd("obv")
+        mt.add_cmd("ad", not self.stock.empty)
+        mt.add_cmd("adosc", not self.stock.empty)
+        mt.add_cmd("obv", not self.stock.empty)
         mt.add_info("_custom_")
-        mt.add_cmd("fib")
+        mt.add_cmd("fib", not self.stock.empty)
+        mt.add_cmd("multi", not self.stock.empty)
         console.print(text=mt.menu_text, menu="Stocks - Technical Analysis")
 
     def custom_reset(self):
@@ -162,25 +181,6 @@ class TechnicalAnalysisController(StockBaseController):
         if self.ticker:
             return ["stocks", f"load {self.ticker}", "ta"]
         return []
-
-    # SPECIFIC
-    @log_start_end(log=logger)
-    def call_view(self, other_args: List[str]):
-        """Process view command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="view",
-            description="""View historical price with trendlines. [Source: Finviz]""",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
-            if not self.ticker:
-                no_ticker_message()
-                return
-            finviz_view.view(self.ticker)
 
     @log_start_end(log=logger)
     def call_summary(self, other_args: List[str]):
@@ -835,7 +835,7 @@ class TechnicalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
 
         if ns_parser:
@@ -1162,7 +1162,7 @@ class TechnicalAnalysisController(StockBaseController):
             "--std",
             action="store",
             dest="n_std",
-            type=check_positive,
+            type=check_positive_float,
             default=2,
             help="std",
         )
@@ -1647,6 +1647,197 @@ class TechnicalAnalysisController(StockBaseController):
                 window=ns_parser.n_length,
                 mamode=ns_parser.s_mamode,
                 offset=ns_parser.n_offset,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_multi(self, other_args: List[str]):
+        """Process multi command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="multi",
+            description="""
+                Plot multiple indicators on the same chart separated by a comma.
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--indicators",
+            dest="indicators",
+            type=check_indicator_parameters,
+            help='Indicators with optional arguments in the form of "macd[12,26,9],rsi,sma[20]"',
+            required="-h" not in other_args,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-i")
+
+        if all(x in other_args for x in ["-h", "-i"]):
+            check_indicator_parameters(other_args[other_args.index("-i") + 1], True)
+            console.print()
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
+
+            parameters = json.loads(ns_parser.indicators)
+            ns_parser.indicators = list(parameters.keys())
+
+            custom_indicators_view.plot_multiple_indicators(
+                self.stock,
+                ns_parser.indicators,
+                self.ticker,
+                parameters,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_cones(self, other_args: List[str]):
+        """Process cones command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cones",
+            description="""
+            Calculates the realized volatility quantiles over rolling windows of time.
+            The model for calculating volatility is selectable.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--lower_q",
+            action="store",
+            dest="lower_q",
+            type=float,
+            default=0.25,
+            help="The lower quantile value for calculations.",
+        )
+        parser.add_argument(
+            "-u",
+            "--upper_q",
+            action="store",
+            dest="upper_q",
+            type=float,
+            default=0.75,
+            help="The upper quantile value for calculations.",
+        )
+        parser.add_argument(
+            "-m",
+            "--model",
+            action="store",
+            dest="model",
+            default="STD",
+            choices=volatility_model.VOLATILITY_MODELS,
+            type=str,
+            help="The model used to calculate realized volatility.",
+        )
+        parser.add_argument(
+            "--is_crypto",
+            dest="is_crypto",
+            action="store_true",
+            default=False,
+            help="If True, volatility is calculated for 365 days instead of 252.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
+
+            volatility_view.display_cones(
+                data=self.stock,
+                symbol=self.ticker,
+                lower_q=ns_parser.lower_q,
+                upper_q=ns_parser.upper_q,
+                model=ns_parser.model,
+                is_crypto=ns_parser.is_crypto,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_ichimoku(self, other_args: List[str]):
+        """Process ichimoku command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ichimoku",
+            description="""
+                The Ichimoku Cloud, also known as Ichimoku Kinko Hyo, is a versatile indicator that
+                defines support and resistance, identifies trend direction, gauges momentum and provides
+                trading signals. Ichimoku Kinko Hyo translates into "one look equilibrium chart". With
+                one look, chartists can identify the trend and look for potential signals within that trend.
+            """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--conversion",
+            action="store",
+            dest="n_conversion",
+            type=check_positive,
+            default=9,
+            help="conversion line period",
+        )
+        parser.add_argument(
+            "-b",
+            "--base",
+            action="store",
+            dest="n_base",
+            type=check_positive,
+            default=26,
+            help="base line period",
+        )
+        parser.add_argument(
+            "-l",
+            "--lagging",
+            action="store",
+            dest="n_lagging",
+            type=check_positive,
+            default=52,
+            help="lagging span period",
+        )
+        parser.add_argument(
+            "-f",
+            "--forward",
+            action="store",
+            dest="n_forward",
+            type=check_positive,
+            default=26,
+            help="forward span period",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
+
+            momentum_view.display_ichimoku(
+                data=self.stock,
+                symbol=self.ticker,
+                conversion_period=ns_parser.n_conversion,
+                base_period=ns_parser.n_base,
+                lagging_line_period=ns_parser.n_lagging,
+                displacement=ns_parser.n_forward,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name

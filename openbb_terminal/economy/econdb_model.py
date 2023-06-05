@@ -553,6 +553,13 @@ def get_macro_data(
 
             df = pd.DataFrame(data["dataarray"])
 
+            if code not in df.columns:
+                console.print(
+                    f"No data available for {parameter} of {country} "
+                    f"{f'with transform method {transform}' if transform else ''}"
+                )
+                return pd.DataFrame(), "NA/NA"
+
             df = df.set_index(pd.to_datetime(df["date"]))[code] * SCALES[scale]
             df = df.sort_index().dropna()
 
@@ -658,8 +665,8 @@ def get_macro_countries() -> Dict[str, str]:
 
 @log_start_end(log=logger)
 def get_aggregated_macro_data(
-    parameters: list = None,
-    countries: list = None,
+    parameters: Optional[list] = None,
+    countries: Optional[list] = None,
     transform: str = "",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,
@@ -736,13 +743,15 @@ def get_aggregated_macro_data(
     else:
         denomination_string = f" [in {denomination}]" if denomination != "Units" else ""
 
+    df_rounded = df_rounded.dropna()
+
     return (df_rounded, units, denomination_string)
 
 
 @log_start_end(log=logger)
 def get_treasuries(
-    instruments: list = None,
-    maturities: list = None,
+    instruments: Optional[list] = None,
+    maturities: Optional[list] = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,

@@ -3,22 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import Optional, Union
 
-from matplotlib import pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
+from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    camel_case_split,
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import av_model
 
 logger = logging.getLogger(__name__)
@@ -26,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_overview(symbol: str, export: str = "", sheet_name: str = None):
+def display_overview(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Alpha Vantage stock ticker overview
 
     Parameters
@@ -40,10 +33,10 @@ def display_overview(symbol: str, export: str = "", sheet_name: str = None):
         return
 
     print_rich_table(
-        df_fa.drop(index=["Description"]),
-        headers=[""],
+        df_fa,
         title=f"{symbol} Overview",
         show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -59,7 +52,7 @@ def display_overview(symbol: str, export: str = "", sheet_name: str = None):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_key(symbol: str, export: str = "", sheet_name: str = None):
+def display_key(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Alpha Vantage key metrics
 
     Parameters
@@ -73,7 +66,11 @@ def display_key(symbol: str, export: str = "", sheet_name: str = None):
         return
 
     print_rich_table(
-        df_key, headers=[""], title=f"{symbol} Key Metrics", show_index=True
+        df_key,
+        headers=[""],
+        title=f"{symbol} Key Metrics",
+        show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -92,9 +89,9 @@ def display_income_statement(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage income statement
 
@@ -115,6 +112,8 @@ def display_income_statement(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     df_income = av_model.get_income_statements(
         symbol, limit, quarterly, ratios, bool(plot)
     )
@@ -122,41 +121,44 @@ def display_income_statement(
     if df_income.empty:
         return
 
+    df_income.index = [
+        stocks_helper.INCOME_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_income.index.str.lower()]
+    ]
+
     if plot:
         rows_plot = len(plot)
         income_plot_data = df_income.transpose()
-        income_plot_data.columns = income_plot_data.columns.str.lower()
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(income_plot_data)
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = income_plot_data
-            denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
-            title = (
+            fig = OpenBBFigure()
+            fig.add_scatter(
+                x=income_plot_data.index,
+                y=income_plot_data[plot[0]],
+                name=plot[0].replace("_", ""),
+            )
+            fig.set_title(
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.add_scatter(
+                    x=income_plot_data.index,
+                    y=income_plot_data[plot[i]],
+                    name=plot[i].replace("_", ""),
+                    row=i + 1,
+                    col=1,
+                )
+                fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
+
+        fig.show(external=fig.is_image_export(export))
+
     else:
-        indexes = df_income.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_income.index = new_indexes
+        # Snake case to english
+        df_income.index = [x.replace("_", " ").title() for x in df_income.index]
 
         print_rich_table(
             df_income,
@@ -165,14 +167,16 @@ def display_income_statement(
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Income Statement",
             show_index=True,
+            export=bool(export),
         )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "income",
-        df_income,
+        df_income.transpose(),
         sheet_name,
+        fig,
     )
 
 
@@ -183,9 +187,9 @@ def display_balance_sheet(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage balance sheet statement
 
@@ -206,6 +210,8 @@ def display_balance_sheet(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     df_balance = av_model.get_balance_sheet(
         symbol, limit, quarterly, ratios, bool(plot)
     )
@@ -213,42 +219,43 @@ def display_balance_sheet(
     if df_balance.empty:
         return
 
+    df_balance.index = [
+        stocks_helper.BALANCE_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_balance.index.str.lower()]
+    ]
+
     if plot:
         rows_plot = len(plot)
         balance_plot_data = df_balance.transpose()
-        balance_plot_data.columns = balance_plot_data.columns.str.lower()
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(balance_plot_data)
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = balance_plot_data
-            denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
-            title = (
+            fig = OpenBBFigure()
+            fig.set_title(
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
+            fig.add_scatter(
+                x=balance_plot_data.index,
+                y=balance_plot_data[plot[0]],
+                name=plot[0].replace("_", ""),
+            )
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.add_scatter(
+                    x=balance_plot_data.index,
+                    y=balance_plot_data[plot[i]],
+                    name=plot[i].replace("_", ""),
+                    row=i + 1,
+                    col=1,
+                )
+                fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
 
+        fig.show(external=fig.is_image_export(export))
     else:
-        indexes = df_balance.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_balance.index = new_indexes
+        # Snake case to english
+        df_balance.index = [x.replace("_", " ").title() for x in df_balance.index]
 
         print_rich_table(
             df_balance,
@@ -257,6 +264,7 @@ def display_balance_sheet(
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Balance Sheet",
             show_index=True,
+            export=bool(export),
         )
 
     export_data(
@@ -265,6 +273,7 @@ def display_balance_sheet(
         "balance",
         df_balance,
         sheet_name,
+        fig,
     )
 
 
@@ -275,9 +284,9 @@ def display_cash_flow(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage income statement
 
@@ -298,47 +307,50 @@ def display_cash_flow(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     df_cash = av_model.get_cash_flow(symbol, limit, quarterly, ratios, bool(plot))
 
     if df_cash.empty:
         return
 
+    df_cash.index = [
+        stocks_helper.CASH_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_cash.index.str.lower()]
+    ]
+
     if plot:
         rows_plot = len(plot)
         cash_plot_data = df_cash.transpose()
-        cash_plot_data.columns = cash_plot_data.columns.str.lower()
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(cash_plot_data)
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = cash_plot_data
-            denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
-            title = (
+            fig = OpenBBFigure()
+            fig.set_title(
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
+            fig.add_scatter(
+                x=cash_plot_data.index,
+                y=cash_plot_data[plot[0]],
+                name=plot[0].replace("_", ""),
+            )
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.add_scatter(
+                    x=cash_plot_data.index,
+                    y=cash_plot_data[plot[i]],
+                    name=plot[i].replace("_", ""),
+                    row=i + 1,
+                    col=1,
+                )
+                fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
 
+        fig.show(external=fig.is_image_export(export))
     else:
-        indexes = df_cash.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_cash.index = new_indexes
+        # Snake case to english
+        df_cash.index = [x.replace("_", " ").title() for x in df_cash.index]
 
         print_rich_table(
             df_cash,
@@ -347,6 +359,7 @@ def display_cash_flow(
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Cash flow",
             show_index=True,
+            export=bool(export),
         )
 
     export_data(
@@ -355,6 +368,7 @@ def display_cash_flow(
         "cash",
         df_cash,
         sheet_name,
+        fig,
     )
 
 
@@ -365,7 +379,7 @@ def display_earnings(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage earnings
 
@@ -388,10 +402,12 @@ def display_earnings(
         return
 
     print_rich_table(
-        df_fa.head(limit),
+        df_fa,
         headers=list(df_fa.columns),
         show_index=False,
         title=f"{symbol} Earnings",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -408,7 +424,7 @@ def display_earnings(
 def display_fraud(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     help_text: bool = False,
     color: bool = True,
     detail: bool = False,
@@ -427,22 +443,29 @@ def display_fraud(
     detail : bool
         Whether to show the details for the mscore
     """
+    current_user = get_current_user()
+    enable_interactive = (
+        current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
+    )
     df = av_model.get_fraud_ratios(symbol, detail=detail)
 
     if df.empty:
+        console.print("[red]No data found[/red]")
         return
 
     df_color = df.copy()
-    if color:
+    if color and not enable_interactive:
         for column in df_color:
             df_color[column] = df_color[column].astype(str)
         df_color = df_color.apply(lambda x: av_model.replace_df(x.name, x), axis=1)
+    df_color = df_color.fillna("N/A")
 
     print_rich_table(
         df_color,
         headers=list(df_color.columns),
         show_index=True,
         title="Fraud Risk Statistics",
+        export=bool(export),
     )
 
     help_message = """
@@ -474,9 +497,9 @@ def display_dupont(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Shows the extended dupont ratio
 
     Parameters
@@ -487,31 +510,31 @@ def display_dupont(
         Show raw data instead of a graph
     export : bool
         Whether to export the dupont breakdown
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = av_model.get_dupont(symbol)
     if df.empty:
-        return
+        return None
     if raw:
-        print_rich_table(
-            df, headers=list(df.columns), show_index=True, title="Extended Dupont"
+        return print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title="Extended Dupont",
+            export=bool(export),
         )
-        return
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
 
-    colors = theme.get_colors()
-    df.transpose().plot(kind="line", ax=ax, color=colors)
-    ax.set_title("Extended Dupont by Year")
-    theme.style_primary_axis(ax)
+    fig = OpenBBFigure().set_title("Extended Dupont by Year")
 
-    if not external_axes:
-        theme.visualize_output()
+    df = df.transpose()
+    for column in df:
+        fig.add_scatter(
+            x=df.index,
+            y=df[column],
+            name=column,
+            mode="lines",
+        )
 
     export_data(
         export,
@@ -519,4 +542,7 @@ def display_dupont(
         "dupont",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

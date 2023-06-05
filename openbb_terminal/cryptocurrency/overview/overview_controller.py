@@ -6,9 +6,9 @@ import argparse
 import difflib
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
     get_categories_keys,
 )
@@ -87,11 +87,11 @@ class OverviewController(BaseController):
     PATH = "/crypto/ov/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             choices["wfpe"].update(
@@ -160,7 +160,7 @@ class OverviewController(BaseController):
             choices=get_categories_keys(),
             metavar="CATEGORY",
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -226,7 +226,7 @@ class OverviewController(BaseController):
             help="Display N items",
             default=10,
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-m")
 
         ns_parser = self.parse_known_args_and_warn(

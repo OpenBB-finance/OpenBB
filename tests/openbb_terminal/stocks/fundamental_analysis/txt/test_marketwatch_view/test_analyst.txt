@@ -1,7 +1,3 @@
-            Document Date      Type                 Category Amended                                                                                   Link
-Filing Date                                                                                                                                                
-02/01/2023            N/A  SC 13G/A  Institutional Ownership       *  https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16356194
-01/31/2023     12/31/2022      10-K           Annual Reports          https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16349444
-01/25/2023     01/20/2023       8-K           Special Events          https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16335601
-01/03/2023     01/02/2023       8-K           Special Events          https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16290601
-10/24/2022     09/30/2022      10-Q        Quarterly Reports          https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16146849
+           Company Name Reporting Owner Form Type Period                                                                                                                                                                                                                              View
+Filed                                                                                                                                                                                                                                                                                     
+02/13/2020   Tesla Inc.                      10-K         https://app.quotemedia.com/data/downloadFiling?webmasterId=90423&ref=114788198&type=HTML&symbol=TSLA&companyName=Tesla+Inc.&formType=10-K&formDescription=Annual+report+pursuant+to+Section+13+or+15%28d%29&dateFiled=2020-02-13

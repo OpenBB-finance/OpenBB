@@ -19,17 +19,25 @@ from oandapyV20.endpoints import (
 )
 from oandapyV20.exceptions import V20Error
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-if cfg.OANDA_ACCOUNT_TYPE != "REPLACE_ME":
-    client = API(access_token=cfg.OANDA_TOKEN, environment=cfg.OANDA_ACCOUNT_TYPE)
+current_user = get_current_user()
+
+if current_user.credentials.OANDA_ACCOUNT_TYPE != "REPLACE_ME":
+    try:
+        client = API(
+            access_token=current_user.credentials.OANDA_TOKEN,
+            environment=current_user.credentials.OANDA_ACCOUNT_TYPE,
+        )
+    except KeyError:
+        client = None
 else:
     client = None
-account = cfg.OANDA_ACCOUNT
+account = current_user.credentials.OANDA_ACCOUNT
 
 
 @log_start_end(log=logger)
@@ -299,10 +307,11 @@ def create_order_request(
             "Error: An instrument should be loaded before running this command."
         )
         return False
-    if "JPY" in instrument or "THB" in instrument or "HUF" in instrument:
-        price = round(price, 3)
-    else:
-        price = round(price, 5)
+    price = (
+        round(price, 3)
+        if "JPY" in instrument or "THB" in instrument or "HUF" in instrument
+        else round(price, 5)
+    )
     data = {
         "order": {
             "price": price,
@@ -708,10 +717,7 @@ def get_calendar_request(
         else:
             previous = ""
 
-        if "impact" in response[i[0]]:
-            impact = response[i[0]]["impact"]
-        else:
-            impact = ""
+        impact = response[i[0]]["impact"] if "impact" in response[i[0]] else ""
 
         l_data.append(
             {
@@ -726,8 +732,5 @@ def get_calendar_request(
                 "Previous": previous,
             }
         )
-    if len(l_data) == 0:
-        df_calendar = pd.DataFrame()
-    else:
-        df_calendar = pd.DataFrame(l_data)
+    df_calendar = pd.DataFrame() if len(l_data) == 0 else pd.DataFrame(l_data)
     return df_calendar

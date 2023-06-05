@@ -1,3 +1,5 @@
-[info]email:[/info] MOCK_EMAIL
-[info]uuid:[/info] MOCK_UUID
-[info]sync:[/info] ON
+[info]You are currently logged as a guest.[/info]
+[info]Login to use this feature.[/info]
+
+[info]If you don't have an account, you can create one here: [/info][cmds]https://my.openbb.co/register
+[/cmds]

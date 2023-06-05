@@ -6,7 +6,4 @@ def no_dfs(args: list, kwargs: dict) -> bool:
     for item in args:
         if isinstance(item, pd.DataFrame):
             return False
-    for item in kwargs.values():
-        if isinstance(item, pd.DataFrame):
-            return False
-    return True
+    return all(not isinstance(item, pd.DataFrame) for item in kwargs.values())

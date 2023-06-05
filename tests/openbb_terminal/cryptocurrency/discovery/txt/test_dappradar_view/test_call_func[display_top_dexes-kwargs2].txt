@@ -1,2 +1,0 @@
-[red]Failed to fetch data from DappRadar[/red]
-

@@ -13,7 +13,11 @@ from openbb_terminal.rich_config import console
 
 
 def get_news(
-    term: str = "", sources: str = "", sort: str = "published"
+    term: str = "",
+    sources: str = "",
+    sort: str = "published",
+    limit: int = 10,
+    display_message: bool = True,
 ) -> pd.DataFrame:
     """Get news for a given term and source. [Source: Feedparser]
 
@@ -25,6 +29,10 @@ def get_news(
         sources to exclusively show news from (separated by commas)
     sort: str
         the column to sort by
+    limit : int
+        number of articles to display
+    display_message: bool
+        whether to display a message to the user
 
     Returns
     -------
@@ -43,8 +51,9 @@ def get_news(
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
     have_data = False
-    console.print("[yellow]Fetching data. Please be patient\n[/yellow]")
-    limit = 0
+    if display_message:
+        console.print("[yellow]Fetching data. Please be patient\n[/yellow]")
+    n = 0
 
     while not have_data:
         if term:
@@ -64,10 +73,10 @@ def get_news(
         ):  # Checking if data has status attribute and if data request succeeded
             if data.entries:
                 have_data = True
-            elif limit == 60:  # Breaking if 60 successful requests return no data
+            elif n == 60:  # Breaking if 60 successful requests return no data
                 console.print("[red]Timeout occurred. Please try again\n[/red]")
                 break
-            limit = limit + 1
+            n += 1
 
         elif hasattr(data, "status") and data.status != 200:  # If data request failed
             console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
@@ -97,5 +106,7 @@ def get_news(
         df = pd.DataFrame(data.entries, columns=["title", "link", "published"])
     df["published"] = pd.to_datetime(df["published"])
     df = df.sort_values(by=[sort], ascending=False)
-
+    df = df[["published", "title", "link"]]
+    df.columns = ["Date", "Description", "URL"]
+    df = df[:limit]
     return df

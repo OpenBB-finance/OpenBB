@@ -4,10 +4,10 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.alternative.realestate import landRegistry_view
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
@@ -40,7 +40,7 @@ class RealEstateController(BaseController):
     CHOICES_GENERATION = True
     # FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(queue)
 
@@ -51,7 +51,7 @@ class RealEstateController(BaseController):
         self.region = None
         self.limit = 25
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 

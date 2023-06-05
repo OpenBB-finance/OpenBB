@@ -37,9 +37,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def generate_portfolio(
-    symbols_categories: Dict[str, Dict[str, str]] = None,
-    symbols_file_path: str = None,
-    parameters_file_path: str = None,
+    symbols_categories: Optional[Dict[str, Dict[str, str]]] = None,
+    symbols_file_path: Optional[str] = None,
+    parameters_file_path: Optional[str] = None,
 ) -> Union[PoEngine, None]:
     """Load portfolio optimization engine
 
@@ -273,7 +273,7 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
 
 @log_start_end(log=logger)
 def get_maxsharpe(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize Sharpe ratio weights
 
@@ -419,7 +419,7 @@ def get_maxsharpe(
 
 @log_start_end(log=logger)
 def get_minrisk(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize minimum risk weights
 
@@ -565,7 +565,7 @@ def get_minrisk(
 
 @log_start_end(log=logger)
 def get_maxutil(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize maximum utility weights
 
@@ -711,7 +711,7 @@ def get_maxutil(
 
 @log_start_end(log=logger)
 def get_maxret(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize maximum return weights
 
@@ -857,7 +857,7 @@ def get_maxret(
 
 @log_start_end(log=logger)
 def get_maxdiv(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize diversification weights
 
@@ -980,7 +980,7 @@ def get_maxdiv(
 
 @log_start_end(log=logger)
 def get_maxdecorr(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize decorrelation weights
 
@@ -1081,7 +1081,7 @@ def get_maxdecorr(
 
 @log_start_end(log=logger)
 def get_blacklitterman(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize decorrelation weights
 
@@ -1191,7 +1191,7 @@ def get_blacklitterman(
 
 @log_start_end(log=logger)
 def get_ef(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[
     pd.DataFrame,
     pd.DataFrame,
@@ -1315,7 +1315,7 @@ def get_ef(
 
 @log_start_end(log=logger)
 def get_riskparity(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Risk Parity using the risk budgeting approach
 
@@ -1448,7 +1448,7 @@ def get_riskparity(
 
 @log_start_end(log=logger)
 def get_relriskparity(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Relaxed Risk Parity using the least squares approach
 
@@ -1591,7 +1591,9 @@ def get_relriskparity(
 
 
 @log_start_end(log=logger)
-def get_hrp(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_hrp(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Hierarchical Risk Parity
 
     Parameters
@@ -1790,7 +1792,9 @@ def get_hrp(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, 
 
 
 @log_start_end(log=logger)
-def get_herc(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_herc(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Hierarchical Equal Risk Contribution (HERC) method.
 
     Parameters
@@ -1989,7 +1993,9 @@ def get_herc(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame,
 
 
 @log_start_end(log=logger)
-def get_nco(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_nco(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Non-Convex Optimization (NCO) model.
 
     Parameters
@@ -2190,7 +2196,7 @@ def get_nco(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, 
 @log_start_end(log=logger)
 def show(
     portfolio_engine: PoEngine,
-    category: str = None,
+    category: Optional[str] = None,
 ) -> Union[pd.DataFrame, pd.DataFrame]:
     """Show portfolio optimization results
 

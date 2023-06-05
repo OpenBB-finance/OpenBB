@@ -8,6 +8,7 @@ from typing import Any, Optional, Union
 
 import pandas as pd
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import lambda_long_number_format
 
 
@@ -82,6 +83,8 @@ def lambda_long_number_format_with_type_check(x: Union[int, float]) -> Union[str
     Union[str, Any]
     """
 
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return x
     if isinstance(x, (int, float)) and x < 10**18:
         return lambda_long_number_format(x)
     return x
@@ -104,6 +107,8 @@ def lambda_very_long_number_formatter(num: Union[str, int, float]) -> str:
         formatted number
     """
 
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return num  # type:ignore
     if isinstance(num, str):
         try:
             num = float(num)

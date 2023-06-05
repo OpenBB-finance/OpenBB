@@ -1,0 +1,107 @@
+name: Windows 10 Full Clean Build with ML
+env:
+  OPENBB_ENABLE_QUICK_EXIT: true
+  OPENBB_LOG_COLLECT: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
+  OPENBB_FILE_OVERWRITE: true
+  PIP_DEFAULT_TIMEOUT: 100
+  PYTHONNOUSERSITE: 1
+on:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+    inputs:
+      comments:
+        required: true
+        description: "Test scenario tags"
+jobs:
+  windows-conda:
+    name: Windows-latest, Conda-latest, Python 3.9
+    runs-on: windows-latest
+    steps:
+      - name: Set git to use LF
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Need to fetch more than the last commit so that setuptools-scm can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+
+      - name: Setup caching for conda packages
+        uses: actions/cache@v2
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-windows-3-9-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge,defaults
+          show-channel-urls: true
+          channel-priority: flexible
+          environment-file: build/conda/conda-3-9-env.yaml
+          activate-environment: obb
+          # Needed for caching
+          use-only-tar-bz2: true
+
+      - name: Update Temp permissions on windows
+        if: runner.os == 'Windows'
+        shell: cmd /C CALL {0}
+        run: >-
+          c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
+
+      - name: Get pip cache dir
+        shell: bash -l {0}
+        id: pip-cache
+        run: |
+          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: pip cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: windows-3-9-pip-${{ hashFiles('requirements-full.txt') }}
+          restore-keys: |
+            windows-pip-
+
+      - name: Uninstall Brotlipy
+        shell: bash -l {0}
+        run: |
+          conda remove brotlipy -y
+
+      - name: Install dependencies (Bash)
+        shell: bash -l {0}
+        run: |
+          conda info
+          build\conda\cleanup_artifacts.bat
+          pip install docstring_parser
+          poetry install -E all -E installer
+
+      - name: List installed packages (Bash)
+        shell: bash -l {0}
+        run: |
+          conda list
+          pip list
+
+      - name: Run tests (Bash)
+        env:
+            MPLBACKEND: Agg
+        shell: bash -l {0}
+        run: pytest tests/ -m "not linux"
+
+      - name: Start Terminal and exit
+        shell: bash -l {0}
+        run: python terminal.py

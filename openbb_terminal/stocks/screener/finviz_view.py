@@ -4,10 +4,11 @@ __docformat__ = "numpy"
 import difflib
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -127,11 +128,11 @@ d_cols_to_sort = {
 def screener(
     loaded_preset: str = "top_gainers",
     data_type: str = "overview",
-    limit: int = 10,
+    limit: int = -1,
     ascend: bool = False,
     sortby: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> List[str]:
     """Screener one of the following: overview, valuation, financial, ownership, performance, technical.
 
@@ -159,7 +160,7 @@ def screener(
         df_screen = get_screener_data(
             preset_loaded=loaded_preset,
             data_type=data_type,
-            limit=10,
+            limit=limit,
             ascend=ascend,
         )
 
@@ -196,7 +197,7 @@ def screener(
                     console.print(
                         f"Wrong sort column provided! Provide one of these: {', '.join(d_cols_to_sort[data_type])}"
                     )
-
+        df_original = df_screen.copy()
         df_screen = df_screen.fillna("")
 
         if data_type == "ownership":
@@ -235,24 +236,31 @@ def screener(
                 lambda x: lambda_long_number_format(x, 1)
             )
 
+        if not get_current_user().preferences.USE_INTERACTIVE_DF:
+            df_original = df_screen
+
         print_rich_table(
-            df_screen.head(n=limit),
-            headers=list(df_screen.columns),
+            df_original,
+            headers=list(df_original.columns),
             show_index=False,
             title="Finviz Screener",
+            export=bool(export),
+            limit=limit,
         )
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             data_type,
-            df_screen,
+            df_original,
             sheet_name,
         )
 
-        return list(df_screen.head(n=limit)["Ticker"].values)
+        return df_screen.Ticker.tolist()
 
     console.print(
-        "The preset selected did not return a sufficient number of tickers. Two or more tickers are needed."
+        "Error: The preset selected did not return results."
+        "This might be a temporary error that is resolved by running the command again."
+        "If no results continue to be returned, check the preset and expand the parameters."
     )
     return []

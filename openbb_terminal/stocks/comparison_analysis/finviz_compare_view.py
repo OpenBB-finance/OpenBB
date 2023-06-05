@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -18,7 +18,7 @@ def screener(
     similar: List[str],
     data_type: str = "overview",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Screener.
 
@@ -45,6 +45,7 @@ def screener(
             headers=list(df_screen.columns),
             show_index=False,
             title="Stock Screener",
+            export=bool(export),
         )
 
     export_data(

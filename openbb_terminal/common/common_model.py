@@ -52,6 +52,7 @@ file_types = ["xlsx", "csv"]
 @log_start_end(log=logger)
 def load(
     file: str,
+    sheet_name: Optional[str] = None,
     data_files: Optional[Dict[Any, Any]] = None,
     data_examples: Optional[Dict[Any, Any]] = None,
 ) -> pd.DataFrame:
@@ -80,10 +81,7 @@ def load(
             return wage_panel.load()
         return getattr(sm.datasets, file).load_pandas().data
 
-    if file in data_files:
-        full_file = data_files[file]
-    else:
-        full_file = file
+    full_file = data_files[file] if file in data_files else file
 
     if not Path(full_file).exists():
         console.print(f"[red]Cannot find the file {full_file}[/red]\n")
@@ -93,7 +91,15 @@ def load(
 
     try:
         if file_type == ".xlsx":
-            data = pd.read_excel(full_file)
+            try:
+                data = (
+                    pd.read_excel(full_file)
+                    if sheet_name is None
+                    else pd.read_excel(full_file, sheet_name=sheet_name)
+                )
+            except ValueError as err:
+                console.print(f"[red]{err}[/red]\n")
+                return pd.DataFrame()
         elif file_type == ".csv":
             data = pd.read_csv(full_file)
         else:

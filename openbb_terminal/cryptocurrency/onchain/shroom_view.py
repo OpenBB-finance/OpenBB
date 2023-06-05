@@ -3,27 +3,17 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import Optional, Union
 
-from matplotlib import pyplot as plt
-
-from openbb_terminal import (
-    config_plot as cfgPlot,
-    config_terminal as cfg,
-)
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.onchain.shroom_model import (
     get_daily_transactions,
     get_dapp_stats,
+    get_query_data,
     get_total_value_locked,
 )
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -31,11 +21,44 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_SHROOM_KEY"])
+def display_query(
+    query: str,
+    sheet_name: Optional[str] = None,
+    limit: int = 10,
+    export: str = "",
+):
+    """Display query results from shroom
+    [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
+
+    Parameters
+    ----------
+    query : str
+        Query string
+    raw : bool
+        Show raw data
+    limit : int
+        Limit of rows
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = get_query_data(query)
+    if df.empty:
+        console.print("[red]No data found.[/red]")
+    elif not df.empty:
+        print_rich_table(df, limit=limit)
+
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "query", df, sheet_name
+        )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_SHROOM_KEY"])
 def display_daily_transactions(
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Get daily transactions for certain symbols in ethereum blockchain
     [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
 
@@ -48,30 +71,13 @@ def display_daily_transactions(
     symbols = ["DAI", "USDT", "BUSD", "USDC"]
     df = get_daily_transactions(symbols)
     if df.empty:
-        console.print("[red]No data found.[/red]")
-        return
+        return console.print("[red]No data found.[/red]")
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Transactions", xaxis_title="Date")
+    fig.set_title("Daily Transactions in Ethereum")
 
     for name in symbols:
-        ax.plot(df.index, df[name] / 1_000_000_000, label=name, lw=0.5)
-
-    ax.set_title("Daily Transactions in Ethereum")
-    ax.set_ylabel("Transactions [in billions]")
-    ax.set_xlabel("Date")
-    ax.set_xlim(df.index[0], df.index[-1])
-    ax.legend()
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+        fig.add_scatter(x=df.index, y=df[name], name=name)
 
     export_data(
         export,
@@ -79,7 +85,10 @@ def display_daily_transactions(
         "dt",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -89,9 +98,9 @@ def display_dapp_stats(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Get daily transactions for certain symbols in ethereum blockchain
     [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
 
@@ -105,43 +114,42 @@ def display_dapp_stats(
         Limit of rows
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = get_dapp_stats(platform=platform)
     if df.empty:
-        console.print("[red]No data found.[/red]")
-    elif not df.empty:
-        if raw:
-            print_rich_table(df.head(limit), headers=list(df.columns), show_index=True)
+        return console.print("[red]No data found.[/red]")
 
-        # This plot has 1 axis
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-
-        ax.bar(df.index, df["n_users"], color=theme.down_color, label="Number of Users")
-        ax.set_xlim(
-            df.index[0],
-            df.index[-1],
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            export=bool(export),
+            limit=limit,
         )
 
-        ax2 = ax.twinx()
-        ax2.plot(df["fees"] / 1_000_000, color=theme.up_color, label="Platform Fees")
-        # ax2.plot(df["volume"], label="Volume")
-        ax2.set_ylabel("Number of Users", labelpad=30)
-        ax2.set_zorder(ax2.get_zorder() + 1)
-        ax.patch.set_visible(False)
-        ax2.yaxis.set_label_position("left")
-        ax.set_ylabel(
-            "Platforms Fees [USD M]", labelpad=30
-        )  # attribute Deb because of $ -> USD
-        ax.set_title(f"{platform} stats")
-        ax.legend(loc="upper left")
-        ax2.legend(loc="upper right")
-        cfg.theme.style_primary_axis(ax)
+    fig = OpenBBFigure.create_subplots(specs=[[{"secondary_y": True}]])
+    fig.set_title(f"{platform} stats")
 
-        if external_axes is None:
-            cfg.theme.visualize_output()
+    fig.add_bar(
+        x=df.index,
+        y=df["n_users"],
+        name="Number of Users",
+        marker_color=theme.down_color,
+        secondary_y=False,
+    )
+
+    fig.add_scatter(
+        x=df.index,
+        y=df["fees"],
+        name="Platform Fees",
+        marker_color=theme.up_color,
+        secondary_y=True,
+    )
+    fig.update_yaxes(title_text="Number of Users", secondary_y=False, side="left")
+    fig.update_yaxes(title_text="Platform Fees [USD]", secondary_y=True)
 
     export_data(
         export,
@@ -149,7 +157,10 @@ def display_dapp_stats(
         "ds",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -160,9 +171,9 @@ def display_total_value_locked(
     symbol: str = "USDC",
     interval: int = 1,
     export: str = "",
-    sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """
     Get total value locked for a certain address
     TVL measures the total amount of a token that is locked in a contract.
@@ -180,7 +191,8 @@ def display_total_value_locked(
         Interval of months
     export : str
         Export dataframe data to csv,json,xlsx file
-
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     # example user_address :
@@ -194,29 +206,17 @@ def display_total_value_locked(
     )
 
     if df.empty:
-        console.print("[red]No data found.[/red]")
-        return
+        return console.print("[red]No data found.[/red]")
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Amount [USD M]", xaxis_title="Date")
+    fig.set_title("Total value locked Ethereum ERC20")
 
-    # ax.plot(df.index, df["amount_usd"], label="", lw=0.5)
-    ax.bar(df.index, df["amount_usd"], color=theme.down_color, label="amount_usd")
-    ax.set_title("Total value locked Ethereum ERC20")
-    ax.set_ylabel("Amount [USD M]")
-    ax.set_xlabel("Date")
-    ax.set_xlim(df.index[0], df.index[-1])
-    ax.legend()
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_bar(
+        x=df.index,
+        y=df["amount_usd"],
+        name="amount_usd",
+        marker_color=theme.down_color,
+    )
 
     export_data(
         export,
@@ -224,4 +224,7 @@ def display_total_value_locked(
         "tvl",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

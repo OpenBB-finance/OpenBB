@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+
 import datetime
 from pathlib import Path
 
@@ -20,6 +21,16 @@ from openbb_terminal.helper_funcs import (
 # pylint: disable=W0621
 # pylint: disable=W0613
 # pylint: disable=R0912
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [
+            ("User-Agent", None),
+            ("Authorization", "MOCK_AUTHORIZATION"),
+        ],
+    }
 
 
 @pytest.fixture

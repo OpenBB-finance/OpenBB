@@ -3,6 +3,7 @@ from copy import deepcopy
 from pathlib import Path
 
 # IMPORTATION THIRDPARTY
+from typing import List
 
 # IMPORTATION INTERNAL
 
@@ -42,12 +43,21 @@ class AppSettings:
     def session_id(self) -> str:
         return self.__session_id
 
+    @property
+    def user_id(self) -> str:
+        return self.__user_id
+
+    @user_id.setter
+    def user_id(self, value: str):
+        self.__user_id = value
+
     def __init__(
         self,
         name: str,
         commit_hash: str,
         session_id: str,
         identifier: str,
+        user_id: str,
     ):
         """
         Args:
@@ -55,12 +65,14 @@ class AppSettings:
             commit_hash (str): Commit hash of the current running code.
             identifier (str): Unique key identifying a particular installation.
             session_id (str): Key identifying a particular running session.
+            user_id (str): Hash identifying a particular user.
         """
 
         self.__name = name
         self.__commit_hash = commit_hash
         self.__identifier = identifier
         self.__session_id = session_id
+        self.__user_id = user_id
 
 
 class LogSettings:
@@ -73,7 +85,7 @@ class LogSettings:
         return self.__frequency
 
     @property
-    def handler_list(self) -> str:
+    def handler_list(self) -> List[str]:
         return self.__handler_list
 
     @property
@@ -88,7 +100,7 @@ class LogSettings:
         self,
         directory: Path,
         frequency: str,
-        handler_list: str,
+        handler_list: List[str],
         rolling_clock: bool,
         verbosity: int,
     ):
@@ -96,7 +108,7 @@ class LogSettings:
         Args:
             directory (Path): Directory used to store log files.
             frequency (str): Frequency of the log files rotation.
-            handler_list (str) : Comma separated list of handlers : stdout,stderr,noop,file.
+            handler_list (List[str]) : list of handlers : stdout,stderr,noop,file,posthog.
             rolling_clock (bool): Whether or not to start a Thread to rotate logs even when inactive.
             verbosity (str): Verbosity level as defined in Python `logging` module.
         """

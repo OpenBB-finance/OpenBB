@@ -3,13 +3,13 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -59,7 +59,7 @@ class QaController(StockBaseController):
     def __init__(
         self,
         all_economy_data: Dict,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -82,7 +82,7 @@ class QaController(StockBaseController):
         self.start_date = self.data.index[0]
         self.resolution = ""  # For the views
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["pick"] = {c: {} for c in self.options}
             choices["unitroot"] = {
@@ -267,10 +267,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if isinstance(self.data, pd.Series):
-            data = self.data.to_frame()
-        else:
-            data = self.data
+        data = self.data.to_frame() if isinstance(self.data, pd.Series) else self.data
         if ns_parser:
             qa_view.display_raw(
                 data=data,
@@ -347,6 +344,7 @@ class QaController(StockBaseController):
                 log_y=ns_parser.log,
                 markers_lines=ns_parser.ml,
                 markers_scatter=ns_parser.ms,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

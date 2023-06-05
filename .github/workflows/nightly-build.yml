@@ -3,7 +3,6 @@ name: Nightly Build
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECT: false
-  OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
   OPENBB_FILE_OVERWRITE: true
@@ -30,28 +29,27 @@ jobs:
   trigger-macos-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger M1 MacOs Build
+      - name: Trigger M1 & Intel MacOs Build
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: m1_macos_build.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          wait-for-completion-timeout: 2h
-
-  trigger-intel-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Intel MacOs Build
-        uses: aurelien-baudet/workflow-dispatch@v2
-        with:
-          workflow: intel_macos_build.yml
+          workflow: macos-build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
 
   trigger-docker-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger docker Build
+      - name: Trigger Docker Build
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          workflow: docker.yml
+          workflow: docker-build.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  trigger-pypi-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger PyPI Build
+        uses: aurelien-baudet/workflow-dispatch@v2
+        with:
+          workflow: pypi-nightly.yml
           token: ${{ secrets.GITHUB_TOKEN }}

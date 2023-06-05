@@ -1,0 +1,221 @@
+                                                                            name                           family category_group category
+symbol                                                                                                                                   
+ADFI                                            Anfield Dynamic Fixed Income ETF                          Anfield   Fixed Income    Bonds
+NFLT                                       Virtus Newfleet Multi-Sector Bond ETF                           Virtus   Fixed Income    Bonds
+NUAG                               Nuveen Enhanced Yield U.S. Aggregate Bond ETF                           Nuveen   Fixed Income    Bonds
+NUBD                                          Nuveen ESG U.S. Aggregate Bond ETF                           Nuveen   Fixed Income    Bonds
+NUHY                                    Nuveen ESG High Yield Corporate Bond ETF                           Nuveen   Fixed Income    Bonds
+NUSA                      Nuveen Enhanced Yield 1-5 Year U.S. Aggregate Bond ETF                           Nuveen   Fixed Income    Bonds
+OPER                                        ClearShares Ultra-Short Maturity ETF                      ClearShares   Fixed Income    Bonds
+OVT                                           Overlay Shares Short Term Bond ETF                   Overlay Shares   Fixed Income    Bonds
+PBND                                      Invesco PureBeta US Aggregate Bond ETF    Invesco Investment Management   Fixed Income    Bonds
+PBTP                                         Invesco PureBeta 0-5 Yr US TIPS ETF    Invesco Investment Management   Fixed Income    Bonds
+PHYL                                             PGIM Active High Yield Bond ETF                       PGIM Funds   Fixed Income    Bonds
+PULS                                                   PGIM Ultra Short Bond ETF                       PGIM Funds   Fixed Income    Bonds
+QLTA                                    iShares Aaa - A Rated Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+RAVI                                FlexShares Ready Access Variable Income Fund                 Flexshares Trust   Fixed Income    Bonds
+RBND                           SPDR Bloomberg SASB Corporate Bond ESG Select ETF     State Street Global Advisors   Fixed Income    Bonds
+RDFI                                           Rareview Dynamic Fixed Income ETF                 Rareview Capital   Fixed Income    Bonds
+RINF                                        ProShares Inflation Expectations ETF                        ProShares   Fixed Income    Bonds
+SCHI                                         Schwab 5-10 Year Corporate Bond ETF                      Schwab ETFs   Fixed Income    Bonds
+SCHJ                                          Schwab 1-5 Year Corporate Bond ETF                      Schwab ETFs   Fixed Income    Bonds
+SCHO                                         Schwab Short-Term U.S. Treasury ETF                      Schwab ETFs   Fixed Income    Bonds
+SCHP                                                        Schwab U.S. TIPS ETF                      Schwab ETFs   Fixed Income    Bonds
+SCHQ                                          Schwab Long-Term U.S. Treasury ETF                      Schwab ETFs   Fixed Income    Bonds
+SCHR                                  Schwab Intermediate-Term U.S. Treasury ETF                      Schwab ETFs   Fixed Income    Bonds
+SCHZ                                              Schwab U.S. Aggregate Bond ETF                      Schwab ETFs   Fixed Income    Bonds
+NEAR                                             iShares Short Maturity Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+MTGP                                          WisdomTree Mortgage Plus Bond Fund      WisdomTree Asset Management   Fixed Income    Bonds
+MINT                   PIMCO Enhanced Short Maturity Active Exchange-Traded Fund            PIMCO Global Advisors   Fixed Income    Bonds
+MIG                       VanEck Vectors Moody's Analytics IG Corporate Bond ETF          VanEck Asset Management   Fixed Income    Bonds
+IIGD                                      Invesco Investment Grade Defensive ETF    Invesco Investment Management   Fixed Income    Bonds
+IIGV                                          Invesco Investment Grade Value ETF    Invesco Investment Management   Fixed Income    Bonds
+ILTB                                          iShares Core 10+ Year USD Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+ISTB                                          iShares Core 1-5 Year USD Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+JAGG                                            JPMorgan U.S. Aggregate Bond ETF        JPMorgan Asset Management   Fixed Income    Bonds
+JIGB                               JPMorgan Corporate Bond Research Enhanced ETF        JPMorgan Asset Management   Fixed Income    Bonds
+JMBS                              Janus Henderson Mortgage-Backed Securities ETF                  Janus Henderson   Fixed Income    Bonds
+JNK                                  SPDR Bloomberg Barclays High Yield Bond ETF     State Street Global Advisors   Fixed Income    Bonds
+JPHY                                   JPMorgan High Yield Research Enhanced ETF        JPMorgan Asset Management   Fixed Income    Bonds
+JPST                                             JPMorgan Ultra-Short Income ETF        JPMorgan Asset Management   Fixed Income    Bonds
+JSCP                                       JPMorgan Short Duration Core Plus ETF        JPMorgan Asset Management   Fixed Income    Bonds
+SHAG               WisdomTree Yield Enhanced U.S. Short-Term Aggregate Bond Fund      WisdomTree Asset Management   Fixed Income    Bonds
+KDFI                                                KFA Dynamic Fixed Income ETF                      KraneShares   Fixed Income    Bonds
+LDSF                                First Trust Low Duration Strategic Focus ETF             First Trust Advisors   Fixed Income    Bonds
+LDUR                     PIMCO Enhanced Low Duration Active Exchange-Traded Fund            PIMCO Global Advisors   Fixed Income    Bonds
+LGOV                                 First Trust Long Duration Opportunities ETF             First Trust Advisors   Fixed Income    Bonds
+LMBS                                  First Trust Low Duration Opportunities ETF             First Trust Advisors   Fixed Income    Bonds
+LQDH                             iShares Interest Rate Hedged Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+LQDI                                 iShares Inflation Hedged Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+LSST                             Natixis Loomis Sayles Short Duration Income ETF                    Natixis Funds   Fixed Income    Bonds
+LTPZ                         PIMCO 15+ Year U.S. TIPS Index Exchange-Traded Fund            PIMCO Global Advisors   Fixed Income    Bonds
+MBB                                                              iShares MBS ETF       BlackRock Asset Management   Fixed Income    Bonds
+MBBB                     VanEck Vectors Moody's Analytics BBB Corporate Bond ETF          VanEck Asset Management   Fixed Income    Bonds
+MBSD                              FlexShares Disciplined Duration MBS Index Fund                 Flexshares Trust   Fixed Income    Bonds
+KORP                             American Century Diversified Corporate Bond ETF     American Century Investments   Fixed Income    Bonds
+IHYF                                          Invesco High Yield Bond Factor ETF    Invesco Investment Management   Fixed Income    Bonds
+SHV                                              iShares Short Treasury Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+SHYD                                    VanEck Vectors Short High Yield Muni ETF          VanEck Asset Management   Fixed Income    Bonds
+TLH                                         iShares 10-20 Year Treasury Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+TLT                                           iShares 20+ Year Treasury Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+ULTR                                                 IQ Ultra Short Duration ETF                          IndexIQ   Fixed Income    Bonds
+USFR                                      WisdomTree Floating Rate Treasury Fund      WisdomTree Asset Management   Fixed Income    Bonds
+USHY                             iShares Broad USD High Yield Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+USI                                      Principal Ultra-Short Active Income ETF                  Principal Funds   Fixed Income    Bonds
+USIG                       iShares Broad USD Investment Grade Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+USTB                                 VictoryShares USAA Core Short-Term Bond ETF                  Victory Capital   Fixed Income    Bonds
+VABS                                                 Virtus Newfleet ABS/MBS ETF                           Virtus   Fixed Income    Bonds
+VALT                                                   ETFMG Sit Ultra Short ETF                   ETF Management   Fixed Income    Bonds
+VCIT             Vanguard Intermediate-Term Corporate Bond Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+VCLT                     Vanguard Long-Term Corporate Bond Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+VCSH                    Vanguard Short-Term Corporate Bond Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+VGIT                   Vanguard Intermediate-Term Treasury Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+VGLT                           Vanguard Long-Term Treasury Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+VGSH                          Vanguard Short-Term Treasury Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+VMBS                   Vanguard Mortgage-Backed Securities Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+VNLA                                   Janus Henderson Short Duration Income ETF                  Janus Henderson   Fixed Income    Bonds
+VPC                                                    Virtus Private Credit ETF                           Virtus   Fixed Income    Bonds
+VRP                                          Invesco Variable Rate Preferred ETF    Invesco Investment Management   Fixed Income    Bonds
+VTC                                 Vanguard Total Corporate Bond ETF ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+VTIP    Vanguard Short-Term Inflation-Protected Securities Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+WBII                                              WBI BullBear Global Income ETF                  WBI Investments   Fixed Income    Bonds
+TIPZ                            PIMCO Broad U.S. TIPS Index Exchange-Traded Fund            PIMCO Global Advisors   Fixed Income    Bonds
+TIP                                                        iShares TIPS Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+THY                             Toews Agility Shares Dynamic Tactical Income ETF                Toews Corporation   Fixed Income    Bonds
+TGIF                                                      SoFi Weekly Income ETF                             Sofi   Fixed Income    Bonds
+SHYG                              iShares 0-5 Year High Yield Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+SHYL                                Xtrackers Short Duration High Yield Bond ETF                        Xtrackers   Fixed Income    Bonds
+SJNK                      SPDR Bloomberg Barclays Short Term High Yield Bond ETF     State Street Global Advisors   Fixed Income    Bonds
+SKOR                       FlexShares Credit-Scored US Corporate Bond Index Fund                 Flexshares Trust   Fixed Income    Bonds
+SLQD                        iShares 0-5 Year Investment Grade Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+SNLN                                              Highland/iBoxx Senior Loan ETF                   Highland Funds   Fixed Income    Bonds
+SPAB                                           SPDR Portfolio Aggregate Bond ETF     State Street Global Advisors   Fixed Income    Bonds
+SPBO                                           SPDR Portfolio Corporate Bond ETF     State Street Global Advisors   Fixed Income    Bonds
+SPHY                                          SPDR Portfolio High Yield Bond ETF     State Street Global Advisors   Fixed Income    Bonds
+SPIB                         SPDR Portfolio Intermediate Term Corporate Bond ETF     State Street Global Advisors   Fixed Income    Bonds
+SPSB                                SPDR Portfolio Short Term Corporate Bond ETF     State Street Global Advisors   Fixed Income    Bonds
+SHY                                           iShares 1-3 Year Treasury Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+SPTI                               SPDR Portfolio Intermediate Term Treasury ETF     State Street Global Advisors   Fixed Income    Bonds
+SRLN                                             SPDR Blackstone Senior Loan ETF     State Street Global Advisors   Fixed Income    Bonds
+STIP                                              iShares 0-5 Year TIPS Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+STPZ                         PIMCO 1-5 Year U.S. TIPS Index Exchange-Traded Fund            PIMCO Global Advisors   Fixed Income    Bonds
+SUSB                                 iShares ESG 1-5 Year USD Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+SUSC                                          iShares ESG USD Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+TBJL                        Innovator 20+ Year Treasury Bond Buffer ETF ‚Äì July                   Innovator ETFs   Fixed Income    Bonds
+TDTF                     FlexShares iBoxx 5-Year Target Duration TIPS Index Fund                 Flexshares Trust   Fixed Income    Bonds
+TDTT                     FlexShares iBoxx 3-Year Target Duration TIPS Index Fund                 Flexshares Trust   Fixed Income    Bonds
+TFJL                               Innovator Long Term Treasury Floor ETF - July                   Innovator ETFs   Fixed Income    Bonds
+TFLO                                     iShares Treasury Floating Rate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+TFLT                                            Global X TargetIncome Plus 2 ETF                   Global X Funds   Fixed Income    Bonds
+SPXB                                                  ProShares S&P 500 Bond ETF                        ProShares   Fixed Income    Bonds
+WINC                                     Western Asset Short Duration Income ETF  Franklink Templeton Investments   Fixed Income    Bonds
+IHY                             VanEck Vectors International High Yield Bond ETF          VanEck Asset Management   Fixed Income    Bonds
+IGLB                        iShares 10+ Year Investment Grade Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+CORP            PIMCO Investment Grade Corporate Bond Index Exchange-Traded Fund            PIMCO Global Advisors   Fixed Income    Bonds
+DEED                                        First Trust TCW Securitized Plus ETF             First Trust Advisors   Fixed Income    Bonds
+DFHY                          TrimTabs Donoghue Forlines Tactical High Yield ETF                         TrimTabs   Fixed Income    Bonds
+DIAL                            Columbia Diversified Fixed Income Allocation ETF            Columbia Threadneedle   Fixed Income    Bonds
+DWFI                              SPDR Dorsey Wright Fixed Income Allocation ETF     State Street Global Advisors   Fixed Income    Bonds
+EDV                    Vanguard Extended Duration Treasury Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+ESCR          Xtrackers Bloomberg Barclays US Investment Grade Corporate ESG ETF                        Xtrackers   Fixed Income    Bonds
+ESHY                 Xtrackers J.P. Morgan ESG USD High Yield Corporate Bond ETF                        Xtrackers   Fixed Income    Bonds
+FALN                                          iShares Fallen Angels USD Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+FCOR                                                 Fidelity Corporate Bond ETF             Fidelity Investments   Fixed Income    Bonds
+FDHY                                              Fidelity High Yield Factor ETF             Fidelity Investments   Fixed Income    Bonds
+FFIU                   Fieldstone UVA Unconstrained Medium-Term Fixed Income ETF              Spinnaker ETF Trust   Fixed Income    Bonds
+FIGB                                          Fidelity Investment Grade Bond ETF             Fidelity Investments   Fixed Income    Bonds
+FISR                                  SPDR SSGA Fixed Income Sector Rotation ETF     State Street Global Advisors   Fixed Income    Bonds
+FLBL                                            Franklin Liberty Senior Loan ETF  Franklink Templeton Investments   Fixed Income    Bonds
+FLCO                             Franklin Liberty Investment Grade Corporate ETF  Franklink Templeton Investments   Fixed Income    Bonds
+FLDR                                       Fidelity Low Duration Bond Factor ETF             Fidelity Investments   Fixed Income    Bonds
+FLGV                                     Franklin Liberty U.S. Treasury Bond ETF  Franklink Templeton Investments   Fixed Income    Bonds
+FLHY                                   Franklin Liberty High Yield Corporate ETF  Franklink Templeton Investments   Fixed Income    Bonds
+FLOT                                              iShares Floating Rate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+FLRN                  SPDR Bloomberg Barclays Investment Grade Floating Rate ETF     State Street Global Advisors   Fixed Income    Bonds
+FLRT                                              Pacific Global Senior Loan ETF                   Pacific Global   Fixed Income    Bonds
+FLTB                                              Fidelity Limited Term Bond ETF             Fidelity Investments   Fixed Income    Bonds
+CMBS                                                            iShares CMBS ETF       BlackRock Asset Management   Fixed Income    Bonds
+CLTL                                             Invesco Treasury Collateral ETF    Invesco Investment Management   Fixed Income    Bonds
+CEFS                                                   Saba Closed-End Funds ETF                         SABA ETF   Fixed Income    Bonds
+BTC                              ClearShares Piton Intermediate Fixed Income ETF                      ClearShares   Fixed Income    Bonds
+AFIF                                          Anfield Universal Fixed Income ETF                         Affinity   Fixed Income    Bonds
+AGG                                         iShares Core U.S. Aggregate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+AGGY                          WisdomTree Yield Enhanced U.S. Aggregate Bond Fund      WisdomTree Asset Management   Fixed Income    Bonds
+AGZ                                                      iShares Agency Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+AGZD                    WisdomTree Interest Rate Hedged U.S. Aggregate Bond Fund      WisdomTree Asset Management   Fixed Income    Bonds
+ANGL                             VanEck Vectors Fallen Angel High Yield Bond ETF          VanEck Asset Management   Fixed Income    Bonds
+ARCM                                        Arrow Reserve Capital Management ETF                      ArrowShares   Fixed Income    Bonds
+AVIG                                               Avantis Core Fixed Income ETF                Avantis Investors   Fixed Income    Bonds
+AWTM                              Aware Ultra-Short Duration Enhanced Income ETF                            Aware   Fixed Income    Bonds
+BIV                        Vanguard Intermediate-Term Bond Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+BKAG                                                    BNY Mellon Core Bond ETF                       BNY Mellon   Fixed Income    Bonds
+FLTR                           VanEck Vectors Investment Grade Floating Rate ETF          VanEck Asset Management   Fixed Income    Bonds
+BKHY                                              BNY Mellon High Yield Beta ETF                       BNY Mellon   Fixed Income    Bonds
+BLV                                Vanguard Long-Term Bond Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+BND                             Vanguard Total Bond Market Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+BNDC                                            FlexShares Core Select Bond Fund                 Flexshares Trust   Fixed Income    Bonds
+BSJL                     Invesco BulletShares 2021 High Yield Corporate Bond ETF    Invesco Investment Management   Fixed Income    Bonds
+BSJM                     Invesco BulletShares 2022 High Yield Corporate Bond ETF    Invesco Investment Management   Fixed Income    Bonds
+BSJN                     Invesco BulletShares 2023 High Yield Corporate Bond ETF    Invesco Investment Management   Fixed Income    Bonds
+BSJP                     Invesco BulletShares 2025 High Yield Corporate Bond ETF    Invesco Investment Management   Fixed Income    Bonds
+BSJQ                     Invesco BulletShares 2026 High Yield Corporate Bond ETF    Invesco Investment Management   Fixed Income    Bonds
+BSJR                     Invesco BulletShares 2027 High Yield Corporate Bond ETF    Invesco Investment Management   Fixed Income    Bonds
+BSJS                     Invesco BulletShares 2028 High Yield Corporate Bond ETF    Invesco Investment Management   Fixed Income    Bonds
+BSV                               Vanguard Short-Term Bond Index Fund ETF Shares        Vanguard Asset Management   Fixed Income    Bonds
+BKSB                                BNY Mellon Short Duration Corporate Bond ETF                       BNY Mellon   Fixed Income    Bonds
+IGSB                        iShares 1-5 Year Investment Grade Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+FSEC                                   Fidelity Investment Grade Securitized ETF             Fidelity Investments   Fixed Income    Bonds
+FTSL                                                First Trust Senior Loan Fund             First Trust Advisors   Fixed Income    Bonds
+HYLS                                         First Trust Tactical High Yield ETF             First Trust Advisors   Fixed Income    Bonds
+HYLV                                   IQ S&P High Yield Low Volatility Bond ETF                          IndexIQ   Fixed Income    Bonds
+HYMB                SPDR Nuveen Bloomberg Barclays High Yield Municipal Bond ETF     State Street Global Advisors   Fixed Income    Bonds
+HYMU                                   BlackRock High Yield Muni Income Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+HYS          PIMCO 0-5 Year High Yield Corporate Bond Index Exchange-Traded Fund            PIMCO Global Advisors   Fixed Income    Bonds
+HYTR                                                     CP High Yield Trend ETF        CounterPoint Mutual Funds   Fixed Income    Bonds
+HYUP                                     Xtrackers High Beta High Yield Bond ETF                        Xtrackers   Fixed Income    Bonds
+HYXF                          iShares ESG Advanced High Yield Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+HYXU                                   iShares International High Yield Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+HYZD                        WisdomTree Interest Rate Hedged High Yield Bond Fund      WisdomTree Asset Management   Fixed Income    Bonds
+IBHA                          iShares iBonds 2021 Term High Yield and Income ETF       BlackRock Asset Management   Fixed Income    Bonds
+IBHB                          iShares iBonds 2022 Term High Yield and Income ETF       BlackRock Asset Management   Fixed Income    Bonds
+IBHC                          iShares iBonds 2023 Term High Yield and Income ETF       BlackRock Asset Management   Fixed Income    Bonds
+IBHD                          iShares iBonds 2024 Term High Yield and Income ETF       BlackRock Asset Management   Fixed Income    Bonds
+IBHE                          iShares iBonds 2025 Term High Yield and Income ETF       BlackRock Asset Management   Fixed Income    Bonds
+ICSH                                           iShares Ultra Short-Term Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+IEF                                          iShares 7-10 Year Treasury Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+IEI                                           iShares 3-7 Year Treasury Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+IG                               Principal Investment Grade Corporate Active ETF                  Principal Funds   Fixed Income    Bonds
+IGBH                   iShares Interest Rate Hedged Long-Term Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+IGEB                             iShares Edge Investment Grade Enhanced Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+IGHG                           ProShares Investment Grade‚ÄîInterest Rate Hedged                        ProShares   Fixed Income    Bonds
+IGIB                       iShares 5-10 Year Investment Grade Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+HYLB                                 Xtrackers USD High Yield Corporate Bond ETF                        Xtrackers   Fixed Income    Bonds
+HYIN                                          WisdomTree Alternative Income Fund      WisdomTree Asset Management   Fixed Income    Bonds
+HYHG                                 ProShares High Yield‚ÄîInterest Rate Hedged                        ProShares   Fixed Income    Bonds
+HYGV                          FlexShares High Yield Value-Scored Bond Index Fund                 Flexshares Trust   Fixed Income    Bonds
+FTSM                                     First Trust Enhanced Short Maturity ETF             First Trust Advisors   Fixed Income    Bonds
+FWDB                               AdvisorShares FolioBeyond Smart Core Bond ETF                    AdvisorShares   Fixed Income    Bonds
+GBF                                           iShares Government/Credit Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+GBIL                                  Goldman Sachs Access Treasury 0-1 Year ETF   Goldman Sachs Asset Management   Fixed Income    Bonds
+GCOR                                Goldman Sachs Access U.S. Aggregate Bond ETF   Goldman Sachs Asset Management   Fixed Income    Bonds
+GHYB                          Goldman Sachs Access High Yield Corporate Bond ETF   Goldman Sachs Asset Management   Fixed Income    Bonds
+GHYG                                  iShares US & Intl High Yield Corp Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+GNMA                                                       iShares GNMA Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+GOVT                                              iShares U.S. Treasury Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+GOVZ                                   iShares 25+ Year Treasury STRIPS Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+GSIG           Goldman Sachs Access Investment Grade Corporate 1-5 Year Bond ETF   Goldman Sachs Asset Management   Fixed Income    Bonds
+FTSD                         Franklin Liberty Short Duration U.S. Government ETF  Franklink Templeton Investments   Fixed Income    Bonds
+GSY                                             Invesco Ultra Short Duration ETF    Invesco Investment Management   Fixed Income    Bonds
+GVI                              iShares Intermediate Government/Credit Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+HCRB                                                      Hartford Core Bond ETF            Hartford Mutual Funds   Fixed Income    Bonds
+HOLD                                        AdvisorShares Sage Core Reserves ETF                    AdvisorShares   Fixed Income    Bonds
+HSRT                                                 Hartford Short Duration ETF            Hartford Mutual Funds   Fixed Income    Bonds
+HTAB                                       Hartford Schroders Tax-Aware Bond ETF            Hartford Mutual Funds   Fixed Income    Bonds
+HYBB                                         iShares BB Rated Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+HYD                                           VanEck Vectors High Yield Muni ETF          VanEck Asset Management   Fixed Income    Bonds
+HYDB                                  iShares Edge High Yield Defensive Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+HYDW                                      Xtrackers Low Beta High Yield Bond ETF                        Xtrackers   Fixed Income    Bonds
+HYG                                iShares iBoxx $ High Yield Corporate Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+HYGH                            iShares Interest Rate Hedged High Yield Bond ETF       BlackRock Asset Management   Fixed Income    Bonds
+GTIP                       Goldman Sachs Access Inflation Protected USD Bond ETF   Goldman Sachs Asset Management   Fixed Income    Bonds
+ZROZ         PIMCO 25+ Year Zero Coupon U.S. Treasury Index Exchange-Traded Fund            PIMCO Global Advisors   Fixed Income    Bonds

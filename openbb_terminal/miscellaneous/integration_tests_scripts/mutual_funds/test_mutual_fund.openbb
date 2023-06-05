@@ -1,0 +1,21 @@
+funds
+country --name united_states
+search  --fund morning
+load --fund Vanguard
+plot -c both
+sector -t equity
+sector -t fixed_income
+holdings -t all
+carbon
+exclusion
+country sweden
+load F00000OW3P
+alswe --help
+alswe --focus sector
+infoswe --help
+infoswe
+help
+..
+reset
+quit
+exit

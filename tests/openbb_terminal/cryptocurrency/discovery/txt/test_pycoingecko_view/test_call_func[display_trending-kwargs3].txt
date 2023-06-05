@@ -1,8 +1,8 @@
-            Symbol             Name  market_cap Cap Rank
-0  battle-infinity  Battle Infinity                  903
-1         dogecoin         Dogecoin                    8
-2            aptos            Aptos                   55
-3  metavault-trade  Metavault Trade                 1001
-4        dogechain        Dogechain                  359
-5            floki            FLOKI                  229
-6             gala             Gala                  128
+            Symbol            Name  market_cap Cap Rank
+0         zigzag-2          ZigZag                 1015
+1           insure     inSure DeFi                  387
+2  spool-dao-token       Spool DAO                  959
+3       blockstack          Stacks                   42
+4         optimism        Optimism                   80
+5   singularitynet  SingularityNET                   78
+6            vaiot           Vaiot                  621

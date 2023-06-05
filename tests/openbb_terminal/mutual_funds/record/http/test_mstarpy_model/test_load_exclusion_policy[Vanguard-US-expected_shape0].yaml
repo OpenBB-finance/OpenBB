@@ -1,0 +1,126 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      user-agent:
+      - Mozilla/5.0 (Windows NT 5.1; rv:25.0) Gecko/20100101 Firefox/25.0
+    method: GET
+    uri: https://tools.morningstar.co.uk/api/rest.svc/klr5zyak8x/security/screener?page=1&pageSize=1&sortOrder=LegalName+asc&outputType=json&version=1&universeIds=FOUSA%24%24ALL&currencyId=EUR&securityDataPoints=SecId%7CTenforeId%7CLegalName&term=Vanguard
+  response:
+    body:
+      string: '{"total": 306,"page": 1,"pageSize": 1,"rows": [{"SecId": "FOUSA00L8W","TenforeId":
+        "52.8.VFIAX","LegalName": "Vanguard 500 Index Fund Admiral Shares"}] }'
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Accept,Origin
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '153'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Mar 2023 12:15:46 GMT
+      Set-Cookie:
+      - ASP.NET_SessionId=ngbdebnx1gaikabgpj3k4ygo; path=/; secure; HttpOnly; SameSite=None
+      Strict-Transport-Security:
+      - max-age=7200; includeSubDomains
+      Via:
+      - 1.1 8d1d469965b7983f5b93251c439f9c4c.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - ldbGUX1nGUbWFtZuXVDNJnJ4xGV16XNYZ_Yx-916wK-lfflgDDJMAw==
+      X-Amz-Cf-Pop:
+      - BUD50-C1
+      X-Cache:
+      - Miss from cloudfront
+      p3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+      apikey:
+      - lstzFDEOhfFNMLikKa0am9mgEKLBl49T
+    method: GET
+    uri: https://api-global.morningstar.com/sal-service/v1/fund/esg/v1/FOUSA00L8W/data
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVXS0/jSBD+K5HFESI7D5jkFkwSIgEJOOxoT6OOXTGtaXdnu+0wHjT/favbj/g1
+        0bCXlThEXV+9q74yH1aiQG7TA1hTayEBrEsLVHhHYmJNPywlfEoYS19AHQRXdMdgkfDAmvKEMUTG
+        b9QnbKVUAl4sSQxhuhB+ogrAQch4LxgVaFB7GNiD4ZXtXA2drW1PzV/ftm2rgfQSFRPKyY4yGqcv
+        JKY8bGhf17T3GNTcW3q+kFD6BukDj2evj644ggQNsKaTSf/m2p44mU7dUa4+cPpjp0PfFTyW+qdK
+        jZ3JYHwzuLR8nbaQGCb/3pFmPVBVc6hr+ZxQHlOGasOmeJNF4FYcWNPxqG83gY+EB5nnJ6GdgL8K
+        dD/Xr97Mth++fLVMOnshI8J9MEJ7gxHZg7/vn1GIvQuwxl4a7QQrCki91VPxWxcrs+kZm4Pne1SL
+        iIpBborWGcBwPNSJFlUxbxeLtTu7eLi9uEAJJ5GO9C/Cw4TIoDe27d6KB/CjNwsiKgnT2qdS30GQ
+        +DEVvAilsPyU2XkgMoTeLQMcy0srZGJHmFuHvHq9+T8J1qmXgV1yKBV0YvdUxYieHcPfzgOODLbn
+        zQD1yHcAlzXXMwyehJn26MaZTDDwREps5+dU7fH1F6xZEu1Air0eGDXjhKU/ARtWaNRN4iSNRqNL
+        63dpdY5VVlvVsXiukLicCDbzT3eJbkZuw5o6erS7FT2zNjTknYpGrdz6Els3pKoLXal+ge7s1x+i
+        W+V2Rv3R0B5j5VS3RpZWnsF6P2c01IxYzn/OE93FzHfUS+QR0gL0y7CtidslzE8YySb9w9oRBcGm
+        pKAqcZVFazFeU1CkWK7Oaa1qis33pp46Q5MdspP6aYKBH6kUPMJ0sCOZhVF/OOmStNybK5QrTXAZ
+        a09NdKgT4Zrnco2b/rj12lQ6d6iuuw/V2dtRdqKa3AtV32upV8Zfp1ORZ1mW8mUZfQVj8iohr8gK
+        TGhyDOYqrMAw8Os/v2Y4jvWrlF96FZ6hjcr8dClXxGeMwDleOiM7G9hnbvP/xu6fIurs/v+Hg5Bx
+        zb1g+tJnOgp52Pq2WX+zTjx0h8EUZF2TPsARWLe0zgErHmPUCCCZ8w+L8iOoWC9B+xsCvOWK+/mN
+        MVb3hCkwgjkPsVSRuRf5a4hnG+Qd1dNkrOfvTLy7RO4EXwilKFskwMznbCH3RRQlHDXudBriUDNa
+        o6DyVcRvIFfRgfjx9g2jUKUEGw3vBKl/zkGGpyDesfzSfABrgj9FjB1nNSbwwMeOl5CyfgxWZanW
+        elAYq9ZDd7v5TE2AXRJoe2xCfAmaMNbcLIYzubLHuBs9ezS1B2YxsEEMP/JeD/p21TZoeOXcGKBT
+        ADFr9YSfmOpW3y4PbQM3H+75fv/wWRKAmu2QsrDRXgyRC4ypFiBIWDzHIZK6KFmjGgjmi7fTh2r5
+        zGlE2Bbr1+H2xHfItF+B6P9nmphFIr0DaCqO0wesDPa/CVmSaMc6zC8f1y1zj3odiEyNa2xSh9pT
+        4jMgLS8bwqI1bSW40an5NICWKw8TZzOsfVOAk4sf/cwVpGVti7Tk+6L5vK6lHR2YSNVcyxQ2TZUT
+        ZD5ffv0LftcJ3kAOAAA=
+    headers:
+      Accept-Encoding:
+      - gzip
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Fri, 17 Mar 2023 12:15:46 GMT
+      Host:
+      - salservice.morningstar.com
+      RequestId:
+      - 8692bda9-5555-41c1-add7-00ebed214652
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - X-SAL-ContentType,Origin,Accept-Encoding
+      Via:
+      - 1.1 9d20586df7150a47ce50554b50d8f500.cloudfront.net (CloudFront), 1.1 9d20586df7150a47ce50554b50d8f500.cloudfront.net
+        (CloudFront)
+      X-Amz-Cf-Id:
+      - VXAWWKpSF-_jRlBLI7xPc6Q2rmytKZuCjHgObrHip5fYP6QsgD7bAw==
+      X-Amz-Cf-Pop:
+      - BUD50-C1
+      X-Cache:
+      - Miss from cloudfront
+      X-Forwarded-Port:
+      - '9001'
+      X-Forwarded-Proto:
+      - http
+    status:
+      code: 200
+      message: OK
+version: 1

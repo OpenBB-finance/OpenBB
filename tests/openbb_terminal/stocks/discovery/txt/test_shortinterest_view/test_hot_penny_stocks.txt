@@ -1,3 +1,31 @@
-  Symbol                  Company Name  Last Price  Change % Change  Market Time   Volume Avg Vol (3 month) Market Cap
-0   MNMD  Mind Medicine (MindMed) Inc.        1.02    0.27  +36.18%  4:00 PM EDT  224.25M             6.61M    435.63M
-1   BBIG          Vinco Ventures, Inc.        1.45    0.06   +4.32%  4:00 PM EDT  117.16M            21.15M    338.05M
+   Symbol                           Company Name  Last Price  Change   % Change  Market Time   Volume Avg Vol (3 month) Market Cap
+0    MNMD           Mind Medicine (MindMed) Inc.     1.02000    0.27    +36.18%  4:00 PM EDT  224.25M             6.61M    435.63M
+1    BBIG                   Vinco Ventures, Inc.     1.45000    0.06     +4.32%  4:00 PM EDT  117.16M            21.15M    338.05M
+2     CEI                    Camber Energy, Inc.     0.41000    0.05    +14.85%  4:00 PM EDT   73.82M            22.79M    201.40M
+3    CRIS                            Curis, Inc.     1.26000    0.21    +20.00%  4:00 PM EDT   75.18M             4.19M    115.69M
+4    ENDP                 Endo International plc     0.40570    0.12    +42.90%  4:00 PM EDT  154.56M            58.54M     95.40M
+5    INND  InnerScope Hearing Technologies, Inc.     0.02420    0.00    +10.25%  3:59 PM EDT  271.95M            55.54M     83.64M
+6    IMPP                Imperial Petroleum Inc.     0.39990    0.04    +10.32%  4:00 PM EDT   51.18M            42.19M     76.08M
+7    VTGN            VistaGen Therapeutics, Inc.     0.22340    0.03    +15.69%  4:00 PM EDT   33.68M            10.78M     46.21M
+8    DRUG          Bright Minds Biosciences Inc.     2.17000    1.25   +135.87%  4:00 PM EDT  119.00M             1.99M     25.76M
+9    PSTV                Plus Therapeutics, Inc.     0.84800    0.30    +53.90%  4:00 PM EDT   93.48M             3.13M     19.52M
+10   PHIL               Philux Global Group Inc.     0.00060    0.00    +20.00%  3:28 PM EDT  275.29M           165.21M     18.16M
+11   NEPT        Neptune Wellness Solutions Inc.     2.02000    0.67    +49.63%  4:00 PM EDT   69.19M             1.65M     17.78M
+12   AXXA                        Exxe Group Inc.     0.01550    0.00    +13.97%  3:59 PM EDT   49.23M             5.31M      6.49M
+13   IGPK    Integrated Cannabis Solutions, Inc.     0.00310    0.00    +15.46%  3:59 PM EDT   30.61M             5.43M      5.22M
+14   MCOA     Marijuana Company of America, Inc.     0.00040    0.00    +19.40%  3:57 PM EDT  254.96M           118.76M      4.06M
+15   MLFB            Major League Football, Inc.     0.00420    0.00   +223.08%  3:59 PM EDT  352.36M            18.29M      2.53M
+16   ELRA                  Elray Resources, Inc.     0.00085    0.00     +6.25%  3:09 PM EDT   26.62M            57.92M      2.30M
+17   GEGI        Genesis Electronics Group, Inc.     0.00800    0.00    +29.03%  3:59 PM EDT  160.07M            45.52M      1.61M
+18   CMGR            Clubhouse Media Group, Inc.     0.00160    0.00    +23.08%  3:59 PM EDT  160.77M            49.19M      1.30M
+19   RNVA                   Rennova Health, Inc.     0.00010    0.00  +9900.00%  3:59 PM EDT  112.44M            98.83M    967.93k
+20   TGRO             Tiger Oil and Energy, Inc.     0.00020    0.00   +100.00%  3:58 PM EDT   32.25M            29.59M    899.34k
+21   FTXP            Foothills Exploration, Inc.     0.00050    0.00    +72.41%  3:56 PM EDT    1.28B            86.97M    578.22k
+22   WNBD             Winning Brands Corporation     0.00090    0.00    +28.57%  3:59 PM EDT  111.51M            13.13M    420.53k
+23   PLPL            Plandaí Biotechnology, Inc.     0.00060    0.00    +20.00%  3:59 PM EDT   52.67M           166.33M    284.25k
+24   HVCW     Harrison Vickers and Waterman Inc.     0.00100    0.00    +11.11%  3:59 PM EDT  705.89M           110.28M    192.39k
+25   MSTO                 Masterbeat Corporation     0.00110    0.00    +22.22%  2:46 PM EDT   42.57M            13.15M    117.65k
+26   QBAN                       Telco Cuba, Inc.     0.00050    0.00    +25.00%  3:35 PM EDT   64.53M            68.38M    112.32k
+27   MWWC               Marketing Worldwide Corp     0.00080    0.00    +14.29%  3:39 PM EDT   27.25M            45.70M     31.80k
+28   GNCP                     GNCC Capital, Inc.     0.00010    0.00   +100.00%  3:59 PM EDT   73.98M            24.12M     20.31k
+29   QEDN                      QED Connect, Inc.     0.00210    0.00    +23.53%  3:47 PM EDT   50.18M            25.27M     18.46k

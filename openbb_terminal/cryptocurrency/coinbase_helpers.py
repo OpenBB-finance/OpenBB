@@ -12,7 +12,7 @@ from typing import Any, Optional, Union
 
 from requests.auth import AuthBase
 
-import openbb_terminal.config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -146,8 +146,11 @@ def _get_account_coin_dict() -> dict:
         {'1INCH': '0c29b708-d73b-4e1c-a58c-9c261cb4bedb', 'AAVE': '0712af66-c069-45b5-84ae-7b2347c2fd24', ..}
 
     """
+    current_user = get_current_user()
     auth = CoinbaseProAuth(
-        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+        current_user.credentials.API_COINBASE_KEY,
+        current_user.credentials.API_COINBASE_SECRET,
+        current_user.credentials.API_COINBASE_PASS_PHRASE,
     )
     accounts = make_coinbase_request("/accounts", auth=auth)
     return {acc["currency"]: acc["id"] for acc in accounts}

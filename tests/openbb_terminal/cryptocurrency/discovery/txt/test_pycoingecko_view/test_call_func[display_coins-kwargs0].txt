@@ -1,17 +1,21 @@
-    Symbol                Name Volume [$] Market Cap  Market Cap Rank  7D Change [%]  24H Change [%]
-8   vision          APY.vision       3.6K     948.7K             1985      21.187294        2.583935
-4      vib            Viberate       9.4M      13.4M              797      20.361318        4.124686
-7      uwl           UniWhales      19.8K       2.3M             1502      25.415291        1.687210
-6     push       Push Protocol       588K       4.6M             1204       7.142269        5.384511
-2      prq              PARSIQ       3.3M      23.3M              633      24.716873       25.859638
-15   moons           MoonTools          1          0             <NA>            NaN       -0.127583
-14     krw               KROWN        292      78.2K             3262      13.692898        3.693596
-0      grt           The Graph      39.1M     620.7M               74       4.656318        0.433542
-9      glq  GraphLinq Protocol      72.4K     598.9K             2255       7.288661        0.703644
-5     dobo            DogeBonk        11K       6.2M             1076      48.808246       -0.200775
-3     dext            DexTools     259.5K      13.5M              791      11.264005       -2.309393
-11    data  Data Economy Index        101     460.8K             2402      -1.624063       -0.213695
-1      cqt            Covalent     948.5K      45.7M              436      25.850260       -0.753528
-13   chart             ChartEx          6      99.3K             3180      17.215459             NaN
-10     bdp   Big Data Protocol     150.9K     570.6K             2277       9.771324       -8.029610
-12   astro          AstroTools      18.5K     113.8K             3132      17.191254        0.807919
+    Symbol                Name   Volume [$]    Market Cap  Market Cap Rank  7D Change [%]  24H Change [%]
+14  vision          APY.vision       505.30  7.581400e+05             2228     -12.180935        5.064334
+4      vib            Viberate   4115764.00  1.918901e+07              799       2.364991        0.938405
+13     uwl           UniWhales     24787.00  1.451768e+06             1879       1.410288        7.065904
+6    radar           DappRadar    991195.00  1.289519e+07              910      -7.204816       -3.076113
+5     push       Push Protocol    714056.00  1.576046e+07              857      -6.557584        4.055879
+2      prq              PARSIQ   1558435.00  2.790488e+07              670      -4.561147        3.058163
+12     oja               Ojamu     32929.00  2.287814e+06             1660     -17.008005        1.627328
+19   moons           MoonTools        31.76  0.000000e+00             <NA>            NaN             NaN
+18     krw               KROWN      1711.21  1.700323e+04             3677            NaN        5.777005
+10     jdb                 JDB      2962.38  3.066191e+06             1521      11.984613        0.875934
+0      grt           The Graph  94511299.00  1.420463e+09               41      -3.977677        1.838453
+8      glq  GraphLinq Protocol    349929.00  5.757456e+06             1240       7.874708       -1.908265
+9     dobo            DogeBonk     62297.00  4.742005e+06             1322      14.085489       11.183600
+3     dext            DexTools    365407.00  2.442021e+07              717       3.668216        3.796121
+17    data  Data Economy Index      1354.60  9.977700e+04             3220      -0.973779        0.511097
+1      cqt            Covalent   2166048.00  8.991678e+07              335      23.485956       16.691028
+15   chart             ChartEx      1460.55  2.149680e+05             2872      -1.773036        2.473204
+11    bird          Bird.Money    760850.00  2.845177e+06             1560       8.353728       16.781279
+7      bdp   Big Data Protocol   1002383.00  6.531363e+06             1183      29.811948       23.302590
+16   astro          AstroTools     19900.92  1.128830e+05             3172       7.312453        1.673997

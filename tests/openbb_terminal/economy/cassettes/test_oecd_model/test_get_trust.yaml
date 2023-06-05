@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - stats.oecd.org
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.TRUSTGOV.TOT.PC.A/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod=2020-01-01&endPeriod=2022-01-31
+  response:
+    body:
+      string: "\uFEFF\"LOCATION\",\"INDICATOR\",\"SUBJECT\",\"MEASURE\",\"FREQUENCY\",\"TIME\",\"Value\",\"Flag
+        Codes\"\r\n\"AUS\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",44.6422249484244,\r\n\"AUS\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",51.9226387269998,\r\n\"AUT\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",62.6177826842198,\r\n\"AUT\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",61.0458963307101,\r\n\"BEL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",29.4799600657363,\r\n\"BEL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",47.3133105255303,\r\n\"CAN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",60.0424110070179,\r\n\"CAN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",61.0411167292314,\r\n\"CZE\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",31.8858991214926,\r\n\"CZE\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",28.4475429313419,\r\n\"DNK\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",71.5797588737729,\r\n\"DNK\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",65.1709716073998,\r\n\"FIN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",80.863288011065,\r\n\"FIN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",71.3731249908732,\r\n\"FRA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",41.0406651012307,\r\n\"FRA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",43.3520499917692,\r\n\"DEU\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",65.406310434657,\r\n\"DEU\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",60.4759932362344,\r\n\"GRC\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",39.7469760890433,\r\n\"GRC\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",40.173639463011,\r\n\"HUN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",42.8733251215195,\r\n\"HUN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",41.6566138185724,\r\n\"ISL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",59.2407281936249,\r\n\"ISL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",63.3886735712649,\r\n\"IRL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",58.8148266866781,\r\n\"IRL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",62.3389411864285,\r\n\"ITA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",37.4515772443029,\r\n\"ITA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",35.429390283743,\r\n\"JPN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",42.337998467072,\r\n\"JPN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",29.0785675214417,\r\n\"KOR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",44.8309238280724,\r\n\"KOR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",43.3829193400451,\r\n\"MEX\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",45.9497858951298,\r\n\"MEX\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",48.3326115001658,\r\n\"NLD\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",78.0745963024676,\r\n\"NLD\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",58.4738788340274,\r\n\"NZL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",62.8641075031231,\r\n\"NZL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",63.4897827518881,\r\n\"NOR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",82.9234210846933,\r\n\"NOR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",77.352319776611,\r\n\"POL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",27.3116610310921,\r\n\"POL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",25.9251651378815,\r\n\"PRT\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",61.4669417209344,\r\n\"PRT\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",57.618641201935,\r\n\"SVK\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",30.7444519017386,\r\n\"SVK\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",21.5807581467336,\r\n\"ESP\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",38.1767100934638,\r\n\"ESP\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",37.1703814804768,\r\n\"SWE\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",67.107864752608,\r\n\"SWE\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",63.3536082593929,\r\n\"CHE\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",84.6330707358843,\r\n\"CHE\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",83.7848093008452,\r\n\"TUR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",55.3262159125458,\r\n\"TUR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",42.6014369483973,\r\n\"GBR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",34.6972844445844,\r\n\"GBR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",39.4753987902553,\r\n\"USA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",46.4917090465757,\r\n\"USA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",40.4625220436663,\r\n\"BRA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",36.2292400768302,\r\n\"BRA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",32.7099283931536,\r\n\"CHL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",17.146378832949,\r\n\"CHL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",23.2144804154189,\r\n\"COL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",37.3634383411604,\r\n\"COL\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",28.9148897418525,\r\n\"CRI\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",29.823056442099,\r\n\"CRI\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",31.5308324162133,\r\n\"EST\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",46.4805976813481,\r\n\"EST\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",51.926399218504,\r\n\"ISR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",38.8938520677275,\r\n\"ISR\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",43.9594681535094,\r\n\"LVA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",30.6789062455792,\r\n\"LVA\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",29.4602407828229,\r\n\"LTU\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",47.4045330413199,\r\n\"LTU\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",30.3830445599736,\r\n\"RUS\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",47.7703668013377,\r\n\"RUS\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",45.6992085335251,\r\n\"SVN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",45.2974234162068,\r\n\"SVN\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",33.9235814755947,\r\n\"ZAF\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2020\",51.7606686490518,\r\n\"ZAF\",\"TRUSTGOV\",\"TOT\",\"PC\",\"A\",\"2021\",50.896150522116,\r\n"
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST,GET,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - close
+      Content-Disposition:
+      - attachment;filename=DP_LIVE_20032023141557349.csv
+      Content-Type:
+      - text/csv
+      Date:
+      - Mon, 20 Mar 2023 13:15:56 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -42,12 +42,12 @@ def test_get_etfs_by_description(recorder, description):
     recorder.capture(result)
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "category",
     [
-        "Bank Loan",
-        "Bear Market",
+        "Bonds",
+        "Materials",
     ],
 )
 def test_get_etfs_by_category(recorder, category):
@@ -56,7 +56,7 @@ def test_get_etfs_by_category(recorder, category):
     recorder.capture(result)
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 def test_get_all_names_symbols(recorder):
     result = financedatabase_model.get_etfs_categories()
 

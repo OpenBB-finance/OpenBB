@@ -20,9 +20,6 @@ def test_display_crypto_rates(mocker):
         target="openbb_terminal.cryptocurrency.overview.loanscan_view.export_data"
     )
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     loanscan_view.display_crypto_rates(
         symbols="BTC,ETH,USDT,USDC",
         platforms="BlockFi,Ledn,SwissBorg,Youhodler",

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import pandas as pd
 
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 def display_rsp(
     s_ticker: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     tickers_show: bool = False,
 ):
     """Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]
@@ -44,12 +45,14 @@ def display_rsp(
             headers=list(rsp_stock.columns),
             show_index=False,
             title="Relative Strength Percentile of Stock (relative to SPY)",
+            export=bool(export),
         )
         print_rich_table(
             rsp_industry,
             headers=list(rsp_industry.columns),
             show_index=False,
             title="Relative Strength Percentile of Industry the ticker is part of",
+            export=bool(export),
         )
         if tickers_show:
             print_rich_table(

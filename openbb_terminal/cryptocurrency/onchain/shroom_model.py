@@ -6,7 +6,7 @@ from typing import List
 
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
@@ -31,7 +31,7 @@ def create_query(query: str):
         headers={
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "x-api-key": cfg.API_SHROOM_KEY,
+            "x-api-key": get_current_user().credentials.API_SHROOM_KEY,
         },
     )
     if r.status_code != 200:
@@ -49,7 +49,7 @@ def get_query_results(token):
         headers={
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "x-api-key": cfg.API_SHROOM_KEY,
+            "x-api-key": get_current_user().credentials.API_SHROOM_KEY,
         },
     )
     if r.status_code != 200:
@@ -79,6 +79,30 @@ def get_shroom_data(sql: str):
 
 @log_start_end(log=logger)
 @check_api_key(["API_SHROOM_KEY"])
+def get_query_data(sql: str) -> pd.DataFrame:
+    """Get query data
+
+    Parameters
+    ----------
+    sql : str
+        SQL query
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with query data
+    """
+    data = get_shroom_data(sql)
+
+    if data and data["results"] and data["columnLabels"]:
+        df = pd.DataFrame(data["results"], columns=data["columnLabels"])
+        return df
+
+    return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_SHROOM_KEY"])
 def get_dapp_stats(
     platform: str = "curve",
 ) -> pd.DataFrame:
@@ -99,8 +123,8 @@ def get_dapp_stats(
         sum(t.fee_usd) as fee,
         count(distinct(s.from_address)) as n_users,
         count(distinct(s.amount_usd)) as volume
-    from ethereum.dex_swaps s
-    join ethereum.transactions t
+    from ethereum.core.ez_dex_swaps s
+    join ethereum.core.fact_transactions t
         on s.tx_id = t.tx_id
     where platform = '{platform}'
     group by date
@@ -147,7 +171,7 @@ def get_daily_transactions(symbols: List[str]) -> pd.DataFrame:
     select
     date_trunc('day', block_timestamp) as timeframe,
     {extra_sql}
-    from  ethereum.udm_events
+    from  ethereum.core.udm_events
     where
     block_timestamp >= '2020-06-01'
     -- and amount0_usd > '0'
@@ -200,10 +224,11 @@ def get_total_value_locked(
     if not (user_address or address_name):
         console.print("[red]No user address or address name provided.[/red]")
         return pd.DataFrame()
-    if user_address:
-        extra_sql = f"user_address = '{user_address}' and"
-    else:
-        extra_sql = f"address_name = '{address_name}' and"
+    extra_sql = (
+        f"user_address = '{user_address}' and"
+        if user_address
+        else f"address_name = '{address_name}' and"
+    )
 
     sql = f"""
     SELECT
@@ -211,7 +236,7 @@ def get_total_value_locked(
         symbol,
         amount_usd/1000000 as amount_usd
     FROM
-        ethereum.erc20_balances
+        ethereum.core.erc20_balances
     WHERE
         {extra_sql}
         symbol = '{symbol}' AND

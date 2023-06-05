@@ -1,4 +1,5 @@
 # IMPORTS STANDARD
+
 import json
 import os
 import pathlib
@@ -19,14 +20,15 @@ from _pytest.mark.structures import Mark
 
 # IMPORTS INTERNAL
 from openbb_terminal import (
+    config_terminal,
     decorators,
-    feature_flags as obbff,
     helper_funcs,
 )
-from openbb_terminal.base_helpers import strtobool
+from openbb_terminal.core.session.current_system import set_system_variable
 
 # pylint: disable=redefined-outer-name
 
+config_terminal.setup_i18n()
 
 DISPLAY_LIMIT: int = 500
 EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]
@@ -36,8 +38,8 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
     "txt": [str],
 }
 
-os.environ["TEST_MODE"] = "True"
-obbff.ENABLE_EXIT_AUTO_HELP = strtobool("True")
+set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 
 
 class Record:
@@ -57,12 +59,16 @@ class Record:
         else:
             raise AttributeError(f"Unsupported type : {type(data)}")
 
-        return string_value
+        return string_value.replace("\r\n", "\n")
 
     @staticmethod
     def load_string(path: str) -> Optional[str]:
         if os.path.exists(path):
-            with open(file=path, encoding="utf-8") as f:
+            with open(
+                file=path,
+                encoding="utf-8",
+                newline="\n",  # Windows: newline="\r\n" Which is BAD
+            ) as f:
                 return f.read()
         else:
             return None
@@ -123,7 +129,12 @@ class Record:
             pathlib.Path(record_dir_name).mkdir(parents=True, exist_ok=True)
 
         # SAVE FILE
-        with open(file=record_path, mode="w", encoding="utf-8") as f:
+        with open(
+            file=record_path,
+            mode="w",
+            encoding="utf-8",
+            newline="\n",  # Windows: newline="\r\n" Which is BAD
+        ) as f:
             f.write(captured)
 
         # RELOAD RECORDED CONTENT
@@ -314,9 +325,9 @@ def record_stdout_format_kwargs(
 
 def pytest_addoption(parser: Parser):
     parser.addoption(
-        "--prediction",
+        "--forecast",
         action="store_true",
-        help="To run tests with the marker : @pytest.mark.prediction",
+        help="To run tests with the marker : @pytest.mark.forecast",
     )
     parser.addoption(
         "--optimization",
@@ -364,7 +375,7 @@ def disable_check_api():
 
 
 def enable_debug():
-    os.environ["DEBUG_MODE"] = "true"
+    set_system_variable("DEBUG_MODE", True)
 
 
 def pytest_configure(config: Config) -> None:
@@ -386,6 +397,11 @@ def rewrite_expected(request: SubRequest) -> bool:
 @pytest.fixture(autouse=True)
 def mock_matplotlib(mocker):
     mocker.patch("matplotlib.pyplot.show")
+
+
+@pytest.fixture(autouse=True)
+def mock_plotly(mocker):
+    mocker.patch("plotly.io.show")
 
 
 # pylint: disable=protected-access

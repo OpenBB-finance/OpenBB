@@ -63,7 +63,6 @@ def getFINRAweeks(tier: str = "T1", is_ats: bool = True) -> List:
     return response.json() if response.status_code == 200 else list()
 
 
-@log_start_end(log=logger)
 def getFINRAdata_offset(
     start_date: str,
     tier: str = "T1",
@@ -230,10 +229,7 @@ def getATSdata(limit: int = 1000, tier_ats: str = "T1") -> Tuple[pd.DataFrame, D
     Tuple[pd.DataFrame, Dict]
         Dark Pools (ATS) Data, Tickers from Dark Pools with better regression slope
     """
-    if tier_ats:
-        tiers = [tier_ats]
-    else:
-        tiers = ["T1", "T2", "OTCE"]
+    tiers = [tier_ats] if tier_ats else ["T1", "T2", "OTCE"]
     df_ats = pd.DataFrame()
 
     for tier in tiers:
@@ -317,7 +313,7 @@ def getTickerFINRAdata(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
             )
             if status_code == 200:
                 if response:
-                    d_data = response[0]
+                    d_data: dict = response[0]
                     d_data.update(d_week)
                     l_data.append(d_data)
                 else:

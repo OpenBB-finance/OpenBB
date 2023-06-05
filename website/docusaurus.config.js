@@ -3,6 +3,8 @@
 
 const lightCodeTheme = require("prism-react-renderer/themes/vsLight");
 const darkCodeTheme = require("prism-react-renderer/themes/vsDark");
+const math = require("remark-math");
+const katex = require("rehype-katex");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -27,15 +29,14 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
-
   plugins: [
     [
       "@docusaurus/plugin-client-redirects",
       {
         redirects: [
           {
-            from: "/terminal/guides/intros/forecasting",
-            to: "/terminal/guides/intros/forecast",
+            from: "/terminal/usage/intros/forecasting",
+            to: "/terminal/usage/intros/forecast",
           },
         ],
       },
@@ -51,7 +52,7 @@ const config = {
         },
       };
     },
-    [
+    /*[
       "@docusaurus/plugin-content-docs",
       {
         id: "sdk",
@@ -62,6 +63,17 @@ const config = {
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "bot",
+        path: "content/bot",
+        routeBasePath: "bot",
+        editUrl:
+          "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+        sidebarPath: require.resolve("./sidebars.js"),
+      },
+    ],*/
   ],
   presets: [
     [
@@ -72,8 +84,10 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
             "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
-          routeBasePath: "terminal",
-          path: "content/terminal",
+          routeBasePath: "/",
+          path: "content",
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -90,6 +104,7 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      // TODO - Jose can you make this so we get lighter color on main view - like bot docs
       colorMode: {
         defaultMode: "dark",
         disableSwitch: false,
@@ -102,6 +117,13 @@ const config = {
         contextualSearch: false,
       },
     }),
+
+  stylesheets: [
+    {
+      href: "/katex/katex.min.css",
+      type: "text/css",
+    },
+  ],
 };
 
 module.exports = config;

@@ -1,2 +1,2 @@
-  Symbol                    Buy / Sell Ratio                  Price Change          Company # Buy Orders # Sell Orders
-0   LCID  [green]75%[/green] Buys, 25% Sells  [red]-8.20 (-18.3363%)[/red]  LUCID GROUP INC       19,081         6,287
+  Symbol     Buy / Sell Ratio       Price Change          Company # Buy Orders # Sell Orders
+0   LCID  75% Buys, 25% Sells  -8.20 (-18.3363%)  LUCID GROUP INC       19,081         6,287

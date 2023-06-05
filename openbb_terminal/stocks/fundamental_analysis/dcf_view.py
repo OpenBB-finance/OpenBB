@@ -3,8 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
+import financedatabase as fd
 import numpy as np
 import pandas as pd
 import yfinance as yf
@@ -18,7 +19,7 @@ from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 
-# pylint: disable=C0302
+# pylint: disable=C0302,too-many-arguments,too-many-boolean-expressions
 
 
 logger = logging.getLogger(__name__)
@@ -29,6 +30,7 @@ class CreateExcelFA:
     def __init__(
         self,
         symbol: str,
+        beta: float,
         audit: bool = False,
         ratios: bool = True,
         len_pred: int = 10,
@@ -80,13 +82,42 @@ class CreateExcelFA:
             "IS": self.get_data("IS", self.starts["IS"], True),
             "CF": self.get_data("CF", self.starts["CF"], False),
         }
-        self.data: Dict[str, Any] = {
-            "now": datetime.now().strftime("%Y-%m-%d"),
-            "info": yf.Ticker(symbol).info,
-            "t_bill": get_rf(),
-            "r_ff": dcf_model.get_fama_coe(self.info["symbol"]),
-            "f_info": yf.Ticker(symbol).fast_info,
-        }
+
+        df_not_created = (
+            (not isinstance(self.df["BS"], pd.DataFrame) and not self.df["BS"])
+            and (not isinstance(self.df["IS"], pd.DataFrame) and not self.df["IS"])
+            and (not isinstance(self.df["CF"], pd.DataFrame) and not self.df["CF"])
+        )
+        equities_database = fd.Equities()
+        self.data: Dict[str, Any] = (
+            {
+                "now": datetime.now().strftime("%Y-%m-%d"),
+                "info": {
+                    "country": equities_database.data.loc[self.info["symbol"]][
+                        "country"
+                    ],
+                    "sector": equities_database.data.loc[self.info["symbol"]]["sector"],
+                    "industry_group": equities_database.data.loc[self.info["symbol"]][
+                        "industry_group"
+                    ],
+                    "industry": equities_database.data.loc[self.info["symbol"]][
+                        "industry"
+                    ],
+                    "beta": beta,
+                },
+                "t_bill": get_rf(),
+                "r_ff": dcf_model.get_fama_coe(self.info["symbol"]),
+                "f_info": yf.Ticker(symbol).fast_info,
+            }
+            if not df_not_created
+            else {}
+        )
+
+        if df_not_created:
+            console.print(
+                "It was not possible to create a DCF for this company.\n"
+                "Please consider that non US-listed companies are not supported."
+            )
 
     @log_start_end(log=logger)
     def create_workbook(self):
@@ -114,20 +145,26 @@ class CreateExcelFA:
 
         i = 0
         while True:
-            path = dcf_model.generate_path(i, self.info["symbol"], self.data["now"])
+            file_name = f"{self.data['now'].replace('-', '')}_dcf_{self.info['symbol']}"
+            path = dcf_model.generate_path(i, file_name)
             path.parent.mkdir(parents=True, exist_ok=True)
 
             if not path.is_file():
                 self.wb.save(path)
-                console.print(f"Analysis for {self.info['symbol']} At:\n{path}.\n")
+                console.print(
+                    f"Find the Discounted Cash Flow (DCF) Analysis of {self.info['symbol']} here: {path}"
+                )
                 break
             i += 1
 
     @log_start_end(log=logger)
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
-        df, rounding, _ = dcf_model.create_dataframe(self.info["symbol"], statement)
+        symbol = self.info["symbol"]
+        df, rounding, _ = dcf_model.create_dataframe(symbol, statement)
         if df.empty:
-            raise ValueError("Could not generate a dataframe for the ticker symbol")
+            raise ValueError(
+                f"Could not generate a dataframe for the ticker `{symbol}` and statement `{statement}`."
+            )
         self.info["rounding"] = rounding
         if not self.info["len_data"]:
             self.info["len_data"] = len(df.columns)
@@ -927,7 +964,7 @@ class CreateExcelFA:
         adds: List[str],
         subtracts: List[str],
         audit: bool = False,
-        text: str = None,
+        text: Optional[str] = None,
     ):
         col = 1 if audit else self.info["len_data"] + 1
         for i in range(self.info["len_data"] if audit else self.info["len_pred"]):
@@ -946,7 +983,6 @@ class CreateExcelFA:
         if text:
             self.custom_exp(row, text)
 
-    @log_start_end(log=logger)
     def title_to_row(self, title: str) -> int:
         df = (
             self.df["IS"]
@@ -970,7 +1006,7 @@ class CreateExcelFA:
 
     @log_start_end(log=logger)
     def custom_exp(
-        self, row: Union[int, str], text: str, ws: int = 1, column: str = None
+        self, row: Union[int, str], text: str, ws: int = 1, column: Optional[str] = None
     ):
         if ws == 1:
             rowT = row if isinstance(row, int) else self.title_to_row(row)
