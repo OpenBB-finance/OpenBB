@@ -1,7 +1,6 @@
 # pylint: disable=R0902
 import importlib
 import inspect
-import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
@@ -219,7 +218,11 @@ class PlotlyTA(PltTA):
     @staticmethod
     def _locate_plugins() -> None:
         """Locate all the plugins in the plugins folder"""
-        path = REPOSITORY_DIRECTORY if hasattr(sys, "frozen") else Path(os.getcwd())
+        path = (
+            Path(sys.executable).parent
+            if hasattr(sys, "frozen")
+            else REPOSITORY_DIRECTORY
+        )
         current_system = get_current_system()
 
         # This is for debugging purposes
@@ -354,6 +357,7 @@ class PlotlyTA(PltTA):
             1,
             shared_xaxes=True,
             vertical_spacing=0.06,
+            horizontal_spacing=0.01,
             row_width=[1],
             specs=[[{"secondary_y": True}]],
         )
@@ -373,7 +377,7 @@ class PlotlyTA(PltTA):
                 showlegend=False,
                 row=1,
                 col=1,
-                secondary_y=self.show_volume,
+                secondary_y=False,
             )
         else:
             fig.add_scatter(
@@ -383,7 +387,7 @@ class PlotlyTA(PltTA):
                 connectgaps=True,
                 row=1,
                 col=1,
-                secondary_y=self.show_volume,
+                secondary_y=False,
             )
             fig.update_layout(yaxis=dict(nticks=15))
             self.inchart_colors = theme.get_colors()[1:]
@@ -448,12 +452,12 @@ class PlotlyTA(PltTA):
                     if indicator in self.ma_mode:
                         if ma_done:
                             continue
-                        indicator, ma_done = "ma", True
+                        indicator, ma_done = "ma", True  # noqa
 
                     figure, inchart_index = getattr(self, f"plot_{indicator}")(
                         figure, self.df_ta, inchart_index
                     )
-                elif indicator in ["fib", "srlines", "demark", "clenow"]:
+                elif indicator in ["fib", "srlines", "demark", "clenow", "ichimoku"]:
                     figure = getattr(self, f"plot_{indicator}")(figure, self.df_ta)
                 else:
                     raise ValueError(f"Unknown indicator: {indicator}")
@@ -479,12 +483,12 @@ class PlotlyTA(PltTA):
                 continue
 
         figure.update(fig_new)
-        figure.set_yaxis_title(
-            "Price ($)",
+        figure.update_yaxes(
             row=1,
             col=1,
-            secondary_y=self.show_volume,
+            secondary_y=False,
             nticks=15 if subplot_row < 3 else 10,
+            tickfont=dict(size=16),
         )
         figure.update_traces(
             selector=dict(type="scatter", mode="lines"), connectgaps=True
@@ -497,11 +501,11 @@ class PlotlyTA(PltTA):
 
         # We remove xaxis labels from all but bottom subplot, and we make sure
         # they all match the bottom one
-        xbottom = f"y{subplot_row}"
-        for xa in figure.select_xaxes():
-            if subplot_row == 2:
+        xbottom = f"y{subplot_row+1}"
+        xaxes = list(figure.select_xaxes())
+        for xa in xaxes:
+            if xa == xaxes[-1]:
                 xa.showticklabels = True
-                break
             if not xa.showticklabels and xa.anchor != xbottom:
                 xa.showticklabels = False
             if xa.anchor != xbottom:
@@ -549,8 +553,7 @@ class PlotlyTA(PltTA):
         for trace in fig.select_traces():
             xref, yref = trace.xaxis, trace.yaxis
             row, col = subplots[xref][yref][0]
-            secondary_y = not row > 1 if self.show_volume else False
-            new_subplot.add_trace(trace, row=row, col=col, secondary_y=secondary_y)
+            new_subplot.add_trace(trace, row=row, col=col, secondary_y=False)
 
         fig_json = fig.to_plotly_json()["layout"]
         for layout in fig_json:

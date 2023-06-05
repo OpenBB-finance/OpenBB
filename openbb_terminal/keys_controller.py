@@ -5,19 +5,12 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List, Optional
+from typing import Callable, Dict, List, Optional
 
-from openbb_terminal import (
-    keys_model,
-    keys_view,
-)
-from openbb_terminal.core.config.paths import (
-    PACKAGE_ENV_FILE,
-    REPOSITORY_ENV_FILE,
-    SETTINGS_ENV_FILE,
-)
+from openbb_terminal import keys_model, keys_view
 from openbb_terminal.core.session.constants import KEYS_URL
 from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.env_handler import get_reading_order
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -38,9 +31,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     API_DICT = keys_model.API_DICT
     API_LIST = list(API_DICT.keys())
-    CHOICES_COMMANDS: List[str] = ["mykeys"] + API_LIST
+    CHOICES_COMMANDS: List[str] = ["mykeys", "status"] + API_LIST
     PATH = "/keys/"
     status_dict: Dict = {}
+    help_status_text: str = ""
 
     def __init__(
         self,
@@ -56,58 +50,71 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    def check_keys_status(self) -> None:
-        """Check keys status"""
-        for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
-            try:
-                self.status_dict[api] = getattr(
-                    keys_model, "check_" + str(api) + "_key"
-                )()
-            except Exception:
-                self.status_dict[api] = str(
-                    keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE
-                )
+    def get_check_keys_function(self, key: str) -> Callable:
+        """Get check `key` function from keys_model"""
+        return getattr(keys_model, f"check_{key}_key")
 
-    def print_help(self):
+    def check_keys_status(self, reevaluate: bool = False) -> None:
+        """Check keys status"""
+        if not self.status_dict or reevaluate:
+            for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
+                try:
+                    self.status_dict[api] = self.get_check_keys_function(api)()
+                except Exception:
+                    self.status_dict[api] = str(
+                        keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE
+                    )
+
+    def get_source_hierarchy(self) -> str:
+        """Hierarchy is equivalent to reverse order of reading .env files.
+
+        Returns
+        -------
+        str
+            Source priority string.
+        """
+        reading_order = get_reading_order()
+        hierarchy = "\n        ".join(list(map(str, reversed(reading_order))))
+        return hierarchy if is_local() else f"{KEYS_URL}\n        {hierarchy}"
+
+    def print_help(self, update_status: bool = True, reevaluate: bool = True):
         """Print help"""
-        self.check_keys_status()
+        self.check_keys_status(reevaluate=reevaluate)
         mt = MenuText("keys/")
         mt.add_param(
             "_source",
-            f"{SETTINGS_ENV_FILE}\n        {PACKAGE_ENV_FILE}\n        {REPOSITORY_ENV_FILE}"
-            if is_local()
-            else KEYS_URL,
+            self.get_source_hierarchy(),
         )
         mt.add_raw("\n")
         mt.add_info("_keys_")
         mt.add_raw("\n")
         mt.add_cmd("mykeys")
+        mt.add_cmd("status")
         mt.add_raw("\n")
         mt.add_info("_status_")
 
-        for cmd_name, status_msg in self.status_dict.items():
-            api_name = self.API_DICT[cmd_name]
+        status_color_map = {
+            keys_model.KeyStatus.DEFINED_TEST_PASSED.value: "green",
+            keys_model.KeyStatus.DEFINED_TEST_FAILED.value: "red",
+            keys_model.KeyStatus.DEFINED_NOT_TESTED.value: "yellow",
+            keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE.value: "yellow",
+            keys_model.KeyStatus.NOT_DEFINED.value: "grey30",
+        }
 
-            c = "grey30"
-            if status_msg == str(keys_model.KeyStatus.DEFINED_TEST_PASSED):
-                c = "green"
-            elif status_msg == str(keys_model.KeyStatus.DEFINED_TEST_FAILED):
-                c = "red"
-            elif status_msg == str(keys_model.KeyStatus.DEFINED_NOT_TESTED):
-                c = "yellow"
-            elif status_msg == str(keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE):
-                c = "yellow"
-            elif status_msg == str(keys_model.KeyStatus.NOT_DEFINED):
-                c = "grey30"
+        if not self.help_status_text or update_status:
+            for cmd_name, status_msg in self.status_dict.items():
+                api_name = self.API_DICT[cmd_name]
 
-            if status_msg is None:
-                status_msg = str(keys_model.KeyStatus.NOT_DEFINED)
-            mt.add_raw(
-                f"    [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
-                f" [{c}] {api_name} {(25 - len(api_name)) * ' '} {translate(status_msg)} [/{c}]\n"
-            )
+                c = status_color_map.get(status_msg, "grey30")
+                status_msg = status_msg or keys_model.KeyStatus.NOT_DEFINED.value
 
-        console.print(text=mt.menu_text, menu="Keys")
+                mt.add_raw(
+                    f"    [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
+                    f" [{c}] {api_name} {(25 - len(api_name)) * ' '} {translate(status_msg)} [/{c}]\n"
+                )
+            self.help_status_text = mt.menu_text
+
+        console.print(text=self.help_status_text, menu="Keys")
 
     @log_start_end(log=logger)
     def call_mykeys(self, other_args: List[str]):
@@ -119,7 +126,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             description="Display current keys.",
         )
         parser.add_argument(
-            "-s", "--show", type=bool, dest="show", help="show", default=False
+            "-s",
+            "--show",
+            type=bool,
+            dest="show",
+            help="See keys in raw text instead of the default protected display.",
+            default=False,
         )
         if other_args and "-s" in other_args[0]:
             other_args.insert(1, "True")
@@ -136,6 +148,50 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 if ns_parser.sheet_name
                 else None,
             )
+
+    @log_start_end(log=logger)
+    def call_status(self, other_args: List[str]):
+        """Display current keys status with the option to force the check"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="status",
+            description="Reevaluate keys status.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="Force the status to reevaluate for a specific key.",
+            default=None,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        is_key = bool(ns_parser and ns_parser.key)
+
+        if is_key:
+            if ns_parser.key in self.API_LIST:
+                try:
+                    status = self.get_check_keys_function(ns_parser.key)(True)
+                    self.status_dict[ns_parser.key] = status
+                    console.print("")
+                except Exception:
+                    status = keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE
+                    self.status_dict[ns_parser.key] = str(status)
+                    console.print(f"{status.colorize()}\n")
+            else:
+                console.print(f"[red]Key `{ns_parser.key}` is not a valid key.[/red]")
+                return
+
+        if "-h" not in other_args and "--help" not in other_args:
+            self.print_help(update_status=True, reevaluate=not is_key)
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
@@ -338,6 +394,34 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             )
 
     @log_start_end(log=logger)
+    def call_biztoc(self, other_args: List[str]):
+        """Process BizToc API command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="news",
+            description="Set BizToc API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, visit: https://api.biztoc.com")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["biztoc"] = keys_model.set_biztoc_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
     def call_tradier(self, other_args: List[str]):
         """Process Tradier API command"""
         parser = argparse.ArgumentParser(
@@ -434,7 +518,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_id",
             help="Client ID",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -442,7 +526,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="client_secret",
             help="Client Secret",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-u",
@@ -450,7 +534,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="username",
             help="Username",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -458,7 +542,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="password",
             help="Password",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-a",
@@ -466,7 +550,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="user_agent",
             help="User agent",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             nargs="+",
         )
         if not other_args:
@@ -504,7 +588,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -512,7 +596,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret",
             help="Secret key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-t",
@@ -520,7 +604,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="token",
             help="Bearer token",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://developer.twitter.com")
@@ -585,7 +669,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="username",
             help="username",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -593,7 +677,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="password",
             help="password",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -674,7 +758,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -682,7 +766,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret",
             help="Secret key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://binance.com")
@@ -738,7 +822,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -746,7 +830,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret",
             help="Secret key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -754,7 +838,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="passphrase",
             help="Passphrase",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://docs.pro.coinbase.com/")
@@ -927,7 +1011,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         parser.add_argument(
             "-t",
@@ -935,7 +1019,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="token",
             help="Token",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://www.smartstake.io")
@@ -1205,8 +1289,65 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
+
         ns_parser = self.parse_simple_args(parser, other_args)
+
         if ns_parser:
             self.status_dict["openai"] = keys_model.set_openai_key(
                 key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_ultima(self, other_args: List[str]):
+        """Process ultima command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ultima",
+            description="Set Ultima Insights API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, https://ultimainsights.ai/")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["ultima"] = keys_model.set_ultima_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_dappradar(self, other_args: List[str]):
+        """Process dappradar command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dappradar",
+            description="Set DappRadar API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, visit: https://dappradar.com/api")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["dappradar"] = keys_model.set_dappradar_key(
             )

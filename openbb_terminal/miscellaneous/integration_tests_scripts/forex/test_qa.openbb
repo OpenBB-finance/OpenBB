@@ -1,0 +1,61 @@
+forex
+load ${currency=EUR}${currency_vs=USD} --source YahooFinance
+qa
+summary
+normality
+unitroot
+unitroot --fuller_reg ctt --kps_reg c
+line
+line --log
+hist
+hist --bins 16
+cdf
+bw
+bw --yearly
+acf
+acf --lags 5
+qqplot
+rolling
+rolling --window 10
+spread
+spread -w 5
+quantile
+quantile -w 5 -q 0.01
+skew
+skew --window 5
+kurtosis
+kurtosis --w 10
+var
+es
+raw
+raw --limit 10 --reverse
+decompose
+decompose --multiplicative
+cusum
+cusum -t 0.01 -d 0.01
+..
+load ${currency=EUR}${currency_vsUSD} --source YahooFinance
+qa
+summary
+normality
+unitroot
+line
+hist
+cdf
+bw
+acf
+qqplot
+rolling
+spread
+quantile
+skew
+kurtosis
+var
+es
+raw
+decompose
+cusum
+pick -t High
+help
+reset
+exit

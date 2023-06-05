@@ -93,6 +93,8 @@ def display_sentiment_compare(
         print_rich_table(
             df_sentiment,
             headers=list(df_sentiment.columns),
+            show_index=True,
+            index_name="Date",
             title="Ticker Sentiment",
             export=bool(export),
         )
@@ -106,7 +108,7 @@ def display_sentiment_compare(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -194,4 +196,4 @@ def display_sentiment_correlation(
         sheet_name,
         fig,
     )
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

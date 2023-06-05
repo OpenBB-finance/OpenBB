@@ -87,7 +87,7 @@ d_signals = {
 def get_screener_data(
     preset_loaded: str = "top_gainers",
     data_type: str = "overview",
-    limit: int = 10,
+    limit: int = -1,
     ascend: bool = False,
 ):
     """Screener Overview
@@ -187,6 +187,10 @@ def get_screener_data(
                 df_screen = screen.screener_view(limit=limit, ascend=ascend)
             else:
                 df_screen = screen.screener_view(ascend=ascend)
+
+    df_screen = df_screen.rename(columns={"\n\nTicker": "Ticker"})
+    if "Company" in df_screen.columns:
+        df_screen["Company"] = df_screen["Company"].str.replace(",", "")
 
     return df_screen
 

@@ -1,7 +1,7 @@
 ---
 title: PyPI
 sidebar_position: 4
-description: This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems.
+description: This section provides steps to install the OpenBB Terminal from PyPI. This installation type supports Windows, macOS and Linux systems.
 keywords:
   [
     installation,
@@ -17,8 +17,20 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    pypi,
+    miniconda,
+    git,
+    c++,
+    rosetta2,
+    libomp,
+    vcxsrv,
+    gtk
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="PyPI - Terminal | OpenBB Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -157,7 +169,7 @@ sudo apt install libwebkit2gtk-4.0-dev
 <summary>Arch Linux / Manjaro</summary>
 
 ```shell
-sudo pacman -S webkit2gtk-4.0
+sudo pacman -S webkit2gtk
 ```
 
 </details>
@@ -166,7 +178,7 @@ sudo pacman -S webkit2gtk-4.0
 <summary>Fedora</summary>
 
 ```shell
-sudo dnf install gtk3-devel webkit2gtk4.0-devel
+sudo dnf install gtk3-devel webkit2gtk3-devel
 ```
 
 </details>
@@ -182,8 +194,12 @@ Create the environment using a configuration file from the OpenBB Terminal repos
 Copy and paste these commands into the terminal/command prompt:
 
 ```shell
-conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/conda-3-9-env.yaml
+conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/conda/conda-3-9-env.yaml
 ```
+
+:::note
+Additional `YAML` files provide support for Python versions 3.8 and 3.10.  Substitute the `9`, in the command above, with the desired version.
+:::
 
 Agree to the prompts if there are any.
 
@@ -223,6 +239,10 @@ Install all available toolkits at once with:
 pip install "openbb[all]" --no-cache-dir
 ```
 
+:::info
+`pip install openbb[all]` is not yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK.  It may be possible to install without the extra toolkits, but we currently do not officially support this type of installation.  We are working on a solution to this problem and will update this section once it is resolved.
+:::
+
 ## Verify Installation
 
 Once this installation process is completed, the terminal is launched by running:
@@ -240,8 +260,8 @@ openbb.__version__
 
 You should see the version number displayed, for example:
 
-```python
-'2.5.1'
+```console
+'3.0.1'
 ```
 
 That's it!

@@ -1,0 +1,37 @@
+stocks
+load AAPL
+ins
+view
+view whales
+set Electronics
+filter -l 4
+filter -l 2 -u
+stats
+stats -u
+act --raw
+act
+lins
+lcb
+lpsb
+lit
+lip
+blip
+blop
+blcp
+lis
+blis
+blos
+blcs
+topt
+toppw
+toppm
+tipt
+tippw
+tippm
+tist
+tispw
+tispm
+help
+reset
+..
+exit

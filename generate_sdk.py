@@ -8,8 +8,11 @@ from typing import Any, Dict, List, Optional, TextIO
 
 from openbb_terminal.core.sdk.sdk_helpers import get_sdk_imports_text
 from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.rich_config import console
 
+set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 REPO_ROOT = Path(__file__).parent.joinpath("openbb_terminal").resolve()
 
 sub_names = {
@@ -63,7 +66,7 @@ class SDKLogger:
     def _try_to_login(sdk: "OpenBBSDK"):
         if is_local() and is_auth_enabled():
             try:
-                sdk.login()
+                sdk.login(silent=True)
             except Exception:
                 pass
 
@@ -546,9 +549,9 @@ def generate_sdk(sort: bool = False) -> bool:
     """
     trailmaps = get_trailmaps(sort)
     try:
-        console.print("[yellow]Generating SDK...[/]")
+        console.print("[yellow]Generating SDK...[/yellow]")
         BuildCategoryModelClasses(trailmaps).build()
-        console.print("[green]SDK Generated Successfully.[/]")
+        console.print("[green]SDK Generated Successfully.[/green]")
     except Exception as e:
         console.print(f"[red]Error generating SDK: {e}[/]")
         return False

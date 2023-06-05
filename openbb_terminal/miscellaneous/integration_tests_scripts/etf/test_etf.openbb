@@ -7,7 +7,18 @@ weights --raw
 candle
 candle --raw
 candle --sort adjclose --reverse --raw
+candle -ma
 candle -t --ma 4
+candle -t -ma
 news
 compare spy,ivv
+disc
+..
+ca
+quit
+help
+search -n vol
+ta
+..
+reset
 exit

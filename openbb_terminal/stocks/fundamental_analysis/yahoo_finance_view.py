@@ -245,6 +245,9 @@ def display_splits(
             )
             fig.add_vline(x=index, line_width=2, line_color=theme.down_color)
 
+    df_splits.index = pd.to_datetime(df_splits.index, format="%Y%m%d").strftime(
+        "%Y-%m-%d"
+    )
     print_rich_table(
         df_splits,
         title=f"{symbol.upper()} splits and reverse splits",
@@ -326,7 +329,7 @@ def display_mktcap(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)

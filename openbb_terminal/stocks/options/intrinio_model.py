@@ -39,7 +39,6 @@ columns_to_drop = [
 ]
 
 
-@log_start_end(log=logger)
 def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
     """Adds a column calculating the difference between expiration and the date data is from
 
@@ -63,8 +62,7 @@ def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
         lambda row: (
             datetime.strptime(row["expiration"], "%Y-%m-%d")
             - datetime.strptime(row["date"], "%Y-%m-%d")
-        ).days
-        / 365,
+        ).days,
         axis=1,
     )
     return chain_df
@@ -234,7 +232,7 @@ def get_full_chain_eod(symbol: str, date: str, quiet: bool = False) -> pd.DataFr
     >>> eod_chain = openbb.stocks.options.eodchain("AAPL", date="2022-12-23")
 
     """
-    expirations = get_expiration_dates(symbol)
+    expirations = get_expiration_dates(symbol, start=date)
     # Since we can't have expirations in the past, lets do something fun:
     # Note that there is an issue with using >= in that when the date = expiration, the dte will be 0, so iv*dte = 0*0
     expirations = list(filter(lambda x: x > date, expirations))
@@ -338,7 +336,12 @@ def get_historical_options(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of historical option chain
     """
-    historical = pd.DataFrame(api.get_options_prices_eod(symbol).to_dict()["prices"])
+    try:
+        historical = pd.DataFrame(
+            api.get_options_prices_eod(symbol).to_dict()["prices"]
+        )
+    except Exception:
+        return pd.DataFrame()
     historical = historical[
         [
             "date",

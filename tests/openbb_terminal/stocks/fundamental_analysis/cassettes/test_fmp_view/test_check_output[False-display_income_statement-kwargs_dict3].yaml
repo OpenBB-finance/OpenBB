@@ -15,16 +15,16 @@ interactions:
         \   \"acceptedDate\": \"2023-02-10 08:20:35\",\n    \"calendarYear\": \"2022\",\n
         \   \"period\": \"FY\",\n    \"revenue\": 31762000000,\n    \"costOfRevenue\":
         11402000000,\n    \"grossProfit\": 20360000000,\n    \"grossProfitRatio\":
-        0.6410175681632139,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0.6410175682,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
         8138000000,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
         8138000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 8138000000,\n
         \   \"costAndExpenses\": 19540000000,\n    \"interestIncome\": 180000000,\n
         \   \"interestExpense\": 768000000,\n    \"depreciationAndAmortization\":
-        1189000000,\n    \"ebitda\": 13591000000,\n    \"ebitdaratio\": 0.42790126566337133,\n
-        \   \"operatingIncome\": 12222000000,\n    \"operatingIncomeRatio\": 0.3662867577608463,\n
-        \   \"totalOtherIncomeExpensesNet\": 0,\n    \"incomeBeforeTax\": 11634000000,\n
-        \   \"incomeBeforeTaxRatio\": 0.3662867577608463,\n    \"incomeTaxExpense\":
-        2244000000,\n    \"netIncome\": 9048000000,\n    \"netIncomeRatio\": 0.2848687110383477,\n
+        1003000000,\n    \"ebitda\": 13249000000,\n    \"ebitdaratio\": 0.4171336818,\n
+        \   \"operatingIncome\": 12246000000,\n    \"operatingIncomeRatio\": 0.3855550658,\n
+        \   \"totalOtherIncomeExpensesNet\": -612000000,\n    \"incomeBeforeTax\":
+        11634000000,\n    \"incomeBeforeTaxRatio\": 0.3662867578,\n    \"incomeTaxExpense\":
+        2244000000,\n    \"netIncome\": 9048000000,\n    \"netIncomeRatio\": 0.284868711,\n
         \   \"eps\": 5.81,\n    \"epsdiluted\": 5.81,\n    \"weightedAverageShsOut\":
         1557000000,\n    \"weightedAverageShsOutDil\": 1557000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/0001413329-23-000025-index.htm\",\n
@@ -34,17 +34,17 @@ interactions:
         \   \"acceptedDate\": \"2022-02-11 08:29:22\",\n    \"calendarYear\": \"2021\",\n
         \   \"period\": \"FY\",\n    \"revenue\": 31405000000,\n    \"costOfRevenue\":
         10030000000,\n    \"grossProfit\": 21375000000,\n    \"grossProfitRatio\":
-        0.6806241044419679,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0.6806241044,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
         8419000000,\n    \"sellingAndMarketingExpenses\": 8304000000,\n    \"sellingGeneralAndAdministrativeExpenses\":
-        8419000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 8515000000,\n
-        \   \"costAndExpenses\": 18545000000,\n    \"interestIncome\": 109000000,\n
-        \   \"interestExpense\": 737000000,\n    \"depreciationAndAmortization\":
-        998000000,\n    \"ebitda\": 13967000000,\n    \"ebitdaratio\": 0.44473809902881706,\n
-        \   \"operatingIncome\": 12860000000,\n    \"operatingIncomeRatio\": 0.38949211908931697,\n
-        \   \"totalOtherIncomeExpensesNet\": 0,\n    \"incomeBeforeTax\": 12232000000,\n
-        \   \"incomeBeforeTaxRatio\": 0.38949211908931697,\n    \"incomeTaxExpense\":
-        2671000000,\n    \"netIncome\": 9109000000,\n    \"netIncomeRatio\": 0.29004935519821684,\n
-        \   \"eps\": 5.83,\n    \"epsdiluted\": 5.83,\n    \"weightedAverageShsOut\":
+        8419000000,\n    \"otherExpenses\": 96000000,\n    \"operatingExpenses\":
+        8515000000,\n    \"costAndExpenses\": 18545000000,\n    \"interestIncome\":
+        109000000,\n    \"interestExpense\": 737000000,\n    \"depreciationAndAmortization\":
+        540000000,\n    \"ebitda\": 13515000000,\n    \"ebitdaratio\": 0.4303454864,\n
+        \   \"operatingIncome\": 12975000000,\n    \"operatingIncomeRatio\": 0.4131507722,\n
+        \   \"totalOtherIncomeExpensesNet\": -743000000,\n    \"incomeBeforeTax\":
+        12232000000,\n    \"incomeBeforeTaxRatio\": 0.3894921191,\n    \"incomeTaxExpense\":
+        2671000000,\n    \"netIncome\": 9109000000,\n    \"netIncomeRatio\": 0.2900493552,\n
+        \   \"eps\": 5.85,\n    \"epsdiluted\": 5.84,\n    \"weightedAverageShsOut\":
         1558000000,\n    \"weightedAverageShsOutDil\": 1559000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm\"\n
@@ -53,16 +53,16 @@ interactions:
         \   \"acceptedDate\": \"2021-02-09 16:20:37\",\n    \"calendarYear\": \"2020\",\n
         \   \"period\": \"FY\",\n    \"revenue\": 28694000000,\n    \"costOfRevenue\":
         9569000000,\n    \"grossProfit\": 19125000000,\n    \"grossProfitRatio\":
-        0.666515647870635,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
-        97000000,\n    \"sellingAndMarketingExpenses\": 7384000000,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        0.6665156479,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        7481000000,\n    \"sellingAndMarketingExpenses\": 7384000000,\n    \"sellingGeneralAndAdministrativeExpenses\":
         7481000000,\n    \"otherExpenses\": 73000000,\n    \"operatingExpenses\":
         7554000000,\n    \"costAndExpenses\": 17123000000,\n    \"interestIncome\":
-        110000000,\n    \"interestExpense\": 728000000,\n    \"depreciationAndAmortization\":
-        981000000,\n    \"ebitda\": 12142000000,\n    \"ebitdaratio\": 0.42315466648079736,\n
-        \   \"operatingIncome\": 11668000000,\n    \"operatingIncomeRatio\": 0.4066355335610232,\n
+        110000000,\n    \"interestExpense\": 618000000,\n    \"depreciationAndAmortization\":
+        -24000000,\n    \"ebitda\": 11644000000,\n    \"ebitdaratio\": 0.4057991218,\n
+        \   \"operatingIncome\": 11668000000,\n    \"operatingIncomeRatio\": 0.4066355336,\n
         \   \"totalOtherIncomeExpensesNet\": -715000000,\n    \"incomeBeforeTax\":
-        10953000000,\n    \"incomeBeforeTaxRatio\": 0.38171743221579424,\n    \"incomeTaxExpense\":
-        2377000000,\n    \"netIncome\": 8056000000,\n    \"netIncomeRatio\": 0.28075555865337704,\n
+        10953000000,\n    \"incomeBeforeTaxRatio\": 0.3817174322,\n    \"incomeTaxExpense\":
+        2377000000,\n    \"netIncome\": 8056000000,\n    \"netIncomeRatio\": 0.2807555587,\n
         \   \"eps\": 5.16,\n    \"epsdiluted\": 5.16,\n    \"weightedAverageShsOut\":
         1557000000,\n    \"weightedAverageShsOutDil\": 1558000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/0001413329-21-000007-index.htm\",\n
@@ -72,16 +72,16 @@ interactions:
         \   \"acceptedDate\": \"2020-02-07 06:47:13\",\n    \"calendarYear\": \"2019\",\n
         \   \"period\": \"FY\",\n    \"revenue\": 29805000000,\n    \"costOfRevenue\":
         10513000000,\n    \"grossProfit\": 19292000000,\n    \"grossProfitRatio\":
-        0.6472739473242745,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
-        8784000000,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        0.6472739473,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        8784000000,\n    \"sellingAndMarketingExpenses\": 8695000000,\n    \"sellingGeneralAndAdministrativeExpenses\":
         8784000000,\n    \"otherExpenses\": 66000000,\n    \"operatingExpenses\":
         8850000000,\n    \"costAndExpenses\": 19363000000,\n    \"interestIncome\":
-        226000000,\n    \"interestExpense\": 796000000,\n    \"depreciationAndAmortization\":
-        964000000,\n    \"ebitda\": 11238000000,\n    \"ebitdaratio\": 0.3770508303975843,\n
-        \   \"operatingIncome\": 10531000000,\n    \"operatingIncomeRatio\": 0.3533299781915786,\n
+        226000000,\n    \"interestExpense\": 570000000,\n    \"depreciationAndAmortization\":
+        -23000000,\n    \"ebitda\": 10508000000,\n    \"ebitdaratio\": 0.3525582956,\n
+        \   \"operatingIncome\": 10531000000,\n    \"operatingIncomeRatio\": 0.3533299782,\n
         \   \"totalOtherIncomeExpensesNet\": -659000000,\n    \"incomeBeforeTax\":
-        9872000000,\n    \"incomeBeforeTaxRatio\": 0.3312195940278477,\n    \"incomeTaxExpense\":
-        2293000000,\n    \"netIncome\": 7185000000,\n    \"netIncomeRatio\": 0.24106693507800706,\n
+        9872000000,\n    \"incomeBeforeTaxRatio\": 0.331219594,\n    \"incomeTaxExpense\":
+        2293000000,\n    \"netIncome\": 7185000000,\n    \"netIncomeRatio\": 0.2410669351,\n
         \   \"eps\": 4.61,\n    \"epsdiluted\": 4.61,\n    \"weightedAverageShsOut\":
         1555000000,\n    \"weightedAverageShsOutDil\": 1556000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/0001413329-20-000007-index.htm\",\n
@@ -92,16 +92,16 @@ interactions:
         \   \"period\": \"FY\",\n    \"revenue\": 29625000000,\n    \"costOfRevenue\":
         10758000000,\n    \"grossProfit\": 18867000000,\n    \"grossProfitRatio\":
         0.6368607594936709,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
-        7449000000,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        7449000000,\n    \"sellingAndMarketingExpenses\": 7408000000,\n    \"sellingGeneralAndAdministrativeExpenses\":
         7449000000,\n    \"otherExpenses\": 82000000,\n    \"operatingExpenses\":
         7531000000,\n    \"costAndExpenses\": 18289000000,\n    \"interestIncome\":
         190000000,\n    \"interestExpense\": 855000000,\n    \"depreciationAndAmortization\":
         989000000,\n    \"ebitda\": 12200000000,\n    \"ebitdaratio\": 0.4118143459915612,\n
         \   \"operatingIncome\": 11377000000,\n    \"operatingIncomeRatio\": 0.3840337552742616,\n
-        \   \"totalOtherIncomeExpensesNet\": -706000000,\n    \"incomeBeforeTax\":
+        \   \"totalOtherIncomeExpensesNet\": -41000000,\n    \"incomeBeforeTax\":
         10671000000,\n    \"incomeBeforeTaxRatio\": 0.36020253164556965,\n    \"incomeTaxExpense\":
         2445000000,\n    \"netIncome\": 7911000000,\n    \"netIncomeRatio\": 0.2670379746835443,\n
-        \   \"eps\": 5.08,\n    \"epsdiluted\": 5.08,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 5.09,\n    \"epsdiluted\": 5.09,\n    \"weightedAverageShsOut\":
         1555000000,\n    \"weightedAverageShsOutDil\": 1555000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/0001413329-19-000007-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/pm123118form10kwrapinclfsm.htm\"\n
@@ -120,7 +120,7 @@ interactions:
         \   \"totalOtherIncomeExpensesNet\": -914000000,\n    \"incomeBeforeTax\":
         10589000000,\n    \"incomeBeforeTaxRatio\": 0.36833866703770696,\n    \"incomeTaxExpense\":
         4307000000,\n    \"netIncome\": 6035000000,\n    \"netIncomeRatio\": 0.20992764714067066,\n
-        \   \"eps\": 3.88,\n    \"epsdiluted\": 3.88,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 3.89,\n    \"epsdiluted\": 3.89,\n    \"weightedAverageShsOut\":
         1552000000,\n    \"weightedAverageShsOutDil\": 1553000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/0001413329-18-000007-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332918000007/pm123117form10kwrapinclfsm.htm\"\n
@@ -139,7 +139,7 @@ interactions:
         \   \"totalOtherIncomeExpensesNet\": -891000000,\n    \"incomeBeforeTax\":
         9924000000,\n    \"incomeBeforeTaxRatio\": 0.37189432265317596,\n    \"incomeTaxExpense\":
         2768000000,\n    \"netIncome\": 6967000000,\n    \"netIncomeRatio\": 0.2610830054337643,\n
-        \   \"eps\": 4.48,\n    \"epsdiluted\": 4.48,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 4.49,\n    \"epsdiluted\": 4.49,\n    \"weightedAverageShsOut\":
         1551000000,\n    \"weightedAverageShsOutDil\": 1551000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332917000014/0001413329-17-000014-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332917000014/pm123116form10kwrapinclfsm.htm\"\n
@@ -155,10 +155,10 @@ interactions:
         124000000,\n    \"interestExpense\": 1132000000,\n    \"depreciationAndAmortization\":
         754000000,\n    \"ebitda\": 11447000000,\n    \"ebitdaratio\": 0.42722251250279913,\n
         \   \"operatingIncome\": 10623000000,\n    \"operatingIncomeRatio\": 0.3964693588116743,\n
-        \   \"totalOtherIncomeExpensesNet\": -1008000000,\n    \"incomeBeforeTax\":
+        \   \"totalOtherIncomeExpensesNet\": -68000000,\n    \"incomeBeforeTax\":
         9615000000,\n    \"incomeBeforeTaxRatio\": 0.3588489960438904,\n    \"incomeTaxExpense\":
         2688000000,\n    \"netIncome\": 6873000000,\n    \"netIncomeRatio\": 0.256512652086288,\n
-        \   \"eps\": 4.42,\n    \"epsdiluted\": 4.42,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 4.44,\n    \"epsdiluted\": 4.44,\n    \"weightedAverageShsOut\":
         1549000000,\n    \"weightedAverageShsOutDil\": 1549000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332916000076/0001413329-16-000076-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332916000076/pm123115form10kwrapinclfsm.htm\"\n
@@ -174,10 +174,10 @@ interactions:
         118000000,\n    \"interestExpense\": 1170000000,\n    \"depreciationAndAmortization\":
         889000000,\n    \"ebitda\": 12649000000,\n    \"ebitdaratio\": 0.42493365135888733,\n
         \   \"operatingIncome\": 11702000000,\n    \"operatingIncomeRatio\": 0.39311989787348406,\n
-        \   \"totalOtherIncomeExpensesNet\": -1052000000,\n    \"incomeBeforeTax\":
+        \   \"totalOtherIncomeExpensesNet\": -535000000,\n    \"incomeBeforeTax\":
         10650000000,\n    \"incomeBeforeTaxRatio\": 0.35777874827829476,\n    \"incomeTaxExpense\":
         3097000000,\n    \"netIncome\": 7493000000,\n    \"netIncomeRatio\": 0.25172170524406223,\n
-        \   \"eps\": 4.76,\n    \"epsdiluted\": 4.76,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 4.78,\n    \"epsdiluted\": 4.78,\n    \"weightedAverageShsOut\":
         1566000000,\n    \"weightedAverageShsOutDil\": 1566000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332915000016/0001413329-15-000016-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332915000016/pm12312014form10kwrapinclf.htm\"\n
@@ -193,10 +193,10 @@ interactions:
         131000000,\n    \"interestExpense\": 1104000000,\n    \"depreciationAndAmortization\":
         882000000,\n    \"ebitda\": 14232000000,\n    \"ebitdaratio\": 0.45590543614056445,\n
         \   \"operatingIncome\": 13515000000,\n    \"operatingIncomeRatio\": 0.432937181663837,\n
-        \   \"totalOtherIncomeExpensesNet\": -973000000,\n    \"incomeBeforeTax\":
+        \   \"totalOtherIncomeExpensesNet\": -309000000,\n    \"incomeBeforeTax\":
         12542000000,\n    \"incomeBeforeTaxRatio\": 0.4017682672902585,\n    \"incomeTaxExpense\":
         3670000000,\n    \"netIncome\": 8576000000,\n    \"netIncomeRatio\": 0.274722106544511,\n
-        \   \"eps\": 5.26,\n    \"epsdiluted\": 5.26,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 5.29,\n    \"epsdiluted\": 5.29,\n    \"weightedAverageShsOut\":
         1622000000,\n    \"weightedAverageShsOutDil\": 1622000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332914000012/0001413329-14-000012-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332914000012/pm1231201310-k.htm\"\n
@@ -212,10 +212,10 @@ interactions:
         148000000,\n    \"interestExpense\": 1007000000,\n    \"depreciationAndAmortization\":
         898000000,\n    \"ebitda\": 14538000000,\n    \"ebitdaratio\": 0.4633330146285496,\n
         \   \"operatingIncome\": 13846000000,\n    \"operatingIncomeRatio\": 0.44127864359244034,\n
-        \   \"totalOtherIncomeExpensesNet\": -859000000,\n    \"incomeBeforeTax\":
+        \   \"totalOtherIncomeExpensesNet\": -83000000,\n    \"incomeBeforeTax\":
         12987000000,\n    \"incomeBeforeTaxRatio\": 0.41390190266755905,\n    \"incomeTaxExpense\":
         3833000000,\n    \"netIncome\": 8800000000,\n    \"netIncomeRatio\": 0.2804602097077477,\n
-        \   \"eps\": 5.17,\n    \"epsdiluted\": 5.17,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 5.2,\n    \"epsdiluted\": 5.2,\n    \"weightedAverageShsOut\":
         1692000000,\n    \"weightedAverageShsOutDil\": 1692000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000141332913000019/0001413329-13-000019-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332913000019/pm1231201210-k.htm\"\n
@@ -231,10 +231,10 @@ interactions:
         134000000,\n    \"interestExpense\": 934000000,\n    \"depreciationAndAmortization\":
         993000000,\n    \"ebitda\": 14171000000,\n    \"ebitdaratio\": 0.4557031224876998,\n
         \   \"operatingIncome\": 13332000000,\n    \"operatingIncomeRatio\": 0.4287230279448178,\n
-        \   \"totalOtherIncomeExpensesNet\": -800000000,\n    \"incomeBeforeTax\":
+        \   \"totalOtherIncomeExpensesNet\": -109000000,\n    \"incomeBeforeTax\":
         12532000000,\n    \"incomeBeforeTaxRatio\": 0.40299707367270154,\n    \"incomeTaxExpense\":
         3653000000,\n    \"netIncome\": 8591000000,\n    \"netIncomeRatio\": 0.27626459143968873,\n
-        \   \"eps\": 4.977668,\n    \"epsdiluted\": 4.977668,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 4.98,\n    \"epsdiluted\": 4.98,\n    \"weightedAverageShsOut\":
         1725908666,\n    \"weightedAverageShsOutDil\": 1725908666,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000119312512076983/0001193125-12-076983-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312512076983/d258717d10k.htm\"\n
@@ -250,10 +250,10 @@ interactions:
         98000000,\n    \"interestExpense\": 974000000,\n    \"depreciationAndAmortization\":
         932000000,\n    \"ebitda\": 11991000000,\n    \"ebitdaratio\": 0.4407159658923846,\n
         \   \"operatingIncome\": 11200000000,\n    \"operatingIncomeRatio\": 0.4116436342252279,\n
-        \   \"totalOtherIncomeExpensesNet\": -876000000,\n    \"incomeBeforeTax\":
+        \   \"totalOtherIncomeExpensesNet\": -47000000,\n    \"incomeBeforeTax\":
         10324000000,\n    \"incomeBeforeTaxRatio\": 0.379447221405469,\n    \"incomeTaxExpense\":
         2826000000,\n    \"netIncome\": 7259000000,\n    \"netIncomeRatio\": 0.26679653043222584,\n
-        \   \"eps\": 3.93,\n    \"epsdiluted\": 3.92,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 3.95,\n    \"epsdiluted\": 3.94,\n    \"weightedAverageShsOut\":
         1839000000,\n    \"weightedAverageShsOutDil\": 1842000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000119312511046772/0001193125-11-046772-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312511046772/d10k.htm\"\n
@@ -269,10 +269,10 @@ interactions:
         0,\n    \"interestExpense\": 797000000,\n    \"depreciationAndAmortization\":
         853000000,\n    \"ebitda\": 10683000000,\n    \"ebitdaratio\": 0.4267225883762732,\n
         \   \"operatingIncome\": 10040000000,\n    \"operatingIncomeRatio\": 0.4010385460355502,\n
-        \   \"totalOtherIncomeExpensesNet\": -797000000,\n    \"incomeBeforeTax\":
+        \   \"totalOtherIncomeExpensesNet\": -29000000,\n    \"incomeBeforeTax\":
         9243000000,\n    \"incomeBeforeTaxRatio\": 0.36920311563810665,\n    \"incomeTaxExpense\":
         2691000000,\n    \"netIncome\": 6342000000,\n    \"netIncomeRatio\": 0.25332534451767524,\n
-        \   \"eps\": 3.25,\n    \"epsdiluted\": 3.24,\n    \"weightedAverageShsOut\":
+        \   \"eps\": 3.26,\n    \"epsdiluted\": 3.25,\n    \"weightedAverageShsOut\":
         1943000000,\n    \"weightedAverageShsOutDil\": 1950000000,\n    \"link\":
         \"https://www.sec.gov/Archives/edgar/data/1413329/000119312510041735/0001193125-10-041735-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312510041735/d10k.htm\"\n
@@ -288,7 +288,7 @@ interactions:
         217000000,\n    \"interestExpense\": 528000000,\n    \"depreciationAndAmortization\":
         842000000,\n    \"ebitda\": 11047000000,\n    \"ebitdaratio\": 0.4297607469363937,\n
         \   \"operatingIncome\": 10248000000,\n    \"operatingIncomeRatio\": 0.39867730013616026,\n
-        \   \"totalOtherIncomeExpensesNet\": -311000000,\n    \"incomeBeforeTax\":
+        \   \"totalOtherIncomeExpensesNet\": -84000000,\n    \"incomeBeforeTax\":
         9937000000,\n    \"incomeBeforeTaxRatio\": 0.386578486675744,\n    \"incomeTaxExpense\":
         2787000000,\n    \"netIncome\": 6890000000,\n    \"netIncomeRatio\": 0.26804123711340205,\n
         \   \"eps\": 3.33,\n    \"epsdiluted\": 3.32,\n    \"weightedAverageShsOut\":
@@ -297,7 +297,7 @@ interactions:
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000119312509038765/d10k.htm\"\n
         \ },\n  {\n    \"date\": \"2007-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2007-12-31\",\n
-        \   \"acceptedDate\": \"2007-12-30 19:00:00\",\n    \"calendarYear\": \"2007\",\n
+        \   \"acceptedDate\": \"2007-12-31 00:00:00\",\n    \"calendarYear\": \"2007\",\n
         \   \"period\": \"FY\",\n    \"revenue\": 22798000000,\n    \"costOfRevenue\":
         8720000000,\n    \"grossProfit\": 14078000000,\n    \"grossProfitRatio\":
         0.6175103079217475,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
@@ -307,51 +307,51 @@ interactions:
         0,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\": 748000000,\n
         \   \"ebitda\": 9338000000,\n    \"ebitdaratio\": 0.40959733309939467,\n    \"operatingIncome\":
         8873000000,\n    \"operatingIncomeRatio\": 0.3892008070883411,\n    \"totalOtherIncomeExpensesNet\":
-        -10000000,\n    \"incomeBeforeTax\": 8863000000,\n    \"incomeBeforeTaxRatio\":
+        -156000000,\n    \"incomeBeforeTax\": 8863000000,\n    \"incomeBeforeTaxRatio\":
         0.38876217212036146,\n    \"incomeTaxExpense\": 2564000000,\n    \"netIncome\":
         6026000000,\n    \"netIncomeRatio\": 0.2643214317045355,\n    \"eps\": 2.87,\n
         \   \"epsdiluted\": 2.85,\n    \"weightedAverageShsOut\": 2101000000,\n    \"weightedAverageShsOutDil\":
-        2116000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  },\n  {\n    \"date\":
+        2116000000,\n    \"link\": null,\n    \"finalLink\": null\n  },\n  {\n    \"date\":
         \"2006-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\": \"USD\",\n
         \   \"cik\": \"0001413329\",\n    \"fillingDate\": \"2006-12-31\",\n    \"acceptedDate\":
-        \"2006-12-30 19:00:00\",\n    \"calendarYear\": \"2006\",\n    \"period\":
+        \"2006-12-31 00:00:00\",\n    \"calendarYear\": \"2006\",\n    \"period\":
         \"FY\",\n    \"revenue\": 48260000000,\n    \"costOfRevenue\": 35619000000,\n
         \   \"grossProfit\": 12641000000,\n    \"grossProfitRatio\": 0.26193535018648983,\n
         \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
         0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
-        4574000000,\n    \"otherExpenses\": -301000000,\n    \"operatingExpenses\":
-        4273000000,\n    \"costAndExpenses\": 39892000000,\n    \"interestIncome\":
-        0,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\": 658000000,\n
-        \   \"ebitda\": 8633000000,\n    \"ebitdaratio\": 0.17888520513883133,\n    \"operatingIncome\":
-        8368000000,\n    \"operatingIncomeRatio\": 0.17339411520928305,\n    \"totalOtherIncomeExpensesNet\":
-        -142000000,\n    \"incomeBeforeTax\": 8226000000,\n    \"incomeBeforeTaxRatio\":
+        4574000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 4574000000,\n
+        \   \"costAndExpenses\": 39892000000,\n    \"interestIncome\": 0,\n    \"interestExpense\":
+        0,\n    \"depreciationAndAmortization\": 658000000,\n    \"ebitda\": 8633000000,\n
+        \   \"ebitdaratio\": 0.17888520513883133,\n    \"operatingIncome\": 8368000000,\n
+        \   \"operatingIncomeRatio\": 0.17339411520928305,\n    \"totalOtherIncomeExpensesNet\":
+        301000000,\n    \"incomeBeforeTax\": 8226000000,\n    \"incomeBeforeTaxRatio\":
         0.17045171985080812,\n    \"incomeTaxExpense\": 1829000000,\n    \"netIncome\":
-        6146000000,\n    \"netIncomeRatio\": 0.12735184417737255,\n    \"eps\": 2.913745,\n
-        \   \"epsdiluted\": 2.913745,\n    \"weightedAverageShsOut\": 2109313033,\n
-        \   \"weightedAverageShsOutDil\": 2109313033,\n    \"link\": \"\",\n    \"finalLink\":
-        \"\"\n  },\n  {\n    \"date\": \"2005-12-31\",\n    \"symbol\": \"PM\",\n
-        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\":
-        \"2005-12-31\",\n    \"acceptedDate\": \"2005-12-30 19:00:00\",\n    \"calendarYear\":
-        \"2005\",\n    \"period\": \"FY\",\n    \"revenue\": 45288000000,\n    \"costOfRevenue\":
-        32920000000,\n    \"grossProfit\": 12368000000,\n    \"grossProfitRatio\":
-        0.2730966260378025,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        6146000000,\n    \"netIncomeRatio\": 0.12735184417737255,\n    \"eps\": 2.91,\n
+        \   \"epsdiluted\": 2.91,\n    \"weightedAverageShsOut\": 2109313033,\n    \"weightedAverageShsOutDil\":
+        2109313033,\n    \"link\": null,\n    \"finalLink\": null\n  },\n  {\n    \"date\":
+        \"2005-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\": \"USD\",\n
+        \   \"cik\": \"0001413329\",\n    \"fillingDate\": \"2005-12-31\",\n    \"acceptedDate\":
+        \"2005-12-31 00:00:00\",\n    \"calendarYear\": \"2005\",\n    \"period\":
+        \"FY\",\n    \"revenue\": 45288000000,\n    \"costOfRevenue\": 32920000000,\n
+        \   \"grossProfit\": 12368000000,\n    \"grossProfitRatio\": 0.2730966260378025,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
         0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
         4543000000,\n    \"otherExpenses\": 90000000,\n    \"operatingExpenses\":
         4633000000,\n    \"costAndExpenses\": 37553000000,\n    \"interestIncome\":
         0,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\": 527000000,\n
         \   \"ebitda\": 7982000000,\n    \"ebitdaratio\": 0.17624977919095566,\n    \"operatingIncome\":
         7735000000,\n    \"operatingIncomeRatio\": 0.1707957957957958,\n    \"totalOtherIncomeExpensesNet\":
-        -94000000,\n    \"incomeBeforeTax\": 7641000000,\n    \"incomeBeforeTaxRatio\":
+        -90000000,\n    \"incomeBeforeTax\": 7641000000,\n    \"incomeBeforeTaxRatio\":
         0.16872019077901432,\n    \"incomeTaxExpense\": 1835000000,\n    \"netIncome\":
-        5620000000,\n    \"netIncomeRatio\": 0.12409468291821232,\n    \"eps\": 2.664375,\n
-        \   \"epsdiluted\": 2.664375,\n    \"weightedAverageShsOut\": 2109313033,\n
-        \   \"weightedAverageShsOutDil\": 2109313033,\n    \"link\": \"\",\n    \"finalLink\":
-        \"\"\n  },\n  {\n    \"date\": \"2003-12-31\",\n    \"symbol\": \"PM\",\n
-        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\":
-        \"2003-12-31\",\n    \"acceptedDate\": \"2003-12-30 19:00:00\",\n    \"calendarYear\":
-        \"2003\",\n    \"period\": \"FY\",\n    \"revenue\": 33389000000,\n    \"costOfRevenue\":
-        23821000000,\n    \"grossProfit\": 9568000000,\n    \"grossProfitRatio\":
-        0.2865614423912067,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        5620000000,\n    \"netIncomeRatio\": 0.12409468291821232,\n    \"eps\": 2.66,\n
+        \   \"epsdiluted\": 2.66,\n    \"weightedAverageShsOut\": 2109313033,\n    \"weightedAverageShsOutDil\":
+        2109313033,\n    \"link\": null,\n    \"finalLink\": null\n  },\n  {\n    \"date\":
+        \"2003-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\": \"USD\",\n
+        \   \"cik\": \"0001413329\",\n    \"fillingDate\": \"2003-12-31\",\n    \"acceptedDate\":
+        \"2003-12-31 00:00:00\",\n    \"calendarYear\": \"2003\",\n    \"period\":
+        \"FY\",\n    \"revenue\": 33389000000,\n    \"costOfRevenue\": 23821000000,\n
+        \   \"grossProfit\": 9568000000,\n    \"grossProfitRatio\": 0.2865614423912067,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
         0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
         3372000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 3372000000,\n
         \   \"costAndExpenses\": 27193000000,\n    \"interestIncome\": 0,\n    \"interestExpense\":
@@ -362,7 +362,7 @@ interactions:
         0.1860792476564138,\n    \"incomeTaxExpense\": 2090000000,\n    \"netIncome\":
         3975000000,\n    \"netIncomeRatio\": 0.11905118452184851,\n    \"eps\": 1.96,\n
         \   \"epsdiluted\": 1.95,\n    \"weightedAverageShsOut\": 2028000000,\n    \"weightedAverageShsOutDil\":
-        2038000000,\n    \"link\": \"\",\n    \"finalLink\": \"\"\n  }\n]"
+        2038000000,\n    \"link\": null,\n    \"finalLink\": null\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -378,13 +378,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '27901'
+      - '27789'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 07 Mar 2023 17:08:44 GMT
+      - Tue, 02 May 2023 14:20:55 GMT
       ETag:
-      - W/"6cfd-4PEYPFcfGFtjPUhmx+H6jpfUIm0"
+      - W/"6c8d-dyok+KH8DbFv/5YYI3EX3gmW7OE"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:

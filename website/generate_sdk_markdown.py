@@ -8,7 +8,10 @@ from typing import Any, Dict, List, Literal, TextIO
 from docstring_parser import parse
 
 from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
+from openbb_terminal.core.session.current_system import set_system_variable
 
+set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 website_path = Path(__file__).parent.absolute()
 
 reference_import = """
@@ -286,6 +289,9 @@ def main() -> bool:
                 f"Error generating {trailmap.location_path} {trailmap.class_attr} - {e}"
             )
             return False
+
+    # Sort reference_cards
+    reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
 
     with open(content_path / "index.mdx", "w", **kwargs) as f:  # type: ignore
         fname = "OpenBB SDK Reference"

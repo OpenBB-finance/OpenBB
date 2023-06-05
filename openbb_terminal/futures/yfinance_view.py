@@ -5,6 +5,8 @@ import logging
 import os
 from typing import List, Optional
 
+import pandas as pd
+
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.futures import yfinance_model
@@ -191,6 +193,7 @@ def display_historical(
 @log_start_end(log=logger)
 def display_curve(
     symbol: str,
+    date: Optional[str] = "",
     raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
@@ -202,8 +205,10 @@ def display_curve(
     ----------
     symbol: str
         Curve future symbol to display
+    date: str
+        Optionally include historical futures prices for each contract
     raw: bool
-        Display futures timeseries in raw format
+        Display futures prices in raw format
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
     export: str
@@ -214,7 +219,11 @@ def display_curve(
     if symbol not in yfinance_model.FUTURES_DATA["Ticker"].unique().tolist():
         return console.print(f"[red]'{symbol}' is not a valid symbol[/red]")
 
-    df = yfinance_model.get_curve_futures(symbol)
+    df = (
+        yfinance_model.get_curve_futures(symbol)
+        if date == ""
+        else yfinance_model.get_curve_futures(symbol, date)
+    )
 
     if df.empty:
         return console.print("[red]No future data found to generate curve.[/red]\n")
@@ -225,15 +234,29 @@ def display_curve(
         "Description"
     ].values[0]
 
-    fig.add_scatter(
-        x=df.index,
-        y=df["Futures"],
-        mode="lines+markers",
-        name=name,
-        line=dict(dash="dash", width=4),
-        marker=dict(size=10),
-    )
+    df.index = pd.to_datetime(df.index, format="%b-%Y")
+
+    if date == "":
+        fig.add_scatter(
+            x=df.index,
+            y=df.iloc[:, 0],
+            mode="lines+markers",
+            name=name,
+            line=dict(dash="dash", width=4),
+            marker=dict(size=10),
+        )
+    else:
+        for col in df.columns.tolist():
+            fig.add_scatter(
+                x=df.index,
+                y=df[col],
+                mode="lines+markers",
+                name=col,
+                line=dict(dash="dash", width=4),
+                marker=dict(size=10),
+            )
     fig.set_title(name)
+    fig.update_layout(xaxis=dict(tickformat="%b-%Y"))
 
     export_data(
         export,

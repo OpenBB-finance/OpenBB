@@ -8,6 +8,7 @@ from pathlib import Path
 from textwrap import shorten
 from typing import Dict, List, TextIO, Union
 
+from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 from website.controller_doc_classes import (
@@ -16,6 +17,8 @@ from website.controller_doc_classes import (
     sub_names_full as subnames,
 )
 
+set_system_variable("TEST_MODE", True)
+set_system_variable("LOG_COLLECT", False)
 website_path = Path(__file__).parent.absolute()
 
 reference_import = """
@@ -336,6 +339,9 @@ def main() -> bool:
                 f"[red]Failed to generate markdown for {ctrl_trailmap}: {e}[/red]"
             )
             return False
+
+    # Sort reference_cards
+    reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
 
     # Generate root "_category_.json" file
     with open(content_path / "_category_.json", "w", **wopen_kwargs) as f:  # type: ignore

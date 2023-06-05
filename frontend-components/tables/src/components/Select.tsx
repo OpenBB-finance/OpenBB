@@ -29,11 +29,11 @@ const Select = ({
     }[];
   }[];
 }) => {
-  const onlyOneGroup = groups.length === 1;
+  const onlyOneGroup = groups?.length === 1;
   return (
     <SelectPrimitive.Root value={value} onValueChange={onChange}>
       <SelectPrimitive.Group
-        className={clsx("flex gap-1 text-sm", {
+        className={clsx("flex gap-1", {
           "flex-row items-center gap-2": labelType === "row",
           "flex-col": labelType === "col",
         })}
@@ -42,7 +42,7 @@ const Select = ({
           {label}
         </SelectPrimitive.Label>
         <SelectPrimitive.Trigger
-          className="justify-between bg-white dark:bg-grey-900 whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
+          className="justify-between bg-white text-black dark:text-white dark:bg-grey-900 whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
           aria-label={label}
         >
           <SelectPrimitive.Value placeholder={placeholder} />
@@ -53,13 +53,14 @@ const Select = ({
       </SelectPrimitive.Group>
       <SelectPrimitive.Portal>
         <SelectPrimitive.Content className="z-50 bg-white/80 dark:bg-grey-900/80 backdrop-filter backdrop-blur overflow-hidden border-[1.5px] border-grey-700 rounded p-3 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
-          <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] cursor-default">
+          <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] cursor-default dark:text-white text-black">
             <ChevronUpIcon />
           </SelectPrimitive.ScrollUpButton>
           <SelectPrimitive.Viewport className="p-[5px]">
             {onlyOneGroup ? (
               <SelectPrimitive.Group>
                 {groups[0].items.map((item) => (
+                  //@ts-ignore
                   <SelectItem value={item.value} disabled={item.disabled}>
                     {item.label}
                   </SelectItem>
@@ -72,6 +73,7 @@ const Select = ({
                     {group.label}
                   </SelectPrimitive.Label>
                   {group.items.map((item) => (
+                    //@ts-ignore
                     <SelectItem
                       key={item.value}
                       value={item.value}
@@ -84,7 +86,7 @@ const Select = ({
               ))
             )}
           </SelectPrimitive.Viewport>
-          <SelectPrimitive.ScrollDownButton className="flex items-center justify-center h-[25px] cursor-default">
+          <SelectPrimitive.ScrollDownButton className="flex items-center justify-center h-[25px] cursor-default dark:text-white text-black">
             <ChevronDownIcon />
           </SelectPrimitive.ScrollDownButton>
         </SelectPrimitive.Content>
@@ -94,6 +96,7 @@ const Select = ({
 };
 
 const SelectItem = forwardRef(
+  //@ts-ignore
   ({ children, className, ...props }, forwardedRef) => {
     return (
       <SelectPrimitive.Item
@@ -102,6 +105,7 @@ const SelectItem = forwardRef(
           className
         )}
         {...props}
+        //@ts-ignore
         ref={forwardedRef}
       >
         <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

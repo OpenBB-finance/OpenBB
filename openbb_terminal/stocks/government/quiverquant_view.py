@@ -153,7 +153,7 @@ def display_government_buys(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -236,7 +236,7 @@ def display_government_sells(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -281,7 +281,7 @@ def display_last_contracts(
     )
 
     df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d").dt.date
-    df = df.groupby("Date").sum().div(1000)
+    df = df.groupby("Date").sum(True).div(1000)
 
     fig = OpenBBFigure(yaxis_title="Amount ($1k)", xaxis_title="Date")
     fig.set_title("Total amount of government contracts given")
@@ -471,7 +471,7 @@ def display_contracts(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)

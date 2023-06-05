@@ -1,14 +1,61 @@
 stocks
-search -c United States -s Consumer Cyclical -i Specialty Retail -e USA -l 5
-load ${ticker=aapl} -i 5
-load ${ticker=aapl} -s 2022-10-01
+search -c united_states -s consumer_staples
+search --industrygroup banks -e nms --limit 100
+search -q gold --all-exchanges --exchangecountry india --export csv
+search --help
+load --ticker AAPL -i 5 --prepost
+load --ticker AAPL -s 2020-10-01 -e 2022-10-01 --performance
+load --ticker AAPL -s 1980-01-01 --monthly
+load --ticker AAPL -s 1980-01-01 --weekly --export csv
+load --help
 quote
+quote --ticker AAPL,MSFT,GOOG,META,AMZN,NFLX
 tob
 tob -e EDGX
 candle
 candle -t --ma 5,10
 candle --raw
 candle --sort AdjClose -r --raw
+candle --ha
 codes
 news -l 3
+news -h
+th
+..
+options
+..
+disc
+..
+dps
+..
+scr
+..
+ins
+..
+gov
+..
+ba
+..
+ca
+..
+fa
+..
+bt
+..
+ta
+..
+qa
+..
+forecast
+..
+res
+..
+
+# below two submenus are deprecated
+dd
+sia
+
+help
+reset
+quit
 exit

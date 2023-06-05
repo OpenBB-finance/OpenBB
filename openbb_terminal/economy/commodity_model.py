@@ -34,20 +34,26 @@ def get_debt() -> pd.DataFrame:
     """
     url = "https://en.wikipedia.org/wiki/List_of_countries_by_external_debt"
     response = request(url, headers={"User-Agent": get_user_agent()})
-    df = pd.read_html(response.text)[0]
+    df = pd.read_html(response.content)[0]
     df = df.rename(
         columns={
             "Country/Region": "Country",
-            "External debtUS dollars": "Debt",
+            "External debt US dollars": "USD Debt",
             "Per capitaUS dollars": "Per Capita",
-            "External debt US dollars": "Debt",
-            "Per capita US dollars": "Per Capita",
+            "Per capita US dollars": "USD Per Capita",
+            "Date": "As Of",
         }
     )
-    df = df.drop(["Date", "% of GDP"], axis=1)
-    df["Debt"] = df["Debt"].apply(lambda x: format_number(x))
-    df["Rank"] = df["Debt"].rank(ascending=False).astype(int)
-    indexes = ["Rank", "Country", "Per Capita", "Debt"]
+    df["USD Debt"] = df["USD Debt"].apply(lambda x: format_number(x)).astype(int)
+    df["USD Per Capita"] = df["USD Per Capita"].astype(int)
+    df["Rank"] = df["USD Debt"].rank(ascending=False).astype(int)
+    date = df["As Of"].astype(str)
+    dates = []
+    for i in date.index:
+        dates.append(date[i].split("[")[0])
+    df["As Of"] = dates
+    df["As Of"] = df["As Of"].str.replace("31 September", "30 September")
+    indexes = ["Rank", "As Of", "Country", "USD Per Capita", "USD Debt", "% of GDP"]
     df = df[indexes]
 
     return df

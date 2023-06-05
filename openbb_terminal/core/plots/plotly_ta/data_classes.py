@@ -317,7 +317,7 @@ class TA_Data:
                 and not self.has_volume
             ):
                 continue
-            if indicator.name in ["fib", "srlines", "clenow", "demark"]:
+            if indicator.name in ["fib", "srlines", "clenow", "demark", "ichimoku"]:
                 continue
             try:
                 indicator_data = self.get_indicator_data(

@@ -1,9 +1,13 @@
 ---
-title: Settings & API Keys
+title: Setting API Keys
 sidebar_position: 1
-description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address. Each key is entered into the Terminal from the `/keys` menu, using the syntax described below. The `--help` dialogue for each source will also display the expected inputs.
-keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, openbb terminal]
+description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. Learn how to set, manage, and access data APIs for the OpenBB Terminal.
+keywords: [api, keys, api keys, openbb terminal, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, sdk, alphavantage, bitquery, coinbase, databento, finnhub, FRED, github, glassnode, iex cloud, news API, robinhood, santiment, shroomdk, token terminal, tradier, twitter, whale alert]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Setting API Keys - Terminal | OpenBB Docs" />
 
 API (Application Programming Interface) keys are access credentials for obtaining data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address, some will require an account with proper KYC (Know Your Customer). Each source is entered into the Terminal from the `/keys` menu with the syntax as described in the sections below. Adding the `-h` argument to the command will also display the expected inputs. For example,
 
@@ -119,6 +123,33 @@ Enter this API key into the OpenBB Terminal by typing:
 
 ```console
 /keys/bitquery REPLACE_WITH_KEY
+```
+
+</details>
+
+### BizToc
+
+> BizToc is the one-stop business and finance news hub, encapsulating the top 200 US news providers in real time.
+
+<details>
+<summary>Instructions</summary>
+
+The BizToc API is hosted on RapidAPI.  To set up, go to: https://rapidapi.com/thma/api/biztoc.
+
+![biztoc0](https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda)
+
+In the top right, select "Sign Up".  After answering some questions, you will be prompted to select one of their plans.
+
+![biztoc1](https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422)
+
+After signing up, navigate back to https://rapidapi.com/thma/api/biztoc.  If you are logged in, you will see a header called X-RapidAPI-Key.
+
+![biztoc2](https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f)
+
+Copy the key to the clipboard, and enter this key into the OpenBB Terminal with:
+
+```console
+/keys/biztoc REPLACE_WITH_KEY
 ```
 
 </details>
@@ -421,37 +452,6 @@ Enter this key in the OpenBB terminal with:
 
 ```console
 /keys/glassnode REPLACE_WITH_KEY
-```
-
-</details>
-
-### IEX Cloud (Apperate)
-
-> Apperate is a streaming data platform for finance with integrated IEX Cloud Data Bundles. We help developers skip the headaches of building with real-time data.
-
-<details>
-<summary>Instructions</summary>
-
-Go to: https://iexcloud.io
-
-![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833088-e879e9f2-3180-4e50-ba9e-f40ee958f98a.png)
-
-Click on, "Sign in", and then create a new account.
-
-![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833011-542d6ef0-0bdf-494a-83cb-c0a6741df2a3.png)
-
-After signing up, select a plan. There is a choice for a free plan at the bottom.
-
-![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833303-4ebb2880-0b4c-4008-9b33-0e8ee6836027.png)
-
-After completing the sign-up process, the API Keyis found under the, "Access & Security", tab.
-
-![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833540-c1e25500-22e9-43c3-a89e-b05dd446f2a5.png)
-
-Add this API key to the OpenBB Terminal by entering:
-
-```console
-/keys/iex REPLACE_WITH_KEY
 ```
 
 </details>
@@ -791,6 +791,25 @@ Click on, "Open Account", to start the sign-up process. After the account has be
 <summary>Upcoming changes to the Twitter API will deprecate the current functionality, it is uncertain if the current features will continue to work. </summary>
 
 ![Twitter API](https://pbs.twimg.com/media/FooIJF3agAIU8SN?format=png&name=medium)
+
+</details>
+
+### Ultima Insights
+
+> Ultima Insights' News Monitor is a platform that harnesses the power of GPT + LLMs to help deliver better, more relevant news to investors. We help find the news & tell you why it's important before it's on the front page of Bloomberg.
+
+<details>
+<summary>Instructions</summary>
+
+Go to: https://ultimainsights.ai/
+
+![Ultima Insights](https://user-images.githubusercontent.com/1911913/229215125-e3419788-eef3-4389-a3bd-5c08f3333347.png)
+
+Click on, "Get Started", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://beta.ultimainsights.ai/my-account/generate-api-key) and click "Generate Key". Copy the API key to the clipboard, and enter this key into the OpenBB Terminal with:
+
+```console
+/keys/ultima REPLACE_WITH_KEY
+```
 
 </details>
 

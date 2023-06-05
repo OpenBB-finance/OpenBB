@@ -6,10 +6,7 @@ import finviz.main_func
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import (
-    PreferencesModel,
-    copy_user,
-)
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.stocks.fundamental_analysis import finviz_view
 
 
@@ -43,3 +40,20 @@ def test_display_screen_data(mocker, use_tab):
 def test_lambda_category_color_red_green(val, expected):
     result = finviz_view.lambda_category_color_red_green(val=val)
     assert result == expected
+
+
+@pytest.mark.http_record
+@pytest.mark.parametrize(
+    "symbol, kwargs",
+    [
+        ("AAPL", {}),
+    ],
+)
+def test_analyst(mocker, symbol, kwargs):
+    preferences = PreferencesModel(USE_TABULATE_DF=False)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
+    finviz_view.analyst(symbol=symbol, **kwargs)

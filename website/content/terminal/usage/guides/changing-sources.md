@@ -1,12 +1,16 @@
 ---
 sidebar_position: 2
 title: Changing Sources
-description: Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. Many have a default source but you can change the default sources of each command via two methods.
-keywords: [source, sources, default source, datasources, api keys, api, keys, openbb terminal]
+description: How to change which data sources are the default source for commands run in the OpenBB Terminal.
+keywords: [source, sources, default source, datasources, api keys, api, keys, openbb sdk, yfinance, yahoo finance, alphavantage polygon, EODHD, change the source]
 
 ---
 
-Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. Many have a default source but you can change the default sources of each command via two methods.
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Changing Sources - Terminal | OpenBB Docs" />
+
+Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. Many have a default source, but you can change the default sources of each command via two methods.
 
 ## Changing the Source
 
@@ -56,10 +60,10 @@ In case you are looking to change the default source al together, you can do so 
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── OpenBB Terminal (https://openbb.co) ─╯
 ```
 
-For example, if you would like to change the default data provider from the `income` command from the `stocks/fa` menu you can first run the command `get` following by `stocks_load`. This returns the following:
+For example, if you would like to change the default data provider from the `income` command from the `stocks/fa` menu you can first run the command `get --cmd stocks/fa/income`. This returns the following:
 
 ```
-(🦋) /sources/ $ get stocks_fa_income
+(🦋) /sources/ $ get --cmd stocks/fa/income
 
 Default   : FinancialModelingPrep
 Available : FinancialModelingPrep, Polygon, AlphaVantage, EODHD, YahooFinance
@@ -69,11 +73,11 @@ Then, with `set` you can change the default data provider. For example, we can c
 the following:
 
 ```
-(🦋) /sources/ $ set stocks_fa_income Polygon
+(🦋) /sources/ $ set --cmd stocks/fa/income --source Polygon
 
-The data source was specified successfully.
+Default data source for 'stocks/fa/income' set to 'Polygon'.
 
-(🦋) /sources/ $ get stocks_fa_income
+(🦋) /sources/ $ get --cmd stocks/fa/income
 
 Default   : Polygon
 Available : Polygon, FinancialModelingPrep, AlphaVantage, EODHD, YahooFinance

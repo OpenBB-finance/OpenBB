@@ -1,0 +1,716 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/cash-flow-statement/AAPL?apikey=MOCK_API_KEY&limit=0&period=annual
+  response:
+    body:
+      string: "[\n  {\n    \"date\": \"2022-09-24\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"2022-10-28\",\n    \"acceptedDate\": \"2022-10-27 18:01:14\",\n    \"calendarYear\":
+        \"2022\",\n    \"period\": \"FY\",\n    \"netIncome\": 99803000000,\n    \"depreciationAndAmortization\":
+        11104000000,\n    \"deferredIncomeTax\": 895000000,\n    \"stockBasedCompensation\":
+        9038000000,\n    \"changeInWorkingCapital\": 1200000000,\n    \"accountsReceivables\":
+        -1823000000,\n    \"inventory\": 1484000000,\n    \"accountsPayables\": 9448000000,\n
+        \   \"otherWorkingCapital\": 478000000,\n    \"otherNonCashItems\": 111000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 122151000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -10708000000,\n    \"acquisitionsNet\": -306000000,\n    \"purchasesOfInvestments\":
+        -76923000000,\n    \"salesMaturitiesOfInvestments\": 67363000000,\n    \"otherInvestingActivites\":
+        -1780000000,\n    \"netCashUsedForInvestingActivites\": -22354000000,\n    \"debtRepayment\":
+        -9543000000,\n    \"commonStockIssued\": 0,\n    \"commonStockRepurchased\":
+        -89402000000,\n    \"dividendsPaid\": -14841000000,\n    \"otherFinancingActivites\":
+        3037000000,\n    \"netCashUsedProvidedByFinancingActivities\": -110749000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": -10952000000,\n
+        \   \"cashAtEndOfPeriod\": 24977000000,\n    \"cashAtBeginningOfPeriod\":
+        35929000000,\n    \"operatingCashFlow\": 122151000000,\n    \"capitalExpenditure\":
+        -10708000000,\n    \"freeCashFlow\": 111443000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019322000108/0000320193-22-000108-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019322000108/aapl-20220924.htm\"\n
+        \ },\n  {\n    \"date\": \"2021-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2021-10-29\",\n
+        \   \"acceptedDate\": \"2021-10-28 18:04:28\",\n    \"calendarYear\": \"2021\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 94680000000,\n    \"depreciationAndAmortization\":
+        11284000000,\n    \"deferredIncomeTax\": -4774000000,\n    \"stockBasedCompensation\":
+        7906000000,\n    \"changeInWorkingCapital\": -4911000000,\n    \"accountsReceivables\":
+        -10125000000,\n    \"inventory\": -2642000000,\n    \"accountsPayables\":
+        12326000000,\n    \"otherWorkingCapital\": 1676000000,\n    \"otherNonCashItems\":
+        -147000000,\n    \"netCashProvidedByOperatingActivities\": 104038000000,\n
+        \   \"investmentsInPropertyPlantAndEquipment\": -11085000000,\n    \"acquisitionsNet\":
+        -33000000,\n    \"purchasesOfInvestments\": -109689000000,\n    \"salesMaturitiesOfInvestments\":
+        106870000000,\n    \"otherInvestingActivites\": -608000000,\n    \"netCashUsedForInvestingActivites\":
+        -14545000000,\n    \"debtRepayment\": -8750000000,\n    \"commonStockIssued\":
+        1105000000,\n    \"commonStockRepurchased\": -85971000000,\n    \"dividendsPaid\":
+        -14467000000,\n    \"otherFinancingActivites\": 14730000000,\n    \"netCashUsedProvidedByFinancingActivities\":
+        -93353000000,\n    \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\":
+        -3860000000,\n    \"cashAtEndOfPeriod\": 35929000000,\n    \"cashAtBeginningOfPeriod\":
+        39789000000,\n    \"operatingCashFlow\": 104038000000,\n    \"capitalExpenditure\":
+        -11085000000,\n    \"freeCashFlow\": 92953000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019321000105/0000320193-21-000105-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019321000105/aapl-20210925.htm\"\n
+        \ },\n  {\n    \"date\": \"2020-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2020-10-30\",\n
+        \   \"acceptedDate\": \"2020-10-29 18:06:25\",\n    \"calendarYear\": \"2020\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 57411000000,\n    \"depreciationAndAmortization\":
+        11056000000,\n    \"deferredIncomeTax\": -215000000,\n    \"stockBasedCompensation\":
+        6829000000,\n    \"changeInWorkingCapital\": 5690000000,\n    \"accountsReceivables\":
+        6917000000,\n    \"inventory\": -127000000,\n    \"accountsPayables\": -4062000000,\n
+        \   \"otherWorkingCapital\": 2081000000,\n    \"otherNonCashItems\": -97000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 80674000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -7309000000,\n    \"acquisitionsNet\": -1524000000,\n    \"purchasesOfInvestments\":
+        -115148000000,\n    \"salesMaturitiesOfInvestments\": 120483000000,\n    \"otherInvestingActivites\":
+        -791000000,\n    \"netCashUsedForInvestingActivites\": -4289000000,\n    \"debtRepayment\":
+        -12629000000,\n    \"commonStockIssued\": 880000000,\n    \"commonStockRepurchased\":
+        -72358000000,\n    \"dividendsPaid\": -14081000000,\n    \"otherFinancingActivites\":
+        11368000000,\n    \"netCashUsedProvidedByFinancingActivities\": -86820000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": -10435000000,\n
+        \   \"cashAtEndOfPeriod\": 39789000000,\n    \"cashAtBeginningOfPeriod\":
+        50224000000,\n    \"operatingCashFlow\": 80674000000,\n    \"capitalExpenditure\":
+        -7309000000,\n    \"freeCashFlow\": 73365000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019320000096/0000320193-20-000096-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019320000096/aapl-20200926.htm\"\n
+        \ },\n  {\n    \"date\": \"2019-09-28\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2019-10-31\",\n
+        \   \"acceptedDate\": \"2019-10-30 18:12:36\",\n    \"calendarYear\": \"2019\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 55256000000,\n    \"depreciationAndAmortization\":
+        12547000000,\n    \"deferredIncomeTax\": -340000000,\n    \"stockBasedCompensation\":
+        6068000000,\n    \"changeInWorkingCapital\": -3488000000,\n    \"accountsReceivables\":
+        245000000,\n    \"inventory\": -289000000,\n    \"accountsPayables\": -1923000000,\n
+        \   \"otherWorkingCapital\": -625000000,\n    \"otherNonCashItems\": -652000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 69391000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -10495000000,\n    \"acquisitionsNet\": -624000000,\n    \"purchasesOfInvestments\":
+        -40631000000,\n    \"salesMaturitiesOfInvestments\": 98724000000,\n    \"otherInvestingActivites\":
+        -1078000000,\n    \"netCashUsedForInvestingActivites\": 45896000000,\n    \"debtRepayment\":
+        -8805000000,\n    \"commonStockIssued\": 781000000,\n    \"commonStockRepurchased\":
+        -66897000000,\n    \"dividendsPaid\": -14119000000,\n    \"otherFinancingActivites\":
+        -1936000000,\n    \"netCashUsedProvidedByFinancingActivities\": -90976000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": 24311000000,\n
+        \   \"cashAtEndOfPeriod\": 50224000000,\n    \"cashAtBeginningOfPeriod\":
+        25913000000,\n    \"operatingCashFlow\": 69391000000,\n    \"capitalExpenditure\":
+        -10495000000,\n    \"freeCashFlow\": 58896000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019319000119/0000320193-19-000119-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019319000119/a10-k20199282019.htm\"\n
+        \ },\n  {\n    \"date\": \"2018-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2018-11-05\",\n
+        \   \"acceptedDate\": \"2018-11-05 08:01:40\",\n    \"calendarYear\": \"2018\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 59531000000,\n    \"depreciationAndAmortization\":
+        10903000000,\n    \"deferredIncomeTax\": -32590000000,\n    \"stockBasedCompensation\":
+        5340000000,\n    \"changeInWorkingCapital\": 34694000000,\n    \"accountsReceivables\":
+        -5322000000,\n    \"inventory\": 828000000,\n    \"accountsPayables\": 9175000000,\n
+        \   \"otherWorkingCapital\": -44000000,\n    \"otherNonCashItems\": -444000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 77434000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -13313000000,\n    \"acquisitionsNet\": -721000000,\n    \"purchasesOfInvestments\":
+        -73227000000,\n    \"salesMaturitiesOfInvestments\": 104072000000,\n    \"otherInvestingActivites\":
+        -745000000,\n    \"netCashUsedForInvestingActivites\": 16066000000,\n    \"debtRepayment\":
+        -6500000000,\n    \"commonStockIssued\": 669000000,\n    \"commonStockRepurchased\":
+        -72738000000,\n    \"dividendsPaid\": -13712000000,\n    \"otherFinancingActivites\":
+        4405000000,\n    \"netCashUsedProvidedByFinancingActivities\": -87876000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": 5624000000,\n
+        \   \"cashAtEndOfPeriod\": 25913000000,\n    \"cashAtBeginningOfPeriod\":
+        20289000000,\n    \"operatingCashFlow\": 77434000000,\n    \"capitalExpenditure\":
+        -13313000000,\n    \"freeCashFlow\": 64121000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019318000145/0000320193-18-000145-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019318000145/a10-k20189292018.htm\"\n
+        \ },\n  {\n    \"date\": \"2017-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2017-11-03\",\n
+        \   \"acceptedDate\": \"2017-11-03 08:01:37\",\n    \"calendarYear\": \"2017\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 48351000000,\n    \"depreciationAndAmortization\":
+        10157000000,\n    \"deferredIncomeTax\": 5966000000,\n    \"stockBasedCompensation\":
+        4840000000,\n    \"changeInWorkingCapital\": -5550000000,\n    \"accountsReceivables\":
+        -2093000000,\n    \"inventory\": -2723000000,\n    \"accountsPayables\": 9618000000,\n
+        \   \"otherWorkingCapital\": -626000000,\n    \"otherNonCashItems\": -166000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 63598000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -12451000000,\n    \"acquisitionsNet\": -329000000,\n    \"purchasesOfInvestments\":
+        -159881000000,\n    \"salesMaturitiesOfInvestments\": 126339000000,\n    \"otherInvestingActivites\":
+        -124000000,\n    \"netCashUsedForInvestingActivites\": -46446000000,\n    \"debtRepayment\":
+        -3500000000,\n    \"commonStockIssued\": 555000000,\n    \"commonStockRepurchased\":
+        -32900000000,\n    \"dividendsPaid\": -12769000000,\n    \"otherFinancingActivites\":
+        31267000000,\n    \"netCashUsedProvidedByFinancingActivities\": -17347000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": -195000000,\n
+        \   \"cashAtEndOfPeriod\": 20289000000,\n    \"cashAtBeginningOfPeriod\":
+        20484000000,\n    \"operatingCashFlow\": 63598000000,\n    \"capitalExpenditure\":
+        -12795000000,\n    \"freeCashFlow\": 50803000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019317000070/0000320193-17-000070-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019317000070/a10-k20179302017.htm\"\n
+        \ },\n  {\n    \"date\": \"2016-09-24\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2016-10-26\",\n
+        \   \"acceptedDate\": \"2016-10-26 16:42:16\",\n    \"calendarYear\": \"2016\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 45687000000,\n    \"depreciationAndAmortization\":
+        10505000000,\n    \"deferredIncomeTax\": 4938000000,\n    \"stockBasedCompensation\":
+        4210000000,\n    \"changeInWorkingCapital\": 484000000,\n    \"accountsReceivables\":
+        1095000000,\n    \"inventory\": 217000000,\n    \"accountsPayables\": 1791000000,\n
+        \   \"otherWorkingCapital\": -1554000000,\n    \"otherNonCashItems\": 0,\n
+        \   \"netCashProvidedByOperatingActivities\": 65824000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -12734000000,\n    \"acquisitionsNet\": -297000000,\n    \"purchasesOfInvestments\":
+        -143816000000,\n    \"salesMaturitiesOfInvestments\": 111794000000,\n    \"otherInvestingActivites\":
+        -924000000,\n    \"netCashUsedForInvestingActivites\": -45977000000,\n    \"debtRepayment\":
+        -2500000000,\n    \"commonStockIssued\": 495000000,\n    \"commonStockRepurchased\":
+        -29722000000,\n    \"dividendsPaid\": -12150000000,\n    \"otherFinancingActivites\":
+        23394000000,\n    \"netCashUsedProvidedByFinancingActivities\": -20483000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": -636000000,\n
+        \   \"cashAtEndOfPeriod\": 20484000000,\n    \"cashAtBeginningOfPeriod\":
+        21120000000,\n    \"operatingCashFlow\": 65824000000,\n    \"capitalExpenditure\":
+        -13548000000,\n    \"freeCashFlow\": 52276000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000162828016020309/0001628280-16-020309-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000162828016020309/a201610-k9242016.htm\"\n
+        \ },\n  {\n    \"date\": \"2015-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2015-10-28\",\n
+        \   \"acceptedDate\": \"2015-10-28 16:31:09\",\n    \"calendarYear\": \"2015\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 53394000000,\n    \"depreciationAndAmortization\":
+        11257000000,\n    \"deferredIncomeTax\": 1382000000,\n    \"stockBasedCompensation\":
+        3586000000,\n    \"changeInWorkingCapital\": 11647000000,\n    \"accountsReceivables\":
+        611000000,\n    \"inventory\": -238000000,\n    \"accountsPayables\": 5400000000,\n
+        \   \"otherWorkingCapital\": 1042000000,\n    \"otherNonCashItems\": 0,\n
+        \   \"netCashProvidedByOperatingActivities\": 81266000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -11247000000,\n    \"acquisitionsNet\": -343000000,\n    \"purchasesOfInvestments\":
+        -166402000000,\n    \"salesMaturitiesOfInvestments\": 121985000000,\n    \"otherInvestingActivites\":
+        -267000000,\n    \"netCashUsedForInvestingActivites\": -56274000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 543000000,\n    \"commonStockRepurchased\":
+        -35253000000,\n    \"dividendsPaid\": -11561000000,\n    \"otherFinancingActivites\":
+        28555000000,\n    \"netCashUsedProvidedByFinancingActivities\": -17716000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": 7276000000,\n
+        \   \"cashAtEndOfPeriod\": 21120000000,\n    \"cashAtBeginningOfPeriod\":
+        13844000000,\n    \"operatingCashFlow\": 81266000000,\n    \"capitalExpenditure\":
+        -11488000000,\n    \"freeCashFlow\": 69778000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312515356351/0001193125-15-356351-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312515356351/d17062d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2014-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2014-10-27\",\n
+        \   \"acceptedDate\": \"2014-10-27 17:11:55\",\n    \"calendarYear\": \"2014\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 39510000000,\n    \"depreciationAndAmortization\":
+        7946000000,\n    \"deferredIncomeTax\": 2347000000,\n    \"stockBasedCompensation\":
+        2863000000,\n    \"changeInWorkingCapital\": 7047000000,\n    \"accountsReceivables\":
+        -4232000000,\n    \"inventory\": -76000000,\n    \"accountsPayables\": 5938000000,\n
+        \   \"otherWorkingCapital\": 1460000000,\n    \"otherNonCashItems\": 0,\n
+        \   \"netCashProvidedByOperatingActivities\": 59713000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -9571000000,\n    \"acquisitionsNet\": -3765000000,\n    \"purchasesOfInvestments\":
+        -217128000000,\n    \"salesMaturitiesOfInvestments\": 208111000000,\n    \"otherInvestingActivites\":
+        -226000000,\n    \"netCashUsedForInvestingActivites\": -22579000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 730000000,\n    \"commonStockRepurchased\":
+        -45000000000,\n    \"dividendsPaid\": -11126000000,\n    \"otherFinancingActivites\":
+        17847000000,\n    \"netCashUsedProvidedByFinancingActivities\": -37549000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": -415000000,\n
+        \   \"cashAtEndOfPeriod\": 13844000000,\n    \"cashAtBeginningOfPeriod\":
+        14259000000,\n    \"operatingCashFlow\": 59713000000,\n    \"capitalExpenditure\":
+        -9813000000,\n    \"freeCashFlow\": 49900000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312514383437/0001193125-14-383437-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312514383437/d783162d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2013-09-28\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2013-10-30\",\n
+        \   \"acceptedDate\": \"2013-10-29 20:38:28\",\n    \"calendarYear\": \"2013\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 37037000000,\n    \"depreciationAndAmortization\":
+        6757000000,\n    \"deferredIncomeTax\": 1141000000,\n    \"stockBasedCompensation\":
+        2253000000,\n    \"changeInWorkingCapital\": 6478000000,\n    \"accountsReceivables\":
+        -2172000000,\n    \"inventory\": -973000000,\n    \"accountsPayables\": 2340000000,\n
+        \   \"otherWorkingCapital\": 1459000000,\n    \"otherNonCashItems\": 0,\n
+        \   \"netCashProvidedByOperatingActivities\": 53666000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -8165000000,\n    \"acquisitionsNet\": -496000000,\n    \"purchasesOfInvestments\":
+        -148489000000,\n    \"salesMaturitiesOfInvestments\": 124447000000,\n    \"otherInvestingActivites\":
+        -1071000000,\n    \"netCashUsedForInvestingActivites\": -33774000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 530000000,\n    \"commonStockRepurchased\":
+        -22860000000,\n    \"dividendsPaid\": -10564000000,\n    \"otherFinancingActivites\":
+        16515000000,\n    \"netCashUsedProvidedByFinancingActivities\": -16379000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": 3513000000,\n
+        \   \"cashAtEndOfPeriod\": 14259000000,\n    \"cashAtBeginningOfPeriod\":
+        10746000000,\n    \"operatingCashFlow\": 53666000000,\n    \"capitalExpenditure\":
+        -9076000000,\n    \"freeCashFlow\": 44590000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312513416534/0001193125-13-416534-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312513416534/d590790d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2012-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2012-10-31\",\n
+        \   \"acceptedDate\": \"2012-10-31 17:07:19\",\n    \"calendarYear\": \"2012\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 41733000000,\n    \"depreciationAndAmortization\":
+        3277000000,\n    \"deferredIncomeTax\": 4405000000,\n    \"stockBasedCompensation\":
+        1740000000,\n    \"changeInWorkingCapital\": -299000000,\n    \"accountsReceivables\":
+        -5551000000,\n    \"inventory\": -15000000,\n    \"accountsPayables\": 4467000000,\n
+        \   \"otherWorkingCapital\": 2824000000,\n    \"otherNonCashItems\": 0,\n
+        \   \"netCashProvidedByOperatingActivities\": 50856000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -8295000000,\n    \"acquisitionsNet\": -350000000,\n    \"purchasesOfInvestments\":
+        -151232000000,\n    \"salesMaturitiesOfInvestments\": 112805000000,\n    \"otherInvestingActivites\":
+        -1155000000,\n    \"netCashUsedForInvestingActivites\": -48227000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 665000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": -2488000000,\n    \"otherFinancingActivites\":
+        125000000,\n    \"netCashUsedProvidedByFinancingActivities\": -1698000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": 931000000,\n
+        \   \"cashAtEndOfPeriod\": 10746000000,\n    \"cashAtBeginningOfPeriod\":
+        9815000000,\n    \"operatingCashFlow\": 50856000000,\n    \"capitalExpenditure\":
+        -9402000000,\n    \"freeCashFlow\": 41454000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312512444068/0001193125-12-444068-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312512444068/d411355d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2011-09-24\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2011-10-26\",\n
+        \   \"acceptedDate\": \"2011-10-26 16:35:25\",\n    \"calendarYear\": \"2011\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 25922000000,\n    \"depreciationAndAmortization\":
+        1814000000,\n    \"deferredIncomeTax\": 2868000000,\n    \"stockBasedCompensation\":
+        1168000000,\n    \"changeInWorkingCapital\": 5757000000,\n    \"accountsReceivables\":
+        143000000,\n    \"inventory\": 275000000,\n    \"accountsPayables\": 2515000000,\n
+        \   \"otherWorkingCapital\": 1654000000,\n    \"otherNonCashItems\": 0,\n
+        \   \"netCashProvidedByOperatingActivities\": 37529000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -4260000000,\n    \"acquisitionsNet\": -244000000,\n    \"purchasesOfInvestments\":
+        -102317000000,\n    \"salesMaturitiesOfInvestments\": 69853000000,\n    \"otherInvestingActivites\":
+        -3451000000,\n    \"netCashUsedForInvestingActivites\": -40419000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 831000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 613000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 1444000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": -1446000000,\n    \"cashAtEndOfPeriod\": 9815000000,\n
+        \   \"cashAtBeginningOfPeriod\": 11261000000,\n    \"operatingCashFlow\":
+        37529000000,\n    \"capitalExpenditure\": -7452000000,\n    \"freeCashFlow\":
+        30077000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312511282113/0001193125-11-282113-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312511282113/d220209d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2010-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2010-10-27\",\n
+        \   \"acceptedDate\": \"2010-10-27 16:36:21\",\n    \"calendarYear\": \"2010\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 14013000000,\n    \"depreciationAndAmortization\":
+        1027000000,\n    \"deferredIncomeTax\": 1440000000,\n    \"stockBasedCompensation\":
+        879000000,\n    \"changeInWorkingCapital\": 1212000000,\n    \"accountsReceivables\":
+        -2142000000,\n    \"inventory\": -596000000,\n    \"accountsPayables\": 6307000000,\n
+        \   \"otherWorkingCapital\": 1097000000,\n    \"otherNonCashItems\": 24000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 18595000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -2005000000,\n    \"acquisitionsNet\": -638000000,\n    \"purchasesOfInvestments\":
+        -57811000000,\n    \"salesMaturitiesOfInvestments\": 46718000000,\n    \"otherInvestingActivites\":
+        -118000000,\n    \"netCashUsedForInvestingActivites\": -13854000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 912000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 345000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 1257000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 5998000000,\n    \"cashAtEndOfPeriod\": 11261000000,\n
+        \   \"cashAtBeginningOfPeriod\": 5263000000,\n    \"operatingCashFlow\": 18595000000,\n
+        \   \"capitalExpenditure\": -2121000000,\n    \"freeCashFlow\": 16474000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312510238044/0001193125-10-238044-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312510238044/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2009-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2009-10-27\",\n
+        \   \"acceptedDate\": \"2009-10-27 16:18:29\",\n    \"calendarYear\": \"2009\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 5704000000,\n    \"depreciationAndAmortization\":
+        703000000,\n    \"deferredIncomeTax\": -519000000,\n    \"stockBasedCompensation\":
+        710000000,\n    \"changeInWorkingCapital\": 3535000000,\n    \"accountsReceivables\":
+        -939000000,\n    \"inventory\": 54000000,\n    \"accountsPayables\": 92000000,\n
+        \   \"otherWorkingCapital\": 5562000000,\n    \"otherNonCashItems\": 26000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 10159000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -1144000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -46825000000,\n    \"salesMaturitiesOfInvestments\": 30678000000,\n    \"otherInvestingActivites\":
+        -143000000,\n    \"netCashUsedForInvestingActivites\": -17434000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 475000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 188000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 663000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": -6612000000,\n    \"cashAtEndOfPeriod\": 5263000000,\n
+        \   \"cashAtBeginningOfPeriod\": 11875000000,\n    \"operatingCashFlow\":
+        10159000000,\n    \"capitalExpenditure\": -1213000000,\n    \"freeCashFlow\":
+        8946000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312509214859/0001193125-09-214859-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312509214859/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2008-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2008-11-05\",\n
+        \   \"acceptedDate\": \"2008-11-05 06:16:23\",\n    \"calendarYear\": \"2008\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 4834000000,\n    \"depreciationAndAmortization\":
+        473000000,\n    \"deferredIncomeTax\": -368000000,\n    \"stockBasedCompensation\":
+        516000000,\n    \"changeInWorkingCapital\": 4119000000,\n    \"accountsReceivables\":
+        -785000000,\n    \"inventory\": -163000000,\n    \"accountsPayables\": 596000000,\n
+        \   \"otherWorkingCapital\": 5150000000,\n    \"otherNonCashItems\": 22000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 9596000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -1091000000,\n    \"acquisitionsNet\": -220000000,\n    \"purchasesOfInvestments\":
+        -23003000000,\n    \"salesMaturitiesOfInvestments\": 16243000000,\n    \"otherInvestingActivites\":
+        -118000000,\n    \"netCashUsedForInvestingActivites\": -8189000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 483000000,\n    \"commonStockRepurchased\":
+        -124000000,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 757000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 1116000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 2523000000,\n    \"cashAtEndOfPeriod\": 11875000000,\n
+        \   \"cashAtBeginningOfPeriod\": 9352000000,\n    \"operatingCashFlow\": 9596000000,\n
+        \   \"capitalExpenditure\": -1199000000,\n    \"freeCashFlow\": 8397000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312508224958/0001193125-08-224958-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312508224958/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2007-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2007-11-15\",\n
+        \   \"acceptedDate\": \"2007-11-15 16:49:37\",\n    \"calendarYear\": \"2007\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 3496000000,\n    \"depreciationAndAmortization\":
+        317000000,\n    \"deferredIncomeTax\": 78000000,\n    \"stockBasedCompensation\":
+        242000000,\n    \"changeInWorkingCapital\": 1325000000,\n    \"accountsReceivables\":
+        -385000000,\n    \"inventory\": -76000000,\n    \"accountsPayables\": 1494000000,\n
+        \   \"otherWorkingCapital\": 81000000,\n    \"otherNonCashItems\": 12000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 5470000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -735000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -11736000000,\n    \"salesMaturitiesOfInvestments\": 9424000000,\n    \"otherInvestingActivites\":
+        -202000000,\n    \"netCashUsedForInvestingActivites\": -3249000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 365000000,\n    \"commonStockRepurchased\":
+        -3000000,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 377000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 739000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 2960000000,\n    \"cashAtEndOfPeriod\": 9352000000,\n
+        \   \"cashAtBeginningOfPeriod\": 6392000000,\n    \"operatingCashFlow\": 5470000000,\n
+        \   \"capitalExpenditure\": -986000000,\n    \"freeCashFlow\": 4484000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746907009340/0001047469-07-009340-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746907009340/a2181030z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2006-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2006-12-29\",\n
+        \   \"acceptedDate\": \"2006-12-29 06:05:58\",\n    \"calendarYear\": \"2006\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 1989000000,\n    \"depreciationAndAmortization\":
+        225000000,\n    \"deferredIncomeTax\": 53000000,\n    \"stockBasedCompensation\":
+        163000000,\n    \"changeInWorkingCapital\": -221000000,\n    \"accountsReceivables\":
+        -357000000,\n    \"inventory\": -105000000,\n    \"accountsPayables\": 1611000000,\n
+        \   \"otherWorkingCapital\": -1040000000,\n    \"otherNonCashItems\": 11000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 2220000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -657000000,\n    \"acquisitionsNet\": 40000000,\n    \"purchasesOfInvestments\":
+        -7280000000,\n    \"salesMaturitiesOfInvestments\": 8312000000,\n    \"otherInvestingActivites\":
+        -58000000,\n    \"netCashUsedForInvestingActivites\": 357000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 318000000,\n    \"commonStockRepurchased\":
+        -355000000,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 361000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 324000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 2901000000,\n    \"cashAtEndOfPeriod\": 6392000000,\n
+        \   \"cashAtBeginningOfPeriod\": 3491000000,\n    \"operatingCashFlow\": 2220000000,\n
+        \   \"capitalExpenditure\": -657000000,\n    \"freeCashFlow\": 1563000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465906084288/a06-25759_210k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465906084288/a06-25759_210k.htm\"\n
+        \ },\n  {\n    \"date\": \"2005-09-24\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2005-12-01\",\n
+        \   \"acceptedDate\": \"2005-11-30 21:22:48\",\n    \"calendarYear\": \"2005\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 1335000000,\n    \"depreciationAndAmortization\":
+        179000000,\n    \"deferredIncomeTax\": 505000000,\n    \"stockBasedCompensation\":
+        42000000,\n    \"changeInWorkingCapital\": 465000000,\n    \"accountsReceivables\":
+        -121000000,\n    \"inventory\": -64000000,\n    \"accountsPayables\": 328000000,\n
+        \   \"otherWorkingCapital\": -61000000,\n    \"otherNonCashItems\": 9000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 2535000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -260000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -11470000000,\n    \"salesMaturitiesOfInvestments\": 9195000000,\n    \"otherInvestingActivites\":
+        -21000000,\n    \"netCashUsedForInvestingActivites\": -2556000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 543000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 0,\n    \"netCashUsedProvidedByFinancingActivities\":
+        543000000,\n    \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\":
+        522000000,\n    \"cashAtEndOfPeriod\": 3491000000,\n    \"cashAtBeginningOfPeriod\":
+        2969000000,\n    \"operatingCashFlow\": 2535000000,\n    \"capitalExpenditure\":
+        -260000000,\n    \"freeCashFlow\": 2275000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465905058421/a05-20674_110k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465905058421/a05-20674_110k.htm\"\n
+        \ },\n  {\n    \"date\": \"2004-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2004-12-03\",\n
+        \   \"acceptedDate\": \"2004-12-02 18:05:49\",\n    \"calendarYear\": \"2004\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 276000000,\n    \"depreciationAndAmortization\":
+        150000000,\n    \"deferredIncomeTax\": 20000000,\n    \"stockBasedCompensation\":
+        33000000,\n    \"changeInWorkingCapital\": 448000000,\n    \"accountsReceivables\":
+        -8000000,\n    \"inventory\": -45000000,\n    \"accountsPayables\": 297000000,\n
+        \   \"otherWorkingCapital\": -39000000,\n    \"otherNonCashItems\": 7000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 934000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -176000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -3270000000,\n    \"salesMaturitiesOfInvestments\": 1947000000,\n    \"otherInvestingActivites\":
+        11000000,\n    \"netCashUsedForInvestingActivites\": -1488000000,\n    \"debtRepayment\":
+        -300000000,\n    \"commonStockIssued\": 427000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 0,\n    \"netCashUsedProvidedByFinancingActivities\":
+        127000000,\n    \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\":
+        -427000000,\n    \"cashAtEndOfPeriod\": 2969000000,\n    \"cashAtBeginningOfPeriod\":
+        3396000000,\n    \"operatingCashFlow\": 934000000,\n    \"capitalExpenditure\":
+        -176000000,\n    \"freeCashFlow\": 758000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746904035975/a2147337z10-k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746904035975/a2147337z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2003-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2003-12-19\",\n
+        \   \"acceptedDate\": \"2003-12-19 17:25:45\",\n    \"calendarYear\": \"2003\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 69000000,\n    \"depreciationAndAmortization\":
+        113000000,\n    \"deferredIncomeTax\": -11000000,\n    \"stockBasedCompensation\":
+        16000000,\n    \"changeInWorkingCapital\": 126000000,\n    \"accountsReceivables\":
+        -201000000,\n    \"inventory\": -11000000,\n    \"accountsPayables\": 243000000,\n
+        \   \"otherWorkingCapital\": -30000000,\n    \"otherNonCashItems\": -24000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 289000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -164000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -2648000000,\n    \"salesMaturitiesOfInvestments\": 3607000000,\n    \"otherInvestingActivites\":
+        33000000,\n    \"netCashUsedForInvestingActivites\": 828000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 53000000,\n    \"commonStockRepurchased\":
+        -26000000,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 0,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 27000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 1144000000,\n    \"cashAtEndOfPeriod\": 3396000000,\n
+        \   \"cashAtBeginningOfPeriod\": 2252000000,\n    \"operatingCashFlow\": 289000000,\n
+        \   \"capitalExpenditure\": -164000000,\n    \"freeCashFlow\": 125000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746903041604/a2124888z10-k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746903041604/a2124888z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2002-09-28\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2002-12-19\",\n
+        \   \"acceptedDate\": \"2002-12-19 17:20:21\",\n    \"calendarYear\": \"2002\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 65000000,\n    \"depreciationAndAmortization\":
+        118000000,\n    \"deferredIncomeTax\": -34000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": -103000000,\n    \"accountsReceivables\":
+        -99000000,\n    \"inventory\": -34000000,\n    \"accountsPayables\": 110000000,\n
+        \   \"otherWorkingCapital\": -11000000,\n    \"otherNonCashItems\": 43000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 89000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -174000000,\n    \"acquisitionsNet\": -27000000,\n    \"purchasesOfInvestments\":
+        -4144000000,\n    \"salesMaturitiesOfInvestments\": 4100000000,\n    \"otherInvestingActivites\":
+        -7000000,\n    \"netCashUsedForInvestingActivites\": -252000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 105000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 0,\n    \"netCashUsedProvidedByFinancingActivities\":
+        105000000,\n    \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\":
+        -58000000,\n    \"cashAtEndOfPeriod\": 2252000000,\n    \"cashAtBeginningOfPeriod\":
+        2310000000,\n    \"operatingCashFlow\": 89000000,\n    \"capitalExpenditure\":
+        -174000000,\n    \"freeCashFlow\": -85000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746902007674/0001047469-02-007674-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746902007674/a2096490z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2001-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2001-12-21\",\n
+        \   \"acceptedDate\": \"2001-12-21 00:00:00\",\n    \"calendarYear\": \"2001\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -25000000,\n    \"depreciationAndAmortization\":
+        102000000,\n    \"deferredIncomeTax\": -36000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 211000000,\n    \"accountsReceivables\":
+        487000000,\n    \"inventory\": 22000000,\n    \"accountsPayables\": -356000000,\n
+        \   \"otherWorkingCapital\": 12000000,\n    \"otherNonCashItems\": -67000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 185000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -232000000,\n    \"acquisitionsNet\": 340000000,\n    \"purchasesOfInvestments\":
+        -4269000000,\n    \"salesMaturitiesOfInvestments\": 5089000000,\n    \"otherInvestingActivites\":
+        -36000000,\n    \"netCashUsedForInvestingActivites\": 892000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 42000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 0,\n    \"netCashUsedProvidedByFinancingActivities\":
+        42000000,\n    \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\":
+        1119000000,\n    \"cashAtEndOfPeriod\": 2310000000,\n    \"cashAtBeginningOfPeriod\":
+        1191000000,\n    \"operatingCashFlow\": 185000000,\n    \"capitalExpenditure\":
+        -232000000,\n    \"freeCashFlow\": -47000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205701544436/a2066171z10-k405.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205701544436/a2066171z10-k405.htm\"\n
+        \ },\n  {\n    \"date\": \"2000-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2000-12-14\",\n
+        \   \"acceptedDate\": \"2000-12-14 00:00:00\",\n    \"calendarYear\": \"2000\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 786000000,\n    \"depreciationAndAmortization\":
+        84000000,\n    \"deferredIncomeTax\": 163000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 157000000,\n    \"accountsReceivables\":
+        -272000000,\n    \"inventory\": -13000000,\n    \"accountsPayables\": 345000000,\n
+        \   \"otherWorkingCapital\": -15000000,\n    \"otherNonCashItems\": -364000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 826000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -107000000,\n    \"acquisitionsNet\": 372000000,\n    \"purchasesOfInvestments\":
+        -4499000000,\n    \"salesMaturitiesOfInvestments\": 3331000000,\n    \"otherInvestingActivites\":
+        -27000000,\n    \"netCashUsedForInvestingActivites\": -930000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 85000000,\n    \"commonStockRepurchased\":
+        -116000000,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 0,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": -31000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": -135000000,\n    \"cashAtEndOfPeriod\": 1191000000,\n
+        \   \"cashAtBeginningOfPeriod\": 1326000000,\n    \"operatingCashFlow\": 826000000,\n
+        \   \"capitalExpenditure\": -107000000,\n    \"freeCashFlow\": 719000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205700053623/0000912057-00-053623-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205700053623/a2032880z10-k.txt\"\n
+        \ },\n  {\n    \"date\": \"1999-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1999-12-22\",\n
+        \   \"acceptedDate\": \"1999-12-22 00:00:00\",\n    \"calendarYear\": \"1999\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 601000000,\n    \"depreciationAndAmortization\":
+        85000000,\n    \"deferredIncomeTax\": -35000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 377000000,\n    \"accountsReceivables\":
+        274000000,\n    \"inventory\": 58000000,\n    \"accountsPayables\": 93000000,\n
+        \   \"otherWorkingCapital\": -3000000,\n    \"otherNonCashItems\": -230000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 798000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -47000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": -4348000000,\n
+        \   \"salesMaturitiesOfInvestments\": 3400000000,\n    \"otherInvestingActivites\":
+        31000000,\n    \"netCashUsedForInvestingActivites\": -964000000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 86000000,\n    \"commonStockRepurchased\":
+        -75000000,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 0,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 11000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": -155000000,\n    \"cashAtEndOfPeriod\": 1326000000,\n
+        \   \"cashAtBeginningOfPeriod\": 1481000000,\n    \"operatingCashFlow\": 798000000,\n
+        \   \"capitalExpenditure\": -47000000,\n    \"freeCashFlow\": 751000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205799010244/0000912057-99-010244-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000912057-99-010244.txt\"\n
+        \ },\n  {\n    \"date\": \"1998-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1998-09-25\",\n
+        \   \"acceptedDate\": \"1998-09-24 20:00:00\",\n    \"calendarYear\": \"1998\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 309000000,\n    \"depreciationAndAmortization\":
+        111000000,\n    \"deferredIncomeTax\": 1000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 387000000,\n    \"accountsReceivables\":
+        72000000,\n    \"inventory\": 359000000,\n    \"accountsPayables\": 34000000,\n
+        \   \"otherWorkingCapital\": 83000000,\n    \"otherNonCashItems\": -33000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 775000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -46000000,\n    \"acquisitionsNet\": 24000000,\n    \"purchasesOfInvestments\":
+        -2313000000,\n    \"salesMaturitiesOfInvestments\": 1723000000,\n    \"otherInvestingActivites\":
+        69000000,\n    \"netCashUsedForInvestingActivites\": -543000000,\n    \"debtRepayment\":
+        -25000000,\n    \"commonStockIssued\": 41000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 3000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 19000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 251000000,\n    \"cashAtEndOfPeriod\": 1481000000,\n
+        \   \"cashAtBeginningOfPeriod\": 1230000000,\n    \"operatingCashFlow\": 775000000,\n
+        \   \"capitalExpenditure\": -56000000,\n    \"freeCashFlow\": 719000000,\n
+        \   \"link\": \"\",\n    \"finalLink\": \"\"\n  },\n  {\n    \"date\": \"1997-09-26\",\n
+        \   \"symbol\": \"AAPL\",\n    \"reportedCurrency\": \"USD\",\n    \"cik\":
+        \"0000320193\",\n    \"fillingDate\": \"1997-12-05\",\n    \"acceptedDate\":
+        \"1997-12-05 00:00:00\",\n    \"calendarYear\": \"1997\",\n    \"period\":
+        \"FY\",\n    \"netIncome\": -1045000000,\n    \"depreciationAndAmortization\":
+        118000000,\n    \"deferredIncomeTax\": -7000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 670000000,\n    \"accountsReceivables\":
+        469000000,\n    \"inventory\": 225000000,\n    \"accountsPayables\": -107000000,\n
+        \   \"otherWorkingCapital\": -7000000,\n    \"otherNonCashItems\": 452000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 188000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -53000000,\n    \"acquisitionsNet\": -384000000,\n    \"purchasesOfInvestments\":
+        -999000000,\n    \"salesMaturitiesOfInvestments\": 963000000,\n    \"otherInvestingActivites\":
+        -60000000,\n    \"netCashUsedForInvestingActivites\": -533000000,\n    \"debtRepayment\":
+        -161000000,\n    \"commonStockIssued\": 34000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": 0,\n    \"otherFinancingActivites\": 150000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 23000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": -322000000,\n    \"cashAtEndOfPeriod\": 1230000000,\n
+        \   \"cashAtBeginningOfPeriod\": 1552000000,\n    \"operatingCashFlow\": 188000000,\n
+        \   \"capitalExpenditure\": -53000000,\n    \"freeCashFlow\": 135000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746997006960/0001047469-97-006960-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0001047469-97-006960.txt\"\n
+        \ },\n  {\n    \"date\": \"1996-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1996-12-19\",\n
+        \   \"acceptedDate\": \"1996-12-19 00:00:00\",\n    \"calendarYear\": \"1996\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": -816000000,\n    \"depreciationAndAmortization\":
+        156000000,\n    \"deferredIncomeTax\": -439000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 1109000000,\n    \"accountsReceivables\":
+        435000000,\n    \"inventory\": 1113000000,\n    \"accountsPayables\": -374000000,\n
+        \   \"otherWorkingCapital\": -439000000,\n    \"otherNonCashItems\": 509000000,\n
+        \   \"netCashProvidedByOperatingActivities\": 519000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -67000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": -437000000,\n
+        \   \"salesMaturitiesOfInvestments\": 440000000,\n    \"otherInvestingActivites\":
+        -55000000,\n    \"netCashUsedForInvestingActivites\": -119000000,\n    \"debtRepayment\":
+        -275000000,\n    \"commonStockIssued\": 39000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": -14000000,\n    \"otherFinancingActivites\": 646000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 396000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 796000000,\n    \"cashAtEndOfPeriod\": 1552000000,\n
+        \   \"cashAtBeginningOfPeriod\": 756000000,\n    \"operatingCashFlow\": 519000000,\n
+        \   \"capitalExpenditure\": -67000000,\n    \"freeCashFlow\": 452000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019396000023/0000320193-96-000023-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-96-000023.txt\"\n
+        \ },\n  {\n    \"date\": \"1995-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1995-12-19\",\n
+        \   \"acceptedDate\": \"1995-12-19 00:00:00\",\n    \"calendarYear\": \"1995\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 424000000,\n    \"depreciationAndAmortization\":
+        127000000,\n    \"deferredIncomeTax\": 73000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": -797000000,\n    \"accountsReceivables\":
+        -350000000,\n    \"inventory\": -687000000,\n    \"accountsPayables\": 283000000,\n
+        \   \"otherWorkingCapital\": 73000000,\n    \"otherNonCashItems\": -67000000,\n
+        \   \"netCashProvidedByOperatingActivities\": -240000000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -159000000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -1672000000,\n    \"salesMaturitiesOfInvestments\": 1531000000,\n    \"otherInvestingActivites\":
+        -102000000,\n    \"netCashUsedForInvestingActivites\": -402000000,\n    \"debtRepayment\":
+        -2000000,\n    \"commonStockIssued\": 86000000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": -58000000,\n    \"otherFinancingActivites\": 169000000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": 195000000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": -447000000,\n    \"cashAtEndOfPeriod\": 756000000,\n
+        \   \"cashAtBeginningOfPeriod\": 1203000000,\n    \"operatingCashFlow\": -240000000,\n
+        \   \"capitalExpenditure\": -159000000,\n    \"freeCashFlow\": -399000000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019395000016/0000320193-95-000016-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-95-000016.txt\"\n
+        \ },\n  {\n    \"date\": \"1994-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1994-12-13\",\n
+        \   \"acceptedDate\": \"1994-12-13 00:00:00\",\n    \"calendarYear\": \"1994\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 310178000,\n    \"depreciationAndAmortization\":
+        167958000,\n    \"deferredIncomeTax\": 40800000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 247729000,\n    \"accountsReceivables\":
+        -199401000,\n    \"inventory\": 418204000,\n    \"accountsPayables\": 139095000,\n
+        \   \"otherWorkingCapital\": 15873000,\n    \"otherNonCashItems\": -29670000,\n
+        \   \"netCashProvidedByOperatingActivities\": 736995000,\n    \"investmentsInPropertyPlantAndEquipment\":
+        -159587000,\n    \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\":
+        -312073000,\n    \"salesMaturitiesOfInvestments\": 473595000,\n    \"otherInvestingActivites\":
+        -3737000,\n    \"netCashUsedForInvestingActivites\": -1802000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 82081000,\n    \"commonStockRepurchased\":
+        0,\n    \"dividendsPaid\": -56572000,\n    \"otherFinancingActivites\": -233627000,\n
+        \   \"netCashUsedProvidedByFinancingActivities\": -208118000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 527075000,\n    \"cashAtEndOfPeriod\": 1203488000,\n
+        \   \"cashAtBeginningOfPeriod\": 676413000,\n    \"operatingCashFlow\": 736995000,\n
+        \   \"capitalExpenditure\": -159587000,\n    \"freeCashFlow\": 577408000,\n
+        \   \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019394000016/0000320193-94-000016-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-94-000016.txt\"\n
+        \ },\n  {\n    \"date\": \"1993-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1993-09-30\",\n
+        \   \"acceptedDate\": \"1993-09-29 20:00:00\",\n    \"calendarYear\": \"1993\",\n
+        \   \"period\": \"FY\",\n    \"netIncome\": 86600000,\n    \"depreciationAndAmortization\":
+        166100000,\n    \"deferredIncomeTax\": 19000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": -946700000,\n    \"accountsReceivables\":
+        0,\n    \"inventory\": -926500000,\n    \"accountsPayables\": 0,\n    \"otherWorkingCapital\":
+        0,\n    \"otherNonCashItems\": 13200000,\n    \"netCashProvidedByOperatingActivities\":
+        -661800000,\n    \"investmentsInPropertyPlantAndEquipment\": -213100000,\n
+        \   \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": -1432000000,\n
+        \   \"salesMaturitiesOfInvestments\": 2153100000,\n    \"otherInvestingActivites\":
+        -15200000,\n    \"netCashUsedForInvestingActivites\": 492800000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 85300000,\n    \"commonStockRepurchased\":
+        -273500000,\n    \"dividendsPaid\": -55600000,\n    \"otherFinancingActivites\":
+        590700000,\n    \"netCashUsedProvidedByFinancingActivities\": 346900000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": 346900000,\n
+        \   \"cashAtEndOfPeriod\": 0,\n    \"cashAtBeginningOfPeriod\": 498600000,\n
+        \   \"operatingCashFlow\": -661800000,\n    \"capitalExpenditure\": -213100000,\n
+        \   \"freeCashFlow\": -874900000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1992-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1992-09-30\",\n    \"acceptedDate\": \"1992-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1992\",\n    \"period\": \"FY\",\n    \"netIncome\": 530400000,\n    \"depreciationAndAmortization\":
+        217200000,\n    \"deferredIncomeTax\": 100900000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 20700000,\n    \"accountsReceivables\":
+        0,\n    \"inventory\": 91600000,\n    \"accountsPayables\": 0,\n    \"otherWorkingCapital\":
+        0,\n    \"otherNonCashItems\": 14500000,\n    \"netCashProvidedByOperatingActivities\":
+        883700000,\n    \"investmentsInPropertyPlantAndEquipment\": -194900000,\n
+        \   \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": -2121300000,\n
+        \   \"salesMaturitiesOfInvestments\": 1473000000,\n    \"otherInvestingActivites\":
+        -69400000,\n    \"netCashUsedForInvestingActivites\": -912600000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 157200000,\n    \"commonStockRepurchased\":
+        -212600000,\n    \"dividendsPaid\": -57200000,\n    \"otherFinancingActivites\":
+        35900000,\n    \"netCashUsedProvidedByFinancingActivities\": -76700000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": -76700000,\n
+        \   \"cashAtEndOfPeriod\": 0,\n    \"cashAtBeginningOfPeriod\": 604100000,\n
+        \   \"operatingCashFlow\": 883700000,\n    \"capitalExpenditure\": -194900000,\n
+        \   \"freeCashFlow\": 688800000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1991-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1991-09-30\",\n    \"acceptedDate\": \"1991-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1991\",\n    \"period\": \"FY\",\n    \"netIncome\": 309800000,\n    \"depreciationAndAmortization\":
+        204400000,\n    \"deferredIncomeTax\": 8000000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": -400700000,\n    \"accountsReceivables\":
+        0,\n    \"inventory\": -316200000,\n    \"accountsPayables\": 0,\n    \"otherWorkingCapital\":
+        0,\n    \"otherNonCashItems\": 7200000,\n    \"netCashProvidedByOperatingActivities\":
+        128700000,\n    \"investmentsInPropertyPlantAndEquipment\": -218300000,\n
+        \   \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": -610700000,\n
+        \   \"salesMaturitiesOfInvestments\": 944500000,\n    \"otherInvestingActivites\":
+        -57200000,\n    \"netCashUsedForInvestingActivites\": 58300000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 257700000,\n    \"commonStockRepurchased\":
+        -184700000,\n    \"dividendsPaid\": -56500000,\n    \"otherFinancingActivites\":
+        26000000,\n    \"netCashUsedProvidedByFinancingActivities\": 42500000,\n    \"effectOfForexChangesOnCash\":
+        0,\n    \"netChangeInCash\": 42500000,\n    \"cashAtEndOfPeriod\": 0,\n    \"cashAtBeginningOfPeriod\":
+        374700000,\n    \"operatingCashFlow\": 128700000,\n    \"capitalExpenditure\":
+        -218300000,\n    \"freeCashFlow\": -89600000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1990-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1990-09-30\",\n    \"acceptedDate\": \"1990-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1990\",\n    \"period\": \"FY\",\n    \"netIncome\": 474900000,\n    \"depreciationAndAmortization\":
+        202700000,\n    \"deferredIncomeTax\": 138900000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": 145300000,\n    \"accountsReceivables\":
+        0,\n    \"inventory\": 119900000,\n    \"accountsPayables\": 0,\n    \"otherWorkingCapital\":
+        0,\n    \"otherNonCashItems\": 2100000,\n    \"netCashProvidedByOperatingActivities\":
+        963900000,\n    \"investmentsInPropertyPlantAndEquipment\": -224300000,\n
+        \   \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": -1424400000,\n
+        \   \"salesMaturitiesOfInvestments\": 1172700000,\n    \"otherInvestingActivites\":
+        -97500000,\n    \"netCashUsedForInvestingActivites\": -573500000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 103500000,\n    \"commonStockRepurchased\":
+        -569600000,\n    \"dividendsPaid\": -53800000,\n    \"otherFinancingActivites\":
+        65900000,\n    \"netCashUsedProvidedByFinancingActivities\": -454000000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": -454000000,\n
+        \   \"cashAtEndOfPeriod\": 0,\n    \"cashAtBeginningOfPeriod\": 438300000,\n
+        \   \"operatingCashFlow\": 963900000,\n    \"capitalExpenditure\": -224300000,\n
+        \   \"freeCashFlow\": 739600000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1989-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1989-09-30\",\n    \"acceptedDate\": \"1989-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1989\",\n    \"period\": \"FY\",\n    \"netIncome\": 454000000,\n    \"depreciationAndAmortization\":
+        124800000,\n    \"deferredIncomeTax\": 111300000,\n    \"stockBasedCompensation\":
+        0,\n    \"changeInWorkingCapital\": -109000000,\n    \"accountsReceivables\":
+        0,\n    \"inventory\": -13900000,\n    \"accountsPayables\": 0,\n    \"otherWorkingCapital\":
+        0,\n    \"otherNonCashItems\": -73800000,\n    \"netCashProvidedByOperatingActivities\":
+        507300000,\n    \"investmentsInPropertyPlantAndEquipment\": -239000000,\n
+        \   \"acquisitionsNet\": 0,\n    \"purchasesOfInvestments\": -984700000,\n
+        \   \"salesMaturitiesOfInvestments\": 787400000,\n    \"otherInvestingActivites\":
+        33200000,\n    \"netCashUsedForInvestingActivites\": -403100000,\n    \"debtRepayment\":
+        0,\n    \"commonStockIssued\": 96000000,\n    \"commonStockRepurchased\":
+        -12900000,\n    \"dividendsPaid\": -50300000,\n    \"otherFinancingActivites\":
+        -71100000,\n    \"netCashUsedProvidedByFinancingActivities\": -38300000,\n
+        \   \"effectOfForexChangesOnCash\": 0,\n    \"netChangeInCash\": -38300000,\n
+        \   \"cashAtEndOfPeriod\": 0,\n    \"cashAtBeginningOfPeriod\": 372400000,\n
+        \   \"operatingCashFlow\": 507300000,\n    \"capitalExpenditure\": -239000000,\n
+        \   \"freeCashFlow\": 268300000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '54519'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 12 Apr 2023 14:40:28 GMT
+      ETag:
+      - W/"d4f7-f38SuMxUFqDgokF7v4VCNfw24D8"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

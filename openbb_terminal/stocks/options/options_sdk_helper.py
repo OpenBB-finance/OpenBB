@@ -1,12 +1,12 @@
 """Options Functions For OpenBB SDK"""
 
 import logging
+import re
 from datetime import datetime, timedelta
 from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
-from scipy.optimize import minimize
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
@@ -15,13 +15,14 @@ from openbb_terminal.stocks.options import (
     chartexchange_model,
     intrinio_model,
     nasdaq_model,
-    op_helpers,
     tradier_model,
     yfinance_model,
 )
 from openbb_terminal.stocks.options.op_helpers import Option
 
 logger = logging.getLogger(__name__)
+
+# pylint:disable=C0302
 
 
 @log_start_end(log=logger)
@@ -35,7 +36,7 @@ def get_full_option_chain(
     symbol : str
         Symbol to get chain for
     source : str, optional
-        Source to get data from, by default "Nasdaq".  Can be YahooFinance, Tradier, Nasdaq, or Intrinio
+        Source to get data from, by default "Nasdaq". Can be YahooFinance, Tradier, Nasdaq, or Intrinio
     expiration : Union[str, None], optional
         Date to get chain for.  By default returns all dates
 
@@ -54,20 +55,23 @@ def get_full_option_chain(
     >>> aapl_chain_date = openbb.stocks.options.chains("AAPL", expiration="2023-07-21", source="Nasdaq")
     """
 
-    if source == "Tradier":
+    source = re.sub(r"\s+", "", source.lower())
+    df = pd.DataFrame()
+    if source == "tradier":
         df = tradier_model.get_full_option_chain(symbol)
 
-    elif source == "Nasdaq":
+    elif source == "nasdaq":
         df = nasdaq_model.get_full_option_chain(symbol)
 
-    elif source == "YahooFinance":
+    elif source == "yahoofinance":
         df = yfinance_model.get_full_option_chain(symbol)
 
-    elif source == "Intrinio":
+    elif source == "intrinio":
         df = intrinio_model.get_full_option_chain(symbol)
 
-    else:
-        logger.info("Invalid Source")
+    if not isinstance(df, pd.DataFrame) or df.empty:
+        logger.info("Invalid Source or Symbol")
+        console.print("Invalid Source or Symbol")
         return pd.DataFrame()
 
     if expiration:
@@ -87,7 +91,7 @@ def get_option_current_price(
     symbol : str
         Symbol to get chain for
     source : str, optional
-        Source to get data from, by default "Nasdaq"
+        Source to get data, by default "Nasdaq". Can be Nasdaq, Tradier, or YahooFinance
 
     Returns
     -------
@@ -100,15 +104,21 @@ def get_option_current_price(
     >>> aapl_price = openbb.stocks.options.price("AAPL", source="Nasdaq")
     """
 
-    if source == "Tradier":
-        last_price = tradier_model.get_last_price(symbol)
-        return last_price if last_price else 0.0
-    if source == "Nasdaq":
-        return nasdaq_model.get_last_price(symbol)
-    if source == "YahooFinance":
-        return yfinance_model.get_last_price(symbol)
-    logger.info("Invalid Source")
-    return 0.0
+    source = re.sub(r"\s+", "", source.lower())
+    output = None
+    if source == "tradier":
+        output = tradier_model.get_last_price(symbol)
+    if source == "nasdaq":
+        output = nasdaq_model.get_last_price(symbol)
+    if source == "yahoofinance":
+        output = yfinance_model.get_last_price(symbol)
+
+    if not output:
+        logger.info("Invalid Source or Symbol")
+        console.print("Invalid Source or Symbol")
+        return 0.0
+
+    return output
 
 
 @log_start_end(log=logger)
@@ -120,7 +130,7 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
     symbol : str
         Symbol to get chain for
     source : str, optional
-        Source to get data from, by default "Nasdaq"
+        Source to get data from, by default "Nasdaq". Can be Intrinio, Tradier, Nasdaq, or YahooFinance
 
     Returns
     -------
@@ -132,17 +142,23 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
     >>> from openbb_terminal.sdk import openbb
     >>> SPX_expirations = openbb.stocks.options.expirations("SPX", source = "Tradier")
     """
+    source = re.sub(r"\s+", "", source.lower())
+    output = []
+    if source == "tradier":
+        output = tradier_model.option_expirations(symbol)
+    if source == "yahoofinance":
+        output = yfinance_model.option_expirations(symbol)
+    if source == "nasdaq":
+        output = nasdaq_model.option_expirations(symbol)
+    if source == "intrinio":
+        output = intrinio_model.get_expiration_dates(symbol)
 
-    if source == "Tradier":
-        return tradier_model.option_expirations(symbol)
-    if source == "YahooFinance":
-        return yfinance_model.option_expirations(symbol)
-    if source == "Nasdaq":
-        return nasdaq_model.option_expirations(symbol)
-    if source == "Intrinio":
-        return intrinio_model.get_expiration_dates(symbol)
-    logger.info("Invalid Source")
-    return pd.DataFrame()
+    if not output:
+        logger.info("Invalid Source or Symbol")
+        console.print("Invalid Source or Symbol")
+        return []
+
+    return output
 
 
 @log_start_end(log=logger)
@@ -166,7 +182,7 @@ def hist(
     call : bool, optional
         Flag to indicate a call, by default True
     source : str, optional
-        Source to get data from.  Can be ChartExchange or Tradier, by default "ChartExchange"
+        Source to get data from, by default "ChartExchange". Can be ChartExchange, Intrinio, or Tradier
 
     Returns
     -------
@@ -182,62 +198,23 @@ def hist(
     (Note that Tradier requires an API key)
     >>> openbb.stocks.options.hist("SPY", "2022-11-18", 400, call=False, source="Tradier").plot(y="close")
     """
-    if source.lower() == "chartexchange":
-        return chartexchange_model.get_option_history(symbol, exp, call, strike)
-    if source.lower() == "tradier":
-        return tradier_model.get_historical_options(symbol, exp, strike, not call)
-    if source.lower() == "intrinio":
+
+    source = re.sub(r"\s+", "", source.lower())
+    output = pd.DataFrame()
+    if source == "chartexchange":
+        output = chartexchange_model.get_option_history(symbol, exp, call, strike)
+    if source == "tradier":
+        output = tradier_model.get_historical_options(symbol, exp, strike, not call)
+    if source == "intrinio":
         occ_symbol = f"{symbol}{''.join(exp[2:].split('-'))}{'C' if call else 'P'}{str(int(1000*strike)).zfill(8)}"
-        return intrinio_model.get_historical_options(occ_symbol)
-    return pd.DataFrame()
+        output = intrinio_model.get_historical_options(occ_symbol)
 
+    if not isinstance(output, pd.DataFrame) or output.empty:
+        logger.info("No data found for symbol, check symbol and expiration date")
+        console.print("No data found for symbol, check symbol and expiration date")
+        return pd.DataFrame()
 
-def get_delta_neutral(symbol: str, date: str, x0: Optional[float] = None) -> float:
-    """Get delta neutral price for symbol at a given close date
-
-    Parameters
-    ----------
-    symbol : str
-        Symbol to get delta neutral price for
-    date : str
-        Date to get delta neutral price for
-    x0 : float, optional
-        Optional initial guess for solver, defaults to close price of that day
-
-    Returns
-    -------
-    float
-        Delta neutral price
-    """
-    # Need an initial guess for the solver
-    if x0:
-        x0_guess = x0
-    else:
-        # Check that the close price exists.  I am finding that holidays are not consistent, such as June 20, 2022
-        try:
-            x0_guess = intrinio_model.get_close_at_date(symbol, date)
-        except Exception:
-            console.print("Error getting close price for symbol, check date and symbol")
-            return np.nan
-    x0_guess = x0 if x0 else intrinio_model.get_close_at_date(symbol, date)
-    chains = intrinio_model.get_full_chain_eod(symbol, date)
-    if chains.empty:
-        return np.nan
-    # Lots of things can go wrong with minimizing, so lets add a general exception catch here.
-    try:
-        res = minimize(
-            op_helpers.get_abs_market_delta,
-            x0=x0_guess,
-            args=(chains),
-            bounds=[(0.01, np.inf)],
-            method="l-bfgs-b",
-        )
-        return res.x[0]
-    except Exception as e:
-        logging.info(
-            "Error getting delta neutral price for %s on %s: error:%s", symbol, date, e
-        )
-        return np.nan
+    return output
 
 
 def get_greeks(

@@ -22,8 +22,13 @@ from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
+import openbb_terminal.core.session.local_model as Local
+from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
+from openbb_terminal.core.config.paths import HIST_FILE_PATH
+from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.routines_handler import read_routine
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -39,7 +44,6 @@ from openbb_terminal.helper_funcs import (
     set_command_location,
     support_message,
     system_clear,
-    update_news_from_tweet_to_be_displayed,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -184,7 +188,17 @@ class BaseController(metaclass=ABCMeta):
         self.SUPPORT_CHOICES = support_choices
 
         # Add in news options
-        news_choices = ["--term", "-t", "--sources", "-s", "--help", "-h"]
+        news_choices = [
+            "--term",
+            "-t",
+            "--sources",
+            "-s",
+            "--help",
+            "-h",
+            "--tag",
+            "--taglist",
+            "--sourcelist",
+        ]
         self.NEWS_CHOICES = {c: None for c in news_choices}
 
     def check_path(self) -> None:
@@ -299,10 +313,9 @@ class BaseController(metaclass=ABCMeta):
         if self.queue:
             joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
             if not self.contains_keys(joined_queue):
+                queue = {"path": self.PATH, "queue": joined_queue}
                 logger.info(
-                    "QUEUE: {'path': '%s', 'queue': '%s'}",
-                    self.PATH,
-                    joined_queue,
+                    "QUEUE: %s", json.dumps(queue, default=str, ensure_ascii=False)
                 )
 
     def log_cmd_and_queue(
@@ -342,7 +355,8 @@ class BaseController(metaclass=ABCMeta):
         """
         actions = self.parse_input(an_input)
 
-        console.print()
+        if an_input and an_input != "reset":
+            console.print()
 
         # Empty command
         if len(actions) == 0:
@@ -393,7 +407,13 @@ class BaseController(metaclass=ABCMeta):
 
         self.log_queue()
 
-        if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+        if (
+            an_input
+            and an_input != "reset"
+            and (
+                not self.queue or (self.queue and self.queue[0] not in ("quit", "help"))
+            )
+        ):
             console.print()
 
         return self.queue
@@ -472,6 +492,11 @@ class BaseController(metaclass=ABCMeta):
         self.save_class()
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
+
+        if not is_local():
+            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
+            if not get_current_user().profile.remember:
+                Local.remove(HIST_FILE_PATH)
 
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
@@ -669,6 +694,31 @@ class BaseController(metaclass=ABCMeta):
             console.print(
                 f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
             )
+
+            if not is_local():
+                routine = read_routine(file_name=routine_file)
+                if routine is not None:
+                    name = SESSION_RECORDED_NAME.split(sep=".openbb", maxsplit=-1)[0]
+                    response = Hub.upload_routine(
+                        auth_header=current_user.profile.get_auth_header(),
+                        name=name,
+                        routine=routine,
+                    )
+                    if response is not None and response.status_code == 409:
+                        i = console.input(
+                            "A routine with the same name already exists, "
+                            "do you want to replace it? (y/n): "
+                        )
+                        console.print("")
+                        if i.lower() in ["y", "yes"]:
+                            response = Hub.upload_routine(
+                                auth_header=current_user.profile.get_auth_header(),
+                                name=name,
+                                routine=routine,
+                                override=True,
+                            )
+                        else:
+                            console.print("[info]Aborted.[/info]")
 
             # Clear session to be recorded again
             RECORD_SESSION = False
@@ -935,55 +985,8 @@ class BaseController(metaclass=ABCMeta):
                 try:
                     # Get input from user using auto-completion
                     if session and current_user.preferences.USE_PROMPT_TOOLKIT:
-                        # Check if tweet news is enabled
-                        if current_user.preferences.TOOLBAR_TWEET_NEWS:
-                            news_tweet = update_news_from_tweet_to_be_displayed()
-
-                            # Check if there is a valid tweet news to be displayed
-                            if news_tweet:
-                                an_input = session.prompt(
-                                    f"{get_flair()} {self.PATH} $ ",
-                                    completer=self.completer,
-                                    search_ignore_case=True,
-                                    bottom_toolbar=HTML(news_tweet),
-                                    style=Style.from_dict(
-                                        {
-                                            "bottom-toolbar": "#ffffff bg:#333333",
-                                        }
-                                    ),
-                                )
-
-                            else:
-                                # Check if toolbar hint was enabled
-                                if current_user.preferences.TOOLBAR_HINT:
-                                    an_input = session.prompt(
-                                        f"{get_flair()} {self.PATH} $ ",
-                                        completer=self.completer,
-                                        search_ignore_case=True,
-                                        bottom_toolbar=HTML(
-                                            '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
-                                            '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu'
-                                            '    <style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
-                                            '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
-                                            "see usage and available options    "
-                                            f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
-                                            f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
-                                        ),
-                                        style=Style.from_dict(
-                                            {
-                                                "bottom-toolbar": "#ffffff bg:#333333",
-                                            }
-                                        ),
-                                    )
-                                else:
-                                    an_input = session.prompt(
-                                        f"{get_flair()} {self.PATH} $ ",
-                                        completer=self.completer,
-                                        search_ignore_case=True,
-                                    )
-
                         # Check if toolbar hint was enabled
-                        elif current_user.preferences.TOOLBAR_HINT:
+                        if current_user.preferences.TOOLBAR_HINT:
                             an_input = session.prompt(
                                 f"{get_flair()} {self.PATH} $ ",
                                 completer=self.completer,
@@ -1025,10 +1028,8 @@ class BaseController(metaclass=ABCMeta):
                 # Process the input command
                 self.queue = self.switch(an_input)
 
-                if is_local() and an_input == "login":
-                    return ["login"]
-                if not is_local() and an_input == "logout":
-                    return ["logout"]
+                if get_show_prompt() and an_input in ("login", "logout"):
+                    return [an_input]
 
             except SystemExit:
                 if not self.contains_keys(an_input):
@@ -1060,7 +1061,11 @@ class BaseController(metaclass=ABCMeta):
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
-                    if not self.contains_keys(an_input):
+                    if not self.contains_keys(an_input) and an_input not in [
+                        "exit",
+                        "quit",
+                        "help",
+                    ]:
                         logger.warning("Replacing by %s", an_input)
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
@@ -1230,6 +1235,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
+                    if "." not in self.ticker:
+                        self.ticker = ns_parser.ticker.upper()
                 else:
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
@@ -1301,7 +1308,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             help="Coin to get. Must be coin symbol (e.g., btc, eth)",
             dest="coin",
             type=str,
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
         )
 
         parser.add_argument(

@@ -41,6 +41,8 @@ def get_score(symbol: str, years: int) -> Dict[str, Any]:
 
     current_user = get_current_user()
 
+    scores = {}
+
     try:
         valstock = valinvest.Fundamental(
             symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
@@ -659,8 +661,9 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = False) -> pd.Dat
     for row, dt_type in date_rows.items():
         if row in data.index:
             data.loc[row] = pd.to_datetime(data.loc[row], format=dt_type)
-
-    data = data.applymap(lambda x: lambda_long_number_format(x))
+    # we dont want to format this going to pywry window
+    if not get_current_user().preferences.USE_INTERACTIVE_DF:
+        data = data.applymap(lambda x: lambda_long_number_format(x))
     clean_df_index(data)
     data.columns.name = "Fiscal Date Ending"
     data = data.rename(
@@ -673,72 +676,6 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = False) -> pd.Dat
     )
 
     return data
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_filings(
-    pages: int = 1,
-) -> pd.DataFrame:
-    """Get SEC Filings RSS feed, disseminated by FMP
-
-    Parameters
-    ----------
-    pages: range = 1
-        The range of most-rececnt pages to get entries from (1000 per page; maximum of 30 pages)
-
-    Returns
-    -------
-    df: pd.DataFrame
-        Dataframe of results
-
-    Examples
-    --------
-    df = openbb.stocks.filings()
-
-    df = openbb.stocks.filings(pages=30)
-    """
-    current_user = get_current_user()
-    temp = []
-    try:
-        for i in range(pages):
-            temp.append(
-                pd.read_json(
-                    "https://financialmodelingprep.com/api/v3/rss_feed?&page="
-                    f"{i}"
-                    "&apikey="
-                    f"{current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
-                )
-            )
-        df = pd.concat(temp)
-        df = df.rename(
-            columns={
-                "title": "Title",
-                "date": "Date",
-                "link": "URL",
-                "cik": "CIK",
-                "form_type": "Form Type",
-                "ticker": "Ticker",
-            },
-        )
-        df_columns = ["Date", "Ticker", "CIK", "Form Type", "Title", "URL"]
-        df = (
-            pd.DataFrame(df, columns=df_columns)
-            .set_index(keys=["Date"])
-            .copy()
-            .sort_index(ascending=False)
-        )
-
-        # Invalid API Keys
-    except ValueError as e:
-        console.print(e)
-        df = pd.DataFrame()
-        # Premium feature, API plan is not authorized
-    except HTTPError as e:
-        console.print(e)
-        df = pd.DataFrame()
-
-    return df
 
 
 @log_start_end(log=logger)
@@ -816,3 +753,65 @@ def get_price_targets(symbol: str) -> pd.DataFrame:
         return pd.DataFrame()
 
     return pd.DataFrame(response.json())
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_filings(
+    pages: int = 1,
+) -> pd.DataFrame:
+    """Get SEC Filings RSS feed, disseminated by FMP
+    Parameters
+    ----------
+    pages: range = 1
+        The range of most-rececnt pages to get entries from (1000 per page; maximum of 30 pages)
+    Returns
+    -------
+    df: pd.DataFrame
+        Dataframe of results
+    Examples
+    --------
+    df = openbb.stocks.filings()
+    df = openbb.stocks.filings(pages=30)
+    """
+    current_user = get_current_user()
+    temp = []
+    try:
+        for i in range(pages):
+            temp.append(
+                pd.read_json(
+                    "https://financialmodelingprep.com/api/v3/rss_feed?&page="
+                    f"{i}"
+                    "&apikey="
+                    f"{current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
+                )
+            )
+        df = pd.concat(temp)
+        df = df.rename(
+            columns={
+                "title": "Title",
+                "date": "Date",
+                "link": "URL",
+                "cik": "CIK",
+                "form_type": "Form Type",
+                "ticker": "Ticker",
+            },
+        )
+        df_columns = ["Date", "Ticker", "CIK", "Form Type", "Title", "URL"]
+        df = (
+            pd.DataFrame(df, columns=df_columns)
+            .set_index(keys=["Date"])
+            .copy()
+            .sort_index(ascending=False)
+        )
+
+        # Invalid API Keys
+    except ValueError as e:
+        console.print(e)
+        df = pd.DataFrame()
+        # Premium feature, API plan is not authorized
+    except HTTPError as e:
+        console.print(e)
+        df = pd.DataFrame()
+
+    return df

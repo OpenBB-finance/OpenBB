@@ -1,7 +1,7 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
-from typing import Iterable, Optional, Tuple, Union
+from typing import Iterable, List, Optional, Tuple, Union
 
 import i18n
 from rich import panel
@@ -48,67 +48,22 @@ def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
     return renderable
 
 
-def get_ordered_list_sources(command_path: str):
+def get_ordered_list_sources(command_path: str) -> List:
     """
-    Returns the preferred source for the given command. If a value is not available for the specific
-    command, returns the most specific source, eventually returning the overall default source.
+    Returns the preferred source for the given command.
 
     Parameters
     ----------
     command_path: str
-        The command to find the source for. Example would be "stocks/load" to return the value
-        for stocks.load first, then stocks, then the default value.
+        The command to find the source for. E.g. "stocks/load
 
     Returns
     -------
-    list:
-        list of sources
+    List
+        The list of sources for the given command.
     """
-    current_user = get_current_user()
-    try:
-        json_doc = current_user.sources.sources_dict
-
-        # We are going to iterate through each command as if it is broken up by period characters (.)
-        path_objects = command_path.split("/")[1:]
-
-        # Start iterating through the top-level JSON doc to start
-        deepest_level = json_doc
-
-        # If we still have entries in path_objects, continue to go deeper
-        while len(path_objects) > 0:
-            # Is this path object in the JSON doc? If so, go into that for our next iteration.
-            if path_objects[0] in deepest_level:
-                # We found the element, so go one level deeper
-                deepest_level = deepest_level[path_objects[0]]
-
-            else:
-                # If we have not find the `load` on the deepest level it means we may be in a sub-menu
-                # and we can use the load from the Base class
-                if path_objects[0] == "load":
-                    # Get the context associated with the sub-menu (e.g. stocks, crypto, ...)
-                    context = command_path.split("/")[1]
-
-                    # Grab the load source from that context if it exists, otherwise throws an error
-                    if context in json_doc and "load" in json_doc[context]:
-                        return json_doc[context]["load"]
-
-                # We didn't find the next level, so flag that that command default source is missing
-                # Which means that there aren't more than 1 source and therefore no selection is necessary
-                return []
-
-            # Go one level deeper into the path
-            path_objects = path_objects[1:]
-
-        # We got through all values, so return this as the final value
-        return deepest_level
-
-    except Exception as e:
-        console.print(
-            f"[red]Failed to load preferred source from file: "
-            f"{current_user.preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
-        )
-        console.print(f"[red]{e}[/red]")
-        return None
+    command_path = command_path[1:] if command_path.startswith("/") else command_path
+    return get_current_user().sources.choices.get(command_path, [])
 
 
 class MenuText:

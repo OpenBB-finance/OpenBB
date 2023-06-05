@@ -39,7 +39,6 @@ from openbb_terminal.economy import (
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     list_from_str,
     parse_and_split_input,
@@ -78,7 +77,6 @@ class EconomyController(BaseController):
         "plot",
         "valuation",
         "performance",
-        "spectrum",
         "map",
         "rtps",
         "bigmac",
@@ -322,7 +320,6 @@ class EconomyController(BaseController):
         mt.add_cmd("rtps")
         mt.add_cmd("valuation")
         mt.add_cmd("performance")
-        mt.add_cmd("spectrum")
         mt.add_raw("\n")
         mt.add_info("_country_")
         mt.add_cmd("gdp")
@@ -2428,44 +2425,6 @@ class EconomyController(BaseController):
                 else None,
                 limit=ns_parser.limit,
             )
-
-    @log_start_end(log=logger)
-    def call_spectrum(self, other_args: List[str]):
-        """Process spectrum command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spectrum",
-            description="""
-                View group (sectors, industry or country) spectrum data. [Source: Finviz]
-            """,
-        )
-        parser.add_argument(
-            "-g",
-            "--group",
-            type=str,
-            choices=list(self.d_GROUPS.keys()),
-            default="sector",
-            dest="group",
-            help="Data group (sector, industry or country)",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-g")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
-            ns_group = (
-                " ".join(ns_parser.group)
-                if isinstance(ns_parser.group, list)
-                else ns_parser.group
-            )
-            finviz_view.display_spectrum(group=ns_group)
-
-            # # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
-            # # after saving it and displaying it to the user
-            os.remove(self.d_GROUPS[ns_group] + ".jpg")
 
     @log_start_end(log=logger)
     def call_eval(self, other_args):

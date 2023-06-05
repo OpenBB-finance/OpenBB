@@ -129,31 +129,29 @@ class OptionsController(BaseController):
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
-        self.selected_date = expiration if expiration else ""
+        self.selected_date = expiration or ""
         self.chain: pd.DataFrame = pd.DataFrame()
         self.full_chain: pd.DataFrame = pd.DataFrame()
-
+        self.expiry_dates: List[str] = []
         self.current_price = 0.0
+        self.is_eod = False
         # Keeps track of initial source of load so we can use correct commands later
-        self.source = ""
-
+        self.source = get_ordered_list_sources(f"{self.PATH}load")[0]
         if ticker:
-            if (
-                get_current_user().credentials.API_TRADIER_TOKEN == "REPLACE_ME"
-            ):  # nosec
-                console.print("Loaded expiry dates from Yahoo Finance")
-                self.expiry_dates = yfinance_model.option_expirations(self.ticker)
-            else:
-                console.print("Loaded expiry dates from Tradier")
-                self.expiry_dates = tradier_model.option_expirations(self.ticker)
-                self.source = "Tradier"
-
             self.set_option_chain()
             self.set_current_price()
+            self.set_expiry_dates()
+            self.selected_date = ""
+
+            if not self.expiry_dates and not self.chain.empty:
+                console.print(
+                    f"""[red]Issue loading options for "{self.ticker}" from source "{self.source}".[/red]"""
+                )
+                console.print("Defaulting to YahooFinance now.")
+                self.expiry_dates = nasdaq_model.option_expirations(self.ticker)
+
         else:
             self.expiry_dates = []
-
-        self.default_chain = get_ordered_list_sources(f"{self.PATH}chains")[0]
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
@@ -161,6 +159,8 @@ class OptionsController(BaseController):
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.update_runtime_choices()
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
@@ -173,10 +173,7 @@ class OptionsController(BaseController):
 
         custom_filters = [sort_filter]
 
-        commands = parse_and_split_input(
-            an_input=an_input, custom_filters=custom_filters
-        )
-        return commands
+        return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
     def set_option_chain(self):
         df = pd.DataFrame()
@@ -202,13 +199,13 @@ class OptionsController(BaseController):
         self.full_chain = df.copy(deep=True)
         self.chain = self.full_chain.copy(deep=True)
 
-        console.print("Loaded option chain from", self.source)
+        console.print(f"Loaded option chain from {self.source}\n")
 
     def set_current_price(self):
         if not self.chain.empty:
             if self.source == "Tradier":
                 last_price = tradier_model.get_last_price(self.ticker)
-                self.current_price = last_price if last_price else 0.0
+                self.current_price = last_price or 0.0
             elif self.source == "Nasdaq":
                 self.current_price = nasdaq_model.get_last_price(self.ticker)
             elif self.source == "Intrinio":
@@ -359,8 +356,7 @@ class OptionsController(BaseController):
             default=-1,
             required="-m" in other_args,
         )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
             pars = (
                 {"x_min": ns_parser.min, "x_max": ns_parser.max}
                 if ns_parser.min > 0 and ns_parser.max > 0
@@ -431,10 +427,9 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
+        ):
             if ns_parser.calls_only and ns_parser.puts_only:
                 console.print(
                     "Cannot return puts only and calls only. Either use one or neither."
@@ -478,10 +473,9 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
+        ):
             if self.ticker:
                 alphaquery_view.display_put_call_ratio(
                     symbol=self.ticker,
@@ -504,10 +498,9 @@ class OptionsController(BaseController):
             prog="info",
             description="Display option data [Source: Barchart.com]",
         )
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
+        ):
             if self.ticker:
                 barchart_view.print_options_data(
                     symbol=self.ticker,
@@ -579,10 +572,9 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
+        ):
             if self.ticker or "--chain" in other_args:
                 if self.selected_date or "--chain" in other_args:
                     if (
@@ -652,18 +644,18 @@ class OptionsController(BaseController):
             "--ticker",
             action="store",
             dest="ticker",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             help="Stock ticker",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser,
             other_args,
-        )
-        if ns_parser:
+        ):
             self.ticker = ns_parser.ticker.upper()
             self.source = ns_parser.source
+            self.is_eod = False
 
             self.set_option_chain()
             self.set_current_price()
@@ -716,8 +708,7 @@ class OptionsController(BaseController):
             else:
                 other_args.insert(0, "-i")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
             if self.ticker:
                 # Print possible expiry dates
                 if ns_parser.index == -1 and not ns_parser.date:
@@ -736,7 +727,6 @@ class OptionsController(BaseController):
                     self.selected_date = expiry_date
 
                 if self.selected_date:
-                    self.source = ns_parser.source
                     self.chain = self.full_chain[
                         self.full_chain["expiration"] == self.selected_date
                     ]
@@ -782,14 +772,13 @@ class OptionsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser,
             other_args,
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
             limit=10,
-        )
-        if ns_parser:
+        ):
             if not self.ticker and ns_parser.chain_id is None:
                 console.print("No ticker loaded. First use `load <ticker>`")
                 return
@@ -841,10 +830,7 @@ class OptionsController(BaseController):
                     else None,
                 )
 
-            if (
-                ns_parser.source == "Tradier"
-                and get_current_user().credentials.API_TRADIER_TOKEN != "REPLACE_ME"
-            ):  # nosec
+            if ns_parser.source == "Tradier":  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,
                     expiry=self.selected_date,
@@ -903,7 +889,7 @@ class OptionsController(BaseController):
             "-d",
             "--display",
             dest="to_display",
-            default=",".join(list(self.chain)) if not self.chain.empty else [],
+            default=[] if self.chain.empty else ",".join(list(self.chain)),
             type=str,
             help="Columns to display",
         )
@@ -916,10 +902,9 @@ class OptionsController(BaseController):
             help="Select expiration date (YYYY-MM-DD)",
             default="",
         )
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
+        ):
             if self.ticker:
                 if ns_parser.exp:
                     if ns_parser.exp in self.expiry_dates:
@@ -938,9 +923,11 @@ class OptionsController(BaseController):
                     df_chain = self.chain.copy()
                     needed = ["symbol", "code", "optionType", "expiration", "strike"]
                     needed = [col for col in needed if col in df_chain.columns]
-
                     if ns_parser.to_display:
                         to_display = ns_parser.to_display.split(",")
+                        if self.is_eod:
+                            for col in ["contractSymbol", "lastPrice", "bid", "ask"]:
+                                to_display.remove(col)
                         display = [col for col in to_display if col not in needed]
                         df_chain = df_chain[needed + display]
 
@@ -1014,13 +1001,12 @@ class OptionsController(BaseController):
             help="Select expiration date (YYYY-MM-DD)",
             default="",
         )
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
-        )
-        if ns_parser:
+        ):
             if self.ticker:
                 if ns_parser.exp:
                     if ns_parser.exp in self.expiry_dates:
@@ -1100,10 +1086,9 @@ class OptionsController(BaseController):
             help="Select expiration date (YYYY-MM-DD)",
             default="",
         )
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
-        )
-        if ns_parser:
+        ):
             if self.ticker:
                 if ns_parser.exp:
                     if ns_parser.exp in self.expiry_dates:
@@ -1190,13 +1175,12 @@ class OptionsController(BaseController):
             help="Select expiration date (YYYY-MM-DD)",
             default="",
         )
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser,
             other_args,
             raw=True,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-        )
-        if ns_parser:
+        ):
             if self.ticker:
                 if ns_parser.exp:
                     if ns_parser.exp in self.expiry_dates:
@@ -1285,10 +1269,9 @@ class OptionsController(BaseController):
             help="Choose from already created graphs",
         )
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
+        ):
             if self.ticker:
                 if self.selected_date:
                     if (
@@ -1331,10 +1314,9 @@ class OptionsController(BaseController):
             help="The data for the Z axis",
         )
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
+        ):
             yfinance_view.display_vol_surface(
                 self.ticker,
                 export=ns_parser.export,
@@ -1399,10 +1381,9 @@ class OptionsController(BaseController):
             help="Whether to show all greeks.",
         )
 
-        ns_parser = self.parse_known_args_and_warn(
+        if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
+        ):
             if not self.ticker:
                 console.print("No ticker loaded. First use `load <ticker>`")
             elif not self.selected_date:
@@ -1456,16 +1437,15 @@ class OptionsController(BaseController):
             "--date",
             type=valid_date,
             dest="date",
-            help="Date to get option chain for.  Format YYYY-MM-DD",
-            required="-h" not in other_args,
+            help="Date to get option chain for. Format YYYY-MM-DD",
+            required="-h" not in other_args and "--help" not in other_args,
         )
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
             if not self.ticker:
                 console.print("No ticker loaded. First use `load <ticker>`")
                 return
             self.full_chain = intrinio_model.get_full_chain_eod(
                 self.ticker, datetime.strftime(ns_parser.date, "%Y-%m-%d")
             )
+            self.is_eod = True

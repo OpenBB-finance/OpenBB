@@ -1,170 +1,245 @@
 ---
 title: Stock Screener
-keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics]
-description: This guide introduces the Stock Screener, within the Stocks menu, briefly explains the features, and shows examples in context.
+keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics, how to, example, components, S&P, preset, signal name, description]
+description: Learn the basics of the Stock Screener - a diverse tool for stock discovery.  Get to it from the `Stocks` menu by typing `scr` and then pressing `enter`.
 ---
-The Stock Screener menu is a diverse tool for stock discovery. There are categories of statistics to use as metrics to sort the criteria defined in the preset file. The preset files are `.ini` files stored locally in the application folder: `~/OpenBBUserData/presets/stocks/screener` and they can be modified in any text editor. Get to the Stock Screener from the `Stocks` menu by typing `scr` and then pressing `enter`.
+The Stock Screener is a diverse tool for discovering comapanies.  It is a great jumping point for narrowing the universe of stocks at the beginning of a research workflow.  Get to the screener from the `Stocks` menu by typing `scr`, and then pressing `enter`.  There are six categories of statistics to sort the defined criteria by.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983524-8f86cdc8-e504-4b56-82d6-6d4e95c33c68.png"></img>
+- Overview
+- Valuation
+- Financial
+- Ownership
+- Performance
+- Technical
 
-### How to use
+Running a screen is as easy as entering one of the choices above.
 
-The default preset is `top_gainers.ini`. Use the commands `view` and `set` to select a new one. Modify individual parameters within the different presets to get more precision from a starting point.
+## How to use
 
-:::note To create your own preset please use the following steps:
+The default preset upon entering the sub-menu is, `top_gainers`.  This preset, like some of the others, contain no parameters other than a signal - the name of the preset - and has no corresponding file which can be edited.  All signals are listed in the table below.  Use the commands `view` and `set` to select a new one.
 
-1. Download the default preset as found [here](https://www.dropbox.com/s/xqdo5m87j1krh0h/stocks_screener_template.ini?dl=0).
-2. Place the `stocks_screener_template.ini` in the [OpenBBUserData](https://docs.openbb.co/terminal/usage/guides/data) folder under `presets/stocks/screener`.
-3. Rename that file to something you find meaningful, e.g. `my_own_filter.ini`.
-4. Open the file you just renamed (e.g. `my_own_filter.ini`), and set the parameters you want to filter.
-5. It may be useful to play with the main source ([Finviz](https://finviz.com/screener.ashx)) since you can tweak these and understand how they influence the outcome of the filtered stocks.
-6. Start the terminal, and go to the `stocks/scr` menu. In there, you load in your template with `set`.
+| Preset and Signal Name |                                                                 Description |
+| :--------------------- | --------------------------------------------------------------------------: |
+| top_gainers            |                                  stocks with the highest % price gain today |
+| top_losers             |                                  stocks with the highest % price loss today |
+| new_high               |                                            stocks making 52-week high today |
+| new_low                |                                             stocks making 52-week low today |
+| most_volatile          |                 stocks with the highest widest high/low trading range today |
+| most_active            |                                stocks with the highest trading volume today |
+| unusual_volume         | stocks with unusually high volume today - the highest relative volume ratio |
+| overbought             |                 stock is becoming overvalued and may experience a pullback. |
+| oversold               |            oversold stocks may represent a buying opportunity for investors |
+| downgrades             |                                         stocks downgraded by analysts today |
+| upgrades               |                                           stocks upgraded by analysts today |
+| earnings_before        |                      companies reporting earnings today, before market open |
+| earnings_after         |                      companies reporting earnings today, after market close |
+| recent_insider_buying  |                                  stocks with recent insider buying activity |
+| recent_insider_selling |                                 stocks with recent insider selling activity |
+| major_news             |                                 stocks with the highest news coverage today |
+| horizontal_sr          | horizontal channel of price range between support and resistance trendlines |
+| tl_resistance          |                                           once a rising trendline is broken |
+| tl_support             |                                          once a falling trendline is broken |
+| wedge_up               |         upward trendline support and upward trendline resistance (reversal) |
+| wedge_down             |     downward trendline support and downward trendline resistance (reversal) |
+| wedge                  |      upward trendline support, downward trendline resistance (contiunation) |
+| triangle_ascending     |                upward trendline support and horizontal trendline resistance |
+| triangle_descending    |              horizontal trendline support and downward trendline resistance |
+| channel_up             |                         both support and resistance trendlines slope upward |
+| channel_down           |                       both support and resistance trendlines slope downward |
+| channel                |                       both support and resistance trendlines are horizontal |
+| double_top             |             stock with 'M' shape that indicates a bearish reversal in trend |
+| double_bottom          |             stock with 'W' shape that indicates a bullish reversal in trend |
+| multiple_top           |                                       same as double_top hitting more highs |
+| multiple_bottom        |                                     same as double_bottom hitting more lows |
+| head_shoulders         |           chart formation that predicts a bullish-to-bearish trend reversal |
+| head_shoulders_inverse |           chart formation that predicts a bearish-to-bullish trend reversal |
+
+These signals offer a good starting point, and results can be narrowed by creating a custom preset with defined parameters.  Place new presets (which are text files saved as an `.ini` type) in the OpenBBUserData folder: `~/OpenBBUserData/presets/stocks/screener`.  Files saved here will populate as a choice the next time the Terminal is launched.   The next section provides guidance for using and creating presets.
+
+:::note Refer to the template file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt) for all of the available parameters and accpeted values.
+
+All of the included presets can be viewed online [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/stocks/screener)
 :::
 
-To get started, simply choose one of the categories, like `technical`.
+Preset parameters are grouped into major categories:
+
+- [General]
+- [Descriptive]
+- [Fundamental]
+- [Technical]
+
+The `General` category, for example, has two parameters: Order and Signal.  The accepted values for both are listed below.
+
+```console
+[General]
+# Ticker, Company, Sector, Industry, Country, Market Cap., Price/Earnings, Forward Price/Earnings,
+# PEG (Price/Earnings/Growth), Price/Sales, Price/Book, Price/Cash, Price/Free Cash Flow, Dividend Yield, Payout Ratio,
+# EPS (ttm), EPS growth this year, EPS growth next year, EPS growth past 5 years, EPS growth next 5 years,
+# Sales growth past 5 years, EPS growth qtr over qtr, Sales growth qtr over qtr, Shares Outstanding, Shares Float,
+# Insider Ownership, Insider Transactions, Institutional Ownership, Institutional Transactions, Short Interest Share,
+# Short Interest Ratio, Earnings Date, Return on Assets, Return on Equity, Return on Investment, Current Ratio,
+# Quick Ratio, LT Debt/Equity, Total Debt/Equity, Gross Margin, Operating Margin, Net Profit Margin,
+# Analyst Recommendation, Performance (Week), Performance (Month), Performance (Quarter), Performance (Half Year),
+# Performance (Year), Performance (Year To Date), Beta, Average True Range, Volatility (Week), Volatility (Month),
+# 20-Day SMA (Relative), 50-Day SMA (Relative), 200-Day SMA (Relative), 50-Day High (Relative), 50-Day Low (Relative),
+# 52-Week High (Relative), 52-Week Low (Relative), Relative Strength Index (14), Average Volume (3 Month),
+# Relative Volume, Change, Change from Open, Gap, Volume, Price, Target Price, IPO Date
+
+Order = Ticker
+
+# None (all stocks), Top Gainers, Top Losers, New High, New Low, Most Volatile, Most Active, Unusual Volume, Overbought,
+# Oversold, Downgrades, Upgrades, Earnings Before, Earnings After, Recent Insider Buying, Recent Insider Selling, Major News,
+# Horizontal S/R, TL Resistance, TL Support, Wedge Up, Wedge Down, Triangle Ascending, Triangle Descending, Wedge, Channel Up,
+# Channel Down, Channel, Double Top, Double Bottom, Multiple Top, Multiple Bottom, Head & Shoulders, Head & Shoulders Inverse
+
+Signal = Top Gainers
 
 ```
-(🦋) /stocks/scr/ $ technical
 
-                                                       Finviz Screener
-┏━━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
-┃ Ticker ┃ Beta  ┃ ATR  ┃ SMA20 ┃ SMA50 ┃ SMA200 ┃ 52W High ┃ 52W Low ┃ RSI   ┃ Price  ┃ Change ┃ from Open ┃ Gap  ┃ Volume  ┃
-┡━━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
-│ PALI   │ 1.78  │ 0.80 │ 0.26  │ -0.00 │ -0.80  │ -0.96    │ 1.44    │ 56.60 │ 4.98   │ 1.25   │ 0.78      │ 0.27 │ 52.9 M  │
-├────────┼───────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼────────┼────────┼───────────┼──────┼─────────┤
-│ COSM   │ 1.25  │ 0.03 │ 1.67  │ 0.68  │ -0.72  │ -0.94    │ 3.17    │ 76.55 │ 0.28   │ 0.61   │ 0.39      │ 0.16 │ 274.7 M │
-├────────┼───────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼────────┼────────┼───────────┼──────┼─────────┤
-│ MSGM   │       │ 1.01 │ -0.16 │ -0.22 │ -0.49  │ -0.94    │ 0.27    │ 43.40 │ 5.71   │ 0.27   │ 0.25      │ 0.02 │ 281.2 K │
-├────────┼───────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼────────┼────────┼───────────┼──────┼─────────┤
-│ BCLI   │ -0.34 │ 0.31 │ -0.31 │ -0.45 │ -0.41  │ -0.61    │ 0.71    │ 33.00 │ 1.86   │ 0.24   │ 0.21      │ 0.02 │ 365.0 K │
-├────────┼───────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼────────┼────────┼───────────┼──────┼─────────┤
-│ ANF    │ 1.36  │ 1.04 │ 0.23  │ 0.32  │ -0.06  │ -0.53    │ 0.59    │ 71.34 │ 22.24  │ 0.19   │ 0.03      │ 0.16 │ 6.5 M   │
-├────────┼───────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼────────┼────────┼───────────┼──────┼─────────┤
-│ BURL   │ 0.99  │ 8.84 │ 0.31  │ 0.44  │ 0.14   │ -0.38    │ 0.77    │ 78.33 │ 188.12 │ 0.19   │ 0.05      │ 0.14 │ 3.9 M   │
-├────────┼───────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼────────┼────────┼───────────┼──────┼─────────┤
-│ AEO    │ 1.31  │ 0.68 │ 0.30  │ 0.40  │ 0.10   │ -0.48    │ 0.61    │ 75.78 │ 15.20  │ 0.17   │ 0.09      │ 0.08 │ 12.6 M  │
-├────────┼───────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼────────┼────────┼───────────┼──────┼─────────┤
-│ ACHV   │ 1.16  │ 0.21 │ 0.33  │ -0.01 │ -0.47  │ -0.66    │ 0.46    │ 65.34 │ 2.92   │ 0.17   │ 0.13      │ 0.04 │ 419.9 K │
-├────────┼───────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼────────┼────────┼───────────┼──────┼─────────┤
-│ BNSO   │ 0.77  │ 0.24 │ 0.10  │ 0.12  │ 0.07   │ -0.70    │ 0.60    │ 60.35 │ 3.61   │ 0.16   │ 0.16      │ 0.00 │ 874.5 K │
-├────────┼───────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼────────┼────────┼───────────┼──────┼─────────┤
-│ STBX   │       │ 0.18 │ 0.36  │ 0.28  │ -0.11  │ -0.95    │ 0.79    │ 58.01 │ 2.45   │ 0.16   │ 0.16      │ 0.00 │ 205.7 K │
-└────────┴───────┴──────┴───────┴───────┴────────┴──────────┴─────────┴───────┴────────┴────────┴───────────┴──────┴─────────┘
+A new preset file should contain all four categories, even if no parameters are added.  The example below is a minimalist example of how it should be structured.  This preset is called, `djia_components`.
+
+```console
+# Author of preset: OpenBB
+# Description: Filter for the Dow Jones Industrial Average components.
+
+[General]
+
+[Descriptive]
+
+Index = DJIA
+
+[Fundamental]
+
+[Technical]
 ```
 
-The columns can be sorted with the optional argument `-s`, and autocomplete will present a list of choices.
+To set the preset to be the example above, use the `set` command and press the spacebar.  Use the up/down arrow keys to scroll through the presets.
 
-<img width="800" alt="Sorting results" src="https://user-images.githubusercontent.com/85772166/173903096-0643a64f-4482-4de9-832b-d654af532a10.png"></img>
-
-To see a description of each preset, use `view`, and autocomplete will allow the user to scroll presets with the arrow keys to `set` the choice.
-
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983695-c5efd052-e30e-44c1-80dd-2de0044c4e2c.png"></img>
-
-### Examples
-
-Using the `modified_dreman.ini` preset and the `financial` category, then sorting for return-on-investment.
-
-```
-(🦋) /stocks/scr/ $ financial -s ROI
-
-                                                                           Finviz Screener
-┏━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-┃ Ticker ┃ Market Cap ┃ Dividend ┃ ROA  ┃ ROE  ┃ ROI  ┃ Curr R ┃ Quick R ┃ LTDebt/Eq ┃ Debt/Eq ┃ Gross M ┃ Oper M ┃ Profit M ┃ Earnings ┃ Price  ┃ Change ┃ Volume  ┃
-┡━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-│ GFI    │ 9.5 B      │ 0.03     │ 0.12 │ 0.23 │ 0.25 │ 2.20   │ 2.20    │ 0.36      │ 0.37    │ 0.43    │ 0.42   │ 0.20     │ Aug 25/b │ 10.81  │ 0.02   │ 5.4 M   │
-├────────┼────────────┼──────────┼──────┼──────┼──────┼────────┼─────────┼───────────┼─────────┼─────────┼────────┼──────────┼──────────┼────────┼────────┼─────────┤
-│ FLIC   │ 406.7 M    │ 0.05     │ 0.01 │ 0.12 │ 0.24 │        │         │ 0.74      │ 0.74    │         │ 0.87   │ 0.36     │ Oct 27/b │ 18.47  │ 0.03   │ 43.5 K  │
-├────────┼────────────┼──────────┼──────┼──────┼──────┼────────┼─────────┼───────────┼─────────┼─────────┼────────┼──────────┼──────────┼────────┼────────┼─────────┤
-│ LCNB   │ 196.6 M    │ 0.05     │ 0.01 │ 0.10 │ 0.22 │        │         │ 0.00      │ 0.00    │         │ 0.94   │ 0.34     │ -        │ 17.92  │ 0.02   │ 48.5 K  │
-├────────┼────────────┼──────────┼──────┼──────┼──────┼────────┼─────────┼───────────┼─────────┼─────────┼────────┼──────────┼──────────┼────────┼────────┼─────────┤
-│ CCBG   │ 605.4 M    │ 0.02     │ 0.01 │ 0.09 │ 0.21 │        │         │ 0.14      │ 0.14    │         │ 0.96   │ 0.30     │ -        │ 35.79  │ 0.00   │ 12.8 K  │
-├────────┼────────────┼──────────┼──────┼──────┼──────┼────────┼─────────┼───────────┼─────────┼─────────┼────────┼──────────┼──────────┼────────┼────────┼─────────┤
-│ CHCO   │ 1.5 B      │ 0.03     │ 0.01 │ 0.15 │ 0.20 │        │         │ 0.00      │ 0.00    │         │ 0.95   │ 0.52     │ -        │ 99.05  │ 0.00   │ 20.8 K  │
-├────────┼────────────┼──────────┼──────┼──────┼──────┼────────┼─────────┼───────────┼─────────┼─────────┼────────┼──────────┼──────────┼────────┼────────┼─────────┤
-│ MMM    │ 70.8 B     │ 0.05     │ 0.14 │ 0.46 │ 0.19 │ 1.60   │ 1.00    │ 0.98      │ 1.12    │ 0.44    │ 0.22   │ 0.19     │ Oct 25/b │ 127.77 │ 0.00   │ 914.0 K │
-├────────┼────────────┼──────────┼──────┼──────┼──────┼────────┼─────────┼───────────┼─────────┼─────────┼────────┼──────────┼──────────┼────────┼────────┼─────────┤
-│ ABM    │ 3.0 B      │ 0.02     │ 0.05 │ 0.13 │ 0.06 │ 1.20   │ 1.20    │ 0.60      │ 0.71    │ 0.14    │ 0.04   │ 0.03     │ Sep 09/b │ 45.78  │ -0.00  │ 53.0 K  │
-├────────┼────────────┼──────────┼──────┼──────┼──────┼────────┼─────────┼───────────┼─────────┼─────────┼────────┼──────────┼──────────┼────────┼────────┼─────────┤
-│ BKH    │ 4.4 B      │ 0.04     │ 0.03 │ 0.09 │ 0.06 │ 0.90   │ 0.60    │ 1.43      │ 1.60    │         │ 0.19   │ 0.11     │ Nov 02/a │ 69.42  │ 0.01   │ 101.9 K │
-├────────┼────────────┼──────────┼──────┼──────┼──────┼────────┼─────────┼───────────┼─────────┼─────────┼────────┼──────────┼──────────┼────────┼────────┼─────────┤
-│ FTS    │ 24.9 B     │ 0.06     │ 0.02 │ 0.07 │ 0.05 │ 0.60   │ 0.50    │ 1.35      │ 1.49    │ 0.66    │ 0.25   │ 0.12     │ Oct 28/b │ 39.92  │ 0.01   │ 321.1 K │
-├────────┼────────────┼──────────┼──────┼──────┼──────┼────────┼─────────┼───────────┼─────────┼─────────┼────────┼──────────┼──────────┼────────┼────────┼─────────┤
-│ AGR    │ 15.5 B     │ 0.04     │ 0.02 │ 0.05 │ 0.03 │ 0.70   │ 0.60    │ 0.40      │ 0.44    │ 0.69    │ 0.11   │ 0.12     │ Oct 25/a │ 41.86  │ 0.01   │ 160.3 K │
-└────────┴────────────┴──────────┴──────┴──────┴──────┴────────┴─────────┴───────────┴─────────┴─────────┴────────┴──────────┴──────────┴────────┴────────┴─────────┘
+```console
+set djia_components
 ```
 
-Setting the preset to `short_squeeze_scan.ini` and scanning with the `ownership` category.
+With a preset selected, select the type of data to return by entering one of the six commands listed at the top of this guide.  Each command returns a different set of columns which can be sorted by adding the optional `-s` argument, and selecting a choice populated by autocomplete.  The results will display as a table.
+
+![Stocks Screener](https://user-images.githubusercontent.com/85772166/229921157-8297665a-1b88-4f4e-aeb1-91c1bb9aba7c.png)
+
+## Examples
+
+The examples below will demonstrate the expected outputs, and provide some context for getting started.
+
+### View
+
+See the specified parameters for a custom preset with the `view` function.
+
+```console
+view -p bull_runs_over_10pct
+```
+
+```console
+
+ - General -
+Order : Ticker
+Signal: Top Gainers
+
+
+ - Descriptive -
+
+
+ - Fundamental -
+
+
+ - Technical -
+Performance: Today +10%
+```
+
+```console
+view -p buffett_like
+```
+
+```console
+ - General -
+
+
+ - Descriptive -
+Market Cap.   : +Mid (over $2bln)
+Dividend Yield: Positive (>0%)
+
+
+ - Fundamental -
+EPS growthnext 5 years  : Positive (>0%)
+Debt/Equity             : Under 0.5
+Price/Free Cash Flow    : Under 50
+Sales growthpast 5 years: Positive (>0%)
+Return on Investment    : Over +15%
+P/B                     : Under 3
+
+
+ - Technical -
 
 ```
-(🦋) /stocks/scr/ $ ownership
 
-                                                                            Finviz Screener
-┏━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━┓
-┃ Ticker ┃ Market Cap ┃ Outstanding ┃ Float   ┃ Insider Own ┃ Insider Trans ┃ Inst Own ┃ Inst Trans ┃ Float Short ┃ Short Ratio ┃ Avg Volume ┃ Price ┃ Change ┃ Volume ┃
-┡━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━┩
-│ PR     │ 5.8 B      │ 286.2 M     │ 207.5 M │ 0.03        │ -0.01         │ 0.88     │ 0.01       │ 0.21        │ 6.19        │ 6.9 M      │ 10.47 │ 0.03   │ 2.6 M  │
-├────────┼────────────┼─────────────┼─────────┼─────────────┼───────────────┼──────────┼────────────┼─────────────┼─────────────┼────────────┼───────┼────────┼────────┤
-│ MVIS   │ 509.5 M    │ 165.7 M     │ 164.7 M │ 0.01        │ 0.00          │ 0.31     │ -0.03      │ 0.25        │ 23.30       │ 1.7 M      │ 3.06  │ 0.01   │ 1.2 M  │
-├────────┼────────────┼─────────────┼─────────┼─────────────┼───────────────┼──────────┼────────────┼─────────────┼─────────────┼────────────┼───────┼────────┼────────┤
-│ MARA   │ 777.5 M    │ 116.5 M     │ 108.0 M │ 0.00        │ 0.02          │ 0.38     │ -0.06      │ 0.30        │ 1.91        │ 17.0 M     │ 6.39  │ 0.03   │ 19.3 M │
-└────────┴────────────┴─────────────┴─────────┴─────────────┴───────────────┴──────────┴────────────┴─────────────┴─────────────┴────────────┴───────┴────────┴────────┘
+Some presets contain only a signal, therefore there are no parameters to view.  Any stock crossing the threshold for the signal will be returned.
+
+```console
+view -p channel_up
 ```
 
-Using `set triangle_ascending.ini`, show `techincal` & `overview` tables:
+```console
+This preset contains no parameters other than the signal.
+```
+
+### S&P 500 Sector Components
+
+A series of presets are included that filter the S&P 500 constituents by sector.  There are no parameters, so these presets simply return the components for comparison.
+
+![S&P 500](https://user-images.githubusercontent.com/85772166/229921343-605d0fbe-645f-4c69-83a9-a0034bc5c00e.png)
+
+```console
+/stocks/scr/set -p sp500_financial_sector/performance
+```
+
+Columns can also be sorted, filtered, or rearranged from within the tables.
+
+![Screener Output](https://user-images.githubusercontent.com/85772166/229921470-ac5d9d9e-8489-45aa-9cc2-f0d8a156b172.png)
+
+Changes made to an existing preset will be reflected immediately, restarting is only necessary when adding a new file.  The preset Financial Sector preset can be modified to filter only those companies with a Price-to-Book ratio of under 1.
+
+```console
+
+# Author of preset: OpenBB
+# Description: Filter for the S&P 500 Financial Sector components.
+
+[General]
+
+[Descriptive]
+
+Index = S&P 500
+Sector = Financial
+
+[Fundamental]
+
+P/B = Under 1
+
+[Technical]
 
 ```
-(🦋) /stocks/scr/ $ set triangle_ascending
 
-(🦋) /stocks/scr/ $ technical
+Open presets in any simple text editor, add the desired parameters, save the file, then run the command again.  At the time of publication, twelve results were narrowed down from sixty-eight.  All available parameters and settings are listed in the text file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt).
 
-                                                       Finviz Screener
-┏━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━┓
-┃ Ticker ┃ Beta ┃ ATR  ┃ SMA20 ┃ SMA50 ┃ SMA200 ┃ 52W High ┃ 52W Low ┃ RSI   ┃ Price ┃ Change ┃ from Open ┃ Gap   ┃ Volume  ┃
-┡━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━┩
-│ SCUA   │      │ 0.02 │ 0.00  │ 0.01  │ 0.02   │ -0.02    │ 0.03    │ 65.42 │ 10.14 │ 0.00   │ 0.00      │ 0.00  │ 0       │
-├────────┼──────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼───────┼────────┼───────────┼───────┼─────────┤
-│ VSAT   │ 1.31 │ 2.06 │ -0.08 │ -0.07 │ -0.12  │ -0.36    │ 0.33    │ 42.93 │ 33.87 │ -0.01  │ -0.00     │ -0.00 │ 119.4 K │
-├────────┼──────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼───────┼────────┼───────────┼───────┼─────────┤
-│ STNE   │ 2.14 │ 0.88 │ 0.06  │ 0.09  │ 0.11   │ -0.43    │ 0.66    │ 54.39 │ 11.30 │ 0.01   │ 0.02      │ -0.01 │ 2.7 M   │
-├────────┼──────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼───────┼────────┼───────────┼───────┼─────────┤
-│ VINP   │      │ 0.69 │ -0.06 │ -0.07 │ -0.13  │ -0.33    │ 0.11    │ 38.79 │ 9.70  │ 0.02   │ 0.05      │ -0.03 │ 10.2 K  │
-├────────┼──────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼───────┼────────┼───────────┼───────┼─────────┤
-│ CTKB   │      │ 0.64 │ -0.01 │ 0.01  │ 0.18   │ -0.29    │ 0.98    │ 49.95 │ 14.63 │ -0.01  │ 0.01      │ -0.02 │ 640.7 K │
-├────────┼──────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼───────┼────────┼───────────┼───────┼─────────┤
-│ GLSI   │      │ 0.69 │ 0.09  │ 0.10  │ -0.12  │ -0.71    │ 0.56    │ 60.13 │ 10.67 │ -0.02  │ -0.04     │ 0.02  │ 6.9 K   │
-├────────┼──────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼───────┼────────┼───────────┼───────┼─────────┤
-│ IBTB   │      │ 0.02 │ 0.00  │ 0.00  │ 0.00   │ -0.00    │ 0.00    │ 59.47 │ 25.41 │ 0.00   │ 0.00      │ 0.00  │ 596.9 K │
-├────────┼──────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼───────┼────────┼───────────┼───────┼─────────┤
-│ CVEO   │ 2.78 │ 1.18 │ -0.02 │ 0.05  │ 0.11   │ -0.08    │ 0.67    │ 49.56 │ 29.50 │ 0.01   │ -0.00     │ 0.01  │ 7.4 K   │
-├────────┼──────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼───────┼────────┼───────────┼───────┼─────────┤
-│ GSBC   │ 0.77 │ 1.29 │ 0.01  │ 0.02  │ 0.03   │ -0.04    │ 0.23    │ 54.22 │ 61.76 │ -0.00  │ -0.01     │ 0.01  │ 5.5 K   │
-├────────┼──────┼──────┼───────┼───────┼────────┼──────────┼─────────┼───────┼───────┼────────┼───────────┼───────┼─────────┤
-│ ORLA   │      │ 0.18 │ 0.10  │ 0.13  │ 0.01   │ -0.29    │ 0.62    │ 61.06 │ 3.73  │ 0.07   │ 0.06      │ 0.01  │ 331.2 K │
-└────────┴──────┴──────┴───────┴───────┴────────┴──────────┴─────────┴───────┴───────┴────────┴───────────┴───────┴─────────┘
-(🦋) /stocks/scr/ $ overview
+![Financial Sector P/B Under 1](https://user-images.githubusercontent.com/85772166/229921644-ca14f08a-95f2-4ac3-8da3-49bbe4af3be4.png)
 
-                                                                            Finviz Screener
-┏━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-┃ Ticker ┃ Company                                   ┃ Sector          ┃ Industry                    ┃ Country        ┃ Market Cap ┃ P/E    ┃ Price ┃ Change ┃ Volume  ┃
-┡━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-│ SCUA   │ Sculptor Acquisition Corp I               │ Financial       │ Shell Companies             │ USA            │ 291.5 M    │ 14.67  │ 10.14 │ 0.00   │ 0       │
-├────────┼───────────────────────────────────────────┼─────────────────┼─────────────────────────────┼────────────────┼────────────┼────────┼───────┼────────┼─────────┤
-│ VSAT   │ Viasat, Inc.                              │ Technology      │ Communication Equipment     │ USA            │ 2.6 B      │        │ 33.87 │ -0.01  │ 119.4 K │
-├────────┼───────────────────────────────────────────┼─────────────────┼─────────────────────────────┼────────────────┼────────────┼────────┼───────┼────────┼─────────┤
-│ STNE   │ StoneCo Ltd.                              │ Technology      │ Software - Application      │ Cayman Islands │ 3.0 B      │        │ 11.30 │ 0.01   │ 2.7 M   │
-├────────┼───────────────────────────────────────────┼─────────────────┼─────────────────────────────┼────────────────┼────────────┼────────┼───────┼────────┼─────────┤
-│ VINP   │ Vinci Partners Investments Ltd.           │ Financial       │ Asset Management            │ Brazil         │ 526.6 M    │ 13.51  │ 9.70  │ 0.02   │ 10.2 K  │
-├────────┼───────────────────────────────────────────┼─────────────────┼─────────────────────────────┼────────────────┼────────────┼────────┼───────┼────────┼─────────┤
-│ CTKB   │ Cytek Biosciences, Inc.                   │ Healthcare      │ Medical Devices             │ USA            │ 1.9 B      │        │ 14.63 │ -0.01  │ 640.7 K │
-├────────┼───────────────────────────────────────────┼─────────────────┼─────────────────────────────┼────────────────┼────────────┼────────┼───────┼────────┼─────────┤
-│ GLSI   │ Greenwich LifeSciences, Inc.              │ Healthcare      │ Biotechnology               │ USA            │ 140.3 M    │        │ 10.67 │ -0.02  │ 6.9 K   │
-├────────┼───────────────────────────────────────────┼─────────────────┼─────────────────────────────┼────────────────┼────────────┼────────┼───────┼────────┼─────────┤
-│ IBTB   │ iShares iBonds Dec 2022 Term Treasury ETF │ Financial       │ Exchange Traded Fund        │ USA            │            │        │ 25.41 │ 0.00   │ 596.9 K │
-├────────┼───────────────────────────────────────────┼─────────────────┼─────────────────────────────┼────────────────┼────────────┼────────┼───────┼────────┼─────────┤
-│ CVEO   │ Civeo Corporation                         │ Industrials     │ Specialty Business Services │ USA            │ 404.5 M    │ 16.58  │ 29.50 │ 0.01   │ 7.4 K   │
-├────────┼───────────────────────────────────────────┼─────────────────┼─────────────────────────────┼────────────────┼────────────┼────────┼───────┼────────┼─────────┤
-│ GSBC   │ Great Southern Bancorp, Inc.              │ Financial       │ Banks - Regional            │ USA            │ 745.8 M    │ 11.56  │ 61.76 │ -0.00  │ 5.5 K   │
-├────────┼───────────────────────────────────────────┼─────────────────┼─────────────────────────────┼────────────────┼────────────┼────────┼───────┼────────┼─────────┤
-│ ORLA   │ Orla Mining Ltd.                          │ Basic Materials │ Gold                        │ Canada         │ 1.1 B      │ 350.00 │ 3.73  │ 0.07   │ 331.2 K │
-└────────┴───────────────────────────────────────────┴─────────────────┴─────────────────────────────┴────────────────┴────────────┴────────┴───────┴────────┴─────────┘
+### CA
+
+The tickers from the results of the last screen are stored in memory and can be taken into the [Comparison Analysis menu](https://docs.openbb.co/terminal/usage/intros/stocks/comparison) to undergo further scrutiny.
+
+![Screener Results](https://user-images.githubusercontent.com/85772166/229921889-3ce97436-a768-4a74-b312-e6070459e2a9.png)
+
+```console
+set -p buffett_like
+performance
+?
+ca
+hcorr
 ```
+
+![Correlation Matrix of Results](https://user-images.githubusercontent.com/85772166/229921977-fd31ff4c-d782-46fb-ba56-922cde5df8f0.png)

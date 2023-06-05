@@ -1,28 +1,25 @@
-from typing import Tuple
+from typing import Dict, Optional, Tuple
 
 from prompt_toolkit import PromptSession
 
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
-from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.constants import REGISTER_URL, SUPPORT_URL
 from openbb_terminal.core.session.session_model import (
     LoginStatus,
     create_session,
     login,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.terminal_helper import bootup, is_installer
 
 
 def display_welcome_message():
     """Display welcome message"""
     with open(PACKAGE_DIRECTORY / "core" / "session" / "banner.txt") as f:
         console.print(f"[menu]{f.read()}[/menu]\n")
-        console.print(f"Register     : [cmds]{REGISTER_URL}[/cmds]")
-        console.print("Ask support  : [cmds]https://openbb.co/support[/cmds]")
-        console.print(
-            "[yellow]\nWARNING: This is a pre-release version published for testing.[/yellow]"
-            "[yellow]\nBeware that your account will be deleted without notice.[/yellow]"
-        )
+        console.print(f"Register : [cmds]{REGISTER_URL}[/cmds]")
+        console.print(f"Support  : [cmds]{SUPPORT_URL}[/cmds]")
 
 
 def get_user_input() -> Tuple[str, str, bool]:
@@ -33,9 +30,15 @@ def get_user_input() -> Tuple[str, str, bool]:
     Tuple[str, str, bool]
         The user email, password and save login option.
     """
-    console.print(
-        "[info]\nPlease enter your credentials or press <ENTER> for guest mode:[/info]"
-    )
+
+    msg = "\nPlease enter your credentials"
+
+    if not is_installer():
+        msg += " or press <ENTER> for guest mode:"
+    else:
+        msg += ":"
+
+    console.print("[info]" + msg + "[/info]")
 
     s: PromptSession = PromptSession()
 
@@ -49,15 +52,14 @@ def get_user_input() -> Tuple[str, str, bool]:
         message="> Password: ",
         is_password=True,
     )
-    save_str = s.prompt(message="> Remember me? (y/n): ", is_password=False).lower()
-    save = False
-    if save_str == "y":
-        save = True
+    remember = (
+        s.prompt(message="> Remember me? (y/n): ", is_password=False).lower() == "y"
+    )
 
-    return email, password, save
+    return email, password, remember
 
 
-def prompt(welcome=True):
+def prompt(welcome: bool = True):
     """Prompt and launch terminal if login is successful.
 
     Parameters
@@ -65,34 +67,40 @@ def prompt(welcome=True):
     welcome : bool, optional
         Display welcome message, by default True
     """
+    bootup()
+
     if welcome:
         display_welcome_message()
 
     while True:
-        email, password, save = get_user_input()
+        email, password, remember = get_user_input()
         if not email:
-            return launch_terminal()
-        session = create_session(email, password, save)
+            return prompt(welcome=False) if is_installer() else launch_terminal()
+
+        session = create_session(email, password, remember)
         if isinstance(session, dict) and session:
-            return login_and_launch(session=session)
+            return login_and_launch(session, remember)
 
 
 def launch_terminal():
     """Launch terminal"""
+    # pylint: disable=import-outside-toplevel
     from openbb_terminal import terminal_controller
 
     terminal_controller.parse_args_and_run()
 
 
-def login_and_launch(session: dict):
+def login_and_launch(session: dict, remember: bool = False):
     """Login and launch terminal.
 
     Parameters
     ----------
     session : dict
         The session info.
+    remember : bool, optional
+        Remember the session, by default False
     """
-    status = login(session)
+    status = login(session, remember)
     if status in [LoginStatus.SUCCESS, LoginStatus.NO_RESPONSE]:
         launch_terminal()
     elif status == LoginStatus.FAILED:
@@ -101,13 +109,13 @@ def login_and_launch(session: dict):
         prompt(welcome=True)
 
 
-def main():
+def main(session: Optional[Dict] = None):
     """Main function"""
-    local_session = Local.get_session()
+    local_session = Local.get_session() if session is None else session
     if not local_session:
         prompt()
     else:
-        login_and_launch(session=local_session)
+        login_and_launch(session=local_session, remember=True)
 
 
 if __name__ == "__main__":

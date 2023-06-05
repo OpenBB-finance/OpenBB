@@ -8,18 +8,20 @@ import warnings
 from itertools import combinations
 from typing import Any, Dict, Optional, Tuple, Union
 
+import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from arch import arch_model
 from scipy import stats
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from statsmodels.tools.tools import add_constant
 from statsmodels.tsa.stattools import adfuller, grangercausalitytests, kpss
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
-@log_start_end(log=logger)
 def get_options(
     datasets: Dict[str, pd.DataFrame], dataset_name: str = ""
 ) -> Dict[Union[str, Any], pd.DataFrame]:
@@ -61,7 +63,6 @@ def get_options(
     return option_tables
 
 
-@log_start_end(log=logger)
 def get_corr_df(data: pd.DataFrame) -> pd.DataFrame:
     """Returns correlation for a given df
 
@@ -79,7 +80,6 @@ def get_corr_df(data: pd.DataFrame) -> pd.DataFrame:
     return corr
 
 
-@log_start_end(log=logger)
 def clean(
     dataset: pd.DataFrame,
     fill: str = "",
@@ -127,7 +127,6 @@ def clean(
     return dataset
 
 
-@log_start_end(log=logger)
 def get_normality(data: pd.Series) -> pd.DataFrame:
     """
     The distribution of returns and generate statistics on the relation to the normal curve.
@@ -182,7 +181,6 @@ def get_normality(data: pd.Series) -> pd.DataFrame:
     )
 
 
-@log_start_end(log=logger)
 def get_root(
     data: pd.Series, fuller_reg: str = "c", kpss_reg: str = "c"
 ) -> pd.DataFrame:
@@ -224,10 +222,9 @@ def get_root(
     return data
 
 
-@log_start_end(log=logger)
 def get_granger_causality(
     dependent_series: pd.Series, independent_series: pd.Series, lags: int = 3
-) -> dict:
+) -> pd.DataFrame:
     """Calculate granger tests
 
     Parameters
@@ -241,8 +238,8 @@ def get_granger_causality(
 
     Returns
     -------
-    dict
-        Dictionary containing results of Granger test
+    pd.DataFrame
+        Dataframe containing results of Granger test
     """
     granger_set = pd.concat([dependent_series, independent_series], axis=1)
 
@@ -326,6 +323,90 @@ def get_coint_df(
     return pd.DataFrame()
 
 
+def get_returns(data: pd.Series):
+    """Calculate returns for the given time series
+
+    Parameters
+    ----------
+    data: pd.Series
+        The data series to calculate returns for
+    """
+    return 100 * data.pct_change().dropna()
+
+
+def get_garch(
+    data: pd.Series,
+    p: int = 1,
+    o: int = 0,
+    q: int = 1,
+    mean: str = "constant",
+    horizon: int = 100,
+):
+    r"""Calculates volatility forecasts based on GARCH.
+
+    GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series,
+    which is for instance used to model volatility clusters, stock return and inflation. It is a
+    generalisation of the ARCH models.
+
+    $ GARCH(p, q)  = (1 - \alpha - \beta) \sigma_l + \sum_{i=1}^q \alpha u_{t-i}^2 + \sum_{i=1}^p \beta \sigma_{t-i}^2
+    $ [1]
+
+    The GARCH-model assumes that the variance estimate consists of 3 components:
+    - $ \sigma_l $; the long term component, which is unrelated to the current market conditions
+    - $ u_t $; the innovation/discovery through current market price changes
+    - $ \sigma_t $; the last estimate
+
+    GARCH can be understood as a model, which allows to optimize these 3 variance components to the time series.
+    This is done assigning weights to variance components: $ (1 - \alpha - \beta) $ for $ \sigma_l $, $ \alpha $ for
+    $ u_t $ and $ \beta $ for $ \sigma_t $. [2]
+
+    The weights can be estimated by iterating over different values of $ (1 - \alpha - \beta) \sigma_l $ which we
+    will call $ \omega $, $ \alpha $ and $ \beta $, while maximizing: $ \sum_{i} -ln(v_i) - (u_i ^ 2) / v_i $.
+    With the constraints:
+    - $ \alpha > 0 $
+    - $ \beta > 0 $
+    - $ \alpha + \beta < 1 $
+    Note that there is no restriction on $ \omega $.
+
+    Another method used for estimation is "variance targeting", where one first sets $ \omega $
+    equal to the variance of the time series. This method nearly as effective as the previously mentioned and
+    is less computationally effective.
+
+    One can measure the fit of the time series to the GARCH method by using the Ljung-Box statistic. [3]
+
+    See the sources below for reference and for greater detail.
+
+    Sources:
+    [1] Generalized Autoregressive Conditional Heteroskedasticity, by Tim Bollerslev
+    [2] Finance Compact Plus Band 1, by Yvonne Seler Zimmerman and Heinz Zimmerman; ISBN: 978-3-907291-31-1
+    [3] Options, Futures & other Derivates, by John C. Hull; ISBN: 0-13-022444-8
+
+    Parameters
+    ----------
+    data: pd.Series
+        The time series (often returns) to estimate volatility from
+    p: int
+        Lag order of the symmetric innovation
+    o: int
+        Lag order of the asymmetric innovation
+    q: int
+        Lag order of lagged volatility or equivalent
+    mean: str
+        The name of the mean model
+    horizon: int
+        The horizon of the forecast
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.econometrics.garch(openbb.stocks.load("AAPL").iloc[:, 0].pct_change()*100)
+    """
+    model = arch_model(data.dropna(), vol="GARCH", p=p, o=o, q=q, mean=mean)
+    model_fit = model.fit(disp="off")
+    pred = model_fit.forecast(horizon=horizon, reindex=False)
+
+    return np.sqrt(pred.variance.values[-1, :]), model_fit
+
+
 def get_engle_granger_two_step_cointegration_test(
     dependent_series: pd.Series, independent_series: pd.Series
 ) -> Tuple[float, float, float, pd.Series, float, float]:
@@ -403,3 +484,51 @@ def get_engle_granger_two_step_cointegration_test(
     adfstat, pvalue, _, _, _ = adfuller(z, maxlag=1, autolag=None)
 
     return c, gamma, alpha, z, adfstat, pvalue
+
+
+def get_vif(dataset: pd.DataFrame, columns: Optional[list] = None) -> pd.DataFrame:
+    r"""Calculates VIF (variance inflation factor), which tests collinearity.
+
+    It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square
+    root of the variance inflation factor indicates how much larger the standard error increases compared to if
+    that variable had 0 correlation to other predictor variables in the model.
+
+    It is defined as:
+
+    $ VIF_i = 1 / (1 - R_i^2) $
+    where $ R_i $ is the coefficient of determination of the regression equation with the column i being the result
+    from the i:th series being the exogenous variable.
+
+    A VIF over 5 indicates a high collinearity and correlation. Values over 10 indicates causes problems, while a
+    value of 1 indicates no correlation. Thus VIF values between 1 and 5 are most commonly considered acceptable.
+    In order to improve the results one can often remove a column with high VIF.
+
+    For further information see: https://en.wikipedia.org/wiki/Variance_inflation_factor
+
+    Parameters
+    ----------
+    dataset: pd.Series
+        Dataset to calculate VIF on
+    columns: Optional[list]
+        The columns to calculate to test for collinearity
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with the resulting VIF values for the selected columns
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> longley = openbb.econometrics.load("longley")
+    >>> openbb.econometrics.vif(longley, ["TOTEMP","UNEMP","ARMED"])
+    """
+    df = add_constant(dataset if columns is None else dataset[columns])
+    vif = pd.DataFrame(
+        {
+            "VIF Values": [
+                variance_inflation_factor(df.values, i) for i in range(df.shape[1])
+            ][1:]
+        },
+        index=df.columns[1:],
+    )
+    return vif

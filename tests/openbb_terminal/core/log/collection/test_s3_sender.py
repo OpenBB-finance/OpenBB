@@ -80,7 +80,7 @@ def test_send_to_s3_using_presigned_url(mocker, tmp_path):
     file = tmp_path.joinpath("mock_log_file")
     object_key = "MOCK_S3/OBJECT_KEY"
 
-    with open(file, "w") as f:
+    with open(file, "w", encoding="utf-8", newline="\n") as f:
         f.write("Mocking a log file to send to s3.")
 
     s3_sender.send_to_s3_using_presigned_url(
@@ -121,7 +121,7 @@ def test_send_to_s3(aws_settings, mocker, last, tmp_path):
     file = tmp_path.joinpath("mock_log_file")
     object_key = "MOCK_S3/OBJECT_KEY"
 
-    with open(file, "w") as f:
+    with open(file, "w", encoding="utf-8", newline="\n") as f:
         f.write("Mocking a log file to send to s3.")
 
     assert file.exists()

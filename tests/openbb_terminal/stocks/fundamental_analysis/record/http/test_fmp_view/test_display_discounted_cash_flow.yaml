@@ -1,0 +1,113 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/discounted-cash-flow/PM?apikey=MOCK_API_KEY&limit=0&period=annual
+  response:
+    body:
+      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"date\": \"2023-04-10\",\n    \"dcf\":
+        101.0897302504817,\n    \"Stock Price\": 99.03\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '112'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 10 Apr 2023 11:00:47 GMT
+      ETag:
+      - W/"70-XZcwRZ0uGcqDM+61MSuAIWWQvmg"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-discounted-cash-flow/PM?apikey=MOCK_API_KEY&period=annual
+  response:
+    body:
+      string: "[\n  {\n    \"symbol\": \"PM\",\n    \"historicalDCF\": [\n      {\n
+        \       \"date\": \"2021-12-31\",\n        \"Stock Price\": 103.5199966,\n
+        \       \"DCF\": 106.40760096737316\n      },\n      {\n        \"date\":
+        \"2020-12-31\",\n        \"Stock Price\": 79.6500015,\n        \"DCF\": 84.32565981727682\n
+        \     },\n      {\n        \"date\": \"2019-12-31\",\n        \"Stock Price\":
+        84.3300018,\n        \"DCF\": 88.74222044951769\n      },\n      {\n        \"date\":
+        \"2018-12-31\",\n        \"Stock Price\": 74.4800034,\n        \"DCF\": 78.71987478263665\n
+        \     },\n      {\n        \"date\": \"2017-12-31\",\n        \"Stock Price\":
+        107.9400024,\n        \"DCF\": 113.38265703917526\n      },\n      {\n        \"date\":
+        \"2016-12-31\",\n        \"Stock Price\": 95.9599991,\n        \"DCF\": 98.6930745352031\n
+        \     },\n      {\n        \"date\": \"2015-12-31\",\n        \"Stock Price\":
+        90.0100021,\n        \"DCF\": 92.21594141568754\n      },\n      {\n        \"date\":
+        \"2014-12-31\",\n        \"Stock Price\": 80.2399979,\n        \"DCF\": 81.3140719740741\n
+        \     },\n      {\n        \"date\": \"2013-12-31\",\n        \"Stock Price\":
+        79.0899963,\n        \"DCF\": 80.417986435635\n      },\n      {\n        \"date\":
+        \"2012-12-31\",\n        \"Stock Price\": 87.6500015,\n        \"DCF\": 89.4130038640662\n
+        \     },\n      {\n        \"date\": \"2011-12-31\",\n        \"Stock Price\":
+        74.9000015,\n        \"DCF\": 76.37748408655537\n      },\n      {\n        \"date\":
+        \"2010-12-31\",\n        \"Stock Price\": 56.5999985,\n        \"DCF\": 57.52604526454595\n
+        \     },\n      {\n        \"date\": \"2009-12-31\",\n        \"Stock Price\":
+        45.5099983,\n        \"DCF\": 46.30258708023674\n      },\n      {\n        \"date\":
+        \"2008-12-31\",\n        \"Stock Price\": 37.1500015,\n        \"DCF\": 37.89033032011606\n
+        \     }\n    ]\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '1668'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 10 Apr 2023 11:00:48 GMT
+      ETag:
+      - W/"684-KUHB5l+xWU/bXUHG5KRXSaS5M+4"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

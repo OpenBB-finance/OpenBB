@@ -12,6 +12,7 @@ class KeysRoot(Category):
         `av`: Set Alpha Vantage key\n
         `binance`: Set Binance key\n
         `bitquery`: Set Bitquery key\n
+        `biztoc`: Set BizToc key\n
         `cmc`: Set Coinmarketcap key\n
         `coinbase`: Set Coinbase key\n
         `coinglass`: Set Coinglass key.\n
@@ -42,6 +43,7 @@ class KeysRoot(Category):
         `tokenterminal`: Set Token Terminal key.\n
         `tradier`: Set Tradier key\n
         `twitter`: Set Twitter key\n
+        `ultima`: Set Ultima Insights key\n
         `walert`: Set Walert key\n
     """
 
@@ -52,6 +54,7 @@ class KeysRoot(Category):
         self.av = lib.keys_model.set_av_key
         self.binance = lib.keys_model.set_binance_key
         self.bitquery = lib.keys_model.set_bitquery_key
+        self.biztoc = lib.keys_model.set_biztoc_key
         self.cmc = lib.keys_model.set_cmc_key
         self.coinbase = lib.keys_model.set_coinbase_key
         self.coinglass = lib.keys_model.set_coinglass_key
@@ -82,4 +85,5 @@ class KeysRoot(Category):
         self.tokenterminal = lib.keys_model.set_tokenterminal_key
         self.tradier = lib.keys_model.set_tradier_key
         self.twitter = lib.keys_model.set_twitter_key
+        self.ultima = lib.keys_model.set_ultima_key
         self.walert = lib.keys_model.set_walert_key

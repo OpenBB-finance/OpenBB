@@ -1,8 +1,7 @@
 """Main helper."""
 __docformat__ = "numpy"
-
-# pylint: disable=unsupported-assignment-operation,too-many-lines
-# pylint: disable=no-member,too-many-branches,too-many-arguments
+# pylint: disable=too-many-lines, unsupported-assignment-operation
+# pylint: disable=no-member, too-many-branches, too-many-arguments
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=consider-using-dict-items
 
@@ -18,6 +17,7 @@ import pandas as pd
 import pytz
 import yfinance as yf
 from pandas.tseries.holiday import USFederalHolidayCalendar
+from pandas_ta import candles
 from requests.exceptions import ReadTimeout
 from scipy import stats
 
@@ -117,6 +117,7 @@ def search(
     sector: str = "",
     industry_group: str = "",
     industry: str = "",
+    exchange: str = "",
     exchange_country: str = "",
     all_exchanges: bool = False,
     limit: int = 0,
@@ -131,14 +132,18 @@ def search(
         Search by country to find stocks matching the criteria
     sector : str
         Search by sector to find stocks matching the criteria
+    industry_group : str
+        Search by industry group to find stocks matching the criteria
     industry : str
         Search by industry to find stocks matching the criteria
+    exchange: str
+        Search by exchange to find stock matching the criteria
     exchange_country: str
-        Search by exchange country to find stock matching
+        Search by exchange country to find stock matching the criteria
     all_exchanges: bool
         Whether to search all exchanges, without this option only the United States market is searched
     limit : int
-        The limit of companies shown.
+        The limit of results shown, where 0 means all the results
 
     Returns
     -------
@@ -149,7 +154,7 @@ def search(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.stocks.search(country="united states", exchange_country="Germany")
+    >>> openbb.stocks.search(country="United States", exchange_country="Germany")
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
@@ -160,7 +165,11 @@ def search(
         kwargs["industry"] = industry
     if industry_group:
         kwargs["industry_group"] = industry_group
-    kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
+    if exchange:
+        kwargs["exchange"] = exchange
+    kwargs["exclude_exchanges"] = (
+        False if (exchange_country or exchange) else not all_exchanges
+    )
 
     try:
         equities_database = fd.Equities()
@@ -181,7 +190,7 @@ def search(
             " capabilities. This tends to be due to access restrictions for GitHub.com,"
             " please check if you can access this website without a VPN.[/red]\n"
         )
-        data = {}
+        data = pd.DataFrame()
     except ValueError:
         console.print(
             "[red]No companies were found that match the given criteria.[/red]\n"
@@ -217,11 +226,17 @@ def search(
             exchange_suffix[x] = k
 
     df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
+    # To automate renaming columns
+    headers = [col.replace("_", " ") for col in df.columns.tolist()]
 
     title = "Companies found"
     if query:
         title += f" on term {query}"
-    if exchange_country:
+    if exchange_country and exchange:
+        title += f" on the exchange {exchange} in {exchange_country.replace('_', ' ').title()}"
+    if exchange and not exchange_country:
+        title += f" on the exchange {exchange}"
+    if exchange_country and not exchange:
         title += f" on an exchange in {exchange_country.replace('_', ' ').title()}"
     if country:
         title += f" in {country.replace('_', ' ').title()}"
@@ -242,7 +257,8 @@ def search(
     print_rich_table(
         df,
         show_index=True,
-        headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
+        headers=headers,
+        index_name="Symbol",
         title=title,
         limit=limit,
     )
@@ -562,6 +578,7 @@ def display_candle(
     source: str = "YahooFinance",
     weekly: bool = False,
     monthly: bool = False,
+    ha: Optional[bool] = False,
     external_axes: bool = False,
     raw: bool = False,
     yscale: str = "linear",
@@ -596,6 +613,8 @@ def display_candle(
         Flag to get weekly data
     monthly: bool
         Flag to get monthly data
+    ha: bool
+        Flag to show Heikin Ashi candles.
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     raw : bool, optional
@@ -657,12 +676,20 @@ def display_candle(
 
     data.name = f"{asset_type} {symbol}"
 
+    if ha:
+        data_ = heikin_ashi(data)
+        data["Open"] = data_["HA Open"]
+        data["High"] = data_["HA High"]
+        data["Low"] = data_["HA Low"]
+        data["Close"] = data_["HA Close"]
+        data.name = f"{symbol} - Heikin Ashi Candles"
+
     fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
 
     if add_trend:
-        fig.add_trend(data, secondary_y=True)
+        fig.add_trend(data, secondary_y=False)
 
-    fig.update_layout(yaxis2=dict(title="Stock Price ($)", type=yscale))
+    fig.update_layout(yaxis=dict(type=yscale))
 
     return fig.show(external=external_axes)
 
@@ -873,7 +900,10 @@ def clean_function(entry: str) -> Union[str, float]:
     return entry
 
 
-def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
+def show_quick_performance(
+    stock_df: pd.DataFrame,
+    ticker: str,
+) -> None:
     """Show quick performance stats of stock prices.
 
     Daily prices expected.
@@ -910,6 +940,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         )
 
     perf_df["Previous Close"] = str(round(closes[-1], 2))
+
     print_rich_table(
         perf_df,
         show_index=False,
@@ -1029,3 +1060,48 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
                 )
         return True
     return False
+
+
+def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
+    """Return OHLC data as Heikin Ashi Candles.
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        DataFrame containing OHLC data.
+
+    Returns
+    -------
+    pd.DataFrame
+        Appended DataFrame with Heikin Ashi candle calculations.
+    """
+
+    check_columns = ["Open", "High", "Low", "Close"]
+
+    data.rename(
+        columns={"open": "Open", "high": "High", "low": "Low", "close": "Close"},
+        inplace=True,
+    )
+
+    for item in check_columns:
+        if item not in data.columns:
+            raise ValueError(
+                "The expected column labels, "
+                f"{check_columns}"
+                ", were not found in DataFrame."
+            )
+
+    ha = candles.ha(
+        data["Open"],
+        data["High"],
+        data["Low"],
+        data["Close"],
+    )
+    ha.columns = [
+        "HA Open",
+        "HA High",
+        "HA Low",
+        "HA Close",
+    ]
+
+    return pd.concat([data, ha], axis=1)

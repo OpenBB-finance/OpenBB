@@ -5,34 +5,34 @@ Filling Date                         2019-02-07 00:00:00  2020-02-07 00:00:00  2
 Accepted Date                        2019-02-07 15:09:20  2020-02-07 06:47:13  2021-02-09 16:20:37  2022-02-11 08:29:22  2023-02-10 08:20:35
 Calendar Year                        2018-01-01 00:00:00  2019-01-01 00:00:00  2020-01-01 00:00:00  2021-01-01 00:00:00  2022-01-01 00:00:00
 Period                                                FY                   FY                   FY                   FY                   FY
-Revenue                                         29.625 B             29.805 B             28.694 B             31.405 B             31.762 B
-Cost Of Revenue                                 10.758 B             10.513 B              9.569 B             10.030 B             11.402 B
-Gross Profit                                    18.867 B             19.292 B             19.125 B             21.375 B             20.360 B
-Gross Profit Ratio                                 0.637                0.647                0.667                0.681                0.641
+Revenue                                      29625000000          29805000000          28694000000          31405000000          31762000000
+Cost Of Revenue                              10758000000          10513000000           9569000000          10030000000          11402000000
+Gross Profit                                 18867000000          19292000000          19125000000          21375000000          20360000000
+Gross Profit Ratio                              0.636861             0.647274             0.666516             0.680624             0.641018
 Research And Development Expenses                      0                    0                    0                    0                    0
-General And Administrative Expenses              7.449 B              8.784 B                 97 M              8.419 B              8.138 B
-Selling And Marketing Expenses                         0                    0              7.384 B              8.304 B                    0
-Selling General And Administrative               7.449 B              8.784 B              7.481 B              8.419 B              8.138 B
-Other Expenses                                      82 M                 66 M                 73 M                    0                    0
-Operating Expenses                               7.531 B              8.850 B              7.554 B              8.515 B              8.138 B
-Costs And Expenses                              18.289 B             19.363 B             17.123 B             18.545 B             19.540 B
-Interest Income                                    190 M                226 M                110 M                109 M                180 M
-Interest Expense                                   855 M                796 M                728 M                737 M                768 M
-Depreciation And Amortization                      989 M                964 M                981 M                998 M              1.189 B
-Ebitda                                          12.200 B             11.238 B             12.142 B             13.967 B             13.591 B
-Ebitda Ratio                                       0.412                0.377                0.423                0.445                0.428
-Operating Income                                11.377 B             10.531 B             11.668 B             12.860 B             12.222 B
-Operating Income Ratio                             0.384                0.353                0.407                0.389                0.366
-Non Operating Income Loss                         -706 M               -659 M               -715 M                    0                    0
-Income Before Tax                               10.671 B              9.872 B             10.953 B             12.232 B             11.634 B
-Income Before Tax Ratio                            0.360                0.331                0.382                0.389                0.366
-Income Tax Expense                               2.445 B              2.293 B              2.377 B              2.671 B              2.244 B
-Net Income                                       7.911 B              7.185 B              8.056 B              9.109 B              9.048 B
-Net Income Ratio                                   0.267                0.241                0.281                0.290                0.285
-Basic Earnings Per Share                           5.080                4.610                5.160                5.830                5.810
-Diluted Earnings Per Share                         5.080                4.610                5.160                5.830                5.810
-Basic Average Shares                             1.555 B              1.555 B              1.557 B              1.558 B              1.557 B
-Diluted Average Shares                           1.555 B              1.556 B              1.558 B              1.559 B              1.557 B
+General And Administrative Expenses           7449000000           8784000000           7481000000           8419000000           8138000000
+Selling And Marketing Expenses                7408000000           8695000000           7384000000           8304000000                    0
+Selling General And Administrative            7449000000           8784000000           7481000000           8419000000           8138000000
+Other Expenses                                  82000000             66000000             73000000             96000000                    0
+Operating Expenses                            7531000000           8850000000           7554000000           8515000000           8138000000
+Costs And Expenses                           18289000000          19363000000          17123000000          18545000000          19540000000
+Interest Income                                190000000            226000000            110000000            109000000            180000000
+Interest Expense                               855000000            570000000            618000000            737000000            768000000
+Depreciation And Amortization                  989000000            -23000000            -24000000            540000000           1003000000
+Ebitda                                       12200000000          10508000000          11644000000          13515000000          13249000000
+Ebitda Ratio                                    0.411814             0.352558             0.405799             0.430345             0.417134
+Operating Income                             11377000000          10531000000          11668000000          12975000000          12246000000
+Operating Income Ratio                          0.384034              0.35333             0.406636             0.413151             0.385555
+Non Operating Income Loss                      -41000000           -659000000           -715000000           -743000000           -612000000
+Income Before Tax                            10671000000           9872000000          10953000000          12232000000          11634000000
+Income Before Tax Ratio                         0.360203              0.33122             0.381717             0.389492             0.366287
+Income Tax Expense                            2445000000           2293000000           2377000000           2671000000           2244000000
+Net Income                                    7911000000           7185000000           8056000000           9109000000           9048000000
+Net Income Ratio                                0.267038             0.241067             0.280756             0.290049             0.284869
+Basic Earnings Per Share                            5.09                 4.61                 5.16                 5.85                 5.81
+Diluted Earnings Per Share                          5.09                 4.61                 5.16                 5.84                 5.81
+Basic Average Shares                          1555000000           1555000000           1557000000           1558000000           1557000000
+Diluted Average Shares                        1555000000           1556000000           1558000000           1559000000           1557000000
                                                                                                            Final Link
 Fiscal Date Ending                                                                                                   
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/pm123118form10kwrapinclfsm.htm

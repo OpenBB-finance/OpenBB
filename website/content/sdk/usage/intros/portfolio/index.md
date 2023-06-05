@@ -1,8 +1,12 @@
 ---
 title: Portfolio
-keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report, optimization, risk, benchmark, brokers]
-description: The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a benchmark. For example, you are able to load both your portfolio and a benchmark (load and bench), then have the option to look into the performance compared to the benchmark asking the question "What if I invested all my money in the benchmark instead?" (perf) as well as see a wide variety of statistics and metrics (rsharpe, distr, var and metric). Next to that, with these findings you can apply optimization techniques to your portfolio through the Portfolio Optimization menu.
+keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report, optimization, risk, benchmark, brokers, function, holdings, assets, returns, examples, import statement, load, show, perf, summary, maxdd, resharpe, rvol, dret]
+description: The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Portfolio - SDK | OpenBB Docs" />
 
 The [Portfolio menu](/terminal/usage/intros/portfolio), from the OpenBB Terminal, is wrapped into a Python SDK layer, enabling users to programmatically work with the data in a flexible environment, fully customizable for the needs of any user. This guide will introduce the functions within the main Portfolio module, and walk through examples demonstrating how to work with a portfolio file and object.
 
@@ -67,7 +71,7 @@ Note that the Excel sheet requires the following columns:
   country, sector or industry.
 
 
-This is also illustrated int the table beThe table below illustrates the required column titles:
+The table below illustrates the required column titles:
 
 | Date       | Type   | Ticker   | Side   |   Price |   Quantity |   Fees |   Investment | Currency   | Sector                 | Industry                       | Country       | Region        |
 |:-----------|:-------|:---------|:-------|--------:|-----------:|-------:|-------------:|:-----------|:-----------------------|:-------------------------------|:--------------|:--------------|

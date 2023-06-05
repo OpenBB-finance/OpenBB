@@ -1,0 +1,69 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
+    method: GET
+    uri: https://api.ultimainsights.ai/v1/supportedTickers
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Mon, 29 May 2023 17:46:24 GMT
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -2,51 +2,55 @@ import { useState } from "react";
 import { downloadData, downloadImage } from "../../utils/utils";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import useLocalStorage from "../../utils/useLocalStorage";
-const types = ["csv", "xlsx", "png"];
+import { EXPORT_TYPES } from ".";
+import Select from "../Select";
 
-export default function Export({ columns, data }: { columns: any; data: any }) {
-  const [type, setType] = useLocalStorage("exportType", types[0]);
-
+export default function Export({
+  columns,
+  data,
+  type,
+  setType,
+  downloadFinished,
+}: {
+  columns: any;
+  data: any;
+  type: any;
+  setType: any;
+  downloadFinished: (change: boolean) => void;
+}) {
   const onExport = () => {
     switch (type) {
       case "csv":
-        downloadData("csv", columns, data);
+        downloadData("csv", columns, data, downloadFinished);
         break;
       case "xlsx":
-        downloadData("xlsx", columns, data);
+        downloadData("xlsx", columns, data, downloadFinished);
         break;
       case "png":
-        downloadImage("table");
+        downloadImage("table", downloadFinished);
         break;
     }
   };
   return (
     <div className="flex gap-6 items-center">
-      <p>Export:</p>
-      <RadioGroup.Root
-        onValueChange={setType}
-        defaultValue={type}
-        className="flex gap-4"
-        aria-label={"Export"}
-      >
-        {types.map((key) => (
-          <div key={key} className="flex items-center gap-2 cursor-pointer">
-            <RadioGroup.Item
-              className="bg-white border-black dark:bg-black dark:border-white border-2 w-5 h-5 rounded-full outline-none"
-              value={key}
-              id={key}
-            >
-              <RadioGroup.Indicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-[11px] after:h-[11px] after:rounded-[50%] dark:after:bg-white after:bg-black" />
-            </RadioGroup.Item>
-            <label
-              className="text-black dark:text-white text-sm leading-none uppercase"
-              htmlFor={key}
-            >
-              {key}
-            </label>
-          </div>
-        ))}
-      </RadioGroup.Root>
+      <Select
+        labelType="row"
+        value={type}
+        onChange={(value) => {
+          setType(value);
+        }}
+        label="Type"
+        placeholder="Select type"
+        groups={[
+          {
+            label: "Type",
+            items: EXPORT_TYPES.map((type) => ({
+              label: type,
+              value: type,
+            })),
+          },
+        ]}
+      />
       <button onClick={onExport} className="_btn">
         Export
       </button>

@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      X-BLOBR-KEY:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://api.dappradar.com/4tsxo4vuhotaojtl/defi/chains
+  response:
+    body:
+      string: '{"success":true,"chains":["aurora","avalanche","binance-smart-chain","celo","cronos","ethereum","fantom","hedera","moonbeam","moonriver","near","optimism","polygon","ronin","solana","stacks","tezos"]}'
+    headers:
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - '*'
+      Access-Control-Allow-Origin:
+      - '*'
+      Apicache-Store:
+      - memory
+      Apicache-Version:
+      - 1.6.3
+      Cache-Control:
+      - max-age=48
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '200'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Apr 2023 13:23:59 GMT
+      Etag:
+      - W/"c8-NfzqctiQnk5HSyAtETf9e/pkF+A"
+      Via:
+      - 1.1 015d563c1df00e18321ce956266180b0.cloudfront.net (CloudFront)
+      X-Amz-Apigw-Id:
+      - ECeZfECgFiAFpAg=
+      X-Amz-Cf-Id:
+      - 75QNDfnpBm4jV35BEeE4Nt7UfmEJ-dFMYMC_q0xNVaCmB5FGsXza2Q==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Amzn-Remapped-Connection:
+      - keep-alive
+      X-Amzn-Remapped-Content-Length:
+      - '200'
+      X-Amzn-Remapped-Date:
+      - Thu, 27 Apr 2023 13:23:59 GMT
+      X-Amzn-Remapped-Server:
+      - nginx/1.23.3
+      X-Amzn-Requestid:
+      - 2895e803-5336-478a-83ca-b828efe17250
+      X-Amzn-Trace-Id:
+      - Root=1-644a776f-e9ec35e03d00100aefd54b41
+      X-Blobr-Request-Id:
+      - 1682601839630250767-YXdzLWV1LXdlc3QtMQ==-908c9177540e46ebab56413ecb0c1d3382e82498424a48978d13673788377efc
+      X-Blobr-Version:
+      - 2.9.0
+      X-Cache:
+      - Miss from cloudfront
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

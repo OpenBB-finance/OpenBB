@@ -25,11 +25,11 @@ try:
             "Follow instructions on creating a new conda environment with the latest "
             f"Darts version ({darts_latest}):"
         )
-        print("https://docs.openbb.co/terminal/quickstart/installation")
+        print("https://my.openbb.co/app/sdk/installation")
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
         "Please install the forecast version of the terminal. Instructions can be found "
-        "under the python tab: https://docs.openbb.co/terminal/quickstart/installation"
+        "under the python tab: https://my.openbb.co/app/sdk/installation"
     )
 
 try:
@@ -1758,6 +1758,13 @@ class ForecastController(BaseController):
             choices=common_model.file_types,
             type=str,
             default="xlsx",
+        )
+        parser.add_argument(
+            "--sheet-name",
+            help="The name of the sheet to export to when type is XLSX.",
+            dest="sheet_name",
+            type=str,
+            default="",
         )
 
         if other_args and "-" not in other_args[0][0]:

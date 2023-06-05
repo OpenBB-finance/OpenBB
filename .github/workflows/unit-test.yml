@@ -3,7 +3,6 @@ name: Unit Test
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECT: false
-  OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   OPENBB_FILE_OVERWRITE: true
   OPENBB_ENABLE_CHECK_API: false
@@ -104,9 +103,6 @@ jobs:
         run: |
           source $VENV
           pytest tests/ --optimization --cov --cov-fail-under=50 --autodoc -n auto --durations=10 --timeout=30 --cov-report=xml
-
-      - name: Upload coverage reports to Codecov with GitHub Action
-        uses: codecov/codecov-action@v3
 
       - name: Start Terminal and exit
         run: |

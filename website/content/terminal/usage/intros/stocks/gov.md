@@ -1,7 +1,7 @@
 ---
 title: Government
-keywords: [government, house, senate, politician, lobby, lobbyist, contract, contractor, spending, budget, treasury, trading, buys, sells, ticker, tickers, companies, listing, exchange]
-description: This guide introduces the Government submenu, within the Stocks menu, by briefly explaining the features and how to use them, showing examples in context.
+keywords: [government, house, senate, politician, lobby, lobbyist, contract, contractor, spending, budget, treasury, trading, buys, sells, ticker, tickers, companies, listing, exchange, how to, example, quiverquant, openbb terminal]
+description: This guide introduces the Government submenu, within the Stocks menu, by briefly explaining the features, how to use them, and showing examples in context.
 ---
 
 The features in this menu are intended to show the reported trades of elected officials, lobbyist activity, awarded contracts, and general spending of the United States Treasury Department. This menu only covers the USA, or companies that trade on US exchanges. The information in this menu is compiled by <a href="https://www.quiverquant.com/" target="_blank" rel="noreferrer noopener">QuiverQuant</a>. A ticker is not required to enter the menu; navigate there from anywhere in the terminal with absolute path jumping: `/stocks/gov`

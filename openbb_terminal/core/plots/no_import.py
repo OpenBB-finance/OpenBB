@@ -22,11 +22,11 @@ Pywry uses gtk-rs and its related libraries for window creation and Wry also nee
 To activate interactive plots/tables in pywry window, please make sure the following packages are installed:
 
 [yellow]Arch Linux / Manjaro:[/]
-[green]sudo pacman -S webkit2gtk-4.0[/]\n
+[green]sudo pacman -S webkit2gtk[/]\n
 [yellow]Debian / Ubuntu:[/]
 [green]sudo apt install libwebkit2gtk-4.0-dev[/]\n
 [yellow]Fedora / CentOS / AlmaLinux:[/]
-[green]sudo dnf install gtk3-devel webkit2gtk4.0-devel[/]\r
+[green]sudo dnf install gtk3-devel webkit2gtk3-devel[/]\r
 """
 
 
@@ -82,6 +82,9 @@ class DummyBackend:
         pass
 
     def start(self, debug: bool = False):  # pylint: disable=W0613
+        pass
+
+    def send_outgoing(self, outgoing: dict):
         pass
 
     async def check_backend(self):

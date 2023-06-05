@@ -26,7 +26,6 @@ jobs:
       if: always()
 
     - name: Checkout code
-      if: github.event_name == 'push'
       uses: actions/checkout@v3
 
     - name: Checkout specific ref
@@ -68,9 +67,16 @@ jobs:
       id: integration-tests
       run: |
         source $VENV
-        python terminal.py -t > result.txt
-        cat result.txt
-        grep "================================ integration test summary ================================" result.txt -A100 | tail -c 2000 > failed_tests.txt
+        python terminal.py -t | tee result.txt
+        grep "================================ Integration Test Summary ================================" result.txt -A100 | tail --bytes=2000 > summary.txt
+        echo  >> summary.txt
+
+    - name: Run Integration Tests Coverage Report
+      id: integration-tests-coverage
+      run: |
+        source $VENV
+        python terminal.py -t --coverage | tee result.txt
+        sed -n '/Integration Coverage Summary/,$p' result.txt >> summary.txt
 
     - name: Upload summary to Slack
       uses: adrey/slack-file-upload-action@master
@@ -78,7 +84,7 @@ jobs:
         token: ${{ secrets.SLACK_API_TOKEN }}
         initial_comment: "Integration test summary"
         title: "Integration test summary"
-        path: failed_tests.txt
+        path: summary.txt
         channel: ${{ secrets.SLACK_CHANNEL_ID }}
 
     - name: Slack Notification - Success/Failure
