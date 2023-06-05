@@ -261,14 +261,16 @@ class StocksController(model.StocksRoot):
 
         Attributes:
             `calculate_chains_stats`: Calculates basic statistics for the options chains, like OI and Vol/OI ratios.\n
-            `calculate_straddle`: Calculates the cost of a straddle and its payoff profile.  Requires the OptionsChains data object.\n
-            `calculate_strangle`: Calculates the cost of a straddle and its payoff profile.  Requires the OptionsChains data object.\n
+            `calculate_straddle`: Calculates the cost of a straddle and its payoff profile. Use a negative strike price for short options.\n
+            `calculate_strangle`: Calculates the cost of a straddle and its payoff profile.  Use a negative value for moneyness for short options.\n
+            `calculate_vertical_call_spread`: Calculates the vertical call spread for the target DTE.\n
+            `calculate_vertical_put_spread`: Calculates the vertical put spread for the target DTE.\n
             `chains`: Get Option Chain For A Stock.  No greek data is returned\n
             `dte`: Returns a new column containing the DTE as an integer, including 0.\n
             `eodchain`: Get full EOD option date across all expirations\n
             `expirations`: Get Option Chain Expirations\n
             `generate_data`: Gets x values, and y values before and after premiums\n
-            `get_strategies`: Gets options strategies for all, or a list of, DTE(s). Currently supports straddles and strangles.\n
+            `get_strategies`: Gets options strategies for all, or a list of, DTE(s).\n
             `greeks`: Gets the greeks for a given option\n
             `grhist`: Get histoical option greeks\n
             `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
