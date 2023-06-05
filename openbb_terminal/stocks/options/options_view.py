@@ -365,29 +365,36 @@ def plot_voi(
     fig = OpenBBFigure(yaxis_title="Volume", xaxis_title="Strike Price")
     fig.set_title(title)
 
+    option_chain = option_chain[
+        (option_chain.strike >= min_strike) & (option_chain.strike <= max_strike)
+    ]
     fig.add_bar(
         x=option_chain.strike,
         y=option_chain.openInterest_call,
         name="Calls: Open Interest",
         marker_color="lightgreen",
+        hovertemplate="Calls Open Interest: %{y}<extra></extra>",
     )
     fig.add_bar(
         x=option_chain.strike,
         y=option_chain.volume_call,
         name="Calls: Volume",
         marker_color="green",
+        hovertemplate="Calls Volume: %{y}<extra></extra>",
     )
     fig.add_bar(
         x=option_chain.strike,
         y=option_chain.openInterest_put,
         name="Puts: Open Interest",
         marker_color="pink",
+        hovertemplate="Puts Open Interest: %{y}<extra></extra>",
     )
     fig.add_bar(
         x=option_chain.strike,
         y=option_chain.volume_put,
         name="Puts: Volume",
         marker_color="red",
+        hovertemplate="Puts Volume: %{y}<extra></extra>",
     )
     fig.add_vline_legend(
         x=current_price,
@@ -400,9 +407,7 @@ def plot_voi(
         line=dict(dash="dash", width=2, color="red"),
     )
 
-    fig.update_layout(
-        barmode="relative", hovermode="y unified", xaxis_range=[min_strike, max_strike]
-    )
+    fig.update_layout(barmode="relative", hovermode="x unified")
 
     if raw:
         print_raw(calls, puts, title, export=export)
