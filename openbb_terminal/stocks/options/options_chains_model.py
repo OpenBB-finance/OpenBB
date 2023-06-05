@@ -160,12 +160,21 @@ def validate_object(
             bool
                 True if the object is a valid OptionsChains data object.
 
-    Example
-    -------
+    Examples
+    --------
+    Load some data first:
     >>> from openbb_terminal.stocks.options import options_chains_model
-    >>> options = options_chains_model.OptionsChains().load_options_chains("SPY")
-    >>> chains = options_chains_model.validate_object(options, scope="chains")
-    >>> options_chains_model.validate_object(options, scope="object")
+    >>> data = options_chains_model.OptionsChains().load_options_chains("SPY")
+    To extract just the chains data, use:
+    >>> chains = options_chains_model.validate_object(data, scope="chains")
+    To pass as a true/false validation, use:
+    >>> if options_chains_model.validate_object(data, scope="object") is False:
+    >>>     return
+    To pass and return the entire object for non-zero prices:
+    >>> from copy import deepcopy
+    >>> options = deepcopy(data)
+    >>> if options_chains_model.validate_object(options, scope="object") is True:
+    >>>     options = options_chains_model.validate_object(options, scope="nonZeroPrices")
     """
 
     scopes = ["chains", "object", "strategies", "nonZeroPrices"]
@@ -479,41 +488,45 @@ def get_nearest_otm_strike(
     return otmStrikes
 
 
-@log_start_end(log=logger)
 def calculate_straddle(
     options: object,
     days: Optional[int] = 30,
-    strike_price: Optional[float] = 0,
-    payoff: Optional[bool] = False,
+    strike: float = 0,
 ) -> pd.DataFrame:
-    """Calculates the cost of a straddle and its payoff profile.  Requires the OptionsChains data object.
+    """Calculates the cost of a straddle and its payoff profile. Use a negative strike price for short options.
+    Requires the OptionsChains data object.
 
     Parameters
     ----------
     options : object
-        The OptionsChains data object.  Use load_options_chains() to load the data.
+        The OptionsChains data object. Use load_options_chains() to load the data.
     days: int
-        The target number of days until expiry.  Default is 30 days.
-    strike_price: float
-        The target strike price.  Default is the last price of the underlying stock.
-    payoff: bool
-        Returns the payoff profile if True.  Default is False.
+        The target number of days until expiry. Default is 30 days.
+    strike: float
+        The target strike price. Enter a negative value for short options.
+        Default is the last price of the underlying stock.
 
     Returns
     -------
     pd.DataFrame
-        Pandas DataFrame with the results.
+        Pandas DataFrame with the results. Strike1 is the nearest call strike, strike2 is the nearest put strike.
 
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> data = openbb.stocks.options.load_options_chains('SPY')
     >>> openbb.stocks.options.calculate_straddle(data)
-    >>> payoff = openbb.stocks.options.calculate_straddle(data, payoff = True)
     """
     options = deepcopy(options)
     if not days:
         days = 30
+
+    short: bool = False
+    if strike is not None and strike < 0:
+        short = True
+    strike_price = abs(strike)
+
+    bidAsk = "bid" if short else "ask"  # noqa:F841
 
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
@@ -539,21 +552,13 @@ def calculate_straddle(
         options, dte_estimate, strike_price
     )  # noqa:F841
 
-    sT = np.arange(0, 2 * options.last_price, 1)
-
-    def call_payoff(sT, strike_price, call_premium):
-        return np.where(sT > strike_price, sT - strike_price, 0) - call_premium
-
-    def put_payoff(sT, strike_price, put_premium):
-        return np.where(sT < strike_price, strike_price - sT, 0) - put_premium
-
     call_premium = options.chains.query(
         "`strike` == @call_strike_estimate and `dte` == @dte_estimate and `optionType` == 'call'"
-    )["ask"].values
+    )[bidAsk].values
 
     put_premium = options.chains.query(
         "`strike` == @put_strike_estimate and `dte` == @dte_estimate and `optionType` == 'put'"
-    )["ask"].values
+    )[bidAsk].values
 
     straddle_cost = call_premium + put_premium
 
@@ -576,47 +581,50 @@ def calculate_straddle(
                 "expiration"
             ].unique()[0],
             "DTE": dte_estimate,
-            "Call Strike": call_strike_estimate,
-            "Put Strike": put_strike_estimate,
-            "Call Premium": call_premium[0],
-            "Put Premium": put_premium[0],
-            "Cost": straddle_cost[0],
+            "Strike 1": call_strike_estimate,
+            "Strike 2": put_strike_estimate,
+            "Strike 1 Premium": call_premium[0],
+            "Strike 2 Premium": put_premium[0],
+            "Cost": straddle_cost[0] * -1 if short else straddle_cost[0],
             "Cost Percent": round(
                 straddle_cost[0] / options.last_price * 100, ndigits=4
             ),
             "Breakeven Upper": call_strike_estimate + straddle_cost[0],
+            "Breakeven Upper Percent": round(
+                (call_strike_estimate + straddle_cost[0]) / options.last_price * 100,
+                ndigits=4,
+            )
+            - 100,
             "Breakeven Lower": put_strike_estimate - straddle_cost[0],
+            "Breakeven Lower Percent": -100
+            + round(
+                (put_strike_estimate - straddle_cost[0]) / options.last_price * 100,
+                ndigits=4,
+            ),
+            "Max Profit": abs(straddle_cost[0]) if short else np.inf,
+            "Max Loss": np.inf if short else straddle_cost[0] * -1,
         }
     )
 
     straddle = pd.DataFrame(data=straddle.values(), index=straddle.keys()).rename(
-        columns={0: "Straddle"}
+        columns={0: "Short Straddle" if short else "Long Straddle"}
     )
 
-    if payoff is False:
-        return straddle
+    straddle.loc["Payoff Ratio"] = round(
+        abs(straddle.loc["Max Profit"][0] / straddle.loc["Max Loss"][0]), ndigits=4
+    )
 
-    payoff_call = call_payoff(sT, call_strike_estimate, call_premium)
-    payoff_put = put_payoff(sT, put_strike_estimate, put_premium)
-    payoff_straddle = payoff_call + payoff_put
-    payoff_df = pd.DataFrame()
-    payoff_df["Price at Expiration"] = sT
-    payoff_df["Long Call Payoff"] = payoff_call
-    payoff_df["Long Put Payoff"] = payoff_put
-    payoff_df["Long Straddle Payoff"] = payoff_straddle
-    payoff_df = payoff_df.set_index("Price at Expiration")
-
-    return payoff_df
+    return straddle
 
 
-@log_start_end(log=logger)
 def calculate_strangle(
     options: object,
     days: Optional[int] = 30,
-    moneyness: float = 5,
-    payoff: Optional[bool] = False,
+    moneyness: Optional[float] = 5,
 ) -> pd.DataFrame:
-    """Calculates the cost of a straddle and its payoff profile.  Requires the OptionsChains data object.
+    """Calculates the cost of a straddle and its payoff profile.  Use a negative value for moneyness for short options.
+
+    Requires the OptionsChains data object.
 
     Parameters
     ----------
@@ -625,26 +633,35 @@ def calculate_strangle(
     days: int
         The target number of days until expiry.  Default is 30 days.
     moneyness: float
-        The percentage of OTM moneyness, expressed as a percent between 0 and 100.  Default is 5.
-    payoff: bool
-        Returns the payoff profile if True.  Default is False.
+        The percentage of OTM moneyness, expressed as a percent between -100 < 0 < 100.
+        Enter a negative number for short options.
+        Default is 5.
 
     Returns
     -------
     pd.DataFrame
-        Pandas DataFrame with the results, the payoff profile if payoff is True.
+        Pandas DataFrame with the results. Strike 1 is the nearest call strike, and strike 2 is the nearest put strike.
 
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> data = openbb.stocks.options.load_options_chains('SPY')
     >>> openbb.stocks.options.calculate_strangle(data)
-    >>> payoff = openbb.stocks.options.calculate_strangle(data, days = 10, moneyness = 0.5, payoff = True)
     """
     options = deepcopy(options)
 
     if not days:
         days = 30
+
+    if not moneyness:
+        moneyness = 5
+
+    short: bool = False
+
+    if moneyness < 0:
+        short = True
+    moneyness = abs(moneyness)
+    bidAsk = "bid" if short else "ask"  # noqa:F841
 
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
@@ -673,21 +690,13 @@ def calculate_strangle(
         options, dte_estimate, strikes["put"]
     )  # noqa:F841
 
-    sT = np.arange(0, 2 * options.last_price, 1)
-
-    def call_payoff(sT, strike_price, call_premium):
-        return np.where(sT > strike_price, sT - strike_price, 0) - call_premium
-
-    def put_payoff(sT, strike_price, put_premium):
-        return np.where(sT < strike_price, strike_price - sT, 0) - put_premium
-
     call_premium = options.chains.query(
         "`strike` == @call_strike_estimate and `dte` == @dte_estimate and `optionType` == 'call'"
-    )["ask"].values
+    )[bidAsk].values
 
     put_premium = options.chains.query(
         "`strike` == @put_strike_estimate and `dte` == @dte_estimate and `optionType` == 'put'"
-    )["ask"].values
+    )[bidAsk].values
 
     strangle_cost = call_premium + put_premium
 
@@ -710,37 +719,40 @@ def calculate_strangle(
                 "expiration"
             ].unique()[0],
             "DTE": dte_estimate,
-            "Call Strike": call_strike_estimate,
-            "Put Strike": put_strike_estimate,
-            "Call Premium": call_premium[0],
-            "Put Premium": put_premium[0],
-            "Cost": strangle_cost[0],
+            "Strike 1": call_strike_estimate,
+            "Strike 2": put_strike_estimate,
+            "Strike 1 Premium": call_premium[0],
+            "Strike 2 Premium": put_premium[0],
+            "Cost": strangle_cost[0] * -1 if short else strangle_cost[0],
             "Cost Percent": round(
                 strangle_cost[0] / options.last_price * 100, ndigits=4
             ),
             "Breakeven Upper": call_strike_estimate + strangle_cost[0],
+            "Breakeven Upper Percent": round(
+                (call_strike_estimate + strangle_cost[0]) / options.last_price * 100,
+                ndigits=4,
+            )
+            - 100,
             "Breakeven Lower": put_strike_estimate - strangle_cost[0],
+            "Breakeven Lower Percent": -100
+            + round(
+                (put_strike_estimate - strangle_cost[0]) / options.last_price * 100,
+                ndigits=4,
+            ),
+            "Max Profit": abs(strangle_cost[0]) if short else np.inf,
+            "Max Loss": np.inf if short else strangle_cost[0] * -1,
         }
     )
 
     strangle = pd.DataFrame(data=strangle.values(), index=strangle.keys()).rename(
-        columns={0: "Strangle"}
+        columns={0: "Short Strangle" if short else "Long Strangle"}
     )
 
-    if payoff is False:
-        return strangle
+    strangle.loc["Payoff Ratio"] = round(
+        abs(strangle.loc["Max Profit"][0] / strangle.loc["Max Loss"][0]), ndigits=4
+    )
 
-    payoff_call = call_payoff(sT, call_strike_estimate, call_premium)
-    payoff_put = put_payoff(sT, put_strike_estimate, put_premium)
-    payoff_straddle = payoff_call + payoff_put
-    payoff_df = pd.DataFrame()
-    payoff_df["Price at Expiration"] = sT
-    payoff_df["Long Call Payoff"] = payoff_call
-    payoff_df["Long Put Payoff"] = payoff_put
-    payoff_df["Long Strangle Payoff"] = payoff_straddle
-    payoff_df = payoff_df.set_index("Price at Expiration")
-
-    return payoff_df
+    return strangle
 
 
 def calculate_vertical_call_spread(
@@ -750,6 +762,7 @@ def calculate_vertical_call_spread(
     bought_strike: Optional[float] = 0,
 ) -> pd.DataFrame:
     """Calculates the vertical call spread for the target DTE.
+    A bull call spread is when the sold strike is above the bought strike.
 
     Parameters
     ----------
@@ -767,7 +780,7 @@ def calculate_vertical_call_spread(
     Returns
     -------
     pd.DataFrame
-        Pandas DataFrame with the results.
+        Pandas DataFrame with the results. Strike 1 is the sold strike, and strike 2 is the bought strike.
 
     Examples
     --------
@@ -788,10 +801,10 @@ def calculate_vertical_call_spread(
         days = 30
 
     if not bought_strike:
-        bought_strike = options.last_price
+        bought_strike = options.last_price * 1.0250
 
     if not sold_strike:
-        sold_strike = options.last_price * 1.05
+        sold_strike = options.last_price * 1.0750
 
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
@@ -820,62 +833,214 @@ def calculate_vertical_call_spread(
     spread_cost = bought_premium - sold_premium
     breakeven_price = bought + spread_cost[0]
     max_profit = sold - bought - spread_cost[0]
-    call_spread = {}
+    call_spread_ = {}
+    if sold != bought and spread_cost != 0:
+        # Includees the as-of date if it is historical EOD data.
+        if (
+            options.source == "Intrinio"
+            and options.date != ""
+            or options.source == "TMX"
+            and options.date != ""
+        ):
+            call_spread_.update({"Date": options.date})
 
-    # Includees the as-of date if it is historical EOD data.
-    if (
-        options.source == "Intrinio"
-        and options.date != ""
-        or options.source == "TMX"
-        and options.date != ""
-    ):
-        call_spread.update({"Date": options.date})
+        call_spread_.update(
+            {
+                "Symbol": options.symbol,
+                "Underlying Price": options.last_price,
+                "Expiration": options.chains.query("`dte` == @dte_estimate")[
+                    "expiration"
+                ].unique()[0],
+                "DTE": dte_estimate,
+                "Strike 1": sold,
+                "Strike 2": bought,
+                "Strike 1 Premium": sold_premium[0],
+                "Strike 2 Premium": bought_premium[0],
+                "Cost": spread_cost[0],
+                "Cost Percent": round(
+                    spread_cost[0] / options.last_price * 100, ndigits=4
+                ),
+                "Breakeven Lower": breakeven_price,
+                "Breakeven Lower Percent": round(
+                    (breakeven_price / options.last_price * 100) - 100, ndigits=4
+                ),
+                "Breakeven Upper": np.nan,
+                "Breakeven Upper Percent": np.nan,
+                "Max Profit": max_profit,
+                "Max Loss": spread_cost[0] * -1,
+            }
+        )
 
-    call_spread.update(
-        {
-            "Symbol": options.symbol,
-            "Underlying Price": options.last_price,
-            "Expiration": options.chains.query("`dte` == @dte_estimate")[
-                "expiration"
-            ].unique()[0],
-            "DTE": dte_estimate,
-            "Sold Strike": sold,
-            "Bought Strike": bought,
-            "Sold Strike Premium": sold_premium[0],
-            "Bought Strike Premium": bought_premium[0],
-            "Cost": spread_cost[0],
-            "Cost Percent": round(spread_cost[0] / options.last_price * 100, ndigits=4),
-            "Breakeven": breakeven_price,
-            "Breakeven Percent": round(
+        call_spread = pd.DataFrame(
+            data=call_spread_.values(), index=call_spread_.keys()
+        ).rename(columns={0: "Bull Call Spread"})
+        if call_spread.loc["Cost"][0] < 0:
+            call_spread.loc["Max Profit"][0] = call_spread.loc["Cost"][0] * -1
+            call_spread.loc["Max Loss"][0] = -1 * (
+                bought - sold + call_spread.loc["Cost"][0]
+            )
+            lower = bought if sold > bought else sold
+            call_spread.loc["Breakeven Upper"][0] = (
+                lower + call_spread.loc["Max Profit"][0]
+            )
+            call_spread.loc["Breakeven Upper Percent"][0] = round(
                 (breakeven_price / options.last_price * 100) - 100, ndigits=4
-            ),
-            "Max Profit": max_profit,
-            "Max Loss": spread_cost[0] * -1,
-        }
-    )
+            )
+            call_spread.loc["Breakeven Lower"][0] = np.nan
+            call_spread.loc["Breakeven Lower Percent"][0] = np.nan
+            call_spread.rename(
+                columns={"Bull Call Spread": "Bear Call Spread"}, inplace=True
+            )
 
-    call_spread = pd.DataFrame(
-        data=call_spread.values(), index=call_spread.keys()
-    ).rename(columns={0: "Bull Call Spread"})
-    if call_spread.loc["Cost"][0] < 0:
-        call_spread.loc["Max Profit"][0] = call_spread.loc["Cost"][0] * -1
-        call_spread.loc["Max Loss"][0] = -1 * (
-            bought - sold + call_spread.loc["Cost"][0]
-        )
-        lower = bought if sold > bought else sold
-        call_spread.loc["Breakeven"][0] = lower + call_spread.loc["Max Profit"][0]
-        call_spread.rename(
-            columns={"Bull Call Spread": "Bear Call Spread"}, inplace=True
+        call_spread.loc["Payoff Ratio"] = round(
+            abs(call_spread.loc["Max Profit"][0] / call_spread.loc["Max Loss"][0]),
+            ndigits=4,
         )
 
-    call_spread.loc["Payoff Ratio"] = round(
-        abs(call_spread.loc["Max Profit"][0] / call_spread.loc["Max Loss"][0]),
-        ndigits=4,
-    )
-
-    return call_spread
+        return call_spread
+    return pd.DataFrame()
 
 
+# %%
+def calculate_vertical_put_spread(
+    options: object,
+    days: Optional[int] = 30,
+    sold_strike: Optional[float] = 0,
+    bought_strike: Optional[float] = 0,
+) -> pd.DataFrame:
+    """Calculates the vertical put spread for the target DTE.
+    A bear put spread is when the bought strike is above the sold strike.
+
+    Parameters
+    ----------
+    options : object
+        The OptionsChains data object. Use load_options_chains() to load the data.
+    days: int
+        The target number of days until expiry. This value will be used to get the nearest valid DTE.
+        Default is 30 days.
+    sold_strike: float
+        The target strike price for the short leg of the vertical put spread. Default is the last price of the underlying.
+    bought_strike: float
+        The target strike price for the long leg of the vertical put spread.
+        Default is the 5% OTM above the last price of the underlying.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with the results. Strike 1 is the sold strike, strike 2 is the bought strike.
+
+    Examples
+    --------
+    Load the data:
+    >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains()
+    >>> op = OptionsChains()
+    >>> data = op.load_options_chains("QQQ")
+
+    For a bull put spread:
+    >>> op.calculate_vertical_put_spread(data, days=10, sold_strike=355, bought_strike=350)
+
+    For a bear put spread:
+    >>> op.calculate_vertical_put_spread(data, days=10, sold_strike=355, bought_strike=350)
+    """
+    options = deepcopy(options)
+
+    if not days:
+        days = 30
+
+    if not bought_strike:
+        bought_strike = options.last_price * 0.9750
+
+    if not sold_strike:
+        sold_strike = options.last_price * 0.9250
+
+    if validate_object(options, scope="object") is False:
+        return pd.DataFrame()
+
+    if validate_object(options, scope="strategies") is False:
+        print("`last_price` was not found in the OptionsChain data object.")
+        return pd.DataFrame()
+
+    if isinstance(options.chains, dict):
+        options.chains = pd.DataFrame(options.chains)
+
+    dte_estimate = get_nearest_dte(options, days)  # noqa:F841
+    options = validate_object(options, "nonZeroPrices", dte_estimate)
+    sold = get_nearest_put_strike(options, days, sold_strike)
+    bought = get_nearest_put_strike(options, days, bought_strike)
+
+    sold_premium = options.chains.query(
+        "`strike` == @sold and `dte` == @dte_estimate and `optionType` == 'put'"
+    )["bid"].values
+    bought_premium = options.chains.query(
+        "`strike` == @bought and `dte` == @dte_estimate and `optionType` == 'put'"
+    )["ask"].values
+
+    spread_cost = bought_premium - sold_premium
+    max_profit = abs(spread_cost[0])
+    breakeven_price = sold - max_profit
+    max_loss = (sold - bought - max_profit) * -1
+    put_spread_ = {}
+    if sold != bought and max_loss != 0:
+        # Includees the as-of date if it is historical EOD data.
+        if (
+            options.source == "Intrinio"
+            and options.date != ""
+            or options.source == "TMX"
+            and options.date != ""
+        ):
+            put_spread_.update({"Date": options.date})
+
+        put_spread_.update(
+            {
+                "Symbol": options.symbol,
+                "Underlying Price": options.last_price,
+                "Expiration": options.chains.query("`dte` == @dte_estimate")[
+                    "expiration"
+                ].unique()[0],
+                "DTE": dte_estimate,
+                "Strike 1": sold,
+                "Strike 2": bought,
+                "Strike 1 Premium": sold_premium[0],
+                "Strike 2 Premium": bought_premium[0],
+                "Cost": spread_cost[0],
+                "Cost Percent": round(max_profit / options.last_price * 100, ndigits=4),
+                "Breakeven Lower": np.nan,
+                "Breakeven Lower Percent": np.nan,
+                "Breakeven Upper": breakeven_price,
+                "Breakeven Upper Percent": (
+                    100 - round((breakeven_price / options.last_price) * 100, ndigits=4)
+                ),
+                "Max Profit": max_profit,
+                "Max Loss": max_loss,
+            }
+        )
+
+        put_spread = pd.DataFrame(
+            data=put_spread_.values(), index=put_spread_.keys()
+        ).rename(columns={0: "Bull Put Spread"})
+        if put_spread.loc["Cost"][0] > 0:
+            put_spread.loc["Max Profit"][0] = bought - sold - spread_cost[0]
+            put_spread.loc["Max Loss"][0] = spread_cost[0] * (-1)
+            put_spread.loc["Breakeven Lower"][0] = bought - spread_cost[0]
+            put_spread.loc["Breakeven Lower Percent"][0] = 100 - round(
+                (breakeven_price / options.last_price) * 100, ndigits=4
+            )
+            put_spread.loc["Breakeven Upper"][0] = np.nan
+            put_spread.loc["Breakeven Upper Percent"][0] = np.nan
+            put_spread.rename(
+                columns={"Bull Put Spread": "Bear Put Spread"}, inplace=True
+            )
+
+        put_spread.loc["Payoff Ratio"] = round(
+            abs(put_spread.loc["Max Profit"][0] / put_spread.loc["Max Loss"][0]),
+            ndigits=4,
+        )
+
+        return put_spread
+    return pd.DataFrame()
+
+
+# %%
 @log_start_end(log=logger)
 def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.DataFrame:
     """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
@@ -946,34 +1111,38 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
     return stats.replace([np.nan, np.inf], "")
 
 
+# %%
 @log_start_end(log=logger)
-def get_strategies(  # pylint: disable=dangerous-default-value
+def get_strategies(
     options: object,
-    days: list[int] = [0],
-    strike_price: Optional[float] = 0,
-    moneyness: list[float] = [5, 10],
-    straddle: Optional[bool] = False,
-    strangle: Optional[bool] = False,
+    days: Optional[list[int]] = None,
+    straddle_strike: Optional[float] = 0,
+    strangle_moneyness: Optional[list[float]] = None,
+    call_strikes: Optional[list[float]] = None,
+    put_strikes: Optional[list[float]] = None,
 ) -> pd.DataFrame:
-    """Gets options strategies for all, or a list of, DTE(s). Currently supports straddles and strangles.
-    Multiple strategies, target strikes, or % moneyness can be returned.
+    """Gets options strategies for all, or a list of, DTE(s).
+    Currently supports straddles, strangles, and vertical spreads.
+    Multiple strategies, expirations, and % moneyness can be returned.
+    To get short options, use a negative value for the `straddle_strike` price or `strangle_moneyness`.
+    A sold call strike that is lower than the bought strike, or a sold put strike that is higher than the bought strike,
+    is a bearish vertical spread.
 
     Parameters
     ----------
     options: object
         The OptionsChains data object. Use `load_options_chains()` to load the data.
     days: list[int]
-        List of DTE(s) to get strategies for. Defaults to all.
+        List of DTE(s) to get strategies for. Enter a single value, or multiple as a list. Defaults to all.
     strike_price: float
-        The target strike price. Defaults to the last price of the underlying stock. Only valid when straddle is True.
-    moneyness: list[float]
+        The target strike price. Defaults to the last price of the underlying stock.
+    strangle_moneyness: list[float]
         List of OTM moneyness to target, expressed as a percent value between 0 and 100.
-        Only valid when strangle is True. Defaults to [5,10].
-    straddle: bool
-        Returns straddles. When all are false, defaults to be True. Multiple strategies can be returned.
-    strangle: bool
-        Returns strangles when True. Multiple strategies can be returned.
-
+        Enter a single value, or multiple as a list. Defaults to 5.
+    call_strikes: list[float]
+        Call strikes for vertical spreads, listed as [sold strike, bought strike].
+    put_strikes: list[float]
+        Put strikes for vertical spreads, listed as [sold strike, bought strike].
     Returns
     -------
     pd.DataFrame
@@ -984,17 +1153,43 @@ def get_strategies(  # pylint: disable=dangerous-default-value
     Load data
     >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
     >>> data = OptionsChains().load_options_chains("SPY")
+
     Return just straddles
     >>> OptionsChains().get_strategies(data)
+
     Return strangles
-    >>> OptionsChains().get_strategies(data, strangle = True)
+    >>> OptionsChains().get_strategies(data)
+
     Return both at 2.5, 5, 10, and 20 moneyness, and at 10,30,60, and 90 DTE.
-    >>> (
-            OptionsChains()
-            .get_strategies(data, days = [10,30,60,90], moneyness = [2.5,5,10,20], strangle = True, straddle = True)
-        )
+    >>> OptionsChains().get_strategies(data, days = [10,30,60,90], moneyness = [2.5,5,10,20])
     """
+    if strangle_moneyness is None:
+        strangle_moneyness = [0.0]
+    if days is None:
+        days = options.chains["dte"].unique().tolist()
+
     options = deepcopy(options)
+
+    # Allows a single input to be passed instead of a list.
+    days = [days] if isinstance(days, int) else days  # type: ignore[list-item]
+
+    if not isinstance(call_strikes, (list, float)) and call_strikes is not None:
+        print(
+            "Two strike prices are required. Enter the sold price first, then the bought price."
+        )
+        return pd.DataFrame()
+    if not isinstance(put_strikes, (list, float)) and put_strikes is not None:
+        print(
+            "Two strike prices are required. Enter the sold price first, then the bought price."
+        )
+        return pd.DataFrame()
+
+    if strangle_moneyness:
+        strangle_moneyness = (
+            [strangle_moneyness]  # type: ignore[list-item]
+            if not isinstance(strangle_moneyness, list)
+            else strangle_moneyness
+        )
 
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
@@ -1006,51 +1201,74 @@ def get_strategies(  # pylint: disable=dangerous-default-value
     if isinstance(options.chains, dict):
         options.chains = pd.DataFrame(options.chains)
 
-    if not straddle and not strangle:
-        print("No strategy chosen, defaulting to straddle")
-        straddle = True
-
-    if days[0] == 0:
-        days = options.chains["dte"].unique().tolist()
-
-    if strike_price == 0:
-        strike_price = options.last_price
-
     days_list = []
 
     strategies = pd.DataFrame()
     straddles = pd.DataFrame()
     strangles = pd.DataFrame()
     strangles_ = pd.DataFrame()
+    call_spreads = pd.DataFrame()
+    put_spreads = pd.DataFrame()
 
     for day in days:
         days_list.append(get_nearest_dte(options, day))
     days = list(set(days_list))
-    if straddle:
+
+    if call_strikes:
+        cStrike1 = call_strikes[0]
+        cStrike2 = call_strikes[1]
+        for day in days:
+            call_spread = calculate_vertical_call_spread(
+                options, day, cStrike1, cStrike2
+            ).transpose()
+            call_spreads = pd.concat([call_spreads, call_spread])
+
+    if put_strikes:
+        pStrike1 = put_strikes[0]
+        pStrike2 = put_strikes[1]
+        for day in days:
+            put_spread = calculate_vertical_put_spread(
+                options, day, pStrike1, pStrike2
+            ).transpose()
+            put_spreads = pd.concat([put_spreads, put_spread])
+
+    if straddle_strike:
+        straddle_strike = (
+            options.last_price if straddle_strike == 0 else straddle_strike
+        )
         for day in days:
             straddles = pd.concat(
-                [straddles, calculate_straddle(options, day, strike_price).transpose()]
+                [
+                    straddles,
+                    calculate_straddle(options, day, straddle_strike).transpose(),
+                ]
             )
 
-    if strangle:
+    if strangle_moneyness and strangle_moneyness[0] != 0:
         for day in days:
-            for moneynes in moneyness:
+            for moneyness in strangle_moneyness:
                 strangles_ = pd.concat(
-                    [strangles_, calculate_strangle(options, day, moneynes).transpose()]
+                    [
+                        strangles_,
+                        calculate_strangle(options, day, moneyness).transpose(),
+                    ]
                 )
         strangles = pd.concat([strangles, strangles_])
-        strangles = strangles.query("`Call Strike` != `Put Strike`").drop_duplicates()
+        strangles = strangles.query("`Strike 1` != `Strike 2`").drop_duplicates()
 
-    strategies = pd.concat([straddles, strangles])
+    strategies = pd.concat([straddles, strangles, call_spreads, put_spreads])
+
+    if strategies.empty:
+        print("No strategy was selected, returning all ATM straddles.")
+        return get_strategies(options, straddle_strike=options.last_price)
 
     strategies = strategies.reset_index().rename(columns={"index": "Strategy"})
     strategies = (
-        strategies.set_index(["Expiration", "Strategy", "DTE"])
+        strategies.set_index(["Expiration", "DTE"])
         .sort_index()
         .drop(columns=["Symbol"])
     )
-
-    return strategies.reset_index(["Strategy", "DTE"])
+    return strategies.reset_index()
 
 
 class OptionsChains:  # pylint: disable=too-few-public-methods
@@ -1076,6 +1294,10 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
         self.load_options_chains: Callable = load_options_chains
         self.calculate_stats: Callable = calculate_stats
         self.calculate_vertical_call_spread: Callable = calculate_vertical_call_spread
+        self.calculate_vertical_put_spread: Callable = calculate_vertical_put_spread
         self.calculate_straddle: Callable = calculate_straddle
         self.calculate_strangle: Callable = calculate_strangle
         self.get_strategies: Callable = get_strategies
+
+
+# %%
