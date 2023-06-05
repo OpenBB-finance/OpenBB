@@ -348,6 +348,9 @@ class TerminalController(BaseController):
 
             if "I don't know" not in response:
                 console.print(f"[green]Suggested Command: {response}[/green]")
+                console.print(
+                    f"[green]If this command does not work, please refine your question.[/green]"
+                )
                 # To run the command automatically, uncomment the line below.
                 # Left untouched for testing currently
                 # self.queue.append(response)
