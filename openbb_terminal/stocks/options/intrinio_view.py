@@ -112,11 +112,11 @@ def display_historical(
 
 @log_start_end(log=logger)
 def view_historical_greeks(
-    symbol: str,
-    expiry: str,
-    strike: Union[float, str],
+    symbol: Optional[str] = None,
+    expiry: Optional[str] = None,
+    strike: Union[float, str] = None,
     greek: str = "Delta",
-    chain_id: str = "",
+    chain_id: Optional[str] = None,
     put: bool = False,
     raw: bool = False,
     limit: Union[int, str] = 20,
@@ -158,9 +158,12 @@ def view_historical_greeks(
     else:
         chain_id = f"{symbol}{''.join(expiry[2:].split('-'))}{'P' if put else 'C'}{str(int(1000*strike)).zfill(8)}"
         df = intrinio_model.get_historical_options(chain_id)
-        title = f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
-
+        title = (
+            f"Historical {(greek).capitalize()} for {symbol.upper()}"
+            f"{strike} {['Call','Put'][put]} and {expiry} Expiration"
+        )
     if df.empty:
+        print(f"No data found for {chain_id}")
         return None
 
     df = df.rename(columns={"impliedVolatility": "iv", "close": "price"})
@@ -213,7 +216,7 @@ def view_historical_greeks(
     fig.update_layout(
         yaxis2=dict(
             side="left",
-            title=greek,
+            title=greek.title(),
             anchor="x",
             overlaying="y",
         ),

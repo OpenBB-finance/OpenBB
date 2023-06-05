@@ -256,9 +256,6 @@ class StocksController(model.StocksRoot):
     def options(self):
         """Stocks Options Submodule
 
-        Submodules:
-            `screen`: Screen Module
-
         Attributes:
             `chains`: Get Option Chain For A Stock.  No greek data is returned\n
             `dte`: Returns a new column containing the DTE as an integer, including 0.\n
@@ -266,7 +263,7 @@ class StocksController(model.StocksRoot):
             `expirations`: Get Option Chain Expirations\n
             `generate_data`: Gets x values, and y values before and after premiums\n
             `greeks`: Gets the greeks for a given option\n
-            `grhist`: Get histoical option greeks\n
+            `grhist`: Get historical pricing option chain for a given symbol\n
             `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
             `hist`: Get historical option pricing.\n
             `info`: Scrape barchart for options info\n

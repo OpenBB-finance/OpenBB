@@ -446,9 +446,6 @@ class StocksInsiders(Category):
 class StocksOptions(Category):
     """Options Module.
 
-        Submodules:
-        `screen`: Screen Module
-
     Attributes:
         `chains`: Get Option Chain For A Stock.  No greek data is returned\n
         `dte`: Returns a new column containing the DTE as an integer, including 0.\n
@@ -456,7 +453,7 @@ class StocksOptions(Category):
         `expirations`: Get Option Chain Expirations\n
         `generate_data`: Gets x values, and y values before and after premiums\n
         `greeks`: Gets the greeks for a given option\n
-        `grhist`: Get histoical option greeks\n
+        `grhist`: Get historical pricing option chain for a given symbol\n
         `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
         `hist`: Get historical option pricing.\n
         `info`: Scrape barchart for options info\n
@@ -484,10 +481,8 @@ class StocksOptions(Category):
         self.expirations = lib.stocks_options_sdk_helper.get_option_expirations
         self.generate_data = lib.stocks_options_yfinance_model.generate_data
         self.greeks = lib.stocks_options_sdk_helper.get_greeks
-        self.grhist = lib.stocks_options_screen_syncretism_model.get_historical_greeks
-        self.grhist_chart = (
-            lib.stocks_options_screen_syncretism_view.view_historical_greeks
-        )
+        self.grhist = lib.stocks_options_intrinio_model.get_historical_options
+        self.grhist_chart = lib.stocks_options_intrinio_view.view_historical_greeks
         self.hist = lib.stocks_options_sdk_helper.hist
         self.info = lib.stocks_options_barchart_model.get_options_info
         self.info_chart = lib.stocks_options_barchart_view.print_options_data

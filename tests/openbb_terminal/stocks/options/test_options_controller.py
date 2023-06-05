@@ -508,7 +508,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--limit=2",
                 "--export=csv",
             ],
-            "syncretism_view.view_historical_greeks",
+            "intrinio_view.view_historical_greeks",
             [],
             dict(
                 symbol="MOCK_TICKER",
@@ -535,7 +535,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--limit=2",
                 "--export=csv",
             ],
-            "syncretism_view.view_historical_greeks",
+            "intrinio_view.view_historical_greeks",
             [],
             dict(
                 symbol="MOCK_TICKER",

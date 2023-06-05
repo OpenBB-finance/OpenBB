@@ -168,9 +168,6 @@ en:
   stocks/options/screen/view: view available presets (or one in particular)
   stocks/options/screen/set: set one of the available presets
   stocks/options/screen/_preset: Preset
-  stocks/options/screen/scr: screen data from this preset
-  stocks/options/screen/_screened_tickers: Last screened tickers
-  stocks/options/screen/ca: take these to comparison analysis menu
   stocks/options/hedge/_ticker: Ticker
   stocks/options/hedge/_expiry: Expiry
   stocks/options/hedge/pick: pick the underlying asset position
