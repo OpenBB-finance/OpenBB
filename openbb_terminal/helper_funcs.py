@@ -67,10 +67,10 @@ from openbb_terminal.decorators import check_api_key
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
-logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
-logger = logging.getLogger(__name__)
+# logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
+# logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 if (
