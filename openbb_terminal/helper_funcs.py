@@ -91,7 +91,7 @@ MENU_RESET = 2
 LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_MODEL_NAME = "gpt-3.5"
+GPT_MODEL_NAME = "gpt-3.5-turbo"
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
