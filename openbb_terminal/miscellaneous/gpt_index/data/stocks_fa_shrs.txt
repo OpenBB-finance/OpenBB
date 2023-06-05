@@ -1,0 +1,19 @@
+parent_command:stocks/fa
+usage: shrs [-t TICKER] [--holder {major,institutional,mutualfund}]
+
+Print Major, institutional and mutualfunds shareholders. [Source: Yahoo Finance]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+  --holder {major,institutional,mutualfund}
+                        Table of holders to get (default: institutional)
+
+
+Examples:
+- To view institutional shareholders for <SYMBOL>: stocks/load <SYMBOL>/fa/shrs
+- To display major shareholders of a specific stock: stocks/fa/shrs -t <SYMBOL> --holder major
+- To see mutual fund shareholders for a particular ticker: stocks/fa/shrs --ticker <SYMBOL> --holder mutualfund
+- Retrieve major shareholders without loading a symbol: stocks/fa/shrs -t <SYMBOL> --holder major
+- Show institutional shareholders for a stock without loading: stocks/fa/shrs --ticker <SYMBOL> --holder institutional
+- To get mutual fund shareholders without loading <SYMBOL>: stocks/fa/shrs --ticker <SYMBOL> --holder mutualfund

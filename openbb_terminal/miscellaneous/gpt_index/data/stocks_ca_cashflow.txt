@@ -1,0 +1,17 @@
+parent_command:stocks/ca
+usage: cashflow [-q] [-t S_TIMEFRAME]
+
+Prints either yearly or quarterly cashflow statement the company, and compares it against similar companies.
+
+optional arguments:
+  -q, --quarter         Quarter financial data flag. (default: False)
+  -t S_TIMEFRAME, --timeframe S_TIMEFRAME
+                        Specify year/quarter of the cashflow statement to be retrieved. The format for year is YYYY and for quarter is DD-MMM-YYY (for example, 30-Sep-2021). Default is last year/quarter. (default: None)
+
+
+Examples:
+- To display the yearly cashflow statement for a specific company: stocks/load <SYMBOL>/ca/cashflow
+- To display the quarterly cashflow statement for a specific company: stocks/load <SYMBOL>/ca/cashflow -q
+- To display the cashflow statement for a specific year for a specific company: stocks/load <SYMBOL>/ca/cashflow -t 2020
+- To display the cashflow statement for a specific quarter for a specific company: stocks/load <SYMBOL>/ca/cashflow -t 30-Sep-2021
+- To display the quarterly cashflow statement for a specific company and compare it with similar companies: stocks/load <SYMBOL>/ca/cashflow --quarter

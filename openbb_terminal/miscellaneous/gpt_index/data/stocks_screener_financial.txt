@@ -1,0 +1,23 @@
+parent_command:stocks/screener
+usage: financial [-p Desired preset.] [-l LIMIT] [-r] [-s SORT]
+
+Prints financial data of the companies that meet the pre-set filtering.
+
+optional arguments:
+  -p Desired preset., --preset Desired preset.
+                        Filter presets
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to print
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed.
+  -s SORT, --sort SORT  Sort elements of the table.
+
+
+Examples:
+- To display financial data of companies using a specific preset: stocks/screener financial -p Desired preset
+- To display financial data of companies with a specific preset and limit the number of stocks: stocks/screener financial -p Desired preset -l 10
+- To display financial data of companies using a specific preset and sort the table by a specific element: stocks/screener financial -p Desired preset -s SORT
+- To display financial data of companies using a specific preset, limit the number of stocks, and sort the table by a specific element: stocks/screener financial -p Desired preset -l 10 -s SORT
+- To display financial data of companies using a specific preset and reverse the sorting order: stocks/screener financial -p Desired preset -r
+- To display financial data of companies using a specific preset, limit the number of stocks, and reverse the sorting order: stocks/screener financial -p Desired preset -l 10 -r
+- To display financial data of companies using a specific preset, sort the table by a specific element, and reverse the sorting order: stocks/screener financial -p Desired preset -s SORT -r
+- To display financial data of companies using a specific preset, limit the number of stocks, sort the table by a specific element, and reverse the sorting order: stocks/screener financial -p Desired preset -l 10 -s SORT -r

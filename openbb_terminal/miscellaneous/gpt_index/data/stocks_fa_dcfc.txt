@@ -1,0 +1,21 @@
+parent_command:stocks/fa
+usage: dcfc [-t TICKER] [-l LIMIT] [-q]
+
+Prints the discounted cash flow of a company over time including the DCF of today. The following fields are expected: DCF, Stock price, and Date. [Source: Financial Modeling Prep]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+  -l LIMIT, --limit LIMIT
+                        Limit of latest years/quarters. (default: 5)
+  -q, --quarter         Quarter fundamental data flag. (default: False)
+
+
+Examples:
+- To display the discounted cash flow of a company using its ticker: stocks/fa/dcfc -t <SYMBOL>
+- To analyze the DCF of a company for the last 10 years: stocks/fa/dcfc -t <SYMBOL> -l 10
+- To examine the DCF of a company for the last 3 quarters: stocks/fa/dcfc -t <SYMBOL> -l 3 -q
+- For a company's DCF analysis over the default limit of years: stocks/load <SYMBOL>/fa/dcfc
+- To view the DCF of a company for the previous 7 quarters: stocks/load <SYMBOL>/fa/dcfc -l 7 -q
+- To check the DCF of a company for a specific number of years: stocks/load <SYMBOL>/fa/dcfc --limit 6
+- To inspect the DCF of a company for the last 4 quarters: stocks/load <SYMBOL>/fa/dcfc --quarter --limit 4

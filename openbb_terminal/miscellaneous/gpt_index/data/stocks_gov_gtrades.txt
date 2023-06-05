@@ -1,0 +1,17 @@
+parent_command:stocks/gov
+usage: gtrades [-p PAST_TRANSACTIONS_MONTHS] [-g {congress,senate,house}] [--raw]
+
+Government trading. [Source: www.quiverquant.com]
+
+optional arguments:
+  -p PAST_TRANSACTIONS_MONTHS, --past_transactions_months PAST_TRANSACTIONS_MONTHS
+                        Past transaction months (default: 6)
+  -g {congress,senate,house}, --govtype {congress,senate,house}
+  --raw                 Print raw data. (default: False)
+
+
+Examples:
+- Display government trading data for the past 3 months: stocks/gov/gtrades -p 3
+- Show trading data for the Senate only: stocks/gov/gtrades -g senate
+- Display trading data for the House of Representatives in the past 2 months: stocks/gov/gtrades -p 2 -g house
+- Show Congress trading data for the past 4 months and display raw data: stocks/gov/gtrades -p 4 -g congress --raw

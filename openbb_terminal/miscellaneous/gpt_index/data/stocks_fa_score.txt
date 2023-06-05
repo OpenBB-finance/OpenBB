@@ -1,0 +1,17 @@
+parent_command:stocks/fa
+usage: score [-y YEARS] [-t TICKER]
+
+Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
+
+optional arguments:
+  -y YEARS, --years YEARS
+                        Define the amount of years required to calculate the score. (default: 10)
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+
+
+Examples:
+- Analyze <SYMBOL> using the value investing tool: stocks/fa/score -t <SYMBOL>
+- Analyze <SYMBOL> with a specific number of years for calculation: stocks/fa/score -t <SYMBOL> -y 5
+- Calculate the score for <SYMBOL> based on 7 years of data: stocks/fa/score --ticker <SYMBOL> --years 7
+- Use the value investing tool for <SYMBOL> considering data from the last 3 years: stocks/fa/score --years 3 -t <SYMBOL>

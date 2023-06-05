@@ -1,0 +1,17 @@
+parent_command:stocks/options
+usage: pcr [-l {10,20,30,60,90,120,150,180}] [-s START]
+
+Display put to call ratio for ticker [AlphaQuery.com]
+
+optional arguments:
+  -l {10,20,30,60,90,120,150,180}, --length {10,20,30,60,90,120,150,180}
+                        Window length to get (default: 30)
+  -s START, --start START
+                        Start date for plot (default: 2022-06-01 12:54:04.479129)
+
+
+Examples:
+- To view the put to call ratio for a specific stock: stocks/load <SYMBOL>/options/pcr
+- To display the put to call ratio for a stock with a 60-day window: stocks/load <SYMBOL>/options/pcr -l 60
+- To show the put to call ratio for a stock starting from a specific date: stocks/load <SYMBOL>/options/pcr -s 2022-01-01
+- To display the put to call ratio for a stock with a 90-day window and a specific start date: stocks/load <SYMBOL>/options/pcr -l 90 -s 2022-01-01

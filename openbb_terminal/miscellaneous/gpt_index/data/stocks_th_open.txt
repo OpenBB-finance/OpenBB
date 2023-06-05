@@ -1,0 +1,12 @@
+parent_command:stocks/th
+usage: exchange
+
+Show currently open exchanges
+
+open
+Examples:
+- To display currently open exchanges: stocks/th exchange
+- Check which exchanges are open at the moment: stocks/th exchange
+- View open exchanges: stocks/th exchange
+- Find out which exchanges are currently open: stocks/th exchange
+- See the list of open exchanges: stocks/th exchange

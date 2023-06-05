@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: tispw [-l LIMIT]
+
+Print top insider sales of the week. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- Display the top insider sales of the week for all stocks: stocks/ins/tispw
+- Show the top 5 insider sales of the week: stocks/ins/tispw -l 5
+- Retrieve the top 20 insider sales of the week: stocks/ins/tispw --limit 20

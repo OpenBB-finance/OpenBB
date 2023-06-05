@@ -1,0 +1,13 @@
+parent_command:stocks/ins
+usage: view [-p Desired preset]
+
+View available presets under presets folder.
+
+optional arguments:
+  -p Desired preset, --preset Desired preset
+                        View specific preset
+
+
+Examples:
+- To view all available presets: stocks/ins/view
+- To view a specific preset: stocks/ins/view -p <Desired preset>

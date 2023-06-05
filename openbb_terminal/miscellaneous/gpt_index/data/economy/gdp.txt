@@ -1,7 +1,0 @@
-usage:gdp [-c COUNTRIES] [-u {USD_CAP,MLN_USD}] [-s START_DATE] [-e END_DATE]           [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]           [--raw]  This indicator is based on nominal GDP (also called GDP at current prices or GDP in value) and is available in different measures: US dollars and US dollars per capita (current PPPs).  optional arguments:   -c COUNTRIES, --countries COUNTRIES                         Countries to get data for (default: united_states)   -u {USD_CAP,MLN_USD}, --units {USD_CAP,MLN_USD}                         Use either USD_CAP (US dollars per capita) or MLN_USD                         (millions of US dollars) (default: USD_CAP)   -s START_DATE, --start START_DATE                         Start date of data, in YYYY-MM-DD format (default:                         1993-04-04)   -e END_DATE, --end END_DATE                         End date of data, in YYYY-MM-DD format (default:                         2023-04-04)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)  For more information and examples, use 'about gdp' to access the related guide.
-
-Example:
-gdp
-gdp -c australia,denmark
-gdp -c belgium -s 2020-01-01
-gdp -c canada -u MLN_USD

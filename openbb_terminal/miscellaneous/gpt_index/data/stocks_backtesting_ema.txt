@@ -1,0 +1,17 @@
+parent_command:stocks/backtesting
+usage: ema [-l LENGTH] [--spy] [--no_bench]
+
+Strategy where stock is bought when Price > EMA(l)
+
+optional arguments:
+  -l LENGTH   EMA period to consider (default: 20)
+  --spy       Flag to add spy hold comparison (default: False)
+  --no_bench  Flag to not show buy and hold comparison (default: False)
+
+
+Examples:
+- To backtest the EMA strategy with a default EMA period of 20: stocks/load <SYMBOL>/backtesting/ema
+- To backtest the EMA strategy with a custom EMA period of 50: stocks/load <SYMBOL>/backtesting/ema -l 50
+- To backtest the EMA strategy and compare it with the SPY benchmark: stocks/load <SYMBOL>/backtesting/ema --spy
+- To backtest the EMA strategy without showing the buy and hold comparison: stocks/load <SYMBOL>/backtesting/ema --no_bench
+- To backtest the EMA strategy with a custom EMA period of 30 and compare it with the SPY benchmark: stocks/load <SYMBOL>/backtesting/ema -l 30 --spy

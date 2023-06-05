@@ -1,0 +1,26 @@
+parent_command:stocks/fa
+usage: mktcap [-t TICKER] [-s START] [-e END] [-q] [-m {enterprise_value,market_cap}]
+
+Prints stock price, number of shares, market capitalization and enterprise value over time. The following fields are expected: Add total debt, Enterprise value, Market capitalization, Minus cash and cash equivalents, Number of
+shares, Stock price, and Symbol. [Source: Financial Modeling Prep]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) of the enterprise value to display. (default: 1900-01-01)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the enterprise value to display. (default: 2023-06-02 12:53:55.613143)
+  -q, --quarter         Quarter fundamental data flag. (default: False)
+  -m {enterprise_value,market_cap}, --method {enterprise_value,market_cap}
+                        Define the data to display. (default: market_cap)
+
+
+Examples:
+- To display market capitalization for a specific stock: stocks/fa/mktcap -t <SYMBOL>
+- To view the enterprise value of a stock between specific dates: stocks/fa/mktcap -t <SYMBOL> -s 2020-01-01 -e 2021-12-31 -m enterprise_value
+- To show the market capitalization of a stock from a specific start date: stocks/fa/mktcap -t <SYMBOL> -s 2020-01-01
+- To display the enterprise value of a stock up to a specific end date: stocks/fa/mktcap -t <SYMBOL> -e 2021-12-31 -m enterprise_value
+- To analyze market capitalization using quarterly data: stocks/fa/mktcap -t <SYMBOL> -q
+- To examine the enterprise value of a stock using quarterly data: stocks/fa/mktcap -t <SYMBOL> -q -m enterprise_value
+- To view market capitalization for a specific stock between specific dates using quarterly data: stocks/fa/mktcap -t <SYMBOL> -s 2020-01-01 -e 2021-12-31 -q
+- To display the enterprise value of a stock between specific dates using quarterly data: stocks/fa/mktcap -t <SYMBOL> -s 2020-01-01 -e 2021-12-31 -q -m enterprise_value

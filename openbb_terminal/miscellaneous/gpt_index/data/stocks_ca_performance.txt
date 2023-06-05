@@ -1,0 +1,12 @@
+parent_command:stocks/ca
+usage: performance
+
+Prints screener data of similar companies. [Source: Finviz]
+
+performance
+Examples:
+- Retrieve performance data for similar companies to a specific stock: stocks/load <SYMBOL>/ca/performance
+- Compare the performance of similar companies to a given stock: stocks/load <SYMBOL>/ca/performance
+- Get screener data for companies related to a particular stock: stocks/load <SYMBOL>/ca/performance
+- Analyze the performance of companies similar to a specific stock: stocks/load <SYMBOL>/ca/performance
+- Examine the performance of companies in the same sector as a chosen stock: stocks/load <SYMBOL>/ca/performance

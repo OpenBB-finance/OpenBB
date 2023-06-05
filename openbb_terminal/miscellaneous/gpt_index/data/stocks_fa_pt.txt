@@ -1,0 +1,15 @@
+parent_command:stocks/fa
+usage: pt [-t TICKER]
+
+Prints price target from analysts. [Source: Business Insider and Financial Modeling Prep]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze
+
+
+Examples:
+- To view the price target for a specific stock, use: stocks/fa/pt -t <SYMBOL>
+- Display the analyst price target for a stock by entering: stocks/fa/pt --ticker <SYMBOL>
+- Obtain the price target from analysts for a particular stock with: stocks/fa/pt -t <SYMBOL>
+- Check the analyst's price target for a given stock using: stocks/fa/pt --ticker <SYMBOL>

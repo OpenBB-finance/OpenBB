@@ -1,0 +1,19 @@
+parent_command:stocks/fa
+usage: divs [-t TICKER] [-l LIMIT] [-p]
+
+Historical dividends for a company
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+  -l LIMIT, --limit LIMIT
+                        Number of previous dividends to show (default: 16)
+  -p, --plot            Plots changes in dividend over time (default: False)
+
+
+Examples:
+- To see the historical dividends for a specific company: stocks/fa/divs -t <SYMBOL>
+- To analyze the historical dividends for a company with a specific limit: stocks/fa/divs -t <SYMBOL> -l 10
+- To visualize the changes in dividend over time for a specific company: stocks/fa/divs -t <SYMBOL> -p
+- To display the historical dividends for a company and plot the changes over time: stocks/fa/divs -t <SYMBOL> -p -l 20
+- To examine the last 5 dividends for a company: stocks/fa/divs -t <SYMBOL> -l 5

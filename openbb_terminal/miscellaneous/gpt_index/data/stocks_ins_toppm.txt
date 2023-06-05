@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: toppm [-l LIMIT]
+
+Print top officer purchases of the month. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To view the top officer purchases of the month for all stocks: stocks/ins/toppm
+- To display the top 5 officer purchases of the month: stocks/ins/toppm -l 5
+- If you want to see the top 20 officer purchases this month: stocks/ins/toppm --limit 20

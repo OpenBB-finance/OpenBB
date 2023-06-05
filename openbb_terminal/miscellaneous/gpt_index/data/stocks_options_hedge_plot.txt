@@ -1,0 +1,12 @@
+parent_command:stocks/options/hedge
+usage: plot
+
+This function plots option payoff diagrams
+
+plot
+Examples:
+- To plot the option payoff diagram for a specific stock: stocks/load <SYMBOL>/options/hedge/plot
+- For plotting the payoff diagram of options for a chosen stock: stocks/load <SYMBOL>/options/hedge/plot
+- To visualize the option payoff diagram for a particular stock: stocks/load <SYMBOL>/options/hedge/plot
+- Display the option payoff diagram for a given stock: stocks/load <SYMBOL>/options/hedge/plot
+- To show the option payoff chart for a specific stock: stocks/load <SYMBOL>/options/hedge/plot

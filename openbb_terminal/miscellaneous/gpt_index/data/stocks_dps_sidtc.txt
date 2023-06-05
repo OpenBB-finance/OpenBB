@@ -1,0 +1,18 @@
+parent_command:stocks/dps
+usage: sidtc [-l LIMIT] [-s {float,dtc,si}]
+
+Print short interest and days to cover. [Source: Stockgrid]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of tickers to display. (default: 10)
+  -s {float,dtc,si}, --sort {float,dtc,si}
+                        Field for which to sort by, where 'float': Float Short %, 'dtc': Days to Cover, 'si': Short Interest (default: float)
+
+
+Examples:
+- To display the top 10 tickers with the highest short interest as a percentage of float: stocks/dps/sidtc
+- To display the top 20 tickers sorted by days to cover: stocks/dps/sidtc -l 20 -s dtc
+- To display the top 5 tickers sorted by short interest: stocks/dps/sidtc -l 5 -s si
+- For the top 15 tickers with the highest days to cover, use: stocks/dps/sidtc -l 15 -s dtc
+- To view the top 10 tickers sorted by short interest as a percentage of float: stocks/dps/sidtc -s float

@@ -1,0 +1,16 @@
+parent_command:stocks/options/screen
+usage: set [-p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}]
+
+Set preset from custom and default ones.
+
+optional arguments:
+  -p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}, --preset {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}
+                        Filter presets
+
+
+Examples:
+- Set a high implied volatility preset for options screening: stocks/options/screen set -p high_iv
+- Apply a preset for options with volatility below the 20-day average: stocks/options/screen set --preset v_below_20day
+- Use a liquid out-of-the-money preset for options screening: stocks/options/screen set -p liquid_otm
+- Set a preset for SPY options with a 30 delta: stocks/options/screen set --preset spy_30_delta
+- Apply a custom preset template for options screening: stocks/options/screen set -p template

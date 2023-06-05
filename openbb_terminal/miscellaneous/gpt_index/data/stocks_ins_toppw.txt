@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: toppw [-l LIMIT]
+
+Print top officer purchases of the week. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To display the top 10 officer purchases of the week: stocks/ins/toppw
+- To display the top 5 officer purchases of the week: stocks/ins/toppw -l 5
+- If you want to see the top 20 officer purchases of the week: stocks/ins/toppw --limit 20

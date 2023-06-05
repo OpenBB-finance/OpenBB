@@ -1,0 +1,12 @@
+parent_command:stocks/ca
+usage: ownership
+
+Prints screener data of similar companies. [Source: Finviz]
+
+ownership
+Examples:
+- To display ownership data for a specific stock: stocks/load <SYMBOL>/ca/ownership
+- Display ownership data for a stock: stocks/load <SYMBOL>/ca/ownership
+- Get ownership information for a particular company: stocks/load <SYMBOL>/ca/ownership
+- Retrieve ownership data for a specific stock: stocks/load <SYMBOL>/ca/ownership
+- Obtain ownership details for a particular stock: stocks/load <SYMBOL>/ca/ownership

@@ -1,0 +1,17 @@
+parent_command:stocks/disc
+usage: upcoming [-l LIMIT] [-s START_DATE]
+
+Upcoming earnings release dates. [Source: Seeking Alpha]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of upcoming earnings release dates to look ahead. (default: 5)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format. Defaults to today. (default: 2023-06-02)
+
+
+Examples:
+- To display the upcoming earnings release dates for the next 5 days: stocks/disc/upcoming
+- To show the upcoming earnings release dates for the next 10 days: stocks/disc/upcoming -l 10
+- To view the upcoming earnings release dates starting from a specific date: stocks/disc/upcoming -s 2023-07-01
+- To get the upcoming earnings release dates for the next 20 days, starting from a specific date: stocks/disc/upcoming -l 20 -s 2023-07-01

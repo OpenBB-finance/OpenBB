@@ -1,0 +1,14 @@
+parent_command:stocks/th
+usage: symbol [-n SYMBOL]
+
+Select the symbol you wish to trade
+
+optional arguments:
+  -n SYMBOL, --name SYMBOL
+                        Symbol (default: None)
+
+
+Examples:
+- To trade a specific stock, use: stocks/th/symbol -n <SYMBOL>
+- Select the stock you want to trade with: stocks/th/symbol --name <SYMBOL>
+- Choose the stock for trading by entering its symbol: stocks/th/symbol -n <SYMBOL>

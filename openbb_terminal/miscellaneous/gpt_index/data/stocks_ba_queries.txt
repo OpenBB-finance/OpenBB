@@ -1,0 +1,16 @@
+parent_command:stocks/ba
+usage: queries [-l LIMIT]
+
+Print top related queries with this stock's query. [Source: Google]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        limit of top related queries to print. (default: 10)
+
+
+Examples:
+- To display the top 10 related queries for a stock: stocks/load <SYMBOL>/ba/queries
+- To display the top 5 related queries for a stock: stocks/load <SYMBOL>/ba/queries -l 5
+- For a specific stock, show 7 top related queries: stocks/load <SYMBOL>/ba/queries --limit 7
+- Retrieve the top 3 related queries for a stock: stocks/load <SYMBOL>/ba/queries -l 3
+- Display the top 8 related queries for a specific stock: stocks/load <SYMBOL>/ba/queries --limit 8

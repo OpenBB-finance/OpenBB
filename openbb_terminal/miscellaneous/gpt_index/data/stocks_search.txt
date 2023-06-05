@@ -1,0 +1,35 @@
+parent_command:stocks
+usage: search [-q QUERY [QUERY ...]] [-c country] [-s sector] [--industrygroup industry_group] [-i industry] [-e exchange] [--exchangecountry exchange_country] [-a]
+
+Show companies matching the search query, country, sector, industry and/or exchange. Note that by default only the United States exchanges are searched which tend to contain the most extensive data for each company. To search all
+exchanges use the --all-exchanges flag.
+
+optional arguments:
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
+                        The search term used to find company tickers (default: )
+  -c country, --country country
+                        Search by country to find stocks matching the criteria (default: )
+  -s sector, --sector sector
+                        Search by sector to find stocks matching the criteria (default: )
+  --industrygroup industry_group
+                        Search by industry group to find stocks matching the criteria (default: )
+  -i industry, --industry industry
+                        Search by industry to find stocks matching the criteria (default: )
+  -e exchange, --exchange exchange
+                        Search by a specific exchange to find stocks matching the criteria (default: )
+  --exchangecountry exchange_country
+                        Search by a specific country and all its exchanges to find stocks matching the criteria (default: )
+  -a, --all-exchanges   Whether to search all exchanges, without this option only the United States market is searched. (default: False)
+
+
+Examples:
+- Search for companies with a specific query: stocks/search -q <QUERY>
+- Find companies in a particular country: stocks/search -c <country>
+- Search for companies within a specific sector: stocks/search -s <sector>
+- Locate companies in a certain industry group: stocks/search --industrygroup <industry_group>
+- Discover companies in a particular industry: stocks/search -i <industry>
+- Look for companies listed on a specific exchange: stocks/search -e <exchange>
+- Search for companies across all exchanges in a specific country: stocks/search --exchangecountry <exchange_country>
+- Explore companies on all exchanges: stocks/search -a
+- Find companies matching multiple criteria: stocks/search -q <QUERY> -c <country> -s <sector> -e <exchange>
+- Search for companies in a specific sector and industry: stocks/search -s <sector> -i <industry>

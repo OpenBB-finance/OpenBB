@@ -1,9 +1,0 @@
-usage:futures [-c {energy,metals,meats,grains,softs}]               [-s {ticker,last,change,prevClose}] [-r] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]               [--source {WallStreetJournal,Finviz}]  Futures/Commodities from Wall St. Journal and FinViz.  optional arguments:   -c {energy,metals,meats,grains,softs}, --commodity {energy,metals,meats,grains,softs}                         Obtain commodity futures from FinViz (default: )   -s {ticker,last,change,prevClose}, --sortby {ticker,last,change,prevClose}   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --source {WallStreetJournal,Finviz}                         Data source to select from (default:                         WallStreetJournal)  For more information and examples, use 'about futures' to access the related guide.
-
-Example:
-futures
-futures metals
-futures grains
-futures --commodity energy
-futures -c metals --source Finviz
-futures --export xlsx

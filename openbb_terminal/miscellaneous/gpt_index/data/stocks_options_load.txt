@@ -1,0 +1,14 @@
+parent_command:stocks/options
+usage: load [-t TICKER]
+
+Load a ticker into option menu
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Stock ticker (default: None)
+
+
+Examples:
+- To load a specific stock ticker for options, use: stocks/options/load -t <SYMBOL>
+- Access the option menu for a particular stock by entering: stocks/options/load --ticker <SYMBOL>
+- Load a stock's option menu with its ticker symbol: stocks/options/load -t <SYMBOL>

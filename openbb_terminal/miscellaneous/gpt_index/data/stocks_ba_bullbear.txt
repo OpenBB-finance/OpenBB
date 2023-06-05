@@ -1,0 +1,12 @@
+parent_command:stocks/ba
+usage: bullbear
+
+Print bullbear sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]
+
+bullbear
+Examples:
+- To view the bullbear sentiment and watchlist count for the last 30 messages on the board: stocks/load <SYMBOL>/ba/bullbear
+- Display bullbear sentiment and watchlist count of a specific stock: stocks/load <SYMBOL>/ba/bullbear
+- Retrieve the bullbear sentiment and watchlist count for a particular stock: stocks/load <SYMBOL>/ba/bullbear
+- Analyze the bullbear sentiment and watchlist count for the last 30 messages for a chosen stock: stocks/load <SYMBOL>/ba/bullbear
+- Get the bullbear sentiment and watchlist count based on the last 30 messages for a specific stock: stocks/load <SYMBOL>/ba/bullbear

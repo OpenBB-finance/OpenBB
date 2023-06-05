@@ -1,0 +1,15 @@
+parent_command:stocks/fa
+usage: analysis [-t TICKER]
+
+Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+
+
+Examples:
+- Analyze SEC filings for a specific stock: stocks/fa/analysis -t <SYMBOL>
+- To analyze the filings of a particular company, use: stocks/load <SYMBOL>/fa/analysis
+- Display analysis of SEC filings for the desired stock: stocks/fa/analysis --ticker <SYMBOL>
+- For SEC filings analysis of a specific stock, run: stocks/load <SYMBOL>/fa/analysis

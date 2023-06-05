@@ -1,0 +1,14 @@
+parent_command:crypto/defi
+usage: gdapps [-l LIMIT]
+
+Display top dApps (in terms of TVL) grouped by chain. [Source: https://docs.llama.fi/api]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of top dApps to display (default: 40)
+
+
+Examples:
+- To display the top 40 dApps by TVL across chains: crypto/defi/gdapps
+- To display the top 10 dApps by TVL across chains: crypto/defi/gdapps -l 10
+- If you want to see the top 20 dApps grouped by chain: crypto/defi/gdapps --limit 20

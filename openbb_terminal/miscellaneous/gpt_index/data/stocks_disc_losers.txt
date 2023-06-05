@@ -1,0 +1,14 @@
+parent_command:stocks/disc
+usage: losers [-l LIMIT]
+
+Print up to 25 top losers. [Source: Yahoo Finance]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display. (default: 5)
+
+
+Examples:
+- To display the top 5 losers in the stock market: stocks/disc/losers
+- To view the top 10 losers in the stock market: stocks/disc/losers -l 10
+- For a list of the top 15 losing stocks: stocks/disc/losers --limit 15

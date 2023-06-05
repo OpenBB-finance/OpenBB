@@ -1,0 +1,30 @@
+parent_command:stocks
+usage: candle [-t TICKER] [-p] [--sort {open,high,low,close,adjclose,volume,dividends,stock_splits}] [-r] [--raw] [--trend] [--ma MOV_AVG] [--ha] [--log]
+
+Shows historic price and volume for the asset.
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze. (default: None)
+  -p, --prepost         Pre/After market hours. Only works for intraday data. (default: False)
+  --sort {open,high,low,close,adjclose,volume,dividends,stock_splits}
+                        Choose a column to sort by. Only works when raw data is displayed. (default: )
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  --raw                 Shows raw data instead of a chart. (default: False)
+  --trend               Flag to add high and low trends to candle. (default: False)
+  --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1. (default: None)
+  --ha                  Flag to show Heikin Ashi candles. (default: False)
+  --log                 Plot with y axis on log scale (default: False)
+
+
+Examples:
+- To view the historic price and volume chart for a specific stock: stocks/load <SYMBOL>/candle
+- Show the historic price and volume chart for a specific stock with pre and post-market hours: stocks/load <SYMBOL>/candle -p
+- Display raw data for a stock, sorted by volume: stocks/load <SYMBOL>/candle --raw --sort volume
+- View the historic price and volume chart for a specific stock with high and low trends: stocks/load <SYMBOL>/candle --trend
+- Plot the historic price and volume chart for a stock with a 50-day moving average: stocks/load <SYMBOL>/candle --ma 50
+- Show the Heikin Ashi candles for a specific stock: stocks/load <SYMBOL>/candle --ha
+- Display the historic price and volume chart for a stock with a logarithmic y-axis: stocks/load <SYMBOL>/candle --log
+- View raw data for a stock, sorted by dividends in ascending order: stocks/load <SYMBOL>/candle --raw --sort dividends -r
+- Show the historic price and volume chart for a stock with 20 and 50-day moving averages: stocks/load <SYMBOL>/candle --ma 20,50
+- Display the historic price and volume chart for a stock with pre and post-market hours and Heikin Ashi candles: stocks/load <SYMBOL>/candle -p --ha

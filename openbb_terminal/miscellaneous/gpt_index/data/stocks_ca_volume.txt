@@ -1,0 +1,16 @@
+parent_command:stocks/ca
+usage: volume [-s START] [-e END]
+
+Historical volume comparison between similar companies.
+
+optional arguments:
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2022-06-01)
+  -e END, --end END     The end date (format YYYY-MM-DD) of the stocks (default: 2023-06-02)
+
+
+Examples:
+- Compare historical volume between similar companies: stocks/ca/volume
+- Compare historical volume between similar companies starting from a specific date: stocks/load <SYMBOL>/ca/volume -s 2022-01-01
+- Compare historical volume between similar companies for a specific date range: stocks/load <SYMBOL>/ca/volume -s 2022-01-01 -e 2022-12-31
+- Analyze historical volume of similar companies with a custom start and end date: stocks/load <SYMBOL>/ca/volume --start 2021-07-01 --end 2022-07-01

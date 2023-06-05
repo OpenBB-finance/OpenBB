@@ -1,0 +1,33 @@
+parent_command:stocks/fa
+usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [--performance]
+
+Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-
+finance-sln2310.html.
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Stock ticker (default: None)
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-05-28)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-06-02)
+  -i {1,5,15,30,60}, --interval {1,5,15,30,60}
+                        Intraday stock minutes (default: 1440)
+  -p, --prepost         Pre/After market hours. Only reflected in 'YahooFinance' intraday data. (default: False)
+  -f FILEPATH, --file FILEPATH
+                        Path to load custom file. (default: None)
+  -m, --monthly         Load monthly data (default: False)
+  -w, --weekly          Load weekly data (default: False)
+  --performance         Show performance information. (default: False)
+
+
+Examples:
+- To load a stock with a specific ticker and perform analysis: stocks/fa/load -t <SYMBOL>
+- Load a stock with a specific ticker and a custom date range: stocks/fa/load -t <SYMBOL> -s 2021-01-01 -e 2021-12-31
+- Load a stock with a specific ticker and intraday intervals: stocks/fa/load -t <SYMBOL> -i 30
+- Load a stock with a specific ticker, including pre/after market hours: stocks/fa/load -t <SYMBOL> -p
+- Load a stock from a custom file: stocks/fa/load -f /path/to/custom/file.csv
+- Load a stock with a specific ticker and display monthly data: stocks/fa/load -t <SYMBOL> -m
+- Load a stock with a specific ticker and display weekly data: stocks/fa/load -t <SYMBOL> -w
+- Load a stock with a specific ticker and show performance information: stocks/fa/load -t <SYMBOL> --performance
+- Load an Indian stock with a specific ticker: stocks/fa/load -t <SYMBOL>.NS
+- Load a stock with a specific ticker and a custom date range with intraday intervals: stocks/fa/load -t <SYMBOL> -s 2021-01-01 -e 2021-12-31 -i 15

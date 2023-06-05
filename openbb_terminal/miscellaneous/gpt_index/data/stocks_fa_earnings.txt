@@ -1,0 +1,20 @@
+parent_command:stocks/fa
+usage: earnings [-t TICKER] [-q] [-l LIMIT]
+
+Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+  -q, --quarter         Quarter fundamental data flag. (default: False)
+  -l LIMIT, --limit LIMIT
+                        Number of latest info (default: 5)
+
+
+Examples:
+- To view the earnings dates and reported EPS of a company: stocks/fa/earnings -t <SYMBOL>
+- To analyze the earnings and EPS for a specific ticker: stocks/load <SYMBOL>/fa/earnings
+- To display the latest 10 earnings dates and reported EPS: stocks/load <SYMBOL>/fa/earnings -l 10
+- For quarterly fundamental data of a company: stocks/load <SYMBOL>/fa/earnings -q
+- To check the earnings and EPS of a ticker with a limit of 3 latest entries: stocks/fa/earnings -t <SYMBOL> -l 3
+- To view the quarterly earnings and EPS for a specific company with a limit of 7: stocks/load <SYMBOL>/fa/earnings -q -l 7

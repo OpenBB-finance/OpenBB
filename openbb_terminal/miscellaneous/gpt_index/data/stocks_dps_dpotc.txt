@@ -1,0 +1,12 @@
+parent_command:stocks/dps
+usage: dpotc
+
+Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
+
+dpotc
+Examples:
+- To display a barchart of dark pool and OTC data for a specific stock: stocks/load <SYMBOL>/dps/dpotc
+- Show dark pool and OTC barchart for a stock by loading its symbol: stocks/load <SYMBOL>/dps/dpotc
+- Visualize dark pool and OTC data for a stock using a barchart: stocks/load <SYMBOL>/dps/dpotc
+- Load a stock symbol and display its dark pool and OTC data in a barchart: stocks/load <SYMBOL>/dps/dpotc
+- Access dark pool and OTC data barchart for a specific stock: stocks/load <SYMBOL>/dps/dpotc

@@ -1,7 +1,0 @@
-usage:balance [-c COUNTRIES] [-s START_DATE] [-e END_DATE] [-h]               [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]               [--raw]  General government balance is defined as the balance of income and expenditure of government, including capital income and capital expenditures. 'Net lending' means that government has a surplus, and is providing financial resources to other sectors, while 'net borrowing' means that government has a deficit, and requires financial resources from other sectors. This indicator is measured as a percentage of GDP.  optional arguments:   -c COUNTRIES, --countries COUNTRIES                         Countries to get data for (default: united_states)   -s START_DATE, --start START_DATE                         Start date of data, in YYYY-MM-DD format (default:                         1993-04-04)   -e END_DATE, --end END_DATE                         End date of data, in YYYY-MM-DD format (default:                         2023-04-04)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)  For more information and examples, use 'about balance' to access the related guide.
-
-Example:
-balance
-balance --countries ireland,greece -s 2010-01-01
-balance -c european_union
-balance -c euro_area

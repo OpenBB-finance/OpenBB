@@ -1,0 +1,12 @@
+parent_command:stocks/options
+usage: info
+
+Display option data [Source: Barchart.com]
+
+info
+Examples:
+- To display option data for a specific stock: stocks/load <SYMBOL>/options/info
+- Show option data of a stock: stocks/load <SYMBOL>/options/info
+- Retrieve option data for a particular stock: stocks/load <SYMBOL>/options/info
+- Obtain option data for a selected stock: stocks/load <SYMBOL>/options/info
+- Access option data for a given stock: stocks/load <SYMBOL>/options/info

@@ -1,0 +1,20 @@
+parent_command:stocks/ba
+usage: popular [-l LIMIT] [-n NUM] [-s S_SUBREDDIT]
+
+Print latest popular tickers. [Source: Reddit]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        limit of top tickers to retrieve (default: 10)
+  -n NUM, --num NUM     number of posts retrieved per sub reddit. (default: 10)
+  -s S_SUBREDDIT, --sub S_SUBREDDIT
+                        Subreddits to look for tickers, e.g. pennystocks,stocks. Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets (default: None)
+
+
+Examples:
+- To view the top 10 popular tickers from the default subreddits: stocks/ba/popular
+- To display the top 5 popular tickers: stocks/ba/popular -l 5
+- To retrieve the top 20 popular tickers from specific subreddits: stocks/ba/popular -l 20 -s investing,wallstreetbets
+- To view the top 10 popular tickers by analyzing 15 posts per subreddit: stocks/ba/popular -n 15
+- To check the top 7 popular tickers from the 'stocks' subreddit: stocks/ba/popular -l 7 -s stocks
+- To retrieve the top 10 popular tickers by analyzing 20 posts per subreddit from the 'investing' and 'wallstreetbets' subreddits: stocks/ba/popular -n 20 -s investing,wallstreetbets

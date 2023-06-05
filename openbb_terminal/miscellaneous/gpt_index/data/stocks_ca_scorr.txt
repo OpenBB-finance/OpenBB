@@ -1,0 +1,14 @@
+parent_command:stocks/ca
+usage: sentiment_compare [-r]
+
+FinBrain's sentiment correlation across similar tickers.
+
+optional arguments:
+  -r, --raw  Display raw sentiment data (default: False)
+
+
+Examples:
+- To view FinBrain's sentiment correlation across similar tickers: stocks/ca/sentiment_compare
+- To display raw sentiment data for similar tickers: stocks/ca/sentiment_compare -r
+- For a specific stock, load <SYMBOL> and then view sentiment correlation: stocks/load <SYMBOL>/ca/sentiment_compare
+- For a specific stock, load <SYMBOL> and display raw sentiment data: stocks/load <SYMBOL>/ca/sentiment_compare -r

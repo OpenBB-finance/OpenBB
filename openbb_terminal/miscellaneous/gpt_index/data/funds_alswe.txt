@@ -1,0 +1,15 @@
+parent_command:funds
+usage: alswe [--focus {all,country,sector,holding}]
+
+Show allocation of a swedish fund. To get a list of available funds, check the file `avanza_fund_ID.csv`.
+
+optional arguments:
+  --focus {all,country,sector,holding}
+                        The focus of the funds exposure/allocation (default: all)
+
+
+Examples:
+- Display allocation of a Swedish fund: funds/alswe
+- Show country allocation of a Swedish fund: funds/alswe --focus country
+- View sector allocation of a Swedish fund: funds/alswe --focus sector
+- Examine holding allocation of a Swedish fund: funds/alswe --focus holding

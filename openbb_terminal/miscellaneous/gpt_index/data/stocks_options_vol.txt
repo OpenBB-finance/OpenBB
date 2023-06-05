@@ -1,0 +1,25 @@
+parent_command:stocks/options
+usage: vol [-m MIN] [-M MAX] [-c] [-p]
+           [-e {2023-06-02,2023-06-09,2023-06-16,2023-06-23,2023-06-30,2023-07-07,2023-07-21,2023-08-18,2023-09-15,2023-10-20,2023-11-17,2023-12-15,2024-01-19,2024-03-15,2024-06-21,2024-09-20,2024-12-20,2025-01-17,2025-06-20,2025-12-19,}]
+
+Plot volume. Volume refers to the number of contracts traded today.
+
+optional arguments:
+  -m MIN, --min MIN     Min strike to plot (default: -1)
+  -M MAX, --max MAX     Max strike to plot (default: -1)
+  -c, --calls           Flag to plot call options only (default: False)
+  -p, --puts            Flag to plot put options only (default: False)
+  -e {2023-06-02,2023-06-09,2023-06-16,2023-06-23,2023-06-30,2023-07-07,2023-07-21,2023-08-18,2023-09-15,2023-10-20,2023-11-17,2023-12-15,2024-01-19,2024-03-15,2024-06-21,2024-09-20,2024-12-20,2025-01-17,2025-06-20,2025-12-19,}, --expiration {2023-06-02,2023-06-09,2023-06-16,2023-06-23,2023-06-30,2023-07-07,2023-07-21,2023-08-18,2023-09-15,2023-10-20,2023-11-17,2023-12-15,2024-01-19,2024-03-15,2024-06-21,2024-09-20,2024-12-20,2025-01-17,2025-06-20,2025-12-19,}
+                        Select expiration date (YYYY-MM-DD) (default: )
+
+
+Examples:
+- To plot the volume for all options of a specific stock, use: stocks/load <SYMBOL>/options/vol
+- For plotting call options volume only, use: stocks/load <SYMBOL>/options/vol -c
+- To display the volume for put options only, enter: stocks/load <SYMBOL>/options/vol -p
+- If you want to plot volume for strike prices between 10 and 50, use: stocks/load <SYMBOL>/options/vol -m 10 -M 50
+- To visualize the volume for options expiring on a specific date, enter: stocks/load <SYMBOL>/options/vol -e 2023-06-02
+- For plotting call options volume with a minimum strike price of 20, use: stocks/load <SYMBOL>/options/vol -c -m 20
+- To display the volume for put options with a maximum strike price of 100, enter: stocks/load <SYMBOL>/options/vol -p -M 100
+- If you want to plot the volume for call options expiring on a specific date and with a minimum strike price of 30, use: stocks/load <SYMBOL>/options/vol -c -e 2023-06-09 -m 30
+- To visualize the volume for put options expiring on a specific date and with a maximum strike price of 80, enter: stocks/load <SYMBOL>/options/vol -p -e 2023-06-16 -M 80

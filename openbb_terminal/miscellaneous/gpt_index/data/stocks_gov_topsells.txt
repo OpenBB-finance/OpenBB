@@ -1,0 +1,25 @@
+parent_command:stocks/gov
+usage: topsells [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-l LIMIT] [--raw]
+
+Top sells for government trading. [Source: www.quiverquant.com]
+
+optional arguments:
+  -g {congress,senate,house}, --govtype {congress,senate,house}
+  -p PAST_TRANSACTIONS_MONTHS, --past_transactions_months PAST_TRANSACTIONS_MONTHS
+                        Past transaction months (default: 6)
+  -l LIMIT, --limit LIMIT
+                        Limit of top tickers to display (default: 10)
+  --raw                 Print raw data. (default: False)
+
+
+Examples:
+- Display top 10 sells for all government trading: stocks/gov/topsells
+- Show top 5 sells for the Senate: stocks/gov/topsells -g senate -l 5
+- View top 20 sells for the House of Representatives in the past 3 months: stocks/gov/topsells -g house -p 3 -l 20
+- Retrieve top 15 sells for Congress over the last 12 months: stocks/gov/topsells -g congress -p 12 -l 15
+- Obtain raw data for top 10 sells in all government trading: stocks/gov/topsells --raw
+- Examine top 7 sells for the Senate with raw data output: stocks/gov/topsells -g senate -l 7 --raw
+- Explore top 25 sells in the House of Representatives for the past 9 months: stocks/gov/topsells -g house -p 9 -l 25
+- Investigate top 30 sells in Congress in the past 4 months: stocks/gov/topsells -g congress -p 4 -l 30
+- Review top 10 sells for the Senate in the past 2 months: stocks/gov/topsells -g senate -p 2
+- Check top 15 sells for the House of Representatives with a 1-month transaction history: stocks/gov/topsells -g house -p 1 -l 15

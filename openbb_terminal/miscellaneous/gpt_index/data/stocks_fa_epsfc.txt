@@ -1,0 +1,14 @@
+parent_command:stocks/fa
+usage: epsfc [-t TICKER]
+
+Estimated EPS [Source: Seeking Alpha]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+
+
+Examples:
+- To view the estimated EPS for a specific stock: stocks/fa/epsfc -t <SYMBOL>
+- Analyze the estimated EPS of a company using its ticker: stocks/fa/epsfc --ticker <SYMBOL>
+- Estimate the EPS for a stock by providing its ticker: stocks/fa/epsfc -t <SYMBOL>

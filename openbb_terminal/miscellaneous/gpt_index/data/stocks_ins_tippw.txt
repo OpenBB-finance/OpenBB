@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: tippw [-l LIMIT]
+
+Print top insider purchases of the week. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To view the top insider purchases of the week for all stocks: stocks/ins/tippw
+- To display the top 5 insider purchases of the week: stocks/ins/tippw -l 5
+- If you want to see the top 20 insider purchases this week: stocks/ins/tippw --limit 20

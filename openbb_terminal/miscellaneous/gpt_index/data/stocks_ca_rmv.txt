@@ -1,0 +1,16 @@
+parent_command:stocks/ca
+usage: rmv [-s L_SIMILAR]
+
+Remove similar tickers to compare with.
+
+optional arguments:
+  -s L_SIMILAR, --similar L_SIMILAR
+                        Tickers to remove from similar list (default: [])
+
+
+Examples:
+- Remove a specific similar ticker for comparison: stocks/load <SYMBOL>/ca/rmv -s AAPL
+- Eliminate multiple similar tickers from the comparison list: stocks/load <SYMBOL>/ca/rmv -s AAPL MSFT GOOG
+- Clear the list of similar tickers for comparison: stocks/load <SYMBOL>/ca/rmv --similar
+- Exclude a single similar ticker from the comparison: stocks/load <SYMBOL>/ca/rmv --similar TSLA
+- Remove several tickers from the list of similar ones: stocks/load <SYMBOL>/ca/rmv -s NFLX AMZN FB

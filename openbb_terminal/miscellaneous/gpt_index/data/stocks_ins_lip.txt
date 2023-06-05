@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: lip [-l LIMIT]
+
+Print latest insider purchases. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To view the latest insider purchases for <SYMBOL>: stocks/load <SYMBOL>/ins/lip
+- To display the latest 5 insider purchases for a specific stock: stocks/load <SYMBOL>/ins/lip -l 5
+- To show the 20 most recent insider purchases for <SYMBOL>: stocks/load <SYMBOL>/ins/lip --limit 20

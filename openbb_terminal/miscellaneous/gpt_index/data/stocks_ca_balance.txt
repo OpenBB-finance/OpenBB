@@ -1,0 +1,20 @@
+parent_command:stocks/ca
+usage: balance [-q] [-t S_TIMEFRAME]
+
+Prints either yearly or quarterly balance statement the company, and compares it against similar companies.
+
+optional arguments:
+  -q, --quarter         Quarter financial data flag. (default: False)
+  -t S_TIMEFRAME, --timeframe S_TIMEFRAME
+                        Specify yearly/quarterly timeframe. Default is last. (default: None)
+
+
+Examples:
+- To display the yearly balance statement for a company: stocks/load <SYMBOL>/ca/balance
+- To display the quarterly balance statement for a company: stocks/load <SYMBOL>/ca/balance -q
+- To display the balance statement for a specific quarter: stocks/load <SYMBOL>/ca/balance -t Q3
+- To display the balance statement for a specific year: stocks/load <SYMBOL>/ca/balance -t 2021
+- Show the yearly balance statement and compare with similar companies: stocks/load <SYMBOL>/ca/balance
+- Show the quarterly balance statement and compare with similar companies: stocks/load <SYMBOL>/ca/balance -q
+- Compare the balance statement of a company for a specific quarter with its peers: stocks/load <SYMBOL>/ca/balance -t Q3
+- Compare the balance statement of a company for a specific year with its peers: stocks/load <SYMBOL>/ca/balance -t 2021

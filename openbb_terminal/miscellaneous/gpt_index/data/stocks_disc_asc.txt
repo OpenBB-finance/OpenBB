@@ -1,0 +1,14 @@
+parent_command:stocks/disc
+usage: asc [-l LIMIT]
+
+Print up to 25 small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display. (default: 5)
+
+
+Examples:
+- To display the top 5 small cap stocks with earnings growth rates better than 25%: stocks/disc/asc
+- To display the top 10 small cap stocks with earnings growth rates better than 25%: stocks/disc/asc -l 10
+- For showing 15 small cap stocks with earnings growth rates over 25%: stocks/disc/asc --limit 15

@@ -1,0 +1,19 @@
+parent_command:portfolio
+usage: attrib [-p {mtd,qtd,ytd,3m,6m,1y,3y,5y,10y,all}] [-t {relative,absolute}] [--raw [RAW]]
+
+Displays sector attribution of the portfolio compared to the S&P 500
+
+optional arguments:
+  -p {mtd,qtd,ytd,3m,6m,1y,3y,5y,10y,all}, --period {mtd,qtd,ytd,3m,6m,1y,3y,5y,10y,all}
+                        Period in which to calculate attribution (default: all)
+  -t {relative,absolute}, --type {relative,absolute}
+                        Select between relative or absolute attribution values (default: relative)
+  --raw [RAW]           View raw attribution values in a table (default: False)
+
+
+Examples:
+- Show the portfolio's sector attribution compared to the S&P 500 for all periods: portfolio/attrib
+- Display the sector attribution of the portfolio for the past year: portfolio/attrib -p 1y
+- View the absolute attribution values of the portfolio for the past 3 years: portfolio/attrib -p 3y -t absolute
+- Show the relative sector attribution of the portfolio for the current quarter: portfolio/attrib -p qtd -t relative
+- Display the portfolio's sector attribution for the past 5 years in a raw table format: portfolio/attrib -p 5y --raw

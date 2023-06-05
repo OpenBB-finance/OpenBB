@@ -1,0 +1,16 @@
+parent_command:stocks/gov
+usage: contracts [-p PAST_TRANSACTION_DAYS] [--raw]
+
+Contracts associated with ticker. [Source: www.quiverquant.com]
+
+optional arguments:
+  -p PAST_TRANSACTION_DAYS, --past_transaction_days PAST_TRANSACTION_DAYS
+                        Past transaction days (default: 10)
+  --raw                 Print raw data. (default: False)
+
+
+Examples:
+- To view contracts associated with a specific stock: stocks/load <SYMBOL>/gov/contracts
+- To view contracts for a specific stock within the past 30 days: stocks/load <SYMBOL>/gov/contracts -p 30
+- To view contracts for a specific stock and display raw data: stocks/load <SYMBOL>/gov/contracts --raw
+- Show contracts for a stock within the past 5 days: stocks/load <SYMBOL>/gov/contracts -p 5

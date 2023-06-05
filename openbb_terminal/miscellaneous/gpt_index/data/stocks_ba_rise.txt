@@ -1,0 +1,16 @@
+parent_command:stocks/ba
+usage: rise [-l LIMIT]
+
+Print top rising related queries with this stock's query. [Source: Google]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        limit of top rising related queries to print. (default: 10)
+
+
+Examples:
+- To view the top 10 rising related queries for a specific stock: stocks/load <SYMBOL>/ba/rise
+- To display the top 5 rising related queries for a specific stock: stocks/load <SYMBOL>/ba/rise -l 5
+- For a specific stock, show the top 3 rising related queries: stocks/load <SYMBOL>/ba/rise --limit 3
+- To retrieve the top 7 rising related queries associated with a specific stock: stocks/load <SYMBOL>/ba/rise -l 7
+- To obtain the top 8 rising related queries for a specific stock: stocks/load <SYMBOL>/ba/rise --limit 8

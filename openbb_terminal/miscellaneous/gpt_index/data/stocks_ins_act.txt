@@ -1,0 +1,16 @@
+parent_command:stocks/ins
+usage: act [--raw]
+
+Prints insider activity over time [Source: Business Insider]
+
+optional arguments:
+  --raw  Print raw data.
+
+
+Examples:
+- To display insider activity for a specific stock: stocks/load <SYMBOL>/ins/act
+- To display raw insider activity data for a specific stock: stocks/load <SYMBOL>/ins/act --raw
+- Show insider activity over time for a stock: stocks/load <SYMBOL>/ins/act
+- View raw data of insider activity for a particular stock: stocks/load <SYMBOL>/ins/act --raw
+- Retrieve insider activity information for a stock: stocks/load <SYMBOL>/ins/act
+- Access raw data on insider activity for a specific stock: stocks/load <SYMBOL>/ins/act --raw

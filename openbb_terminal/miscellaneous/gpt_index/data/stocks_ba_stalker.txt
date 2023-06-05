@@ -1,0 +1,17 @@
+parent_command:stocks/ba
+usage: stalker [-u S_USER] [-l LIMIT]
+
+Print up to the last 30 messages of a user. [Source: Stocktwits]
+
+optional arguments:
+  -u S_USER, --user S_USER
+                        username. (default: Newsfilter)
+  -l LIMIT, --limit LIMIT
+                        limit messages shown. (default: 30)
+
+
+Examples:
+- To view the last 30 messages from the default user (Newsfilter) in the stocks/ba category: stocks/ba/stalker
+- To view the last 10 messages from the default user (Newsfilter) in the stocks/ba category: stocks/ba/stalker -l 10
+- To view the last 30 messages from a specific user in the stocks/ba category: stocks/ba/stalker -u <S_USER>
+- To view the last 15 messages from a specific user in the stocks/ba category: stocks/ba/stalker -u <S_USER> -l 15

@@ -1,0 +1,15 @@
+parent_command:stocks/fa
+usage: supplier [-t TICKER]
+
+List of suppliers from ticker provided. [Source: CSIMarket]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze
+
+
+Examples:
+- To obtain a list of suppliers for a specific stock, use: stocks/fa/supplier -t <SYMBOL>
+- For a list of suppliers related to a given stock, try: stocks/fa/supplier --ticker <SYMBOL>
+- To analyze the suppliers of a particular stock, enter: stocks/fa/supplier -t <SYMBOL>
+- Retrieve the list of suppliers associated with a specific stock by using: stocks/fa/supplier --ticker <SYMBOL>

@@ -1,0 +1,13 @@
+parent_command:stocks/ta
+usage: summary
+
+Technical summary report provided by FinBrain's API. FinBrain Technologies develops deep learning algorithms for financial analysis and prediction, which currently serves traders from more than 150 countries all around the world.
+[Source: Finbrain]
+
+summary
+Examples:
+- To view the technical summary report for a stock, use: stocks/load <SYMBOL>/ta/summary
+- For a technical summary of a specific stock, enter: stocks/load <SYMBOL>/ta/summary
+- To obtain the FinBrain technical summary for a stock, input: stocks/load <SYMBOL>/ta/summary
+- To see the technical analysis summary by FinBrain for a stock, type: stocks/load <SYMBOL>/ta/summary
+- To get a deep learning-based technical summary for a stock, execute: stocks/load <SYMBOL>/ta/summary

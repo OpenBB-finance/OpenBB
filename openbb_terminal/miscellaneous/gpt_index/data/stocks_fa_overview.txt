@@ -1,0 +1,14 @@
+parent_command:stocks/fa
+usage: overview [-t TICKER]
+
+Prints information about, among other things, the industry, sector exchange and company description.
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+
+
+Examples:
+- To get an overview of a specific stock: stocks/fa/overview -t <SYMBOL>
+- Display information about a stock, including its industry, sector, and exchange: stocks/fa/overview --ticker <SYMBOL>
+- Analyze a company's description and other details by entering its ticker: stocks/fa/overview -t <SYMBOL>

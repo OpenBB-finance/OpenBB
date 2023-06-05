@@ -1,0 +1,14 @@
+parent_command:stocks/ba
+usage: messages [-l LIMIT]
+
+Print up to 30 of the last messages on the board. [Source: Stocktwits]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        limit messages shown. (default: 30)
+
+
+Examples:
+- To display the last 30 messages on the board for <SYMBOL>: stocks/load <SYMBOL>/ba/messages
+- To show the 10 most recent messages on the board for <SYMBOL>: stocks/load <SYMBOL>/ba/messages -l 10
+- To view the last 5 messages on the board for a specific stock: stocks/load <SYMBOL>/ba/messages --limit 5

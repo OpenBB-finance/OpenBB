@@ -1,0 +1,16 @@
+parent_command:stocks/ins
+usage: set [-p Desired preset]
+
+Set preset from under presets folder.
+
+optional arguments:
+  -p Desired preset, --preset Desired preset
+                        Filter presets
+
+
+Examples:
+- To set a specific preset for analyzing <SYMBOL>: stocks/load <SYMBOL>/ins/set -p DesiredPreset
+- Set a desired preset for a stock: stocks/ins/set --preset DesiredPreset
+- Apply a preset for analyzing a stock: stocks/load <SYMBOL>/ins/set --preset DesiredPreset
+- Use a specific preset for stock analysis: stocks/ins/set -p DesiredPreset
+- Configure a preset for a stock: stocks/load <SYMBOL>/ins/set --preset DesiredPreset

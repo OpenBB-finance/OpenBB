@@ -1,0 +1,22 @@
+parent_command:stocks
+usage: news [-t TICKER] [-d N_START_DATE] [-o] [-s SOURCES]
+
+latest news of the company
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to get data for
+  -d N_START_DATE, --date N_START_DATE
+                        The starting date (format YYYY-MM-DD) to search articles from
+  -o, --oldest          Show oldest articles first
+  -s SOURCES, --sources SOURCES
+                        Show news only from the sources specified (e.g bloomberg,reuters)
+
+
+Examples:
+- To view the latest news for a specific company: stocks/news -t <SYMBOL>
+- To see news articles for a company starting from a specific date: stocks/news -t <SYMBOL> -d 2022-01-01
+- To display the oldest news articles first for a company: stocks/news -t <SYMBOL> -o
+- To show news from specific sources for a company: stocks/news -t <SYMBOL> -s bloomberg,reuters
+- To view news for a company starting from a specific date and showing the oldest articles first: stocks/news -t <SYMBOL> -d 2022-01-01 -o
+- To see news articles for a specific company from a specific source starting from a particular date: stocks/news -t <SYMBOL> -d 2022-01-01 -s bloomberg

@@ -1,0 +1,11 @@
+parent_command:stocks/th
+usage: exchange
+
+Show currently closed exchanges
+
+closed
+Examples:
+- To view currently closed exchanges: stocks/th/exchange
+- Display closed exchanges: stocks/th/exchange
+- Check which exchanges are closed: stocks/th/exchange
+- Find out closed exchanges: stocks/th/exchange

@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: blop [-l LIMIT]
+
+Print latest officer purchases 25k. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To display the latest officer purchases for a specific stock: stocks/load <SYMBOL>/ins/blop
+- To display the latest officer purchases for a specific stock with a custom limit: stocks/load <SYMBOL>/ins/blop -l 20
+- Display the latest officer purchases for a specific stock with a limit of 5: stocks/load <SYMBOL>/ins/blop --limit 5

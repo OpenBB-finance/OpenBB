@@ -1,0 +1,12 @@
+parent_command:stocks/options/hedge
+usage: list
+
+Lists available calls and puts.
+
+list
+Examples:
+- To view available call and put options for a specific stock: stocks/load <SYMBOL>/options/hedge/list
+- Display available options for a stock: stocks/load <SYMBOL>/options/hedge/list
+- Show call and put options for a particular stock: stocks/load <SYMBOL>/options/hedge/list
+- Retrieve the list of available options for a stock: stocks/load <SYMBOL>/options/hedge/list
+- Get a list of call and put options for a specific stock: stocks/load <SYMBOL>/options/hedge/list

@@ -1,0 +1,12 @@
+parent_command:stocks/ba
+usage: trending
+
+Stocks trending. [Source: Stocktwits]
+
+trending
+Examples:
+- To view trending stocks: stocks/ba/trending
+- Check the current trending stocks: stocks/ba/trending
+- Find out which stocks are trending: stocks/ba/trending
+- Discover trending stocks: stocks/ba/trending
+- See the list of trending stocks: stocks/ba/trending

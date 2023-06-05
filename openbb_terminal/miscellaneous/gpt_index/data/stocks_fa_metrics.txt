@@ -1,0 +1,27 @@
+parent_command:stocks/fa
+usage: metrics [-t TICKER] [-l LIMIT] [-q]
+
+Prints a list of the key metrics of a company over time. This can be either quarterly or annually. This includes, among other things, Return on Equity (ROE), Working Capital, Current Ratio and Debt to Assets. The following fields
+are expected: Average inventory, Average payables, Average receivables, Book value per share, Capex per share, Capex to depreciation, Capex to operating cash flow, Capex to revenue, Cash per share, Current ratio, Days of inventory
+on hand, Days payables outstanding, Days sales outstanding, Debt to assets, Debt to equity, Dividend yield, Earnings yield, Enterprise value, Enterprise value over EBITDA, Ev to free cash flow, Ev to operating cash flow, Ev to
+sales, Free cash flow per share, Free cash flow yield, Graham net net, Graham number, Income quality, Intangibles to total assets, Interest debt per share, Inventory turnover, Market cap, Net current asset value, Net debt to
+EBITDA, Net income per share, Operating cash flow per share, Payables turnover, Payout ratio, Pb ratio, Pe ratio, Pfcf ratio, Pocf ratio, Price to sales ratio, Ptb ratio, Receivables turnover, Research and development to revenue,
+Return on tangible assets, Revenue per share, Roe, Roic, Sales general and administrative to revenue, Shareholders equity per share, Stock based compensation to revenue, Tangible book value per share, and Working capital. [Source:
+Financial Modeling Prep]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+  -l LIMIT, --limit LIMIT
+                        Limit of latest years/quarters. (default: 5)
+  -q, --quarter         Quarter fundamental data flag. (default: False)
+
+
+Examples:
+- To display the key metrics of a company for the last 5 years: stocks/load <SYMBOL>/fa/metrics
+- To view the key metrics of a specific company for the last 3 years: stocks/load <SYMBOL>/fa/metrics -l 3
+- To show the key metrics of a company for the last 5 quarters: stocks/load <SYMBOL>/fa/metrics -q
+- To analyze the key metrics of a specific company for the last 2 quarters: stocks/load <SYMBOL>/fa/metrics -l 2 -q
+- To check the key metrics of a company using a specific ticker: stocks/fa/metrics -t <TICKER>
+- To examine the key metrics of a company with a specific ticker for the last 4 years: stocks/fa/metrics -t <TICKER> -l 4
+- To view the key metrics of a company using a specific ticker for the last 3 quarters: stocks/fa/metrics -t <TICKER> -l 3 -q

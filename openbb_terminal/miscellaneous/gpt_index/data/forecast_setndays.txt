@@ -1,0 +1,15 @@
+parent_command:forecast
+usage: setndays [-n N_DAYS]
+
+Set the number of days to forecast
+
+optional arguments:
+  -n N_DAYS, --n-days N_DAYS
+                        Number of days to forecast (default: 5)
+
+
+Examples:
+- Set the number of days to forecast to 10: forecast/setndays -n 10
+- Forecast for the default 5 days: forecast/setndays
+- Change the forecast period to 7 days: forecast/setndays --n-days 7
+- Update the number of days for forecasting to 3: forecast/setndays -n 3

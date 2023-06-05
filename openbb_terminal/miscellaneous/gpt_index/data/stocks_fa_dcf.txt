@@ -1,0 +1,32 @@
+parent_command:stocks/fa
+usage: dcf [-t TICKER] [-a] [--no-ratios] [--no-filter] [-p PREDICTION] [-s SIMILAR] [-b BETA] [-g]
+
+A discounted cash flow statement looks to analyze the value of a company. To do this we need to predict the future cash flows and then determine how much those cash flows are worth to us today. We predict the future expected cash
+flows by predicting what the financial statements will look like in the future, and then using this to determine the cash the company will have in the future. This cash is paid to share holders. We use linear regression to predict
+the future financial statements. Once we have our predicted financial statements we need to determine how much the cash flows are worth today. This is done with a discount factor. Our DCF allows users to choose between Fama French
+and CAPM for the factor. This allows us to calculate the present value of the future cash flows. The present value of all of these cash payments is the companies' value. Dividing this value by the number of shares outstanding
+allows us to calculate the value of each share in a company.
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+  -a, --audit           Generates a tie-out for financial statement information pulled from online. (default: False)
+  --no-ratios           Removes ratios from DCF. (default: True)
+  --no-filter           Allow similar companies of any market cap to be shown. (default: False)
+  -p PREDICTION, --prediction PREDICTION
+                        Number of years to predict before using terminal value. (default: 10)
+  -s SIMILAR, --similar SIMILAR
+                        Number of similar companies to generate ratios for. (default: 0)
+  -b BETA, --beta BETA  The beta you'd like to use for the calculation. (default: 1)
+  -g, --growth          Whether to replace a linear regression estimate with a growth estimate. (default: False)
+
+
+Examples:
+- To analyze the discounted cash flow for a specific stock: stocks/fa/dcf -t <SYMBOL>
+- Perform a DCF analysis with an audit for a specific ticker: stocks/fa/dcf -t <SYMBOL> -a
+- Analyze a stock's DCF without ratios: stocks/fa/dcf -t <SYMBOL> --no-ratios
+- Allow similar companies with any market cap to be shown in the DCF analysis: stocks/fa/dcf -t <SYMBOL> --no-filter
+- Predict the DCF for a specific stock for a custom number of years: stocks/fa/dcf -t <SYMBOL> -p 5
+- Generate ratios for a specific number of similar companies: stocks/fa/dcf -t <SYMBOL> -s 3
+- Use a custom beta for the DCF calculation: stocks/fa/dcf -t <SYMBOL> -b 1.2
+- Replace the linear regression estimate with a growth estimate: stocks/fa/dcf -t <SYMBOL> -g

@@ -1,0 +1,15 @@
+parent_command:stocks/ins
+usage: blcp [-l LIMIT]
+
+Print latest CEO/CFO purchases 25k. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To display the latest CEO/CFO purchases for a stock: stocks/load <SYMBOL>/ins/blcp
+- To display the latest CEO/CFO purchases for a stock with a specific limit: stocks/load <SYMBOL>/ins/blcp -l 5
+- Show the latest 7 CEO/CFO purchases for a stock: stocks/load <SYMBOL>/ins/blcp --limit 7
+- Retrieve the 15 most recent CEO/CFO purchases for a stock: stocks/load <SYMBOL>/ins/blcp -l 15

@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: market
+
+Market data for loaded coin. There you find metrics like: Market Cap, Supply, Circulating Supply, Price, Volume and many others.
+
+market
+Examples:
+- To view market data for a specific coin: crypto/load <COIN>/dd/market
+- Obtain market metrics for the loaded cryptocurrency: crypto/load <COIN>/dd/market
+- Access market information for a selected coin: crypto/load <COIN>/dd/market
+- Retrieve market data of the desired cryptocurrency: crypto/load <COIN>/dd/market
+- Display market data for a particular coin: crypto/load <COIN>/dd/market

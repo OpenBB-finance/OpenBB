@@ -1,0 +1,24 @@
+parent_command:stocks/gov
+usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESENTATIVE]
+
+Last government trades. [Source: www.quiverquant.com]
+
+optional arguments:
+  -g {congress,senate,house}, --govtype {congress,senate,house}
+  -p PAST_TRANSACTIONS_DAYS, --past_transactions_days PAST_TRANSACTIONS_DAYS
+                        Past transaction days (default: 5)
+  -r REPRESENTATIVE, --representative REPRESENTATIVE
+                        Representative (default: )
+
+
+Examples:
+- View the last trades made by members of Congress: stocks/gov/lasttrades -g congress
+- Check the last trades for Senate members: stocks/gov/lasttrades -g senate
+- See the last trades for House members: stocks/gov/lasttrades -g house
+- Display the last 10 days of trades for Congress members: stocks/gov/lasttrades -g congress -p 10
+- Show the last trades made by a specific representative: stocks/gov/lasttrades -r "John Doe"
+- Examine the last 7 days of trades for Senate members: stocks/gov/lasttrades -g senate -p 7
+- Investigate the last trades of a specific representative in the House: stocks/gov/lasttrades -g house -r "Jane Smith"
+- Retrieve the last 3 days of trades for Congress members: stocks/gov/lasttrades -g congress -p 3
+- Find the last trades of a specific representative in the Senate: stocks/gov/lasttrades -g senate -r "Richard Roe"
+- Look up the last 5 days of trades for a specific representative: stocks/gov/lasttrades -r "John Doe" -p 5

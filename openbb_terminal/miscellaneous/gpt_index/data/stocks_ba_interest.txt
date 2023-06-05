@@ -1,0 +1,17 @@
+parent_command:stocks/ba
+usage: interest [-s START] [-w WORDS [WORDS ...]]
+
+Plot interest over time of words/sentences versus stock price. [Source: Google]
+
+optional arguments:
+  -s START, --start START
+                        starting date (format YYYY-MM-DD) of interest (default: 2021-05-31)
+  -w WORDS [WORDS ...], --words WORDS [WORDS ...]
+                        Select multiple sentences/words separated by commas. E.g. COVID,WW3,NFT (default: None)
+
+
+Examples:
+- To plot the interest over time of specific words against the stock price of <SYMBOL>: stocks/load <SYMBOL>/ba/interest -w COVID,WW3,NFT
+- To analyze the interest over time of specific words against the stock price of <SYMBOL> starting from a particular date: stocks/load <SYMBOL>/ba/interest -s 2020-01-01 -w COVID,WW3,NFT
+- For comparing multiple words' interest over time with the stock price of <SYMBOL>: stocks/load <SYMBOL>/ba/interest --words Inflation,Unemployment,GDP
+- To analyze the interest over time of specific words against <SYMBOL>'s stock price since a specific date: stocks/load <SYMBOL>/ba/interest --start 2019-01-01 --words COVID,WW3,NFT

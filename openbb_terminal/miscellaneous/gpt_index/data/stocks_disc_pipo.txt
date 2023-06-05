@@ -1,0 +1,20 @@
+parent_command:stocks/disc
+usage: pipo [-d DAYS] [-s START] [-l LIMIT]
+
+Past IPOs dates. [Source: https://finnhub.io]
+
+optional arguments:
+  -d DAYS, --days DAYS  Number of past days to look for IPOs. (default: 5)
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) to look for IPOs. When set, start date will override --days argument (default: None)
+  -l LIMIT, --limit LIMIT
+                        Limit number of IPOs to display. (default: 20)
+
+
+Examples:
+- View past IPOs from the last 5 days: stocks/disc/pipo
+- View past IPOs from the last 10 days: stocks/disc/pipo -d 10
+- Display 15 past IPOs from the last 7 days: stocks/disc/pipo -d 7 -l 15
+- Find past IPOs starting from a specific date: stocks/disc/pipo -s 2022-01-01
+- Show 10 past IPOs since a specific date: stocks/disc/pipo -s 2022-01-01 -l 10
+- Limit the number of past IPOs to 5: stocks/disc/pipo -l 5

@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: lit [-l LIMIT]
+
+Print latest insider trading. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To display the latest insider trading for a stock: stocks/load <SYMBOL>/ins/lit
+- To display the latest insider trading with a limit of 5 rows: stocks/load <SYMBOL>/ins/lit -l 5
+- Show the latest 15 insider trades for a specific stock: stocks/load <SYMBOL>/ins/lit --limit 15

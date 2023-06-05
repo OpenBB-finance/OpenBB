@@ -1,0 +1,14 @@
+parent_command:stocks
+usage: quote [-t S_TICKER]
+
+Current quote for the loaded stock ticker.
+
+optional arguments:
+  -t S_TICKER, --ticker S_TICKER
+                        Get a quote for a specific ticker, or comma-separated list of tickers. (default: AAPL)
+
+
+Examples:
+- Retrieve the current quote for the loaded stock ticker: stocks/quote
+- Get a quote for a specific stock ticker: stocks/quote -t <SYMBOL>
+- Obtain quotes for multiple stock tickers separated by commas: stocks/quote -t <SYMBOL1>,<SYMBOL2>,<SYMBOL3>

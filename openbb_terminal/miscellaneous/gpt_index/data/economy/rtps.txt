@@ -1,4 +1,0 @@
-usage:rtps [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]            [--raw]  Real-time and historical sector performances calculated from S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]  optional arguments:   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)  For more information and examples, use 'about rtps' to access the related guide.
-
-Example:
-rtps

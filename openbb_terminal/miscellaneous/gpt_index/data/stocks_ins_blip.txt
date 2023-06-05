@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: blip [-l LIMIT]
+
+Print latest insider purchases 25k. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- View the latest insider purchases for any stock: stocks/ins/blip
+- Display the top 5 insider purchases: stocks/ins/blip -l 5
+- Show the latest 20 insider purchases with a higher limit: stocks/ins/blip --limit 20

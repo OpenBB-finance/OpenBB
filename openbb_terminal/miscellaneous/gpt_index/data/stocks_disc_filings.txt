@@ -1,0 +1,16 @@
+parent_command:stocks/disc
+usage: filings [-p pages] [-t]
+
+The most-recent filings submitted to the SEC
+
+optional arguments:
+  -p pages, --pages pages
+                        The number of pages to get data from (1000 entries/page; maximum 30 pages) (default: 1)
+  -t, --today           Show all filings from today (default: False)
+
+
+Examples:
+- To display the most recent filings for all stocks: stocks/disc/filings
+- To display the most recent filings for all stocks from the first 5 pages: stocks/disc/filings -p 5
+- To show all filings submitted to the SEC today: stocks/disc/filings -t
+- To view the most recent filings for all stocks from the first 3 pages and only show today's filings: stocks/disc/filings -p 3 -t

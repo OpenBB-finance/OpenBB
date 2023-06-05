@@ -1,0 +1,20 @@
+parent_command:stocks/gov
+usage: lastcontracts [-p PAST_TRANSACTION_DAYS] [-l LIMIT] [-s]
+
+Last government contracts. [Source: www.quiverquant.com]
+
+optional arguments:
+  -p PAST_TRANSACTION_DAYS, --past_transaction_days PAST_TRANSACTION_DAYS
+                        Past transaction days (default: 2)
+  -l LIMIT, --limit LIMIT
+                        Limit of contracts to display (default: 20)
+  -s, --sum             Flag to show total amount of contracts. (default: False)
+
+
+Examples:
+- To display the last government contracts for a specific stock: stocks/load <SYMBOL>/gov/lastcontracts
+- To display the last government contracts for a specific stock within the past 5 days: stocks/load <SYMBOL>/gov/lastcontracts -p 5
+- To display the last 10 government contracts for a specific stock: stocks/load <SYMBOL>/gov/lastcontracts -l 10
+- To display the total amount of government contracts for a specific stock: stocks/load <SYMBOL>/gov/lastcontracts -s
+- To display the last government contracts for a specific stock within the past 7 days and limit the display to 15 contracts: stocks/load <SYMBOL>/gov/lastcontracts -p 7 -l 15
+- To display the total amount of government contracts for a specific stock within the past 3 days: stocks/load <SYMBOL>/gov/lastcontracts -p 3 -s

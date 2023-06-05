@@ -1,0 +1,14 @@
+parent_command:stocks/disc
+usage: active [-l LIMIT]
+
+Print up to 25 top most actively traded intraday tickers. [Source: Yahoo Finance]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display. (default: 5)
+
+
+Examples:
+- To display the top 5 most actively traded intraday tickers: stocks/disc/active
+- To display the top 10 most actively traded intraday tickers: stocks/disc/active -l 10
+- If you want to see the top 15 most actively traded intraday tickers: stocks/disc/active --limit 15

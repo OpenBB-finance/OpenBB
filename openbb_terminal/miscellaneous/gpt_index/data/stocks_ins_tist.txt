@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: tist [-l LIMIT]
+
+Print top insider sales of the day. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To view the top insider sales of the day: stocks/ins/tist
+- To display the top 5 insider sales of the day: stocks/ins/tist -l 5
+- To show the top 20 insider sales today: stocks/ins/tist --limit 20

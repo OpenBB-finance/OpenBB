@@ -1,0 +1,18 @@
+parent_command:stocks/fa
+usage: rating [-t TICKER] [-l LIMIT]
+
+Based on specific ratios, prints information whether the company is a (strong) buy, neutral or a (strong) sell. The following fields are expected: P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze
+  -l LIMIT, --limit LIMIT
+                        limit of last days to display ratings
+
+
+Examples:
+- To analyze a specific stock and display its rating: stocks/fa/rating -t <SYMBOL>
+- To analyze a specific stock and display its rating for the last 30 days: stocks/fa/rating -t <SYMBOL> -l 30
+- Analyze <SYMBOL> and display the rating for the last 7 days: stocks/fa/rating -t <SYMBOL> -l 7
+- For a stock analysis and rating of <SYMBOL>, use: stocks/fa/rating -t <SYMBOL>
+- Display the rating for <SYMBOL> for the last 15 days: stocks/fa/rating -t <SYMBOL> -l 15

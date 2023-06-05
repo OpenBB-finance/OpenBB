@@ -1,0 +1,16 @@
+parent_command:stocks/ca
+usage: set [-s L_SIMILAR]
+
+Select similar companies to compare with.
+
+optional arguments:
+  -s L_SIMILAR, --similar L_SIMILAR
+                        similar companies to compare with. (default: [])
+
+
+Examples:
+- To compare <SYMBOL> with similar companies: stocks/load <SYMBOL>/ca/set -s L_SIMILAR
+- Set similar companies for comparison without loading a specific symbol: stocks/ca/set --similar L_SIMILAR
+- For comparing <SYMBOL> to a list of similar companies: stocks/load <SYMBOL>/ca/set --similar "Company1, Company2, Company3"
+- To select similar companies for comparison after loading a stock symbol: stocks/load <SYMBOL>/ca/set -s L_SIMILAR
+- Set a list of similar companies for comparison without specifying a stock symbol: stocks/ca/set -s "Company1, Company2, Company3"

@@ -1,0 +1,13 @@
+parent_command:stocks/fa
+usage: customer [-t TICKER]
+
+List of customers from ticker provided. [Source: CSIMarket]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze
+
+
+Examples:
+- To view the list of customers for a specific stock, use: stocks/fa/customer -t <SYMBOL>
+- Get the customers of a particular stock by entering its ticker: stocks/fa/customer --ticker <SYMBOL>

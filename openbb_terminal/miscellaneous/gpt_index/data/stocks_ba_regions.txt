@@ -1,0 +1,16 @@
+parent_command:stocks/ba
+usage: regions [-l LIMIT]
+
+Plot bars of regions based on stock's interest. [Source: Google]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        limit of regions to plot that show highest interest. (default: 10)
+
+
+Examples:
+- To plot bars of regions based on a stock's interest: stocks/load <SYMBOL>/ba/regions
+- For displaying the top 5 regions with the highest interest in a stock: stocks/load <SYMBOL>/ba/regions -l 5
+- To visualize the top 7 regions with the highest interest for a specific stock: stocks/load <SYMBOL>/ba/regions --limit 7
+- Show the top 3 regions with the highest interest in a stock: stocks/load <SYMBOL>/ba/regions -l 3
+- To display the top 10 regions with the highest interest for a specific stock: stocks/load <SYMBOL>/ba/regions --limit 10

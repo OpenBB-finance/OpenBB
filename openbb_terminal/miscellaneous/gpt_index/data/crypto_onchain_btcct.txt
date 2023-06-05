@@ -1,0 +1,17 @@
+parent_command:crypto/onchain
+usage: btcct [-s SINCE] [-u UNTIL]
+
+Display BTC confirmed transactions [Source: https://api.blockchain.info/]
+
+optional arguments:
+  -s SINCE, --since SINCE
+                        Initial date. Default: 2010-01-01 (default: 2010-01-01)
+  -u UNTIL, --until UNTIL
+                        Final date. Default: 2023-06-02 (default: 2023-06-02)
+
+
+Examples:
+- Show BTC confirmed transactions from the beginning: crypto/onchain/btcct
+- Display BTC confirmed transactions since a specific date: crypto/onchain/btcct -s 2021-01-01
+- Present BTC confirmed transactions until a specific date: crypto/onchain/btcct -u 2022-12-31
+- Visualize BTC confirmed transactions between two dates: crypto/onchain/btcct -s 2021-01-01 -u 2021-12-31

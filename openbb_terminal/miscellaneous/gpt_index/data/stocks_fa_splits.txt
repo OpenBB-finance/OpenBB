@@ -1,0 +1,15 @@
+parent_command:stocks/fa
+usage: splits [-t TICKER]
+
+Stock splits and reverse split events since IPO [Source: Yahoo Finance]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+
+
+Examples:
+- To view stock splits and reverse split events for a specific ticker: stocks/fa/splits -t <SYMBOL>
+- Analyzing stock splits and reverse splits for a given ticker: stocks/fa/splits --ticker <SYMBOL>
+- Retrieve stock split history for a particular stock: stocks/fa/splits -t <SYMBOL>
+- Display stock splits and reverse splits since IPO for a specific stock: stocks/fa/splits --ticker <SYMBOL>

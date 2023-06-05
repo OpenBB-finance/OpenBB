@@ -1,0 +1,14 @@
+parent_command:stocks/disc
+usage: gtech [-l LIMIT]
+
+Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display. (default: 5)
+
+
+Examples:
+- To display the top 5 tech stocks with high revenue and earnings growth: stocks/disc/gtech
+- To display the top 10 tech stocks with high revenue and earnings growth: stocks/disc/gtech -l 10
+- To display the top 15 tech stocks with high revenue and earnings growth: stocks/disc/gtech --limit 15

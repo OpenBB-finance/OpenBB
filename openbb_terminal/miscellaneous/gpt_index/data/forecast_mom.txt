@@ -1,0 +1,18 @@
+parent_command:forecast
+usage: mom [-d {AAPL}] [-c TARGET_COLUMN] [--period PERIOD]
+
+Add momentum to dataset based on specific column.
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  --period PERIOD       The period to use (default: 10)
+
+
+Examples:
+- Add momentum to the dataset for <SYMBOL> using the default column and period: forecast/mom -d <SYMBOL>
+- Add momentum to the dataset for <SYMBOL> with a specific column: forecast/mom -d <SYMBOL> -c high
+- Add momentum to the dataset for <SYMBOL> using a custom period: forecast/mom -d <SYMBOL> --period 20
+- Calculate momentum for <SYMBOL> using the "low" column and a period of 15: forecast/mom -d <SYMBOL> -c low --period 15

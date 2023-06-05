@@ -1,0 +1,13 @@
+parent_command:stocks/dps
+usage: psi [--nyse]
+
+Shows price vs short interest volume. [Source: Quandl/Stockgrid]
+
+optional arguments:
+  --nyse  Data from NYSE flag. Otherwise comes from NASDAQ. Only works for Quandl.
+
+
+Examples:
+- To display price vs short interest volume for a specific stock: stocks/load <SYMBOL>/dps/psi
+- To show price vs short interest volume for a stock using NYSE data: stocks/load <SYMBOL>/dps/psi --nyse
+- For NASDAQ data on price vs short interest volume of a stock: stocks/load <SYMBOL>/dps/psi

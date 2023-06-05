@@ -1,0 +1,12 @@
+parent_command:stocks/gov
+usage: histcont [--raw]
+
+Quarterly-contracts historical [Source: www.quiverquant.com]
+
+optional arguments:
+  --raw  Print raw data. (default: False)
+
+
+Examples:
+- To view the quarterly contracts historical data: stocks/gov/histcont
+- To display the raw data for quarterly contracts historical information: stocks/gov/histcont --raw

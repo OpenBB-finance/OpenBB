@@ -1,0 +1,21 @@
+parent_command:stocks/ba
+usage: sentiment [-l LIMIT] [-d N_DAYS_PAST] [-c]
+
+Plot in-depth sentiment predicted from tweets from last days that contain pre-defined ticker. [Source: Twitter]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        limit of tweets to extract per hour. (default: 15)
+  -d N_DAYS_PAST, --days N_DAYS_PAST
+                        number of days in the past to extract tweets. (default: 6)
+  -c, --compare         show corresponding change in stock price (default: False)
+
+
+Examples:
+- To analyze sentiment for <SYMBOL> using the default settings: stocks/load <SYMBOL>/ba/sentiment
+- To analyze sentiment for <SYMBOL> with a limit of 20 tweets per hour: stocks/load <SYMBOL>/ba/sentiment -l 20
+- To analyze sentiment for <SYMBOL> for the past 10 days: stocks/load <SYMBOL>/ba/sentiment -d 10
+- To analyze sentiment for <SYMBOL> and compare it with the stock price change: stocks/load <SYMBOL>/ba/sentiment -c
+- To analyze sentiment for <SYMBOL> with a limit of 30 tweets per hour and for the past 5 days: stocks/load <SYMBOL>/ba/sentiment -l 30 -d 5
+- To analyze sentiment for <SYMBOL> for the past 7 days and compare it with the stock price change: stocks/load <SYMBOL>/ba/sentiment -d 7 -c
+- To analyze sentiment for <SYMBOL> with a limit of 10 tweets per hour, for the past 3 days, and compare it with the stock price change: stocks/load <SYMBOL>/ba/sentiment -l 10 -d 3 -c

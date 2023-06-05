@@ -44,7 +44,6 @@ from openbb_terminal.helper_funcs import (
     parse_and_split_input,
     print_rich_table,
     valid_date,
-    query_LLM,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -343,8 +342,6 @@ class EconomyController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("eval")
         mt.add_cmd("plot")
-        mt.add_raw("\n")
-        mt.add_menu("askobb")
         mt.add_raw("\n")
         mt.add_menu("qa")
 
@@ -1939,7 +1936,8 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="events",
-            description="Economic calendar. If no start or end dates, default is the current day high importance events.",
+            description="Economic calendar. If no start or end dates,"
+                        "default is the current day high importance events.",
         )
         parser.add_argument(
             "-c",
@@ -2494,20 +2492,3 @@ class EconomyController(BaseController):
             console.print(
                 "[red]Please load a dataset before moving to the qa menu[/red]\n"
             )
-
-    def call_askobb(self, other_args: List[str]) -> None:
-        """Accept user input as a string and return the most appropriate Terminal command"""
-        self.save_class()
-        argparse.ArgumentParser(
-            add_help=False,
-            prog="askobb",
-            description="Accept input as a string and return the most appropriate Terminal command",
-        )
-
-        if other_args:
-            response = query_LLM(" ".join(other_args))
-
-            if "I don't know" not in response:
-                self.queue.append(response)
-            else:
-                console.print(f"[red]{response}[/red]")

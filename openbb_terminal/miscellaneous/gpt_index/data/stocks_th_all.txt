@@ -1,0 +1,9 @@
+parent_command:stocks/th
+usage: exchange
+
+Show all exchanges
+
+all
+Examples:
+- To display all exchanges: stocks/th/exchange
+- Show all available exchanges: stocks/th/exchange all

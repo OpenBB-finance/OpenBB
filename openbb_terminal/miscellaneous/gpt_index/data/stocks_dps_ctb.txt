@@ -1,0 +1,16 @@
+parent_command:stocks/dps
+usage: ctb [-n NUMBER] [--raw]
+
+Show cost to borrow of stocks. [Source: Stocksera/Interactive Broker]
+
+optional arguments:
+  -n NUMBER, --number NUMBER
+                        Number of records to retrieve. (default: 20)
+  --raw                 Print raw data. (default: False)
+
+
+Examples:
+- To display the cost to borrow for the top 20 stocks: stocks/dps/ctb
+- To show the cost to borrow for a specific number of stocks, for example, 10: stocks/dps/ctb -n 10
+- To view the cost to borrow for the top 20 stocks and print raw data: stocks/dps/ctb --raw
+- To show the cost to borrow for 15 stocks and display raw data: stocks/dps/ctb -n 15 --raw

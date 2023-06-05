@@ -1,0 +1,15 @@
+parent_command:stocks/ca
+usage: add [-s L_SIMILAR]
+
+Add similar tickers to compare with.
+
+optional arguments:
+  -s L_SIMILAR, --similar L_SIMILAR
+                        Tickers to add to similar list (default: [])
+
+
+Examples:
+- To add similar tickers for comparison: stocks/load <SYMBOL>/ca/add -s AAPL MSFT
+- Add multiple similar tickers to compare with <SYMBOL>: stocks/load <SYMBOL>/ca/add --similar GOOGL FB
+- Compare <SYMBOL> with other tickers by adding them: stocks/load <SYMBOL>/ca/add -s TSLA AMZN
+- Add similar tickers to the list for comparison with <SYMBOL>: stocks/load <SYMBOL>/ca/add --similar NFLX NVDA

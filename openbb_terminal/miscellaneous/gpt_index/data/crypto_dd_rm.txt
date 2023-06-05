@@ -1,0 +1,14 @@
+parent_command:crypto/dd
+usage: rm [-r]
+
+Display asset's roadmap [Source: https://messari.io]
+
+optional arguments:
+  -r, --reverse  Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the roadmap of a specific coin: crypto/load <COIN>/dd/rm
+- To display the roadmap of a specific coin with raw data in ascending order: crypto/load <COIN>/dd/rm -r
+- Show the roadmap for a chosen cryptocurrency in reverse order: crypto/load <COIN>/dd/rm --reverse
+- Access the roadmap information for a particular coin and display it in ascending order: crypto/load <COIN>/dd/rm -r

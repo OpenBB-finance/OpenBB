@@ -1,6 +1,0 @@
-usage:trust [-c COUNTRIES] [-s START_DATE] [-e END_DATE] [-h]             [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]             [--raw]  Trust in government refers to the share of people who report having confidence in the national government.  optional arguments:   -c COUNTRIES, --countries COUNTRIES                         Countries to get data for (default: united_states)   -s START_DATE, --start START_DATE                         Start date of data, in YYYY-MM-DD format (default:                         1993-04-04)   -e END_DATE, --end END_DATE                         End date of data, in YYYY-MM-DD format (default:                         2023-04-04)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)  For more information and examples, use 'about trust' to access the related guide.
-
-Example:
-trust
-trust -c korea
-trust -c russia --start 2010-01-01

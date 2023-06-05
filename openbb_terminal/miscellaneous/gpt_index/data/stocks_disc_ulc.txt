@@ -1,0 +1,14 @@
+parent_command:stocks/disc
+usage: ulc [-l LIMIT]
+
+Print up to 25 potentially undervalued large cap stocks. [Source: Yahoo Finance]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display. (default: 5)
+
+
+Examples:
+- To display the top 5 potentially undervalued large cap stocks: stocks/disc/ulc
+- To display the top 10 potentially undervalued large cap stocks: stocks/disc/ulc -l 10
+- If you want to see 15 potentially undervalued large cap stocks: stocks/disc/ulc --limit 15

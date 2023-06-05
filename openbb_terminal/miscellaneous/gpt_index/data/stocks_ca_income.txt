@@ -1,0 +1,16 @@
+parent_command:stocks/ca
+usage: income [-q] [-t S_TIMEFRAME]
+
+Prints either yearly or quarterly income statement the company, and compares it against similar companies.
+
+optional arguments:
+  -q, --quarter         Quarter financial data flag. (default: False)
+  -t S_TIMEFRAME, --timeframe S_TIMEFRAME
+                        Specify yearly/quarterly timeframe. Default is last. (default: None)
+
+
+Examples:
+- To view the yearly income statement for a specific company: stocks/load <SYMBOL>/ca/income
+- To view the quarterly income statement for a specific company: stocks/load <SYMBOL>/ca/income -q
+- To view the income statement for a specific company with a specified timeframe: stocks/load <SYMBOL>/ca/income -t 2021Q3
+- Display the quarterly income statement for the last quarter of a specific company: stocks/load <SYMBOL>/ca/income --quarter --timeframe last

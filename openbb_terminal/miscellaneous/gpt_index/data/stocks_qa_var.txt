@@ -1,0 +1,23 @@
+parent_command:stocks/qa
+usage: var [-m] [-a] [-s] [-p PERCENTILE] [-d DATA_RANGE]
+
+Provides value at risk (short: VaR) of the selected stock.
+
+optional arguments:
+  -m, --mean            If one should use the mean of the stocks return (default: False)
+  -a, --adjusted        If the VaR should be adjusted for skew and kurtosis (Cornish-Fisher-Expansion) (default: False)
+  -s, --student         If one should use the student-t distribution (default: False)
+  -p PERCENTILE, --percentile PERCENTILE
+                        Percentile used for VaR calculations, for example input 99.9 equals a 99.9 Percent VaR (default: 99.9)
+  -d DATA_RANGE, --datarange DATA_RANGE
+                        Number of rows you want to use VaR over, ex: if you are using days, 30 would show VaR for the last 30 TRADING days (default: 0)
+
+
+Examples:
+- To calculate the value at risk for a specific stock: stocks/load <SYMBOL>/qa/var
+- Calculate the value at risk using the mean of the stock's return: stocks/load <SYMBOL>/qa/var -m
+- Determine the adjusted value at risk with Cornish-Fisher-Expansion: stocks/load <SYMBOL>/qa/var -a
+- Compute the value at risk using the student-t distribution: stocks/load <SYMBOL>/qa/var -s
+- Find the value at risk at a specific percentile, for example, 95th percentile: stocks/load <SYMBOL>/qa/var -p 95
+- Calculate the value at risk over a specific data range, such as the last 30 trading days: stocks/load <SYMBOL>/qa/var -d 30
+- Obtain the adjusted value at risk using the mean of the stock's return and a specific data range: stocks/load <SYMBOL>/qa/var -m -a -d 30

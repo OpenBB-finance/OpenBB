@@ -1,0 +1,14 @@
+parent_command:stocks/disc
+usage: gainers [-l LIMIT]
+
+Print up to 25 top gainers. [Source: Yahoo Finance]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display. (default: 5)
+
+
+Examples:
+- To display the top 5 gainers: stocks/disc/gainers
+- To display the top 10 gainers: stocks/disc/gainers -l 10
+- To display the top 25 gainers: stocks/disc/gainers --limit 25

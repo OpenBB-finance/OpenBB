@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: lpsb [-l LIMIT]
+
+Print latest penny stock buys. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To display the latest penny stock buys: stocks/ins/lpsb
+- To display the top 5 latest penny stock buys: stocks/ins/lpsb -l 5
+- To show the latest 20 penny stock buys: stocks/ins/lpsb --limit 20

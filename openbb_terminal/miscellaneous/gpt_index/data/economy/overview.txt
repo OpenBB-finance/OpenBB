@@ -1,7 +1,0 @@
-usage:overview [-t {indices,usbonds,glbonds,currencies}] [-h]                [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Provide a market overview of a variety of options. This can be a general overview, indices, bonds and currencies. [Source: Wall St. Journal]  optional arguments:   -t {indices,usbonds,glbonds,currencies}, --type {indices,usbonds,glbonds,currencies}                         Obtain either US indices, US Bonds, Global Bonds or                         Currencies (default: )   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about overview' to access the related guide.
-
-Example:
-overview
-overview -t indices
-overview --type currencies --export csv
-overview --type usbonds

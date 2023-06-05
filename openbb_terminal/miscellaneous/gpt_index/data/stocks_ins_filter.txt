@@ -1,0 +1,17 @@
+parent_command:stocks/ins
+usage: filter [-l LIMIT] [-u]
+
+Print open insider filtered data using loaded preset. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+  -u, --urls            Flag to show hyperlinks (default: False)
+
+
+Examples:
+- To display the top 10 open insider transactions for a stock: stocks/load <SYMBOL>/ins/filter
+- Show the top 20 open insider transactions for a stock: stocks/load <SYMBOL>/ins/filter -l 20
+- Display the top 5 open insider transactions with hyperlinks: stocks/load <SYMBOL>/ins/filter -l 5 -u
+- Retrieve open insider transactions for a specific stock and include hyperlinks: stocks/load <SYMBOL>/ins/filter -u
+- For a particular stock, display open insider filtered data with a limit of 15 rows: stocks/load <SYMBOL>/ins/filter -l 15

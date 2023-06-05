@@ -1,0 +1,19 @@
+parent_command:stocks/fa
+usage: est [-t TICKER] [-e {annual_earnings,quarter_earnings,quarter_revenues}]
+
+Yearly estimates and quarter earnings/revenues. [Source: Business Insider]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze
+  -e {annual_earnings,quarter_earnings,quarter_revenues}, --estimate {annual_earnings,quarter_earnings,quarter_revenues}
+                        Estimates to get
+
+
+Examples:
+- To get annual earnings estimates for a specific stock: stocks/fa/est -t <SYMBOL> -e annual_earnings
+- To obtain quarter earnings estimates for a particular stock: stocks/fa/est --ticker <SYMBOL> --estimate quarter_earnings
+- For quarter revenue estimates of a specific company: stocks/fa/est -t <SYMBOL> -e quarter_revenues
+- If you want to analyze a stock's annual earnings: stocks/fa/est --ticker <SYMBOL> --estimate annual_earnings
+- To check the quarter earnings projections for a stock: stocks/fa/est -t <SYMBOL> -e quarter_earnings
+- To view a company's quarter revenue projections: stocks/fa/est --ticker <SYMBOL> --estimate quarter_revenues

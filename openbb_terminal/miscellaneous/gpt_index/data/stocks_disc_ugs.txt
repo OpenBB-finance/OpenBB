@@ -1,0 +1,14 @@
+parent_command:stocks/disc
+usage: ugs [-l LIMIT]
+
+Print up to 25 undervalued stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display. (default: 5)
+
+
+Examples:
+- To display 5 undervalued stocks with high revenue and earnings growth: stocks/disc/ugs
+- To display 10 undervalued stocks with significant growth: stocks/disc/ugs -l 10
+- To show 15 undervalued stocks with growth over 25%: stocks/disc/ugs --limit 15

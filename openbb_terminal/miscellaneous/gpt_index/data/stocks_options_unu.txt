@@ -1,0 +1,26 @@
+parent_command:stocks/options
+usage: unu [-l LIMIT] [-s {Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} [{Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} ...]] [-r] [-p] [-c]
+
+This command gets unusual options from fdscanner.com
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of options to show. Each scraped page gives 20 results. (default: 20)
+  -s {Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} [{Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} ...], --sortby {Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} [{Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} ...]
+                        Column to sort by. Vol/OI is the default and typical variable to be considered unusual. (default: Vol/OI)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -p, --puts_only       Flag to show puts only (default: False)
+  -c, --calls_only      Flag to show calls only (default: False)
+
+
+Examples:
+- To fetch unusual options with default settings: stocks/options/unu
+- To display 40 unusual options instead of the default 20: stocks/options/unu -l 40
+- To show only put options with unusual activity: stocks/options/unu -p
+- To display only call options with unusual activity: stocks/options/unu -c
+- To sort the unusual options by the Bid column: stocks/options/unu -s Bid
+- To sort the unusual options by the Ask column in ascending order: stocks/options/unu -s Ask -r
+- To fetch unusual options and sort by both the Expiration and Ticker columns: stocks/options/unu -s Exp Ticker
+- To display 30 unusual options, sorted by Volume and showing only put options: stocks/options/unu -l 30 -s Vol -p
+- To show 50 unusual options, sorted by Strike and displaying only call options: stocks/options/unu -l 50 -s Strike -c
+- To fetch unusual options, showing only calls, sorted by Ticker in ascending order: stocks/options/unu -c -s Ticker -r

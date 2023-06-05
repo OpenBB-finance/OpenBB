@@ -1,0 +1,12 @@
+parent_command:stocks/ca
+usage: overview
+
+Prints screener data of similar companies. [Source: Finviz]
+
+overview
+Examples:
+- Get an overview of similar companies for a specific stock: stocks/load <SYMBOL>/ca/overview
+- Display screener data for companies similar to the loaded stock: stocks/load <SYMBOL>/ca/overview
+- Find and display similar companies' screener data for the given stock: stocks/load <SYMBOL>/ca/overview
+- Load a stock symbol and show an overview of related companies: stocks/load <SYMBOL>/ca/overview
+- Obtain an overview of companies similar to the chosen stock: stocks/load <SYMBOL>/ca/overview

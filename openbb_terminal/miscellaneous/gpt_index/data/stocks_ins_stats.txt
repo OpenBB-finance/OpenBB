@@ -1,0 +1,16 @@
+parent_command:stocks/ins
+usage: stats [-l LIMIT] [-u]
+
+Open insider filtered data using selected ticker. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+  -u, --urls            Flag to show hyperlinks (default: False)
+
+
+Examples:
+- To display insider filtered data for a specific stock: stocks/load <SYMBOL>/ins/stats
+- To show insider filtered data with a limit of 5 rows: stocks/load <SYMBOL>/ins/stats -l 5
+- To display insider filtered data and include hyperlinks: stocks/load <SYMBOL>/ins/stats -u
+- To show insider filtered data with a limit of 20 rows and include hyperlinks: stocks/load <SYMBOL>/ins/stats -l 20 -u

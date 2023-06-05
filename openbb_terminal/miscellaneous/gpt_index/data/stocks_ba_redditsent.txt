@@ -1,0 +1,31 @@
+parent_command:stocks/ba
+usage: redditsent [-s {relevance,hot,top,new,comments}] [-c COMPANY] [--subreddits SUBREDDITS] [-l LIMIT] [-t {hour,day,week,month,year,all}] [--full] [-g] [-d]
+
+Determine general Reddit sentiment about a ticker. [Source: Reddit]
+
+optional arguments:
+  -s {relevance,hot,top,new,comments}, --sort {relevance,hot,top,new,comments}
+                        search sorting type
+  -c COMPANY, --company COMPANY
+                        explicit name of company to search for, will override ticker symbol
+  --subreddits SUBREDDITS
+                        comma-separated list of subreddits to search
+  -l LIMIT, --limit LIMIT
+                        how many posts to gather from each subreddit
+  -t {hour,day,week,month,year,all}, --time {hour,day,week,month,year,all}
+                        time period to get posts from -- all, year, month, week, or day; defaults to week
+  --full                enable comprehensive search
+  -g, --graphic         display graphic
+  -d, --display         Print table of sentiment values
+
+
+Examples:
+- Analyze Reddit sentiment for a specific stock: stocks/load <SYMBOL>/ba/redditsent
+- Search for a company by name and analyze Reddit sentiment: stocks/ba/redditsent -c "Company Name"
+- Analyze Reddit sentiment for a specific stock and sort by hot posts: stocks/load <SYMBOL>/ba/redditsent -s hot
+- Analyze Reddit sentiment for a specific stock with a custom list of subreddits: stocks/load <SYMBOL>/ba/redditsent --subreddits "subreddit1,subreddit2"
+- Analyze Reddit sentiment for a specific stock and limit the number of posts: stocks/load <SYMBOL>/ba/redditsent -l 10
+- Analyze Reddit sentiment for a specific stock within a specific time period: stocks/load <SYMBOL>/ba/redditsent -t month
+- Conduct a comprehensive search for Reddit sentiment on a specific stock: stocks/load <SYMBOL>/ba/redditsent --full
+- Analyze Reddit sentiment for a specific stock and display a graphic: stocks/load <SYMBOL>/ba/redditsent -g
+- Analyze Reddit sentiment for a specific stock and print a table of sentiment values: stocks/load <SYMBOL>/ba/redditsent -d

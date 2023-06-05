@@ -1,0 +1,17 @@
+parent_command:stocks/gov
+usage: toplobbying [-l LIMIT] [--raw]
+
+Top lobbying. [Source: www.quiverquant.com]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display (default: 10)
+  --raw                 Print raw data. (default: False)
+
+
+Examples:
+- To display the top 10 stocks with the highest lobbying activities: stocks/gov/toplobbying
+- To show the top 20 stocks with the most lobbying activities: stocks/gov/toplobbying -l 20
+- If you want to view the top 15 stocks involved in lobbying: stocks/gov/toplobbying --limit 15
+- To display raw data of the top 10 lobbying stocks: stocks/gov/toplobbying --raw
+- For raw data of the top 25 stocks with significant lobbying activities: stocks/gov/toplobbying -l 25 --raw

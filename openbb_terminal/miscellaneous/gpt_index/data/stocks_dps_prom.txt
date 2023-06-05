@@ -1,0 +1,21 @@
+parent_command:stocks/dps
+usage: prom [-n N_NUM] [-l LIMIT] [-t {T1,T2,OTCE}]
+
+Display dark pool (ATS) data of tickers with growing trades activity using linear regression.
+
+optional arguments:
+  -n N_NUM, --num N_NUM
+                        Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity. (default: 1000)
+  -l LIMIT, --limit LIMIT
+                        Limit of most promising tickers to display. (default: 10)
+  -t {T1,T2,OTCE}, --tier {T1,T2,OTCE}
+                        Tier to process data from. (default: )
+
+
+Examples:
+- To display the top 10 promising tickers with growing trades activity from the entire ATS data: stocks/dps/prom
+- To display the top 20 promising tickers with growing trades activity from the entire ATS data: stocks/dps/prom -l 20
+- To filter the top 500 tickers based on the sum of total weekly shares quantity and display the top 10 promising tickers: stocks/dps/prom -n 500
+- To display the top 15 promising tickers with growing trades activity from Tier 1: stocks/dps/prom -l 15 -t T1
+- To filter the top 200 tickers based on the sum of total weekly shares quantity and display the top 5 promising tickers from Tier 2: stocks/dps/prom -n 200 -l 5 -t T2
+- To display the top 10 promising tickers with growing trades activity from OTCE tier: stocks/dps/prom -t OTCE

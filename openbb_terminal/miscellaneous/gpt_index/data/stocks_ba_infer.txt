@@ -1,0 +1,14 @@
+parent_command:stocks/ba
+usage: infer [-l LIMIT]
+
+Print quick sentiment inference from last tweets that contain the ticker. This model splits the text into character-level tokens and uses vader sentiment analysis. [Source: Twitter]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        limit of latest tweets to infer from. (default: 100)
+
+
+Examples:
+- To analyze the sentiment of the last 100 tweets containing <SYMBOL>: stocks/load <SYMBOL>/ba/infer
+- For a quick sentiment analysis of the last 50 tweets with <SYMBOL>: stocks/load <SYMBOL>/ba/infer -l 50
+- To infer sentiment from the most recent 200 tweets for <SYMBOL>: stocks/load <SYMBOL>/ba/infer --limit 200

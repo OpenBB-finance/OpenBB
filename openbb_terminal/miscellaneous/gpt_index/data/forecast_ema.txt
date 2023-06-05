@@ -1,0 +1,18 @@
+parent_command:forecast
+usage: ema [-d {AAPL}] [-c TARGET_COLUMN] [--period PERIOD]
+
+Add exponential moving average to dataset based on specific column.
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  --period PERIOD       The period to use (default: 10)
+
+
+Examples:
+- Add exponential moving average to the dataset for <SYMBOL> using the default column and period: forecast/ema -d <SYMBOL>
+- Calculate exponential moving average for <SYMBOL> using the 'open' column: forecast/ema -d <SYMBOL> -c open
+- Apply exponential moving average to <SYMBOL> dataset with a custom period of 20: forecast/ema -d <SYMBOL> --period 20
+- Compute exponential moving average for <SYMBOL> using the 'high' column and a period of 30: forecast/ema -d <SYMBOL> -c high --period 30

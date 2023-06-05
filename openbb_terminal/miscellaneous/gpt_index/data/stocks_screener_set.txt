@@ -1,0 +1,15 @@
+parent_command:stocks/screener
+usage: set [-p Desired preset.]
+
+Set preset from custom and default ones.
+
+optional arguments:
+  -p Desired preset., --preset Desired preset.
+                        Filter presets
+
+
+Examples:
+- To set a custom preset for stock screener: stocks/screener/set -p <Desired preset>
+- Applying a default preset to the stock screener: stocks/screener/set --preset <Desired preset>
+- Configuring the stock screener with a specific preset: stocks/screener/set -p <Desired preset>
+- Customize the stock screener using a desired preset: stocks/screener/set --preset <Desired preset>

@@ -46,6 +46,7 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_and_split_input,
+    query_LLM,
 )
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
@@ -110,6 +111,7 @@ class TerminalController(BaseController):
         "futures",
         "fixedincome",
         "funds",
+        "askobb",
     ]
 
     if is_auth_enabled():
@@ -227,6 +229,7 @@ class TerminalController(BaseController):
         mt.add_menu("fixedincome")
         mt.add_menu("alternative")
         mt.add_menu("funds")
+        mt.add_menu("askobb")
         mt.add_raw("\n")
         mt.add_info("_toolkits_")
         mt.add_menu("econometrics")
@@ -330,6 +333,26 @@ class TerminalController(BaseController):
                         export=news_parser.export,
                         sheet_name=news_parser.sheet_name,
                     )
+
+    def call_askobb(self, other_args: List[str]) -> None:
+        """Accept user input as a string and return the most appropriate Terminal command"""
+        self.save_class()
+        argparse.ArgumentParser(
+            add_help=False,
+            prog="askobb",
+            description="Accept input as a string and return the most appropriate Terminal command",
+        )
+
+        if other_args:
+            response = query_LLM(" ".join(other_args))
+
+            if "I don't know" not in response:
+                console.print(f"[green]Suggested Command: {response}[/green]")
+                # To run the command automatically, uncomment the line below.
+                # Left untouched for testing currently
+                # self.queue.append(response)
+            else:
+                console.print(f"[red]{response}[/red]")
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""

@@ -1,0 +1,22 @@
+parent_command:stocks/disc
+usage: divcal [-d DATE] [-s {name,symbol,ex-dividend_date,payment_date,record_date,dividend,annual_dividend,announcement_date}] [-r]
+
+Get dividend calendar for selected date
+
+optional arguments:
+  -d DATE, --date DATE  Date to get format for (default: 2023-06-02 12:53:55.342082)
+  -s {name,symbol,ex-dividend_date,payment_date,record_date,dividend,annual_dividend,announcement_date}, --sort {name,symbol,ex-dividend_date,payment_date,record_date,dividend,annual_dividend,announcement_date}
+                        Column to sort by (default: dividend)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- Retrieve dividend calendar for the current date: stocks/disc/divcal
+- Obtain dividend calendar for a specific date: stocks/disc/divcal -d 2023-06-15
+- Display dividend calendar sorted by symbol: stocks/disc/divcal -s symbol
+- Show dividend calendar sorted by payment date in ascending order: stocks/disc/divcal -s payment_date -r
+- View dividend calendar for a particular date and sort by ex-dividend date: stocks/disc/divcal -d 2023-07-01 -s ex-dividend_date
+- Get dividend calendar sorted by annual dividend: stocks/disc/divcal -s annual_dividend
+- Fetch dividend calendar for a chosen date and sort by announcement date: stocks/disc/divcal -d 2023-08-01 -s announcement_date
+- Access dividend calendar sorted by record date in ascending order: stocks/disc/divcal -s record_date -r
+- See dividend calendar for a specific date, sorted by name: stocks/disc/divcal -d 2023-09-01 -s name

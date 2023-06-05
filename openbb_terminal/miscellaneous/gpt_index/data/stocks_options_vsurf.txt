@@ -1,0 +1,14 @@
+parent_command:stocks/options
+usage: vsurf [-z {IV,OI,LP}]
+
+Plot 3D volatility surface.
+
+optional arguments:
+  -z {IV,OI,LP}, --z-axis {IV,OI,LP}
+                        The data for the Z axis (default: IV)
+
+
+Examples:
+- To plot a 3D volatility surface with implied volatility for <SYMBOL>: stocks/load <SYMBOL>/options/vsurf
+- For visualizing a 3D volatility surface with open interest as the Z axis for a specific stock: stocks/load <SYMBOL>/options/vsurf -z OI
+- To display a 3D volatility surface using the last price data for the Z axis for <SYMBOL>: stocks/load <SYMBOL>/options/vsurf -z LP

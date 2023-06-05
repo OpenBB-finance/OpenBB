@@ -1,0 +1,15 @@
+parent_command:stocks/ba
+usage: mentions [-s START]
+
+Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
+
+optional arguments:
+  -s START, --start START
+                        starting date (format YYYY-MM-DD) from when we are interested in stock's mentions. (default: 2022-06-02)
+
+
+Examples:
+- To plot weekly bars of stock's interest over time since the default starting date: stocks/load <SYMBOL>/ba/mentions
+- To plot weekly bars of stock's interest over time starting from a specific date: stocks/load <SYMBOL>/ba/mentions -s 2021-01-01
+- Plotting stock's interest from a custom starting date: stocks/load <SYMBOL>/ba/mentions --start 2020-12-31
+- Visualize the weekly interest bars of a stock since a particular date: stocks/load <SYMBOL>/ba/mentions -s 2022-01-01

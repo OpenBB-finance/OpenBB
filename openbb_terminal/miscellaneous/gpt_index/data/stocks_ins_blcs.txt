@@ -1,0 +1,15 @@
+parent_command:stocks/ins
+usage: blcs [-l LIMIT]
+
+Print latest CEO/CFO sales 100k. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To view the latest CEO/CFO sales 100k for a specific stock: stocks/load <SYMBOL>/ins/blcs
+- Display the latest 5 CEO/CFO sales 100k for a specific stock: stocks/load <SYMBOL>/ins/blcs -l 5
+- Show the latest CEO/CFO sales 100k for a specific stock with a limit of 20 rows: stocks/load <SYMBOL>/ins/blcs --limit 20
+- Retrieve the latest 15 CEO/CFO sales 100k for a specific stock: stocks/load <SYMBOL>/ins/blcs -l 15

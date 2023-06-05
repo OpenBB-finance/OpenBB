@@ -1,0 +1,16 @@
+parent_command:stocks/fa
+usage: dupont [-t TICKER] [--raw]
+
+The extended dupont deconstructs return on equity to allow investors to understand it better
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze
+  --raw                 Print raw data.
+
+
+Examples:
+- Analyze the return on equity for a specific stock: stocks/fa/dupont -t <SYMBOL>
+- Examine the extended dupont for a particular stock with raw data: stocks/fa/dupont -t <SYMBOL> --raw
+- Deconstruct return on equity for a stock using its ticker: stocks/fa/dupont --ticker <SYMBOL>
+- Understand return on equity better by analyzing a stock with raw data: stocks/fa/dupont --ticker <SYMBOL> --raw

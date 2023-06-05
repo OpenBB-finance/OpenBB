@@ -1,0 +1,15 @@
+parent_command:stocks/dps
+usage: hsi [-l LIMIT]
+
+Print top stocks being more heavily shorted. HighShortInterest.com provides a convenient sorted database of stocks which have a short interest of over 20 percent. Additional key data such as the float, number of outstanding shares,
+and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, and the American Stock Exchange. [Source: www.highshortinterest.com]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of the top heavily shorted stocks to retrieve. (default: 10)
+
+
+Examples:
+- To view the top 10 heavily shorted stocks: stocks/dps/hsi
+- To view the top 5 heavily shorted stocks: stocks/dps/hsi -l 5
+- Retrieve the top 20 heavily shorted stocks: stocks/dps/hsi --limit 20

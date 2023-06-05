@@ -1,0 +1,25 @@
+parent_command:crypto/onchain
+usage: dvcp -c COIN [-vs {ETH,USD,BTC,USDT}] [-d DAYS] [-s {date,exchange,base,quote,open,high,low,close,tradeAmount,trades}] [-r]
+
+Display daily volume for given crypto pair [Source: https://graphql.bitquery.io/]
+
+optional arguments:
+  -c COIN, --coin COIN  ERC20 token symbol or address. (default: None)
+  -vs {ETH,USD,BTC,USDT}, --vs {ETH,USD,BTC,USDT}
+                        Quote currency (default: USDT)
+  -d DAYS, --days DAYS  Number of days to display data for. (default: 10)
+  -s {date,exchange,base,quote,open,high,low,close,tradeAmount,trades}, --sort {date,exchange,base,quote,open,high,low,close,tradeAmount,trades}
+                        Sort by given column. (default: date)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the daily volume of a specific ERC20 token in USDT for the past 10 days: crypto/onchain/dvcp -c <COIN> -vs USDT
+- Show the daily volume of a given ERC20 token in ETH for the last 5 days: crypto/onchain/dvcp -c <COIN> -vs ETH -d 5
+- Display the daily volume of a specific ERC20 token in BTC and sort the data by trade amount: crypto/onchain/dvcp -c <COIN> -vs BTC -s tradeAmount
+- To view the daily volume of an ERC20 token in USDT for the past 20 days, sorted by the number of trades: crypto/onchain/dvcp -c <COIN> -vs USDT -d 20 -s trades
+- Display the daily volume of a given ERC20 token in USDT, sorted by the closing price in ascending order: crypto/onchain/dvcp -c <COIN> -vs USDT -s close -r
+- Show the daily volume of a specific ERC20 token in USDT for the past 7 days, sorted by the high price: crypto/onchain/dvcp -c <COIN> -vs USDT -d 7 -s high
+- To view the daily volume of an ERC20 token in BTC for the past 15 days, sorted by the low price in ascending order: crypto/onchain/dvcp -c <COIN> -vs BTC -d 15 -s low -r
+- Display the daily volume of a given ERC20 token in USDT for the past 3 days, sorted by the opening price: crypto/onchain/dvcp -c <COIN> -vs USDT -d 3 -s open
+- Show the daily volume of a specific ERC20 token in ETH, sorted by the base currency in ascending order: crypto/onchain/dvcp -c <COIN> -vs ETH -s base -r

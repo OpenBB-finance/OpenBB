@@ -1,0 +1,16 @@
+parent_command:stocks/ins
+usage: tippm [-l LIMIT]
+
+Print top insider purchases of the month. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To view the top 10 insider purchases of the month: stocks/ins/tippm
+- Display the top 5 insider purchases for the month: stocks/ins/tippm -l 5
+- Show the top 20 monthly insider purchases: stocks/ins/tippm --limit 20
+- Retrieve the top 15 insider purchases this month: stocks/ins/tippm -l 15
+- Get the top 8 insider purchases for the current month: stocks/ins/tippm --limit 8

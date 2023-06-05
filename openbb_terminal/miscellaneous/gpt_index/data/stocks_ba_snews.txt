@@ -1,0 +1,11 @@
+parent_command:stocks/ba
+usage: snews
+
+Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]
+
+snews
+Examples:
+- To display stock price and headlines sentiment for a specific stock: stocks/load <SYMBOL>/ba/snews
+- Show the sentiment of news headlines and stock price for a company: stocks/load <SYMBOL>/ba/snews
+- Analyze the sentiment of stock price and news headlines over time for a particular stock: stocks/load <SYMBOL>/ba/snews
+- View the stock price and news sentiment using VADER model for a specific stock: stocks/load <SYMBOL>/ba/snews

@@ -1,0 +1,21 @@
+parent_command:stocks/options/screen
+usage: scr [-p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}] [-l LIMIT]
+
+Screener filter output from https://ops.syncretism.io/index.html.
+
+optional arguments:
+  -p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}, --preset {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}
+                        Filter presets (default: high_iv.ini)
+  -l LIMIT, --limit LIMIT
+                        Limit of entries to display, default of 25. (default: 25)
+
+
+Examples:
+- To screen stocks with high implied volatility: stocks/options/screen -p high_iv
+- To screen stocks with volatility below the 20-day average: stocks/options/screen -p v_below_20day
+- To screen liquid out-of-the-money options: stocks/options/screen -p liquid_otm
+- To screen SPY options with a 30 delta: stocks/options/screen -p spy_30_delta
+- To use a custom filter template for screening: stocks/options/screen -p template
+- To screen stocks with high implied volatility and display 10 entries: stocks/options/screen -p high_iv -l 10
+- To screen liquid out-of-the-money options and show 15 entries: stocks/options/screen -p liquid_otm -l 15
+- To screen SPY options with a 30 delta and limit the output to 5 entries: stocks/options/screen -p spy_30_delta -l 5

@@ -1,0 +1,14 @@
+parent_command:stocks/disc
+usage: hotpenny [-l LIMIT]
+
+Provides top penny stocks from various websites. [Source: Yfinance]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        limit of stocks to display (default: 5)
+
+
+Examples:
+- To display the top 5 penny stocks: stocks/disc/hotpenny
+- To display the top 10 penny stocks: stocks/disc/hotpenny -l 10
+- For a list of the top 20 penny stocks: stocks/disc/hotpenny --limit 20

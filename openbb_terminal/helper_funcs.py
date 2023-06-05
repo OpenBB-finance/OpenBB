@@ -42,10 +42,7 @@ from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
-
-logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
-
+from langchain.chat_models import ChatOpenAI
 from llama_index import (
     GPTSimpleVectorIndex,
     SimpleDirectoryReader,
@@ -53,13 +50,11 @@ from llama_index import (
     LLMPredictor,
 )
 
-from langchain.chat_models import ChatOpenAI
-
 from openbb_terminal import (
     OpenBBFigure,
     plots_backend,
 )
-from openbb_terminal import OpenBBFigure, plots_backend
+
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.core.config.paths import (
@@ -72,6 +67,8 @@ from openbb_terminal.decorators import check_api_key
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
+logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
+logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 logger = logging.getLogger(__name__)
 
 
@@ -94,7 +91,7 @@ MENU_RESET = 2
 LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_MODEL_NAME = "gpt-3.5-turbo"
+GPT_MODEL_NAME = "gpt-3.5"
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
@@ -2162,7 +2159,7 @@ def generate_index():
     console.print("Generating index, this might take a while....\n")
 
     # read in documents
-    documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/economy").load_data()
+    documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
 
     # define LLM
     llm_predictor = LLMPredictor(
@@ -2201,14 +2198,16 @@ def query_LLM(query_text):
         # save to disk
         index.save_to_disk(save_path=GPT_INDEX_DIRECTORY / "index.json")
 
-    response = index.query(
-        f"""From argparse help text above, provide the command for {query_text}.
-        Provide the exact command to get that information, and nothing else. Don't add any
-        other word such as 'Command to get', 'Answer' or the likes.
-        If and only if there is no information in the argparse help text above, say I don't know.
-        Only do what is asked.
-        Always use a comma to separate between countries. Lower cap the country name.
-        """
-    )
+    prompt_string = f"""From argparse help text above, provide the terminal command
+    for {query_text}. Don't add any other word such as 'Command to get', 'Answer' or the likes.
+    Other rules:
+    1. When referencing a command, reference the examples.
+    Try to not use the options within the parameters to find similarities.
+    2. Lower cap the country name and make sure it is in short form.
+    3. Never provide a final command with <SYMBOL> or <COIN> as the final result, always
+    come up with a sample to replace any keywords in <...> .
+    """
+
+    response = index.query(prompt_string)
 
     return response.response

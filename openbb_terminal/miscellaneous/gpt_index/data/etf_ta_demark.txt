@@ -1,0 +1,15 @@
+parent_command:etf/ta
+usage: demark [-m MIN_TO_SHOW]
+
+Calculates the Demark sequential indicator.
+
+optional arguments:
+  -m MIN_TO_SHOW, --min MIN_TO_SHOW
+                        Minimum value of indicator to show (declutters plot). (default: 5)
+
+
+Examples:
+- To calculate the Demark sequential indicator for an ETF: etf/ta/demark
+- To calculate the Demark sequential indicator for an ETF and show values greater than or equal to 10: etf/ta/demark -m 10
+- Calculate the Demark sequential indicator for a specific ETF and display values greater than or equal to 7: etf/load <SYMBOL>/ta/demark -m 7
+- Display Demark sequential indicator values for an ETF with a minimum value of 15: etf/load <SYMBOL>/ta/demark --min 15

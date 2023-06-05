@@ -1,0 +1,14 @@
+parent_command:stocks/ins
+usage: blis [-l LIMIT]
+
+Print latest insider sales 100k. [Source: OpenInsider]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+
+
+Examples:
+- To display the latest insider sales for a stock: stocks/load <SYMBOL>/ins/blis
+- Show the 5 most recent insider sales for a specific stock: stocks/load <SYMBOL>/ins/blis -l 5
+- Retrieve the latest 20 insider sales for a particular stock: stocks/load <SYMBOL>/ins/blis --limit 20

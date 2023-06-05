@@ -1,0 +1,18 @@
+parent_command:stocks/gov
+usage: qtrcontracts [-l LIMIT] [-a {total,upmom,downmom}] [--raw]
+
+Look at government contracts [Source: www.quiverquant.com]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of tickers to get (default: 5)
+  -a {total,upmom,downmom}, --analysis {total,upmom,downmom}
+                        Analysis to look at contracts. 'Total' shows summed contracts. 'Upmom' shows highest sloped contacts while 'downmom' shows highest decreasing slopes. (default: total)
+  --raw                 Print raw data. (default: False)
+
+
+Examples:
+- View the top 5 tickers with the highest sum of government contracts: stocks/gov/qtrcontracts
+- Display the top 10 tickers with the most increasing government contracts: stocks/gov/qtrcontracts -l 10 -a upmom
+- Show the top 3 tickers with the largest decrease in government contracts: stocks/gov/qtrcontracts -l 3 -a downmom
+- Retrieve the top 7 tickers with the highest sum of government contracts and display raw data: stocks/gov/qtrcontracts -l 7 --raw

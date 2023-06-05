@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: basic
+
+Get basic information for coin. Like: name, symbol, rank, type, description, platform, proof_type, contract, tags, parent
+
+basic
+Examples:
+- To get basic information for a coin: crypto/dd/basic
+- Retrieve essential details for a specific cryptocurrency: crypto/load <COIN>/dd/basic
+- Obtain fundamental data about a coin: crypto/dd/basic
+- Display core information for a particular crypto: crypto/load <COIN>/dd/basic
+- Access primary details of a cryptocurrency: crypto/dd/basic

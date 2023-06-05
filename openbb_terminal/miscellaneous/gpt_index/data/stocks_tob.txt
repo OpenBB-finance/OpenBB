@@ -1,0 +1,16 @@
+parent_command:stocks
+usage: tob [-t S_TICKER] [-e {BZX,EDGX,BYX,EDGA}]
+
+Get top of book for loaded ticker from selected exchange
+
+optional arguments:
+  -t S_TICKER, --ticker S_TICKER
+                        Ticker to get data for (default: None)
+  -e {BZX,EDGX,BYX,EDGA}, --exchange {BZX,EDGX,BYX,EDGA}
+
+
+Examples:
+- Get top of book for <SYMBOL> from BZX exchange: stocks/load <SYMBOL>/tob -e BZX
+- Retrieve top of book for a specific ticker from EDGX exchange: stocks/tob -t <SYMBOL> -e EDGX
+- Obtain top of book data for loaded ticker from BYX exchange: stocks/load <SYMBOL>/tob -e BYX
+- Access top of book information for a specified ticker on EDGA exchange: stocks/tob -t <SYMBOL> -e EDGA

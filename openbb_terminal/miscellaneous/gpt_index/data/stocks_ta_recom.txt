@@ -1,0 +1,27 @@
+parent_command:stocks/ta
+usage: recom [-s {australia,brazil,cfd,crypto,euronext,forex,france,germany,hongkong,india,indonesia,malaysia,philippines,russia,ksa,rsa,korea,spain,sweden,taiwan,thailand,turkey,uk,america,vietnam}] [-e EXCHANGE]
+             [-i {1m,5m,15m,1h,4h,1d,1W,1M}]
+
+Print tradingview recommendation based on technical indicators. [Source: Tradingview]
+
+optional arguments:
+  -s {australia,brazil,cfd,crypto,euronext,forex,france,germany,hongkong,india,indonesia,malaysia,philippines,russia,ksa,rsa,korea,spain,sweden,taiwan,thailand,turkey,uk,america,vietnam}, --screener {australia,brazil,cfd,crypto,euronext,forex,france,germany,hongkong,india,indonesia,malaysia,philippines,russia,ksa,rsa,korea,spain,sweden,taiwan,thailand,turkey,uk,america,vietnam}
+                        Screener. See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html (default: america)
+  -e EXCHANGE, --exchange EXCHANGE
+                        Set exchange. For Forex use: 'FX_IDC', and for crypto use 'TVC'. See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html. By default Alpha Vantage tries to get this data from the ticker.
+                        (default: )
+  -i {1m,5m,15m,1h,4h,1d,1W,1M}, --interval {1m,5m,15m,1h,4h,1d,1W,1M}
+                        Interval, that corresponds to the recommendation given by tradingview based on technical indicators. See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html (default: )
+
+
+Examples:
+- To get a tradingview recommendation for <SYMBOL> based on technical indicators in the US market with a daily interval: stocks/load <SYMBOL>/ta/recom -s america -i 1d
+- For a tradingview recommendation on <SYMBOL> in the UK market with a 1-hour interval: stocks/load <SYMBOL>/ta/recom -s uk -i 1h
+- To obtain a tradingview recommendation for <COIN> in the crypto market using a 4-hour interval: crypto/load <COIN>/ta/recom -s crypto -i 4h
+- Get a tradingview recommendation for <PAIR> in the forex market with a 15-minute interval: forex/load <PAIR>/ta/recom -s forex -i 15m
+- For a tradingview recommendation on <SYMBOL> in the German market with a weekly interval: stocks/load <SYMBOL>/ta/recom -s germany -i 1W
+- To receive a tradingview recommendation for <SYMBOL> in the Hong Kong market with a 1-month interval: stocks/load <SYMBOL>/ta/recom -s hongkong -i 1M
+- Obtain a tradingview recommendation for <SYMBOL> in the Brazilian market with a 5-minute interval: stocks/load <SYMBOL>/ta/recom -s brazil -i 5m
+- Get a tradingview recommendation for <FUTURE> in the CFD market with a 1-minute interval: futures/load <FUTURE>/ta/recom -s cfd -i 1m
+- For a tradingview recommendation on <SYMBOL> in the French market with a 1-day interval, specifying the exchange: stocks/load <SYMBOL>/ta/recom -s france -i 1d -e Euronext
+- To get a tradingview recommendation for <COIN> in the crypto market with a 1-hour interval, specifying the exchange: crypto/load <COIN>/ta/recom -s crypto -i 1h -e TVC

@@ -1,0 +1,15 @@
+parent_command:stocks/fa
+usage: mgmt [-t TICKER]
+
+Print management team. Namely: Name, Title, and Information from google [Source: Business Insider]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
+
+
+Examples:
+- To display the management team of a specific company: stocks/fa/mgmt -t <SYMBOL>
+- View the management information for a particular stock: stocks/load <SYMBOL>/fa/mgmt
+- Retrieve the management team details for a given ticker: stocks/fa/mgmt --ticker <SYMBOL>
+- Show the management team of a stock by using its ticker symbol: stocks/load <SYMBOL>/fa/mgmt

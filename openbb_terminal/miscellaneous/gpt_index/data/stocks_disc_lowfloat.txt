@@ -1,0 +1,15 @@
+parent_command:stocks/disc
+usage: lowfloat [-l LIMIT]
+
+Print top stocks with lowest float. LowFloat.com provides a convenient sorted database of stocks which have a float of under 10 million shares. Additional key data such as the number of outstanding shares, short interest, and
+company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        limit of stocks to display (default: 5)
+
+
+Examples:
+- To display the top 5 stocks with the lowest float: stocks/disc/lowfloat
+- To display the top 10 stocks with the lowest float: stocks/disc/lowfloat -l 10
+- For a custom number of stocks with the lowest float, use: stocks/disc/lowfloat --limit 15
