@@ -23,9 +23,12 @@ from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
 import openbb_terminal.core.session.local_model as Local
+from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
+from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.routines_handler import read_routine
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -692,6 +695,31 @@ class BaseController(metaclass=ABCMeta):
                 f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
             )
 
+            if not is_local():
+                routine = read_routine(file_name=routine_file)
+                if routine is not None:
+                    name = SESSION_RECORDED_NAME.split(sep=".openbb", maxsplit=-1)[0]
+                    response = Hub.upload_routine(
+                        auth_header=current_user.profile.get_auth_header(),
+                        name=name,
+                        routine=routine,
+                    )
+                    if response is not None and response.status_code == 409:
+                        i = console.input(
+                            "A routine with the same name already exists, "
+                            "do you want to replace it? (y/n): "
+                        )
+                        console.print("")
+                        if i.lower() in ["y", "yes"]:
+                            response = Hub.upload_routine(
+                                auth_header=current_user.profile.get_auth_header(),
+                                name=name,
+                                routine=routine,
+                                override=True,
+                            )
+                        else:
+                            console.print("[info]Aborted.[/info]")
+
             # Clear session to be recorded again
             RECORD_SESSION = False
             SESSION_RECORDED = list()
@@ -1000,10 +1028,8 @@ class BaseController(metaclass=ABCMeta):
                 # Process the input command
                 self.queue = self.switch(an_input)
 
-                if is_local() and an_input == "login":
-                    return ["login"]
-                if not is_local() and an_input == "logout":
-                    return ["logout"]
+                if get_show_prompt() and an_input in ("login", "logout"):
+                    return [an_input]
 
             except SystemExit:
                 if not self.contains_keys(an_input):

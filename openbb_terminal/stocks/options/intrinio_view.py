@@ -61,6 +61,10 @@ def display_historical(
         chain_id = f"{symbol}{''.join(expiry[2:].split('-'))}{'P' if put else 'C'}{str(int(1000*strike)).zfill(8)}"
         df_hist = intrinio_model.get_historical_options(chain_id)
 
+    if df_hist.empty:
+        console.print(f"[red]No data found for {chain_id}[/red]")
+        return None
+
     if raw:
         print_rich_table(
             df_hist,
@@ -71,13 +75,13 @@ def display_historical(
 
     df_hist.columns = [x.title() for x in df_hist.columns]
 
+    titles_list = [symbol, strike, op_type]
     fig = OpenBBFigure.create_subplots(
         rows=1,
         cols=1,
         specs=[[{"secondary_y": True}]],
         vertical_spacing=0.03,
-        subplot_titles=[f"{symbol} {strike} {op_type}"],
-    )
+    ).set_title(" ".join([str(x) for x in titles_list if x]))
 
     fig.add_candlestick(
         open=df_hist["Open"],
@@ -88,7 +92,7 @@ def display_historical(
         name=f"{symbol} OHLC",
         row=1,
         col=1,
-        secondary_y=True,
+        secondary_y=False,
     )
     fig.add_inchart_volume(df_hist)
     fig.hide_holidays()

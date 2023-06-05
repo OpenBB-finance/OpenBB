@@ -16,29 +16,9 @@ import ResizeHandler from "./ResizeHandler";
 import ChangeColor from "./ChangeColor";
 import clsx from "clsx";
 import DownloadFinishedDialog from "./Dialogs/DownloadFinishedDialog";
+import AlertDialog from "./Dialogs/AlertDialog";
 
 const Plot = createPlotlyComponent(Plotly);
-
-function CreateDataXrangeChunks(data: Plotly.PlotData[], xrange?: any) {
-	const chunks = [];
-	let chunk = [];
-	const XDATA = data.filter(
-		(trace) =>
-			trace.x !== undefined && trace.x.length > 0 && trace.x[0] !== undefined,
-	);
-	const xaxis = XDATA[0]?.x ? XDATA[0].x : XDATA[1].x ? XDATA[1].x : [];
-	for (let i = 0; i < xaxis.length; i++) {
-		if (xaxis[i] >= xrange[0] && xaxis[i] <= xrange[1]) {
-			chunk.push(i);
-		} else if (chunk.length > 0) {
-			chunks.push(chunk);
-			chunk = [];
-		}
-	}
-
-	if (chunk.length > 0) chunks.push(chunk);
-	return chunks;
-}
 
 function CreateDataXrange(data: Plotly.PlotData[], xrange?: any) {
 	if (!xrange) {
@@ -47,28 +27,41 @@ function CreateDataXrange(data: Plotly.PlotData[], xrange?: any) {
 			data[0]?.x[data[0].x.length - 1],
 		];
 	}
-	const chunks = CreateDataXrangeChunks(data, xrange);
 	const new_data = [];
-	chunks.forEach((chunk) => {
-		data.forEach((trace) => {
-			const new_trace = { ...trace };
-			const data_keys = ["x", "y", "low", "high", "open", "close", "text"];
-			data_keys.forEach((key) => {
-				if (trace[key] && Array.isArray(trace[key])) {
-					new_trace[key] = trace[key].filter((_, i) => chunk.includes(i));
-				}
-			});
-			const color_keys = ["marker", "line"];
-			color_keys.forEach((key) => {
-				if (trace[key]?.color && Array.isArray(trace[key].color)) {
-					new_trace[key] = { ...trace[key] };
-					new_trace[key].color = trace[key].color.filter((_, i) =>
-						chunk.includes(i),
-					);
-				}
-			});
-			new_data.push(new_trace);
+	data.forEach((trace) => {
+		const new_trace = { ...trace };
+		const data_keys = [
+			"x",
+			"y",
+			"low",
+			"high",
+			"open",
+			"close",
+			"text",
+			"customdata",
+		];
+		const xaxis = trace.x ? trace.x : [];
+		const chunks = [];
+		for (let i = 0; i < xaxis.length; i++) {
+			if (xaxis[i] >= xrange[0] && xaxis[i] <= xrange[1]) {
+				chunks.push(i);
+			}
+		}
+		data_keys.forEach((key) => {
+			if (trace[key] && Array.isArray(trace[key])) {
+				new_trace[key] = trace[key].filter((_, i) => chunks.includes(i));
+			}
 		});
+		const color_keys = ["marker", "line"];
+		color_keys.forEach((key) => {
+			if (trace[key]?.color && Array.isArray(trace[key].color)) {
+				new_trace[key] = { ...trace[key] };
+				new_trace[key].color = trace[key].color.filter((_, i) =>
+					chunks.includes(i),
+				);
+			}
+		});
+		new_data.push(new_trace);
 	});
 
 	if (new_data.length === 0) return data;
@@ -149,6 +142,7 @@ export default function Chart({
 	const [volumeBars, setVolumeBars] = useState({ old_nticks: {} });
 	const [maximizePlot, setMaximizePlot] = useState(false);
 	const [downloadFinished, setDownloadFinished] = useState(false);
+	const [dateSliced, setDateSliced] = useState(false);
 
 	const [plotData, setPlotData] = useState(originalData);
 	const [annotations, setAnnotations] = useState([]);
@@ -159,20 +153,9 @@ export default function Chart({
 	const [colorActive, setColorActive] = useState(false);
 	const [onAnnotationClick, setOnAnnotationClick] = useState({});
 	const [ohlcAnnotation, setOhlcAnnotation] = useState([]);
+	const [yaxisFixedRange, setYaxisFixedRange] = useState({});
 
 	const onClose = () => setModal({ name: "" });
-
-	useEffect(() => {
-		if (!plotLoaded) {
-			if (
-				originalData.data[0]?.x !== undefined &&
-				originalData.data[0]?.x.length <= 1000
-			)
-				return;
-			const new_data = CreateDataXrange(originalData.data);
-			setPlotData({ ...originalData, data: new_data });
-		}
-	}, [plotLoaded]);
 
 	// @ts-ignore
 	function onDeleteAnnotation(annotation) {
@@ -266,20 +249,57 @@ export default function Chart({
 		let active = true;
 
 		if (button.style.border === "transparent") {
+			plotDiv.removeAllListeners("plotly_relayout");
 			active = false;
 			plotDiv.on(
 				"plotly_relayout",
 				non_blocking(async function (eventdata) {
 					if (eventdata["xaxis.range[0]"] === undefined) return;
-
-					const to_update = await autoScaling(eventdata, plotDiv);
-					Plotly.update(plotDiv, {}, to_update);
+					if (dateSliced) {
+						const data = { ...originalData };
+						await DynamicLoad({
+							event: eventdata,
+							figure: data,
+						}).then(async (to_update) => {
+							setPlotData(to_update);
+							Plotly.react(plotDiv, to_update.data, to_update.layout);
+							const scaled = await autoScaling(eventdata, plotDiv);
+							setYaxisFixedRange(scaled.yaxis_fixedrange);
+							Plotly.update(plotDiv, {}, scaled.to_update);
+						});
+					} else {
+						const scaled = await autoScaling(eventdata, plotDiv);
+						setYaxisFixedRange(scaled.yaxis_fixedrange);
+						Plotly.update(plotDiv, {}, scaled.to_update);
+					}
 				}, 100),
 			);
 		}
 		// If the button isn't active, we remove the listener so
 		// the graphs don't autoscale anymore
-		else plotDiv.removeAllListeners("plotly_relayout");
+		else {
+			plotDiv.removeAllListeners("plotly_relayout");
+			yaxisFixedRange.forEach((yaxis) => {
+				plotDiv.layout[yaxis].fixedrange = false;
+			});
+			setYaxisFixedRange({});
+			if (dateSliced) {
+				plotDiv.on(
+					"plotly_relayout",
+					non_blocking(async function (eventdata) {
+						if (eventdata["xaxis.range[0]"] === undefined) return;
+						const data = { ...originalData };
+						await DynamicLoad({
+							event: eventdata,
+							figure: data,
+						}).then(async (to_update) => {
+							setPlotData(to_update);
+							Plotly.react(plotDiv, to_update.data, to_update.layout);
+						});
+					}, 100),
+				);
+			}
+		}
 
 		button_pressed(title, active);
 	}
@@ -470,26 +490,32 @@ export default function Chart({
 					Plotly.relayout(plotDiv, layout_update);
 				}
 			});
-			plotDiv.on(
-				"plotly_relayout",
-				non_blocking(async function (eventdata) {
-					if (eventdata["xaxis.range[0]"] === undefined) return;
-					const data = { ...originalData };
-					const to_update = DynamicLoad({
-						event: eventdata,
-						figure: data,
-					});
-					const newPlotData = await to_update;
-					setPlotData(newPlotData);
 
-					Plotly.react(plotDiv, newPlotData.data, newPlotData.layout);
-					const scaled = await autoScaling(eventdata, plotDiv);
-					Plotly.update(plotDiv, {}, scaled);
-				}, 10),
-			);
 			if (theme !== "dark") {
 				setChangeTheme(true);
 			}
+
+			const traceTypes = originalData.data.map(
+				(trace) => trace.type === "candlestick",
+			);
+			if (
+				(originalData.data[0]?.x !== undefined &&
+					originalData.data[0]?.x.length <= 1000) ||
+				!traceTypes.includes(true)
+			)
+				return;
+			setModal({
+				name: "alertDialog",
+				data: {
+					title: "Warning",
+					content: `Data has been truncated to 1000 points for performance reasons.
+						Please use the zoom tool to see more data.`,
+				},
+			});
+			const new_data = CreateDataXrange(originalData.data);
+			setPlotData({ ...originalData, data: new_data });
+			setDateSliced(true);
+			setAutoScaling(true);
 		}
 	}, [plotLoaded]);
 
@@ -523,6 +549,12 @@ export default function Chart({
 				<div id="loading_text" className="loading_text" />
 				<div id="loader" className="loader" />
 			</div>
+			<AlertDialog
+				title={modal?.data?.title}
+				content={modal?.data?.content}
+				open={modal.name === "alertDialog"}
+				close={onClose}
+			/>
 			<OverlayChartDialog
 				addOverlay={(overlay) => {
 					console.log(overlay);
