@@ -378,6 +378,9 @@ class TerminalController(BaseController):
             help="GPT Model to use for Askobb LLM (default: gpt-3.5-turbo) or gpt-4 (beta)",
         )
 
+        if other_args and "-q" not in other_args:
+            other_args.insert(0, "-q")
+
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -390,7 +393,9 @@ class TerminalController(BaseController):
                     "[red]Please enter a question with more than 2 words[/red]"
                 )
             else:
-                console.print("[yellow]Thinking... This may take a few moments.\n[/yellow]")
+                console.print(
+                    "[yellow]Thinking... This may take a few moments.\n[/yellow]"
+                )
                 response = query_LLM(" ".join(ns_parser.question), ns_parser.gpt_model)
 
                 if response is not None:
