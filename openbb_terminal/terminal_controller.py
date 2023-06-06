@@ -337,29 +337,40 @@ class TerminalController(BaseController):
     def call_askobb(self, other_args: List[str]) -> None:
         """Accept user input as a string and return the most appropriate Terminal command"""
         self.save_class()
-        argparse.ArgumentParser(
+        parser = argparse.ArgumentParser(
             add_help=False,
             prog="askobb",
             description="Accept input as a string and return the most appropriate Terminal command",
         )
+        parser.add_argument(
+            "--question",
+            "-q",
+            action="store",
+            type=str,
+            nargs="+",
+            dest="question",
+            required=False,
+            default="",
+            help="Question for Askobb LLM",
+        )
 
-        if other_args:
-            # if the user passed '-h' or '--help' as an argument, print the help message
-            if (
-                "-h" in other_args
-                or "--help" in other_args
-                or "help" in other_args
-                or "-help" in other_args
-            ):
+        if other_args and "-q" not in other_args:
+            other_args.insert(0, "-q")
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
+
+        if ns_parser:
+            # check if user has passed a question with more than 2 words
+            if len(ns_parser.question) <= 2:
                 console.print(
-                    "[yellow]Askobb accepts a user input as a string and"
-                    " return the most appropriate Terminal command [/yellow]"
+                    "[red]Please enter a question with more than 2 words[/red]"
                 )
-                console.print("Example Usage: askobb load btc\n")
                 return
 
             console.print("Thinking... This may take a few moments.\n")
-            response = query_LLM(" ".join(other_args))
+            response = query_LLM(" ".join(ns_parser.question))
 
             if "I don't know" not in response:
                 console.print(
