@@ -423,6 +423,8 @@ class TerminalController(BaseController):
                             self.queue.append(response)
                         elif user_response == "n":
                             console.print("Please refine your question and try again.")
+                        else:
+                            return
 
                     else:
                         console.print(
