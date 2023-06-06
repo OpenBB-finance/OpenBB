@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 SOURCES = ["CBOE", "YahooFinance", "Tradier", "Intrinio", "Nasdaq", "TMX"]
 
-# mypy: disable-error-code=attr-defined
+# mypy: disable-error-code="attr-defined, index"
 
 
 @log_start_end(log=logger)
