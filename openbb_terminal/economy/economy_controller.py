@@ -1937,7 +1937,7 @@ class EconomyController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="events",
             description="Economic calendar. If no start or end dates,"
-                        "default is the current day high importance events.",
+            "default is the current day high importance events.",
         )
         parser.add_argument(
             "-c",
