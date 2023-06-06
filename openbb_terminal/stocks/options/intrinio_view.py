@@ -112,11 +112,11 @@ def display_historical(
 
 @log_start_end(log=logger)
 def view_historical_greeks(
-    symbol: Optional[str] = None,
-    expiry: Optional[str] = None,
-    strike: Union[float, str] = None,
+    symbol: str = "",
+    expiry: str = "",
+    strike: Union[float, str] = 0,
     greek: str = "Delta",
-    chain_id: Optional[str] = None,
+    chain_id: str = "",
     put: bool = False,
     raw: bool = False,
     limit: Union[int, str] = 20,
@@ -124,7 +124,7 @@ def view_historical_greeks(
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[None, OpenBBFigure]:
-    """Plots historical greeks for a given option. [Source: Syncretism]
+    """Plots historical greeks for a given option.
 
     Parameters
     ----------
