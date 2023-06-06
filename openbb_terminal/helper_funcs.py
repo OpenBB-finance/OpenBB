@@ -42,33 +42,30 @@ from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
+import shutil
 from langchain.chat_models import ChatOpenAI
+
 from llama_index import (
-    GPTSimpleVectorIndex,
     SimpleDirectoryReader,
-    PromptHelper,
+    GPTVectorStoreIndex,
     LLMPredictor,
+    PromptHelper,
+    StorageContext,
+    load_index_from_storage,
 )
 
-from openbb_terminal import (
-    OpenBBFigure,
-    plots_backend,
-)
-
+from openbb_terminal import OpenBBFigure, plots_backend
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
 )
-from openbb_terminal.decorators import check_api_key
-
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
-
-# logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
-# logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 logger = logging.getLogger(__name__)
 
@@ -88,10 +85,10 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
-LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
-
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
 GPT_MODEL_NAME = "gpt-3.5-turbo"
+GPT_INDEX_VER = 1
+
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
@@ -322,6 +319,9 @@ def print_rich_table(
     enable_interactive = (
         current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
     )
+
+    # Make a copy of the dataframe to avoid SettingWithCopyWarning
+    df = df.copy()
 
     show_index = not isinstance(df.index, pd.RangeIndex) and show_index
     #  convert non-str that are not timestamp or int into str
@@ -1473,7 +1473,7 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     current_user = get_current_user()
     if current_user.preferences.FILE_OVERWRITE:
         return False, True
-    if os.environ.get("TEST_MODE") == "True":
+    if get_current_system().TEST_MODE:
         return False, True
     if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
@@ -2171,16 +2171,13 @@ def generate_index():
     max_input_size = 4096
     # set number of output tokens
     num_output = 256
-    # set maximum chunk overlap
-    max_chunk_overlap = 20
-    prompt_helper = PromptHelper(max_input_size, num_output, max_chunk_overlap)
+    prompt_helper = PromptHelper(max_input_size, num_output)
 
-    index = GPTSimpleVectorIndex(
-        documents=documents, llm_predictor=llm_predictor, prompt_helper=prompt_helper
+    index = GPTVectorStoreIndex.from_documents(
+        documents, llm_predictor=llm_predictor, prompt_helper=prompt_helper
     )
 
     return index
-
 
 @check_api_key(["API_OPENAI_KEY"])
 def query_LLM(query_text):
@@ -2188,15 +2185,30 @@ def query_LLM(query_text):
     current_user = get_current_user()
     os.environ["OPENAI_API_KEY"] = current_user.credentials.API_OPENAI_KEY
 
-    if os.path.exists(GPT_INDEX_DIRECTORY / "index.json"):
-        index = GPTSimpleVectorIndex.load_from_disk(
-            save_path=GPT_INDEX_DIRECTORY / "index.json"
-        )
+    index_path = GPT_INDEX_DIRECTORY / f"index_{GPT_INDEX_VER}.json"
+    old_index_paths = [
+        str(x) for x in GPT_INDEX_DIRECTORY.glob("index_*.json") if x != index_path
+    ]
+
+    if os.path.exists(index_path):
+        # rebuild storage context
+        storage_context = StorageContext.from_defaults(persist_dir=index_path)
+        index = load_index_from_storage(storage_context=storage_context)
     else:
+        # If the index file doesn't exist or is of incorrect version, generate a new one
+        # First, remove old version(s), if any
+        for path in old_index_paths:
+            if os.path.isfile(path):
+                os.remove(path)
+            elif os.path.isdir(path):
+                shutil.rmtree(path)
+
+        # Then, generate and save new index
         index = generate_index()
 
         # save to disk
-        index.save_to_disk(save_path=GPT_INDEX_DIRECTORY / "index.json")
+        console.print("Saving index to disk....\n")
+        index.storage_context.persist(index_path)
 
     prompt_string = f"""From argparse help text above, provide the terminal command
     for {query_text}. Don't add any other word such as 'Command to get', 'Answer' or the likes.
@@ -2207,7 +2219,8 @@ def query_LLM(query_text):
     3. Never provide a final command with <SYMBOL> or <COIN> as the final result, always
     come up with a sample to replace any keywords in <...> .
     """
-
-    response = index.query(prompt_string)
+    query_engine = index.as_query_engine()
+    response = query_engine.query(prompt_string)
 
     return response.response
+
