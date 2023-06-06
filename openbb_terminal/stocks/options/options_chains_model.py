@@ -901,7 +901,6 @@ def calculate_vertical_call_spread(
     return pd.DataFrame()
 
 
-# %%
 def calculate_vertical_put_spread(
     options: object,
     days: Optional[int] = 30,
@@ -1040,7 +1039,6 @@ def calculate_vertical_put_spread(
     return pd.DataFrame()
 
 
-# %%
 @log_start_end(log=logger)
 def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.DataFrame:
     """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
@@ -1072,30 +1070,67 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
         print("Invalid choice.  The supported methods are: [expiration, strike]")
         return pd.DataFrame()
 
-    chains = validate_object(options, scope="chains")
+    chains = deepcopy(options)
+    last_price = chains.last_price if hasattr(chains, "last_price") else None
+    chains = validate_object(chains, scope="chains")
 
     if chains.empty or chains is None:
         return chains == pd.DataFrame()
 
     stats = pd.DataFrame()
+
     stats["Puts OI"] = (
         chains[chains["optionType"] == "put"]
-        .groupby(f"{by}")
-        .sum(numeric_only=True)[["openInterest"]]
+        .groupby(f"{by}")[["openInterest"]]
+        .sum(numeric_only=True)
         .astype(int)
     )
     stats["Calls OI"] = (
         chains[chains["optionType"] == "call"]
-        .groupby(f"{by}")
-        .sum(numeric_only=True)[["openInterest"]]
+        .groupby(f"{by}")[["openInterest"]]
+        .sum(numeric_only=True)
         .astype(int)
     )
     stats["Total OI"] = stats["Calls OI"] + stats["Puts OI"]
     stats["OI Ratio"] = round(stats["Puts OI"] / stats["Calls OI"], 2)
+
+    if by == "expiration" and last_price:
+        stats["Puts OTM"] = (
+            chains.query("`optionType` == 'put' & `strike` < @last_price")
+            .groupby("expiration")[["openInterest"]]
+            .sum(numeric_only=True)
+        )
+        stats["Calls OTM"] = (
+            chains.query("`optionType` == 'call' & `strike` > @last_price")
+            .groupby("expiration")[["openInterest"]]
+            .sum(numeric_only=True)
+        )
+        stats["Puts ITM"] = (
+            chains.query("`optionType` == 'put' & `strike` > @last_price")
+            .groupby("expiration")[["openInterest"]]
+            .sum(numeric_only=True)
+        )
+        stats["Calls ITM"] = (
+            chains.query("`optionType` == 'call' & `strike` < @last_price")
+            .groupby("expiration")[["openInterest"]]
+            .sum(numeric_only=True)
+        )
+        stats["OTM Ratio"] = round(stats["Puts OTM"] / stats["Calls OTM"], 2)
+        stats["ITM Percent"] = round(
+            (stats["Puts ITM"] + stats["Calls ITM"]) / stats["Total OI"] * 100, 2
+        )
+        if last_price:
+            straddle_cost = (
+                get_strategies(options, straddle_strike=last_price)
+                .rename(columns={"expiration": "Expiration"})
+                .set_index("Expiration")[["Cost"]]
+            )
+            stats["Straddle Cost"] = straddle_cost
+
     stats["Puts Volume"] = (
         chains[chains["optionType"] == "put"]
-        .groupby(f"{by}")
-        .sum(numeric_only=True)[["volume"]]
+        .groupby(f"{by}")[["volume"]]
+        .sum(numeric_only=True)
         .astype(int)
     )
     stats["Calls Volume"] = (
@@ -1108,18 +1143,21 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
     stats["Volume Ratio"] = round(stats["Puts Volume"] / stats["Calls Volume"], 2)
     stats["Vol-OI Ratio"] = round(stats["Total Volume"] / stats["Total OI"], 2)
 
+    if by == "strike":
+        stats.rename_axis("Strike", inplace=True)
+    stats.rename_axis("Expiration", inplace=True)
+
     return stats.replace([np.nan, np.inf], "")
 
 
-# %%
 @log_start_end(log=logger)
 def get_strategies(
     options: object,
     days: Optional[list[int]] = None,
     straddle_strike: Optional[float] = 0,
     strangle_moneyness: Optional[list[float]] = None,
-    call_strikes: Optional[list[float]] = None,
-    put_strikes: Optional[list[float]] = None,
+    vertical_calls: Optional[list[float]] = None,
+    vertical_puts: Optional[list[float]] = None,
 ) -> pd.DataFrame:
     """Gets options strategies for all, or a list of, DTE(s).
     Currently supports straddles, strangles, and vertical spreads.
@@ -1139,9 +1177,9 @@ def get_strategies(
     strangle_moneyness: list[float]
         List of OTM moneyness to target, expressed as a percent value between 0 and 100.
         Enter a single value, or multiple as a list. Defaults to 5.
-    call_strikes: list[float]
+    vertical_calls: list[float]
         Call strikes for vertical spreads, listed as [sold strike, bought strike].
-    put_strikes: list[float]
+    vertical_puts: list[float]
         Put strikes for vertical spreads, listed as [sold strike, bought strike].
     Returns
     -------
@@ -1152,16 +1190,20 @@ def get_strategies(
     --------
     Load data
     >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
-    >>> data = OptionsChains().load_options_chains("SPY")
+    >>> op = OptionsChains()
+    >>> data = op.load_options_chains("SPY")
 
     Return just straddles
-    >>> OptionsChains().get_strategies(data)
+    >>> op.get_strategies(data)
 
     Return strangles
-    >>> OptionsChains().get_strategies(data)
+    >>> op.get_strategies(data)
 
-    Return both at 2.5, 5, 10, and 20 moneyness, and at 10,30,60, and 90 DTE.
-    >>> OptionsChains().get_strategies(data, days = [10,30,60,90], moneyness = [2.5,5,10,20])
+    Return multiple values for both moneness and days:
+    >>> op.get_strategies(data, days = [10,30,60,90], moneyness = [2.5,-5,10,-20])
+
+    Return vertical spreads for all expirations.
+    >>> op.get_strategies(data, vertical_calls=[430,427], vertical_puts=[420,426])
     """
     if strangle_moneyness is None:
         strangle_moneyness = [0.0]
@@ -1173,12 +1215,12 @@ def get_strategies(
     # Allows a single input to be passed instead of a list.
     days = [days] if isinstance(days, int) else days  # type: ignore[list-item]
 
-    if not isinstance(call_strikes, (list, float)) and call_strikes is not None:
+    if not isinstance(vertical_calls, (list, float)) and vertical_calls is not None:
         print(
             "Two strike prices are required. Enter the sold price first, then the bought price."
         )
         return pd.DataFrame()
-    if not isinstance(put_strikes, (list, float)) and put_strikes is not None:
+    if not isinstance(vertical_puts, (list, float)) and vertical_puts is not None:
         print(
             "Two strike prices are required. Enter the sold price first, then the bought price."
         )
@@ -1214,18 +1256,18 @@ def get_strategies(
         days_list.append(get_nearest_dte(options, day))
     days = list(set(days_list))
 
-    if call_strikes:
-        cStrike1 = call_strikes[0]
-        cStrike2 = call_strikes[1]
+    if vertical_calls:
+        cStrike1 = vertical_calls[0]
+        cStrike2 = vertical_calls[1]
         for day in days:
             call_spread = calculate_vertical_call_spread(
                 options, day, cStrike1, cStrike2
             ).transpose()
             call_spreads = pd.concat([call_spreads, call_spread])
 
-    if put_strikes:
-        pStrike1 = put_strikes[0]
-        pStrike2 = put_strikes[1]
+    if vertical_puts:
+        pStrike1 = vertical_puts[0]
+        pStrike2 = vertical_puts[1]
         for day in days:
             put_spread = calculate_vertical_put_spread(
                 options, day, pStrike1, pStrike2
@@ -1298,6 +1340,3 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
         self.calculate_straddle: Callable = calculate_straddle
         self.calculate_strangle: Callable = calculate_strangle
         self.get_strategies: Callable = get_strategies
-
-
-# %%
