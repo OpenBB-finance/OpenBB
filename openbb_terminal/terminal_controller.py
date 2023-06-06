@@ -389,38 +389,37 @@ class TerminalController(BaseController):
                 console.print(
                     "[red]Please enter a question with more than 2 words[/red]"
                 )
-                return
+            else:
+                console.print("[yellow]Thinking... This may take a few moments.\n[/yellow]")
+                response = query_LLM(" ".join(ns_parser.question), ns_parser.gpt_model)
 
-            console.print("[yellow]Thinking... This may take a few moments.\n[/yellow]")
-            response = query_LLM(" ".join(ns_parser.question), ns_parser.gpt_model)
+                if response is not None:
+                    # check that "I don't know" and "Sorry" is not the response
+                    if (
+                        "I don't know" not in response
+                        and "Sorry" not in response
+                        and "I am not sure" not in response
+                        and "no terminal command provided" not in response
+                    ):
+                        console.print(f"[green]Suggested Command: {response}[/green]\n")
+                        console.print(
+                            "If this command does not work, please refine your question and try again."
+                        )
 
-            if response is not None:
-                # check that "I don't know" and "Sorry" is not the response
-                if (
-                    "I don't know" not in response
-                    and "Sorry" not in response
-                    and "I am not sure" not in response
-                    and "no terminal command provided" not in response
-                ):
-                    console.print(f"[green]Suggested Command: {response}[/green]\n")
-                    console.print(
-                        "If this command does not work, please refine your question and try again."
-                    )
+                        console.print(
+                            "[yellow]Would you like to run this command?(y/n)[/yellow]"
+                        )
+                        user_response = input()
+                        if user_response == "y":
+                            self.queue.append(response)
+                        elif user_response == "n":
+                            console.print("Please refine your question and try again.")
 
-                    console.print(
-                        "[yellow]Would you like to run this command?(y/n)[/yellow]"
-                    )
-                    user_response = input()
-                    if user_response == "y":
-                        self.queue.append(response)
-                    elif user_response == "n":
-                        return
-
-                else:
-                    console.print(
-                        "[red]AskObb could not respond with an appropriate answer.[/red]"
-                    )
-                    console.print("Please refine your question and try again.")
+                    else:
+                        console.print(
+                            "[red]AskObb could not respond with an appropriate answer.[/red]"
+                        )
+                        console.print("Please refine your question and try again.")
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
