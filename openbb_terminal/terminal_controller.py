@@ -344,11 +344,27 @@ class TerminalController(BaseController):
         )
 
         if other_args:
+            # if the user passed '-h' or '--help' as an argument, print the help message
+            if (
+                "-h" in other_args
+                or "--help" in other_args
+                or "help" in other_args
+                or "-help" in other_args
+            ):
+                console.print(
+                    "[yellow]Askobb accepts a user input as a string and"
+                    " return the most appropriate Terminal command [/yellow]"
+                )
+                console.print("Example Usage: askobb load btc\n")
+                return
+
             console.print("Thinking... This may take a few moments.\n")
             response = query_LLM(" ".join(other_args))
 
             if "I don't know" not in response:
-                console.print(f"[green]Suggested Command (Experimental): {response}[/green]\n")
+                console.print(
+                    f"[green]Suggested Command (Experimental): {response}[/green]\n"
+                )
                 console.print(
                     "If this command does not work, please refine your question and try again."
                 )
