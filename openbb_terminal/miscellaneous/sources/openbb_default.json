@@ -51,15 +51,6 @@
         "FDScanner"
       ],
       "calc": [],
-      "screen": {
-        "view": [
-          "Syncretism"
-        ],
-        "set": [],
-        "scr": [
-          "Syncretism"
-        ]
-      },
       "load": [
         "YahooFinance",
         "Tradier",
@@ -81,7 +72,6 @@
         "YahooFinance"
       ],
       "grhist": [
-        "Syncretism",
         "Intrinio"
       ],
       "plot": [

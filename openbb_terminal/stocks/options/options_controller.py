@@ -43,11 +43,6 @@ from openbb_terminal.stocks.options.options_view import (
     plot_voi,
     plot_vol,
 )
-from openbb_terminal.stocks.options.screen import (
-    screener_controller,
-    syncretism_model,
-    syncretism_view,
-)
 
 # pylint: disable=R1710,C0302,R0916,R0902
 
@@ -85,11 +80,8 @@ class OptionsController(BaseController):
     ]
     CHOICES_MENUS = [
         "pricing",
-        "screen",
         "hedge",
     ]
-
-    preset_choices = syncretism_model.get_preset_choices()
 
     grhist_greeks_choices = [
         "iv",
@@ -261,8 +253,6 @@ class OptionsController(BaseController):
         mt = MenuText("stocks/options/")
         mt.add_cmd("unu")
         mt.add_cmd("calc")
-        mt.add_raw("\n")
-        mt.add_menu("screen")
         mt.add_raw("\n")
         mt.add_cmd("load")
         mt.add_cmd("exp", self.ticker)
@@ -526,8 +516,15 @@ class OptionsController(BaseController):
             "--strike",
             dest="strike",
             type=float,
-            required="--chain" not in other_args and "-h" not in other_args,
             help="Strike price to look at",
+        )
+        parser.add_argument(
+            "-e",
+            "--expiration",
+            dest="expiration",
+            type=str,
+            default=self.selected_date,
+            help="The expiration date of the option. Format: YYYY-MM-DD",
         )
         parser.add_argument(
             "-p",
@@ -552,6 +549,7 @@ class OptionsController(BaseController):
             dest="chain_id",
             default="",
             type=str,
+            required="--strike" not in other_args and "-h" not in other_args,
             help="OCC option symbol",
         )
         parser.add_argument(
@@ -575,8 +573,12 @@ class OptionsController(BaseController):
         if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         ):
-            if self.ticker or "--chain" in other_args:
-                if self.selected_date or "--chain" in other_args:
+            if self.ticker or ns_parser.chain_id in other_args:
+                if (
+                    self.selected_date
+                    or ns_parser.expiration in other_args
+                    or ns_parser.chain_id
+                ):
                     if (
                         not self.chain.empty
                         and (
@@ -591,38 +593,24 @@ class OptionsController(BaseController):
                                 in [float(strike) for strike in self.chain["strike"]]
                             )
                         )
-                        or "--chain" in other_args
+                        or ns_parser.chain_id in other_args
                     ):
-                        if ns_parser.source == "Syncretism":
-                            syncretism_view.view_historical_greeks(
-                                symbol=self.ticker,
-                                expiry=self.selected_date,
-                                strike=ns_parser.strike,
-                                greek=ns_parser.greek,
-                                chain_id=ns_parser.chain_id,
-                                put=ns_parser.put,
-                                raw=ns_parser.raw,
-                                limit=ns_parser.limit,
-                                export=ns_parser.export,
-                                sheet_name=" ".join(ns_parser.sheet_name)
-                                if ns_parser.sheet_name
-                                else None,
-                            )
-                        if ns_parser.source == "Intrinio":
-                            intrinio_view.view_historical_greeks(
-                                symbol=self.ticker,
-                                expiry=self.selected_date,
-                                strike=ns_parser.strike,
-                                greek=ns_parser.greek,
-                                chain_id=ns_parser.chain_id,
-                                put=ns_parser.put,
-                                raw=ns_parser.raw,
-                                limit=ns_parser.limit,
-                                export=ns_parser.export,
-                                sheet_name=" ".join(ns_parser.sheet_name)
-                                if ns_parser.sheet_name
-                                else None,
-                            )
+                        intrinio_view.view_historical_greeks(
+                            symbol=self.ticker,
+                            expiry=ns_parser.expiration
+                            if ns_parser.expiration
+                            else self.selected_date,
+                            strike=ns_parser.strike,
+                            greek=ns_parser.greek,
+                            chain_id=ns_parser.chain_id,
+                            put=ns_parser.put,
+                            raw=ns_parser.raw,
+                            limit=ns_parser.limit,
+                            export=ns_parser.export,
+                            sheet_name=" ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None,
+                        )
                     else:
                         console.print("No correct strike input")
                 else:
@@ -1417,11 +1405,6 @@ class OptionsController(BaseController):
 
         else:
             console.print("No ticker loaded. First use `load <ticker>`")
-
-    @log_start_end(log=logger)
-    def call_screen(self, _):
-        """Process screen command"""
-        self.queue = screener_controller.ScreenerController(self.queue).menu()
 
     @log_start_end(log=logger)
     def call_eodchain(self, other_args: List[str]):
