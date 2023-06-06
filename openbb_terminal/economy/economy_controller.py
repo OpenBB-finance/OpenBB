@@ -81,7 +81,6 @@ class EconomyController(BaseController):
         "bigmac",
         "events",
         "edebt",
-        "askobb",
     ]
 
     CHOICES_MENUS = [

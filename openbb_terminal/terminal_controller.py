@@ -348,7 +348,7 @@ class TerminalController(BaseController):
             response = query_LLM(" ".join(other_args))
 
             if "I don't know" not in response:
-                console.print(f"[green]Suggested Command: {response}[/green]\n")
+                console.print(f"[green]Suggested Command (Experimental): {response}[/green]\n")
                 console.print(
                     "If this command does not work, please refine your question and try again."
                 )
