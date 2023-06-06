@@ -349,7 +349,7 @@ class TerminalController(BaseController):
             if "I don't know" not in response:
                 console.print(f"[green]Suggested Command: {response}[/green]")
                 console.print(
-                    f"[green]If this command does not work, please refine your question.[/green]"
+                    "[green]If this command does not work, please refine your question.[/green]"
                 )
                 # To run the command automatically, uncomment the line below.
                 # Left untouched for testing currently
@@ -357,7 +357,7 @@ class TerminalController(BaseController):
             else:
                 console.print(f"[red]{response}[/red]")
                 console.print(
-                    f"[green]Please refine your question and try again.[/green]"
+                    "[green]Please refine your question and try again.[/green]"
                 )
 
     def call_guess(self, other_args: List[str]) -> None:

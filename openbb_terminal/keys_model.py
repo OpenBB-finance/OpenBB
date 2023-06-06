@@ -21,9 +21,10 @@ import stocksera
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI
 from oandapyV20 import API as oanda_API
+import openai
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
-import openai
+
 
 from openbb_terminal.core.session.current_user import get_current_user, set_credential
 from openbb_terminal.core.session.env_handler import write_to_dotenv
@@ -2923,6 +2924,7 @@ def check_openai_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
         except openai.error.APIError as e:
+            console.print(e)
             # Handle other API errors
             logger.warning("OpenAI key defined, test inclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE

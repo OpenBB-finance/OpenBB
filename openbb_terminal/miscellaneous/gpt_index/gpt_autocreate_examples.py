@@ -1,12 +1,12 @@
 """
 To run: python gpt_autocreate_examples.py
 """
-import os
-import time
 import openai
+import os
+from pathlib import Path
 import random
 from tqdm import tqdm
-from pathlib import Path
+import time
 
 from openbb_terminal.core.session.current_user import get_current_user
 
@@ -88,16 +88,16 @@ for file_name in tqdm(os.listdir(folder_path)):
             parent_command: stocks/options/
             usage: oi [-m MIN] [-M MAX] [-c] [-p] [-e] [-h] [--export EXPORT][--sheet-name SHEET_NAME [SHEET_NAME ...]]
             [--raw]       [--source ]  Plot open interest. Open interest represents the number of contracts that exist.
-              optional arguments:   -m MIN, --min MIN     Min strike to plot (default: -1)   -M MAX, --max MAX     Max
-              strike to plot (default: -1)   -c, --calls   Flag to plot call options only (default: False)   -p, --puts
-              Flag to plot put options only (default: False)   -e, --expiration                Select expiration
-              date (YYYY-MM-DD) (default: )   -h, --help            show this help message (default: False)
-              --export EXPORT       Export raw data into csv, json, xlsx and figure into
-              png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]
-              Name of excel sheet to save data to. Only valid for
-              .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)   --source
-              Data source to select from (default: YahooFinance)  For more information and examples, use 'about oi'
-              to access the related guide.
+            optional arguments:   -m MIN, --min MIN     Min strike to plot (default: -1)   -M MAX, --max MAX     Max
+            strike to plot (default: -1)   -c, --calls   Flag to plot call options only (default: False)   -p, --puts
+            Flag to plot put options only (default: False)   -e, --expiration                Select expiration
+            date (YYYY-MM-DD) (default: )   -h, --help            show this help message (default: False)
+            --export EXPORT       Export raw data into csv, json, xlsx and figure into
+            png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]
+            Name of excel sheet to save data to. Only valid for
+            .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)   --source
+            Data source to select from (default: YahooFinance)  For more information and examples, use 'about oi'
+            to access the related guide.
 
             Examples:
             - Load <SYMBOL> and plot open interest for all options: stocks/load <SYMBOL>/options/oi
