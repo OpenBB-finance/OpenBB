@@ -324,7 +324,7 @@ def get_last_price(symbol: str) -> float:
 @log_start_end(log=logger)
 @check_api_key(["API_INTRINIO_KEY"])
 def get_historical_options(symbol: str) -> pd.DataFrame:
-    """Get historical EOD option prices for a given OCC chain label.
+    """Get historical EOD option prices, with Greeks, for a given OCC chain label.
 
     Parameters
     ----------

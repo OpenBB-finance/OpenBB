@@ -263,7 +263,7 @@ class StocksController(model.StocksRoot):
             `expirations`: Get Option Chain Expirations\n
             `generate_data`: Gets x values, and y values before and after premiums\n
             `greeks`: Gets the greeks for a given option\n
-            `grhist`: Get historical EOD option prices for a given OCC chain label.\n
+            `grhist`: Get historical EOD option prices, with Greeks, for a given OCC chain label.\n
             `grhist_chart`: Plots historical greeks for a given option.\n
             `hist`: Get historical option pricing.\n
             `info`: Scrape barchart for options info\n
