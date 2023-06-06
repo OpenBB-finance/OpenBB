@@ -1,11 +1,10 @@
-parent_command:stocks/ca
-usage: financial
+parent_command: stocks/ca/
+usage: financial [-h] [--export EXPORT]                  [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints screener data of similar companies. [Source: Finviz]  optional arguments:   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about financial' to access the related guide.
+Summary: Display screener data of companies similar to a specific stock symbol using Finviz as the data source. You can export the data in various formats and save the data to a specific excel sheet if needed.
 
-Prints screener data of similar companies. [Source: Finviz]
-
-financial
 Examples:
-- To display financial screener data for a specific company, first load the symbol and then use the financial command: stocks/load <SYMBOL>/ca/financial
-- Display financial data for a company by loading its symbol and printing similar companies' screener data: stocks/load <SYMBOL>/ca/financial
-- Load a stock symbol and retrieve financial screener data for similar companies: stocks/load <SYMBOL>/ca/financial
-- To view financial screener data for companies similar to a specific stock, load the stock symbol and use the financial command: stocks/load <SYMBOL>/ca/financial
+- To view screener data of similar companies to <SYMBOL>: stocks/load <SYMBOL>/ca/financial
+- To export screener data of similar companies to <SYMBOL> in csv format: stocks/load <SYMBOL>/ca/financial --export csv
+- To export screener data of similar companies to <SYMBOL> in json format: stocks/load <SYMBOL>/ca/financial --export json
+- To export screener data of similar companies to <SYMBOL> in xlsx format: stocks/load <SYMBOL>/ca/financial --export xlsx
+- To save screener data of similar companies to <SYMBOL> to a specific excel sheet: stocks/load <SYMBOL>/ca/financial --sheet-name Sheet1

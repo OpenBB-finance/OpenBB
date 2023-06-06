@@ -1,27 +1,12 @@
-parent_command:stocks/options
-usage: greeks [-d DIVIDEND] [-r RISK_FREE] [-p] [-m MIN] [-M MAX] [-a]
-
-The greeks for a given option.
-
-optional arguments:
-  -d DIVIDEND, --div DIVIDEND
-                        The dividend continuous rate (default: 0)
-  -r RISK_FREE, --risk-free RISK_FREE
-                        The risk free rate (default: None)
-  -p, --put             Whether the option is a put. (default: False)
-  -m MIN, --min MIN     Minimum strike price to show. (default: None)
-  -M MAX, --max MAX     Maximum strike price to show. (default: None)
-  -a, --all             Whether to show all greeks. (default: False)
-
+parent_command: stocks/options/
+usage: greeks [-d DIVIDEND] [-r RISK_FREE] [-p] [-m MIN] [-M MAX] [-a] [-h]               [--export EXPORT]  The greeks for a given option.  optional arguments:   -d DIVIDEND, --div DIVIDEND                         The dividend continuous rate (default: 0)   -r RISK_FREE, --risk-free RISK_FREE                         The risk free rate (default: None)   -p, --put             Whether the option is a put. (default: False)   -m MIN, --min MIN     Minimum strike price to show. (default: None)   -M MAX, --max MAX     Maximum strike price to show. (default: None)   -a, --all             Whether to show all greeks. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )  For more information and examples, use 'about greeks' to access the related guide.
+Summary: Display the greeks for a given option, with options to set the dividend continuous rate, risk-free rate, specify if it's a put option, and set minimum and maximum strike prices. You can also choose to show all greeks and export the figure in various formats.
 
 Examples:
-- To calculate the greeks for all options of a specific stock: stocks/load <SYMBOL>/options/greeks
-- Calculate the greeks for put options only: stocks/load <SYMBOL>/options/greeks -p
-- Show greeks for options with a minimum strike price of 30: stocks/load <SYMBOL>/options/greeks -m 30
-- Display greeks for options with a maximum strike price of 100: stocks/load <SYMBOL>/options/greeks -M 100
-- Calculate greeks for options with strike prices between 50 and 150: stocks/load <SYMBOL>/options/greeks -m 50 -M 150
-- Show all greeks for a specific stock: stocks/load <SYMBOL>/options/greeks -a
-- Calculate greeks for options with a dividend continuous rate of 0.02: stocks/load <SYMBOL>/options/greeks -d 0.02
-- Display greeks for options with a risk-free rate of 0.03: stocks/load <SYMBOL>/options/greeks -r 0.03
-- Calculate greeks for put options with a minimum strike price of 20 and a maximum strike price of 80: stocks/load <SYMBOL>/options/greeks -p -m 20 -M 80
-- Show greeks for all options with a dividend continuous rate of 0.01 and a risk-free rate of 0.02: stocks/load <SYMBOL>/options/greeks -d 0.01 -r 0.02
+- Retrieve greeks for a specific option of <SYMBOL>: stocks/load <SYMBOL>/options/greeks
+- Show greeks for a put option of <SYMBOL>: stocks/load <SYMBOL>/options/greeks -p
+- Display greeks for <SYMBOL> with a dividend continuous rate of 0.02: stocks/load <SYMBOL>/options/greeks -d 0.02
+- View greeks for <SYMBOL> with a risk-free rate of 0.03: stocks/load <SYMBOL>/options/greeks -r 0.03
+- Get greeks for <SYMBOL> with strike prices between 100 and 200: stocks/load <SYMBOL>/options/greeks -m 100 -M 200
+- Show all greeks for <SYMBOL>: stocks/load <SYMBOL>/options/greeks -a
+- Export greeks figure for <SYMBOL> in png format: stocks/load <SYMBOL>/options/greeks --export png

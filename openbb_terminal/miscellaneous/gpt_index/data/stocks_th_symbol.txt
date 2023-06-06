@@ -1,14 +1,7 @@
-parent_command:stocks/th
-usage: symbol [-n SYMBOL]
-
-Select the symbol you wish to trade
-
-optional arguments:
-  -n SYMBOL, --name SYMBOL
-                        Symbol (default: None)
-
+parent_command: stocks/th/
+usage: symbol [-n SYMBOL] [-h]  Select the symbol you wish to trade  optional arguments:   -n SYMBOL, --name SYMBOL                         Symbol (default: None)   -h, --help            show this help message (default: False)  For more information and examples, use 'about symbol' to access the related guide.
+Summary: Select a specific stock symbol for trading. This command allows you to choose the symbol you want to trade by providing the symbol name.
 
 Examples:
-- To trade a specific stock, use: stocks/th/symbol -n <SYMBOL>
-- Select the stock you want to trade with: stocks/th/symbol --name <SYMBOL>
-- Choose the stock for trading by entering its symbol: stocks/th/symbol -n <SYMBOL>
+- Select a stock symbol for trading: stocks/th/symbol -n <SYMBOL>
+- Choose a specific stock symbol to trade: stocks/th/symbol --name <SYMBOL>

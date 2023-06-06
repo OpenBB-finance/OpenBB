@@ -1,0 +1,8 @@
+parent_command: stocks/scr/
+usage: set [-p Desired preset.] [-h]  Set preset from custom and default ones.  optional arguments:   -p Desired preset., --preset Desired preset.                         Filter presets   -h, --help            show this help message  For more information and examples, use 'about set' to access the related guide.
+Summary: Set a preset from custom and default ones for stock screening. You can choose a desired preset using the -p or --preset option.
+
+Examples:
+- Set a custom preset for stock screening: stocks/scr/set -p CustomPreset
+- Set a default preset for stock screening: stocks/scr/set --preset DefaultPreset
+- To learn more about a specific preset, use 'about set': stocks/scr/about set

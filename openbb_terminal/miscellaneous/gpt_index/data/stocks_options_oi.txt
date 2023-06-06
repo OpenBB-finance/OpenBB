@@ -1,25 +1,14 @@
-parent_command:stocks/options
-usage: oi [-m MIN] [-M MAX] [-c] [-p]
-          [-e {2023-06-02,2023-06-09,2023-06-16,2023-06-23,2023-06-30,2023-07-07,2023-07-21,2023-08-18,2023-09-15,2023-10-20,2023-11-17,2023-12-15,2024-01-19,2024-03-15,2024-06-21,2024-09-20,2024-12-20,2025-01-17,2025-06-20,2025-12-19,}]
-
-Plot open interest. Open interest represents the number of contracts that exist.
-
-optional arguments:
-  -m MIN, --min MIN     Min strike to plot (default: -1)
-  -M MAX, --max MAX     Max strike to plot (default: -1)
-  -c, --calls           Flag to plot call options only (default: False)
-  -p, --puts            Flag to plot put options only (default: False)
-  -e {2023-06-02,2023-06-09,2023-06-16,2023-06-23,2023-06-30,2023-07-07,2023-07-21,2023-08-18,2023-09-15,2023-10-20,2023-11-17,2023-12-15,2024-01-19,2024-03-15,2024-06-21,2024-09-20,2024-12-20,2025-01-17,2025-06-20,2025-12-19,}, --expiration {2023-06-02,2023-06-09,2023-06-16,2023-06-23,2023-06-30,2023-07-07,2023-07-21,2023-08-18,2023-09-15,2023-10-20,2023-11-17,2023-12-15,2024-01-19,2024-03-15,2024-06-21,2024-09-20,2024-12-20,2025-01-17,2025-06-20,2025-12-19,}
-                        Select expiration date (YYYY-MM-DD) (default: )
-
+parent_command: stocks/options/
+usage: oi [-m MIN] [-M MAX] [-c] [-p] [-e {}] [-h] [--export EXPORT]           [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw]           [--source {YahooFinance,Tradier,Nasdaq}]  Plot open interest. Open interest represents the number of contracts that exist.  optional arguments:   -m MIN, --min MIN     Min strike to plot (default: -1)   -M MAX, --max MAX     Max strike to plot (default: -1)   -c, --calls           Flag to plot call options only (default: False)   -p, --puts            Flag to plot put options only (default: False)   -e {}, --expiration {}                         Select expiration date (YYYY-MM-DD) (default: )   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)   --source {YahooFinance,Tradier,Nasdaq}                         Data source to select from (default: YahooFinance)  For more information and examples, use 'about oi' to access the related guide.
+Summary: The command plots open interest for call and/or put options of a specific stock symbol. You can set a minimum and maximum strike to plot, choose to display only calls or puts, select a specific expiration date, and choose from various data sources. Additionally, you can export the data in different formats, save it to a specific excel sheet, and display raw data.
 
 Examples:
-- To plot open interest for all options of a stock: stocks/load <SYMBOL>/options/oi
-- For call options only, plot open interest: stocks/load <SYMBOL>/options/oi -c
-- To display put options only, plot open interest: stocks/load <SYMBOL>/options/oi -p
-- Plot open interest for strike prices between a minimum and maximum value: stocks/load <SYMBOL>/options/oi -m 10 -M 50
-- To visualize open interest for options expiring on a specific date: stocks/load <SYMBOL>/options/oi -e 2023-06-02
-- Plot open interest for call options with a minimum strike price: stocks/load <SYMBOL>/options/oi -c -m 20
-- Display open interest for put options with a maximum strike price: stocks/load <SYMBOL>/options/oi -p -M 40
-- To view open interest for call options expiring on a specific date: stocks/load <SYMBOL>/options/oi -c -e 2023-07-07
-- Plot open interest for put options with a minimum and maximum strike price, and a specific expiration date: stocks/load <SYMBOL>/options/oi -p -m 30 -M 60 -e 2023-08-18
+- To plot open interest for all options of a stock symbol: stocks/load <SYMBOL>/options/oi
+- To plot open interest for call options only: stocks/load <SYMBOL>/options/oi -c
+- To plot open interest for put options only: stocks/load <SYMBOL>/options/oi -p
+- To plot open interest for strike prices between a minimum and maximum value: stocks/load <SYMBOL>/options/oi -m 10 -M 50
+- To plot open interest for options with a specific expiration date: stocks/load <SYMBOL>/options/oi -e 2022-12-31
+- To plot open interest using a specific data source: stocks/load <SYMBOL>/options/oi --source Nasdaq
+- To export raw data in csv format: stocks/load <SYMBOL>/options/oi --export csv
+- To save data to a specific excel sheet: stocks/load <SYMBOL>/options/oi --sheet-name Sheet1
+- To display raw data: stocks/load <SYMBOL>/options/oi --raw

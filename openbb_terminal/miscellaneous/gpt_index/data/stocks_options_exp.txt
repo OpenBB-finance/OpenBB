@@ -1,19 +1,9 @@
-parent_command:stocks/options
-usage: exp [-i {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19}]
-           [-d {2023-06-02,2023-06-09,2023-06-16,2023-06-23,2023-06-30,2023-07-07,2023-07-21,2023-08-18,2023-09-15,2023-10-20,2023-11-17,2023-12-15,2024-01-19,2024-03-15,2024-06-21,2024-09-20,2024-12-20,2025-01-17,2025-06-20,2025-12-19,}]
-
-See and set expiration date
-
-optional arguments:
-  -i {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19}, --index {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19}
-                        Select index for expiry date. (default: -1)
-  -d {2023-06-02,2023-06-09,2023-06-16,2023-06-23,2023-06-30,2023-07-07,2023-07-21,2023-08-18,2023-09-15,2023-10-20,2023-11-17,2023-12-15,2024-01-19,2024-03-15,2024-06-21,2024-09-20,2024-12-20,2025-01-17,2025-06-20,2025-12-19,}, --date {2023-06-02,2023-06-09,2023-06-16,2023-06-23,2023-06-30,2023-07-07,2023-07-21,2023-08-18,2023-09-15,2023-10-20,2023-11-17,2023-12-15,2024-01-19,2024-03-15,2024-06-21,2024-09-20,2024-12-20,2025-01-17,2025-06-20,2025-12-19,}
-                        Select date (YYYY-MM-DD) (default: )
-
+parent_command: stocks/options/
+usage: exp [-i {}] [-d {}] [-h]            [--source {YahooFinance,Tradier,Nasdaq,Intrinio}]  See and set expiration date  optional arguments:   -i {}, --index {}     Select index for expiry date. (default: -1)   -d {}, --date {}      Select date (YYYY-MM-DD) (default: )   -h, --help            show this help message (default: False)   --source {YahooFinance,Tradier,Nasdaq,Intrinio}                         Data source to select from (default: YahooFinance)  For more information and examples, use 'about exp' to access the related guide.
+Summary: View and set the expiration date for options of a specific stock symbol. You can select an index for the expiry date, choose a specific date, and select the data source.
 
 Examples:
-- To see the expiration date for a specific stock: stocks/load <SYMBOL>/options/exp
-- Set the expiration date by index for a stock: stocks/load <SYMBOL>/options/exp -i 5
-- Choose an expiration date for a stock by using a specific date: stocks/load <SYMBOL>/options/exp -d 2023-06-23
-- Select the 10th expiration date index for a stock: stocks/load <SYMBOL>/options/exp --index 10
-- Pick an expiration date for a stock using a date format: stocks/load <SYMBOL>/options/exp --date 2024-03-15
+- To view the expiration date for options of a stock: stocks/load <SYMBOL>/options/exp
+- To set the expiration date by index for options of a stock: stocks/load <SYMBOL>/options/exp -i 3
+- To set a specific expiration date for options of a stock: stocks/load <SYMBOL>/options/exp -d 2023-01-20
+- To view the expiration date for options using a specific data source: stocks/load <SYMBOL>/options/exp --source Nasdaq

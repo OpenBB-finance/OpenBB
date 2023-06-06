@@ -1,14 +1,10 @@
-parent_command:stocks/fa
-usage: revfc [-t TICKER]
-
-Estimated revenue [Source: Seeking Alpha]
-
-optional arguments:
-  -t TICKER, --ticker TICKER
-                        Ticker to analyze (default: None)
-
+parent_command: stocks/fa/
+usage: revfc [-t TICKER] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Estimated revenue [Source: Seeking Alpha]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about revfc' to access the related guide.
+Summary: Retrieve estimated revenue data for a specific stock ticker from Seeking Alpha. You can export the raw data in various formats such as csv, json, or xlsx, and save the data to a specific excel sheet if needed.
 
 Examples:
-- To analyze the estimated revenue for a specific stock: stocks/fa/revfc -t <SYMBOL>
-- Analyze the estimated revenue of a company using its ticker symbol: stocks/load <SYMBOL>/fa/revfc
-- Estimate the revenue for a stock with its ticker: stocks/fa/revfc --ticker <SYMBOL>
+- Retrieve estimated revenue for <SYMBOL>: stocks/fa/revfc -t <SYMBOL>
+- Export estimated revenue data for <SYMBOL> in csv format: stocks/fa/revfc -t <SYMBOL> --export csv
+- Export estimated revenue data for <SYMBOL> in json format: stocks/fa/revfc -t <SYMBOL> --export json
+- Export estimated revenue data for <SYMBOL> in xlsx format: stocks/fa/revfc -t <SYMBOL> --export xlsx
+- Save estimated revenue data for <SYMBOL> to a specific excel sheet: stocks/fa/revfc -t <SYMBOL> --sheet-name Sheet1

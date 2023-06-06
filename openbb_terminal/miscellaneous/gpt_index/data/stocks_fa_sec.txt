@@ -1,25 +1,11 @@
-parent_command:stocks/fa
-usage: sec [-t TICKER] [-l LIMIT] [-y YEAR] [-f {annual,quarterly,proxies,insiders,8-K,registrations,comments}]
-
-Prints SEC filings of the company. The following fields are expected: Filing Date, Document Date, Type, Category, Amended, and Link. [Source: Market Watch and FinancialModelingPrep]
-
-optional arguments:
-  -t TICKER, --ticker TICKER
-                        The ticker to be used to get SEC filings.
-  -l LIMIT, --limit LIMIT
-                        number of latest SEC filings.
-  -y YEAR, --year YEAR  year of SEC filings.
-  -f {annual,quarterly,proxies,insiders,8-K,registrations,comments}, --form {annual,quarterly,proxies,insiders,8-K,registrations,comments}
-                        form group of SEC filings.
-
+parent_command: stocks/fa/
+usage: sec [-t TICKER] [-l LIMIT] [-p PAGES] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]            [--source {MarketWatch,FinancialModelingPrep}]  Prints SEC filings of the company. The following fields are expected: Filing Date, Document Date, Type, Category, Amended, and Link. [Source: Market Watch and FinancialModelingPrep]  optional arguments:   -t TICKER, --ticker TICKER                         The ticker to be used to get SEC filings.   -l LIMIT, --limit LIMIT                         number of latest SEC filings.   -p PAGES, --pages PAGES                         number of pages of SEC filings to search through, only                         relevant for FinancialModellingPrep.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.   --source {MarketWatch,FinancialModelingPrep}                         Data source to select from  For more information and examples, use 'about sec' to access the related guide.
+Summary: The 'sec' command displays SEC filings for a specified company, showing information such as Filing Date, Document Date, Type, Category, Amended, and Link. You can set a limit on the number of filings displayed, choose the number of pages to search through (only relevant for FinancialModelingPrep), and select a data source. Additionally, you can export the raw data in various formats and save it to a specific Excel sheet.
 
 Examples:
-- To view SEC filings for a specific company, use: stocks/load <SYMBOL>/fa/sec -t <SYMBOL>
-- Show the latest 5 SEC filings for a company: stocks/load <SYMBOL>/fa/sec -t <SYMBOL> -l 5
-- Retrieve SEC filings for a company in a specific year: stocks/load <SYMBOL>/fa/sec -t <SYMBOL> -y 2021
-- Display annual SEC filings for a specific company: stocks/load <SYMBOL>/fa/sec -t <SYMBOL> -f annual
-- View quarterly SEC filings for a company: stocks/load <SYMBOL>/fa/sec -t <SYMBOL> -f quarterly
-- Check insider SEC filings for a specific company: stocks/load <SYMBOL>/fa/sec -t <SYMBOL> -f insiders
-- Obtain 8-K SEC filings for a company: stocks/load <SYMBOL>/fa/sec -t <SYMBOL> -f 8-K
-- Access registration SEC filings for a specific company: stocks/load <SYMBOL>/fa/sec -t <SYMBOL> -f registrations
-- Review SEC filings with comments for a company: stocks/load <SYMBOL>/fa/sec -t <SYMBOL> -f comments
+- Retrieve the latest SEC filings for a specific ticker: stocks/fa/sec -t <SYMBOL>
+- Display the 10 most recent SEC filings for a specific ticker: stocks/fa/sec -t <SYMBOL> -l 10
+- Search through 5 pages of SEC filings for a specific ticker using FinancialModelingPrep: stocks/fa/sec -t <SYMBOL> -p 5 --source FinancialModelingPrep
+- Export the SEC filings for a specific ticker in JSON format: stocks/fa/sec -t <SYMBOL> --export json
+- Save the SEC filings for a specific ticker to a specific Excel sheet: stocks/fa/sec -t <SYMBOL> --sheet-name Sheet1
+- Retrieve the latest SEC filings for a specific ticker using MarketWatch as the data source: stocks/fa/sec -t <SYMBOL> --source MarketWatch

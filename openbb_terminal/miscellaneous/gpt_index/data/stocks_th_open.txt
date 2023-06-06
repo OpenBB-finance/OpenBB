@@ -1,12 +1,6 @@
-parent_command:stocks/th
-usage: exchange
+parent_command: stocks/th/
+usage: exchange [-h]  Show currently open exchanges  optional arguments:   -h, --help  show this help message (default: False)  For more information and examples, use 'about exchange' to access the related guide.
+Summary: Display a list of currently open stock exchanges.
 
-Show currently open exchanges
-
-open
 Examples:
-- To display currently open exchanges: stocks/th exchange
-- Check which exchanges are open at the moment: stocks/th exchange
-- View open exchanges: stocks/th exchange
-- Find out which exchanges are currently open: stocks/th exchange
-- See the list of open exchanges: stocks/th exchange
+- To view the list of open exchanges: stocks/th/exchange
