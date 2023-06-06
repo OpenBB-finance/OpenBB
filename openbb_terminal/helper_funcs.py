@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 
 # IMPORTS STANDARD LIBRARY
+# IMPORTS STANDARD
 import argparse
 import inspect
 import io
@@ -26,9 +27,25 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
 # IMPORTS THIRDPARTY
-from holidays import US as us_holidays
 import iso8601
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import pandas.io.formats.format
+import pandas_ta as ta
+import pytz
+import requests
+import yfinance as yf
+from holidays import US as us_holidays
+from pandas._config.config import get_option
+from pandas.plotting import register_matplotlib_converters
+from PIL import Image, ImageDraw
+from rich.table import Table
+from screeninfo import get_monitors
+import shutil
 from langchain.chat_models import ChatOpenAI
+
 from llama_index import (
     SimpleDirectoryReader,
     GPTVectorStoreIndex,
@@ -37,22 +54,6 @@ from llama_index import (
     StorageContext,
     load_index_from_storage,
 )
-import matplotlib
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import pandas.io.formats.format
-import pandas_ta as ta
-from pandas._config.config import get_option
-from pandas.plotting import register_matplotlib_converters
-from PIL import Image, ImageDraw
-import pytz
-from rich.table import Table
-import requests
-from screeninfo import get_monitors
-import shutil
-from yfinance import yf
-
 
 from openbb_terminal import OpenBBFigure, plots_backend
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
