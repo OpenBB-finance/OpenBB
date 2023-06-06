@@ -30,6 +30,8 @@ class CompaniesHouseController(BaseController):
         "officers",
         "signifcontrol",
         "filings",
+        "filings_previous",
+        "filings_next",
         "filingdocument",
     ]
     PATH = "/alternative/companieshouse/"
@@ -41,6 +43,9 @@ class CompaniesHouseController(BaseController):
 
         self.companyNo = ""
         self.companyName = ""
+        self.filing_total_count = 0
+        self.filing_end_index = 0
+        self.filing_start_index = 0
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -59,6 +64,8 @@ class CompaniesHouseController(BaseController):
         mt.add_cmd("officers")
         mt.add_cmd("signifcontrol")
         mt.add_cmd("filings")
+        mt.add_cmd("filings_previous")
+        mt.add_cmd("filings_next")
         mt.add_cmd("filingdocument")
 
         console.print(text=mt.menu_text, menu="UK Companies House Data")
@@ -153,6 +160,8 @@ class CompaniesHouseController(BaseController):
             )
             if company.dataAvailable():
                 self.companyName = company.name
+                self.filing_total_count = 0
+                self.filing_end_index = 0
                 console.print(company.name)
                 console.print(company.address)
                 console.print(company.lastAccounts)
@@ -273,7 +282,52 @@ class CompaniesHouseController(BaseController):
 
         if ns_parser:
             companyNo = ns_parser.companyNo if ns_parser.companyNo else self.companyNo
-            companieshouse_view.display_filings(companyNo, export=ns_parser.export)
+            filing_data = companieshouse_view.display_filings(
+                companyNo, export=ns_parser.export
+            )
+            self.filing_total_count = filing_data.total_count
+            self.filing_end_index = filing_data.end_index
+            self.filing_start_index = filing_data.start_index
+
+    @log_start_end(log=logger)
+    @check_api_key(["API_COMPANIESHOUSE_KEY"])
+    def call_filings_next(self, other_args: List[str]):
+        # check against filing_total_count to see if > 0
+        # check filing_end_index see if == to total_count
+        # only if both pass then make call
+        if self.filing_end_index != 0:
+            if self.filing_end_index < self.filing_total_count:
+                filing_data = companieshouse_view.display_filings(
+                    self.companyNo, self.filing_end_index
+                )
+                self.filing_total_count = filing_data.total_count
+                self.filing_end_index = filing_data.end_index
+                self.filing_start_index = filing_data.start_index
+            else:
+                console.print("No further entries")
+        else:
+            console.print("Cannot use <next> in this context")
+
+    @log_start_end(log=logger)
+    @check_api_key(["API_COMPANIESHOUSE_KEY"])
+    def call_filings_previous(self, other_args: List[str]):
+        # check against filing_total_count to see if > 0
+        # check filing_end_index see if == to total_count
+        # only if both pass then make call
+        start_index = self.filing_start_index
+        if start_index > 0:
+            if start_index - 100 < 0:
+                start_index = 0
+            else:
+                start_index = start_index - 100
+            filing_data = companieshouse_view.display_filings(
+                self.companyNo, start_index
+            )
+            self.filing_total_count = filing_data.total_count
+            self.filing_end_index = filing_data.end_index
+            self.filing_start_index = filing_data.start_index
+        else:
+            console.print("Cannot use <previous> in this context")
 
     @log_start_end(log=logger)
     @check_api_key(["API_COMPANIESHOUSE_KEY"])

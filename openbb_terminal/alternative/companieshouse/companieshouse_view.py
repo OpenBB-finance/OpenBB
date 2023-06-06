@@ -6,6 +6,7 @@ import os
 
 from openbb_terminal.alternative.companieshouse import companieshouse_model
 from openbb_terminal.alternative.companieshouse.company import Company
+from openbb_terminal.alternative.companieshouse.filing_data import Filing_data
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -129,7 +130,9 @@ def display_persons_with_significant_control(
 
 
 @log_start_end(log=logger)
-def display_filings(company_number: str, export: str = "") -> None:
+def display_filings(
+    company_number: str, start_index=0, export: str = ""
+) -> Filing_data:
     """Display company's filing history.
 
     Parameters
@@ -139,10 +142,14 @@ def display_filings(company_number: str, export: str = "") -> None:
 
 
     """
-    results = companieshouse_model.get_filings(company_number)
+    results = companieshouse_model.get_filings(company_number, start_index)
+
+    console.print(
+        f"Retrieved {results.start_index} to {results.end_index} of {results.total_count} filings"
+    )
 
     print_rich_table(
-        results,
+        results.filings,
         show_index=False,
         title=f"[bold]{company_number}[/bold]",
         export=bool(export),
@@ -154,6 +161,8 @@ def display_filings(company_number: str, export: str = "") -> None:
         "results",
         results,
     )
+
+    return results
 
 
 def download_filing_document(

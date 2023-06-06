@@ -7,6 +7,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal.alternative.companieshouse.company import Company
+from openbb_terminal.alternative.companieshouse.filing_data import Filing_data
 from openbb_terminal.alternative.companieshouse.company_doc import CompanyDocument
 from openbb_terminal.core.session.constants import (
     TIMEOUT,
@@ -175,7 +176,7 @@ def get_officers(company_number: str) -> pd.DataFrame:
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
     r = requests.get(
-        f"https://api.company-information.service.gov.uk/company/{company_number}/officers",
+        f"https://api.company-information.service.gov.uk/company/{company_number}/officers?items_per_page=100",
         auth=auth,
         timeout=TIMEOUT,
     )
@@ -223,7 +224,7 @@ def get_persons_with_significant_control(company_number: str) -> pd.DataFrame:
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
     r = requests.get(
-        f"https://api.company-information.service.gov.uk/company/{company_number}/persons-with-significant-control",
+        f"https://api.company-information.service.gov.uk/company/{company_number}/persons-with-significant-control?items_per_page=100",
         auth=auth,
         timeout=TIMEOUT,
     )
@@ -248,7 +249,7 @@ def get_persons_with_significant_control(company_number: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
-def get_filings(company_number: str) -> pd.DataFrame:
+def get_filings(company_number: str, start_index=0) -> Filing_data:
     """Gets information on filings for given company, e.g. accounts, etc
 
     Parameters
@@ -271,7 +272,7 @@ def get_filings(company_number: str) -> pd.DataFrame:
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
     r = requests.get(
-        f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history",
+        f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history?start_index={start_index}&items_per_page=100",
         auth=auth,
         timeout=TIMEOUT,
     )
@@ -294,10 +295,14 @@ def get_filings(company_number: str) -> pd.DataFrame:
                 "/document?format=pdf&download=0",
             }
         )
+    start_index = int(returned_data.get("start_index"))
+    total_count = int(returned_data.get("total_count"))
+    end_index = start_index + 100
+    if end_index > total_count:
+        end_index = total_count
+    data = Filing_data(pd.DataFrame(filings), start_index, end_index, total_count)
 
-    df = pd.DataFrame(filings)
-
-    return df
+    return data
 
 
 @log_start_end(log=logger)
