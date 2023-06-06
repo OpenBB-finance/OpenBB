@@ -2217,7 +2217,6 @@ def query_LLM(query_text, gpt_model):
     try:
         query_engine = index.as_query_engine()
         response = query_engine.query(prompt_string)
-        print(response.response)
         return response.response
     except Exception as e:
         # check if the error has the following "The model: `gpt-4` does not exist"

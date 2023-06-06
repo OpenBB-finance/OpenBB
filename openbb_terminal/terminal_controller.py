@@ -381,11 +381,16 @@ class TerminalController(BaseController):
                 )
                 return
 
-            console.print("Thinking... This may take a few moments.\n")
+            console.print("[yellow]Thinking... This may take a few moments.\n[/yellow]")
             response = query_LLM(" ".join(ns_parser.question), ns_parser.gpt_model)
 
             if response is not None:
-                if "I don't know" not in response:
+                # check that "I don't know" and "Sorry" is not the response
+                if (
+                    "I don't know" not in response
+                    and "Sorry" not in response
+                    and "I am not sure" not in response
+                ):
                     console.print(f"[green]Suggested Command: {response}[/green]\n")
                     console.print(
                         "If this command does not work, please refine your question and try again."
@@ -394,9 +399,9 @@ class TerminalController(BaseController):
                     # Left untouched for testing currently
                     # self.queue.append(response)
                 else:
-                    console.print(f"[red]{response}[/red]")
+                    console.print("[red]AskObb could not respond with an appropriate answer.[/red]")
                     console.print(
-                        "[green]Please refine your question and try again.[/green]"
+                        "Please refine your question and try again."
                     )
 
     def call_guess(self, other_args: List[str]) -> None:
