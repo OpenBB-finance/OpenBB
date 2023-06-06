@@ -2179,6 +2179,7 @@ def generate_index():
 
     return index
 
+
 @check_api_key(["API_OPENAI_KEY"])
 def query_LLM(query_text):
     # check if index exists
@@ -2223,4 +2224,3 @@ def query_LLM(query_text):
     response = query_engine.query(prompt_string)
 
     return response.response
-
