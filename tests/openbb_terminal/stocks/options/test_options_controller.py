@@ -976,6 +976,7 @@ def test_call_func_no_selected_date(func, mocker):
     ns = argparse.Namespace()
     ns.exp = ""  # set the exp attribute
     ns.chain_id = None
+    ns.expiration = None
     mocker.patch(
         "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
         return_value=ns,  # return the Namespace object
