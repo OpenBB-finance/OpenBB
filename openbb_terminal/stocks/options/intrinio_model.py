@@ -324,17 +324,17 @@ def get_last_price(symbol: str) -> float:
 @log_start_end(log=logger)
 @check_api_key(["API_INTRINIO_KEY"])
 def get_historical_options(symbol: str) -> pd.DataFrame:
-    """Get historical pricing option chain for a given symbol
+    """Get historical EOD option prices for a given OCC chain label.
 
     Parameters
     ----------
     symbol : str
-        Symbol to get historical option chain for.  Should be an OCC chain label
+        Symbol to get historical option chain for.  Should be an OCC chain label.
 
     Returns
     -------
     pd.DataFrame
-        Dataframe of historical option chain
+        Dataframe of historical option chain.
     """
     try:
         historical = pd.DataFrame(
