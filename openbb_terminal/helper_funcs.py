@@ -2202,15 +2202,17 @@ def query_LLM(query_text, gpt_model):
         console.print("Saving index to disk....\n")
         index.storage_context.persist(index_path)
 
-    prompt_string = f"""From argparse help text above, provide the terminal command
-    for {query_text}. Don't add any other word such as 'Command to get', 'Answer' or the likes.
-    Other rules:
-    1. When referencing a command, reference the examples.
-    Try to not use the options within the parameters to find similarities.
-    2. Lower cap the country name and make sure it is in short form.
-    3. Never provide a final command with <SYMBOL> or <COIN> as the final result, always
-    come up with a sample to replace any keywords in <...> .
-    """
+    prompt_string = f"""From argparse help text above, provide the terminal 
+        command for {query_text}.Provide the exact command along with the parent command 
+        with a "/" seperation to get that information,and nothing else including any 
+        explaination. Don't add anyother word such as 'Command to get', 'Answer' or the likes. 
+        Remember, it is very important to provide the full path of the command. Pay 
+        attention to the parent commands, and make sure that if you were to run a command that is located 
+        in a submenu, that it will have the full path included as if you were running 
+        from the root directory. If and only if there is no information in the argparse help text above, 
+        then just provide information on how to find that answer through normal financial terms. 
+        Only do what is asked. Always use a comma to separate between countries. Lower cap the country name.
+        """
 
     # try to get the response from the index
     try:
