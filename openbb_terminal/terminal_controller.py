@@ -390,14 +390,18 @@ class TerminalController(BaseController):
                     "I don't know" not in response
                     and "Sorry" not in response
                     and "I am not sure" not in response
+                    and "no terminal command provided" not in response
                 ):
                     console.print(f"[green]Suggested Command: {response}[/green]\n")
                     console.print(
                         "If this command does not work, please refine your question and try again."
                     )
-                    # To run the command automatically, uncomment the line below.
-                    # Left untouched for testing currently
-                    # self.queue.append(response)
+
+                    console.print("[yellow]Would you like to run this command?(y/n)[/yellow]")
+                    user_response = input()
+                    if user_response == "y":
+                        self.queue.append(response)
+
                 else:
                     console.print("[red]AskObb could not respond with an appropriate answer.[/red]")
                     console.print(
