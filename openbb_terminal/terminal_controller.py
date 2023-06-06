@@ -407,6 +407,8 @@ class TerminalController(BaseController):
                         and "no terminal command provided" not in response
                         and "no available" not in response
                         and "no command provided" not in response
+                        and "no information" not in response
+                        and "does not contain" not in response
                     ):
                         console.print(f"[green]Suggested Command: {response}[/green]\n")
                         console.print(
