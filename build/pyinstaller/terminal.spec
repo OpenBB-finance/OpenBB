@@ -71,6 +71,8 @@ added_files = [
     (str(pathex / "streamlit"), "streamlit"),
     (str(pathex / "altair"), "altair"),
     (str(pathex / "pyarrow"), "pyarrow"),
+    (str(pathex / "langchain"), "langchain"),
+    (str(pathex / "llama-index"), "llama-index")
 ]
 
 if is_win:
@@ -113,6 +115,8 @@ hidden_imports = [
     "pytrends",
     "pytrends.request",
     "pyarrow",
+    "langchain",
+    "llama-index"
 ]
 
 
