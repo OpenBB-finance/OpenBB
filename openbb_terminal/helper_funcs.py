@@ -52,6 +52,7 @@ from llama_index import (
     LLMPredictor,
     PromptHelper,
     StorageContext,
+    ServiceContext,
     load_index_from_storage,
 )
 
@@ -87,7 +88,6 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_MODEL_NAME = "gpt-3.5-turbo"
 GPT_INDEX_VER = 1
 
 
@@ -2155,47 +2155,31 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def generate_index():
-    # import from print console and say generating index, this might take a while
-    console.print("Generating index, this might take a while....\n")
-
-    # read in documents
-    documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
-
-    # define LLM
-    llm_predictor = LLMPredictor(
-        llm=ChatOpenAI(temperature=0, model_name=GPT_MODEL_NAME)
-    )
-
-    # define prompt helper
-    # set maximum input size
-    max_input_size = 4096
-    # set number of output tokens
-    num_output = 256
-    prompt_helper = PromptHelper(max_input_size, num_output)
-
-    index = GPTVectorStoreIndex.from_documents(
-        documents, llm_predictor=llm_predictor, prompt_helper=prompt_helper
-    )
-
-    return index
-
-
 @check_api_key(["API_OPENAI_KEY"])
-def query_LLM(query_text):
-    # check if index exists
+def query_LLM(query_text, gpt_model):
     current_user = get_current_user()
     os.environ["OPENAI_API_KEY"] = current_user.credentials.API_OPENAI_KEY
 
+    # check if index exists
     index_path = GPT_INDEX_DIRECTORY / f"index_{GPT_INDEX_VER}.json"
     old_index_paths = [
         str(x) for x in GPT_INDEX_DIRECTORY.glob("index_*.json") if x != index_path
     ]
 
+    # define LLM
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name=gpt_model))
+    # define prompt helper
+    prompt_helper = PromptHelper(max_input_size=4096, num_output=256)
+    service_context = ServiceContext.from_defaults(
+        llm_predictor=llm_predictor, prompt_helper=prompt_helper
+    )
+
     if os.path.exists(index_path):
         # rebuild storage context
         storage_context = StorageContext.from_defaults(persist_dir=index_path)
-        index = load_index_from_storage(storage_context=storage_context)
+        index = load_index_from_storage(
+            service_context=service_context, storage_context=storage_context
+        )
     else:
         # If the index file doesn't exist or is of incorrect version, generate a new one
         # First, remove old version(s), if any
@@ -2206,7 +2190,14 @@ def query_LLM(query_text):
                 shutil.rmtree(path)
 
         # Then, generate and save new index
-        index = generate_index()
+        # import from print console and say generating index, this might take a while
+        console.print("Generating index, this might take a while....\n")
+
+        # read in documents
+        documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
+        index = GPTVectorStoreIndex.from_documents(
+            documents, service_context=service_context
+        )
 
         # save to disk
         console.print("Saving index to disk....\n")
@@ -2223,7 +2214,20 @@ def query_LLM(query_text):
 
     If you do not know how to answer the question with certainty, reply 'I don't know'.
     """
-    query_engine = index.as_query_engine()
-    response = query_engine.query(prompt_string)
 
-    return response.response
+    # try to get the response from the index
+    try:
+        query_engine = index.as_query_engine()
+        response = query_engine.query(prompt_string)
+        return response.response
+    except Exception as e:
+        # check if the error has the following "The model: `gpt-4` does not exist"
+        if "The model: `gpt-4` does not exist" in str(e):
+            console.print(
+                "[red]You do not have access to GPT4 model with your API key."
+                " Please try again with valid API Access.[/red]"
+            )
+            return None
+        else:
+            console.print(f"[red]Something went wrong with the query. {e}[/red]")
+            return None

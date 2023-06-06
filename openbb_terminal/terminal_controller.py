@@ -354,6 +354,18 @@ class TerminalController(BaseController):
             help="Question for Askobb LLM",
         )
 
+        parser.add_argument(
+            "--model",
+            "-m",
+            action="store",
+            type=str,
+            dest="gpt_model",
+            required=False,
+            default="gpt-3.5-turbo",
+            choices=["gpt-3.5-turbo", "gpt-4"],
+            help="GPT Model to use for Askobb LLM (default: gpt-3.5-turbo) or gpt-4 (beta)",
+        )
+
         if other_args and "-q" not in other_args:
             other_args.insert(0, "-q")
         ns_parser = self.parse_known_args_and_warn(
@@ -370,21 +382,22 @@ class TerminalController(BaseController):
                 return
 
             console.print("Thinking... This may take a few moments.\n")
-            response = query_LLM(" ".join(ns_parser.question))
+            response = query_LLM(" ".join(ns_parser.question), ns_parser.gpt_model)
 
-            if "I don't know" not in response:
-                console.print(f"[green]Suggested Command: {response}[/green]\n")
-                console.print(
-                    "If this command does not work, please refine your question and try again."
-                )
-                # To run the command automatically, uncomment the line below.
-                # Left untouched for testing currently
-                # self.queue.append(response)
-            else:
-                console.print(f"[red]{response}[/red]")
-                console.print(
-                    "[green]Please refine your question and try again.[/green]"
-                )
+            if response is not None:
+                if "I don't know" not in response:
+                    console.print(f"[green]Suggested Command: {response}[/green]\n")
+                    console.print(
+                        "If this command does not work, please refine your question and try again."
+                    )
+                    # To run the command automatically, uncomment the line below.
+                    # Left untouched for testing currently
+                    # self.queue.append(response)
+                else:
+                    console.print(f"[red]{response}[/red]")
+                    console.print(
+                        "[green]Please refine your question and try again.[/green]"
+                    )
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
