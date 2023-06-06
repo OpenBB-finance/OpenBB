@@ -300,6 +300,9 @@ def print_rich_table(
         current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
     )
 
+    # Make a copy of the dataframe to avoid SettingWithCopyWarning
+    df = df.copy()
+
     show_index = not isinstance(df.index, pd.RangeIndex) and show_index
     #  convert non-str that are not timestamp or int into str
     # eg) praw.models.reddit.subreddit.Subreddit

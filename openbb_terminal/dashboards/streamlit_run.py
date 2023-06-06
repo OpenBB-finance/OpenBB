@@ -5,6 +5,9 @@ from pathlib import Path
 import streamlit.web.bootstrap
 
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
+from openbb_terminal.core.plots.plotly_helper import theme
+
+theme.apply_style("dark")
 
 
 def main():

@@ -549,9 +549,9 @@ def generate_sdk(sort: bool = False) -> bool:
     """
     trailmaps = get_trailmaps(sort)
     try:
-        console.print("[yellow]Generating SDK...[/]")
+        console.print("[yellow]Generating SDK...[/yellow]")
         BuildCategoryModelClasses(trailmaps).build()
-        console.print("[green]SDK Generated Successfully.[/]")
+        console.print("[green]SDK Generated Successfully.[/green]")
     except Exception as e:
         console.print(f"[red]Error generating SDK: {e}[/]")
         return False

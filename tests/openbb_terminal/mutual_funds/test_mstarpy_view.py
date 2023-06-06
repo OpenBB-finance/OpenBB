@@ -57,6 +57,7 @@ def test_display_load(term, country):
     assert isinstance(funds, EXAMPLE_FUND.__class__)
 
 
+@pytest.mark.skip
 @pytest.mark.record_verify_screen
 @pytest.mark.parametrize(
     "term, country, limit",

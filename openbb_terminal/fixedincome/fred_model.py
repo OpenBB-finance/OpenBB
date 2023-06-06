@@ -166,7 +166,7 @@ MOODY_TO_OPTIONS: Dict[str, Dict] = {
     "Spread": ["treasury", "fed_funds"],  # type: ignore
 }
 SPOT_TO_OPTIONS = {
-    "Maturity": [f"{i}y" for i in np.arange(1, 100.5, 0.5)],
+    "Maturity": [f"{i}y".replace(".0", "") for i in np.arange(1, 100.5, 0.5)],
     "Category": ["spot_rate", "par_yield"],
 }
 CP_TO_OPTIONS = {
