@@ -2211,14 +2211,13 @@ def query_LLM(query_text, gpt_model):
     2. Lower cap the country name and make sure it is in short form.
     3. Never provide a final command with <SYMBOL> or <COIN> as the final result, always
     come up with a sample to replace any keywords in <...> .
-
-    If you do not know how to answer the question with certainty, reply 'I don't know'.
     """
 
     # try to get the response from the index
     try:
         query_engine = index.as_query_engine()
         response = query_engine.query(prompt_string)
+        print(response.response)
         return response.response
     except Exception as e:
         # check if the error has the following "The model: `gpt-4` does not exist"
