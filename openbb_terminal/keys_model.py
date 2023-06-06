@@ -13,6 +13,7 @@ from typing import Dict, List, Union
 
 import binance
 import oandapyV20.endpoints.pricing
+import openai
 import pandas as pd
 import praw
 import quandl
@@ -21,10 +22,8 @@ import stocksera
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI
 from oandapyV20 import API as oanda_API
-import openai
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
-
 
 from openbb_terminal.core.session.current_user import get_current_user, set_credential
 from openbb_terminal.core.session.env_handler import write_to_dotenv

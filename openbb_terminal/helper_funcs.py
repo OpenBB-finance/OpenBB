@@ -13,6 +13,7 @@ import logging
 import os
 import random
 import re
+import shutil
 import sys
 import urllib.parse
 import webbrowser
@@ -38,31 +39,29 @@ import pytz
 import requests
 import yfinance as yf
 from holidays import US as us_holidays
+from langchain.chat_models import ChatOpenAI
+from llama_index import (
+    GPTVectorStoreIndex,
+    LLMPredictor,
+    PromptHelper,
+    ServiceContext,
+    SimpleDirectoryReader,
+    StorageContext,
+    load_index_from_storage,
+)
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
-import shutil
-from langchain.chat_models import ChatOpenAI
-
-from llama_index import (
-    SimpleDirectoryReader,
-    GPTVectorStoreIndex,
-    LLMPredictor,
-    PromptHelper,
-    StorageContext,
-    ServiceContext,
-    load_index_from_storage,
-)
 
 from openbb_terminal import OpenBBFigure, plots_backend
-from openbb_terminal.core.config.paths import HOME_DIRECTORY
-from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
-from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.config.paths import (
+    HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
 )
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user

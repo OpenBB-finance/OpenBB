@@ -334,6 +334,18 @@ class TerminalController(BaseController):
                         sheet_name=news_parser.sheet_name,
                     )
 
+    def parse_input(self, an_input: str) -> List:
+        """Overwrite the BaseController parse_input for `askobb`
+
+        This will allow us to search for something like "P/E" ratio
+        """
+        # Filtering out sorting parameters with forward slashes like P/E
+        sort_filter = r"((\ -q |\ --question ).*?(/))"
+
+        custom_filters = [sort_filter]
+
+        return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
+
     def call_askobb(self, other_args: List[str]) -> None:
         """Accept user input as a string and return the most appropriate Terminal command"""
         self.save_class()
@@ -397,7 +409,9 @@ class TerminalController(BaseController):
                         "If this command does not work, please refine your question and try again."
                     )
 
-                    console.print("[yellow]Would you like to run this command?(y/n)[/yellow]")
+                    console.print(
+                        "[yellow]Would you like to run this command?(y/n)[/yellow]"
+                    )
                     user_response = input()
                     if user_response == "y":
                         self.queue.append(response)
@@ -405,10 +419,10 @@ class TerminalController(BaseController):
                         return
 
                 else:
-                    console.print("[red]AskObb could not respond with an appropriate answer.[/red]")
                     console.print(
-                        "Please refine your question and try again."
+                        "[red]AskObb could not respond with an appropriate answer.[/red]"
                     )
+                    console.print("Please refine your question and try again.")
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""

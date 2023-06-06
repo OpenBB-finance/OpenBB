@@ -1,15 +1,15 @@
 """
 To run: python gpt_autocreate_examples.py
 """
-import openai
 import os
-from pathlib import Path
 import random
-from tqdm import tqdm
 import time
+from pathlib import Path
+
+import openai
+from tqdm import tqdm
 
 from openbb_terminal.core.session.current_user import get_current_user
-
 
 PACKAGE_DIRECTORY = Path(__file__).parent.parent.parent
 GPT_INDEX_DIRECTORY = PACKAGE_DIRECTORY / "miscellaneous" / "gpt_index/"
@@ -72,7 +72,7 @@ for file_name in tqdm(os.listdir(folder_path)):
         file_path = os.path.join(folder_path, file_name)
 
         # Read the file content
-        with open(file_path, "r", encoding="utf-8") as file:
+        with open(file_path, encoding="utf-8") as file:
             file_content = file.read()
 
         # Check if the file_content has the word 'Examples:' in it
@@ -159,7 +159,7 @@ for file_name in tqdm(os.listdir(folder_path)):
         print(f"Appended GPT-4 examples to {file_name}")
 
         # Read the file content with the new prompt
-        with open(file_path, "r") as file:
+        with open(file_path) as file:
             file_content = file.read()
 
         # Extract the examples section
@@ -240,10 +240,9 @@ for file_name in tqdm(os.listdir(folder_path)):
         tweaked_example = get_gpt_response(tweak_prompt)
 
         # Check if the tweaked_example is empty, if so, use the original random_example
-        if not tweaked_example.strip():
-            tweaked_example = random_example
-        else:
-            tweaked_example = tweaked_example.strip()
+        tweaked_example = (
+            random_example if not tweaked_example.strip() else tweaked_example.strip()
+        )
 
         # Append the extracted data to the validation.txt file
         with open(validation_file, "a") as txtfile:
