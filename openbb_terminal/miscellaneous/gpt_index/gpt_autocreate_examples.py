@@ -65,7 +65,7 @@ if not os.path.exists(validation_file):
     with open(validation_file, "w") as txtfile:
         txtfile.write("natural_text:cmd\n")
 
-# Loop through each file in the folder wth tqdm progress bar
+# Loop through each file in the folder with tqdm progress bar
 for file_name in tqdm(os.listdir(folder_path)):
     if file_name.endswith(".txt"):
         print(f"\nProcessing file: {file_name}")
@@ -80,7 +80,7 @@ for file_name in tqdm(os.listdir(folder_path)):
             continue
 
         # Create the prompt with help text and request for examples
-        # prompt = f"here is some help text: {file_content}. Now provide me an explaination to this code:"
+        # prompt = f"here is some help text: {file_content}. Now provide me an explanation to this code:"
 
         prompt = f"""
             Given specific help text on a command and its parent command, for example:
