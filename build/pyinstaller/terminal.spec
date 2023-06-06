@@ -72,7 +72,9 @@ added_files = [
     (str(pathex / "altair"), "altair"),
     (str(pathex / "pyarrow"), "pyarrow"),
     (str(pathex / "langchain"), "langchain"),
-    (str(pathex / "llama_index/VERSION"), "llama_index")
+    (str(pathex / "llama_index/VERSION"), "llama_index"),
+    (str(pathex / "tiktoken"), "tiktoken"),
+    (str(pathex / "tiktoken_ext"), "tiktoken_ext")
 ]
 
 if is_win:
