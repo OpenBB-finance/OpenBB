@@ -344,12 +344,13 @@ class TerminalController(BaseController):
         )
 
         if other_args:
+            console.print("Thinking... This may take a few moments.\n")
             response = query_LLM(" ".join(other_args))
 
             if "I don't know" not in response:
-                console.print(f"[green]Suggested Command: {response}[/green]")
+                console.print(f"[green]Suggested Command: {response}[/green]\n")
                 console.print(
-                    "[green]If this command does not work, please refine your question.[/green]"
+                    "If this command does not work, please refine your question and try again."
                 )
                 # To run the command automatically, uncomment the line below.
                 # Left untouched for testing currently
