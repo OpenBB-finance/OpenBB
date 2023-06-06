@@ -146,7 +146,6 @@ en:
   stocks/forecast: forecast techniques           rnn, nbeats, transformer, block rnn
   stocks/options/unu: show unusual options activity
   stocks/options/calc: basic call/put PnL calculator
-  stocks/options/screen: screens tickers based on preset
   stocks/options/load: load new ticker
   stocks/options/exp: see and set expiration dates
   stocks/options/_ticker: Ticker
@@ -165,12 +164,6 @@ en:
   stocks/options/eodchain: gets option chain at a specific date
   stocks/options/pricing: shows options pricing and risk neutral valuation
   stocks/options/hedge: shows portfolio weights in order to neutralise delta
-  stocks/options/screen/view: view available presets (or one in particular)
-  stocks/options/screen/set: set one of the available presets
-  stocks/options/screen/_preset: Preset
-  stocks/options/screen/scr: screen data from this preset
-  stocks/options/screen/_screened_tickers: Last screened tickers
-  stocks/options/screen/ca: take these to comparison analysis menu
   stocks/options/hedge/_ticker: Ticker
   stocks/options/hedge/_expiry: Expiry
   stocks/options/hedge/pick: pick the underlying asset position
