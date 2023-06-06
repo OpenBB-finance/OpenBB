@@ -7,8 +7,8 @@ import pandas as pd
 import requests
 
 from openbb_terminal.alternative.companieshouse.company import Company
-from openbb_terminal.alternative.companieshouse.filing_data import Filing_data
 from openbb_terminal.alternative.companieshouse.company_doc import CompanyDocument
+from openbb_terminal.alternative.companieshouse.filing_data import Filing_data
 from openbb_terminal.core.session.constants import (
     TIMEOUT,
 )

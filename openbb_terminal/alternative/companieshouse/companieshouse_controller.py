@@ -316,10 +316,7 @@ class CompaniesHouseController(BaseController):
         # only if both pass then make call
         start_index = self.filing_start_index
         if start_index > 0:
-            if start_index - 100 < 0:
-                start_index = 0
-            else:
-                start_index = start_index - 100
+            start_index = 0 if start_index - 100 < 0 else start_index - 100
             filing_data = companieshouse_view.display_filings(
                 self.companyNo, start_index
             )
