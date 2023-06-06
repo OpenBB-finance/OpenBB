@@ -356,6 +356,9 @@ class TerminalController(BaseController):
                 # self.queue.append(response)
             else:
                 console.print(f"[red]{response}[/red]")
+                console.print(
+                    f"[green]Please refine your question and try again.[/green]"
+                )
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
