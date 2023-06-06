@@ -382,7 +382,6 @@ class TerminalController(BaseController):
                 return
 
             console.print("[yellow]Thinking... This may take a few moments.\n[/yellow]")
-            print(" ".join(ns_parser.question))
             response = query_LLM(" ".join(ns_parser.question), ns_parser.gpt_model)
 
             if response is not None:
