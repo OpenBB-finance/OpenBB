@@ -516,7 +516,6 @@ class OptionsController(BaseController):
             "--strike",
             dest="strike",
             type=float,
-            required="--chain" not in other_args and "-h" not in other_args,
             help="Strike price to look at",
         )
         parser.add_argument(
@@ -574,11 +573,11 @@ class OptionsController(BaseController):
         if ns_parser := self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         ):
-            if self.ticker or "--chain" in other_args:
+            if self.ticker or ns_parser.chain_id in other_args:
                 if (
                     self.selected_date
-                    or "--chain"
                     or ns_parser.expiration in other_args
+                    or ns_parser.chain_id
                 ):
                     if (
                         not self.chain.empty
@@ -594,7 +593,7 @@ class OptionsController(BaseController):
                                 in [float(strike) for strike in self.chain["strike"]]
                             )
                         )
-                        or "--chain" in other_args
+                        or ns_parser.chain_id in other_args
                     ):
                         intrinio_view.view_historical_greeks(
                             symbol=self.ticker,
