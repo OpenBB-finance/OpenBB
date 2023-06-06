@@ -401,6 +401,8 @@ class TerminalController(BaseController):
                     user_response = input()
                     if user_response == "y":
                         self.queue.append(response)
+                    else:
+                        return
 
                 else:
                     console.print("[red]AskObb could not respond with an appropriate answer.[/red]")
