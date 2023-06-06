@@ -373,9 +373,7 @@ class TerminalController(BaseController):
             response = query_LLM(" ".join(ns_parser.question))
 
             if "I don't know" not in response:
-                console.print(
-                    f"[green]Suggested Command (Experimental): {response}[/green]\n"
-                )
+                console.print(f"[green]Suggested Command: {response}[/green]\n")
                 console.print(
                     "If this command does not work, please refine your question and try again."
                 )
