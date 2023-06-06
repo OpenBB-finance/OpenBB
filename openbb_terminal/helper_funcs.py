@@ -2220,6 +2220,8 @@ def query_LLM(query_text):
     2. Lower cap the country name and make sure it is in short form.
     3. Never provide a final command with <SYMBOL> or <COIN> as the final result, always
     come up with a sample to replace any keywords in <...> .
+
+    If you do not know how to answer the question with certainty, reply 'I don't know'.
     """
     query_engine = index.as_query_engine()
     response = query_engine.query(prompt_string)
