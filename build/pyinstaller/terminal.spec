@@ -72,7 +72,8 @@ added_files = [
     (str(pathex / "altair"), "altair"),
     (str(pathex / "pyarrow"), "pyarrow"),
     (str(pathex / "langchain"), "langchain"),
-    (str(pathex / "llama_index/VERSION"), "llama_index"),
+    (str(pathex / "llama_index/VERSION"), "llama_index")
+]
 
 if is_win:
     added_files.extend(
