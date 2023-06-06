@@ -361,7 +361,7 @@ class TerminalController(BaseController):
             type=str,
             nargs="+",
             dest="question",
-            required=False,
+            required="-h" not in other_args and "--help" not in other_args,
             default="",
             help="Question for Askobb LLM",
         )
@@ -378,8 +378,6 @@ class TerminalController(BaseController):
             help="GPT Model to use for Askobb LLM (default: gpt-3.5-turbo) or gpt-4 (beta)",
         )
 
-        if other_args and "-q" not in other_args:
-            other_args.insert(0, "-q")
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
