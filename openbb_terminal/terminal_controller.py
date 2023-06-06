@@ -340,7 +340,7 @@ class TerminalController(BaseController):
         This will allow us to search for something like "P/E" ratio
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        sort_filter = r"((\ -q |\ --question ).*?(/))"
+        sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
 
         custom_filters = [sort_filter]
 
