@@ -135,8 +135,10 @@ class PosthogHandler(logging.Handler):
         self.settings = settings
         self.app_settings = settings.app_settings
         self.logged_in = False
-        self.disabled = openbb_posthog.get_feature_flag(
-            "disable_analytics", self.app_settings.identifier
+        self.disabled = openbb_posthog.feature_enabled(
+            "disable_analytics",
+            self.app_settings.identifier,
+            send_feature_flag_events=False,
         )
 
     def emit(self, record: logging.LogRecord):
