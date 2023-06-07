@@ -35,6 +35,7 @@ from openbb_terminal.core.log.generation.settings import (
     LogSettings,
     Settings,
 )
+from openbb_terminal.core.log.generation.settings_logger import get_startup
 from openbb_terminal.core.log.generation.user_logger import (
     NO_USER_PLACEHOLDER,
     get_current_user,
@@ -188,6 +189,7 @@ class PosthogHandler(logging.Handler):
                 {
                     "email": get_current_user().profile.email,
                     "primaryUsage": get_current_user().profile.primary_usage,
+                    **get_startup(),
                 },
             )
             openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
