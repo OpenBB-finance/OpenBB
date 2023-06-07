@@ -229,10 +229,10 @@ def test_get_filings(mocker):
     mocker.patch.object(requests, "get", return_value=mock_response)
 
     # Call the function that makes a request to the remote API
-    result = companieshouse_model.get_filings("13090621")
+    result = companieshouse_model.get_filings("13090621", 0)
 
-    assert len(result) == 3
-    assert result["Category"].iloc[0] == "confirmation-statement"
+    assert len(result.filings) == 3
+    assert result.filings["Category"].iloc[0] == "confirmation-statement"
 
 
 def test_get_filing_document(mocker):
