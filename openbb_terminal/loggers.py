@@ -135,8 +135,13 @@ class PosthogHandler(logging.Handler):
         self.settings = settings
         self.app_settings = settings.app_settings
         self.logged_in = False
+        self.disabled = openbb_posthog.get_feature_flag(
+            "disable_analytics", self.app_settings.identifier
+        )
 
     def emit(self, record: logging.LogRecord):
+        if self.disabled:
+            return
         try:
             self.send(record=record)
         except Exception:
