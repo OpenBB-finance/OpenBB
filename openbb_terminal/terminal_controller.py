@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import contextlib
 import difflib
+import json
 import logging
 import os
 import re
@@ -397,7 +398,16 @@ class TerminalController(BaseController):
                     "[yellow]Thinking... This may take a few moments.\n[/yellow]"
                 )
                 response = query_LLM(" ".join(ns_parser.question), ns_parser.gpt_model)
-
+                logger.info(
+                    "ASKOBB: %s ",
+                    json.dumps(
+                        {
+                            "Question": " ".join(ns_parser.question),
+                            "Model": ns_parser.gpt_model,
+                            "Response": response,
+                        }
+                    ),
+                )
                 if response is not None:
                     # check that "I don't know" and "Sorry" is not the response
                     if (

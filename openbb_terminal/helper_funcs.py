@@ -2202,15 +2202,15 @@ def query_LLM(query_text, gpt_model):
         console.print("Saving index to disk....\n")
         index.storage_context.persist(index_path)
 
-    prompt_string = f"""From argparse help text above, provide the terminal 
-        command for {query_text}.Provide the exact command along with the parent command 
-        with a "/" seperation to get that information,and nothing else including any 
-        explaination. Don't add anyother word such as 'Command to get', 'Answer' or the likes. 
-        Remember, it is very important to provide the full path of the command. Pay 
-        attention to the parent commands, and make sure that if you were to run a command that is located 
-        in a submenu, that it will have the full path included as if you were running 
-        from the root directory. If and only if there is no information in the argparse help text above, 
-        then just provide information on how to find that answer through normal financial terms. 
+    prompt_string = f"""From argparse help text above, provide the terminal
+        command for {query_text}.Provide the exact command along with the parent command
+        with a "/" seperation to get that information,and nothing else including any
+        explaination. Don't add anyother word such as 'Command to get', 'Answer' or the likes.
+        Remember, it is very important to provide the full path of the command. Pay
+        attention to the parent commands, and make sure that if you were to run a command that is located
+        in a submenu, that it will have the full path included as if you were running
+        from the root directory. If and only if there is no information in the argparse help text above,
+        then just provide information on how to find that answer through normal financial terms.
         Only do what is asked. Always use a comma to separate between countries. Lower cap the country name.
         """
 
