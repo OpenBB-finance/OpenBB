@@ -156,7 +156,7 @@ def login_and_launch(session: dict, remember: bool = False):
         pywry_login(welcome=True)
 
 
-def main(session: Optional[Dict] = None, welcome: bool = True, prompt: bool = False):
+def main(session: Optional[Dict] = None, welcome: bool = True, prompt: bool = True):
     """Main function"""
 
     local_session = Local.get_session() if session is None else session
