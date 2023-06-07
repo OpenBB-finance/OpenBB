@@ -1,0 +1,37 @@
+<html>
+<body>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div id="sexy_time"></div>
+
+	<script>
+		function sendData() {
+			let data = {};
+			let inputs = document.getElementById('sexy_time').getElementsByTagName('input');
+			for (let i = 0; i < inputs.length; i++) {
+				data[inputs[i].name] = inputs[i].value;
+			}
+			window.pywry.result(JSON.stringify(data));
+		}
+		if (window.json_data) {
+			let json_data = window.json_data;
+			if (typeof json_data === 'string') {
+				json_data = JSON.parse(json_data);
+			}
+			console.log(json_data);
+			let sexy_time = document.getElementById('sexy_time').innerHTML;
+			json_data.params.forEach((parm) => {
+				sexy_time += `<label for="${parm}">${parm}</label>`;
+				sexy_time += `<input type"text" name="${parm}"></input>`;
+			});
+
+			sexy_time += `<button onclick="sendData()">Submit</button>`;
+			document.getElementById('sexy_time').innerHTML = sexy_time;
+		}
+	</script>
+</body>
+</html>

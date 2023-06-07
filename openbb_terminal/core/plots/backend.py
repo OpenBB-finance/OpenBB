@@ -387,6 +387,58 @@ class Backend(PyWry):
 
         super().close()
 
+    async def get_results(self, description: str) -> dict:
+        """Wait for completion of interactive task and return the data.
+
+        Parameters
+        ----------
+        description : str
+            Description of the task to console print while waiting.
+
+        Returns
+        -------
+        dict
+            The data returned from pywry backend.
+        """
+        console.print(
+            f"[green]{description}[/]\n\n"
+            "[yellow]If the window is closed you can continue by pressing Ctrl+C.[/]"
+        )
+        while True:
+            try:
+                data: dict = self.recv.get(block=False) or {}
+                if data.get("result", False):
+                    return json.loads(data["result"])
+            except Exception:  # pylint: disable=W0703
+                pass
+
+            await asyncio.sleep(1)
+
+    def call_routine(self, title, params_list: list, path: Path) -> Optional[dict]:
+        self.loop.run_until_complete(self.check_backend())
+
+        outgoing = dict(
+            html=path.resolve(),
+            json_data=json.dumps({"params": params_list}),
+            **self.get_kwargs(title),
+            width=900,
+            height=800,
+        )
+        self.send_outgoing(outgoing)
+
+        messages_dict = dict(
+            message="Choose your args SHILL",
+            interrupt="Perfect phone call",
+        )
+
+        try:
+            return self.loop.run_until_complete(
+                self.get_results(messages_dict["message"])
+            )
+        except KeyboardInterrupt:
+            console.print(f"\n[red]{messages_dict['interrupt']}[/red]")
+            return None
+
 
 async def download_plotly_js():
     """Download or updates plotly.js to the assets folder."""
