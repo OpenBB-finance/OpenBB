@@ -65,9 +65,9 @@ ACAC,True,Acri Capital Acquisition Corporation - Class A Common Stock,Q,G,False,
 ACACU,True,Acri Capital Acquisition Corporation - Unit,Q,G,False,100.0,False,D,,ACACU,False
 ACACW,True,Acri Capital Acquisition Corporation - Warrant,Q,G,False,100.0,False,D,,ACACW,False
 ACAD,True,ACADIA Pharmaceuticals Inc. - Common Stock,Q,Q,False,100.0,False,N,,ACAD,False
-ACAH,True,Atlantic Coastal Acquisition Corp. - Class A Common Stock,Q,S,False,100.0,False,D,,ACAH,False
-ACAHU,True,Atlantic Coastal Acquisition Corp. - Unit,Q,S,False,100.0,False,D,,ACAHU,False
-ACAHW,True,Atlantic Coastal Acquisition Corp. - Warrant,Q,S,False,100.0,False,D,,ACAHW,False
+ACAH,True,Atlantic Coastal Acquisition Corp. - Class A Common Stock,Q,S,False,100.0,False,N,,ACAH,False
+ACAHU,True,Atlantic Coastal Acquisition Corp. - Unit,Q,S,False,100.0,False,N,,ACAHU,False
+ACAHW,True,Atlantic Coastal Acquisition Corp. - Warrant,Q,S,False,100.0,False,N,,ACAHW,False
 ACAQ,True,Athena Consumer Acquisition Corp. Class A Common Stock,A, ,False,100.0,False,,ACAQ,ACAQ,False
 ACAQ.U,True,"Athena Consumer Acquisition Corp. Units, each consisting of one share of Class A common stock and one-half of one Redeemable Warrant",A, ,False,100.0,False,,ACAQ.U,ACAQ=,False
 ACAQ.W,True,Athena Consumer Acquisition Corp. Redeemable warrants,A, ,False,100.0,False,,ACAQ.WS,ACAQ+,False
@@ -1394,7 +1394,7 @@ BNDX,True,Vanguard Total International Bond ETF,Q,G,True,100.0,False,N,,BNDX,Fal
 BNE,True,ETF Series Solutions Blue Horizon BNE ETF,P, ,True,100.0,False,,BNE,BNE,False
 BNED,True,"Barnes & Noble Education, Inc Common Stock",N, ,False,100.0,False,,BNED,BNED,False
 BNGE,True,First Trust S-Network Streaming and Gaming ETF,P, ,True,100.0,False,,BNGE,BNGE,False
-BNGO,True,"Bionano Genomics, Inc. - Common Stock",Q,S,False,100.0,False,N,,BNGO,False
+BNGO,True,"Bionano Genomics, Inc. - Common Stock",Q,S,False,100.0,False,D,,BNGO,False
 BNGOW,True,"Bionano Genomics, Inc. - Warrant",Q,S,False,100.0,False,N,,BNGOW,False
 BNH,True,"Brookfield Finance Inc. 4.625% Subordinated Notes due October 16, 2080",N, ,False,100.0,False,,BNH,BNH,False
 BNIX,True,Bannix Acquisition Corp. - Common Stock,Q,S,False,100.0,False,N,,BNIX,False
@@ -1486,9 +1486,9 @@ BRFS,True,BRF S.A.,N, ,False,100.0,False,,BRFS,BRFS,False
 BRID,True,Bridgford Foods Corporation - Common Stock,Q,G,False,100.0,False,N,,BRID,False
 BRK.A,False,Berkshire Hathaway Inc. Common Stock,N, ,False,1.0,False,,BRK.A,BRK.A,False
 BRK.B,True,Berkshire Hathaway Inc. New Common Stock,N, ,False,100.0,False,,BRK.B,BRK.B,False
-BRKH,True,BurTech Acquisition Corp. - Class A Common Stock,Q,G,False,100.0,False,E,,BRKH,False
-BRKHU,True,BurTech Acquisition Corp. - Unit,Q,G,False,100.0,False,E,,BRKHU,False
-BRKHW,True,BurTech Acquisition Corp. - Warrants,Q,G,False,100.0,False,E,,BRKHW,False
+BRKH,True,BurTech Acquisition Corp. - Class A Common Stock,Q,G,False,100.0,False,N,,BRKH,False
+BRKHU,True,BurTech Acquisition Corp. - Unit,Q,G,False,100.0,False,N,,BRKHU,False
+BRKHW,True,BurTech Acquisition Corp. - Warrants,Q,G,False,100.0,False,N,,BRKHW,False
 BRKL,True,"Brookline Bancorp, Inc. - Common Stock",Q,Q,False,100.0,False,N,,BRKL,False
 BRKR,True,Bruker Corporation - Common Stock,Q,Q,False,100.0,False,N,,BRKR,False
 BRLI,True,Brilliant Acquisition Corporation - Ordinary Shares,Q,S,False,100.0,False,D,,BRLI,False
@@ -3512,7 +3512,6 @@ EW,True,Edwards Lifesciences Corporation Common Stock,N, ,False,100.0,False,,EW,
 EWA,True,iShares MSCI Australia Index Fund,P, ,True,100.0,False,,EWA,EWA,False
 EWBC,True,"East West Bancorp, Inc. - Common Stock",Q,Q,False,100.0,False,N,,EWBC,False
 EWC,True,iShares MSCI Canada Index Fund,P, ,True,100.0,False,,EWC,EWC,False
-EWCO,True,Invesco S&P 500 Equal Weight Communication Services ETF,P, ,True,100.0,False,,EWCO,EWCO,False
 EWCZ,True,"European Wax Center, Inc. - Class A Common Stock",Q,Q,False,100.0,False,N,,EWCZ,False
 EWD,True,iShares Inc iShares MSCI Sweden ETF,P, ,True,100.0,False,,EWD,EWD,False
 EWEB,True,Global X Emerging Markets Internet & E-commerce ETF,Q,G,True,100.0,False,N,,EWEB,False
@@ -3530,7 +3529,6 @@ EWN,True,iShares MSCI Netherlands Index Fund,P, ,True,100.0,False,,EWN,EWN,False
 EWO,True,iShares Inc iShares MSCI Austria ETF,P, ,True,100.0,False,,EWO,EWO,False
 EWP,True,iShares Inc iShares MSCI Spain ETF,P, ,True,100.0,False,,EWP,EWP,False
 EWQ,True,iShares MSCI France Index Fund,P, ,True,100.0,False,,EWQ,EWQ,False
-EWRE,True,Invesco S&P 500 Equal Weight Real Estate ETF,P, ,True,100.0,False,,EWRE,EWRE,False
 EWS,True,iShares Inc iShares MSCI Singapore ETF,P, ,True,100.0,False,,EWS,EWS,False
 EWT,True,iShares Inc iShares MSCI Taiwan ETF,P, ,True,100.0,False,,EWT,EWT,False
 EWTX,True,"Edgewise Therapeutics, Inc. - Common Stock",Q,Q,False,100.0,False,N,,EWTX,False
@@ -3770,11 +3768,12 @@ FHN$E,True,"First Horizon Corporation Depositary Shares, each representing a 1/4
 FHN$F,True,"First Horizon Corporation Depositary Shares, each representing 1/4000th Interest in a Share of Non-Cumulative Perpetual Preferred Stock, Series F",N, ,False,100.0,False,,FHNpF,FHN-F,False
 FHTX,True,Foghorn Therapeutics Inc. - Common Stock,Q,G,False,100.0,False,N,,FHTX,False
 FHYS,True,Federated Hermes ETF Trust Federated Hermes Short Duration High Yield ETF,P, ,True,100.0,False,,FHYS,FHYS,False
+FI,True,"Fiserv, Inc. Common Stock",N, ,False,100.0,False,,FI,FI,False
 FIAC,True,Focus Impact Acquisition Corp. - Class A Common Stock,Q,G,False,100.0,False,N,,FIAC,False
 FIACU,True,Focus Impact Acquisition Corp. - Unit,Q,G,False,100.0,False,N,,FIACU,False
 FIACW,True,Focus Impact Acquisition Corp. - Warrant,Q,G,False,100.0,False,N,,FIACW,False
 FIAX,True,Tidal ETF Trust II Nicholas Fixed Income Alternative ETF,P, ,True,100.0,False,,FIAX,FIAX,False
-FIBK,True,"First Interstate BancSystem, Inc. - Class A Common Stock",Q,Q,False,100.0,False,N,,FIBK,False
+FIBK,True,"First Interstate BancSystem, Inc. - Common Stock",Q,Q,False,100.0,False,N,,FIBK,False
 FIBR,True,iShares U.S. Fixed Income Balanced Risk Factor ETF,Z, ,True,100.0,False,,FIBR,FIBR,False
 FICO,True,Fair Isaac Corproation Common Stock,N, ,False,100.0,False,,FICO,FICO,False
 FICS,True,First Trust International Developed Capital Strength ETF,Q,G,True,100.0,False,N,,FICS,False
@@ -3800,7 +3799,6 @@ FIS,True,"Fidelity National Information Services, Inc. Common Stock",N, ,False,1
 FISI,True,"Financial Institutions, Inc. - Common Stock",Q,Q,False,100.0,False,N,,FISI,False
 FISK,True,"Empire State Realty OP, L.P. Series 250 Operating Partnership Units Representing Limited Partnership Interests",P, ,False,100.0,False,,FISK,FISK,False
 FISR,True,SPDR SSGA Fixed Income Sector Rotation ETF,P, ,True,100.0,False,,FISR,FISR,False
-FISV,True,"Fiserv, Inc. - Common Stock",Q,Q,False,100.0,False,N,,FISV,False
 FITB,True,Fifth Third Bancorp - Common Stock,Q,Q,False,100.0,False,N,,FITB,False
 FITBI,True,Fifth Third Bancorp - Depositary Share repstg 1/1000th Ownership Interest Perp Pfd Series I,Q,Q,False,100.0,False,N,,FITBI,False
 FITBO,True,"Fifth Third Bancorp - Depositary Shares each representing a 1/1000th ownership interest in a share of Non-Cumulative Perpetual Preferred Stock, Series K",Q,Q,False,100.0,False,N,,FITBO,False
@@ -4613,9 +4611,9 @@ GS$K,True,"Goldman Sachs Group, Inc. (The) Dep Shs Repstg 1/1000 Int Sh Fxd/Fltg
 GSAT,True,"Globalstar, Inc. Common Stock",A, ,False,100.0,False,,GSAT,GSAT,False
 GSBC,True,"Great Southern Bancorp, Inc. - Common Stock",Q,Q,False,100.0,False,N,,GSBC,False
 GSBD,True,"Goldman Sachs BDC, Inc. Common Stock",N, ,False,100.0,False,,GSBD,GSBD,False
-GSD,True,Global Systems Dynamics Inc. - Common Stock,Q,S,False,100.0,False,D,,GSD,False
-GSDWU,True,Global Systems Dynamics Inc. - Unit,Q,S,False,100.0,False,D,,GSDWU,False
-GSDWW,True,Global Systems Dynamics Inc. - Warrant,Q,S,False,100.0,False,D,,GSDWW,False
+GSD,True,Global Systems Dynamics Inc. - Common Stock,Q,S,False,100.0,False,H,,GSD,False
+GSDWU,True,Global Systems Dynamics Inc. - Unit,Q,S,False,100.0,False,H,,GSDWU,False
+GSDWW,True,Global Systems Dynamics Inc. - Warrant,Q,S,False,100.0,False,H,,GSDWW,False
 GSEE,True,Goldman Sachs MarketBeta Emerging Markets Equity ETF,Z, ,True,100.0,False,,GSEE,GSEE,False
 GSEU,True,Goldman Sachs ActiveBeta Europe Equity ETF,P, ,True,100.0,False,,GSEU,GSEU,False
 GSEW,True,Goldman Sachs Equal Weight U.S. Large Cap Equity ETF,Z, ,True,100.0,False,,GSEW,GSEW,False
@@ -4696,6 +4694,7 @@ GXC,True,SPDR S&P China ETF,P, ,True,100.0,False,,GXC,GXC,False
 GXG,True,Global X MSCI Colombia ETF,P, ,True,100.0,False,,GXG,GXG,False
 GXO,True,"GXO Logistics, Inc. Common Stock ",N, ,False,100.0,False,,GXO,GXO,False
 GXTG,True,Global X Thematic Growth ETF,Q,G,True,100.0,False,N,,GXTG,False
+GXUS,True,Goldman Sachs ETF Trust II Goldman Sachs MarketBeta Total International Equity ETF,P, ,True,100.0,False,,GXUS,GXUS,False
 GYLD,True,Arrow Dow Jones Global Yield ETF ETF,P, ,True,100.0,False,,GYLD,GYLD,False
 GYRO,True,"Gyrodyne , LLC - Common Stock",Q,S,False,100.0,False,N,,GYRO,False
 H,True,Hyatt Hotels Corporation Class A Common Stock,N, ,False,100.0,False,,H,H,False
@@ -5355,9 +5354,9 @@ IMUX,True,"Immunic, Inc.  - Common Stock",Q,Q,False,100.0,False,N,,IMUX,False
 IMVT,True,"Immunovant, Inc.  - Common Stock",Q,Q,False,100.0,False,N,,IMVT,False
 IMXI,True,"International Money Express, Inc. - Common Stock",Q,S,False,100.0,False,N,,IMXI,False
 INAB,True,"IN8bio, Inc. - Common Stock",Q,G,False,100.0,False,N,,INAB,False
-INAQ,True,Insight Acquisition Corp. - Class A Common Stock,Q,G,False,100.0,False,E,,INAQ,False
-INAQU,True,Insight Acquisition Corp. - Unit,Q,G,False,100.0,False,E,,INAQU,False
-INAQW,True,Insight Acquisition Corp. - Warrant,Q,S,False,100.0,False,E,,INAQW,False
+INAQ,True,Insight Acquisition Corp. - Class A Common Stock,Q,G,False,100.0,False,N,,INAQ,False
+INAQU,True,Insight Acquisition Corp. - Unit,Q,G,False,100.0,False,N,,INAQU,False
+INAQW,True,Insight Acquisition Corp. - Warrant,Q,S,False,100.0,False,N,,INAQW,False
 INBK,True,First Internet Bancorp - Common Stock,Q,Q,False,100.0,False,N,,INBK,False
 INBKZ,True,First Internet Bancorp - Fixed-to-Floating Rate Subordinated Notes Due 2029,Q,Q,False,100.0,False,N,,INBKZ,False
 INBS,True,Intelligent Bio Solutions Inc.  - Common Stock,Q,S,False,100.0,False,N,,INBS,False
@@ -5693,7 +5692,7 @@ JEPQ,True,JPMorgan Nasdaq Equity Premium Income ETF,Q,G,True,100.0,False,N,,JEPQ
 JEQ,True,"abrdn Japan Equity Fund, Inc. Common Stock",N, ,False,100.0,False,,JEQ,JEQ,False
 JETS,True,U.S. Global Jets ETF,P, ,True,100.0,False,,JETS,JETS,False
 JEWL,True,Adamas One Corp. - Common Stock,Q,S,False,100.0,False,D,,JEWL,False
-JFBR,True,Jeffs' Brands Ltd - Ordinary Shares,Q,S,False,100.0,False,N,,JFBR,False
+JFBR,True,Jeffs' Brands Ltd - Ordinary Shares,Q,S,False,100.0,False,D,,JFBR,False
 JFBRW,True,Jeffs' Brands Ltd - Warrant,Q,S,False,100.0,False,N,,JFBRW,False
 JFIN,True,Jiayin Group Inc. - American Depositary Shares,Q,G,False,100.0,False,N,,JFIN,False
 JFR,True,Nuveen Floating Rate Income Fund Common Stock,N, ,False,100.0,False,,JFR,JFR,False
@@ -6158,7 +6157,7 @@ LEXXW,True,Lexaria Bioscience Corp. - Warrant,Q,S,False,100.0,False,N,,LEXXW,Fal
 LFAC,True,LF Capital Acquisition Corp. II - Class A Common Stock,Q,G,False,100.0,False,N,,LFAC,False
 LFACU,True,LF Capital Acquisition Corp. II - Units,Q,G,False,100.0,False,N,,LFACU,False
 LFACW,True,LF Capital Acquisition Corp. II - Warrants,Q,G,False,100.0,False,N,,LFACW,False
-LFCR,True,"Lifecore Biomedical, Inc. - Common Stock",Q,Q,False,100.0,False,E,,LFCR,False
+LFCR,True,"Lifecore Biomedical, Inc. - Common Stock",Q,Q,False,100.0,False,N,,LFCR,False
 LFEQ,True,VanEck Long/Flat Trend ETF,P, ,True,100.0,False,,LFEQ,LFEQ,False
 LFLY,True,"Leafly Holdings, Inc. - Common Stock",Q,S,False,100.0,False,D,,LFLY,False
 LFLYW,True,"Leafly Holdings, Inc. - Warrant",Q,S,False,100.0,False,N,,LFLYW,False
@@ -8561,7 +8560,6 @@ RCACW,True,Revelstone Capital Acquisition Corp. - Warrant,Q,G,False,100.0,False,
 RCAT,True,"Red Cat Holdings, Inc. - Common Stock",Q,S,False,100.0,False,N,,RCAT,False
 RCB,True,Ready Capital Corporation 6.20% Senior Notes due 2026,N, ,False,100.0,False,,RCB,RCB,False
 RCC,True,Ready Capital Corporation 5.75% Senior Notes due 2026,N, ,False,100.0,False,,RCC,RCC,False
-RCD,True,Invesco S&P 500 Equal Weight Consumer Discretionary ETF,P, ,True,100.0,False,,RCD,RCD,False
 RCEL,True,"Avita Medical, Inc. - Common Stock",Q,S,False,100.0,False,N,,RCEL,False
 RCFA,True,RCF Acquisition Corp. Class A Ordinary Shares,N, ,False,100.0,False,,RCFA,RCFA,False
 RCFA.U,True,"RCF Acquisition Corp. Units, each consisting of one Class A ordinary share and one-half of one redeemable warrant",N, ,False,100.0,False,,RCFA.U,RCFA=,False
@@ -8678,7 +8676,6 @@ RGC,True,Regencell Bioscience Holdings Limited - Ordinary Shares,Q,S,False,100.0
 RGCO,True,RGC Resources Inc. - Common Stock,Q,G,False,100.0,False,N,,RGCO,False
 RGEN,True,Repligen Corporation - Common Stock,Q,Q,False,100.0,False,N,,RGEN,False
 RGF,True,"The Real Good Food Company, Inc. - Class A Common Stock",Q,G,False,100.0,False,D,,RGF,False
-RGI,True,Invesco S&P 500 Equal Weight Industrials Portfolio,P, ,True,100.0,False,,RGI,RGI,False
 RGLD,True,"Royal Gold, Inc. - Common Stock",Q,Q,False,100.0,False,N,,RGLD,False
 RGLS,True,Regulus Therapeutics Inc. - Common Stock,Q,S,False,100.0,False,N,,RGLS,False
 RGNX,True,REGENXBIO Inc. - Common Stock,Q,Q,False,100.0,False,N,,RGNX,False
@@ -8695,7 +8692,6 @@ RHE$A,True,"Regional Health Properties, Inc. 10.875% Series A Cumulative Redeema
 RHI,True,Robert Half International Inc. Common Stock,N, ,False,100.0,False,,RHI,RHI,False
 RHP,True,"Ryman Hospitality Properties, Inc. (REIT)",N, ,False,100.0,False,,RHP,RHP,False
 RHRX,True,RH Tactical Rotation ETF,P, ,True,100.0,False,,RHRX,RHRX,False
-RHS,True,Invesco S&P 500 Equal Weight Consumer Staples ETF  ,P, ,True,100.0,False,,RHS,RHS,False
 RHTX,True,RH Tactical Outlook ETF,P, ,True,100.0,False,,RHTX,RHTX,False
 RIBT,True,RiceBran Technologies - Common Stock,Q,S,False,100.0,False,N,,RIBT,False
 RICK,True,"RCI Hospitality Holdings, Inc. - Common Stock",Q,G,False,100.0,False,N,,RICK,False
@@ -8863,7 +8859,18 @@ RSI,True,"Rush Street Interactive, Inc. Class A Common Stock",N, ,False,100.0,Fa
 RSKD,True,Riskified Ltd. Class A Ordinary Shares,N, ,False,100.0,False,,RSKD,RSKD,False
 RSLS,True,"ReShape Lifesciences, Inc. - Common Stock",Q,S,False,100.0,False,N,,RSLS,False
 RSP,True,Invesco S&P 500 Equal Weight ETF,P, ,True,100.0,False,,RSP,RSP,False
+RSPC,True,Invesco S&P 500 Equal Weight Communication Services ETF,P, ,True,100.0,False,,RSPC,RSPC,False
+RSPD,True,Invesco S&P 500 Equal Weight Consumer Discretionary ETF,P, ,True,100.0,False,,RSPD,RSPD,False
 RSPE,True,Invesco ESG S&P 500 Equal Weight ETF,P, ,True,100.0,False,,RSPE,RSPE,False
+RSPF,True,Invesco S&P 500 Equal Weight Financial ETF,P, ,True,100.0,False,,RSPF,RSPF,False
+RSPG,True,Invesco S&P 500 Equal Weight Energy ETF,P, ,True,100.0,False,,RSPG,RSPG,False
+RSPH,True,Invesco S&P 500 Equal Weight Health Care ETF,P, ,True,100.0,False,,RSPH,RSPH,False
+RSPM,True,Invesco S&P 500 Equal Weight Materials ETF,P, ,True,100.0,False,,RSPM,RSPM,False
+RSPN,True,Invesco S&P 500 Equal Weight Industrials Portfolio,P, ,True,100.0,False,,RSPN,RSPN,False
+RSPR,True,Invesco S&P 500 Equal Weight Real Estate ETF,P, ,True,100.0,False,,RSPR,RSPR,False
+RSPS,True,Invesco S&P 500 Equal Weight Consumer Staples ETF  ,P, ,True,100.0,False,,RSPS,RSPS,False
+RSPT,True,Invesco S&P 500 Equal Weight Technology ETF,P, ,True,100.0,False,,RSPT,RSPT,False
+RSPU,True,Invesco S&P 500 Equal Weight Utilities ETF,P, ,True,100.0,False,,RSPU,RSPU,False
 RSPY,True,Revere Sector Opportunity ETF,P, ,True,100.0,False,,RSPY,RSPY,False
 RSSS,True,"Research Solutions, Inc - Common Stock",Q,S,False,100.0,False,N,,RSSS,False
 RSVR,True,"Reservoir Media, Inc.. - Common Stock",Q,G,False,100.0,False,N,,RSVR,False
@@ -8874,7 +8881,6 @@ RTH,True,VanEck Retail ETF,Q,G,True,100.0,False,N,,RTH,False
 RTL,True,"The Necessity Retail REIT, Inc. - Class A Common Stock",Q,Q,False,100.0,False,N,,RTL,False
 RTLPO,True,"The Necessity Retail REIT, Inc. - 7.375% Series C Cumulative Redeemable Preferred Stock",Q,Q,False,100.0,False,N,,RTLPO,False
 RTLPP,True,"The Necessity Retail REIT, Inc. - 7.50% Series A Cumulative Redeemable Perpetual Preferred Stock",Q,Q,False,100.0,False,N,,RTLPP,False
-RTM,True,Invesco S&P 500 Equal Weight Materials ETF,P, ,True,100.0,False,,RTM,RTM,False
 RTO,True,Rentokil Initial plc American Depositary Shares (each representing five (5) Ordinary Shares),N, ,False,100.0,False,,RTO,RTO,False
 RTX,True,Raytheon Technologies Corporation Common Stock,N, ,False,100.0,False,,RTX,RTX,False
 RUFF,True,Alpha Dog ETF,P, ,True,100.0,False,,RUFF,RUFF,False
@@ -8930,18 +8936,13 @@ RY$T,True,"Royal Bank Of Canada 6.750% Fixed Rate/Floating Rate Noncumulative Fi
 RYAAY,True,"Ryanair Holdings plc - American Depositary Shares, each representing five Ordinary Shares",Q,Q,False,100.0,False,N,,RYAAY,False
 RYAM,True,Rayonier Advanced Materials Inc. Common Stock,N, ,False,100.0,False,,RYAM,RYAM,False
 RYAN,True,"Ryan Specialty Holdings, Inc. Class A Common Stock",N, ,False,100.0,False,,RYAN,RYAN,False
-RYE,True,Invesco S&P 500 Equal Weight Energy ETF,P, ,True,100.0,False,,RYE,RYE,False
-RYF,True,Invesco S&P 500 Equal Weight Financial ETF,P, ,True,100.0,False,,RYF,RYF,False
-RYH,True,Invesco S&P 500 Equal Weight Health Care ETF,P, ,True,100.0,False,,RYH,RYH,False
 RYI,True,Ryerson Holding Corporation Common Stock,N, ,False,100.0,False,,RYI,RYI,False
 RYJ,True,Invesco Raymond James SB-1 Equity ETF,P, ,True,100.0,False,,RYJ,RYJ,False
 RYLD,True,Global X Russell 2000 Covered Call ETF,P, ,True,100.0,False,,RYLD,RYLD,False
 RYLG,True,Global X Funds Global X Russell 2000 Covered Call & Growth ETF,P, ,True,100.0,False,,RYLG,RYLG,False
 RYN,True,Rayonier Inc. REIT Common Stock,N, ,False,100.0,False,,RYN,RYN,False
 RYSE,True,ETF Series Solutions Cboe Vest 10 Year Interest Rate Hedge ETF,Z, ,True,100.0,False,,RYSE,RYSE,False
-RYT,True,Invesco S&P 500 Equal Weight Technology ETF,P, ,True,100.0,False,,RYT,RYT,False
 RYTM,True,"Rhythm Pharmaceuticals, Inc. - Common Stock",Q,G,False,100.0,False,N,,RYTM,False
-RYU,True,Invesco S&P 500 Equal Weight Utilities ETF,P, ,True,100.0,False,,RYU,RYU,False
 RZB,True,"Reinsurance Group of America, Incorporated 5.75% Fixed-To-Floating Rate Subordinated Debentures due 2056",N, ,False,100.0,False,,RZB,RZB,False
 RZC,True,"Reinsurance Group of America, Incorporated 7.125% Fixed-Rate Reset Subordinated Debentures due 2052",N, ,False,100.0,False,,RZC,RZC,False
 RZG,True,Invesco S&P Smallcap 600 Pure Growth ETF,P, ,True,100.0,False,,RZG,RZG,False
@@ -9460,7 +9461,6 @@ SNEX,True,StoneX Group Inc. - Common Stock,Q,Q,False,100.0,False,N,,SNEX,False
 SNFCA,True,Security National Financial Corporation - Class A Common Stock,Q,G,False,100.0,False,N,,SNFCA,False
 SNGX,True,"Soligenix, Inc. - Common Stock",Q,S,False,100.0,False,N,,SNGX,False
 SNLN,True,Highland/iBoxx Senior Loan ETF,Q,G,True,100.0,False,N,,SNLN,False
-SNMP,True,Evolve Transition Infrastructure LP Common Stock,A, ,False,100.0,False,,SNMP,SNMP,False
 SNN,True,"Smith & Nephew SNATS, Inc. Common Stock",N, ,False,100.0,False,,SNN,SNN,False
 SNOA,True,"Sonoma Pharmaceuticals, Inc. - Common Stock",Q,S,False,100.0,False,N,,SNOA,False
 SNOW,True,Snowflake Inc. Class A Common Stock,N, ,False,100.0,False,,SNOW,SNOW,False
@@ -9835,7 +9835,7 @@ SXTC,True,"China SXT Pharmaceuticals, Inc. - Common Stock",Q,S,False,100.0,False
 SXUS,True,Janus Henderson International Sustainable Equity ETF,P, ,True,100.0,False,,SXUS,SXUS,False
 SY,True,So-Young International Inc. - American Depository Shares,Q,G,False,100.0,False,N,,SY,False
 SYBT,True,"Stock Yards Bancorp, Inc. - Common Stock",Q,Q,False,100.0,False,N,,SYBT,False
-SYBX,True,"Synlogic, Inc. - Common Stock",Q,G,False,100.0,False,D,,SYBX,False
+SYBX,True,"Synlogic, Inc. - Common Stock",Q,S,False,100.0,False,D,,SYBX,False
 SYF,True,Synchrony Financial Common Stock,N, ,False,100.0,False,,SYF,SYF,False
 SYF$A,True,"Synchrony Financial Depositary Shares, each Representing a 1/40th Interest in a Share of 5.625% Fixed Rate Non-Cumulative Perpetual Preferred Stock, Series A",N, ,False,100.0,False,,SYFpA,SYF-A,False
 SYII,True,Syntax ETF Trust Syntax Stratified Total Market II ETF,P, ,True,100.0,False,,SYII,SYII,False

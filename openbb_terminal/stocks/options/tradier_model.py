@@ -463,7 +463,7 @@ class Chains(Options):
             return self
         self.underlying_price = get_underlying_price(self.symbol)
         self.underlying_name = self.underlying_price["name"]
-        self.last_price = self.underlying_price["close"]
+        self.last_price = self.underlying_price["last"]
         self.chains = get_full_option_chain(self.symbol)
         if not self.chains.empty:
             self.expirations = self.chains["expiration"].unique().tolist()

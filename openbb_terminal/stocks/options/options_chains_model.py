@@ -1119,13 +1119,6 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
         stats["ITM Percent"] = round(
             (stats["Puts ITM"] + stats["Calls ITM"]) / stats["Total OI"] * 100, 2
         )
-        if last_price:
-            straddle_cost = (
-                get_strategies(options, straddle_strike=last_price)
-                .rename(columns={"expiration": "Expiration"})
-                .set_index("Expiration")[["Cost"]]
-            )
-            stats["Straddle Cost"] = straddle_cost
 
     stats["Puts Volume"] = (
         chains[chains["optionType"] == "put"]
@@ -1142,12 +1135,10 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
     stats["Total Volume"] = stats["Calls Volume"] + stats["Puts Volume"]
     stats["Volume Ratio"] = round(stats["Puts Volume"] / stats["Calls Volume"], 2)
     stats["Vol-OI Ratio"] = round(stats["Total Volume"] / stats["Total OI"], 2)
-
     if by == "strike":
         stats.rename_axis("Strike", inplace=True)
     stats.rename_axis("Expiration", inplace=True)
-
-    return stats.replace([np.nan, np.inf], "")
+    return stats.replace([np.nan, np.inf], None)
 
 
 @log_start_end(log=logger)

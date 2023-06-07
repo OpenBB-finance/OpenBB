@@ -523,13 +523,14 @@ class Chains(Options):
         if not info.empty:
             iv = get_ticker_iv(self.symbol)
             info = pd.concat([info, iv])
+            info = pd.Series(info[f"{self.symbol}"])
             self.underlying_name = (
                 self.SYMBOLS.reset_index()
                 .query("`Symbol` == @self.symbol")["Company Name"]
                 .iloc[0]
             )
             self.underlying_price = info
-            self.last_price = round(info.loc["price"].iloc[0], 2)
+            self.last_price = round(info.loc["price"], 2)
             self.chains = get_quotes(self.symbol)
             if not self.chains.empty:
                 self.expirations = (

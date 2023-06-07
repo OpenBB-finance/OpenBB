@@ -256,7 +256,10 @@ def get_underlying_price(symbol: str) -> pd.Series:
             )
             df["volume"] = data["primaryData"]["volume"].replace(",", "")
             df["date"] = pd.to_datetime(
-                data["primaryData"]["lastTradeTimestamp"], yearfirst=True
+                data["primaryData"]["lastTradeTimestamp"].replace(
+                    "ET - PRE-MARKET", ""
+                ).replace("ET", ""),
+                yearfirst=True,
             ).strftime("%Y-%m-%d")
             return df.rename(symbol)
 
