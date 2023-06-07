@@ -84,9 +84,12 @@ def pywry_login(welcome: bool = True):
         return prompt(welcome)
 
     if response is None:
+        if is_installer():
+            return prompt(welcome=False)
         return launch_terminal()
 
     if isinstance(response, dict) and response:
+        console.print("\n[info]Logging in... Please wait.[/info]\n")
         response["token_type"] = "bearer"
 
         for r_key, new_key in zip(
@@ -153,14 +156,17 @@ def login_and_launch(session: dict, remember: bool = False):
         pywry_login(welcome=True)
 
 
-def main(session: Optional[Dict] = None, welcome: bool = True):
+def main(session: Optional[Dict] = None, welcome: bool = True, prompt: bool = False):
     """Main function"""
 
     local_session = Local.get_session() if session is None else session
-    if not local_session:
-        pywry_login(welcome)
-    else:
+
+    if not local_session and not prompt:
+        launch_terminal()
+    elif local_session:
         login_and_launch(session=local_session, remember=True)
+    else:
+        pywry_login(welcome)
 
 
 if __name__ == "__main__":

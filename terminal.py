@@ -7,6 +7,8 @@ import openbb_terminal.config_terminal as cfg
 import openbb_terminal.core.session.current_system as syst  # noqa: F401
 from openbb_terminal.terminal_helper import (
     hide_splashscreen,
+    is_auth_enabled,
+    is_installer,
 )
 
 
@@ -27,10 +29,13 @@ def main():
     else:
         from openbb_terminal.core.session import session_controller
 
-        if sys.stdin.isatty():
-            session_controller.main()
-        else:
-            session_controller.launch_terminal()
+        prompt_login = (
+            is_auth_enabled()
+            and ("--login" in sys.argv[1:] or is_installer())
+            and sys.stdin.isatty()
+        )
+
+        session_controller.main(prompt=prompt_login)
 
 
 if __name__ == "__main__":
