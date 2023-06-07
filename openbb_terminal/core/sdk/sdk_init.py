@@ -484,12 +484,6 @@ from openbb_terminal.stocks.options import (
 )
 
 
-from openbb_terminal.stocks.options.screen import (
-    syncretism_model as stocks_options_screen_syncretism_model,
-    syncretism_view as stocks_options_screen_syncretism_view,
-)
-
-
 # Stocks - Screener
 
 from openbb_terminal.stocks.screener import (

@@ -256,9 +256,6 @@ class StocksController(model.StocksRoot):
     def options(self):
         """Stocks Options Submodule
 
-        Submodules:
-            `screen`: Screen Module
-
         Attributes:
             `calculate_chains_stats`: Calculates basic statistics for the options chains, like OI and Vol/OI ratios.\n
             `calculate_straddle`: Calculates the cost of a straddle and its payoff profile. Use a negative strike price for short options.\n
@@ -272,8 +269,8 @@ class StocksController(model.StocksRoot):
             `generate_data`: Gets x values, and y values before and after premiums\n
             `get_strategies`: Gets options strategies for all, or a list of, DTE(s).\n
             `greeks`: Gets the greeks for a given option\n
-            `grhist`: Get histoical option greeks\n
-            `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
+            `grhist`: Get historical EOD option prices, with Greeks, for a given OCC chain label.\n
+            `grhist_chart`: Plots historical greeks for a given option.\n
             `hist`: Get historical option pricing.\n
             `info`: Scrape barchart for options info\n
             `info_chart`: Scrapes Barchart.com for the options information\n
