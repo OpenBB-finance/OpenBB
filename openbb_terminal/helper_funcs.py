@@ -2211,7 +2211,8 @@ def query_LLM(query_text, gpt_model):
         in a submenu, that it will have the full path included as if you were running
         from the root directory. If and only if there is no information in the argparse help text above,
         then just provide information on how to find that answer through normal financial terms.
-        Only do what is asked. Always use a comma to separate between countries. Lower cap the country name.
+        Only do what is asked and provide a single comand string. Always use a comma to separate between countries but
+        never between full commands. Lower cap the country name.
         """
 
     # try to get the response from the index
