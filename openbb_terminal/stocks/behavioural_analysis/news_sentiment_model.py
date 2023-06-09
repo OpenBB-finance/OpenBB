@@ -54,10 +54,10 @@ def get_data(
         return df
 
     if date:
-        date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
-        query_params["published_on"] = str(date)
+        dtdate = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+        query_params["published_on"] = str(dtdate)
         if start_date:
-            if str(date) < start_date:
+            if str(dtdate) < start_date:
                 console.print("date must be grater than or equal to start_date")
                 return df
             del query_params["published_on__gte"]
@@ -65,9 +65,9 @@ def get_data(
             del query_params["published_on__lte"]
 
     if limit:
-        query_params["limit"] = limit
+        query_params["limit"] = limit  # type:ignore
     if offset:
-        query_params["offset"] = offset
+        query_params["offset"] = offset  # type:ignore
 
     response = requests.get(
         "https://althub-backend.invisagealpha.com/api/OnclusiveSentiment/",
