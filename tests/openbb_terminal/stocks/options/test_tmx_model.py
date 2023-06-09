@@ -10,13 +10,16 @@ from openbb_terminal.stocks.options import tmx_model
 # pylint: disable=no-member
 
 
-@pytest.fixture(scope="module")
 @pytest.mark.vcr
-def test_underlying_price(recorder):
+def test_underlying_price():
     result_df = tmx_model.get_underlying_price("XIU")
-    result_df2 = tmx_model.Chains().get_chains("XIU").underlying_price
     assert isinstance(result_df, pd.Series)
-    recorder.capture(pd.concat([result_df, result_df2], axis=1))
+    assert "price" in result_df.index
+    result_df2 = tmx_model.load_options("XIU", pydantic=True)
+    assert result_df["price"] == result_df2.last_price
+    assert hasattr(result_df2, "underlying_price")
+    assert isinstance(result_df2.underlying_price, dict)
+    assert result_df2.underlying_price["price"] == result_df["price"]
 
 
 @pytest.mark.record_stdout
@@ -26,84 +29,89 @@ def test_underlying_price_bad_symbol():
 
 
 @pytest.mark.vcr
-def test_underlying_name(recorder):
+def test_underlying_name():
     ticker = tmx_model.Chains().get_chains("BAM")
-    result_df = ticker.underlying_name
-    recorder.capture(result_df)
-    assert isinstance(result_df, str)
+    assert hasattr(ticker, "underlying_name")
+    assert isinstance(ticker.underlying_name, str)
+    assert ticker.underlying_name != "BAM"
 
 
 @pytest.mark.vcr
-def test_check_symbol(recorder):
+def test_check_symbol():
     ticker = tmx_model.Chains()
     result_df = ticker.check_symbol("BAD_SYMBOL")
     assert isinstance(result_df, bool)
     result_df2 = ticker.check_symbol("CM")
-    recorder.capture([result_df, result_df2])
     assert result_df2 is True
 
 
 @pytest.mark.vcr
-def test_last_price(recorder):
+def test_last_price():
     ticker = tmx_model.load_options("AC")
-    result_df = ticker.last_price
-    assert isinstance(result_df, float)
+    assert hasattr(ticker, "last_price")
+    assert isinstance(ticker.last_price, float)
     ticker2 = tmx_model.load_options("AC", "2021-12-28")
-    result_df2 = ticker2.last_price
-    assert isinstance(result_df2, float)
-    assert result_df != result_df2
-    recorder.capture([result_df, result_df2])
+    assert hasattr(ticker2, "last_price")
+    assert isinstance(ticker2.last_price, float)
+    assert ticker.last_price != ticker2.last_price
 
 
 @pytest.mark.vcr
-def test_chains(recorder):
+def test_chains():
     ticker = tmx_model.Chains().get_chains("BMO")
-    results_df = ticker.chains
-    assert not results_df.empty
-    recorder.capture(results_df)
+    assert hasattr(ticker, "chains")
+    assert isinstance(ticker.chains, pd.DataFrame)
+    ticker = tmx_model.load_options("BMO", pydantic=True)
+    assert hasattr(ticker, "chains")
+    assert isinstance(ticker.chains, dict)
+    assert ticker.hasGreeks is False
 
 
 @pytest.mark.vcr
-def test_strikes(recorder):
+def test_strikes():
     ticker = tmx_model.Chains().get_chains("RY")
-    results_df = ticker.strikes
-    assert isinstance(results_df, list)
-    recorder.capture(results_df)
+    assert hasattr(ticker, "strikes")
+    assert isinstance(ticker.strikes, list)
+    assert isinstance(ticker.strikes[0], float)
+    assert ticker.strikes[-1] == max(ticker.chains["strike"])
 
 
 @pytest.mark.vcr
-def test_eodchains_holiday(recorder):
+def test_eodchains_holiday():
     ticker = tmx_model.Chains().get_eodchains("SU", "2018-12-25")
-    results_df = ticker.chains
-    assert not results_df.empty
-    recorder.capture(results_df)
+    assert not ticker.chains.empty
+    ticker1 = tmx_model.Chains().get_eodchains("SU", "2020-07-01")
+    assert hasattr(ticker1, "date")
+    assert ticker1.date != "2020-07-01"
 
 
 @pytest.mark.vcr
-def test_expirations(recorder):
+def test_expirations():
     ticker = tmx_model.Chains().get_chains("VFV")
-    results_df = ticker.expirations
-    assert isinstance(results_df, list)
+    assert hasattr(ticker, "expirations")
+    results1 = ticker.expirations
+    assert isinstance(results1, list)
     ticker.get_eodchains("VFV", "2021-12-28")
     results_df2 = ticker.expirations
     assert isinstance(results_df2, list)
-    assert results_df != results_df2
-    recorder.capture([results_df, results_df2])
+    assert results1 != results_df2
 
 
 @pytest.mark.vcr
-def test_SYMBOLS(recorder):
+def test_SYMBOLS():
     ticker = tmx_model.Chains()
     results_df = ticker.SYMBOLS
     assert not results_df.empty
-    recorder.capture(results_df)
+    assert "RY" in results_df.index
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 def test_hasGreeks_hasIV():
     ticker = tmx_model.Chains()
     assert ticker.chains.empty
     ac = tmx_model.load_options("AC")
     assert ac.hasGreeks is False
     assert ac.hasIV is False
+    ac2 = tmx_model.load_options("AC", "2022-01-03")
+    assert ac2.hasIV
+    assert ac2.hasGreeks is False

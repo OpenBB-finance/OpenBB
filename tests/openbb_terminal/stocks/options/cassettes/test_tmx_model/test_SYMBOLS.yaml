@@ -748,8 +748,8 @@ interactions:
         href=\"/en/trading/data/quotes?symbol=MDI*#quotes\">MDI</a></td>\n<td>MDI</td>\n</tr>\n<tr>\n<td>\nManulife
         Financial Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MFC*#quotes\">MFC</a></td>\n<td>MFC</td>\n</tr>\n<tr>\n<td>\nMaple
         Leaf Foods Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MFI*#quotes\">MFI</a></td>\n<td>MFI</td>\n</tr>\n<tr>\n<td>\nMartinrea
-        International Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MRE*#quotes\">MRE</a></td>\n<td>MRE</td>\n</tr>\n<tr>\n<td>\nMAXR1
-        \                           </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MAXR1*#quotes\">MAXR1</a></td>\n<td>MAXR1</td>\n</tr>\n<tr>\n<td>\nMEG
+        International Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MRE*#quotes\">MRE</a></td>\n<td>MRE</td>\n</tr>\n<tr>\n<td>\nMATR
+        \                           </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MATR*#quotes\">MATR</a></td>\n<td>MATR</td>\n</tr>\n<tr>\n<td>\nMEG
         Energy Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MEG*#quotes\">MEG</a></td>\n<td>MEG</td>\n</tr>\n<tr>\n<td>\nMethanex
         Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MX*#quotes\">MX</a></td>\n<td>MX</td>\n</tr>\n<tr>\n<td>\nMetro
         Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MRU*#quotes\">MRU</a></td>\n<td>MRU</td>\n</tr>\n<tr>\n<td>\nMullen
@@ -802,8 +802,7 @@ interactions:
         Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SAP*#quotes\">SAP</a></td>\n<td>SAP</td>\n</tr>\n<tr>\n<td>\nSavaria
         Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SIS*#quotes\">SIS</a></td>\n<td>SIS</td>\n</tr>\n<tr>\n<td>\nSeabridge
         Gold Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SEA*#quotes\">SEA</a></td>\n<td>SEA</td>\n</tr>\n<tr>\n<td>\nSecure
-        Energy Services Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SES*#quotes\">SES</a></td>\n<td>SES</td>\n</tr>\n<tr>\n<td>\nShawCor
-        Ltd., Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SCL*#quotes\">SCL</a></td>\n<td>SCL</td>\n</tr>\n<tr>\n<td>\nShopify
+        Energy Services Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SES*#quotes\">SES</a></td>\n<td>SES</td>\n</tr>\n<tr>\n<td>\nShopify
         Inc. Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SHOP*#quotes\">SHOP</a></td>\n<td>SHOP</td>\n</tr>\n<tr>\n<td>\nSienna
         Senior Living Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SIA*#quotes\">SIA</a></td>\n<td>SIA</td>\n</tr>\n<tr>\n<td>\nSilvercorp
         Metals Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SVM*#quotes\">SVM</a></td>\n<td>SVM</td>\n</tr>\n<tr>\n<td>\nSilverCrest
@@ -846,12 +845,12 @@ interactions:
         Connections Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WCN*#quotes\">WCN</a></td>\n<td>WCN</td>\n</tr>\n<tr>\n<td>\nWELL
         Health Technologies Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WELL*#quotes\">WELL</a></td>\n<td>WELL</td>\n</tr>\n<tr>\n<td>\nWesdome
         Gold Mines Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WDO*#quotes\">WDO</a></td>\n<td>WDO</td>\n</tr>\n<tr>\n<td>\nWest
-        Fraser Timber Co. Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WFG*#quotes\">WFG</a></td>\n<td>WFG</td>\n</tr>\n<tr>\n<td>\nWestport
-        Fuel Systems Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WPRT*#quotes\">WPRT</a></td>\n<td>WPRT</td>\n</tr>\n<tr>\n<td>\nWestshore
+        Fraser Timber Co. Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WFG*#quotes\">WFG</a></td>\n<td>WFG</td>\n</tr>\n<tr>\n<td>\nWestshore
         Terminals Investment Corporation                            </td>\n<td><a
         href=\"/en/trading/data/quotes?symbol=WTE*#quotes\">WTE</a></td>\n<td>WTE</td>\n</tr>\n<tr>\n<td>\nWheaton
         Precious Metals Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WPM*#quotes\">WPM</a></td>\n<td>WPM</td>\n</tr>\n<tr>\n<td>\nWhitecap
-        Resources Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WCP*#quotes\">WCP</a></td>\n<td>WCP</td>\n</tr>\n<tr>\n<td>\nWSP
+        Resources Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WCP*#quotes\">WCP</a></td>\n<td>WCP</td>\n</tr>\n<tr>\n<td>\nWPRT1
+        \                           </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WPRT1*#quotes\">WPRT1</a></td>\n<td>WPRT1</td>\n</tr>\n<tr>\n<td>\nWSP
         Global Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WSP*#quotes\">WSP</a></td>\n<td>WSP</td>\n</tr>\n<tr>\n<td>\nYamana
         Gold Inc.                                <br/><span class=\"arrow\">Please
         refer to <a href=\"/f_circulaires_en/114-12_en.pdf\" target=\"_blank\" class=\"pdf\">circular
@@ -1006,7 +1005,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Sun, 14 May 2023 23:42:20 GMT
+      - Fri, 09 Jun 2023 06:29:52 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -1014,18 +1013,18 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - PHPSESSID=r6idsmashlkeghqv2cq9bq25n9; expires=Mon, 15-May-2023 00:06:20 GMT;
-        Max-Age=1440; path=/
-      - tmx_locale=en; Expires=Mon, 13-May-2024 23:42:20 GMT; Path=/
-      - tmx_locale=en; Expires=Mon, 13-May-2024 23:42:20 GMT; Path=/
+      - PHPSESSID=1fp05uoaij5or9rvfic2cs56lg; expires=Fri, 09-Jun-2023 10:29:52 GMT;
+        Max-Age=14400; path=/
+      - tmx_locale=en; Expires=Sat, 08-Jun-2024 06:29:52 GMT; Path=/
+      - tmx_locale=en; Expires=Sat, 08-Jun-2024 06:29:52 GMT; Path=/
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 28fdf6e146f70e7372911f118404fb20.cloudfront.net (CloudFront)
+      - 1.1 548adcda884eed02304ba5d6a1d7f514.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - Uy8jJURgj9KAXiPDo7HEm1kw4ejUXmcyedh10Bgy9TM5qRAEis-d6A==
+      - lOfNiKLad522ay2RZnKN4CPpF705dFdfuxRLmGudtUvzHSvgqdzU2w==
       X-Amz-Cf-Pop:
       - SEA19-C3
       X-Cache:
