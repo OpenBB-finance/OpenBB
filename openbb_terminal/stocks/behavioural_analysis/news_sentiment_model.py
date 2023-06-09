@@ -82,14 +82,13 @@ def get_data(
     def condition(x):
         if x >= 250:
             return "Super Positive"
-        elif x < 250 and x > 0:
+        if 0 < x < 250:
             return "Positive"
-        elif x == 0:
+        if x == 0:
             return "Neutral"
-        elif x < 0 and x > -250:
+        if -250 < x < 0:
             return "Negative"
-        else:
-            return "Super Negative"
+        return "Super Negative"
 
     sentiment = {50: "Positive", -50: "Negative", 0: "Neutral", None: "Neutral"}
 
