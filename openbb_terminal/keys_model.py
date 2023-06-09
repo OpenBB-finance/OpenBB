@@ -2917,7 +2917,8 @@ def check_dappradar_key(show_output: bool = False) -> str:
         console.print(status.colorize())
 
     return str(status)
-  
+
+
 # Set OpenAI key
 def set_openai_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set OpenAI key
@@ -2999,5 +3000,3 @@ def check_openai_key(show_output: bool = False) -> str:
         console.print(status.colorize())
 
     return str(status)
-
-  
