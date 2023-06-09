@@ -1,0 +1,26 @@
+parent_command:econometrics
+usage: add -n NEWDATASETCOL -b BASEDATASETCOL -s {div,mul,add,sub,mod,pow,>,<,>=,<=,==} -c CRITERIAORDATASETCOL
+
+Add columns to your dataframe with the option to use formulas. E.g. newdatasetcol = basedatasetcol sign criteriaordatasetcol thesis.high_revenue = thesis.revenue > 1000 dataset.debt_ratio = dataset.debt div dataset2.assets
+
+optional arguments:
+  -n NEWDATASETCOL, --newdatasetcol NEWDATASETCOL
+                        New dataset column to be added with format: dataset.column (default: None)
+  -b BASEDATASETCOL, --basedatasetcol BASEDATASETCOL
+                        Base dataset column to be used as base with format: dataset.column (default: None)
+  -s {div,mul,add,sub,mod,pow,>,<,>=,<=,==}, --sign {div,mul,add,sub,mod,pow,>,<,>=,<=,==}
+                        Sign to be applied to the base dataset column (default: None)
+  -c CRITERIAORDATASETCOL, --criteriaordatasetcol CRITERIAORDATASETCOL
+                        Either dataset column to be applied on top of base dataset or criteria (default: None)
+
+
+Examples:
+- To add a new column to the dataframe with the ratio of debt to assets: econometrics/add -n dataset.debt_ratio -b dataset.debt -s div -c dataset.assets
+- To create a new column that shows the sum of revenue and expenses: econometrics/add -n dataset.total_income -b dataset.revenue -s add -c dataset.expenses
+- To add a column that flags rows where the revenue is greater than 1000: econometrics/add -n thesis.high_revenue -b thesis.revenue -s > -c 1000
+- To compute the difference between two columns and store the result in a new column: econometrics/add -n dataset.profit -b dataset.sales -s sub -c dataset.costs
+- To add a new column that shows the product of two existing columns: econometrics/add -n dataset.product -b dataset.value1 -s mul -c dataset.value2
+- To create a column that indicates whether the value in column A is equal to the value in column B: econometrics/add -n dataset.equal_values -b dataset.columnA -s == -c dataset.columnB
+- To add a column that calculates the power of one column to another: econometrics/add -n dataset.power_result -b dataset.base -s pow -c dataset.exponent
+- To create a new column that shows the remainder when dividing two columns: econometrics/add -n dataset.remainder -b dataset.dividend -s mod -c dataset.divisor
+- To add a column that flags rows where the value in column A is less than or equal to the value in column B: econometrics/add -n dataset.less_equal -b dataset.columnA -s <= -c dataset.columnB

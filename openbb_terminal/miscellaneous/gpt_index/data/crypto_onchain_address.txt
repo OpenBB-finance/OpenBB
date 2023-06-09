@@ -1,0 +1,19 @@
+parent_command:crypto/onchain
+usage: address [-a] [-t] [-tx] --address ADDRESS
+
+Load address for further analysis. You can analyze account address, token address or transaction hash. [Source: Ethplorer]
+
+optional arguments:
+  -a                 Account address (default: False)
+  -t                 ERC20 token address (default: False)
+  -tx                Transaction hash (default: False)
+  --address ADDRESS  Ethereum address (default: False)
+
+
+Examples:
+- To analyze an account address: crypto/onchain/address -a --address <ADDRESS>
+- To analyze an ERC20 token address: crypto/onchain/address -t --address <ADDRESS>
+- To analyze a transaction hash: crypto/onchain/address -tx --address <ADDRESS>
+- Load <COIN> and analyze its account address: crypto/load <COIN>/onchain/address -a --address <ADDRESS>
+- Load <COIN> and analyze its ERC20 token address: crypto/load <COIN>/onchain/address -t --address <ADDRESS>
+- Load <COIN> and analyze a specific transaction hash: crypto/load <COIN>/onchain/address -tx --address <ADDRESS>

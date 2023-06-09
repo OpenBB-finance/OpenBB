@@ -1,0 +1,14 @@
+parent_command:portfolio
+usage: rbeta [-p PERIOD]
+
+Show rolling beta portfolio vs benchmark
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        Period to apply rolling window (default: 1y)
+
+
+Examples:
+- To display the rolling beta of your portfolio compared to the benchmark with a default 1-year period: portfolio/rbeta
+- To show the rolling beta of your portfolio against the benchmark using a different period, for example, 6 months: portfolio/rbeta -p 6m
+- If you want to view the rolling beta for your portfolio versus the benchmark over a 3-year period: portfolio/rbeta --period 3y

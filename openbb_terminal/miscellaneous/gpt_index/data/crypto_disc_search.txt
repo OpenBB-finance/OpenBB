@@ -1,0 +1,28 @@
+parent_command:crypto/disc
+usage: search -q QUERY [QUERY ...] [-c {currencies,exchanges,icos,people,tags,all}] [-l LIMIT] [-s {category,id,name}] [-r]
+
+Search over CoinPaprika API You can display only N number of results with --limit parameter. You can sort data by id, name , category --sort parameter and also with --reverse flag to sort descending. To choose category in which you
+are searching for use --cat/-c parameter. Available categories: currencies|exchanges|icos|people|tags|all Displays: id, name, category
+
+optional arguments:
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
+                        phrase for search (default: None)
+  -c {currencies,exchanges,icos,people,tags,all}, --category {currencies,exchanges,icos,people,tags,all}
+                        Categories to search: currencies|exchanges|icos|people|tags|all. Default: all (default: all)
+  -l LIMIT, --limit LIMIT
+                        Limit of records (default: 10)
+  -s {category,id,name}, --sort {category,id,name}
+                        Sort by given column. Default: id (default: id)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- Search for Bitcoin in all categories: crypto/disc/search -q Bitcoin
+- Search for Ethereum in currencies category only: crypto/disc/search -q Ethereum -c currencies
+- Search for Binance and limit results to 5: crypto/disc/search -q Binance -l 5
+- Search for ICOs related to gaming and sort results by name: crypto/disc/search -q gaming -c icos -s name
+- Search for people in the crypto industry with the name John: crypto/disc/search -q John -c people
+- Find exchanges with "coin" in their name and sort by category: crypto/disc/search -q coin -c exchanges -s category
+- Look for tags related to DeFi and display up to 20 results: crypto/disc/search -q DeFi -c tags -l 20
+- Search for a specific coin, limit the results to 3, and sort in ascending order: crypto/disc/search -q <COIN> -l 3 -r
+- Find all information related to a specific ICO and sort the results by name in ascending order: crypto/disc/search -q <ICO> -c icos -s name -r

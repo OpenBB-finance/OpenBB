@@ -1,0 +1,12 @@
+parent_command:portfolio
+usage: show
+
+Show transactions table
+
+show
+Examples:
+- Display your transactions table: portfolio/show
+- To view the list of transactions in your portfolio: portfolio/show
+- Show the transactions in your current portfolio: portfolio/show
+- View all transactions within your portfolio: portfolio/show
+- Check the transactions table for your portfolio: portfolio/show

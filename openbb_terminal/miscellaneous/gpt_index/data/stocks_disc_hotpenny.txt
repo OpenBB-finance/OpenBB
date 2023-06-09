@@ -1,0 +1,11 @@
+parent_command: stocks/disc/
+usage: hotpenny [-l LIMIT] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]                 [--source {YahooFinance,Shortinterest}]  Provides top penny stocks from various websites. [Source: Yfinance]  optional arguments:   -l LIMIT, --limit LIMIT                         limit of stocks to display (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --source {YahooFinance,Shortinterest}                         Data source to select from (default: YahooFinance)  For more information and examples, use 'about hotpenny' to access the related guide.
+Summary: The hotpenny command provides a list of top penny stocks from various websites, with options to limit the number of stocks displayed, choose the data source, and export the raw data in different formats. You can also specify the name of the excel sheet when exporting to an .xlsx file.
+
+Examples:
+- To display the top 5 penny stocks: stocks/disc/hotpenny
+- To display the top 10 penny stocks: stocks/disc/hotpenny -l 10
+- To display the top 5 penny stocks from the Shortinterest source: stocks/disc/hotpenny --source Shortinterest
+- To export the top 5 penny stocks in a csv file: stocks/disc/hotpenny --export csv
+- To export the top 10 penny stocks in an xlsx file: stocks/disc/hotpenny -l 10 --export xlsx
+- To export the top 5 penny stocks in an xlsx file with a custom sheet name: stocks/disc/hotpenny --export xlsx --sheet-name MySheet

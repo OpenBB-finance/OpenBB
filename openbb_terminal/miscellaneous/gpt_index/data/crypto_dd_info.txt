@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: info
+
+Shows basic information about loaded coin like: Name, Symbol, Description, Market Cap, Public Interest, Supply, and Price related metrics
+
+info
+Examples:
+- To display basic information about a loaded coin: crypto/load <COIN>/dd/info
+- Show information about a specific cryptocurrency: crypto/load <COIN>/dd/info
+- Retrieve basic details of a loaded coin: crypto/load <COIN>/dd/info
+- Access essential details for a loaded cryptocurrency: crypto/load <COIN>/dd/info
+- Obtain basic metrics for a specific coin: crypto/load <COIN>/dd/info

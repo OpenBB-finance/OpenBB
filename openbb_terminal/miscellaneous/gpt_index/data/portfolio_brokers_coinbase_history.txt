@@ -1,0 +1,17 @@
+parent_command:portfolio/brokers/coinbase
+usage: history [-a ACCOUNT] [-l LIMIT]
+
+Display account history
+
+optional arguments:
+  -a ACCOUNT, --acc ACCOUNT
+                        Symbol of coin of account or id (default: BTC)
+  -l LIMIT, --limit LIMIT
+                        Limit parameter. (default: 20)
+
+
+Examples:
+- View the account history of your default coin (BTC) on Coinbase: portfolio/brokers/coinbase/history
+- Display the account history for a specific coin <COIN> on Coinbase: portfolio/brokers/coinbase/history -a <COIN>
+- Show the account history for a specific coin <COIN> with a limit of 10 entries: portfolio/brokers/coinbase/history -a <COIN> -l 10
+- Retrieve the last 5 entries of your default coin (BTC) account history on Coinbase: portfolio/brokers/coinbase/history -l 5

@@ -1,0 +1,14 @@
+parent_command:crypto/defi
+usage: newsletter [-l LIMIT]
+
+Display DeFi related substack newsletters. [Source: substack.com]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 10)
+
+
+Examples:
+- To view the top 10 DeFi related newsletters: crypto/defi/newsletter
+- To display the top 5 DeFi related newsletters: crypto/defi/newsletter -l 5
+- For a list of 20 DeFi newsletters: crypto/defi/newsletter --limit 20

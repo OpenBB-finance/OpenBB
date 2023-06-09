@@ -1,0 +1,15 @@
+parent_command:crypto/defi
+usage: sreturn [-l LIMIT]
+
+Displays terra blockchain staking returns history. [Source: https://fcd.terra.dev/swagger]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of days to show (default: 90)
+
+
+Examples:
+- To see the staking returns history for the past 30 days on the Terra blockchain: crypto/defi/sreturn -l 30
+- Display the staking returns history for the default 90 days: crypto/defi/sreturn
+- Show the staking returns for the past 7 days: crypto/defi/sreturn --limit 7
+- Retrieve the staking returns history for the last 60 days: crypto/defi/sreturn -l 60

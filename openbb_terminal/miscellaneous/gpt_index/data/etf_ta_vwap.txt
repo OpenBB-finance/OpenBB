@@ -1,0 +1,18 @@
+parent_command:etf/ta
+usage: vwap [-o N_OFFSET] [--start START] [--end END]
+
+The Volume Weighted Average Price that measures the average typical price by volume. It is typically used with intraday charts to identify general direction.
+
+optional arguments:
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+  --start START         Starting date to select (default: None)
+  --end END             Ending date to select (default: None)
+
+
+Examples:
+- To calculate the VWAP for an ETF: etf/ta/vwap
+- Calculate the VWAP for an ETF with an offset of 5: etf/ta/vwap -o 5
+- Calculate the VWAP for an ETF starting from a specific date: etf/ta/vwap --start 2022-01-01
+- Calculate the VWAP for an ETF between a specific date range: etf/ta/vwap --start 2022-01-01 --end 2022-02-01
+- Calculate the VWAP for an ETF with an offset of 3 and a specific starting date: etf/ta/vwap -o 3 --start 2022-01-01

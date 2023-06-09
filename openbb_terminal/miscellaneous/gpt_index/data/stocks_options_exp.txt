@@ -1,0 +1,9 @@
+parent_command: stocks/options/
+usage: exp [-i {}] [-d {}] [-h]            [--source {YahooFinance,Tradier,Nasdaq,Intrinio}]  See and set expiration date  optional arguments:   -i {}, --index {}     Select index for expiry date. (default: -1)   -d {}, --date {}      Select date (YYYY-MM-DD) (default: )   -h, --help            show this help message (default: False)   --source {YahooFinance,Tradier,Nasdaq,Intrinio}                         Data source to select from (default: YahooFinance)  For more information and examples, use 'about exp' to access the related guide.
+Summary: View and set the expiration date for options of a specific stock symbol. You can select an index for the expiry date, choose a specific date, and select the data source.
+
+Examples:
+- To view the expiration date for options of a stock: stocks/load <SYMBOL>/options/exp
+- To set the expiration date by index for options of a stock: stocks/load <SYMBOL>/options/exp -i 3
+- To set a specific expiration date for options of a stock: stocks/load <SYMBOL>/options/exp -d 2023-01-20
+- To view the expiration date for options using a specific data source: stocks/load <SYMBOL>/options/exp --source Nasdaq

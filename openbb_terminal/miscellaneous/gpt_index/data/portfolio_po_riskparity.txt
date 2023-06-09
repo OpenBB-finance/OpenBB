@@ -1,0 +1,56 @@
+parent_command:portfolio/po
+usage: riskparity [-rm RISK-MEASURE] [-rc RISK_CONTRIBUTION] [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN]
+                  [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+
+Build a risk parity portfolio based on risk budgeting approach
+
+optional arguments:
+  -rm RISK-MEASURE, --risk-measure RISK-MEASURE
+                        Risk measure used to optimize the portfolio. Possible values are: 'MV' : Variance 'MAD' : Mean Absolute Deviation 'MSV' : Semi Variance (Variance of negative returns) 'FLPM' : First Lower Partial Moment
+                        'SLPM' : Second Lower Partial Moment 'CVaR' : Conditional Value at Risk 'EVaR' : Entropic Value at Risk 'UCI' : Ulcer Index of uncompounded returns 'CDaR' : Conditional Drawdown at Risk of uncompounded
+                        returns 'EDaR' : Entropic Drawdown at Risk of uncompounded returns (default: MV)
+  -rc RISK_CONTRIBUTION, --risk-cont RISK_CONTRIBUTION
+                        vector of risk contribution constraint (default: None)
+  -tr TARGET_RETURN, --target-return TARGET_RETURN
+                        Constraint on minimum level of portfolio's return (default: -1)
+  -de SMOOTHING_FACTOR_EWMA, --d-ewma SMOOTHING_FACTOR_EWMA
+                        Smoothing factor for ewma estimators (default: 0.94)
+  -mt METHOD, --method METHOD
+                        Method used to fill nan values in time series, by default time. Possible values are: 'linear': linear interpolation 'time': linear interpolation based on time index 'nearest': use nearest value to replace
+                        nan values 'zero': spline of zeroth order 'slinear': spline of first order 'quadratic': spline of second order 'cubic': spline of third order 'barycentric': builds a polynomial that pass for all points
+                        (default: time)
+  -ct CATEGORIES, --categories CATEGORIES
+                        Show selected categories (default: [])
+  -p PERIOD, --period PERIOD
+                        Period to get yfinance data from. Possible frequency strings are: 'd': means days, for example '252d' means 252 days 'w': means weeks, for example '52w' means 52 weeks 'mo': means months, for example '12mo'
+                        means 12 months 'y': means years, for example '1y' means 1 year 'ytd': downloads data from beginning of year to today 'max': downloads all data available for each asset (default: 3y)
+  -s START_PERIOD, --start START_PERIOD
+                        Start date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -e END_PERIOD, --end END_PERIOD
+                        End date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -lr, --log-returns    If use logarithmic or arithmetic returns to calculate returns (default: False)
+  --freq {d,w,m}        Frequency used to calculate returns. Possible values are: 'd': for daily returns 'w': for weekly returns 'm': for monthly returns (default: d)
+  -mn MAX_NAN, --maxnan MAX_NAN
+                        Max percentage of nan values accepted per asset to be considered in the optimization process (default: 0.05)
+  -th THRESHOLD_VALUE, --threshold THRESHOLD_VALUE
+                        Value used to replace outliers that are higher to threshold in absolute value (default: 0.3)
+  -r RISK_FREE, --risk-free-rate RISK_FREE
+                        Risk-free rate of borrowing/lending. The period of the risk-free rate must be annual (default: 0.04739)
+  -a SIGNIFICANCE_LEVEL, --alpha SIGNIFICANCE_LEVEL
+                        Significance level of CVaR, EVaR, CDaR and EDaR (default: 0.05)
+  -v LONG_ALLOCATION, --value LONG_ALLOCATION
+                        Amount to allocate to portfolio (default: 1)
+  --name NAME           Save portfolio with personalized or default name (default: RP_0)
+
+
+Examples:
+- Create a risk parity portfolio with default settings: portfolio/po riskparity
+- Build a risk parity portfolio optimizing for Mean Absolute Deviation: portfolio/po riskparity -rm MAD
+- Construct a risk parity portfolio with a target return of 0.1: portfolio/po riskparity -tr 0.1
+- Create a risk parity portfolio using logarithmic returns: portfolio/po riskparity -lr
+- Build a risk parity portfolio with a specific risk-free rate: portfolio/po riskparity -r 0.03
+- Construct a risk parity portfolio with a significance level of 0.1 for CVaR, EVaR, CDaR, and EDaR: portfolio/po riskparity -a 0.1
+- Create a risk parity portfolio with a long allocation of 5000: portfolio/po riskparity -v 5000
+- Build a risk parity portfolio and save it with a custom name: portfolio/po riskparity --name Custom_RP
+- Construct a risk parity portfolio with a specific start and end date: portfolio/po riskparity -s 2020-01-01 -e 2021-12-31
+- Create a risk parity portfolio using weekly returns: portfolio/po riskparity --freq w

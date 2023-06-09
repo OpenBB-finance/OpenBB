@@ -1,0 +1,12 @@
+parent_command:portfolio
+usage: holdp [-u]
+
+Display holdings of assets (in percentage)
+
+optional arguments:
+  -u, --unstack  Sum all assets percentage over time (default: False)
+
+
+Examples:
+- To display the holdings of assets in percentage: portfolio/holdp
+- To display the holdings of assets in percentage and sum all assets percentage over time: portfolio/holdp -u

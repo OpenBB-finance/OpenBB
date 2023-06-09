@@ -1,0 +1,36 @@
+parent_command:econometrics
+usage: garch -v {} [-p P] [-o O] [-q Q] [-m {LS,AR,ARX,HAR,HARX,constant,zero}] [-l HORIZON] [-d]
+
+Calculates annualized volatility forecasts based on GARCH. GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for instance used to model volatility clusters, stock return
+and inflation. It is a generalisation of the ARCH models. $\text{GARCH}(p, q) = (1 - \alpha - \beta) \sigma_l + \sum_{i=1}^q \alpha u_{t-i}^2 + \sum_{i=1}^p \beta \sigma_{t-i}^2$ [1] The GARCH-model assumes that the variance
+estimate consists of 3 components: - $\sigma_l$ ; the long term component, which is unrelated to the current market conditions - $u_t$ ; the innovation/discovery through current market price changes - $\sigma_t$ ; the last estimate
+GARCH can be understood as a model, which allows to optimize these 3 variance components to the time series. This is done assigning weights to variance components: $(1 - \alpha - \beta)$ for $\sigma_l$ , $\alpha$ for $u_t$ and
+$\beta$ for $\sigma_t$ . [2] The weights can be estimated by iterating over different values of $(1 - \alpha - \beta) \sigma_l$ which we will call $\omega$ , $\alpha$ and $\beta$ , while maximizing: $\sum_{i} -ln(v_i) - (u_i ^ 2) /
+v_i$ . With the constraints: - $\alpha > 0$ - $\beta > 0$ - $\alpha + \beta < 1$ Note that there is no restriction on $\omega$ . Another method used for estimation is "variance targeting", where one first sets $\omega$ equal to the
+variance of the time series. This method nearly as effective as the previously mentioned and is less computationally effective. One can measure the fit of the time series to the GARCH method by using the Ljung-Box statistic. [3]
+See the sources below for reference and for greater detail. Sources: [1] Generalized Autoregressive Conditional Heteroskedasticity, by Tim Bollerslev [2] Finance Compact Plus Band 1, by Yvonne Seler Zimmerman and Heinz Zimmerman;
+ISBN: 978-3-907291-31-1 [3] Options, Futures & other Derivates, by John C. Hull; ISBN: 0-13-022444-8
+
+optional arguments:
+  -v {}, --value {}     The column and name of the database you want to estimate volatility for (default: None)
+  -p P                  The lag order of the symmetric innovation (default: 1)
+  -o O                  The lag order of the asymmetric innovation (default: 0)
+  -q Q                  The lag order of lagged volatility or equivalent (default: 1)
+  -m {LS,AR,ARX,HAR,HARX,constant,zero}, --mean {LS,AR,ARX,HAR,HARX,constant,zero}
+                        Choose mean model (default: constant)
+  -l HORIZON, --length HORIZON
+                        The length of the estimate (default: 100)
+  -d, --detailed        Display the details about the parameter fit, for instance the confidence interval (default: False)
+
+
+Examples:
+- Calculate GARCH volatility forecasts for a specific column in the database: econometrics/garch -v columnName
+- Estimate GARCH volatility with a lag order of 2 for symmetric innovation: econometrics/garch -v columnName -p 2
+- Estimate GARCH volatility with a lag order of 3 for lagged volatility: econometrics/garch -v columnName -q 3
+- Estimate GARCH volatility using the AR mean model: econometrics/garch -v columnName -m AR
+- Calculate GARCH volatility forecasts for a specific column with a horizon of 150: econometrics/garch -v columnName -l 150
+- Estimate GARCH volatility with detailed information about the parameter fit: econometrics/garch -v columnName -d
+- Calculate GARCH volatility forecasts with a lag order of 2 for symmetric innovation and a lag order of 1 for asymmetric innovation: econometrics/garch -v columnName -p 2 -o 1
+- Estimate GARCH volatility using the HAR mean model and a horizon of 200: econometrics/garch -v columnName -m HAR -l 200
+- Calculate GARCH volatility forecasts with a lag order of 3 for lagged volatility and detailed information about the parameter fit: econometrics/garch -v columnName -q 3 -d
+- Estimate GARCH volatility with a lag order of 2 for symmetric innovation, a lag order of 1 for asymmetric innovation, and the ARX mean model: econometrics/garch -v columnName -p 2 -o 1 -m ARX

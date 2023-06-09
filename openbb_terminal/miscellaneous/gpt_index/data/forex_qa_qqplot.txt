@@ -1,0 +1,11 @@
+parent_command:forex/qa
+usage: qqplot
+
+Display QQ plot vs normal quantiles
+
+qqplot
+Examples:
+- To display a QQ plot for a specific currency pair: forex/load <PAIR>/qa/qqplot
+- Generate a QQ plot for the desired forex pair: forex/load <PAIR>/qa/qqplot
+- Visualize normal quantiles with a QQ plot for a selected currency pair: forex/load <PAIR>/qa/qqplot
+- Obtain a QQ plot to assess normality for a given forex pair: forex/load <PAIR>/qa/qqplot

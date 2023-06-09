@@ -1,0 +1,14 @@
+parent_command:economy/qa
+usage: spread [-w N_WINDOW]
+
+Shows rolling spread measurement
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        Window length (default: 14)
+
+
+Examples:
+- To display the rolling spread measurement with the default window length: economy/qa/spread
+- To display the rolling spread measurement with a custom window length of 30: economy/qa/spread -w 30
+- For a rolling spread measurement with a window length of 50: economy/qa/spread --window 50

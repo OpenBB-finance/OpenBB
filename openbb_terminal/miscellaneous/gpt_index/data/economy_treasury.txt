@@ -1,0 +1,25 @@
+parent_command:economy
+usage: treasury [-m MATURITY] [--show] [--freq {annually,monthly,weekly,daily}] [-t TYPE] [-s START_DATE] [-e END_DATE]
+
+Obtain any set of U.S. treasuries and plot them together. These can be a range of maturities for nominal, inflation-adjusted (on long term average of inflation adjusted) and secondary markets over a lengthy period. Note: 3-month
+and 10-year treasury yields for other countries are available via the command 'macro' and parameter 'M3YD' and 'Y10YD'. [Source: EconDB / FED]
+
+optional arguments:
+  -m MATURITY, --maturity MATURITY
+                        The preferred maturity which is dependent on the type of the treasury (default: 10y)
+  --show                Show the maturities available for every instrument. (default: False)
+  --freq {annually,monthly,weekly,daily}
+                        The frequency, this can be annually, monthly, weekly or daily (default: monthly)
+  -t TYPE, --type TYPE  Choose from: nominal, inflation, average, secondary (default: nominal)
+  -s START_DATE, --start START_DATE
+                        The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) (default: 1934-01-31)
+  -e END_DATE, --end END_DATE
+                        The end date of the data (format: YEAR-DAY-MONTH, i.e. 2021-06-02) (default: 2023-06-02)
+
+
+Examples:
+- To plot 10-year nominal U.S. treasuries with monthly frequency: economy/treasury
+- For plotting 5-year inflation-adjusted U.S. treasuries with daily frequency: economy/treasury -m 5y --freq daily -t inflation
+- To view available maturities for each instrument type: economy/treasury --show
+- Plot secondary market U.S. treasuries with a 2-year maturity and weekly frequency: economy/treasury -m 2y -t secondary --freq weekly
+- To plot average U.S. treasuries with a 30-year maturity, monthly frequency, and specified date range: economy/treasury -m 30y -t average --freq monthly -s 2000-01-01 -e 2020-12-31

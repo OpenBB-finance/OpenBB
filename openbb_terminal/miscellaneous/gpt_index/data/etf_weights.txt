@@ -1,0 +1,12 @@
+parent_command:etf
+usage: weights
+
+Look at ETF sector holdings
+
+weights
+Examples:
+- To view the sector holdings of an ETF: etf/weights
+- Examine the sector weights of a specific ETF by loading it first: etf/load <SYMBOL>/weights
+- Analyze the sector holdings in an ETF after loading the desired ETF: etf/load <SYMBOL>/weights
+- Load an ETF symbol and then inspect its sector weights: etf/load <SYMBOL>/weights
+- After loading the ETF symbol, view its sector holdings: etf/load <SYMBOL>/weights

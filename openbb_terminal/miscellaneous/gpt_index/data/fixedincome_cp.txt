@@ -1,0 +1,30 @@
+parent_command:fixedincome
+usage: cp [-m {15d,30d,60d,7d,90d,overnight}] [-c {asset_backed,financial,non_financial,spread}] [-g {a2_p2,aa}] [-o] [-d] [-s START_DATE] [-e END_DATE]
+
+Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations. Maturities range up to 270 days but average about 30 days. Many companies use CP to raise cash needed for current transactions, and
+many find it to be a lower-cost alternative to bank loans.
+
+optional arguments:
+  -m {15d,30d,60d,7d,90d,overnight}, --maturity {15d,30d,60d,7d,90d,overnight}
+                        What type you'd like to collect data for (default: 30d)
+  -c {asset_backed,financial,non_financial,spread}, --category {asset_backed,financial,non_financial,spread}
+                        What category you'd like to collect data for (default: financial)
+  -g {a2_p2,aa}, --grade {a2_p2,aa}
+                        What grade you'd like to collect data for (default: aa)
+  -o, --options         See the available options (default: False)
+  -d, --description     Whether to provide a description of the data. (default: False)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: 1980-01-01)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- To view commercial paper data for 30-day maturity and financial category: fixedincome/cp
+- Display commercial paper data for 7-day maturity and asset-backed category: fixedincome/cp -m 7d -c asset_backed
+- Retrieve commercial paper data for 90-day maturity, non-financial category, and A2/P2 grade: fixedincome/cp -m 90d -c non_financial -g a2_p2
+- Show commercial paper data for overnight maturity with a description: fixedincome/cp -m overnight -d
+- Obtain commercial paper data for a specific date range: fixedincome/cp -s 2021-01-01 -e 2021-12-31
+- View available options for commercial paper data: fixedincome/cp -o
+- Collect commercial paper data for 60-day maturity, financial category, and AA grade, including a description: fixedincome/cp -m 60d -c financial -g aa -d
+- Fetch commercial paper data for 15-day maturity, spread category, and A2/P2 grade within a specific date range: fixedincome/cp -m 15d -c spread -g a2_p2 -s 2020-01-01 -e 2020-12-31

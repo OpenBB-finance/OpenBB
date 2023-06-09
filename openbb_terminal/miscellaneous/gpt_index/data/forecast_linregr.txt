@@ -1,0 +1,44 @@
+parent_command:forecast
+usage: linregr [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-o OUTPUT_CHUNK_LENGTH] [--end S_END_DATE] [--start S_START_DATE] [--lags LAGS]
+               [--residuals] [--forecast-only] [--explainability-raw] [--export-pred-raw] [--metric {rmse,mse,mape,smape}]
+
+Perform a linear regression forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.linear_regression_model.html
+
+optional arguments:
+  --past-covariates PAST_COVARIATES
+                        Past covariates(columns/features) in same dataset. Comma separated. (default: None)
+  --all-past-covariates
+                        Adds all rows as past covariates except for date and the target column. (default: False)
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  -o OUTPUT_CHUNK_LENGTH, --output-chunk-length OUTPUT_CHUNK_LENGTH
+                        The length of the forecast of the model. (default: 5)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --lags LAGS           Lagged target values used to predict the next time step. (default: 14)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --explainability-raw  Prints out a raw dataframe showing explainability results. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+  --metric {rmse,mse,mape,smape}
+                        Calculate precision based on a specific metric (rmse, mse, mape) (default: mape)
+
+
+Examples:
+- Perform a linear regression forecast for <SYMBOL> with default settings: forecast/linregr -d {<SYMBOL>}
+- Forecast <SYMBOL> with a specific target column and prediction days: forecast/linregr -d {<SYMBOL>} -c volume -n 10
+- Perform a linear regression forecast for <SYMBOL> using all past covariates: forecast/linregr -d {<SYMBOL>} --all-past-covariates
+- Forecast <SYMBOL> with a custom train split and output chunk length: forecast/linregr -d {<SYMBOL>} -t 0.75 -o 7
+- Perform a linear regression forecast for <SYMBOL> with a specific start and end date: forecast/linregr -d {<SYMBOL>} --start 2021-01-01 --end 2021-12-31
+- Forecast <SYMBOL> using a custom number of lags: forecast/linregr -d {<SYMBOL>} --lags 20
+- Show the residuals for the linear regression forecast of <SYMBOL>: forecast/linregr -d {<SYMBOL>} --residuals
+- Perform a linear regression forecast for <SYMBOL> without plotting historical data: forecast/linregr -d {<SYMBOL>} --forecast-only
+- Show the raw explainability results for <SYMBOL> forecast: forecast/linregr -d {<SYMBOL>} --explainability-raw
+- Export the linear regression forecast predictions for <SYMBOL> to a CSV file: forecast/linregr -d {<SYMBOL>} --export-pred-raw

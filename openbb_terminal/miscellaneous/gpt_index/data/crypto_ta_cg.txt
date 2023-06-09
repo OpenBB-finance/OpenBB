@@ -1,0 +1,14 @@
+parent_command:crypto/ta
+usage: cg [-l N_LENGTH]
+
+The Center of Gravity indicator, in short, is used to anticipate future price movements and to trade on price reversals as soon as they happen. However, just like other oscillators, the COG indicator returns the best results in
+range-bound markets and should be avoided when the price is trending. Traders who use it will be able to closely speculate the upcoming price change of the asset.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 14)
+
+
+Examples:
+- To plot the Center of Gravity indicator with the default length of 14 for a specific cryptocurrency: crypto/load <COIN>/ta/cg
+- To display the Center of Gravity indicator with a custom length of 20 for a chosen cryptocurrency: crypto/load <COIN>/ta/cg -l 20

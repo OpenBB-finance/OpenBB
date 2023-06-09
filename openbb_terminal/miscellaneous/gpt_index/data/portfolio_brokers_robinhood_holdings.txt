@@ -1,0 +1,12 @@
+parent_command:portfolio/brokers/robinhood
+usage: holdings
+
+Display info about your trading accounts on Robinhood
+
+holdings
+Examples:
+- To view your Robinhood holdings: portfolio/brokers/robinhood/holdings
+- Display information about your Robinhood trading accounts: portfolio/brokers/robinhood/holdings
+- Check your holdings on Robinhood: portfolio/brokers/robinhood/holdings
+- Get details about your Robinhood account holdings: portfolio/brokers/robinhood/holdings
+- Retrieve your Robinhood trading account information: portfolio/brokers/robinhood/holdings

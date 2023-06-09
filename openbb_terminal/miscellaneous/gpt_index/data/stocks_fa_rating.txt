@@ -1,0 +1,10 @@
+parent_command: stocks/fa/
+usage: rating [-t TICKER] [-l LIMIT] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]               [--source {Finviz,FinancialModelingPrep}]  Based on specific ratios, prints information whether the company is a (strong) buy, neutral or a (strong) sell. The following fields are expected: P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze   -l LIMIT, --limit LIMIT                         limit of last days to display ratings   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.   --source {Finviz,FinancialModelingPrep}                         Data source to select from  For more information and examples, use 'about rating' to access the related guide.
+Summary: The rating command provides information on whether a company is a (strong) buy, neutral, or a (strong) sell based on specific ratios, such as P/B, ROA, DCF, P/E, ROE, and D/E. You can analyze a specific ticker, limit the number of days to display ratings, export raw data, and choose the data source.
+
+Examples:
+- Analyze the rating for a specific stock symbol: stocks/fa/rating -t <SYMBOL>
+- Analyze the rating for a specific stock symbol and limit the number of days to display ratings: stocks/fa/rating -t <SYMBOL> -l 30
+- Analyze the rating for a specific stock symbol using a specific data source: stocks/fa/rating -t <SYMBOL> --source Finviz
+- Export the rating data for a specific stock symbol in csv format: stocks/fa/rating -t <SYMBOL> --export csv
+- Analyze the rating for a specific stock symbol and save data to a specific excel sheet: stocks/fa/rating -t <SYMBOL> --sheet-name Sheet1

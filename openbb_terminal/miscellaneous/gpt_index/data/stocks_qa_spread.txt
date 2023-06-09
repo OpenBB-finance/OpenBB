@@ -1,0 +1,14 @@
+parent_command:stocks/qa
+usage: spread [-w N_WINDOW]
+
+Shows rolling spread measurement
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        Window length (default: 14)
+
+
+Examples:
+- Display rolling spread measurement for a loaded stock: stocks/load <SYMBOL>/qa/spread
+- Show rolling spread measurement with a custom window length: stocks/load <SYMBOL>/qa/spread -w 30
+- Plot rolling spread measurement for a specific stock and 7-day window: stocks/load <SYMBOL>/qa/spread -w 7

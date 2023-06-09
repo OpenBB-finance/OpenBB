@@ -1,0 +1,65 @@
+parent_command:portfolio/po
+usage: maxsharpe [-tr TARGET_RETURN] [-tk TARGET_RISK] [-m {hist,ewma1,ewma2}] [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION]
+                 [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE]
+                 [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+
+Maximizes the portfolio's return/risk ratio
+
+optional arguments:
+  -tr TARGET_RETURN, --target-return TARGET_RETURN
+                        Constraint on minimum level of portfolio's return (default: -1)
+  -tk TARGET_RISK, --target-risk TARGET_RISK
+                        Constraint on maximum level of portfolio's risk (default: -1)
+  -m {hist,ewma1,ewma2}, --mean {hist,ewma1,ewma2}
+                        Method used to estimate the expected return vector (default: hist)
+  -cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}, --covariance {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}
+                        Method used to estimate covariance matrix. Possible values are 'hist': historical method 'ewma1': exponential weighted moving average with adjust=True 'ewma2': exponential weighted moving average with
+                        adjust=False 'ledoit': Ledoit and Wolf shrinkage method 'oas': oracle shrinkage method 'shrunk': scikit-learn shrunk method 'gl': graphical lasso method 'jlogo': j-logo covariance 'fixed': takes average of
+                        eigenvalues above max Marchenko Pastour limit 'spectral': makes zero eigenvalues above max Marchenko Pastour limit 'shrink': Lopez de Prado's book shrinkage method (default: hist)
+  -de SMOOTHING_FACTOR_EWMA, --d-ewma SMOOTHING_FACTOR_EWMA
+                        Smoothing factor for ewma estimators (default: 0.94)
+  -vs SHORT_ALLOCATION, --value-short SHORT_ALLOCATION
+                        Amount to allocate to portfolio in short positions (default: 0.0)
+  -rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}, --risk-measure {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}
+                        Risk measure used to optimize the portfolio. Possible values are: 'MV' : Variance 'MAD' : Mean Absolute Deviation 'MSV' : Semi Variance (Variance of negative returns) 'FLPM' : First Lower Partial Moment
+                        'SLPM' : Second Lower Partial Moment 'CVaR' : Conditional Value at Risk 'EVaR' : Entropic Value at Risk 'WR' : Worst Realization 'ADD' : Average Drawdown of uncompounded returns 'UCI' : Ulcer Index of
+                        uncompounded returns 'CDaR' : Conditional Drawdown at Risk of uncompounded returns 'EDaR' : Entropic Drawdown at Risk of uncompounded returns 'MDD' : Maximum Drawdown of uncompounded returns (default: MV)
+  -mt METHOD, --method METHOD
+                        Method used to fill nan values in time series, by default time. Possible values are: 'linear': linear interpolation 'time': linear interpolation based on time index 'nearest': use nearest value to replace
+                        nan values 'zero': spline of zeroth order 'slinear': spline of first order 'quadratic': spline of second order 'cubic': spline of third order 'barycentric': builds a polynomial that pass for all points
+                        (default: time)
+  -ct CATEGORIES, --categories CATEGORIES
+                        Show selected categories (default: [])
+  -p PERIOD, --period PERIOD
+                        Period to get yfinance data from. Possible frequency strings are: 'd': means days, for example '252d' means 252 days 'w': means weeks, for example '52w' means 52 weeks 'mo': means months, for example '12mo'
+                        means 12 months 'y': means years, for example '1y' means 1 year 'ytd': downloads data from beginning of year to today 'max': downloads all data available for each asset (default: 3y)
+  -s START_PERIOD, --start START_PERIOD
+                        Start date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -e END_PERIOD, --end END_PERIOD
+                        End date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -lr, --log-returns    If use logarithmic or arithmetic returns to calculate returns (default: False)
+  --freq {d,w,m}        Frequency used to calculate returns. Possible values are: 'd': for daily returns 'w': for weekly returns 'm': for monthly returns (default: d)
+  -mn MAX_NAN, --maxnan MAX_NAN
+                        Max percentage of nan values accepted per asset to be considered in the optimization process (default: 0.05)
+  -th THRESHOLD_VALUE, --threshold THRESHOLD_VALUE
+                        Value used to replace outliers that are higher to threshold in absolute value (default: 0.3)
+  -r RISK_FREE, --risk-free-rate RISK_FREE
+                        Risk-free rate of borrowing/lending. The period of the risk-free rate must be annual (default: 0.04739)
+  -a SIGNIFICANCE_LEVEL, --alpha SIGNIFICANCE_LEVEL
+                        Significance level of CVaR, EVaR, CDaR and EDaR (default: 0.05)
+  -v LONG_ALLOCATION, --value LONG_ALLOCATION
+                        Amount to allocate to portfolio (default: 1)
+  --name NAME           Save portfolio with personalized or default name (default: MAXSHARPE_0)
+
+
+Examples:
+- Optimize the portfolio with the max Sharpe ratio: portfolio/po/maxsharpe
+- Optimize the portfolio with a target return of 0.1: portfolio/po/maxsharpe -tr 0.1
+- Optimize the portfolio with a target risk of 0.2: portfolio/po/maxsharpe -tk 0.2
+- Optimize the portfolio using the historical method for expected return and Ledoit and Wolf shrinkage method for covariance: portfolio/po/maxsharpe -m hist -cv ledoit
+- Optimize the portfolio with a smoothing factor of 0.9 for ewma estimators: portfolio/po/maxsharpe -de 0.9
+- Optimize the portfolio with a short allocation of 0.5: portfolio/po/maxsharpe -vs 0.5
+- Optimize the portfolio using the Mean Absolute Deviation risk measure: portfolio/po/maxsharpe -rm MAD
+- Optimize the portfolio with a custom name: portfolio/po/maxsharpe --name CustomPortfolio
+- Optimize the portfolio using logarithmic returns and weekly frequency: portfolio/po/maxsharpe -lr --freq w
+- Optimize the portfolio with a risk-free rate of 0.03: portfolio/po/maxsharpe -r 0.03
