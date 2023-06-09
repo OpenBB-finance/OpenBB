@@ -247,7 +247,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
             data = response_json["data"]
             data = pd.Series(data)
             df["companyName"] = data["companyName"]
-            df["lastPrice"] = float(
+            df["price"] = float(
                 data["primaryData"]["lastSalePrice"].strip("$").replace(",", "")
             )
             df["change"] = float(data["primaryData"]["netChange"])
@@ -342,7 +342,7 @@ class Chains(Options):
                 pd.Series(self.chains["strike"]).sort_values().unique().tolist()
             )
             self.underlying_price = get_underlying_price(self.symbol)
-            self.last_price = self.underlying_price["lastPrice"]
+            self.last_price = self.underlying_price["price"]
             self.underlying_name = self.underlying_price["companyName"]
 
         self.hasIV = "impliedVolatility" in self.chains.columns

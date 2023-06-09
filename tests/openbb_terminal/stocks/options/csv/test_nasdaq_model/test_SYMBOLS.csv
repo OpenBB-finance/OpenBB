@@ -391,7 +391,7 @@ ALGN,True,"Align Technology, Inc. - Common Stock",Q,Q,False,100.0,False,N,,ALGN,
 ALGS,True,"Aligos Therapeutics, Inc. - Common stock",Q,Q,False,100.0,False,N,,ALGS,False
 ALGT,True,Allegiant Travel Company - Common Stock,Q,Q,False,100.0,False,N,,ALGT,False
 ALHC,True,"Alignment Healthcare, Inc. - Common Stock",Q,Q,False,100.0,False,N,,ALHC,False
-ALIM,True,"Alimera Sciences, Inc. - Common Stock",Q,G,False,100.0,False,D,,ALIM,False
+ALIM,True,"Alimera Sciences, Inc. - Common Stock",Q,G,False,100.0,False,N,,ALIM,False
 ALIT,True,"Alight, Inc. Class A Common Stock",N, ,False,100.0,False,,ALIT,ALIT,False
 ALK,True,"Alaska Air Group, Inc. Common Stock",N, ,False,100.0,False,,ALK,ALK,False
 ALKS,True,Alkermes plc - Ordinary Shares,Q,Q,False,100.0,False,N,,ALKS,False
@@ -882,9 +882,6 @@ AUUDW,True,Auddia Inc. - Warrants,Q,S,False,100.0,False,D,,AUUDW,False
 AUVI,True,"Applied UV, Inc. - Common Stock",Q,S,False,100.0,False,D,,AUVI,False
 AUVIP,True,"Applied UV, Inc. - 10.5% Series A Cumulative Perpetual Preferred Stock, $0.0001 par value per share",Q,S,False,100.0,False,N,,AUVIP,False
 AVA,True,Avista Corporation Common Stock,N, ,False,100.0,False,,AVA,AVA,False
-AVAC,True,Avalon Acquisition Inc. - Class A Common Stock,Q,G,False,100.0,False,D,,AVAC,False
-AVACU,True,Avalon Acquisition Inc. - Units,Q,G,False,100.0,False,D,,AVACU,False
-AVACW,True,Avalon Acquisition Inc. - Warrant,Q,G,False,100.0,False,D,,AVACW,False
 AVAH,True,Aveanna Healthcare Holdings Inc. - Common Stock,Q,Q,False,100.0,False,N,,AVAH,False
 AVAL,True,Grupo Aval Acciones y Valores S.A. ADR (Each representing 20 preferred shares),N, ,False,100.0,False,,AVAL,AVAL,False
 AVAV,True,"AeroVironment, Inc. - Common Stock",Q,Q,False,100.0,False,N,,AVAV,False
@@ -998,7 +995,6 @@ BAERW,True,"Bridger Aerospace Group Holdings, Inc. - Warrant",Q,G,False,100.0,Fa
 BAFN,True,BayFirst Financial Corp. - Common Stock,Q,S,False,100.0,False,N,,BAFN,False
 BAH,True,Booz Allen Hamilton Holding Corporation Common Stock,N, ,False,100.0,False,,BAH,BAH,False
 BAK,True,Braskem SA ADR,N, ,False,100.0,False,,BAK,BAK,False
-BAL,True,iPathA Series B Bloomberg Cotton Subindex Total Return ETN,P, ,False,100.0,False,,BAL,BAL,False
 BALL,True,Ball Corporation Common Stock,N, ,False,100.0,False,,BALL,BALL,False
 BALT,True,Innovator Defined Wealth Shield ETF,Z, ,True,100.0,False,,BALT,BALT,False
 BALY,True,Bally's Corporation Common Stock,N, ,False,100.0,False,,BALY,BALY,False
@@ -1087,7 +1083,6 @@ BCH,True,Banco De Chile Banco De Chile ADS,N, ,False,100.0,False,,BCH,BCH,False
 BCI,True,abrdn Bloomberg All Commodity Strategy K-1 Free ETF,P, ,True,100.0,False,,BCI,BCI,False
 BCIM,True,abrdn Bloomberg Industrial Metals Strategy K-1 Free ETF,P, ,True,100.0,False,,BCIM,BCIM,False
 BCLI,True,Brainstorm Cell Therapeutics Inc. - Common Stock,Q,S,False,100.0,False,N,,BCLI,False
-BCM,True,iPath Pure Beta Broad Commodity ETN,P, ,False,100.0,False,,BCM,BCM,False
 BCML,True,BayCom Corp - Common Stock,Q,Q,False,100.0,False,N,,BCML,False
 BCO,True,Brinks Company (The) Common Stock,N, ,False,100.0,False,,BCO,BCO,False
 BCOV,True,Brightcove Inc. - Common Stock,Q,Q,False,100.0,False,N,,BCOV,False
@@ -1133,6 +1128,8 @@ BELFA,True,Bel Fuse Inc. - Class A Common Stock,Q,Q,False,100.0,False,N,,BELFA,F
 BELFB,True,Bel Fuse Inc. - Class B Common Stock,Q,Q,False,100.0,False,N,,BELFB,False
 BEMB,True,iShares Trust iShares J.P. Morgan Broad USD Emerging Markets Bond ETF,Z, ,True,100.0,False,,BEMB,BEMB,False
 BEN,True,"Franklin Resources, Inc. Common Stock",N, ,False,100.0,False,,BEN,BEN,False
+BENF,True,Beneficient - Class A Common Stock,Q,G,False,100.0,False,N,,BENF,False
+BENFW,True,Beneficient - Warrant,Q,S,False,100.0,False,N,,BENFW,False
 BEP,True,Brookfield Renewable Partners L.P. ,N, ,False,100.0,False,,BEP,BEP,False
 BEP$A,True,"Brookfield Renewable Partners L.P. 5.25% Class A Preferred Limited Partnership Units, Series 17",N, ,False,100.0,False,,BEPpA,BEP-A,False
 BEPC,True,Brookfield Renewable Corporation Class A Subordinate Voting Shares ,N, ,False,100.0,False,,BEPC,BEPC,False
@@ -1239,7 +1236,7 @@ BIO,True,"Bio-Rad Laboratories, Inc. Class A Common Stock",N, ,False,100.0,False
 BIO.B,True,"Bio-Rad Laboratories, Inc. Class B  Common Stock",N, ,False,100.0,False,,BIO.B,BIO.B,False
 BIOC,True,"Biocept, Inc. - Common Stock",Q,S,False,100.0,False,D,,BIOC,False
 BIOL,True,"Biolase, Inc. - Common Stock",Q,S,False,100.0,False,D,,BIOL,False
-BIOR,True,"Biora Therapeutics, Inc.  - Common Stock",Q,G,False,100.0,False,D,,BIOR,False
+BIOR,True,"Biora Therapeutics, Inc.  - Common Stock",Q,G,False,100.0,False,N,,BIOR,False
 BIOS,True,BioPlus Acquisition Corp. - Class A Ordinary Shares,Q,G,False,100.0,False,N,,BIOS,False
 BIOSU,True,BioPlus Acquisition Corp. - Units,Q,G,False,100.0,False,N,,BIOSU,False
 BIOSW,True,BioPlus Acquisition Corp. - Warrants,Q,G,False,100.0,False,N,,BIOSW,False
@@ -1335,7 +1332,7 @@ BLEUW,True,bleuacacia ltd - Warrants,Q,G,False,100.0,False,N,,BLEUW,False
 BLFS,True,"BioLife Solutions, Inc. - Common Stock",Q,S,False,100.0,False,N,,BLFS,False
 BLFY,True,Blue Foundry Bancorp - Common Stock,Q,Q,False,100.0,False,N,,BLFY,False
 BLHY,True,Virtus Newfleet High Yield Bond ETF,P, ,True,100.0,False,,BLHY,BLHY,False
-BLIN,True,"Bridgeline Digital, Inc. - Common Stock",Q,S,False,100.0,False,D,,BLIN,False
+BLIN,True,"Bridgeline Digital, Inc. - Common Stock",Q,S,False,100.0,False,N,,BLIN,False
 BLK,True,"BlackRock, Inc. Common Stock",N, ,False,100.0,False,,BLK,BLK,False
 BLKB,True,"Blackbaud, Inc. - Common Stock",Q,Q,False,100.0,False,N,,BLKB,False
 BLKC,True,Invesco Alerian Galaxy Blockchain Users and Decentralized Commerce ETF,Z, ,True,100.0,False,,BLKC,BLKC,False
@@ -1683,7 +1680,7 @@ BYTS,True,BYTE Acquisition Corp. - Class A Ordinary Shares,Q,S,False,100.0,False
 BYTSU,True,BYTE Acquisition Corp. - Units,Q,S,False,100.0,False,N,,BYTSU,False
 BYTSW,True,BYTE Acquisition Corp. - Warrants,Q,S,False,100.0,False,N,,BYTSW,False
 BZ,True,KANZHUN LIMITED - American Depository Shares,Q,Q,False,100.0,False,N,,BZ,False
-BZFD,True,"BuzzFeed, Inc. - Class A Common Stock",Q,G,False,100.0,False,N,,BZFD,False
+BZFD,True,"BuzzFeed, Inc. - Class A Common Stock",Q,G,False,100.0,False,D,,BZFD,False
 BZFDW,True,"BuzzFeed, Inc. - Warrant",Q,S,False,100.0,False,N,,BZFDW,False
 BZH,True,"Beazer Homes USA, Inc. Common Stock",N, ,False,100.0,False,,BZH,BZH,False
 BZQ,True,ProShares UltraShort MSCI Brazil Capped,P, ,True,100.0,False,,BZQ,BZQ,False
@@ -2078,7 +2075,7 @@ CLM,True,"Cornerstone Strategic Value Fund, Inc. New Common Stock",A, ,False,100
 CLMB,True,"Climb Global Solutions, Inc. - Common Stock",Q,G,False,100.0,False,N,,CLMB,False
 CLMT,True,"Calumet Specialty Products Partners, L.P. - Common units representing limited partner interests",Q,Q,False,100.0,False,N,,CLMT,False
 CLNE,True,Clean Energy Fuels Corp. - Common Stock,Q,Q,False,100.0,False,N,,CLNE,False
-CLNN,True,Clene Inc. - Common Stock,Q,S,False,100.0,False,N,,CLNN,False
+CLNN,True,Clene Inc. - Common Stock,Q,S,False,100.0,False,D,,CLNN,False
 CLNNW,True,Clene Inc. - Warrant,Q,S,False,100.0,False,N,,CLNNW,False
 CLNR,True,IQ Cleaner Transport ETF,P, ,True,100.0,False,,CLNR,CLNR,False
 CLOA,True,BlackRock AAA CLO ETF,Q,G,True,100.0,False,N,,CLOA,False
@@ -2211,7 +2208,6 @@ CNXC,True,Concentrix Corporation - Common Stock,Q,Q,False,100.0,False,N,,CNXC,Fa
 CNXN,True,"PC Connection, Inc. - Common Stock",Q,Q,False,100.0,False,N,,CNXN,False
 CNXT,True,VanEck ChiNext ETF,P, ,True,100.0,False,,CNXT,CNXT,False
 CNYA,True,iShares MSCI China A ETF,Z, ,True,100.0,False,,CNYA,CNYA,False
-CO,True,Global Cord Blood Corporation Common Stock,N, ,False,100.0,False,,CO,CO,False
 COCO,True,"The Vita Coco Company, Inc. - Common Stock",Q,Q,False,100.0,False,N,,COCO,False
 COCP,True,"Cocrystal Pharma, Inc. - Common Stock",Q,S,False,100.0,False,N,,COCP,False
 CODA,True,"Coda Octopus Group, Inc. - Common stock",Q,S,False,100.0,False,N,,CODA,False
@@ -2274,7 +2270,6 @@ COSM,True,Cosmos Health Inc. - Common Stock,Q,S,False,100.0,False,N,,COSM,False
 COST,True,Costco Wholesale Corporation - Common Stock,Q,Q,False,100.0,False,N,,COST,False
 COTY,True,Coty Inc. Class A Common Stock,N, ,False,100.0,False,,COTY,COTY,False
 COUR,True,"Coursera, Inc. Common Stock",N, ,False,100.0,False,,COUR,COUR,False
-COW,True,iPathA Series B Bloomberg Livestock Subindex Total Return ETN,P, ,False,100.0,False,,COW,COW,False
 COWG,True,Pacer US Large Cap Cash Cows Growth Leaders ETF,Q,G,True,100.0,False,N,,COWG,False
 COWZ,True,Pacer US Cash Cows 100 ETF,Z, ,True,100.0,False,,COWZ,COWZ,False
 COYA,True,"Coya Therapeutics, Inc. - Common Stock",Q,S,False,100.0,False,N,,COYA,False
@@ -3702,7 +3697,7 @@ FELE,True,"Franklin Electric Co., Inc. - Common Stock",Q,Q,False,100.0,False,N,,
 FEM,True,First Trust Emerging Markets AlphaDEX Fund,Q,G,True,100.0,False,N,,FEM,False
 FEMB,True,First Trust Emerging Markets Local Currency Bond ETF,Q,G,True,100.0,False,N,,FEMB,False
 FEMS,True,First Trust Emerging Markets Small Cap AlphaDEX Fund,Q,G,True,100.0,False,N,,FEMS,False
-FEMY,True,Femasys Inc. - Common Stock,Q,S,False,100.0,False,N,,FEMY,False
+FEMY,True,Femasys Inc. - Common Stock,Q,S,False,100.0,False,D,,FEMY,False
 FEN,True,First Trust Energy Income and Growth Fund,A, ,False,100.0,False,,FEN,FEN,False
 FENC,True,Fennec Pharmaceuticals Inc. - Common Stock,Q,S,False,100.0,False,N,,FENC,False
 FENG,True,"Phoenix New Media Limited American Depositary Shares, each representing 48 Class A ordinary shares.",N, ,False,100.0,False,,FENG,FENG,False
@@ -3757,7 +3752,7 @@ FGRO,True,Fidelity Growth Opportunities ETF,Z, ,True,100.0,False,,FGRO,FGRO,Fals
 FHB,True,"First Hawaiian, Inc. - Common Stock",Q,Q,False,100.0,False,N,,FHB,False
 FHI,True,"Federated Hermes, Inc. Common Stock",N, ,False,100.0,False,,FHI,FHI,False
 FHLC,True,Fidelity MSCI Health Care Index ETF,P, ,True,100.0,False,,FHLC,FHLC,False
-FHLT,True,Future Health ESG Corp. - Common stock,Q,S,False,100.0,False,N,,FHLT,False
+FHLT,True,Future Health ESG Corp. - Common stock,Q,S,False,100.0,False,D,,FHLT,False
 FHLTU,True,Future Health ESG Corp. - Unit,Q,S,False,100.0,False,N,,FHLTU,False
 FHLTW,True,Future Health ESG Corp. - Warrant,Q,S,False,100.0,False,N,,FHLTW,False
 FHN,True,First Horizon Corporation Common Stock,N, ,False,100.0,False,,FHN,FHN,False
@@ -4220,7 +4215,6 @@ GATEW,True,Marblegate Acquisition Corp. - Warrant,Q,G,False,100.0,False,D,,GATEW
 GATO,True,"Gatos Silver, Inc. Common Stock",N, ,False,100.0,False,,GATO,GATO,False
 GATX,True,GATX Corporation Common Stock,N, ,False,100.0,False,,GATX,GATX,False
 GAU,True,Galiano Gold Inc.,A, ,False,100.0,False,,GAU,GAU,False
-GAZ,True,Barclays Bank PLC iPath Series B Bloomberg Natural Gas Subindex Total Return ETN,P, ,False,100.0,False,,GAZ,GAZ,False
 GB,True,Global Blue Group Holding AG Ordinary Shares,N, ,False,100.0,False,,GB,GB,False
 GB.W,True,Global Blue Group Holding AG Warrants exercisable for one Ordinary Share of Global Blue Group Holding AG at a price of $11.50 per share,N, ,False,100.0,False,,GB.WS,GB+,False
 GBAB,True,Guggenheim Taxable Municipal Bond & Investment Grade Debt Trust Common Shares of Beneficial Interest,N, ,False,100.0,False,,GBAB,GBAB,False
@@ -4632,7 +4626,6 @@ GSLC,True,Goldman Sachs ActiveBeta U.S. Large Cap Equity ETF,P, ,True,100.0,Fals
 GSM,True,Ferroglobe PLC - Ordinary Shares,Q,S,False,100.0,False,N,,GSM,False
 GSMG,True,Glory Star New Media Group Holdings Limited - Ordinary Share,Q,S,False,100.0,False,D,,GSMG,False
 GSMGW,True,Glory Star New Media Group Holdings Limited - Warrant,Q,S,False,100.0,False,N,,GSMGW,False
-GSP,True,"Barclays Bank PLC iPath Exchange Traded Notes due June 12, 2036 Linked to GSCI Total Return Index",P, ,False,100.0,False,,GSP,GSP,False
 GSPY,True,Gotham Enhanced 500 ETF,P, ,True,100.0,False,,GSPY,GSPY,False
 GSQB,True,G Squared Ascend II Inc. Class A Ordinary Shares,N, ,False,100.0,False,,GSQB,GSQB,False
 GSQB.U,True,G Squared Ascend II Inc. Units,N, ,False,100.0,False,,GSQB.U,GSQB=,False
@@ -4825,7 +4818,6 @@ HHGCW,True,HHG Capital Corporation - Warrant,Q,S,False,100.0,False,N,,HHGCW,Fals
 HHLA,True,HH&L Acquisition Co. Class A Ordinary Shares,N, ,False,100.0,False,,HHLA,HHLA,False
 HHLA.U,True,"HH&L Acquisition Co. Units, each consisting of one Class A ordinary share and one-half of one redeemable warrant",N, ,False,100.0,False,,HHLA.U,HHLA=,False
 HHLA.W,True,"HH&L Acquisition Co. Redeemable warrants, each warrant exercisable for one Class A ordinary share at an exercise price of $11.50",N, ,False,100.0,False,,HHLA.WS,HHLA+,False
-HHR,True,HeadHunter Group PLC - American Depositary Shares,Q,Q,False,100.0,False,D,,HHR,False
 HHRS,True,Hammerhead Energy Inc. - Class A Common Stock,Q,S,False,100.0,False,N,,HHRS,False
 HHRSW,True,Hammerhead Energy Inc. - Warrant,Q,S,False,100.0,False,N,,HHRSW,False
 HHS,True,"Harte-Hanks, Inc. - Common Stock",Q,G,False,100.0,False,N,,HHS,False
@@ -5315,7 +5307,7 @@ ILMN,True,"Illumina, Inc. - Common Stock",Q,Q,False,100.0,False,N,,ILMN,False
 ILPT,True,Industrial Logistics Properties Trust - Common Shares of Beneficial Interest,Q,Q,False,100.0,False,N,,ILPT,False
 ILTB,True,iShares Core 10  Year USD Bond ETF,P, ,True,100.0,False,,ILTB,ILTB,False
 IMAB,True,I-MAB - American Depositary Shares,Q,G,False,100.0,False,N,,IMAB,False
-IMACW,True,"IMAC Holdings, Inc. - Warrant",Q,S,False,100.0,False,N,,IMACW,False
+IMACW,True,"IMAC Holdings, Inc. - Warrant",Q,S,False,100.0,False,D,,IMACW,False
 IMAQ,True,International Media Acquisition Corp. - Class A Common Stock,Q,S,False,100.0,False,N,,IMAQ,False
 IMAQR,True,International Media Acquisition Corp. - Rights,Q,S,False,100.0,False,N,,IMAQR,False
 IMAQU,True,International Media Acquisition Corp. - Unit,Q,S,False,100.0,False,N,,IMAQU,False
@@ -5362,6 +5354,7 @@ INBKZ,True,First Internet Bancorp - Fixed-to-Floating Rate Subordinated Notes Du
 INBS,True,Intelligent Bio Solutions Inc.  - Common Stock,Q,S,False,100.0,False,N,,INBS,False
 INBX,True,"Inhibrx, Inc. - Common Stock",Q,G,False,100.0,False,N,,INBX,False
 INC,True,VanEck ETF Trust VanEck Dynamic High Income ETF,P, ,True,100.0,False,,INC,INC,False
+INCM,True,Franklin Templeton ETF Trust Franklin Income Focus ETF,P, ,True,100.0,False,,INCM,INCM,False
 INCO,True,Columbia India Consumer ETF,P, ,True,100.0,False,,INCO,INCO,False
 INCR,True,Intercure Ltd. - ordinary shares,Q,G,False,100.0,False,N,,INCR,False
 INCY,True,Incyte Corporation - Common Stock,Q,Q,False,100.0,False,N,,INCY,False
@@ -5725,17 +5718,7 @@ JIDA,True,JPMorgan ActiveBuilders International Equity ETF,P, ,True,100.0,False,
 JIG,True,JPMorgan International Growth ETF,P, ,True,100.0,False,,JIG,JIG,False
 JILL,True,"J. Jill, Inc. Common Stock",N, ,False,100.0,False,,JILL,JILL,False
 JIRE,True,J.P. Morgan Exchange-Traded Fund Trust JPMorgan International Research Enhanced Equity ETF,P, ,True,100.0,False,,JIRE,JIRE,False
-JJA,True,iPathA Series B Bloomberg Agriculture Subindex Total Return ETN,P, ,False,100.0,False,,JJA,JJA,False
-JJC,True,iPathA Series B Bloomberg Copper Subindex Total Return ETN,P, ,False,100.0,False,,JJC,JJC,False
-JJE,True,iPathA Series B Bloomberg Energy Subindex Total Return ETN,P, ,False,100.0,False,,JJE,JJE,False
-JJG,True,iPathA Series B Bloomberg Grains Subindex Total Return ETN,P, ,False,100.0,False,,JJG,JJG,False
-JJM,True,iPathA Series B Bloomberg Industrial Metals Subindex Total Return ETN,P, ,False,100.0,False,,JJM,JJM,False
-JJN,True,iPathA Series B Bloomberg Nickel Subindex Total Return ETN,P, ,False,100.0,False,,JJN,JJN,False
-JJP,True,iPathA Series B Bloomberg Precious Metals Subindex Total Return ETN,P, ,False,100.0,False,,JJP,JJP,False
-JJS,True,iPathA Series B Bloomberg Softs Subindex Total Return ETN,P, ,False,100.0,False,,JJS,JJS,False
 JJSF,True,J & J Snack Foods Corp. - Common Stock,Q,Q,False,100.0,False,N,,JJSF,False
-JJT,True,iPathA Series B Bloomberg Tin Subindex Total Return ETN,P, ,False,100.0,False,,JJT,JJT,False
-JJU,True,iPathA Series B Bloomberg Aluminum Subindex Total Return ETN,P, ,False,100.0,False,,JJU,JJU,False
 JKHY,True,"Jack Henry & Associates, Inc. - Common Stock",Q,Q,False,100.0,False,N,,JKHY,False
 JKS,True,JinkoSolar Holding Company Limited American Depositary Shares (each representing 4 Common Shares),N, ,False,100.0,False,,JKS,JKS,False
 JLL,True,Jones Lang LaSalle Incorporated Common Stock,N, ,False,100.0,False,,JLL,JLL,False
@@ -5752,7 +5735,6 @@ JNJ,True,Johnson & Johnson Common Stock,N, ,False,100.0,False,,JNJ,JNJ,False
 JNK,True,SPDR Bloomberg High Yield Bond ETF,P, ,True,100.0,False,,JNK,JNK,False
 JNPR,True,"Juniper Networks, Inc. Common Stock",N, ,False,100.0,False,,JNPR,JNPR,False
 JNUG,True,Direxion Daily Junior Gold Miners Index Bull 2X Shares,P, ,True,100.0,False,,JNUG,JNUG,False
-JO,True,iPathA Series B Bloomberg Coffee Subindex Total Return ETN,P, ,False,100.0,False,,JO,JO,False
 JOAN,True,"JOANN, Inc. - common stock",Q,G,False,100.0,False,N,,JOAN,False
 JOB,True,GEE Group Inc. Common Stock,A, ,False,100.0,False,,JOB,JOB,False
 JOBY,True,"Joby Aviation, Inc. Common Stock",N, ,False,100.0,False,,JOBY,JOBY,False
@@ -6071,6 +6053,7 @@ LANC,True,Lancaster Colony Corporation - Common Stock,Q,Q,False,100.0,False,N,,L
 LAND,True,Gladstone Land Corporation - Common Stock,Q,G,False,100.0,False,N,,LAND,False
 LANDM,True,Gladstone Land Corporation - 5.00% Series D Cumulative Term Preferred Stock,Q,G,False,100.0,False,N,,LANDM,False
 LANDO,True,Gladstone Land Corporation - 6.00% Series B Cumulative Redeemable Preferred Stock,Q,G,False,100.0,False,N,,LANDO,False
+LANDP,True,Gladstone Land Corporation - 6.00% Series C Cumulative Redeemable Preferred Stock,Q,G,False,100.0,False,N,,LANDP,False
 LANV,True,Lanvin Group Holdings Limited Ordinary Shares,N, ,False,100.0,False,,LANV,LANV,False
 LANV.W,True,"Lanvin Group Holdings Limited Redeemable Warrants, each whole warrant exercisable for one Ordinary Share at an exercise price of $11.50",N, ,False,100.0,False,,LANV.WS,LANV+,False
 LARK,True,Landmark Bancorp Inc. - Common Stock,Q,G,False,100.0,False,N,,LARK,False
@@ -6122,7 +6105,6 @@ LCUT,True,"Lifetime Brands, Inc. - Common Stock",Q,Q,False,100.0,False,N,,LCUT,F
 LCW,True,Learn CW Investment Corporation Class A Ordinary Shares,N, ,False,100.0,False,,LCW,LCW,False
 LCW.U,True,"Learn CW Investment Corporation Units, each consisting of one Class A ordinary share and one-half of one redeemable warrant",N, ,False,100.0,False,,LCW.U,LCW=,False
 LCW.W,True,"Learn CW Investment Corporation Redeemable warrants, each whole warrant exercisable for one Class A ordinary share at an exercise price of $11.50 per share",N, ,False,100.0,False,,LCW.WS,LCW+,False
-LD,True,iPath Bloomberg Lead Subindex Total Return SM Index ETN,P, ,False,100.0,False,,LD,LD,False
 LDEM,True,iShares ESG MSCI EM Leaders ETF,Q,G,True,100.0,False,N,,LDEM,False
 LDI,True,"loanDepot, Inc. Class A Common Stock",N, ,False,100.0,False,,LDI,LDI,False
 LDOS,True,"Leidos Holdings, Inc. Common Stock",N, ,False,100.0,False,,LDOS,LDOS,False
@@ -6467,7 +6449,7 @@ MBSC,True,M3-Brigade Acquisition III Corp. Class A Common Stock,N, ,False,100.0,
 MBSC.U,True,M3-Brigade Acquisition III Corp. Units,N, ,False,100.0,False,,MBSC.U,MBSC=,False
 MBSC.W,True,"M3-Brigade Acquisition III Corp. Public warrants, each whole public warrant exercisable for one share of Class A Common Stock at an exercise price of $11.50 per share",N, ,False,100.0,False,,MBSC.WS,MBSC+,False
 MBSD,True,FlexShares Trust FlexShares Disciplined Duration MBS Index Fund,P, ,True,100.0,False,,MBSD,MBSD,False
-MBTC,True,Nocturne Acquisition Corporation - Ordinary Shares,Q,S,False,100.0,False,E,,MBTC,False
+MBTC,True,Nocturne Acquisition Corporation - Ordinary Shares,Q,S,False,100.0,False,H,,MBTC,False
 MBTCR,True,Nocturne Acquisition Corporation - Right,Q,S,False,100.0,False,E,,MBTCR,False
 MBTCU,True,Nocturne Acquisition Corporation - Unit,Q,S,False,100.0,False,E,,MBTCU,False
 MBUU,True,"Malibu Boats, Inc. - Common Stock",Q,G,False,100.0,False,N,,MBUU,False
@@ -6915,9 +6897,6 @@ MTSI,True,"MACOM Technology Solutions Holdings, Inc. - Common Stock",Q,Q,False,1
 MTTR,True,"Matterport, Inc. - Class A Common Stock",Q,G,False,100.0,False,N,,MTTR,False
 MTUL,True,ETRACS 2x Leveraged MSCI US Momentum Factor TR ETN,P, ,True,100.0,False,,MTUL,MTUL,False
 MTUM,True,iShares MSCI USA Momentum Factor ETF,Z, ,True,100.0,False,,MTUM,MTUM,False
-MTVC,True,Motive Capital Corp II Class A Ordinary Shares,N, ,False,100.0,False,,MTVC,MTVC,False
-MTVC.U,True,"Motive Capital Corp II Units, each consisting of one Class A ordinary share, and one-third of one redeemable warrant",N, ,False,100.0,False,,MTVC.U,MTVC=,False
-MTVC.W,True,"Motive Capital Corp II Warrants, each whole warrant exercisable for one Class A ordinary share at an exercise price of $11.50",N, ,False,100.0,False,,MTVC.WS,MTVC+,False
 MTVR,True,Fount Metaverse ETF,P, ,True,100.0,False,,MTVR,MTVR,False
 MTW,True,"Manitowoc Company, Inc. (The) Common Stock",N, ,False,100.0,False,,MTW,MTW,False
 MTX,True,Minerals Technologies Inc. Common Stock,N, ,False,100.0,False,,MTX,MTX,False
@@ -7128,7 +7107,6 @@ NHTC,True,Natural Health Trends Corp. - Commn Stock,Q,S,False,100.0,False,N,,NHT
 NHWK,True,"NightHawk Biosciences, Inc. Common Stock",A, ,False,100.0,False,,NHWK,NHWK,False
 NI,True,NiSource Inc Common Stock,N, ,False,100.0,False,,NI,NI,False
 NI$B,True,"NiSource, Inc Depositary Shares representing 1/1,000th ownership interest in a share of 6.50% Series B Preferred Stock and 1/1,000th ownership interest in a share of Series B-1 Preferred Stock",N, ,False,100.0,False,,NIpB,NI-B,False
-NIB,True,iPath Bloomberg Cocoa Subindex Total Return SM IndexETN,P, ,False,100.0,False,,NIB,NIB,False
 NIC,True,Nicolet Bankshares Inc. Common Stock,N, ,False,100.0,False,,NIC,NIC,False
 NICE,True,NICE Ltd - American Depositary Shares each representing one Ordinary Share,Q,Q,False,100.0,False,N,,NICE,False
 NICK,True,"Nicholas Financial, Inc. - Common Stock",Q,Q,False,100.0,False,N,,NICK,False
@@ -7232,11 +7210,13 @@ NPFD,True,Nuveen Variable Rate Preferred & Income Fund Common Shares,N, ,False,1
 NPK,True,"National Presto Industries, Inc. Common Stock",N, ,False,100.0,False,,NPK,NPK,False
 NPO,True,EnPro Industries Inc,N, ,False,100.0,False,,NPO,NPO,False
 NPV,True,Nuveen Virginia Quality Municipal Income Fund Common Stock,N, ,False,100.0,False,,NPV,NPV,False
+NPWR,True,NET Power Inc. Class A Common Stock,N, ,False,100.0,False,,NPWR,NPWR,False
+NPWR.W,True,"NET Power Inc. Redeemable warrants, each whole warrant exercisable for one share of Class A Common Stock at an exercise price of $11.50",N, ,False,100.0,False,,NPWR.WS,NPWR+,False
 NQP,True,Nuveen Pennsylvania Quality Municipal Income Fund Common Stock,N, ,False,100.0,False,,NQP,NQP,False
 NR,True,"Newpark Resources, Inc. Common Stock",N, ,False,100.0,False,,NR,NR,False
-NRAC,True,Northern Revival Acquisition Corporation - Class A Ordinary share,Q,S,False,100.0,False,H,,NRAC,False
-NRACU,True,Northern Revival Acquisition Corporation - Unit,Q,S,False,100.0,False,H,,NRACU,False
-NRACW,True,Northern Revival Acquisition Corporation - Warrant,Q,S,False,100.0,False,H,,NRACW,False
+NRAC,True,Northern Revival Acquisition Corporation - Class A Ordinary share,Q,S,False,100.0,False,D,,NRAC,False
+NRACU,True,Northern Revival Acquisition Corporation - Unit,Q,S,False,100.0,False,D,,NRACU,False
+NRACW,True,Northern Revival Acquisition Corporation - Warrant,Q,S,False,100.0,False,D,,NRACW,False
 NRBO,True,"NeuroBo Pharmaceuticals, Inc. - Common Stock",Q,S,False,100.0,False,D,,NRBO,False
 NRC,True,National Research Corporation - Common Stock,Q,Q,False,100.0,False,N,,NRC,False
 NRDS,True,"NerdWallet, Inc. - Class A Common Stock",Q,G,False,100.0,False,N,,NRDS,False
@@ -7366,7 +7346,7 @@ NVDY,True,Tidal ETF Trust II YieldMax NVDA Option Income Strategy ETF,P, ,True,1
 NVEC,True,NVE Corporation - Common Stock,Q,S,False,100.0,False,N,,NVEC,False
 NVEE,True,"NV5 Global, Inc. - Common Stock",Q,Q,False,100.0,False,N,,NVEE,False
 NVEI,True,Nuvei Corporation - Subordinate Voting Shares,Q,Q,False,100.0,False,N,,NVEI,False
-NVFY,True,"Nova Lifestyle, Inc - Common Stock",Q,S,False,100.0,False,D,,NVFY,False
+NVFY,True,"Nova Lifestyle, Inc - Common Stock",Q,S,False,100.0,False,N,,NVFY,False
 NVG,True,Nuveen AMT-Free Municipal Credit Income Fund ,N, ,False,100.0,False,,NVG,NVG,False
 NVGS,True,Navigator Holdings Ltd. Ordinary Shares (Marshall Islands),N, ,False,100.0,False,,NVGS,NVGS,False
 NVIR,True,Listed Funds Trust Horizon Kinetics Energy and Remediation ETF,P, ,True,100.0,False,,NVIR,NVIR,False
@@ -7528,7 +7508,6 @@ OIA,True,Invesco Municipal Income Opportunities Trust Common Stock,N, ,False,100
 OIG,True,"Orbital Infrastructure Group, Inc. - Common Stock",Q,S,False,100.0,False,D,,OIG,False
 OIH,True,VanEck Oil Services ETF,P, ,True,100.0,False,,OIH,OIH,False
 OII,True,"Oceaneering International, Inc. Common Stock",N, ,False,100.0,False,,OII,OII,False
-OIL,True,iPath Pure Beta Crude Oil ETN,P, ,False,100.0,False,,OIL,OIL,False
 OILD,True,MicroSectors Oil & Gas Exp. & Prod. -3x Inverse Leveraged ETN,P, ,True,100.0,False,,OILD,OILD,False
 OILK,True,ProShares K-1 Free Crude Oil Strategy ETF,Z, ,True,100.0,False,,OILK,OILK,False
 OILU,True,MicroSectors Oil & Gas Exp. & Prod. 3x Leveraged ETN,P, ,True,100.0,False,,OILU,OILU,False
@@ -7720,7 +7699,6 @@ OXY.W,True,Occidental Petroleum Corporation Warrants ,N, ,False,100.0,False,,OXY
 OZ,True,"Belpointe PREP, LLC Class A Units",A, ,False,100.0,False,,OZ,OZ,False
 OZK,True,Bank OZK - Common Stock,Q,Q,False,100.0,False,N,,OZK,False
 OZKAP,True,Bank OZK - 4.625% Series A Non-Cumulative Perpetual Preferred Stock,Q,Q,False,100.0,False,N,,OZKAP,False
-OZON,True,"Ozon Holdings PLC - ADS, each ADS representing one ordinary share",Q,Q,False,100.0,False,D,,OZON,False
 PAA,True,"Plains All American Pipeline, L.P. - Common Units representing Limited Partner Interests",Q,Q,False,100.0,False,N,,PAA,False
 PAAS,True,Pan American Silver Corp. Common Stock,N, ,False,100.0,False,,PAAS,PAAS,False
 PAB,True,PGIM Active Aggregate Bond ETF,P, ,True,100.0,False,,PAB,PAB,False
@@ -7946,7 +7924,6 @@ PGEN,True,"Precigen, Inc. - Common Stock",Q,Q,False,100.0,False,N,,PGEN,False
 PGF,True,Invesco Financial Preferred ETF,P, ,True,100.0,False,,PGF,PGF,False
 PGHY,True,Invesco Global Short Term High Yield Bond ETF,P, ,True,100.0,False,,PGHY,PGHY,False
 PGJ,True,Invesco Golden Dragon China ETF,Q,G,True,100.0,False,N,,PGJ,False
-PGM,True,iPathA Series B Bloomberg Platinum Subindex Total Return ETN,P, ,False,100.0,False,,PGM,PGM,False
 PGNY,True,"Progyny, Inc. - Common Stock",Q,Q,False,100.0,False,N,,PGNY,False
 PGP,True,Pimco Global Stocksplus & Income Fund Pimco Global StocksPlus & Income Fund Common Shares of Beneficial Interest,N, ,False,100.0,False,,PGP,PGP,False
 PGR,True,Progressive Corporation (The) Common Stock,N, ,False,100.0,False,,PGR,PGR,False
@@ -8569,7 +8546,7 @@ RCI,True,"Rogers Communication, Inc. Common Stock",N, ,False,100.0,False,,RCI,RC
 RCKT,True,"Rocket Pharmaceuticals, Inc. - Common Stock",Q,G,False,100.0,False,N,,RCKT,False
 RCKTW,True,"Rocket Pharmaceuticals, Inc. - Warrant",Q,S,False,100.0,False,N,,RCKTW,False
 RCKY,True,"Rocky Brands, Inc. - Common Stock",Q,Q,False,100.0,False,N,,RCKY,False
-RCL,True,D/B/A Royal Caribbean Cruises Ltd. Common Stock,N, ,False,100.0,False,,RCL,RCL,False
+RCL,True,Royal Caribbean Cruises Ltd. Common Stock,N, ,False,100.0,False,,RCL,RCL,False
 RCLF,True,Rosecliff Acquisition Corp I - Class A Common Stock,Q,S,False,100.0,False,D,,RCLF,False
 RCLFU,True,"Rosecliff Acquisition Corp I - Units, consisting of one share Class A common stock and one-third redeemable warrants",Q,S,False,100.0,False,D,,RCLFU,False
 RCLFW,True,Rosecliff Acquisition Corp I - Warrants,Q,S,False,100.0,False,D,,RCLFW,False
@@ -8695,7 +8672,7 @@ RHRX,True,RH Tactical Rotation ETF,P, ,True,100.0,False,,RHRX,RHRX,False
 RHTX,True,RH Tactical Outlook ETF,P, ,True,100.0,False,,RHTX,RHTX,False
 RIBT,True,RiceBran Technologies - Common Stock,Q,S,False,100.0,False,N,,RIBT,False
 RICK,True,"RCI Hospitality Holdings, Inc. - Common Stock",Q,G,False,100.0,False,N,,RICK,False
-RIDE,True,Lordstown Motors Corp. - Class A Common Stock,Q,Q,False,100.0,False,D,,RIDE,False
+RIDE,True,Lordstown Motors Corp. - Class A Common Stock,Q,Q,False,100.0,False,N,,RIDE,False
 RIET,True,Hoya Capital High Dividend Yield ETF,P, ,True,100.0,False,,RIET,RIET,False
 RIG,True,Transocean Ltd (Switzerland) Common Stock,N, ,False,100.0,False,,RIG,RIG,False
 RIGL,True,"Rigel Pharmaceuticals, Inc. - Common Stock",Q,Q,False,100.0,False,N,,RIGL,False
@@ -8755,6 +8732,7 @@ RMGC,True,RMG Acquisition Corp. III - Class A Ordinary Shares,Q,S,False,100.0,Fa
 RMGCU,True,RMG Acquisition Corp. III - Unit,Q,S,False,100.0,False,D,,RMGCU,False
 RMGCW,True,RMG Acquisition Corp. III - Warrant,Q,S,False,100.0,False,D,,RMGCW,False
 RMI,True,"RiverNorth Opportunistic Municipal Income Fund, Inc. Common Stock",N, ,False,100.0,False,,RMI,RMI,False
+RMIF,True,ETF Series Solutions LHA Risk-Managed Income ETF,Z, ,True,100.0,False,,RMIF,RMIF,False
 RMM,True,"RiverNorth Managed Duration Municipal Income Fund, Inc. Common Stock",N, ,False,100.0,False,,RMM,RMM,False
 RMMZ,True,"RiverNorth Managed Duration Municipal Income Fund II, Inc. Common Stock",N, ,False,100.0,False,,RMMZ,RMMZ,False
 RMNI,True,"Rimini Street, Inc. - Common Stock",Q,G,False,100.0,False,N,,RMNI,False
@@ -8809,9 +8787,6 @@ ROKU,True,"Roku, Inc. - Class A Common Stock",Q,Q,False,100.0,False,N,,ROKU,Fals
 ROL,True,"Rollins, Inc. Common Stock",N, ,False,100.0,False,,ROL,ROL,False
 ROM,True,ProShares Ultra Technology,P, ,True,100.0,False,,ROM,ROM,False
 ROMO,True,Strategy Shares Newfound/ReSolve Robust Momentum ETF,Z, ,True,100.0,False,,ROMO,ROMO,False
-RONI,True,Rice Acquisition Corp. II Class A Ordinary Shares,N, ,False,100.0,False,,RONI,RONI,False
-RONI.U,True,"Rice Acquisition Corp. II Units, each consisting of one Class A ordinary share and one-fourth of one redeemable warrant",N, ,False,100.0,False,,RONI.U,RONI=,False
-RONI.W,True,"Rice Acquisition Corp. II Redeemable warrants, each whole warrant exercisable for one Class A ordinary share at an exercise price of $11.50",N, ,False,100.0,False,,RONI.WS,RONI+,False
 ROOF,True,IQ CBRE NextGen Real Estate ETF,P, ,True,100.0,False,,ROOF,ROOF,False
 ROOT,True,"Root, Inc. - Common Stock",Q,Q,False,100.0,False,N,,ROOT,False
 ROP,True,"Roper Technologies, Inc. Common Stock",N, ,False,100.0,False,,ROP,ROP,False
@@ -8888,6 +8863,7 @@ RULE,True,Adaptive Core ETF,Z, ,True,100.0,False,,RULE,RULE,False
 RUM,True,Rumble Inc. - Class A Common Stock,Q,G,False,100.0,False,N,,RUM,False
 RUMBW,True,Rumble Inc. - Warrant,Q,G,False,100.0,False,N,,RUMBW,False
 RUN,True,Sunrun Inc. - Common Stock,Q,Q,False,100.0,False,N,,RUN,False
+RUNN,True,Running Oak Efficient Growth ETF,Q,G,True,100.0,False,N,,RUNN,False
 RUSHA,True,"Rush Enterprises, Inc. - Class A Common Stock",Q,Q,False,100.0,False,N,,RUSHA,False
 RUSHB,True,"Rush Enterprises, Inc. - Class B Common Stock",Q,Q,False,100.0,False,N,,RUSHB,False
 RUTH,True,"Ruth's Hospitality Group, Inc. - Common Stock",Q,Q,False,100.0,False,N,,RUTH,False
@@ -9099,9 +9075,6 @@ SCS,True,Steelcase Inc. Common Stock,N, ,False,100.0,False,,SCS,SCS,False
 SCSC,True,"ScanSource, Inc. - Common Stock",Q,Q,False,100.0,False,N,,SCSC,False
 SCTL,True,"Societal CDMO, Inc. - Common Stock",Q,S,False,100.0,False,D,,SCTL,False
 SCU,True,"Sculptor Capital Management, Inc. Class A Common Stock",N, ,False,100.0,False,,SCU,SCU,False
-SCUA,True,Sculptor Acquisition Corp I Class A Ordinary Shares,N, ,False,100.0,False,,SCUA,SCUA,False
-SCUA.U,True,"Sculptor Acquisition Corp I Units, each consisting of one Class A ordinary share and one-half of one redeemable warrant",N, ,False,100.0,False,,SCUA.U,SCUA=,False
-SCUA.W,True,"Sculptor Acquisition Corp I Redeemable Warrants, each whole warrant exercisable for one Class A ordinary share at an exercise price of $11.50",N, ,False,100.0,False,,SCUA.WS,SCUA+,False
 SCVL,True,"Shoe Carnival, Inc. - Common Stock",Q,Q,False,100.0,False,N,,SCVL,False
 SCWO,True,374Water Inc. - common stock,Q,S,False,100.0,False,N,,SCWO,False
 SCWX,True,SecureWorks Corp. - Class A Common Stock,Q,Q,False,100.0,False,N,,SCWX,False
@@ -9134,7 +9107,7 @@ SDVY,True,First Trust SMID Cap Rising Dividend Achievers ETF,Q,G,True,100.0,Fals
 SDY,True,SPDR S&P Dividend ETF,P, ,True,100.0,False,,SDY,SDY,False
 SE,True,"Sea Limited American Depositary Shares, each representing one Class A Ordinary Share",N, ,False,100.0,False,,SE,SE,False
 SEA,True,ETF Series Solutions U.S. Global Sea to Sky Cargo ETF,P, ,True,100.0,False,,SEA,SEA,False
-SEAC,True,"SeaChange International, Inc. - Common Stock",Q,S,False,100.0,False,D,,SEAC,False
+SEAC,True,"SeaChange International, Inc. - Common Stock",Q,S,False,100.0,False,N,,SEAC,False
 SEAL$A,True,Seapeak LLC 9.00% Series A Cumulative Redeemable Perpetual Preferred Units,N, ,False,100.0,False,,SEALpA,SEAL-A,False
 SEAL$B,True,Seapeak LLC 8.50% Series B Fixed-to-Floating Rate Cumulative Redeemable Perpetual Preferred Units,N, ,False,100.0,False,,SEALpB,SEAL-B,False
 SEAS,True,"SeaWorld Entertainment, Inc. Common Stock",N, ,False,100.0,False,,SEAS,SEAS,False
@@ -9209,7 +9182,6 @@ SGDJ,True,Sprott Junior Gold Miners ETF,P, ,True,100.0,False,,SGDJ,SGDJ,False
 SGDM,True,Sprott Gold Miners ETF,P, ,True,100.0,False,,SGDM,SGDM,False
 SGE,True,"Strong Global Entertainment, Inc. Class A Common Voting Shares",A, ,False,100.0,False,,SGE,SGE,False
 SGEN,True,Seagen Inc.  - Common Stock,Q,Q,False,100.0,False,N,,SGEN,False
-SGG,True,iPathA Series B Bloomberg Sugar Subindex Total Return ETN,P, ,False,100.0,False,,SGG,SGG,False
 SGH,True,"SMART Global Holdings, Inc. - Ordinary Shares",Q,Q,False,100.0,False,N,,SGH,False
 SGHC,True,Super Group (SGHC) Limited Ordinary Shares,N, ,False,100.0,False,,SGHC,SGHC,False
 SGHT,True,"Sight Sciences, Inc. - Common Stock",Q,Q,False,100.0,False,N,,SGHT,False
@@ -9707,8 +9679,6 @@ STEL,True,"Stellar Bancorp, Inc. - Common Stock",Q,Q,False,100.0,False,N,,STEL,F
 STEM,True,"Stem, Inc. Class A Common Stock",N, ,False,100.0,False,,STEM,STEM,False
 STEP,True,StepStone Group Inc. - Class A Common Stock,Q,Q,False,100.0,False,N,,STEP,False
 STER,True,Sterling Check Corp. - Common Stock,Q,Q,False,100.0,False,N,,STER,False
-STET,True,ST Energy Transition I Ltd. Class A Ordinary Shares,N, ,False,100.0,False,,STET,STET,False
-STET.U,True,"ST Energy Transition I Ltd. SAIL securities, each consisting of one Class A ordinary share and one-half of one redeemable warrant",N, ,False,100.0,False,,STET.U,STET=,False
 STEW,True,"SRH Total Return Fund, Inc. Common Stock",N, ,False,100.0,False,,STEW,STEW,False
 STG,True,"Sunlands Technology Group American Depositary Shares, representing Class A ordinary shares",N, ,False,100.0,False,,STG,STG,False
 STGF,True,Listed Funds Trust Merk Stagflation ETF,P, ,True,100.0,False,,STGF,STGF,False
@@ -9741,13 +9711,12 @@ STRCW,True,Sarcos Technology and Robotics Corporation - Warrant,Q,G,False,100.0,
 STRL,True,"Sterling Infrastructure, Inc. - Common Stock",Q,Q,False,100.0,False,N,,STRL,False
 STRM,True,"Streamline Health Solutions, Inc. - Common Stock",Q,S,False,100.0,False,N,,STRM,False
 STRO,True,"Sutro Biopharma, Inc. - Common Stock",Q,G,False,100.0,False,N,,STRO,False
-STRR,True,"Star Equity Holdings, Inc. - Common Stock",Q,G,False,100.0,False,D,,STRR,False
+STRR,True,"Star Equity Holdings, Inc. - Common Stock",Q,G,False,100.0,False,N,,STRR,False
 STRRP,True,"Star Equity Holdings, Inc. - Series A Cumulative Perpetual Preferred Stock",Q,G,False,100.0,False,N,,STRRP,False
 STRS,True,Stratus Properties Inc. - Common Stock,Q,Q,False,100.0,False,N,,STRS,False
 STRT,True,STRATTEC SECURITY CORPORATION - Common Stock,Q,G,False,100.0,False,N,,STRT,False
 STRV,True,EA Series Trust Strive 500 ETF,P, ,True,100.0,False,,STRV,STRV,False
 STRW,True,"Strawberry Fields REIT, Inc. Common Stock",A, ,False,100.0,False,,STRW,STRW,False
-STSA,True,"Satsuma Pharmaceuticals, Inc. - Common stock",Q,G,False,100.0,False,N,,STSA,False
 STSS,True,Sharps Technology Inc. - Common Stock,Q,S,False,100.0,False,N,,STSS,False
 STSSW,True,Sharps Technology Inc. - Warrant,Q,S,False,100.0,False,N,,STSSW,False
 STT,True,State Street Corporation Common Stock,N, ,False,100.0,False,,STT,STT,False
@@ -10522,6 +10491,7 @@ USBF,True,iShares USD Bond Factor ETF,Q,G,True,100.0,False,D,,USBF,False
 USCA,True,DBX ETF Trust Xtrackers MSCI USA Climate Action Equity ETF,P, ,True,100.0,False,,USCA,USCA,False
 USCB,True,"USCB Financial Holdings, Inc.  - Class A Common Stock",Q,G,False,100.0,False,N,,USCB,False
 USCI,True,United States Commodity Index Fund ETV,P, ,True,100.0,False,,USCI,USCI,False
+USCL,True,iShares Climate Conscious & Transition MSCI USA ETF,Q,G,True,100.0,False,N,,USCL,False
 USCT,True,TKB Critical Technologies 1 - Class A Ordinary Shares,Q,G,False,100.0,False,N,,USCT,False
 USCTU,True,TKB Critical Technologies 1 - Unit,Q,G,False,100.0,False,N,,USCTU,False
 USCTW,True,TKB Critical Technologies 1 - Warrant,Q,G,False,100.0,False,N,,USCTW,False
@@ -10573,7 +10543,7 @@ UTHY,True,US Treasury 30 Year Bond ETF,Q,G,True,100.0,False,N,,UTHY,False
 UTI,True,Universal Technical Institute Inc Common Stock,N, ,False,100.0,False,,UTI,UTI,False
 UTL,True,UNITIL Corporation Common Stock,N, ,False,100.0,False,,UTL,UTL,False
 UTMD,True,"Utah Medical Products, Inc. - Common Stock",Q,Q,False,100.0,False,N,,UTMD,False
-UTME,True,UTime Limited - Ordinary Shares,Q,S,False,100.0,False,D,,UTME,False
+UTME,True,UTime Limited - Ordinary Shares,Q,S,False,100.0,False,N,,UTME,False
 UTRE,True,US Treasury 3 Year Note ETF,Q,G,True,100.0,False,N,,UTRE,False
 UTRN,True,Vesper US Large Cap Short-Term Reversal Strategy ETF,P, ,True,100.0,False,,UTRN,UTRN,False
 UTRS,True,"Minerva Surgical, Inc. - Common Stock",Q,S,False,100.0,False,D,,UTRS,False
@@ -10675,7 +10645,7 @@ VERA,True,"Vera Therapeutics, Inc. - Class A Common Stock",Q,G,False,100.0,False
 VERB,True,"Verb Technology Company, Inc. - Common Stock",Q,S,False,100.0,False,N,,VERB,False
 VERBW,True,"Verb Technology Company, Inc. - Warrant",Q,S,False,100.0,False,N,,VERBW,False
 VERI,True,"Veritone, Inc. - Common Stock",Q,G,False,100.0,False,N,,VERI,False
-VERO,True,Venus Concept Inc.  - Common Stock,Q,S,False,100.0,False,N,,VERO,False
+VERO,True,Venus Concept Inc.  - Common Stock,Q,S,False,100.0,False,D,,VERO,False
 VERS,True,ProShares Trust ProShares Metaverse ETF,P, ,True,100.0,False,,VERS,VERS,False
 VERU,True,Veru Inc. - Common Stock,Q,S,False,100.0,False,N,,VERU,False
 VERV,True,"Verve Therapeutics, Inc. - Common Stock",Q,Q,False,100.0,False,N,,VERV,False
@@ -10732,7 +10702,7 @@ VIIAU,True,7GC & Co. Holdings Inc. - Unit,Q,S,False,100.0,False,N,,VIIAU,False
 VIIAW,True,7GC & Co. Holdings Inc. - Warrant,Q,S,False,100.0,False,N,,VIIAW,False
 VINC,True,"Vincerx Pharma, Inc. - Common Stock",Q,S,False,100.0,False,N,,VINC,False
 VINE,True,"Fresh Vine Wine, Inc. Common Stock",A, ,False,100.0,False,,VINE,VINE,False
-VINO,True,"Gaucho Group Holdings, Inc. - Common Stock",Q,S,False,100.0,False,N,,VINO,False
+VINO,True,"Gaucho Group Holdings, Inc. - Common Stock",Q,S,False,100.0,False,D,,VINO,False
 VINP,True,Vinci Partners Investments Ltd. - Class A Common Shares,Q,Q,False,100.0,False,N,,VINP,False
 VIOG,True,Vanguard S&P Small-Cap 600 Growth ETF,P, ,True,100.0,False,,VIOG,VIOG,False
 VIOO,True,Vanguard S&P Small-Cap 600 ETF,P, ,True,100.0,False,,VIOO,VIOO,False
@@ -10985,8 +10955,6 @@ WEBS,True,Direxion Daily Dow Jones Internet Bear 3X Shares,P, ,True,100.0,False,
 WEC,True,"WEC Energy Group, Inc. Common Stock",N, ,False,100.0,False,,WEC,WEC,False
 WEED,True,Listed Funds Trust Roundhill Cannabis ETF,Z, ,True,100.0,False,,WEED,WEED,False
 WEIX,True,Dynamic Shares Trust Dynamic Short Short-Term Volatility Futures ETF,P, ,True,100.0,False,,WEIX,WEIX,False
-WEJO,True,Wejo Group Limited - Common Shares,Q,Q,False,100.0,False,D,,WEJO,False
-WEJOW,True,Wejo Group Limited - Warrant,Q,Q,False,100.0,False,D,,WEJOW,False
 WEL,True,Integrated Wellness Acquisition Corp Class A Ordinary Shares,N, ,False,100.0,False,,WEL,WEL,False
 WEL.U,True,"Integrated Wellness Acquisition Corp Units, each consisting of one Class A ordinary share and one-half of one redeemable warrant(",N, ,False,100.0,False,,WEL.U,WEL=,False
 WEL.W,True,Integrated Wellness Acquisition Corp Redeemable Warrants,N, ,False,100.0,False,,WEL.WS,WEL+,False

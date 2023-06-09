@@ -62,8 +62,10 @@ def test_underlying_name(recorder):
 @pytest.mark.vcr
 def test_underlying_price(recorder):
     result_df = nasdaq_model.load_options("MSFT")
-    assert result_df.underlying_price.dtype == object
-    recorder.capture(result_df.underlying_price)
+    assert hasattr(result_df, "underlying_price")
+    assert isinstance(result_df.underlying_price, pd.Series)
+    assert isinstance(result_df.underlying_price["price"], float)
+    recorder.capture(result_df.underlying_price.index.to_list())
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -84,7 +86,8 @@ def test_get_available_greeks(recorder):
     df = nasdaq_model.load_options("TSLA")
     results_df = df.get_available_greeks(df.expirations[-1])
     assert isinstance(results_df, pd.DataFrame)
-    recorder.capture(results_df)
+    assert results_df.cIV.sum() > 0
+    recorder.capture(results_df.columns.to_list())
 
 
 @pytest.mark.vcr
@@ -101,6 +104,6 @@ def test_load_options(recorder):
     assert isinstance(data.strikes, list)
     df2 = pd.DataFrame(data.chains)
     assert df1.columns.equals(df2.columns)
-    recorder.capture(data.chains)
-    recorder.capture(data.underlying_price)
-    recorder.capture(data.last_price)
+    recorder.capture(df2.columns.to_list())
+    recorder.capture(data.underlying_name)
+    recorder.capture(data.symbol)
