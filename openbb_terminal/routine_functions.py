@@ -274,6 +274,9 @@ def parse_openbb_script(
                                 if VAR_NAME in ROUTINE_VARS:
                                     values = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
                                     if isinstance(values, list):
+                                        # TODO: This is a bit of a hack, but we need to do same here
+                                        # for case user selects first $ARGV[n] with n>0 and then
+                                        # tries to access $ARGV[0] which is empty
                                         templine = templine.replace(
                                             match[0],
                                             eval(f"values[{VAR_SLICE}]"),
@@ -353,13 +356,37 @@ def parse_openbb_script(
                                                     f"was an attempt to access it with index {VAR_SLICE}.[/red]",
                                                     "",
                                                 )
-                                    # TODO: We need to handle the case the initial fields are empty
-                                    # because we invoked $ARGV[n] with n>0 before creating n==0
-                                    # so we check that the fields are missing and we ask for them
-                                    templine = templine.replace(
-                                        match[0],
-                                        variable[int(VAR_SLICE)],
-                                    )
+
+                                    else:
+                                        # Handle the case the initial fields are empty
+                                        # because we invoked $ARGV[n] with n > 0 before creating n == 0
+                                        # so we check that the fields are missing and we ask for them
+                                        if in_production and not variable[int(VAR_SLICE)]:
+                                            plots_backend().start(True)
+                                            args = plots_backend().call_routine(
+                                                f"Routine '{file_path}' requires variable '{VAR_NAME}[{VAR_SLICE}]'",
+                                                [f"{VAR_NAME}[{VAR_SLICE}]"],
+                                                Path(__file__).parent.parent / "openbb_terminal"
+                                                    / "core" / "routines" / "argv_input.html",
+                                            )
+                                            if args and f"{VAR_NAME}[{VAR_SLICE}]" in args:
+                                                # Replace the empty value that we have with the user input
+                                                ROUTINE_VARS[VAR_NAME][int(VAR_SLICE)] = args[f"{VAR_NAME}[{VAR_SLICE}]"]
+                                                templine = templine.replace(
+                                                    match[0],
+                                                    args[f"{VAR_NAME}[{VAR_SLICE}]"],
+                                                )
+                                            else:
+                                                return (
+                                                    f"[red]Variable {VAR_NAME}[{VAR_SLICE}] is empty[/red]",
+                                                    "",
+                                                )
+                                        else:
+                                            templine = templine.replace(
+                                                match[0],
+                                                variable[int(VAR_SLICE)],
+                                            )
+
                                 else:
                                     # In production we want to ask for the variable
                                     # if it wasn't given using PyWry
