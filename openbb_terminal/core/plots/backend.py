@@ -359,7 +359,7 @@ class Backend(PyWry):
         """Override to check if isatty."""
         if self.isatty:
             message = (
-                "[bold red]PyWry version 0.5.6 or higher is required to use the "
+                "[bold red]PyWry version 0.5.12 or higher is required to use the "
                 "OpenBB Plots backend.[/]\n"
                 "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
             )
@@ -374,7 +374,7 @@ class Backend(PyWry):
 
                 PyWry.__version__ = pywry_version  # pylint: disable=W0201
 
-            if version.parse(PyWry.__version__) < version.parse("0.5.6"):
+            if version.parse(PyWry.__version__) < version.parse("0.5.12"):
                 console.print(message)
                 self.max_retries = 0  # pylint: disable=W0201
                 return

@@ -4,7 +4,6 @@
 name = "absl-py"
 version = "1.4.0"
 description = "Abseil Python Common Libraries, see https://github.com/abseil/abseil-py."
-category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
@@ -16,7 +15,6 @@ files = [
 name = "aiodns"
 version = "3.0.0"
 description = "Simple DNS resolver for asyncio"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -31,7 +29,6 @@ pycares = ">=4.0.0"
 name = "aiohttp"
 version = "3.8.4"
 description = "Async http client/server framework (asyncio)"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -140,7 +137,6 @@ speedups = ["Brotli", "aiodns", "cchardet"]
 name = "aiosignal"
 version = "1.3.1"
 description = "aiosignal: a list of registered asynchronous callbacks"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -155,7 +151,6 @@ frozenlist = ">=1.1.0"
 name = "alabaster"
 version = "0.7.13"
 description = "A configurable sidebar-enabled Sphinx theme"
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -167,7 +162,6 @@ files = [
 name = "alpha-vantage"
 version = "2.3.1"
 description = "Python module to get stock data from the Alpha Vantage Api"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -183,7 +177,6 @@ requests = "*"
 name = "altair"
 version = "4.2.2"
 description = "Altair: A declarative statistical visualization library for Python."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -206,7 +199,6 @@ dev = ["black", "docutils", "flake8", "ipython", "m2r", "mistune (<2.0.0)", "pyt
 name = "altgraph"
 version = "0.17.3"
 description = "Python graph (network) package"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -218,7 +210,6 @@ files = [
 name = "ansiwrap"
 version = "0.8.4"
 description = "textwrap, but savvy to ANSI colors and styles"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -233,7 +224,6 @@ textwrap3 = ">=0.9.2"
 name = "anyio"
 version = "3.6.2"
 description = "High level compatibility layer for multiple asynchronous event loop implementations"
-category = "main"
 optional = false
 python-versions = ">=3.6.2"
 files = [
@@ -254,7 +244,6 @@ trio = ["trio (>=0.16,<0.22)"]
 name = "appdirs"
 version = "1.4.4"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -266,7 +255,6 @@ files = [
 name = "appnope"
 version = "0.1.3"
 description = "Disable App Nap on macOS >= 10.9"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -278,7 +266,6 @@ files = [
 name = "arch"
 version = "5.5.0"
 description = "ARCH for Python"
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -318,7 +305,6 @@ statsmodels = ">=0.11"
 name = "argon2-cffi"
 version = "21.3.0"
 description = "The secure Argon2 password hashing algorithm."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -338,7 +324,6 @@ tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pytest"]
 name = "argon2-cffi-bindings"
 version = "21.2.0"
 description = "Low-level CFFI bindings for Argon2"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -376,7 +361,6 @@ tests = ["pytest"]
 name = "ascii-magic"
 version = "1.6"
 description = "Converts pictures into ASCII art"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -392,7 +376,6 @@ Pillow = "*"
 name = "astor"
 version = "0.8.1"
 description = "Read/rewrite/write Python ASTs"
-category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
 files = [
@@ -404,7 +387,6 @@ files = [
 name = "astroid"
 version = "2.15.0"
 description = "An abstract syntax tree for Python with inference support."
-category = "dev"
 optional = false
 python-versions = ">=3.7.2"
 files = [
@@ -421,7 +403,6 @@ wrapt = {version = ">=1.11,<2", markers = "python_version < \"3.11\""}
 name = "astropy"
 version = "5.2.1"
 description = "Astronomy and astrophysics core library"
-category = "main"
 optional = true
 python-versions = ">=3.8"
 files = [
@@ -475,7 +456,6 @@ test-all = ["coverage[toml]", "ipython (>=4.2)", "objgraph", "pytest (>=7.0)", "
 name = "asttokens"
 version = "2.2.1"
 description = "Annotate AST trees with source code positions"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -493,7 +473,6 @@ test = ["astroid", "pytest"]
 name = "async-timeout"
 version = "4.0.2"
 description = "Timeout context manager for asyncio programs"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -505,7 +484,6 @@ files = [
 name = "atomicwrites"
 version = "1.4.1"
 description = "Atomic file writes."
-category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -516,7 +494,6 @@ files = [
 name = "attrs"
 version = "21.4.0"
 description = "Classes Without Boilerplate"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
@@ -534,7 +511,6 @@ tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy"
 name = "babel"
 version = "2.12.1"
 description = "Internationalization utilities"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -549,7 +525,6 @@ pytz = {version = ">=2015.7", markers = "python_version < \"3.9\""}
 name = "backcall"
 version = "0.2.0"
 description = "Specifications for callback functions passed in to an API"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -561,7 +536,6 @@ files = [
 name = "backoff"
 version = "2.2.1"
 description = "Function decoration for backoff and retry"
-category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
@@ -573,7 +547,6 @@ files = [
 name = "backports-zoneinfo"
 version = "0.2.1"
 description = "Backport of the standard library zoneinfo module"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -602,7 +575,6 @@ tzdata = ["tzdata"]
 name = "bandit"
 version = "1.7.5"
 description = "Security oriented static analyser for python code."
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -626,7 +598,6 @@ yaml = ["PyYAML"]
 name = "base58"
 version = "2.1.1"
 description = "Base58 and Base58Check implementation."
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -641,7 +612,6 @@ tests = ["PyHamcrest (>=2.0.2)", "mypy", "pytest (>=4.6)", "pytest-benchmark", "
 name = "beautifulsoup4"
 version = "4.11.2"
 description = "Screen-scraping library"
-category = "main"
 optional = false
 python-versions = ">=3.6.0"
 files = [
@@ -660,7 +630,6 @@ lxml = ["lxml"]
 name = "black"
 version = "23.1.0"
 description = "The uncompromising code formatter."
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -710,7 +679,6 @@ uvloop = ["uvloop (>=0.15.2)"]
 name = "bleach"
 version = "6.0.0"
 description = "An easy safelist-based HTML-sanitizing tool."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -729,7 +697,6 @@ css = ["tinycss2 (>=1.1.0,<1.2)"]
 name = "blinker"
 version = "1.5"
 description = "Fast, simple object-to-object and broadcast signaling"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
@@ -741,7 +708,6 @@ files = [
 name = "brotli"
 version = "1.0.9"
 description = "Python bindings for the Brotli compression library"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -833,7 +799,6 @@ files = [
 name = "brotlicffi"
 version = "1.0.9.2"
 description = "Python CFFI bindings to the Brotli library"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -876,7 +841,6 @@ cffi = ">=1.0.0"
 name = "bs4"
 version = "0.0.1"
 description = "Dummy package for Beautiful Soup"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -890,7 +854,6 @@ beautifulsoup4 = "*"
 name = "bt"
 version = "0.2.9"
 description = "A flexible backtesting framework for Python"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 files = [
@@ -916,7 +879,6 @@ dev = ["black (>=20.8b1)", "codecov", "coverage", "cython (>=0.25)", "ffn (>=0.3
 name = "cachetools"
 version = "5.3.0"
 description = "Extensible memoizing collections and decorators"
-category = "main"
 optional = false
 python-versions = "~=3.7"
 files = [
@@ -928,7 +890,6 @@ files = [
 name = "catboost"
 version = "1.1.1"
 description = "Catboost Python Package"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -962,7 +923,6 @@ six = "*"
 name = "cattrs"
 version = "22.2.0"
 description = "Composable complex class support for attrs and dataclasses."
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -978,7 +938,6 @@ exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
 name = "ccxt"
 version = "2.9.16"
 description = "A JavaScript / Python / PHP cryptocurrency trading library with support for 130+ exchanges"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -1003,7 +962,6 @@ qa = ["flake8 (==3.7.9)"]
 name = "certifi"
 version = "2022.12.7"
 description = "Python package for providing Mozilla's CA Bundle."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1015,7 +973,6 @@ files = [
 name = "cffi"
 version = "1.15.1"
 description = "Foreign Function Interface for Python calling C code."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -1092,7 +1049,6 @@ pycparser = "*"
 name = "cfgv"
 version = "3.3.1"
 description = "Validate configuration and produce human readable error messages."
-category = "dev"
 optional = false
 python-versions = ">=3.6.1"
 files = [
@@ -1104,7 +1060,6 @@ files = [
 name = "charset-normalizer"
 version = "3.1.0"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
-category = "main"
 optional = false
 python-versions = ">=3.7.0"
 files = [
@@ -1189,7 +1144,6 @@ files = [
 name = "click"
 version = "8.1.3"
 description = "Composable command line interface toolkit"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1204,7 +1158,6 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 name = "cloudpickle"
 version = "2.2.1"
 description = "Extended pickling support for Python objects"
-category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
@@ -1216,7 +1169,6 @@ files = [
 name = "cmdstanpy"
 version = "1.1.0"
 description = "Python interface to CmdStan"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -1238,7 +1190,6 @@ tests = ["flake8", "mypy", "pylint", "pytest", "pytest-cov", "pytest-order", "tq
 name = "codespell"
 version = "2.2.4"
 description = "Codespell"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1256,7 +1207,6 @@ types = ["chardet (>=5.1.0)", "mypy", "pytest", "pytest-cov", "pytest-dependency
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
-category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 files = [
@@ -1268,7 +1218,6 @@ files = [
 name = "comm"
 version = "0.1.2"
 description = "Jupyter Python Comm implementation, for usage in ipykernel, xeus-python etc."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1286,7 +1235,6 @@ test = ["pytest"]
 name = "commonmark"
 version = "0.9.1"
 description = "Python parser for the CommonMark Markdown spec"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -1301,7 +1249,6 @@ test = ["flake8 (==3.7.8)", "hypothesis (==3.55.3)"]
 name = "contourpy"
 version = "1.0.7"
 description = "Python library for calculating contours of 2D quadrilateral grids"
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1376,7 +1323,6 @@ test-no-images = ["pytest"]
 name = "convertdate"
 version = "2.4.0"
 description = "Converts between Gregorian dates and other calendar systems"
-category = "main"
 optional = false
 python-versions = "<4,>=3.7"
 files = [
@@ -1396,7 +1342,6 @@ tests = ["coverage"]
 name = "coverage"
 version = "7.2.2"
 description = "Code coverage measurement for Python"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1463,7 +1408,6 @@ toml = ["tomli"]
 name = "cryptography"
 version = "39.0.2"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1509,7 +1453,6 @@ tox = ["tox"]
 name = "cssselect"
 version = "1.2.0"
 description = "cssselect parses CSS3 Selectors and translates them to XPath 1.0"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1521,7 +1464,6 @@ files = [
 name = "cssselect2"
 version = "0.7.0"
 description = "CSS selectors for Python ElementTree"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1541,7 +1483,6 @@ test = ["flake8", "isort", "pytest"]
 name = "cvxpy"
 version = "1.2.2"
 description = "A domain-specific language for modeling convex optimization problems in Python."
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -1574,7 +1515,6 @@ scs = ">=1.1.6"
 name = "cycler"
 version = "0.11.0"
 description = "Composable style cycles"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1586,7 +1526,6 @@ files = [
 name = "cython"
 version = "0.29.33"
 description = "The Cython compiler for writing C extensions for the Python language."
-category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 files = [
@@ -1656,7 +1595,6 @@ dev = ["flake8", "hypothesis", "ipython", "mypy (>=0.710)", "portray", "pytest (
 name = "dateparser"
 version = "1.1.7"
 description = "Date parsing library designed to parse dates from HTML pages"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1679,7 +1617,6 @@ langdetect = ["langdetect"]
 name = "datetime"
 version = "5.1"
 description = "This package provides a DateTime data type, as known from Zope. Unless you need to communicate with Zope APIs, you're probably better off using Python's built-in datetime module."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1695,7 +1632,6 @@ pytz = "*"
 name = "debugpy"
 version = "1.6.6"
 description = "An implementation of the Debug Adapter Protocol for Python"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1722,7 +1658,6 @@ files = [
 name = "decorator"
 version = "5.1.1"
 description = "Decorators for Humans"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -1734,7 +1669,6 @@ files = [
 name = "defusedxml"
 version = "0.7.1"
 description = "XML bomb protection for Python stdlib modules"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
@@ -1746,7 +1680,6 @@ files = [
 name = "degiro-connector"
 version = "2.0.21"
 description = "This is yet another library to access Degiro's API."
-category = "main"
 optional = false
 python-versions = ">=3.7.1,<4.0.0"
 files = [
@@ -1766,7 +1699,6 @@ wrapt = ">=1.12.1,<2.0.0"
 name = "detecta"
 version = "0.0.5"
 description = "Detect events in data"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1778,7 +1710,6 @@ files = [
 name = "dill"
 version = "0.3.6"
 description = "serialize all of python"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1793,7 +1724,6 @@ graph = ["objgraph (>=1.7.2)"]
 name = "distlib"
 version = "0.3.6"
 description = "Distribution utilities"
-category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -1805,7 +1735,6 @@ files = [
 name = "dnspython"
 version = "2.3.0"
 description = "DNS toolkit"
-category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
@@ -1826,7 +1755,6 @@ wmi = ["wmi (>=1.5.1,<2.0.0)"]
 name = "docstring-parser"
 version = "0.15"
 description = "Parse Python docstrings in reST, Google and Numpydoc format"
-category = "main"
 optional = true
 python-versions = ">=3.6,<4.0"
 files = [
@@ -1838,7 +1766,6 @@ files = [
 name = "docstring-to-markdown"
 version = "0.11"
 description = "On the fly conversion of Python docstrings to markdown"
-category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
@@ -1850,7 +1777,6 @@ files = [
 name = "docutils"
 version = "0.17.1"
 description = "Docutils -- Python Documentation Utilities"
-category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
@@ -1862,7 +1788,6 @@ files = [
 name = "ecos"
 version = "2.0.12"
 description = "This is the Python package for ECOS: Embedded Cone Solver. See Github page for more information."
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -1892,7 +1817,6 @@ scipy = ">=0.9"
 name = "entrypoints"
 version = "0.4"
 description = "Discover and load entry points from installed packages."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1904,7 +1828,6 @@ files = [
 name = "ephem"
 version = "4.1.4"
 description = "Compute positions of the planets and stars"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -1981,7 +1904,6 @@ files = [
 name = "et-xmlfile"
 version = "1.1.0"
 description = "An implementation of lxml.xmlfile for the standard library"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1993,7 +1915,6 @@ files = [
 name = "exceptiongroup"
 version = "1.1.1"
 description = "Backport of PEP 654 (exception groups)"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -2008,7 +1929,6 @@ test = ["pytest (>=6)"]
 name = "exchange-calendars"
 version = "4.2.5"
 description = "Calendars for securities exchanges"
-category = "main"
 optional = false
 python-versions = "~=3.8"
 files = [
@@ -2032,7 +1952,6 @@ dev = ["flake8", "hypothesis", "pip-tools", "pytest", "pytest-benchmark", "pytes
 name = "execnet"
 version = "1.9.0"
 description = "execnet: rapid multi-Python deployment"
-category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
@@ -2047,7 +1966,6 @@ testing = ["pre-commit"]
 name = "executing"
 version = "1.2.0"
 description = "Get the currently executing AST node of a frame, and other information"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2062,7 +1980,6 @@ tests = ["asttokens", "littleutils", "pytest", "rich"]
 name = "fastjsonschema"
 version = "2.16.3"
 description = "Fastest Python implementation of JSON schema"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2077,7 +1994,6 @@ devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benc
 name = "feedparser"
 version = "6.0.10"
 description = "Universal feed parser, handles RSS 0.9x, RSS 1.0, RSS 2.0, CDF, Atom 0.3, and Atom 1.0 feeds"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -2092,7 +2008,6 @@ sgmllib3k = "*"
 name = "ffmpeg-python"
 version = "0.2.0"
 description = "Python bindings for FFmpeg - with complex filtering support"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -2110,7 +2025,6 @@ dev = ["Sphinx (==2.1.0)", "future (==0.17.1)", "numpy (==1.16.4)", "pytest (==4
 name = "ffn"
 version = "0.3.6"
 description = "Financial functions for Python"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2136,7 +2050,6 @@ dev = ["black (>=20.8b1)", "codecov", "coverage", "flake8", "flake8-black", "fut
 name = "filelock"
 version = "3.10.0"
 description = "A platform independent file lock."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2152,7 +2065,6 @@ testing = ["covdefaults (>=2.3)", "coverage (>=7.2.1)", "pytest (>=7.2.2)", "pyt
 name = "financedatabase"
 version = "2.0.9"
 description = "This is a database of 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2167,7 +2079,6 @@ pandas = "*"
 name = "finnhub-python"
 version = "2.4.16"
 description = "Finnhub API"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2182,7 +2093,6 @@ requests = ">=2.22.0"
 name = "finviz"
 version = "1.4.6"
 description = "Unofficial API for FinViz.com"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2204,7 +2114,6 @@ user_agent = "*"
 name = "finvizfinance"
 version = "0.14.5"
 description = "Finviz Finance. Information downloader."
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -2223,7 +2132,6 @@ requests = "*"
 name = "flake8"
 version = "5.0.4"
 description = "the modular source code checker: pep8 pyflakes and co"
-category = "main"
 optional = false
 python-versions = ">=3.6.1"
 files = [
@@ -2240,7 +2148,6 @@ pyflakes = ">=2.5.0,<2.6.0"
 name = "fonttools"
 version = "4.39.2"
 description = "Tools to manipulate font files"
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -2266,7 +2173,6 @@ woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
 name = "formulaic"
 version = "0.3.4"
 description = "An implementation of Wilkinson formulas."
-category = "main"
 optional = false
 python-versions = ">=3.7.1,<4.0.0"
 files = [
@@ -2290,7 +2196,6 @@ calculus = ["sympy (>=1.3,<1.10)"]
 name = "fred"
 version = "3.1"
 description = "St. Louis Federal Reserve FRED API"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2304,7 +2209,6 @@ requests = "*"
 name = "fredapi"
 version = "0.4.3"
 description = "Python API for Federal Reserve Economic Data (FRED) from St. Louis Fed"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2319,7 +2223,6 @@ pandas = "*"
 name = "freezegun"
 version = "1.2.2"
 description = "Let your Python tests travel through time"
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -2334,7 +2237,6 @@ python-dateutil = ">=2.7"
 name = "frozendict"
 version = "2.3.5"
 description = "A simple immutable dictionary"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -2360,7 +2262,6 @@ files = [
 name = "frozenlist"
 version = "1.3.3"
 description = "A list-like structure which implements collections.abc.MutableSequence"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2484,7 +2385,6 @@ tqdm = ["tqdm"]
 name = "fundamentalanalysis"
 version = "0.2.14"
 description = "Fully-fledged Fundamental Analysis package capable of collecting 20 years of Company Profiles,    Financial Statements, Ratios and Stock Data of 20.000+ companies."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2496,7 +2396,6 @@ files = [
 name = "future"
 version = "0.18.3"
 description = "Clean single-source support for Python 3 and 2"
-category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 files = [
@@ -2507,7 +2406,6 @@ files = [
 name = "gitdb"
 version = "4.0.10"
 description = "Git Object Database"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2522,7 +2420,6 @@ smmap = ">=3.0.1,<6"
 name = "gitpython"
 version = "3.1.31"
 description = "GitPython is a Python library used to interact with Git repositories"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2537,7 +2434,6 @@ gitdb = ">=4.0.1,<5"
 name = "google-auth"
 version = "2.16.2"
 description = "Google Authentication Library"
-category = "main"
 optional = true
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*"
 files = [
@@ -2562,7 +2458,6 @@ requests = ["requests (>=2.20.0,<3.0.0dev)"]
 name = "google-auth-oauthlib"
 version = "0.4.6"
 description = "Google Authentication Library"
-category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
@@ -2581,7 +2476,6 @@ tool = ["click (>=6.0.0)"]
 name = "graphviz"
 version = "0.20.1"
 description = "Simple Python interface for Graphviz"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -2672,7 +2566,6 @@ test = ["objgraph", "psutil"]
 name = "grpcio"
 version = "1.51.3"
 description = "HTTP/2-based RPC framework"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2730,7 +2623,6 @@ protobuf = ["grpcio-tools (>=1.51.3)"]
 name = "hijri-converter"
 version = "2.2.4"
 description = "Accurate Hijri-Gregorian dates converter based on the Umm al-Qura calendar"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -2742,7 +2634,6 @@ files = [
 name = "holidays"
 version = "0.14.2"
 description = "Generate and work with holidays in Python"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2760,7 +2651,6 @@ python-dateutil = "*"
 name = "html5lib"
 version = "1.1"
 description = "HTML parser based on the WHATWG HTML specification"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
@@ -2782,7 +2672,6 @@ lxml = ["lxml"]
 name = "huggingface-hub"
 version = "0.13.2"
 description = "Client library to download and publish models, datasets and other repos on the huggingface.co hub"
-category = "main"
 optional = true
 python-versions = ">=3.7.0"
 files = [
@@ -2813,7 +2702,6 @@ typing = ["types-PyYAML", "types-requests", "types-simplejson", "types-toml", "t
 name = "identify"
 version = "2.5.21"
 description = "File identification library for Python"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2828,7 +2716,6 @@ license = ["ukkonen"]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -2840,7 +2727,6 @@ files = [
 name = "imagesize"
 version = "1.4.1"
 description = "Getting image size from png/jpeg/jpeg2000/gif file"
-category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -2852,7 +2738,6 @@ files = [
 name = "importlib-metadata"
 version = "6.0.0"
 description = "Read metadata from Python packages"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2872,7 +2757,6 @@ testing = ["flake8 (<5)", "flufl.flake8", "importlib-resources (>=1.3)", "packag
 name = "importlib-resources"
 version = "5.12.0"
 description = "Read resources from Python packages"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2891,7 +2775,6 @@ testing = ["flake8 (<5)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-chec
 name = "inflection"
 version = "0.5.1"
 description = "A port of Ruby on Rails inflector to Python"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -2903,7 +2786,6 @@ files = [
 name = "iniconfig"
 version = "2.0.0"
 description = "brain-dead simple config-ini parsing"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2915,7 +2797,6 @@ files = [
 name = "interface-meta"
 version = "1.3.0"
 description = "`interface_meta` provides a convenient way to expose an extensible API with enforced method signatures and consistent documentation."
-category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
@@ -2927,7 +2808,6 @@ files = [
 name = "intrinio-sdk"
 version = "6.22.2"
 description = "Intrinio API"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2946,7 +2826,6 @@ urllib3 = ">=1.15"
 name = "ipykernel"
 version = "6.21.3"
 description = "IPython Kernel for Jupyter"
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -2960,7 +2839,7 @@ comm = ">=0.1.1"
 debugpy = ">=1.6.5"
 ipython = ">=7.23.1"
 jupyter-client = ">=6.1.12"
-jupyter-core = ">=4.12,<5.0.0 || >=5.1.0"
+jupyter-core = ">=4.12,<5.0.dev0 || >=5.1.dev0"
 matplotlib-inline = ">=0.1"
 nest-asyncio = "*"
 packaging = "*"
@@ -2980,7 +2859,6 @@ test = ["flaky", "ipyparallel", "pre-commit", "pytest (>=7.0)", "pytest-asyncio"
 name = "ipympl"
 version = "0.8.4"
 description = "Matplotlib Jupyter Extension"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2997,7 +2875,6 @@ matplotlib = ">=2.0.0"
 name = "ipython"
 version = "8.11.0"
 description = "IPython: Productive Interactive Computing"
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -3036,7 +2913,6 @@ test-extra = ["curio", "matplotlib (!=3.2.0)", "nbformat", "numpy (>=1.21)", "pa
 name = "ipython-genutils"
 version = "0.2.0"
 description = "Vestigial utilities from IPython"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -3048,7 +2924,6 @@ files = [
 name = "ipywidgets"
 version = "8.0.4"
 description = "Jupyter interactive widgets"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3070,7 +2945,6 @@ test = ["jsonschema", "pytest (>=3.6.0)", "pytest-cov", "pytz"]
 name = "iso8601"
 version = "0.1.16"
 description = "Simple module to parse ISO 8601 dates"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -3082,7 +2956,6 @@ files = [
 name = "isodate"
 version = "0.6.1"
 description = "An ISO 8601 date/time/duration parser and formatter"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -3097,7 +2970,6 @@ six = "*"
 name = "isort"
 version = "5.12.0"
 description = "A Python utility / library to sort Python imports."
-category = "dev"
 optional = false
 python-versions = ">=3.8.0"
 files = [
@@ -3115,7 +2987,6 @@ requirements-deprecated-finder = ["pip-api", "pipreqs"]
 name = "jedi"
 version = "0.18.2"
 description = "An autocompletion tool for Python that can be used for text editors."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -3135,7 +3006,6 @@ testing = ["Django (<3.1)", "attrs", "colorama", "docopt", "pytest (<7.0.0)"]
 name = "jedi-language-server"
 version = "0.40.0"
 description = "A language server for Jedi!"
-category = "main"
 optional = true
 python-versions = ">=3.7,<3.12"
 files = [
@@ -3154,7 +3024,6 @@ pygls = ">=1.0.0,<2.0.0"
 name = "jinja2"
 version = "3.1.2"
 description = "A very fast and expressive template engine."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3172,7 +3041,6 @@ i18n = ["Babel (>=2.7)"]
 name = "joblib"
 version = "1.2.0"
 description = "Lightweight pipelining with Python functions"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3184,7 +3052,6 @@ files = [
 name = "json5"
 version = "0.9.11"
 description = "A Python implementation of the JSON5 data format."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -3199,7 +3066,6 @@ dev = ["hypothesis"]
 name = "jsonschema"
 version = "4.17.3"
 description = "An implementation of JSON Schema validation for Python"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3221,7 +3087,6 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 name = "jupyter-client"
 version = "7.4.1"
 description = "Jupyter protocol implementation and client libraries"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3246,7 +3111,6 @@ test = ["codecov", "coverage", "ipykernel (>=6.5)", "ipython", "mypy", "pre-comm
 name = "jupyter-core"
 version = "5.3.0"
 description = "Jupyter core package. A base package on which Jupyter projects rely."
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -3267,7 +3131,6 @@ test = ["ipykernel", "pre-commit", "pytest", "pytest-cov", "pytest-timeout"]
 name = "jupyter-lsp"
 version = "2.0.0"
 description = "Multi-Language Server WebSocket proxy for Jupyter Notebook/Lab server"
-category = "main"
 optional = true
 python-versions = ">=3.8"
 files = [
@@ -3283,7 +3146,6 @@ jupyter-server = ">=1.1.2"
 name = "jupyter-server"
 version = "1.23.6"
 description = "The backend—i.e. core services, APIs, and REST endpoints—to Jupyter web applications."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3296,7 +3158,7 @@ anyio = ">=3.1.0,<4"
 argon2-cffi = "*"
 jinja2 = "*"
 jupyter-client = ">=6.1.12"
-jupyter-core = ">=4.12,<5.0.0 || >=5.1.0"
+jupyter-core = ">=4.12,<5.0.dev0 || >=5.1.dev0"
 nbconvert = ">=6.4.4"
 nbformat = ">=5.2.0"
 packaging = "*"
@@ -3316,7 +3178,6 @@ test = ["coverage", "ipykernel", "pre-commit", "pytest (>=7.0)", "pytest-console
 name = "jupyterlab"
 version = "3.5.3"
 description = "JupyterLab computational environment"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3343,7 +3204,6 @@ test = ["check-manifest", "coverage", "jupyterlab-server[test]", "pre-commit", "
 name = "jupyterlab-code-formatter"
 version = "1.5.3"
 description = "Code formatter for JupyterLab"
-category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
@@ -3358,7 +3218,6 @@ jupyterlab = ">=3.0,<4.0"
 name = "jupyterlab-lsp"
 version = "3.10.2"
 description = "Coding assistance for JupyterLab with Language Server Protocol"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -3374,7 +3233,6 @@ jupyterlab = ">=3.1.0,<4.0.0a0"
 name = "jupyterlab-pygments"
 version = "0.2.2"
 description = "Pygments theme using JupyterLab CSS variables"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3386,7 +3244,6 @@ files = [
 name = "jupyterlab-server"
 version = "2.20.0"
 description = "A set of server components for JupyterLab and JupyterLab like applications."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3413,7 +3270,6 @@ test = ["codecov", "ipykernel", "jupyterlab-server[openapi]", "openapi-spec-vali
 name = "jupyterlab-widgets"
 version = "3.0.5"
 description = "Jupyter interactive widgets for JupyterLab"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3425,7 +3281,6 @@ files = [
 name = "kiwisolver"
 version = "1.4.4"
 description = "A fast implementation of the Cassowary constraint solver"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3503,7 +3358,6 @@ files = [
 name = "korean-lunar-calendar"
 version = "0.3.1"
 description = "Korean Lunar Calendar"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -3552,7 +3406,6 @@ text-helpers = ["chardet (>=5.1.0,<6.0.0)"]
 name = "lazy-object-proxy"
 version = "1.9.0"
 description = "A fast and thorough lazy object proxy."
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3598,7 +3451,6 @@ files = [
 name = "lightgbm"
 version = "3.3.5"
 description = "LightGBM Python Package"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -3622,7 +3474,6 @@ dask = ["dask[array] (>=2.0.0)", "dask[dataframe] (>=2.0.0)", "dask[distributed]
 name = "linearmodels"
 version = "4.27"
 description = "Linear Panel, Instrumental Variable, Asset Pricing, and System Regression models for Python"
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -3688,7 +3539,6 @@ urllib3 = "<2"
 name = "llvmlite"
 version = "0.39.1"
 description = "lightweight wrapper around basic LLVM functionality"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -3726,7 +3576,6 @@ files = [
 name = "loguru"
 version = "0.6.0"
 description = "Python logging made (stupidly) simple"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -3745,7 +3594,6 @@ dev = ["Sphinx (>=4.1.1)", "black (>=19.10b0)", "colorama (>=0.3.4)", "docutils 
 name = "lsprotocol"
 version = "2023.0.0a1"
 description = "Python implementation of the Language Server Protocol."
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -3761,7 +3609,6 @@ cattrs = "*"
 name = "lunarcalendar"
 version = "0.0.9"
 description = "A lunar calendar converter, including a number of lunar and solar holidays, mainly from China."
-category = "main"
 optional = true
 python-versions = ">=2.7, <4"
 files = [
@@ -3778,7 +3625,6 @@ pytz = "*"
 name = "lxml"
 version = "4.9.2"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, != 3.4.*"
 files = [
@@ -3871,7 +3717,6 @@ source = ["Cython (>=0.29.7)"]
 name = "macholib"
 version = "1.16.2"
 description = "Mach-O header analysis and editing"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -3886,7 +3731,6 @@ altgraph = ">=0.17"
 name = "markdown"
 version = "3.4.1"
 description = "Python implementation of Markdown."
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -3904,7 +3748,6 @@ testing = ["coverage", "pyyaml"]
 name = "markdown-it-py"
 version = "1.1.0"
 description = "Python port of markdown-it. Markdown parsing, done right!"
-category = "dev"
 optional = false
 python-versions = "~=3.6"
 files = [
@@ -3927,7 +3770,6 @@ testing = ["coverage", "psutil", "pytest (>=3.6,<4)", "pytest-benchmark (>=3.2,<
 name = "markupsafe"
 version = "2.1.2"
 description = "Safely add untrusted strings to HTML/XML markup."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4023,7 +3865,6 @@ marshmallow = ">=2.0.0"
 name = "matplotlib"
 version = "3.7.0"
 description = "Python plotting package"
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -4086,7 +3927,6 @@ python-dateutil = ">=2.7"
 name = "matplotlib-inline"
 version = "0.1.6"
 description = "Inline Matplotlib backend for Jupyter"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -4101,7 +3941,6 @@ traitlets = "*"
 name = "mccabe"
 version = "0.7.0"
 description = "McCabe checker, plugin for flake8"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -4113,7 +3952,6 @@ files = [
 name = "mdit-py-plugins"
 version = "0.2.8"
 description = "Collection of plugins for markdown-it-py"
-category = "dev"
 optional = false
 python-versions = "~=3.6"
 files = [
@@ -4133,7 +3971,6 @@ testing = ["coverage", "pytest (>=3.6,<4)", "pytest-cov", "pytest-regressions"]
 name = "mistune"
 version = "2.0.5"
 description = "A sane Markdown parser with useful plugins and renderers"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -4145,7 +3982,6 @@ files = [
 name = "mock"
 version = "4.0.3"
 description = "Rolling backport of unittest.mock for all Pythons"
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -4162,7 +3998,6 @@ test = ["pytest (<5.4)", "pytest-cov"]
 name = "monotonic"
 version = "1.6"
 description = "An implementation of time.monotonic() for Python 2 & < 3.3"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -4174,7 +4009,6 @@ files = [
 name = "more-itertools"
 version = "9.1.0"
 description = "More routines for operating on iterables, beyond itertools"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4186,7 +4020,6 @@ files = [
 name = "mplfinance"
 version = "0.12.9b7"
 description = "Utilities for the visualization, and visual analysis, of financial data"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -4202,7 +4035,6 @@ pandas = "*"
 name = "mstarpy"
 version = "0.0.4"
 description = "Mutual funds data extraction from MorningStar with Python"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -4219,7 +4051,6 @@ requests = ">=2.28.1"
 name = "multidict"
 version = "6.0.4"
 description = "multidict implementation"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4303,7 +4134,6 @@ files = [
 name = "multitasking"
 version = "0.0.11"
 description = "Non-blocking Python methods using decorators"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -4315,7 +4145,6 @@ files = [
 name = "mutagen"
 version = "1.46.0"
 description = "read and write audio tags for many formats"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -4327,7 +4156,6 @@ files = [
 name = "mypy"
 version = "1.1.1"
 description = "Optional static typing for Python"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4374,7 +4202,6 @@ reports = ["lxml"]
 name = "mypy-extensions"
 version = "1.0.0"
 description = "Type system extensions for programs checked with the mypy type checker."
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -4386,7 +4213,6 @@ files = [
 name = "myst-parser"
 version = "0.15.2"
 description = "An extended commonmark compliant parser, with bridges to docutils & sphinx."
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -4412,7 +4238,6 @@ testing = ["beautifulsoup4", "coverage", "docutils (>=0.17.0,<0.18.0)", "pytest 
 name = "nbclassic"
 version = "0.5.3"
 description = "Jupyter Notebook as a Jupyter Server extension."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4448,7 +4273,6 @@ test = ["coverage", "nbval", "pytest", "pytest-cov", "pytest-jupyter", "pytest-p
 name = "nbclient"
 version = "0.6.8"
 description = "A client library for executing notebooks. Formerly nbconvert's ExecutePreprocessor."
-category = "main"
 optional = false
 python-versions = ">=3.7.0"
 files = [
@@ -4470,7 +4294,6 @@ test = ["black", "check-manifest", "flake8", "ipykernel", "ipython", "ipywidgets
 name = "nbconvert"
 version = "7.2.10"
 description = "Converting Jupyter Notebooks"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4509,7 +4332,6 @@ webpdf = ["pyppeteer (>=1,<1.1)"]
 name = "nbformat"
 version = "5.7.3"
 description = "The Jupyter Notebook format"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4531,7 +4353,6 @@ test = ["pep440", "pre-commit", "pytest", "testpath"]
 name = "nbmake"
 version = "1.4.1"
 description = "Pytest plugin for testing notebooks"
-category = "dev"
 optional = false
 python-versions = ">=3.7.0,<4.0.0"
 files = [
@@ -4551,7 +4372,6 @@ pytest = ">=6.1.0"
 name = "nest-asyncio"
 version = "1.5.6"
 description = "Patch asyncio to allow nested event loops"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -4563,7 +4383,6 @@ files = [
 name = "networkx"
 version = "3.0"
 description = "Python package for creating and manipulating graphs and networks"
-category = "main"
 optional = true
 python-versions = ">=3.8"
 files = [
@@ -4582,7 +4401,6 @@ test = ["codecov (>=2.1)", "pytest (>=7.2)", "pytest-cov (>=4.0)"]
 name = "nfoursid"
 version = "1.0.1"
 description = "Implementation of N4SID, Kalman filtering and state-space models"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -4599,7 +4417,6 @@ pandas = ">=1.1"
 name = "nodeenv"
 version = "1.7.0"
 description = "Node.js virtual environment builder"
-category = "dev"
 optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*"
 files = [
@@ -4614,7 +4431,6 @@ setuptools = "*"
 name = "notebook"
 version = "6.5.3"
 description = "A web-based notebook environment for interactive computing"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4649,7 +4465,6 @@ test = ["coverage", "nbval", "pytest", "pytest-cov", "requests", "requests-unixs
 name = "notebook-shim"
 version = "0.2.2"
 description = "A shim layer for notebook traits and config"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4667,7 +4482,6 @@ test = ["pytest", "pytest-console-scripts", "pytest-tornasync"]
 name = "numba"
 version = "0.56.4"
 description = "compiling Python code using LLVM"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -4703,7 +4517,7 @@ files = [
 
 [package.dependencies]
 importlib-metadata = {version = "*", markers = "python_version < \"3.9\""}
-llvmlite = ">=0.39.0dev0,<0.40"
+llvmlite = "==0.39.*"
 numpy = ">=1.18,<1.24"
 setuptools = "*"
 
@@ -4754,7 +4568,6 @@ numpy = ">=1.13.3"
 name = "numpy"
 version = "1.23.4"
 description = "NumPy is the fundamental package for array computing with Python."
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -4792,7 +4605,6 @@ files = [
 name = "oandapyv20"
 version = "0.6.3"
 description = "Python wrapper for the OANDA REST-V20 API"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -4803,7 +4615,6 @@ files = [
 name = "oauthlib"
 version = "3.2.2"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
-category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
@@ -4820,7 +4631,6 @@ signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
 name = "onetimepass"
 version = "1.0.1"
 description = "Module for generating and validating HOTP and TOTP tokens"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -4857,7 +4667,6 @@ wandb = ["numpy", "openpyxl (>=3.0.7)", "pandas (>=1.2.3)", "pandas-stubs (>=1.1
 name = "openai-whisper"
 version = "20230124"
 description = "Robust Speech Recognition via Large-Scale Weak Supervision"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -4894,7 +4703,6 @@ pydantic = ">=1.8.2"
 name = "openpyxl"
 version = "3.1.2"
 description = "A Python library to read/write Excel 2010 xlsx/xlsm files"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -4909,7 +4717,6 @@ et-xmlfile = "*"
 name = "osqp"
 version = "0.6.2.post8"
 description = "OSQP: The Operator Splitting QP Solver"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -4949,7 +4756,6 @@ scipy = ">=0.13.2"
 name = "packaging"
 version = "23.0"
 description = "Core utilities for Python packages"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -4961,7 +4767,6 @@ files = [
 name = "pandas"
 version = "1.5.3"
 description = "Powerful data structures for data analysis, time series, and statistics"
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -5009,7 +4814,6 @@ test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
 name = "pandas-datareader"
 version = "0.10.0"
 description = "Data readers extracted from the pandas codebase,should be compatible with recent pandas versions"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -5026,7 +4830,6 @@ requests = ">=2.19.0"
 name = "pandas-market-calendars"
 version = "3.2"
 description = "Market and exchange trading calendars for pandas"
-category = "main"
 optional = false
 python-versions = ">=3.7.0"
 files = [
@@ -5044,7 +4847,6 @@ pytz = "*"
 name = "pandas-ta"
 version = "0.3.14b"
 description = "An easy to use Python 3 Pandas Extension with 130+ Technical Analysis Indicators. Can be called from a Pandas DataFrame or standalone like TA-Lib. Correlation tested with TA-Lib."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -5062,7 +4864,6 @@ test = ["ta-lib"]
 name = "pandocfilters"
 version = "1.5.0"
 description = "Utilities for writing pandoc filters in python"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -5074,7 +4875,6 @@ files = [
 name = "papermill"
 version = "2.4.0"
 description = "Parametrize and run Jupyter and nteract Notebooks"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -5108,7 +4908,6 @@ test = ["attrs (>=17.4.0)", "azure-datalake-store (>=0.0.30)", "azure-storage-bl
 name = "parso"
 version = "0.8.3"
 description = "A Python Parser"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -5124,7 +4923,6 @@ testing = ["docopt", "pytest (<6.0.0)"]
 name = "pathspec"
 version = "0.11.1"
 description = "Utility library for gitignore style pattern matching of file paths."
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -5136,7 +4934,6 @@ files = [
 name = "patsy"
 version = "0.5.3"
 description = "A Python package for describing statistical models and for building design matrices."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -5155,7 +4952,6 @@ test = ["pytest", "pytest-cov", "scipy"]
 name = "pbr"
 version = "5.11.1"
 description = "Python Build Reasonableness"
-category = "dev"
 optional = false
 python-versions = ">=2.6"
 files = [
@@ -5167,7 +4963,6 @@ files = [
 name = "pefile"
 version = "2023.2.7"
 description = "Python PE parsing module"
-category = "main"
 optional = true
 python-versions = ">=3.6.0"
 files = [
@@ -5179,7 +4974,6 @@ files = [
 name = "pexpect"
 version = "4.8.0"
 description = "Pexpect allows easy control of interactive console applications."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -5194,7 +4988,6 @@ ptyprocess = ">=0.5"
 name = "pickleshare"
 version = "0.7.5"
 description = "Tiny 'shelve'-like database with concurrency support"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -5206,7 +4999,6 @@ files = [
 name = "pillow"
 version = "9.4.0"
 description = "Python Imaging Library (Fork)"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -5297,7 +5089,6 @@ tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "pa
 name = "pkgutil-resolve-name"
 version = "1.3.10"
 description = "Resolve a name to an object."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -5309,7 +5100,6 @@ files = [
 name = "platformdirs"
 version = "3.1.1"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -5325,7 +5115,6 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.2.2)", "pytest (>=7.2.1)", "pytes
 name = "plotly"
 version = "5.14.1"
 description = "An open-source, interactive data visualization library for Python"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -5341,7 +5130,6 @@ tenacity = ">=6.2.0"
 name = "pluggy"
 version = "1.0.0"
 description = "plugin and hook calling mechanisms for python"
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -5357,7 +5145,6 @@ testing = ["pytest", "pytest-benchmark"]
 name = "pmaw"
 version = "3.0.0"
 description = "A multithread Pushshift.io API Wrapper for reddit.com comment and submission searches."
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -5373,7 +5160,6 @@ requests = "*"
 name = "pmdarima"
 version = "2.0.3"
 description = "Python's forecast::auto.arima equivalent"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -5419,7 +5205,6 @@ urllib3 = "*"
 name = "posthog"
 version = "3.0.1"
 description = "Integrate PostHog into any python application."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -5443,7 +5228,6 @@ test = ["coverage", "flake8", "freezegun (==0.3.15)", "mock (>=2.0.0)", "pylint"
 name = "praw"
 version = "7.7.0"
 description = "PRAW, an acronym for \"Python Reddit API Wrapper\", is a python package that allows for simple access to  Reddit's API."
-category = "main"
 optional = false
 python-versions = "~=3.7"
 files = [
@@ -5467,7 +5251,6 @@ test = ["betamax (>=0.8,<0.9)", "betamax-matchers (>=0.3.0,<0.5)", "pytest (>=2.
 name = "prawcore"
 version = "2.3.0"
 description = "Low-level communication layer for PRAW 4+."
-category = "main"
 optional = false
 python-versions = "~=3.6"
 files = [
@@ -5488,7 +5271,6 @@ test = ["betamax (>=0.8,<0.9)", "betamax-matchers (>=0.4.0,<0.5)", "betamax-seri
 name = "pre-commit"
 version = "2.21.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -5507,7 +5289,6 @@ virtualenv = ">=20.10.0"
 name = "prometheus-client"
 version = "0.16.0"
 description = "Python client for the Prometheus monitoring system."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -5522,7 +5303,6 @@ twisted = ["twisted"]
 name = "prompt-toolkit"
 version = "3.0.38"
 description = "Library for building powerful interactive command lines in Python"
-category = "main"
 optional = false
 python-versions = ">=3.7.0"
 files = [
@@ -5537,7 +5317,6 @@ wcwidth = "*"
 name = "property-cached"
 version = "1.6.4"
 description = "A decorator for caching properties in classes (forked from cached-property)."
-category = "main"
 optional = false
 python-versions = ">= 3.5"
 files = [
@@ -5549,7 +5328,6 @@ files = [
 name = "prophet"
 version = "1.1.2"
 description = "Automatic Forecasting Procedure"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -5579,7 +5357,6 @@ parallel = ["dask[dataframe]", "distributed"]
 name = "protobuf"
 version = "3.20.1"
 description = "Protocol Buffers"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -5613,7 +5390,6 @@ files = [
 name = "psutil"
 version = "5.9.3"
 description = "Cross-platform lib for process and system monitoring in Python."
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -5662,7 +5438,6 @@ test = ["enum34", "ipaddress", "mock", "pywin32", "wmi"]
 name = "ptyprocess"
 version = "0.7.0"
 description = "Run a subprocess in a pseudo terminal"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -5674,7 +5449,6 @@ files = [
 name = "pure-eval"
 version = "0.2.2"
 description = "Safely evaluate AST nodes without side effects"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -5689,7 +5463,6 @@ tests = ["pytest"]
 name = "py"
 version = "1.11.0"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
-category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
@@ -5701,7 +5474,6 @@ files = [
 name = "pyarrow"
 version = "11.0.0"
 description = "Python library for Apache Arrow"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -5739,7 +5511,6 @@ numpy = ">=1.16.6"
 name = "pyasn1"
 version = "0.4.8"
 description = "ASN.1 types and codecs"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -5751,7 +5522,6 @@ files = [
 name = "pyasn1-modules"
 version = "0.2.8"
 description = "A collection of ASN.1-based protocols modules."
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -5766,7 +5536,6 @@ pyasn1 = ">=0.4.6,<0.5.0"
 name = "pycares"
 version = "4.3.0"
 description = "Python interface for c-ares"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -5834,7 +5603,6 @@ idna = ["idna (>=2.1)"]
 name = "pycodestyle"
 version = "2.9.1"
 description = "Python style guide checker"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -5846,7 +5614,6 @@ files = [
 name = "pycoingecko"
 version = "3.1.0"
 description = "Python wrapper around the CoinGecko API"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -5861,7 +5628,6 @@ requests = "*"
 name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -5873,7 +5639,6 @@ files = [
 name = "pycryptodome"
 version = "3.17"
 description = "Cryptographic library for Python"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
@@ -5916,7 +5681,6 @@ files = [
 name = "pycryptodomex"
 version = "3.17"
 description = "Cryptographic library for Python"
-category = "main"
 optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
@@ -5959,7 +5723,6 @@ files = [
 name = "pydantic"
 version = "1.10.6"
 description = "Data validation and settings management using python type hints"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6012,7 +5775,6 @@ email = ["email-validator (>=1.0.3)"]
 name = "pydeck"
 version = "0.8.0"
 description = "Widget for deck.gl maps"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6032,7 +5794,6 @@ jupyter = ["ipykernel (>=5.1.2)", "ipython (>=5.8.0)", "ipywidgets (>=7,<8)", "t
 name = "pydeprecate"
 version = "0.3.2"
 description = "Deprecation tooling"
-category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
@@ -6044,7 +5805,6 @@ files = [
 name = "pydocstyle"
 version = "6.3.0"
 description = "Python docstring style checker"
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6062,7 +5822,6 @@ toml = ["tomli (>=1.2.3)"]
 name = "pyerfa"
 version = "2.0.0.1"
 description = "Python bindings for ERFA"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -6108,7 +5867,6 @@ test = ["pytest", "pytest-doctestplus (>=0.7)"]
 name = "pyflakes"
 version = "2.5.0"
 description = "passive checker of Python programs"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6120,7 +5878,6 @@ files = [
 name = "pygls"
 version = "1.0.1"
 description = "a pythonic generic language server (pronounced like \"pie glass\")."
-category = "main"
 optional = true
 python-versions = "<4,>=3.7"
 files = [
@@ -6136,13 +5893,12 @@ typeguard = ">=2.10.0,<3"
 dev = ["bandit (==1.7.4)", "flake8 (==4.0.1)", "mypy (==0.961)"]
 docs = ["sphinx (==5.0.1)", "sphinx-rtd-theme (==1.0.0)"]
 test = ["mock (==4.0.3)", "pytest (==7.1.2)", "pytest-asyncio (==0.18.3)"]
-ws = ["websockets (>=10.0.0,<11.0.0)"]
+ws = ["websockets (==10.*)"]
 
 [[package]]
 name = "pygments"
 version = "2.14.0"
 description = "Pygments is a syntax highlighting package written in Python."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6157,7 +5913,6 @@ plugins = ["importlib-metadata"]
 name = "pyhdfe"
 version = "0.1.2"
 description = "High dimensional fixed effect absorption with Python 3"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6177,7 +5932,6 @@ tests = ["pytest", "pytest-xdist"]
 name = "pyinstaller"
 version = "4.10"
 description = "PyInstaller bundles a Python application and all its dependencies into a single package."
-category = "main"
 optional = true
 python-versions = "<3.11,>=3.6"
 files = [
@@ -6210,7 +5964,6 @@ hook-testing = ["execnet (>=1.5.0)", "psutil", "pytest (>=2.7.3)"]
 name = "pyinstaller-hooks-contrib"
 version = "2023.0"
 description = "Community maintained hooks for PyInstaller"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -6222,7 +5975,6 @@ files = [
 name = "pylint"
 version = "2.17.0"
 description = "python code static checker"
-category = "dev"
 optional = false
 python-versions = ">=3.7.2"
 files = [
@@ -6249,7 +6001,6 @@ testutils = ["gitpython (>3)"]
 name = "pyluach"
 version = "2.2.0"
 description = "A Python package for dealing with Hebrew (Jewish) calendar dates."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6265,7 +6016,6 @@ test = ["beautifulsoup4", "flake8", "pytest", "pytest-cov"]
 name = "pymeeus"
 version = "0.5.12"
 description = "Python implementation of Jean Meeus astronomical routines"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -6276,7 +6026,6 @@ files = [
 name = "pympler"
 version = "1.0.1"
 description = "A development tool to measure, monitor and analyze the memory behavior of Python objects."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6288,7 +6037,6 @@ files = [
 name = "pyobjc-core"
 version = "9.0.1"
 description = "Python<->ObjC Interoperability Module"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6305,7 +6053,6 @@ files = [
 name = "pyobjc-framework-cocoa"
 version = "9.0.1"
 description = "Wrappers for the Cocoa frameworks on macOS"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6325,7 +6072,6 @@ pyobjc-core = ">=9.0.1"
 name = "pyod"
 version = "1.0.8"
 description = "A Comprehensive and Scalable Python Library for Outlier Detection (Anomaly Detection)"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -6345,7 +6091,6 @@ six = "*"
 name = "pyotp"
 version = "2.8.0"
 description = "Python One Time Password Library"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6357,7 +6102,6 @@ files = [
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
-category = "main"
 optional = false
 python-versions = ">=3.6.8"
 files = [
@@ -6372,7 +6116,6 @@ diagrams = ["jinja2", "railroad-diagrams"]
 name = "pyprind"
 version = "2.11.3"
 description = "Python Progress Bar and Percent Indicator Utility"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -6384,7 +6127,6 @@ files = [
 name = "pyrsistent"
 version = "0.19.3"
 description = "Persistent/Functional/Immutable data structures"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6421,7 +6163,6 @@ files = [
 name = "pytest"
 version = "6.2.5"
 description = "pytest: simple powerful testing with Python"
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6446,7 +6187,6 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 name = "pytest-cov"
 version = "3.0.0"
 description = "Pytest plugin for measuring coverage."
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6465,7 +6205,6 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtuale
 name = "pytest-mock"
 version = "3.10.0"
 description = "Thin-wrapper around the mock package for easier use with pytest"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6483,7 +6222,6 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 name = "pytest-recorder"
 version = "0.2.3"
 description = "Pytest plugin, meant to facilitate unit tests writing for tools consumming Web APIs."
-category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
@@ -6499,7 +6237,6 @@ vcrpy = ">=4.2.1,<5.0.0"
 name = "pytest-recording"
 version = "0.12.2"
 description = "A pytest plugin that allows you recording of network interactions via VCR.py"
-category = "dev"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -6516,7 +6253,6 @@ vcrpy = ">=2.0.1"
 name = "pytest-timeout"
 version = "2.1.0"
 description = "pytest plugin to abort hanging tests"
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6531,7 +6267,6 @@ pytest = ">=5.0.0"
 name = "pytest-xdist"
 version = "3.2.1"
 description = "pytest xdist plugin for distributed testing, most importantly across multiple CPUs"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6552,7 +6287,6 @@ testing = ["filelock"]
 name = "pythclient"
 version = "0.1.4"
 description = "A library to retrieve Pyth account structures off the Solana blockchain."
-category = "main"
 optional = false
 python-versions = ">=3.7.0"
 files = [
@@ -6577,7 +6311,6 @@ testing = ["aiodns", "aiohttp (>=3.7.4)", "backoff", "base58", "dnspython", "fla
 name = "python-binance"
 version = "1.0.17"
 description = "Binance REST API python implementation"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -6598,7 +6331,6 @@ websockets = "*"
 name = "python-coinmarketcap"
 version = "0.2"
 description = "CoinMarketCap Python API Wrapper"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -6611,7 +6343,6 @@ files = [
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
-category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 files = [
@@ -6626,7 +6357,6 @@ six = ">=1.5"
 name = "python-dotenv"
 version = "0.19.2"
 description = "Read key-value pairs from a .env file and set them as environment variables"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -6641,7 +6371,6 @@ cli = ["click (>=5.0)"]
 name = "python-i18n"
 version = "0.3.9"
 description = "Translation library for Python"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -6656,7 +6385,6 @@ yaml = ["pyyaml (>=3.10)"]
 name = "pytorch-lightning"
 version = "1.6.5"
 description = "PyTorch Lightning is the lightweight PyTorch wrapper for ML researchers. Scale your models. Write less boilerplate."
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -6694,7 +6422,6 @@ test = ["cloudpickle (>=1.3)", "codecov (>=2.1)", "coverage (>=6.4)", "flake8 (>
 name = "pytrends"
 version = "4.9.2"
 description = "Pseudo API for Google Trends"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6711,7 +6438,6 @@ requests = ">=2.0"
 name = "pytz"
 version = "2022.7.1"
 description = "World timezone definitions, modern and historical"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -6723,7 +6449,6 @@ files = [
 name = "pytz-deprecation-shim"
 version = "0.1.0.post0"
 description = "Shims to make deprecation of pytz easier"
-category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 files = [
@@ -6739,7 +6464,6 @@ tzdata = {version = "*", markers = "python_version >= \"3.6\""}
 name = "pywin32"
 version = "305"
 description = "Python for Window Extensions"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -6763,7 +6487,6 @@ files = [
 name = "pywin32-ctypes"
 version = "0.2.0"
 description = ""
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -6775,7 +6498,6 @@ files = [
 name = "pywinpty"
 version = "2.0.10"
 description = "Pseudo terminal support for Windows from Python."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -6789,25 +6511,24 @@ files = [
 
 [[package]]
 name = "pywry"
-version = "0.5.8"
+version = "0.5.12"
 description = ""
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pywry-0.5.8-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:4c3c8688ba6c50a5ccea78f9500ee28afb02b712f945b55e2c79b96eb28e86c1"},
-    {file = "pywry-0.5.8-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:ed5761372493935b94503ff80e02b8c357b536abeca6e83f6574a3ec6ff994de"},
-    {file = "pywry-0.5.8-cp310-none-win_amd64.whl", hash = "sha256:1e6a18d45bc7979980718f44850656914b52722581279cb1fda93b530a4c2116"},
-    {file = "pywry-0.5.8-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:27992ff19ea7e066d7d7a254f78fd6c10f4fd3af10599871261b907f34aedd85"},
-    {file = "pywry-0.5.8-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:5ec7e7d9ba764af19cf2b9b96a6b2cae5192f68039739fb4c763d4fc569ecc86"},
-    {file = "pywry-0.5.8-cp311-none-win_amd64.whl", hash = "sha256:e934d97680249be5e337b131fc424faaefc80dadd8b143a48356138b2da5b9a6"},
-    {file = "pywry-0.5.8-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:368edec5aebb302e81066a9dd2734e3c3d40634bb398e506045a9b794c776679"},
-    {file = "pywry-0.5.8-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:94d6a61d6bcf47de415e0665c3b8aaf9c4fa4f4faa5363ac28a86ca01ee3a3e9"},
-    {file = "pywry-0.5.8-cp38-none-win_amd64.whl", hash = "sha256:e2a7388c804f1604574cbe25078c9736bc293d3b2a00fc1159a2977406ad039b"},
-    {file = "pywry-0.5.8-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:20c81936e5ce356bfa7c7a307ad0dd32ca05e47c14f1a5cdc699364e0c2da6a5"},
-    {file = "pywry-0.5.8-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:4c6bb77acef0b6c2ec56364520771ce7d561c2b4a9de9eddc4c448673e9d3f31"},
-    {file = "pywry-0.5.8-cp39-none-win_amd64.whl", hash = "sha256:b36800fdaf9f603eb6fb79e93205cc89fb3375c5a68ecdf968f2a3adbeefa923"},
-    {file = "pywry-0.5.8.tar.gz", hash = "sha256:568787b1c62f39b4450e15a44c653874f5a22f4ab6b9165a7cb7eeef14bc6a1d"},
+    {file = "pywry-0.5.12-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:742e63522c324f4a313d83f6cc9470703b92ac3668be5e2c3221dd735f99241a"},
+    {file = "pywry-0.5.12-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:4aaa2cfd161a694c1ad4f0d1abbc1650fd776e6d6f49077734077dff9e7541db"},
+    {file = "pywry-0.5.12-cp310-none-win_amd64.whl", hash = "sha256:fde04222de82a697211385c0031ddd5cca3d609bf15c9edb74459c878013c45b"},
+    {file = "pywry-0.5.12-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:c471a010782ee87c8b0da3317962e9b20a0584975e3c96dd87ccbae89bd3e95a"},
+    {file = "pywry-0.5.12-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:cb4c83dc23ce363322343fe21a2fbbac6f0488a3881042026b2c5fabf2b4f53c"},
+    {file = "pywry-0.5.12-cp311-none-win_amd64.whl", hash = "sha256:7bb6b4a2726b4a7db62afe9fba3bf46a86db92b1a0c290266b20c5b777956f5e"},
+    {file = "pywry-0.5.12-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:efe90cefbeeb2ae2b8c0b3b931fcd82631b9b125351140f113e3a96229475f01"},
+    {file = "pywry-0.5.12-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:bfbcc91ad389fd931059e4013c0c74a3924da5728a2aa2c5203104845c5b3a0d"},
+    {file = "pywry-0.5.12-cp38-none-win_amd64.whl", hash = "sha256:edf25b8d7ce6d735f8561bacac37864373c6f568d1e4e44705bc0b60af86d6d7"},
+    {file = "pywry-0.5.12-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:ca3ad7d6b4350ae2d3f516f997dbfb00229927ace3906434ff0fbef64b253940"},
+    {file = "pywry-0.5.12-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:6cde2c32a7177d17d418cde9bdafff6b05c1146aaef0fa3be3d9375c1eb0e37a"},
+    {file = "pywry-0.5.12-cp39-none-win_amd64.whl", hash = "sha256:446c52bca13d00cb1965353fa9954fa7930ad47d024a520fe8b3b67777996f71"},
+    {file = "pywry-0.5.12.tar.gz", hash = "sha256:3c20830c9a14dbd8557bbe147122eeb79c6a588064960a2d754e8917b0d511e7"},
 ]
 
 [package.dependencies]
@@ -6820,7 +6541,6 @@ dev = ["auditwheel", "wheel"]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6870,7 +6590,6 @@ files = [
 name = "pyzmq"
 version = "25.0.1"
 description = "Python bindings for 0MQ"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -6960,7 +6679,6 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 name = "qdldl"
 version = "0.1.5.post3"
 description = "QDLDL, a free LDL factorization routine."
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -6993,7 +6711,6 @@ scipy = ">=0.13.2"
 name = "quandl"
 version = "3.7.0"
 description = "Package for quandl API access"
-category = "main"
 optional = false
 python-versions = ">= 3.6"
 files = [
@@ -7014,7 +6731,6 @@ six = "*"
 name = "rdflib"
 version = "6.2.0"
 description = "RDFLib is a Python library for working with RDF, a simple yet powerful language for representing information."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -7039,7 +6755,6 @@ tests = ["html5lib", "pytest", "pytest-cov"]
 name = "regex"
 version = "2022.10.31"
 description = "Alternative regular expression module, to replace re."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -7137,7 +6852,6 @@ files = [
 name = "reportlab"
 version = "3.6.13"
 description = "The Reportlab Toolkit"
-category = "main"
 optional = false
 python-versions = ">=3.7,<4"
 files = [
@@ -7199,7 +6913,6 @@ rlpycairo = ["rlPyCairo (>=0.1.0)"]
 name = "requests"
 version = "2.28.2"
 description = "Python HTTP for Humans."
-category = "main"
 optional = false
 python-versions = ">=3.7, <4"
 files = [
@@ -7221,7 +6934,6 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 name = "requests-futures"
 version = "1.0.0"
 description = "Asynchronous Python HTTP for Humans."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -7236,7 +6948,6 @@ requests = ">=1.2.0"
 name = "requests-oauthlib"
 version = "1.3.1"
 description = "OAuthlib authentication support for Requests."
-category = "main"
 optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -7255,7 +6966,6 @@ rsa = ["oauthlib[signedtoken] (>=3.0.0)"]
 name = "retrying"
 version = "1.3.4"
 description = "Retrying"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -7270,7 +6980,6 @@ six = ">=1.7.0"
 name = "rich"
 version = "12.6.0"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
-category = "main"
 optional = false
 python-versions = ">=3.6.3,<4.0.0"
 files = [
@@ -7290,7 +6999,6 @@ jupyter = ["ipywidgets (>=7.5.1,<8.0.0)"]
 name = "riskfolio-lib"
 version = "3.3.0"
 description = "Portfolio Optimization and Quantitative Strategic Asset Allocation in Python"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -7315,7 +7023,6 @@ xlsxwriter = ">=1.3.7"
 name = "robin-stocks"
 version = "2.1.0"
 description = "A Python wrapper around the Robinhood API"
-category = "main"
 optional = false
 python-versions = ">=3"
 files = [
@@ -7333,7 +7040,6 @@ requests = "*"
 name = "rsa"
 version = "4.9"
 description = "Pure-Python RSA implementation"
-category = "main"
 optional = true
 python-versions = ">=3.6,<4"
 files = [
@@ -7348,7 +7054,6 @@ pyasn1 = ">=0.1.3"
 name = "ruamel-yaml"
 version = "0.17.21"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
-category = "main"
 optional = false
 python-versions = ">=3"
 files = [
@@ -7367,7 +7072,6 @@ jinja2 = ["ruamel.yaml.jinja2 (>=0.2)"]
 name = "ruamel-yaml-clib"
 version = "0.2.7"
 description = "C version of reader, parser and emitter for ruamel.yaml derived from libyaml"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -7414,7 +7118,6 @@ files = [
 name = "ruff"
 version = "0.0.256"
 description = "An extremely fast Python linter, written in Rust."
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -7441,7 +7144,6 @@ files = [
 name = "scikit-learn"
 version = "1.2.1"
 description = "A set of python modules for machine learning and data mining"
-category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -7484,7 +7186,6 @@ tests = ["black (>=22.3.0)", "flake8 (>=3.8.2)", "matplotlib (>=3.1.3)", "mypy (
 name = "scipy"
 version = "1.10.1"
 description = "Fundamental algorithms for scientific computing in Python"
-category = "main"
 optional = false
 python-versions = "<3.12,>=3.8"
 files = [
@@ -7523,7 +7224,6 @@ test = ["asv", "gmpy2", "mpmath", "pooch", "pytest", "pytest-cov", "pytest-timeo
 name = "screeninfo"
 version = "0.6.7"
 description = "Fetch location and size of physical screens."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -7538,7 +7238,6 @@ pyobjc-framework-Cocoa = {version = "*", markers = "sys_platform == \"darwin\""}
 name = "scs"
 version = "3.2.2"
 description = "scs: splitting conic solver"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -7571,7 +7270,6 @@ scipy = ">=0.13.2"
 name = "seaborn"
 version = "0.11.2"
 description = "seaborn: statistical data visualization"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -7589,7 +7287,6 @@ scipy = ">=1.0"
 name = "semantic-version"
 version = "2.10.0"
 description = "A library implementing the 'SemVer' scheme."
-category = "main"
 optional = true
 python-versions = ">=2.7"
 files = [
@@ -7605,7 +7302,6 @@ doc = ["Sphinx", "sphinx-rtd-theme"]
 name = "send2trash"
 version = "1.8.0"
 description = "Send file to trash natively under Mac OS X, Windows and Linux."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -7622,7 +7318,6 @@ win32 = ["pywin32"]
 name = "setproctitle"
 version = "1.3.2"
 description = "A Python module to customize the process title"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -7707,7 +7402,6 @@ test = ["pytest"]
 name = "setuptools"
 version = "65.4.1"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -7724,7 +7418,6 @@ testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (
 name = "setuptools-rust"
 version = "1.5.2"
 description = "Setuptools Rust extension plugin"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -7741,7 +7434,6 @@ typing-extensions = ">=3.7.4.3"
 name = "setuptools-scm"
 version = "6.4.2"
 description = "the blessed package to manage your versions by scm tags"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -7762,7 +7454,6 @@ toml = ["setuptools (>=42)"]
 name = "sgmllib3k"
 version = "1.0.0"
 description = "Py3k port of sgmllib."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -7773,7 +7464,6 @@ files = [
 name = "shap"
 version = "0.41.0"
 description = "A unified approach to explain the output of any machine learning model."
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -7827,7 +7517,6 @@ test = ["catboost", "lightgbm", "opencv-python", "pyod", "pyspark", "pytest", "p
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 files = [
@@ -7839,7 +7528,6 @@ files = [
 name = "slicer"
 version = "0.0.7"
 description = "A small package for big slicing."
-category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
@@ -7851,7 +7539,6 @@ files = [
 name = "smmap"
 version = "5.0.0"
 description = "A pure Python implementation of a sliding window memory map manager"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -7863,7 +7550,6 @@ files = [
 name = "sniffio"
 version = "1.3.0"
 description = "Sniff out which async library your code is running under"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -7875,7 +7561,6 @@ files = [
 name = "snowballstemmer"
 version = "2.2.0"
 description = "This package provides 29 stemmers for 28 languages generated from Snowball algorithms."
-category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -7887,7 +7572,6 @@ files = [
 name = "soupsieve"
 version = "2.4"
 description = "A modern CSS selector implementation for Beautiful Soup."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -7899,7 +7583,6 @@ files = [
 name = "sparqlwrapper"
 version = "2.0.0"
 description = "SPARQL Endpoint interface to Python"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -7920,7 +7603,6 @@ pandas = ["pandas (>=1.3.5)"]
 name = "sphinx"
 version = "4.5.0"
 description = "Python documentation generator"
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -7956,7 +7638,6 @@ test = ["cython", "html5lib", "pytest", "pytest-cov", "typed-ast"]
 name = "sphinxcontrib-applehelp"
 version = "1.0.4"
 description = "sphinxcontrib-applehelp is a Sphinx extension which outputs Apple help books"
-category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -7972,7 +7653,6 @@ test = ["pytest"]
 name = "sphinxcontrib-devhelp"
 version = "1.0.2"
 description = "sphinxcontrib-devhelp is a sphinx extension which outputs Devhelp document."
-category = "dev"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -7988,7 +7668,6 @@ test = ["pytest"]
 name = "sphinxcontrib-htmlhelp"
 version = "2.0.1"
 description = "sphinxcontrib-htmlhelp is a sphinx extension which renders HTML help files"
-category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -8004,7 +7683,6 @@ test = ["html5lib", "pytest"]
 name = "sphinxcontrib-jsmath"
 version = "1.0.1"
 description = "A sphinx extension which renders display math in HTML via JavaScript"
-category = "dev"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -8019,7 +7697,6 @@ test = ["flake8", "mypy", "pytest"]
 name = "sphinxcontrib-qthelp"
 version = "1.0.3"
 description = "sphinxcontrib-qthelp is a sphinx extension which outputs QtHelp document."
-category = "dev"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -8035,7 +7712,6 @@ test = ["pytest"]
 name = "sphinxcontrib-serializinghtml"
 version = "1.1.5"
 description = "sphinxcontrib-serializinghtml is a sphinx extension which outputs \"serialized\" HTML files (json and pickle)."
-category = "dev"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -8129,7 +7805,6 @@ sqlcipher = ["sqlcipher3-binary"]
 name = "squarify"
 version = "0.4.3"
 description = "Pure Python implementation of the squarify treemap layout algorithm"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -8141,7 +7816,6 @@ files = [
 name = "stack-data"
 version = "0.6.2"
 description = "Extract data from python stack frames and tracebacks for informative displays"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -8161,7 +7835,6 @@ tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
 name = "statsforecast"
 version = "1.4.0"
 description = "Time series forecasting suite using statistical models"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -8188,7 +7861,6 @@ ray = ["protobuf (>=3.15.3,<4.0.0)", "ray"]
 name = "statsmodels"
 version = "0.13.2"
 description = "Statistical computations and models for Python"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8233,7 +7905,6 @@ docs = ["ipykernel", "jupyter-client", "matplotlib", "nbconvert", "nbformat", "n
 name = "statsmodels"
 version = "0.13.3"
 description = "Statistical computations and models for Python"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8269,7 +7940,7 @@ numpy = {version = ">=1.17", markers = "python_version != \"3.10\" or platform_s
 packaging = ">=21.3"
 pandas = ">=0.25"
 patsy = ">=0.5.2"
-scipy = {version = ">=1.3", markers = "python_version > \"3.7\" and python_version < \"3.12\" or platform_system != \"Windows\" and python_version < \"3.12\" or platform_machine != \"x86\" and python_version < \"3.12\""}
+scipy = {version = ">=1.3", markers = "(python_version > \"3.7\" or platform_system != \"Windows\" or platform_machine != \"x86\") and python_version < \"3.12\""}
 
 [package.extras]
 build = ["cython (>=0.29.32)"]
@@ -8280,7 +7951,6 @@ docs = ["ipykernel", "jupyter-client", "matplotlib", "nbconvert", "nbformat", "n
 name = "statsmodels"
 version = "0.13.5"
 description = "Statistical computations and models for Python"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8319,7 +7989,7 @@ numpy = [
 packaging = ">=21.3"
 pandas = ">=0.25"
 patsy = ">=0.5.2"
-scipy = {version = ">=1.3", markers = "python_version > \"3.9\" and python_version < \"3.12\" or platform_system != \"Windows\" and python_version < \"3.12\" or platform_machine != \"x86\" and python_version < \"3.12\""}
+scipy = {version = ">=1.3", markers = "(python_version > \"3.9\" or platform_system != \"Windows\" or platform_machine != \"x86\") and python_version < \"3.12\""}
 
 [package.extras]
 build = ["cython (>=0.29.32)"]
@@ -8330,7 +8000,6 @@ docs = ["ipykernel", "jupyter-client", "matplotlib", "nbconvert", "nbformat", "n
 name = "stevedore"
 version = "5.0.0"
 description = "Manage dynamic plugins for Python applications"
-category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -8345,7 +8014,6 @@ pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 name = "stocksera"
 version = "0.1.21"
 description = "Official Stocksera API"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -8361,7 +8029,6 @@ requests = "*"
 name = "streamlit"
 version = "1.22.0"
 description = "A faster way to build and share data apps"
-category = "main"
 optional = false
 python-versions = ">=3.7, !=3.9.7"
 files = [
@@ -8402,7 +8069,6 @@ snowflake = ["snowflake-snowpark-python"]
 name = "svglib"
 version = "1.5.1"
 description = "A pure-Python library for reading and converting SVG"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8419,7 +8085,6 @@ tinycss2 = ">=0.6.0"
 name = "tabulate"
 version = "0.9.0"
 description = "Pretty-print tabular data"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8434,7 +8099,6 @@ widechars = ["wcwidth"]
 name = "tbats"
 version = "1.1.2"
 description = "BATS and TBATS for time series forecasting"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -8455,7 +8119,6 @@ dev = ["pip-tools", "pytest", "rpy2"]
 name = "tenacity"
 version = "8.2.2"
 description = "Retry code until it succeeds"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -8470,7 +8133,6 @@ doc = ["reno", "sphinx", "tornado (>=4.5)"]
 name = "tensorboard"
 version = "2.12.0"
 description = "TensorBoard lets you watch Tensors Flow"
-category = "main"
 optional = true
 python-versions = ">=3.8"
 files = [
@@ -8496,7 +8158,6 @@ wheel = ">=0.26"
 name = "tensorboard-data-server"
 version = "0.7.0"
 description = "Fast data loading for TensorBoard"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -8509,7 +8170,6 @@ files = [
 name = "tensorboard-plugin-wit"
 version = "1.8.1"
 description = "What-If Tool TensorBoard plugin."
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -8520,7 +8180,6 @@ files = [
 name = "terminado"
 version = "0.17.1"
 description = "Tornado websocket backend for the Xterm.js Javascript terminal emulator library."
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8541,7 +8200,6 @@ test = ["pre-commit", "pytest (>=7.0)", "pytest-timeout"]
 name = "textwrap3"
 version = "0.9.2"
 description = "textwrap from Python 3.6 backport (plus a few tweaks)"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -8553,7 +8211,6 @@ files = [
 name = "thepassiveinvestor"
 version = "1.1.2"
 description = "Passive Investing for the Average Joe."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -8565,7 +8222,6 @@ files = [
 name = "threadpoolctl"
 version = "3.1.0"
 description = "threadpoolctl"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -8623,7 +8279,6 @@ blobfile = ["blobfile (>=2)"]
 name = "time-machine"
 version = "2.9.0"
 description = "Travel through time in your tests."
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8689,7 +8344,6 @@ python-dateutil = "*"
 name = "tinycss2"
 version = "1.2.1"
 description = "A tiny CSS parser"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8708,7 +8362,6 @@ test = ["flake8", "isort", "pytest"]
 name = "tokenizers"
 version = "0.13.2"
 description = "Fast and Customizable Tokenizers"
-category = "main"
 optional = true
 python-versions = "*"
 files = [
@@ -8763,7 +8416,6 @@ testing = ["black (==22.3)", "datasets", "numpy", "pytest", "requests"]
 name = "tokenterminal"
 version = "1.0.1"
 description = "Unofficial Token Terminal API client."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -8778,7 +8430,6 @@ requests = ">=2.18.4"
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
-category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 files = [
@@ -8790,7 +8441,6 @@ files = [
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8802,7 +8452,6 @@ files = [
 name = "tomlkit"
 version = "0.11.6"
 description = "Style preserving TOML library"
-category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -8814,7 +8463,6 @@ files = [
 name = "toolz"
 version = "0.12.0"
 description = "List processing tools and functional utilities"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -8826,7 +8474,6 @@ files = [
 name = "torch"
 version = "1.11.0"
 description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
-category = "main"
 optional = true
 python-versions = ">=3.7.0"
 files = [
@@ -8858,7 +8505,6 @@ typing-extensions = "*"
 name = "torchmetrics"
 version = "0.11.4"
 description = "PyTorch native Metrics"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -8885,7 +8531,6 @@ text = ["nltk (>=3.6)", "regex (>=2021.9.24)", "tqdm (>=4.41.0)"]
 name = "tornado"
 version = "6.2"
 description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
-category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
@@ -8906,7 +8551,6 @@ files = [
 name = "tqdm"
 version = "4.65.0"
 description = "Fast, Extensible Progress Meter"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8927,7 +8571,6 @@ telegram = ["requests"]
 name = "tradingview-ta"
 version = "3.3.0"
 description = "Unofficial TradingView technical analysis API wrapper."
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -8942,7 +8585,6 @@ requests = "*"
 name = "traitlets"
 version = "5.9.0"
 description = "Traitlets Python configuration system"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -8958,7 +8600,6 @@ test = ["argcomplete (>=2.0)", "pre-commit", "pytest", "pytest-mock"]
 name = "transformers"
 version = "4.27.1"
 description = "State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow"
-category = "main"
 optional = true
 python-versions = ">=3.7.0"
 files = [
@@ -9026,7 +8667,6 @@ vision = ["Pillow"]
 name = "typeguard"
 version = "2.13.3"
 description = "Run-time type checker for Python"
-category = "main"
 optional = true
 python-versions = ">=3.5.3"
 files = [
@@ -9042,7 +8682,6 @@ test = ["mypy", "pytest", "typing-extensions"]
 name = "types-python-dateutil"
 version = "2.8.19.10"
 description = "Typing stubs for python-dateutil"
-category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -9054,7 +8693,6 @@ files = [
 name = "types-pytz"
 version = "2021.3.8"
 description = "Typing stubs for pytz"
-category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -9066,7 +8704,6 @@ files = [
 name = "types-pyyaml"
 version = "6.0.12.8"
 description = "Typing stubs for PyYAML"
-category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -9078,7 +8715,6 @@ files = [
 name = "types-requests"
 version = "2.28.11.15"
 description = "Typing stubs for requests"
-category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -9093,7 +8729,6 @@ types-urllib3 = "<1.27"
 name = "types-setuptools"
 version = "57.4.18"
 description = "Typing stubs for setuptools"
-category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -9105,7 +8740,6 @@ files = [
 name = "types-six"
 version = "1.16.21.7"
 description = "Typing stubs for six"
-category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -9117,7 +8751,6 @@ files = [
 name = "types-urllib3"
 version = "1.26.25.8"
 description = "Typing stubs for urllib3"
-category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -9129,7 +8762,6 @@ files = [
 name = "typing-extensions"
 version = "4.5.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -9157,7 +8789,6 @@ typing-extensions = ">=3.7.4"
 name = "tzdata"
 version = "2022.7"
 description = "Provider of IANA time zone data"
-category = "main"
 optional = false
 python-versions = ">=2"
 files = [
@@ -9169,7 +8800,6 @@ files = [
 name = "tzlocal"
 version = "4.2"
 description = "tzinfo object for the local timezone"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -9190,7 +8820,6 @@ test = ["pytest (>=4.3)", "pytest-mock (>=3.3)"]
 name = "u8darts"
 version = "0.23.0"
 description = "A python library for easy manipulation and forecasting of time series."
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -9231,7 +8860,6 @@ torch = ["pytorch-lightning (>=1.5.0)", "torch (>=1.8.0)"]
 name = "ujson"
 version = "5.7.0"
 description = "Ultra fast JSON encoder and decoder for Python"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -9306,7 +8934,6 @@ files = [
 name = "update-checker"
 version = "0.18.0"
 description = "A python module that will check for package updates."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -9326,7 +8953,6 @@ test = ["pytest (>=2.7.3)"]
 name = "urllib3"
 version = "1.26.15"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 files = [
@@ -9343,7 +8969,6 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 name = "user-agent"
 version = "0.1.10"
 description = "User-Agent generator"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -9357,7 +8982,6 @@ six = "*"
 name = "vadersentiment"
 version = "3.3.2"
 description = "VADER Sentiment Analysis. VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis tool that is specifically attuned to sentiments expressed in social media, and works well on texts from other domains."
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -9372,7 +8996,6 @@ requests = "*"
 name = "validators"
 version = "0.20.0"
 description = "Python Data Validation for Humans™."
-category = "main"
 optional = false
 python-versions = ">=3.4"
 files = [
@@ -9389,7 +9012,6 @@ test = ["flake8 (>=2.4.0)", "isort (>=4.2.2)", "pytest (>=2.2.3)"]
 name = "valinvest"
 version = "0.0.2"
 description = "A value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -9401,7 +9023,6 @@ files = [
 name = "vcrpy"
 version = "4.2.1"
 description = "Automatically mock your HTTP interactions to simplify and speed up testing"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -9419,7 +9040,6 @@ yarl = "*"
 name = "virtualenv"
 version = "20.21.0"
 description = "Virtual Python Environment builder"
-category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -9440,7 +9060,6 @@ test = ["covdefaults (>=2.2.2)", "coverage (>=7.1)", "coverage-enable-subprocess
 name = "watchdog"
 version = "2.3.1"
 description = "Filesystem events monitoring"
-category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -9481,7 +9100,6 @@ watchmedo = ["PyYAML (>=3.10)"]
 name = "wcwidth"
 version = "0.2.6"
 description = "Measures the displayed width of unicode strings in a terminal"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -9493,7 +9111,6 @@ files = [
 name = "webencodings"
 version = "0.5.1"
 description = "Character encoding aliases for legacy web content"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -9505,7 +9122,6 @@ files = [
 name = "websocket-client"
 version = "1.5.1"
 description = "WebSocket client for Python with low level API options"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -9522,7 +9138,6 @@ test = ["websockets"]
 name = "websockets"
 version = "11.0.1"
 description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -9602,7 +9217,6 @@ files = [
 name = "werkzeug"
 version = "2.2.3"
 description = "The comprehensive WSGI web application library."
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -9620,7 +9234,6 @@ watchdog = ["watchdog"]
 name = "wheel"
 version = "0.40.0"
 description = "A built-package format for Python"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -9635,7 +9248,6 @@ test = ["pytest (>=6.0.0)"]
 name = "widgetsnbextension"
 version = "4.0.5"
 description = "Jupyter interactive widgets for Jupyter Notebook"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -9647,7 +9259,6 @@ files = [
 name = "win32-setctime"
 version = "1.1.0"
 description = "A small Python utility to set file creation time on Windows"
-category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -9662,7 +9273,6 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 name = "wrapt"
 version = "1.15.0"
 description = "Module for decorators, wrappers and monkey patching."
-category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 files = [
@@ -9747,7 +9357,6 @@ files = [
 name = "xarray"
 version = "2023.1.0"
 description = "N-D labeled arrays and datasets in Python"
-category = "main"
 optional = true
 python-versions = ">=3.8"
 files = [
@@ -9772,7 +9381,6 @@ viz = ["matplotlib", "nc-time-axis", "seaborn"]
 name = "xgboost"
 version = "1.7.4"
 description = "XGBoost Python Package"
-category = "main"
 optional = true
 python-versions = ">=3.8"
 files = [
@@ -9800,7 +9408,6 @@ scikit-learn = ["scikit-learn"]
 name = "xlsxwriter"
 version = "3.0.9"
 description = "A Python module for creating Excel XLSX files."
-category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
@@ -9812,7 +9419,6 @@ files = [
 name = "y-py"
 version = "0.6.0"
 description = "Python bindings for the Y-CRDT built from yrs (Rust)"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -9888,7 +9494,6 @@ files = [
 name = "yahooquery"
 version = "2.3.0"
 description = "Python interface to unofficial Yahoo Finance API endpoints"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -9911,7 +9516,6 @@ test = ["coverage (==5.2.1)", "pytest (==6.0.2)", "pytest-cov (==2.10.1)", "sele
 name = "yarl"
 version = "1.8.2"
 description = "Yet another URL library"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -9999,7 +9603,6 @@ multidict = ">=4.0"
 name = "yfinance"
 version = "0.2.12"
 description = "Download market data from Yahoo! Finance API"
-category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -10024,7 +9627,6 @@ requests = ">=2.26"
 name = "yt-dlp"
 version = "2023.3.4"
 description = "A youtube-dl fork with additional features and patches"
-category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
@@ -10044,7 +9646,6 @@ websockets = "*"
 name = "zipp"
 version = "3.15.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
-category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -10060,7 +9661,6 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 name = "zope-interface"
 version = "5.5.2"
 description = "Interfaces for Python"
-category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 files = [
