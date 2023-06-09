@@ -3,17 +3,9 @@
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
-import requests
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.options import cboe_model
-
-
-@pytest.fixture(scope="module")
-def vcr_config():
-    return {
-        "filter_headers": [("User-Agent", None)],
-    }
 
 
 @pytest.mark.vcr
@@ -24,60 +16,62 @@ def test_symbol_directory():
 
 
 @pytest.mark.vcr
-def test_underlying_price(recorder):
+def test_underlying_price():
     result_df = cboe_model.load_options("QQQ")
-    recorder.capture(result_df.underlying_price)
+    hasattr(result_df, "underlying_price")
+    assert isinstance(result_df.underlying_price, pd.Series)
+    assert isinstance(result_df.underlying_price["price"], float)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_underlying_price_bad_symbol(mocker):
-    mock_response = requests.Response()
-    mock_response.status_code = 400
-    mocker.patch(
-        target="openbb_terminal.helper_funcs.requests.get",
-        new=mocker.Mock(return_value=mock_response),
-    )
+def test_underlying_price_bad_symbol():
     result_df = cboe_model.load_options("BAD_SYMBOL")
     assert result_df.underlying_price.empty
 
 
 @pytest.mark.vcr
-def test_underlying_name(recorder):
+def test_underlying_name():
     ticker = cboe_model.load_options("SPX")
-    result_df = ticker.underlying_name
-    recorder.capture(result_df)
+    assert hasattr(ticker, "underlying_name")
+    assert isinstance(ticker.underlying_name, str)
+    assert ticker.underlying_name == "SPX"
 
 
 @pytest.mark.vcr
-def test_last_price(recorder):
+def test_last_price():
     ticker = cboe_model.load_options("AAPL")
-    result_df = ticker.last_price
-    recorder.capture(result_df)
+    assert hasattr(ticker, "last_price")
+    assert isinstance(ticker.last_price, float)
+    assert ticker.last_price == ticker.underlying_price["price"]
 
 
 @pytest.mark.vcr
-def test_chains(recorder):
+def test_chains():
     ticker = cboe_model.load_options("JPM")
-    results_df = ticker.chains
-    assert isinstance(results_df, pd.DataFrame)
-    recorder.capture(results_df)
+    assert hasattr(ticker, "chains")
+    assert ticker.symbol == "JPM"
+    assert isinstance(ticker.chains, pd.DataFrame)
+    assert ticker.expirations[0] == ticker.chains["expiration"][0]
 
 
 @pytest.mark.vcr
-def test_strikes(recorder):
+def test_strikes():
     ticker = cboe_model.load_options("TSLA")
-    results_df = ticker.strikes
-    assert isinstance(results_df, list)
-    recorder.capture(results_df)
+    results_df = ticker
+    assert hasattr(results_df, "strikes")
+    assert isinstance(results_df.strikes, list)
+    assert isinstance(results_df.strikes[0], float)
+    assert len(results_df.strikes) > 1
 
 
 @pytest.mark.vcr
-def test_expirations(recorder):
+def test_expirations():
     ticker = cboe_model.load_options("OXY")
-    results_df = ticker.expirations
-    assert isinstance(results_df, list)
-    recorder.capture(results_df)
+    assert hasattr(ticker, "expirations")
+    assert isinstance(ticker.expirations, list)
+    assert isinstance(ticker.expirations[0], str)
+    assert ticker.expirations[0] == ticker.chains["expiration"].iloc[0]
 
 
 @pytest.mark.vcr
@@ -85,5 +79,6 @@ def test_hasGreeks_hasIV():
     ticker = cboe_model.Options()
     assert ticker.chains.empty
     ticker = cboe_model.load_options("TSLA")
+    assert ticker.underlying_name != "TSLA"
     assert ticker.hasGreeks is True
     assert ticker.hasIV is True

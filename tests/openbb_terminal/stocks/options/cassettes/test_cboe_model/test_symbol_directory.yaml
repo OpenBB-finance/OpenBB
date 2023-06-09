@@ -66,8 +66,6 @@ interactions:
 
         "AAR CORP COM","AIR","Citadel Securities LLC","1/1"
 
-        "ABB LTD SPONSORED ADR","ABB","Morgan Stanley & Co. LLC","4/1"
-
         "ABBOTT LABS COM","ABT","Susquehanna Securities, LLC","4/1"
 
         "ABBVIE INC COM","ABBV","Susquehanna Securities, LLC","1/1"
@@ -116,9 +114,13 @@ interactions:
 
         "ACELRX PHARMACEUTICALS INC COM NEW","ACRX","Susquehanna Securities, LLC","2/1"
 
+        "ACELYRIN INC COM","SLRN","Belvedere Trading LLC","5/1"
+
         "ACER THERAPEUTICS INC COM","ACER","Susquehanna Securities, LLC","3/1"
 
         "ACERAGEN INC COM","ACGN","Group One Trading, L.P.","4/1"
+
+        "ACHIEVE LIFE SCIENCES INC COM","ACHV","Group One Trading, L.P.","1/1"
 
         "ACI WORLDWIDE INC COM","ACIW","Morgan Stanley & Co. LLC","2/1"
 
@@ -128,7 +130,7 @@ interactions:
 
         "ACNB CORP COM","ACNB","Group One Trading, L.P.","3/1"
 
-        "ACORDA THERAPEUTICS INC COM NEW","ACOR","Susquehanna Securities, LLC","2/1"
+        "ACORDA THERAPEUTICS INC COM","ACOR","Susquehanna Securities, LLC","2/1"
 
         "ACRES COMMERCIAL REALTY CORP COM NEW","ACR","Wolverine Trading, LLC","1/1"
 
@@ -148,7 +150,7 @@ interactions:
 
         "ADAM NAT RES FD INC COM","PEO","Susquehanna Securities, LLC","3/1"
 
-        "ADAMIS PHARMACEUTICALS CORP COM NEW","ADMP","Citadel Securities LLC","4/1"
+        "ADAMIS PHARMACEUTICALS CORP COM","ADMP","Citadel Securities LLC","4/1"
 
         "ADAPTHEALTH CORP COMMON STOCK","AHCO","Group One Trading, L.P.","4/1"
 
@@ -403,7 +405,7 @@ interactions:
 
         "ALPHATEC HLDGS INC COM NEW","ATEC","Group One Trading, L.P.","4/1"
 
-        "ALPINE 4 HOLDINGS INC CL A","ALPP","Susquehanna Securities, LLC","3/1"
+        "ALPINE 4 HOLDINGS INC CL A NEW","ALPP","Susquehanna Securities, LLC","3/1"
 
         "ALPINE IMMUNE SCIENCES INC COM","ALPN","Susquehanna Securities, LLC","3/1"
 
@@ -426,8 +428,6 @@ interactions:
         "ALTA EQUIPMENT GROUP INC COMMON STOCK","ALTG","Group One Trading, L.P.","4/1"
 
         "ALTAIR ENGR INC COM CL A","ALTR","Citadel Securities LLC","6/1"
-
-        "ALTAMIRA THERAPEUTICS LTD SHS NEW","CYTO","Susquehanna Securities, LLC","2/1"
 
         "ALTERYX INC COM CL A","AYX","Susquehanna Securities, LLC","4/1"
 
@@ -523,8 +523,6 @@ interactions:
 
         "AMERICAN VANGUARD CORP COM","AVD","Wolverine Trading, LLC","2/1"
 
-        "AMERICAN VRTUAL CLOUD TECH INC COM NEW","AVCTQ","","4/1"
-
         "AMERICAN WELL CORP CL A","AMWL","Citadel Securities LLC","3/1"
 
         "AMERICAN WOODMARK CORPORATION COM","AMWD","Susquehanna Securities, LLC","1/1"
@@ -614,8 +612,6 @@ interactions:
 
         "ANNEXON INC COM","ANNX","Citadel Securities LLC","3/1"
 
-        "ANPAC BIO MED SCIENCE CO LTD SPONSORED ADS","ANPC","Belvedere Trading LLC","3/1"
-
         "ANSYS INC COM","ANSS","GTS Securities LLC","3/1"
 
         "ANTERIX INC COM","ATEX","Belvedere Trading LLC","5/1"
@@ -656,6 +652,8 @@ interactions:
 
         "APPLE INC COM","AAPL","Susquehanna Securities, LLC","3/1"
 
+        "APPLIED DIGITAL CORP COM NEW","APLD","Belvedere Trading LLC","1/1"
+
         "APPLIED DNA SCIENCES INC COM","APDN","Susquehanna Securities, LLC","1/1"
 
         "APPLIED INDL TECHNOLOGIES INC COM","AIT","Group One Trading, L.P.","4/1"
@@ -672,11 +670,9 @@ interactions:
 
         "APTARGROUP INC COM","ATR","GTS Securities LLC","1/1"
 
-        "APTINYX INC COM","APTX","Susquehanna Securities, LLC","3/1"
-
         "APTIV PLC SHS","APTV","Susquehanna Securities, LLC","3/1"
 
-        "APTOSE BIOSCIENCES INC COM NEW","APTO","Susquehanna Securities, LLC","1/1"
+        "APTOSE BIOSCIENCES INC COM","APTO","Susquehanna Securities, LLC","1/1"
 
         "AQUA METALS INC COM","AQMS","Group One Trading, L.P.","4/1"
 
@@ -871,7 +867,7 @@ interactions:
 
         "ATERIAN INC COM","ATER","Susquehanna Securities, LLC","2/1"
 
-        "ATHENEX INC COM NEW","ATNX","Citadel Securities LLC","4/1"
+        "ATHENEX INC COM NEW","ATNXQ","","4/1"
 
         "ATHERSYS INC NEW COM NEW","ATHX","Group One Trading, L.P.","4/1"
 
@@ -907,7 +903,7 @@ interactions:
 
         "ATYR PHARMA INC COM NEW","LIFE","Susquehanna Securities, LLC","1/1"
 
-        "AUDACY INC CL A","AUD","Group One Trading, L.P.","6/1"
+        "AUDACY INC CL A","AUDA","Group One Trading, L.P.","6/1"
 
         "AUDIOCODES LTD ORD","AUDC","Citadel Securities LLC","2/1"
 
@@ -1088,27 +1084,7 @@ interactions:
 
         "BARCLAYS BANK PLC DJUBS CMDT ETN36","DJP","Wolverine Trading, LLC","8/1"
 
-        "BARCLAYS BANK PLC ETN DJUBSCOCO 38","NIB","Susquehanna Securities, LLC","7/1"
-
-        "BARCLAYS BANK PLC ETN LKD 48","BAL","Citadel Securities LLC","3/1"
-
-        "BARCLAYS BANK PLC ETN LKD 48","COW","Wolverine Trading, LLC","3/1"
-
-        "BARCLAYS BANK PLC ETN LKD 48","JJC","Wolverine Trading, LLC","3/1"
-
-        "BARCLAYS BANK PLC ETN LKD 48","JJG","Susquehanna Securities, LLC","7/1"
-
-        "BARCLAYS BANK PLC ETN LKD 48","JJN","Belvedere Trading LLC","2/1"
-
-        "BARCLAYS BANK PLC ETN LKD 48","JO","Susquehanna Securities, LLC","7/1"
-
-        "BARCLAYS BANK PLC ETN LKD 48","SGG","Citadel Securities LLC","1/1"
-
         "BARCLAYS BANK PLC IPATH SER B ETN","GRN","Wolverine Trading, LLC","3/1"
-
-        "BARCLAYS BANK PLC IPATHBBGNATGAS37","GAZ","Belvedere Trading LLC","1/1"
-
-        "BARCLAYS BANK PLC IPTH CRUDE OIL","OIL","Belvedere Trading LLC","5/1"
 
         "BARCLAYS PLC ADR","BCS","Susquehanna Securities, LLC","1/1"
 
@@ -1133,6 +1109,8 @@ interactions:
         "BAUSCH PLUS LOMB CORP COMMON SHARES","BLCO","Citadel Securities LLC","6/1"
 
         "BAXTER INTL INC COM","BAX","Citadel Securities LLC","5/1"
+
+        "BAYCOM CORP COM","BCML","Wolverine Trading, LLC","2/1"
 
         "BAYTEX ENERGY CORP COM","BTE","Citadel Securities LLC","3/1"
 
@@ -1218,7 +1196,7 @@ interactions:
 
         "BIOCARDIA INC COM","BCDA","Citadel Securities LLC","3/1"
 
-        "BIOCEPT INC COM","BIOC","Susquehanna Securities, LLC","6/1"
+        "BIOCEPT INC COM NEW","BIOC","Susquehanna Securities, LLC","6/1"
 
         "BIOCRYST PHARMACEUTICALS INC COM","BCRX","Group One Trading, L.P.","4/1"
 
@@ -1260,7 +1238,7 @@ interactions:
 
         "BITFARMS LTD COM","BITF","Susquehanna Securities, LLC","1/1"
 
-        "BITNILE METAVERSE INC COM NEW","BNMV","Susquehanna Securities, LLC","2/1"
+        "BITNILE METAVERSE INC COM","BNMV","Susquehanna Securities, LLC","2/1"
 
         "BJS RESTAURANTS INC COM","BJRI","Susquehanna Securities, LLC","1/1"
 
@@ -1312,7 +1290,7 @@ interactions:
 
         "BLOOMIN BRANDS INC COM","BLMN","Susquehanna Securities, LLC","5/1"
 
-        "BLUE APRON HLDGS INC CL A NEW","APRN","Morgan Stanley & Co. LLC","2/1"
+        "BLUE APRON HLDGS INC COM","APRN","Morgan Stanley & Co. LLC","2/1"
 
         "BLUE BIRD CORP COM","BLBD","Belvedere Trading LLC","3/1"
 
@@ -1388,15 +1366,17 @@ interactions:
 
         "BRIACELL THERAPEUTICS CORP COM NEW","BCTX","Belvedere Trading LLC","5/1"
 
+        "BRIDGE INVT GROUP HLDGS INC COM CL A","BRDG","Wolverine Trading, LLC","2/1"
+
         "BRIDGEBIO PHARMA INC COM","BBIO","Citadel Securities LLC","6/1"
 
         "BRIDGETOWN HOLDINGS LTD COM CL A","BTWN","Wolverine Trading, LLC","3/1"
 
-        "BRIDGEWATER BANCSHARES INC COM ACCD INV","BWB","Wolverine Trading, LLC","3/1"
+        "BRIDGEWATER BANCSHARES INC COM","BWB","Wolverine Trading, LLC","3/1"
 
         "BRIGHT GREEN CORP COMMON STOCK","BGXX","Group One Trading, L.P.","3/1"
 
-        "BRIGHT HEALTH GROUP INC COM","BHG","Citadel Securities LLC","5/1"
+        "BRIGHT HEALTH GROUP INC COM NEW","BHG","Citadel Securities LLC","5/1"
 
         "BRIGHT HORIZONS FAM SOL IN DEL COM","BFAM","Wolverine Trading, LLC","6/1"
 
@@ -1425,8 +1405,6 @@ interactions:
         "BRIXMOR PPTY GROUP INC COM","BRX","Wolverine Trading, LLC","3/1"
 
         "BROADCOM INC COM","AVGO","Susquehanna Securities, LLC","4/1"
-
-        "BROADMARK RLTY CAP INC COM","BRMK","Belvedere Trading LLC","1/1"
 
         "BROADRIDGE FINL SOLUTIONS INC COM","BR","Wolverine Trading, LLC","4/1"
 
@@ -1763,8 +1741,6 @@ interactions:
 
         "CERAGON NETWORKS LTD ORD","CRNT","Citadel Securities LLC","5/1"
 
-        "CERBERUS CYBER SENTINEL CORP COM","CISO","Citadel Securities LLC","6/1"
-
         "CERENCE INC COM","CRNC","Wolverine Trading, LLC","3/1"
 
         "CEREVEL THERAPEUTICS HLDNG INC COM","CERE","Group One Trading, L.P.","4/1"
@@ -1892,6 +1868,8 @@ interactions:
 
         "CISCO SYS INC COM","CSCO","Citadel Securities LLC","5/1"
 
+        "CISO GLOBAL INC COM","CISO","Citadel Securities LLC","6/1"
+
         "CITI TRENDS INC COM","CTRN","Citadel Securities LLC","5/1"
 
         "CITIGROUP INC COM NEW","C","Susquehanna Securities, LLC","1/1"
@@ -1946,7 +1924,8 @@ interactions:
 
         "CLEVER LEAVES HOLDINGS INC COM","CLVR","Wolverine Trading, LLC","3/1"
 
-        "CLOOPEN GROUP HOLDING LIMITED ADS","RAAS","Susquehanna Securities, LLC","2/1"
+        "CLOOPEN GROUP HOLDING LIMITED SPON ADS","RAASY","Susquehanna Securities,
+        LLC","2/1"
 
         "CLOROX CO DEL COM","CLX","Susquehanna Securities, LLC","1/1"
 
@@ -2102,6 +2081,8 @@ interactions:
 
         "CONOCOPHILLIPS COM","COP","Susquehanna Securities, LLC","2/1"
 
+        "CONSENSUS CLOUD SOLUTIONS INC COM","CCSI","Wolverine Trading, LLC","4/1"
+
         "CONSOL ENERGY INC NEW COM","CEIX","Wolverine Trading, LLC","3/1"
 
         "CONSOLIDATED COMM HLDGS INC COM","CNSL","GTS Securities LLC","3/1"
@@ -2150,6 +2131,8 @@ interactions:
         "CORMEDIX INC COM","CRMD","Morgan Stanley & Co. LLC","3/1"
 
         "CORNING INC COM","GLW","Two Sigma Securities, LLC","6/1"
+
+        "CORPORACION AMER ARPTS S A COM","CAAP","Citadel Securities LLC","4/1"
 
         "CORPORATE OFFICE PPTYS TR SH BEN INT","OFC","Susquehanna Securities, LLC","5/1"
 
@@ -2226,6 +2209,8 @@ interactions:
         "CROSS CTRY HEALTHCARE INC COM","CCRN","Belvedere Trading LLC","5/1"
 
         "CROSSAMERICA PARTNERS LP UT LTD PTN INT","CAPL","Citadel Securities LLC","6/1"
+
+        "CROSSFIRST BANKSHARES INC COM","CFB","Wolverine Trading, LLC","5/1"
 
         "CROWDSTRIKE HLDGS INC CL A","CRWD","Susquehanna Securities, LLC","3/1"
 
@@ -2447,7 +2432,7 @@ interactions:
 
         "DICKS SPORTING GOODS INC COM","DKS","Citadel Securities LLC","2/1"
 
-        "DIEBOLD NIXDORF INC COM STK","DBD","Susquehanna Securities, LLC","3/1"
+        "DIEBOLD NIXDORF INC COM STK","DBDQQ","","16/1"
 
         "DIGI INTL INC COM","DGII","Susquehanna Securities, LLC","3/1"
 
@@ -2529,7 +2514,7 @@ interactions:
 
         "DIREXION SHS ETF TR DAILY REAL ESTAT","DRV","GTS Securities LLC","6/1"
 
-        "DIREXION SHS ETF TR DAILY RGNAL BULL","DPST","Belvedere Trading LLC","2/1"
+        "DIREXION SHS ETF TR DAILY REGIONAL","DPST","Belvedere Trading LLC","2/1"
 
         "DIREXION SHS ETF TR DAILY ROBOTICS","UBOT","Belvedere Trading LLC","5/1"
 
@@ -2589,7 +2574,7 @@ interactions:
 
         "DIREXION SHS ETF TR DLY TECH BULL 3X","TECL","GTS Securities LLC","5/1"
 
-        "DIREXION SHS ETF TR DLY TSLA BEAR 1X","TSLS","Wolverine Trading, LLC","2/1"
+        "DIREXION SHS ETF TR DLY TSLA BEAR 1X","TSLS","Citadel Securities LLC","1/1"
 
         "DIREXION SHS ETF TR DLY UTLTIES 3X","UTSL","Belvedere Trading LLC","1/1"
 
@@ -2611,7 +2596,7 @@ interactions:
 
         "DIREXION SHS ETF TR TSLA BULL 1.5X","TSLL","Morgan Stanley & Co. LLC","1/1"
 
-        "DISC MEDICINE INC COM","IRON","Citadel Securities LLC","5/1"
+        "DISC MEDICINE INC COM","IRON","Belvedere Trading LLC","6/1"
 
         "DISCOVER FINL SVCS COM","DFS","Susquehanna Securities, LLC","5/1"
 
@@ -2749,6 +2734,8 @@ interactions:
 
         "E2OPEN PARENT HOLDINGS INC COM CL A","ETWO","Susquehanna Securities, LLC","1/1"
 
+        "EA SERIES TRUST EA BRIDGEWAY OMN","BSVO","Belvedere Trading LLC","3/1"
+
         "EA SERIES TRUST STRIVE US ENERGY","DRLL","Belvedere Trading LLC","1/1"
 
         "EAGLE BANCORP INC MD COM","EGBN","Wolverine Trading, LLC","6/1"
@@ -2833,6 +2820,9 @@ interactions:
 
         "ELLINGTON FINANCIAL INC COM","EFC","Morgan Stanley & Co. LLC","2/1"
 
+        "ELLINGTON RESIDENTIAL MTG REIT COM SHS BEN INT","EARN","Susquehanna Securities,
+        LLC","6/1"
+
         "ELME COMMUNITIES SH BEN INT","ELME","Citadel Securities LLC","5/1"
 
         "ELYS GAME TECHNOLOGY CORP COM","ELYS","Citadel Securities LLC","3/1"
@@ -2915,7 +2905,7 @@ interactions:
 
         "ENLINK MIDSTREAM LLC COM UNIT REP LTD","ENLC","Belvedere Trading LLC","6/1"
 
-        "ENLIVEN THERAPEUTICS INC COM","ELVN","Citadel Securities LLC","1/1"
+        "ENLIVEN THERAPEUTICS INC COM","ELVN","Citadel Securities LLC","16/1"
 
         "ENOCHIAN BIOSCIENCES INC COM","ENOB","Belvedere Trading LLC","2/1"
 
@@ -3118,8 +3108,6 @@ interactions:
         "EVOLUTION PETE CORP COM","EPM","Wolverine Trading, LLC","3/1"
 
         "EVOLV TECHNOLOGIES HLDNGS INC COM CL A","EVLV","Group One Trading, L.P.","4/1"
-
-        "EVOQUA WATER TECHNOLOGIES CORP COM","AQUA","Wolverine Trading, LLC","3/1"
 
         "EXACT SCIENCES CORP COM","EXAS","Morgan Stanley & Co. LLC","4/1"
 
@@ -3324,6 +3312,8 @@ interactions:
 
         "FIRST COMWLTH FINL CORP PA COM","FCF","Belvedere Trading LLC","1/1"
 
+        "FIRST CTZNS BANCSHARES INC N C CL A","FCNCA","Susquehanna Securities, LLC","1/1"
+
         "FIRST FINL BANCORP OH COM","FFBC","Citadel Securities LLC","2/1"
 
         "FIRST FNDTN INC COM","FFWM","Citadel Securities LLC","6/1"
@@ -3336,7 +3326,7 @@ interactions:
 
         "FIRST INTERNET BANCORP COM","INBK","Citadel Securities LLC","5/1"
 
-        "FIRST INTST BANCSYSTEM INC COM CL A","FIBK","Wolverine Trading, LLC","3/1"
+        "FIRST INTST BANCSYSTEM INC COM","FIBK","Wolverine Trading, LLC","3/1"
 
         "FIRST MAJESTIC SILVER CORP COM","AG","Citadel Securities LLC","4/1"
 
@@ -3472,7 +3462,7 @@ interactions:
 
         "FIRSTSERVICE CORP NEW COM","FSV","Group One Trading, L.P.","4/1"
 
-        "FISERV INC COM","FISV","Two Sigma Securities, LLC","6/1"
+        "FISERV INC COM","FI","Two Sigma Securities, LLC","6/1"
 
         "FISKER INC CL A COM STK","FSR","Group One Trading, L.P.","4/1"
 
@@ -3598,6 +3588,8 @@ interactions:
         "FRESENIUS MED CARE AG&CO KGAA SPONSORED ADR","FMS","Wolverine Trading, LLC","2/1"
 
         "FRESH DEL MONTE PRODUCE INC ORD","FDP","Citadel Securities LLC","2/1"
+
+        "FRESH2 GROUP LIMITED SPONSORED ADS","FRES","Belvedere Trading LLC","3/1"
 
         "FRESHPET INC COM","FRPT","Citadel Securities LLC","4/1"
 
@@ -3813,8 +3805,6 @@ interactions:
 
         "GLOBAL BUSINESS TRAVEL GROUP COM CL A","GBTG","Wolverine Trading, LLC","3/1"
 
-        "GLOBAL CORD BLOOD CORPORATION SHS","CO","Wolverine Trading, LLC","1/1"
-
         "GLOBAL E ONLINE LTD SHS","GLBE","Susquehanna Securities, LLC","5/1"
 
         "GLOBAL INDUSTRIAL COMPANY COM","GIC","Group One Trading, L.P.","4/1"
@@ -3927,9 +3917,9 @@ interactions:
 
         "GLOBAL X FDS S&P 500 CATHOLIC","CATH","Belvedere Trading LLC","3/1"
 
-        "GLOBAL X FDS S&P 500 COVERED","XYLG","Belvedere Trading LLC","6/1"
-
         "GLOBAL X FDS S&P 500 COVERED","XYLD","Wolverine Trading, LLC","3/1"
+
+        "GLOBAL X FDS S&P 500 COVERED","XYLG","Belvedere Trading LLC","6/1"
 
         "GLOBAL X FDS S&P 500 RISK","XRMI","Belvedere Trading LLC","3/1"
 
@@ -4127,6 +4117,8 @@ interactions:
 
         "GRUPO TELEVISA S A B SPON ADR REP ORD","TV","Belvedere Trading LLC","4/1"
 
+        "GSI TECHNOLOGY INC COM","GSIT","Group One Trading, L.P.","1/1"
+
         "GSK PLC SPONSORED ADR","GSK","GTS Securities LLC","5/1"
 
         "GT BIOPHARMA INC COM NEW","GTBP","Citadel Securities LLC","1/1"
@@ -4240,6 +4232,8 @@ interactions:
 
         "HEARTLAND EXPRESS INC COM","HTLD","Belvedere Trading LLC","1/1"
 
+        "HEARTLAND FINL USA INC COM","HTLF","Citadel Securities LLC","1/1"
+
         "HECLA MNG CO COM","HL","GTS Securities LLC","5/1"
 
         "HEICO CORP NEW COM","HEI","Wolverine Trading, LLC","3/1"
@@ -4271,6 +4265,8 @@ interactions:
         "HERCULES CAPITAL INC COM","HTGC","Wolverine Trading, LLC","3/1"
 
         "HERITAGE CRYSTAL CLEAN INC COM","HCCI","Belvedere Trading LLC","2/1"
+
+        "HERITAGE FINL CORP WASH COM","HFWA","Group One Trading, L.P.","2/1"
 
         "HERITAGE INSURANCE HLDGS INC COM","HRTG","Wolverine Trading, LLC","2/1"
 
@@ -4854,23 +4850,26 @@ interactions:
         "INVESCO EXCHANGE TRADED FD TR S&P SPIN OFF","CSD","Susquehanna Securities,
         LLC","7/1"
 
-        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL DIS","RCD","Belvedere Trading LLC","1/1"
+        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL DIS","RSPD","Belvedere Trading LLC","1/1"
 
-        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL ENR","RYE","Belvedere Trading LLC","3/1"
+        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL ENR","RSPG","Belvedere Trading LLC","3/1"
 
-        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL FIN","RYF","Wolverine Trading, LLC","3/1"
-
-        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL HLT","RYH","Morgan Stanley & Co.
-        LLC","4/1"
-
-        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL IND","RGI","Wolverine Trading, LLC","3/1"
-
-        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL MAT","RTM","Wolverine Trading, LLC","3/1"
-
-        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL REL","EWRE","Wolverine Trading,
+        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL FIN","RSPF","Wolverine Trading,
         LLC","3/1"
 
-        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL TEC","RYT","Belvedere Trading LLC","6/1"
+        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL HLT","RSPH","Morgan Stanley & Co.
+        LLC","4/1"
+
+        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL IND","RSPN","Wolverine Trading,
+        LLC","3/1"
+
+        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL MAT","RSPM","Wolverine Trading,
+        LLC","3/1"
+
+        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL REL","RSPR","Wolverine Trading,
+        LLC","3/1"
+
+        "INVESCO EXCHANGE TRADED FD TR S&P500 EQL TEC","RSPT","Belvedere Trading LLC","6/1"
 
         "INVESCO EXCHANGE TRADED FD TR S&P500 EQL WGT","RSP","Belvedere Trading LLC","4/1"
 
@@ -4897,8 +4896,8 @@ interactions:
 
         "INVESCO QQQ TR UNIT SER 1","QQQ","Wolverine Trading, LLC","8/1"
 
-        "INVESTMENT MANAGERS SER TR II AXS 1.25X NVDA","NVDS","Wolverine Trading,
-        LLC","3/1"
+        "INVESTMENT MANAGERS SER TR II AXS 1.25X NVDA","NVDS","Citadel Securities
+        LLC","6/1"
 
         "INVESTMENT MANAGERS SER TR II AXS 1.5X PYPL BL","PYPT","Wolverine Trading,
         LLC","1/1"
@@ -4930,8 +4929,8 @@ interactions:
         "INVESTMENT MANAGERS SER TR II AXS SHRT DE SPAC","SOGU","Belvedere Trading
         LLC","5/1"
 
-        "INVESTMENT MANAGERS SER TR II AXS TSLA BEAR DL","TSLQ","Wolverine Trading,
-        LLC","2/1"
+        "INVESTMENT MANAGERS SER TR II AXS TSLA BEAR DL","TSLQ","Citadel Securities
+        LLC","6/1"
 
         "INVITAE CORP COM","NVTA","Susquehanna Securities, LLC","3/1"
 
@@ -4999,6 +4998,8 @@ interactions:
 
         "ISHARES INC ESG AWR MSCI EM","ESGE","Belvedere Trading LLC","2/1"
 
+        "ISHARES INC FRONTIER AND SEL","FM","Belvedere Trading LLC","1/1"
+
         "ISHARES INC GLB ENR PROD ETF","FILL","Belvedere Trading LLC","1/1"
 
         "ISHARES INC JP MORGAN EM ETF","LEMB","Susquehanna Securities, LLC","7/1"
@@ -5016,8 +5017,6 @@ interactions:
         "ISHARES INC MSCI CDA ETF","EWC","Citadel Securities LLC","1/1"
 
         "ISHARES INC MSCI FRANCE ETF","EWQ","Susquehanna Securities, LLC","7/1"
-
-        "ISHARES INC MSCI FRONTIER","FM","Belvedere Trading LLC","1/1"
 
         "ISHARES INC MSCI GBL GOLD MN","RING","Susquehanna Securities, LLC","7/1"
 
@@ -5426,6 +5425,8 @@ interactions:
 
         "JAGUAR HEALTH INC COM","JAGX","Citadel Securities LLC","2/1"
 
+        "JAMES HARDIE INDS PLC SPONSORED ADR","JHX","Citadel Securities LLC","2/1"
+
         "JAMES RIV GROUP LTD COM","JRVR","Group One Trading, L.P.","4/1"
 
         "JAMF HLDG CORP COM","JAMF","Group One Trading, L.P.","4/1"
@@ -5555,8 +5556,6 @@ interactions:
         "KILROY RLTY CORP COM","KRC","Wolverine Trading, LLC","3/1"
 
         "KIMBALL ELECTRONICS INC COM","KE","Belvedere Trading LLC","3/1"
-
-        "KIMBALL INTL INC CL B","KBAL","Belvedere Trading LLC","3/1"
 
         "KIMBELL RTY PARTNERS LP UNIT","KRP","Susquehanna Securities, LLC","1/1"
 
@@ -5922,7 +5921,7 @@ interactions:
 
         "LOOP INDS INC COM","LOOP","Belvedere Trading LLC","5/1"
 
-        "LORDSTOWN MOTORS CORP COM CL A","RIDE","Citadel Securities LLC","5/1"
+        "LORDSTOWN MOTORS CORP CL A NEW","RIDE","Citadel Securities LLC","5/1"
 
         "LOTTERY COM INC COM","LTRY","Wolverine Trading, LLC","3/1"
 
@@ -5983,6 +5982,8 @@ interactions:
         "MACYS INC COM","M","GTS Securities LLC","5/1"
 
         "MADDEN STEVEN LTD COM","SHOO","Susquehanna Securities, LLC","6/1"
+
+        "MADISON SQUARE GARDEN ENTMT COM CL A","MSGE","Susquehanna Securities, LLC","3/1"
 
         "MADISON SQUARE GRDN SPRT CORP CL A","MSGS","Susquehanna Securities, LLC","2/1"
 
@@ -6054,7 +6055,7 @@ interactions:
 
         "MARINUS PHARMACEUTICALS INC COM NEW","MRNS","Susquehanna Securities, LLC","2/1"
 
-        "MARKEL CORP COM","MKL","Susquehanna Securities, LLC","3/1"
+        "MARKEL GROUP INC COM","MKL","Susquehanna Securities, LLC","3/1"
 
         "MARKETAXESS HLDGS INC COM","MKTX","Susquehanna Securities, LLC","3/1"
 
@@ -6297,6 +6298,8 @@ interactions:
 
         "MODERNA INC COM","MRNA","Group One Trading, L.P.","4/1"
 
+        "MODINE MFG CO COM","MOD","Wolverine Trading, LLC","1/1"
+
         "MODIVCARE INC COM","MODV","Wolverine Trading, LLC","2/1"
 
         "MOELIS & CO CL A","MC","Citadel Securities LLC","3/1"
@@ -6311,8 +6314,6 @@ interactions:
 
         "MOLSON COORS BEVERAGE CO CL B","TAP","Susquehanna Securities, LLC","3/1"
 
-        "MOMENTIVE GLOBAL INC COM","MNTV","Belvedere Trading LLC","2/1"
-
         "MOMENTUS INC COM CL A","MNTS","Susquehanna Securities, LLC","4/1"
 
         "MONARCH CASINO & RESORT INC COM","MCRI","Susquehanna Securities, LLC","5/1"
@@ -6320,8 +6321,6 @@ interactions:
         "MONDAY COM LTD SHS","MNDY","Wolverine Trading, LLC","3/1"
 
         "MONDELEZ INTL INC CL A","MDLZ","Susquehanna Securities, LLC","1/1"
-
-        "MONEYGRAM INTL INC COM NEW","MGI","Citadel Securities LLC","1/1"
 
         "MONEYLION INC CL A","ML","Wolverine Trading, LLC","3/1"
 
@@ -6425,7 +6424,7 @@ interactions:
 
         "NANOVIRICIDES INC COM","NNVC","Group One Trading, L.P.","4/1"
 
-        "NANTHEALTH INC COM NEW","NH","Susquehanna Securities, LLC","3/1"
+        "NANTHEALTH INC COM NEW","NHIQ","Susquehanna Securities, LLC","3/1"
 
         "NAPCO SEC TECHNOLOGIES INC COM","NSSC","Group One Trading, L.P.","4/1"
 
@@ -6898,7 +6897,7 @@ interactions:
 
         "ORIENTAL CULTURE HOLDING LTD ORD SHS","OCG","Citadel Securities LLC","6/1"
 
-        "ORIGIN BANCORP INC COM","OBNK","Citadel Securities LLC","4/1"
+        "ORIGIN BANCORP INC COM","OBK","Citadel Securities LLC","4/1"
 
         "ORIGIN MATERIALS INC COM","ORGN","Belvedere Trading LLC","3/1"
 
@@ -7128,6 +7127,8 @@ interactions:
 
         "PENUMBRA INC COM","PEN","Susquehanna Securities, LLC","6/1"
 
+        "PEOPLES BANCORP INC COM","PEBO","Susquehanna Securities, LLC","4/1"
+
         "PEPSICO INC COM","PEP","Susquehanna Securities, LLC","2/1"
 
         "PERASO INC COM","PRSO","Susquehanna Securities, LLC","3/1"
@@ -7164,8 +7165,6 @@ interactions:
 
         "PETROLEO BRASILEIRO SA PETROBR SPONSORED ADR","PBR","Morgan Stanley & Co.
         LLC","2/1"
-
-        "PETROS PHARMACEUTICALS INC COM NEW","PTPI","Citadel Securities LLC","5/1"
 
         "PFIZER INC COM","PFE","Susquehanna Securities, LLC","1/1"
 
@@ -7741,6 +7740,12 @@ interactions:
 
         "RAYTHEON TECHNOLOGIES CORP COM","RTX","Susquehanna Securities, LLC","3/1"
 
+        "RB GLOBAL INC COM","RBA","Susquehanna Securities, LLC","3/1"
+
+        "RBB FD INC US TREAS 20YR BD","UTWY","Belvedere Trading LLC","5/1"
+
+        "RBB FD INC US TREAS 30YR BD","UTHY","Belvedere Trading LLC","4/1"
+
         "RBB FD INC US TRSRY 6 MNTH","XBIL","Belvedere Trading LLC","4/1"
 
         "RBC BEARINGS INC COM","RBC","Wolverine Trading, LLC","3/1"
@@ -7847,7 +7852,7 @@ interactions:
 
         "RESERVOIR MEDIA INC COM","RSVR","Belvedere Trading LLC","4/1"
 
-        "Residential REIT Income ETF","HAUS","Belvedere Trading LLC","1/1"
+        "Residential REIT ETF","HAUS","Belvedere Trading LLC","1/1"
 
         "RESIDEO TECHNOLOGIES INC COM","REZI","Wolverine Trading, LLC","3/1"
 
@@ -7871,7 +7876,7 @@ interactions:
 
         "REVOLVE GROUP INC CL A","RVLV","Citadel Securities LLC","6/1"
 
-        "REVVITY INC","PKI","Susquehanna Securities, LLC","6/1"
+        "REVVITY INC COM","RVTY","Susquehanna Securities, LLC","6/1"
 
         "REWALK ROBOTICS LTD SHS","RWLK","Susquehanna Securities, LLC","6/1"
 
@@ -7904,8 +7909,6 @@ interactions:
         "RIOT PLATFORMS INC COM","RIOT","Susquehanna Securities, LLC","6/1"
 
         "RISKIFIED LTD SHS CL A","RSKD","Susquehanna Securities, LLC","3/1"
-
-        "RITCHIE BROS AUCTIONEERS COM","RBA","Susquehanna Securities, LLC","3/1"
 
         "RITE AID CORP COM","RAD","Susquehanna Securities, LLC","3/1"
 
@@ -8075,8 +8078,6 @@ interactions:
 
         "SATELLOGIC INC CLASS A ORD SHS","SATL","Belvedere Trading LLC","3/1"
 
-        "SATSUMA PHARMACEUTICALS INC COM","STSA","Citadel Securities LLC","5/1"
-
         "SAUL CTRS INC COM","BFS","Wolverine Trading, LLC","3/1"
 
         "SAVARA INC COM","SVRA","Susquehanna Securities, LLC","2/1"
@@ -8163,7 +8164,7 @@ interactions:
 
         "SEABRIDGE GOLD INC COM","SA","Citadel Securities LLC","3/1"
 
-        "SEACHANGE INTL INC COM","SEAC","Citadel Securities LLC","2/1"
+        "SEACHANGE INTL INC COM NEW","SEAC","Citadel Securities LLC","2/1"
 
         "SEACOAST BKG CORP FLA COM NEW","SBCF","Citadel Securities LLC","3/1"
 
@@ -8279,6 +8280,9 @@ interactions:
 
         "SHIFTPIXY INC COM NEW","PIXY","Susquehanna Securities, LLC","4/1"
 
+        "SHINHAN FINANCIAL GROUP CO LTD SPN ADR RESTRD","SHG","Citadel Securities
+        LLC","5/1"
+
         "SHOALS TECHNOLOGIES GROUP INC CL A","SHLS","Susquehanna Securities, LLC","3/1"
 
         "SHOCKWAVE MED INC COM","SWAV","Wolverine Trading, LLC","3/1"
@@ -8307,7 +8311,7 @@ interactions:
 
         "SIGHT SCIENCES INC COM","SGHT","Group One Trading, L.P.","4/1"
 
-        "SIGILON THERAPEUTICS INC COM","SGTX","Belvedere Trading LLC","3/1"
+        "SIGILON THERAPEUTICS INC COM NEW","SGTX","Belvedere Trading LLC","3/1"
 
         "SIGMA ADDITIVE SOLUTIONS INC COM","SASI","Belvedere Trading LLC","1/1"
 
@@ -8354,7 +8358,7 @@ interactions:
 
         "SIMULATIONS PLUS INC COM","SLP","Susquehanna Securities, LLC","5/1"
 
-        "SINCLAIR BROADCAST GROUP INC CL A","SBGI","Wolverine Trading, LLC","6/1"
+        "SINCLAIR INC CL A","SBGI","Wolverine Trading, LLC","6/1"
 
         "SINGULAR GENOMICS SYSTEMS INC COM","OMIC","Group One Trading, L.P.","3/1"
 
@@ -8480,6 +8484,8 @@ interactions:
         "SONOS INC COM","SONO","Citadel Securities LLC","3/1"
 
         "SONY GROUP CORPORATION SPONSORED ADR","SONY","GTS Securities LLC","5/1"
+
+        "SOPHIA GENETICS SA ORDINARY SHARES","SOPH","Belvedere Trading LLC","6/1"
 
         "SORRENTO THERAPEUTICS INC COM NEW","SRNEQ","Morgan Stanley & Co. LLC","3/1"
 
@@ -8783,8 +8789,6 @@ interactions:
 
         "STELLANTIS N.V SHS","STLA","Susquehanna Securities, LLC","1/1"
 
-        "STELLAR BANCORP INC COM","STEL","Wolverine Trading, LLC","3/1"
-
         "STELLUS CAP INVT CORP COM","SCM","Belvedere Trading LLC","2/1"
 
         "STEM INC COM","STEM","Wolverine Trading, LLC","3/1"
@@ -8810,6 +8814,8 @@ interactions:
         "STITCH FIX INC COM CL A","SFIX","Susquehanna Securities, LLC","6/1"
 
         "STMICROELECTRONICS N V NY REGISTRY","STM","Citadel Securities LLC","3/1"
+
+        "STOKE THERAPEUTICS INC COM","STOK","Group One Trading, L.P.","2/1"
 
         "STONECO LTD COM CL A","STNE","Citadel Securities LLC","3/1"
 
@@ -8838,8 +8844,6 @@ interactions:
 
         "SUBURBAN PROPANE PARTNERS L P UNIT LTD PARTN","SPH","Morgan Stanley & Co.
         LLC","4/1"
-
-        "Subversive Metaverse ETF","PUNK","Belvedere Trading LLC","4/1"
 
         "SUMITOMO MITSUI FINL GROUP INC SPONSORED ADR","SMFG","Wolverine Trading,
         LLC","3/1"
@@ -9160,6 +9164,8 @@ interactions:
 
         "TIDAL ETF TR UPAR ULTRA RISK","UPAR","Belvedere Trading LLC","3/1"
 
+        "TIDAL TR II ROUNDHILL GENER","CHAT","Belvedere Trading LLC","6/1"
+
         "TIDEWATER INC NEW COM","TDW","Susquehanna Securities, LLC","3/1"
 
         "TILE SHOP HLDGS INC COM","TTSH","Susquehanna Securities, LLC","4/1"
@@ -9173,6 +9179,8 @@ interactions:
         "TIMKEN CO COM","TKR","Two Sigma Securities, LLC","6/1"
 
         "TIMKENSTEEL CORPORATION COM","TMST","Susquehanna Securities, LLC","2/1"
+
+        "TINGO GROUP INC COM","TIO","Group One Trading, L.P.","1/1"
 
         "TIPTREE INC COM","TIPT","Wolverine Trading, LLC","3/1"
 
@@ -9237,8 +9245,6 @@ interactions:
         "TRANSUNION COM","TRU","Wolverine Trading, LLC","3/1"
 
         "TRAVEL PLUS LEISURE CO COM","TNL","Citadel Securities LLC","4/1"
-
-        "TRAVELCENTERS OF AMERICA INC COM NEW","TA","Group One Trading, L.P.","4/1"
 
         "TRAVELERS COMPANIES INC COM","TRV","Susquehanna Securities, LLC","3/1"
 
@@ -9358,6 +9364,8 @@ interactions:
         "TYSON FOODS INC CL A","TSN","Citadel Securities LLC","2/1"
 
         "U HAUL HOLDING COMPANY COM","UHAL","Citadel Securities LLC","4/1"
+
+        "U POWER LTD SHS","UCAR","Citadel Securities LLC","1/1"
 
         "U S GLOBAL INVS INC CL A","GROW","Susquehanna Securities, LLC","1/1"
 
@@ -9713,6 +9721,8 @@ interactions:
 
         "VANGUARD SCOTTSDALE FDS TOTAL CORP BND","VTC","Belvedere Trading LLC","5/1"
 
+        "VANGUARD SCOTTSDALE FDS VNG RUS1000IDX","VONE","Wolverine Trading, LLC","2/1"
+
         "VANGUARD SCOTTSDALE FDS VNG RUS2000GRW","VTWG","Belvedere Trading LLC","1/1"
 
         "VANGUARD SCOTTSDALE FDS VNG RUS2000IDX","VTWO","Susquehanna Securities, LLC","7/1"
@@ -9780,6 +9790,8 @@ interactions:
 
         "VBI VACCINES INC CDA COM NEW","VBIV","Susquehanna Securities, LLC","2/1"
 
+        "VECTIVBIO HLDG AG ORD SHS","VECT","Belvedere Trading LLC","6/1"
+
         "VECTOR GROUP LTD COM","VGR","Susquehanna Securities, LLC","3/1"
 
         "VEECO INSTRS INC DEL COM","VECO","Citadel Securities LLC","5/1"
@@ -9790,7 +9802,7 @@ interactions:
 
         "VELOCITY FINL INC COM","VEL","Group One Trading, L.P.","4/1"
 
-        "VENATOR MATLS PLC SHS","VNTR","Wolverine Trading, LLC","3/1"
+        "VENATOR MATLS PLC SHS","VNTRQ","Wolverine Trading, LLC","3/1"
 
         "VENTAS INC COM","VTR","Citadel Securities LLC","2/1"
 
@@ -9802,7 +9814,7 @@ interactions:
 
         "VERADIGM INC COM","MDRX","Citadel Securities LLC","3/1"
 
-        "VERASTEM INC COM","VSTM","Citadel Securities LLC","6/1"
+        "VERASTEM INC COM NEW","VSTM","Citadel Securities LLC","6/1"
 
         "VERICEL CORP COM","VCEL","Group One Trading, L.P.","4/1"
 
@@ -9921,7 +9933,7 @@ interactions:
 
         "VISTA OUTDOOR INC COM","VSTO","Wolverine Trading, LLC","3/1"
 
-        "VISTAGEN THERAPEUTICS INC COM NEW","VTGN","Belvedere Trading LLC","6/1"
+        "VISTAGEN THERAPEUTICS INC COM","VTGN","Belvedere Trading LLC","6/1"
 
         "VISTEON CORP COM NEW","VC","Citadel Securities LLC","4/1"
 
@@ -10031,7 +10043,7 @@ interactions:
 
         "WEIBO CORP SPONSORED ADR","WB","Susquehanna Securities, LLC","3/1"
 
-        "WEJO GROUP LIMITED COMMON SHARES","WEJO","Belvedere Trading LLC","4/1"
+        "WEJO GROUP LIMITED COMMON SHARES","WEJOQ","","4/1"
 
         "WELLS FARGO CO NEW COM","WFC","Susquehanna Securities, LLC","6/1"
 
@@ -10066,7 +10078,7 @@ interactions:
 
         "WESTLAKE CORPORATION COM","WLK","GTS Securities LLC","6/1"
 
-        "WESTPORT FUEL SYSTEMS INC COM NEW","WPRT","Wolverine Trading, LLC","3/1"
+        "WESTPORT FUEL SYSTEMS INC COM","WPRT","Wolverine Trading, LLC","3/1"
 
         "WESTROCK CO COM","WRK","Citadel Securities LLC","5/1"
 
@@ -10153,6 +10165,8 @@ interactions:
         "WISDOMTREE TR EUROPE SMCP DV","DFE","Susquehanna Securities, LLC","7/1"
 
         "WISDOMTREE TR FLOATNG RAT TREA","USFR","Belvedere Trading LLC","3/1"
+
+        "WISDOMTREE TR GLB US QTLY DIV","DNL","Wolverine Trading, LLC","5/1"
 
         "WISDOMTREE TR INDIA ERNGS FD","EPI","Wolverine Trading, LLC","3/1"
 
@@ -10268,6 +10282,8 @@ interactions:
 
         "XYLEM INC COM","XYL","GTS Securities LLC","5/1"
 
+        "Y-MABS THERAPEUTICS INC COM","YMAB","Group One Trading, L.P.","1/1"
+
         "YALLA GROUP LTD ADS","YALA","Wolverine Trading, LLC","3/1"
 
         "YATSEN HLDG LTD ADS","YSG","Susquehanna Securities, LLC","3/1"
@@ -10346,10 +10362,12 @@ interactions:
 
         '
     headers:
+      Age:
+      - '4'
       CF-Cache-Status:
-      - EXPIRED
+      - HIT
       CF-RAY:
-      - 7c7765a20b4bc5a8-SEA
+      - 7d46f59d5e15c39d-SEA
       Cache-Control:
       - public, max-age=1, s-maxage=15, stale-while-revalidate=15
       Connection:
@@ -10359,9 +10377,9 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Mon, 15 May 2023 00:52:16 GMT
+      - Fri, 09 Jun 2023 05:26:23 GMT
       Last-Modified:
-      - Mon, 15 May 2023 00:50:48 GMT
+      - Fri, 09 Jun 2023 05:26:19 GMT
       Link:
       - <https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv>;
         rel="canonical"
