@@ -1,0 +1,21 @@
+parent_command:forecast
+usage: sto [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL] [-d {AAPL}] [--period PERIOD]
+
+Add in Stochastic Oscillator %K and %D
+
+optional arguments:
+  --close-col CLOSE_COL
+                        Close column name to use for Stochastic Oscillator (default: close)
+  --high-col HIGH_COL   High column name to use for Stochastic Oscillator (default: high)
+  --low-col LOW_COL     Low column name to use for Stochastic Oscillator (default: low)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  --period PERIOD       The period to use (default: 10)
+
+
+Examples:
+- To add Stochastic Oscillator %K and %D for <SYMBOL> using default columns and period: forecast/load <SYMBOL>/sto
+- To add Stochastic Oscillator %K and %D for <SYMBOL> with a custom close column: forecast/load <SYMBOL>/sto --close-col custom_close
+- To add Stochastic Oscillator %K and %D for <SYMBOL> with custom high and low columns: forecast/load <SYMBOL>/sto --high-col custom_high --low-col custom_low
+- To add Stochastic Oscillator %K and %D for a specific dataset: forecast/sto -d AAPL
+- To add Stochastic Oscillator %K and %D for <SYMBOL> with a custom period: forecast/load <SYMBOL>/sto --period 20

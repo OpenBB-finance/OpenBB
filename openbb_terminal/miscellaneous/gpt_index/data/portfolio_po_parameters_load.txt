@@ -1,0 +1,14 @@
+parent_command:portfolio/po/parameters
+usage: file [-f FILE [FILE ...]]
+
+Select parameter file to use (ini or xlsx). The OpenBB Parameters Template can be found inside the Portfolio Optimization documentation. Please type `about` to access the documentation.
+
+optional arguments:
+  -f FILE [FILE ...], --file FILE [FILE ...]
+                        Parameter file to be used (default: None)
+
+
+Examples:
+- To use an ini file for parameter selection: portfolio/po/parameters -f parameters.ini
+- To use an xlsx file for parameter selection: portfolio/po/parameters --file parameters.xlsx
+- Select multiple parameter files: portfolio/po/parameters -f parameters1.ini parameters2.xlsx

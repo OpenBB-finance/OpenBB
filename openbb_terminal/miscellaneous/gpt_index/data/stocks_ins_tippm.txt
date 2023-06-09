@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: tippm [-l LIMIT] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top insider purchases of the month. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about tippm' to access the related guide.
+Summary: Display the top insider purchases of the month for stocks with an option to limit the number of rows displayed. You can also export the data in various formats and save it to a specific excel sheet. [Source: OpenInsider]
+
+Examples:
+- Show the top 10 insider purchases of the month: stocks/ins/tippm
+- Display the top 5 insider purchases of the month: stocks/ins/tippm -l 5
+- Export the top insider purchases of the month in csv format: stocks/ins/tippm --export csv
+- Save the top insider purchases of the month to a specific excel sheet: stocks/ins/tippm --sheet-name Sheet1

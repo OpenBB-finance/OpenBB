@@ -1,0 +1,21 @@
+parent_command:portfolio
+usage: var [-m] [-a] [-s] [-p PERCENTILE]
+
+Provides value at risk (short: VaR) of the selected portfolio.
+
+optional arguments:
+  -m, --mean            If one should use the mean of the portfolio return (default: True)
+  -a, --adjusted        If the VaR should be adjusted for skew and kurtosis (Cornish-Fisher-Expansion) (default: False)
+  -s, --student         If one should use the student-t distribution (default: False)
+  -p PERCENTILE, --percentile PERCENTILE
+                        Percentile used for VaR calculations, for example input 99.9 equals a 99.9 Percent VaR (default: 99.9)
+
+
+Examples:
+- To calculate the value at risk for the selected portfolio using the mean return: portfolio/var
+- To calculate the value at risk for the selected portfolio using the mean return and adjusting for skew and kurtosis: portfolio/var -a
+- To calculate the value at risk for the selected portfolio using the student-t distribution: portfolio/var -s
+- To calculate the value at risk for the selected portfolio at a specific percentile, for example, 95%: portfolio/var -p 95
+- To calculate the value at risk for the selected portfolio using the student-t distribution and adjusting for skew and kurtosis: portfolio/var -s -a
+- To calculate the value at risk for the selected portfolio at a specific percentile, for example, 95%, and adjusting for skew and kurtosis: portfolio/var -p 95 -a
+- To calculate the value at risk for the selected portfolio at a specific percentile, for example, 95%, using the student-t distribution: portfolio/var -p 95 -s

@@ -1,0 +1,15 @@
+parent_command:economy/qa
+usage: skew [-w N_WINDOW]
+
+Skewness is a measure of asymmetry or distortion of symmetric distribution. It measures the deviation of the given distribution of a random variable from a symmetric distribution, such as normal distribution. A normal distribution
+is without any skewness, as it is symmetrical on both sides. Hence, a curve is regarded as skewed if it is shifted towards the right or the left.
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        window length (default: 14)
+
+
+Examples:
+- To calculate the skewness of the economy data: economy/qa/skew
+- Calculate the skewness using a custom window length: economy/qa/skew -w 30
+- To compute the skewness with a 50-day window: economy/qa/skew --window 50

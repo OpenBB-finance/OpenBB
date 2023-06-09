@@ -1,0 +1,10 @@
+parent_command: stocks/ins/
+usage: stats [-l LIMIT] [-u] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Open insider filtered data using selected ticker. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -u, --urls            Flag to show hyperlinks (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about stats' to access the related guide.
+Summary: Display insider filtered data for a specific stock symbol, with options to limit the number of rows displayed, show hyperlinks, and export the data in various formats. You can also save the data to a specific excel sheet.
+
+Examples:
+- To display insider filtered data for a stock symbol: stocks/load <SYMBOL>/ins/stats
+- To display insider filtered data for a stock symbol with a limit of 5 rows: stocks/load <SYMBOL>/ins/stats -l 5
+- To display insider filtered data for a stock symbol with hyperlinks: stocks/load <SYMBOL>/ins/stats -u
+- To export insider filtered data for a stock symbol in csv format: stocks/load <SYMBOL>/ins/stats --export csv
+- To export insider filtered data for a stock symbol in xlsx format and save it to a specific excel sheet: stocks/load <SYMBOL>/ins/stats --export xlsx --sheet-name Sheet1

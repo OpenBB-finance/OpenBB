@@ -1,0 +1,17 @@
+parent_command:forecast
+usage: combine [--dataset {AAPL}] [-c {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits,AAPL}]
+
+Combine two entire datasets, or add specific columns. Add specificcolumns with the syntax: <datasetX.column2>
+
+optional arguments:
+  --dataset {AAPL}      Dataset to add columns to (default: None)
+  -c {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits,AAPL}, --columns {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits,AAPL}
+                        The columns we want to add <dataset.column> (default: None)
+
+
+Examples:
+- Combine datasets of two different stocks: forecast/combine --dataset <SYMBOL1> --dataset <SYMBOL2>
+- Add specific columns from one stock's dataset to another: forecast/combine --dataset <SYMBOL1> -c <SYMBOL2>.open <SYMBOL2>.close
+- Merge the high and low columns of two stock datasets: forecast/combine --dataset <SYMBOL1> -c <SYMBOL2>.high <SYMBOL2>.low
+- Combine the adjusted close and volume columns from two different stocks: forecast/combine --dataset <SYMBOL1> -c <SYMBOL2>.adj_close <SYMBOL2>.volume
+- Add dividend and stock split columns from one dataset to another: forecast/combine --dataset <SYMBOL1> -c <SYMBOL2>.dividends <SYMBOL2>.stock_splits

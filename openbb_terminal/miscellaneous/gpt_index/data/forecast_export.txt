@@ -1,0 +1,19 @@
+parent_command:forecast
+usage: export [-t {xlsx,csv}] [--sheet-name SHEET_NAME] [-d {AAPL}]
+
+Export dataset to Excel
+
+optional arguments:
+  -t {xlsx,csv}, --type {xlsx,csv}
+                        The file type you wish to export to (default: xlsx)
+  --sheet-name SHEET_NAME
+                        The name of the sheet to export to when type is XLSX. (default: )
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+
+
+Examples:
+- To export the dataset of <SYMBOL> in Excel format: forecast/export -d <SYMBOL> -t xlsx
+- Export the dataset of <SYMBOL> as a CSV file: forecast/export -d <SYMBOL> --type csv
+- Save the dataset of <SYMBOL> to a specific Excel sheet: forecast/export -d <SYMBOL> --sheet-name MySheet
+- Export <SYMBOL>'s dataset in Excel format and save it to a specific sheet: forecast/export -d <SYMBOL> -t xlsx --sheet-name MySheet

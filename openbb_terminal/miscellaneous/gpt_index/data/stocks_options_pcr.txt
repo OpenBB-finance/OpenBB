@@ -1,0 +1,11 @@
+parent_command: stocks/options/
+usage: pcr [-l {10,20,30,60,90,120,150,180}] [-s START] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Display put to call ratio for ticker [AlphaQuery.com]  optional arguments:   -l {10,20,30,60,90,120,150,180}, --length {10,20,30,60,90,120,150,180}                         Window length to get (default: 30)   -s START, --start START                         Start date for plot (default: 2022-04-18                         12:53:55.910638)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about pcr' to access the related guide.
+Summary: Display the put to call ratio for a specific stock symbol using data from AlphaQuery.com. You can choose a window length for the data, set a start date for the plot, and export the data in various formats. The window length options are 10, 20, 30, 60, 90, 120, 150, and 180 days.
+
+Examples:
+- To display the put to call ratio for a stock symbol with a 30-day window: stocks/load <SYMBOL>/options/pcr -l 30
+- To display the put to call ratio for a stock symbol with a 90-day window: stocks/load <SYMBOL>/options/pcr -l 90
+- To display the put to call ratio for a stock symbol, starting from a specific date: stocks/load <SYMBOL>/options/pcr -s 2022-01-01
+- To display the put to call ratio for a stock symbol with a 60-day window and starting from a specific date: stocks/load <SYMBOL>/options/pcr -l 60 -s 2022-01-01
+- To export the put to call ratio data for a stock symbol in csv format: stocks/load <SYMBOL>/options/pcr --export csv
+- To export the put to call ratio data for a stock symbol in xlsx format and save it to a specific excel sheet: stocks/load <SYMBOL>/options/pcr --export xlsx --sheet-name Sheet1

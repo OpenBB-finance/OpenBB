@@ -1,0 +1,12 @@
+parent_command:econometrics
+usage: corr [-d {}]
+
+Plot correlation coefficients.
+
+optional arguments:
+  -d {}, --dataset {}  The name of the dataset you want to select (default: None)
+
+
+Examples:
+- To plot correlation coefficients for the default dataset: econometrics/corr
+- To plot correlation coefficients for a specific dataset: econometrics/corr -d <DATASET_NAME>

@@ -1,0 +1,18 @@
+parent_command:portfolio
+usage: rsharpe [-p PERIOD] [-r RISK_FREE_RATE]
+
+Show rolling sharpe portfolio vs benchmark
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        Period to apply rolling window (default: 1y)
+  -r RISK_FREE_RATE, --rfr RISK_FREE_RATE
+                        Set risk free rate for calculations. (default: 0)
+
+
+Examples:
+- Display rolling Sharpe ratio for your portfolio with the default period and risk-free rate: portfolio/rsharpe
+- Show rolling Sharpe ratio for your portfolio with a 6-month period: portfolio/rsharpe -p 6m
+- Calculate rolling Sharpe ratio for your portfolio using a 2-year period and a 0.5% risk-free rate: portfolio/rsharpe -p 2y -r 0.005
+- Compare your portfolio's rolling Sharpe ratio with a benchmark using a 3-month period: portfolio/rsharpe -p 3m
+- Examine the rolling Sharpe ratio for your portfolio with a custom risk-free rate of 1%: portfolio/rsharpe -r 0.01

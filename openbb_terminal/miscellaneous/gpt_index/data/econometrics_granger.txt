@@ -1,0 +1,18 @@
+parent_command:econometrics
+usage: granger [-t Available time series] [-l LAGS] [-c CONFIDENCE]
+
+Show Granger causality between two timeseries
+
+optional arguments:
+  -t Available time series, --timeseries Available time series
+                        Requires two time series, the first time series is assumed to be Granger-caused by the second time series. (default: None)
+  -l LAGS, --lags LAGS  How many lags should be included (default: 3)
+  -c CONFIDENCE, --confidence CONFIDENCE
+                        Set the confidence level (default: 0.05)
+
+
+Examples:
+- To test Granger causality between two time series with default settings: econometrics/granger -t TimeSeries1 TimeSeries2
+- To test Granger causality between two time series with a specific number of lags: econometrics/granger -t TimeSeries1 TimeSeries2 -l 5
+- To test Granger causality between two time series with a specific confidence level: econometrics/granger -t TimeSeries1 TimeSeries2 -c 0.01
+- To test Granger causality between two time series with custom lags and confidence level: econometrics/granger -t TimeSeries1 TimeSeries2 -l 4 -c 0.1

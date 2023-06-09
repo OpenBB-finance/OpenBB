@@ -1,0 +1,10 @@
+parent_command:portfolio/brokers/degiro
+usage: hold
+
+hold
+Examples:
+- To view your current holdings with Degiro broker: portfolio/brokers/degiro hold
+- Check the holdings in your Degiro account: portfolio/brokers/degiro hold
+- Display the current positions in your Degiro portfolio: portfolio/brokers/degiro hold
+- See the stocks you own in your Degiro account: portfolio/brokers/degiro hold
+- Review your Degiro portfolio holdings: portfolio/brokers/degiro hold

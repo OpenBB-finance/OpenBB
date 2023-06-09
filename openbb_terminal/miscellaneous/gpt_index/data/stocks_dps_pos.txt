@@ -1,0 +1,11 @@
+parent_command: stocks/dps/
+usage: pos [-l LIMIT] [-s {sv,sv_pct,nsv,nsv_dollar,dpp,dpp_dollar}] [-r] [-h]            [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Get dark pool short positions. [Source: Stockgrid]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of tickers to display. (default: 10)   -s {sv,sv_pct,nsv,nsv_dollar,dpp,dpp_dollar}, --sort {sv,sv_pct,nsv,nsv_dollar,dpp,dpp_dollar}                         Field for which to sort by, where 'sv': Short Vol.                         [1M], 'sv_pct': Short Vol. %, 'nsv': Net Short Vol.                         [1M], 'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP                         Position [1M], 'dpp_dollar': DP Position ($1B)                         (default: dpp_dollar)   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about pos' to access the related guide.
+Summary: Retrieve dark pool short positions for stocks with options to limit the number of tickers displayed, sort by specific fields, and export the data in various formats. [Source: Stockgrid]
+
+Examples:
+- Display the top 10 dark pool short positions sorted by default: stocks/dps/pos
+- Display the top 5 dark pool short positions: stocks/dps/pos -l 5
+- Display dark pool short positions sorted by Short Vol. %: stocks/dps/pos -s sv_pct
+- Display dark pool short positions sorted by Net Short Vol. [1M] in ascending order: stocks/dps/pos -s nsv -r
+- Export dark pool short positions data into a csv file: stocks/dps/pos --export csv
+- Export dark pool short positions data into an xlsx file with a specific sheet name: stocks/dps/pos --export xlsx --sheet-name Sheet1

@@ -1,0 +1,17 @@
+parent_command:forex/qa
+usage: line [--log] [--ml ML] [--ms MS]
+
+Show line plot of selected data or highlight specific datetimes.
+
+optional arguments:
+  --log    Plot with y on log scale (default: False)
+  --ml ML  Draw vertical line markers to highlight certain events (default: )
+  --ms MS  Draw scatter markers to highlight certain events (default: )
+
+
+Examples:
+- To display a line plot of the selected forex data: forex/load <PAIR>/qa/line
+- To show a line plot with the Y-axis on a log scale for a specific forex pair: forex/load <PAIR>/qa/line --log
+- To plot a line graph for the chosen forex data and highlight specific datetimes using vertical line markers: forex/load <PAIR>/qa/line --ml "2022-01-01 12:00,2022-02-01 12:00"
+- To display a line plot of the selected forex data with scatter markers highlighting certain events: forex/load <PAIR>/qa/line --ms "2022-01-15 12:00,2022-02-15 12:00"
+- To show a line plot of the chosen forex pair data, with both vertical line markers and scatter markers for event highlighting: forex/load <PAIR>/qa/line --ml "2022-01-01 12:00,2022-02-01 12:00" --ms "2022-01-15 12:00,2022-02-15 12:00"

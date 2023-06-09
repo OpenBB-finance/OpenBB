@@ -26,6 +26,8 @@ en:
   account/show: Shows the current Personal Access Token
   account/revoke: Revoke the Personal Access Token
   account/_info_: Cloud storage of keys
+  account/sync: Turn the keys synchronization on/off
+  account/pull: Pull keys from cloud
   account/clear: Clear keys from cloud
   account/_routines_: Cloud storage of routines
   account/list: List available routines
@@ -120,6 +122,7 @@ en:
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
+  askobb: ask OpenBB LLM
   stocks/filings: the most-recent form submissions to the SEC
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis

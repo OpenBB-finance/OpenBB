@@ -1,0 +1,13 @@
+parent_command: stocks/dps/
+usage: ctb [-n NUMBER] [--raw] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]            [--source {InteractiveBrokers,Stocksera}]  Show cost to borrow of stocks. [Source: Stocksera/Interactive Broker]  optional arguments:   -n NUMBER, --number NUMBER                         Number of records to retrieve. (default: 20)   --raw                 Print raw data. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --source {InteractiveBrokers,Stocksera}                         Data source to select from (default:                         InteractiveBrokers)  For more information and examples, use 'about ctb' to access the related guide.
+Summary: Display the cost to borrow of stocks with options to set the number of records to retrieve, choose the data source, export the data in various formats, and view raw data. 
+
+Examples:
+- Retrieve the top 20 stocks with the highest cost to borrow: stocks/dps/ctb
+- Retrieve the top 10 stocks with the highest cost to borrow: stocks/dps/ctb -n 10
+- Show raw data for the top 20 stocks with the highest cost to borrow: stocks/dps/ctb --raw
+- Retrieve the top 20 stocks with the highest cost to borrow from Stocksera: stocks/dps/ctb --source Stocksera
+- Export the top 20 stocks with the highest cost to borrow in csv format: stocks/dps/ctb --export csv
+- Export the top 20 stocks with the highest cost to borrow in json format: stocks/dps/ctb --export json
+- Export the top 20 stocks with the highest cost to borrow in xlsx format: stocks/dps/ctb --export xlsx
+- Save the top 20 stocks with the highest cost to borrow to a specific excel sheet: stocks/dps/ctb --sheet-name Sheet1

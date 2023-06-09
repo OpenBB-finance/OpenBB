@@ -1,0 +1,10 @@
+parent_command: stocks/fa/
+usage: rot [-t TICKER] [-l LIMIT] [--raw] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Rating over time (monthly). [Source: Finnhub]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze   -l LIMIT, --limit LIMIT                         Limit of last months   --raw                 Only output raw data   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about rot' to access the related guide.
+Summary: Display the rating over time (monthly) for a specific stock ticker. You can set a limit for the number of last months to analyze, output raw data, and export the data in various formats. The data source is Finnhub.
+
+Examples:
+- Display the rating over time for a specific stock ticker: stocks/fa/rot -t <SYMBOL>
+- Show the rating over time for a specific stock ticker, limited to the last 6 months: stocks/fa/rot -t <SYMBOL> -l 6
+- Output raw data for the rating over time for a specific stock ticker: stocks/fa/rot -t <SYMBOL> --raw
+- Export the rating over time data for a specific stock ticker in csv format: stocks/fa/rot -t <SYMBOL> --export csv
+- Save the rating over time data for a specific stock ticker to a specific excel sheet: stocks/fa/rot -t <SYMBOL> --sheet-name Sheet1

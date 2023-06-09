@@ -1,0 +1,13 @@
+parent_command:funds
+usage: country [-n NAME]
+
+Set a country for funds.
+
+optional arguments:
+  -n NAME, --name NAME  country to select (default: united_states)
+
+
+Examples:
+- To set the country for funds to United States: funds/country
+- To set the country for funds to Germany: funds/country -n Germany
+- Set the country for funds to Canada by using: funds/country --name Canada

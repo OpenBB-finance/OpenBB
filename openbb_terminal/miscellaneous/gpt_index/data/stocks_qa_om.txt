@@ -1,0 +1,16 @@
+parent_command:stocks/qa
+usage: om [-s START] [-e END]
+
+Provides omega ratio of the selected stock.
+
+optional arguments:
+  -s START, --start START
+                        Start of the omega ratio threshold (default: 0)
+  -e END, --end END     End of the omega ratio threshold (default: 1.5)
+
+
+Examples:
+- Obtain the omega ratio of <SYMBOL> with default thresholds: stocks/load <SYMBOL>/qa/om
+- Calculate the omega ratio for <SYMBOL> with a custom start threshold: stocks/load <SYMBOL>/qa/om -s 0.5
+- Determine the omega ratio for <SYMBOL> with a custom end threshold: stocks/load <SYMBOL>/qa/om -e 2
+- Find the omega ratio of <SYMBOL> with custom start and end thresholds: stocks/load <SYMBOL>/qa/om -s 0.5 -e 2

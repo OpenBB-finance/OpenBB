@@ -1,0 +1,12 @@
+parent_command:stocks/qa
+usage: capm
+
+Provides detailed information about a stock's risk compared to the market risk.
+
+capm
+Examples:
+- To obtain detailed information about a stock's risk compared to the market risk: stocks/load <SYMBOL>/qa/capm
+- For CAPM analysis of a specific stock: stocks/load <SYMBOL>/qa/capm
+- Analyze a stock's risk relative to market risk: stocks/load <SYMBOL>/qa/capm
+- Assess the risk of a stock compared to the market: stocks/load <SYMBOL>/qa/capm
+- Determine the risk of a stock in relation to the market risk: stocks/load <SYMBOL>/qa/capm

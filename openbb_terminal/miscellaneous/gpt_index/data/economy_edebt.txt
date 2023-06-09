@@ -1,0 +1,12 @@
+parent_command:economy
+usage: edebt
+
+National debt statistics for various countries. [Source: Wikipedia]
+
+edebt
+Examples:
+- To view national debt statistics for various countries: economy/edebt
+- Retrieve national debt data: economy/edebt
+- Access information on national debt for different countries: economy/edebt
+- Get an overview of national debt statistics: economy/edebt
+- Display national debt information for various countries: economy/edebt

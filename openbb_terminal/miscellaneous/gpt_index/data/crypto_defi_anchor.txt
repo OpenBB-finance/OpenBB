@@ -1,0 +1,17 @@
+parent_command:crypto/defi
+usage: anchor --address ADDRESS [--transactions]
+
+Displays anchor protocol earnings data of a certain terra address --transactions flag can be passed to show history of previous transactions [Source: https://cryptosaurio.com/]
+
+optional arguments:
+  --address ADDRESS  Terra address. Valid terra addresses start with 'terra' (default: None)
+  --transactions     Flag to show transactions history in anchor earn (default: False)
+
+
+Examples:
+- To display anchor protocol earnings data for a specific Terra address: crypto/defi anchor --address terra1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+- To display anchor protocol earnings data and transaction history for a specific Terra address: crypto/defi anchor --address terra1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --transactions
+- Show earnings data for a Terra address using the anchor command: crypto/defi anchor --address terra1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+- Retrieve anchor protocol earnings and transaction history for a given Terra address: crypto/defi anchor --address terra1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --transactions
+- Display anchor earnings data for a specific address in the Terra ecosystem: crypto/defi anchor --address terra1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+- Get anchor protocol earnings information and past transactions for a Terra address: crypto/defi anchor --address terra1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --transactions

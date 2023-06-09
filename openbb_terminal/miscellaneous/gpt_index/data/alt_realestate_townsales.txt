@@ -1,0 +1,22 @@
+parent_command:alt/realestate
+usage: townsales -t town [-s startdate] [-e enddate] [-l limit]
+
+Select the town and date range you want to see sold house price data for. [Source: UK Land Registry]
+
+optional arguments:
+  -t town, --town town  Town that we want sales information for (default: None)
+  -s startdate, --startdate startdate
+                        Start date that we want sales information for (default: 2022-05-03)
+  -e enddate, --enddate enddate
+                        End date that we want sales information for (default: 2023-05-03)
+  -l limit, --limit limit
+                        Number of entries to return (default: 25)
+
+
+Examples:
+- To view sold house price data for a specific town: alt/realestate/townsales -t "London"
+- To see sold house price data for a town within a specific date range: alt/realestate/townsales -t "Manchester" -s 2022-01-01 -e 2022-03-31
+- To display sold house price data for a town with a custom start date: alt/realestate/townsales -t "Bristol" -s 2021-06-01
+- To retrieve sold house price data for a town with a custom end date: alt/realestate/townsales -t "Edinburgh" -e 2022-12-31
+- To limit the number of entries returned for a town's sold house price data: alt/realestate/townsales -t "Liverpool" -l 10
+- To view sold house price data for a town with a custom date range and limit: alt/realestate/townsales -t "Birmingham" -s 2021-07-01 -e 2021-12-31 -l 15

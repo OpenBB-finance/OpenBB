@@ -1,0 +1,12 @@
+parent_command:stocks/qa
+usage: acf [-l LAGS]
+
+Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
+
+optional arguments:
+  -l LAGS, --lags LAGS  maximum lags to display in plots (default: 15)
+
+
+Examples:
+- To display auto-correlation and partial auto-correlation functions for a stock with default lags: stocks/load <SYMBOL>/qa/acf
+- To display auto-correlation and partial auto-correlation functions for a stock with a specific number of lags: stocks/load <SYMBOL>/qa/acf -l 20
