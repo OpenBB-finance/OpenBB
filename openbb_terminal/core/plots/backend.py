@@ -427,8 +427,8 @@ class Backend(PyWry):
         self.send_outgoing(outgoing)
 
         messages_dict = dict(
-            message="Choose your args SHILL",
-            interrupt="Perfect phone call",
+            message=title,
+            interrupt="",
         )
 
         try:

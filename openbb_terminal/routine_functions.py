@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, timedelta
+from pathlib import Path
 from typing import Dict, List, Match, Optional, Tuple, Union
 
 from dateutil.relativedelta import relativedelta
@@ -161,6 +162,8 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
 def parse_openbb_script(
     raw_lines: List[str],
     script_inputs: Optional[List[str]] = None,
+    in_production: bool = False,
+    file_path: str = "",
 ) -> Tuple[str, str]:
     """
     Parse .openbb script
@@ -171,6 +174,10 @@ def parse_openbb_script(
         Lines from .openbb script
     script_inputs: str, optional
         Inputs to the script that come externally
+    in_production: bool, optional
+        Whether the script is being run in production mode or not
+    file_path: str, optional
+        Provides name of the script being run
 
     Returns
     -------
@@ -273,11 +280,37 @@ def parse_openbb_script(
                                     else:
                                         templine = templine.replace(match[0], values)
                                 else:
-                                    return (
-                                        f"[red]Variable {VAR_NAME} not given "
-                                        "for current routine script.[/red]",
-                                        "",
-                                    )
+                                    # In production we want to ask for the variable
+                                    # if it wasn't given using PyWry
+                                    if in_production:
+                                        from openbb_terminal.core.plots.backend import (
+                                            plots_backend,
+                                        )
+
+                                        plots_backend().start(True)
+                                        args = plots_backend().call_routine(
+                                            f"Routine '{file_path}' requires variable '{VAR_NAME}'",
+                                            [VAR_NAME],
+                                            Path(__file__).parent.parent / "test.html",
+                                        )
+                                        if args and VAR_NAME in args:
+                                            templine = templine.replace(
+                                                match[0],
+                                                args[VAR_NAME],
+                                            )
+                                        else:
+                                            return (
+                                                f"[red]Variable {VAR_NAME} not given "
+                                                "for current routine script.[/red]",
+                                                "",
+                                            )
+
+                                    else:
+                                        return (
+                                            f"[red]Variable {VAR_NAME} not given "
+                                            "for current routine script.[/red]",
+                                            "",
+                                        )
 
                             # Only enters here when any other index from 0 is used
                             else:
