@@ -210,7 +210,7 @@ def generate_gpt_txt(cmd_meta: Dict[str, str], trail: str = "") -> str:
                     if flag.startswith("-"):  # type: ignore
                         example += f" {flag}"
                         break
-                if param["choices"]:
+                if param["choices"]:  # type: ignore
                     example += f" {random.choice(choices_type(param['choices']))}"  # type: ignore
                 elif param["default"]:  # type: ignore
                     default = param["default"]  # type: ignore
