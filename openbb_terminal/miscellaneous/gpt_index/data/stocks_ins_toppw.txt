@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: toppw [-l LIMIT] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top officer purchases of the week. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about toppw' to access the related guide.
+Summary: Display the top officer purchases of the week with the option to limit the number of data rows shown. You can also export the data in various formats and save it to a specific excel sheet. [Source: OpenInsider]
+
+Examples:
+- Show top officer purchases of the week: stocks/ins/toppw
+- Show top 5 officer purchases of the week: stocks/ins/toppw -l 5
+- Export top officer purchases of the week to a csv file: stocks/ins/toppw --export csv
+- Save top officer purchases of the week to a specific excel sheet: stocks/ins/toppw --sheet-name Sheet1

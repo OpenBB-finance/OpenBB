@@ -1,0 +1,9 @@
+parent_command: stocks/ba/
+usage: mentions [-s START] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]  optional arguments:   -s START, --start START                         starting date (format YYYY-MM-DD) from when we are                         interested in stock's mentions. (default: 2000-01-01)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about mentions' to access the related guide.
+Summary: Plot weekly bars of a stock's interest over time based on its mentions in other users' watchlists using Google as the data source. You can set a starting date for the data and export the data in various formats.
+
+Examples:
+- To plot weekly bars of stock mentions since a specific date: stocks/load <SYMBOL>/ba/mentions -s 2021-01-01
+- To plot weekly bars of stock mentions since the default start date: stocks/load <SYMBOL>/ba/mentions
+- To plot weekly bars of stock mentions since a specific date and export data in csv format: stocks/load <SYMBOL>/ba/mentions -s 2021-01-01 --export csv
+- To plot weekly bars of stock mentions and save data to a specific excel sheet: stocks/load <SYMBOL>/ba/mentions --sheet-name Sheet1

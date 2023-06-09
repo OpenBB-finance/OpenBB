@@ -1,0 +1,16 @@
+parent_command:forecast
+usage: plot [-v {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}]
+
+Plot data based on the index
+
+optional arguments:
+  -v {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}, --values {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}
+                        Dataset.column values to be displayed in a plot. Use comma to separate multiple (default: None)
+
+
+Examples:
+- To plot the closing prices for <SYMBOL>: stocks/load <SYMBOL>/forecast/plot -v <SYMBOL>.close
+- To visualize the opening prices for <SYMBOL>: stocks/load <SYMBOL>/forecast/plot --values <SYMBOL>.open
+- To display the high and low prices for <SYMBOL> in a plot: stocks/load <SYMBOL>/forecast/plot -v <SYMBOL>.high,<SYMBOL>.low
+- To plot the adjusted closing prices and volume for <SYMBOL>: stocks/load <SYMBOL>/forecast/plot --values <SYMBOL>.adj_close,<SYMBOL>.volume
+- To visualize the dividends and stock splits for <SYMBOL> in a plot: stocks/load <SYMBOL>/forecast/plot -v <SYMBOL>.dividends,<SYMBOL>.stock_splits

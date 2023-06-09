@@ -1,0 +1,18 @@
+parent_command:crypto
+usage: prt [--vs VS] [-p PRICE] [-t TOP]
+
+Potential Returns ToolTool to check returns if loaded coin reaches provided price or other crypto market capUses CoinGecko to grab coin data (price and market cap).
+
+optional arguments:
+  --vs VS               Coin to compare with (default: None)
+  -p PRICE, --price PRICE
+                        Desired price (default: None)
+  -t TOP, --top TOP     Compare with top N coins (default: None)
+
+
+Examples:
+- To check potential returns if <COIN> reaches a specific price: crypto/load <COIN>/prt -p 500
+- To compare <COIN> with another coin's market cap: crypto/load <COIN>/prt --vs <COIN2>
+- To check potential returns if <COIN> reaches the market cap of a top N coin: crypto/load <COIN>/prt -t 5
+- To compare <COIN> with another coin's market cap and check potential returns at a specific price: crypto/load <COIN>/prt --vs <COIN2> -p 1000
+- To check potential returns if <COIN> reaches the market cap of a top N coin at a specific price: crypto/load <COIN>/prt -t 10 -p 2000

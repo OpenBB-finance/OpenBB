@@ -1,0 +1,17 @@
+parent_command:crypto/onchain
+usage: btccp [-s SINCE] [-u UNTIL]
+
+Display BTC circulating supply [Source: https://api.blockchain.info/]
+
+optional arguments:
+  -s SINCE, --since SINCE
+                        Initial date. Default: 2010-01-01 (default: 2010-01-01)
+  -u UNTIL, --until UNTIL
+                        Final date. Default: 2021-01-01 (default: 2023-06-02)
+
+
+Examples:
+- To view the BTC circulating supply from the beginning to the present day: crypto/onchain/btccp
+- Display the BTC circulating supply for a specific date range: crypto/onchain/btccp -s 2015-01-01 -u 2020-01-01
+- Show the BTC circulating supply since a particular date: crypto/onchain/btccp --since 2018-01-01
+- Retrieve the BTC circulating supply until a certain date: crypto/onchain/btccp --until 2022-01-01

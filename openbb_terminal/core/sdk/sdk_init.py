@@ -356,6 +356,8 @@ from openbb_terminal.stocks import (
 from openbb_terminal.stocks.behavioural_analysis import (
     finnhub_model as stocks_ba_finnhub_model,
     finnhub_view as stocks_ba_finnhub_view,
+    news_sentiment_model as stocks_ba_news_sentiment_model,
+    news_sentiment_view as stocks_ba_news_sentiment_view,
 )
 
 

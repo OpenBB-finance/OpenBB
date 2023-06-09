@@ -343,6 +343,7 @@ class EconomyController(BaseController):
         mt.add_cmd("plot")
         mt.add_raw("\n")
         mt.add_menu("qa")
+
         console.print(text=mt.menu_text, menu="Economy")
 
     @log_start_end(log=logger)
@@ -1386,13 +1387,8 @@ class EconomyController(BaseController):
                 query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(search_query=query)
 
-                if isinstance(df_search, pd.DataFrame) and not df_search.empty:
-                    fred_view.notes(
-                        search_query=query,
-                        limit=ns_parser.limit,
-                        export=ns_parser.export,
-                        sheet_name=ns_parser.sheet_name,
-                    )
+                if not df_search.empty:
+                    fred_view.notes(search_query=query, limit=ns_parser.limit)
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
@@ -1433,7 +1429,7 @@ class EconomyController(BaseController):
                     get_data=True,
                 )
 
-                if isinstance(df, pd.DataFrame) and not df.empty:
+                if not df.empty:
                     for series_id, data in detail.items():
                         self.FRED_TITLES[
                             series_id
@@ -1450,7 +1446,7 @@ class EconomyController(BaseController):
                     if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
-                elif not ns_parser.export and not ns_parser.raw:
+                else:
                     console.print("[red]No data found for the given Series ID[/red]")
 
             elif not parameters and ns_parser.raw:
@@ -1939,7 +1935,8 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="events",
-            description="Economic calendar. If no start or end dates, default is the current day high importance events.",
+            description="Economic calendar. If no start or end dates,"
+            "default is the current day high importance events.",
         )
         parser.add_argument(
             "-c",

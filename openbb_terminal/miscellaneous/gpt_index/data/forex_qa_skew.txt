@@ -1,0 +1,14 @@
+parent_command:forex/qa
+usage: skew [-w N_WINDOW]
+
+Skewness is a measure of asymmetry or distortion of symmetric distribution. It measures the deviation of the given distribution of a random variable from a symmetric distribution, such as normal distribution. A normal distribution
+is without any skewness, as it is symmetrical on both sides. Hence, a curve is regarded as skewed if it is shifted towards the right or the left.
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        window length (default: 14)
+
+
+Examples:
+- To calculate skewness for a forex pair with the default window length: forex/load <PAIR>/qa/skew
+- To calculate skewness for a forex pair with a custom window length of 30: forex/load <PAIR>/qa/skew -w 30

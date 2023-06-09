@@ -1,0 +1,12 @@
+parent_command:alt/covid
+usage: rates
+
+Show historical death/cases rates for a country.
+
+rates
+Examples:
+- To display historical death and cases rates for a specific country, use: alt/covid/rates <COUNTRY>
+- Obtain the historical death and cases rates for the United States: alt/covid/rates United States
+- Show historical death and cases rates for France: alt/covid/rates France
+- Retrieve the historical death and cases rates for India: alt/covid/rates India
+- Get the historical death and cases rates for Brazil: alt/covid/rates Brazil

@@ -1,0 +1,11 @@
+parent_command: stocks/ins/
+usage: tist [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top insider sales of the day. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about tist' to access the related guide.
+Summary: Display the top insider sales of the day with an option to limit the number of data rows shown. You can also export the data in various formats and save it to a specific excel sheet. This information is sourced from OpenInsider.
+
+Examples:
+- Show the top 10 insider sales of the day: stocks/ins/tist
+- Show the top 5 insider sales of the day: stocks/ins/tist -l 5
+- Export the top 10 insider sales of the day in csv format: stocks/ins/tist --export csv
+- Export the top 5 insider sales of the day in json format: stocks/ins/tist -l 5 --export json
+- Save the top 10 insider sales of the day to a specific excel sheet: stocks/ins/tist --sheet-name Sheet1
+- Show the top 20 insider sales of the day and save the data in xlsx format: stocks/ins/tist -l 20 --export xlsx

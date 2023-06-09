@@ -1,0 +1,31 @@
+parent_command:crypto/ov
+usage: news [-l LIMIT] [-k {news,media}] [--filter {rising,hot,bullish,bearish,important,saved,lol}] [-r {en,de,es,fr,nl,it,pt,ru}] [-s {published_at,domain,title,negative_votes,positive_votes}] [--reverse] [-u]
+
+Display recent news from CryptoPanic aggregator platform. [Source: https://cryptopanic.com/]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 20)
+  -k {news,media}, --kind {news,media}
+                        Filter by category of news. Available values: news or media. (default: news)
+  --filter {rising,hot,bullish,bearish,important,saved,lol}
+                        Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol (default: None)
+  -r {en,de,es,fr,nl,it,pt,ru}, --region {en,de,es,fr,nl,it,pt,ru}
+                        Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский) (default: en)
+  -s {published_at,domain,title,negative_votes,positive_votes}, --sortby {published_at,domain,title,negative_votes,positive_votes}
+                        Sort by given column. Default: published_at (default: published_at)
+  --reverse             Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -u, --urls            Flag to show urls column. (default: False)
+
+
+Examples:
+- Display recent crypto news: crypto/ov/news
+- Show the latest 10 crypto news articles: crypto/ov/news -l 10
+- Display recent crypto media content: crypto/ov/news -k media
+- Show recent bullish crypto news: crypto/ov/news --filter bullish
+- Display crypto news in French: crypto/ov/news -r fr
+- Show recent crypto news sorted by positive votes: crypto/ov/news -s positive_votes
+- Display recent crypto news in ascending order of publication date: crypto/ov/news -s published_at --reverse
+- Show recent crypto news with URLs: crypto/ov/news -u
+- Display the latest 5 bearish crypto news articles in German: crypto/ov/news -l 5 --filter bearish -r de
+- Show recent crypto media content sorted by domain: crypto/ov/news -k media -s domain

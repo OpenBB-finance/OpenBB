@@ -1,0 +1,17 @@
+parent_command:funds
+usage: search --fund FUND [-l LIMIT]
+
+Search mutual funds in selected country
+
+optional arguments:
+  --fund FUND           Fund string to search for (default: None)
+  -l LIMIT, --limit LIMIT
+                        Number of search results to show (default: 10)
+
+
+Examples:
+- To search for mutual funds containing the string "Tech": funds/search --fund Tech
+- To search for mutual funds with "Income" in their name and display only 5 results: funds/search --fund Income -l 5
+- Search for "Global" mutual funds and show a maximum of 20 results: funds/search --fund Global --limit 20
+- Find mutual funds related to "Healthcare" and display 10 results: funds/search --fund Healthcare -l 10
+- Look for "Energy" mutual funds and limit the search results to 7: funds/search --fund Energy --limit 7

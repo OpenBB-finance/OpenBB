@@ -1,0 +1,11 @@
+parent_command: stocks/fa/
+usage: shrs [-t TICKER] [--holder {major,institutional,mutualfund}] [-h]             [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print Major, institutional and mutualfunds shareholders. [Source: Yahoo Finance]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   --holder {major,institutional,mutualfund}                         Table of holders to get (default: institutional)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about shrs' to access the related guide.
+Summary: Display major, institutional, and mutual fund shareholders for a specific stock symbol. You can choose the type of holder to display and export the data in various formats. The data source is Yahoo Finance.
+
+Examples:
+- To view institutional shareholders for <SYMBOL>: stocks/load <SYMBOL>/fa/shrs
+- To view major shareholders for <SYMBOL>: stocks/load <SYMBOL>/fa/shrs --holder major
+- To view mutual fund shareholders for <SYMBOL>: stocks/load <SYMBOL>/fa/shrs --holder mutualfund
+- To export institutional shareholder data for <SYMBOL> in csv format: stocks/load <SYMBOL>/fa/shrs --export csv
+- To export major shareholder data for <SYMBOL> in json format: stocks/load <SYMBOL>/fa/shrs --holder major --export json
+- To export mutual fund shareholder data for <SYMBOL> in xlsx format with a custom sheet name: stocks/load <SYMBOL>/fa/shrs --holder mutualfund --export xlsx --sheet-name Shareholders

@@ -1,0 +1,18 @@
+parent_command:portfolio/brokers/robinhood
+usage: history [-s {day,week,month,3month,year,5year,all}] [-i {5minute,10minute,hour,day,week}]
+
+Historical Portfolio Info
+
+optional arguments:
+  -s {day,week,month,3month,year,5year,all}, --span {day,week,month,3month,year,5year,all}
+                        Span of historical data (default: 3month)
+  -i {5minute,10minute,hour,day,week}, --interval {5minute,10minute,hour,day,week}
+                        Interval to look at portfolio (default: day)
+
+
+Examples:
+- To view your historical portfolio data with the default settings: portfolio/brokers/robinhood/history
+- To see your portfolio history for the past day with 5-minute intervals: portfolio/brokers/robinhood/history -s day -i 5minute
+- To review your portfolio performance over the last year with weekly intervals: portfolio/brokers/robinhood/history -s year -i week
+- For a 5-year historical overview of your portfolio with daily intervals: portfolio/brokers/robinhood/history -s 5year -i day
+- To examine your portfolio's performance over the past month with 10-minute intervals: portfolio/brokers/robinhood/history -s month -i 10minute

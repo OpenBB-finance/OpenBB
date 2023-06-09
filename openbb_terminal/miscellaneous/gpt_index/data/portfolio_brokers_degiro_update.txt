@@ -1,0 +1,16 @@
+parent_command:portfolio/brokers/degiro
+usage: update -p PRICE id
+
+positional arguments:
+  id                    Order's id.
+
+optional arguments:
+  -p PRICE, --price PRICE
+                        Price wanted.
+
+
+Examples:
+- Update the price of an order with a specific id: portfolio/brokers/degiro/update 12345 -p 150
+- Modify the price of an existing order using its id: portfolio/brokers/degiro/update 67890 --price 200
+- Change the desired price for an order by providing its id: portfolio/brokers/degiro/update 98765 -p 250
+- Adjust the price of an order with the given id: portfolio/brokers/degiro/update 54321 --price 300

@@ -1,0 +1,64 @@
+parent_command:forecast
+usage: nbeats [--num_stacks NUM_STACKS] [--num_blocks NUM_BLOCKS] [--num_layers NUM_LAYERS] [--layer_widths LAYER_WIDTHS] [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {AAPL}] [-c TARGET_COLUMN]
+              [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS]
+              [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only] [--export-pred-raw] [--metric {rmse,mse,mape,smape}]
+
+Perform NBEATS forecast (Neural Bayesian Estimation of Time Series): https://unit8co.github.io/darts/generated_api/darts.models.forecasting.nbeats.html
+
+optional arguments:
+  --num_stacks NUM_STACKS
+                        The number of stacks that make up the whole model. (default: 10)
+  --num_blocks NUM_BLOCKS
+                        The number of blocks making up every stack. (default: 3)
+  --num_layers NUM_LAYERS
+                        The number of fully connected layers preceding the final forking layers in each block of every stack. (default: 4)
+  --layer_widths LAYER_WIDTHS
+                        Determines the number of neurons that make up each fully connected layer in each block of every stack (default: 512)
+  --past-covariates PAST_COVARIATES
+                        Past covariates(columns/features) in same dataset. Comma separated. (default: None)
+  --all-past-covariates
+                        Adds all rows as past covariates except for date and the target column. (default: False)
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  -i INPUT_CHUNK_LENGTH, --input-chunk-length INPUT_CHUNK_LENGTH
+                        Number of past time steps for forecasting module at prediction time. (default: 14)
+  -o OUTPUT_CHUNK_LENGTH, --output-chunk-length OUTPUT_CHUNK_LENGTH
+                        The length of the forecast of the model. (default: 5)
+  --force-reset FORCE_RESET
+                        If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). (default: True)
+  --save-checkpoints SAVE_CHECKPOINTS
+                        Whether to automatically save the untrained model and checkpoints. (default: True)
+  --model-save-name MODEL_SAVE_NAME
+                        Name of the model to save. (default: nbeats_model)
+  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 300)
+  --batch-size BATCH_SIZE
+                        Number of time series (input and output) used in each training pass (default: 800)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --learning-rate LEARNING_RATE
+                        Learning rate during training. (default: 0.001)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+  --metric {rmse,mse,mape,smape}
+                        Calculate precision based on a specific metric (rmse, mse, mape) (default: mape)
+
+
+Examples:
+- Perform NBEATS forecast on a specific dataset: forecast/nbeats -d {AAPL}
+- Forecast using a specific target column and prediction days: forecast/nbeats -c TARGET_COLUMN -n 10
+- Perform NBEATS forecast with custom training split and input/output chunk lengths: forecast/nbeats -t 0.8 -i 20 -o 10
+- Perform NBEATS forecast with custom model parameters: forecast/nbeats --num_stacks 5 --num_blocks 2 --num_layers 3 --layer_widths 256
+- Perform NBEATS forecast with past covariates and show residuals: forecast/nbeats --past-covariates PAST_COVARIATES --residuals
+- Perform NBEATS forecast with a specific start and end date: forecast/nbeats --start 2020-01-01 --end 2020-12-31
+- Perform NBEATS forecast with custom learning rate and batch size: forecast/nbeats --learning-rate 0.01 --batch-size 500
+- Perform NBEATS forecast and export predictions to a csv file: forecast/nbeats --export-pred-raw
+- Perform NBEATS forecast with a specific metric for precision calculation: forecast/nbeats --metric rmse
+- Compare the NBEATS forecast with the naive baseline: forecast/nbeats --naive

@@ -1,0 +1,20 @@
+parent_command:economy/qa
+usage: load [-c {Open,High,Low,Close,Adj Close,Volume,Dividends,Stock Splits}]
+
+Load a FRED series to current selection
+
+optional arguments:
+  -c {Open,High,Low,Close,Adj Close,Volume,Dividends,Stock Splits}, --column {Open,High,Low,Close,Adj Close,Volume,Dividends,Stock Splits}
+                        Which loaded source to get data from
+
+
+Examples:
+- To load a FRED series with the default column selection: economy/qa/load
+- Load a FRED series and select the Open column: economy/qa/load -c Open
+- Load a FRED series and choose the High column: economy/qa/load --column High
+- Load a FRED series focusing on the Low column: economy/qa/load -c Low
+- Load a FRED series and retrieve the Close column: economy/qa/load --column Close
+- Load a FRED series and obtain the Adj Close column: economy/qa/load -c Adj Close
+- Load a FRED series and access the Volume column: economy/qa/load --column Volume
+- Load a FRED series and select the Dividends column: economy/qa/load -c Dividends
+- Load a FRED series and choose the Stock Splits column: economy/qa/load --column Stock Splits

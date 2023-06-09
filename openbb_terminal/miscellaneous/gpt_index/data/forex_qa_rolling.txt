@@ -1,0 +1,13 @@
+parent_command:forex/qa
+usage: rolling [-w N_WINDOW]
+
+Rolling mean and std deviation
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        Window length (default: 14)
+
+
+Examples:
+- Calculate the rolling mean and standard deviation for a forex pair with the default window length: forex/load <PAIR>/qa/rolling
+- Calculate the rolling mean and standard deviation for a forex pair with a custom window length of 20: forex/load <PAIR>/qa/rolling -w 20

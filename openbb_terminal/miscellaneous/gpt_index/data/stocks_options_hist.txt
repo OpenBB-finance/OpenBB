@@ -1,0 +1,15 @@
+parent_command: stocks/options/
+usage: hist [-s STRIKE] [-p] [-c CHAIN_ID] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw] [-l LIMIT]             [--source {ChartExchange,Tradier,Intrinio}]  Gets historical quotes for given option chain  optional arguments:   -s STRIKE, --strike STRIKE                         Strike price to look at (default: None)   -p, --put             Flag for showing put option (default: False)   -c CHAIN_ID, --chain CHAIN_ID                         Option symbol (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)   -l LIMIT, --limit LIMIT                         Number of entries to show in data. (default: 10)   --source {ChartExchange,Tradier,Intrinio}                         Data source to select from (default: ChartExchange)  For more information and examples, use 'about hist' to access the related guide.
+Summary: Retrieve historical quotes for a specific option chain, including strike price, put options, and option symbols. You can set a limit on the number of entries displayed, choose the data source, and export the data in various formats. The raw data can also be displayed.
+
+Examples:
+- Get historical quotes for a specific strike price: stocks/load <SYMBOL>/options/hist -s 50
+- Get historical quotes for put options: stocks/load <SYMBOL>/options/hist -p
+- Get historical quotes using a specific option symbol: stocks/load <SYMBOL>/options/hist -c CHAIN_ID
+- Get historical quotes with a specified number of entries: stocks/load <SYMBOL>/options/hist -l 20
+- Get historical quotes from a specific data source: stocks/load <SYMBOL>/options/hist --source Tradier
+- Export historical quotes data to a CSV file: stocks/load <SYMBOL>/options/hist --export csv
+- Save historical quotes data to a specific excel sheet: stocks/load <SYMBOL>/options/hist --sheet-name Sheet1
+- Display raw historical quotes data: stocks/load <SYMBOL>/options/hist --raw
+- Get historical quotes for a specific strike price and put options: stocks/load <SYMBOL>/options/hist -s 50 -p
+- Get historical quotes for a specific strike price, put options, and a specific option symbol: stocks/load <SYMBOL>/options/hist -s 50 -p -c CHAIN_ID

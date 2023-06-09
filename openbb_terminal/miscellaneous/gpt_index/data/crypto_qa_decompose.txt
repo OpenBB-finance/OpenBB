@@ -1,0 +1,14 @@
+parent_command:crypto/qa
+usage: decompose [-m]
+
+Decompose time series as: - Additive Time Series = Level + CyclicTrend + Residual + Seasonality - Multiplicative Time Series = Level * CyclicTrend * Residual * Seasonality
+
+optional arguments:
+  -m, --multiplicative  decompose using multiplicative model instead of additive (default: False)
+
+
+Examples:
+- To decompose a time series using the additive model for a specific coin: crypto/load <COIN>/qa/decompose
+- For decomposing a time series using the multiplicative model, use this command: crypto/load <COIN>/qa/decompose -m
+- Decompose a cryptocurrency time series with the multiplicative model: crypto/load <COIN>/qa/decompose --multiplicative
+- Analyze a time series for a cryptocurrency with the additive model: crypto/load <COIN>/qa/decompose

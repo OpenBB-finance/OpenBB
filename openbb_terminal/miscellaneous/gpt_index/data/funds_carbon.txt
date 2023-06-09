@@ -1,0 +1,12 @@
+parent_command:funds
+usage: carbon
+
+Show funds carbon metrcis.
+
+carbon
+Examples:
+- To display carbon metrics for funds: funds/carbon
+- Displaying carbon metrics of funds: funds/carbon
+- Show carbon metrics for funds: funds/carbon
+- Retrieve funds carbon metrics: funds/carbon
+- Access carbon metrics for funds: funds/carbon

@@ -1,0 +1,19 @@
+parent_command:crypto/qa
+usage: unitroot [-r {c,ct,ctt,nc}] [-k {c,ct}]
+
+Unit root test / stationarity (ADF, KPSS)
+
+optional arguments:
+  -r {c,ct,ctt,nc}, --fuller_reg {c,ct,ctt,nc}
+                        Type of regression. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order (default: c)
+  -k {c,ct}, --kps_reg {c,ct}
+                        Type of regression. Can be ‘c’,’ct' (default: c)
+
+
+Examples:
+- To perform a unit root test with constant regression on a cryptocurrency: crypto/load <COIN>/qa/unitroot
+- To perform a unit root test with constant and trend regression on a cryptocurrency: crypto/load <COIN>/qa/unitroot -r ct
+- To perform a KPSS test with constant regression on a cryptocurrency: crypto/load <COIN>/qa/unitroot -k c
+- To perform a KPSS test with constant and trend regression on a cryptocurrency: crypto/load <COIN>/qa/unitroot -k ct
+- To perform a unit root test with no constant and no trend regression on a cryptocurrency: crypto/load <COIN>/qa/unitroot -r nc
+- To perform a unit root test with quadratic trend regression on a cryptocurrency: crypto/load <COIN>/qa/unitroot -r ctt

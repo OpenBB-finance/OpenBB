@@ -1,0 +1,9 @@
+parent_command:forex/qa
+usage: summary
+
+Summary statistics
+
+summary
+Examples:
+- To view summary statistics for a loaded forex pair: forex/load <PAIR>/qa/summary
+- After loading a forex pair, display the summary statistics: forex/qa/summary

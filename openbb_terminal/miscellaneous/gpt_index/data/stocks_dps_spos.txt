@@ -1,0 +1,9 @@
+parent_command: stocks/dps/
+usage: spos [-n NUM] [-r] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Shows Net Short Vol. vs Position. [Source: Stockgrid]  optional arguments:   -n NUM, --number NUM  Number of last open market days to show   -r, --raw             Flag to print raw data instead   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about spos' to access the related guide.
+Summary: Display Net Short Vol. vs Position for a specific stock symbol over a specified number of last open market days. You can choose to display raw data and export the data in various formats. Data is sourced from Stockgrid.
+
+Examples:
+- To display Net Short Vol. vs Position for the last 10 open market days: stocks/load <SYMBOL>/dps/spos -n 10
+- Show Net Short Vol. vs Position for <SYMBOL> over the last 5 open market days with raw data: stocks/load <SYMBOL>/dps/spos -n 5 -r
+- Display Net Short Vol. vs Position for the last 20 open market days and export the data in csv format: stocks/load <SYMBOL>/dps/spos -n 20 --export csv
+- Show Net Short Vol. vs Position for <SYMBOL> over the last 15 open market days and save the data to a specific excel sheet: stocks/load <SYMBOL>/dps/spos -n 15 --sheet-name Sheet1

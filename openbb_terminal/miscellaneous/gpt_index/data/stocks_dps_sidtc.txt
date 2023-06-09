@@ -1,0 +1,10 @@
+parent_command: stocks/dps/
+usage: sidtc [-l LIMIT] [-s {float,dtc,si}] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print short interest and days to cover. [Source: Stockgrid]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of tickers to display. (default: 10)   -s {float,dtc,si}, --sort {float,dtc,si}                         Field for which to sort by, where 'float': Float Short                         %, 'dtc': Days to Cover, 'si': Short Interest                         (default: float)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about sidtc' to access the related guide.
+Summary: Display short interest and days to cover for a list of stock tickers, with the option to limit the number of tickers displayed and sort by specific fields such as Float Short %, Days to Cover, or Short Interest. You can also export the data in various formats and save to a specific excel sheet. [Source: Stockgrid]
+
+Examples:
+- Display the top 10 tickers with the highest Float Short %: stocks/dps/sidtc
+- Show the top 5 tickers with the highest Days to Cover: stocks/dps/sidtc -l 5 -s dtc
+- Display the top 20 tickers sorted by Short Interest: stocks/dps/sidtc -l 20 -s si
+- Export the top 10 tickers with the highest Float Short % in csv format: stocks/dps/sidtc --export csv
+- Save the top 15 tickers sorted by Days to Cover in an excel sheet named "ShortInterestData": stocks/dps/sidtc -l 15 -s dtc --sheet-name ShortInterestData

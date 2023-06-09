@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: tispw [-l LIMIT] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top insider sales of the week. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about tispw' to access the related guide.
+Summary: Display the top insider sales of the week for stocks with an optional limit on the number of data rows displayed. Data is sourced from OpenInsider. You can also export the data in various formats and save it to a specific excel sheet.
+
+Examples:
+- Show the top 10 insider sales of the week: stocks/ins/tispw
+- Show the top 5 insider sales of the week: stocks/ins/tispw -l 5
+- Show the top 20 insider sales of the week and export the data in csv format: stocks/ins/tispw -l 20 --export csv
+- Show the top 15 insider sales of the week and save the data to a specific excel sheet: stocks/ins/tispw -l 15 --sheet-name Sheet1

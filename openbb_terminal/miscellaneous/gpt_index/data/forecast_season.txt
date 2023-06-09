@@ -1,0 +1,20 @@
+parent_command:forecast
+usage: season [-v {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}] [-m M] [--max_lag MAX_LAG] [-a ALPHA]
+
+The seasonality for a given column
+
+optional arguments:
+  -v {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}, --values {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}
+                        Dataset.column values to be displayed in a plot (default: None)
+  -m M                  A time lag to highlight on the plot (default: None)
+  --max_lag MAX_LAG     The maximal lag order to consider (default: 24)
+  -a ALPHA, --alpha ALPHA
+                        The confidence interval to display (default: 0.05)
+
+
+Examples:
+- Analyze the seasonality for the closing price of a stock: forecast/load <SYMBOL>/season -v <SYMBOL>.close
+- Examine the seasonality of the adjusted closing price with a highlighted time lag of 12: forecast/load <SYMBOL>/season -v <SYMBOL>.adj_close -m 12
+- Investigate the seasonality for the volume of a stock with a maximum lag order of 36: forecast/load <SYMBOL>/season -v <SYMBOL>.volume --max_lag 36
+- Explore the seasonality of a stock's opening price with a 95% confidence interval: forecast/load <SYMBOL>/season -v <SYMBOL>.open -a 0.05
+- Study the seasonality of a stock's low price with a time lag of 6 and a 99% confidence interval: forecast/load <SYMBOL>/season -v <SYMBOL>.low -m 6 -a 0.01

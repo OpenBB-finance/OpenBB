@@ -1,0 +1,14 @@
+parent_command:portfolio/po
+usage: file [-f FILE [FILE ...]]
+
+Select parameter file to use. The OpenBB Parameters Template can be found inside the Portfolio Optimization documentation. Please type `about` to access the documentation.
+
+optional arguments:
+  -f FILE [FILE ...], --file FILE [FILE ...]
+                        Parameter file to be used (default: None)
+
+
+Examples:
+- To use a parameter file for portfolio optimization: portfolio/po/file -f <FILE>
+- For selecting multiple parameter files: portfolio/po/file -f <FILE1> <FILE2> <FILE3>
+- Using the --file option to select a parameter file: portfolio/po/file --file <FILE>

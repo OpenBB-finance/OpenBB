@@ -1,0 +1,18 @@
+parent_command:econometrics
+usage: ols -d DEPENDENT -i INDEPENDENT [--no-output]
+
+Performs an OLS regression on timeseries data.
+
+optional arguments:
+  -d DEPENDENT, --dependent DEPENDENT
+                        The dependent variable on the regression you would like to perform (default: None)
+  -i INDEPENDENT, --independent INDEPENDENT
+                        The independent variables on the regression you would like to perform. E.g. historical.high,historical.low (default: None)
+  --no-output           Hide the output of the regression (default: False)
+
+
+Examples:
+- Perform an OLS regression with historical high as dependent and historical low as independent variables: econometrics/ols -d historical.high -i historical.low
+- Conduct an OLS regression using historical close as dependent and historical open as independent variables, without displaying the output: econometrics/ols -d historical.close -i historical.open --no-output
+- Run an OLS regression with historical volume as the dependent variable and historical open as the independent variable: econometrics/ols -d historical.volume -i historical.open
+- Execute an OLS regression analysis using historical close as the dependent variable and historical high and low as independent variables: econometrics/ols -d historical.close -i historical.high,historical.low
