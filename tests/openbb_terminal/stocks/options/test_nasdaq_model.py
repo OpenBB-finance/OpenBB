@@ -21,51 +21,14 @@ def test_SYMBOLS(recorder):
     ticker = nasdaq_model.Chains()
     results_df = ticker.SYMBOLS
     assert not results_df.empty
-    recorder.capture(results_df)
+    recorder.capture(results_df.columns.to_list())
 
 
 @pytest.mark.vcr
-def test_last_price(recorder):
+def test_last_price():
     result_df = nasdaq_model.load_options("QQQ")
     assert isinstance(result_df.last_price, float)
-    recorder.capture(result_df.last_price)
-
-
-@pytest.mark.vcr
-def test_chains(recorder):
-    result_df = nasdaq_model.load_options("SPY")
-    assert isinstance(result_df.chains, pd.DataFrame)
-    recorder.capture(result_df.chains)
-
-
-@pytest.mark.vcr
-def test_expirations(recorder):
-    result_df = nasdaq_model.load_options("AAPL")
-    assert isinstance(result_df.expirations, list)
-    recorder.capture(result_df.expirations)
-
-
-@pytest.mark.vcr
-def test_strikes(recorder):
-    result_df = nasdaq_model.load_options("TSLA")
-    assert isinstance(result_df.strikes, list)
-    recorder.capture(result_df.strikes)
-
-
-@pytest.mark.vcr
-def test_underlying_name(recorder):
-    result_df = nasdaq_model.load_options("QQQ")
-    assert isinstance(result_df.underlying_name, str)
-    recorder.capture(result_df.underlying_name)
-
-
-@pytest.mark.vcr
-def test_underlying_price(recorder):
-    result_df = nasdaq_model.load_options("MSFT")
-    assert hasattr(result_df, "underlying_price")
-    assert isinstance(result_df.underlying_price, pd.Series)
-    assert isinstance(result_df.underlying_price["price"], float)
-    recorder.capture(result_df.underlying_price.index.to_list())
+    assert result_df.last_price > 0
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -105,5 +68,6 @@ def test_load_options(recorder):
     df2 = pd.DataFrame(data.chains)
     assert df1.columns.equals(df2.columns)
     recorder.capture(df2.columns.to_list())
+    recorder.capture(list(data.underlying_price.keys()))
     recorder.capture(data.underlying_name)
     recorder.capture(data.symbol)

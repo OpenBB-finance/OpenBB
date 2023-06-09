@@ -258,6 +258,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
             df["date"] = pd.to_datetime(
                 data["primaryData"]["lastTradeTimestamp"]
                 .replace("ET - PRE-MARKET", "")
+                .replace(" - AFTER HOURS", "")
                 .replace("ET", ""),
                 yearfirst=True,
             ).strftime("%Y-%m-%d")
