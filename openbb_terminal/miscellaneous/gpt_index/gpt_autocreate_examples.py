@@ -141,7 +141,7 @@ for file_name in tqdm(os.listdir(folder_path)):
             <Examples>
 
             Here is the help text: {file_content}
-            """
+            """ # noqa: S608
 
         # Get the GPT-3.5 response
         gpt_response = get_gpt_response(prompt)
