@@ -42,7 +42,7 @@ def test_prompt():
         "openbb_terminal.core.session.session_controller.login_and_launch",
         return_value=True,
     ):
-        session_controller.prompt()
+        session_controller.prompt_cli()
         assert get_user_input_mock.call_count == 1
         create_session_mock.assert_called_once_with("email", "password", False)
         assert create_session_mock.call_count == 1
