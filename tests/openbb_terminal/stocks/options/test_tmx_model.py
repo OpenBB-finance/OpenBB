@@ -98,7 +98,7 @@ def test_eodchains_holiday():
 
 @pytest.mark.vcr
 def test_expirations():
-    ticker = tmx_model.Chains().get_chains("VFV")
+    ticker = tmx_model.load_options("VFV")
     assert hasattr(ticker, "expirations")
     results1 = ticker.expirations
     assert isinstance(results1, list)
