@@ -400,7 +400,8 @@
         "YahooFinance",
         "AlphaVantage",
         "Polygon",
-        "EODHD"
+        "EODHD",
+        "AlthubPlatform"
       ],
       "headlines": [
         "FinBrain"
@@ -455,6 +456,9 @@
       ],
       "rise": [
         "Google"
+      ],
+      "ns": [
+        "Althub Platform"
       ]
     },
     "ca": {
