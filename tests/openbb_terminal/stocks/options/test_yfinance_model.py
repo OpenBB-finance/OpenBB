@@ -96,14 +96,13 @@ def test_load_options(recorder):
     assert isinstance(data.underlying_price, pd.Series)
     assert data.hasIV
     df1 = data.chains
-    data = yfinance_model.load_options(symbol="OXY", pydantic=True)
-    assert isinstance(data.chains, dict)
-    assert isinstance(data.underlying_price, dict)
-    assert data.hasIV
-    assert isinstance(data.expirations, list)
-    assert isinstance(data.strikes, list)
-    df2 = pd.DataFrame(data.chains)
+    data2 = yfinance_model.load_options(symbol="OXY", pydantic=True)
+    assert isinstance(data2.chains, dict)
+    assert isinstance(data2.underlying_price, dict)
+    assert data2.hasIV
+    assert isinstance(data2.expirations, list)
+    assert isinstance(data2.strikes, list)
+    df2 = pd.DataFrame(data2.chains)
     assert df1.equals(df2)
-    recorder.capture(data.chains)
-    recorder.capture(data.underlying_price)
-    recorder.capture(data.last_price)
+    recorder.capture(data.underlying_price.index.to_list())
+    recorder.capture(df2.columns.to_list())

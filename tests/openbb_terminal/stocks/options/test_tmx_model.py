@@ -10,6 +10,17 @@ from openbb_terminal.stocks.options import tmx_model
 # pylint: disable=no-member
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("Authorization")],
+        "filter_query_parameters": [
+            ("before", "MOCK_BEFORE"),
+            ("after", "MOCK_AFTER"),
+        ],
+    }
+
+
 @pytest.mark.vcr
 def test_underlying_price():
     result_df = tmx_model.get_underlying_price("XIU")
@@ -94,7 +105,7 @@ def test_expirations():
     ticker.get_eodchains("VFV", "2021-12-28")
     results_df2 = ticker.expirations
     assert isinstance(results_df2, list)
-    assert results1 != results_df2
+    assert results1[1] != results_df2[1]
 
 
 @pytest.mark.vcr

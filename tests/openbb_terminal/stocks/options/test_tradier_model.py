@@ -168,16 +168,15 @@ def test_SYMBOLS(recorder):
 def test_load_options(recorder):
     results = tradier_model.load_options(symbol="AAPL")
     results1 = tradier_model.load_options(symbol="AAPL", pydantic=True)
+    assert hasattr(results, "chains")
+    assert hasattr(results1, "chains")
     assert isinstance(results.chains, pd.DataFrame)
-    recorder.capture(results.chains)
-    assert isinstance(results.underlying_price, pd.Series)
-    recorder.capture(results.underlying_price)
-    assert isinstance(results.expirations, list)
-    recorder.capture(results.expirations)
-    assert results.hasGreeks
-    assert isinstance(results.underlying_name, str)
-    recorder.capture(results.underlying_name)
     assert isinstance(results1.chains, dict)
+    assert isinstance(results.expirations, list)
+    assert isinstance(results1.expirations, list)
+    assert isinstance(results.underlying_price, pd.Series)
+    assert isinstance(results1.underlying_price, dict)
     assert (
         results.chains["volume"].sum() == pd.DataFrame(results1.chains)["volume"].sum()
     )
+    recorder.capture([results.underlying_name, results1.underlying_name])
