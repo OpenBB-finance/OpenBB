@@ -23,7 +23,7 @@ from website.controller_doc_classes import (
 )
 
 current_system = get_current_system()
-current_system.DOC_MODE = True
+current_system.DOC_MODE = True  # type: ignore
 set_current_system(current_system)
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
@@ -98,7 +98,7 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
                     for choice in choices:
                         # We check for nested dicts
                         if isinstance(choice, (type({}.keys()), type({}.values()))):
-                            listdict.append([f"{k}" for k in choice])
+                            listdict.append([f"{k}" for k in choice])  # type: ignore
                         elif isinstance(choice, dict):
                             listdict.append([f"{k}: {v}" for k, v in choice.items()])
 
@@ -123,7 +123,7 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
             key = action.dest.replace("s_", "")
             new_choices = SYMBOLS.get(action.dest.replace("s_", ""), choices)
 
-            if key == "vs" and "currency" in doc:
+            if key == "vs" and "currency" in doc:  # type: ignore
                 new_choices = choices
 
             if (flags := action.option_strings) is not None:
@@ -183,11 +183,11 @@ def generate_gpt_txt(cmd_meta: Dict[str, str], trail: str = "") -> str:
 
     command_model = f"parent_command:{trail}\n{cmd_meta['usage']}\n\nExample:\n"
 
-    examples = []
+    examples = []  # type: ignore
 
     if cmd_meta["actions"]:
-        required_params = [x for x in cmd_meta["actions"] if not x["optional"]]
-        optional_params = [x for x in cmd_meta["actions"] if x["optional"]]
+        required_params = [x for x in cmd_meta["actions"] if not x["optional"]]  # type: ignore
+        optional_params = [x for x in cmd_meta["actions"] if x["optional"]]  # type: ignore
 
         def choices_type(choices: Union[dict, list]) -> list:
             """Get choices type"""
@@ -206,31 +206,31 @@ def generate_gpt_txt(cmd_meta: Dict[str, str], trail: str = "") -> str:
             example = f"{cmd_meta['cmd_name']}"
 
             for param in random.sample(required_params, len(required_params)):
-                for flag in param["flags"]:
-                    if flag.startswith("-"):
+                for flag in param["flags"]:  # type: ignore
+                    if flag.startswith("-"):  # type: ignore
                         example += f" {flag}"
                         break
-                if param["choices"]:
-                    example += f" {random.choice(choices_type(param['choices']))}"
-                elif param["default"]:
-                    default = param["default"]
+                if param["choices"]:  # type: ignore
+                    example += f" {random.choice(choices_type(param['choices']))}"  # type: ignore
+                elif param["default"]:  # type: ignore
+                    default = param["default"]  # type: ignore
                     if default in ["False", "True"]:
                         default = ""
-                    example += f" {param['default']}" if default else ""
+                    example += f" {param['default']}" if default else ""  # type: ignore
 
             if optional:
                 for param in random.sample(optional_params, len(optional_params) // 4):
-                    for flag in param["flags"]:
+                    for flag in param["flags"]:  # type: ignore
                         if flag.startswith("-"):
                             example += f" {flag}"
                             break
-                    if param["choices"]:
-                        example += f" {random.choice(choices_type(param['choices']))}"
-                    elif param["default"]:
-                        default = param["default"]
+                    if param["choices"]:  # type: ignore
+                        example += f" {random.choice(choices_type(param['choices']))}"  # type: ignore
+                    elif param["default"]:  # type: ignore
+                        default = param["default"]  # type: ignore
                         if default in ["False", "True"]:
                             default = ""
-                        example += f" {param['default']}" if default else ""
+                        example += f" {param['default']}" if default else ""  # type: ignore
 
             if example not in examples_list or retry == 0:
                 return example
