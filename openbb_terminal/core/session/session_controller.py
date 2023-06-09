@@ -79,13 +79,13 @@ def pywry_login(welcome: bool = True):
     if plots_backend().isatty:
         if welcome:
             display_welcome_message(False)
-        response = plots_backend().call_hub()
+        response = plots_backend().call_hub() or None
     else:
-        return prompt(welcome)
+        return prompt_cli(welcome)
 
     if response is None:
         if is_installer():
-            return prompt(welcome=False)
+            return prompt_cli(welcome=False)
         return launch_terminal()
 
     if isinstance(response, dict) and response:
@@ -106,7 +106,7 @@ def pywry_login(welcome: bool = True):
     return pywry_login(welcome=False)
 
 
-def prompt(welcome: bool = True):
+def prompt_cli(welcome: bool = True):
     """Prompt and launch terminal if login is successful.
 
     Parameters
@@ -122,7 +122,7 @@ def prompt(welcome: bool = True):
     while True:
         email, password, remember = get_user_input()
         if not email:
-            return prompt(welcome=False) if is_installer() else launch_terminal()
+            return prompt_cli(welcome=False) if is_installer() else launch_terminal()
 
         session = create_session(email, password, remember)
         if isinstance(session, dict) and session:
