@@ -421,14 +421,14 @@ class Backend(PyWry):
             html=path.resolve(),
             json_data=json.dumps({"params": params_list}),
             **self.get_kwargs(title),
-            width=900,
-            height=800,
+            width=400,
+            height=100,
         )
         self.send_outgoing(outgoing)
 
         messages_dict = dict(
-            message="Choose your args SHILL",
-            interrupt="Perfect phone call",
+            message=title,
+            interrupt="",
         )
 
         try:

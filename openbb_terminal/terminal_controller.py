@@ -169,6 +169,7 @@ class TerminalController(BaseController):
                 ).rglob("*.openbb")
             }
 
+        self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
         self.ROUTINE_CHOICES["--file"] = {
             filename: None for filename in self.ROUTINE_FILES
         }
@@ -684,6 +685,8 @@ class TerminalController(BaseController):
                 err, parsed_script = parse_openbb_script(
                     raw_lines=raw_lines,
                     script_inputs=script_inputs if ns_parser.routine_args else None,
+                    in_production=True,
+                    file_path=file_path,
                 )
 
                 # If there err output is not an empty string then it means there was an
