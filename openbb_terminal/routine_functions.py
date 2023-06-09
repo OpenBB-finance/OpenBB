@@ -6,6 +6,7 @@ from typing import Dict, List, Match, Optional, Tuple, Union
 from dateutil.relativedelta import relativedelta
 
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.plots.backend import plots_backend
 
 # pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
 # pylint: disable=too-many-branches,too-many-return-statements
@@ -283,24 +284,23 @@ def parse_openbb_script(
                                     # In production we want to ask for the variable
                                     # if it wasn't given using PyWry
                                     if in_production:
-                                        from openbb_terminal.core.plots.backend import (
-                                            plots_backend,
-                                        )
-
                                         plots_backend().start(True)
                                         args = plots_backend().call_routine(
-                                            f"Routine '{file_path}' requires variable '{VAR_NAME}'",
-                                            [VAR_NAME],
-                                            Path(__file__).parent.parent / "test.html",
+                                            f"Routine '{file_path}' requires variable '{VAR_NAME}[{VAR_SLICE}]'",
+                                            [f"{VAR_NAME}[{VAR_SLICE}]"],
+                                            Path(__file__).parent.parent / "openbb_terminal"
+                                                / "core" / "routines" / "argv_input.html",
                                         )
-                                        if args and VAR_NAME in args:
+                                        if args and f"{VAR_NAME}[{VAR_SLICE}]" in args:
+                                            # Update index 0 from $ARGV with user input
+                                            ROUTINE_VARS[VAR_NAME] = [args[f"{VAR_NAME}[{VAR_SLICE}]"]]
                                             templine = templine.replace(
                                                 match[0],
-                                                args[VAR_NAME],
+                                                args[f"{VAR_NAME}[{VAR_SLICE}]"],
                                             )
                                         else:
                                             return (
-                                                f"[red]Variable {VAR_NAME} not given "
+                                                f"[red]Variable {VAR_NAME}[{VAR_SLICE}] not given "
                                                 "for current routine script.[/red]",
                                                 "",
                                             )
@@ -312,7 +312,7 @@ def parse_openbb_script(
                                             "",
                                         )
 
-                            # Only enters here when any other index from 0 is used
+                            # Only enters here when any other index different from 0 is used
                             else:
                                 if VAR_NAME in ROUTINE_VARS:
                                     variable = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
@@ -324,22 +324,57 @@ def parse_openbb_script(
 
                                     # We use <= because we are using 0 index based lists
                                     if length_variable <= int(VAR_SLICE):
+                                        # TODO: We want to trigger a pywry window to allow to add
+                                        # another element to argv from external
                                         return (
                                             f"[red]Variable {VAR_NAME} only has "
                                             f"{length_variable} elements and there "
                                             f"was an attempt to access it with index {VAR_SLICE}.[/red]",
                                             "",
                                         )
+                                    # TODO: We need to handle the case the initial fields are empty
+                                    # because we invoked $ARGV[n] with n>0 before creating n==0
+                                    # so we check that the fields are missing and we ask for them
                                     templine = templine.replace(
                                         match[0],
                                         variable[int(VAR_SLICE)],
                                     )
                                 else:
-                                    return (
-                                        f"[red]Variable {VAR_NAME} not given "
-                                        "for current routine script.[/red]",
-                                        "",
-                                    )
+                                    # In production we want to ask for the variable
+                                    # if it wasn't given using PyWry
+                                    if in_production:
+                                        plots_backend().start(True)
+                                        args = plots_backend().call_routine(
+                                            f"Routine '{file_path}' requires variable '{VAR_NAME}[{VAR_SLICE}]'",
+                                            [f"{VAR_NAME}[{VAR_SLICE}]"],
+                                            Path(__file__).parent.parent / "openbb_terminal"
+                                                / "core" / "routines" / "argv_input.html",
+                                        )
+                                        if args and f"{VAR_NAME}[{VAR_SLICE}]" in args:
+                                            # Update index different than 0 from $ARGV with user input
+                                            # Note that we only get here if the user invokes $ARGV[n]
+                                            # with n != 0 for the first time, thus it means that we are
+                                            # ok with setting the first elements as empty since they haven't
+                                            # been used yet
+                                            ROUTINE_VARS[VAR_NAME] = [""] * (int(VAR_SLICE)+1)
+                                            ROUTINE_VARS[VAR_NAME][VAR_SLICE] = [args[f"{VAR_NAME}[{VAR_SLICE}]"]]
+                                            templine = templine.replace(
+                                                match[0],
+                                                args[f"{VAR_NAME}[{VAR_SLICE}]"],
+                                            )
+                                        else:
+                                            return (
+                                                f"[red]Variable {VAR_NAME}[{VAR_SLICE}] not given "
+                                                "for current routine script.[/red]",
+                                                "",
+                                            )
+
+                                    else:
+                                        return (
+                                            f"[red]Variable {VAR_NAME} not given "
+                                            "for current routine script.[/red]",
+                                            "",
+                                        )
 
                         # Involves slicing which is a bit more tricky to use eval on
                         elif (
@@ -416,11 +451,42 @@ def parse_openbb_script(
                                         match[0], potential_date_match
                                     )
                                 else:
-                                    return (
-                                        f"[red]Variable {VAR_NAME} not given for "
-                                        "current routine script.[/red]",
-                                        "",
-                                    )
+                                    # If we are in production mode, we want to ask for the variable
+                                    # only in the case that this is $ARGV as this is an argument
+                                    # that we can select through pywry
+                                    if in_production and VAR_NAME == "$ARGV":
+                                        plots_backend().start(True)
+                                        args = plots_backend().call_routine(
+                                            f"Routine '{file_path}' requires variable '{VAR_NAME}'",
+                                            [VAR_NAME],
+                                            Path(__file__).parent.parent / "openbb_terminal"
+                                                / "core" / "routines" / "argv_input.html",
+                                        )
+                                        if args and f"{VAR_NAME}" in args:
+                                            # Update entire $ARGV with user input
+                                            # If it has a comma it means the ARGV has multiple values
+                                            # otherwise it is a single value
+                                            if "," in args[VAR_NAME]:
+                                                ROUTINE_VARS[VAR_NAME] = args[VAR_NAME].split(",")
+                                            else:
+                                                ROUTINE_VARS[VAR_NAME] = args[VAR_NAME]
+                                            templine = templine.replace(
+                                                match[0],
+                                                args[VAR_NAME],
+                                            )
+                                        else:
+                                            return (
+                                                f"[red]Variable {VAR_NAME}[{VAR_SLICE}] not given "
+                                                "for current routine script.[/red]",
+                                                "",
+                                            )
+
+                                    else:
+                                        return (
+                                            f"[red]Variable {VAR_NAME} not given for "
+                                            "current routine script.[/red]",
+                                            "",
+                                        )
 
         lines_with_vars_replaced.append(templine)
 

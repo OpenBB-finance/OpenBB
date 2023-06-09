@@ -1,0 +1,28 @@
+<html>
+<body>
+    <div id="argv"></div>
+    <script>
+        function sendData() {
+            let data = {};
+            let inputs = document.getElementById('argv').getElementsByTagName('input');
+            data[inputs[0].name] = inputs[0].value;
+            window.pywry.result(JSON.stringify(data));
+        }
+        if (window.json_data) {
+            let json_data = window.json_data;
+            if (typeof json_data === 'string') {
+                json_data = JSON.parse(json_data);
+            }
+            
+            let argv = document.getElementById('argv').innerHTML;
+            json_data.params.forEach((parm) => {
+                argv += `<label for="${parm}">${parm}</label>`;
+                argv += `<input type"text" name="${parm}"></input>`;
+            });
+
+            argv += `<button onclick="sendData()">Submit</button>`;
+            document.getElementById('argv').innerHTML = argv;
+        }
+    </script>
+</body>
+</html>
