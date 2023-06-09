@@ -324,14 +324,35 @@ def parse_openbb_script(
 
                                     # We use <= because we are using 0 index based lists
                                     if length_variable <= int(VAR_SLICE):
-                                        # TODO: We want to trigger a pywry window to allow to add
-                                        # another element to argv from external
-                                        return (
-                                            f"[red]Variable {VAR_NAME} only has "
-                                            f"{length_variable} elements and there "
-                                            f"was an attempt to access it with index {VAR_SLICE}.[/red]",
-                                            "",
-                                        )
+                                        # In production we want to ask for the user to provide the variable
+                                        # since the values provided are not enough based on index selected
+                                        if in_production:
+                                            plots_backend().start(True)
+                                            args = plots_backend().call_routine(
+                                                f"Routine '{file_path}' requires variable '{VAR_NAME}[{VAR_SLICE}]'",
+                                                [f"{VAR_NAME}[{VAR_SLICE}]"],
+                                                Path(__file__).parent.parent / "openbb_terminal"
+                                                    / "core" / "routines" / "argv_input.html",
+                                            )
+                                            if args and f"{VAR_NAME}[{VAR_SLICE}]" in args:
+                                                # Update index different than 0 from $ARGV with user input
+                                                # Note that we only get here if the user invokes $ARGV[n]
+                                                # with n != 0 for the first time, thus it means that we are
+                                                # ok with setting the first elements as empty since they haven't
+                                                # been used yet
+                                                ROUTINE_VARS[VAR_NAME] += [""] * (int(VAR_SLICE)+1-len(ROUTINE_VARS[VAR_NAME]))
+                                                ROUTINE_VARS[VAR_NAME][int(VAR_SLICE)] = args[f"{VAR_NAME}[{VAR_SLICE}]"]
+                                                templine = templine.replace(
+                                                    match[0],
+                                                    args[f"{VAR_NAME}[{VAR_SLICE}]"],
+                                                )
+                                            else:
+                                                return (
+                                                    f"[red]Variable {VAR_NAME} only has "
+                                                    f"{length_variable} elements and there "
+                                                    f"was an attempt to access it with index {VAR_SLICE}.[/red]",
+                                                    "",
+                                                )
                                     # TODO: We need to handle the case the initial fields are empty
                                     # because we invoked $ARGV[n] with n>0 before creating n==0
                                     # so we check that the fields are missing and we ask for them
@@ -357,7 +378,7 @@ def parse_openbb_script(
                                             # ok with setting the first elements as empty since they haven't
                                             # been used yet
                                             ROUTINE_VARS[VAR_NAME] = [""] * (int(VAR_SLICE)+1)
-                                            ROUTINE_VARS[VAR_NAME][VAR_SLICE] = [args[f"{VAR_NAME}[{VAR_SLICE}]"]]
+                                            ROUTINE_VARS[VAR_NAME][int(VAR_SLICE)] = args[f"{VAR_NAME}[{VAR_SLICE}]"]
                                             templine = templine.replace(
                                                 match[0],
                                                 args[f"{VAR_NAME}[{VAR_SLICE}]"],
