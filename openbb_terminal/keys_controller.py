@@ -1349,4 +1349,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.status_dict["dappradar"] = keys_model.set_dappradar_key()
+            self.status_dict["dappradar"] = keys_model.set_dappradar_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
