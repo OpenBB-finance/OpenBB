@@ -1028,9 +1028,7 @@ def test_call_fred_query(mocker):
     controller = economy_controller.EconomyController(queue=None)
     controller.choices = {}
     controller.call_fred(["--query", "MOCK_QUERY", "--limit", "1"])
-    mock.assert_called_once_with(
-        **dict(search_query="MOCK_QUERY", limit=1, export="", sheet_name=None)
-    )
+    mock.assert_called_once_with(**dict(search_query="MOCK_QUERY", limit=1))
 
 
 @pytest.mark.vcr(record_mode="none")
