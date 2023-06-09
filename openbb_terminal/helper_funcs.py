@@ -2228,6 +2228,6 @@ def query_LLM(query_text, gpt_model):
                 " Please try again with valid API Access.[/red]"
             )
             return None
-        else:
-            console.print(f"[red]Something went wrong with the query. {e}[/red]")
-            return None
+
+        console.print(f"[red]Something went wrong with the query. {e}[/red]")
+        return None

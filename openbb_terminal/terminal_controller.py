@@ -410,15 +410,18 @@ class TerminalController(BaseController):
                 )
                 if response is not None:
                     # check that "I don't know" and "Sorry" is not the response
-                    if (
-                        "I don't know" not in response
-                        and "Sorry" not in response
-                        and "I am not sure" not in response
-                        and "no terminal command provided" not in response
-                        and "no available" not in response
-                        and "no command provided" not in response
-                        and "no information" not in response
-                        and "does not contain" not in response
+                    if all(
+                        phrase not in response
+                        for phrase in [
+                            "I don't know",
+                            "Sorry",
+                            "I am not sure",
+                            "no terminal command provided",
+                            "no available",
+                            "no command provided",
+                            "no information",
+                            "does not contain",
+                        ]
                     ):
                         console.print(f"[green]Suggested Command: {response}[/green]\n")
                         console.print(
@@ -444,7 +447,6 @@ class TerminalController(BaseController):
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
-        import json
         import random
 
         current_user = get_current_user()
