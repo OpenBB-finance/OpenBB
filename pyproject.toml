@@ -101,7 +101,7 @@ jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
 streamlit = "^1.22.0"
-pywry = "^0.5.8"
+pywry = "^0.5.12"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
@@ -155,6 +155,7 @@ nbmake = ">0.5.0"
 ruff = "^0.0.256"
 pytest-timeout = "^2.1.0"
 pytest-recorder = "^0.2.1"
+freezegun = "^1.2.2"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]

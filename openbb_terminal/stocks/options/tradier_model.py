@@ -103,14 +103,17 @@ def get_historical_options(
     else:
         symbol = chain_id
 
-    response = request(
-        "https://sandbox.tradier.com/v1/markets/history",
-        params={"symbol": {symbol}, "interval": "daily"},
-        headers={
-            "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
-            "Accept": "application/json",
-        },
-    )
+    try:
+        response = request(
+            "https://sandbox.tradier.com/v1/markets/history",
+            params={"symbol": {symbol}, "interval": "daily"},
+            headers={
+                "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
+                "Accept": "application/json",
+            },
+        )
+    except requests.exceptions.ReadTimeout:
+        return pd.DataFrame()
 
     if response.status_code != 200:
         console.print("Error with request")

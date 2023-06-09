@@ -141,12 +141,7 @@ class StocksController(StockBaseController):
     def custom_reset(self):
         """Class specific component of reset command."""
         if self.ticker:
-            return [
-                "stocks",
-                f"load {self.ticker}.{self.suffix}"
-                if self.suffix
-                else f"load {self.ticker}",
-            ]
+            return ["stocks", f"load {self.ticker}"]
         return []
 
     def custom_load_wrapper(self, other_args: List[str]):
@@ -587,7 +582,7 @@ class StocksController(StockBaseController):
                     query = str(self.ticker).upper()
                     if query not in ultima_newsmonitor_view.supported_terms():
                         console.print(
-                            "[red]Ticker not supported by Ultima Insights News Monitor[/red]"
+                            "[red]Ticker not supported by Ultima Insights News Monitor. Falling back to default.\n[/red]"
                         )
                         feedparser_view.display_news(
                             term=query,
@@ -735,9 +730,7 @@ class StocksController(StockBaseController):
 
         self.queue = self.load_class(
             ca_controller.ComparisonAnalysisController,
-            [f"{self.ticker}.{self.suffix}" if self.suffix else self.ticker]
-            if self.ticker
-            else "",
+            [f"{self.ticker}"] if self.ticker else "",
             self.queue,
         )
 

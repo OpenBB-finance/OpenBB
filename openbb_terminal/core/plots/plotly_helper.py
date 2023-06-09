@@ -1126,11 +1126,13 @@ class OpenBBFigure(go.Figure):
 
     def _xaxis_tickformatstops(self) -> None:
         """Set the datetickformatstops for the xaxis if the x data is datetime."""
-        if (dateindex := self.get_dateindex()) is None:
+        if (dateindex := self.get_dateindex()) is None or list(
+            self.select_xaxes(lambda x: hasattr(x, "tickformat") and x.tickformat)
+        ):
             return
 
         tickformatstops = [
-            dict(dtickrange=[None, 86_400_000], value="%I%p\n%b,%d"),
+            dict(dtickrange=[None, 86_400_000], value="%I:%M%p\n%b,%d"),
             dict(dtickrange=[86_400_000, 604_800_000], value="%Y-%m-%d"),
         ]
         xhoverformat = "%I:%M%p %Y-%m-%d"
@@ -1149,7 +1151,9 @@ class OpenBBFigure(go.Figure):
                     dict(dtickrange=["M1", None], value="%Y-%m-%d"),
                 ],
                 type="date",
-                selector=dict(anchor=entry["yaxis"]),
+                row=entry["row"],
+                col=entry["col"],
+                tick0=0.5,
             )
             self.update_traces(
                 xhoverformat=xhoverformat, selector=dict(name=entry["name"])
@@ -1223,6 +1227,8 @@ class OpenBBFigure(go.Figure):
                         self._date_xaxs[trace.xaxis] = {
                             "yaxis": trace.yaxis,
                             "name": name,
+                            "row": row,
+                            "col": col,
                             "secondary_y": secondary_y,
                         }
                         self._subplot_xdates.setdefault(row, {}).setdefault(
@@ -1592,6 +1598,7 @@ class OpenBBFigure(go.Figure):
                 xref="paper",
                 x=1,
                 y=0,
+                showarrow=False,
                 text="OpenBB Terminal",
                 font_size=17,
                 font_color="gray",

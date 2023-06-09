@@ -146,7 +146,6 @@ en:
   stocks/forecast: forecast techniques           rnn, nbeats, transformer, block rnn
   stocks/options/unu: show unusual options activity
   stocks/options/calc: basic call/put PnL calculator
-  stocks/options/screen: screens tickers based on preset
   stocks/options/load: load new ticker
   stocks/options/exp: see and set expiration dates
   stocks/options/_ticker: Ticker
@@ -165,12 +164,6 @@ en:
   stocks/options/eodchain: gets option chain at a specific date
   stocks/options/pricing: shows options pricing and risk neutral valuation
   stocks/options/hedge: shows portfolio weights in order to neutralise delta
-  stocks/options/screen/view: view available presets (or one in particular)
-  stocks/options/screen/set: set one of the available presets
-  stocks/options/screen/_preset: Preset
-  stocks/options/screen/scr: screen data from this preset
-  stocks/options/screen/_screened_tickers: Last screened tickers
-  stocks/options/screen/ca: take these to comparison analysis menu
   stocks/options/hedge/_ticker: Ticker
   stocks/options/hedge/_expiry: Expiry
   stocks/options/hedge/pick: pick the underlying asset position
@@ -584,7 +577,7 @@ en:
   crypto/defi/anchor: anchor earnings data
   crypto/tools/aprtoapy: convert apr to apy
   crypto/tools/il: calculate impermanent loss
-  crypto/nft/fp: collection sales/floor price
+  crypto/nft/fp: collection floor price
   crypto/nft/collections: top ethereum collections
   crypto/nft/stats: collection stats
   crypto/dd/_overview_: Overview
@@ -981,6 +974,8 @@ en:
   econometrics/coint: co-integration test on a multitude of columns
   econometrics/garch: estimate future volatility with GARCH
   econometrics/ret: calculate returns for the given time series
+  econometrics/vif: perform collinearity test (VIF)
+  econometrics/_assumption_testing_: Assumption Testing
   portfolio/bro: brokers holdings    supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization   optimize your portfolio weights efficiently
   portfolio/load: load transactions into the portfolio (use load --example for an example)

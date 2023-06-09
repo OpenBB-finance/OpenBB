@@ -23,9 +23,9 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.account.account_controller import (
-    get_login_called,
-    set_login_called,
+from openbb_terminal.account.show_prompt import (
+    get_show_prompt,
+    set_show_prompt,
 )
 from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
@@ -51,13 +51,13 @@ from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.routine_functions import is_reset, parse_openbb_script
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
     first_time_user,
     is_auth_enabled,
     is_installer,
-    is_reset,
     print_goodbye,
     reset,
     suppress_stdout,
@@ -67,7 +67,6 @@ from openbb_terminal.terminal_helper import (
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
-
 
 logger = logging.getLogger(__name__)
 
@@ -668,61 +667,36 @@ class TerminalController(BaseController):
                     )
                 else:
                     routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
-
             else:
                 return
 
             with open(routine_path) as fp:
-                raw_lines = [
-                    x for x in fp if (not is_reset(x)) and ("#" not in x) and x
-                ]
-                raw_lines = [
-                    raw_line.strip("\n")
-                    for raw_line in raw_lines
-                    if raw_line.strip("\n")
-                ]
+                raw_lines = list(fp)
 
-                lines = list()
-                for rawline in raw_lines:
-                    templine = rawline
+                # Capture ARGV either as list if args separated by commas or as single value
+                if ns_parser.routine_args:
+                    script_inputs = (
+                        ns_parser.routine_args
+                        if "," not in ns_parser.routine_args
+                        else ns_parser.routine_args.split(",")
+                    )
 
-                    # Check if dynamic parameter exists in script
-                    if "$ARGV" in rawline:
-                        # Check if user has provided inputs through -i or --input
-                        if ns_parser.routine_args:
-                            for i, arg in enumerate(ns_parser.routine_args):
-                                # Check what is the location of the ARGV to be replaced
-                                if f"$ARGV[{i}]" in templine:
-                                    templine = templine.replace(f"$ARGV[{i}]", arg)
+                err, parsed_script = parse_openbb_script(
+                    raw_lines=raw_lines,
+                    script_inputs=script_inputs if ns_parser.routine_args else None,
+                )
 
-                            # Check if all ARGV have been removed, otherwise means that there are less inputs
-                            # when running the script than the script expects
-                            if "$ARGV" in templine:
-                                console.print(
-                                    "[red]Not enough inputs were provided to fill in dynamic variables. "
-                                    "E.g. --input VAR1,VAR2,VAR3[/red]\n"
-                                )
-                                return
+                # If there err output is not an empty string then it means there was an
+                # issue in parsing the routine and therefore we don't want to feed it
+                # to the terminal
+                if err:
+                    console.print(err)
+                    return
 
-                            lines.append(templine)
-                        # The script expects a parameter that the user has not provided
-                        else:
-                            console.print(
-                                "[red]The script expects parameters, "
-                                "run the script again with --input defined.[/red]\n"
-                            )
-                            return
-                    else:
-                        lines.append(templine)
-
-                simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
-                file_cmds = simulate_argv.replace("//", "/home/").split()
-                file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-                cmds_with_params = " ".join(file_cmds)
                 self.queue = [
                     val
                     for val in parse_and_split_input(
-                        an_input=cmds_with_params, custom_filters=[]
+                        an_input=parsed_script, custom_filters=[]
                     )
                     if val
                 ]
@@ -873,7 +847,11 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 break
 
         try:
-            if an_input in "login" and get_login_called() and is_auth_enabled():
+            if (
+                an_input in ("login", "logout")
+                and get_show_prompt()
+                and is_auth_enabled()
+            ):
                 break
 
             # Process the input command
@@ -919,8 +897,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if an_input in "login" and get_login_called() and is_auth_enabled():
-        set_login_called(False)
+    if an_input in ("login", "logout") and get_show_prompt() and is_auth_enabled():
+        set_show_prompt(False)
         return session_controller.main()
 
 
@@ -964,6 +942,7 @@ def run_scripts(
         if not test_mode:
             terminal()
 
+    # THIS NEEDS TO BE REFACTORED!!! - ITS USED FOR TESTING
     with path.open() as fp:
         raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
         raw_lines = [
@@ -994,6 +973,7 @@ def run_scripts(
         if test_mode and "exit" not in lines[-1]:
             lines.append("exit")
 
+        # Deals with the export with a path with "/" in it
         export_folder = ""
         if "export" in lines[0]:
             export_folder = lines[0].split("export ")[1].rstrip()

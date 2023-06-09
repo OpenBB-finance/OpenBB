@@ -197,6 +197,10 @@ Copy and paste these commands into the terminal/command prompt:
 conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/conda/conda-3-9-env.yaml
 ```
 
+:::note
+Additional `YAML` files provide support for Python versions 3.8 and 3.10.  Substitute the `9`, in the command above, with the desired version.
+:::
+
 Agree to the prompts if there are any.
 
 After the obb environment is created, activate it by entering:
@@ -236,7 +240,7 @@ pip install "openbb[all]" --no-cache-dir
 ```
 
 :::info
-The `pip install openbb` isn't yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK. We are working on a solution to this problem and will update this section once it is resolved.
+`pip install openbb[all]` is not yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK.  It may be possible to install without the extra toolkits, but we currently do not officially support this type of installation.  We are working on a solution to this problem and will update this section once it is resolved.
 :::
 
 ## Verify Installation
@@ -256,8 +260,8 @@ openbb.__version__
 
 You should see the version number displayed, for example:
 
-```python
-'2.5.1'
+```console
+'3.0.1'
 ```
 
 That's it!
