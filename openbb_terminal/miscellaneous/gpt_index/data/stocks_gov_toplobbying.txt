@@ -1,0 +1,10 @@
+parent_command: stocks/gov/
+usage: toplobbying [-l LIMIT] [--raw] [-h] [--export EXPORT]                    [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Top lobbying. [Source: www.quiverquant.com]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of stocks to display (default: 10)   --raw                 Print raw data. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about toplobbying' to access the related guide.
+Summary: Display the top lobbying stocks with the option to set a limit on the number of stocks shown. You can also view raw data, and export the data in various formats. The data source for this information is www.quiverquant.com.
+
+Examples:
+- View the top 10 lobbying stocks: stocks/gov/toplobbying
+- View the top 20 lobbying stocks: stocks/gov/toplobbying -l 20
+- Display raw data for the top 10 lobbying stocks: stocks/gov/toplobbying --raw
+- Export the top lobbying stocks data to a csv file: stocks/gov/toplobbying --export csv
+- Export the top lobbying stocks data to an excel file with a specific sheet name: stocks/gov/toplobbying --export xlsx --sheet-name LobbyingData

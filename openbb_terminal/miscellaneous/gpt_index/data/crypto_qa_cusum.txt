@@ -1,0 +1,17 @@
+parent_command:crypto/qa
+usage: cusum [-t THRESHOLD] [-d DRIFT]
+
+Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
+
+optional arguments:
+  -t THRESHOLD, --threshold THRESHOLD
+                        threshold (default: 389.5846923828125)
+  -d DRIFT, --drift DRIFT
+                        drift (default: 194.79234619140624)
+
+
+Examples:
+- To apply the CUSUM algorithm on a cryptocurrency with default threshold and drift values: crypto/load <COIN>/qa/cusum
+- To apply the CUSUM algorithm on a cryptocurrency with a custom threshold: crypto/load <COIN>/qa/cusum -t 500
+- To apply the CUSUM algorithm on a cryptocurrency with a custom drift value: crypto/load <COIN>/qa/cusum -d 150
+- To apply the CUSUM algorithm on a cryptocurrency with custom threshold and drift values: crypto/load <COIN>/qa/cusum -t 400 -d 200

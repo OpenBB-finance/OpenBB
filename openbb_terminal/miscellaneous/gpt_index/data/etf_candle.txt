@@ -1,0 +1,23 @@
+parent_command:etf
+usage: candle [-p] [--sort {adjclose,open,close,high,low,volume,returns,logret}] [-r] [-n NUM] [-t] [--ma MOV_AVG]
+
+Shows historic data for an ETF
+
+optional arguments:
+  -p, --plotly          Flag to show interactive plotly chart. (default: True)
+  --sort {adjclose,open,close,high,low,volume,returns,logret}, -s {adjclose,open,close,high,low,volume,returns,logret}
+                        Choose a column to sort by (default: )
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -n NUM, --num NUM     Number to show if raw selected (default: 20)
+  -t, --trend           Flag to add high and low trends to candle. (default: False)
+  --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1. (default: )
+
+
+Examples:
+- To display the historical data of an ETF with an interactive plotly chart: etf/candle -p
+- Show the historical data of an ETF sorted by volume: etf/candle --sort volume
+- Display the historical data of an ETF sorted by open price in ascending order: etf/candle -s open -r
+- Show the historical data of an ETF with the top 30 records: etf/candle -n 30
+- Display the historical data of an ETF with high and low trends added to the candle chart: etf/candle -t
+- Show the historical data of an ETF with a 50-day moving average: etf/candle --ma 50
+- Display the historical data of an ETF with a 20-day and 100-day moving averages: etf/candle --ma 20,100

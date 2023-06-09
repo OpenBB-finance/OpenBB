@@ -1,0 +1,10 @@
+parent_command: stocks/options/screen/
+usage: scr [-p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}]            [-l LIMIT] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Screener filter output from https://ops.syncretism.io/index.html.  optional arguments:   -p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}, --preset {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}                         Filter presets (default: high_iv.ini)   -l LIMIT, --limit LIMIT                         Limit of entries to display, default of 25. (default:                         25)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about scr' to access the related guide.
+Summary: The command 'scr' is used to filter stock options screener data from https://ops.syncretism.io/index.html. You can choose from preset filters, set a limit on the number of entries displayed, and export the data in various formats. Preset filters include high_iv, v_below_20day, liquid_otm, spy_30_delta, and template.
+
+Examples:
+- Filter stock options using the high_iv preset: stocks/options/screen/scr -p high_iv
+- Display only the top 10 results using the liquid_otm preset: stocks/options/screen/scr -p liquid_otm -l 10
+- Filter stock options using the spy_30_delta preset and export the data to a json file: stocks/options/screen/scr -p spy_30_delta --export json
+- Use the template preset and save the data to a specific excel sheet: stocks/options/screen/scr -p template --sheet-name Sheet1
+- Display the default high_iv preset with a custom limit of 50 entries: stocks/options/screen/scr -l 50

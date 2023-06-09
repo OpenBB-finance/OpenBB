@@ -1,0 +1,10 @@
+parent_command: stocks/options/screen/
+usage: set [-p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}] [-h]  Set preset from custom and default ones.  optional arguments:   -p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}, --preset {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}                         Filter presets   -h, --help            show this help message  For more information and examples, use 'about set' to access the related guide.
+Summary: Set a preset filter for screening stock options from custom and default options. Presets include high_iv, v_below_20day, liquid_otm, spy_30_delta, and template.
+
+Examples:
+- Set a high_iv filter for stock options: stocks/options/screen/set -p high_iv
+- Apply a v_below_20day preset filter: stocks/options/screen/set --preset v_below_20day
+- Use the liquid_otm preset for screening options: stocks/options/screen/set -p liquid_otm
+- Set a spy_30_delta filter for stock options: stocks/options/screen/set --preset spy_30_delta
+- Apply a custom template preset: stocks/options/screen/set -p template

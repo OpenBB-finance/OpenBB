@@ -1,0 +1,12 @@
+parent_command:stocks/options/hedge
+usage: sop
+
+Displays selected option
+
+sop
+Examples:
+- Display selected option for a stock: stocks/load <SYMBOL>/options/hedge/sop
+- To view the chosen option for a specific stock: stocks/load <SYMBOL>/options/hedge/sop
+- Show the selected option after loading a stock: stocks/load <SYMBOL>/options/hedge/sop
+- For a specific stock, display the chosen option: stocks/load <SYMBOL>/options/hedge/sop
+- After loading a stock, show its selected option: stocks/load <SYMBOL>/options/hedge/sop

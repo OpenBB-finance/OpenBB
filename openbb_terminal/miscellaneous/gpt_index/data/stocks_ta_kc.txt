@@ -1,0 +1,26 @@
+parent_command:stocks/ta
+usage: kc [-l N_LENGTH] [-s N_SCALAR] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
+
+Keltner Channels are volatility-based bands that are placed on either side of an asset's price and can aid in determining the direction of a trend.The Keltner channel uses the average true range (ATR) or volatility, with breaks
+above or below the top and bottom barriers signaling a continuation.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window length (default: 20)
+  -s N_SCALAR, --scalar N_SCALAR
+                        scalar (default: 2)
+  -m {ema,sma,wma,hma,zlma}, --mamode {ema,sma,wma,hma,zlma}
+                        mamode (default: ema)
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To plot Keltner Channels with default settings for a stock: stocks/load <SYMBOL>/ta/kc
+- To display Keltner Channels with a window length of 30: stocks/load <SYMBOL>/ta/kc -l 30
+- To show Keltner Channels using a scalar of 3: stocks/load <SYMBOL>/ta/kc -s 3
+- To visualize Keltner Channels with a simple moving average (sma) as the mamode: stocks/load <SYMBOL>/ta/kc -m sma
+- To plot Keltner Channels with a window length of 25, scalar of 2.5, and weighted moving average (wma) as the mamode: stocks/load <SYMBOL>/ta/kc -l 25 -s 2.5 -m wma
+- To display Keltner Channels with an offset of 2: stocks/load <SYMBOL>/ta/kc -o 2
+- To show Keltner Channels with a window length of 15, scalar of 1.5, Hull moving average (hma) as the mamode, and an offset of 1: stocks/load <SYMBOL>/ta/kc -l 15 -s 1.5 -m hma -o 1
+- To visualize Keltner Channels with a zero-lag moving average (zlma) as the mamode and an offset of 3: stocks/load <SYMBOL>/ta/kc -m zlma -o 3

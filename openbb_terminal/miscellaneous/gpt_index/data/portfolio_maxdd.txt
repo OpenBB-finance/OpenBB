@@ -1,0 +1,12 @@
+parent_command:portfolio
+usage: maxdd
+
+Show portfolio maximum drawdown
+
+maxdd
+Examples:
+- To display the maximum drawdown of your portfolio: portfolio/maxdd
+- Show the maximum drawdown for your current portfolio: portfolio/maxdd
+- Retrieve the maximum drawdown value for your portfolio: portfolio/maxdd
+- Get the highest drawdown experienced by your portfolio: portfolio/maxdd
+- Check the maximum drawdown in your portfolio: portfolio/maxdd

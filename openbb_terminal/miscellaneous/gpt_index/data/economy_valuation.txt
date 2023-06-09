@@ -1,0 +1,25 @@
+parent_command:economy
+usage: valuation [-g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}]
+                 [-s {Name,MarketCap,P/E,FwdP/E,PEG,P/S,P/B,P/C,P/FCF,EPSpast5Y,EPSnext5Y,Salespast5Y,Change,Volume}] [-r]
+
+View group (sectors, industry or country) valuation data. [Source: Finviz]
+
+optional arguments:
+  -g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}, --group {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}
+                        Data group (sectors, industry or country) (default: sector)
+  -s {Name,MarketCap,P/E,FwdP/E,PEG,P/S,P/B,P/C,P/FCF,EPSpast5Y,EPSnext5Y,Salespast5Y,Change,Volume}, --sortby {Name,MarketCap,P/E,FwdP/E,PEG,P/S,P/B,P/C,P/FCF,EPSpast5Y,EPSnext5Y,Salespast5Y,Change,Volume}
+                        Column to sort by (default: Name)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- View sector valuation data sorted by Market Cap: economy/valuation -g sector -s MarketCap
+- Display industry valuation data sorted by P/E ratio: economy/valuation -g industry -s P/E
+- Explore country valuation data with ascending P/S ratio: economy/valuation -g country -s P/S -r
+- Show valuation data for the technology sector sorted by EPS growth in the past 5 years: economy/valuation -g technology -s EPSpast5Y
+- Examine valuation data for the consumer defensive industry sorted by forward P/E ratio: economy/valuation -g consumer_defensive -s FwdP/E
+- View valuation data for countries sorted by sales growth in the past 5 years: economy/valuation -g country -s Salespast5Y
+- Display valuation data for the energy sector with ascending P/B ratio: economy/valuation -g energy -s P/B -r
+- Check valuation data for the healthcare industry sorted by P/FCF: economy/valuation -g healthcare -s P/FCF
+- Examine valuation data for the financial sector sorted by EPS growth in the next 5 years: economy/valuation -g financial -s EPSnext5Y
+- Explore capitalization valuation data sorted by volume: economy/valuation -g capitalization -s Volume

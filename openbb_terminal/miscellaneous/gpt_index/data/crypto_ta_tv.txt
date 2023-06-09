@@ -1,0 +1,12 @@
+parent_command:crypto/ta
+usage: tv
+
+View TradingView for technical analysis. [Source: TradingView]
+
+tv
+Examples:
+- To view the TradingView for technical analysis of a specific cryptocurrency: crypto/load <COIN>/ta/tv
+- Access TradingView for a cryptocurrency's technical analysis: crypto/load <COIN>/ta/tv
+- Display TradingView's technical analysis for a chosen cryptocurrency: crypto/load <COIN>/ta/tv
+- Examine a cryptocurrency's technical analysis on TradingView: crypto/load <COIN>/ta/tv
+- For technical analysis of a cryptocurrency using TradingView: crypto/load <COIN>/ta/tv

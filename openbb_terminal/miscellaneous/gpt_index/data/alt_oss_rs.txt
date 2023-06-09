@@ -1,0 +1,13 @@
+parent_command:alt/oss
+usage: rs -r REPO
+
+Display a repo summary [Source: https://api.github.com]
+
+optional arguments:
+  -r REPO, --repo REPO  Repository to search for repo summary. Format: org/repo, e.g., openbb-finance/openbbterminal (default: None)
+
+
+Examples:
+- To view the summary of a specific repository, use: alt/oss/rs -r openbb-finance/openbbterminal
+- Display the repo summary for a given repository with: alt/oss/rs --repo openbb-finance/openbbterminal
+- Obtain a summary of the specified repository: alt/oss/rs -r openbb-finance/openbbterminal

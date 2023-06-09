@@ -1,0 +1,12 @@
+parent_command:crypto/disc
+usage: dapp_categories
+
+Shows available dapp categories [Source: https://dappradar.com/]
+
+dapp_categories
+Examples:
+- To display a list of available dapp categories: crypto/disc/dapp_categories
+- View all dapp categories using the command: crypto/disc/dapp_categories
+- Retrieve the dapp categories with: crypto/disc/dapp_categories
+- Find out the available dapp categories by typing: crypto/disc/dapp_categories
+- Get a list of dapp categories from DappRadar: crypto/disc/dapp_categories

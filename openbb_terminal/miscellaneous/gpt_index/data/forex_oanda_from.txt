@@ -1,0 +1,15 @@
+parent_command:forex/oanda
+usage: from -n FROM_SYMBOL
+
+Select the "from" currency symbol in a forex pair
+
+optional arguments:
+  -n FROM_SYMBOL, --name FROM_SYMBOL
+                        From currency (default: None)
+
+
+Examples:
+- To select the "from" currency symbol in a forex pair: forex/oanda/from -n <FROM_SYMBOL>
+- Set the "from" currency symbol for a forex pair: forex/oanda/from --name <FROM_SYMBOL>
+- Choose the base currency in a forex pair: forex/oanda/from -n <FROM_SYMBOL>
+- Specify the "from" currency in a forex pair: forex/oanda/from --name <FROM_SYMBOL>

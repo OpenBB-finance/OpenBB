@@ -1,0 +1,23 @@
+parent_command:economy
+usage: revenue [-c COUNTRIES] [-u {PC_GDP,THND_USD_CAP}] [-s START_DATE] [-e END_DATE]
+
+Governments collect revenues mainly for two purposes: to finance the goods and services they provide to citizens and businesses, and to fulfil their redistributive role. Comparing levels of government revenues across countries
+provides an indication of the importance of the government sector in the economy in terms of available financial resources.
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        Countries to get data for (default: united_states)
+  -u {PC_GDP,THND_USD_CAP}, --units {PC_GDP,THND_USD_CAP}
+                        Use either THND_USD_CAP (thousands of USD per capity) or PC_GDP (percentage of GDP) (default: PC_GDP)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format (default: 1993-06-02)
+  -e END_DATE, --end END_DATE
+                        End date of data, in YYYY-MM-DD format (default: 2023-06-02)
+
+
+Examples:
+- To view government revenue data for the United States in percentage of GDP: economy/revenue
+- To display government revenue data for multiple countries: economy/revenue -c "united_states, germany, france"
+- To retrieve government revenue data in thousands of USD per capita: economy/revenue -u THND_USD_CAP
+- To obtain government revenue data for a specific date range: economy/revenue -s 2000-01-01 -e 2020-12-31
+- To view government revenue data for a single country in a specific unit and date range: economy/revenue -c "united_kingdom" -u PC_GDP -s 2010-01-01 -e 2020-12-31

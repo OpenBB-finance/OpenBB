@@ -1,0 +1,23 @@
+parent_command:crypto/ta
+usage: ema [-l N_LENGTH] [-o N_OFFSET]
+
+The Exponential Moving Average is a staple of technical analysis and is used in countless technical indicators. In a Simple Moving Average, each value in the time period carries equal weight, and values outside of the time period
+are not included in the average. However, the Exponential Moving Average is a cumulative calculation, including all data. Past values have a diminishing contribution to the average, while more recent values have a greater
+contribution. This method allows the moving average to be more responsive to changes in the data.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [20, 50])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To calculate the Exponential Moving Average for a cryptocurrency with default window lengths: crypto/load <COIN>/ta/ema
+- To calculate the Exponential Moving Average for a cryptocurrency with custom window lengths of 10 and 30: crypto/load <COIN>/ta/ema -l 10,30
+- To calculate the Exponential Moving Average for a cryptocurrency with a custom window length of 100 and an offset of 5: crypto/load <COIN>/ta/ema -l 100 -o 5
+- For a specific cryptocurrency, calculate the Exponential Moving Average using multiple window lengths of 10, 20, and 50: crypto/load <COIN>/ta/ema -l 10,20,50
+- To compute the Exponential Moving Average for a cryptocurrency with a window length of 200 and no offset: crypto/load <COIN>/ta/ema -l 200
+- For a specific cryptocurrency, calculate the Exponential Moving Average with an offset of 10: crypto/load <COIN>/ta/ema -o 10
+- To determine the Exponential Moving Average for a cryptocurrency using a custom window length of 150: crypto/load <COIN>/ta/ema -l 150
+- For a specific cryptocurrency, calculate the Exponential Moving Average with a window length of 75 and an offset of 3: crypto/load <COIN>/ta/ema -l 75 -o 3

@@ -1,0 +1,21 @@
+parent_command:account
+usage: upload [-f FILE [FILE ...]] [-d DESCRIPTION [DESCRIPTION ...]] [-n NAME [NAME ...]]
+
+Upload a routine to the cloud.
+
+optional arguments:
+  -f FILE [FILE ...], --file FILE [FILE ...]
+                        The file to be loaded (default: None)
+  -d DESCRIPTION [DESCRIPTION ...], --description DESCRIPTION [DESCRIPTION ...]
+                        The description of the routine (default: )
+  -n NAME [NAME ...], --name NAME [NAME ...]
+                        The name of the routine. (default: None)
+
+
+Examples:
+- Upload a routine file to the cloud: account/upload -f routine_file.py
+- Upload multiple routine files to the cloud: account/upload -f routine_file1.py routine_file2.py
+- Upload a routine file with a description: account/upload -f routine_file.py -d "This is a sample routine"
+- Upload a routine file and give it a name: account/upload -f routine_file.py -n "SampleRoutine"
+- Upload a routine file with a name and description: account/upload -f routine_file.py -n "SampleRoutine" -d "This is a sample routine"
+- Upload multiple routine files with names and descriptions: account/upload -f routine_file1.py routine_file2.py -n "Routine1" "Routine2" -d "Description for Routine1" "Description for Routine2"

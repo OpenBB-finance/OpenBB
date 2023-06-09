@@ -1,0 +1,44 @@
+parent_command:forecast
+usage: regr [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-o OUTPUT_CHUNK_LENGTH] [--end S_END_DATE] [--start S_START_DATE] [--lags LAGS]
+            [--residuals] [--forecast-only] [--explainability-raw] [--export-pred-raw] [--metric {rmse,mse,mape,smape}]
+
+Perform a regression forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.regression_model.html
+
+optional arguments:
+  --past-covariates PAST_COVARIATES
+                        Past covariates(columns/features) in same dataset. Comma separated. (default: None)
+  --all-past-covariates
+                        Adds all rows as past covariates except for date and the target column. (default: False)
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  -o OUTPUT_CHUNK_LENGTH, --output-chunk-length OUTPUT_CHUNK_LENGTH
+                        The length of the forecast of the model. (default: 5)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --lags LAGS           Lagged target values used to predict the next time step. (default: 14)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --explainability-raw  Prints out a raw dataframe showing explainability results. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+  --metric {rmse,mse,mape,smape}
+                        Calculate precision based on a specific metric (rmse, mse, mape) (default: mape)
+
+
+Examples:
+- Perform a regression forecast on the default dataset and column: forecast/regr
+- Perform a regression forecast on a specific dataset and target column: forecast/regr -d {AAPL} -c revenue
+- Perform a regression forecast with a specific number of prediction days: forecast/regr -n 10
+- Perform a regression forecast with a custom train split: forecast/regr -t 0.9
+- Perform a regression forecast with a specific output chunk length: forecast/regr -o 7
+- Perform a regression forecast with a custom start and end date: forecast/regr --start 2022-01-01 --end 2022-12-31
+- Perform a regression forecast with specified lag values: forecast/regr --lags 20
+- Perform a regression forecast and display the residuals: forecast/regr --residuals
+- Perform a regression forecast and export predictions to a csv file: forecast/regr --export-pred-raw
+- Perform a regression forecast and calculate precision based on a specific metric: forecast/regr --metric rmse

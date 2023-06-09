@@ -1,0 +1,24 @@
+parent_command:etf
+usage: load -t TICKER [-s START] [-e END] [-l LIMIT]
+
+Load ETF ticker to perform analysis on.
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        ETF ticker (default: None)
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) of the ETF (default: 2022-06-01)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the ETF (default: 2023-06-02)
+  -l LIMIT, --limit LIMIT
+                        Limit of holdings to display (default: 5)
+
+
+Examples:
+- To load an ETF with its ticker and default date range: etf/load -t <TICKER>
+- Load an ETF for analysis with a custom start date: etf/load -t <TICKER> -s 2021-01-01
+- Load an ETF with a specific end date: etf/load -t <TICKER> -e 2022-12-31
+- Load an ETF with a custom date range: etf/load -t <TICKER> -s 2020-01-01 -e 2021-12-31
+- Load an ETF and display a specific number of holdings: etf/load -t <TICKER> -l 10
+- Load an ETF with a custom start date and limit of holdings: etf/load -t <TICKER> -s 2021-01-01 -l 15
+- Load an ETF with a custom end date and limit of holdings: etf/load -t <TICKER> -e 2022-12-31 -l 20
+- Load an ETF with a custom date range and limit of holdings: etf/load -t <TICKER> -s 2020-01-01 -e 2021-12-31 -l 25

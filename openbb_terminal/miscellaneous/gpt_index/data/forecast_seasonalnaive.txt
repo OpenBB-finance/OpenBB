@@ -1,0 +1,37 @@
+parent_command:forecast
+usage: seasonalnaive [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
+
+Perform SeasonalNaive forecasting: https://nixtla.github.io/statsforecast/models.html#seasonalnaive
+
+optional arguments:
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -s {N,A,M}, --seasonal {N,A,M}
+                        Seasonality: N: None, A: Additive, M: Multiplicative. (default: A)
+  -p SEASONAL_PERIODS, --periods SEASONAL_PERIODS
+                        Seasonal periods: 4: Quarterly, 7: Daily (default: 7)
+  -w START_WINDOW, --window START_WINDOW
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+
+
+Examples:
+- Perform SeasonalNaive forecasting on the default dataset and target column: forecast/seasonalnaive
+- Show the naive baseline for the default dataset and target column: forecast/seasonalnaive --naive
+- Perform SeasonalNaive forecasting on a specific dataset and target column: forecast/seasonalnaive -d {AAPL} -c open
+- Forecast for 10 days using SeasonalNaive on the default dataset and target column: forecast/seasonalnaive -n 10
+- Perform SeasonalNaive forecasting with multiplicative seasonality on the default dataset: forecast/seasonalnaive -s M
+- Use a specific seasonal period for SeasonalNaive forecasting on the default dataset: forecast/seasonalnaive -p 4
+- Perform SeasonalNaive forecasting with a custom rolling training and forecast window: forecast/seasonalnaive -w 0.9
+- Forecast using SeasonalNaive within a specific date range: forecast/seasonalnaive --start 2022-01-01 --end 2022-12-31
+- Show residuals for the SeasonalNaive model on the default dataset: forecast/seasonalnaive --residuals
+- Export SeasonalNaive predictions to a csv file: forecast/seasonalnaive --export-pred-raw

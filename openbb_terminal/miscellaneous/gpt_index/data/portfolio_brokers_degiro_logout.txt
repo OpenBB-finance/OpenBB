@@ -1,0 +1,10 @@
+parent_command:portfolio/brokers/degiro
+usage: logout
+
+logout
+Examples:
+- Log out of your Degiro account: portfolio/brokers/degiro/logout
+- Sign out from Degiro: portfolio/brokers/degiro/logout
+- Disconnect from your Degiro broker account: portfolio/brokers/degiro/logout
+- End your Degiro session: portfolio/brokers/degiro/logout
+- Exit your Degiro account: portfolio/brokers/degiro/logout

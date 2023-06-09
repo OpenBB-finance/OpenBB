@@ -1,0 +1,11 @@
+parent_command: stocks/ins/
+usage: filter [-l LIMIT] [-u] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print open insider filtered data using loaded preset. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -u, --urls            Flag to show hyperlinks (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about filter' to access the related guide.
+Summary: Display open insider filtered data using a loaded preset from the OpenInsider source. You can set a limit on the number of data rows to display, show hyperlinks, and export the data in various formats. Additionally, you can specify the name of an Excel sheet to save the data to when exporting as an .xlsx file.
+
+Examples:
+- Display the top 10 open insider filtered data rows: stocks/ins/filter
+- Show the top 20 open insider filtered data rows: stocks/ins/filter -l 20
+- Display open insider filtered data with hyperlinks: stocks/ins/filter -u
+- Limit the display to 5 data rows and include hyperlinks: stocks/ins/filter -l 5 -u
+- Export the open insider filtered data as a CSV file: stocks/ins/filter --export csv
+- Save the open insider filtered data to an Excel sheet named "InsiderData": stocks/ins/filter --sheet-name InsiderData --export xlsx

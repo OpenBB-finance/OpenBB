@@ -1,0 +1,25 @@
+parent_command:econometrics
+usage: panel -d DEPENDENT -i INDEPENDENT [-r {pols,re,bols,fe,fdols,POLS,RE,BOLS,FE,FDOLS}] [-e] [-t]
+
+Performs regression analysis on Panel Data. There are a multitude of options to select from to fit the needs of restrictions of the dataset.
+
+optional arguments:
+  -d DEPENDENT, --dependent DEPENDENT
+                        The dependent variable on the regression you would like to perform (default: None)
+  -i INDEPENDENT, --independent INDEPENDENT
+                        The independent variables on the regression you would like to perform. E.g. wage_panel.married,wage_panel.union (default: None)
+  -r {pols,re,bols,fe,fdols,POLS,RE,BOLS,FE,FDOLS}, --regression {pols,re,bols,fe,fdols,POLS,RE,BOLS,FE,FDOLS}
+                        The type of regression you wish to perform. This can be either pols (Pooled OLS), re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS) (default: pols)
+  -e, --entity_effects  Using this command creates entity effects, which is equivalent to including dummies for each entity. This is only used within Fixed Effects estimations (when type is set to 'fe') (default: False)
+  -t, --time_effects    Using this command creates time effects, which is equivalent to including dummies for each time. This is only used within Fixed Effects estimations (when type is set to 'fe') (default: False)
+
+
+Examples:
+- Perform a Pooled OLS regression with dependent variable and independent variables: econometrics/panel -d DEPENDENT -i INDEPENDENT
+- Run a Random Effects regression on the dataset: econometrics/panel -d DEPENDENT -i INDEPENDENT -r re
+- Conduct a Between OLS regression analysis: econometrics/panel -d DEPENDENT -i INDEPENDENT -r bols
+- Execute a Fixed Effects regression without entity or time effects: econometrics/panel -d DEPENDENT -i INDEPENDENT -r fe
+- Use a First Difference OLS regression for the analysis: econometrics/panel -d DEPENDENT -i INDEPENDENT -r fdols
+- Perform a Fixed Effects regression with entity effects: econometrics/panel -d DEPENDENT -i INDEPENDENT -r fe -e
+- Run a Fixed Effects regression with time effects: econometrics/panel -d DEPENDENT -i INDEPENDENT -r fe -t
+- Conduct a Fixed Effects regression with both entity and time effects: econometrics/panel -d DEPENDENT -i INDEPENDENT -r fe -e -t

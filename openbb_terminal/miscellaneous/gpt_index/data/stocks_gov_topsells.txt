@@ -1,0 +1,11 @@
+parent_command: stocks/gov/
+usage: topsells [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS]                 [-l LIMIT] [--raw] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Top sells for government trading. [Source: www.quiverquant.com]  optional arguments:   -g {congress,senate,house}, --govtype {congress,senate,house}   -p PAST_TRANSACTIONS_MONTHS, --past_transactions_months PAST_TRANSACTIONS_MONTHS                         Past transaction months (default: 6)   -l LIMIT, --limit LIMIT                         Limit of top tickers to display (default: 10)   --raw                 Print raw data. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about topsells' to access the related guide.
+Summary: Display top sells for government trading based on the specified government type (congress, senate, or house), past transaction months, and limit of top tickers. You can also print raw data, export the data in various formats, and save the data to a specific excel sheet.
+
+Examples:
+- Show top 10 sells for congress in the past 6 months: stocks/gov/topsells -g congress -p 6 -l 10
+- Display top 5 sells for senate in the past 3 months: stocks/gov/topsells -g senate -p 3 -l 5
+- View top 20 sells for the house in the past 12 months: stocks/gov/topsells -g house -p 12 -l 20
+- Show raw data for top 10 sells in congress: stocks/gov/topsells -g congress --raw
+- Export top sells for senate in the past 6 months to a csv file: stocks/gov/topsells -g senate -p 6 --export csv
+- Save top sells for the house in the past 3 months to a specific excel sheet: stocks/gov/topsells -g house -p 3 --sheet-name Sheet1

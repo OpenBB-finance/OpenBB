@@ -1,0 +1,20 @@
+parent_command:alt/covid
+usage: slopes [-d DAYS] [-r] [-t THRESHOLD]
+
+Show countries with highest slopes.
+
+optional arguments:
+  -d DAYS, --days DAYS  Number of days back to look (default: 30)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -t THRESHOLD, --threshold THRESHOLD
+                        Threshold for total cases over period (default: 10000)
+
+
+Examples:
+- To display countries with the highest slopes for the last 30 days: alt/covid/slopes
+- Show countries with the highest slopes for the past 15 days: alt/covid/slopes -d 15
+- Display countries with the highest slopes for the last 7 days and a threshold of 15000 total cases: alt/covid/slopes -d 7 -t 15000
+- Show countries with the highest slopes for the past 30 days in ascending order: alt/covid/slopes -r
+- Display countries with the highest slopes for the past 60 days, sorted in ascending order: alt/covid/slopes -d 60 -r
+- Show countries with the highest slopes for the past 45 days and a threshold of 5000 total cases: alt/covid/slopes -d 45 -t 5000
+- Display countries with the highest slopes for the last 30 days, sorted in ascending order, and with a threshold of 20000 total cases: alt/covid/slopes -r -t 20000

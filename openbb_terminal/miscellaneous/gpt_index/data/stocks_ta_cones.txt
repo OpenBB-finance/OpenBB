@@ -1,0 +1,21 @@
+parent_command:stocks/ta
+usage: cones [-l LOWER_Q] [-u UPPER_Q] [-m {STD,Parkinson,Garman-Klass,Hodges-Tompkins,Rogers-Satchell,Yang-Zhang}] [--is_crypto]
+
+Calculates the realized volatility quantiles over rolling windows of time. The model for calculating volatility is selectable.
+
+optional arguments:
+  -l LOWER_Q, --lower_q LOWER_Q
+                        The lower quantile value for calculations. (default: 0.25)
+  -u UPPER_Q, --upper_q UPPER_Q
+                        The upper quantile value for calculations. (default: 0.75)
+  -m {STD,Parkinson,Garman-Klass,Hodges-Tompkins,Rogers-Satchell,Yang-Zhang}, --model {STD,Parkinson,Garman-Klass,Hodges-Tompkins,Rogers-Satchell,Yang-Zhang}
+                        The model used to calculate realized volatility. (default: STD)
+  --is_crypto           If True, volatility is calculated for 365 days instead of 252. (default: False)
+
+
+Examples:
+- To calculate realized volatility quantiles for a stock using the default settings: stocks/load <SYMBOL>/ta/cones
+- To calculate realized volatility quantiles with custom lower and upper quantile values: stocks/load <SYMBOL>/ta/cones -l 0.1 -u 0.9
+- To calculate realized volatility quantiles using a specific model, such as the Parkinson model: stocks/load <SYMBOL>/ta/cones -m Parkinson
+- To calculate realized volatility quantiles for a cryptocurrency using the default settings: crypto/load <COIN>/ta/cones --is_crypto
+- To calculate realized volatility quantiles for a cryptocurrency with custom quantile values and the Garman-Klass model: crypto/load <COIN>/ta/cones -l 0.2 -u 0.8 -m Garman-Klass --is_crypto

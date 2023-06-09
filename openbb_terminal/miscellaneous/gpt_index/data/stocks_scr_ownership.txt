@@ -1,0 +1,15 @@
+parent_command: stocks/scr/
+usage: ownership [-p Desired preset.] [-l LIMIT] [-r] [-s SORT] [-h]                  [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints ownership data of the companies that meet the pre-set filtering.  optional arguments:   -p Desired preset., --preset Desired preset.                         Filter presets   -l LIMIT, --limit LIMIT                         Limit of stocks to print   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed.   -s SORT, --sort SORT  Sort elements of the table.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about ownership' to access the related guide.
+Summary: Display ownership data of companies that meet pre-set filtering criteria. You can choose a desired preset, limit the number of stocks to display, sort the data in ascending or descending order, and export the data in various formats. You can also specify the name of the excel sheet for .xlsx files.
+
+Examples:
+- Display ownership data using a specific preset: stocks/scr/ownership -p <Desired preset>
+- Display ownership data for a limited number of stocks: stocks/scr/ownership -l 10
+- Display ownership data sorted in ascending order: stocks/scr/ownership -r
+- Display ownership data sorted by a specific column: stocks/scr/ownership -s <SORT>
+- Export ownership data to a csv file: stocks/scr/ownership --export csv
+- Save ownership data to a specific excel sheet: stocks/scr/ownership --sheet-name Sheet1
+- Display ownership data using a preset and limit the number of stocks: stocks/scr/ownership -p <Desired preset> -l 20
+- Display ownership data sorted by a specific column in ascending order: stocks/scr/ownership -s <SORT> -r
+- Display ownership data using a preset and export to a json file: stocks/scr/ownership -p <Desired preset> --export json
+- Display ownership data with a specific preset, limit, and sort order: stocks/scr/ownership -p <Desired preset> -l 15 -s <SORT> -r
