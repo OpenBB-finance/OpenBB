@@ -2204,14 +2204,14 @@ def query_LLM(query_text, gpt_model):
 
     prompt_string = f"""From argparse help text above, provide the terminal
         command for {query_text}.Provide the exact command along with the parent command
-        with a "/" seperation to get that information,and nothing else including any
-        explaination. Don't add anyother word such as 'Command to get', 'Answer' or the likes.
+        with a "/" separation to get that information,and nothing else including any
+        explanation. Don't add any other word such as 'Command to get', 'Answer' or the likes.
         Remember, it is very important to provide the full path of the command. Pay
         attention to the parent commands, and make sure that if you were to run a command that is located
         in a submenu, that it will have the full path included as if you were running
         from the root directory. If and only if there is no information in the argparse help text above,
         then just provide information on how to find that answer through normal financial terms.
-        Only do what is asked and provide a single comand string. Always use a comma to separate between countries but
+        Only do what is asked and provide a single command string. Always use a comma to separate between countries but
         never between full commands. Lower cap the country name.
         """
 
