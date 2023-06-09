@@ -5,8 +5,8 @@ from typing import Dict, List, Match, Optional, Tuple, Union
 
 from dateutil.relativedelta import relativedelta
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
 # pylint: disable=too-many-branches,too-many-return-statements
@@ -274,13 +274,43 @@ def parse_openbb_script(
                                 if VAR_NAME in ROUTINE_VARS:
                                     values = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
                                     if isinstance(values, list):
-                                        # TODO: This is a bit of a hack, but we need to do same here
-                                        # for case user selects first $ARGV[n] with n>0 and then
-                                        # tries to access $ARGV[0] which is empty
-                                        templine = templine.replace(
-                                            match[0],
-                                            eval(f"values[{VAR_SLICE}]"),
-                                        )
+                                        val = eval("values[0]")
+                                        if val:
+                                            templine = templine.replace(
+                                                match[0],
+                                                val,
+                                            )
+
+                                        else:
+                                            # This is a bit of a hack, but we need to do same here
+                                            # for case user selects first $ARGV[n] with n>0 and then
+                                            # tries to access $ARGV[0] which is empty
+                                            if in_production:
+                                                plots_backend().start(True)
+                                                args = plots_backend().call_routine(
+                                                    f"Routine '{file_path}' requires variable '{VAR_NAME}[0]'",
+                                                    [f"{VAR_NAME}[0]"],
+                                                    Path(__file__).parent.parent
+                                                    / "openbb_terminal"
+                                                    / "core"
+                                                    / "routines"
+                                                    / "argv_input.html",
+                                                )
+                                                if args and f"{VAR_NAME}[0]" in args:
+                                                    # Update index 0 from $ARGV with user input
+                                                    ROUTINE_VARS[VAR_NAME][0] = [
+                                                        args[f"{VAR_NAME}[0]"]
+                                                    ]
+                                                    templine = templine.replace(
+                                                        match[0],
+                                                        args[f"{VAR_NAME}[0]"],
+                                                    )
+                                                else:
+                                                    return (
+                                                        f"[red]Variable {VAR_NAME}[{VAR_SLICE}] is empty[/red]",
+                                                        "",
+                                                    )
+
                                     else:
                                         templine = templine.replace(match[0], values)
                                 else:
@@ -291,12 +321,17 @@ def parse_openbb_script(
                                         args = plots_backend().call_routine(
                                             f"Routine '{file_path}' requires variable '{VAR_NAME}[{VAR_SLICE}]'",
                                             [f"{VAR_NAME}[{VAR_SLICE}]"],
-                                            Path(__file__).parent.parent / "openbb_terminal"
-                                                / "core" / "routines" / "argv_input.html",
+                                            Path(__file__).parent.parent
+                                            / "openbb_terminal"
+                                            / "core"
+                                            / "routines"
+                                            / "argv_input.html",
                                         )
                                         if args and f"{VAR_NAME}[{VAR_SLICE}]" in args:
                                             # Update index 0 from $ARGV with user input
-                                            ROUTINE_VARS[VAR_NAME] = [args[f"{VAR_NAME}[{VAR_SLICE}]"]]
+                                            ROUTINE_VARS[VAR_NAME] = [
+                                                args[f"{VAR_NAME}[{VAR_SLICE}]"]
+                                            ]
                                             templine = templine.replace(
                                                 match[0],
                                                 args[f"{VAR_NAME}[{VAR_SLICE}]"],
@@ -334,17 +369,29 @@ def parse_openbb_script(
                                             args = plots_backend().call_routine(
                                                 f"Routine '{file_path}' requires variable '{VAR_NAME}[{VAR_SLICE}]'",
                                                 [f"{VAR_NAME}[{VAR_SLICE}]"],
-                                                Path(__file__).parent.parent / "openbb_terminal"
-                                                    / "core" / "routines" / "argv_input.html",
+                                                Path(__file__).parent.parent
+                                                / "openbb_terminal"
+                                                / "core"
+                                                / "routines"
+                                                / "argv_input.html",
                                             )
-                                            if args and f"{VAR_NAME}[{VAR_SLICE}]" in args:
+                                            if (
+                                                args
+                                                and f"{VAR_NAME}[{VAR_SLICE}]" in args
+                                            ):
                                                 # Update index different than 0 from $ARGV with user input
                                                 # Note that we only get here if the user invokes $ARGV[n]
                                                 # with n != 0 for the first time, thus it means that we are
                                                 # ok with setting the first elements as empty since they haven't
                                                 # been used yet
-                                                ROUTINE_VARS[VAR_NAME] += [""] * (int(VAR_SLICE)+1-len(ROUTINE_VARS[VAR_NAME]))
-                                                ROUTINE_VARS[VAR_NAME][int(VAR_SLICE)] = args[f"{VAR_NAME}[{VAR_SLICE}]"]
+                                                ROUTINE_VARS[VAR_NAME] += [""] * (
+                                                    int(VAR_SLICE)
+                                                    + 1
+                                                    - len(ROUTINE_VARS[VAR_NAME])
+                                                )
+                                                ROUTINE_VARS[VAR_NAME][
+                                                    int(VAR_SLICE)
+                                                ] = args[f"{VAR_NAME}[{VAR_SLICE}]"]
                                                 templine = templine.replace(
                                                     match[0],
                                                     args[f"{VAR_NAME}[{VAR_SLICE}]"],
@@ -361,17 +408,28 @@ def parse_openbb_script(
                                         # Handle the case the initial fields are empty
                                         # because we invoked $ARGV[n] with n > 0 before creating n == 0
                                         # so we check that the fields are missing and we ask for them
-                                        if in_production and not variable[int(VAR_SLICE)]:
+                                        if (
+                                            in_production
+                                            and not variable[int(VAR_SLICE)]
+                                        ):
                                             plots_backend().start(True)
                                             args = plots_backend().call_routine(
                                                 f"Routine '{file_path}' requires variable '{VAR_NAME}[{VAR_SLICE}]'",
                                                 [f"{VAR_NAME}[{VAR_SLICE}]"],
-                                                Path(__file__).parent.parent / "openbb_terminal"
-                                                    / "core" / "routines" / "argv_input.html",
+                                                Path(__file__).parent.parent
+                                                / "openbb_terminal"
+                                                / "core"
+                                                / "routines"
+                                                / "argv_input.html",
                                             )
-                                            if args and f"{VAR_NAME}[{VAR_SLICE}]" in args:
+                                            if (
+                                                args
+                                                and f"{VAR_NAME}[{VAR_SLICE}]" in args
+                                            ):
                                                 # Replace the empty value that we have with the user input
-                                                ROUTINE_VARS[VAR_NAME][int(VAR_SLICE)] = args[f"{VAR_NAME}[{VAR_SLICE}]"]
+                                                ROUTINE_VARS[VAR_NAME][
+                                                    int(VAR_SLICE)
+                                                ] = args[f"{VAR_NAME}[{VAR_SLICE}]"]
                                                 templine = templine.replace(
                                                     match[0],
                                                     args[f"{VAR_NAME}[{VAR_SLICE}]"],
@@ -395,8 +453,11 @@ def parse_openbb_script(
                                         args = plots_backend().call_routine(
                                             f"Routine '{file_path}' requires variable '{VAR_NAME}[{VAR_SLICE}]'",
                                             [f"{VAR_NAME}[{VAR_SLICE}]"],
-                                            Path(__file__).parent.parent / "openbb_terminal"
-                                                / "core" / "routines" / "argv_input.html",
+                                            Path(__file__).parent.parent
+                                            / "openbb_terminal"
+                                            / "core"
+                                            / "routines"
+                                            / "argv_input.html",
                                         )
                                         if args and f"{VAR_NAME}[{VAR_SLICE}]" in args:
                                             # Update index different than 0 from $ARGV with user input
@@ -404,8 +465,12 @@ def parse_openbb_script(
                                             # with n != 0 for the first time, thus it means that we are
                                             # ok with setting the first elements as empty since they haven't
                                             # been used yet
-                                            ROUTINE_VARS[VAR_NAME] = [""] * (int(VAR_SLICE)+1)
-                                            ROUTINE_VARS[VAR_NAME][int(VAR_SLICE)] = args[f"{VAR_NAME}[{VAR_SLICE}]"]
+                                            ROUTINE_VARS[VAR_NAME] = [""] * (
+                                                int(VAR_SLICE) + 1
+                                            )
+                                            ROUTINE_VARS[VAR_NAME][
+                                                int(VAR_SLICE)
+                                            ] = args[f"{VAR_NAME}[{VAR_SLICE}]"]
                                             templine = templine.replace(
                                                 match[0],
                                                 args[f"{VAR_NAME}[{VAR_SLICE}]"],
@@ -433,26 +498,162 @@ def parse_openbb_script(
                                 or VAR_SLICE.split(":")[1].isdigit()
                             )
                         ):
-                            slicing_tuple = "slice("
-                            slicing_tuple += (
-                                VAR_SLICE.split(":")[0]
-                                if VAR_SLICE.split(":")[0].isdigit()
-                                else "None"
-                            )
-                            slicing_tuple += ","
-                            slicing_tuple += (
-                                VAR_SLICE.split(":")[1]
-                                if VAR_SLICE.split(":")[1].isdigit()
-                                else "None"
-                            )
-                            slicing_tuple += ")"
+                            # The variable exists for us to slice it
+                            if VAR_NAME in ROUTINE_VARS:
+                                if not isinstance(ROUTINE_VARS[VAR_NAME], list):
+                                    return (
+                                        f"[red]Variable {VAR_NAME} is not a list and"
+                                        "thus it cannot be sliced.[/red]",
+                                        "",
+                                    )
 
-                            templine = templine.replace(
-                                match[0],
-                                ",".join(
-                                    eval(f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]')
-                                ),
-                            )
+                                slice_start = (
+                                    VAR_SLICE.split(":")[0]
+                                    if VAR_SLICE.split(":")[0].isdigit()
+                                    else "None"
+                                )
+                                slicing_tuple = "slice("
+                                slicing_tuple += slice_start
+                                slicing_tuple += ","
+
+                                slice_end = (
+                                    VAR_SLICE.split(":")[1]
+                                    if VAR_SLICE.split(":")[1].isdigit()
+                                    else "None"
+                                )
+                                slicing_tuple += slice_end
+                                slicing_tuple += ")"
+
+                                # When in production there's the chance that the user wants to slice
+                                # variables that were previously empty because we created them in production
+                                if in_production:
+                                    slice_st = (
+                                        int(slice_start) if slice_start != "None" else 0
+                                    )
+                                    slice_en = (
+                                        int(slice_end)
+                                        if slice_end != "None"
+                                        else len(ROUTINE_VARS[VAR_NAME]) - 1
+                                    )
+                                    for slice_individual_idx in range(
+                                        slice_st, slice_en
+                                    ):
+                                        # Check that we are trying to slice an array that exists and
+                                        # the slicing number makes sense but one of the values is empty
+                                        if (
+                                            slice_individual_idx
+                                            < len(ROUTINE_VARS[VAR_NAME])
+                                            and not ROUTINE_VARS[VAR_NAME][
+                                                slice_individual_idx
+                                            ]
+                                        ):
+                                            plots_backend().start(True)
+                                            name = f"{VAR_NAME}[{slice_individual_idx}]"
+                                            args = plots_backend().call_routine(
+                                                f"Routine '{file_path}' requires variable '{name}'",
+                                                [f"{VAR_NAME}[{slice_individual_idx}]"],
+                                                Path(__file__).parent.parent
+                                                / "openbb_terminal"
+                                                / "core"
+                                                / "routines"
+                                                / "argv_input.html",
+                                            )
+                                            if (
+                                                args
+                                                and f"{VAR_NAME}[{slice_individual_idx}]"
+                                                in args
+                                            ):
+                                                # Update entire $ARGV with user input
+                                                # If it has a comma it means the ARGV has multiple values
+                                                # otherwise it is a single value
+                                                ROUTINE_VARS[VAR_NAME] = args[
+                                                    f"{VAR_NAME}[{slice_individual_idx}]"
+                                                ]
+                                                templine = templine.replace(
+                                                    match[0],
+                                                    args[
+                                                        f"{VAR_NAME}[{slice_individual_idx}]"
+                                                    ],
+                                                )
+                                            else:
+                                                return (
+                                                    f"[red]Variable {VAR_NAME}[{slice_individual_idx}] not given "
+                                                    "for current routine script.[/red]",
+                                                    "",
+                                                )
+
+                                        # We are trying to slice elements that don't exist, so we will ask the user
+                                        # to provide them
+                                        if (
+                                            slice_individual_idx
+                                            > len(ROUTINE_VARS[VAR_NAME]) - 1
+                                        ):
+                                            plots_backend().start(True)
+                                            name = f"{VAR_NAME}[{slice_individual_idx}]"
+                                            args = plots_backend().call_routine(
+                                                f"Routine '{file_path}' requires variable '{name}'",
+                                                [f"{VAR_NAME}[{slice_individual_idx}]"],
+                                                Path(__file__).parent.parent
+                                                / "openbb_terminal"
+                                                / "core"
+                                                / "routines"
+                                                / "argv_input.html",
+                                            )
+                                            if (
+                                                args
+                                                and f"{VAR_NAME}[{slice_individual_idx}]"
+                                                in args
+                                            ):
+                                                # Add enough elements to fix missing values on the list
+                                                ROUTINE_VARS[VAR_NAME] += [""] * (
+                                                    slice_individual_idx
+                                                    + 1
+                                                    - len(ROUTINE_VARS[VAR_NAME])
+                                                )
+                                                ROUTINE_VARS[VAR_NAME][
+                                                    slice_individual_idx
+                                                ] = args[
+                                                    f"{VAR_NAME}[{slice_individual_idx}]"
+                                                ]
+                                                templine = templine.replace(
+                                                    match[0],
+                                                    args[
+                                                        f"{VAR_NAME}[{slice_individual_idx}]"
+                                                    ],
+                                                )
+                                            else:
+                                                return (
+                                                    f"[red]Variable {VAR_NAME}[{slice_individual_idx}] not given "
+                                                    "for current routine script.[/red]",
+                                                    "",
+                                                )
+
+                                    templine = templine.replace(
+                                        match[0],
+                                        ",".join(
+                                            eval(
+                                                f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
+                                            )
+                                        ),
+                                    )
+
+                                else:
+                                    templine = templine.replace(
+                                        match[0],
+                                        ",".join(
+                                            eval(
+                                                f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
+                                            )
+                                        ),
+                                    )
+
+                            # The variable doesn't exist f or us to slice it
+                            else:
+                                return (
+                                    f"[red]Variable {VAR_NAME} not given for "
+                                    "current routine script for it to be sliced.[/red]",
+                                    "",
+                                )
 
                         # Just replace value without slicing or list
                         else:
@@ -507,15 +708,20 @@ def parse_openbb_script(
                                         args = plots_backend().call_routine(
                                             f"Routine '{file_path}' requires variable '{VAR_NAME}'",
                                             [VAR_NAME],
-                                            Path(__file__).parent.parent / "openbb_terminal"
-                                                / "core" / "routines" / "argv_input.html",
+                                            Path(__file__).parent.parent
+                                            / "openbb_terminal"
+                                            / "core"
+                                            / "routines"
+                                            / "argv_input.html",
                                         )
                                         if args and f"{VAR_NAME}" in args:
                                             # Update entire $ARGV with user input
                                             # If it has a comma it means the ARGV has multiple values
                                             # otherwise it is a single value
                                             if "," in args[VAR_NAME]:
-                                                ROUTINE_VARS[VAR_NAME] = args[VAR_NAME].split(",")
+                                                ROUTINE_VARS[VAR_NAME] = args[
+                                                    VAR_NAME
+                                                ].split(",")
                                             else:
                                                 ROUTINE_VARS[VAR_NAME] = args[VAR_NAME]
                                             templine = templine.replace(
