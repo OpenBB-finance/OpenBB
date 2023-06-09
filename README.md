@@ -24,6 +24,7 @@
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=Follow%20%40openbb_finance)](https://twitter.com/openbb_finance)
 
 [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/OpenBB-finance/OpenBBTerminal)
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/OpenBB-finance/OpenBBTerminal)
 
 <!-- PROJECT LOGO -->
