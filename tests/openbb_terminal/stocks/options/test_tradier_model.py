@@ -157,14 +157,6 @@ def test_get_historical_greeks_invalid_status(mocker):
 
 
 @pytest.mark.vcr
-def test_SYMBOLS(recorder):
-    ticker = tradier_model.Chains()
-    results_df = ticker.SYMBOLS
-    assert not results_df.empty
-    recorder.capture(results_df)
-
-
-@pytest.mark.vcr
 def test_load_options(recorder):
     results = tradier_model.load_options(symbol="AAPL")
     results1 = tradier_model.load_options(symbol="AAPL", pydantic=True)
@@ -179,4 +171,12 @@ def test_load_options(recorder):
     assert (
         results.chains["volume"].sum() == pd.DataFrame(results1.chains)["volume"].sum()
     )
-    recorder.capture([results.underlying_name, results1.underlying_name])
+    recorder.capture(
+        [
+            results.chains.columns.to_list(),
+            results.underlying_price.index.to_list(),
+            results.SYMBOLS.columns.to_list(),
+            results.underlying_name,
+            results1.underlying_name,
+        ]
+    )

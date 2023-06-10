@@ -41,7 +41,7 @@ def test_underlying_price_bad_symbol():
 
 @pytest.mark.vcr
 def test_underlying_name():
-    ticker = tmx_model.Chains().get_chains("BAM")
+    ticker = tmx_model.get_chains("BAM")
     assert hasattr(ticker, "underlying_name")
     assert isinstance(ticker.underlying_name, str)
     assert ticker.underlying_name != "BAM"
@@ -49,10 +49,9 @@ def test_underlying_name():
 
 @pytest.mark.vcr
 def test_check_symbol():
-    ticker = tmx_model.Chains()
-    result_df = ticker.check_symbol("BAD_SYMBOL")
+    result_df = tmx_model.check_symbol("BAD_SYMBOL")
     assert isinstance(result_df, bool)
-    result_df2 = ticker.check_symbol("CM")
+    result_df2 = tmx_model.check_symbol("CM")
     assert result_df2 is True
 
 
@@ -61,7 +60,7 @@ def test_last_price():
     ticker = tmx_model.load_options("AC")
     assert hasattr(ticker, "last_price")
     assert isinstance(ticker.last_price, float)
-    ticker2 = tmx_model.load_options("AC", "2021-12-28")
+    ticker2 = tmx_model.get_eodchains("AC", "2021-12-28")
     assert hasattr(ticker2, "last_price")
     assert isinstance(ticker2.last_price, float)
     assert ticker.last_price != ticker2.last_price
@@ -69,7 +68,7 @@ def test_last_price():
 
 @pytest.mark.vcr
 def test_chains():
-    ticker = tmx_model.Chains().get_chains("BMO")
+    ticker = tmx_model.get_chains("BMO")
     assert hasattr(ticker, "chains")
     assert isinstance(ticker.chains, pd.DataFrame)
     ticker = tmx_model.load_options("BMO", pydantic=True)
@@ -80,7 +79,7 @@ def test_chains():
 
 @pytest.mark.vcr
 def test_strikes():
-    ticker = tmx_model.Chains().get_chains("RY")
+    ticker = tmx_model.get_chains("RY")
     assert hasattr(ticker, "strikes")
     assert isinstance(ticker.strikes, list)
     assert isinstance(ticker.strikes[0], float)
@@ -89,9 +88,9 @@ def test_strikes():
 
 @pytest.mark.vcr
 def test_eodchains_holiday():
-    ticker = tmx_model.Chains().get_eodchains("SU", "2018-12-25")
+    ticker = tmx_model.get_eodchains("SU", "2018-12-25")
     assert not ticker.chains.empty
-    ticker1 = tmx_model.Chains().get_eodchains("SU", "2020-07-01")
+    ticker1 = tmx_model.get_eodchains("SU", "2020-07-01")
     assert hasattr(ticker1, "date")
     assert ticker1.date != "2020-07-01"
 
@@ -102,27 +101,24 @@ def test_expirations():
     assert hasattr(ticker, "expirations")
     results1 = ticker.expirations
     assert isinstance(results1, list)
-    ticker.get_eodchains("VFV", "2021-12-28")
-    results_df2 = ticker.expirations
+    ticker2 = tmx_model.get_eodchains("VFV", "2021-12-28")
+    results_df2 = ticker2.expirations
     assert isinstance(results_df2, list)
     assert results1[1] != results_df2[1]
 
 
 @pytest.mark.vcr
 def test_SYMBOLS():
-    ticker = tmx_model.Chains()
-    results_df = ticker.SYMBOLS
+    results_df = tmx_model.get_all_ticker_symbols()
     assert not results_df.empty
     assert "RY" in results_df.index
 
 
 @pytest.mark.vcr
 def test_hasGreeks_hasIV():
-    ticker = tmx_model.Chains()
-    assert ticker.chains.empty
     ac = tmx_model.load_options("AC")
     assert ac.hasGreeks is False
     assert ac.hasIV is False
-    ac2 = tmx_model.load_options("AC", "2022-01-03")
+    ac2 = tmx_model.get_eodchains("AC", "2022-01-03")
     assert ac2.hasIV
     assert ac2.hasGreeks is False

@@ -1,3 +1,5 @@
+# mypy: disable-error-code=attr-defined
+
 """Nasdaq Model"""
 __docformat__ = "numpy"
 
@@ -16,7 +18,7 @@ from openbb_terminal.stocks.options.op_helpers import Options, PydanticOptions
 
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
-# mypy: disable-error-code=no-redef
+
 
 call_cols = [
     "c_Last",
@@ -304,97 +306,50 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-class Chains(Options):
-    """OptionsChains data object for Nasdaq."""
+def get_available_greeks(options: object, expiration: str = "") -> pd.DataFrame:
+    """Get available greeks for a specific expiration.
+    This function will return data for strike prices near the money only.
 
-    def __init__(self) -> None:
-        self.SYMBOLS: pd.DataFrame = (
-            pandas_datareader.nasdaq_trader.get_nasdaq_symbols()
+    Parameters
+    ----------
+    expiration: str
+        The expiration date to return the data.  Default is the first available date. (YYYY-MM-DD)
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with option greeks and strike prices.
+
+    Examples
+    --------
+    Near-the-Money Greeks for the closest expiration date.
+
+    >>> greeks = self.get_available_greeks()
+
+    Get the last expiration date.
+
+    >>> greeks = self.get_available_greeks(self.expirations[-1])
+    """
+    OptionsChains = options
+    if expiration == "":
+        expiration = OptionsChains.expirations[0]
+
+    if expiration not in OptionsChains.expirations:
+        print(
+            f"{expiration}",
+            " is not a valid expiration.  Choose from, ",
+            OptionsChains.expirations,
+            sep="",
         )
-        self.source: str = "Nasdaq"
+        return pd.DataFrame()
 
-    def get_chains(self, symbol: str) -> object:
-        """Load options data for Nasdaq.  Parameters and attributes are the same as `load_options()`."""
+    greeks = get_option_greeks(OptionsChains.symbol, expiration)
 
-        self.source = "Nasdaq"
-        self.symbol = symbol.upper()
-        self.chains = pd.DataFrame()
-        self.underlying_name = ""
-        self.underlying_price = pd.Series(dtype=object)
-        self.last_price = 0
-        self.expirations = []
-        self.strikes = []
+    return greeks
 
-        if self.symbol not in self.SYMBOLS.index and self.symbol != "NDX":
-            print(self.symbol, "was not found in the Nasdaq directory")
-            return self
-
-        try:
-            self.chains = get_full_option_chain(self.symbol)
-            now = datetime.now()
-            temp = pd.DatetimeIndex(self.chains.expiration)
-            temp_ = (temp - now).days + 1
-            self.chains["dte"] = temp_
-        except Exception:
-            return self
-        if not self.chains.empty:
-            self.expirations = option_expirations(self.symbol)
-            self.strikes = (
-                pd.Series(self.chains["strike"]).sort_values().unique().tolist()
-            )
-            self.underlying_price = get_underlying_price(self.symbol)
-            self.last_price = self.underlying_price["price"]
-            self.underlying_name = self.underlying_price["companyName"]
-
-        self.hasIV = "impliedVolatility" in self.chains.columns
-        self.hasGreeks = "gamma" in self.chains.columns
-
-        return self
-
-    def get_available_greeks(self, expiration: str = "") -> pd.DataFrame:
-        """Get available greeks for a specific expiration.
-        This function will return data for strike prices near the money only.
-
-        Parameters
-        ----------
-        expiration: str
-            The expiration date to return the data.  Default is the first available date. (YYYY-MM-DD)
-
-        Returns
-        -------
-        pd.DataFrame
-            Dataframe with option greeks and strike prices.
-
-        Examples
-        --------
-        Near-the-Money Greeks for the closest expiration date.
-
-        >>> greeks = self.get_available_greeks()
-
-        Get the last expiration date.
-
-        >>> greeks = self.get_available_greeks(self.expirations[-1])
-        """
-
-        if expiration == "":
-            expiration = self.expirations[0]
-
-        if expiration not in self.expirations:
-            print(
-                f"{expiration}",
-                " is not a valid expiration.  Choose from, ",
-                self.expirations,
-                sep="",
-            )
-            return self
-
-        greeks = get_option_greeks(self.symbol, expiration)
-
-        return greeks
-
-
+@log_start_end(log=logger)
 def load_options(symbol: str, pydantic: bool = False) -> object:
-    """Options data object for Nasdaq.
+    """OptionsChains data object for Nasdaq.
 
     Parameters
     ----------
@@ -406,13 +361,8 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     Returns
     -------
     object: Options
-
-        symbol: str
-            The symbol entered by the user.
-        source: str
-            The source of the data, "Nasdaq".
         chains: dict
-            The complete options chain for the ticker.  Returns as a Pandas DataFrame if pydantic is False.
+            The complete options chain for the ticker. Returns as a Pandas DataFrame if pydantic is False.
         expirations: list[str]
             List of unique expiration dates. (YYYY-MM-DD)
         strikes: list[float]
@@ -422,11 +372,17 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
         underlying_name: str
             The name of the underlying asset.
         underlying_price: dict
-            The price of the underlying asset.  Returns as a Pandas Series if pydantic is False.
+            The price and recent performance of the underlying asset. Returns as a Pandas Series if pydantic is False.
         hasIV: bool
-            Does not return implied volatility.
+            Returns implied volatility.
         hasGreeks: bool
-            Does not return greeks data.
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "Nasdaq".
+        SYMBOLS: dict
+            The Nasdaq symbol directory. Returns as a Pandas DataFrame if pydantic is False.
 
     Examples
     --------
@@ -440,27 +396,62 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     >>> data = load_options("AAPL", pydantic=True)
     """
 
-    options = Chains()
-    options.get_chains(symbol)
+    symbol = symbol.upper()
+    OptionsChains = Options()
+    OptionsChains.source = "Nasdaq"
+    OptionsChains.SYMBOLS = pandas_datareader.nasdaq_trader.get_nasdaq_symbols()
+    OptionsChains.symbol = symbol
+    if OptionsChains.symbol not in OptionsChains.SYMBOLS.index and OptionsChains.symbol != "NDX":
+        print(OptionsChains.symbol, "was not found in the Nasdaq directory")
+        return OptionsChains
 
-    if not pydantic:
-        return options
+    OptionsChains.symbol = symbol
 
-    if not options.chains.empty:
-        if options.last_price is None:
-            options.last_price = 0
-            print("No last price for " + options.symbol)
-        options_chains = PydanticOptions(
-            source=options.source,
-            symbol=options.symbol,
-            underlying_name=options.underlying_name,
-            last_price=options.last_price,
-            expirations=options.expirations,
-            strikes=options.strikes,
-            hasIV=options.hasIV,
-            hasGreeks=options.hasGreeks,
-            underlying_price=options.underlying_price.to_dict(),
-            chains=options.chains.to_dict(),
+    try:
+        OptionsChains.chains = get_full_option_chain(OptionsChains.symbol)
+        now = datetime.now()
+        temp = pd.DatetimeIndex(OptionsChains.chains.expiration)
+        temp_ = (temp - now).days + 1
+        OptionsChains.chains["dte"] = temp_
+
+    except Exception:
+        return OptionsChains
+
+    if not OptionsChains.chains.empty:
+        OptionsChains.expirations = option_expirations(OptionsChains.symbol)
+        OptionsChains.strikes = (
+            pd.Series(OptionsChains.chains["strike"]).sort_values().unique().tolist()
         )
-        return options_chains
+        OptionsChains.underlying_price = get_underlying_price(OptionsChains.symbol)
+        OptionsChains.last_price = OptionsChains.underlying_price["price"]
+        OptionsChains.underlying_name = OptionsChains.underlying_price["companyName"]
+
+    OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
+    OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
+
+    if not OptionsChains.chains.empty:
+        if OptionsChains.last_price is None:
+            OptionsChains.last_price = 0
+            print("No last price for " + OptionsChains.symbol)
+
+        if not pydantic:
+            setattr(OptionsChains, "get_available_greeks", get_available_greeks)
+            return OptionsChains
+
+        OptionsChainsPydantic = PydanticOptions(
+            chains=OptionsChains.chains.to_dict(),
+            expirations=OptionsChains.expirations,
+            strikes=OptionsChains.strikes,
+            last_price=OptionsChains.last_price,
+            underlying_name=OptionsChains.underlying_name,
+            underlying_price=OptionsChains.underlying_price.to_dict(),
+            hasIV=OptionsChains.hasIV,
+            hasGreeks=OptionsChains.hasGreeks,
+            symbol=OptionsChains.symbol,
+            source=OptionsChains.source,
+            SYMBOLS=OptionsChains.SYMBOLS.to_dict(),
+        )
+        setattr(OptionsChainsPydantic, "get_available_greeks", get_available_greeks)
+        return OptionsChainsPydantic
+
     return None

@@ -1,3 +1,5 @@
+# mypy: disable-error-code=attr-defined
+
 """Model for retrieving public options data from the CBOE."""
 
 from datetime import datetime
@@ -367,7 +369,7 @@ def get_quotes(symbol: str) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.stocks.options import cboe_model
-    >>> xsp = cboe_model.Options().get_chains('XSP')
+    >>> xsp = cboe_model.OptionsChains().get_chains('XSP')
     >>> xsp_chains = xsp.chains
     """
     # Checks ticker to determine if ticker is an index or an exception that requires modifying the request's URLs.
@@ -469,83 +471,8 @@ def get_quotes(symbol: str) -> pd.DataFrame:
     return quotes.reset_index()
 
 
-class Chains(Options):
-    """OptionsChains data object for CBOE."""
-
-    def __init__(self) -> None:
-        self.SYMBOLS = SYMBOLS
-        self.source = "CBOE"
-        return
-
-    def get_chains(self, symbol: str) -> object:
-        """Gets the complete options chain from CBOE.
-
-        Parameters
-        ----------
-        symbol: str
-            The ticker symbol of the underlying asset.
-
-        Returns
-        -------
-        object: Options
-            chains: pd.DataFrame
-                The complete options chain for the ticker.
-            expirations: list[str]
-                List of unique expiration dates. (YYYY-MM-DD)
-            strikes: list[float]
-                List of unique strike prices.
-            last_price: float
-                The last price of the underlying asset.
-            underlying_name: str
-                The name of the underlying asset.
-            underlying_price: pd.Series
-                The price and recent performance of the underlying asset.
-
-        Examples
-        --------
-        >>> from openbb_terminal.stocks.options import cboe_model
-        >>> data = cboe_model.Chains().get_chains("AAPL")
-        >>> chains = data.chains
-        """
-        self.source = "CBOE"
-        self.symbol = symbol.upper()
-        self.chains = pd.DataFrame()
-        self.underlying_name = ""
-        self.underlying_price = pd.Series(dtype=object)
-        self.last_price = 0
-        self.expirations = []
-        self.strikes = []
-
-        if self.symbol not in self.SYMBOLS.index:
-            print("The symbol, " f"{symbol}" ", was not found in the CBOE directory.")
-            return self
-        info, _ = get_ticker_info(self.symbol)
-        if not info.empty:
-            iv = get_ticker_iv(self.symbol)
-            info = pd.concat([info, iv])
-            info = pd.Series(info[f"{self.symbol}"])
-            self.underlying_name = (
-                self.SYMBOLS.reset_index()
-                .query("`Symbol` == @self.symbol")["Company Name"]
-                .iloc[0]
-            )
-            self.underlying_price = info
-            self.last_price = round(info.loc["price"], 2)
-            self.chains = get_quotes(self.symbol)
-            if not self.chains.empty:
-                self.expirations = (
-                    self.chains["expiration"].astype(str).unique().tolist()
-                )
-                self.strikes = self.chains["strike"].sort_values().unique().tolist()
-            self.hasIV = "impliedVolatility" in self.chains.columns
-            self.hasGreeks = "gamma" in self.chains.columns
-
-            return self
-        return None
-
-
 def load_options(symbol: str, pydantic: bool = False) -> object:
-    """Options data object for CBOE.
+    """OptionsChains data object for CBOE.
 
     Parameters
     ----------
@@ -557,14 +484,8 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     Returns
     -------
     object: OptionsChains
-        SYMBOLS: pd.DataFrame
-            The CBOE symbol directory.  Only returned if pydantic is False.
-        symbol: str
-            The symbol entered by the user.
-        source: str
-            The source of the data, "CBOE".
         chains: dict
-            The complete options chain for the ticker.  Returns as a Pandas DataFrame if pydantic is False.
+            The complete options chain for the ticker. Returns as a Pandas DataFrame if pydantic is False.
         expirations: list[str]
             List of unique expiration dates. (YYYY-MM-DD)
         strikes: list[float]
@@ -574,11 +495,17 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
         underlying_name: str
             The name of the underlying asset.
         underlying_price: dict
-            The price and recent performance of the underlying asset.  Returns as a Pandas Series if pydantic is False.
+            The price and recent performance of the underlying asset. Returns as a Pandas Series if pydantic is False.
         hasIV: bool
             Returns implied volatility.
         hasGreeks: bool
             Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "CBOE".
+        SYMBOLS: dict
+            The CBOE symbol directory. Returns as a Pandas DataFrame if pydantic is False.
 
     Examples
     --------
@@ -591,25 +518,56 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     >>> from openbb_terminal.stocks.options.cboe_model import load_options
     >>> data = load_options("AAPL", pydantic=True)
     """
+    OptionsChains = Options()
+    symbol = symbol.upper()
+    OptionsChains.SYMBOLS = SYMBOLS
+    OptionsChains.source = "CBOE"
+    OptionsChains.symbol = symbol
 
-    options = Chains()
-    options.get_chains(symbol)
+    if OptionsChains.symbol not in OptionsChains.SYMBOLS.index:
+        print("The symbol, " f"{symbol}" ", was not found in the CBOE directory.")
+        return OptionsChains
+    info, _ = get_ticker_info(OptionsChains.symbol)
+    if not info.empty:
+        iv = get_ticker_iv(OptionsChains.symbol)
+        info = pd.concat([info, iv])
+        info = pd.Series(info[f"{OptionsChains.symbol}"])
+        underlying_name = (
+            OptionsChains.SYMBOLS.reset_index()
+            .query("`Symbol` == @symbol")["Company Name"]
+            .iloc[0]
+        )
+        OptionsChains.underlying_name = underlying_name
+        OptionsChains.underlying_price = info
+        OptionsChains.last_price = round(info.loc["price"], 2)
+        OptionsChains.chains = get_quotes(OptionsChains.symbol)
+        if not OptionsChains.chains.empty:
+            OptionsChains.expirations = (
+                OptionsChains.chains["expiration"].astype(str).unique().tolist()
+            )
+            OptionsChains.strikes = (
+                OptionsChains.chains["strike"].sort_values().unique().tolist()
+            )
+        OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
+        OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
 
     if not pydantic:
-        return options
-
-    if not options.chains.empty:
-        options_chains = PydanticOptions(
-            source=options.source,
-            symbol=options.symbol,
-            underlying_name=options.underlying_name,
-            last_price=options.last_price,
-            expirations=options.expirations,
-            strikes=options.strikes,
-            hasIV=options.hasIV,
-            hasGreeks=options.hasGreeks,
-            underlying_price=options.underlying_price.to_dict(),
-            chains=options.chains.to_dict(),
+        return OptionsChains
+    OptionsChains = Options()
+    if not OptionsChains.chains.empty:
+        OptionsChainsPydantic = PydanticOptions(
+            chains=OptionsChains.chains.to_dict(),
+            expirations=OptionsChains.expirations,
+            strikes=OptionsChains.strikes,
+            last_price=OptionsChains.last_price,
+            underlying_name=OptionsChains.underlying_name,
+            underlying_price=OptionsChains.underlying_price.to_dict(),
+            hasIV=OptionsChains.hasIV,
+            hasGreeks=OptionsChains.hasGreeks,
+            symbol=OptionsChains.symbol,
+            source=OptionsChains.source,
+            SYMBOLS=OptionsChains.SYMBOLS.to_dict(),
         )
-        return options_chains
-    return None
+        return OptionsChainsPydantic
+
+    return OptionsChains

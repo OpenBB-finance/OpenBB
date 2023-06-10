@@ -93,10 +93,9 @@ def test_get_ticker_info(recorder):
 
 @pytest.mark.vcr
 def test_SYMBOLS(recorder):
-    ticker = intrinio_model.Chains()
-    results_df = ticker.SYMBOLS
+    results_df = intrinio_model.get_all_ticker_symbols()
     assert isinstance(results_df, list)
-    recorder.capture(results_df)
+    recorder.capture(results_df[0])
 
 
 @pytest.mark.vcr

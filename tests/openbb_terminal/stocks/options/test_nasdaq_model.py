@@ -18,7 +18,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_SYMBOLS(recorder):
-    ticker = nasdaq_model.Chains()
+    ticker = nasdaq_model.load_options("AAPL")
     results_df = ticker.SYMBOLS
     assert not results_df.empty
     recorder.capture(results_df.columns.to_list())
@@ -40,14 +40,14 @@ def test_load_options_bad_symbol(mocker):
         target="openbb_terminal.helper_funcs.requests.get",
         new=mocker.Mock(return_value=mock_response),
     )
-    result_df = nasdaq_model.load_options("BAD_SYMBOL")
-    assert result_df.chains.empty
+    data = nasdaq_model.load_options("BAD_SYMBOL")
+    assert hasattr(data, "underlying_name") is False
 
 
 @pytest.mark.vcr
 def test_get_available_greeks(recorder):
     df = nasdaq_model.load_options("TSLA")
-    results_df = df.get_available_greeks(df.expirations[-1])
+    results_df = df.get_available_greeks(df,df.expirations[-1])
     assert isinstance(results_df, pd.DataFrame)
     assert results_df.cIV.sum() > 0
     recorder.capture(results_df.columns.to_list())

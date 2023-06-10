@@ -1,4 +1,6 @@
-"""Model for retrieving public options data from the Montreal Options Exchange."""
+# mypy: disable-error-code=attr-defined
+
+"""Model for retrieving public options data from the Montreal OptionsChains Exchange."""
 
 from datetime import datetime, timedelta
 
@@ -47,12 +49,15 @@ def get_all_ticker_symbols() -> pd.DataFrame:
     options_listings = pd.read_html("https://www.m-x.ca/en/trading/data/options-list")
     listings = pd.concat(options_listings)
     listings = listings.set_index("Option Symbol").drop_duplicates().sort_index()
-    SYMBOLS = listings[:-1]
-    SYMBOLS = SYMBOLS.fillna(value="")
-    SYMBOLS["Underlying Symbol"] = (
-        SYMBOLS["Underlying Symbol"].str.replace(" u", ".UN").str.replace("––", "")
+    symbols = listings[:-1]
+    symbols = symbols.fillna(value="")
+    symbols["Underlying Symbol"] = (
+        symbols["Underlying Symbol"].str.replace(" u", ".UN").str.replace("––", "")
     )
-    return SYMBOLS
+    return symbols
+
+
+SYMBOLS = get_all_ticker_symbols()
 
 
 def get_underlying_price(symbol: str) -> pd.Series:
@@ -111,370 +116,375 @@ def get_underlying_price(symbol: str) -> pd.Series:
     return data
 
 
-class Chains(Options):  # pylint: disable=too-many-instance-attributes
-    """Options data object for TMX."""
+def check_symbol(symbol: str) -> bool:
+    """Checks if the symbol is valid.  This function is used as an internal helper.
 
-    def __init__(self) -> None:
-        self.SYMBOLS = get_all_ticker_symbols()
-        self.source: str = "TMX"
+    Parameters
+    ----------
+    symbol: str
+        The ticker symbol to check.
 
-    def check_symbol(self, symbol: str) -> bool:
-        """Checks if the symbol is valid.  This function is used as an internal helper.
+    Returns
+    -------
+    bool: True if the symbol is valid, False otherwise.
 
-        Parameters
-        ----------
+    Examples
+    --------
+    >>> from openbb_terminal.stocks.options import tmx_model
+    >>> tmx_model.check_symbol("AC")
+    >>> tmx_model.check_symbol("SPX")
+    """
+    symbol = symbol.upper()
+    return len(SYMBOLS.query("`Underlying Symbol` == @symbol")) == 1
+
+
+def get_chains(symbol: str = "") -> object:
+    """Gets the current quotes for the complete options chain.
+    No implied volatility is returned from this method.
+    Use `get_eodchains()` to get the implied volatility.
+
+    Parameters
+    ----------
+    symbol: str
+        The ticker symbol of the underlying asset.
+
+    Returns
+    -------
+    object: OptionsChains
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks data.
         symbol: str
-            The ticker symbol to check.
+            The symbol entered by the user.
+        source: str
+            The source of the data, "TMX".
+        SYMBOLS: pd.DataFrame
+            TMX symbol directory.
 
-        Returns
-        -------
-        bool: True if the symbol is valid, False otherwise.
+    Example
+    -------
+    >>> from openbb_terminal.stocks.options import tmx_model
+    >>> ticker = tmx_model.get_quotes("AC")
+    >>> chains = ticker.chains
+    """
+    OptionsChains = Options()
+    OptionsChains.SYMBOLS = SYMBOLS
+    OptionsChains.source = "TMX"
 
-        Examples
-        --------
-        >>> from openbb_terminal.stocks.options import tmx_model
-        >>> tmx_model.Options().check_symbol("AC")
-        >>> tmx_model.Options().check_symbol("SPX")
-        """
-        symbol = symbol.upper()
-        return len(self.SYMBOLS.query("`Underlying Symbol` == @symbol")) == 1
+    if symbol == "":
+        print("Please enter a symbol.")
+        return OptionsChains
 
-    def get_chains(self, symbol: str = "") -> object:
-        """Gets the current quotes for the complete options chain.
-        No implied volatility is returned from this method.
-        Use `get_eodchains()` to get the implied volatility.
+    symbol = symbol.upper()
 
-        Parameters
-        ----------
+    if ".TO" in symbol:
+        symbol = symbol.replace(".TO", "")
+
+    if check_symbol(symbol):
+        symbol = list(SYMBOLS.query("`Underlying Symbol` == @symbol").index.values)[0]
+
+    if symbol not in OptionsChains.SYMBOLS.index:
+        print(
+            "The symbol, " f"{symbol}" ", is not a valid TMX listing.",
+            sep=None,
+        )
+        return OptionsChains
+
+    OptionsChains.symbol = symbol
+
+    QUOTES_URL = (
+        "https://www.m-x.ca/en/trading/data/quotes?symbol="
+        f"{OptionsChains.symbol}"
+        "*"
+    )
+
+    cols = [
+        "expiration",
+        "strike",
+        "bid",
+        "ask",
+        "lastPrice",
+        "change",
+        "openInterest",
+        "volume",
+        "optionType",
+    ]
+    data = pd.DataFrame()
+    data = pd.read_html(QUOTES_URL)[0]
+    data = data.iloc[:-1]
+
+    expirations = (
+        data["Unnamed: 0_level_0"]["Expiry date"].astype(str).rename("expiration")
+    )
+
+    expirations = expirations.str.strip("(Weekly)")
+
+    OptionsChains.expirations = list(
+        pd.DatetimeIndex(expirations.unique()).astype(str).sort_values()
+    )
+
+    strikes = (data["Unnamed: 7_level_0"].dropna().sort_values("Strike")).rename(
+        columns={"Strike": "strike"}
+    )
+
+    OptionsChains.strikes = list(strikes["strike"].unique())
+
+    calls = pd.concat([expirations, strikes, data["Calls"]], axis=1)
+    calls["expiration"] = pd.DatetimeIndex(calls["expiration"]).astype(str)
+    calls["optionType"] = "call"
+    calls.columns = cols
+    calls = calls.set_index(["expiration", "strike", "optionType"])
+
+    puts = pd.concat([expirations, strikes, data["Puts"]], axis=1)
+    puts["expiration"] = pd.DatetimeIndex(puts["expiration"]).astype(str)
+    puts["optionType"] = "put"
+    puts.columns = cols
+    puts = puts.set_index(["expiration", "strike", "optionType"])
+
+    chains = pd.concat([calls, puts])
+    chains["openInterest"] = chains["openInterest"].astype(int)
+    chains["volume"] = chains["volume"].astype(int)
+    chains["change"] = chains["change"].astype(float)
+    chains["lastPrice"] = chains["lastPrice"].astype(float)
+    chains["bid"] = chains["bid"].astype(float)
+    chains["ask"] = chains["ask"].astype(float)
+    chains = chains.sort_index()
+    chains = chains.reset_index()
+    now = datetime.now()
+    temp = pd.DatetimeIndex(chains.expiration)
+    temp_ = (temp - now).days + 1
+    chains["dte"] = temp_
+
+    OptionsChains.chains = chains
+
+    OptionsChains.underlying_name = OptionsChains.SYMBOLS.loc[OptionsChains.symbol][
+        "Name of Underlying Instrument"
+    ]
+
+    try:
+        OptionsChains.underlying_price = get_underlying_price(OptionsChains.symbol)
+        OptionsChains.last_price = OptionsChains.underlying_price["price"]
+    except TypeError:
+        OptionsChains.last_price = 0
+        OptionsChains.underlying_price = 0
+
+    OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
+    OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
+
+    return OptionsChains
+
+
+def get_eodchains(symbol: str = "", date: str = "") -> object:
+    """Gets the complete options chain for the EOD on a specific date.
+    Open Interest values are from the previous day.
+
+    Parameters
+    ----------
+    symbol: str
+        The ticker symbol of the underlying asset.
+    date: str
+        The date to get the EOD chain for. Formatted as YYYY-MM-DD.
+
+    Returns
+    -------
+    object: Options
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks data.
         symbol: str
-            The ticker symbol of the underlying asset.
-
-        Returns
-        -------
-        object: Options
-            chains: pd.DataFrame
-                DataFrame with current quotes for the complete options chain.
-            expirations: list
-                List of all expiration dates.
-            strikes: list
-                List of all strike prices.
-            underlying_price: pd.Series
-                Series of the current price and performance of the underlying asset.
-            last_price: float
-                The last price of the underlying asset.
-            underlying_name: str
-                The name of the underlying asset.
-
-        Example
-        -------
-        >>> ticker = tmx_model.Ticker().get_quotes("AC")
-        >>> chains = ticker.chains
-        """
-
-        self.source = "TMX"
-        self.symbol = symbol.upper()
-        self.chains = pd.DataFrame()
-        self.underlying_name = ""
-        self.underlying_price = pd.Series(dtype=object)
-        self.last_price = 0
-        self.expirations = []
-        self.strikes = []
-        self.chains = pd.DataFrame()
-
-        if symbol == "":
-            print("Please enter a symbol.")
-            return self
-
-        symbol = symbol.upper()
-
-        if ".TO" in symbol:
-            symbol = symbol.replace(".TO", "")
-
-        if self.check_symbol(symbol):
-            symbol = list(
-                self.SYMBOLS.query("`Underlying Symbol` == @symbol").index.values
-            )[0]
-
-        if symbol not in self.SYMBOLS.index:
-            print(
-                "The symbol, " f"{symbol}" ", is not a valid TMX listing.",
-                sep=None,
-            )
-            return self
-        self.symbol = symbol
-
-        QUOTES_URL = (
-            "https://www.m-x.ca/en/trading/data/quotes?symbol=" f"{self.symbol}" "*"
-        )
-
-        cols = [
-            "expiration",
-            "strike",
-            "bid",
-            "ask",
-            "lastPrice",
-            "change",
-            "openInterest",
-            "volume",
-            "optionType",
-        ]
-        data = pd.DataFrame()
-        data = pd.read_html(QUOTES_URL)[0]
-        data = data.iloc[:-1]
-
-        expirations = (
-            data["Unnamed: 0_level_0"]["Expiry date"].astype(str).rename("expiration")
-        )
-
-        expirations = expirations.str.strip("(Weekly)")
-
-        self.expirations = list(
-            pd.DatetimeIndex(expirations.unique()).astype(str).sort_values()
-        )
-
-        strikes = (data["Unnamed: 7_level_0"].dropna().sort_values("Strike")).rename(
-            columns={"Strike": "strike"}
-        )
-
-        self.strikes = list(strikes["strike"].unique())
-
-        calls = pd.concat([expirations, strikes, data["Calls"]], axis=1)
-        calls["expiration"] = pd.DatetimeIndex(calls["expiration"]).astype(str)
-        calls["optionType"] = "call"
-        calls.columns = cols
-        calls = calls.set_index(["expiration", "strike", "optionType"])
-
-        puts = pd.concat([expirations, strikes, data["Puts"]], axis=1)
-        puts["expiration"] = pd.DatetimeIndex(puts["expiration"]).astype(str)
-        puts["optionType"] = "put"
-        puts.columns = cols
-        puts = puts.set_index(["expiration", "strike", "optionType"])
-
-        chains = pd.concat([calls, puts])
-        chains["openInterest"] = chains["openInterest"].astype(int)
-        chains["volume"] = chains["volume"].astype(int)
-        chains["change"] = chains["change"].astype(float)
-        chains["lastPrice"] = chains["lastPrice"].astype(float)
-        chains["bid"] = chains["bid"].astype(float)
-        chains["ask"] = chains["ask"].astype(float)
-        chains = chains.sort_index()
-
-        self.chains = chains.reset_index()
-        now = datetime.now()
-        temp = pd.DatetimeIndex(self.chains.expiration)
-        temp_ = (temp - now).days + 1
-        self.chains["dte"] = temp_
-
-        self.underlying_name = self.SYMBOLS.loc[self.symbol][
-            "Name of Underlying Instrument"
-        ]
-
-        try:
-            self.underlying_price = get_underlying_price(self.symbol)
-            self.last_price = self.underlying_price["price"]
-        except TypeError:
-            self.last_price = 0
-            self.underlying_price = 0
-
-        self.hasIV = "impliedVolatility" in self.chains.columns
-        self.hasGreeks = "gamma" in self.chains.columns
-
-        return self
-
-    def get_eodchains(self, symbol: str = "", date: str = "") -> object:
-        """Gets the complete options chain for the EOD on a specific date.
-        Open Interest values are from the previous day.
-
-        Parameters
-        ----------
-        symbol: str
-            The ticker symbol of the underlying asset.
+            The symbol entered by the user.
+        source: str
+            The source of the data, "TMX".
         date: str
-            The date to get the EOD chain for. Formatted as YYYY-MM-DD.
+            The date, if applicable, for the EOD chains data. (YYYY-MM-DD)
+        SYMBOLS: pd.DataFrame
+            TMX symbol directory.
 
-        Returns
-        -------
+    Examples
+    --------
+    >>> from openbb_terminal.stocks.options import tmx_model
+    >>> xiu = tmx_model.get_eodchains("XIU", "2009-01-01")
+    >>> chains = xiu.chains
+    """
+    OptionsChains = Options()
 
-        object: Options
-            symbol: str
-                The ticker symbol entered by the user.
-            date: str
-                The date entered by the user.
-            chains: pd.DataFrame
-                DataFrame with the complete options chain for the chosen date.
-            expirations: list
-                List of all expiration dates available on the date.
-            strikes: list
-                List of all strike prices for that date.
-            underlying_price: pd.Series
-                Series of the price and performance of the underlying asset on the date.
-            last_price: float
-                The last price of the underlying asset on the date.
-            underlying_name: str
-                The name of the underlying asset.
+    OptionsChains.SYMBOLS = SYMBOLS
+    OptionsChains.source = "TMX"
 
-        Examples
-        --------
-        >>> from openbb_terminal.stocks.options import tmx_model
-        >>> xiu = tmx_model.Options().get_eodchains("XIU", "2009-01-01")
-        """
+    symbol = symbol.upper()
+    BASE_URL = "https://www.m-x.ca/en/trading/data/historical?symbol="
 
-        self.source = "TMX"
-        self.symbol = symbol.upper()
-        self.date: str = date
-        self.chains = pd.DataFrame()
-        self.underlying_name = ""
-        self.underlying_price = pd.Series(dtype=object)
-        self.last_price = 0
-        self.expirations = []
-        self.strikes = []
-        self.chains = pd.DataFrame()
+    if symbol == "":
+        print("Please enter a symbol.")
+        return OptionsChains
 
-        symbol = symbol.upper()
-        BASE_URL = "https://www.m-x.ca/en/trading/data/historical?symbol="
+    if ".TO" in symbol:
+        symbol = symbol.replace(".TO", "")
 
-        if symbol == "":
-            print("Please enter a symbol.")
-            return self
+    if symbol not in OptionsChains.SYMBOLS.index:
+        print(
+            "The symbol, " f"{symbol}" ", was not found in the TMX listings.",
+            sep=None,
+        )
+        return OptionsChains
 
-        if ".TO" in symbol:
-            symbol = symbol.replace(".TO", "")
+    OptionsChains.symbol = symbol.upper()
 
-        if symbol not in self.SYMBOLS.index:
-            print(
-                "The symbol, " f"{symbol}" ", was not found in the TMX listings.",
-                sep=None,
-            )
-            return self
+    if date == "":
+        EOD_URL = BASE_URL + f"{OptionsChains.symbol}" "&dnld=1#quotes"
+    if date != "":
+        if pd.to_datetime(date) < pd.to_datetime("2009-01-01"):
+            print("Historical options data begins on 2009-01-02.")
+        date = check_weekday(date)
+        if date in holidays:
+            date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")
+        date = check_weekday(date)
+        if date in holidays:
+            date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")
 
-        self.symbol = symbol
+        EOD_URL = (
+            BASE_URL + f"{OptionsChains.symbol}"
+            "&from="
+            f"{date}"
+            "&to="
+            f"{date}"
+            "&dnld=1#quotes"
+        )
+    data = pd.read_csv(EOD_URL)
+    if data.empty:
+        print(
+            "No data found.  Check the date to ensure the ticker was listed before that date."
+        )
+        return OptionsChains
 
-        if date == "":
-            EOD_URL = BASE_URL + f"{self.symbol}" "&dnld=1#quotes"
-        if date != "":
-            if pd.to_datetime(date) < pd.to_datetime("2009-01-01"):
-                print("Historical options data begins on 2009-01-02.")
-            date = check_weekday(date)
-            if date in holidays:
-                date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")
-            date = check_weekday(date)
-            if date in holidays:
-                date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")
+    OptionsChains.date = str(date)
 
-            EOD_URL = (
-                BASE_URL + f"{self.symbol}"
-                "&from="
-                f"{date}"
-                "&to="
-                f"{date}"
-                "&dnld=1#quotes"
-            )
-        data = pd.read_csv(EOD_URL)
-        if data.empty:
-            print(
-                "No data found.  Check the date to ensure the ticker was listed before that date."
-            )
-            return self
-        self.date = str(date)
-        contractSymbol = []
+    contractSymbol = []
 
-        for i in data.index:
-            contractSymbol.append(data["Symbol"].iloc[i].replace(" ", ""))
-        data["contractSymbol"] = contractSymbol
+    for i in data.index:
+        contractSymbol.append(data["Symbol"].iloc[i].replace(" ", ""))
+    data["contractSymbol"] = contractSymbol
 
-        data["optionType"] = data["Call/Put"].replace(0, "call").replace(1, "put")
+    data["optionType"] = data["Call/Put"].replace(0, "call").replace(1, "put")
 
-        data = data.drop(
-            columns=[
-                "Symbol",
-                "Class Symbol",
-                "Root Symbol",
-                "Underlying Symbol",
-                "Ins. Type",
-                "Call/Put",
+    data = data.drop(
+        columns=[
+            "Symbol",
+            "Class Symbol",
+            "Root Symbol",
+            "Underlying Symbol",
+            "Ins. Type",
+            "Call/Put",
+        ]
+    )
+
+    cols = [
+        "date",
+        "strike",
+        "expiration",
+        "bid",
+        "ask",
+        "bidSize",
+        "askSize",
+        "lastPrice",
+        "volume",
+        "previousClose",
+        "change",
+        "open",
+        "high",
+        "low",
+        "totalValue",
+        "transactions",
+        "settlementPrice",
+        "openInterest",
+        "impliedVolatility",
+        "contractSymbol",
+        "optionType",
+    ]
+
+    data.columns = cols
+
+    OptionsChains.expirations = list(
+        pd.DatetimeIndex(data["expiration"].iloc[1:].unique()).astype(str)
+    )
+
+    OptionsChains.strikes = list(data["strike"].iloc[1:].unique())
+
+    data["expiration"] = pd.to_datetime(data["expiration"], format="%Y-%m-%d")
+    data["date"] = pd.to_datetime(data["date"], format="%Y-%m-%d")
+    data["impliedVolatility"] = 0.01 * data["impliedVolatility"]
+
+    date_ = pd.to_datetime(date, format="%Y-%m-%d")
+    temp = pd.DatetimeIndex(data.expiration)
+    temp_ = pd.Series((temp - date_).days)
+    data["dte"] = pd.to_numeric(temp_)
+    data = data.set_index(["expiration", "strike", "optionType"])
+    data = data.sort_index()
+    data["date"] = data["date"].astype(str)
+
+    OptionsChains.underlying_name = OptionsChains.SYMBOLS.loc[OptionsChains.symbol][
+        "Name of Underlying Instrument"
+    ]
+
+    OptionsChains.chains = data.reset_index()
+
+    underlying_price = (
+        OptionsChains.chains.iloc[-1].drop(
+            index=[
+                "impliedVolatility",
+                "strike",
+                "optionType",
+                "settlementPrice",
+                "openInterest",
+                "expiration",
+                "dte",
             ]
         )
+    ).rename(f"{OptionsChains.underlying_name}")
 
-        cols = [
-            "date",
-            "strike",
-            "expiration",
-            "bid",
-            "ask",
-            "bidSize",
-            "askSize",
-            "lastPrice",
-            "volume",
-            "previousClose",
-            "change",
-            "open",
-            "high",
-            "low",
-            "totalValue",
-            "transactions",
-            "settlementPrice",
-            "openInterest",
-            "impliedVolatility",
-            "contractSymbol",
-            "optionType",
-        ]
+    underlying_price.rename(
+        {
+            "lastPrice": "price",
+            "totalValue": "valueCAD",
+            "transactions": "transactions",
+            "contractSymbol": "symbol",
+        },
+        inplace=True,
+    )
+    OptionsChains.underlying_price = underlying_price
+    OptionsChains.last_price = underlying_price["price"]
+    OptionsChains.chains = OptionsChains.chains.iloc[:-1]
+    OptionsChains.chains.dte = OptionsChains.chains.dte.astype(int)
+    OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
+    OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
 
-        data.columns = cols
-
-        self.expirations = list(
-            pd.DatetimeIndex(data["expiration"].iloc[1:].unique()).astype(str)
-        )
-
-        self.strikes = list(data["strike"].iloc[1:].unique())
-
-        data["expiration"] = pd.to_datetime(data["expiration"], format="%Y-%m-%d")
-        data["date"] = pd.to_datetime(data["date"], format="%Y-%m-%d")
-        data["impliedVolatility"] = 0.01 * data["impliedVolatility"]
-
-        date_ = pd.to_datetime(date, format="%Y-%m-%d")
-        temp = pd.DatetimeIndex(data.expiration)
-        temp_ = pd.Series((temp - date_).days)
-        data["dte"] = pd.to_numeric(temp_)
-        data = data.set_index(["expiration", "strike", "optionType"])
-        data = data.sort_index()
-        data["date"] = data["date"].astype(str)
-
-        self.underlying_name = self.SYMBOLS.loc[self.symbol][
-            "Name of Underlying Instrument"
-        ]
-
-        self.chains = data.reset_index()
-
-        self.underlying_price = (
-            self.chains.iloc[-1].drop(
-                index=[
-                    "impliedVolatility",
-                    "strike",
-                    "optionType",
-                    "settlementPrice",
-                    "openInterest",
-                    "expiration",
-                    "dte",
-                ]
-            )
-        ).rename(f"{self.underlying_name}")
-
-        self.underlying_price.rename(
-            {
-                "lastPrice": "price",
-                "totalValue": "valueCAD",
-                "transactions": "transactions",
-                "contractSymbol": "symbol",
-            },
-            inplace=True,
-        )
-        self.last_price = self.underlying_price["price"]
-        self.chains = self.chains.iloc[:-1]
-        self.chains.dte = self.chains.dte.astype(int)
-        self.hasIV = "impliedVolatility" in self.chains.columns
-        self.hasGreeks = "gamma" in self.chains.columns
-
-        return self
+    return OptionsChains
 
 
 def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
@@ -492,14 +502,8 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
     Returns
     -------
     object: Options
-        SYMBOLS: pd.DataFrame
-            The available symbols and company names.  Only returned if pydantic is False.
-        symbol: str
-            The symbol entered by the user.
-        source: str
-            The source of the data, "TMX".
         chains: pd.DataFrame
-            The complete options chain for the ticker.  Returns as a dictionary if pydantic is True.
+            The complete options chain for the ticker. Returns a dictionary if pydantic is True.
         expirations: list[str]
             List of unique expiration dates. (YYYY-MM-DD)
         strikes: list[float]
@@ -509,11 +513,19 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
         underlying_name: str
             The name of the underlying asset.
         underlying_price: pd.Series
-            The price and recent performance of the underlying asset.  Returns as a dictionary if pydantic is True.
+            The price and recent performance of the underlying asset. Returns a dictionary if pydantic is True.
         hasIV: bool
-            True if implied volatility is returned.
+            Returns implied volatility.
         hasGreeks: bool
-            Greeks data is not returned.
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "TMX".
+        date: str
+            The date, if applicable, for the EOD chains data. (YYYY-MM-DD)
+        SYMBOLS: pd.DataFrame
+            TMX symbol directory. Returns a dictionary if pydantic is True.
 
     Examples
     --------
@@ -532,45 +544,48 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
     >>> data = load_options("RY", pydantic=True)
     """
 
-    options = Chains()
     if date != "":
-        options.get_eodchains(symbol, date)
+        OptionsChainsEOD = get_eodchains(symbol, date)
         if not pydantic:
-            return options
+            return OptionsChainsEOD
 
-        if not options.chains.empty:
-            options_chains = PydanticOptions(
-                source=options.source,
-                symbol=options.symbol,
-                date=options.date,
-                underlying_name=options.underlying_name,
-                last_price=options.last_price,
-                expirations=options.expirations,
-                strikes=options.strikes,
-                hasIV=options.hasIV,
-                hasGreeks=options.hasGreeks,
-                underlying_price=options.underlying_price.to_dict(),
-                chains=options.chains.to_dict(),
+        if not OptionsChainsEOD.chains.empty:
+            OptionsChainsPydantic = PydanticOptions(
+                chains=OptionsChainsEOD.chains.to_dict(),
+                expirations=OptionsChainsEOD.expirations,
+                strikes=OptionsChainsEOD.strikes,
+                last_price=OptionsChainsEOD.last_price,
+                underlying_name=OptionsChainsEOD.underlying_name,
+                underlying_price=OptionsChainsEOD.underlying_price.to_dict(),
+                hasIV=OptionsChainsEOD.hasIV,
+                hasGreeks=OptionsChainsEOD.hasGreeks,
+                symbol=OptionsChainsEOD.symbol,
+                source=OptionsChainsEOD.source,
+                date=OptionsChainsEOD.date,
+                SYMBOLS=OptionsChainsEOD.SYMBOLS.to_dict(),
             )
-            return options_chains
+            return OptionsChainsPydantic
+
         return None
 
-    options.get_chains(symbol)
+    OptionsChainsChains = get_chains(symbol)
     if not pydantic:
-        return options
+        return OptionsChainsChains
 
-    if not options.chains.empty:
-        options_chains = PydanticOptions(
-            source=options.source,
-            symbol=options.symbol,
-            underlying_name=options.underlying_name,
-            last_price=options.last_price,
-            expirations=options.expirations,
-            strikes=options.strikes,
-            hasIV=options.hasIV,
-            hasGreeks=options.hasGreeks,
-            underlying_price=options.underlying_price.to_dict(),
-            chains=options.chains.to_dict(),
+    if not OptionsChainsChains.chains.empty:
+        OptionsChainsPydantic = PydanticOptions(
+            chains=OptionsChainsChains.chains.to_dict(),
+            expirations=OptionsChainsChains.expirations,
+            strikes=OptionsChainsChains.strikes,
+            last_price=OptionsChainsChains.last_price,
+            underlying_name=OptionsChainsChains.underlying_name,
+            underlying_price=OptionsChainsChains.underlying_price.to_dict(),
+            hasIV=OptionsChainsChains.hasIV,
+            hasGreeks=OptionsChainsChains.hasGreeks,
+            symbol=OptionsChainsChains.symbol,
+            source=OptionsChainsChains.source,
+            SYMBOLS=OptionsChainsChains.SYMBOLS.to_dict(),
         )
-        return options_chains
+        return OptionsChainsPydantic
+
     return None

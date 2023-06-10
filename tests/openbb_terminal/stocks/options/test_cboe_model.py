@@ -26,8 +26,8 @@ def test_underlying_price():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_underlying_price_bad_symbol():
-    result_df = cboe_model.load_options("BAD_SYMBOL")
-    assert result_df.underlying_price.empty
+    data = cboe_model.load_options("BAD_SYMBOL")
+    assert hasattr(data, "underlying_name") is False
 
 
 @pytest.mark.vcr
@@ -76,8 +76,6 @@ def test_expirations():
 
 @pytest.mark.vcr
 def test_hasGreeks_hasIV():
-    ticker = cboe_model.Options()
-    assert ticker.chains.empty
     ticker = cboe_model.load_options("TSLA")
     assert ticker.underlying_name != "TSLA"
     assert ticker.hasGreeks is True

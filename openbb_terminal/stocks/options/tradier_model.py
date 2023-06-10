@@ -1,3 +1,5 @@
+# mypy: disable-error-code=attr-defined
+
 """Tradier options model"""
 __docformat__ = "numpy"
 
@@ -122,7 +124,7 @@ def get_historical_options(
         response = request(
             "https://sandbox.tradier.com/v1/markets/history",
             params={"symbol": {symbol}, "interval": "daily"},
-            headers={  # type: ignore[attr-defined]
+            headers={
                 "Authorization": f"Bearer {get_current_user().credentials.API_TRADIER_TOKEN}",
                 "Accept": "application/json",
             },
@@ -370,9 +372,10 @@ def get_underlying_price(symbol: str) -> pd.Series:
     if r.status_code != 200:
         console.print("Error getting last price")
         return pd.DataFrame()
+    underlying_price = pd.Series(dtype=object)
     underlying_price = pd.Series(r.json()["quotes"]["quote"])
     underlying_price = underlying_price.rename(
-        {
+        index={
             "description": "name",
             "change_percentage": "changePercent",
             "average_volume": "avgVolume",
@@ -390,46 +393,36 @@ def get_underlying_price(symbol: str) -> pd.Series:
             "root_symbols": "rootSymbols",
         }
     )
-    underlying_price["lastTradeTimestamp"] = (
+    underlying_price[
+        "lastTradeTimestamp"
+    ] = (  # pylint: disable=unsupported-assignment-operation
         pd.to_datetime(underlying_price["lastTradeTimestamp"], unit="ms").tz_localize(
             "EST"
         )
-    ).strftime("%Y-%m-%d")
-    underlying_price["bidDate"] = (
+    ).strftime(
+        "%Y-%m-%d"
+    )
+    underlying_price["bidDate"] = (  # pylint: disable=unsupported-assignment-operation
         pd.to_datetime(underlying_price["bidDate"], unit="ms").tz_localize("EST")
     ).strftime("%Y-%m-%d")
-    underlying_price["askDate"] = (
+    underlying_price["askDate"] = (  # pylint: disable=unsupported-assignment-operation
         pd.to_datetime(underlying_price["askDate"], unit="ms").tz_localize("EST")
     ).strftime("%Y-%m-%d")
 
     return underlying_price
 
 
-class Chains(Options):
-    """OptionsChains data object for Tradier."""
+def get_chains(symbol: str) -> object:
+    """OptionsChains data object for Tradier.
 
-    def __init__(self) -> None:
-        self.SYMBOLS = pd.DataFrame(lookup_company("")["securities"]["security"])
-        self.source: str = "Tradier"
+    Parameters
+    ----------
+    symbol : str
+        The ticker symbol to load.
 
-    def get_chains(self, symbol: str) -> object:
-        """Options data object for Tradier.
-
-        Parameters
-        ----------
-        symbol : str
-            The ticker symbol to load.
-        date: Optional[str]
-            The date for EOD chains data.
-
-        Returns
-        -------
-        SYMBOLS: pd.DataFrame
-            The symbol directory for Tradier.
-        symbol: str
-            The symbol entered by the user.
-        source: str
-            The source of the data, "Tradier".
+    Returns
+    -------
+    object: OptionsChains
         chains: pd.DataFrame
             The complete options chain for the ticker.
         expirations: list[str]
@@ -443,44 +436,64 @@ class Chains(Options):
         underlying_price: pd.Series
             The price and recent performance of the underlying asset.
         hasIV: bool
-            Implied volatility is returned.
+            Returns implied volatility.
         hasGreeks: bool
-            Greeks data is returned.
-        """
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "Tradier".
+        SYMBOLS: pd.DataFrame
+            Tradier symbol directory.
 
-        self.source = "Tradier"
-        self.symbol = symbol.upper()
-        self.chains = pd.DataFrame()
-        self.underlying_name = ""
-        self.underlying_price = pd.Series(dtype=object)
-        self.last_price = 0
-        self.expirations = []
-        self.strikes = []
-        self.chains = pd.DataFrame()
+    Examples
+    --------
+    >>> from openbb_terminal.stocks.options import tradier_model
+    >>> data = tradier_model.load_options("AAPL")
+    >>> chains = tradier_model.chains
+    """
 
-        if self.symbol not in list(self.SYMBOLS["symbol"]):
-            print(f"{self.symbol} is not support by Tradier.")
-            return self
-        self.underlying_price = get_underlying_price(self.symbol)
-        self.underlying_name = self.underlying_price["name"]
-        self.last_price = self.underlying_price["last"]
-        self.chains = get_full_option_chain(self.symbol)
-        if not self.chains.empty:
-            self.expirations = self.chains["expiration"].unique().tolist()
-            self.strikes = self.chains["strike"].sort_values().unique().tolist()
+    OptionsChains = Options()
+    OptionsChains.source = "Tradier"
 
-        now = datetime.now()
-        temp = pd.DatetimeIndex(self.chains.expiration)
-        temp_ = (temp - now).days + 1
-        self.chains["dte"] = temp_
+    try:
+        OptionsChains.SYMBOLS = pd.DataFrame(
+            lookup_company("")["securities"]["security"]
+        )
+    except requests.exceptions.JSONDecodeError:
+        return OptionsChains
 
-        self.hasIV = "impliedVolatility" in self.chains.columns
-        self.hasGreeks = "gamma" in self.chains.columns
-        return self
+    OptionsChains.symbol = symbol.upper()
+
+    if OptionsChains.symbol not in list(OptionsChains.SYMBOLS["symbol"]):
+        print(f"{OptionsChains.symbol} is not support by Tradier.")
+        return OptionsChains
+
+    OptionsChains.underlying_price = get_underlying_price(OptionsChains.symbol)
+    OptionsChains.underlying_name = OptionsChains.underlying_price["name"]
+    OptionsChains.last_price = OptionsChains.underlying_price["last"]
+
+    chains = get_full_option_chain(OptionsChains.symbol)
+
+    if not chains.empty:
+        OptionsChains.expirations = chains["expiration"].unique().tolist()
+        OptionsChains.strikes = chains["strike"].sort_values().unique().tolist()
+
+    now = datetime.now()
+    temp = pd.DatetimeIndex(chains.expiration)
+    temp_ = (temp - now).days + 1
+    chains["dte"] = temp_
+
+    OptionsChains.chains = chains
+
+    OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
+    OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
+
+    return OptionsChains
 
 
 def load_options(symbol: str, pydantic: bool = False) -> object:
-    """Options data object for CBOE.
+    """OptionsChains data object for Tradier.
 
     Parameters
     ----------
@@ -492,15 +505,8 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     Returns
     -------
     object: Options
-
-        SYMBOLS: pd.DataFrame
-            The Tradier symbol directory.  Only returned if pydantic is False.
-        symbol: str
-            The symbol entered by the user.
-        source: str
-            The source of the data, "Tradier".
-        chains: dict
-            The complete options chain for the ticker.  Returns as a Pandas DataFrame if pydantic is False.
+        chains: pd.DataFrame
+            The complete options chain for the ticker. Returns as a dictionary if pydantic is True.
         expirations: list[str]
             List of unique expiration dates. (YYYY-MM-DD)
         strikes: list[float]
@@ -509,12 +515,18 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
             The last price of the underlying asset.
         underlying_name: str
             The name of the underlying asset.
-        underlying_price: dict
-            The price and recent performance of the underlying asset.  Returns as a Pandas Series if pydantic is False.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset. Returns as a dictionary if pydantic is True.
         hasIV: bool
             Returns implied volatility.
         hasGreeks: bool
             Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data, "Tradier".
+        SYMBOLS: pd.DataFrame
+            Tradier symbol directory. Returns as a dictionary if pydantic is True.
 
     Examples
     --------
@@ -528,27 +540,29 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     >>> data = load_options("AAPL", pydantic=True)
     """
 
-    options = Chains()
-    options.get_chains(symbol)
+    options = get_chains(symbol)
+
+    if options.last_price is None:
+        options.last_price = 0
+        print("No last price for " + options.symbol)
 
     if not pydantic:
         return options
 
     if not options.chains.empty:
-        if options.last_price is None:
-            options.last_price = 0
-            print("No last price for " + options.symbol)
-        options_chains = PydanticOptions(
-            source=options.source,
-            symbol=options.symbol,
-            underlying_name=options.underlying_name,
-            last_price=options.last_price,
+        OptionsChainsPydantic = PydanticOptions(
+            chains=options.chains.to_dict(),
             expirations=options.expirations,
             strikes=options.strikes,
+            last_price=options.last_price,
+            underlying_name=options.underlying_name,
+            underlying_price=options.underlying_price.to_dict(),
             hasIV=options.hasIV,
             hasGreeks=options.hasGreeks,
-            underlying_price=options.underlying_price.to_dict(),
-            chains=options.chains.copy().to_dict(),
+            symbol=options.symbol,
+            source=options.source,
+            SYMBOLS=options.SYMBOLS.to_dict(),
         )
-        return options_chains
+        return OptionsChainsPydantic
+
     return None
