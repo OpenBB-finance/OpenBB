@@ -329,10 +329,8 @@ def print_rich_table(
     for col in df.columns:
         try:
             if not any(
-                [
-                    isinstance(df[col].iloc[x], pd.Timestamp)
-                    for x in range(min(10, len(df)))
-                ]
+                isinstance(df[col].iloc[x], pd.Timestamp)
+                for x in range(min(10, len(df)))
             ):
                 df[col] = pd.to_numeric(df[col])
         except (ValueError, TypeError):
