@@ -1,0 +1,14 @@
+parent_command:forex/qa
+usage: acf [-l LAGS]
+
+Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff forex data
+
+optional arguments:
+  -l LAGS, --lags LAGS  maximum lags to display in plots (default: 15)
+
+
+Examples:
+- To display auto-correlation and partial auto-correlation functions for diff and diff diff forex data with default lags: forex/qa/acf
+- To display auto-correlation and partial auto-correlation functions for diff and diff diff forex data with a specific number of lags: forex/load <PAIR>/qa/acf -l 20
+- For a custom number of lags, use the command: forex/load <PAIR>/qa/acf --lags 25
+- To analyze auto-correlation and partial auto-correlation functions with 30 lags for a forex pair: forex/load <PAIR>/qa/acf -l 30

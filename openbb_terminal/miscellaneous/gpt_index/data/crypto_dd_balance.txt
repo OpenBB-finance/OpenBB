@@ -1,0 +1,21 @@
+parent_command:crypto/dd
+usage: balance [--vs {USDT,TUSD,USDC,BUSD,RUB,TRY,EUR,ZAR,GBP,UAH,BIDR,DAI,BRL,PLN,RON}]
+
+Display balance
+
+optional arguments:
+  --vs {USDT,TUSD,USDC,BUSD,RUB,TRY,EUR,ZAR,GBP,UAH,BIDR,DAI,BRL,PLN,RON}
+                        Quote currency (what to view coin vs) (default: USDT)
+
+
+Examples:
+- To view the balance of a specific coin against USDT: crypto/dd/balance
+- Display the balance of a coin in comparison to EUR: crypto/dd/balance --vs EUR
+- Check the balance of a cryptocurrency against GBP: crypto/dd/balance --vs GBP
+- See the balance of a digital asset compared to BRL: crypto/dd/balance --vs BRL
+- Examine the balance of a coin in terms of DAI: crypto/dd/balance --vs DAI
+- Assess the balance of a cryptocurrency against RUB: crypto/dd/balance --vs RUB
+- Review the balance of a digital currency in comparison to PLN: crypto/dd/balance --vs PLN
+- Inspect the balance of a coin against ZAR: crypto/dd/balance --vs ZAR
+- Analyze the balance of a cryptocurrency in relation to RON: crypto/dd/balance --vs RON
+- Observe the balance of a digital asset compared to UAH: crypto/dd/balance --vs UAH

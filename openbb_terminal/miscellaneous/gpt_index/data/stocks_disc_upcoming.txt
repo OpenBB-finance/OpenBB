@@ -1,0 +1,11 @@
+parent_command: stocks/disc/
+usage: upcoming [-l LIMIT] [-s START_DATE] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Upcoming earnings release dates. [Source: Seeking Alpha]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of upcoming earnings release dates to look                         ahead. (default: 5)   -s START_DATE, --start START_DATE                         Start date of data, in YYYY-MM-DD format. Defaults to                         today. (default: 2023-04-19)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about upcoming' to access the related guide.
+Summary: Display upcoming earnings release dates for stocks, with options to limit the number of results, specify a start date, and export the data. The data source is Seeking Alpha.
+
+Examples:
+- View upcoming earnings release dates for the next 5 days: stocks/disc/upcoming
+- Show earnings release dates starting from a specific date: stocks/disc/upcoming -s 2023-05-01
+- Limit the number of upcoming earnings release dates to 10: stocks/disc/upcoming -l 10
+- View upcoming earnings release dates for the next 7 days starting from a specific date: stocks/disc/upcoming -l 7 -s 2023-05-01
+- Export upcoming earnings release dates to a CSV file: stocks/disc/upcoming --export csv
+- Save upcoming earnings release dates to a specific Excel sheet: stocks/disc/upcoming --sheet-name EarningsDates --export xlsx

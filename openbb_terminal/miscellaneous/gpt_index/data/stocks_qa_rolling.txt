@@ -1,0 +1,14 @@
+parent_command:stocks/qa
+usage: rolling [-w N_WINDOW]
+
+Rolling mean and std deviation
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        Window length (default: 14)
+
+
+Examples:
+- Calculate the rolling mean and standard deviation for the default window length of 14: stocks/qa/rolling
+- Analyze the rolling mean and standard deviation for a specific window length of 20: stocks/qa/rolling -w 20
+- Compute the rolling mean and standard deviation for a 30-day window: stocks/qa/rolling --window 30

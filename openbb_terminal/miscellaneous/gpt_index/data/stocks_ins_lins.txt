@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: lins [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints information about inside traders. The following fields are expected: Date, Relationship, Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of latest inside traders.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about lins' to access the related guide.
+Summary: Display information about inside traders for a specific stock symbol, including date, relationship, transaction, number of shares, cost, value, shares total, insider trading, and SEC Form 4. You can set a limit on the number of latest inside traders and export the data in various formats.
+
+Examples:
+- To view inside trader information for a stock: stocks/load <SYMBOL>/ins/lins
+- To view the latest 5 inside traders for a stock: stocks/load <SYMBOL>/ins/lins -l 5
+- To export inside trader information in csv format: stocks/load <SYMBOL>/ins/lins --export csv
+- To save inside trader information to a specific excel sheet: stocks/load <SYMBOL>/ins/lins --sheet-name Sheet1

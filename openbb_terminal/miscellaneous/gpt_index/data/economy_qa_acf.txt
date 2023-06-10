@@ -1,0 +1,13 @@
+parent_command:economy/qa
+usage: acf [-l LAGS]
+
+Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
+
+optional arguments:
+  -l LAGS, --lags LAGS  maximum lags to display in plots (default: 15)
+
+
+Examples:
+- Plot auto-correlation and partial auto-correlation functions for diff and diff diff stock data with default lags: economy/qa/acf
+- Plot auto-correlation and partial auto-correlation functions for diff and diff diff stock data with 10 lags: economy/qa/acf -l 10
+- Display the auto-correlation and partial auto-correlation functions for diff and diff diff stock data with 20 lags: economy/qa/acf --lags 20

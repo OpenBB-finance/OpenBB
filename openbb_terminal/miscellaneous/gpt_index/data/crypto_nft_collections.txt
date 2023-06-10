@@ -1,0 +1,14 @@
+parent_command:crypto/nft
+usage: collections [--fp] [--sales]
+
+NFT Collections [Source: https://nftpricefloor.com/]
+
+optional arguments:
+  --fp     Flag to display floor price over time for top collections (default: False)
+  --sales  Flag to display sales over time for top collections (default: False)
+
+
+Examples:
+- To view the floor price over time for top NFT collections: crypto/nft/collections --fp
+- To view sales over time for top NFT collections: crypto/nft/collections --sales
+- To display both floor price and sales over time for top collections: crypto/nft/collections --fp --sales

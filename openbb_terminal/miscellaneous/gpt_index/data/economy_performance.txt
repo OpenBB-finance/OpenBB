@@ -1,0 +1,25 @@
+parent_command:economy
+usage: performance [-g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}]
+                   [-s {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}] [-r]
+
+View group (sectors, industry or country) performance data. [Source: Finviz]
+
+optional arguments:
+  -g {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}, --group {sector,industry,basic_materials,communication_services,consumer_cyclical,consumer_defensive,energy,financial,healthcare,industrials,real_Estate,technology,utilities,country,capitalization}
+                        Data group (sector, industry or country) (default: sector)
+  -s {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}, --sortby {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}
+                        Column to sort by (default: Name)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- View sector performance data: economy/performance
+- Display industry performance data: economy/performance -g industry
+- Show country performance data: economy/performance -g country
+- Examine performance data for the technology sector: economy/performance -g technology
+- Sort sector performance data by 1-year performance: economy/performance -s 1Year
+- Sort industry performance data by YTD performance in ascending order: economy/performance -g industry -s YTD -r
+- View performance data for consumer defensive sector and sort by average volume: economy/performance -g consumer_defensive -s AvgVolume
+- Display capitalization performance data sorted by relative volume: economy/performance -g capitalization -s RelVolume
+- Show sector performance data sorted by 6-month performance in ascending order: economy/performance -s 6Month -r
+- Examine country performance data sorted by recommendation: economy/performance -g country -s Recom

@@ -1,0 +1,14 @@
+parent_command:stocks/ta
+usage: demark [-m MIN_TO_SHOW]
+
+Calculates the Demark sequential indicator.
+
+optional arguments:
+  -m MIN_TO_SHOW, --min MIN_TO_SHOW
+                        Minimum value of indicator to show (declutters plot). (default: 5)
+
+
+Examples:
+- To calculate the Demark sequential indicator for <SYMBOL> and display all values: stocks/load <SYMBOL>/ta/demark
+- To calculate the Demark sequential indicator for <SYMBOL> and display values greater than or equal to 10: stocks/load <SYMBOL>/ta/demark -m 10
+- For <SYMBOL>, calculate the Demark sequential indicator and only show values greater than or equal to 7: stocks/load <SYMBOL>/ta/demark --min 7

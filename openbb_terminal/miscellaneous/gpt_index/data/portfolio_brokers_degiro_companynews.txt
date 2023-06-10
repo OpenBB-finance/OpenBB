@@ -1,0 +1,23 @@
+parent_command:portfolio/brokers/degiro
+usage: companynews -s SYMBOL [-l LIMIT] [-o OFFSET] [-lang LANGUAGES]
+
+optional arguments:
+  -s SYMBOL, --symbol SYMBOL
+                        ISIN code of the company.
+  -l LIMIT, --limit LIMIT
+                        Number of news to display.
+  -o OFFSET, --offset OFFSET
+                        Offset of news to display.
+  -lang LANGUAGES, --languages LANGUAGES
+                        Languages of news to display.
+
+
+Examples:
+- To view company news for a specific symbol: portfolio/brokers/degiro/companynews -s <SYMBOL>
+- Display company news for a specific symbol with a limit of 5 news items: portfolio/brokers/degiro/companynews -s <SYMBOL> -l 5
+- Show company news for a specific symbol with an offset of 10: portfolio/brokers/degiro/companynews -s <SYMBOL> -o 10
+- Retrieve company news for a specific symbol in a specific language: portfolio/brokers/degiro/companynews -s <SYMBOL> -lang en
+- View company news for a specific symbol, limit the number of news items to 5, and set an offset of 10: portfolio/brokers/degiro/companynews -s <SYMBOL> -l 5 -o 10
+- Display company news for a specific symbol, limit the number of news items to 5, and filter by language: portfolio/brokers/degiro/companynews -s <SYMBOL> -l 5 -lang en
+- Show company news for a specific symbol with an offset of 10 and filter by language: portfolio/brokers/degiro/companynews -s <SYMBOL> -o 10 -lang en
+- Retrieve company news for a specific symbol, limit the number of news items to 5, set an offset of 10, and filter by language: portfolio/brokers/degiro/companynews -s <SYMBOL> -l 5 -o 10 -lang en

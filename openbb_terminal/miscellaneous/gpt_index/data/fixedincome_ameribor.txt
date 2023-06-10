@@ -1,0 +1,24 @@
+parent_command:fixedincome
+usage: ameribor [-p {overnight,term_30,term_90,1_week_term_structure,1_month_term_structure,3_month_term_structure,6_month_term_structure,1_year_term_structure,2_year_term_structure,30_day_ma,90_day_ma}] [-s START_DATE]
+                [-e END_DATE]
+
+Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
+American Financial Exchange (AFX).
+
+optional arguments:
+  -p {overnight,term_30,term_90,1_week_term_structure,1_month_term_structure,3_month_term_structure,6_month_term_structure,1_year_term_structure,2_year_term_structure,30_day_ma,90_day_ma}, --parameter {overnight,term_30,term_90,1_week_term_structure,1_month_term_structure,3_month_term_structure,6_month_term_structure,1_year_term_structure,2_year_term_structure,30_day_ma,90_day_ma}
+                        Specific AMERIBOR data to retrieve (default: overnight)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- Retrieve overnight Ameribor rate: fixedincome/ameribor
+- Get 30-day term Ameribor rate: fixedincome/ameribor -p term_30
+- Obtain 90-day moving average Ameribor rate: fixedincome/ameribor -p 90_day_ma
+- Display 1-week term structure of Ameribor rate: fixedincome/ameribor -p 1_week_term_structure
+- Fetch Ameribor rate for a specific date range: fixedincome/ameribor -s 2022-01-01 -e 2022-01-31
+- View 2-year term structure of Ameribor rate: fixedincome/ameribor -p 2_year_term_structure
+- Access 6-month term structure of Ameribor rate with a custom date range: fixedincome/ameribor -p 6_month_term_structure -s 2021-01-01 -e 2021-12-31

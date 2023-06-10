@@ -1,0 +1,12 @@
+parent_command:economy/qa
+usage: hist [-b N_BINS]
+
+Histogram with density and rug
+
+optional arguments:
+  -b N_BINS, --bins N_BINS
+
+
+Examples:
+- To create a histogram with the default number of bins: economy/qa/hist
+- To create a histogram with a specific number of bins, for example, 20: economy/qa/hist -b 20

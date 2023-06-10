@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: fr
+
+Display asset's fundraising details [Source: https://messari.io]
+
+fr
+Examples:
+- To view the fundraising details of a specific cryptocurrency: crypto/load <COIN>/dd/fr
+- Display the fundraising information for a chosen crypto asset: crypto/load <COIN>/dd/fr
+- Retrieve fundraising details for a particular cryptocurrency: crypto/load <COIN>/dd/fr
+- Access the fundraising information of a specific crypto asset: crypto/load <COIN>/dd/fr
+- Get the fundraising details for a selected cryptocurrency: crypto/load <COIN>/dd/fr

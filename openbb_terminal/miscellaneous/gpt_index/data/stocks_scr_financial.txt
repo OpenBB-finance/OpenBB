@@ -1,0 +1,15 @@
+parent_command: stocks/scr/
+usage: financial [-p Desired preset.] [-l LIMIT] [-r] [-s SORT] [-h]                  [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints financial data of the companies that meet the pre-set filtering.  optional arguments:   -p Desired preset., --preset Desired preset.                         Filter presets   -l LIMIT, --limit LIMIT                         Limit of stocks to print   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed.   -s SORT, --sort SORT  Sort elements of the table.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about financial' to access the related guide.
+Summary: The financial command prints financial data of companies that meet the pre-set filtering criteria. You can select a desired preset, limit the number of stocks to print, sort the data, and export the data in various formats. The command also allows you to specify an excel sheet name when exporting to .xlsx files.
+
+Examples:
+- Display financial data with a specific preset: stocks/scr/financial -p "Desired preset."
+- Display financial data for a limited number of stocks: stocks/scr/financial -l 10
+- Display financial data sorted in ascending order: stocks/scr/financial -r
+- Display financial data sorted by a specific column: stocks/scr/financial -s "Column Name"
+- Export financial data to a csv file: stocks/scr/financial --export csv
+- Save financial data to a specific excel sheet: stocks/scr/financial --sheet-name "Sheet1"
+- Display financial data with a specific preset and limit the number of stocks: stocks/scr/financial -p "Desired preset." -l 10
+- Display financial data sorted by a specific column in ascending order: stocks/scr/financial -s "Column Name" -r
+- Display financial data with a specific preset and export to a json file: stocks/scr/financial -p "Desired preset." --export json
+- Display financial data with a specific preset, limit the number of stocks, and sort by a specific column: stocks/scr/financial -p "Desired preset." -l 10 -s "Column Name"

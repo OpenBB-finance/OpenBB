@@ -1,0 +1,12 @@
+parent_command:stocks/qa
+usage: cdf
+
+Cumulative distribution function
+
+cdf
+Examples:
+- Calculate the cumulative distribution function for a stock: stocks/load <SYMBOL>/qa/cdf
+- Obtain the cumulative distribution function for a specific stock: stocks/load <SYMBOL>/qa/cdf
+- Compute the cumulative distribution function of a stock: stocks/load <SYMBOL>/qa/cdf
+- Get the cumulative distribution function for the selected stock: stocks/load <SYMBOL>/qa/cdf
+- Determine the cumulative distribution function for a specific stock: stocks/load <SYMBOL>/qa/cdf

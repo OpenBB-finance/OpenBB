@@ -1,0 +1,16 @@
+parent_command:stocks/qa
+usage: kurtosis [-w N_WINDOW]
+
+Kurtosis is a measure of the "tailedness" of the probability distribution of a real-valued random variable. Like skewness, kurtosis describes the shape of a probability distribution and there are different ways of quantifying it
+for a theoretical distribution and corresponding ways of estimating it from a sample from a population. Different measures of kurtosis may have different interpretations.
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        window length (default: 14)
+
+
+Examples:
+- To calculate the kurtosis with the default window length for a specific stock: stocks/load <SYMBOL>/qa/kurtosis
+- For a particular stock, find the kurtosis with a custom window length of 20: stocks/load <SYMBOL>/qa/kurtosis -w 20
+- Calculate the kurtosis of a stock using a 30-day window: stocks/load <SYMBOL>/qa/kurtosis --window 30
+- To measure the kurtosis of a stock with a 50-day window length: stocks/load <SYMBOL>/qa/kurtosis -w 50

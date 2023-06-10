@@ -1,0 +1,16 @@
+parent_command:crypto/dd
+usage: stats [--vs {EUR,USDC,USDT,GBP,USD}]
+
+Display coin stats
+
+optional arguments:
+  --vs {EUR,USDC,USDT,GBP,USD}
+                        Quote currency (what to view coin vs) (default: USDT)
+
+
+Examples:
+- To display coin stats for a specific cryptocurrency against USDT: crypto/load <COIN>/dd/stats
+- To view coin stats of a specific cryptocurrency against EUR: crypto/load <COIN>/dd/stats --vs EUR
+- Show coin stats for a specific cryptocurrency against USDC: crypto/load <COIN>/dd/stats --vs USDC
+- Display coin stats for a specific cryptocurrency against GBP: crypto/load <COIN>/dd/stats --vs GBP
+- To view coin stats of a specific cryptocurrency against USD: crypto/load <COIN>/dd/stats --vs USD

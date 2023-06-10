@@ -1,0 +1,10 @@
+parent_command: stocks/disc/
+usage: active [-l LIMIT] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print up to 25 top most actively traded intraday tickers. [Source: Yahoo Finance]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of stocks to display. (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about active' to access the related guide.
+Summary: Display up to 25 of the most actively traded intraday tickers, with the option to limit the number of stocks displayed. You can also export the raw data in various formats and save the data to a specific excel sheet. The data source is Yahoo Finance.
+
+Examples:
+- Show the top 5 most actively traded stocks: stocks/disc/active
+- Display the top 10 most actively traded stocks: stocks/disc/active -l 10
+- Show the top 25 most actively traded stocks: stocks/disc/active -l 25
+- Export the top 5 most actively traded stocks in csv format: stocks/disc/active --export csv
+- Save the top 5 most actively traded stocks to a specific excel sheet: stocks/disc/active --sheet-name Sheet1

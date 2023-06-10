@@ -1,0 +1,13 @@
+parent_command: stocks/disc/
+usage: arkord [-l LIMIT]               [-s {date,volume,open,high,close,low,total,weight,shares}] [-r]               [-b] [-c] [--fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}] [-h]               [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of stocks to display. (default: 10)   -s {date,volume,open,high,close,low,total,weight,shares}, --sortby {date,volume,open,high,close,low,total,weight,shares}                         Column to sort by (default: )   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed. (default: False)   -b, --buy_only        Flag to look at buys only (default: False)   -c, --sell_only       Flag to look at sells only (default: False)   --fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}                         Filter by fund (default: )   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about arkord' to access the related guide.
+Summary: Display orders by ARK Investment Management LLC for stocks, with options to filter by fund, sort by various columns, and limit the number of stocks displayed. You can also choose to view buy or sell orders only, reverse the sorting order, and export the data in different formats.
+
+Examples:
+- View top 10 ARK orders: stocks/disc/arkord
+- View top 20 ARK orders sorted by volume: stocks/disc/arkord -l 20 -s volume
+- View top 10 ARK orders for the ARKK fund: stocks/disc/arkord --fund ARKK
+- View top 10 buy orders only: stocks/disc/arkord -b
+- View top 10 sell orders only: stocks/disc/arkord -c
+- View top 10 ARK orders sorted by date in ascending order: stocks/disc/arkord -s date -r
+- Export top 10 ARK orders in csv format: stocks/disc/arkord --export csv
+- Export top 10 ARK orders to a specific excel sheet: stocks/disc/arkord --sheet-name Sheet1

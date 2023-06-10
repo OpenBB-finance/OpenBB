@@ -1,0 +1,12 @@
+parent_command:etf
+usage: ca
+
+Compare ETF's holdings with each other
+
+ca
+Examples:
+- Compare holdings of two ETFs: etf/load <SYMBOL1>/ca <SYMBOL2>
+- Analyze the differences in holdings between two ETFs: etf/load <SYMBOL1>/ca <SYMBOL2>
+- Examine the holdings comparison of two ETFs: etf/load <SYMBOL1>/ca <SYMBOL2>
+- Assess the similarities and differences in holdings of two ETFs: etf/load <SYMBOL1>/ca <SYMBOL2>
+- Investigate the holdings comparison for a pair of ETFs: etf/load <SYMBOL1>/ca <SYMBOL2>

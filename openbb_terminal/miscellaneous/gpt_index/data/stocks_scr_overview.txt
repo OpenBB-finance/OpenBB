@@ -1,0 +1,13 @@
+parent_command: stocks/scr/
+usage: overview [-p Desired preset.] [-l LIMIT] [-r] [-s SORT] [-h]                 [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints overview data of the companies that meet the pre-set filtering.  optional arguments:   -p Desired preset., --preset Desired preset.                         Filter presets   -l LIMIT, --limit LIMIT                         Limit of stocks to print   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed.   -s SORT, --sort SORT  Sort elements of the table.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about overview' to access the related guide.
+Summary: Display an overview of companies that meet preset filtering criteria, with options to limit the number of stocks shown, sort the data, and export the results. You can choose a preset filter, set a limit on the number of stocks displayed, reverse the sorting order, and specify the sorting criteria. Data can be exported in various formats, and you can specify the sheet name for .xlsx files.
+
+Examples:
+- Show an overview of stocks with a specific preset: stocks/scr/overview -p "Desired preset"
+- Show an overview of the top 10 stocks with a specific preset: stocks/scr/overview -p "Desired preset" -l 10
+- Show an overview of stocks with a specific preset, sorted by a specific column: stocks/scr/overview -p "Desired preset" -s "SORT"
+- Show an overview of stocks with a specific preset, sorted in ascending order: stocks/scr/overview -p "Desired preset" -r
+- Export an overview of stocks with a specific preset in csv format: stocks/scr/overview -p "Desired preset" --export csv
+- Export an overview of stocks with a specific preset in json format: stocks/scr/overview -p "Desired preset" --export json
+- Export an overview of stocks with a specific preset in xlsx format: stocks/scr/overview -p "Desired preset" --export xlsx
+- Save an overview of stocks with a specific preset to a specific excel sheet: stocks/scr/overview -p "Desired preset" --sheet-name "Sheet1"

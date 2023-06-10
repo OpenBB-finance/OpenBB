@@ -1,0 +1,9 @@
+parent_command:forex/oanda
+usage: price
+
+Get price for selected instrument.
+
+price
+Examples:
+- To obtain the price for a specific forex pair: forex/oanda/load <PAIR>/price
+- Retrieve the price of the selected forex instrument: forex/oanda/price

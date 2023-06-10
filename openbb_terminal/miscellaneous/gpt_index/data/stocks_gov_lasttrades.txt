@@ -1,0 +1,11 @@
+parent_command: stocks/gov/
+usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS]                   [-r REPRESENTATIVE] [-h] [--export EXPORT]                   [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Last government trades. [Source: www.quiverquant.com]  optional arguments:   -g {congress,senate,house}, --govtype {congress,senate,house}   -p PAST_TRANSACTIONS_DAYS, --past_transactions_days PAST_TRANSACTIONS_DAYS                         Past transaction days (default: 5)   -r REPRESENTATIVE, --representative REPRESENTATIVE                         Representative (default: )   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about lasttrades' to access the related guide.
+Summary: Display the latest government trades from various government branches (Congress, Senate, or House) within a specified number of past transaction days. You can also filter the results by a specific representative. The data source is www.quiverquant.com. Additionally, you can export the raw data in various formats and save it to a specific excel sheet.
+
+Examples:
+- Show the last 5 days of trades for all government branches: stocks/gov/lasttrades
+- Show the last 10 days of trades for the Senate: stocks/gov/lasttrades -g senate -p 10
+- Show the last 7 days of trades for a specific representative: stocks/gov/lasttrades -r "John Doe" -p 7
+- Show the last 5 days of trades for the House of Representatives: stocks/gov/lasttrades -g house
+- Export the last 5 days of trades for Congress in a csv format: stocks/gov/lasttrades -g congress --export csv
+- Save the last 5 days of trades for the Senate to a specific excel sheet: stocks/gov/lasttrades -g senate --sheet-name Sheet1
