@@ -328,9 +328,11 @@ def print_rich_table(
     # eg) praw.models.reddit.subreddit.Subreddit
     for col in df.columns:
         try:
-            if not isinstance(df[col].iloc[0], pd.Timestamp):
-                pd.to_numeric(df[col].iloc[0])
-
+            if not any(
+                isinstance(df[col].iloc[x], pd.Timestamp)
+                for x in range(min(10, len(df)))
+            ):
+                df[col] = pd.to_numeric(df[col])
         except (ValueError, TypeError):
             df[col] = df[col].astype(str)
 
