@@ -347,6 +347,7 @@ def get_available_greeks(options: object, expiration: str = "") -> pd.DataFrame:
 
     return greeks
 
+
 @log_start_end(log=logger)
 def load_options(symbol: str, pydantic: bool = False) -> object:
     """OptionsChains data object for Nasdaq.
@@ -401,7 +402,10 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     OptionsChains.source = "Nasdaq"
     OptionsChains.SYMBOLS = pandas_datareader.nasdaq_trader.get_nasdaq_symbols()
     OptionsChains.symbol = symbol
-    if OptionsChains.symbol not in OptionsChains.SYMBOLS.index and OptionsChains.symbol != "NDX":
+    if (
+        OptionsChains.symbol not in OptionsChains.SYMBOLS.index
+        and OptionsChains.symbol != "NDX"
+    ):
         print(OptionsChains.symbol, "was not found in the Nasdaq directory")
         return OptionsChains
 
