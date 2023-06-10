@@ -47,7 +47,7 @@ def test_load_options_bad_symbol(mocker):
 @pytest.mark.vcr
 def test_get_available_greeks(recorder):
     df = nasdaq_model.load_options("TSLA")
-    results_df = df.get_available_greeks(df, df.expirations[-1])
+    results_df = nasdaq_model.get_available_greeks(df, df.expirations[-1])
     assert isinstance(results_df, pd.DataFrame)
     assert results_df.cIV.sum() > 0
     recorder.capture(results_df.columns.to_list())
