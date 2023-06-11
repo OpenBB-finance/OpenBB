@@ -323,8 +323,7 @@ def header(
     floppy_disk_img = PACKAGE_DIRECTORY / "reports/templates/floppy-disc.png"
 
     try:
-        with open(openbb_img, "rb") as image_file:
-            openbb_image_encoded = base64.b64encode(image_file.read())
+        openbb_image_encoded = base64.b64encode(openbb_img.read_bytes())
         openbb_img = f"""
             <img src="data:image/png;base64,{openbb_image_encoded.decode()}"
             alt="OpenBB" style="width:144px;">"""
@@ -332,8 +331,7 @@ def header(
         openbb_img = ""
 
     try:
-        with open(floppy_disk_img, "rb") as image_file:
-            floppy_disk_encoded = base64.b64encode(image_file.read())
+        floppy_disk_encoded = base64.b64encode(floppy_disk_img.read_bytes())
         flask_disk_save = f"""
             <center><img src="data:image/png;base64,{floppy_disk_encoded.decode()}"
             alt="OpenBB" style="width:40px;"></center>"""
@@ -354,8 +352,7 @@ def header(
         </style>
         """
         try:
-            with open(PLOTLYJS_PATH) as js_file:
-                plotly_script += f"""<script>{js_file.read()}</script>"""
+            plotly_script += f"""<script>{PLOTLYJS_PATH.read_text()}</script>"""
         except Exception:
             plotly_script += (
                 "<script src='https://cdn.plot.ly/plotly-2.24.2.min.js'></script>"
