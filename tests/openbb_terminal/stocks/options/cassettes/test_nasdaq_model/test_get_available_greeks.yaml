@@ -1521,16 +1521,16 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 10 Jun 2023 22:50:28 GMT
+      - Sun, 11 Jun 2023 20:26:00 GMT
       Expires:
-      - Sat, 10 Jun 2023 22:50:28 GMT
+      - Sun, 11 Jun 2023 20:26:00 GMT
       Pragma:
       - no-cache
       Server:
       - Kestrel
       Set-Cookie:
-      - ak_bmsc=11E6D2FDC3154E0636DE5A61C798F145~000000000000000000000000000000~YAAQLKMAF2ADSZaIAQAAT/2ApxQhutw9KIUPEIlPF0R8nIUt4m2mnrqxwJlKHyo9OODJGWCBDnK88Ga90OH2+nng+Xh1xuu5P+XhjIrZ9Z8l17neLZwcCAGItyHl+0vRtrbrOmvCMzOZn8JLSBmMIg0w1AT6kn81En4ajxfghxdZ0DXE355xRBTwHWaotMm6cfv/PyhLwCNli33XJkbDOYasQdHZa8hdFjsI3y0u20tLWUEz2+F3/T2zZnKt73x9VuF51rOYJ1M/qOUMdiUGY/O/mfNn/l7yI4aMatAXEayqksZhhLhejTU6H0Ivo7c/xAbLLFVnYzG2K2ZrgK3HDwo4WVQJr9u0+5pvfLp3XGiSC8yow3rrGRcZF4sPK1GOFEO6JaqrP/CHcMGyee2yPYPuJsv4Wg==;
-        Domain=.nasdaq.com; Path=/; Expires=Sun, 11 Jun 2023 00:50:26 GMT; Max-Age=7198;
+      - ak_bmsc=729C1B3E23A5AD005C048C54BC131BD2~000000000000000000000000000000~YAAQLKMAFyJVfZaIAQAAwhUjrBSsXJhqPNxThvlb5ODuzpga+iMXifBxOZAzBDBDzkYpf4C7zSCuGiSxJwZLXBTKenpUfxPUSGJtq07vH1iVkFfloZUWA79vZcbwpYt3RLktTLekcPgZDYH8ii5PRANeXXI0GB4koZQDV0iejvHSKbFbO1wrj9se7ydl2pUN05G6L7yZyJFl6VOJksxmiEptCHB/7Ti4F+GiT6Kk//SPZQ2u+8d1zDa1UDNcjPgin3LJnXuxKq0K2E3o853WP4AdLhq8AKMWlmOYQaO9KOQFNXfHMxcLlVNL4IdTK6epYx7rpJVf0V8QFEawOht17RhZkvXaHzeP0mocixueLqSjNdshxOZymoZIEaOZe/NvIQlYmM/UVmtAyTerlIYoftnLiWKZZw==;
+        Domain=.nasdaq.com; Path=/; Expires=Sun, 11 Jun 2023 22:25:58 GMT; Max-Age=7198;
         HttpOnly
       Strict-Transport-Security:
       - max-age=86400
@@ -1539,17 +1539,17 @@ interactions:
       Vary:
       - Accept-Encoding
       X-EdgeConnect-MidMile-RTT:
-      - '49'
-      - '55'
+      - '46'
+      - '57'
       X-EdgeConnect-Origin-MEX-Latency:
-      - '1982'
-      - '1982'
+      - '1831'
+      - '1831'
       gid:
-      - '201'
+      - '104'
       lang:
       - en
       rid:
-      - 345e6c7a-de43-4feb-a01f-c5f4ccfc0aae
+      - 8a9cecb1-437c-48e7-8498-512a6da6efa6
       srctype:
       - default
     status:
@@ -3078,33 +3078,33 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 10 Jun 2023 22:50:29 GMT
+      - Sun, 11 Jun 2023 20:26:00 GMT
       Expires:
-      - Sat, 10 Jun 2023 22:50:29 GMT
+      - Sun, 11 Jun 2023 20:26:00 GMT
       Pragma:
       - no-cache
       Server:
       - Kestrel
       Set-Cookie:
-      - ak_bmsc=AE030758DE5C197486A14C971A0F63F9~000000000000000000000000000000~YAAQLKMAF4QDSZaIAQAATP+ApxR+84As8QAB0x7v+If2nn+seOqhdE6zDPULnuDaC82g2Ysk8T1qAakUCm/XENSBhr3eSqS7Hy1usme351UAuLxGIH6wEhRnFvHQj5+zAR60tXSstpRzEAn9vs2TuJ5+2bBxSvqwXA51QWkId6zLfSYAj/r8/fdsffh09iUsJcuF/VA4KSUB4yNuVhqYcJJBOItmyCmh3sfElvWPilG4HOYsNYnLGmif1I8Xo2xyweMxPC95ayPXMDAgRysvk8TcK5a6OfVE+PBmUpZ8NTWC4NEunrkuWTv2JPiIW2wsB7aKGWo3zYVQndg0MU5iy2JhFBSvyMEYTnLoZLNUGbrDGrFlBOHdJBgYofc9fF8MrpCGYj9GhwEDbsWMn+yqSOfsz1k/Ew==;
-        Domain=.nasdaq.com; Path=/; Expires=Sun, 11 Jun 2023 00:50:29 GMT; Max-Age=7200;
+      - ak_bmsc=2548C2484A2AB5DCC0E3CC7B14FAE9C8~000000000000000000000000000000~YAAQLKMAFz5VfZaIAQAAyRYjrBQIOCERziXtPnWk+hVacx77aSNGJp7dyR2st8KJHRLi1lg2BEog5eoF2NDscFRHGJHP4Ip//sU+Hdymqk1ysHv5yP5dxYdI2k6CNdbWlCF26eNBTOKtKYcm2IkGGphlOXi8kI4HyCD296nEy7zDQx9lR7PUp28HZf8JgPOhrrWaJdWddWSQ1TJ9X2gHaOGUw4+sGKxZHdtXFOnPIR4lhDI1n6AtxjeYl8ByKNYY6pp0FM/FLUZ94bCPsNutcUTXbZoS5p/WoYlg45ooW2W/VGxMtaJ3edc1UxAZasuZGTX153mzw/pUsuArd3mskOokfH1+IcKan4t97XWVNGWjtQEqLFXLRtJLAmmRIl5ldCROZWYrxI0AcaVqeb0BA37eH4KJyA==;
+        Domain=.nasdaq.com; Path=/; Expires=Sun, 11 Jun 2023 22:26:00 GMT; Max-Age=7200;
         HttpOnly
       Strict-Transport-Security:
       - max-age=86400
       Vary:
       - Accept-Encoding
       X-EdgeConnect-MidMile-RTT:
-      - '49'
-      - '55'
+      - '46'
+      - '57'
       X-EdgeConnect-Origin-MEX-Latency:
-      - '1982'
-      - '1982'
+      - '1831'
+      - '1831'
       gid:
-      - '201'
+      - '104'
       lang:
       - en
       rid:
-      - 345e6c7a-de43-4feb-a01f-c5f4ccfc0aae
+      - 8a9cecb1-437c-48e7-8498-512a6da6efa6
       srctype:
       - default
     status:
@@ -3124,13 +3124,16 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAF2R21LCMBCGX6WT0SsrllJ14I4pM4oiHtoXWJoFM6RJbVLGyvDu7iKHqVdpvv/P
-        Hv5uhQQPYrQVri0XVouRyLPZWISisGUFpp1DiQzRaQiDqSl6QWrL0pog87ZYk9HxmbcV2/5J+F18
-        glmxMh9nk/H79UNGWLk5OAlfM+U8SjHydYNn2o+iM3pETYYlaEfXqlYl1O3kMLEG5zPQ+Fargltc
-        xEnSSyJqYNCnx8ZXw95tQqzCukDjYYVnKelFd5ekSdQepkaqArytSWkqolw/r0Firkp0HsqKlKfG
-        BMMwiKN4sN/kA0GzfhpyoeRxoPkNBwlu3QXkyNRPx9C5b6xu9qHHURTGSRwO7vtiR0FjYY08BWAa
-        rUNBgazRZx584/gHaOsoUi7qKARagWmWv6bPnPwaW7a642tjvVry1sqaA6RGtK0DTujP5A7Ft6JO
-        rSTMc4kFf790nRI3qC0l3eG73S/7NS0oZgIAAA==
+        H4sIAAAAAAAAAI1TTY/TMBD9K5YFJ9Ik2y2g7a2kq21hKdAEcUAITZLZxqpjB9tpN1T974zTL3VP
+        KIfEb57n473JjpfggI933HZ1riUf8yx9nPCAF7puQHULqNGDaCUEbK6KkCW6rrViqdPFmojWv7Ou
+        8bQXIXwuKlArH1lM0unk2+AhJVjYBdgS/jwK67DkY2davKA3cXyBZiiJ8ATS0rExogbTTY8dS7Au
+        BYlfjSh8iVfD0SgcxVRAoUtOhd/chW9HhDVoClQOVngJjcL43WuKlSgdzFUpCnDaUKRtCPX5MwMl
+        ZqJG66BuKPKxVewuYMN4eNtPskSQPn5uMhflqaFF5IUEu74GiJGKv1eEq/NGy7YXfRjHwXA0DG7f
+        3/A9CY2FVuVZANVKGXASZI0udeBa6w2Q2pKkPqklEWgEj6bZl+STV36Nnafa022lnXjyUwutCPy5
+        4xVCKYXy5WfzhxnL7pPZYp5MHtkky5bzD9+ze2/shqT0nh8ukTwWekn98rAKLAM2E6uKZVhUigpI
+        tqQiasXyjh1sZlNtLHbshyGeC9lU2EJv0LBt1TF3vgYKZGeFZTU4h8aeih/38kWRiXNG5K1DorVG
+        HrYkR7/W/59/A7L1uSvnGjuOou12G6q+55B+isiSPb1e0QEclP0gg20/SHROPTil9t4J2mLuQ7/h
+        3OL+Fz3BRbyDJfZo5Y6bRJcE+y3guf/+fM0sSQipaa+v8P3+H3Q2MK/UAwAA
     headers:
       Cache-Control:
       - max-age=0, no-cache, no-store
@@ -3139,31 +3142,34 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '370'
+      - '558'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 10 Jun 2023 22:50:29 GMT
+      - Sun, 11 Jun 2023 20:26:01 GMT
       Expires:
-      - Sat, 10 Jun 2023 22:50:29 GMT
+      - Sun, 11 Jun 2023 20:26:01 GMT
       Pragma:
       - no-cache
       Server:
       - Kestrel
       Set-Cookie:
-      - ak_bmsc=72351707122C2FCFAD851EDC5CCB449C~000000000000000000000000000000~YAAQLKMAF6QDSZaIAQAAfQCBpxTvUk3NavuFh186Ze54R25Nwb/8MendZVOvbc7QH8yhqu61VO/O0O+f65BGEPShXIOlNHxLUulzMNLR4Pguj85Gj/2g3p8lmuoSwY/ANO+ADj51TPEmXAb8wZ5xldBO/QFuHn2gVKs+V4GwaEEfzUR36z9tRD+D0Kq5aQ2Is44UJtJyp7t9cWeIhl+UH83Z0KH1TAYc2ng6rxQq8FXlxQhOq/AOFCwWriWvCEQjDqfPE9yBi6kJoJCl48n0CXuv06JcQ4aqxPsFvAK5PcrzSYAs3pwS0vPcOyhD0FwuiK7/R59daHIzxJ/4ZNg+YIq98AsXm7dVHYyzOTCmDRvmNFpoNOnqXcy8IBrTBuIgFgLaSJgHWBLQCLB2US/Hk/OXzpCgaw==;
-        Domain=.nasdaq.com; Path=/; Expires=Sun, 11 Jun 2023 00:50:29 GMT; Max-Age=7200;
+      - ak_bmsc=3A1109F22F9CEE0BBB22D1DE8D85BF8F~000000000000000000000000000000~YAAQLKMAF1xVfZaIAQAA/hcjrBRR4MsZVEQ2hgdqHDoQ05f+VXFXIZjkNfS5xjF1pecFXhS0YQQeYxh3odENqmcDuEy3ls3kDw+mCdKa0IHgHZYs6UYAXGtx+tBLZ5nY53oMe2nFYEolKLWIZGzP4ifNd0+Z140GFgROBU/kZVhAslFcH3F19rrCDWOn3JMxCLESYF/bEEyU9G6wzz4xEFBXW612mHibrsXwcFUuquibcwxyrdmOU+YBwch/xQMh1A0CHm+3bCfbnWLpIqr2U1ZMZAPTpeJrpOXan8MTw7cVm85IAZPdweWB1ULm3wZ7e2Qi6mxpZvozXXctFItsyjq2Kw5es1uchsi1yHsZPGbBOfM+gMd5xVcVlnDY0KCrphmQZg/qIBylAQV/ZUHyJs2v2JA3yQ==;
+        Domain=.nasdaq.com; Path=/; Expires=Sun, 11 Jun 2023 22:26:01 GMT; Max-Age=7200;
         HttpOnly
       Strict-Transport-Security:
       - max-age=86400
       Vary:
       - Accept-Encoding
+      cache-hit:
+      - '3002'
+      - '2001'
       gid:
-      - '204'
+      - '104'
       lang:
       - en
       rid:
-      - 29766c2f-3528-4aa3-baec-9e737400ee45
+      - 2bac6061-4c79-4dae-81b4-1d133f6cc8a8
       srctype:
       - default
     status:
@@ -3179,25 +3185,46 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.nasdaq.com/api/quote/TSLA/option-chain/greeks?assetclass=stocks&date=2025-12-19
+    uri: https://api.nasdaq.com/api/quote/TSLA/option-chain/greeks?assetclass=stocks&date=2023-06-16
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAALWWS2/iMBCA/wrKmYDHb/eGtoi2W7ZSQb2s9uAGtyACRElgtar639cOjzgOubUV
-        qrD54vF8mXHyES10qaObjyjT72a+KlMT3UTz2eOo95SVq9226E1yY9ZF1I9K/ep+/Yh08fQW3Wz3
-        adqPlkYvTF646eTWpG6t6Hb8OB/ZC5KJ3mzcxGQ0nVYTz8udHT7fPbnBfGkqfH43PuIv5t2NX8aT
-        anj/Ygf2Xz+alflq7TY2mz/f/xzbmSyMlYWxMj9WFsbKmrGyc6zPfpTv/tp0ftf5oIFgXJI6HzRA
-        CBg/54MHoBSQOqPYApRjekkJBhgEw6ec0ICBEPby4pQWxm7FOil7PSaKizqrKiIl56xiPBCKMVYn
-        5kJiqBa5hERCiVNqNiQTSPWjfZ7aRIcbna9NGeukXB1W5b9hUe6SdTEsi1QPd9V9j5OlXm2HiU7T
-        ONuX8XH2iMQxZoBBJQjZrds/q62hiyjEA12c1LowwoIGugQGXxcnXHq6cEMXaetiDGSoS150EStH
-        Shzqcves1kUVME+X4vgbdJFrujBQFepSfnUxJANdEoSniyDG/eqyOj1dtK1L2NoIdLnyvOjCTErV
-        qi7s65KCU1+Xq8Yv10Wv6UKEQ6BL+M1od9bSpZCvi1JfF+LE18XauiTnYXUx4emiklfN6etC1SWX
-        kLahwdPF1Xc0I7uii0teVY+/eQmeLlt+oS7F/WYkQhHu6aKuVS+6eEsXQYBxoIsjT5fAkoTNiFwL
-        1LoYZV4zcuRS+HJd/Kjrjz3031ZpWT3G7Lmf6lfjIj3stz3c79nTithHxEGne/cIcsMY8RjhSrQP
-        q25YtWDgnTTwFo1JJ20nQ5qgTpqggE57ogMW9tOCgXbSQFu0rZQuGkOblt20bNCj/XsPumgZQ5Oe
-        maxnz/brtIqBNeinpLTkdRpQjJsCf+0OPegwCBBD0+CtSTp3AjjcyYO2ZXIsKtqkaYzs2s2imur8
-        vHabJq21XVFBB83Du+MMnpy0aRU6qfZ9dMKaNKv2HVbV9rx2m+bh2pVBdZ12BtWxnzemKOwL7fkt
-        tSh1ua9eUvMfu4U7ttyZ9eq+T5vkwhxMustM3pj//PwPXAwb6ikLAAA=
+        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
+        G3P/16//AdZyzjXVIgAA
     headers:
       Cache-Control:
       - max-age=0, no-cache, no-store
@@ -3206,37 +3233,37 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '839'
+      - '2010'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 10 Jun 2023 22:50:29 GMT
+      - Sun, 11 Jun 2023 20:26:02 GMT
       Expires:
-      - Sat, 10 Jun 2023 22:50:29 GMT
+      - Sun, 11 Jun 2023 20:26:02 GMT
       Pragma:
       - no-cache
       Server:
       - Kestrel
       Set-Cookie:
-      - ak_bmsc=DE993FEBCE305CA9FFA7D45516EAB0A4~000000000000000000000000000000~YAAQLKMAF9EDSZaIAQAA0wKBpxS7l+V0hBLaJS2fftnvSBi1lokkQTyRP368+4kWoQcJLa7G0Gh0w8MKuZ4ktl5w+pHmp28t+uscqpF/9XYtarh3rxmw8pS+rOILVbgUSIT9ZlLTRDlOqdPjzPEQLL7Csw3M7G46F3/WD3C3gSGE95grlwTROS+MG6CTwKP0/LjLo7qKLO4SPYEyQtxDmreUI9PSilK9v0eXvT6auy+tqUuHBjy2ChL4dfOzIBiORgUTuPbKroyj8L41eEPA8ZmZwwBwQI8l61DCbiPTcCwdx7F7mABntY2tVzIKYsDODeTLZJWgPmlA1o3f7UItQZsNkWfzgLcqq0ptY7dYE14mFXRq7hMC8nqHIKMXHWD8mGmqP5XiWpN9cqVjCUue3KOSWVwH5Q==;
-        Domain=.nasdaq.com; Path=/; Expires=Sun, 11 Jun 2023 00:50:29 GMT; Max-Age=7200;
+      - ak_bmsc=A0B47478522ADED94FFB94151FB0EE98~000000000000000000000000000000~YAAQLKMAF7hVfZaIAQAAoBwjrBS8q5PzfsrlFRuQWPXqgmg0RPK8jNe/QDxjqLLxKocTnQdeDrm4eRtc6yf83eVqWuJWBwZlwZsVN2GpGlOpjlHEEnxaJVx+GRHoC/zt0QclaARN7iVm+K3pd7Ww1OrN2boFbJAX/fVN8bmrC0//xBIOdKZSO/DV33nYMRX8SMa1nTNIxT2OBvuXUxDmInVk/P48XIgA6difMAovrzlsOenV9fp2B7yocnpJLW/HX2BzFmJNqQwbvmQOkTxDPRT7lEiSzSBK0iXPE3EY9gmlKSTi3L2EdJUvnlihtLFVlFOl53H6W/eix4MtpSsDjFnk1BUS83ccQdFA7uy1f2RmOZ4pEVShD89DhRMEaVSK4W5/ds4ZWNb1Kv+n50qenizR4TwG2g==;
+        Domain=.nasdaq.com; Path=/; Expires=Sun, 11 Jun 2023 22:26:01 GMT; Max-Age=7199;
         HttpOnly
       Strict-Transport-Security:
       - max-age=86400
       Vary:
       - Accept-Encoding
       X-EdgeConnect-MidMile-RTT:
-      - '45'
-      - '54'
+      - '42'
+      - '101'
       X-EdgeConnect-Origin-MEX-Latency:
-      - '438'
-      - '438'
+      - '776'
+      - '776'
       gid:
-      - '203'
+      - '103'
       lang:
       - en
       rid:
-      - d9cbda64-983d-4983-9c78-dd0e960183ad
+      - f72f0685-e9e7-432b-b504-87e4b8c481db
       srctype:
       - default
     status:

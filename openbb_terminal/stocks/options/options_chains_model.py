@@ -7,7 +7,7 @@ import logging
 from copy import deepcopy
 
 # IMPORTATION THIRDPARTY
-from typing import Any, Callable, Optional
+from typing import Any, Optional
 
 import numpy as np
 import pandas as pd
@@ -17,6 +17,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.options.cboe_model import load_options as load_cboe
 from openbb_terminal.stocks.options.intrinio_model import load_options as load_intrinio
 from openbb_terminal.stocks.options.nasdaq_model import load_options as load_nasdaq
+from openbb_terminal.stocks.options.op_helpers import Options
 from openbb_terminal.stocks.options.tmx_model import load_options as load_tmx
 from openbb_terminal.stocks.options.tradier_model import load_options as load_tradier
 from openbb_terminal.stocks.options.yfinance_model import load_options as load_yfinance
@@ -166,17 +167,15 @@ def validate_object(
     --------
     Load some data first:
     >>> from openbb_terminal.stocks.options import options_chains_model
-    >>> data = options_chains_model.OptionsChains().load_options_chains("SPY")
+    >>> data = options_chains_model.load_options_chains("SPY")
     To extract just the chains data, use:
     >>> chains = options_chains_model.validate_object(data, scope="chains")
     To pass as a true/false validation, use:
     >>> if options_chains_model.validate_object(data, scope="object") is False:
     >>>     return
     To pass and return the entire object for non-zero prices:
-    >>> from copy import deepcopy
-    >>> options = deepcopy(data)
-    >>> if options_chains_model.validate_object(options, scope="object") is True:
-    >>>     options = options_chains_model.validate_object(options, scope="nonZeroPrices")
+    >>> if options_chains_model.validate_object(data, scope="object") is True:
+    >>>     data = options_chains_model.validate_object(data, scope="nonZeroPrices")
     """
 
     scopes = ["chains", "object", "strategies", "nonZeroPrices"]
@@ -301,9 +300,9 @@ def get_nearest_dte(options: object, days: Optional[int] = 30) -> int:
     Example
     -------
     >>> from openbb_terminal.stocks.options import options_chains_model
-    >>> options = options_chains_model.OptionsChains().load_options_chains("QQQ")
-    >>> options_chains_model.get_nearest_dte(options)
-    >>> options_chains_model.get_nearest_dte(options, 90)
+    >>> data = options_chains_model.load_options_chains("QQQ")
+    >>> options_chains_model.get_nearest_dte(data, 42)
+    >>> options_chains_model.get_nearest_dte(data, 90)
     """
 
     if validate_object(options, scope="object") is False:
@@ -338,9 +337,10 @@ def get_nearest_call_strike(
 
     Example
     -------
-    >>> data = OptionsChains().load_options_chains('SPY')
-    >>> get_nearest_call_strike(data)
-    >>> get_nearest_call_strike(data, 90)
+    >>> from openbb_terminal.stocks.options import options_chains_model
+    >>> data = options_chains_model.load_options_chains("SPY")
+    >>> options_chains_model.get_nearest_call_strike(data)
+    >>> options_chains_model.get_nearest_call_strike(data, 180, 427)
     >>> days = data.chains.dte.unique().tolist()
     >>> for day in days:
     >>>     print(get_nearest_call_strike(data, day))
@@ -396,9 +396,10 @@ def get_nearest_put_strike(
 
     Example
     -------
-    >>> data = OptionsChains().load_options_chains('SPY')
-    >>> get_nearest_put_strike(data)
-    >>> get_nearest_put_strike(data, 90)
+    >>> from openbb_terminal.stocks.options import options_chains_model
+    >>> data = options_chains_model.load_options_chains('SPY')
+    >>> options_chains_model.get_nearest_put_strike(data, 90, 402)
+    >>> options_chains_model.get_nearest_put_strike(data, 90)
     >>> days = data.chains.dte.unique().tolist()
     >>> for day in days:
     >>>     print(get_nearest_put_strike(data, day))
@@ -453,8 +454,8 @@ def get_nearest_otm_strike(
     Example
     -------
     >>> from openbb_terminal.stocks.options import options_chains_model
-    >>> data = options_chains_model.OptionsChains().load_options_chains('SPY')
-    >>> strikes = options_chains_model.get_nearest_otm_strike(data)
+    >>> data = options_chains_model.load_options_chains('SPY')
+    >>> strikes = options_chains_model.get_nearest_otm_strike(data, 5)
     """
 
     if validate_object(options, scope="object") is False:
@@ -624,7 +625,7 @@ def calculate_strangle(
     days: Optional[int] = 30,
     moneyness: Optional[float] = 5,
 ) -> pd.DataFrame:
-    """Calculates the cost of a straddle and its payoff profile.  Use a negative value for moneyness for short options.
+    """Calculates the cost of a strangle and its payoff profile.  Use a negative value for moneyness for short options.
 
     Requires the OptionsChains data object.
 
@@ -646,10 +647,10 @@ def calculate_strangle(
 
     Examples
     --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> data = openbb.stocks.options.load_options_chains('SPY')
-    >>> openbb.stocks.options.calculate_strangle(data)
+    >>> data = openbb.stocks.options.load_options_chains("SPY")
+    >>> data.calculate_strangle()
     """
+
     options = deepcopy(options)
 
     if not days:
@@ -788,15 +789,15 @@ def calculate_vertical_call_spread(
     --------
     Load the data:
     >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains()
-    >>> op = OptionsChains()
     >>> data = op.load_options_chains("QQQ")
 
     For a bull call spread:
-    >>> op.calculate_vertical_call_spread(data, days=10, sold_strike=355, bought_strike=350)
+    >>> data.calculate_vertical_call_spread(days=10, sold_strike=355, bought_strike=350)
 
     For a bear call spread:
-    >>> op.calculate_vertical_call_spread(data, days=10, sold_strike=350, bought_strike=355)
+    >>> data.calculate_vertical_call_spread(days=10, sold_strike=350, bought_strike=355)
     """
+
     options = deepcopy(options)
 
     if not days:
@@ -934,14 +935,13 @@ def calculate_vertical_put_spread(
     --------
     Load the data:
     >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains()
-    >>> op = OptionsChains()
-    >>> data = op.load_options_chains("QQQ")
+    >>> data = OptionsChains("QQQ")
 
     For a bull put spread:
-    >>> op.calculate_vertical_put_spread(data, days=10, sold_strike=355, bought_strike=350)
+    >>> data.get_vertical_put_spread(data, days=10, sold_strike=355, bought_strike=350)
 
     For a bear put spread:
-    >>> op.calculate_vertical_put_spread(data, days=10, sold_strike=355, bought_strike=350)
+    >>> data.get_vertical_put_spread(data, days=10, sold_strike=355, bought_strike=350)
     """
     options = deepcopy(options)
 
@@ -1062,10 +1062,13 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
     Examples
     --------
     >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
-    >>> data = OptionsChains().load_options_chains("SPY")
-    >>> OptionsChains().calculate_stats(data)
-    >>> OptionsChains().calculate_stats(data, "strike")
-    >>> OptionsChains().calculate_stats(data.chains, "expiration")
+    >>> data = OptionsChains("SPY")
+
+    By expiration date:
+    >>> data.calculate_stats()
+
+    By strike:
+    >>> data.calculate_stats(data, "strike")
     """
 
     if by not in ["expiration", "strike"]:
@@ -1183,21 +1186,21 @@ def get_strategies(
     --------
     Load data
     >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
-    >>> op = OptionsChains()
-    >>> data = op.load_options_chains("SPY")
+    >>> data = OptionsChains("SPY")
 
     Return just straddles
-    >>> op.get_strategies(data)
+    >>> data.get_strategies()
 
     Return strangles
-    >>> op.get_strategies(data)
+    >>> data.get_strategies()
 
     Return multiple values for both moneness and days:
-    >>> op.get_strategies(data, days = [10,30,60,90], moneyness = [2.5,-5,10,-20])
+    >>> data.get_strategies(days = [10,30,60,90], moneyness = [2.5,-5,10,-20])
 
     Return vertical spreads for all expirations.
-    >>> op.get_strategies(data, vertical_calls=[430,427], vertical_puts=[420,426])
+    >>> data.get_strategies(vertical_calls=[430,427], vertical_puts=[420,426])
     """
+
     if strangle_moneyness is None:
         strangle_moneyness = [0.0]
     if days is None:
@@ -1325,11 +1328,227 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
         Function for calculating multiple straddles and strangles at different expirations and moneyness.
     """
 
-    def __init__(self) -> None:
-        self.load_options_chains: Callable = load_options_chains
-        self.calculate_stats: Callable = calculate_stats
-        self.calculate_vertical_call_spread: Callable = calculate_vertical_call_spread
-        self.calculate_vertical_put_spread: Callable = calculate_vertical_put_spread
-        self.calculate_straddle: Callable = calculate_straddle
-        self.calculate_strangle: Callable = calculate_strangle
-        self.get_strategies: Callable = get_strategies
+    options = Options()
+
+    def __init__(self, symbol, source="CBOE", date="", pydantic=False):
+        options = load_options_chains(symbol, source, date, pydantic)
+        items = list(options.__dict__.keys())
+        for item in items:
+            setattr(self, item, options.__dict__[item])
+
+    def get_stats(self, by="expiration"):
+        """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
+
+        Parameters
+        ----------
+        by: str
+            Whether to calculate by strike or expiration.  Default is expiration.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with the calculated statistics.
+
+        Examples
+        --------
+        >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
+        >>> data = OptionsChains("SPY")
+
+        By expiration date:
+        >>> data.calculate_stats()
+
+        By strike:
+        >>> data.calculate_stats(data, "strike")
+        """
+
+        return calculate_stats(self, by)
+
+    def get_straddle(self, days=0, strike=0):
+        """Calculates the cost of a straddle and its payoff profile. Use a negative strike price for short options.
+        Requires the OptionsChains data object.
+
+        Parameters
+        ----------
+        days: int
+            The target number of days until expiry. Default is 30 days.
+        strike: float
+            The target strike price. Enter a negative value for short options.
+            Default is the last price of the underlying stock.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with the results. Strike1 is the nearest call strike, strike2 is the nearest put strike.
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> data = openbb.stocks.options.load_options_chains('SPY')
+        >>> data.get_straddle()
+        """
+
+        return calculate_straddle(self, days, strike)
+
+    def get_strangle(self, days=0, moneyness=0):
+        """Calculates the cost of a strangle and its payoff profile.
+        Use a negative value for moneyness for short options.
+
+        Requires the OptionsChains data object.
+
+        Parameters
+        ----------
+        days: int
+            The target number of days until expiry.  Default is 30 days.
+        moneyness: float
+            The percentage of OTM moneyness, expressed as a percent between -100 < 0 < 100.
+            Enter a negative number for short options.
+            Default is 5.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with the results.
+            Strike 1 is the nearest call strike, and strike 2 is the nearest put strike.
+
+        Examples
+        --------
+        >>> data = openbb.stocks.options.load_options_chains("SPY")
+        >>> data.get_strangle()
+        """
+
+        return calculate_strangle(self, days, moneyness)
+
+    def get_vertical_call_spread(self, days=0, sold_strike=0, bought_strike=0):
+        """Calculates the vertical call spread for the target DTE.
+        A bull call spread is when the sold strike is above the bought strike.
+
+        Parameters
+        ----------
+        days: int
+            The target number of days until expiry. This value will be used to get the nearest valid DTE.
+            Default is 30 days.
+        sold_strike: float
+            The target strike price for the short leg of the vertical call spread.
+            Default is the 5% OTM above the last price of the underlying.
+        bought_strike: float
+            The target strike price for the long leg of the vertical call spread.
+            Default is the last price of the underlying.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with the results. Strike 1 is the sold strike, and strike 2 is the bought strike.
+
+        Examples
+        --------
+        Load the data:
+        >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
+        >>> data = OptionsChains("SPY")
+
+        For a bull call spread:
+        >>> data.get_vertical_call_spread(days=10, sold_strike=355, bought_strike=350)
+
+        For a bear call spread:
+        >>> data.get_vertical_call_spread(days=10, sold_strike=350, bought_strike=355)
+        """
+
+        return calculate_vertical_call_spread(self, days, sold_strike, bought_strike)
+
+    def get_vertical_put_spread(self, days=0, sold_strike=0, bought_strike=0):
+        """Calculates the vertical put spread for the target DTE.
+        A bear put spread is when the bought strike is above the sold strike.
+
+        Parameters
+        ----------
+        days: int
+            The target number of days until expiry. This value will be used to get the nearest valid DTE.
+            Default is 30 days.
+        sold_strike: float
+            The target strike price for the short leg of the vertical put spread.
+            Default is the last price of the underlying.
+        bought_strike: float
+            The target strike price for the long leg of the vertical put spread.
+            Default is the 5% OTM above the last price of the underlying.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with the results. Strike 1 is the sold strike, strike 2 is the bought strike.
+
+        Examples
+        --------
+        Load the data:
+        >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
+        >>> data = OptionsChains("QQQ")
+
+        For a bull put spread:
+        >>> data.get_vertical_put_spread(days=10, sold_strike=355, bought_strike=350)
+
+        For a bear put spread:
+        >>> data.get_vertical_put_spread(days=10, sold_strike=355, bought_strike=350)
+        """
+
+        return calculate_vertical_put_spread(self, days, sold_strike, bought_strike)
+
+    def get_strategies(
+        self,
+        days: Optional[list[int]] = None,
+        straddle_strike: Optional[float] = None,
+        strangle_moneyness: Optional[float] = None,
+        vertical_calls: Optional[list[float]] = None,
+        vertical_puts: Optional[list[float]] = None,
+    ):
+        """Gets options strategies for all, or a list of, DTE(s).
+        Currently supports straddles, strangles, and vertical spreads.
+        Multiple strategies, expirations, and % moneyness can be returned.
+        To get short options, use a negative value for the `straddle_strike` price or `strangle_moneyness`.
+        A sold call strike that is lower than the bought strike,
+        and a sold put strike that is higher than the bought strike,
+        are both bearish.
+
+        Parameters
+        ----------
+        days: list[int]
+            List of DTE(s) to get strategies for. Enter a single value, or multiple as a list. Defaults to all.
+            This is the only shared parameter across strategies.
+        strike_price: float
+            The target strike price. Defaults to the last price of the underlying stock.
+        strangle_moneyness: list[float]
+            List of OTM moneyness to target, expressed as a percent value between 0 and 100.
+            Enter a single value, or multiple as a list. Defaults to 5.
+        vertical_calls: list[float]
+            Call strikes for vertical spreads, listed as [sold strike, bought strike].
+        vertical_puts: list[float]
+            Put strikes for vertical spreads, listed as [sold strike, bought strike].
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with the results.
+
+        Examples
+        --------
+        Load data
+        >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
+        >>> data = OptionsChains("SPY")
+
+        Return just long straddles for every expiry.
+        >>> data.get_strategies()
+
+        Return strangles for every expiry.
+        >>> data.get_strategies(strangle_moneyness = [2.5,5,10])
+
+        Return multiple values for both moneness and days:
+        >>> data.get_strategies(days = [10,30,60,90], moneyness = [2.5,-5,10,-20])
+
+        Return vertical spreads for all expirations.
+        >>> data.get_strategies(vertical_calls=[430,427], vertical_puts=[420,426])
+        """
+
+        return get_strategies(
+            self,
+            days,
+            straddle_strike,
+            strangle_moneyness,
+            vertical_calls,
+            vertical_puts,
+        )

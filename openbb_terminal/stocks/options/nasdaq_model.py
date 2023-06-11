@@ -306,7 +306,7 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-def get_available_greeks(options: object, expiration: str = "") -> pd.DataFrame:
+def get_available_greeks(OptionsChains, expiration: str = "") -> pd.DataFrame:
     """Get available greeks for a specific expiration.
     This function will return data for strike prices near the money only.
 
@@ -330,7 +330,7 @@ def get_available_greeks(options: object, expiration: str = "") -> pd.DataFrame:
 
     >>> greeks = self.get_available_greeks(self.expirations[-1])
     """
-    OptionsChains = options
+
     if expiration == "":
         expiration = OptionsChains.expirations[0]
 
@@ -433,13 +433,51 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
     OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
 
+    def get_greeks(expiration: str = ""):
+        """Get available greeks for a specific expiration.
+        This function will return data for strike prices near the money only.
+
+        Parameters
+        ----------
+        expiration: str
+            The expiration date to return the data.  Default is the first available date. (YYYY-MM-DD)
+
+        Returns
+        -------
+        pd.DataFrame
+            Dataframe with option greeks and strike prices.
+
+        Examples
+        --------
+        Near-the-Money Greeks for the closest expiration date.
+
+        >>> greeks = self.get_available_greeks()
+
+        Get the last expiration date.
+
+        >>> greeks = self.get_available_greeks(self.expirations[-1])
+        """
+
+        if expiration == "":
+            expiration = OptionsChains.expirations[0]
+        if expiration not in OptionsChains.expirations:
+            print(
+                f"{expiration}",
+                " is not a valid expiration.  Choose from, ",
+                OptionsChains.expirations,
+                sep="",
+            )
+            return pd.DataFrame()
+
+        return get_option_greeks(OptionsChains.symbol, expiration)
+
     if not OptionsChains.chains.empty:
         if OptionsChains.last_price is None:
             OptionsChains.last_price = 0
             print("No last price for " + OptionsChains.symbol)
 
         if not pydantic:
-            setattr(OptionsChains, "get_available_greeks", get_available_greeks)
+            setattr(OptionsChains, "get_available_greeks", get_greeks)
             return OptionsChains
 
         OptionsChainsPydantic = PydanticOptions(
@@ -455,7 +493,7 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
             source=OptionsChains.source,
             SYMBOLS=OptionsChains.SYMBOLS.to_dict(),
         )
-        setattr(OptionsChainsPydantic, "get_available_greeks", get_available_greeks)
+        setattr(OptionsChainsPydantic, "get_available_greeks", get_greeks)
         return OptionsChainsPydantic
 
     return None

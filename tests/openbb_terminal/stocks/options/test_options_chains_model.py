@@ -1,3 +1,5 @@
+# pylint: disable=no-member
+
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
@@ -10,9 +12,8 @@ from openbb_terminal.stocks.options import options_chains_model
 
 @pytest.mark.vcr
 def test_OptionsChains(recorder):
-    op = options_chains_model.OptionsChains()
-    df1 = op.load_options_chains("AAPL")
-    df2 = op.load_options_chains("AAPL", "YahooFinance", pydantic=True)
+    df1 = options_chains_model.OptionsChains("AAPL")
+    df2 = options_chains_model.OptionsChains("AAPL", "YahooFinance", pydantic=True)
     assert hasattr(df1, "chains")
     assert hasattr(df2, "underlying_price")
     assert isinstance(df1.underlying_price, pd.Series)
@@ -21,20 +22,19 @@ def test_OptionsChains(recorder):
         [df1.chains.columns.to_list(), df1.underlying_price.index.to_list()]
     )
     recorder.capture([df1.underlying_name, df2.underlying_name])
-    stats1 = op.calculate_stats(df1)
-    stats2 = op.calculate_stats(df2, "strike")
+    stats1 = df1.get_stats()
+    stats2 = df2.get_stats("strike")
     recorder.capture(stats1.columns.to_list())
     recorder.capture(stats2.columns.to_list())
-    straddle = op.calculate_straddle(df1)
+    straddle = df1.get_straddle()
     recorder.capture([straddle.index.to_list(), straddle.columns.to_list()])
-    strangle = op.calculate_strangle(df2, days=90, moneyness=20)
+    strangle = df1.get_strangle(days=90, moneyness=20)
     recorder.capture([strangle.index.to_list(), strangle.columns.to_list()])
-    call_spread = op.calculate_vertical_call_spread(df1)
+    call_spread = df1.get_vertical_call_spread()
     recorder.capture([call_spread.index.to_list(), call_spread.columns.to_list()])
-    put_spread = op.calculate_vertical_put_spread(df2)
+    put_spread = df1.get_vertical_put_spread()
     recorder.capture([put_spread.index.to_list(), put_spread.columns.to_list()])
-    strategies = op.get_strategies(
-        df1,
+    strategies = df1.get_strategies(
         days=[30, 60, 90, 180],
         straddle_strike=df1.last_price,
         strangle_moneyness=[5, 10, 20],
