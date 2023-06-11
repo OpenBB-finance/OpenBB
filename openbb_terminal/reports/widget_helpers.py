@@ -10,6 +10,9 @@ from typing import List
 
 from jinja2 import Template
 
+from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
+from openbb_terminal.core.plots.backend import PLOTLYJS_PATH
+
 
 def price_card_stylesheet():
     """Load a default CSS stylesheet from file."""
@@ -122,7 +125,7 @@ def row(elements: List) -> str:
     Parameters
     ----------
     elements : List
-       List of HTML code elements to add in a row
+        List of HTML code elements to add in a row
 
     Returns
     -------
@@ -287,16 +290,17 @@ def tablinks(tabs: List[str]) -> str:
 
 
 def header(
-    openbb_img, floppy_disk_img, author, report_date, report_time, report_tz, title
+    author: str,
+    report_date: str,
+    report_time: str,
+    report_tz: str,
+    title: str,
+    plotly_js: bool = False,
 ) -> str:
     """Creates reports header
 
     Parameters
     ----------
-    openbb_img : str
-        Image of OpenBB logo
-    floppy_disk_img : str
-        Image of floppy disk containing the save button
     author : str
         Name of author responsible by report
     report_date : str
@@ -307,12 +311,17 @@ def header(
         Timezone associated with datetime of report being run
     title : str
         Title of the report
+    plotly_js : bool
+        If True, then we add plotly.js to the report
 
     Returns
     -------
     str
         HTML code for interactive tabs
     """
+    openbb_img = PACKAGE_DIRECTORY / "reports/templates/OpenBB_reports_logo.png"
+    floppy_disk_img = PACKAGE_DIRECTORY / "reports/templates/floppy-disc.png"
+
     try:
         with open(openbb_img, "rb") as image_file:
             openbb_image_encoded = base64.b64encode(image_file.read())
@@ -331,6 +340,27 @@ def header(
     except Exception:
         flask_disk_save = ""
 
+    plotly_script = ""
+
+    if plotly_js:
+        plotly_script = """
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+        body {
+            font-family: 'Fira Code', monospace;
+            font-weight: 400 700;
+            font-stretch: 50%;
+        }
+        </style>
+        """
+        try:
+            with open(PLOTLYJS_PATH) as js_file:
+                plotly_script += f"""<script>{js_file.read()}</script>"""
+        except Exception:
+            plotly_script += (
+                "<script src='https://cdn.plot.ly/plotly-2.24.2.min.js'></script>"
+            )
+
     return f"""
             <html lang="en" class="" data-lt-installed="true">
             <head>
@@ -338,6 +368,7 @@ def header(
                 <title>OpenBB Terminal Report</title>
                 <meta name="robots" content="noindex">
             </head>
+            {plotly_script}
             <div style="display:flex; margin-bottom:1cm;">
                 {openbb_img}
                 <div style="margin-left:2em">
