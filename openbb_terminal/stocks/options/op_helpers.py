@@ -640,7 +640,7 @@ class Options:  # pylint: disable=too-few-public-methods
         date: str
             The date, when the chains data is historical EOD.
         SYMBOLS: pd.DataFrame
-            The symbol directory for the souce, when available.
+            The symbol directory for the source, when available.
     """
 
     chains = pd.DataFrame
@@ -688,7 +688,7 @@ class PydanticOptions(
         date: str
             The date, when the chains data is historical EOD.
         SYMBOLS: dict
-            The symbol directory for the source, when avaialable.
+            The symbol directory for the source, when available.
     """
 
     chains: dict = Field(default=None)
