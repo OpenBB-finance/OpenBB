@@ -657,9 +657,9 @@ class Options:  # pylint: disable=too-few-public-methods
     SYMBOLS: pd.DataFrame
 
 
-class PydanticOptions(
+class PydanticOptions(  # type: ignore [call-arg]
     BaseModel, extra=Extra.allow
-):  # pylint: disable=too-few-public-methods # type: ignore[call-arg]
+):  # pylint: disable=too-few-public-methods
 
     """Pydantic model for the Options data object.
 
