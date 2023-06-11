@@ -659,7 +659,8 @@ class Options:  # pylint: disable=too-few-public-methods
 
 class PydanticOptions(
     BaseModel, extra=Extra.allow
-):  # pylint: disable=too-few-public-methods
+):  # pylint: disable=too-few-public-methods # type: ignore[call-arg]
+
     """Pydantic model for the Options data object.
 
     Returns
