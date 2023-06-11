@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
