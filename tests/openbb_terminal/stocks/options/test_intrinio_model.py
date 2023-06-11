@@ -106,7 +106,7 @@ def test_load_options(recorder):
     assert isinstance(data.underlying_price, pd.Series)
     assert not data.chains.empty
     assert isinstance(data.underlying_name, str)
-    data = intrinio_model.load_options("AAPL", date="2022-01-03", pydantic=True)
+    data = intrinio_model.load_options("AAPL", date="2023-01-05", pydantic=True)
     assert data.source == "Intrinio"
-    assert data.date == "2022-01-03"
-    recorder.capture(data.chains)
+    assert data.date == "2023-01-05"
+    recorder.capture(pd.DataFrame(data.chains).columns.to_list())

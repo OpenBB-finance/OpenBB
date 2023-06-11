@@ -8,7 +8,7 @@ from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Extra, Field
 from scipy.stats import norm
 
 from openbb_terminal.decorators import log_start_end
@@ -612,19 +612,11 @@ def get_dte(chain: pd.DataFrame) -> pd.DataFrame:
 
 
 class Options:  # pylint: disable=too-few-public-methods
-    """The OptionsChains data object.
+    """The Options data object.
 
     Returns
     -------
-    object: OptionsChains
-        SYMBOLS: pd.DataFrame
-            The symbol directory, if available, from the selected source.
-        symbol: str
-            The symbol entered by the user.
-        source: str
-            The selected source of the data.
-        date: str
-            The date for the historical EOD chains requested.
+    object: Options
         chains: pd.DataFrame
             The complete options chain for the ticker.
         expirations: list[str]
@@ -640,13 +632,17 @@ class Options:  # pylint: disable=too-few-public-methods
         hasIV: bool
             Returns implied volatility.
         hasGreeks: bool
-            Returns greeks.
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data.
+        date: str
+            The date, when the chains data is historical EOD.
+        SYMBOLS: pd.DataFrame
+            The symbol directory for the souce, when available.
     """
 
-    SYMBOLS: pd.DataFrame
-    symbol: str
-    source: str
-    date: str = ""
     chains = pd.DataFrame
     expirations: list
     strikes: list
@@ -655,46 +651,55 @@ class Options:  # pylint: disable=too-few-public-methods
     underlying_price: pd.Series
     hasIV: bool
     hasGreeks: bool
+    symbol: str
+    source: str
+    date: str
+    SYMBOLS: pd.DataFrame
 
 
-class PydanticOptions(BaseModel):  # pylint: disable=too-few-public-methods
-    """Pydantic model for the OptionsChains data object.
+class PydanticOptions(
+    BaseModel, extra=Extra.allow
+):  # pylint: disable=too-few-public-methods
+    """Pydantic model for the Options data object.
 
     Returns
     -------
-    Pydantic: OptionsChains
-        source: str
-            The selected source of the data.
-        symbol: str
-            The symbol entered by the user.
-        date: str
-            The date for the historical EOD chains requested.
-        underlying_name: str
-            The name of the underlying asset.
-        last_price: float
-            The last price of the underlying asset.
+    Pydantic: Options
+        chains: dict
+            The complete options chain for the ticker.
         expirations: list[str]
             List of unique expiration dates. (YYYY-MM-DD)
         strikes: list[float]
             List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
         underlying_price: dict
             The price and recent performance of the underlying asset.
         hasIV: bool
-            Returns implied volatility if True.
+            Returns implied volatility.
         hasGreeks: bool
-            Returns greeks data if True.
-        chains: dict
-            The complete options chain for the ticker.
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data.
+        date: str
+            The date, when the chains data is historical EOD.
+        SYMBOLS: dict
+            The symbol directory for the source, when avaialable.
     """
 
-    source: str = Field(default=None)
-    symbol: str = Field(default=None)
-    underlying_name: str = Field(default=None)
-    date: str = Field(default="")
-    last_price: float = Field(default=None)
+    chains: dict = Field(default=None)
     expirations: list = Field(default=None)
     strikes: list = Field(default=None)
+    last_price: float = Field(default=None)
+    underlying_name: str = Field(default=None)
+    underlying_price: dict = Field(default=None)
     hasIV: bool = Field(default=False)
     hasGreeks: bool = Field(default=False)
-    underlying_price: dict = Field(default=None)
-    chains: dict = Field(default=None)
+    symbol: str = Field(default=None)
+    source: str = Field(default=None)
+    date: str = Field(default=None)
+    SYMBOLS: dict = Field(default=None)

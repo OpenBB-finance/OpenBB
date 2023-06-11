@@ -531,12 +531,14 @@ def get_eod_chains(symbol: str, date: str) -> object:
             The list of valid Intrinio symbols.
     """
     OptionsChains = Options()
+    OptionsChains.source = "Intrinio"
     OptionsChains.date = date
     symbol = symbol.upper()
+    OptionsChains.SYMBOLS = get_all_ticker_symbols()
     if symbol not in OptionsChains.SYMBOLS:
         print(f"{symbol}", "is not supported by Intrinio.")
         return OptionsChains
-
+    OptionsChains.symbol = symbol
     if symbol not in TICKER_EXCEPTIONS:
         underlying = (
             intrinio.SecurityApi()
@@ -561,7 +563,7 @@ def get_eod_chains(symbol: str, date: str) -> object:
                 "fifty_two_week_low": "fiftyTwoWeekLow",
             }
         )
-        OptionsChains.underlying_price = underlying.rename(OptionsChains.symbol)
+        OptionsChains.underlying_price = underlying.rename(f"{OptionsChains.symbol}")
         OptionsChains.last_price = underlying["adjClose"]
         # If the ticker is an index, it will not return underlying data.
     else:
@@ -671,19 +673,19 @@ def load_options(symbol: str, date: str = "", pydantic=False) -> object:
         if not pydantic:
             return options
 
-        if not OptionsChains.chains.empty:
+        if not options.chains.empty:
             OptionsChainsPydantic = PydanticOptions(
-                chains=OptionsChains.chains.to_dict(),
-                expirations=OptionsChains.expirations,
-                strikes=OptionsChains.strikes,
-                last_price=OptionsChains.last_price,
-                underlying_name=OptionsChains.underlying_name,
-                underlying_price=OptionsChains.underlying_price.to_dict(),
-                hasIV=OptionsChains.hasIV,
-                hasGreeks=OptionsChains.hasGreeks,
-                symbol=OptionsChains.symbol,
-                source=OptionsChains.source,
-                date=OptionsChains.date,
+                chains=options.chains.to_dict(),
+                expirations=options.expirations,
+                strikes=options.strikes,
+                last_price=options.last_price,
+                underlying_name=options.underlying_name,
+                underlying_price=options.underlying_price.to_dict(),
+                hasIV=options.hasIV,
+                hasGreeks=options.hasGreeks,
+                symbol=options.symbol,
+                source=options.source,
+                date=options.date,
             )
             return OptionsChainsPydantic
 
