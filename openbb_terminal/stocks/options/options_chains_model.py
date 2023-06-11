@@ -114,21 +114,23 @@ def load_options_chains(
         return None
 
     if source == "Nasdaq":
-        return load_nasdaq(symbol, pydantic)
+        options = load_nasdaq(symbol, pydantic)
     if source == "YahooFinance":
-        return load_yfinance(symbol, pydantic)
+        options = load_yfinance(symbol, pydantic)
     if source == "Tradier":
-        return load_tradier(symbol, pydantic)
+        options = load_tradier(symbol, pydantic)
     if source == "TMX":
         if date != "":
-            return load_tmx(symbol, date, pydantic)
-        return load_tmx(symbol, pydantic=pydantic)
+            options = load_tmx(symbol, date, pydantic)
+        options = load_tmx(symbol, pydantic=pydantic)
     if source == "Intrinio":
         if date != "":
-            return load_intrinio(symbol, date, pydantic)
-        return load_intrinio(symbol, pydantic=pydantic)
+            options = load_intrinio(symbol, date, pydantic)
+        options = load_intrinio(symbol, pydantic=pydantic)
+    if source == "CBOE":
+        options = load_cboe(symbol, pydantic)
 
-    return load_cboe(symbol, pydantic)
+    return options
 
 
 def validate_object(
