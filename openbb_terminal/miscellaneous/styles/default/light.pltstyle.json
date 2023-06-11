@@ -854,6 +854,18 @@
             "xanchor": "left",
             "y": 0.99,
             "yanchor": "top"
+        },
+        "legend2": {
+            "bgcolor": "rgba(0, 0, 0, 0)"
+        },
+        "legend3": {
+            "bgcolor": "rgba(0, 0, 0, 0)"
+        },
+        "legend4": {
+            "bgcolor": "rgba(0, 0, 0, 0)"
+        },
+        "legend5": {
+            "bgcolor": "rgba(0, 0, 0, 0)"
         }
     }
 }

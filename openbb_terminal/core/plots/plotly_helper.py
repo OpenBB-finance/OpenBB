@@ -1407,6 +1407,12 @@ class OpenBBFigure(go.Figure):
                     annotation.font.size - 1.8 if annotation.font.size else 10
                 )
 
+            for trace in self.select_traces(
+                lambda trace: hasattr(trace, "legend") and trace.legend is not None
+            ):
+                if trace.legend in self.layout:
+                    self.layout[trace.legend].font.size = 12
+
             self.update_layout(
                 legend=dict(orientation=orientation, font=dict(size=12)),
                 font=dict(size=14),
@@ -1609,6 +1615,7 @@ class OpenBBFigure(go.Figure):
                 xanchor="right",
                 yanchor="bottom",
                 yshift=-80,
+                xshift=40,
             )
 
     # pylint: disable=import-outside-toplevel
