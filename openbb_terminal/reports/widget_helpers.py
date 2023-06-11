@@ -319,11 +319,11 @@ def header(
     str
         HTML code for interactive tabs
     """
-    openbb_img = PACKAGE_DIRECTORY / "reports/templates/OpenBB_reports_logo.png"
-    floppy_disk_img = PACKAGE_DIRECTORY / "reports/templates/floppy-disc.png"
+    openbb_img_path = PACKAGE_DIRECTORY / "reports/templates/OpenBB_reports_logo.png"
+    floppy_disk_path = PACKAGE_DIRECTORY / "reports/templates/floppy-disc.png"
 
     try:
-        openbb_image_encoded = base64.b64encode(openbb_img.read_bytes())
+        openbb_image_encoded = base64.b64encode(openbb_img_path.read_bytes())
         openbb_img = f"""
             <img src="data:image/png;base64,{openbb_image_encoded.decode()}"
             alt="OpenBB" style="width:144px;">"""
@@ -331,7 +331,7 @@ def header(
         openbb_img = ""
 
     try:
-        floppy_disk_encoded = base64.b64encode(floppy_disk_img.read_bytes())
+        floppy_disk_encoded = base64.b64encode(floppy_disk_path.read_bytes())
         flask_disk_save = f"""
             <center><img src="data:image/png;base64,{floppy_disk_encoded.decode()}"
             alt="OpenBB" style="width:40px;"></center>"""
