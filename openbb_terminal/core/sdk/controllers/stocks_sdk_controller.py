@@ -47,6 +47,8 @@ class StocksController(model.StocksRoot):
             `mentions`: Get interest over time from google api [Source: google].\n
             `mentions_chart`: Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].\n
             `messages`: Get last messages for a given ticker [Source: stocktwits].\n
+            `ns`: Getting Onclusive Data. [Source: Invisage Platform]\n
+            `ns_chart`: Display Onclusive Data. [Source: Invisage Plotform]\n
             `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
             `queries`: Get related queries from google api [Source: google].\n
             `redditsent`: Find posts related to a specific search term in Reddit.\n
@@ -257,11 +259,6 @@ class StocksController(model.StocksRoot):
         """Stocks Options Submodule
 
         Attributes:
-            `calculate_chains_stats`: Calculates basic statistics for the options chains, like OI and Vol/OI ratios.\n
-            `calculate_straddle`: Calculates the cost of a straddle and its payoff profile. Use a negative strike price for short options.\n
-            `calculate_strangle`: Calculates the cost of a straddle and its payoff profile.  Use a negative value for moneyness for short options.\n
-            `calculate_vertical_call_spread`: Calculates the vertical call spread for the target DTE.\n
-            `calculate_vertical_put_spread`: Calculates the vertical put spread for the target DTE.\n
             `chains`: Get Option Chain For A Stock.  No greek data is returned\n
             `dte`: Returns a new column containing the DTE as an integer, including 0.\n
             `eodchain`: Get full EOD option date across all expirations\n

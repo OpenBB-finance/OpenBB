@@ -115,23 +115,21 @@ def load_options_chains(
         return None
 
     if source == "Nasdaq":
-        options = load_nasdaq(symbol, pydantic)
+        return load_nasdaq(symbol, pydantic)
     if source == "YahooFinance":
-        options = load_yfinance(symbol, pydantic)
+        return load_yfinance(symbol, pydantic)
     if source == "Tradier":
-        options = load_tradier(symbol, pydantic)
+        return load_tradier(symbol, pydantic)
     if source == "TMX":
         if date != "":
-            options = load_tmx(symbol, date, pydantic)
-        options = load_tmx(symbol, pydantic=pydantic)
+            return load_tmx(symbol, date, pydantic)
+        return load_tmx(symbol, pydantic=pydantic)
     if source == "Intrinio":
         if date != "":
-            options = load_intrinio(symbol, date, pydantic)
-        options = load_intrinio(symbol, pydantic=pydantic)
-    if source == "CBOE":
-        options = load_cboe(symbol, pydantic)
+            return load_intrinio(symbol, date, pydantic)
+        return load_intrinio(symbol, pydantic=pydantic)
 
-    return options
+    return load_cboe(symbol, pydantic)
 
 
 def validate_object(
@@ -191,8 +189,10 @@ def validate_object(
 
     if scope == "object":
         try:
-            if isinstance(options.strikes, list) and isinstance(
-                options.expirations, list
+            if (
+                isinstance(options.strikes, list)
+                and isinstance(options.expirations, list)
+                and hasattr(options, "last_price")
             ):
                 return valid
 
@@ -252,13 +252,27 @@ def validate_object(
             options, days
         )
         # When Intrinio data is not EOD, there is no "ask" column, renaming "close".
-        if options.source == "Intrinio" and options.date == "":
+        if (
+            options.source == "Intrinio"
+            and options.date is None
+            or options.source == "Intrinio"
+            and options.date == ""
+        ):
             options.chains["ask"] = options.chains["close"]
             options.chains["bid"] = options.chains["close"]
 
         # Error handling for TMX EOD data when the date is an expiration date.  EOD, 0-day options are excluded.
         if options.source == "TMX" and options.date != "":
             options.chains = options.chains[options.chains["dte"] > 0]
+
+        if (
+            options.source == "TMX"
+            and options.date is None
+            or options.source == "TMX"
+            and options.date == ""
+        ):
+            options.chains["ask"] = options.chains["lastPrice"]
+            options.chains["bid"] = options.chains["lastPrice"]
 
         if (
             options.source == "TMX"
@@ -1200,13 +1214,19 @@ def get_strategies(
     Return vertical spreads for all expirations.
     >>> data.get_strategies(vertical_calls=[430,427], vertical_puts=[420,426])
     """
+    options = deepcopy(options)
+
+    if isinstance(options.chains, dict):
+        options.chains = pd.DataFrame(options.chains)
 
     if strangle_moneyness is None:
         strangle_moneyness = [0.0]
+
     if days is None:
         days = options.chains["dte"].unique().tolist()
 
-    options = deepcopy(options)
+    # options = deepcopy(options)
+    # options = validate_object(options, scope="strategies")
 
     # Allows a single input to be passed instead of a list.
     days = [days] if isinstance(days, int) else days  # type: ignore[list-item]
@@ -1222,7 +1242,7 @@ def get_strategies(
         )
         return pd.DataFrame()
 
-    if strangle_moneyness:
+    if strangle_moneyness is not None:
         strangle_moneyness = (
             [strangle_moneyness]  # type: ignore[list-item]
             if not isinstance(strangle_moneyness, list)
@@ -1252,7 +1272,7 @@ def get_strategies(
         days_list.append(get_nearest_dte(options, day))
     days = list(set(days_list))
 
-    if vertical_calls:
+    if vertical_calls is not None:
         cStrike1 = vertical_calls[0]
         cStrike2 = vertical_calls[1]
         for day in days:
@@ -1310,22 +1330,70 @@ def get_strategies(
 
 
 class OptionsChains:  # pylint: disable=too-few-public-methods
-    """OptionsChains class for loading and interacting with the OptionsChains data object.
-    Use `load_options_chains()` to load the data to a variable and then feed the object to
-    the input of the other functions.
+    """OptionsChains class for loading and interacting with the Options data object.
 
-    Attributes
+    Parameters
     ----------
-    load_options_chains: Callable
-        Function for loading the OptionsChains data object for all data sources.
-    calculate_stats: Callable
-        Function to return a table of summary statistics, by strike or by expiration.
-    calculate_straddle: Callable
-        Function to calculate straddles and generate an optional table with the payoff profile.
-    calculate_strangle: Callable
-        Function to calculate strangles and generate an optional table with the payoff profile.
-    get_strategies: Callable
-        Function for calculating multiple straddles and strangles at different expirations and moneyness.
+    symbol: str
+        The ticker symbol to load the data for.
+    source: str
+        The source for the data. Defaults to "CBOE". ["CBOE", "Intrinio", "Nasdaq", "TMX", "Tradier", "YahooFinance"]
+    date: str
+        The date for EOD chains data.  Only available for "Intrinio" and "TMX".
+    pydantic: bool
+        Whether to return as a Pydantic Model or as a Pandas object.  Defaults to False.
+
+    Returns
+    -------
+    Object: Options
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data.
+        date: str
+            The date, when the chains data is historical EOD.
+        SYMBOLS: pd.DataFrame
+            The symbol directory for the source, when available.
+
+        Methods
+        -------
+        get_stats: Callable
+            Function to return a table of summary statistics, by strike or by expiration.
+        get_straddle: Callable
+            Function to calculate straddles and the payoff profile.
+        get_strangle: Callable
+            Function to calculate strangles and the payoff profile.
+        get_vertical_call_spread: Callable
+            Function to calculate vertical call spreads.
+        get_vertical_put_spreads: Callable
+            Function to calculate vertical put spreads.
+        get_strategies: Callable
+            Function for calculating multiple straddles and strangles at different expirations and moneyness.
+
+    Examples
+    --------
+    >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
+    >>> spy = OptionsChains("SPY")
+    >>> spy.__dict__
+
+    >>> xiu = OptionsChains("xiu.to", "TMX")
+    >>> xiu.get_straddle()
     """
 
     options = Options()
@@ -1335,14 +1403,18 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
         items = list(options.__dict__.keys())
         for item in items:
             setattr(self, item, options.__dict__[item])
+        if hasattr(self, "date") is False:
+            setattr(self, "date", "")
 
-    def get_stats(self, by="expiration"):
+    def get_stats(self, by="expiration", query=None):
         """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
 
         Parameters
         ----------
         by: str
             Whether to calculate by strike or expiration.  Default is expiration.
+        query: DataFrame
+            Entry point to perform DataFrame operations on self.chains at the input stage.
 
         Returns
         -------
@@ -1359,7 +1431,16 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
 
         By strike:
         >>> data.calculate_stats(data, "strike")
+
+        Query:
+        >>> data = OptionsChains("XIU", "TMX")
+        >>> data.get_stats(query = data.chains.query("`openInterest` > 0"), by = "strike")
         """
+
+        if query is not None:
+            if isinstance(query, pd.DataFrame):
+                return calculate_stats(query, by)
+            print("Query must be passed a Pandas DataFrame with chains data.")
 
         return calculate_stats(self, by)
 
@@ -1512,14 +1593,16 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
             List of DTE(s) to get strategies for. Enter a single value, or multiple as a list. Defaults to all.
             This is the only shared parameter across strategies.
         strike_price: float
-            The target strike price. Defaults to the last price of the underlying stock.
+            The target strike price for straddles. Defaults to the last price of the underlying stock.
+            Enter a negative value for short straddles.
         strangle_moneyness: list[float]
             List of OTM moneyness to target, expressed as a percent value between 0 and 100.
-            Enter a single value, or multiple as a list. Defaults to 5.
+            Enter a single value, or multiple as a list. Defaults to 5. Enter a negative value for short straddles.
         vertical_calls: list[float]
             Call strikes for vertical spreads, listed as [sold strike, bought strike].
         vertical_puts: list[float]
             Put strikes for vertical spreads, listed as [sold strike, bought strike].
+
         Returns
         -------
         pd.DataFrame
@@ -1543,6 +1626,8 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
         Return vertical spreads for all expirations.
         >>> data.get_strategies(vertical_calls=[430,427], vertical_puts=[420,426])
         """
+        if strangle_moneyness is None:
+            strangle_moneyness = 0
 
         return get_strategies(
             self,

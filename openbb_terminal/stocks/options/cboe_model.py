@@ -548,26 +548,27 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
             OptionsChains.strikes = (
                 OptionsChains.chains["strike"].sort_values().unique().tolist()
             )
-        OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
-        OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
+            OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
+            OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
 
-    if not pydantic:
+            if not pydantic:
+                return OptionsChains
+
+            OptionsChainsPydantic = PydanticOptions(
+                chains=OptionsChains.chains.to_dict(),
+                expirations=OptionsChains.expirations,
+                strikes=OptionsChains.strikes,
+                last_price=OptionsChains.last_price,
+                underlying_name=OptionsChains.underlying_name,
+                underlying_price=OptionsChains.underlying_price.to_dict(),
+                hasIV=OptionsChains.hasIV,
+                hasGreeks=OptionsChains.hasGreeks,
+                symbol=OptionsChains.symbol,
+                source=OptionsChains.source,
+                SYMBOLS=OptionsChains.SYMBOLS.to_dict(),
+            )
+            return OptionsChainsPydantic
+
         return OptionsChains
-    OptionsChains = Options()
-    if not OptionsChains.chains.empty:
-        OptionsChainsPydantic = PydanticOptions(
-            chains=OptionsChains.chains.to_dict(),
-            expirations=OptionsChains.expirations,
-            strikes=OptionsChains.strikes,
-            last_price=OptionsChains.last_price,
-            underlying_name=OptionsChains.underlying_name,
-            underlying_price=OptionsChains.underlying_price.to_dict(),
-            hasIV=OptionsChains.hasIV,
-            hasGreeks=OptionsChains.hasGreeks,
-            symbol=OptionsChains.symbol,
-            source=OptionsChains.source,
-            SYMBOLS=OptionsChains.SYMBOLS.to_dict(),
-        )
-        return OptionsChainsPydantic
 
-    return OptionsChains
+    return None

@@ -667,13 +667,14 @@ def load_options(symbol: str, date: str = "", pydantic=False) -> object:
         return OptionsChains
     OptionsChains.symbol = symbol
 
-    if date != "":
+    if date and date != "":
         options = get_eod_chains(OptionsChains.symbol, date)
 
         if not pydantic:
             return options
 
         if not options.chains.empty:
+            options.SYMBOLS = None
             OptionsChainsPydantic = PydanticOptions(
                 chains=options.chains.to_dict(),
                 expirations=options.expirations,
@@ -686,6 +687,7 @@ def load_options(symbol: str, date: str = "", pydantic=False) -> object:
                 symbol=options.symbol,
                 source=options.source,
                 date=options.date,
+                SYMBOLS=options.SYMBOLS,
             )
             return OptionsChainsPydantic
 
@@ -727,26 +729,26 @@ def load_options(symbol: str, date: str = "", pydantic=False) -> object:
             OptionsChains.chains["strike"].sort_values().unique().tolist()
         )
 
-    OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
-    OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
+        OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
+        OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
 
-    if not pydantic:
+        if pydantic is True:
+            OptionsChains.SYMBOLS = None
+            OptionsChainsPydantic = PydanticOptions(
+                chains=OptionsChains.chains.to_dict(),
+                expirations=OptionsChains.expirations,
+                strikes=OptionsChains.strikes,
+                last_price=OptionsChains.last_price,
+                underlying_name=OptionsChains.underlying_name,
+                underlying_price=OptionsChains.underlying_price.to_dict(),
+                hasIV=OptionsChains.hasIV,
+                hasGreeks=OptionsChains.hasGreeks,
+                symbol=OptionsChains.symbol,
+                source=OptionsChains.source,
+                SYMBOLS=OptionsChains.SYMBOLS,
+            )
+            return OptionsChainsPydantic
+
         return OptionsChains
-
-    if not OptionsChains.chains.empty:
-        OptionsChainsPydantic = PydanticOptions(
-            chains=OptionsChains.chains.to_dict(),
-            expirations=OptionsChains.expirations,
-            strikes=OptionsChains.strikes,
-            last_price=OptionsChains.last_price,
-            underlying_name=OptionsChains.underlying_name,
-            underlying_price=OptionsChains.underlying_price.to_dict(),
-            hasIV=OptionsChains.hasIV,
-            hasGreeks=OptionsChains.hasGreeks,
-            symbol=OptionsChains.symbol,
-            source=OptionsChains.source,
-            SYMBOLS=OptionsChains.SYMBOLS,
-        )
-        return OptionsChainsPydantic
 
     return None
