@@ -50,7 +50,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.21.0.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.24.2.min.js"
 BACKEND = None
 
 
@@ -183,7 +183,7 @@ class Backend(PyWry):
         export_image : str, optional
             Path to export image to, by default ""
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.ensure_backend()
         # pylint: disable=C0415
         from openbb_terminal.helper_funcs import command_location
 
@@ -261,7 +261,7 @@ class Backend(PyWry):
         theme : light or dark, optional
             Theme of the table, by default "light"
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.ensure_backend()
 
         if title:
             # We remove any html tags and markdown from the title
@@ -328,7 +328,7 @@ class Backend(PyWry):
         height : int, optional
             Height of the window, by default 800
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.ensure_backend()
         script = f"""
         <script>
             window.location.replace("{url}");
@@ -354,6 +354,13 @@ class Backend(PyWry):
         """Start the backend WindowManager process."""
         if self.isatty:
             super().start(debug)
+
+    def ensure_backend(self):
+        """Ensure the backend is running. Ignores was never awaited errors."""
+        try:
+            self.loop.run_until_complete(self.check_backend())
+        except Exception:  # pylint: disable=W0703
+            pass
 
     async def check_backend(self):
         """Override to check if isatty."""
