@@ -1,6 +1,7 @@
 """Chart and style helpers for Plotly."""
 # pylint: disable=C0302,R0902,W3301
 import json
+import sys
 import textwrap
 from datetime import datetime
 from math import floor
@@ -139,8 +140,18 @@ class TerminalStyle:
             if "tables" in self.plt_styles_available:
                 tables = self.load_json_style(self.plt_styles_available["tables"])
                 pio.templates["openbb_tables"] = go.layout.Template(tables)
+            try:
+                pio.templates["openbb"] = go.layout.Template(self.plotly_template)
+            except ValueError as err:
+                if "plotly.graph_objs.Layout: 'legend2'" in str(err):
+                    console.print(
+                        "[red]Warning: Plotly multiple legends are "
+                        "not supported in currently installed version.[/]\n\n"
+                        "[yellow]Please update plotly to version >= 5.15.0[/]\n"
+                        "[green]pip install plotly --upgrade[/]"
+                    )
+                    sys.exit(1)
 
-            pio.templates["openbb"] = go.layout.Template(self.plotly_template)
             if style in ["dark", "white"]:
                 pio.templates.default = f"plotly_{style}+openbb"
                 return
