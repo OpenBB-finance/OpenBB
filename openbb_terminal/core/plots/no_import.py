@@ -6,7 +6,7 @@ import dotenv
 from openbb_terminal.base_helpers import console
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.session.current_system import get_current_system
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user, set_current_user
 
 pywry_missing = """
 [red]PyWry is not installed or missing required linux dependencies.[/]
@@ -77,6 +77,7 @@ class DummyBackend:
                 dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
 
         current_user.preferences.USE_INTERACTIVE_DF = False
+        set_current_user(current_user)
 
     def close(self, reset: bool = False):  # pylint: disable=W0613
         pass
