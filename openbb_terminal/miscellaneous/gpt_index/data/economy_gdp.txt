@@ -1,0 +1,24 @@
+parent_command:economy
+usage: gdp [-c COUNTRIES] [-u {USD_CAP,MLN_USD}] [-s START_DATE] [-e END_DATE]
+
+This indicator is based on nominal GDP (also called GDP at current prices or GDP in value) and is available in different measures: US dollars and US dollars per capita (current PPPs).
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        Countries to get data for (default: united_states)
+  -u {USD_CAP,MLN_USD}, --units {USD_CAP,MLN_USD}
+                        Use either USD_CAP (US dollars per capita) or MLN_USD (millions of US dollars) (default: USD_CAP)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format (default: 1993-06-02)
+  -e END_DATE, --end END_DATE
+                        End date of data, in YYYY-MM-DD format (default: 2023-06-02)
+
+
+Examples:
+- Retrieve GDP data for the United States in US dollars per capita: economy/gdp
+- Get GDP data for Germany and France in millions of US dollars: economy/gdp -c germany,france -u MLN_USD
+- Obtain GDP data for Japan in US dollars per capita from 2000 to 2020: economy/gdp -c japan -s 2000-01-01 -e 2020-12-31
+- Fetch GDP information for multiple countries in millions of US dollars: economy/gdp -c united_states,canada,united_kingdom -u MLN_USD
+- Display GDP data for the United States and China from 2010 to 2022: economy/gdp -c united_states,china -s 2010-01-01 -e 2022-12-31
+- Acquire GDP information for India in US dollars per capita between specific dates: economy/gdp -c india -u USD_CAP -s 2005-01-01 -e 2021-12-31
+- Extract GDP data for Brazil in millions of US dollars within a date range: economy/gdp -c brazil -u MLN_USD -s 2000-01-01 -e 2020-12-31

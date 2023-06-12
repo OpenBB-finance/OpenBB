@@ -1,0 +1,24 @@
+parent_command:crypto/ov
+usage: info [--vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}] [-l LIMIT]
+            [-s {rank,name,symbol,price,volume_24h,circulating_supply,total_supply,max_supply,ath_price,market_cap,beta_value}] [-r]
+
+Show basic coin information for all coins from CoinPaprika API You can display only N number of coins with --limit parameter. You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply,
+market_cap, beta_value, ath_price --sortby parameter and also with --reverse flag to sort descending. Displays: rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply, market_cap, beta_value, ath_price
+
+optional arguments:
+  --vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}
+                        Quoted currency. Default USD (default: USD)
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 20)
+  -s {rank,name,symbol,price,volume_24h,circulating_supply,total_supply,max_supply,ath_price,market_cap,beta_value}, --sortby {rank,name,symbol,price,volume_24h,circulating_supply,total_supply,max_supply,ath_price,market_cap,beta_value}
+                        Sort by given column. Default: rank (default: rank)
+  -r, --reverse         Data is sorted in ascending order by default. Reverse flag will sort it in an descending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- Show basic coin information for the top 20 coins in USD: crypto/ov
+- Display basic information for the top 10 coins in EUR: crypto/ov --vs EUR -l 10
+- Show basic coin information for top 5 coins sorted by market cap: crypto/ov -l 5 -s market_cap
+- Display basic information for top 20 coins in GBP sorted by volume_24h in descending order: crypto/ov --vs GBP -s volume_24h -r
+- Show basic coin information for the top 10 coins in JPY sorted by total_supply: crypto/ov --vs JPY -l 10 -s total_supply
+- Display basic information for top 15 coins in CAD sorted by ath_price in descending order: crypto/ov --vs CAD -l 15 -s ath_price -r

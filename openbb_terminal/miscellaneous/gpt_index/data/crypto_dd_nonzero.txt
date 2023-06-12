@@ -1,0 +1,17 @@
+parent_command:crypto/dd
+usage: nonzero [-s SINCE] [-u UNTIL]
+
+Display addresses with nonzero assets in a certain blockchain [Source: https://glassnode.org] Note that free api keys only allow fetching data with a 1y lag
+
+optional arguments:
+  -s SINCE, --since SINCE
+                        Initial date. Default: 2 years ago (default: 2021-06-02)
+  -u UNTIL, --until UNTIL
+                        Final date. Default: 1 year ago (default: 2022-05-31)
+
+
+Examples:
+- To display addresses with nonzero assets in a specific blockchain for the default date range: crypto/dd/nonzero
+- To view addresses with nonzero assets in a particular blockchain since a specific date: crypto/dd/nonzero -s 2020-01-01
+- To show addresses with nonzero assets in a certain blockchain until a specific date: crypto/dd/nonzero -u 2021-12-31
+- To display addresses with nonzero assets in a specific blockchain between two dates: crypto/dd/nonzero -s 2020-01-01 -u 2021-12-31

@@ -1,0 +1,21 @@
+parent_command:crypto/dd
+usage: ps [--vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}]
+
+Get price and supply related metrics for given coin.
+
+optional arguments:
+  --vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}
+                        Quoted currency. Default USD (default: USD)
+
+
+Examples:
+- To get price and supply metrics for a specific coin in USD: crypto/dd <COIN>/ps
+- Retrieve price and supply information for a coin in EUR: crypto/dd <COIN>/ps --vs EUR
+- Obtain price and supply data for a coin in JPY: crypto/dd <COIN>/ps --vs JPY
+- View price and supply metrics for a specific coin in GBP: crypto/dd <COIN>/ps --vs GBP
+- Get price and supply details for a coin in CAD: crypto/dd <COIN>/ps --vs CAD
+- Fetch price and supply metrics for a coin in AUD: crypto/dd <COIN>/ps --vs AUD
+- Acquire price and supply data for a coin in CHF: crypto/dd <COIN>/ps --vs CHF
+- Access price and supply information for a coin in CNY: crypto/dd <COIN>/ps --vs CNY
+- Display price and supply metrics for a coin in SEK: crypto/dd <COIN>/ps --vs SEK
+- Check price and supply details for a coin in ZAR: crypto/dd <COIN>/ps --vs ZAR

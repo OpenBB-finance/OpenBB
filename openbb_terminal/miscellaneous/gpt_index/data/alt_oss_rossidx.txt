@@ -1,0 +1,26 @@
+parent_command:alt/oss
+usage: rossidx [-s SORTBY [SORTBY ...]] [-r] [-c] [-g] [-t {stars,forks}]
+
+Display list of startups from ross index [Source: https://runacap.com/] Use --chart to display chart and -t {stars,forks} to set chart type
+
+optional arguments:
+  -s SORTBY [SORTBY ...], --sortby SORTBY [SORTBY ...]
+                        Sort startups by column (default: Stars AGR [%])
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -c, --chart           Flag to show chart (default: False)
+  -g, --growth          Flag to show growth chart (default: False)
+  -t {stars,forks}, --chart-type {stars,forks}
+                        Chart type: {stars, forks} (default: stars)
+
+
+Examples:
+- Display a list of startups from the ross index sorted by the default column: alt/oss/rossidx
+- Display a list of startups from the ross index sorted by a custom column: alt/oss/rossidx -s "Funding Amount"
+- Display a list of startups from the ross index sorted by multiple columns: alt/oss/rossidx -s "Funding Amount" "Stars AGR [%]"
+- Display a list of startups from the ross index sorted in ascending order: alt/oss/rossidx -r
+- Show a chart of startups from the ross index: alt/oss/rossidx -c
+- Show a growth chart of startups from the ross index: alt/oss/rossidx -g
+- Show a chart of startups from the ross index with forks as the chart type: alt/oss/rossidx -t forks
+- Display a list of startups from the ross index sorted by a custom column and show a chart: alt/oss/rossidx -s "Funding Amount" -c
+- Display a list of startups from the ross index sorted by multiple columns and show a growth chart: alt/oss/rossidx -s "Funding Amount" "Stars AGR [%]" -g
+- Show a chart of startups from the ross index with forks as the chart type and display the list sorted in ascending order: alt/oss/rossidx -t forks -r

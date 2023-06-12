@@ -1,11 +1,5 @@
 stocks
 options
-screen
-view
-view --preset high_IV.ini
-set --preset high_IV.ini
-scr
-q
 unu -l 2 -s Strike -r -c
 unu -l 2 -s Vol
 calc

@@ -403,6 +403,8 @@ from openbb_terminal.stocks import (
 from openbb_terminal.stocks.behavioural_analysis import (
     finnhub_model as stocks_ba_finnhub_model,
     finnhub_view as stocks_ba_finnhub_view,
+    news_sentiment_model as stocks_ba_news_sentiment_model,
+    news_sentiment_view as stocks_ba_news_sentiment_view,
 )
 
 
@@ -534,16 +536,6 @@ from openbb_terminal.stocks.options import (
     yfinance_model as stocks_options_yfinance_model,
     yfinance_view as stocks_options_yfinance_view,
 )
-
-
-from openbb_terminal.stocks.options.screen import (
-    syncretism_model as stocks_options_screen_syncretism_model,
-    syncretism_view as stocks_options_screen_syncretism_view,
-)
-
-
-# Stocks - Screener
-
 
 from openbb_terminal.stocks.screener import (
     finviz_model as stocks_screener_finviz_model,

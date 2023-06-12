@@ -1,0 +1,14 @@
+parent_command:etf
+usage: holdings [-l LIMIT]
+
+Look at ETF company holdings
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of holdings to get (default: 10)
+
+
+Examples:
+- To view the top 10 holdings of an ETF: etf/holdings
+- To view the top 5 holdings of an ETF: etf/holdings -l 5
+- Display the top 20 holdings for a specific ETF: etf/holdings --limit 20

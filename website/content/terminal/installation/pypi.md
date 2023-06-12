@@ -197,6 +197,10 @@ Copy and paste these commands into the terminal/command prompt:
 conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/conda/conda-3-9-env.yaml
 ```
 
+:::note
+Additional `YAML` files provide support for Python versions 3.8 and 3.10.  Substitute the `9`, in the command above, with the desired version.
+:::
+
 Agree to the prompts if there are any.
 
 After the obb environment is created, activate it by entering:

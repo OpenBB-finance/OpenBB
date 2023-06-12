@@ -1,0 +1,19 @@
+parent_command:crypto/ov
+usage: exrates [-l LIMIT] [-s {Index,Name,Unit,Value,Type}] [-r]
+
+Shows list of crypto, fiats, commodity exchange rates from CoinGecko You can look on only N number of records with --limit, You can sort by Index, Name, Unit, Value, Type, and also use --reverse flag to sort descending.
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 15)
+  -s {Index,Name,Unit,Value,Type}, --sortby {Index,Name,Unit,Value,Type}
+                        Sort by given column. Default: Index (default: Index)
+  -r, --reverse         Data is sorted in ascending order by default. Reverse flag will sort it in an descending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- Display the top 15 exchange rates for cryptocurrencies, fiats, and commodities: crypto/ov/exrates
+- Show the top 10 exchange rates sorted by name: crypto/ov/exrates -l 10 -s Name
+- Display the top 5 exchange rates sorted by value in descending order: crypto/ov/exrates -l 5 -s Value -r
+- Show exchange rates for cryptocurrencies, fiats, and commodities sorted by type: crypto/ov/exrates -s Type
+- Display the top 20 exchange rates sorted by unit in descending order: crypto/ov/exrates -l 20 -s Unit -r

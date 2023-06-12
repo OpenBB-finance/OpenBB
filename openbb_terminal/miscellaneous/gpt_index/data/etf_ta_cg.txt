@@ -1,0 +1,16 @@
+parent_command:etf/ta
+usage: cg [-l N_LENGTH]
+
+The Center of Gravity indicator, in short, is used to anticipate future price movements and to trade on price reversals as soon as they happen. However, just like other oscillators, the COG indicator returns the best results in
+range-bound markets and should be avoided when the price is trending. Traders who use it will be able to closely speculate the upcoming price change of the asset.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 14)
+
+
+Examples:
+- To analyze the Center of Gravity indicator for an ETF with the default length of 14: etf/ta/cg
+- To examine the Center of Gravity indicator for an ETF with a custom length of 20: etf/ta/cg -l 20
+- Analyze <SYMBOL> ETF's Center of Gravity with a length of 10: etf/load <SYMBOL>/ta/cg -l 10
+- Determine the Center of Gravity for <SYMBOL> ETF using the default settings: etf/load <SYMBOL>/ta/cg

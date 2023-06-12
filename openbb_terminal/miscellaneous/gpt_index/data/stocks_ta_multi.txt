@@ -1,0 +1,16 @@
+parent_command:stocks/ta
+usage: multi -i INDICATORS
+
+Plot multiple indicators on the same chart separated by a comma.
+
+optional arguments:
+  -i INDICATORS, --indicators INDICATORS
+                        Indicators with optional arguments in the form of "macd[12,26,9],rsi,sma[20]" (default: None)
+
+
+Examples:
+- To plot multiple indicators for a specific stock: stocks/load <SYMBOL>/ta/multi -i macd[12,26,9],rsi,sma[20]
+- Visualize MACD and RSI indicators on the same chart for a stock: stocks/load <SYMBOL>/ta/multi --indicators macd,rsi
+- Display MACD, RSI, and Bollinger Bands for a stock on a single chart: stocks/load <SYMBOL>/ta/multi -i macd,rsi,bbands
+- For a specific stock, plot SMA and EMA indicators together: stocks/load <SYMBOL>/ta/multi --indicators sma[50],ema[50]
+- Visualize Stochastic Oscillator and Parabolic SAR for a stock on the same chart: stocks/load <SYMBOL>/ta/multi -i stoch,sar

@@ -1,0 +1,11 @@
+parent_command: stocks/ins/
+usage: lcb [-l LIMIT] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest cluster buys. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about lcb' to access the related guide.
+Summary: Print the latest cluster buys for stocks with a specified limit of data rows to display. You can export the data in various formats and save it to a specific excel sheet. Data is sourced from OpenInsider.
+
+Examples:
+- Display the latest 10 cluster buys: stocks/ins/lcb
+- Display the latest 20 cluster buys: stocks/ins/lcb -l 20
+- Export the latest 10 cluster buys in csv format: stocks/ins/lcb --export csv
+- Export the latest 15 cluster buys in json format: stocks/ins/lcb -l 15 --export json
+- Save the latest cluster buys to a specific excel sheet: stocks/ins/lcb --sheet-name Sheet1
+- Display the latest 5 cluster buys and export them in xlsx format: stocks/ins/lcb -l 5 --export xlsx

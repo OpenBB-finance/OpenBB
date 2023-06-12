@@ -1,0 +1,17 @@
+parent_command:crypto/defi
+usage: sinfo -a ADDRESS [-l LIMIT]
+
+Displays staking info of a certain terra address. [Source: https://fcd.terra.dev/swagger]
+
+optional arguments:
+  -a ADDRESS, --address ADDRESS
+                        Terra address. Valid terra addresses start with 'terra' (default: None)
+  -l LIMIT, --limit LIMIT
+                        Number of delegations (default: 10)
+
+
+Examples:
+- To display staking info for a specific Terra address: crypto/defi/sinfo -a terra1exampleaddress
+- Show staking info for a Terra address with a limit of 5 delegations: crypto/defi/sinfo -a terra1exampleaddress -l 5
+- Retrieve staking information for a given Terra address and display 20 delegations: crypto/defi/sinfo --address terra1exampleaddress --limit 20
+- Display staking details for a specific Terra address with a custom limit on delegations: crypto/defi/sinfo --address terra1exampleaddress -l 15

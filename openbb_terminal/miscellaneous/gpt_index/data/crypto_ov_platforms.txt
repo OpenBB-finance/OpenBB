@@ -1,0 +1,12 @@
+parent_command:crypto/ov
+usage: platforms
+
+List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama
+
+platforms
+Examples:
+- To list all smart contract platforms: crypto/ov/platforms
+- Retrieve all smart contract platforms: crypto/ov/platforms
+- Display a list of smart contract platforms: crypto/ov/platforms
+- Show all available smart contract platforms: crypto/ov/platforms
+- Get a list of smart contract platforms: crypto/ov/platforms

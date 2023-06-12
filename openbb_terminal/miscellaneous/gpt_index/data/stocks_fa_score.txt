@@ -1,0 +1,10 @@
+parent_command: stocks/fa/
+usage: score [-y YEARS] [-t TICKER] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]  optional arguments:   -y YEARS, --years YEARS                         Define the amount of years required to calculate the                         score. (default: 10)   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about score' to access the related guide.
+Summary: The score command is a value investing tool based on the thoughts of Warren Buffett, Joseph Piotroski, and Benjamin Graham. You can define the number of years for calculating the score, specify a ticker to analyze, and export the raw data in various formats. The data source for this command is FMP.
+
+Examples:
+- Calculate the score for a specific stock with the default 10-year period: stocks/fa/score -t <SYMBOL>
+- Analyze <SYMBOL> using a 5-year period for score calculation: stocks/load <SYMBOL>/fa/score -y 5
+- Calculate the score for <SYMBOL> and export the data as a CSV file: stocks/load <SYMBOL>/fa/score --export csv
+- Analyze <SYMBOL> using a 7-year period and save the data to a specific Excel sheet: stocks/load <SYMBOL>/fa/score -y 7 --sheet-name Sheet1
+- Calculate the score for multiple tickers: stocks/fa/score -t <SYMBOL1> -t <SYMBOL2>

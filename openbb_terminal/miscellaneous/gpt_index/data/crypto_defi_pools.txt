@@ -1,0 +1,21 @@
+parent_command:crypto/defi
+usage: pairs [-l LIMIT] [-s {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}] [-r]
+
+Display uniswap pools by volume. [Source: https://thegraph.com/en/]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 10)
+  -s {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}, --sort {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}
+                        Sort by given column. Default: volumeUSD (default: volumeUSD)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the top 10 uniswap pools by volume: crypto/defi/pairs
+- To show the top 5 uniswap pools sorted by token0 name: crypto/defi/pairs -l 5 -s token0.name
+- To display the top 20 uniswap pools sorted by transaction count: crypto/defi/pairs -l 20 -s txCount
+- To show the top 10 uniswap pools sorted by token1 symbol in ascending order: crypto/defi/pairs -s token1.symbol -r
+- To view the top 15 uniswap pools sorted by token0 symbol in ascending order: crypto/defi/pairs -l 15 -s token0.symbol -r
+- To display the top 7 uniswap pools sorted by token1 name: crypto/defi/pairs -l 7 -s token1.name
+- To show the top 10 uniswap pools sorted by volumeUSD in ascending order: crypto/defi/pairs -s volumeUSD -r

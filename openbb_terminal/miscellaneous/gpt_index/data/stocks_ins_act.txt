@@ -1,0 +1,10 @@
+parent_command: stocks/ins/
+usage: act [--raw] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]] [-l LIMIT]  Prints insider activity over time [Source: Business Insider]  optional arguments:   --raw                 Print raw data.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.   -l LIMIT, --limit LIMIT                         Number of entries to show in data.  For more information and examples, use 'about act' to access the related guide.
+Summary: Display insider activity over time for a specific stock symbol, sourced from Business Insider. You can choose to display raw data, set a limit on the number of entries shown, and export the data in various formats such as csv, json, or xlsx. You can also specify the name of the excel sheet when exporting to xlsx files.
+
+Examples:
+- To view insider activity for a stock symbol: stocks/load <SYMBOL>/ins/act
+- To display raw data of insider activity: stocks/load <SYMBOL>/ins/act --raw
+- To limit the number of entries shown in the insider activity data: stocks/load <SYMBOL>/ins/act -l 10
+- To export insider activity data to a csv file: stocks/load <SYMBOL>/ins/act --export csv
+- To export insider activity data to an xlsx file with a specific sheet name: stocks/load <SYMBOL>/ins/act --export xlsx --sheet-name Sheet1

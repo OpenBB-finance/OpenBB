@@ -25,22 +25,44 @@
     "options": {
       "unu": ["FDScanner"],
       "calc": [],
-      "screen": {
-        "view": ["Syncretism"],
-        "set": [],
-        "scr": ["Syncretism"]
-      },
-      "load": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
-      "pcr": ["AlphaQuery"],
-      "info": ["Barchart"],
-      "hist": ["ChartExchange", "Tradier", "Intrinio"],
-      "vsurf": ["YahooFinance"],
-      "grhist": ["Syncretism", "Intrinio"],
-      "plot": ["YahooFinance"],
-      "parity": ["YahooFinance"],
-      "binom": ["YahooFinance"],
-      "greeks": ["YahooFinance"],
-      "eodchain": ["Intrinio"],
+      "load": [
+        "YahooFinance",
+        "Tradier",
+        "Nasdaq",
+        "Intrinio"
+      ],
+      "pcr": [
+        "AlphaQuery"
+      ],
+      "info": [
+        "Barchart"
+      ],
+      "hist": [
+        "ChartExchange",
+        "Tradier",
+        "Intrinio"
+      ],
+      "vsurf": [
+        "YahooFinance"
+      ],
+      "grhist": [
+        "Intrinio"
+      ],
+      "plot": [
+        "YahooFinance"
+      ],
+      "parity": [
+        "YahooFinance"
+      ],
+      "binom": [
+        "YahooFinance"
+      ],
+      "greeks": [
+        "YahooFinance"
+      ],
+      "eodchain": [
+        "Intrinio"
+      ],
       "pricing": {
         "add": [],
         "rmv": [],
@@ -160,25 +182,70 @@
       "lobbying": ["QuiverQuant"]
     },
     "ba": {
-      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
-      "headlines": ["FinBrain"],
-      "snews": ["Finnhub"],
-      "wsb": ["Reddit"],
-      "spacc": ["Reddit"],
-      "redditsent": ["Reddit"],
-      "popular": ["Reddit"],
-      "getdd": ["Reddit"],
-      "trending": ["Stocktwits"],
-      "stalker": ["Stocktwits"],
-      "bullbear": ["Stocktwits"],
-      "messages": ["Stocktwits"],
-      "infer": ["Twitter"],
-      "sentiment": ["Twitter"],
-      "mentions": ["Google"],
-      "regions": ["Google"],
-      "interest": ["Google"],
-      "queries": ["Google"],
-      "rise": ["Google"]
+      "load": [
+        "YahooFinance",
+        "AlphaVantage",
+        "Polygon",
+        "EODHD",
+        "AlthubPlatform"
+      ],
+      "headlines": [
+        "FinBrain"
+      ],
+      "snews": [
+        "Finnhub"
+      ],
+      "wsb": [
+        "Reddit"
+      ],
+      "spacc": [
+        "Reddit"
+      ],
+      "redditsent": [
+        "Reddit"
+      ],
+      "popular": [
+        "Reddit"
+      ],
+      "getdd": [
+        "Reddit"
+      ],
+      "trending": [
+        "Stocktwits"
+      ],
+      "stalker": [
+        "Stocktwits"
+      ],
+      "bullbear": [
+        "Stocktwits"
+      ],
+      "messages": [
+        "Stocktwits"
+      ],
+      "infer": [
+        "Twitter"
+      ],
+      "sentiment": [
+        "Twitter"
+      ],
+      "mentions": [
+        "Google"
+      ],
+      "regions": [
+        "Google"
+      ],
+      "interest": [
+        "Google"
+      ],
+      "queries": [
+        "Google"
+      ],
+      "rise": [
+        "Google"
+      ],
+      "ns": [
+        "Althub Platform"
+      ]
     },
     "ca": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],

@@ -1,0 +1,12 @@
+parent_command: stocks/disc/
+usage: pipo [-d DAYS] [-s START] [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Past IPOs dates. [Source: https://finnhub.io]  optional arguments:   -d DAYS, --days DAYS  Number of past days to look for IPOs. (default: 5)   -s START, --start START                         The starting date (format YYYY-MM-DD) to look for                         IPOs. When set, start date will override --days                         argument (default: None)   -l LIMIT, --limit LIMIT                         Limit number of IPOs to display. (default: 20)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about pipo' to access the related guide.
+Summary: Display past IPO dates for stocks with options to set the number of past days to look for IPOs, a specific starting date, and limit the number of IPOs displayed. You can also export the raw data in various formats and save it to a specific excel sheet.
+
+Examples:
+- Show IPOs from the past 5 days: stocks/disc/pipo
+- Show IPOs from the past 10 days: stocks/disc/pipo -d 10
+- Show the last 7 IPOs: stocks/disc/pipo -l 7
+- Show IPOs since a specific date: stocks/disc/pipo -s 2022-01-01
+- Show the last 15 IPOs since a specific date: stocks/disc/pipo -s 2022-01-01 -l 15
+- Export IPO data from the past 5 days to a csv file: stocks/disc/pipo --export csv
+- Save IPO data from the past 5 days to a specific excel sheet: stocks/disc/pipo --sheet-name Sheet1

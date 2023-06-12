@@ -52,8 +52,7 @@ function Filter({
 	const columnFilterValue = column.getFilterValue();
 
 	const isProbablyDate = values.every((value: string) => {
-		if (typeof value !== "string") return false;
-		const only_numbers = value?.replace(/[^0-9]/g, "").trim();
+		const only_numbers = value?.toString().replace(/[^0-9]/g, "").trim();
 		return (
 			only_numbers?.length >= 4 &&
 			(includesDateNames(column.id) ||

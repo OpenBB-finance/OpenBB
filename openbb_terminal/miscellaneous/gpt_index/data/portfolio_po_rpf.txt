@@ -1,0 +1,15 @@
+parent_command:portfolio/po
+usage: rpf [-pf PORTFOLIOS]
+
+Remove one of the portfolios
+
+optional arguments:
+  -pf PORTFOLIOS, --portfolios PORTFOLIOS
+                        portfolios to be removed from the saved portfolios
+
+
+Examples:
+- Remove a portfolio by specifying its name: portfolio/po/rpf -pf Portfolio1
+- Delete multiple portfolios at once: portfolio/po/rpf -pf Portfolio1 Portfolio2 Portfolio3
+- Remove a single portfolio from the saved portfolios: portfolio/po/rpf --portfolios PortfolioName
+- Erase a list of portfolios: portfolio/po/rpf --portfolios PortfolioA PortfolioB PortfolioC

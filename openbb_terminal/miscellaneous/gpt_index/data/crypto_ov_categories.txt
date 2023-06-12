@@ -1,0 +1,21 @@
+parent_command:crypto/ov
+usage: categories [-l LIMIT] [-s {Name,Market_Cap,Market_Cap_Change_24H,Top_3_Coins,Volume_24H}] [--pie]
+
+Shows top cryptocurrency categories by market capitalization. It includes categories like: stablecoins, defi, solana ecosystem, polkadot ecosystem and many others. You can sort by {}, using --sortby parameter
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        display N number of records (default: 15)
+  -s {Name,Market_Cap,Market_Cap_Change_24H,Top_3_Coins,Volume_24H}, --sortby {Name,Market_Cap,Market_Cap_Change_24H,Top_3_Coins,Volume_24H}
+                        Sort by given column. Default: market_cap_desc (default: Market_Cap)
+  --pie                 Flag to show pie chart (default: False)
+
+
+Examples:
+- Display top 15 cryptocurrency categories by market capitalization: crypto/ov/categories
+- Show top 10 cryptocurrency categories sorted by 24-hour market cap change: crypto/ov/categories -l 10 -s Market_Cap_Change_24H
+- View top 5 cryptocurrency categories sorted by volume in the last 24 hours: crypto/ov/categories -l 5 -s Volume_24H
+- Display top 20 cryptocurrency categories sorted by name: crypto/ov/categories -l 20 -s Name
+- Show top 10 cryptocurrency categories and their top 3 coins: crypto/ov/categories -l 10 -s Top_3_Coins
+- Visualize top 15 cryptocurrency categories by market capitalization in a pie chart: crypto/ov/categories --pie
+- Display top 7 cryptocurrency categories sorted by 24-hour volume with a pie chart: crypto/ov/categories -l 7 -s Volume_24H --pie

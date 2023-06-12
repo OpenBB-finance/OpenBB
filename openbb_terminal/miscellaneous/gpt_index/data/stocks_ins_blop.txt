@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: blop [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest officer purchases 25k. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about blop' to access the related guide.
+Summary: Display the latest officer purchases of 25k or more for a specific stock symbol, with the option to limit the number of rows shown. You can also export the data in various formats and save it to a specific excel sheet. The data source is OpenInsider.
+
+Examples:
+- Show the latest officer purchases for <SYMBOL> with the default limit of 10 rows: stocks/load <SYMBOL>/ins/blop
+- Display the latest officer purchases for <SYMBOL> with a custom limit of 20 rows: stocks/load <SYMBOL>/ins/blop -l 20
+- Export the latest officer purchases for <SYMBOL> in csv format: stocks/load <SYMBOL>/ins/blop --export csv
+- Save the latest officer purchases for <SYMBOL> to a specific excel sheet: stocks/load <SYMBOL>/ins/blop --sheet-name Sheet1

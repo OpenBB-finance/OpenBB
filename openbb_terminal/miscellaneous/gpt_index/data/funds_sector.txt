@@ -1,0 +1,15 @@
+parent_command:funds
+usage: sector [-t {equity,fixed_income}]
+
+Show funds, index, category sector breakdown.
+
+optional arguments:
+  -t {equity,fixed_income}, --type {equity,fixed_income}
+                        asset type to select (default: equity)
+
+
+Examples:
+- To view the sector breakdown for equity funds: funds/sector
+- To display the sector breakdown for fixed-income funds: funds/sector -t fixed_income
+- Show sector breakdown for equity type assets: funds/sector --type equity
+- Display sector breakdown for fixed income type assets: funds/sector --type fixed_income

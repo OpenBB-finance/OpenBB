@@ -1,0 +1,11 @@
+parent_command: stocks/fa/
+usage: sec [-t TICKER] [-l LIMIT] [-p PAGES] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]            [--source {MarketWatch,FinancialModelingPrep}]  Prints SEC filings of the company. The following fields are expected: Filing Date, Document Date, Type, Category, Amended, and Link. [Source: Market Watch and FinancialModelingPrep]  optional arguments:   -t TICKER, --ticker TICKER                         The ticker to be used to get SEC filings.   -l LIMIT, --limit LIMIT                         number of latest SEC filings.   -p PAGES, --pages PAGES                         number of pages of SEC filings to search through, only                         relevant for FinancialModellingPrep.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.   --source {MarketWatch,FinancialModelingPrep}                         Data source to select from  For more information and examples, use 'about sec' to access the related guide.
+Summary: The 'sec' command displays SEC filings for a specified company, showing information such as Filing Date, Document Date, Type, Category, Amended, and Link. You can set a limit on the number of filings displayed, choose the number of pages to search through (only relevant for FinancialModelingPrep), and select a data source. Additionally, you can export the raw data in various formats and save it to a specific Excel sheet.
+
+Examples:
+- Retrieve the latest SEC filings for a specific ticker: stocks/fa/sec -t <SYMBOL>
+- Display the 10 most recent SEC filings for a specific ticker: stocks/fa/sec -t <SYMBOL> -l 10
+- Search through 5 pages of SEC filings for a specific ticker using FinancialModelingPrep: stocks/fa/sec -t <SYMBOL> -p 5 --source FinancialModelingPrep
+- Export the SEC filings for a specific ticker in JSON format: stocks/fa/sec -t <SYMBOL> --export json
+- Save the SEC filings for a specific ticker to a specific Excel sheet: stocks/fa/sec -t <SYMBOL> --sheet-name Sheet1
+- Retrieve the latest SEC filings for a specific ticker using MarketWatch as the data source: stocks/fa/sec -t <SYMBOL> --source MarketWatch

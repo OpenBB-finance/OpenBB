@@ -1,0 +1,12 @@
+parent_command:etf/disc
+usage: gainers
+
+Displays top ETF/Mutual fund gainers from wsj.com/market-data
+
+gainers
+Examples:
+- To display the top ETF/Mutual fund gainers: etf/disc/gainers
+- Show the leading ETF/Mutual fund gainers: etf/disc/gainers
+- Retrieve the top-performing ETF/Mutual funds: etf/disc/gainers
+- Find the highest gaining ETFs and Mutual funds: etf/disc/gainers
+- Get a list of the best performing ETFs and Mutual funds: etf/disc/gainers

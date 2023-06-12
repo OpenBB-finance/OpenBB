@@ -1,0 +1,11 @@
+parent_command: stocks/ca/
+usage: historical [-t {o,h,l,c,a}] [-n] [-s START] [-e END] [-h]                   [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Historical price comparison between similar companies.  optional arguments:   -t {o,h,l,c,a}, --type {o,h,l,c,a}                         Candle data to use: o-open, h-high, l-low, c-close,                         a-adjusted close. (default: a)   -n, --normalize       Flag to normalize all prices on same 0-1 scale                         (default: False)   -s START, --start START                         The starting date (format YYYY-MM-DD) of the stocks                         (default: 2022-04-18)   -e END, --end END     The end date (format YYYY-MM-DD) of the stocks                         (default: 2023-04-19)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about historical' to access the related guide.
+Summary: The historical command allows you to compare historical price data between similar companies. You can choose the type of candle data to use (open, high, low, close, or adjusted close), normalize the prices on a 0-1 scale, and set a specific start and end date for the comparison. Additionally, you can export the data in various formats and save it to a specific excel sheet.
+
+Examples:
+- Compare historical adjusted close prices of <SYMBOL> and its peers: stocks/load <SYMBOL>/ca/historical
+- Compare historical open prices of <SYMBOL> and similar companies: stocks/load <SYMBOL>/ca/historical -t o
+- Normalize price comparison for <SYMBOL> and its peers: stocks/load <SYMBOL>/ca/historical -n
+- Compare historical prices of <SYMBOL> and its peers between specific dates: stocks/load <SYMBOL>/ca/historical -s 2022-01-01 -e 2022-12-31
+- Export historical price comparison data of <SYMBOL> in csv format: stocks/load <SYMBOL>/ca/historical --export csv
+- Save historical price comparison data of <SYMBOL> to a specific excel sheet: stocks/load <SYMBOL>/ca/historical --sheet-name Sheet1

@@ -1,0 +1,10 @@
+parent_command: stocks/ca/
+usage: valuation [-h] [--export EXPORT]                  [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints screener data of similar companies. [Source: Finviz]  optional arguments:   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about valuation' to access the related guide.
+Summary: The valuation command displays screener data for similar companies using Finviz as the data source. You can export the raw data in csv, json, or xlsx formats and specify the name of the Excel sheet for xlsx files.
+
+Examples:
+- Display screener data for similar companies to <SYMBOL>: stocks/load <SYMBOL>/ca/valuation
+- Export screener data for similar companies to <SYMBOL> in csv format: stocks/load <SYMBOL>/ca/valuation --export csv
+- Export screener data for similar companies to <SYMBOL> in json format: stocks/load <SYMBOL>/ca/valuation --export json
+- Export screener data for similar companies to <SYMBOL> in xlsx format: stocks/load <SYMBOL>/ca/valuation --export xlsx
+- Save screener data for similar companies to <SYMBOL> in a specific Excel sheet: stocks/load <SYMBOL>/ca/valuation --export xlsx --sheet-name Sheet1

@@ -1,0 +1,20 @@
+parent_command:stocks/ta
+usage: hma [-l N_LENGTH] [-o N_OFFSET]
+
+The Hull Moving Average solves the age old dilemma of making a moving average more responsive to current price activity whilst maintaining curve smoothness. In fact the HMA almost eliminates lag altogether and manages to improve
+smoothing at the same time.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [10, 20])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To display the Hull Moving Average for a stock with default window lengths: stocks/load <SYMBOL>/ta/hma
+- For a custom window length of 15 and an offset of 2: stocks/load <SYMBOL>/ta/hma -l 15 -o 2
+- To display the Hull Moving Average with multiple window lengths, 10 and 30: stocks/load <SYMBOL>/ta/hma -l 10,30
+- Plot the Hull Moving Average for a stock with a window length of 25: stocks/load <SYMBOL>/ta/hma -l 25
+- To view the Hull Moving Average with an offset of 5: stocks/load <SYMBOL>/ta/hma -o 5
+- Display the Hull Moving Average for a stock with a custom window length of 40 and no offset: stocks/load <SYMBOL>/ta/hma -l 40 -o 0

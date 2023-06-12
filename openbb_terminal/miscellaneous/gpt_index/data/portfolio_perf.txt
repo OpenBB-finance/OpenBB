@@ -1,0 +1,12 @@
+parent_command:portfolio
+usage: performance [-t]
+
+Shows performance of each trade and total performance of the portfolio versus the benchmark.
+
+optional arguments:
+  -t, --show_trades  Whether to show performance on all trades in comparison to the benchmark. (default: False)
+
+
+Examples:
+- To view the overall performance of your portfolio compared to the benchmark: portfolio/performance
+- To see the performance of each individual trade and the total performance of your portfolio versus the benchmark: portfolio/performance -t
