@@ -374,7 +374,6 @@ class TerminalController(BaseController):
             help="GPT Model to use for Askobb LLM (default: gpt-3.5-turbo) or gpt-4 (beta)",
         )
 
-        # if other_args and "-q" not in other_args:
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
 
