@@ -87,7 +87,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.2
+GPT_INDEX_VER = 0.3
 
 
 # Command location path to be shown in the figures depending on watermark flag
@@ -2168,7 +2168,7 @@ def query_LLM(query_text, gpt_model):
     ]
 
     # define LLM
-    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name=gpt_model))
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.2, model_name=gpt_model))
     # define prompt helper
     prompt_helper = PromptHelper(max_input_size=4096, num_output=256)
     service_context = ServiceContext.from_defaults(
@@ -2208,13 +2208,13 @@ def query_LLM(query_text, gpt_model):
         command for {query_text}.Provide the exact command along with the parent command
         with a "/" separation to get that information,and nothing else including any
         explanation. Don't add any other word such as 'Command to get', 'Answer' or the likes.
-        Remember, it is very important to provide the full path of the command. Pay
-        attention to the parent commands, and make sure that if you were to run a command that is located
-        in a submenu, that it will have the full path included as if you were running
-        from the root directory. If and only if there is no information in the argparse help text above,
-        then just provide information on how to find that answer through normal financial terms.
+
+        Remember, it is very important to provide the full path of the command including the parent command. Before
+        running any sub commands, make sure to load the target symbol etc. to make sure data is loaded before running
+        other commands.
+
         Only do what is asked and provide a single command string. Always use a comma to separate between countries but
-        never between full commands. Lower cap the country name.
+        never between full commands, never provide more than one command. Lower cap the country name.
         """
 
     # try to get the response from the index
