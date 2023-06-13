@@ -336,6 +336,8 @@ class CryptoDiscovery(Category):
         `dapps_chart`: Prints table showing dapps [Source: https://dappradar.com/]\n
         `defi_chains`: Get defi chains [Source: https://dappradar.com/]\n
         `defi_chains_chart`: Prints table showing defi chains [Source: https://dappradar.com/]\n
+        `fees`: Show cryptos with most fees. [Source: CryptoStats]\n
+        `fees_chart`: Display crypto with most fees paid [Source: CryptoStats]\n
         `gainers`: Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
         `gainers_chart`: Prints table showing Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
         `losers`: Shows Largest Losers - coins which lose the most in given period. [Source: CoinGecko]\n
@@ -376,6 +378,8 @@ class CryptoDiscovery(Category):
         self.dapps_chart = lib.crypto_disc_dappradar_view.display_dapps
         self.defi_chains = lib.crypto_disc_dappradar_model.get_defi_chains
         self.defi_chains_chart = lib.crypto_disc_dappradar_view.display_defi_chains
+        self.fees = lib.crypto_disc_cryptostats_model.get_fees
+        self.fees_chart = lib.crypto_disc_cryptostats_view.display_fees
         self.gainers = lib.crypto_disc_pycoingecko_model.get_gainers
         self.gainers_chart = lib.crypto_disc_pycoingecko_view.display_gainers
         self.losers = lib.crypto_disc_pycoingecko_model.get_losers

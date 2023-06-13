@@ -508,6 +508,7 @@ en:
   crypto/disc/dapp_metrics: show dapp metrics
   crypto/disc/defi_chains: show available defi chains
   crypto/disc/tokens: show chains that support tokens
+  crypto/disc/fees: cryptos where users pay most fees on
   crypto/ov/global: global crypto market statistics
   crypto/ov/defi: global DeFi market info
   crypto/ov/stables: stablecoins

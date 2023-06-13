@@ -653,7 +653,7 @@ def get_projection(long_run: bool = False):
 
     data_series_df = pd.DataFrame.from_dict(data_series).dropna()
     data_series_df.index = pd.to_datetime(data_series_df.index).date
-
+    data_series_df.index.name = "Date"
     return data_series_df
 
 
@@ -731,6 +731,7 @@ def get_ecb(
 
         df = pd.DataFrame.from_dict(series_dictionary)
         df.index = pd.to_datetime(df.index).date
+        df.index.name = "Date"
 
     return df
 
@@ -868,6 +869,7 @@ def get_icebofa(
 
     df = pd.DataFrame.from_dict(series_dictionary)
     df.index = pd.to_datetime(df.index).date
+    df.index.name = "Date"
     return df
 
 
@@ -898,6 +900,7 @@ def get_moody(
 
     df = pd.DataFrame(series, columns=[f"{data_type}_{spread if spread else 'index'}"])
     df.index = pd.to_datetime(df.index).date
+    df.index.name = "Date"
     return df
 
 
@@ -947,6 +950,7 @@ def get_cp(
 
     df = pd.DataFrame.from_dict(series_dictionary)
     df.index = pd.to_datetime(df.index).date
+    df.index.name = "Date"
     return df
 
 
@@ -996,6 +1000,7 @@ def get_spot(
 
     df = pd.DataFrame.from_dict(series_dictionary)
     df.index = pd.to_datetime(df.index).date
+    df.index.name = "Date"
     return df
 
 

@@ -6,6 +6,7 @@
     nft_mktp_chains    nft marketplace chains                                          [DappRadar]
     nft_mktp           nft marketplaces                                                [DappRadar]
     dapps              available decentralized apps                                    [DappRadar]
+    fees               cryptos where users pay most fees on                            [Cryptostats]
     dapp_categories    show available dapp categories                                  [DappRadar]
     dapp_chains        show available dapp chains                                      [DappRadar]
     dapp_metrics       show dapp metrics                                               [DappRadar]
