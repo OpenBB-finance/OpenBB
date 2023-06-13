@@ -17,7 +17,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.options.cboe_model import load_options as load_cboe
 from openbb_terminal.stocks.options.intrinio_model import load_options as load_intrinio
 from openbb_terminal.stocks.options.nasdaq_model import load_options as load_nasdaq
-from openbb_terminal.stocks.options.op_helpers import Options
 from openbb_terminal.stocks.options.tmx_model import load_options as load_tmx
 from openbb_terminal.stocks.options.tradier_model import load_options as load_tradier
 from openbb_terminal.stocks.options.yfinance_model import load_options as load_yfinance
