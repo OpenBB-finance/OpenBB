@@ -1254,7 +1254,11 @@ def plot_icebofa(
 
     for column in df.columns:
         fig.add_scatter(
-            x=df.index, y=df[column].values, name=column, showlegend=len(df.columns) > 1
+            x=df.index,
+            y=df[column].values,
+            name=column,
+            showlegend=True,
+            connectgaps=True,
         )
 
     if raw:
