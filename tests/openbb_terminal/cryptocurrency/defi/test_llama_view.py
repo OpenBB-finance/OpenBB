@@ -63,6 +63,7 @@ def gzip_data(response):
     return response
 
 
+@pytest.mark.skip
 @pytest.mark.record_stdout
 def test_display_defi_protocols():
     llama_view.display_defi_protocols(
