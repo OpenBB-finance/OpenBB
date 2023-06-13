@@ -52,7 +52,7 @@ def load_options_chains(
 
     Returns
     -------
-    object: OptionsChains data object
+    object: Options data object
 
         chains: dict
             All options chains data from a specific source.  Returns as a Pandas DataFrame if pydantic is False.
@@ -135,7 +135,7 @@ def load_options_chains(
 def validate_object(
     options: object, scope: Optional[str] = "object", days: Optional[int] = None
 ) -> Any:
-    """This is an internal helper function for validating the OptionsChains data object passed
+    """This is an internal helper function for validating the Options data object passed
     through the input of functions defined in the OptionsChains class.  The purpose is to handle
     multi-type inputs with backwards compatibility and provide robust error handling.  The return
     is the portion of the object, or a true/false validation, required to perform the operation.
@@ -143,7 +143,7 @@ def validate_object(
     Parameters
     ----------
     options : object
-        The OptionsChains data object.
+        The Options data object.
         Accepts both Pydantic and Pandas object types, as defined by `load_options_chains()`.
         A Pandas DataFrame, or dictionary, with the options chains data is also accepted.
     scope: str
@@ -159,7 +159,7 @@ def validate_object(
                 Pandas DataFrame with the validated data.
         if scope == "object" or scope == "strategies":
             bool
-                True if the object is a valid OptionsChains data object.
+                True if the object is a valid Options data object.
 
     Examples
     --------
@@ -198,7 +198,7 @@ def validate_object(
 
         except AttributeError:
             print(
-                "Error: Invalid data type supplied.  The OptionsChains data object is required.  "
+                "Error: Invalid data type supplied.  The Options data object is required.  "
                 "Use load_options_chains() first."
             )
             return not valid
@@ -302,7 +302,7 @@ def get_nearest_dte(options: object, days: Optional[int] = 30) -> int:
     Parameters
     ----------
     options : object
-        The OptionsChains data object.  Use load_options_chains() to load the data.
+        The Options data object.  Use load_options_chains() to load the data.
     days: int
         The target number of days until expiry.  Default is 30 days.
 
@@ -325,6 +325,8 @@ def get_nearest_dte(options: object, days: Optional[int] = 30) -> int:
     if isinstance(options.chains, dict):
         options.chains = pd.DataFrame(options.chains)
 
+    days = -1 if days == 0 else days
+
     nearest = (options.chains["dte"] - days).abs().idxmin()
 
     return options.chains.loc[nearest]["dte"]
@@ -338,7 +340,7 @@ def get_nearest_call_strike(
     Parameters
     ----------
     options : object
-        The OptionsChains data object.  Use load_options_chains() to load the data.
+        The Options data object.  Use load_options_chains() to load the data.
     days: int
         The target number of days until expiry.  Default is 30 days.
     strike_price: float
@@ -378,7 +380,7 @@ def get_nearest_call_strike(
     nearest = (
         (
             options.chains[options.chains["dte"] == dte_estimate]
-            .query("`optionType` == 'call' and `ask` > 0")
+            .query("`optionType` == 'call'")
             .convert_dtypes()["strike"]
             - strike_price
         )
@@ -397,7 +399,7 @@ def get_nearest_put_strike(
     Parameters
     ----------
     options : object
-        The OptionsChains data object.  Use load_options_chains() to load the data.
+        The Options data object.  Use load_options_chains() to load the data.
     days: int
         The target number of days until expiry.  Default is 30 days.
     strike_price: float
@@ -437,7 +439,7 @@ def get_nearest_put_strike(
     nearest = (
         (
             options.chains[options.chains["dte"] == dte_estimate]
-            .query("`optionType` == 'put' and `ask` > 0")
+            .query("`optionType` == 'put'")
             .convert_dtypes()["strike"]
             - strike_price
         )
@@ -456,7 +458,7 @@ def get_nearest_otm_strike(
     Parameters
     ----------
     options : OptionsChains
-        The OptionsChains data object.  Use load_options_chains() to load the data.
+        The Options data object.  Use load_options_chains() to load the data.
     moneyness: float
         The target percent OTM, expressed as a percent between 0 and 100.  Default is 5.
 
@@ -511,12 +513,12 @@ def calculate_straddle(
     strike: float = 0,
 ) -> pd.DataFrame:
     """Calculates the cost of a straddle and its payoff profile. Use a negative strike price for short options.
-    Requires the OptionsChains data object.
+    Requires the Options data object.
 
     Parameters
     ----------
     options : object
-        The OptionsChains data object. Use load_options_chains() to load the data.
+        The Options data object. Use load_options_chains() to load the data.
     days: int
         The target number of days until expiry. Default is 30 days.
     strike: float
@@ -537,6 +539,8 @@ def calculate_straddle(
     options = deepcopy(options)
     if not days:
         days = 30
+    if days and days == 0:
+        days = -1
 
     short: bool = False
     if strike is not None and strike < 0:
@@ -641,12 +645,12 @@ def calculate_strangle(
 ) -> pd.DataFrame:
     """Calculates the cost of a strangle and its payoff profile.  Use a negative value for moneyness for short options.
 
-    Requires the OptionsChains data object.
+    Requires the Options data object.
 
     Parameters
     ----------
     options : object
-        The OptionsChains data object.  Use load_options_chains() to load the data.
+        The Options data object.  Use load_options_chains() to load the data.
     days: int
         The target number of days until expiry.  Default is 30 days.
     moneyness: float
@@ -784,7 +788,7 @@ def calculate_vertical_call_spread(
     Parameters
     ----------
     options : object
-        The OptionsChains data object. Use load_options_chains() to load the data.
+        The Options data object. Use load_options_chains() to load the data.
     days: int
         The target number of days until expiry. This value will be used to get the nearest valid DTE.
         Default is 30 days.
@@ -814,15 +818,6 @@ def calculate_vertical_call_spread(
 
     options = deepcopy(options)
 
-    if not days:
-        days = 30
-
-    if not bought_strike:
-        bought_strike = options.last_price * 1.0250
-
-    if not sold_strike:
-        sold_strike = options.last_price * 1.0750
-
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
 
@@ -832,6 +827,15 @@ def calculate_vertical_call_spread(
 
     if isinstance(options.chains, dict):
         options.chains = pd.DataFrame(options.chains)
+
+    if not days:
+        days = 30
+
+    if not bought_strike:
+        bought_strike = options.last_price * 1.0250
+
+    if not sold_strike:
+        sold_strike = options.last_price * 1.0750
 
     dte_estimate = get_nearest_dte(options, days)  # noqa:F841
 
@@ -930,7 +934,7 @@ def calculate_vertical_put_spread(
     Parameters
     ----------
     options : object
-        The OptionsChains data object. Use load_options_chains() to load the data.
+        The Options data object. Use load_options_chains() to load the data.
     days: int
         The target number of days until expiry. This value will be used to get the nearest valid DTE.
         Default is 30 days.
@@ -959,15 +963,6 @@ def calculate_vertical_put_spread(
     """
     options = deepcopy(options)
 
-    if not days:
-        days = 30
-
-    if not bought_strike:
-        bought_strike = options.last_price * 0.9750
-
-    if not sold_strike:
-        sold_strike = options.last_price * 0.9250
-
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
 
@@ -977,6 +972,15 @@ def calculate_vertical_put_spread(
 
     if isinstance(options.chains, dict):
         options.chains = pd.DataFrame(options.chains)
+
+    if not days:
+        days = 30
+
+    if not bought_strike:
+        bought_strike = options.last_price * 0.9750
+
+    if not sold_strike:
+        sold_strike = options.last_price * 0.9250
 
     dte_estimate = get_nearest_dte(options, days)  # noqa:F841
     options = validate_object(options, "nonZeroPrices", dte_estimate)
@@ -1062,7 +1066,7 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
     Parameters
     ----------
     options : object
-        The OptionsChains data object.
+        The Options data object.
         Accepts both Pydantic and Pandas object types, as defined by `load_options_chains()`.
         A Pandas DataFrame, or dictionary, with the options chains data is also accepted.
     by: str
@@ -1179,7 +1183,7 @@ def get_strategies(
     Parameters
     ----------
     options: object
-        The OptionsChains data object. Use `load_options_chains()` to load the data.
+        The Options data object. Use `load_options_chains()` to load the data.
     days: list[int]
         List of DTE(s) to get strategies for. Enter a single value, or multiple as a list. Defaults to all.
     strike_price: float
@@ -1216,6 +1220,13 @@ def get_strategies(
     """
     options = deepcopy(options)
 
+    if validate_object(options, scope="object") is False:
+        return pd.DataFrame()
+
+    if validate_object(options, scope="strategies") is False:
+        print("`last_price` was not found in the Options data object.")
+        return pd.DataFrame()
+
     if isinstance(options.chains, dict):
         options.chains = pd.DataFrame(options.chains)
 
@@ -1224,9 +1235,6 @@ def get_strategies(
 
     if days is None:
         days = options.chains["dte"].unique().tolist()
-
-    # options = deepcopy(options)
-    # options = validate_object(options, scope="strategies")
 
     # Allows a single input to be passed instead of a list.
     days = [days] if isinstance(days, int) else days  # type: ignore[list-item]
@@ -1249,16 +1257,6 @@ def get_strategies(
             else strangle_moneyness
         )
 
-    if validate_object(options, scope="object") is False:
-        return pd.DataFrame()
-
-    if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
-        return pd.DataFrame()
-
-    if isinstance(options.chains, dict):
-        options.chains = pd.DataFrame(options.chains)
-
     days_list = []
 
     strategies = pd.DataFrame()
@@ -1269,8 +1267,11 @@ def get_strategies(
     put_spreads = pd.DataFrame()
 
     for day in days:
+        if day == 0:
+            day = -1
         days_list.append(get_nearest_dte(options, day))
     days = list(set(days_list))
+    days.sort()
 
     if vertical_calls is not None:
         cStrike1 = vertical_calls[0]
@@ -1295,22 +1296,28 @@ def get_strategies(
             options.last_price if straddle_strike == 0 else straddle_strike
         )
         for day in days:
-            straddles = pd.concat(
-                [
-                    straddles,
-                    calculate_straddle(options, day, straddle_strike).transpose(),
-                ]
-            )
+            straddle = calculate_straddle(options, day, straddle_strike).transpose()
+            if straddle.iloc[0]["Cost"] != 0:
+                straddles = pd.concat(
+                    [
+                        straddles,
+                        straddle,
+                    ]
+                )
+            pass
 
     if strangle_moneyness and strangle_moneyness[0] != 0:
         for day in days:
             for moneyness in strangle_moneyness:
-                strangles_ = pd.concat(
-                    [
-                        strangles_,
-                        calculate_strangle(options, day, moneyness).transpose(),
-                    ]
-                )
+                strangle = calculate_strangle(options, day, moneyness).transpose()
+                if strangle.iloc[0]["Cost"] != 0:
+                    strangles_ = pd.concat(
+                        [
+                            strangles_,
+                            strangle,
+                        ]
+                    )
+                pass
         strangles = pd.concat([strangles, strangles_])
         strangles = strangles.query("`Strike 1` != `Strike 2`").drop_duplicates()
 
@@ -1396,15 +1403,16 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
     >>> xiu.get_straddle()
     """
 
-    options = Options()
-
     def __init__(self, symbol, source="CBOE", date="", pydantic=False):
-        options = load_options_chains(symbol, source, date, pydantic)
-        items = list(options.__dict__.keys())
-        for item in items:
-            setattr(self, item, options.__dict__[item])
-        if hasattr(self, "date") is False:
-            setattr(self, "date", "")
+        try:
+            options = load_options_chains(symbol, source, date, pydantic)
+            items = list(options.__dict__.keys())
+            for item in items:
+                setattr(self, item, options.__dict__[item])
+            if hasattr(self, "date") is False:
+                setattr(self, "date", "")
+        except options.chains == []:
+            return None
 
     def get_stats(self, by="expiration", query=None):
         """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
@@ -1446,7 +1454,7 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
 
     def get_straddle(self, days=0, strike=0):
         """Calculates the cost of a straddle and its payoff profile. Use a negative strike price for short options.
-        Requires the OptionsChains data object.
+        Requires the Options data object.
 
         Parameters
         ----------
@@ -1474,7 +1482,7 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
         """Calculates the cost of a strangle and its payoff profile.
         Use a negative value for moneyness for short options.
 
-        Requires the OptionsChains data object.
+        Requires the Options data object.
 
         Parameters
         ----------
@@ -1626,6 +1634,7 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
         Return vertical spreads for all expirations.
         >>> data.get_strategies(vertical_calls=[430,427], vertical_puts=[420,426])
         """
+
         if strangle_moneyness is None:
             strangle_moneyness = 0
 
