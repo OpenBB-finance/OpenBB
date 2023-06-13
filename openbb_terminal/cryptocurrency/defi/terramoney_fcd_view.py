@@ -3,21 +3,17 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import textwrap
 from typing import Optional, Union
 
-from openbb_terminal import (
-    OpenBBFigure,
-)
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
     prettify_column_names,
 )
 from openbb_terminal.cryptocurrency.defi import terramoney_fcd_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -96,6 +92,10 @@ def display_validators(
         x if x not in ["Voting power", "Commission rate", "Uptime"] else f"{x} %"
         for x in prettify_column_names(df.columns)
     ]
+
+    df["Account address"] = df["Account address"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=20))
+    )
 
     print_rich_table(
         df,
