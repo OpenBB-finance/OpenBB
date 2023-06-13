@@ -1303,7 +1303,6 @@ def get_strategies(
                         straddle,
                     ]
                 )
-            pass
 
     if strangle_moneyness and strangle_moneyness[0] != 0:
         for day in days:
@@ -1316,7 +1315,7 @@ def get_strategies(
                             strangle,
                         ]
                     )
-                pass
+
         strangles = pd.concat([strangles, strangles_])
         strangles = strangles.query("`Strike 1` != `Strike 2`").drop_duplicates()
 
@@ -1410,8 +1409,8 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
                 setattr(self, item, options.__dict__[item])
             if hasattr(self, "date") is False:
                 setattr(self, "date", "")
-        except options.chains == []:
-            return None
+        except Exception:
+            self.chains = pd.DataFrame()
 
     def get_stats(self, by="expiration", query=None):
         """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
