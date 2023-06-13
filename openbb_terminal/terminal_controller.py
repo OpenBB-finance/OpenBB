@@ -24,10 +24,7 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.account.show_prompt import (
-    get_show_prompt,
-    set_show_prompt,
-)
+from openbb_terminal.account.show_prompt import get_show_prompt, set_show_prompt
 from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -38,10 +35,7 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
-from openbb_terminal.core.session.current_user import (
-    get_current_user,
-    set_preference,
-)
+from openbb_terminal.core.session.current_user import get_current_user, set_preference
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -352,6 +346,7 @@ class TerminalController(BaseController):
         self.save_class()
         parser = argparse.ArgumentParser(
             add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="askobb",
             description="Accept input as a string and return the most appropriate Terminal command",
         )
@@ -379,7 +374,8 @@ class TerminalController(BaseController):
             help="GPT Model to use for Askobb LLM (default: gpt-3.5-turbo) or gpt-4 (beta)",
         )
 
-        if other_args and "-q" not in other_args:
+        # if other_args and "-q" not in other_args:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
 
         ns_parser = self.parse_known_args_and_warn(
