@@ -89,6 +89,7 @@ class TerminalController(BaseController):
         "guess",
         "news",
         "intro",
+        "askobb",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -106,7 +107,6 @@ class TerminalController(BaseController):
         "futures",
         "fixedincome",
         "funds",
-        "askobb",
     ]
 
     if is_auth_enabled():
@@ -214,6 +214,8 @@ class TerminalController(BaseController):
         mt.add_cmd("stop")
         mt.add_cmd("exe")
         mt.add_raw("\n")
+        mt.add_cmd("askobb")
+        mt.add_raw("\n")
         mt.add_info("_main_menu_")
         mt.add_menu("stocks")
         mt.add_menu("crypto")
@@ -224,7 +226,6 @@ class TerminalController(BaseController):
         mt.add_menu("fixedincome")
         mt.add_menu("alternative")
         mt.add_menu("funds")
-        mt.add_menu("askobb")
         mt.add_raw("\n")
         mt.add_info("_toolkits_")
         mt.add_menu("econometrics")
@@ -351,8 +352,8 @@ class TerminalController(BaseController):
             description="Accept input as a string and return the most appropriate Terminal command",
         )
         parser.add_argument(
-            "--question",
-            "-q",
+            "--prompt",
+            "-p",
             action="store",
             type=str,
             nargs="+",
@@ -375,7 +376,7 @@ class TerminalController(BaseController):
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-q")
+            other_args.insert(0, "-p")
 
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -383,11 +384,9 @@ class TerminalController(BaseController):
         )
 
         if ns_parser:
-            # check if user has passed a question with more than 2 words
-            if len(ns_parser.question) <= 2:
-                console.print(
-                    "[red]Please enter a question with more than 2 words[/red]"
-                )
+            # check if user has passed a question with 2 or more words
+            if len(ns_parser.question) < 2:
+                console.print("[red]Please enter a prompt with more than 1 word[/red]")
             else:
                 console.print(
                     "[yellow]Thinking... This may take a few moments.\n[/yellow]"
