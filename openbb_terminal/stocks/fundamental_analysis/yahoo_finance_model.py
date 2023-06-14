@@ -355,6 +355,7 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
     df = df.replace(",", "", regex=True)
     df = df.replace("k", "", regex=True)
     df = df.astype("float")
+    df.index = df.index.str.replace(",", "")
 
     not_skipped = ~df.reset_index()["Breakdown"].str.contains("EPS", case=False)
     skipped = df.reset_index()["Breakdown"].str.contains("EPS", case=False)
