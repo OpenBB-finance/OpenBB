@@ -278,6 +278,8 @@ BALANCE_PLOT = {
         "commonstocksharesoutstanding": "common_stock_shares_outstanding",
     },
     "Polygon": {
+        "temporary_equity": "temporary_equity",
+        "temporary_equity_attributable_to_parent": "temporary_equity_attributable_to_parent",
         "equity_attributable_to_noncontrolling_interest": "equity_attributable_to_non_controlling_interest",
         "liabilities": "total_liabilities",
         "noncurrent_assets": "total_non_current_assets",
