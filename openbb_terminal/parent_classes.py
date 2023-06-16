@@ -1249,7 +1249,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
 
-                if self.PATH in ["/stocks/qa/", "/stocks/pred/"]:
+                if self.PATH in ["/stocks/qa/"]:
                     self.stock["Returns"] = self.stock["Adj Close"].pct_change()
                     self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
                         self.stock["Adj Close"].shift(1)
@@ -1258,6 +1258,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                     self.stock = self.stock.dropna()
                     self.stock.columns = [x.lower() for x in self.stock.columns]
+                    self.target = "returns" if not self.stock.empty else ""
 
                 export_data(
                     ns_parser.export,
