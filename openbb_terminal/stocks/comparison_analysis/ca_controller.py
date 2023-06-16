@@ -442,7 +442,9 @@ class ComparisonAnalysisController(BaseController):
             other_args.insert(0, "-s")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.similar = set(list(set(ns_parser.l_similar)) + [self.ticker.upper()])
+            self.similar = list(
+                set(list(set(ns_parser.l_similar)) + [self.ticker.upper()])
+            )
             self.user = "Custom"
             console.print(
                 f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
