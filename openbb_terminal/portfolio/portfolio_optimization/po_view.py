@@ -618,7 +618,7 @@ def display_pie(**kwargs):
         Weights to display, where keys are tickers, and values are either weights or values if -v specified
     title: str
         Title to be used on the plot title
-    external_axes:Optiona[List[plt.Axes]]
+    external_axes:Optional[List[plt.Axes]]
         Optional external axes to plot data on
     """
 

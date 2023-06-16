@@ -32,7 +32,7 @@ class DataBento(BaseModel):
         arbitrary_types_allowed = True
 
     def get_historical_stock(self):
-        """Gets historical EOD stock data from DataBento.  Currnetly, just NASDAQ is supported.
+        """Gets historical EOD stock data from DataBento.  Currently, just NASDAQ is supported.
         Note that only nonadjusted data is available."""
         self.exchange = "XNAS.ITCH"
         self.stype = "native"
