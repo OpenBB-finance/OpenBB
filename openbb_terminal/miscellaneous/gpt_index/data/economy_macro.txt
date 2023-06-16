@@ -33,3 +33,4 @@ Examples:
 - Get macro data for Brazil with a specific start date: economy/macro -c brazil -s 2010-01-01
 - Fetch macro data for Italy with a specific end date: economy/macro -c italy -e 2020-12-31
 - Obtain macro data for China and India with specific parameters and transformations: economy/macro -p RGDP Y10YD -c china india -t TOYA
+- Obtain unemployment rate for united states and portugal: economy/macro -p URATE -c united_states,portugal

@@ -87,7 +87,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.21
+GPT_INDEX_VER = 0.22
 
 
 # Command location path to be shown in the figures depending on watermark flag
@@ -2206,9 +2206,9 @@ def query_LLM(query_text, gpt_model):
 
     current_date = datetime.now().astimezone(pytz.timezone("America/New_York"))
 
-    prompt_string = f"""From argparse help text above, provide the terminal
-        command for {query_text}.Provide the exact command along with the parent command
-        with a "/" separation to get that information,and nothing else including any
+    prompt_string = f"""From the cli argparse help text above, provide the terminal
+        command for {query_text}. Provide the exact command along with the parent command
+        with a "/" separation to get that information, and nothing else including any
         explanation. Don't add any other word such as 'Command to get', 'Answer' or the likes.
 
         Current date: {current_date.strftime("%Y-%m-%d")}
@@ -2218,13 +2218,15 @@ def query_LLM(query_text, gpt_model):
         1. It is very important to provide the full path of the command including the parent command and loading
         the particular target before running any subsequent commands
         2. If you are asked about dates or times, load the target dates, times span during the "load" command
-        before running any subsequent commands. replace all <> with the actual dates and times
-        3. Always use a comma to separate between countries.
-        4. Lower cap the country name.
+        before running any subsequent commands. replace all <> with the actual dates and times.  The date format should
+        be YYYY-MM-DD.
+        3. Always use a comma to separate between countries and no spaces.
+        4. Country names should be snake case and lower case. example: united_states.
         5. Reference the current date and day of the week in your command in case the user do not provide it.
         6. always use "load" command first before running any subsequent commands. example:
         stocks/load <symbol> ....
         crypto/load <symbol> .... etc.
+        7. Do not include --export unless the request asks for the data to be exported or saved to a specific file type.
 
         Only do what is asked and provide a single command string, never more than one.
         """
