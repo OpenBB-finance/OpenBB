@@ -87,7 +87,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.22
+GPT_INDEX_VER = 0.23
 
 
 # Command location path to be shown in the figures depending on watermark flag
@@ -2168,7 +2168,7 @@ def query_LLM(query_text, gpt_model):
     ]
 
     # define LLM
-    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.2, model_name=gpt_model))
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name=gpt_model))
     # define prompt helper
     prompt_helper = PromptHelper(max_input_size=4096, num_output=256)
     service_context = ServiceContext.from_defaults(
@@ -2219,14 +2219,14 @@ def query_LLM(query_text, gpt_model):
         the particular target before running any subsequent commands
         2. If you are asked about dates or times, load the target dates, times span during the "load" command
         before running any subsequent commands. replace all <> with the actual dates and times.  The date format should
-        be YYYY-MM-DD.
+        be YYYY-MM-DD. Reference the current date and day of the week in your command in case the user do not provide it.
         3. Always use a comma to separate between countries and no spaces.
         4. Country names should be snake case and lower case. example: united_states.
-        5. Reference the current date and day of the week in your command in case the user do not provide it.
-        6. always use "load" command first before running any subsequent commands. example:
-        stocks/load <symbol> ....
-        crypto/load <symbol> .... etc.
-        7. Do not include --export unless the request asks for the data to be exported or saved to a specific file type.
+        5. always use "load" command first before running any subsequent commands. example:
+        stocks/load <symbol>/ .... 
+        crypto/load <symbol>/ .... etc.
+        6. Do not include --export unless the request asks for the data to be exported or saved to a specific file type.
+        7. Do not make up any subcommands or options for the specific command.
 
         Only do what is asked and provide a single command string, never more than one.
         """

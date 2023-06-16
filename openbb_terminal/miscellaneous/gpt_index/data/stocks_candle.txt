@@ -13,3 +13,4 @@ Examples:
 - Save raw data to a specific excel sheet: stocks/load <SYMBOL>/candle --sheet-name Sheet1
 - Limit the number of entries displayed to 10: stocks/load <SYMBOL>/candle -l 10
 - Show me the candlestick chart for a specific stock between two dates: stocks/load <SYMBOL> -s <START_DATE> -e <END_DATE>/candle
+- show me specific stock between <START_DATE> and today on candle stick: stocks/load <SYMBOL> -s <START_DATE> -e <CURRENT_DATE>/candle
