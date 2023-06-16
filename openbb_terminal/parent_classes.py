@@ -1258,6 +1258,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                     self.stock = self.stock.dropna()
                     self.stock.columns = [x.lower() for x in self.stock.columns]
+                    # pylint: disable=attribute-defined-outside-init
                     self.target = "returns" if not self.stock.empty else ""
 
                 export_data(
