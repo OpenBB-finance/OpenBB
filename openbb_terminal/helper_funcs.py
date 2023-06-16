@@ -41,7 +41,7 @@ import yfinance as yf
 from holidays import US as us_holidays
 from langchain.chat_models import ChatOpenAI
 from llama_index import (
-    GPTVectorStoreIndex,
+    VectorStoreIndex,
     LLMPredictor,
     PromptHelper,
     ServiceContext,
@@ -87,7 +87,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.3
+GPT_INDEX_VER = 0.2
 
 
 # Command location path to be shown in the figures depending on watermark flag
@@ -2196,7 +2196,7 @@ def query_LLM(query_text, gpt_model):
 
         # read in documents
         documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
-        index = GPTVectorStoreIndex.from_documents(
+        index = VectorStoreIndex.from_documents(
             documents, service_context=service_context
         )
 
@@ -2209,11 +2209,14 @@ def query_LLM(query_text, gpt_model):
         with a "/" separation to get that information,and nothing else including any
         explanation. Don't add any other word such as 'Command to get', 'Answer' or the likes.
 
-        Remember, it is very important to provide the full path of the command including the parent command and loading
-        the particular target before running any subsequent commands.
-
-        Only do what is asked and provide a single command string. Always use a comma to separate between countries but
-        never between full commands, never provide more than one command. Lower cap the country name.
+        Remember:
+        1. it is very important to provide the full path of the command including the parent command and loading
+        the particular target before running any subsequent commands
+        2. if you are asked about dates or times, load the target dates, timesime span during the "load" command
+        before running any subsequent commands. replace all <> with the actual dates and times
+        3. Only do what is asked and provide a single command string, never more than one.
+        4. Always use a comma to separate between countries.
+        5. Lower cap the country name.
         """
 
     # try to get the response from the index
