@@ -2209,9 +2209,8 @@ def query_LLM(query_text, gpt_model):
         with a "/" separation to get that information,and nothing else including any
         explanation. Don't add any other word such as 'Command to get', 'Answer' or the likes.
 
-        Remember, it is very important to provide the full path of the command including the parent command. Before
-        running any sub commands, make sure to load the target symbol etc. to make sure data is loaded before running
-        other commands.
+        Remember, it is very important to provide the full path of the command including the parent command and loading
+        the particular target before running any subsequent commands.
 
         Only do what is asked and provide a single command string. Always use a comma to separate between countries but
         never between full commands, never provide more than one command. Lower cap the country name.
