@@ -51,12 +51,12 @@ def display_valuation(
 
     if df_group.empty:
         return
-
+    df_group = df_group.rename(columns={"Name": ""})
     print_rich_table(
         df_group,
         show_index=False,
         headers=list(df_group.columns),
-        title="Group Valuation Data",
+        title=f"{group.replace('_',' ').title()} Valuation Data",
         export=bool(export),
     )
 
@@ -91,15 +91,14 @@ def display_performance(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
     df_group = finviz_model.get_performance_data(group, sortby, ascend)
-
+    df_group = df_group.rename(columns={"Name": ""})
     if df_group.empty:
         return
-
     print_rich_table(
         df_group,
         show_index=False,
         headers=df_group.columns,
-        title="Group Performance Data",
+        title=f"{group.replace('_',' ').title()} Performance Data",
         export=bool(export),
     )
 

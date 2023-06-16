@@ -507,7 +507,7 @@ def plot_balance(
             showlegend=True,
         )
 
-    title = "Government Defict or Suplus"
+    title = "Government Deficit"
     fig.set_title(title)
 
     if raw:
