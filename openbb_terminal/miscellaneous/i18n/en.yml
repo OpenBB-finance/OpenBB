@@ -298,7 +298,7 @@ en:
   stocks/gov/lobbying: corporate lobbying details
   stocks/ca/ticker: set ticker to get similar companies from
   stocks/ca/_ticker: Ticker to get similar companies from
-  stocks/ca/tsne: run TSNE on all SP500 stocks and returns closest tickers
+  stocks/ca/tsne: run TSNE on all SP500 stocks
   stocks/ca/get: get similar stocks
   stocks/ca/set: reset and set similar companies
   stocks/ca/add: add more similar companies
