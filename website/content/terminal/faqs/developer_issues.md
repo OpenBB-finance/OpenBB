@@ -28,6 +28,18 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Developer Issues - Terminal | OpenBB Docs" />
 
+<details><summary>How do I launch in debug mode?</summary>
+
+When installed from source, the OpenBB Terminal can be launched in debug mode.  Launch the Terminal using the syntax below.
+
+```python
+python terminal.py --debug
+```
+
+Operate the Terminal normally, and errors will trigger an interrupt which prints the traceback with the error.  Charts and tables will also include a developer tools button, located at the top-left of the window, for identifying issues specific to the PyWry interactive window.  
+
+</details>
+
 <details><summary>What branch on GitHub should pull requests be submitted to?</summary>
 
 Pull requests submitted to the Main branch will not be merged, please create branches from the `develop` branch.

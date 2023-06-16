@@ -392,16 +392,7 @@ class TerminalController(BaseController):
                     "[yellow]Thinking... This may take a few moments.\n[/yellow]"
                 )
                 response = query_LLM(" ".join(ns_parser.question), ns_parser.gpt_model)
-                logger.info(
-                    "ASKOBB: %s ",
-                    json.dumps(
-                        {
-                            "Question": " ".join(ns_parser.question),
-                            "Model": ns_parser.gpt_model,
-                            "Response": response,
-                        }
-                    ),
-                )
+                feedback = ""
                 if response is not None:
                     # check that "I don't know" and "Sorry" is not the response
                     if all(
@@ -415,29 +406,42 @@ class TerminalController(BaseController):
                             "no command provided",
                             "no information",
                             "does not contain",
+                            "I cannot provide",
                         ]
                     ):
-                        console.print(f"[green]Suggested Command: {response}[/green]\n")
-                        console.print(
-                            "If this command does not work, please refine your question and try again."
-                        )
+                        console.print(f"[green]Suggested Command:[/green] {response}\n")
 
                         console.print(
-                            "[yellow]Would you like to run this command?(y/n)[/yellow]"
+                            "[yellow]Would you like to run this command?(y/n/fb)[/yellow]"
                         )
                         user_response = input()
                         if user_response == "y":
                             self.queue.append(response)
                         elif user_response == "n":
                             console.print("Please refine your question and try again.")
-                        else:
-                            return
+                        elif user_response == "fb":
+                            console.print("Please enter your feedback on askobb.")
+                            feedback = input()
+                            if feedback:
+                                console.print("Thank you for your feedback!")
 
                     else:
                         console.print(
                             "[red]AskObb could not respond with an appropriate answer.[/red]"
                         )
                         console.print("Please refine your question and try again.")
+
+                logger.info(
+                    "ASKOBB: %s ",
+                    json.dumps(
+                        {
+                            "Question": " ".join(ns_parser.question),
+                            "Model": ns_parser.gpt_model,
+                            "Response": response,
+                            "Feedback": feedback,
+                        }
+                    ),
+                )
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
