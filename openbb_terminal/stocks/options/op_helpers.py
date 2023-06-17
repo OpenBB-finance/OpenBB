@@ -611,7 +611,7 @@ def get_dte(chain: pd.DataFrame) -> pd.DataFrame:
     return chain
 
 
-class Options:  # pylint: disable=too-few-public-methods
+class Options:  # pylint: disable=too-few-public-methods,too-many-instance-attributes
     """The Options data object.
 
     Returns
