@@ -17,6 +17,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.options.cboe_model import load_options as load_cboe
 from openbb_terminal.stocks.options.intrinio_model import load_options as load_intrinio
 from openbb_terminal.stocks.options.nasdaq_model import load_options as load_nasdaq
+from openbb_terminal.stocks.options.op_helpers import Options
 from openbb_terminal.stocks.options.tmx_model import load_options as load_tmx
 from openbb_terminal.stocks.options.tradier_model import load_options as load_tradier
 from openbb_terminal.stocks.options.yfinance_model import load_options as load_yfinance
@@ -1334,7 +1335,7 @@ def get_strategies(
     return strategies.reset_index()
 
 
-class OptionsChains:  # pylint: disable=too-few-public-methods
+class OptionsChains(Options):  # pylint: disable=too-few-public-methods
     """OptionsChains class for loading and interacting with the Options data object.
 
     Parameters
@@ -1411,6 +1412,9 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
                 setattr(self, "date", "")
         except Exception:
             self.chains = pd.DataFrame()
+
+    def __repr__(self) -> str:
+        return f"OptionChains(symbol={self.symbol}, source={self.source})"
 
     def get_stats(self, by="expiration", query=None):
         """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
