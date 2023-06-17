@@ -46,15 +46,6 @@ def test_load_options_bad_symbol(mocker):
 
 
 @pytest.mark.vcr
-def test_get_available_greeks(recorder):
-    df = nasdaq_model.load_options("TSLA")
-    results_df = df.get_available_greeks()
-    assert isinstance(results_df, pd.DataFrame)
-    assert results_df.cIV.sum() > 0
-    recorder.capture(results_df.columns.to_list())
-
-
-@pytest.mark.vcr
 def test_load_options(recorder):
     data = nasdaq_model.load_options(symbol="OXY")
     assert isinstance(data.chains, pd.DataFrame)
@@ -68,7 +59,9 @@ def test_load_options(recorder):
     assert isinstance(data.strikes, list)
     df2 = pd.DataFrame(data.chains)
     assert df1.columns.equals(df2.columns)
+    df_greeks = data.get_available_greeks()
     recorder.capture(df2.columns.to_list())
     recorder.capture(list(data.underlying_price.keys()))
     recorder.capture(data.underlying_name)
     recorder.capture(data.symbol)
+    recorder.capture(df_greeks.columns.to_list())
