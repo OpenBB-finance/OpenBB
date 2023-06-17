@@ -36,6 +36,7 @@ def display_search(search_str: str, limit: int, export: str = "") -> None:
         )
         return
 
+    console.print(f"Retrieved {len(results)} records")
     print_rich_table(
         results,
         show_index=False,
@@ -79,6 +80,7 @@ def display_officers(company_number: str, export: str = "") -> None:
     results = companieshouse_model.get_officers(company_number)
 
     if len(results) > 0:
+        console.print(f"Retrieved {len(results)} records")
         print_rich_table(
             results,
             show_index=False,
@@ -112,6 +114,7 @@ def display_persons_with_significant_control(
     results = companieshouse_model.get_persons_with_significant_control(company_number)
 
     if len(results) > 0:
+        console.print(f"Retrieved {len(results)} records")
         print_rich_table(
             results,
             show_index=False,
@@ -131,7 +134,7 @@ def display_persons_with_significant_control(
 
 @log_start_end(log=logger)
 def display_filings(
-    company_number: str, start_index=0, export: str = ""
+    company_number: str, category: str = "", start_index=0, export: str = ""
 ) -> Filing_data:
     """Display company's filing history.
 
@@ -140,9 +143,8 @@ def display_filings(
     company_number : str
         company_number to retrieve filing history for
 
-
     """
-    results = companieshouse_model.get_filings(company_number, start_index)
+    results = companieshouse_model.get_filings(company_number, category, start_index)
 
     console.print(
         f"Retrieved {results.start_index} to {results.end_index} of {results.total_count} filings"

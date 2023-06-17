@@ -249,7 +249,7 @@ def get_persons_with_significant_control(company_number: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_COMPANIESHOUSE_KEY"])
-def get_filings(company_number: str, start_index=0) -> Filing_data:
+def get_filings(company_number: str, category: str = "", start_index=0) -> Filing_data:
     """Gets information on filings for given company, e.g. accounts, etc
 
     Parameters
@@ -271,8 +271,12 @@ def get_filings(company_number: str, start_index=0) -> Filing_data:
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
+    url = f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history?start_index={start_index}&items_per_page=100"
+    if category:
+        url = f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history?category={category}&start_index={start_index}&items_per_page=100"
+
     r = requests.get(
-        f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history?start_index={start_index}&items_per_page=100",
+        url,
         auth=auth,
         timeout=TIMEOUT,
     )

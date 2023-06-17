@@ -43,6 +43,7 @@ class CompaniesHouseController(BaseController):
 
         self.companyNo = ""
         self.companyName = ""
+        self.filingCategory = ""
         self.filing_total_count = 0
         self.filing_end_index = 0
         self.filing_start_index = 0
@@ -179,32 +180,18 @@ class CompaniesHouseController(BaseController):
             prog="officers",
             description="Select the company number to retrieve officers for. [Source: UK Companies House]",
         )
-        parser.add_argument(
-            "-c",
-            "--companyNo",
-            help="companyNo",
-            type=str.upper,
-            action="store",
-            required=("-h" not in other_args) and not self.companyNo,
-            dest="companyNo",
-            metavar="companyNo",
-        )
-
-        if (
-            other_args
-            and "-c" not in other_args[0]
-            and "--companyNo" not in other_args[0]
-            and "-h" not in other_args
-        ):
-            other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser:
-            companyNo = ns_parser.companyNo if ns_parser.companyNo else self.companyNo
-            companieshouse_view.display_officers(companyNo, export=ns_parser.export)
+        if self.companyNo:
+            if ns_parser:
+                companieshouse_view.display_officers(
+                    self.companyNo, export=ns_parser.export
+                )
+        else:
+            console.print("Must load a company prior to using this command")
 
     @log_start_end(log=logger)
     @check_api_key(["API_COMPANIESHOUSE_KEY"])
@@ -216,37 +203,18 @@ class CompaniesHouseController(BaseController):
             description="Select the company number to retrieve persons with significant control of company. \
             [Source: UK Companies House]",
         )
-        parser.add_argument(
-            "-c",
-            "--companyNo",
-            help="companyNo",
-            type=str.upper,
-            action="store",
-            required=("-h" not in other_args) and not self.companyNo,
-            dest="companyNo",
-            metavar="companyNo",
-        )
-
-        if (
-            other_args
-            and "-c" not in other_args[0]
-            and "--companyNo" not in other_args[0]
-            and "-h" not in other_args
-        ):
-            other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser:
-            companyNo = ns_parser.companyNo if ns_parser.companyNo else self.companyNo
-            # if ns_parser.companyNo:
-            companieshouse_view.display_persons_with_significant_control(
-                companyNo, export=ns_parser.export
-            )
-            # else:
-            #     console.print("[red]No data found for company number[/red]\n")
+        if self.companyNo:
+            if ns_parser:
+                companieshouse_view.display_persons_with_significant_control(
+                    self.companyNo, export=ns_parser.export
+                )
+        else:
+            console.print("Must load a company prior to using this command")
 
     @log_start_end(log=logger)
     @check_api_key(["API_COMPANIESHOUSE_KEY"])
@@ -254,40 +222,44 @@ class CompaniesHouseController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="signifcontrol",
+            prog="filings",
             description="Select the company number to retrieve filling history for. [Source: UK Companies House]",
         )
-        parser.add_argument(
-            "-c",
-            "--companyNo",
-            help="companyNo",
-            type=str.upper,
-            action="store",
-            required=("-h" not in other_args) and not self.companyNo,
-            dest="companyNo",
-            metavar="companyNo",
-        )
 
-        if (
-            other_args
-            and "-c" not in other_args[0]
-            and "--companyNo" not in other_args[0]
-            and "-h" not in other_args
-        ):
-            other_args.insert(0, "-c")
+        parser.add_argument(
+            "-k",
+            "--category",
+            help="category",
+            type=str.lower,
+            required=False,
+            dest="category",
+            metavar="category",
+            choices=[
+                "accounts",
+                "address",
+                "capital",
+                "incorporation",
+                "officers",
+                "resolution",
+            ],
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser:
-            companyNo = ns_parser.companyNo if ns_parser.companyNo else self.companyNo
-            filing_data = companieshouse_view.display_filings(
-                companyNo, export=ns_parser.export
-            )
-            self.filing_total_count = filing_data.total_count
-            self.filing_end_index = filing_data.end_index
-            self.filing_start_index = filing_data.start_index
+        if self.companyNo:
+            if ns_parser:
+                category = ns_parser.category if ns_parser.category else ""
+                self.filingCategory = category
+                filing_data = companieshouse_view.display_filings(
+                    self.companyNo, category, export=ns_parser.export
+                )
+                self.filing_total_count = filing_data.total_count
+                self.filing_end_index = filing_data.end_index
+                self.filing_start_index = filing_data.start_index
+        else:
+            console.print("Must load a company prior to using this command")
 
     @log_start_end(log=logger)
     @check_api_key(["API_COMPANIESHOUSE_KEY"])
@@ -298,7 +270,7 @@ class CompaniesHouseController(BaseController):
         if self.filing_end_index != 0:
             if self.filing_end_index < self.filing_total_count:
                 filing_data = companieshouse_view.display_filings(
-                    self.companyNo, self.filing_end_index
+                    self.companyNo, self.filingCategory, self.filing_end_index
                 )
                 self.filing_total_count = filing_data.total_count
                 self.filing_end_index = filing_data.end_index
@@ -318,7 +290,7 @@ class CompaniesHouseController(BaseController):
         if start_index > 0:
             start_index = 0 if start_index - 100 < 0 else start_index - 100
             filing_data = companieshouse_view.display_filings(
-                self.companyNo, start_index
+                self.companyNo, self.filingCategory, start_index
             )
             self.filing_total_count = filing_data.total_count
             self.filing_end_index = filing_data.end_index
@@ -332,7 +304,7 @@ class CompaniesHouseController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="signifcontrol",
+            prog="filingdocument",
             description="Select the company number and transaction ID to retrieve filling history for. \
             [Source: UK Companies House]",
         )
@@ -368,4 +340,4 @@ class CompaniesHouseController(BaseController):
                     export=ns_parser.export,
                 )
         else:
-            console.print("[red]Load companyNo first[/red]\n")
+            console.print("Must load a company prior to using this command")
