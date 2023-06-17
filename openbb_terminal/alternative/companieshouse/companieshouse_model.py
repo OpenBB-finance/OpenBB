@@ -271,9 +271,15 @@ def get_filings(company_number: str, category: str = "", start_index=0) -> Filin
     auth = requests.auth.HTTPBasicAuth(
         get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
     )
-    url = f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history?start_index={start_index}&items_per_page=100"
+    url = (
+        f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history"
+        + f"?start_index={start_index}&items_per_page=100"
+    )
     if category:
-        url = f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history?category={category}&start_index={start_index}&items_per_page=100"
+        url = (
+            f"https://api.company-information.service.gov.uk/company/{company_number}/filing-history"
+            + f"?category={category}&start_index={start_index}&items_per_page=100"
+        )
 
     r = requests.get(
         url,
