@@ -1,4 +1,4 @@
-# pylint: disable=C0302, R0911
+# pylint: disable=C0302, R0911, W0612
 """ Options Chains Module """
 __docformat__ = "numpy"
 
@@ -1334,6 +1334,154 @@ def get_strategies(
     return strategies.reset_index()
 
 
+def calculate_skew(
+    options, expiration: Optional[str] = "", moneyness: Optional[float] = None
+) -> pd.DataFrame:
+    """
+    Returns the skewness of the options, either vertical or horizontal.
+
+    The vertical skew for each expiry and option is calculated by subtracting the IV of the ATM call or put.
+    Returns only where the IV is greater than 0.
+
+    Horizontal skew is returned if a value for moneyness is supplied.
+    It is expressed as the difference between skews of two equidistant OTM strikes (the closest call and put).
+
+    Parameters
+    -----------
+    options: object
+        The Options data object. Use `load_options_chains()` to load the data.
+    expiration: str
+        The expiration date to target.  Defaults to all.
+    moneyness: float
+        The moneyness to target for calculating horizontal skew.  This parameter overrides a defined expiration date.
+
+    Returns
+    --------
+    pd.DataFrame
+        Pandas DataFrame with the results.
+
+    Examples
+    ----------
+    >>> from openbb_terminal.stocks.options import options_chains_model as op
+    >>> data = op.load_options_chains("SPY")
+
+    Vertical skew at a given expiry:
+    >>> skew = op.calculate_skew(data, "2025-12-19")
+
+    Vertical skew at all expirations:
+    >>> skew = op.calculate_skew(data)
+
+    Horizontal skew at a given % OTM:
+    >>> skew = op.calculate_skew(data, moneyness = 10)
+    """
+
+    options = deepcopy(options)
+
+    if validate_object(options, scope="object") is False:
+        return pd.DataFrame()
+
+    if options.hasIV is False:
+        print(
+            "Options data object does not have Implied Volatility and is required for this function."
+        )
+        return pd.DataFrame()
+
+    options.chains = validate_object(options.chains, scope="chains")
+
+    days = options.chains["dte"].unique().tolist()
+
+    if moneyness is not None:
+        calls = pd.DataFrame()
+        atm_call_iv = pd.DataFrame()
+        puts = pd.DataFrame()
+        atm_put_iv = pd.DataFrame()
+        skew_df = pd.DataFrame()
+        strikes = get_nearest_otm_strike(options, moneyness)
+        for day in days:
+            atm_strike = get_nearest_call_strike(  # noqa:F841
+                options, day, options.last_price
+            )
+            call_strike = get_nearest_call_strike(  # noqa:F841
+                options, day, strikes["call"]
+            )
+            call_iv = options.chains[options.chains["dte"] == day].query(
+                "`optionType` == 'call' & `strike` == @call_strike"
+            )[["expiration", "strike", "impliedVolatility"]]
+            calls = pd.concat([calls, call_iv])
+            atm_call = options.chains[options.chains["dte"] == day].query(
+                "`optionType` == 'call' & `strike` == @atm_strike"
+            )[["expiration", "strike", "impliedVolatility"]]
+            atm_call_iv = pd.concat([atm_call_iv, atm_call])
+
+            put_strike = get_nearest_put_strike(  # noqa:F841
+                options, day, strikes["put"]
+            )
+            put_iv = options.chains[options.chains["dte"] == day].query(
+                "`optionType` == 'put' & `strike` == @put_strike"
+            )[["expiration", "strike", "impliedVolatility"]]
+            puts = pd.concat([puts, put_iv])
+            atm_put = options.chains[options.chains["dte"] == day].query(
+                "`optionType` == 'put' & `strike` == @atm_strike"
+            )[["expiration", "strike", "impliedVolatility"]]
+            atm_put_iv = pd.concat([atm_put_iv, atm_put])
+
+        calls = calls.set_index("expiration")
+        atm_call_iv = atm_call_iv.set_index("expiration")
+        puts = puts.set_index("expiration")
+        atm_put_iv = atm_put_iv.set_index("expiration")
+        skew_df["Call Strike"] = calls["strike"]
+        skew_df["Call IV"] = calls["impliedVolatility"]
+        skew_df["Call ATM IV"] = atm_call_iv["impliedVolatility"]
+        skew_df["Call Skew"] = skew_df["Call IV"] - skew_df["Call ATM IV"]
+        skew_df["Put Strike"] = puts["strike"]
+        skew_df["Put IV"] = puts["impliedVolatility"]
+        skew_df["Put ATM IV"] = atm_put_iv["impliedVolatility"]
+        skew_df["Put Skew"] = skew_df["Put IV"] - skew_df["Put ATM IV"]
+        skew_df["IV Skew"] = skew_df["Call Skew"] - skew_df["Put Skew"]
+
+        return skew_df
+
+    calls = options.chains[options.chains["optionType"] == "call"]
+    puts = options.chains[options.chains["optionType"] == "put"]
+    call_skew = pd.DataFrame()
+    put_skew = pd.DataFrame()
+    skew_df = pd.DataFrame()
+
+    for day in days:
+        atm_strike = get_nearest_call_strike(options, day)  # noqa:F841
+        call = calls[calls["dte"] == day][
+            ["expiration", "optionType", "strike", "impliedVolatility"]
+        ]
+        call = call.set_index("expiration")
+        call["skew"] = (
+            call.impliedVolatility
+            - call.query("`strike` == @atm_strike")["impliedVolatility"]
+        )
+        call_skew = pd.concat([call_skew, call])
+        put = puts[puts["dte"] == day][
+            ["expiration", "optionType", "strike", "impliedVolatility"]
+        ]
+        put = put.set_index("expiration")
+        put["skew"] = (
+            put.impliedVolatility
+            - put.query("`strike` == @atm_strike")["impliedVolatility"]
+        )
+        put_skew = pd.concat([put_skew, put])
+
+    call_skew = call_skew.set_index(["strike", "optionType"], append=True)
+    put_skew = put_skew.set_index(["strike", "optionType"], append=True)
+    skew_df = pd.concat([call_skew, put_skew]).sort_index().reset_index()
+    cols = ["Expiration", "Strike", "Option Type", "IV", "Skew"]
+    skew_df.columns = cols
+    if expiration != "":
+        if expiration not in options.expirations:
+            print(expiration, "is not a valid expiration.")
+            return skew_df[skew_df["IV"] > 0]
+        return skew_df.query("`Expiration` == @expiration & `IV` > 0")
+
+    return skew_df[skew_df["IV"] > 0]
+
+
 class OptionsChains:  # pylint: disable=too-few-public-methods
     """OptionsChains class for loading and interacting with the Options data object.
 
@@ -1379,17 +1527,19 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
         Methods
         -------
         get_stats: Callable
-            Function to return a table of summary statistics, by strike or by expiration.
+            Function to get a table of summary statistics, by strike or by expiration.
         get_straddle: Callable
-            Function to calculate straddles and the payoff profile.
+            Function to get straddles and the payoff profile.
         get_strangle: Callable
             Function to calculate strangles and the payoff profile.
         get_vertical_call_spread: Callable
-            Function to calculate vertical call spreads.
+            Function to get vertical call spreads.
         get_vertical_put_spreads: Callable
-            Function to calculate vertical put spreads.
+            Function to get vertical put spreads.
         get_strategies: Callable
-            Function for calculating multiple straddles and strangles at different expirations and moneyness.
+            Function to get multiple straddles and strangles at different expirations and moneyness.
+        get_skew: Callable
+            Function to get the vertical or horizontal skewness of the options.
 
     Examples
     --------
@@ -1644,3 +1794,43 @@ class OptionsChains:  # pylint: disable=too-few-public-methods
             vertical_calls,
             vertical_puts,
         )
+
+    def get_skew(
+        self, expiration: Optional[str] = "", moneyness: Optional[float] = None
+    ):
+        """
+        Returns the skewness of the options, either vertical or horizontal.
+
+        The vertical skew for each expiry and option is calculated by subtracting the IV of the ATM call or put.
+        Returns only where the IV is greater than 0.
+
+        Horizontal skew is returned if a value for moneyness is supplied.
+        It is expressed as the difference between skews of two equidistant OTM strikes (the closest call and put).
+
+        Parameters
+        -----------
+        expiration: str
+            The expiration date to target.  Defaults to all.
+        moneyness: float
+            The moneyness to target for calculating horizontal skew.  This parameter overrides a defined expiration date.
+
+        Returns
+        --------
+        pd.DataFrame
+            Pandas DataFrame with the results.
+
+        Examples
+        ----------
+        >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
+        >>> data = OptionsChains("SPY")
+
+        Vertical skew at a given expiry:
+        >>> skew = data.get_skew("2025-12-19")
+
+        Vertical skew at all expirations:
+        >>> skew = data.get_skew()
+
+        Horizontal skew at a given % OTM:
+        >>> skew = data.get_skew(moneyness = 10)
+        """
+        return calculate_skew(self, expiration, moneyness)
