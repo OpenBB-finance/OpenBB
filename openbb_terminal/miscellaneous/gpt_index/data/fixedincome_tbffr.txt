@@ -1,0 +1,19 @@
+parent_command:fixedincome
+usage: tbffr [-p {3_month,6_month}] [-s START_DATE] [-e END_DATE]
+
+Get Selected Treasury Bill Minus Federal Funds Rate.
+
+optional arguments:
+  -p {3_month,6_month}, --parameter {3_month,6_month}
+                        Selected Treasury Bill (default: 3_month)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- To get the 3-month Treasury Bill minus Federal Funds Rate for the entire available period: fixedincome/tbffr
+- To retrieve the 6-month Treasury Bill minus Federal Funds Rate for the entire available period: fixedincome/tbffr -p 6_month
+- To obtain the 3-month Treasury Bill minus Federal Funds Rate for a specific date range: fixedincome/tbffr -s 2020-01-01 -e 2020-12-31
+- To fetch the 6-month Treasury Bill minus Federal Funds Rate for a specific date range: fixedincome/tbffr -p 6_month -s 2020-01-01 -e 2020-12-31

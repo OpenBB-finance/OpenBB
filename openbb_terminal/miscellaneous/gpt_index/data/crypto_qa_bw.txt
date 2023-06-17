@@ -1,0 +1,12 @@
+parent_command:crypto/qa
+usage: bw [-y]
+
+Box and Whisker plot
+
+optional arguments:
+  -y, --yearly  Flag to show yearly bw plot (default: False)
+
+
+Examples:
+- To display a box and whisker plot for a cryptocurrency: crypto/load <COIN>/qa/bw
+- To show a yearly box and whisker plot for a specific cryptocurrency: crypto/load <COIN>/qa/bw -y

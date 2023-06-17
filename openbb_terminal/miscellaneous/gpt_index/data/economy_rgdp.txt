@@ -1,0 +1,24 @@
+parent_command:economy
+usage: rgdp [-c COUNTRIES] [-u {PC_CHGPP,PC_CHGPY,IDX}] [-s START_DATE] [-e END_DATE]
+
+This indicator is based on real GDP (also called GDP at constant prices or GDP in volume), i.e. the developments over time are adjusted for price changes.
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        Countries to get data for (default: united_states)
+  -u {PC_CHGPP,PC_CHGPY,IDX}, --units {PC_CHGPP,PC_CHGPY,IDX}
+                        Use either PC_CHGPP (percentage change previous quarter), PC_CHGPY (percentage change from the same quarter of the previous year) or IDX (index with base at 2015) for units (default: PC_CHGPY)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format (default: 2013-06-02)
+  -e END_DATE, --end END_DATE
+                        End date of data, in YYYY-MM-DD format (default: 2023-06-02)
+
+
+Examples:
+- Retrieve real GDP data for the United States with default settings: economy/rgdp
+- Obtain real GDP data for multiple countries: economy/rgdp -c "united_states, germany, japan"
+- Get real GDP data for a specific country with a different unit: economy/rgdp -c france -u IDX
+- Fetch real GDP data with a custom date range: economy/rgdp -s 2010-01-01 -e 2020-12-31
+- Acquire real GDP data for a specific country and date range: economy/rgdp -c canada -s 2015-01-01 -e 2021-12-31
+- Retrieve real GDP data using percentage change from the previous quarter: economy/rgdp -u PC_CHGPP
+- Obtain real GDP data for a specific country, unit, and date range: economy/rgdp -c united_kingdom -u PC_CHGPP -s 2012-01-01 -e 2022-01-01

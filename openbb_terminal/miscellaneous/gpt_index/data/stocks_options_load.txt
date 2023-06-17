@@ -1,0 +1,9 @@
+parent_command: stocks/options/
+usage: load [-t TICKER] [-h] [--source {YahooFinance,Tradier,Nasdaq,Intrinio}]  Load a ticker into option menu  optional arguments:   -t TICKER, --ticker TICKER                         Stock ticker (default: None)   -h, --help            show this help message (default: False)   --source {YahooFinance,Tradier,Nasdaq,Intrinio}                         Data source to select from (default: YahooFinance)  For more information and examples, use 'about load' to access the related guide.
+Summary: Load a stock ticker into the option menu to access option-related data and analysis. You can specify the stock ticker and choose from various data sources, including YahooFinance, Tradier, Nasdaq, and Intrinio.
+
+Examples:
+- Load a stock ticker: stocks/options/load -t <SYMBOL>
+- Load a stock ticker and use Tradier as the data source: stocks/options/load -t <SYMBOL> --source Tradier
+- Access option data for a specific stock using Nasdaq as the data source: stocks/options/load -t <SYMBOL> --source Nasdaq
+- Load a stock ticker for option analysis using Intrinio as the data source: stocks/options/load -t <SYMBOL> --source Intrinio

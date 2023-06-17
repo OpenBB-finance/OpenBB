@@ -1,0 +1,16 @@
+parent_command:portfolio/brokers/coinbase
+usage: account [--all] [-c CURRENCY]
+
+Display info about your trading accounts on Coinbase
+
+optional arguments:
+  --all                 Flag to display all your account (default: False)
+  -c CURRENCY, --currency CURRENCY
+                        Currency to display value in. (default: USD)
+
+
+Examples:
+- To view information about your default trading account on Coinbase: portfolio/brokers/coinbase/account
+- To display information about all your Coinbase accounts: portfolio/brokers/coinbase/account --all
+- To show your default trading account information in a specific currency: portfolio/brokers/coinbase/account -c EUR
+- To view all your Coinbase accounts with values in a different currency: portfolio/brokers/coinbase/account --all --currency GBP

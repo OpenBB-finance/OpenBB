@@ -137,6 +137,8 @@ class PosthogHandler(logging.Handler):
         self.logged_in = False
 
     def emit(self, record: logging.LogRecord):
+        if "llama_index" in record.pathname:
+            return
         try:
             self.send(record=record)
         except Exception:
@@ -144,7 +146,7 @@ class PosthogHandler(logging.Handler):
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict"""
-        log_regex = r"(STARTUP|CMD): (.*)"
+        log_regex = r"(STARTUP|CMD|ASKOBB): (.*)"
         log_dict: Dict[str, Any] = {}
 
         for log in re.findall(log_regex, log_info):
@@ -305,7 +307,6 @@ def setup_handlers(settings: Settings):
         FormatterWithExceptions.LOGPREFIXFORMAT.replace("|", "-"),
         FormatterWithExceptions.LOGFORMAT.replace("|", "-"),
     )
-
     if (
         posthog_active
         and not any(

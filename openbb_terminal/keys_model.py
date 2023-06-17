@@ -13,6 +13,7 @@ from typing import Dict, List, Union
 
 import binance
 import oandapyV20.endpoints.pricing
+import openai
 import pandas as pd
 import praw
 import quandl
@@ -85,6 +86,7 @@ API_DICT: Dict = {
     "stocksera": "STOCKSERA",
     "dappradar": "DAPPRADAR",
     "companieshouse": "COMPANIES_HOUSE",
+    "openai": "OPENAI",
 }
 
 # sorting api key section by name
@@ -2986,6 +2988,89 @@ def check_companieshouse_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Companies House key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+# Set OpenAI key
+def set_openai_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set OpenAI key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.openai(key="example_key")
+    """
+
+    handle_credential("API_OPENAI_KEY", key, persist)
+    return check_openai_key(show_output)
+
+
+def check_openai_key(show_output: bool = False) -> str:
+    """Check OpenAI key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    if show_output:
+        console.print("Checking status...")
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_OPENAI_KEY == "REPLACE_ME":
+        logger.info("OpenAI key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        # Set the endpoint URL and data to be sent
+        data = {
+            "prompt": "Hello, Open AI!",
+        }
+
+        # Make the API call and print the response
+        try:
+            openai.api_key = current_user.credentials.API_OPENAI_KEY
+            # Make the API call and print the response
+            openai.Completion.create(engine="davinci", prompt=data["prompt"])
+            status = KeyStatus.DEFINED_TEST_PASSED
+            logger.info("OpenAI key defined, test passed")
+
+        except openai.error.AuthenticationError:
+            # Handle authentication errors
+            logger.warning("OpenAI key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+
+        except openai.error.APIError as e:
+            console.print(e)
+            # Handle other API errors
+            logger.warning("OpenAI key defined, test inclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:

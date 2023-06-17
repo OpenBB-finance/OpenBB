@@ -1,0 +1,40 @@
+parent_command:forecast
+usage: theta [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
+             [--metric {rmse,mse,mape,smape}]
+
+Perform Theta forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.theta.html
+
+optional arguments:
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -s {N,A,M}, --seasonal {N,A,M}
+                        Seasonality: N: None, A: Additive, M: Multiplicative. (default: M)
+  -p SEASONAL_PERIODS, --periods SEASONAL_PERIODS
+                        Seasonal periods: 4: Quarterly, 7: Daily (default: 7)
+  -w START_WINDOW, --window START_WINDOW
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+  --metric {rmse,mse,mape,smape}
+                        Calculate precision based on a specific metric (rmse, mse, mape) (default: mape)
+
+
+Examples:
+- Perform a Theta forecast for <SYMBOL> with default settings: forecast/theta -d <SYMBOL>
+- Perform a Theta forecast for <SYMBOL> using the 'open' column as the target: forecast/theta -d <SYMBOL> -c open
+- Forecast <SYMBOL> for 10 days using additive seasonality: forecast/theta -d <SYMBOL> -n 10 -s A
+- Perform a Theta forecast for <SYMBOL> with a start date and end date: forecast/theta -d <SYMBOL> --start 2022-01-01 --end 2022-12-31
+- Forecast <SYMBOL> using a rolling training window of 0.9: forecast/theta -d <SYMBOL> -w 0.9
+- Calculate the forecast precision for <SYMBOL> using the RMSE metric: forecast/theta -d <SYMBOL> --metric rmse
+- Perform a Theta forecast for <SYMBOL> and display the naive baseline: forecast/theta -d <SYMBOL> --naive
+- Show the residuals for the Theta forecast of <SYMBOL>: forecast/theta -d <SYMBOL> --residuals
+- Perform a Theta forecast for <SYMBOL> without plotting historical data: forecast/theta -d <SYMBOL> --forecast-only
+- Export the Theta forecast predictions for <SYMBOL> to a CSV file: forecast/theta -d <SYMBOL> --export-pred-raw

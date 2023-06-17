@@ -1,0 +1,19 @@
+parent_command:fixedincome
+usage: iorb [-s START_DATE] [-e END_DATE]
+
+Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United
+States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+
+optional arguments:
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- To get Interest Rate on Reserve Balances data for all available dates: fixedincome/iorb
+- To retrieve Interest Rate on Reserve Balances data starting from a specific date: fixedincome/iorb -s 2020-01-01
+- To obtain Interest Rate on Reserve Balances data for a specific date range: fixedincome/iorb -s 2020-01-01 -e 2020-12-31
+- Fetch Interest Rate on Reserve Balances data up to a certain date: fixedincome/iorb -e 2021-06-30
+- To gather Interest Rate on Reserve Balances data between two dates: fixedincome/iorb --start 2019-01-01 --end 2019-12-31

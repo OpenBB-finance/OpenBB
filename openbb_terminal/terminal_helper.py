@@ -366,9 +366,9 @@ def reset(queue: Optional[List[str]] = None):
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
-    plots_backend().close()
-    debug = get_current_system().DEBUG_MODE
+    plots_backend().close(reset=True)
     load_env_files()
+    debug = get_current_system().DEBUG_MODE
 
     try:
         # save the current user

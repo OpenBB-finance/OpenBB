@@ -1,0 +1,50 @@
+parent_command:portfolio/po
+usage: maxdecorr [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-de SMOOTHING_FACTOR_EWMA] [-vs SHORT_ALLOCATION] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
+                 [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-v LONG_ALLOCATION] [--name NAME]
+
+Maximizes the portfolio's decorrelation
+
+optional arguments:
+  -cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}, --covariance {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}
+                        Method used to estimate covariance matrix. Possible values are 'hist': historical method 'ewma1': exponential weighted moving average with adjust=True 'ewma2': exponential weighted moving average with
+                        adjust=False 'ledoit': Ledoit and Wolf shrinkage method 'oas': oracle shrinkage method 'shrunk': scikit-learn shrunk method 'gl': graphical lasso method 'jlogo': j-logo covariance 'fixed': takes average of
+                        eigenvalues above max Marchenko Pastour limit 'spectral': makes zero eigenvalues above max Marchenko Pastour limit 'shrink': Lopez de Prado's book shrinkage method (default: hist)
+  -de SMOOTHING_FACTOR_EWMA, --d-ewma SMOOTHING_FACTOR_EWMA
+                        Smoothing factor for ewma estimators (default: 0.94)
+  -vs SHORT_ALLOCATION, --value-short SHORT_ALLOCATION
+                        Amount to allocate to portfolio in short positions (default: 0.0)
+  -mt METHOD, --method METHOD
+                        Method used to fill nan values in time series, by default time. Possible values are: 'linear': linear interpolation 'time': linear interpolation based on time index 'nearest': use nearest value to replace
+                        nan values 'zero': spline of zeroth order 'slinear': spline of first order 'quadratic': spline of second order 'cubic': spline of third order 'barycentric': builds a polynomial that pass for all points
+                        (default: time)
+  -ct CATEGORIES, --categories CATEGORIES
+                        Show selected categories (default: [])
+  -p PERIOD, --period PERIOD
+                        Period to get yfinance data from. Possible frequency strings are: 'd': means days, for example '252d' means 252 days 'w': means weeks, for example '52w' means 52 weeks 'mo': means months, for example '12mo'
+                        means 12 months 'y': means years, for example '1y' means 1 year 'ytd': downloads data from beginning of year to today 'max': downloads all data available for each asset (default: 3y)
+  -s START_PERIOD, --start START_PERIOD
+                        Start date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -e END_PERIOD, --end END_PERIOD
+                        End date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -lr, --log-returns    If use logarithmic or arithmetic returns to calculate returns (default: False)
+  --freq {d,w,m}        Frequency used to calculate returns. Possible values are: 'd': for daily returns 'w': for weekly returns 'm': for monthly returns (default: d)
+  -mn MAX_NAN, --maxnan MAX_NAN
+                        Max percentage of nan values accepted per asset to be considered in the optimization process (default: 0.05)
+  -th THRESHOLD_VALUE, --threshold THRESHOLD_VALUE
+                        Value used to replace outliers that are higher to threshold in absolute value (default: 0.3)
+  -v LONG_ALLOCATION, --value LONG_ALLOCATION
+                        Amount to allocate to portfolio (default: 1)
+  --name NAME           Save portfolio with personalized or default name (default: MAXDECORR_0)
+
+
+Examples:
+- Optimize portfolio decorrelation with default settings: portfolio/po maxdecorr
+- Optimize decorrelation using EWMA covariance estimation and a smoothing factor of 0.95: portfolio/po maxdecorr -cv ewma1 -de 0.95
+- Allocate $5000 to the portfolio and $1000 to short positions: portfolio/po maxdecorr -v 5000 -vs 1000
+- Use linear interpolation to fill missing values in time series: portfolio/po maxdecorr -mt linear
+- Optimize decorrelation for a specific period of 2 years: portfolio/po maxdecorr -p 2y
+- Optimize decorrelation with a custom start and end date: portfolio/po maxdecorr -s 2018-01-01 -e 2020-12-31
+- Calculate returns using logarithmic returns and weekly frequency: portfolio/po maxdecorr -lr --freq w
+- Set a maximum percentage of NaN values accepted per asset to 0.1: portfolio/po maxdecorr -mn 0.1
+- Replace outliers higher than 0.4 in absolute value: portfolio/po maxdecorr -th 0.4
+- Save the optimized portfolio with a custom name: portfolio/po maxdecorr --name MyDecorrelatedPortfolio

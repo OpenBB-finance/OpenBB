@@ -339,8 +339,8 @@ export default function Chart({
     if (changeTheme) {
       try {
         console.log("changeTheme", changeTheme);
-        const TRACES = plotData?.data.filter((trace) =>
-          trace?.name?.startsWith("Volume"),
+        const TRACES = plotData?.data.filter(
+          (trace) => trace?.name?.trim() === "Volume",
         );
         const darkmode = !darkMode;
 
@@ -375,7 +375,7 @@ export default function Chart({
         const volumeColors = darkmode ? volumeColorsDark : volumeColorsLight;
 
         TRACES.forEach((trace) => {
-          if (trace.type === "bar")
+          if (trace.type === "bar" && Array.isArray(trace.marker.color))
             trace.marker.color = trace.marker.color.map((color) => {
               return volumeColors[color] || color;
             });

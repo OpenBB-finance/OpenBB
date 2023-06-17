@@ -1,0 +1,23 @@
+parent_command:etf/ta
+usage: bbands [-l N_LENGTH] [-s N_STD] [-m {ema,sma,wma,hma,zlma}]
+
+Bollinger Bands consist of three lines. The middle band is a simple moving average (generally 20 periods) of the typical price (TP). The upper and lower bands are F standard deviations (generally 2) above and below the middle band.
+The bands widen and narrow when the volatility of the price is higher or lower, respectively. Bollinger Bands do not, in themselves, generate buy or sell signals; they are an indicator of overbought or oversold conditions. When the
+price is near the upper or lower band it indicates that a reversal may be imminent. The middle band becomes a support or resistance level. The upper and lower bands can also be interpreted as price targets. When the price bounces
+off of the lower band and crosses the middle band, then the upper band becomes the price target.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 15)
+  -s N_STD, --std N_STD
+                        std (default: 2)
+  -m {ema,sma,wma,hma,zlma}, --mamode {ema,sma,wma,hma,zlma}
+                        mamode (default: sma)
+
+
+Examples:
+- To display Bollinger Bands for an ETF using the default settings: etf/ta/bbands
+- To plot Bollinger Bands for an ETF with a custom length of 30 periods: etf/ta/bbands -l 30
+- To show Bollinger Bands for an ETF with a custom standard deviation of 3: etf/ta/bbands -s 3
+- To visualize Bollinger Bands for an ETF using Exponential Moving Average (EMA) as the middle band: etf/ta/bbands -m ema
+- To generate Bollinger Bands for an ETF using Weighted Moving Average (WMA) as the middle band and a custom length of 25 periods: etf/ta/bbands -l 25 -m wma

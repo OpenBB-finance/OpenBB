@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: lip [-l LIMIT] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest insider purchases. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about lip' to access the related guide.
+Summary: Display the latest insider purchases for a specific stock symbol with an option to limit the number of data rows shown. You can also export the data in various formats and save it to a specific excel sheet. The data source for this command is OpenInsider.
+
+Examples:
+- To view the latest insider purchases for a stock: stocks/load <SYMBOL>/ins/lip
+- Show the latest 5 insider purchases for a stock: stocks/load <SYMBOL>/ins/lip -l 5
+- Export the latest insider purchases data in csv format: stocks/load <SYMBOL>/ins/lip --export csv
+- Save the latest insider purchases data to a specific excel sheet: stocks/load <SYMBOL>/ins/lip --sheet-name Sheet1

@@ -1,0 +1,12 @@
+parent_command:economy/qa
+usage: summary
+
+Summary statistics
+
+summary
+Examples:
+- To view summary statistics for the economy: economy/qa/summary
+- Display the summary statistics of the economy: economy/qa/summary
+- Obtain a summary of economic statistics: economy/qa/summary
+- Get a quick overview of the economy with summary statistics: economy/qa/summary
+- Retrieve the economy's summary statistics: economy/qa/summary

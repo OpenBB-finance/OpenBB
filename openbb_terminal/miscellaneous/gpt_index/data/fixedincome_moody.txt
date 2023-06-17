@@ -1,0 +1,26 @@
+parent_command:fixedincome
+usage: moody [-t {aaa,baa}] [--spread {treasury,fed_funds}] [-s START_DATE] [-e END_DATE]
+
+Moody's Aaa and Baa are investment bonds that acts as an index of the performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectivelyThese corporate bonds often are used in macroeconomics as an
+alternative to the federal ten-year Treasury Bill as an indicator of the interest rate.
+
+optional arguments:
+  -t {aaa,baa}, --type {aaa,baa}
+                        What type you'd like to collect data for (default: aaa)
+  --spread {treasury,fed_funds}
+                        Whether you want to show the spread (default: None)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: 1980-01-01)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- To view Moody's Aaa bond data since 1980: fixedincome/moody -t aaa
+- To view Moody's Baa bond data since 1980: fixedincome/moody -t baa
+- To view Moody's Aaa bond data with the Treasury spread: fixedincome/moody -t aaa --spread treasury
+- To view Moody's Baa bond data with the Fed Funds spread: fixedincome/moody -t baa --spread fed_funds
+- To view Moody's Aaa bond data for a specific date range: fixedincome/moody -t aaa -s 2000-01-01 -e 2020-12-31
+- To view Moody's Baa bond data for a specific date range: fixedincome/moody -t baa -s 2000-01-01 -e 2020-12-31
+- To view Moody's Aaa bond data with the Treasury spread for a specific date range: fixedincome/moody -t aaa --spread treasury -s 2000-01-01 -e 2020-12-31
+- To view Moody's Baa bond data with the Fed Funds spread for a specific date range: fixedincome/moody -t baa --spread fed_funds -s 2000-01-01 -e 2020-12-31

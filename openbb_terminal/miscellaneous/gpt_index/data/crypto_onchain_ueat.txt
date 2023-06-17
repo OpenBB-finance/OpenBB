@@ -1,0 +1,23 @@
+parent_command:crypto/onchain
+usage: ueat [-l LIMIT] [-s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}] [-i {day,month,week}] [-r]
+
+Display number of unique ethereum addresses which made a transaction in given time interval, [Source: https://graphql.bitquery.io/]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        display N number records. (Maximum available time period is 90 days.Depending on chosen time period, display N records will be recalculated. E.g.For interval: month, and number: 10, period of calculation
+                        equals to 300, but because of max days limit: 90, it will only return last 3 months (3 records). (default: 10)
+  -s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}, --sort {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}
+                        Sort by given column. (default: date)
+  -i {day,month,week}, --interval {day,month,week}
+                        Time interval in which ethereum address made transaction. month, week or day. Maximum time period is 90 days (3 months, 14 weeks) (default: day)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the number of unique Ethereum addresses with transactions in the last 10 days: crypto/onchain/ueat
+- To show unique Ethereum addresses with transactions in the last 5 weeks: crypto/onchain/ueat -l 5 -i week
+- To display unique Ethereum addresses with transactions in the last 3 months, sorted by the number of transactions: crypto/onchain/ueat -l 3 -i month -s transactions
+- To show the last 20 days of unique Ethereum addresses with transactions, sorted by average gas price: crypto/onchain/ueat -l 20 -s averageGasPrice
+- To display unique Ethereum addresses with transactions in the last 10 days, sorted by maximum gas price in ascending order: crypto/onchain/ueat -s maximumGasPrice -r
+- To show unique Ethereum addresses with transactions in the last 7 weeks, sorted by unique senders in ascending order: crypto/onchain/ueat -l 7 -i week -s uniqueSenders -r

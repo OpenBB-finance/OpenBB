@@ -1,0 +1,27 @@
+parent_command:crypto/onchain
+usage: lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-l LIMIT] [-d DAYS] [-s {exchange,trades,tradeAmount}] [-r]
+
+Display Trades on Decentralized Exchanges aggregated by DEX or Month [Source: https://graphql.bitquery.io/]
+
+optional arguments:
+  -k {dex,time}, --kind {dex,time}
+                        Aggregate trades by dex or time Default: dex (default: dex)
+  -vs {ETH,USD,BTC,USDT}, --vs {ETH,USD,BTC,USDT}
+                        Currency of displayed trade amount. (default: USD)
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 10)
+  -d DAYS, --days DAYS  Number of days to display data for. (default: 90)
+  -s {exchange,trades,tradeAmount}, --sort {exchange,trades,tradeAmount}
+                        Sort by given column. Default: tradeAmount. For monthly trades date. (default: tradeAmount)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display trades on decentralized exchanges aggregated by DEX for the last 90 days: crypto/onchain/lt
+- Show trades on decentralized exchanges aggregated by month and sorted by trade amount: crypto/onchain/lt -k time -s tradeAmount
+- Display trades on decentralized exchanges aggregated by DEX, limited to 5 records, and sorted by the number of trades: crypto/onchain/lt -l 5 -s trades
+- View trades on decentralized exchanges aggregated by DEX for the last 30 days, sorted by exchange: crypto/onchain/lt -d 30 -s exchange
+- Display trades on decentralized exchanges aggregated by month, with trade amounts in BTC: crypto/onchain/lt -k time -vs BTC
+- Show trades on decentralized exchanges aggregated by DEX, limited to 7 records, and sorted by trade amount in descending order: crypto/onchain/lt -l 7 -s tradeAmount
+- Display trades on decentralized exchanges aggregated by DEX for the last 60 days, sorted by trade amount in ascending order: crypto/onchain/lt -d 60 -s tradeAmount -r
+- View trades on decentralized exchanges aggregated by month, limited to 10 records, with trade amounts in USDT: crypto/onchain/lt -k time -vs USDT -l 10

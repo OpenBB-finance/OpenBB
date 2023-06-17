@@ -1,0 +1,67 @@
+parent_command:forecast
+usage: nhits [--num-stacks NUM_STACKS] [--num-blocks NUM_BLOCKS] [--num-layers NUM_LAYERS] [--layer_widths LAYER_WIDTHS] [--activation {ReLU,RReLU,PReLU,Softplus,Tanh,SELU,LeakyReLU,Sigmoid}] [--max_pool_1d]
+             [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET]
+             [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only]
+             [--export-pred-raw] [--metric {rmse,mse,mape,smape}]
+
+Perform nhits forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
+
+optional arguments:
+  --num-stacks NUM_STACKS
+                        The number of stacks that make up the model (default: 3)
+  --num-blocks NUM_BLOCKS
+                        The number of blocks making up every stack (default: 1)
+  --num-layers NUM_LAYERS
+                        The number of fully connected layers (default: 2)
+  --layer_widths LAYER_WIDTHS
+                        The number of neurons in each layer (default: 512)
+  --activation {ReLU,RReLU,PReLU,Softplus,Tanh,SELU,LeakyReLU,Sigmoid}
+                        The desired activation (default: ReLU)
+  --max_pool_1d         Whether to use max_pool_1d or AvgPool1d (default: True)
+  --past-covariates PAST_COVARIATES
+                        Past covariates(columns/features) in same dataset. Comma separated. (default: None)
+  --all-past-covariates
+                        Adds all rows as past covariates except for date and the target column. (default: False)
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  -i INPUT_CHUNK_LENGTH, --input-chunk-length INPUT_CHUNK_LENGTH
+                        Number of past time steps for forecasting module at prediction time. (default: 14)
+  -o OUTPUT_CHUNK_LENGTH, --output-chunk-length OUTPUT_CHUNK_LENGTH
+                        The length of the forecast of the model. (default: 5)
+  --force-reset FORCE_RESET
+                        If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). (default: True)
+  --save-checkpoints SAVE_CHECKPOINTS
+                        Whether to automatically save the untrained model and checkpoints. (default: True)
+  --model-save-name MODEL_SAVE_NAME
+                        Name of the model to save. (default: nhits_model)
+  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 300)
+  --dropout DROPOUT     Fraction of neurons affected by Dropout, from 0 to 1. (default: 0.1)
+  --batch-size BATCH_SIZE
+                        Number of time series (input and output) used in each training pass (default: 32)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+  --metric {rmse,mse,mape,smape}
+                        Calculate precision based on a specific metric (rmse, mse, mape) (default: mape)
+
+
+Examples:
+- Perform nhits forecast on <SYMBOL> with default settings: forecast/load <SYMBOL>/nhits
+- Perform nhits forecast on <SYMBOL> with a specific target column and prediction days: forecast/load <SYMBOL>/nhits -c volume -n 10
+- Perform nhits forecast on <SYMBOL> with a custom train split and input/output chunk lengths: forecast/load <SYMBOL>/nhits -t 0.9 -i 20 -o 8
+- Perform nhits forecast on <SYMBOL> using a specific dataset and date range: forecast/load <SYMBOL>/nhits -d AAPL --start 2021-01-01 --end 2021-12-31
+- Perform nhits forecast on <SYMBOL> with custom model settings: forecast/load <SYMBOL>/nhits --num-stacks 4 --num-blocks 2 --num-layers 3 --layer_widths 256 --activation Tanh
+- Perform nhits forecast on <SYMBOL> and show naive baseline: forecast/load <SYMBOL>/nhits --naive
+- Perform nhits forecast on <SYMBOL> and save the model with a custom name: forecast/load <SYMBOL>/nhits --model-save-name my_nhits_model
+- Perform nhits forecast on <SYMBOL> with custom training settings: forecast/load <SYMBOL>/nhits --n-epochs 500 --dropout 0.2 --batch-size 64
+- Perform nhits forecast on <SYMBOL> and display residuals: forecast/load <SYMBOL>/nhits --residuals
+- Perform nhits forecast on <SYMBOL> and export predictions to a csv file: forecast/load <SYMBOL>/nhits --export-pred-raw

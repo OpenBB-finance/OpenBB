@@ -1,0 +1,12 @@
+parent_command:crypto/disc
+usage: nft_mktp_chains
+
+Shows NFT marketplace chains [Source: https://dappradar.com/]
+
+nft_mktp_chains
+Examples:
+- To view NFT marketplace chains: crypto/disc/nft_mktp_chains
+- Display NFT marketplace chains information: crypto/disc/nft_mktp_chains
+- Retrieve NFT marketplace chains data: crypto/disc/nft_mktp_chains
+- Get a list of NFT marketplace chains: crypto/disc/nft_mktp_chains
+- Show available NFT marketplace chains: crypto/disc/nft_mktp_chains

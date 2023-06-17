@@ -1,0 +1,12 @@
+parent_command:portfolio/brokers/degiro
+usage: lastnews [-l LIMIT]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of news to display.
+
+
+Examples:
+- To display the latest news from your Degiro broker: portfolio/brokers/degiro/lastnews
+- To display the 5 most recent news items from your Degiro broker: portfolio/brokers/degiro/lastnews -l 5
+- Show the 10 latest news articles for your Degiro account: portfolio/brokers/degiro/lastnews --limit 10

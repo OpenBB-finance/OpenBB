@@ -1,0 +1,22 @@
+parent_command:crypto/dd
+usage: ex [-l LIMIT] [-s {id,name,adjusted_volume_24h_share,fiats}] [-r]
+
+Get all exchanges found for given coin. You can display only top N number of exchanges with --top parameter. You can sort data by id, name, adjusted_volume_24h_share, fiats --sort parameter and also with --reverse flag to sort
+ascending. Displays: id, name, adjusted_volume_24h_share, fiats
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of records (default: 10)
+  -s {id,name,adjusted_volume_24h_share,fiats}, --sort {id,name,adjusted_volume_24h_share,fiats}
+                        Sort by given column. Default: date (default: adjusted_volume_24h_share)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the top 10 exchanges for a specific coin: crypto/dd/ex <COIN>
+- To view the top 5 exchanges for a coin: crypto/dd/ex <COIN> -l 5
+- To sort the exchanges by name in descending order: crypto/dd/ex <COIN> -s name
+- To show the exchanges sorted by adjusted 24-hour volume share in ascending order: crypto/dd/ex <COIN> -s adjusted_volume_24h_share -r
+- To display the top 3 exchanges sorted by the number of supported fiats: crypto/dd/ex <COIN> -l 3 -s fiats
+- To view the exchanges for a coin sorted by ID in ascending order: crypto/dd/ex <COIN> -s id -r
+- To display the top 7 exchanges sorted by name in ascending order: crypto/dd/ex <COIN> -l 7 -s name -r

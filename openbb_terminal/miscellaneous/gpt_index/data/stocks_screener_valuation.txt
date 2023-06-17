@@ -1,0 +1,25 @@
+parent_command:stocks/screener
+usage: valuation [-p Desired preset.] [-l LIMIT] [-r] [-s SORT]
+
+Prints valuation data of the companies that meet the pre-set filtering.
+
+optional arguments:
+  -p Desired preset., --preset Desired preset.
+                        Filter presets
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to print
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed.
+  -s SORT, --sort SORT  Sort elements of the table.
+
+
+Examples:
+- To view valuation data for companies using a specific preset: stocks/screener/valuation -p Desired preset.
+- To view valuation data for a limited number of stocks: stocks/screener/valuation -l LIMIT
+- To view valuation data sorted in ascending order: stocks/screener/valuation -r
+- To sort valuation data by a specific element: stocks/screener/valuation -s SORT
+- To view valuation data using a preset and limiting the number of stocks displayed: stocks/screener/valuation -p Desired preset. -l LIMIT
+- To view valuation data using a preset and sorting by a specific element: stocks/screener/valuation -p Desired preset. -s SORT
+- To view valuation data with a limited number of stocks sorted in ascending order: stocks/screener/valuation -l LIMIT -r
+- To view valuation data sorted by a specific element and in ascending order: stocks/screener/valuation -s SORT -r
+- To view valuation data using a preset, limiting the number of stocks, and sorting by a specific element: stocks/screener/valuation -p Desired preset. -l LIMIT -s SORT
+- To view valuation data using a preset, limiting the number of stocks, and sorting in ascending order: stocks/screener/valuation -p Desired preset. -l LIMIT -r

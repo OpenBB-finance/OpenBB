@@ -1,0 +1,20 @@
+parent_command:crypto/ta
+usage: aroon [-l N_LENGTH] [-s N_SCALAR]
+
+The word aroon is Sanskrit for "dawn's early light." The Aroon indicator attempts to show when a new trend is dawning. The indicator consists of two lines (Up and Down) that measure how long it has been since the highest
+high/lowest low has occurred within an n period range. When the Aroon Up is staying between 70 and 100 then it indicates an upward trend. When the Aroon Down is staying between 70 and 100 then it indicates an downward trend. A
+strong upward trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30. Likewise, a strong downward trend is indicated when the Aroon Down is above 70 while the Aroon Up is below 30. Also look for
+crossovers. When the Aroon Down crosses above the Aroon Up, it indicates a weakening of the upward trend (and vice versa).
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 25)
+  -s N_SCALAR, --scalar N_SCALAR
+                        scalar (default: 100)
+
+
+Examples:
+- To display the Aroon indicator with default settings for a specific cryptocurrency: crypto/load <COIN>/ta/aroon
+- To show the Aroon indicator with a custom length of 50 for a specific cryptocurrency: crypto/load <COIN>/ta/aroon -l 50
+- To display the Aroon indicator with a custom scalar of 200 for a specific cryptocurrency: crypto/load <COIN>/ta/aroon -s 200
+- To show the Aroon indicator with both custom length and scalar for a specific cryptocurrency: crypto/load <COIN>/ta/aroon -l 50 -s 200

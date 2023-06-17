@@ -1,0 +1,22 @@
+parent_command:crypto/qa
+usage: raw [-l LIMIT] [-r] [-s {open,high,low,close,adjclose,volume,returns,logret}]
+
+Print raw data to console
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number to show (default: 20)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -s {open,high,low,close,adjclose,volume,returns,logret}, --sortby {open,high,low,close,adjclose,volume,returns,logret}
+                        The column to sort by (default: None)
+
+
+Examples:
+- Display the raw data for a specific cryptocurrency: crypto/load <COIN>/qa/raw
+- Show the last 10 data points for a cryptocurrency: crypto/load <COIN>/qa/raw -l 10
+- Display the raw data for a cryptocurrency sorted by volume: crypto/load <COIN>/qa/raw -s volume
+- Show the last 5 data points for a cryptocurrency sorted by high: crypto/load <COIN>/qa/raw -l 5 -s high
+- Display the raw data for a cryptocurrency sorted by low in ascending order: crypto/load <COIN>/qa/raw -s low -r
+- Show the last 15 data points for a cryptocurrency sorted by close in ascending order: crypto/load <COIN>/qa/raw -l 15 -s close -r
+- Display the raw data for a cryptocurrency sorted by log returns: crypto/load <COIN>/qa/raw -s logret
+- Show the last 7 data points for a cryptocurrency sorted by returns in ascending order: crypto/load <COIN>/qa/raw -l 7 -s returns -r

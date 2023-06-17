@@ -1,0 +1,12 @@
+parent_command: stocks/scr/
+usage: historical [-l LIMIT] [-n] [-s START] [-t {o,h,l,c,a}] [-h]                   [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Historical price comparison between similar companies [Source: Yahoo Finance]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of the most shorted stocks to retrieve.   -n, --no-scale        Flag to not put all prices on same 0-1 scale   -s START, --start START                         The starting date (format YYYY-MM-DD) of the                         historical price to plot   -t {o,h,l,c,a}, --type {o,h,l,c,a}                         type of candles: o-open, h-high, l-low, c-close,                         a-adjusted close.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about historical' to access the related guide.
+Summary: Display historical price comparison between similar companies with options to set a limit on the number of stocks, choose a start date, select the type of candles, and export the data. You can also choose not to scale the prices on the same 0-1 scale and save data to a specific Excel sheet.
+
+Examples:
+- Compare historical prices of similar companies: stocks/scr/historical
+- Compare historical prices of similar companies with a limit of 10 stocks: stocks/scr/historical -l 10
+- Compare historical prices without scaling the prices on the same 0-1 scale: stocks/scr/historical -n
+- Compare historical prices starting from a specific date: stocks/scr/historical -s 2020-01-01
+- Compare historical prices using adjusted close candle type: stocks/scr/historical -t a
+- Compare historical prices and export the data in csv format: stocks/scr/historical --export csv
+- Compare historical prices and save the data to a specific Excel sheet: stocks/scr/historical --sheet-name Sheet1

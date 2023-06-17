@@ -1,0 +1,14 @@
+parent_command:crypto/defi
+usage: lcsc [-d DAYS]
+
+Display Luna circulating supply changes stats. [Source: Smartstake.io] Follow these steps to get the key token: 1. Head to https://terra.smartstake.io/ 2. Right click on your browser and choose Inspect 3. Select Network tab (by
+clicking on the expand button next to Source tab) 4. Go to Fetch/XHR tab, and refresh the page 5. Get the option looks similar to the following: `listData?type=history&dayCount=30` 6. Extract the key and token out of the URL
+
+optional arguments:
+  -d DAYS, --days DAYS  Number of days to display. Default: 30 days (default: 30)
+
+
+Examples:
+- To display Luna circulating supply changes stats for the default 30 days: crypto/defi/lcsc
+- To display Luna circulating supply changes stats for the last 7 days: crypto/defi/lcsc -d 7
+- To display Luna circulating supply changes stats for the last 60 days: crypto/defi/lcsc --days 60

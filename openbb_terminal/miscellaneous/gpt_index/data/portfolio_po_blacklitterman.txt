@@ -1,0 +1,62 @@
+parent_command:portfolio/po
+usage: blacklitterman [-bm BENCHMARK] [-o {MinRisk,Utility,Sharpe,MaxRet}] [-pv P_VIEWS] [-qv Q_VIEWS] [-ra RISK_AVERSION] [-d DELTA] [-eq] [-op] [-vs SHORT_ALLOCATION] [--file FILE] [--download DOWNLOAD] [-mt METHOD]
+                      [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-v LONG_ALLOCATION] [--name NAME]
+
+Optimize portfolio using Black Litterman estimates
+
+optional arguments:
+  -bm BENCHMARK, --benchmark BENCHMARK
+                        portfolio name from current portfolio list (default: None)
+  -o {MinRisk,Utility,Sharpe,MaxRet}, --objective {MinRisk,Utility,Sharpe,MaxRet}
+                        Objective function used to optimize the portfolio (default: Sharpe)
+  -pv P_VIEWS, --p-views P_VIEWS
+                        matrix P of analyst views (default: None)
+  -qv Q_VIEWS, --q-views Q_VIEWS
+                        matrix Q of analyst views (default: None)
+  -ra RISK_AVERSION, --risk-aversion RISK_AVERSION
+                        Risk aversion parameter (default: 1)
+  -d DELTA, --delta DELTA
+                        Risk aversion factor of Black Litterman model (default: None)
+  -eq, --equilibrium    If True excess returns are based on equilibrium market portfolio, if False excess returns are calculated as historical returns minus risk free rate. (default: True)
+  -op, --optimize       If True Black Litterman estimates are used as inputs of mean variance model, if False returns equilibrium weights from Black Litterman model (default: True)
+  -vs SHORT_ALLOCATION, --value-short SHORT_ALLOCATION
+                        Amount to allocate to portfolio in short positions (default: 0.0)
+  --file FILE           Upload an Excel file with views for Black Litterman model (default: )
+  --download DOWNLOAD   Create a template to design Black Litterman model views (default: )
+  -mt METHOD, --method METHOD
+                        Method used to fill nan values in time series, by default time. Possible values are: 'linear': linear interpolation 'time': linear interpolation based on time index 'nearest': use nearest value to replace
+                        nan values 'zero': spline of zeroth order 'slinear': spline of first order 'quadratic': spline of second order 'cubic': spline of third order 'barycentric': builds a polynomial that pass for all points
+                        (default: time)
+  -ct CATEGORIES, --categories CATEGORIES
+                        Show selected categories (default: [])
+  -p PERIOD, --period PERIOD
+                        Period to get yfinance data from. Possible frequency strings are: 'd': means days, for example '252d' means 252 days 'w': means weeks, for example '52w' means 52 weeks 'mo': means months, for example '12mo'
+                        means 12 months 'y': means years, for example '1y' means 1 year 'ytd': downloads data from beginning of year to today 'max': downloads all data available for each asset (default: 3y)
+  -s START_PERIOD, --start START_PERIOD
+                        Start date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -e END_PERIOD, --end END_PERIOD
+                        End date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -lr, --log-returns    If use logarithmic or arithmetic returns to calculate returns (default: False)
+  --freq {d,w,m}        Frequency used to calculate returns. Possible values are: 'd': for daily returns 'w': for weekly returns 'm': for monthly returns (default: d)
+  -mn MAX_NAN, --maxnan MAX_NAN
+                        Max percentage of nan values accepted per asset to be considered in the optimization process (default: 0.05)
+  -th THRESHOLD_VALUE, --threshold THRESHOLD_VALUE
+                        Value used to replace outliers that are higher to threshold in absolute value (default: 0.3)
+  -r RISK_FREE, --risk-free-rate RISK_FREE
+                        Risk-free rate of borrowing/lending. The period of the risk-free rate must be annual (default: 0.04739)
+  -v LONG_ALLOCATION, --value LONG_ALLOCATION
+                        Amount to allocate to portfolio (default: 1)
+  --name NAME           Save portfolio with personalized or default name (default: BL_0)
+
+
+Examples:
+- Optimize a portfolio using Black Litterman estimates: portfolio/po/blacklitterman
+- Optimize a portfolio using Black Litterman estimates with a specific benchmark: portfolio/po/blacklitterman -bm "My Benchmark"
+- Optimize a portfolio using Black Litterman estimates with a specific objective function: portfolio/po/blacklitterman -o MinRisk
+- Optimize a portfolio using Black Litterman estimates with custom P and Q matrices: portfolio/po/blacklitterman -pv "P_matrix" -qv "Q_matrix"
+- Optimize a portfolio using Black Litterman estimates with a specific risk aversion parameter: portfolio/po/blacklitterman -ra 2
+- Optimize a portfolio using Black Litterman estimates with a specific delta value: portfolio/po/blacklitterman -d 0.5
+- Optimize a portfolio using Black Litterman estimates with historical returns instead of equilibrium returns: portfolio/po/blacklitterman -eq
+- Optimize a portfolio using Black Litterman estimates without using mean variance model: portfolio/po/blacklitterman -op
+- Optimize a portfolio using Black Litterman estimates with a specific short allocation value: portfolio/po/blacklitterman -vs 0.5
+- Optimize a portfolio using Black Litterman estimates with a custom name: portfolio/po/blacklitterman --name "Custom Portfolio"

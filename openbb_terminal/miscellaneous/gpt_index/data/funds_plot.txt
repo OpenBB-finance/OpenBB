@@ -1,0 +1,15 @@
+parent_command:funds
+usage: plot [-c {category,index,both}]
+
+Plot historical data.
+
+optional arguments:
+  -c {category,index,both}
+                        Compare funds performance with its category or index (default: )
+
+
+Examples:
+- To plot historical data for a specific fund: funds/load <SYMBOL>/plot
+- To compare the performance of a fund with its category: funds/load <SYMBOL>/plot -c category
+- To compare the performance of a fund with its index: funds/load <SYMBOL>/plot -c index
+- To compare the performance of a fund with both its category and index: funds/load <SYMBOL>/plot -c both

@@ -1,0 +1,18 @@
+parent_command:economy
+usage: map [-p {1d,1w,1m,3m,6m,1y}] [-t {sp500,world,full,etf}]
+
+Performance index stocks map categorized by sectors and industries. Size represents market cap. Opens web-browser. [Source: Finviz]
+
+optional arguments:
+  -p {1d,1w,1m,3m,6m,1y}, --period {1d,1w,1m,3m,6m,1y}
+                        Performance period. (default: 1d)
+  -t {sp500,world,full,etf}, --type {sp500,world,full,etf}
+                        Map filter type. (default: sp500)
+
+
+Examples:
+- To view the performance index stocks map for the S&P 500 with a 1-day period: economy/map -p 1d -t sp500
+- Display the performance index stocks map for the world with a 1-month period: economy/map --period 1m --type world
+- Access the performance index stocks map for all stocks with a 3-month period: economy/map -p 3m -t full
+- Open the performance index stocks map for ETFs with a 6-month period: economy/map --period 6m --type etf
+- View the performance index stocks map for the S&P 500 with a 1-year period: economy/map -p 1y -t sp500

@@ -1,0 +1,13 @@
+parent_command: stocks/gov/
+usage: gtrades [-p PAST_TRANSACTIONS_MONTHS] [-g {congress,senate,house}]                [--raw] [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Government trading. [Source: www.quiverquant.com]  optional arguments:   -p PAST_TRANSACTIONS_MONTHS, --past_transactions_months PAST_TRANSACTIONS_MONTHS                         Past transaction months (default: 6)   -g {congress,senate,house}, --govtype {congress,senate,house}   --raw                 Print raw data. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about gtrades' to access the related guide.
+Summary: Display government trading data for the past few months, with options to filter by government type (congress, senate, or house), export the data in various formats, and view raw data. The source of this information is www.quiverquant.com.
+
+Examples:
+- Show government trading data for the past 6 months: stocks/gov/gtrades
+- Show government trading data for the past 12 months: stocks/gov/gtrades -p 12
+- Show government trading data for the Senate only: stocks/gov/gtrades -g senate
+- Show government trading data for the House of Representatives only: stocks/gov/gtrades -g house
+- Show government trading data for Congress only: stocks/gov/gtrades -g congress
+- Display raw data for government trading: stocks/gov/gtrades --raw
+- Export government trading data in json format: stocks/gov/gtrades --export json
+- Save government trading data to a specific excel sheet: stocks/gov/gtrades --sheet-name Sheet1

@@ -1,0 +1,14 @@
+parent_command:portfolio
+usage: rvol [-p PERIOD]
+
+Show rolling volatility portfolio vs benchmark
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        Period to apply rolling window (default: 1y)
+
+
+Examples:
+- To view the rolling volatility of your portfolio compared to the benchmark over a default 1-year period: portfolio/rvol
+- To display the rolling volatility of your portfolio against the benchmark for a 6-month period: portfolio/rvol -p 6m
+- For a custom 3-month period, show the rolling volatility of your portfolio versus the benchmark: portfolio/rvol --period 3m

@@ -1,0 +1,10 @@
+parent_command: stocks/ins/
+usage: lit [-l LIMIT] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest insider trading. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about lit' to access the related guide.
+Summary: Display the latest insider trading data for a specific stock symbol, with options to limit the number of rows displayed, export the data in various formats, and save the data to a specific Excel sheet. The data is sourced from OpenInsider.
+
+Examples:
+- Show the latest insider trading for <SYMBOL>: stocks/load <SYMBOL>/ins/lit
+- Show the latest 5 insider trading events for <SYMBOL>: stocks/load <SYMBOL>/ins/lit -l 5
+- Display the latest insider trading for <SYMBOL> and export the data as a csv file: stocks/load <SYMBOL>/ins/lit --export csv
+- Show the latest insider trading for <SYMBOL> and save the data to a specific Excel sheet: stocks/load <SYMBOL>/ins/lit --sheet-name Sheet1
+- Display the latest 20 insider trading events for <SYMBOL>: stocks/load <SYMBOL>/ins/lit -l 20
