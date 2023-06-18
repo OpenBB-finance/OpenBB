@@ -1335,6 +1335,7 @@ def get_strategies(
     return strategies.reset_index()
 
 
+@log_start_end(log=logger)
 def calculate_skew(
     options, expiration: Optional[str] = "", moneyness: Optional[float] = None
 ) -> pd.DataFrame:

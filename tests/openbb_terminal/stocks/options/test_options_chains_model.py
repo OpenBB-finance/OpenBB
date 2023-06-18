@@ -42,3 +42,7 @@ def test_OptionsChains(recorder):
         vertical_puts=[150, 180],
     )
     recorder.capture(strategies["Strategy"].to_list())
+    vertical_skew = df1.get_skew()
+    recorder.capture(vertical_skew.columns.to_list())
+    horizontal_skew = df2.get_skew(moneyness=10)
+    recorder.capture(horizontal_skew.columns.to_list())
