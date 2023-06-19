@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import contextlib
 import difflib
+import json
 import logging
 import os
 import re
@@ -24,10 +25,7 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.account.show_prompt import (
-    get_show_prompt,
-    set_show_prompt,
-)
+from openbb_terminal.account.show_prompt import get_show_prompt, set_show_prompt
 from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -38,10 +36,7 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
-from openbb_terminal.core.session.current_user import (
-    get_current_user,
-    set_preference,
-)
+from openbb_terminal.core.session.current_user import get_current_user, set_preference
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -94,6 +89,7 @@ class TerminalController(BaseController):
         "guess",
         "news",
         "intro",
+        "askobb",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -219,6 +215,8 @@ class TerminalController(BaseController):
         mt.add_cmd("stop")
         mt.add_cmd("exe")
         mt.add_raw("\n")
+        mt.add_cmd("askobb")
+        mt.add_raw("\n")
         mt.add_info("_main_menu_")
         mt.add_menu("stocks")
         mt.add_menu("crypto")
@@ -333,9 +331,20 @@ class TerminalController(BaseController):
                         sheet_name=news_parser.sheet_name,
                     )
 
+    def parse_input(self, an_input: str) -> List:
+        """Overwrite the BaseController parse_input for `askobb`
+
+        This will allow us to search for something like "P/E" ratio
+        """
+        # Filtering out sorting parameters with forward slashes like P/E
+        sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
+
+        custom_filters = [sort_filter]
+
+        return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
+
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
-        import json
         import random
 
         current_user = get_current_user()

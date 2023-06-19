@@ -1,0 +1,13 @@
+parent_command: stocks/options/
+usage: grhist [-s STRIKE] [-p] [-g {iv,gamma,theta,vega,delta,rho,premium}]               [-c CHAIN_ID] [-r] [-l LIMIT] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]               [--source {Syncretism,Intrinio}]  Plot historical option greeks.  optional arguments:   -s STRIKE, --strike STRIKE                         Strike price to look at (default: None)   -p, --put             Flag for showing put option (default: False)   -g {iv,gamma,theta,vega,delta,rho,premium}, --greek {iv,gamma,theta,vega,delta,rho,premium}                         Greek column to select (default: delta)   -c CHAIN_ID, --chain CHAIN_ID                         OCC option symbol (default: )   -r, --raw             Display raw data (default: False)   -l LIMIT, --limit LIMIT                         Limit of raw data rows to display (default: 20)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --source {Syncretism,Intrinio}                         Data source to select from (default: Syncretism)  For more information and examples, use 'about grhist' to access the related guide.
+Summary: Plot historical option greeks for a specific stock symbol with the ability to select a strike price, put or call option, specific greek, OCC option symbol, and data source. You can also display raw data, limit the number of rows displayed, and export the data in various formats.
+
+Examples:
+- Plot the historical delta for a specific strike price: stocks/load <SYMBOL>/options/grhist -s 100
+- Plot the historical theta for a put option: stocks/load <SYMBOL>/options/grhist -p -g theta
+- Plot the historical vega for a call option with a specific OCC option symbol: stocks/load <SYMBOL>/options/grhist -c CHAIN_ID -g vega
+- Display raw data for historical gamma with a limit of 10 rows: stocks/load <SYMBOL>/options/grhist -g gamma -r -l 10
+- Plot historical premium using the Intrinio data source: stocks/load <SYMBOL>/options/grhist -g premium --source Intrinio
+- Export historical rho data to a csv file: stocks/load <SYMBOL>/options/grhist -g rho --export csv
+- Save historical IV data to a specific excel sheet: stocks/load <SYMBOL>/options/grhist -g iv --sheet-name Sheet1
+- Plot historical delta for a put option with a specific strike price and OCC option symbol: stocks/load <SYMBOL>/options/grhist -s 150 -p -g delta -c CHAIN_ID

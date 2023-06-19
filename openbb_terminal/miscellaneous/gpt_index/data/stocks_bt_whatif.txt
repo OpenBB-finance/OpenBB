@@ -1,0 +1,8 @@
+parent_command: stocks/bt/
+usage: whatif [-d DATE_SHARES_ACQUIRED] [-n NUM_SHARES_ACQUIRED] [-h]  Displays what if scenario of having bought X shares at date Y  optional arguments:   -d DATE_SHARES_ACQUIRED, --date DATE_SHARES_ACQUIRED                         Date at which the shares were acquired (default: None)   -n NUM_SHARES_ACQUIRED, --number NUM_SHARES_ACQUIRED                         Number of shares acquired (default: 1.0)   -h, --help            show this help message (default: False)  For more information and examples, use 'about whatif' to access the related guide.
+Summary: The whatif command displays a scenario of having bought a specific number of shares at a given date for a stock symbol. You can specify the date of acquisition and the number of shares acquired.
+
+Examples:
+- To see the outcome of buying 1 share of a stock on a specific date: stocks/load <SYMBOL>/bt/whatif -d 2020-01-01
+- To see the outcome of buying 100 shares of a stock on a specific date: stocks/load <SYMBOL>/bt/whatif -d 2020-01-01 -n 100
+- To analyze the scenario of acquiring 50 shares of a stock on a specific date: stocks/load <SYMBOL>/bt/whatif -n 50 -d 2020-01-01

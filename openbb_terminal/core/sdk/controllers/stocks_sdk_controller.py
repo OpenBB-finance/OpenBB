@@ -47,6 +47,8 @@ class StocksController(model.StocksRoot):
             `mentions`: Get interest over time from google api [Source: google].\n
             `mentions_chart`: Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].\n
             `messages`: Get last messages for a given ticker [Source: stocktwits].\n
+            `ns`: Getting Onclusive Data. [Source: Invisage Platform]\n
+            `ns_chart`: Display Onclusive Data. [Source: Invisage Plotform]\n
             `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
             `queries`: Get related queries from google api [Source: google].\n
             `redditsent`: Find posts related to a specific search term in Reddit.\n
@@ -256,22 +258,21 @@ class StocksController(model.StocksRoot):
     def options(self):
         """Stocks Options Submodule
 
-        Submodules:
-            `screen`: Screen Module
-
         Attributes:
             `chains`: Get Option Chain For A Stock.  No greek data is returned\n
             `dte`: Returns a new column containing the DTE as an integer, including 0.\n
             `eodchain`: Get full EOD option date across all expirations\n
             `expirations`: Get Option Chain Expirations\n
             `generate_data`: Gets x values, and y values before and after premiums\n
+            `get_strategies`: Gets options strategies for all, or a list of, DTE(s).\n
             `greeks`: Gets the greeks for a given option\n
-            `grhist`: Get histoical option greeks\n
-            `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
+            `grhist`: Get historical EOD option prices, with Greeks, for a given OCC chain label.\n
+            `grhist_chart`: Plots historical greeks for a given option.\n
             `hist`: Get historical option pricing.\n
             `info`: Scrape barchart for options info\n
             `info_chart`: Scrapes Barchart.com for the options information\n
             `last_price`: Makes api request for last price\n
+            `load_options_chains`: Loads all options chains from a specific source, fields returned to each attribute will vary.\n
             `oi`: Plot open interest\n
             `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
             `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n

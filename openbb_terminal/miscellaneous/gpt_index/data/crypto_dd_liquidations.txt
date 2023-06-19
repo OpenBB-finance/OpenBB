@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: liquidations
+
+Displays liquidations data for the loaded crypto asset [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
+
+liquidations
+Examples:
+- To view liquidations data for a specific crypto asset: crypto/load <COIN>/dd/liquidations
+- Display liquidations information for the loaded cryptocurrency: crypto/dd/liquidations
+- Retrieve liquidations data for a chosen crypto coin: crypto/load <COIN>/dd/liquidations
+- Access liquidations data for the loaded digital currency: crypto/dd/liquidations
+- Obtain liquidations information for the selected cryptocurrency: crypto/load <COIN>/dd/liquidations

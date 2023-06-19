@@ -1,0 +1,17 @@
+parent_command:portfolio
+usage: summary [-p PERIOD] [-r RISK_FREE_RATE]
+
+Display summary of portfolio vs benchmark
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        The file to be loaded (default: all)
+  -r RISK_FREE_RATE, --rfr RISK_FREE_RATE
+                        Set risk free rate for calculations. (default: 0)
+
+
+Examples:
+- Display a summary of your portfolio compared to the benchmark: portfolio/summary
+- Display a summary of your portfolio compared to the benchmark for a specific period: portfolio/summary -p 3M
+- Display a summary of your portfolio compared to the benchmark with a custom risk-free rate: portfolio/summary -r 0.02
+- Display a summary of your portfolio compared to the benchmark for a specific period and with a custom risk-free rate: portfolio/summary -p 1Y -r 0.03

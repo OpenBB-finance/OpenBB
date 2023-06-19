@@ -1,0 +1,10 @@
+parent_command: stocks/disc/
+usage: ugs [-l LIMIT] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print up to 25 undervalued stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of stocks to display. (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about ugs' to access the related guide.
+Summary: Display a list of up to 25 undervalued stocks with revenue and earnings growth in excess of 25%, sourced from Yahoo Finance. You can set a limit for the number of stocks displayed, and export the data in various formats. You can also specify the name of an Excel sheet to save the data to, if exporting to an .xlsx file.
+
+Examples:
+- Show the top 5 undervalued growth stocks: stocks/disc/ugs
+- Show the top 10 undervalued growth stocks: stocks/disc/ugs -l 10
+- Display the top 15 undervalued growth stocks: stocks/disc/ugs --limit 15
+- Export the top 5 undervalued growth stocks to a csv file: stocks/disc/ugs --export csv
+- Export the top 10 undervalued growth stocks to an xlsx file with a custom sheet name: stocks/disc/ugs -l 10 --export xlsx --sheet-name MySheet

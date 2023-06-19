@@ -1,0 +1,10 @@
+parent_command: stocks/disc/
+usage: rtat [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Tracking over $30B USD/day of individual investors trades, RTAT gives a daily view into retail activity and sentiment for over 9,500 US traded stocks, ADRs, and ETPs  optional arguments:   -l LIMIT, --limit LIMIT                         limit of days to display (default: 3)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about rtat' to access the related guide.
+Summary: RTAT provides a daily view of retail activity and sentiment for over 9,500 US traded stocks, ADRs, and ETPs, tracking over $30B USD/day of individual investors' trades. You can set a limit on the number of days to display, and export the raw data into various formats such as csv, json, and xlsx. Additionally, you can specify the name of the excel sheet to save the data to if using an xlsx file.
+
+Examples:
+- Show retail activity and sentiment for the last 3 days for a specific stock: stocks/load <SYMBOL>/disc/rtat
+- Display retail activity and sentiment for the last 7 days for a specific stock: stocks/load <SYMBOL>/disc/rtat -l 7
+- Export retail activity and sentiment data for the last 5 days for a specific stock in csv format: stocks/load <SYMBOL>/disc/rtat -l 5 --export csv
+- Save retail activity and sentiment data for a specific stock to a named excel sheet: stocks/load <SYMBOL>/disc/rtat --sheet-name Sheet1
+- Retrieve retail activity and sentiment data for the last 10 days for a specific stock and export it to an xlsx file with a custom sheet name: stocks/load <SYMBOL>/disc/rtat -l 10 --export xlsx --sheet-name CustomSheet

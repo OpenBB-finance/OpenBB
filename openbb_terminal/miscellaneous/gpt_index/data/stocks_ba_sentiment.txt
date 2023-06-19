@@ -1,0 +1,12 @@
+parent_command: stocks/ba/
+usage: sentiment [-l LIMIT] [-d N_DAYS_PAST] [-c] [-h] [--export EXPORT]                  [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Plot in-depth sentiment predicted from tweets from last days that contain pre- defined ticker. [Source: Twitter]  optional arguments:   -l LIMIT, --limit LIMIT                         limit of tweets to extract per hour. (default: 15)   -d N_DAYS_PAST, --days N_DAYS_PAST                         number of days in the past to extract tweets.                         (default: 6)   -c, --compare         show corresponding change in stock price (default:                         False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about sentiment' to access the related guide.
+Summary: Plot in-depth sentiment predicted from tweets containing pre-defined tickers for the past number of days. You can limit the number of tweets extracted per hour, choose the number of days to extract tweets, and compare the sentiment with the corresponding change in stock price. Export the data in various formats and save it to a specific excel sheet if needed.
+
+Examples:
+- Analyze sentiment for <SYMBOL> using default settings: stocks/load <SYMBOL>/ba/sentiment
+- Analyze sentiment for <SYMBOL> with a limit of 20 tweets per hour: stocks/load <SYMBOL>/ba/sentiment -l 20
+- Analyze sentiment for <SYMBOL> for the past 10 days: stocks/load <SYMBOL>/ba/sentiment -d 10
+- Analyze sentiment for <SYMBOL> and compare with stock price changes: stocks/load <SYMBOL>/ba/sentiment -c
+- Analyze sentiment for <SYMBOL> with a limit of 30 tweets per hour and for the past 5 days: stocks/load <SYMBOL>/ba/sentiment -l 30 -d 5
+- Export sentiment analysis data for <SYMBOL> in csv format: stocks/load <SYMBOL>/ba/sentiment --export csv
+- Save sentiment analysis data for <SYMBOL> to a specific excel sheet: stocks/load <SYMBOL>/ba/sentiment --sheet-name Sheet1

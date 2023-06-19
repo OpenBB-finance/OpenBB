@@ -1,0 +1,15 @@
+parent_command:stocks/th
+usage: exchange -n LSE [-y [year]]
+
+Select the exchange and year you want see holidays for
+
+optional arguments:
+  -n LSE, --name LSE    Exchange short name (default: None)
+  -y [year], --year [year]
+                        Year (default: None)
+
+
+Examples:
+- View holidays for the London Stock Exchange (LSE) for the current year: stocks/th exchange -n LSE
+- Check holidays for the LSE in 2022: stocks/th exchange -n LSE -y 2022
+- Display holidays for a specific exchange and year: stocks/th exchange --name NYSE --year 2023

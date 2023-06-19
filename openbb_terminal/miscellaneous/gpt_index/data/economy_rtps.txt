@@ -1,0 +1,11 @@
+parent_command:economy
+usage: rtps
+
+Real-time and historical sector performances calculated from S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
+
+rtps
+Examples:
+- To view real-time and historical sector performances: economy/rtps
+- For sector performance data based on S&P500 incumbents: economy/rtps
+- To display a plot of sector performance in real-time: economy/rtps
+- To access sector performance data from Alpha Vantage: economy/rtps

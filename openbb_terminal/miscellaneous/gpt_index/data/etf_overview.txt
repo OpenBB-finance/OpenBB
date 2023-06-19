@@ -1,0 +1,11 @@
+parent_command:etf
+usage: overview
+
+Get overview data for selected etf
+
+overview
+Examples:
+- To get an overview of a specific ETF, use: etf/load <SYMBOL>/overview
+- Obtain overview data for an ETF by entering: etf/load <SYMBOL>/overview
+- For an overview of a particular ETF, type: etf/load <SYMBOL>/overview
+- To view the overview data of a selected ETF, input: etf/load <SYMBOL>/overview

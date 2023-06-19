@@ -1,0 +1,21 @@
+parent_command:forex/ta
+usage: adx [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT]
+
+The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX). The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider a high number to be a strong trend, and a low number, a
+weak trend.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 14)
+  -s N_SCALAR, --scalar N_SCALAR
+                        scalar (default: 100)
+  -d N_DRIFT, --drift N_DRIFT
+                        drift (default: 1)
+
+
+Examples:
+- To calculate the ADX for a forex pair with default settings: forex/load <PAIR>/ta/adx
+- To calculate the ADX for a forex pair with a custom length of 20: forex/load <PAIR>/ta/adx -l 20
+- To calculate the ADX for a forex pair with a custom scalar of 150: forex/load <PAIR>/ta/adx -s 150
+- To calculate the ADX for a forex pair with a custom drift of 2: forex/load <PAIR>/ta/adx -d 2
+- To calculate the ADX for a forex pair with custom length, scalar, and drift values: forex/load <PAIR>/ta/adx -l 20 -s 150 -d 2

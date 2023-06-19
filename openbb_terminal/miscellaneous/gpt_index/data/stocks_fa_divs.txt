@@ -1,0 +1,11 @@
+parent_command: stocks/fa/
+usage: divs [-t TICKER] [-l LIMIT] [-p] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Historical dividends for a company  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -l LIMIT, --limit LIMIT                         Number of previous dividends to show (default: 16)   -p, --plot            Plots changes in dividend over time (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about divs' to access the related guide.
+Summary: Display historical dividends for a specific stock symbol, with options to limit the number of previous dividends shown, plot changes in dividends over time, and export the data in various formats. You can also specify the name of an excel sheet to save the data to when exporting in .xlsx format.
+
+Examples:
+- Display the last 16 dividends for a specific stock symbol: stocks/fa/divs -t <SYMBOL> -l 16
+- Show the last 10 dividends for a specific stock symbol: stocks/fa/divs -t <SYMBOL> -l 10
+- Plot changes in dividend over time for a specific stock symbol: stocks/fa/divs -t <SYMBOL> -p
+- Export historical dividends for a specific stock symbol in csv format: stocks/fa/divs -t <SYMBOL> --export csv
+- Export historical dividends for a specific stock symbol in xlsx format with a custom sheet name: stocks/fa/divs -t <SYMBOL> --export xlsx --sheet-name Dividends
+- Display the last 5 dividends and plot changes over time for a specific stock symbol: stocks/fa/divs -t <SYMBOL> -l 5 -p

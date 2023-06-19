@@ -1,0 +1,12 @@
+parent_command:forex/oanda
+usage: summary
+
+Print some information about your account.
+
+summary
+Examples:
+- To display account information using the summary command: forex/oanda/summary
+- Show your account details with the summary command: forex/oanda/summary
+- Retrieve account information using the summary command: forex/oanda/summary
+- Access your account details with the summary command: forex/oanda/summary
+- Get an overview of your account by using the summary command: forex/oanda/summary

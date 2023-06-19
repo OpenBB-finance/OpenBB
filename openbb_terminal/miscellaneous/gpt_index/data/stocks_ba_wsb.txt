@@ -1,0 +1,8 @@
+parent_command: stocks/ba/
+usage: wsb [-l N_LIMIT] [--new] [-h]  Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]  optional arguments:   -l N_LIMIT, --limit N_LIMIT                         limit of posts to print. (default: 10)   --new                 new flag, if true the posts retrieved are based on                         being more recent rather than their score. (default:                         False)   -h, --help            show this help message (default: False)  For more information and examples, use 'about wsb' to access the related guide.
+Summary: Display posts from the WallStreetBets subreddit, with options to limit the number of posts shown and sort by recency. The command retrieves information from Reddit and can be customized using the given parameters.
+
+Examples:
+- Show the top 10 WallStreetBets posts: stocks/ba/wsb
+- Show the top 20 WallStreetBets posts: stocks/ba/wsb -l 20
+- Show the 15 most recent WallStreetBets posts: stocks/ba/wsb -l 15 --new

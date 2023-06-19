@@ -1,0 +1,11 @@
+parent_command: stocks/ca/
+usage: volume [-s START] [-e END] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Historical volume comparison between similar companies.  optional arguments:   -s START, --start START                         The starting date (format YYYY-MM-DD) of the stock                         (default: 2022-04-18)   -e END, --end END     The end date (format YYYY-MM-DD) of the stocks                         (default: 2023-04-19)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about volume' to access the related guide.
+Summary: Compare historical volume data between similar companies within a specified date range. You can set the start and end dates for the comparison, and export the data in various formats.
+
+Examples:
+- Compare historical volume data for similar companies to <SYMBOL>: stocks/load <SYMBOL>/ca/volume
+- Compare historical volume data for similar companies to <SYMBOL> between specific dates: stocks/load <SYMBOL>/ca/volume -s 2022-01-01 -e 2022-12-31
+- Export historical volume comparison data for similar companies to <SYMBOL> in csv format: stocks/load <SYMBOL>/ca/volume --export csv
+- Save historical volume comparison data for similar companies to <SYMBOL> to a specific excel sheet: stocks/load <SYMBOL>/ca/volume --sheet-name Sheet1
+- Analyze historical volume data for similar companies to <SYMBOL> starting from a specific date: stocks/load <SYMBOL>/ca/volume -s 2022-06-01
+- Analyze historical volume data for similar companies to <SYMBOL> up to a specific date: stocks/load <SYMBOL>/ca/volume -e 2022-12-31

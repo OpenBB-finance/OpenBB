@@ -38,7 +38,13 @@ The complete list is found [here](https://docs.openbb.co/terminal/usage/guides/a
 
 </details>
 
-<details><summary>How do I load a ticker symbol from India?</summary>
+<details><summary>How do I find and load a ticker symbol from India, or any other country?</summary>
+
+Use the [`/stocks/search`](https://docs.openbb.co/terminal/usage/intros/stocks#search) command.
+
+```console
+search --country canada --industrygroup banks
+```
 
 Ticker symbols listed on exchanges outside of the US will have a suffix attached, for example, Rico Auto Industries Limited:
 

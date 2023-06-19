@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: team
+
+Display asset's team [Source: https://messari.io]
+
+team
+Examples:
+- To view the team behind a specific cryptocurrency, use: crypto/load <COIN>/dd/team
+- Show the team members of a crypto asset: crypto/load <COIN>/dd/team
+- Display the team associated with a cryptocurrency: crypto/load <COIN>/dd/team
+- Examine the team for a particular crypto asset: crypto/load <COIN>/dd/team
+- Retrieve information on the team of a specific crypto asset: crypto/load <COIN>/dd/team

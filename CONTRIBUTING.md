@@ -157,7 +157,7 @@ In this function:
 - We use the openbb_terminal helper function `request`, which is an abstracted version of the requests library, which allows us to add user agents, timeouts, caches, etc. to any HTTP request in the terminal.
 - We check for different error messages.  This will depend on the API provider and usually requires some trial and error.  With the FMP API, if there is an invalid symbol, we get a response code of 200, but the json response has an error message field.  Same with an invalid API key.
 - When an error is caught, we still return an empty dataframe.
-- We return the json response as a pandas dataframe.  Most functions in the terminal should return a datatframe, but if not, make sure that the return type is specified.
+- We return the json response as a pandas dataframe.  Most functions in the terminal should return a dataframe, but if not, make sure that the return type is specified.
 
 Note:
 

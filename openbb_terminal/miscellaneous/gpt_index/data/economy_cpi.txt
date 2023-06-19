@@ -1,0 +1,32 @@
+parent_command:economy
+usage: cpi [-c COUNTRIES] [-u {growth_previous,growth_same,index_2015}] [--frequency {monthly,quarterly,annual}] [--harmonized] [--no-smart-select] [-o] [-s START_DATE] [-e END_DATE]
+
+Plot (harmonized) consumer price indices for a variety of countries and regions.
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        What countries you'd like to collect data for (default: united_states)
+  -u {growth_previous,growth_same,index_2015}, --units {growth_previous,growth_same,index_2015}
+                        What units you'd like to collect data for (default: growth_same)
+  --frequency {monthly,quarterly,annual}
+                        What frequency you'd like to collect data for (default: monthly)
+  --harmonized          Whether to use harmonized cpi data (default: False)
+  --no-smart-select     Whether to assist with selection (default: True)
+  -o, --options         See the available options (default: False)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: 1993-06-02)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: 2023-06-02)
+
+
+Examples:
+- Plot consumer price indices for the <COUNTRY>: economy/cpi -c <COUNTRY>
+- Display consumer price indices for multiple countries: economy/cpi -c "<COUNTRY>, <COUNTRY>, <COUNTRY>"
+- Show consumer price indices with annual frequency: economy/cpi --frequency annual
+- Plot harmonized consumer price indices for a specific country: economy/cpi -c <COUNTRY> --harmonized
+- Display consumer price indices using growth compared to the previous period: economy/cpi -u growth_previous
+- Plot consumer price indices for a specific date range: economy/cpi -s 2000-01-01 -e 2020-12-31
+- Show available options for the consumer price indices command: economy/cpi -o
+- Display consumer price indices for a <COUNTRY> without smart select assistance: economy/cpi -c <COUNTRY> --no-smart-select
+- Plot consumer price indices with quarterly frequency and index units based on 2015: economy/cpi --frequency quarterly -u index_2015
+- Show consumer price indices for a specific country and frequency using harmonized data: economy/cpi -c <COUNTRY> --frequency annual --harmonized

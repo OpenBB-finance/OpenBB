@@ -1,5 +1,5 @@
-import CommonDialog, { styleDialog } from "../Dialogs/CommonDialog";
 import { useState } from "react";
+import CommonDialog, { styleDialog } from "../Dialogs/CommonDialog";
 
 const reader = new FileReader();
 
@@ -38,11 +38,10 @@ export default function OverlayChartDialog({
   const [traceName, setTraceName] = useState("");
   const [csvData, setCsvData] = useState<any[]>([]);
   const [csvColumns, setCsvColumns] = useState<string[]>([]);
-  const [selectedColumns, setSelectedColumns] = useState<any>({});
   const [yaxisOptions, setYaxisOptions] = useState<any>({});
   const optionIds = ["x", "open", "high", "low", "close"];
 
-  let traceTypes: any = {
+  const traceTypes: any = {
     scatter: "Scatter (Line)",
     candlestick: "Candlestick",
     bar: "Bar",
@@ -56,14 +55,15 @@ export default function OverlayChartDialog({
     setTraceName("");
     setCsvData([]);
     setCsvColumns([]);
-    setSelectedColumns({});
     setOptions({});
   }
 
   function onSubmit() {
     if (csvData.length == 0) {
       document.getElementById("csv_file")?.focus();
-      document.getElementById("csv_file")?.style.setProperty("border", "1px solid red");
+      document
+        .getElementById("csv_file")
+        ?.style.setProperty("border", "1px solid red");
       document.getElementById("csv_file_warning")!.style.display = "block";
       return;
     }
@@ -82,7 +82,6 @@ export default function OverlayChartDialog({
     onClose();
   }
 
-
   return (
     <CommonDialog
       title="Overlay Chart"
@@ -94,9 +93,13 @@ export default function OverlayChartDialog({
         <div>
           <label htmlFor="csv_file">
             <b>CSV file:</b>
-            <div id="csv_file_warning" className="popup_warning" style={{ marginLeft: "80px", marginBottom: "10px" }}>
+            <div
+              id="csv_file_warning"
+              className="popup_warning"
+              style={{ marginLeft: "80px", marginBottom: "10px" }}
+            >
               CSV file is required.
-              </div>
+            </div>
           </label>
           <input
             onChange={(e) => {
@@ -104,14 +107,16 @@ export default function OverlayChartDialog({
                 return;
               } else if (e.target.files[0].type !== "text/csv") {
                 document.getElementById("csv_file")?.focus();
-                document.getElementById("csv_file")?.style.setProperty("border", "1px solid red");
-                document.getElementById("csv_file_warning")!.style.display = "block";
+                document
+                  .getElementById("csv_file")
+                  ?.style.setProperty("border", "1px solid red");
+                document.getElementById("csv_file_warning")!.style.display =
+                  "block";
                 return;
               }
 
               if (csvColumns.length > 0) {
                 setCsvColumns([]);
-                setSelectedColumns({});
                 setOptions({});
                 setTraceType("scatter");
               }
@@ -123,22 +128,28 @@ export default function OverlayChartDialog({
                 ) {
                   return;
                 }
-                let lines = filebytes.target.result
+                const lines = filebytes.target.result
                   .split("\n")
                   .map((x) => x.replace(/\r/g, ""));
 
                 const headers = lines[0].split(",");
                 const headers_lower = headers.map((x) =>
-                  x.trim().toLowerCase()
+                  x.trim().toLowerCase(),
                 );
 
-                let updateOptions: any = {};
+                const updateOptions: { [key: string]: any } = {};
+
+                if (headers.length > 1) {
+                  updateOptions.x = headers[0];
+                  updateOptions.y = headers[1];
+                }
+
                 for (let i = 0; i < optionIds.length; i++) {
                   if (headers_lower.includes(optionIds[i])) {
                     updateOptions[optionIds[i]] =
                       headers[headers_lower.indexOf(optionIds[i])];
                   } else if (
-                    optionIds[i] == "x" &&
+                    optionIds[i] === "x" &&
                     headers_lower.includes("date")
                   ) {
                     updateOptions[optionIds[i]] =
@@ -148,10 +159,14 @@ export default function OverlayChartDialog({
 
                 const candle_cols = ["open", "high", "low", "close"];
                 const candle_cols_present = candle_cols.every((x) =>
-                  headers_lower.includes(x)
+                  headers_lower.includes(x),
                 );
                 if (candle_cols_present) {
                   setTraceType("candlestick");
+                } else if (headers_lower.length >= 5) {
+                  candle_cols.forEach((x) => {
+                    updateOptions[x] = headers[candle_cols.indexOf(x) + 1];
+                  });
                 }
 
                 if (headers_lower.includes("close")) {
@@ -162,11 +177,11 @@ export default function OverlayChartDialog({
                   updateOptions.y = headers[headers_lower.indexOf("close")];
                 }
 
-                let data = [];
+                const data = [];
 
                 for (let i = 1; i < lines.length; i++) {
-                  let obj = {};
-                  let currentline = lines[i].split(",");
+                  const obj = {};
+                  const currentline = lines[i].split(",");
                   for (let j = 0; j < headers.length; j++) {
                     //@ts-ignore
                     obj[headers[j]] = currentline[j];
@@ -179,8 +194,10 @@ export default function OverlayChartDialog({
 
                 try {
                   if (filename.includes("_")) {
-                    let name_parts = filename.split("_");
-                    let date_regex = new RegExp("^[0-9]{8}$");
+                    const name_parts = filename
+                      .replace(/_{2,}/g, "_")
+                      .split("_");
+                    const date_regex = new RegExp("^[0-9]{8}$");
 
                     if (name_parts.length > 2) {
                       // we check if the first 2 parts are date and time
@@ -236,7 +253,7 @@ export default function OverlayChartDialog({
                   <option key={x} value={x}>
                     {traceTypes[x]}
                   </option>
-                )
+                ),
             )}
           </select>
         </div>
@@ -270,9 +287,9 @@ export default function OverlayChartDialog({
                 id="csv_columns"
                 className="csv_column_container"
               >
-                {["x", "y"].map((x) => (
+                {["x", "y"].map((key) => (
                   <div
-                    key={x}
+                    key={key}
                     style={{
                       marginTop: 10,
                       display: "flex",
@@ -280,32 +297,23 @@ export default function OverlayChartDialog({
                       justifyContent: "space-between",
                     }}
                   >
-                    <label htmlFor={`csv_${x}`} style={{ width: "100px" }}>
-                      {x.toUpperCase()} Axis
+                    <label htmlFor={`csv_${key}`} style={{ width: "100px" }}>
+                      {key.toUpperCase()} Axis
                     </label>
                     <select
                       onChange={(e) => {
-                        setSelectedColumns({
-                          ...selectedColumns,
-                          [x]: e.target.value,
-                        });
                         setOptions({
                           ...options,
-                          [x]: e.target.value,
+                          [key]: e.target.value,
                         });
                       }}
-                      id={`csv_${x}`}
+                      id={`csv_${key}`}
                       style={{ width: "100%" }}
-                      defaultValue={options[x]}
+                      defaultValue={options[key]}
                     >
-                      {options[x] && (
-                        <option key={x} value={options[x]}>
-                          {options[x]}
-                        </option>
-                      )}
-                      {csvColumns.map((x) => (
-                        <option key={x} value={x}>
-                          {x}
+                      {csvColumns.map((column) => (
+                        <option key={column} value={column}>
+                          {column}
                         </option>
                       ))}
                     </select>
@@ -319,9 +327,9 @@ export default function OverlayChartDialog({
                 className="csv_column_container"
                 style={{ marginTop: 15 }}
               >
-                {["x", "open", "high", "low", "close"].map((x) => (
+                {["x", "open", "high", "low", "close"].map((key) => (
                   <div
-                    key={x}
+                    key={key}
                     style={{
                       marginTop: 10,
                       display: "flex",
@@ -329,36 +337,25 @@ export default function OverlayChartDialog({
                       justifyContent: "space-between",
                     }}
                   >
-                    <label htmlFor={`csv_${x}`} style={{ width: "100px" }}>
-                      {x.charAt(0).toUpperCase() + x.slice(1)}
+                    <label htmlFor={`csv_${key}`} style={{ width: "100px" }}>
+                      {key.charAt(0).toUpperCase() + key.slice(1)}
                     </label>
                     <select
                       onChange={(e) => {
-                        setSelectedColumns({
-                          ...selectedColumns,
-                          [x]: e.target.value,
-                        });
                         setOptions({
                           ...options,
-                          [x]: e.target.value,
+                          [key]: e.target.value,
                         });
                       }}
-                      id={`csv_${x}`}
+                      id={`csv_${key}`}
                       style={{ width: "100%" }}
+                      defaultValue={options[key]}
                     >
-                      {options[x] && (
-                        <option key={x} value={options[x]}>
-                          {options[x]}
+                      {csvColumns.map((column) => (
+                        <option key={column} value={column}>
+                          {column}
                         </option>
-                      )}
-                      {csvColumns.map(
-                        (x) =>
-                          x != options[x] && (
-                            <option key={x} value={x}>
-                              {x}
-                            </option>
-                          )
-                      )}
+                      ))}
                     </select>
                   </div>
                 ))}
@@ -508,27 +505,28 @@ export function CSVonSubmit({
   increasingColor: string;
   decreasingColor: string;
 }) {
-  let main_trace = plotlyData.data[0];
-  if (main_trace.xaxis == undefined) {
+  console.log("options", options);
+  const main_trace = plotlyData.data[0] || {};
+  if (main_trace.xaxis === undefined) {
     main_trace.xaxis = "x";
   }
-  if (main_trace.yaxis == undefined) {
+  if (main_trace.yaxis === undefined) {
     main_trace.yaxis = "y";
   }
   let yaxis_id = main_trace.yaxis;
-  let yaxis;
+  let yaxis: string;
 
   const left_yaxis_ticks = Object.keys(plotlyData.layout)
     .filter((k) => k.startsWith("yaxis"))
     .map((k) => plotlyData.layout[k])
     .filter(
       (yaxis) =>
-        yaxis.side == "left" &&
-        (yaxis.overlaying == "y" ||
-          (yaxis.fixedrange != undefined && yaxis.fixedrange == true))
+        yaxis.side === "left" &&
+        (yaxis.overlaying === "y" ||
+          (yaxis.fixedrange !== undefined && yaxis.fixedrange === true)),
     ).length;
 
-  let ticksuffix = left_yaxis_ticks > 0 ? "     " : "";
+  const ticksuffix = left_yaxis_ticks > 0 ? "     " : "";
 
   if (yaxisOptions.sameYaxis !== true) {
     const yaxes = Object.keys(plotlyData.layout)
@@ -537,7 +535,6 @@ export function CSVonSubmit({
 
     yaxis = `y${yaxes.length + 1}`;
     yaxis_id = `yaxis${yaxes.length + 1}`;
-    console.log(`yaxis: ${yaxis} ${yaxis_id}`);
     plotlyData.layout[yaxis_id] = {
       ...layout_defaults,
       title: {
@@ -565,25 +562,42 @@ export function CSVonSubmit({
   let trace: any = {};
 
   if (["scatter", "bar"].includes(traceType)) {
+    if (!csvData || csvData.length === 0) return plotlyData;
     const non_null = csvData.findIndex(
-      (x: any) => x[options.y] != null && x[options.y] != 0
+      (x: any) => x[options.y] !== null && x[options.y] !== 0,
     );
+
+    if (non_null === -1) {
+      return plotlyData;
+    }
+
+    const scatter_data: { [key: string]: any[] } = {
+      x: [],
+      y: [],
+      customdata: [],
+    };
+
+    csvData.forEach((row: any) => {
+      let y = row[options.y];
+      scatter_data.customdata.push(y);
+      if (
+        yaxisOptions.percentChange &&
+        (traceType === "scatter" || traceType === "line")
+      ) {
+        y =
+          (row[options.y] - csvData[non_null][options.y]) /
+          csvData[non_null][options.y];
+      }
+      scatter_data.x.push(row[options.x]);
+      scatter_data.y.push(y);
+    });
 
     trace = {
       ...traceBase,
-      x: csvData.map((row: any) => row[options.x]),
-      y: csvData.map(function (row: any) {
-        if (yaxisOptions.percentChange && traceType === "scatter") {
-          return (
-            (row[options.y] - csvData[non_null][options.y]) /
-            csvData[non_null][options.y]
-          );
-        } else {
-          return row[options.y];
-        }
-      }),
-      customdata: csvData.map((row: any) => row[options.y]),
-      hovertemplate: "%{customdata:.2f}<extra></extra>",
+      x: scatter_data.x,
+      y: scatter_data.y,
+      customdata: scatter_data.customdata,
+      hovertemplate: "%{customdata:.2f}",
       connectgaps: true,
       marker: { color: traceColor },
     };
@@ -591,27 +605,47 @@ export function CSVonSubmit({
     if (traceType === "bar") {
       trace.orientation = options.orientation;
       trace.marker.opacity = 0.7;
-      delete trace.connectgaps;
-      delete trace.hovertemplate;
-      delete trace.customdata;
+      trace.connectgaps = undefined;
+      trace.hovertemplate = undefined;
+      trace.customdata = undefined;
     }
   } else if (traceType === "candlestick") {
+    const candlestick_data: { [key: string]: any[] } = {
+      x: [],
+      open: [],
+      high: [],
+      low: [],
+      close: [],
+    };
+
+    csvData.forEach((row: any) => {
+      candlestick_data.x.push(row[options.x]);
+      candlestick_data.open.push(row[options.open]);
+      candlestick_data.high.push(row[options.high]);
+      candlestick_data.low.push(row[options.low]);
+      candlestick_data.close.push(row[options.close]);
+    });
+
     trace = {
       ...traceBase,
-      x: csvData.map((row: any) => row[options.x]),
-      open: csvData.map((row: any) => row[options.open]),
-      high: csvData.map((row: any) => row[options.high]),
-      low: csvData.map((row: any) => row[options.low]),
-      close: csvData.map((row: any) => row[options.close]),
-      increasing: { line: { color: increasingColor } },
-      decreasing: { line: { color: decreasingColor } },
+      x: candlestick_data.x,
+      open: candlestick_data.open,
+      high: candlestick_data.high,
+      low: candlestick_data.low,
+      close: candlestick_data.close,
+      increasing: {
+        line: { color: increasingColor, width: 0.8 },
+        fillcolor: increasingColor,
+      },
+      decreasing: {
+        line: { color: decreasingColor, width: 0.8 },
+        fillcolor: decreasingColor,
+      },
     };
   }
 
-  const newPlotlyData = {
+  return {
     ...plotlyData,
     data: [...plotlyData.data, trace],
   };
-
-  return newPlotlyData;
 }

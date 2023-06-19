@@ -1,0 +1,12 @@
+parent_command:account
+usage: login
+
+Login into new session.
+
+login
+Examples:
+- To log in to a new session, simply use the command: account/login
+- Log in to your account by entering: account/login
+- Start a new session by executing the command: account/login
+- To access your account, input the command: account/login
+- Initiate a new session with the following command: account/login

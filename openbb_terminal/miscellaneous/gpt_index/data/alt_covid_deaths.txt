@@ -1,0 +1,9 @@
+parent_command:alt/covid
+usage: deaths
+
+Show historical deaths by country.
+
+deaths
+Examples:
+- To display historical deaths by country due to COVID-19: alt/covid/deaths
+- For a list of COVID-19 related deaths in various countries: alt/covid/deaths

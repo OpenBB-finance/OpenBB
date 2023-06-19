@@ -1,0 +1,11 @@
+parent_command: stocks/disc/
+usage: lowfloat [-l LIMIT] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top stocks with lowest float. LowFloat.com provides a convenient sorted database of stocks which have a float of under 10 million shares. Additional key data such as the number of outstanding shares, short interest, and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]  optional arguments:   -l LIMIT, --limit LIMIT                         limit of stocks to display (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about lowfloat' to access the related guide.
+Summary: Display top stocks with the lowest float, limited by a specified number. LowFloat.com provides data for stocks with a float under 10 million shares, including outstanding shares, short interest, and company industry. Data covers the Nasdaq Stock Market, New York Stock Exchange, American Stock Exchange, and Over the Counter Bulletin Board. You can set a limit for the number of stocks displayed and export the data in various formats.
+
+Examples:
+- Show top 5 stocks with the lowest float: stocks/disc/lowfloat
+- Show top 10 stocks with the lowest float: stocks/disc/lowfloat -l 10
+- Display top 20 low float stocks: stocks/disc/lowfloat --limit 20
+- Export top 5 low float stocks in csv format: stocks/disc/lowfloat --export csv
+- Export top 10 low float stocks in json format: stocks/disc/lowfloat -l 10 --export json
+- Save top 5 low float stocks to a specific excel sheet: stocks/disc/lowfloat --sheet-name Sheet1

@@ -1,0 +1,28 @@
+parent_command:portfolio/brokers/degiro
+usage: create [-a {buy,sell}] (-prod PRODUCT | -sym SYMBOL) -p PRICE (-s SIZE | -up UP_TO) [-d {gtd,gtc}] [-t {limit,market,stop-limit,stop-loss}]
+
+optional arguments:
+  -a {buy,sell}, --action {buy,sell}
+                        Action wanted.
+  -prod PRODUCT, --product PRODUCT
+                        Id of the product wanted.
+  -sym SYMBOL, --symbol SYMBOL
+                        Symbol wanted.
+  -p PRICE, --price PRICE
+                        Price wanted.
+  -s SIZE, --size SIZE  Price wanted.
+  -up UP_TO, --up-to UP_TO
+                        Up to price.
+  -d {gtd,gtc}, --duration {gtd,gtc}
+                        Duration of the Order.
+  -t {limit,market,stop-limit,stop-loss}, --type {limit,market,stop-limit,stop-loss}
+                        Type of the Order.
+
+
+Examples:
+- To create a buy limit order for a specific product: portfolio/brokers/degiro/create -a buy -prod PRODUCT -p PRICE -s SIZE -t limit
+- To create a sell market order for a specific symbol: portfolio/brokers/degiro/create -a sell -sym SYMBOL -t market -s SIZE
+- To create a buy stop-limit order with a specific duration: portfolio/brokers/degiro/create -a buy -sym SYMBOL -p PRICE -s SIZE -t stop-limit -d gtd
+- To create a sell stop-loss order for a specific product: portfolio/brokers/degiro/create -a sell -prod PRODUCT -p PRICE -s SIZE -t stop-loss
+- To create a buy limit order with a specific duration and up to a certain price: portfolio/brokers/degiro/create -a buy -sym SYMBOL -p PRICE -up UP_TO -t limit -d gtc
+- To create a sell market order for a specific product with a specific size: portfolio/brokers/degiro/create -a sell -prod PRODUCT -t market -s SIZE

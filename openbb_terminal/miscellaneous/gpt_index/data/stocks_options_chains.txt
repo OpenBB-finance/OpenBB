@@ -1,0 +1,15 @@
+parent_command: stocks/options/
+usage: chains [-c] [-p] [-m MIN_SP] [-M MAX_SP] [-d TO_DISPLAY] [-e {}] [-h]               [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]               [--source {YahooFinance,Tradier,Nasdaq,Intrinio}]  Display option chains  optional arguments:   -c, --calls           Flag to show calls only (default: False)   -p, --puts            Flag to show puts only (default: False)   -m MIN_SP, --min MIN_SP                         minimum strike price to consider. (default: -1)   -M MAX_SP, --max MAX_SP                         maximum strike price to consider. (default: -1)   -d TO_DISPLAY, --display TO_DISPLAY                         Columns to display (default: [])   -e {}, --expiration {}                         Select expiration date (YYYY-MM-DD) (default: )   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --source {YahooFinance,Tradier,Nasdaq,Intrinio}                         Data source to select from (default: YahooFinance)  For more information and examples, use 'about chains' to access the related guide.
+Summary: Display option chains for a specific stock symbol with the ability to filter by call or put options, minimum and maximum strike prices, and expiration date. You can also choose the columns to display, the data source, and export the data in various formats.
+
+Examples:
+- Display option chains for a stock symbol: stocks/load <SYMBOL>/options/chains
+- Display call options only for a stock symbol: stocks/load <SYMBOL>/options/chains -c
+- Display put options only for a stock symbol: stocks/load <SYMBOL>/options/chains -p
+- Display option chains for a stock symbol with strike prices between 20 and 50: stocks/load <SYMBOL>/options/chains -m 20 -M 50
+- Display option chains for a stock symbol expiring on a specific date: stocks/load <SYMBOL>/options/chains -e 2023-01-31
+- Display specific columns for option chains of a stock symbol: stocks/load <SYMBOL>/options/chains -d "Symbol,Last,Volume"
+- Display option chains for a stock symbol using a different data source: stocks/load <SYMBOL>/options/chains --source Nasdaq
+- Export option chains data for a stock symbol in csv format: stocks/load <SYMBOL>/options/chains --export csv
+- Save option chains data for a stock symbol to a specific excel sheet: stocks/load <SYMBOL>/options/chains --sheet-name Sheet1
+- What options are available for <SYMBOL> stock?: stocks/load <SYMBOL>/options/chains

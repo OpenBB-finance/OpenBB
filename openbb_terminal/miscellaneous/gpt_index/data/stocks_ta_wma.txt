@@ -1,0 +1,19 @@
+parent_command:stocks/ta
+usage: wma [-l N_LENGTH] [-o N_OFFSET]
+
+A Weighted Moving Average puts more weight on recent data and less on past data. This is done by multiplying each bar’s price by a weighting factor. Because of its unique calculation, WMA will follow prices more closely than a
+corresponding Simple Moving Average.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [20, 50])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To calculate the weighted moving average with default window lengths for a stock: stocks/load <SYMBOL>/ta/wma
+- Calculate the weighted moving average with a custom window length of 30 for a specific stock: stocks/load <SYMBOL>/ta/wma -l 30
+- Obtain the weighted moving average for a stock with multiple window lengths, 10 and 40: stocks/load <SYMBOL>/ta/wma -l 10,40
+- Calculate the weighted moving average for a stock, offset by 5 days: stocks/load <SYMBOL>/ta/wma -o 5
+- For a specific stock, compute the weighted moving average with a custom window length of 25 and an offset of 3 days: stocks/load <SYMBOL>/ta/wma -l 25 -o 3

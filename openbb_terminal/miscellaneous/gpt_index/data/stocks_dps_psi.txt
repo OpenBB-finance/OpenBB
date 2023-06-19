@@ -1,0 +1,12 @@
+parent_command: stocks/dps/
+usage: psi [--nyse] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw] [-l LIMIT]            [--source {Stockgrid,Quandl}]  Shows price vs short interest volume. [Source: Quandl/Stockgrid]  optional arguments:   --nyse                Data from NYSE flag. Otherwise comes from NASDAQ. Only                         works for Quandl.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.   --raw                 Flag to display raw data   -l LIMIT, --limit LIMIT                         Number of entries to show in data.   --source {Stockgrid,Quandl}                         Data source to select from  For more information and examples, use 'about psi' to access the related guide.
+Summary: Displays price vs short interest volume for a specific stock symbol, with options to choose data source, limit the number of entries displayed, and export data in various formats. You can also select data from NYSE or NASDAQ and display raw data.
+
+Examples:
+- To show price vs short interest volume for a stock: stocks/load <SYMBOL>/dps/psi
+- To display price vs short interest volume for a stock using NYSE data: stocks/load <SYMBOL>/dps/psi --nyse
+- To show price vs short interest volume for a stock with a specific data source: stocks/load <SYMBOL>/dps/psi --source Quandl
+- To limit the number of entries displayed in price vs short interest volume data: stocks/load <SYMBOL>/dps/psi -l 10
+- To display raw data for price vs short interest volume: stocks/load <SYMBOL>/dps/psi --raw
+- To export price vs short interest volume data in csv format: stocks/load <SYMBOL>/dps/psi --export csv
+- To save price vs short interest volume data to a specific excel sheet: stocks/load <SYMBOL>/dps/psi --sheet-name Sheet1

@@ -1,0 +1,13 @@
+parent_command:stocks/qa
+usage: summary
+
+Summary statistics
+
+summary
+Examples:
+- Retrieve summary statistics for a loaded stock: stocks/load <SYMBOL>/qa/summary
+- Obtain summary statistics of a stock after loading it: stocks/load <SYMBOL>/qa/summary
+- Load a stock symbol and get its summary statistics: stocks/load <SYMBOL>/qa/summary
+- Access summary statistics for a loaded stock symbol: stocks/load <SYMBOL>/qa/summary
+- Load a stock and display its summary statistics: stocks/load <SYMBOL>/qa/summary
+- What was the mean return for SYMBOL over the last year: stocks/load <SYMBOL> -s <ONE YEAR AGO>/qa/summary

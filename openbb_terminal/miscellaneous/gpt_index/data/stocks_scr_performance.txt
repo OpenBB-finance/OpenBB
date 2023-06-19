@@ -1,0 +1,12 @@
+parent_command: stocks/scr/
+usage: performance [-p Desired preset.] [-l LIMIT] [-r] [-s SORTBY] [-h]                    [--export EXPORT]                    [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints performance data of the companies that meet the pre-set filtering.  optional arguments:   -p Desired preset., --preset Desired preset.                         Filter presets   -l LIMIT, --limit LIMIT                         Limit of stocks to print   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed.   -s SORTBY, --sort SORTBY                         Sort elements of the table.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about performance' to access the related guide.
+Summary: Prints performance data of companies that meet pre-set filtering criteria. You can choose a preset filter, set a limit on the number of stocks displayed, sort the data in ascending or descending order, and export the data in various formats. You can also specify the excel sheet name for .xlsx files.
+
+Examples:
+- Display performance data using a specific preset: stocks/scr/performance -p <Desired preset>
+- Display performance data for a limited number of stocks: stocks/scr/performance -l 10
+- Display performance data sorted in ascending order: stocks/scr/performance -r
+- Display performance data sorted by a specific column: stocks/scr/performance -s <SORTBY>
+- Export performance data to a csv file: stocks/scr/performance --export csv
+- Export performance data to an xlsx file with a custom sheet name: stocks/scr/performance --export xlsx --sheet-name <SHEET_NAME>
+- Display performance data using a preset and limit the number of stocks displayed: stocks/scr/performance -p <Desired preset> -l 20

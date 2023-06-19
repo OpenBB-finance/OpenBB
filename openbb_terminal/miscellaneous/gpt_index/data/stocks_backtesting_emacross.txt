@@ -1,0 +1,22 @@
+parent_command:stocks/backtesting
+usage: emacross [-l LONG] [-s SHORT] [--spy] [--no_bench] [--no_short]
+
+Cross between a long and a short Exponential Moving Average.
+
+optional arguments:
+  -l LONG, --long LONG  Long EMA period (default: 50)
+  -s SHORT, --short SHORT
+                        Short EMA period (default: 20)
+  --spy                 Flag to add spy hold comparison (default: False)
+  --no_bench            Flag to not show buy and hold comparison (default: False)
+  --no_short            Flag that disables the short sell (default: True)
+
+
+Examples:
+- To perform a backtest using the default EMA periods for a specific stock: stocks/load <SYMBOL>/backtesting/emacross
+- To backtest a stock with custom EMA periods: stocks/load <SYMBOL>/backtesting/emacross -l 100 -s 30
+- To compare the backtest results with the SPY benchmark: stocks/load <SYMBOL>/backtesting/emacross --spy
+- To perform a backtest without displaying the buy and hold comparison: stocks/load <SYMBOL>/backtesting/emacross --no_bench
+- To enable short selling in the backtest: stocks/load <SYMBOL>/backtesting/emacross --no_short False
+- To run a backtest with custom EMA periods and compare it to the SPY benchmark: stocks/load <SYMBOL>/backtesting/emacross -l 100 -s 30 --spy
+- To perform a comprehensive backtest with custom EMA periods, SPY comparison, and short selling enabled: stocks/load <SYMBOL>/backtesting/emacross -l 100 -s 30 --spy --no_short False

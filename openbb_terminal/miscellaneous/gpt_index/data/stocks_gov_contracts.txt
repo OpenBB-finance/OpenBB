@@ -1,0 +1,10 @@
+parent_command: stocks/gov/
+usage: contracts [-p PAST_TRANSACTION_DAYS] [--raw] [-h] [--export EXPORT]                  [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Contracts associated with ticker. [Source: www.quiverquant.com]  optional arguments:   -p PAST_TRANSACTION_DAYS, --past_transaction_days PAST_TRANSACTION_DAYS                         Past transaction days (default: 10)   --raw                 Print raw data. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about contracts' to access the related guide.
+Summary: Display contracts associated with a specific stock symbol, sourced from www.quiverquant.com. You can choose the number of past transaction days to display, export the data in various formats, and save the data to a specific excel sheet. Raw data can also be printed if desired.
+
+Examples:
+- To view contracts for the past 10 days for a specific stock symbol: stocks/load <SYMBOL>/gov/contracts
+- To view contracts for the past 30 days for a specific stock symbol: stocks/load <SYMBOL>/gov/contracts -p 30
+- To display raw data for contracts associated with a specific stock symbol: stocks/load <SYMBOL>/gov/contracts --raw
+- To export contract data for a specific stock symbol in csv format: stocks/load <SYMBOL>/gov/contracts --export csv
+- To save contract data for a specific stock symbol to a specific excel sheet: stocks/load <SYMBOL>/gov/contracts --sheet-name Sheet1

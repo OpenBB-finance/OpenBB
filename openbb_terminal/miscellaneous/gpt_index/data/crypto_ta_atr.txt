@@ -1,0 +1,23 @@
+parent_command:crypto/ta
+usage: atr [-l N_LENGTH] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
+
+Averge True Range is used to measure volatility, especially volatility caused by gaps or limit moves.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window length (default: 14)
+  -m {ema,sma,wma,hma,zlma}, --mamode {ema,sma,wma,hma,zlma}
+                        mamode (default: ema)
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- Calculate Average True Range for a cryptocurrency: crypto/load <COIN>/ta/atr
+- Calculate Average True Range with a 20-day window: crypto/load <COIN>/ta/atr -l 20
+- Calculate Average True Range using Simple Moving Average: crypto/load <COIN>/ta/atr -m sma
+- Calculate Average True Range with a 30-day window and Weighted Moving Average: crypto/load <COIN>/ta/atr -l 30 -m wma
+- Calculate Average True Range with a 14-day window and an offset of 5: crypto/load <COIN>/ta/atr -l 14 -o 5
+- Calculate Average True Range using Hull Moving Average: crypto/load <COIN>/ta/atr -m hma
+- Calculate Average True Range with a 10-day window and Zero Lag Moving Average: crypto/load <COIN>/ta/atr -l 10 -m zlma
+- Calculate Average True Range with a 20-day window, Exponential Moving Average, and an offset of 3: crypto/load <COIN>/ta/atr -l 20 -m ema -o 3

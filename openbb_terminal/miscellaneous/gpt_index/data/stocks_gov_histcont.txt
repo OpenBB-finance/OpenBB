@@ -1,0 +1,9 @@
+parent_command: stocks/gov/
+usage: histcont [--raw] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Quarterly-contracts historical [Source: www.quiverquant.com]  optional arguments:   --raw                 Print raw data. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about histcont' to access the related guide.
+Summary: Display quarterly contracts historical data for a specific stock symbol. You can choose to display raw data, export the data in various formats, and save the data to a specific excel sheet.
+
+Examples:
+- To view quarterly contracts historical data for a stock: stocks/load <SYMBOL>/gov/histcont
+- To display raw data for quarterly contracts historical data: stocks/load <SYMBOL>/gov/histcont --raw
+- To export quarterly contracts historical data in csv format: stocks/load <SYMBOL>/gov/histcont --export csv
+- To save quarterly contracts historical data to a specific excel sheet: stocks/load <SYMBOL>/gov/histcont --sheet-name Sheet1
