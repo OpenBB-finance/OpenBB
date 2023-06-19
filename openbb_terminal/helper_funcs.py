@@ -2252,18 +2252,13 @@ def query_LLM_local(query_text, gpt_model):
         return None, None
 
 
-def query_LLM_remote(query_text: str) -> Tuple[str, str]:
+def query_LLM_remote(query_text: str):
     """Query askobb on gpt-3.5 turbo hosted model
 
     Parameters
     ----------
     query_text : str
         Query string for askobb
-
-    Returns
-    -------
-    Tuple[str,str]
-        Contains a string of the response and the source nodes
     """
 
     url = "https://api.openbb.co/askobb"
