@@ -2238,7 +2238,7 @@ def query_LLM(query_text, gpt_model):
     try:
         query_engine = index.as_query_engine()
         response = query_engine.query(prompt_string)
-        return response.response
+        return response.response, response.source_nodes
     except Exception as e:
         # check if the error has the following "The model: `gpt-4` does not exist"
         if "The model: `gpt-4` does not exist" in str(e):
@@ -2249,4 +2249,4 @@ def query_LLM(query_text, gpt_model):
             return None
 
         console.print(f"[red]Something went wrong with the query. {e}[/red]")
-        return None
+        return None, None
