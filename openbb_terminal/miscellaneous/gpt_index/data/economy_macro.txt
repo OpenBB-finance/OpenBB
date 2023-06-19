@@ -23,7 +23,7 @@ optional arguments:
 
 
 Examples:
-- Retrieve macro data for the United States with default parameters: economy/macro
+- Retrieve macro data for the a specific country with default parameters: economy/macro -c <COUNTRY>
 - Get macro data for GDP and CPI of <COUNTRY> and <COUNTRY> between specific dates: economy/macro -p GDP CPI -c <COUNTRY> <COUNTRY> -s 2015-01-01 -e 2020-12-31
 - Show the available parameters and their meanings: economy/macro --show parameters
 - Display the available countries and their currencies: economy/macro --show countries
@@ -34,4 +34,4 @@ Examples:
 - Fetch macro data for <COUNTRY> with a specific end date: economy/macro -c <COUNTRY> -e 2020-12-31
 - Obtain macro data for <COUNTRY> and <COUNTRY> with specific parameters and transformations: economy/macro -p RGDP Y10YD -c <COUNTRY> <COUNTRY> -t TOYA
 - Obtain unemployment rate for <COUNTRY> and <COUNTRY>: economy/macro -p URATE -c <COUNTRY>,<COUNTRY>
-- what is the unemployment rate in the <COUNTRY>: economy/macro -p URATE -c <COUNTRY>
+- unemployment rate in the <COUNTRY>: economy/macro -p URATE -c <COUNTRY>
