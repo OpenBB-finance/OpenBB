@@ -214,7 +214,8 @@ def search(
 
     if exchange_country and exchange_country in market_coverage_suffix:
         suffix_tickers = [
-            ticker.split(".")[1] if "." in ticker else "" for ticker in list(df.index)
+            ticker.split(".")[1] if "." in str(ticker) else ""
+            for ticker in list(df.index)
         ]
         df = df[
             [val in market_coverage_suffix[exchange_country] for val in suffix_tickers]

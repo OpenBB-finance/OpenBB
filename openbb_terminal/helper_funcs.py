@@ -41,12 +41,12 @@ import yfinance as yf
 from holidays import US as us_holidays
 from langchain.chat_models import ChatOpenAI
 from llama_index import (
-    GPTVectorStoreIndex,
     LLMPredictor,
     PromptHelper,
     ServiceContext,
     SimpleDirectoryReader,
     StorageContext,
+    VectorStoreIndex,
     load_index_from_storage,
 )
 from pandas._config.config import get_option
@@ -87,7 +87,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.2
+GPT_INDEX_VER = 0.23
 
 
 # Command location path to be shown in the figures depending on watermark flag
@@ -2196,7 +2196,7 @@ def query_LLM(query_text, gpt_model):
 
         # read in documents
         documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
-        index = GPTVectorStoreIndex.from_documents(
+        index = VectorStoreIndex.from_documents(
             documents, service_context=service_context
         )
 
@@ -2204,17 +2204,34 @@ def query_LLM(query_text, gpt_model):
         console.print("Saving index to disk....\n")
         index.storage_context.persist(index_path)
 
-    prompt_string = f"""From argparse help text above, provide the terminal
-        command for {query_text}.Provide the exact command along with the parent command
-        with a "/" separation to get that information,and nothing else including any
-        explanation. Don't add any other word such as 'Command to get', 'Answer' or the likes.
-        Remember, it is very important to provide the full path of the command. Pay
-        attention to the parent commands, and make sure that if you were to run a command that is located
-        in a submenu, that it will have the full path included as if you were running
-        from the root directory. If and only if there is no information in the argparse help text above,
-        then just provide information on how to find that answer through normal financial terms.
-        Only do what is asked and provide a single command string. Always use a comma to separate between countries but
-        never between full commands. Lower cap the country name.
+    current_date = datetime.now().astimezone(pytz.timezone("America/New_York"))
+
+    prompt_string = f"""From the cli argparse help text above, provide the terminal
+        command for {query_text}. If relevant, use the examples as guidance.
+        Provide the exact command along with the parent command with a "/" separation to get that information,
+        and nothing else including any explanation. Don't add any other word such as 'Command to get', 'Answer'
+        or the likes.  If you do not know, reply "I don't know"
+
+        Current date: {current_date.strftime("%Y-%m-%d")}
+        Current day of the week: {current_date.strftime("%A")}
+
+        Remember:
+        1. It is very important to provide the full path of the command including the parent command and loading
+        the particular target before running any subsequent commands
+        2. If you are asked about dates or times, load the target dates, times span during the "load" command
+        before running any subsequent commands. replace all <> with the actual dates and times.  The date format should
+        be YYYY-MM-DD. If there is no date included in the query, do not specify any.
+        3. Country names should be snake case and lower case. example: united_states.
+        4. Always use a comma to separate between countries and no spaces: example: united_states,italy,spain
+        5. Always use "load" command first before running any subsequent commands. example:
+        stocks/load <symbol>/ ....
+        crypto/load <symbol>/ .... etc.
+        6. Do not include --export unless the request asks for the data to be exported or saved to a specific file type.
+        7. Do not make up any subcommands or options for the specific command.
+        8. Do not provide anything that could be interpreted as investment advice.
+        9. Any request asking for options refers to stocks/options.
+
+        Only do what is asked and only provide a single command string, never more than one.
         """
 
     # try to get the response from the index

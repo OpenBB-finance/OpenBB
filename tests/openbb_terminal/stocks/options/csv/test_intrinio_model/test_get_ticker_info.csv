@@ -1,0 +1,29 @@
+,AAPL
+id,sec_agjrgj
+companyID,com_NX6GzO
+name,Apple Inc
+type,Ordinary Shares
+code,EQS
+shareClass,AAPL
+currency,USD
+roundLotSize,100.0
+ticker,AAPL
+exchangeTicker,AAPL:UW
+compositeTicker,AAPL:US
+alternateTickers,[]
+figi,BBG000B9Y5X2
+cik,0000320193
+compositeFIGI,BBG000B9XRY4
+shareClassFIGI,BBG001S5N8V8
+figiUniqueID,EQ0010169500001000
+active,True
+etf,False
+delisted,False
+primaryListing,True
+primary_security,True
+firstStockPrice,1980-12-12
+lastStockPrice,2023-05-19
+lastStockPriceAdjustment,2023-05-12
+lastCorporateAction,2023-05-11
+previousTickers,[]
+listingExchangeMIC,XNAS

@@ -122,7 +122,7 @@ en:
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
-  askobb: ask OpenBB LLM
+  askobb: BETA FEATURE - Ask OpenBB LLM for the data you are interested in
   stocks/filings: the most-recent form submissions to the SEC
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis
@@ -298,7 +298,7 @@ en:
   stocks/gov/lobbying: corporate lobbying details
   stocks/ca/ticker: set ticker to get similar companies from
   stocks/ca/_ticker: Ticker to get similar companies from
-  stocks/ca/tsne: run TSNE on all SP500 stocks and returns closest tickers
+  stocks/ca/tsne: run TSNE on all SP500 stocks
   stocks/ca/get: get similar stocks
   stocks/ca/set: reset and set similar companies
   stocks/ca/add: add more similar companies
@@ -508,6 +508,7 @@ en:
   crypto/disc/dapp_metrics: show dapp metrics
   crypto/disc/defi_chains: show available defi chains
   crypto/disc/tokens: show chains that support tokens
+  crypto/disc/fees: cryptos where users pay most fees on
   crypto/ov/global: global crypto market statistics
   crypto/ov/defi: global DeFi market info
   crypto/ov/stables: stablecoins

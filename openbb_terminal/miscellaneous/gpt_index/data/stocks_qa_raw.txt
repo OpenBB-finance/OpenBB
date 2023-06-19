@@ -22,3 +22,4 @@ Examples:
 - View raw data of a specific stock symbol, sorted by opening price in ascending order: stocks/load <SYMBOL>/qa/raw -s open -r
 - Display raw data for a loaded stock symbol, limited to 15 entries and sorted by low price: stocks/load <SYMBOL>/qa/raw -l 15 -s low
 - Show raw data for a specific stock symbol, sorted by high price in ascending order: stocks/load <SYMBOL>/qa/raw -s high -r
+- Show a table of most recent stock volume: stocks/load <SYMBOL>/qa/raw -s volume

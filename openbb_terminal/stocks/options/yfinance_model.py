@@ -1,3 +1,5 @@
+# mypy: disable-error-code=attr-defined
+
 """Yfinance options model"""
 __docformat__ = "numpy"
 
@@ -10,6 +12,7 @@ import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console, optional_rich_track
+from openbb_terminal.stocks.options.op_helpers import Options, PydanticOptions
 
 logger = logging.getLogger(__name__)
 
@@ -82,8 +85,8 @@ def get_option_chain(symbol: str, expiry: str):
 
     Returns
     -------
-    chains: yf.ticker.Options
-        Options chain
+    chains: yf.ticker.OptionsChains
+        OptionsChains chain
     """
 
     yf_ticker = yf.Ticker(symbol)
@@ -286,8 +289,8 @@ def get_iv_surface(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_last_price(symbol: str) -> float:
-    """Get the last price from nasdaq
+def get_last_price(symbol: str) -> pd.Series:
+    """Get the price and performance of the underlying asset.
 
     Parameters
     ----------
@@ -296,7 +299,141 @@ def get_last_price(symbol: str) -> float:
 
     Returns
     -------
-    float
-        Last price
+    pd.Series
+        Pandas Series with the price and performance of the underlying asset.
     """
-    return float(yf.Ticker(symbol).fast_info.last_price)
+
+    ticker = yf.Ticker(symbol).fast_info
+    df = pd.Series(dtype=object)
+    df["lastPrice"] = round(ticker["lastPrice"], 2)
+    df["previousClose"] = round(ticker["previousClose"], 2)
+    df["open"] = round(ticker["open"], 2)
+    df["high"] = round(ticker["dayHigh"], 2)
+    df["low"] = round(ticker["dayLow"], 2)
+    df["yearHigh"] = round(ticker["yearHigh"], 2)
+    df["yearLow"] = round(ticker["yearLow"], 2)
+    df["fiftyDayMA"] = round(ticker["fiftyDayAverage"], 2)
+    df["twoHundredDayMA"] = round(ticker["twoHundredDayAverage"], 2)
+
+    return df.loc["lastPrice"]
+
+
+@log_start_end(log=logger)
+def get_underlying_price(symbol: str) -> pd.Series:
+    """Get the price and performance of the underlying asset.
+
+    Parameters
+    ----------
+    symbol: str
+        Symbol to get quote for
+
+    Returns
+    -------
+    pd.Series
+        Pandas Series with the price and performance of the underlying asset.
+    """
+
+    ticker = yf.Ticker(symbol).fast_info
+    df = pd.Series(dtype=object)
+    df["lastPrice"] = round(ticker["lastPrice"], 2)
+    df["previousClose"] = round(ticker["previousClose"], 2)
+    df["open"] = round(ticker["open"], 2)
+    df["high"] = round(ticker["dayHigh"], 2)
+    df["low"] = round(ticker["dayLow"], 2)
+    df["yearHigh"] = round(ticker["yearHigh"], 2)
+    df["yearLow"] = round(ticker["yearLow"], 2)
+    df["fiftyDayMA"] = round(ticker["fiftyDayAverage"], 2)
+    df["twoHundredDayMA"] = round(ticker["twoHundredDayAverage"], 2)
+
+    return df.rename(f"{symbol}")
+
+
+def load_options(symbol: str, pydantic: bool = False) -> object:
+    """OptionsChains data object for YahooFinance.
+
+    Parameters
+    ----------
+    symbol: str
+        The ticker symbol to load.
+    pydantic: bool
+        Whether to return the object as a Pydantic Model or a subscriptable Pandas Object.  Default is False.
+
+    Returns
+    -------
+    object: OptionsChains
+        chains: pd.DataFrame
+            The complete options chain for the ticker. Returns as a dictionary if pydantic is True.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset. Returns as a dictionary if pydantic is True.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Does not return greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data,  "YahooFinance".
+
+    Examples
+    --------
+    Get current options chains for AAPL.
+    >>> from openbb_terminal.stocks.options.yfinance_model import load_options
+    >>> data = load_options("AAPL")
+    >>> chains = data.chains
+
+    Return the object as a Pydantic Model.
+    >>> from openbb_terminal.stocks.options.yfinance_model import load_options
+    >>> data = load_options("AAPL", pydantic=True)
+    """
+    OptionsChains = Options()
+
+    OptionsChains.source = "YahooFinance"
+    OptionsChains.symbol = symbol.upper()
+
+    chains = get_full_option_chain(OptionsChains.symbol)
+
+    if not chains.empty:
+        OptionsChains.expirations = option_expirations(OptionsChains.symbol)
+        OptionsChains.strikes = (
+            pd.Series(chains["strike"]).sort_values().unique().tolist()
+        )
+        OptionsChains.underlying_price = get_underlying_price(OptionsChains.symbol)
+        OptionsChains.underlying_name = OptionsChains.symbol
+        OptionsChains.last_price = OptionsChains.underlying_price["lastPrice"]
+        now = datetime.now()
+        temp = pd.DatetimeIndex(chains.expiration)
+        temp_ = (temp - now).days + 1
+        chains["dte"] = temp_
+
+    OptionsChains.chains = chains
+    OptionsChains.hasIV = "impliedVolatility" in OptionsChains.chains.columns
+    OptionsChains.hasGreeks = "gamma" in OptionsChains.chains.columns
+
+    if not chains.empty and OptionsChains.last_price is None:
+        OptionsChains.last_price = 0
+        print("No last price for " + OptionsChains.symbol)
+
+    if not pydantic:
+        return OptionsChains
+
+    OptionsChainsPydantic = PydanticOptions(
+        chains=OptionsChains.chains.to_dict(),
+        expirations=OptionsChains.expirations,
+        strikes=OptionsChains.strikes,
+        last_price=OptionsChains.last_price,
+        underlying_name=OptionsChains.underlying_name,
+        underlying_price=OptionsChains.underlying_price.to_dict(),
+        hasIV=OptionsChains.hasIV,
+        hasGreeks=OptionsChains.hasGreeks,
+        symbol=OptionsChains.symbol,
+        source=OptionsChains.source,
+    )
+    return OptionsChainsPydantic

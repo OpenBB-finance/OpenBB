@@ -3,12 +3,14 @@ usage: candle [-t TICKER] [-p]               [--sort {open,high,low,close,adjclo
 Summary: Display historic data for a stock using candlestick charts or raw data. You can analyze a specific ticker, include pre/after market hours, sort by various columns, reverse the order, add trend lines, moving averages, and export the data. The command also allows you to set a limit on the number of entries displayed.
 
 Examples:
-- Show a candlestick chart for a specific stock: stocks/candle -t <SYMBOL>
-- Display raw data for a stock with pre/after market hours: stocks/candle -t <SYMBOL> -p --raw
-- Show raw data sorted by volume in ascending order: stocks/candle -t <SYMBOL> --raw --sort volume -r
-- Display a candlestick chart with high and low trends: stocks/candle -t <SYMBOL> --trend
-- Plot a candlestick chart with a 50-day moving average: stocks/candle -t <SYMBOL> --ma 50
-- Show a candlestick chart with a log scale y-axis: stocks/candle -t <SYMBOL> --log
-- Export raw data to a csv file: stocks/candle -t <SYMBOL> --export csv
-- Save raw data to a specific excel sheet: stocks/candle -t <SYMBOL> --sheet-name Sheet1
-- Limit the number of entries displayed to 10: stocks/candle -t <SYMBOL> -l 10
+- Show a candlestick chart for a specific stock: stocks/load <SYMBOL>/candle
+- Display raw data for a stock with pre/after market hours: stocks/load <SYMBOL>/candle -p --raw
+- Show raw data sorted by volume in ascending order: stocks/load <SYMBOL>/candle --raw --sort volume -r
+- Display a candlestick chart with high and low trends: stocks/load <SYMBOL>/candle --trend
+- Plot a candlestick chart with a 50-day moving average: stocks/load <SYMBOL>/candle --ma 50
+- Show a candlestick chart with a log scale y-axis: stocks/load <SYMBOL>/candle --log
+- Export raw data to a csv file: stocks/load <SYMBOL>/candle --export csv
+- Save raw data to a specific excel sheet: stocks/load <SYMBOL>/candle --sheet-name Sheet1
+- Limit the number of entries displayed to 10: stocks/load <SYMBOL>/candle -l 10
+- Show me the candlestick chart for a specific stock between two dates: stocks/load <SYMBOL> -s <START_DATE> -e <END_DATE>/candle
+- show me specific stock between <START_DATE> and today on candle stick: stocks/load <SYMBOL> -s <START_DATE> -e <CURRENT_DATE>/candle

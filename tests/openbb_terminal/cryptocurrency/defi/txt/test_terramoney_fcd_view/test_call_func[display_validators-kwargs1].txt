@@ -1,325 +1,478 @@
-                                  Account address                                             Validator name  Tokens amount  Voting power %  Commission rate %     Status  Uptime %
-161  terra1r7zwfk0lx6kuy8r03ewdchaea3ssy5vudns2sy                                                blocksteady   1.096899e+02            0.00              10.00     jailed    100.00
-220  terra1rnthk3l73p0sqdwg5a8j05zynzguzst6tu83lt                                               atomicwallet   1.000000e+00            0.00              10.00   inactive    100.00
-219  terra1dkcfqaym0xm8wh9v2gn6y9drq284assg324cp5                                                  RockStake   9.999000e-01            0.00              10.00     jailed    100.00
-218  terra1vhm0l52y83vsqr60vt7vhxgsjlfyhf3h25y532                                              Tavis Digital   2.311403e+03            0.00               7.00     jailed    100.00
-217  terra1revygmqdv3uk0aszkd2wg3nz3jsqwprfre4rmk                                                     DSPool   0.000000e+00            0.00               5.00   inactive    100.00
-216  terra1qr8ewxc0xx2vuq7jhe2evsde2k4c4cku6p9hpy                                             Secure Secrets   5.660990e+01            0.00               3.00   inactive    100.00
-215  terra1f699dxaftg4pxfqtwzyreyxgaznk922zues259                                                Just-Mining   2.495010e+01            0.00             100.00   inactive    100.00
-214  terra1qxrrf73tf7agksyxs6v6zj2nrce63jk0p4a8g2                                                    Celsius   3.005000e+00            0.00               4.00   inactive    100.00
-221  terra1d6r83n848v2juv6qal7a0r3n9n6vmpqjw42uj9                                     porn addicts anonymous   1.000000e+00            0.00              51.00   inactive    100.00
-213  terra1kl9alpr77qfjze4quf62ycngg6fkka0tthn6r6                                                     Bitrue   3.668834e+03            0.00               0.00   inactive    100.00
-211  terra1kupsulfhe4x76yt8k9mumfkgyqs44zyzk5hm2s                                              MissionToMoon   1.199880e+01            0.00               1.20     jailed    100.00
-210  terra1r08m7m7uwre343kveewluq4rh9ykup3060re47                                             uber-validator   1.010000e+01            0.00               1.00   inactive    100.00
-209  terra1gxa4zq407lx58ld5rxy6rqudg3yu4s0sku99lg                                              Sandhill.Asia   8.800000e-03            0.00               6.00     jailed    100.00
-208  terra1gc60jfj3p7qawycd0c4789f24m8h3rz34lpcyw                                               Ellipti Labs   9.999000e-01            0.00              20.00     jailed    100.00
-207  terra1gkumn82kkj3cww28yp53agy7aluxv06fsngwu7                                                  stefanski   1.499578e+02            0.00              10.00     jailed    100.00
-206  terra1rgu3qmm6rllfxlrfk94pgxa0jm37902dyuvy8g                                                      Ghost   5.113000e-01            0.00             100.00     jailed    100.00
-205  terra1g490lqn45aqfu6xe6cl7t380s8g4jxvy5qreqf                                             validator.cafe   1.015000e+00            0.00               5.00   inactive    100.00
-212  terra1rq65gnyxaxv2mzmna4rvpacyu7a4qanjta7jxe                                               Easy Company   8.548200e+00            0.00             100.00   inactive    100.00
-204  terra1gvlj2lv4ra8t7cqacfevz4c8uat9p8490ja79a                                                test-node-1   1.999800e+00            0.00             100.00     jailed    100.00
-222  terra1s00gyl6dlz6gkfj0mwcrcffu8mrw8dgr9ea2xs                                                  SafePoint   7.010000e+00            0.00               0.00   inactive    100.00
-224  terra1h0d5kq5p64jcyqysvja3h2gysxnfudk9h73fnn                                                    cthulhu   0.000000e+00            0.00              25.00   inactive    100.00
-240  terra14584zr0cuyfr4m9gugjv5qzv9ng5h3mrue2hqp                                                   Terranox   1.000000e+00            0.00               5.00   inactive    100.00
-239  terra17gevmwa2ejzqj6wjvmee9tsfvuf3xlct3xrcln                                                L1Anchorage   0.000000e+00            0.00               2.00   inactive     98.94
-238  terra1l8kzrd460yxcfshllr47n580qtjgp875gg3wg6                        Luna Station 81 (Please redelegate)   7.722047e+03            0.00               3.00   inactive    100.00
-237  terra129zazmhhzap0nplylk00ujxlguf5ne7nk53y35                                                  PMCapital   8.000000e+00            0.00               1.50   inactive     99.40
-236  terra1dkw5zp0jf7v7xzut5a8kuaeksg9xufahkycqmp                                               ChainodeTech   1.553090e+03            0.00               0.00   inactive    100.00
-235  terra1dhcgyvufgyrtxkpk6pphxydhfm0j2v3tg00p32                                              terra-rainbow   1.254800e+00            0.00             100.00   inactive    100.00
-234  terra15kty6a6tkun7p3mfq24x5xfzud367lvfmke76w                                          Iron Star Finance   1.228561e+05            0.00               0.00     jailed    100.00
-223  terra14jywaln0sdh8lpc7jtyllqfp3mg5sjw2nl2jek                                           coaction-capital   1.000000e+01            0.00              10.00   inactive    100.00
-233  terra1e7uuywu7hnvukzcznjrf0l0s7jrsxgcaawya3t                                              HotGirlSummer   7.129288e+02            0.00               1.00   inactive    100.00
-231  terra1av2j80jeyuxmzgsm840rkh08c5vyy3tmr7vjc5                                                To the Moon   0.000000e+00            0.00               1.00   inactive     67.43
-230  terra1cc92ptawsp9363aae9wrp2xm6zm9fmucw2hpg7                                          “BinanceStacking”   5.000000e-01            0.00              10.00   inactive    100.00
-229  terra1gwn2dpjfcuxhaewwn709txfffrvewuq22pahep                                                  STAKENODE   3.049695e+02            0.00              10.00   inactive     99.98
-228  terra19z68rv3d7dzvvtlxzma89jxsrssf9j36ysu57t  Old GP Validator (REDELEGATE TO GALACTIC PUNKS VALIDATOR)   8.428758e+04            0.00               5.00     jailed     99.60
-227  terra1eutun6vh83lmyq0wmyf9vgghvurze2xansfdsf                                                     Wraith   0.000000e+00            0.00             100.00   inactive    100.00
-226  terra16xr5kdu5xv7htepnd36q8wn3ayjd7p7kv2eskc                                    100&100 Venture Capital   1.000000e-01            0.00              10.00   inactive    100.00
-225  terra19xe62428tlfesdym0zn5wx9slyefqjp00vkrxa                                              MoonletWallet   5.226738e+04            0.00               5.00   inactive    100.00
-232  terra1m8jxvxkhuu07u4hrv484rkq9wetk4lmde6elhd                                                 NoDelegate   5.930000e-02            0.00              10.00   inactive    100.00
-203  terra1p3uz3qztr2faqqq0h20qdwmvkc3ugupgyeea5m              #decentralizehk - inactive, please redelegate   1.315940e+01            0.00               0.00   inactive    100.00
-202  terra1h7n8r8sjgrppn396r2znvwvxm9saps9337exg8                                                RHIZOME DAO   1.050000e+01            0.00              10.00   inactive    100.00
-201  terra10epxzwlgyq2le2a0p74dakktcsluc4802vq20r                                                  Steemhunt   9.999000e+00            0.00               5.00     jailed    100.00
-179  terra1p3tlranrm030e2x45eav9094xxwmq4qqpufqt5                     WeCanDev - inactive, please redelegate   6.439200e+00            0.00               0.00     jailed    100.00
-178  terra1ppp6q833lz9s4mrgssm9gz5q52ew589k6dn3hn                                       Microcosm Innovation   5.000000e-02            0.00               0.00   inactive    100.00
-177  terra1q6ywn5fay02fw6qk2749ud2w9n9qanvkj6lhau                                       bolt terra validator   4.229577e+02            0.00              15.00     jailed    100.00
-176  terra1q0muwurhexhk6hy5f69dyk4w8d8akhmmvd7wry                                                       1729   3.999600e+00            0.00              10.00     jailed    100.00
-175  terra197d5p7lpn34r2uff0drx78zf5e4jle4wwyml57                          Shutting down - please undelegate   3.827700e+01            0.00              60.00   inactive    100.00
-174  terra1a3r6va8hnyzsq6kr75lyge05d0dtjv6e8pqlnw                                        Hypersphere Digital   1.479364e+02            0.00              10.00   inactive    100.00
-173  terra1nc9tyu8nanvkv2xfnaw4sae3utukx60a2vu7c5                                              Vali the Thor   7.999200e+00            0.00              10.00     jailed    100.00
-180  terra1jlxv4hnf2mtym9x4fg7dsepgnt47rgfan228gt                                    TERRA-LUNA.DLINODES.COM   6.757440e+01            0.00              10.00   inactive    100.00
-172  terra1jaeca6lv7hn6r76ed770vzamhx09956x73v87s                                                   Moonwalk   1.389578e+02            0.00               5.00     jailed    100.00
-170  terra1jhqw7dkmff8rllf7zdeqxhrapz46wr7h9t0fk7                                                to the MOON   5.251420e+01            0.00               5.00     jailed    100.00
-169  terra1jvcr78cgwpvcsucf628fa8qjrahmcskqncvfc5                                                  Terra-CN1   0.000000e+00            0.00               8.88     jailed    100.00
-168  terra13kcwnlafvu4xvy2jr3vhdte9aq9tadwds7nm67                                                 Castlenode   1.009798e+02            0.00              10.00     jailed    100.00
-167  terra1gytqku2dl53w48pdusj9k6t00nfl5nsrhad7y7                                                      Hanko   1.000000e-01            0.00               5.00   inactive    100.00
-166  terra13307pxehvt0qply3kw9vk578u4az0u4mu24yex                                            DUST Foundation   1.245257e+02            0.00               1.00   inactive    100.00
-165  terra13ww603e55suhavpuyjft3htxca6g4tldt2xuc6                                                  HashQuark   0.000000e+00            0.00              20.00     jailed    100.00
-164  terra1xyn55eeupfleh5sq2uzf933u4gdtre5qwmtntk                                          Iron Star Finance   1.000000e+00            0.00               0.00   inactive    100.00
-171  terra1nt3yda9kdvlm25q4utjtd3zwyw0504n2xkgryt                                                  PRO-NODES   1.000000e+00            0.00               7.00   inactive    100.00
-181  terra1nrhlk67k38k9v7yatl0a30q287dhncjjkfczlc                                                Feel Mining   4.088450e+01            0.00               5.00     jailed    100.00
-182  terra15vqlw5zukqzgnh7x8naq6hpc88rc77y0aj7s7e                                               MyCointainer   9.000000e+00            0.00              10.00   inactive    100.00
-183  terra1z7we2y02fy2kvw0tdq8k26j4t370n58wxrngc2                                        StakeTo.Me | 1% FEE   8.761830e+01            0.00              10.00     jailed    100.00
-200  terra1k4ef8m95t7eq522evmmuzvfkpla04pezmne0w9                                                   Bit Cat🐱   9.456721e+02            0.00               8.00   inactive    100.00
-199  terra1rnna7hcf88nzfqmc362egmmp76yeyzlepfc3ms                                 JT Stakers | 0% Commission   9.463910e+01            0.00               0.00   inactive    100.00
-198  terra143klnw7s5968g3h7rf5eenj75mxej34jmmlkgd                                              LearnTerra.io   9.880000e-01            0.00               3.00     jailed    100.00
-197  terra18tmu0lrfsdvke8e3a3jsd7fq2rs29krfhthxrj                                                     werner   1.099890e+01            0.00              10.00     jailed    100.00
-196  terra1vqnhgc6d0jyggtytzqrnsc40r4zez6tx92a66a                                         🌐 KysenPool Moon 🌕   3.005735e+03            0.00              20.00     jailed    100.00
-195  terra1jsdfyz8uhw2nd7cl45709w40r268phmvxjh6fy                                                  Bi23 Labs   1.000485e+05            0.00              20.00  unbonding    100.00
-194  terra19ke9ze6uxuxdc5rd80d0ntmnlqgr85cp4gu344                                        Ceres Yield Capital   1.301000e+00            0.00              20.00   inactive    100.00
-193  terra190std5tgydjt0sy2ugfyhs62y2l0h8z3lemzzj                                                   LUNAtics   6.978800e+02            0.00               1.00     jailed    100.00
-192  terra166fh7594tsp0yrg3c5c4najmehd5s54tkwuq7h                                                MoonStation   3.380000e+00            0.00              10.00   inactive    100.00
-191  terra15hg3m4ch6n0yt4uq6nsadqszlna95am906qluk                                                  BTCSterra   3.050000e+00            0.00             100.00     jailed    100.00
-190  terra1yu6gzu4xsfgqxzthgshqaxydfcqmmrxrpxq5lx                                                     Alpaca   5.000000e-03            0.00              10.00   inactive    100.00
-189  terra157m8nyw8ne3jz0dgdys6chp98jlpuhggp7cyu8                                               dxmterranode   0.000000e+00            0.00              10.00   inactive    100.00
-188  terra1y00cgmcxh02r64mzdcdz38ujggaz599y427erg                                                     V0NDER   6.000000e-01            0.00               1.00     jailed    100.00
-187  terra14sllsz88h6kdwp6xc595zxedp7anjr8q5zwprd                                                     Random   5.000000e-03            0.00              10.00   inactive    100.00
-186  terra1nl2r2yejtqkcykuh6szvwm0sxxqhg26kczv5xm                                                        TTS   4.999500e+00            0.00               1.00     jailed    100.00
-185  terra1zmmcxxhjh89hqq22nxnxnjtzptgnz4x58yhj8r                                                  Anonymous   5.000000e-03            0.00              10.00   inactive    100.00
-184  terra19a0ry9n5k4ammg3umufkuf2cxzyqrqc7vw55mk                                              lunaticdavidk   5.000000e+00            0.00              11.00     jailed    100.00
-241  terra1gu2mzcwdadw7m03susfler0c6q3jgxgf76ss27                 Shutting down very soon. Redelegate stake.   1.000000e-01            0.00               1.00     jailed    100.00
-163  terra1syhmzgg9jqf5cff05s9k4jkp5e25e00qj83gkv           Shutting down - please delegate to new Validator   9.484100e+00            0.00               6.00     jailed    100.00
-242  terra1cac2mcf2eszn9ln3fx4heym6kd363zqfes27ts                                            Fair Square Lab   2.003998e+03            0.00               4.00   inactive    100.00
-244  terra12tkjdqd2l7xp7ql6pj9wnz77le3wy9pz7jsxmk                                                   uGaennS1   5.000000e-01            0.00               5.00   inactive    100.00
-301  terra1chrw39uz28ktq8qzpf0nasszrwy80ejgz2n0tt                                                 Mondversum   1.000000e+00            0.00               1.00   inactive    100.00
-300  terra1cn2qhqs4g0fzxn8j2lhr3vwffc86s0k65cqclp                                                   Notional   2.510000e+01            0.00               9.69   inactive    100.00
-299  terra16vz92wm3fahqepa5s7jt0ml8h337umycjdzegl                                                    nomercy   2.000000e+00            0.00               0.00   inactive    100.00
-298  terra1hz754zdldnrrhp3qpfan3l2dxkcv5cgkudva4l                                         consensus-networks   5.994900e+02            0.00              10.00   inactive    100.00
-297  terra1hg70rkal5d86fl57k0gc7de0rrk4klgs520rzt                   Terraforming/inactive, please undelegate   3.616706e+02            0.00               6.00   inactive    100.00
-296  terra1kq43h4mlv0pm87cjg0f7yc30mrjex6sl6gnk7r                                                   mytester   3.999600e+00            0.00               0.00     jailed    100.00
-295  terra1hxyx4s2uwfe8gq9a8h6gm0mkyruy8djp9tqlp3                                          F U L L . M O O N   0.000000e+00            0.00               1.00   inactive     99.98
-302  terra1ewluvhmhm5rpru8vhw6tdvenxfdmvvqm39h0kh                                                       test   9.999000e-01            0.00             100.00   inactive    100.00
-294  terra15fclgndl9sgpjrfzfwg3e42vgzv9wukn0dy5un                                                  stake.dev   9.999000e-01            0.00              10.00     jailed    100.00
-292  terra1j747dvwyg0kk9ltrz5ux443lhzzq5tgdpl3rsa                           Shutting Down. Please redelegate   1.319634e+04            0.00               5.00     jailed    100.00
-291  terra13s9vaw726ypcawsmcljrfyeffvf4s285pu3l9t                                                        TTS   3.599640e+01            0.00               1.00     jailed    100.00
-290  terra1vv4y54wczzk99ga65uvy7555n5q68gswc5p3ze                                               EZStaking.io   5.027271e+04            0.00              10.00   inactive    100.00
-289  terra1zhq32qvq5yzasx8zn5kd76xmgylytflnvnev5j                                                        _0x   1.110019e+02            0.00              10.00     jailed    100.00
-288  terra1tyxxz4h0sslsm4psc68janrrx64fknmvch8gap                                                     node-x   4.999500e+00            0.00              11.00     jailed    100.00
-287  terra1g2cw3vj6z4vpp7ev3r98drgy7674vnn5fp39nf                                            dxm_terra_stake   1.999800e+00            0.00              10.00     jailed    100.00
-286  terra12nunl9fmxgw5cstkdexygj09mdln0sy2q752x5                                                   topstake   9.999000e-01            0.00              10.00     jailed    100.00
-293  terra1zrxsjccn6u02rxs4ctx9tesjm5rnn8c5ffeqle                                                       test   8.999100e+00            0.00              10.00     jailed    100.00
-285  terra1rlxlvmm0fhpkfcu95gvzdzlcxyy9xycufr528w                                                  rocklords   2.000000e+00            0.00              10.00   inactive    100.00
-303  terra1efuj32cft74cd6fz97m9ed0uyv9jdjrfq8543g                                         IFRA-LAB Validator   5.000000e+00            0.00              10.00   inactive    100.00
-305  terra1lf3zrmdha5nk434nkezzg6m4s5yhfka09p9pdn                                              Luna Wolfpack   9.999000e-01            0.00               0.00   inactive    100.00
-321  terra1d3hatwcsvkktgwp3elglw9glca0h42yg6fgg0j                                                     Marine   1.010000e+00            0.00             100.00     jailed    100.00
-320  terra1frvtdqm6yqwr3ksu38ftj7kf4a6jvzvv0k7sjd                                              Dual Stacking   5.098980e+01            0.00               1.00     jailed    100.00
-319  terra1fp9y688mc7c3t79m855da4zlr45fru0y4au3dn                                           Blockdaemon Beta   0.000000e+00            0.00              10.00     jailed    100.00
-318  terra1x7zmzr6gaz5q68fvm8zr30vr0z3jcdyltsy5x4                                                     SkillZ   1.000000e+00            0.00               0.00   inactive    100.00
-317  terra18fk2ye6m5wnnfrarpwycunnw0ls8564zw7jx5m                                                 stake.zone   7.351259e+03            0.00               6.00   inactive    100.00
-316  terra1grgelyng2v6v3t8z87wu3sxgt9m5s03x259evd                                                   iqlusion   2.426147e+03            0.00              10.00     jailed    100.00
-315  terra1guksxgm0qxm00kaf35myxn263ws9l6ykl2jrgq                             Pillow Staking - No Commission   3.003000e+00            0.00               0.00   inactive    100.00
-304  terra10cpv0r3z2aue92d0h0tlsp6p2etmh7xu4r3q9f                                        Blockware Solutions   4.636786e+02            0.00              10.00   inactive    100.00
-314  terra1gh7wpfpsjrqnash5uc84z4njt95y9g5nh7saj4                                                Genesis Lab   1.642149e+03            0.00               7.00   inactive    100.00
-312  terra1g8uryk8yzu0ceuhh0ujg860rgl3r8gs2gckf06                                                 vAligators   1.000000e+00            0.00              10.00   inactive    100.00
-311  terra1pjledltv8d8zsvzhx6yfgmw7hd3a3lxntaxr7a                                                       Mars   0.000000e+00            0.00             100.00     jailed    100.00
-310  terra105pz70scujjd84rfzj4zlqkv3j588nahnuzsa2                                                   StakeMix   2.010000e+00            0.00              10.00   inactive    100.00
-309  terra1wpvlm4278zysnmfkamjnceezdquguk6s993lcn                                                      qwack   0.000000e+00            0.00               5.00   inactive    100.00
-308  terra1glz9vjdzs45jffmgg0hvfldlx3a936m5xl8zxn                                                   Binances   1.099800e+00            0.00               0.00     jailed    100.00
-307  terra1723x4c20xk43y2wfzdgktv9gkepltqauvardrt                                                      titan   8.998300e+00            0.00              10.00   inactive    100.00
-306  terra1ysuptcd9vfszt7yl23z3wrnz2jajffyuqm0zeu                                                    KCTerra   9.902000e-01            0.00              10.00     jailed    100.00
-313  terra1el72mmska9fd4w9ehst0v4dkd4wqp288hr9ney                                                 NonceTerra   1.050000e-01            0.00              10.00   inactive    100.00
-284  terra1qrs8d7z4w0gz05c3llz3xsn5eh0tc9rejkutl9                                           Cosmos Validator   7.110000e-02            0.00               0.50     jailed    100.00
-283  terra1mgdsc0get3w984h03a02zy6gmg3kgqtfqlakxh                                   🚀 LambdaCore | 🎁airdrop📦   8.924544e+03            0.00               2.00   inactive    100.00
-282  terra15qjn7ke9s47qn4mte3lerkxtjjgp38n5q0slq0                                            Masternode24.de   2.198209e+03            0.00               5.00   inactive    100.00
-260  terra17cpvym9w5f0j5dgukvu93a9w25gx45ke5lwwzg                                      nonce - LunaWhale.com   1.000000e+00            0.00              20.00   inactive    100.00
-259  terra1npv0gns884njlnpd7szhh028vdh2agzxmzpt69                                                 Khazad-dûm   1.000000e+00            0.00               0.00   inactive    100.00
-258  terra1uf4k2y293qss3tfhdrlz7whsu5xj2dpjtn2pvn                                            InfiniteHeig.ht   1.100000e+00            0.00               1.00   inactive    100.00
-257  terra1a0l55c3tzxel6fg927qftkfaxfa0he80q2p0cp                                                  Chainflow   1.989906e+02            0.00              10.00   inactive    100.00
-256  terra1eqp2un00zrxjlpqky0ywluzs8n63h34zdcmq43                                                  juna_luna   4.059594e+02            0.00               5.00   inactive    100.00
-255  terra1ny8m3qj3tuhekgvk0zpvq8xvslvryx8alqzk2j                                            terrasynergyval   0.000000e+00            0.00              10.00     jailed    100.00
-254  terra1vse7mfah2hmfaruum40hwnskkca3ygmmfxt8ks                                                   Beatrice   1.198800e+00            0.00               4.00     jailed    100.00
-261  terra1maexnnf40g39ymqe0jtvqk6rsvjvg7l4mpdd0k                                              fierydev-MCLB   9.999000e-01            0.00               1.00   inactive    100.00
-253  terra1rucuack65khwltlw5pzc2ek3lnppp94qkac5ew                                                  “IRRpool”   8.930000e-01            0.00              10.00   inactive    100.00
-251  terra1f2ly4rft3kz2rv0sx69022puv5lfds6ghxz468                                               Free Staking   7.499300e+00            0.00               0.00     jailed    100.00
-250  terra16gvh8amt7szjfc33yzmlzxz4xg5vrw40khmug0                                                Marte Cloud   7.740142e+03            0.00               2.00   inactive    100.00
-249  terra1g8r0nsks2n2l7d8jsq77ujt5eat5njlusq3h3t                                               Luan-station   1.999800e+00            0.00               5.00     jailed    100.00
-248  terra1u3gcqh4xqcdfkcu82nrk9u75x8vtvcz7xj943h                                                       test   0.000000e+00            0.00              15.00   inactive    100.00
-247  terra1xptfsrmkhw0s4kql4ldnzake83j8dgvxm7dcye                                                     RnodeC   0.000000e+00            0.00              10.00   inactive     99.83
-246  terra1jz4v9tcjhxtme0tucm64ndp6z7wgz5la0xvpwz                                                  MegaStake   1.999800e+00            0.00              10.00     jailed    100.00
-245  terra170m0v5uy40ydx9kdynxf9zhk8a0s34qwypmsye                                                 StakeTo.Me   7.172501e+02            0.00               1.00   inactive    100.00
-252  terra134txuywrqyu0zyfaardetq45hnxsjklqlka3aw                                                   TerraSCV   1.000000e+00            0.00               5.00   inactive    100.00
-262  terra1ltwln4yqytkfzn6868xazlhg7vlzdcf96sgcjr                                                   BasBlock   0.000000e+00            0.00              20.00   inactive    100.00
-263  terra1a2wp3yn3d783q3cmmj9jda7t93088m6z3ug8v8                                          CitadelSystems.eu   3.000000e-01            0.00               0.00   inactive    100.00
-264  terra1whk8em6gz22q9a8fk027ctvud79z5mj3mk3sz6                                               L1 Anchorage   0.000000e+00            0.00              10.00   inactive     99.23
-281  terra1uhjx34pfsxk9xh34yn8p2w4469uqdz067vvpym                                                   Umbrella   3.350380e+01            0.00               5.00   inactive    100.00
-280  terra1y62j08pv27uwjwg987wsvza5suujhyxau456ks                                unbounding, do not delegate   1.502050e+01            0.00              10.00   inactive    100.00
-279  terra186dsseaecl6scdru3ldtwq0f5stez99vs4g5dy                                                       MOON   9.999000e-01            0.00              10.00   inactive    100.00
-278  terra1h4tv9jva02x4l04jcexs0knljpg8rzsyrljuju                                    100&100 Venture Capital   1.143480e+01            0.00              10.00   inactive    100.00
-277  terra14677aardvngtrffjra8ht0dfw8acdgnejg8k4f                                            Citadel Capital   1.999600e+00            0.00              50.00     jailed    100.00
-276  terra1mx6dearzz0p9lmvhgltatyspr5phw3v02vvh9c                                                Coinstaking   4.999500e+00            0.00              10.00   inactive    100.00
-275  terra16jsypha5lv6e3mc24veqzfw3rznfqu92dmteem                                                    SGTerra   4.330000e-02            0.00              20.00   inactive    100.00
-274  terra1fkftfalmgcc5weq90sf2fch9y5vlpxvjv7xees                                                     change   6.100000e-01            0.00              30.00   inactive    100.00
-273  terra1kewgm0rhyauawl89ttjyl8hjk8l5psjv459r2j                                        terraform-validator   1.999800e+00            0.00               0.00     jailed    100.00
-272  terra14lggrv6qm9zu7r8r936zn3x6dawgurdmw76dvm                                               Ubik.Capital   2.000000e+00            0.00               5.00   inactive    100.00
-271  terra1lc2dzu2rt6qrnkhtzmas3w7qpcwd2f52lr8w33                                               Wolf of Luna   4.550680e+03            0.00              15.00   inactive    100.00
-270  terra1mava9ku4f5lym6hux3g23etfjjpqs5xh2rh6a0                                                 Promethium   9.999000e-01            0.00               5.00   inactive    100.00
-269  terra1s5cyxwl36atv65m03pumrp9alhn2xdtzwms49v                                                     RnodeC   1.000000e+01            0.00               5.00   inactive    100.00
-268  terra1anm50nsrde3rhyvylyzzmtqzjza0ewmfj9wrw7                                                  validator   0.000000e+00            0.00              20.00   inactive    100.00
-267  terra1s9q2t9zf8zyjg9g45sn6f6t06kwvgspsl6gl4r                                            Masternode24.de   8.100000e+01            0.00               1.00   inactive    100.00
-266  terra1ltta9hz8hrd5dnqnqnt5sfcdl4kx8m0afw8d80                                                SmartFellas   9.500000e-01            0.00              10.00   inactive    100.00
-265  terra1ch2k5euzh2smu2f5jjma9fuvsn2pu2wk2rcu9s                                                        mvl   0.000000e+00            0.00               0.00   inactive    100.00
-243  terra1wcdv9kccp8jjy8r6uc5gxkc3ymqpeyj6w9lxzw                                       The Valhalla Express   4.130220e+01            0.00             100.00   inactive    100.00
-162  terra1xezgns0g0q3l365yhe3x8r8dg7uwdf97khrplc                                            Republic Crypto   1.510000e+01            0.00               5.00   inactive    100.00
-323  terra1lda78gzrjx0rsadtdk0zn4v7awtz6m9lrzcyjk                                             Polychain Labs   1.853062e+02            0.00              20.00   inactive    100.00
-160  terra1sz53f8emf76s6gs2u7gdhsr7v0jz4lql3fkwss                                  Terranode.de | terra.army   1.512896e+03            0.00               0.00     jailed    100.00
-130  terra1jfndgwuwewn6363w5j5h5wpek3g6ucss4rtgx6                                             DON'T DELEGATE   0.000000e+00            0.00               0.00   inactive    100.00
-131  terra1f2rjcnn7m6ezpjk8rl55wl3p0vsq6cdagpq27q                                                    Stakeit   2.208932e+02            0.00              15.00     jailed    100.00
-132  terra1wj50lwqfzeu4aclnw8am35x7uflewvp20c720r                                           atomo-terra-node   2.000000e+00            0.00              10.00   inactive    100.00
-133  terra1fuj047hmvk2m3m4gjejnmmse3v47rzj579ylx0                               onenode (UNDELEGATE FROM US)   0.000000e+00            0.00              15.00     jailed    100.00
-134  terra12xaq7r598hljwk5zffp02lpy002yt8f9kt2jqm                                        Luna Reserve System   1.500000e-03            0.00               5.00   inactive    100.00
-135  terra122jtp99q03vjdq2d63fgtmsjyndhkh3whjvqdr                                                      G'Lab   6.392600e+00            0.00               1.00   inactive    100.00
-136  terra12ce886lv4muzt09rgehsta8433d8vz7cx5mqlj                                                   Coverlet   2.387305e+03            0.00               5.00   inactive    100.00
-137  terra10ahmn0ucd9selcv77rwysx5pvd607z04zz4rvy                                                   StakeLab   6.990590e+01            0.00               1.00   inactive    100.00
-139  terra1x97e6yr9qfrjzexvm8adt0dqlpdluvqjgn2frd                                                 truststake   9.545331e+02            0.00              10.00     jailed    100.00
-140  terra12uxmdcrz25kcwr7krsn2u0v5nswdfxpa2slcgj                                                   BitoNode   3.999600e+01            0.00               1.00     jailed    100.00
-141  terra1twevg63seyjzen3mt7kk7a68n558gj6atdupr5                                         cybernetic destiny   0.000000e+00            0.00             100.00     jailed    100.00
-142  terra1t7r7m59cxjzax2rjywls0hg3cdhhg6t549e85g                                                  terraform   9.999000e-01            0.00               0.00     jailed    100.00
-143  terra1mxzrwf34c27t7qlvjjpk25y2lgtlk66huc5jwh                                                   StakingV   9.999000e-01            0.00              12.00   inactive    100.00
-144  terra19wrdftpur6jahna2f7286l7u4m4n3m78ywj3vq                                                        va1   2.000000e-02            0.00              10.00   inactive    100.00
-138  terra163phlen6dn7sp9khhjar2gqqx6kga0ly8zj24m                                                    Goliath   9.050100e+00            0.00             100.00   inactive    100.00
-146  terra1wdpwudvc639tpy952n2myre6uckuqdu3h2upx2                                                    pegasus   5.245000e+00            0.00               5.00     jailed    100.00
-145  terra1vfl60ely0r9pf0e5cle4732xa2dttux7yvh0t0                                                    Caronte   8.351618e+02            0.00               0.00     jailed    100.00
-158  terra10mzh7k7zg053nw87g7dk9lghhzd9wvlsd9lwkd                                                  StakeThat   2.044930e+01            0.00              10.00     jailed    100.00
-157  terra1klsqs5k49zw27a53k8jf6q8a3kzfhu0xgq38ct                                         sd-terra-validator   5.000000e+00            0.00              10.00   inactive    100.00
-156  terra103ra79dl2un2ltknhyz7crm5y29g4vhmyh9nuk                                                     NEOWIZ   1.609024e+03            0.00             100.00   inactive    100.00
-155  terra1a209pg5fgzehkg8wyslynns2tc7uf7x6tfyu0l                                               NEVS.Capital   2.999700e+00            0.00               5.00   inactive    100.00
-154  terra1wltqc80xq98shsmvyeps2u9t82tvy3wzctpqvj                                                 SwissTerra   6.899400e+00            0.00              10.00     jailed    100.00
-153  terra1wm80ljexahweq6q5s8eja04d7tsjdref4ht7xe                                                       test   1.004900e+00            0.00              10.00     jailed    100.00
-159  terra18825kzx0zmdntpucvd2gjezau57vdyua6x0sry                                               Ubik.Capital   1.097857e+02            0.00              15.00     jailed    100.00
-322  terra1wq0usarusrv674g5uph576x6pzwd03c2dmxq5w                                                       Kash   8.000000e+00            0.00               0.00   inactive    100.00
-151  terra19r4pzmtejrlc722mf0ccf0x58atg8awpqugd8t                                                      drill   5.000000e+00            0.00              10.00   inactive    100.00
-150  terra1wcsxa023uvadkjlh6mn8mp73lx5h63u2s44735                                          Ledger by Figment   5.000000e+00            0.00               7.50   inactive    100.00
-149  terra10xhsv9ge90g6w4qep9969payn42gp24ll6l5ph                                                 StakingMom   1.900000e+00            0.00              20.00   inactive    100.00
-148  terra1f8qy7ucr0zactwuv0h5jr8mrerm9g6u2qqvc8k                                                       test   3.000700e+00            0.00              30.00     jailed    100.00
-147  terra19xjg25k0xa27zxrujal2x64dnwvqnz4pzcp9p9                                                     Drogon   1.500000e-02            0.00              10.00   inactive    100.00
-152  terra1wc76cg6zgqd7tm4cltg73dgceff77gdshaanlf                                                    DexTrac   1.715321e+03            0.00              10.00     jailed    100.00
-129  terra1ykkk3kzz6xa6qq0xt9sfpv05n2v6sv3n4kt5gc                                                       Pixy   1.153223e+05            0.04               1.11     active     98.96
-128  terra1lm604mtdalpd9z46486acqlshns2urquwr6xs5                                                   Staky.io   1.482952e+05            0.05               8.00     active     99.98
-127  terra1audgfvmgt0js54p3s8kj3r40uwej6vy2trk7na                         FreshLUNA.com Enterprise Validator   2.332555e+05            0.07               8.99     active     99.99
-126  terra1y7px9rdkn3xeh2hyfvk9pveygsk4v7lmf7pc7z                                             ChainofSecrets   2.912033e+05            0.09               1.00     active    100.00
-124  terra13slfa8cc7zvmjt4wkap2lwmlkp4h3azwlyn02r                           ✅ CryptoCrew Validators #IBCgang   3.133466e+05            0.10               5.00     active     99.99
-123  terra1qfx03ywz9hhxupv73lq06da6jjrdwwrl37guh2                                                 🤑 uGaenn ⛅   3.158792e+05            0.10               1.00     active     99.99
-125  terra18p7kdpvpsp3muz93ww7ej72wyrrdja2l7jjxe9                                                        bc1   3.075780e+05            0.10             100.00     active     99.80
-122  terra12kfeqrflptmlz5qj8agrm2ze6dzss3crm3syu6                                                      Huobi   3.297179e+05            0.11              10.00     active     99.99
-121  terra12r8929na0amxfj406zw7vk8jmd03fmzcj20hcm                                         danku_zone w/ DAIC   3.851800e+05            0.12               4.20     active    100.00
-120  terra1p94a6vwl9dkd98cyrlmzf6ydjdgfvamyhnavew                                                  LunaOrbit   4.059857e+05            0.13               5.00     active    100.00
-119  terra1t0z9y2p26qzsh06f2l2kn2v8hqtkyd33s6rcfh                                                Stake5 Labs   4.069784e+05            0.13               5.00     active     99.86
-118  terra1dcrq2xwuhea9hm5xfuydjuwgz6gm7vdjz34gv6                                                       Mr.K   5.005849e+05            0.16               5.00     active    100.00
-117  terra1x92rzuf9z7t359p3zackj0deezkhs3vc9ffe9c                                                  StakeBowl   5.011771e+05            0.16             100.00     active     99.97
-116  terra1xc58asjmdhaqeargcaev3muem2xtp36x8vsvr8                                            Pantera Capital   5.417143e+05            0.17              10.00     active     99.98
-115  terra1ryhpcmnkeqa6umrp06g9782qjwdqc8wfe7qqaw                                                  TaiPanich   5.708794e+05            0.18               1.00     active     99.98
-114  terra1d0dupc4hvl4nnfky6vqp4xyeunejgsjas26xwn                                                       DACM   5.923680e+05            0.19               5.00     active    100.00
-113  terra1nnm4qx2ytff5gy7a82yh4nw4tnez4s38p6gjck                                                Protoss One   6.536147e+05            0.21               2.50     active    100.00
-112  terra1t76s5v5vjawkrr70sh55flpxfcmc3k30400uus                                              GalaxyDigital   6.798028e+05            0.22               5.00     active    100.00
-111  terra198c72uxt9p8r2u5y6zha4390qjkayvjr38ppk4                                                   Zerg One   7.092772e+05            0.23               2.50     active    100.00
-110  terra173de34wwvak6d4829h5vmxvm98y5vl08t594nn                                   Rockaway Blockchain Fund   7.259351e+05            0.23               6.00     active    100.00
-109  terra1fhx7y75643tze8dxf4m9gwhkxn955q8r7r20fv                                                 SolidStake   7.935638e+05            0.25               5.00     active    100.00
-108  terra12g4nkvsjjnl0t7fvq3hdcw7y8dc9fq69nt4p4n                                              PFC - OSS FTW   9.365800e+05            0.30               5.00     active     99.99
-107  terra155x8vngnz4u2ce3fs6dvu027v8w90jqdjypupy                                                Blockdaemon   9.617065e+05            0.31               6.00     active    100.00
-103  terra1cga2xslx7j07fan9ud4p4sg5ha72gtwewf2ecd                                                    MoonDog   1.008749e+06            0.32              10.00     active     99.91
-106  terra1d04sgf8g5uw3q3937r3gmqy499laafx7h4e09q                                               KiKi Finance   1.000639e+06            0.32             100.00     active    100.00
-105  terra12qvrr6j7u3z5el5uuwg99ftx3jru5py609j4e4                                                    Nodeasy   1.000640e+06            0.32              10.00     active    100.00
-104  terra1rf9xakxf97a49qa5svsf7yypjswzkutqfclur8                                                      gazua   1.000763e+06            0.32             100.00     active    100.00
-102  terra1tze7t69lc8dwngkxgv2z3cm9zg907suqn4g6tp                                             Chaos Protocol   1.025881e+06            0.33              10.00     active     99.99
-101  terra1km83qf6kwmzt32m4zha4spnuhj56kw2jctyvys                                           Luna Burner 🔥 0%   1.033812e+06            0.33               0.00     active     99.99
-100  terra18hpew39uymssr52w8euxqh4zrrjt02x7kq7x89                                                    OneStar   1.055276e+06            0.34               4.50     active    100.00
-99   terra1smkgwm78aqf0ja3qvtqwngzczpcekudvtss34n                                           Cosmic Validator   1.075485e+06            0.34              10.00     active    100.00
-98   terra1r843mpk5zzkfgtnduskd0dzgeltv0n503h6l5f                                                   flipside   1.101488e+06            0.35             100.00     active    100.00
-97   terra12jpzzmwthrljcvm48adncspxtchazkl8vjmrvx                                      Synergy Nodes - Glory   1.110240e+06            0.35               5.00     active    100.00
-92   terra1chscwnxzcnd8qvk76efjd6dd73gf945dh6v75s                                                 MANTRA DAO   1.169126e+06            0.37               2.00     active     99.99
-91   terra1ptyzewnns2kn37ewtmv6ppsvhdnmeapvgeks28                                                  WeStaking   1.171378e+06            0.37               5.00     active    100.00
-93   terra1cnhrvznaxjk9etnnaetrrec6xpx6r5m59775d6                                               319B5FDFEF84   1.162249e+06            0.37             100.00     active     97.81
-95   terra1rjmzlljxwu2qh6g2sm9uldmtg0kj4qgyy27m6x                                                  AuraStake   1.154898e+06            0.37               5.00     active     99.99
-96   terra1565r942vpnpqtrsmhxxwvel8j2m40zgspwqz6p                                             Sarah Kerrigan   1.141907e+06            0.37              10.00     active     99.93
-94   terra1qqu376azltyc5wnsje5qgwru5mtj2yqdhj0cwl                                                TERRA-FIRMA   1.156430e+06            0.37              10.00     active     99.99
-68   terra1tusfpgvjrplqg2fm7wacy4slzjmnzswcfn9puj                                                      ATEAM   1.189820e+06            0.38              10.00     active     99.98
-67   terra1xl2ujgt7f6xn8v26rjkhy4f20x5plc3nq4la0d                                               Luna Rewards   1.189981e+06            0.38               5.00     active    100.00
-66   terra1hqzf3tnw0py69xd5swwr3c7tqcumwjzdz05qwv                                                       wave   1.190194e+06            0.38              10.00     active    100.00
-65   terra1x4ce4fhqdnu8j7hrp64qmthumsvuhlq8yq63kx                                             MissionControl   1.190307e+06            0.38               5.00     active    100.00
-64   terra1de6t7xn6mrrckxgpku6kypgyf4wc2fcnuek00f                                                  Leviathan   1.190433e+06            0.38              10.00     active    100.00
-63   terra1svcgzkp4lhvvltce5uk73tnwxfrj6nlka6qxp4                                       KK Validator | == ==   1.190613e+06            0.38              10.00     active     99.99
-62   terra12j25g6uutxrry2zvwnyte6g04kylrm5k5gjz3v                                     Interdimensional Cable   1.191010e+06            0.38              10.00     active    100.00
-69   terra12x0uekrjre057h0vyrf9w8mkz6paf32qvurahx                                            SeltonStake.com   1.189753e+06            0.38              10.00     active    100.00
-60   terra1hme9uynnxf0ga72xmwtdgztt2lmg0jlqj8u0yq                                                      8moon   1.191462e+06            0.38              10.00     active     99.99
-59   terra13ncmrxrf8r0gkztpu7hxvs0hvfuqnq4kd3v79k                                                        MCF   1.191605e+06            0.38               8.00     active    100.00
-58   terra1me4u0au0gr29av3wmvr3zk4m0rkerjll7vpcrm                                                  Top Shelf   1.191622e+06            0.38              10.00     active    100.00
-57   terra1ullpeaj86f2y26gpvg09szznfve7tqur8zpq0w                                                     Uranus   1.191742e+06            0.38              10.00     active     99.98
-56   terra1yad8pjqp93gvwkxa2aa5mh4vctzfs37eka279r                                                   healings   1.191845e+06            0.38              10.00     active    100.00
-55   terra1av4m4rxeh2vsdm76lnwd0ysw0mu6eufjpq8qh0                                                Nexus Event   1.192277e+06            0.38              10.00     active     99.99
-54   terra1kgddca7qj96z0qcxr2c45z73cfl0c75pael9y2                                                 ChainLayer   1.192693e+06            0.38              10.00     active    100.00
-53   terra1pc0gs3n6803x7jqe9m7etegmyx29xw38aj9vvd                                               Staker Space   1.192801e+06            0.38              10.00     active     99.96
-52   terra1d0vfj9zvxfgcm4yt4ze4u35mvhj57eg2knxyxl                                               Easy 2 Stake   1.193027e+06            0.38               8.00     active     99.61
-61   terra1y7e9grrpt8kp0uk2v6mqd9pd0zdnkcwx4yhykl                                                   Un Fuego   1.191095e+06            0.38              10.00     active    100.00
-70   terra1uymwfafhq8fruvcjq8k67a29nqzrxnv9m4hg6d                                             High Stakes 🇨🇭   1.189290e+06            0.38              10.00     active    100.00
-80   terra1hwucxmeqtytu9nq54e9aarwrhzsej6w0hv0njz                                                TerraDactyl   1.186514e+06            0.38              10.00     active     99.99
-72   terra1magm90vzn4t75da3jadmahcp5ya075ez9yk77w                                                      Craig   1.188632e+06            0.38              10.00     active     99.99
-89   terra19ne0aqltndwxl0n32zyuglp2z8mm3nu0gfd5da                                                   StakeBin   1.179542e+06            0.38               5.00     active    100.00
-88   terra1vqegsqhe8q06t6jwgvww0qcr2u6v6g9xrp7wta                                                     Inotel   1.180914e+06            0.38              10.00     active    100.00
-87   terra16tc3c9u6yj5uuhru32pvs0pahfwraurpywwrup                                                    block42   1.181366e+06            0.38              10.00     active    100.00
-86   terra12mcn4pj7d8yeff0xfedcthqe9gs3vwc2tutd5e                                             Stake N' Shake   1.181756e+06            0.38              10.00     active    100.00
-85   terra1ya23p5cxtxwcfdrq4dmd2h0p5nc0vcl96tm0nw                                                 BTC.Secure   1.183529e+06            0.38              10.00     active    100.00
-84   terra1xetqge5kmatfk6223hcfgf8z3tnukmjhrkzmn0                                        Heavy Metal Finland   1.183660e+06            0.38               6.66     active    100.00
-83   terra1v3dey0ha6vdnssru88t2m5fzy7vuvs7emyardq                                                   Legend.X   1.184996e+06            0.38              10.00     active     99.99
-82   terra1zc9uadde55t4k3aw9uvgpkhwpsyzkq3k2qyvhs                                             Autism Staking   1.185607e+06            0.38              10.00     active    100.00
-90   terra1wqcc5g3k3mqg96pgvemzstmhkf42lt835gq8n7                                                   CAPAPULT   1.174088e+06            0.38               5.00     active    100.00
-79   terra1g6g0v23c6tv75ygk5za4s2ewwestdfj0k95e64                                                 StakeSabai   1.187228e+06            0.38               8.00     active    100.00
-81   terra1n7pkcal0jkp0ac9r338qp9cm5x6cakfnrkhkrc                                                  AUDIT.one   1.186385e+06            0.38               7.00     active     99.99
-73   terra1f2t96sz9hnwsqnneux6v28xfgn07pkxjdnqnz3                              BlockNgine 🛡️ Slash Protected   1.188561e+06            0.38               0.99     active     99.99
-74   terra1u7cfwp620pn8tjfth92t5dry3mhd3etc2n874x                                               Crypto Plant   1.188499e+06            0.38              10.00     active    100.00
-71   terra1jyjg55hzsh0f4xymy0kuuan30pp4q75ru0h35c                                                      kytzu   1.188861e+06            0.38              10.00     active    100.00
-76   terra193zuma3tk69kvffz9nqnca7z99tz7ej5zkfdw9                                                     NITAWA   1.187878e+06            0.38              10.00     active     99.95
-77   terra1aw0znxtlq0wrayyz7wppz3qnw94hfrmnnv5mzw                                                      RockX   1.187656e+06            0.38               9.00     active     99.86
-75   terra108lmrztvc3pc3w774shgvpry4d3lf79k2nhxrw                                                 Stakely.io   1.188081e+06            0.38               5.00     active    100.00
-78   terra12079m57cew2v02zs624zvyed5479an9wxcrveh                                                   0base.vc   1.187505e+06            0.38              10.00     active     99.98
-51   terra1xuxwc867udr9k84zzqhaflf9sc00svvmjm4geh                                                   moonshot   1.222024e+06            0.39               5.00     active    100.00
-50   terra1hqyygjq0vdqk0xdpkffgamzr4f7tqqg5u2h42f                                             Angel Protocol   1.246274e+06            0.40             100.00     active    100.00
-49   terra1dfcptsy9x4wzhpv0m79v47ladgj02yyuf0asyu                                                Terra World   1.294869e+06            0.41               5.00     active    100.00
-48   terra1we68q2zel6ajpxuzw5aqhh07zlxxywrkx379e3                                               coinhall.org   1.343717e+06            0.43               5.00     active     99.97
-47   terra1yxkfgpyu6m2wkgw4ljuky9lvn59r3wn0kl935v                                                   CoinBevy   1.381097e+06            0.44               3.00     active    100.00
-46   terra1dg7zhmt4g4zq74y4tksq4xfzf5pwx4cnn833z9                                                Marte Cloud   1.387782e+06            0.44               5.00     active     99.97
-45   terra1d3fv2cjukt0e6lrzd8d857jatlkht7wcpgclds                                  🥩 larry.engineer #IBCgang   1.402520e+06            0.45               5.00     active    100.00
-44   terra1k5hw6rl060zpnnjhgnvky9cs8evrts2g2sx6mc                                                        SCV   1.448105e+06            0.46               5.00     active    100.00
-43   terra1jkg3wy5q9q6jlshjf2r6p9nf4flwtr6hp7r7z9                                            Neptune Finance   1.633336e+06            0.52               5.00     active    100.00
-42   terra1mpmn2y9qw4dn6z2q3a7hy4c3wjztmvu7wde790                            THORchain.BULL & 0xVentures.org   1.724100e+06            0.55               0.00     active     99.99
-41   terra1j27nm2gjm0m4lsye8lspa46rax0rw4fge9awrs                                            Luna Station 88   1.776007e+06            0.57               3.00     active    100.00
-40   terra1rn9grwtg4p3f30tpzk8w0727ahcazj0f0uamr9                                                 GT Capital   2.020414e+06            0.65               5.00     active    100.00
-39   terra1tdkh85vv7vsvav93elmx6qsywuu22amc6qsvqw                                                  setten.io   2.021106e+06            0.65               3.00     active     99.98
-38   terra120ppepaj2lh5vreadx42wnjjznh55vvktwj679                                     Allnodes.com ⚡️ 0% fee   2.178425e+06            0.70               0.00     active    100.00
-37   terra19hflr9ay8usqxsxm4zzrsxfy3xz7hp6kv6gsr7                                            Orbital Command   2.190985e+06            0.70               4.00     active     99.95
-36   terra1c6gve6zhye5690563wxmvns7mugz6plu4j7raz                                      Arrington XRP Capital   2.406246e+06            0.77              10.00     active     99.98
-35   terra18jv83kckd0r8ht9fwsqzyvljcd4h4pj9uxlk72                                                  InfStones   2.801285e+06            0.90               8.00     active     99.77
-34   terra1qd0uk3wrw73x662y2gx4kaulrzlcky627myzyr                                             Talis Protocol   2.923484e+06            0.93               3.00     active     99.94
-33   terra17juxr8d54kfscas5jmtaztfcrsdhalm0ecjp9m                                                BridgeTower   3.014508e+06            0.96               9.00     active    100.00
-32   terra1p72vswk5zfzzr7myhrerm78ty5tjc8ypl9ccmg                                      Accomplice Blockchain   3.244097e+06            1.04               0.00     active    100.00
-31   terra1pux4j3hm2am302qr40u5leh5lsgfvgjskllk8g                                             Centauri Alpha   3.507669e+06            1.12               4.00     active    100.00
-30   terra1t90gxaawul292g2vvqnr3g0p39tw5v6vsecu4f                                                Terra Bites   3.943838e+06            1.26               5.00     active     99.98
-29   terra13rt78f5rclczn4gsxxfa7r50q0cvjjhvdyxljp                                             BinanceStaking   4.000186e+06            1.28               9.00     active     91.87
-28   terra1a9q6jl792qg36cp025ccjtgyf4qxrwzqjehty7                                              stake.systems   4.092926e+06            1.31               1.85     active    100.00
-27   terra1fg5g8acntt90n9303cm5fjza9s3newleq4rlmk                                      Galactic Lounge 🥃 🍸 🍹   4.251950e+06            1.36               0.00     active     99.99
-26   terra1qt7kqljer7fxzudqdyhx87l7wreeef53s9uxqw                                             Coinbase Cloud   4.319366e+06            1.38              10.00     active    100.00
-25   terra1jkqr2vfg4krfd4zwmsf7elfj07cjuzss3qsmhm                                                    Forbole   4.387517e+06            1.40              10.00     active    100.00
-24   terra1c9ye54e3pzwm3e0zpdlel6pnavrj9qqvqgf7ps                                               StakeWith.Us   4.437566e+06            1.42              10.00     active    100.00
-23   terra162892yn0tf8dxl8ghgneqykyr8ufrwmcs6vft5                                           Luna Maximalists   4.485437e+06            1.43              20.00     active     99.97
-22   terra1542ek7muegmm806akl0lam5vlqlph7spfs99vq                                                 blockscape   4.661314e+06            1.49               8.00     active    100.00
-21   terra1h6rf7y2ar5vz64q8rchz5443s3tqnswrpxe69f                                                     Staked   4.737580e+06            1.51              10.00     active     99.98
-20   terra15khv8dsaxqmf7nwu4jdlp9slxl7aczte3fr8ht                                                        ISS   4.840012e+06            1.55               4.00     active     98.72
-19   terra15s5d4lm0n75af9jxwawqzl73trnrypdslj7mjx                                                     Mosaic   4.895076e+06            1.56               5.00     active    100.00
-18   terra1khfcg09plqw84jxy5e7fj6ag4s2r9wqsg5jt4x                                                     01node   5.059327e+06            1.62               8.00     active    100.00
-17   terra1sym8gyehrdsm03vdc44rg9sflg8zeuqwfd3384                                                   syncnode   5.301981e+06            1.69               9.00     active    100.00
-16   terra1vkdp7amtzcde4awykg8xuph0sq89xghpkfgl52                                                   Aardvark   5.349793e+06            1.71               4.00     active    100.00
-15   terra1fjuvyccn8hfmn5r7wc2t3kwqy09zzp6tya55yu                                                    DELIGHT   5.369504e+06            1.72              10.00     active    100.00
-14   terra1krj7amhhagjnyg2tkkuh6l0550y733jnjulzjh                                                 Terran One   5.769537e+06            1.84               2.50     active    100.00
-13   terra144l7c3uph5a7h62xd8u5et3rqvj3dqtvve3he0                                    P2P.ORG - P2P Validator   6.152492e+06            1.97               8.00     active     99.96
-12   terra1nwrksgv2vuadma8ygs8rhwffu2ygk4j24pxxx0                                                     Stakin   6.195341e+06            1.98              10.00     active     99.99
-11   terra15urq2dtp9qce4fyc85m6upwm9xul30496lytpd                                                 Chorus One   6.341083e+06            2.03               8.00     active     99.96
-10   terra1p54hc4yy2ajg67j645dn73w3378j6k05v52cnk                                                     hashed   6.710561e+06            2.14              10.00     active    100.00
-9    terra1kprce6kc08a6l03gzzh99hfpazfjeczfpd6td0                                                 Certus One   6.990584e+06            2.23              10.00     active    100.00
-8    terra1va2ew92dtkhffduswr83elf3nfvl4xg48rguwl                                                  NOD Games   6.995304e+06            2.24               0.00     active    100.00
-7    terra15cupwhpnxhgylxa8n4ufyvux05xu864jcrrkqa                                                    Figment   7.046051e+06            2.25              10.00     active     99.99
-6    terra123gn6j23lmexu0qx5qhmgxgunmjcqsx8g5ueq2                                               Staking Fund   7.923047e+06            2.53              10.00     active    100.00
-5    terra1alpf6snw2d76kkwjv3dp4l7pcl6cn9uytq89zk                                                Smart Stake   8.121594e+06            2.60               5.00     active    100.00
-4    terra175hhkyxmkp8hf2zrzka7cnn7lk6mudtv4nsp2x                                        DSRV - CHAISCAN.com   8.384966e+06            2.68              10.00     active    100.00
-3    terra13g7z3qq6f00qww3u4mpcs3xw5jhqwraswv3q3t                                               everstakeone   8.723616e+06            2.79              10.00     active    100.00
-2    terra1v5hrqlv8dqgzvy0pwzqzg0gxy899rm4kdn0jp4                                               DokiaCapital   1.006455e+07            3.22               5.00     active    100.00
-1    terra15zcjduavxc5mkp8qcqs9eyhwlqwdlrzy6anwpg                                                  B-Harvest   1.007390e+07            3.22               5.00     active     99.98
-0    terra1259cmu5zyklsdkmgstxhwqpe0utfe5hhyygjdc                                                Orion.Money   1.593145e+07            5.09               5.00     active    100.00
+                                      Account address                                                  Validator name  Tokens amount  Voting power %  Commission rate %    Status  Uptime %
+238  terra198c72uxt9p8r2u\n5y6zha4390qjkayvjr38\nppk4                                                        Zerg One   6.232755e+04            0.00               2.50    jailed    100.00
+324  terra1gkumn82kkj3cww\n28yp53agy7aluxv06fsn\ngwu7                                                       stefanski   1.499578e+02            0.00              10.00    jailed    100.00
+323  terra1hlwfelx6s05a43\ntszudj4w02zz500xhupl\n0wkg                                                   🔥BetterLunc🚀🌕   3.756600e+07            0.00               5.00  inactive     98.12
+322  terra1fkq64r5859syjt\n5z7wns9nt8vahfj9lssj\ncnfl                                               Lunc Repeg Club 🔥   4.624062e+07            0.00               3.00    jailed    100.00
+321  terra1f8qy7ucr0zactw\nuv0h5jr8mrerm9g6u2qq\nvc8k                                                            test   3.000700e+00            0.00              30.00    jailed    100.00
+320  terra1fp9y688mc7c3t7\n9m855da4zlr45fru0y4a\nu3dn                                                Blockdaemon Beta   0.000000e+00            0.00              10.00    jailed    100.00
+319  terra1g2cw3vj6z4vpp7\nev3r98drgy7674vnn5fp\n39nf                                                 dxm_terra_stake   1.999800e+00            0.00              10.00    jailed    100.00
+318  terra13ncmrxrf8r0gkz\ntpu7hxvs0hvfuqnq4kd3\nv79k                                                             MCF   1.414296e+09            0.00              14.00  inactive    100.00
+317  terra1va2ew92dtkhffd\nuswr83elf3nfvl4xg48r\nguwl                                                       NOD Games   1.486191e+06            0.00               0.00  inactive    100.00
+316  terra1t76s5v5vjawkrr\n70sh55flpxfcmc3k3040\n0uus                            GalaxyDigital (Winding Down 5/31/22)   2.378394e+04            0.00              15.00  inactive    100.00
+315  terra1gu2mzcwdadw7m0\n3susfler0c6q3jgxgf76\nss27                      Shutting down very soon. Redelegate stake.   1.000000e-01            0.00               1.00    jailed    100.00
+314  terra1g8r0nsks2n2l7d\n8jsq77ujt5eat5njlusq\n3h3t                                                    Luan-station   1.999800e+00            0.00               5.00    jailed    100.00
+313  terra186dsseaecl6scd\nru3ldtwq0f5stez99vs4\ng5dy                                                            MOON   9.999000e-01            0.00              10.00  inactive    100.00
+312  terra1x92rzuf9z7t359\np3zackj0deezkhs3vc9f\nfe9c                                                       StakeBowl   1.020502e+03            0.00             100.00    jailed    100.00
+311  terra1xqerhpsls344kf\n8vgm937k9zwke7wmrl78\nvkfc                                                          aftest   1.999800e+00            0.00             100.00    jailed    100.00
+310  terra1g6g0wxnkfrtgx3\nmewqdggj8vgxggnksd2z\n9t3j                                                        nvmetest   1.999800e+00            0.00               1.00    jailed    100.00
+309  terra1g6g0v23c6tv75y\ngk5za4s2ewwestdfj0k9\n5e64                                                      StakeSabai   3.745529e+06            0.00               5.00    jailed    100.00
+308  terra18fk2ye6m5wnnfr\narpwycunnw0ls8564zw7\njx5m                                                      stake.zone   6.982079e+03            0.00               6.00    jailed    100.00
+307  terra1xc58asjmdhaqea\nrgcaev3muem2xtp36x8v\nsvr8                                                 Pantera Capital   2.476894e+05            0.00              10.00    jailed    100.00
+306  terra1x4ce4fhqdnu8j7\nhrp64qmthumsvuhlq8yq\n63kx                                                  MissionControl   1.228180e+08            0.00               5.00    jailed    100.00
+305  terra1wl3rjgxcg33rju\nq49gr96ewj5tyhjt0z88\nkp5h                            95% BURN | Total burned: 22,073 LUNC   3.616714e+05            0.00             100.00    jailed     95.00
+304  terra1gc60jfj3p7qawy\ncd0c4789f24m8h3rz34l\npcyw                                                    Ellipti Labs   9.999000e-01            0.00              20.00    jailed    100.00
+303  terra1euecqm9lqr8gmm\nn5gmzlv82d02gvaaynl3\n47gs                                                          LuncBR   8.000000e+03            0.00               5.00  inactive    100.00
+302  terra15sf40dnxs54de4\nnzltt5wv66xwfg3d3ljd\nrsrw                      Shuting Down Redelegate To Garuda Universe   5.510446e+07            0.00               1.00    jailed     99.46
+301  terra10fvvdnqjtjgs94\nz9emwayya0ahu55j4270\neqmk                                   Euro Stake Station™️🟩Low Fee🟩   9.787782e+06            0.00               1.99    jailed     99.17
+300  terra1gjclcvps7ayuwj\nuzn7mwe2709r8lmclzf6\n6sw4                                                     Test Node 1   5.199441e+06            0.00               0.00    jailed    100.00
+325  terra1t7r7m59cxjzax2\nrjywls0hg3cdhhg6t549\ne85g                                                       terraform   9.999000e-01            0.00               0.00  inactive    100.00
+326  terra19ehnpha9kazkj6\nrm9esj9qsjutm0cxmhnu\nfham                                              ⚡ AstroTech Labs ⚡   6.749795e+04            0.00              10.00    jailed    100.00
+327  terra1guksxgm0qxm00k\naf35myxn263ws9l6ykl2\njrgq                                  Pillow Staking - No Commission   3.002700e+00            0.00               0.00    jailed    100.00
+328  terra17kyjx5e5garhl8\n2udm25sxrqs5flgpkend\nmhsq                            MAINLINEMINING.COM 🚀 IN ED WE TRUST!   4.038697e+07            0.00               4.50  inactive     98.12
+354  terra1jkqr2vfg4krfd4\nzwmsf7elfj07cjuzss3q\nsmhm                                                         Forbole   1.081300e+08            0.00               5.00  inactive    100.00
+353  terra1d5k0cxfqawjm8j\nwagwj0qftt32vqusx5th\nflc9                                        Shuting Down at 31st May   1.231908e+08            0.00               5.00    jailed     97.91
+352  terra1tjypu0may2tqqx\nxl9vt2heqqpz5gz5jwlv\najd3                                                             a41   0.000000e+00            0.00              10.00  inactive    100.00
+351  terra1twevg63seyjzen\n3mt7kk7a68n558gj6atd\nupr5                                              cybernetic destiny   0.000000e+00            0.00             100.00    jailed    100.00
+350  terra1tdkh85vv7vsvav\n93elmx6qsywuu22amc6q\nsvqw                                                          Setten   3.454565e+08            0.00               3.00    jailed    100.00
+349  terra1tyxxz4h0sslsm4\npsc68janrrx64fknmvch\n8gap                                                          node-x   4.999500e+00            0.00              11.00    jailed    100.00
+348  terra1tze7t69lc8dwng\nkxgv2z3cm9zg907suqn4\ng6tp                                                  Chaos Protocol   4.350481e+06            0.00              25.00    jailed    100.00
+347  terra12kfeqrflptmlz5\nqj8agrm2ze6dzss3crm3\nsyu6                                                           Huobi   3.866242e+03            0.00              10.00    jailed    100.00
+346  terra12j25g6uutxrry2\nzvwnyte6g04kylrm5k5g\njz3v                                          Interdimensional Cable   5.049805e+06            0.00              10.00    jailed    100.00
+345  terra122jtp99q03vjdq\n2d63fgtmsjyndhkh3whj\nvqdr                                                           G'Lab   5.577500e+00            0.00               1.00    jailed    100.00
+344  terra12x0uekrjre057h\n0vyrf9w8mkz6paf32qvu\nrahx                                        Shutting down Redelegate   1.476924e+08            0.00             100.00    jailed    100.00
+343  terra12qvrr6j7u3z5el\n5uuwg99ftx3jru5py609\nj4e4                                                         Nodeasy   2.697332e+02            0.00              10.00    jailed    100.00
+299  terra1ppp6q833lz9s4m\nrgssm9gz5q52ew589k6d\nn3hn                                            Microcosm Innovation   3.064694e+05            0.00               0.00    jailed     98.02
+342  terra12mcn4pj7d8yeff\n0xfedcthqe9gs3vwc2tu\ntd5e                            cakln387djklj2nflksjdflhaasduioucwlj   3.591424e+06            0.00             100.00    jailed    100.00
+340  terra1kewjknvtym2les\nr4qdldqc36cfrt8s432d\nh38y                                      Closing, Please redelegate   2.242882e+08            0.00               5.00  inactive    100.00
+339  terra1tquak2yh9twza9\neusnthx6eu0987xqed99\ncmp0                                                         Be-Free   9.999000e+00            0.00               3.00    jailed    100.00
+338  terra12ce886lv4muzt0\n9rgehsta8433d8vz7cx5\nmqlj                                                        Coverlet   1.642133e+03            0.00               5.00    jailed    100.00
+337  terra12nunl9fmxgw5cs\ntkdexygj09mdln0sy2q7\n52x5                                                        topstake   9.999000e-01            0.00              10.00    jailed    100.00
+336  terra12tkjdqd2l7xp7q\nl6pj9wnz77le3wy9pz7j\nsxmk                                                        uGaennS1   5.000000e-01            0.00               5.00  inactive    100.00
+335  terra1vqnhgc6d0jyggt\nytzqrnsc40r4zez6tx92\na66a                                              🌐 KysenPool Moon 🌕   2.036246e+03            0.00              20.00  inactive    100.00
+334  terra1fshgdpz94gfxx0\nr4jyuh22mc5pns97lu0s\nv9sq                                               Please Undelegate   1.807545e+06            0.00               5.00    jailed    100.00
+333  terra1f24e4z0kdgtp4m\nr8h9wngzpjq6jnzxl53d\n8r0g                                                  TH-Validators2   2.985915e+07            0.00               0.00    jailed    100.00
+332  terra1f2rjcnn7m6ezpj\nk8rl55wl3p0vsq6cdagp\nq27q                                                         Stakeit   2.113882e+02            0.00              15.00    jailed    100.00
+331  terra1fkftfalmgcc5we\nq90sf2fch9y5vlpxvjv7\nxees                                                          change   6.100000e-01            0.00              30.00  inactive    100.00
+330  terra1glz9vjdzs45jff\nmgg0hvfldlx3a936m5xl\n8zxn                                                        Binances   1.099800e+00            0.00               0.00    jailed    100.00
+329  terra1g6yaf2v7cxzjr4\nv9a0xjxncnv57aea5w0x\nnn3q                                                     MR GIVEAWAY   8.780456e+06            0.00               4.00    jailed    100.00
+341  terra1pe3cvzlx6yqrd6\n66qngpmfsllhemk9yqyt\nlfhg                                                   David Goebelt   4.298173e+07            0.00               5.00    jailed    100.00
+298  terra1uk4xgu0ryjk8ps\np7wxwdmjdx6jgxa4f84t\n37ls                                        Shutting Down REDELEGATE   6.388178e+07            0.00              20.00  inactive    100.00
+297  terra18jv83kckd0r8ht\n9fwsqzyvljcd4h4pj9ux\nlk72                                                        Farewell   4.579960e+02            0.00               8.00    jailed    100.00
+296  terra1q43hd97ru800y6\nmmkwemrhlhnwsn2re2y3\nfx92                           LUNC ONE - Closing, Please redelegate   2.219456e+08            0.00               9.00    jailed     89.87
+265  terra1r4zg8eq2fs577y\ng4krseqfwdg48pwmut20\n9xvl                                                   DeFi Patriots   1.139886e+05            0.00               4.00    jailed    100.00
+264  terra1urzzga0tjwthu5\naejujtgmh4kcvvpj87ve\nefn3                             Apeiron Nodes🔗|100% Uptime|Airdrops   2.921600e+08            0.00              10.00    jailed     98.12
+263  terra1jyjg55hzsh0f4x\nymy0kuuan30pp4q75ru0\nh35c                                                           kytzu   8.452949e+07            0.00              10.00    jailed    100.00
+262  terra19hflr9ay8usqxs\nxm4zzrsxfy3xz7hp6kv6\ngsr7                                                         DEFUNCT   3.300908e+08            0.00              10.00    jailed    100.00
+261  terra1xezgns0g0q3l36\n5yhe3x8r8dg7uwdf97kh\nrplc                                                 Republic Crypto   4.999500e+00            0.00               5.00    jailed    100.00
+260  terra1pc0gs3n6803x7j\nqe9m7etegmyx29xw38aj\n9vvd                                                    Staker Space   2.656557e+07            0.00               5.00    jailed    100.00
+259  terra19ke9ze6uxuxdc5\nrd80d0ntmnlqgr85cp4g\nu344                                             Ceres Yield Capital   1.300900e+00            0.00              20.00    jailed    100.00
+258  terra1z056yhed5xr9yf\nc9vnpl23hmy97rqqhvff\ns9h9                                        Shutting Down REDELEGATE   6.738182e+07            0.00               5.00    jailed    100.00
+257  terra1zrxsjccn6u02rx\ns4ctx9tesjm5rnn8c5ff\neqle                                                            test   8.999100e+00            0.00              10.00    jailed    100.00
+256  terra1dg7zhmt4g4zq74\ny4tksq4xfzf5pwx4cnn8\n33z9                                                     Marte Cloud   1.011285e+08            0.00               5.00  inactive    100.00
+255  terra1fuj047hmvk2m3m\n4gjejnmmse3v47rzj579\nylx0                                    onenode (UNDELEGATE FROM US)   0.000000e+00            0.00              15.00    jailed    100.00
+254  terra1gxa4zq407lx58l\nd5rxy6rqudg3yu4s0sku\n99lg                                                   Sandhill.Asia   8.800000e-03            0.00               6.00    jailed    100.00
+266  terra1rucuack65khwlt\nlw5pzc2ek3lnppp94qka\nc5ew                                                       “IRRpool”   8.930000e-01            0.00              10.00  inactive    100.00
+253  terra197d5p7lpn34r2u\nff0drx78zf5e4jle4wwy\nml57                               Shutting down - please undelegate   2.910100e+00            0.00              60.00    jailed    100.00
+251  terra1r843mpk5zzkfgt\nnduskd0dzgeltv0n503h\n6l5f                                                        flipside   1.101645e+06            0.00             100.00    jailed    100.00
+250  terra1f2ly4rft3kz2rv\n0sx69022puv5lfds6ghx\nz468                                                    Free Staking   7.499300e+00            0.00               0.00    jailed    100.00
+249  terra19wrdftpur6jahn\na2f7286l7u4m4n3m78yw\nj3vq                                                             va1   2.000000e-02            0.00              10.00  inactive    100.00
+248  terra1rr53sjy3dmn7n4\nxeh4gu8nvrupd3n3wsaq\nl8lu                                                       Not Jacob   1.209251e+06            0.00               5.00    jailed    100.00
+247  terra1p94a6vwl9dkd98\ncyrlmzf6ydjdgfvamyhn\navew                                                       LunaOrbit   2.758608e+05            0.00               5.00    jailed    100.00
+246  terra129zazmhhzap0np\nlylk00ujxlguf5ne7nk5\n3y35                                                       PMCapital   8.000000e+00            0.00               1.50  inactive     99.40
+245  terra1gytqku2dl53w48\npdusj9k6t00nfl5nsrha\nd7y7                                                           Hanko   1.000000e-01            0.00               5.00  inactive    100.00
+244  terra1y6f97t9u5kl0zk\n4a50ygxl0gap0dc7ej9d\nenne                                                       Test Node   9.998000e-01            0.00               5.00    jailed    100.00
+243  terra1pjledltv8d8zsv\nzhx6yfgmw7hd3a3lxnta\nxr7a                                                            Mars   0.000000e+00            0.00             100.00    jailed    100.00
+242  terra1qd0uk3wrw73x66\n2y2gx4kaulrzlcky627m\nyzyr                                                  Talis Protocol   1.471372e+08            0.00               3.00    jailed    100.00
+241  terra1frvtdqm6yqwr3k\nsu38ftj7kf4a6jvzvv0k\n7sjd                                                   Dual Stacking   4.101980e+01            0.00               1.00    jailed    100.00
+240  terra1ykkk3kzz6xa6qq\n0xt9sfpv05n2v6sv3n4k\nt5gc                                                            Pixy   5.443055e+04            0.00               1.11    jailed    100.00
+252  terra1ysuptcd9vfszt7\nyl23z3wrnz2jajffyuqm\n0zeu                                                         KCTerra   9.902000e-01            0.00              10.00    jailed    100.00
+355  terra1jrqpyej80ctyc6\n0q02uslpy9aenz6lap23\n7uy9                                                    nodetrust.me   2.977124e+07            0.00               3.00  inactive    100.00
+267  terra19z68rv3d7dzvvt\nlxzma89jxsrssf9j36ys\nu57t       Old GP Validator (REDELEGATE TO GALACTIC PUNKS VALIDATOR)   1.322158e+04            0.00               5.00    jailed    100.00
+269  terra1gvlj2lv4ra8t7c\nqacfevz4c8uat9p8490j\na79a                                                     test-node-1   1.999800e+00            0.00             100.00    jailed    100.00
+295  terra1xyn55eeupfleh5\nsq2uzf933u4gdtre5qwm\ntntk                                                         Goliath   2.774761e+08            0.00               3.00    jailed    100.00
+294  terra12uxmdcrz25kcwr\n7krsn2u0v5nswdfxpa2s\nlcgj                                                        BitoNode   4.999500e+00            0.00               1.00    jailed    100.00
+293  terra1ww72kjtrwthxur\n4t37txshvr8y8hrdkpaw\nj53c                                                  Anchor Staking   1.017096e+08            0.00              10.00  inactive    100.00
+292  terra1sym8gyehrdsm03\nvdc44rg9sflg8zeuqwfd\n3384                                      closing, please redelegate   1.081662e+09            0.00               9.00  inactive    100.00
+291  terra1tusfpgvjrplqg2\nfm7wacy4slzjmnzswcfn\n9puj                                                           ATEAM   9.982244e+05            0.00              10.00  inactive    100.00
+290  terra1fhx7y75643tze8\ndxf4m9gwhkxn955q8r7r\n20fv                  SolidStake - REDELEGATE SHUTTING DOWN 30.06.22   3.144098e+05            0.00               5.00    jailed    100.00
+289  terra1x2v89vyeq4ml52\n2gupy5g053pnn444alp2\naerg                                                     Marat Plays   9.999000e-01            0.00               0.00    jailed    100.00
+288  terra1x8wmrha83m2m7q\n99qp469pg0plf6zzkxgx\ntlgl                                                     Foundry USA   9.999000e-01            0.00              10.00    jailed    100.00
+287  terra12plxhwe6jechv2\nvl0cjcaymde4j645phyj\nd2xr                                                    disconnected   4.500550e+04            0.00               5.00    jailed    100.00
+286  terra1gh7wpfpsjrqnas\nh5uc84z4njt95y9g5nh7\nsaj4                                                     Genesis Lab   9.783958e+06            0.00               7.00    jailed    100.00
+285  terra19xe62428tlfesd\nym0zn5wx9slyefqjp00v\nkrxa                                                         Closing   3.619925e+07            0.00               5.00    jailed    100.00
+284  terra19r4pzmtejrlc72\n2mf0ccf0x58atg8awpqu\ngd8t                                                           drill   4.999500e+00            0.00              10.00    jailed    100.00
+268  terra190std5tgydjt0s\ny2ugfyhs62y2l0h8z3le\nmzzj                                                        LUNAtics   6.978800e+02            0.00               1.00    jailed    100.00
+283  terra1cx7petjsun7stn\nag8qxy93drut49waepdf\nu52q                        Will close on March 20 Please Redelegate   1.546024e+07            0.00              15.00  inactive    100.00
+281  terra1tee0y2lagyj5zw\nx6ed3vpw6zyy2y5jyphy\nzvsa                                          Moon Train Express 🌕🚂💨   2.039938e+05            0.00              12.00  inactive    100.00
+280  terra12xaq7r598hljwk\n5zffp02lpy002yt8f9kt\n2jqm                                             Luna Reserve System   5.971000e+00            0.00               5.00    jailed    100.00
+279  terra1f699dxaftg4pxf\nqtwzyreyxgaznk922zue\ns259                                                     Just-Mining   6.137390e+01            0.00             100.00    jailed    100.00
+278  terra1y7px9rdkn3xeh2\nhyfvk9pveygsk4v7lmf7\npc7z                                                  ChainofSecrets   2.286399e+05            0.00               1.00    jailed    100.00
+277  terra18825kzx0zmdntp\nucvd2gjezau57vdyua6x\n0sry                                                    Ubik.Capital   1.097857e+02            0.00              15.00    jailed    100.00
+276  terra19xjg25k0xa27zx\nrujal2x64dnwvqnz4pzc\np9p9                                                          Drogon   1.500000e-02            0.00              10.00  inactive    100.00
+275  terra1yxkfgpyu6m2wkg\nw4ljuky9lvn59r3wn0kl\n935v                                                        coinbevy   1.229984e+06            0.00               5.00    jailed    100.00
+274  terra1zrvsj6wwda45g4\n4ja4tklay9l75fqzc5s2\n4hds                                    Another Validator From Marat   9.999000e-01            0.00               0.00    jailed    100.00
+273  terra1g490lqn45aqfu6\nxe6cl7t380s8g4jxvy5q\nreqf                                                  validator.cafe   1.014900e+00            0.00               5.00    jailed    100.00
+272  terra19a0ry9n5k4ammg\n3umufkuf2cxzyqrqc7vw\n55mk                                                   lunaticdavidk   5.000000e+00            0.00              11.00    jailed    100.00
+271  terra1h2xj53ps3gj5ew\nyngslkwjnp3tpvhu2rkw\ngj07                               Please redelegate to our new node   2.759636e+08            0.00               5.00  inactive    100.00
+270  terra1syxnkjzmvwy4lm\n8saq4qf5354we38p6m8c\n9lug                                                   ToxicLabs DAO   8.536684e+07            0.00               5.00  inactive    100.00
+282  terra1rf9xakxf97a49q\na5svsf7yypjswzkutqfc\nlur8                                                           gazua   1.000746e+06            0.00             100.00    jailed    100.00
+356  terra1ewluvhmhm5rpru\n8vhw6tdvenxfdmvvqm39\nh0kh                                                            test   9.999000e-01            0.00             100.00  inactive    100.00
+357  terra1ldvm3meszks6gl\nyjwdnwt4re8faxzgalu6\ny24p                                                    TRITIUM_NODE   2.523106e+08            0.00               5.00    jailed     97.26
+358  terra10cpv0r3z2aue92\nd0h0tlsp6p2etmh7xu4r\n3q9f                                             Blockware Solutions   2.849542e+02            0.00              10.00  inactive    100.00
+444  terra1l8kzrd460yxcfs\nhllr47n580qtjgp875gg\n3wg6                             Luna Station 81 (Please redelegate)   2.615828e+03            0.00               3.00  inactive    100.00
+443  terra16xr5kdu5xv7hte\npnd36q8wn3ayjd7p7kv2\neskc                                         100&100 Venture Capital   1.000000e-01            0.00              10.00  inactive    100.00
+442  terra1km83qf6kwmzt32\nm4zha4spnuhj56kw2jct\nyvys                                           Shutdown - redelegate   9.870820e+05            0.00               2.00  inactive    100.00
+441  terra13s9vaw726ypcaw\nsmcljrfyeffvf4s285pu\n3l9t                                                             TTS   3.599640e+01            0.00               1.00  inactive    100.00
+440  terra1wdpwudvc639tpy\n952n2myre6uckuqdu3h2\nupx2                                                         pegasus   5.245000e+00            0.00               5.00  inactive    100.00
+439  terra1ut6dl87gqna8zl\n7kq08f20uju6d3t45ypx\nx28a                                               hex-node-01.local   1.109900e+00            0.00              10.00  inactive     99.54
+438  terra1chscwnxzcnd8qv\nk76efjd6dd73gf945dh6\nv75s                                                     UNSTAKE NOW   3.190090e+07            0.00               2.00  inactive    100.00
+437  terra1kprce6kc08a6l0\n3gzzh99hfpazfjeczfpd\n6td0                                                      Certus One   4.340375e+07            0.00              10.00  inactive    100.00
+436  terra15kty6a6tkun7p3\nmfq24x5xfzud367lvfmk\ne76w                                               Iron Star Finance   9.500000e-01            0.00               0.00  inactive    100.00
+435  terra1hxyx4s2uwfe8gq\n9a8h6gm0mkyruy8djp9t\nqlp3                                               F U L L . M O O N   0.000000e+00            0.00               1.00  inactive     99.98
+434  terra1m0ra3jwgz2m0dy\ngvqmu84y85t03g5lt7em\nqkw8                                              Classic Treasure 💎   3.413828e+07            0.00               5.00  inactive    100.00
+433  terra14584zr0cuyfr4m\n9gugjv5qzv9ng5h3mrue\n2hqp                                                        Terranox   9.999000e-01            0.00               5.00  inactive     99.54
+445  terra1syhmzgg9jqf5cf\nf05s9k4jkp5e25e00qj8\n3gkv                Shutting down - please delegate to new Validator   9.484100e+00            0.00               6.00  inactive    100.00
+432  terra1nl2r2yejtqkcyk\nuh6szvwm0sxxqhg26kcz\nv5xm                                                             TTS   4.999500e+00            0.00               1.00  inactive    100.00
+430  terra1a0h8cmnvwd9352\nt8usfp64ywwt6v04d0v0\n2fh8                                                           Comma   9.999000e-01            0.00              10.00  inactive     99.54
+429  terra15hg3m4ch6n0yt4\nuq6nsadqszlna95am906\nqluk                                                       BTCSterra   3.050000e+00            0.00             100.00  inactive    100.00
+428  terra1klsqs5k49zw27a\n53k8jf6q8a3kzfhu0xgq\n38ct                                              sd-terra-validator   4.999500e+00            0.00              10.00  inactive     99.54
+427  terra1d0vfj9zvxfgcm4\nyt4ze4u35mvhj57eg2kn\nxyxl    Validator will be turned off. Please undelegate your tokens!   3.160094e+06            0.00               8.00  inactive    100.00
+426  terra1mx6dearzz0p9lm\nvhgltatyspr5phw3v02v\nvh9c                                                     Coinstaking   4.999500e+00            0.00              10.00  inactive    100.00
+425  terra17gevmwa2ejzqj6\nwjvmee9tsfvuf3xlct3x\nrcln                                                     L1Anchorage   0.000000e+00            0.00               2.00  inactive     98.94
+424  terra13kcwnlafvu4xvy\n2jr3vhdte9aq9tadwds7\nnm67                                                      Castlenode   1.009798e+02            0.00              10.00  inactive    100.00
+423  terra1gn0jt6efhwfl3s\nsfj38rt2cupvmh7x0e3w\nax7q                                                         classic   0.000000e+00            0.00               1.00  inactive    100.00
+422  terra1jkg3wy5q9q6jls\nhjf2r6p9nf4flwtr6hp7\nr7z9                    Neptune Finance [Unbonding - Redelegate now]   1.163922e+06            0.00               5.00  inactive     99.51
+421  terra178jegy8stfzha6\nnu6rcc5tvdz5dfu9pzpv\nmn4l                                                       Hex_Trust   5.000000e-03            0.00              10.00  inactive    100.00
+420  terra1nc9tyu8nanvkv2\nxfnaw4sae3utukx60a2v\nu7c5                                                   Vali the Thor   7.999200e+00            0.00              10.00  inactive    100.00
+419  terra166fh7594tsp0yr\ng3c5c4najmehd5s54tkw\nuq7h                                                     MoonStation   3.380000e+00            0.00              10.00  inactive    100.00
+431  terra1hqyygjq0vdqk0x\ndpkffgamzr4f7tqqg5u2\nh42f                                                  Angel Protocol   1.269684e+06            0.00             100.00  inactive    100.00
+418  terra16tc3c9u6yj5uuh\nru32pvs0pahfwraurpyw\nwrup                                                         block42   1.039879e+06            0.00              10.00  inactive     99.56
+446  terra14jywaln0sdh8lp\nc7jtyllqfp3mg5sjw2nl\n2jek                                                coaction-capital   9.999000e+00            0.00              10.00  inactive     99.54
+448  terra1nqymj2xw3za20j\n6yv6fc08wk44htkn4f2a\ngft2                                    Metaverse ProjectX Validator   1.707429e+06            0.00              10.00  inactive    100.00
+474  terra1jlxv4hnf2mtym9\nx4fg7dsepgnt47rgfan2\n28gt                                         TERRA-LUNA.DLINODES.COM   6.156830e+01            0.00              10.00  inactive     99.56
+473  terra13g7z3qq6f00qww\n3u4mpcs3xw5jhqwraswv\n3q3t                                                    everstakeone   2.617302e+07            0.00              10.00  inactive    100.00
+472  terra1j747dvwyg0kk9l\ntrz5ux443lhzzq5tgdpl\n3rsa                                Shutting Down. Please redelegate   1.047862e+04            0.00               5.00  inactive    100.00
+471  terra1536u0jqfq4dq5n\n2ls2kjuutp569kr0fz8y\ntq66                                                       LUNCSpain   1.094075e+05            0.00               1.00  inactive    100.00
+470  terra16mc833v0zlzv6h\nuymahzxldxxsd99q0l5g\nqww5                                                         testaf%   1.999800e+00            0.00               1.00  inactive    100.00
+469  terra10ahmn0ucd9selc\nv77rwysx5pvd607z04zz\n4rvy                                                        StakeLab   7.749880e+01            0.00               1.00  inactive    100.00
+468  terra143klnw7s5968g3\nh7rf5eenj75mxej34jmm\nlkgd                                                   LearnTerra.io   9.880000e-01            0.00               3.00  inactive    100.00
+467  terra1eutun6vh83lmyq\n0wmyf9vgghvurze2xans\nfdsf                                                          Wraith   1.200000e-02            0.00             100.00  inactive    100.00
+466  terra1el72mmska9fd4w\n9ehst0v4dkd4wqp288hr\n9ney                                                      NonceTerra   1.050000e-01            0.00              10.00  inactive    100.00
+465  terra1mxzrwf34c27t7q\nlvjjpk25y2lgtlk66huc\n5jwh                                                        StakingV   9.999000e-01            0.00              12.00  inactive    100.00
+464  terra1dfcptsy9x4wzhp\nv0m79v47ladgj02yyuf0\nasyu                                                     Terra World   1.281593e+06            0.00               5.00  inactive    100.00
+463  terra1jvcr78cgwpvcsu\ncf628fa8qjrahmcskqnc\nvfc5                                                       Terra-CN1   0.000000e+00            0.00               8.88  inactive    100.00
+447  terra1d04sgf8g5uw3q3\n937r3gmqy499laafx7h4\ne09q                                                    KiKi Finance   1.027387e+08            0.00              10.00  inactive    100.00
+462  terra14sllsz88h6kdwp\n6xc595zxedp7anjr8q5z\nwprd                                                          Random   5.000000e-03            0.00              10.00  inactive    100.00
+460  terra1cc92ptawsp9363\naae9wrp2xm6zm9fmucw2\nhpg7                                               “BinanceStacking”   5.000000e-01            0.00              10.00  inactive    100.00
+459  terra10xhsv9ge90g6w4\nqep9969payn42gp24ll6\nl5ph                                                      StakingMom   1.900000e+00            0.00              20.00  inactive    100.00
+458  terra170m0v5uy40ydx9\nkdynxf9zhk8a0s34qwyp\nmsye                                                      StakeTo.Me   1.000000e-01            0.00               1.00  inactive    100.00
+457  terra134txuywrqyu0zy\nfaardetq45hnxsjklqlk\na3aw                                                        TerraSCV   1.000000e+00            0.00               5.00  inactive    100.00
+456  terra1smkgwm78aqf0ja\n3qvtqwngzczpcekudvts\ns34n                                                Cosmic Validator   9.117183e+05            0.00              10.00  inactive    100.00
+455  terra1st92cdvprzuag2\ntsm90v42s6l7da7e3msk\nh47d                                                          ripple   5.002734e+03            0.00              10.00  inactive     98.12
+454  terra1de6t7xn6mrrckx\ngpku6kypgyf4wc2fcnue\nk00f                                                       Leviathan   1.564191e+06            0.00              10.00  inactive    100.00
+453  terra1e7uuywu7hnvukz\ncznjrf0l0s7jrsxgcaaw\nya3t                                                   HotGirlSummer   1.205540e+01            0.00               1.00  inactive    100.00
+452  terra1mava9ku4f5lym6\nhux3g23etfjjpqs5xh2r\nh6a0                                                      Promethium   9.999000e-01            0.00               5.00  inactive    100.00
+451  terra1wj50lwqfzeu4ac\nlnw8am35x7uflewvp20c\n720r                                                atomo-terra-node   1.999800e+00            0.00              10.00  inactive    100.00
+450  terra1ltwln4yqytkfzn\n6868xazlhg7vlzdcf96s\ngcjr                                                        BasBlock   0.000000e+00            0.00              20.00  inactive    100.00
+449  terra1kq43h4mlv0pm87\ncjg0f7yc30mrjex6sl6g\nnk7r                                                        mytester   3.999600e+00            0.00               0.00  inactive    100.00
+461  terra1wm80ljexahweq6\nq5s8eja04d7tsjdref4h\nt7xe                                                            test   1.004900e+00            0.00              10.00  inactive    100.00
+239  terra1y00cgmcxh02r64\nmzdcdz38ujggaz599y42\n7erg                                                          V0NDER   6.000000e-01            0.00               1.00    jailed    100.00
+417  terra162892yn0tf8dxl\n8ghgneqykyr8ufrwmcs6\nvft5                                                Luna Maximalists   4.458246e+06            0.00              20.00  inactive    100.00
+415  terra1chrw39uz28ktq8\nqzpf0nasszrwy80ejgz2\nn0tt                                                      Mondversum   9.999000e-01            0.00               1.00  inactive     99.54
+384  terra154ewfahhza29pu\naj3r7t4kvxg2xvsdpktt\nd6sz                                            Test Do Not Delegate   1.199900e+00            0.00               5.00  inactive     98.02
+383  terra1me4u0au0gr29av\n3wmvr3zk4m0rkerjll7v\npcrm                                                       Top Shelf   1.070121e+06            0.00              10.00  inactive    100.00
+382  terra1hg70rkal5d86fl\n57k0gc7de0rrk4klgs52\n0rzt                        Terraforming/inactive, please undelegate   1.539798e+02            0.00               6.00  inactive    100.00
+381  terra10mzh7k7zg053nw\n87g7dk9lghhzd9wvlsd9\nlwkd                                                       StakeThat   2.044930e+01            0.00              10.00  inactive    100.00
+380  terra1h58s4hyc6eg659\ne8xva7ayqdh2kjmf2nya\n38q9                                                     terrarityio   6.057824e+07            0.00              10.00  inactive     88.52
+379  terra163phlen6dn7sp9\nkhhjar2gqqx6kga0ly8z\nj24m                                                         Goliath   9.643400e+00            0.00             100.00  inactive    100.00
+378  terra1ch2k5euzh2smu2\nf5jjma9fuvsn2pu2wk2r\ncu9s                                                             mvl   0.000000e+00            0.00               0.00  inactive    100.00
+377  terra16jsypha5lv6e3m\nc24veqzfw3rznfqu92dm\nteem                                                         SGTerra   5.430130e+01            0.00              20.00  inactive    100.00
+376  terra14lggrv6qm9zu7r\n8r936zn3x6dawgurdmw7\n6dvm                                                          Closed   1.000000e+00            0.00               0.00  inactive    100.00
+375  terra1cga2xslx7j07fa\nn9ud4p4sg5ha72gtwewf\n2ecd                                                    Moon Classic   7.301861e+07            0.00              30.00  inactive    100.00
+374  terra1cac2mcf2eszn9l\nn3fx4heym6kd363zqfes\n27ts                                                 Fair Square Lab   1.328084e+03            0.00               4.00  inactive    100.00
+373  terra1vv4y54wczzk99g\na65uvy7555n5q68gswc5\np3ze                                      Redelegate, Terra is DEAD.   1.453884e+05            0.00               8.00  inactive    100.00
+385  terra1ld7zdymrcy2g9t\ncy25at0smz96mmzdk7fq\ngxcl                                                        afzalFCD   1.999800e+00            0.00             100.00  inactive     98.12
+372  terra1krj7amhhagjnyg\n2tkkuh6l0550y733jnju\nlzjh                                        UNDELEGATE SHUTTING DOWN   5.338886e+08            0.00               5.00  inactive    100.00
+370  terra1mgdsc0get3w984\nh03a02zy6gmg3kgqtfql\nakxh                                        🚀 LambdaCore | 🎁airdrop📦   5.937078e+03            0.00               2.00  inactive    100.00
+369  terra1wpvlm4278zysnm\nfkamjnceezdquguk6s99\n3lcn                                                           qwack   0.000000e+00            0.00               5.00  inactive    100.00
+368  terra1lf3zrmdha5nk43\n4nkezzg6m4s5yhfka09p\n9pdn                                                   Luna Wolfpack   2.865430e+01            0.00               0.00  inactive    100.00
+367  terra173de34wwvak6d4\n829h5vmxvm98y5vl08t5\n94nn                                        Rockaway Blockchain Fund   7.238209e+05            0.00               6.00  inactive    100.00
+366  terra1av4m4rxeh2vsdm\n76lnwd0ysw0mu6eufjpq\n8qh0                                                     Nexus Event   1.200535e+06            0.00              10.00  inactive    100.00
+365  terra1c6gve6zhye5690\n563wxmvns7mugz6plu4j\n7raz                                           Arrington XRP Capital   2.080061e+06            0.00              10.00  inactive    100.00
+364  terra1jz4v9tcjhxtme0\ntucm64ndp6z7wgz5la0x\nvpwz                                                       MegaStake   1.999800e+00            0.00              10.00  inactive    100.00
+363  terra1n7pkcal0jkp0ac\n9r338qp9cm5x6cakfnrk\nhkrc                                                       AUDIT.one   3.544260e+06            0.00               7.00  inactive    100.00
+362  terra1dkw5zp0jf7v7xz\nut5a8kuaeksg9xufahky\ncqmp                                                    ChainodeTech   1.999800e+00            0.00               0.00  inactive    100.00
+361  terra1kl9alpr77qfjze\n4quf62ycngg6fkka0tth\nn6r6                                                          Bitrue   2.143082e+03            0.00               0.00  inactive    100.00
+360  terra1565r942vpnpqtr\nsmhxxwvel8j2m40zgspw\nqz6p                                Shutting Down. Please Redelegate   1.504133e+06            0.00              15.00  inactive    100.00
+359  terra15cupwhpnxhgylx\na8n4ufyvux05xu864jcr\nrkqa                                                         Figment   5.154054e+06            0.00              10.00  inactive    100.00
+371  terra1ny8m3qj3tuhekg\nvk0zpvq8xvslvryx8alq\nzk2j                                                 terrasynergyval   0.000000e+00            0.00              10.00  inactive    100.00
+416  terra1kuxgnf0n6m93qu\n0a5035qhf3pxpxje2p4n\n9kmc                                                       Test-Node   9.999000e+00            0.00              10.00  inactive    100.00
+386  terra144l7c3uph5a7h6\n2xd8u5et3rqvj3dqtvve\n3he0                               Please redelegate - shutting down   3.372071e+07            0.00               8.00  inactive    100.00
+388  terra1nrhlk67k38k9v7\nyatl0a30q287dhncjjkf\nczlc                                                     Feel Mining   3.608640e+01            0.00               5.00  inactive    100.00
+414  terra1sam89hnps4vkkh\n54f8wteqayq9pdyx5zx6\nenx5                                             OFF - DONT DELEGATE   9.999000e-01            0.00               5.00  inactive    100.00
+413  terra1a0l55c3tzxel6f\ng927qftkfaxfa0he80q2\np0cp                                                       Chainflow   1.990006e+02            0.00              10.00  inactive    100.00
+412  terra1aw0znxtlq0wray\nyz7wppz3qnw94hfrmnnv\n5mzw                                                           RockX   2.965784e+07            0.00               9.00  inactive     99.98
+411  terra1ullpeaj86f2y26\ngpvg09szznfve7tqur8z\npq0w                                                          Uranus   1.072790e+06            0.00              10.00  inactive    100.00
+410  terra1d6r83n848v2juv\n6qal7a0r3n9n6vmpqjw4\n2uj9                                          porn addicts anonymous   1.000000e+00            0.00              51.00  inactive    100.00
+409  terra1e78ml33v4vfqkp\nthpkuhdgt4xl6um38vmw\nmtla                                                     onyx-client   4.722924e+07            0.00             100.00  inactive    100.00
+408  terra1h6rf7y2ar5vz64\nq8rchz5443s3tqnswrpx\ne69f                                                          Staked   5.105061e+06            0.00              10.00  inactive    100.00
+407  terra10epxzwlgyq2le2\na0p74dakktcsluc4802v\nq20r                                                       Steemhunt   9.999000e+00            0.00               5.00  inactive    100.00
+406  terra1dtpwdluw2hzeaw\nswh58suh9yactpa8ndud\ny5wd                       🥩 Stake n Squeeze | 50% BURN 🔥50% BUILD 🛠   0.000000e+00            0.00              10.00  inactive    100.00
+405  terra1dkcfqaym0xm8wh\n9v2gn6y9drq284assg32\n4cp5                                                       RockStake   9.999000e-01            0.00              10.00  inactive    100.00
+404  terra1d3hatwcsvkktgw\np3elglw9glca0h42yg6f\ngg0j                                                          Marine   1.010000e+00            0.00             100.00  inactive    100.00
+403  terra13307pxehvt0qpl\ny3kw9vk578u4az0u4mu2\n4yex                                                 DUST Foundation   1.225135e+02            0.00               1.00  inactive    100.00
+387  terra1s8e8nqqj7dqauq\nwnnrjcfgvd8c5qk5hjk8\n6a58                                                    OptimusPrime   0.000000e+00            0.00              10.00  inactive    100.00
+402  terra1h0d5kq5p64jcyq\nysvja3h2gysxnfudk9h7\n3fnn                                                         cthulhu   2.000000e-03            0.00              25.00  inactive    100.00
+400  terra1m8jxvxkhuu07u4\nhrv484rkq9wetk4lmde6\nelhd                                                      NoDelegate   5.930000e-02            0.00              10.00  inactive    100.00
+399  terra1jsdfyz8uhw2nd7\ncl45709w40r268phmvxj\nh6fy                                                       Bi23 Labs   1.000321e+05            0.00              20.00  inactive    100.00
+398  terra1k5hw6rl060zpnn\njhgnvky9cs8evrts2g2s\nx6mc                                                    SCV-Security   4.601743e+07            0.00               5.00  inactive     86.54
+397  terra1ltta9hz8hrd5dn\nqnqnt5sfcdl4kx8m0afw\n8d80                                                     SmartFellas   1.000000e-01            0.00              10.00  inactive    100.00
+396  terra1hz754zdldnrrhp\n3qpfan3l2dxkcv5cgkud\nva4l                                              consensus-networks   9.949000e+01            0.00              10.00  inactive    100.00
+395  terra1amuu3de0c9rzzw\n4tg6uqpugfg85w0freu3\nfmzk                                                         Panther   5.000000e-03            0.00              10.00  inactive    100.00
+394  terra16vz92wm3fahqep\na5s7jt0ml8h337umycjd\nzegl                                                         nomercy   2.000000e+00            0.00               0.00  inactive    100.00
+393  terra1wltqc80xq98shs\nmvyeps2u9t82tvy3wzct\npqvj                                                      SwissTerra   6.899400e+00            0.00              10.00  inactive    100.00
+392  terra1nnm4qx2ytff5gy\n7a82yh4nw4tnez4s38p6\ngjck                                                     Protoss One   3.554719e+04            0.00               2.50  inactive    100.00
+391  terra1zvrjycyzqrzh99\nlxk5tjkqhr8l8hh43awv\n6fvz                                                         Testing   0.000000e+00            0.00               1.00  inactive    100.00
+390  terra1wc76cg6zgqd7tm\n4cltg73dgceff77gdsha\nanlf                                                         DexTrac   1.613004e+03            0.00              10.00  inactive    100.00
+389  terra17juxr8d54kfsca\ns5jmtaztfcrsdhalm0ec\njp9m                                              TerraIsMoreThanUST   3.013498e+06            0.00              10.00  inactive     97.25
+401  terra1hwucxmeqtytu9n\nq54e9aarwrhzsej6w0hv\n0njz                                                     TerraDactyl   1.607081e+09            0.00               3.00  inactive    100.00
+475  terra1whk8em6gz22q9a\n8fk027ctvud79z5mj3mk\n3sz6                                                    L1 Anchorage   0.000000e+00            0.00              10.00  inactive     99.23
+476  terra1a2wp3yn3d783q3\ncmmj9jda7t93088m6z3u\ng8v8                                               CitadelSystems.eu   3.000000e-01            0.00               0.00  inactive    100.00
+236  terra1zmmcxxhjh89hqq\n22nxnxnjtzptgnz4x58y\nhj8r                                                       Anonymous   5.000000e-03            0.00              10.00  inactive    100.00
+144  terra1tk7vy9agrt9p5h\nzhmpnxqaysjfgwhcl8r2\nhhpk                                          Unity_Development_Team   3.662842e+07            0.00               5.00  inactive    100.00
+143  terra1d3fv2cjukt0e6l\nrzd8d857jatlkht7wcpg\nclds                                       🥩 larry.engineer #IBCgang   2.839841e+07            0.00               5.00  inactive    100.00
+142  terra16gvh8amt7szjfc\n33yzmlzxz4xg5vrw40kh\nmug0                                                     Marte Cloud   5.962547e+03            0.00               2.00  inactive    100.00
+141  terra1u3gcqh4xqcdfkc\nu82nrk9u75x8vtvcz7xj\n943h                                                            test   1.200000e-02            0.00              15.00  inactive    100.00
+140  terra1cn2qhqs4g0fzxn\n8j2lhr3vwffc86s0k65c\nqclp                                                        Notional   1.754462e+07            0.00               9.69  inactive    100.00
+139  terra103ra79dl2un2lt\nknhyz7crm5y29g4vhmyh\n9nuk                                                          NEOWIZ   2.121002e+03            0.00             100.00  inactive    100.00
+145  terra1kcz85h6pma3fc5\nkvp3v00m00ju5wlwmtwj\nnchf                                                         aeradix   0.000000e+00            0.00               0.00  inactive    100.00
+138  terra1s5cyxwl36atv65\nm03pumrp9alhn2xdtzwm\ns49v                                                          RnodeC   1.000000e+01            0.00               5.00  inactive    100.00
+136  terra1k8wpe3qpxuy66g\n7d8044erkrq4h9lqtq2n\n33l8                                                   TestValidator   4.166587e+02            0.00              10.00  inactive     98.11
+135  terra1h7n8r8sjgrppn3\n96r2znvwvxm9saps9337\nexg8                                                     RHIZOME DAO   1.049900e+01            0.00              10.00  inactive     99.56
+134  terra104a4m3c6qxgh80\n7747tuf9deqjssu53mnc\nlx9s                                                         GD Fund   1.999800e+00            0.00               0.00  inactive    100.00
+133  terra13ww603e55suhav\npuyjft3htxca6g4tldt2\nxuc6                                                       HashQuark   0.000000e+00            0.00              20.00  inactive    100.00
+132  terra154w5s9pq57xv5f\nzlq82t8fjl2njw4a342x\nufpp                                                      Kapa Plays   9.999000e-01            0.00               0.00  inactive     98.07
+131  terra1lm604mtdalpd9z\n46486acqlshns2urquwr\n6xs5                                                        Staky.io   1.308129e+05            0.00               8.00  inactive    100.00
+137  terra1sj7tz0xqsl52tt\n50rpf9xddv5xmy4lnvmu\nzj3t                                                      Terrascope   9.177880e+05            0.00              10.00  inactive    100.00
+130  terra1cnhrvznaxjk9et\nnnaetrrec6xpx6r5m597\n75d6                                                    319B5FDFEF84   8.291696e+06            0.00             100.00  inactive    100.00
+146  terra17eqvq9h0jyd8mx\ntj2xrn6ksfu54qzw4luv\nrtvf                                             Marat still here...   2.500050e+04            0.00               0.00  inactive     98.02
+148  terra1lda78gzrjx0rsa\ndtdk0zn4v7awtz6m9lrz\ncyjk                                                  Polychain Labs   2.004462e+02            0.00              20.00  inactive    100.00
+162  terra1uxezr2wqug5c7c\nl08hx5z8at5d4xvelxel\nufaq                                                       Stake.LNC   1.249875e+05            0.00              10.00  inactive    100.00
+161  terra1qr8ewxc0xx2vuq\n7jhe2evsde2k4c4cku6p\n9hpy                                                  Secure Secrets   3.609600e+00            0.00               3.00    jailed    100.00
+160  terra1ecjqzya8utnpjt\ntw85qwwxhg8euhs9g5j8\nnv9y                                                  Test-Node-xoxo   9.999000e+00            0.00               3.00  inactive    100.00
+159  terra1dhcgyvufgyrtxk\npk6pphxydhfm0j2v3tg0\n0p32                                                   terra-rainbow   1.257800e+00            0.00             100.00  inactive    100.00
+158  terra1lc2dzu2rt6qrnk\nhtzmas3w7qpcwd2f52lr\n8w33                                                    Wolf of Luna   2.748198e+02            0.00              15.00  inactive    100.00
+157  terra15vqlw5zukqzgnh\n7x8naq6hpc88rc77y0aj\n7s7e                                                    MyCointainer   8.998300e+00            0.00              10.00  inactive    100.00
+147  terra1kupsulfhe4x76y\nt8k9mumfkgyqs44zyzk5\nhm2s                                                   MissionToMoon   1.199880e+01            0.00               1.20  inactive    100.00
+156  terra1av2j80jeyuxmzg\nsm840rkh08c5vyy3tmr7\nvjc5                                                     To the Moon   0.000000e+00            0.00               1.00  inactive     67.43
+154  terra1hzcn8xh2xhtrlf\n9l58gcph6c8762ty8sc2\nr4pa                                                      AfNodeTest   2.999700e+00            0.00             100.00  inactive     98.71
+153  terra1wq0usarusrv674\ng5uph576x6pzwd03c2dm\nxq5w                                                            Kash   7.999200e+00            0.00               0.00  inactive    100.00
+152  terra1xptfsrmkhw0s4k\nql4ldnzake83j8dgvxm7\ndcye                                                          RnodeC   0.000000e+00            0.00              10.00  inactive     99.83
+151  terra1wqcc5g3k3mqg96\npgvemzstmhkf42lt835g\nq8n7                                                        capapult   3.945870e+06            0.00              10.00  inactive    100.00
+150  terra14547xlpu85a3n6\n0vn0tcyw560esmptr8st\nh0nd                                               IrinaCashProTerra   3.533212e+06            0.00               0.00  inactive     99.71
+149  terra1t2gmacpsvgykwg\nw3az6qnqw82cm8dl5yy3\nt9g8                                                     mindfulness   1.395923e+06            0.00               5.00    jailed    100.00
+155  terra1vfl60ely0r9pf0\ne5cle4732xa2dttux7yv\nh0t0                                                         Caronte   8.236618e+02            0.00               0.00  inactive    100.00
+163  terra1zhq32qvq5yzasx\n8zn5kd76xmgylytflnvn\nev5j                                                             _0x   1.020019e+02            0.00              10.00    jailed    100.00
+129  terra1a209pg5fgzehkg\n8wyslynns2tc7uf7x6tf\nyu0l                                                    NEVS.Capital   8.054700e+00            0.00               5.00  inactive    100.00
+127  terra17cpvym9w5f0j5d\ngukvu93a9w25gx45ke5l\nwwzg                                           nonce - LunaWhale.com   1.000000e+00            0.00              20.00  inactive    100.00
+108  terra1zu7yyzzsyr34f7\nfwjfkltlyqjdzyjpr4w5\nj69v                                                         optimus   2.530620e+07            0.00               5.00    active     98.91
+107  terra1fgj2fdyw8cvq84\njfp632f4ypjrrkrdrsk5\nuc6r              🚀 WHEN MOON 🌕 WHEN LAMBO 🔥 REStake ✅ IBC relayer 🌎   2.652976e+07            0.00               5.00    active     98.82
+106  terra1aqhlz67rmakn9p\nh2x8625g55r0evwjjfve\n7xxn                                                 0% BINNOSTAKE 🚀   2.845378e+07            0.00               0.00    active     56.78
+105  terra1pqaencqr3we900\nvzwz2hxkptf6vdznj3mm\nm0km                                                   CatalystiX.CC   2.855152e+07            0.00               5.00    active     99.18
+104  terra1d0dupc4hvl4nnf\nky6vqp4xyeunejgsjas2\n6xwn                                                            DACM   3.293044e+07            0.00               5.00    active    100.00
+103  terra1pux4j3hm2am302\nqr40u5leh5lsgfvgjskl\nlk8g                                                  Centauri Alpha   3.507194e+07            0.00               4.00    active     86.77
+109  terra1uml7n30kyndkmj\nvrgy6d63kffpn6hvztx7\n9mnf                                                       frag_node   2.457069e+07            0.00               1.00    active     99.32
+102  terra1t0z9y2p26qzsh0\n6f2l2kn2v8hqtkyd33s6\nrcfh                                                     Stake5 Labs   3.517444e+07            0.00               5.00    active     99.67
+100  terra1v48dyqhkdlrk8r\ng56sy4g3mhffn6srht7e\nzhs9                                                           eXion   4.146796e+07            0.00               3.00    active     92.31
+99   terra1vj54700f5gs502\n7e6qxmhsm0yfh3flc0q0\n3ch6                             StakeStack - Trusted Lunc Validator   4.452650e+07            0.00               5.00    active     99.94
+98   terra1vkdp7amtzcde4a\nwykg8xuph0sq89xghpkf\ngl52                                                        Aardvark   4.615158e+07            0.00               4.00    active     99.43
+97   terra18wkdeuunsz8w4n\n6w7sc9acd6rt30glhy24\n2yaw                                                       terrazzt4   4.640627e+07            0.00               5.00    active     82.71
+96   terra1g69xxz9eaas4qs\n8fsl3eg58kp2kcp6454g\n02dv                                                Toseus Validator   4.749049e+07            0.00               5.00    active    100.00
+95   terra1ewk02cws2v4wz9\ntw4v278qdpn5dwjja0ln\nfuh2                                                 Flying Stakes 🚀   4.974639e+07            0.00               5.00    active    100.00
+101  terra1fdg0a035ujsa3z\n08nqzpxgtd0mnets56fv\nc805                               Revival 0% Fee Plus Auto-Compound   3.588943e+07            0.00               0.00    active    100.00
+128  terra1uf4k2y293qss3t\nfhdrlz7whsu5xj2dpjtn\n2pvn                                                 InfiniteHeig.ht   1.100000e+00            0.00               1.00  inactive    100.00
+110  terra1ptxaf54794a4a9\nxep605ra6egr48kj9rvc\n45yx                                      TwinGoWbs - Stake and Burn   2.413962e+07            0.00               5.00    active     99.99
+112  terra16kffhj335qj6gv\nv4vkeur7qe47jyeez265\njhm9                                                   Luna Survivor   1.800453e+07            0.00               5.00    active     99.97
+126  terra1h4tv9jva02x4l0\n4jcexs0knljpg8rzsyrl\njuju                                         100&100 Venture Capital   1.143480e+01            0.00              10.00  inactive    100.00
+125  terra1wcsxa023uvadkj\nlh6mn8mp73lx5h63u2s4\n4735                                               Ledger by Figment   4.999500e+00            0.00               7.50  inactive    100.00
+124  terra1c9ye54e3pzwm3e\n0zpdlel6pnavrj9qqvqg\nf7ps                                                    StakeWith.Us   2.536029e+07            0.00              10.00  inactive     99.67
+123  terra1sz53f8emf76s6g\ns2u7gdhsr7v0jz4lql3f\nkwss                                       Terranode.de | terra.army   1.511896e+03            0.00               0.00  inactive    100.00
+122  terra1dcrq2xwuhea9hm\n5xfuydjuwgz6gm7vdjz3\n4gv6                                                            Mr.K   5.074811e+08            0.00               0.00  inactive    100.00
+121  terra1efuj32cft74cd6\nfz97m9ed0uyv9jdjrfq8\n543g                                              IFRA-LAB Validator   4.999500e+00            0.00              10.00  inactive     99.54
+111  terra15fl3j64pyh8jk2\nxhak6vv5rrfvrwd7uux0\nj0pq                                                           apolo   1.829131e+07            0.00               5.00    active     53.80
+120  terra1l4540mec3t84uz\nql4u4dvrx84qtmh3pyr8\nhc6x                                                    Virtual Hive   0.000000e+00            0.00               5.00  inactive    100.00
+237  terra1revygmqdv3uk0a\nszkd2wg3nz3jsqwprfre\n4rmk                                                          DSPool   1.000000e-02            0.00               5.00  inactive    100.00
+117  terra1nt3yda9kdvlm25\nq4utjtd3zwyw0504n2xk\ngryt                                                       PRO-NODES   7.649526e+05            0.00               7.00    active     52.31
+116  terra1vqegsqhe8q06t6\njwgvww0qcr2u6v6g9xrp\n7wta                                                          Inotel   9.069177e+06            0.00              10.00    active     52.31
+115  terra13rt78f5rclczn4\ngsxxfa7r50q0cvjjhvdy\nxljp                                                  BinanceStaking   1.663922e+07            0.00               9.00    active    100.00
+114  terra1rqg8z9xhx88z5a\n38jzj3gyw6mk2evk0wtt\nmt4s                                                   TestValidator   1.696449e+07            0.00               2.00    active     99.90
+113  terra1ts78du2kmgerw7\nszy8q8wjq7qplwfrvfls\n5ak7                                              🕊️peaceANDfreedom🌎   1.709252e+07            0.00               5.00    active     99.48
+119  terra1jfndgwuwewn636\n3w5j5h5wpek3g6ucss4r\ntgx6                                                  DON'T DELEGATE   0.000000e+00            0.00               0.00  inactive    100.00
+164  terra1rnthk3l73p0sqd\nwg5a8j05zynzguzst6tu\n83lt                                                    atomicwallet   1.019900e+00            0.00              10.00    jailed    100.00
+118  terra1l77zt56j395y54\n764z0kkjp23ruqswk6z5\nd5w8                                                 MyLuncValidator   5.030200e+05            0.00              10.00    active     99.89
+166  terra1uk0n5sd684ly40\nfuxdxzxl6es6at923ean\n08u9                                                   Test-Node-111   9.999000e+00            0.00               3.00  inactive    100.00
+218  terra17lmrun0fc2scd3\njgc3yfvzs86dm4yj4c94\nvckz                                              🇹🇭‍ UCH LUNC 🇹🇭 🚀🌕   1.158364e+07            0.00               5.00  inactive    100.00
+217  terra1x97e6yr9qfrjze\nxvm8adt0dqlpdluvqjgn\n2frd                                                      truststake   9.545331e+02            0.00              10.00    jailed    100.00
+216  terra1rn9grwtg4p3f30\ntpzk8w0727ahcazj0f0u\namr9                                                      GT Capital   1.151699e+06            0.00               5.00    jailed    100.00
+215  terra1xpwwdsafx6erfv\nwe9q5fumtug46q8ts237\npktr                                                       testnode1   1.188681e+04            0.00              10.00    jailed    100.00
+214  terra1y7e9grrpt8kp0u\nk2v6mqd9pd0zdnkcwx4y\nhykl                                                        Un Fuego   2.063749e+06            0.00              10.00    jailed    100.00
+213  terra1yzctmh7s8ypv8l\n8yvxkzeqz0q0tnt883kt\ny04v                            MUSTA VALIDATOR - STAKE = BURN-LUNC🔥   2.393709e+06            0.00               3.00    jailed    100.00
+219  terra1npv0gns884njln\npd7szhh028vdh2agzxmz\npt69                                                      Khazad-dûm   1.000000e+00            0.00               0.00  inactive    100.00
+212  terra1q6ywn5fay02fw6\nqk2749ud2w9n9qanvkj6\nlhau                                            bolt terra validator   4.229577e+02            0.00              15.00    jailed    100.00
+210  terra157m8nyw8ne3jz0\ndgdys6chp98jlpuhggp7\ncyu8                                                    dxmterranode   0.000000e+00            0.00              10.00  inactive    100.00
+209  terra1gwn2dpjfcuxhae\nwwn709txfffrvewuq22p\nahep                                                       STAKENODE   3.049695e+02            0.00              10.00  inactive     99.98
+208  terra1y62j08pv27uwjw\ng987wsvza5suujhyxau4\n56ks                                     unbounding, do not delegate   1.501900e+01            0.00              10.00    jailed    100.00
+207  terra1pjgjpegttkf4jc\n7kd9j7763tgvmpaa6glc\nans3                                                    StellarDrift   6.698584e+06            0.00               0.00    jailed    100.00
+206  terra18tmu0lrfsdvke8\ne3a3jsd7fq2rs29krfht\nhxrj                                                          werner   1.099890e+01            0.00              10.00    jailed    100.00
+205  terra1qezsuky9fcp42k\nnpmhxec95j9ccs0cqck8\neeh4                                           LuncValidatorOfficial   1.199904e+06            0.00               8.00    jailed    100.00
+211  terra1723x4c20xk43y2\nwfzdgktv9gkepltqauva\nrdrt                                                           titan   9.004400e+00            0.00              10.00  inactive    100.00
+203  terra123gn6j23lmexu0\nqx5qhmgxgunmjcqsx8g5\nueq2                                                    Staking Fund   2.686490e+07            0.00              10.00    jailed    100.00
+220  terra1grgelyng2v6v3t\n8z87wu3sxgt9m5s03x25\n9evd                                                        iqlusion   2.421149e+03            0.00              10.00    jailed    100.00
+222  terra1s9q2t9zf8zyjg9\ng45sn6f6t06kwvgspsl6\ngl4r                                                 Masternode24.de   8.100000e+01            0.00               1.00  inactive    100.00
+165  terra1a6l2pxh7pxw4dg\nk57nscg8mfnslt29h7zy\nyewt                                                          AFtest   1.999800e+00            0.00               1.00  inactive     99.14
+235  terra1zdulm0mwm3apyy\nh66493xrmexca26r39a4\nddjv                                                          Ginkou   8.138488e+07            0.00               5.00    jailed    100.00
+234  terra15fclgndl9sgpjr\nfzfwg3e42vgzv9wukn0d\ny5un                                                       stake.dev   9.999000e-01            0.00              10.00  inactive    100.00
+233  terra1g8uryk8yzu0ceu\nhh0ujg860rgl3r8gs2gc\nkf06                                                      vAligators   9.999000e-01            0.00              10.00    jailed    100.00
+232  terra1z5v48fw3v78gmz\n0qu8ugw8f2s3mzxff45f\np3n5                                                        abcd.xyz   4.999500e+00            0.00              10.00    jailed    100.00
+231  terra1p72vswk5zfzzr7\nmyhrerm78ty5tjc8ypl9\nccmg                                           Accomplice Blockchain   7.876582e+06            0.00               0.00    jailed    100.00
+221  terra10e7du4qyg3ans6\nj8snkzpprsvydff6n92l\n8agk                                                        abcd.xyz   2.149785e+02            0.00              10.00  inactive     98.02
+230  terra1r7zwfk0lx6kuy8\nr03ewdchaea3ssy5vudn\ns2sy                                                     blocksteady   4.670250e+01            0.00              10.00    jailed    100.00
+228  terra18p7kdpvpsp3muz\n93ww7ej72wyrrdja2l7j\njxe9                                                             bc1   3.075084e+05            0.00             100.00    jailed    100.00
+227  terra1x7zmzr6gaz5q68\nfvm8zr30vr0z3jcdylts\ny5x4                                                          SkillZ   9.999000e-01            0.00               0.00    jailed    100.00
+226  terra1xetqge5kmatfk6\n223hcfgf8z3tnukmjhrk\nzmn0                                               Please redelegate   1.029657e+06            0.00               6.66    jailed    100.00
+225  terra1qt7kqljer7fxzu\ndqdyhx87l7wreeef53s9\nuxqw                                                  Coinbase Cloud   2.749522e+05            0.00              10.00    jailed    100.00
+224  terra1a3r6va8hnyzsq6\nkr75lyge05d0dtjv6e8p\nqlnw                                             Hypersphere Digital   1.479364e+02            0.00              10.00  inactive    100.00
+223  terra1z7we2y02fy2kvw\n0tdq8k26j4t370n58wxr\nngc2                                    { UNDELEGATE SHUTTING DOWN }   3.748899e+08            0.00               5.00    jailed    100.00
+229  terra1uhjx34pfsxk9xh\n34yn8p2w4469uqdz067v\nvpym                                                        Umbrella   3.381200e+01            0.00               5.00  inactive    100.00
+202  terra1rgu3qmm6rllfxl\nrfk94pgxa0jm37902dyu\nvy8g                                                           Ghost   5.113000e-01            0.00             100.00    jailed    100.00
+204  terra1v3dey0ha6vdnss\nru88t2m5fzy7vuvs7emy\nardq                                                        Legend.X   1.042968e+06            0.00              10.00  inactive    100.00
+200  terra1eqp2un00zrxjlp\nqky0ywluzs8n63h34zdc\nmq43                                                       juna_luna   1.010900e+00            0.00               5.00  inactive    100.00
+201  terra1wcdv9kccp8jjy8\nr6uc5gxkc3ymqpeyj6w9\nlxzw                                            The Valhalla Express   4.079820e+01            0.00             100.00  inactive    100.00
+180  terra1qqu376azltyc5w\nnsje5qgwru5mtj2yqdhj\n0cwl                                                     TERRA-FIRMA   9.570869e+05            0.00              10.00    jailed    100.00
+179  terra1vhm0l52y83vsqr\n60vt7vhxgsjlfyhf3h25\ny532                                                   Tavis Digital   1.846532e+02            0.00               7.00  inactive    100.00
+178  terra155x8vngnz4u2ce\n3fs6dvu027v8w90jqdjy\npupy                                                     Blockdaemon   8.903757e+05            0.00               6.00  inactive    100.00
+177  terra1maexnnf40g39ym\nqe0jtvqk6rsvjvg7l4mp\ndd0k                                                   fierydev-MCLB   9.999000e-01            0.00               1.00  inactive    100.00
+176  terra105pz70scujjd84\nrfzj4zlqkv3j588nahnu\nzsa2                                                        StakeMix   2.009800e+00            0.00              10.00  inactive    100.00
+175  terra1anm50nsrde3rhy\nvylyzzmtqzjza0ewmfj9\nwrw7                                                       validator   1.000000e+00            0.00              20.00  inactive    100.00
+174  terra1uyu9sx8q5lmsdr\nj4t8w0unvd2u2uudq2kw\npuxu                                                   TH-Validators   1.074246e+06            0.00               0.00  inactive    100.00
+173  terra1jhqw7dkmff8rll\nf7zdeqxhrapz46wr7h9t\n0fk7                                                     to the MOON   4.589540e+01            0.00               5.00  inactive    100.00
+172  terra15qjn7ke9s47qn4\nmte3lerkxtjjgp38n5q0\nslq0                                                 Masternode24.de   2.177941e+03            0.00               5.00  inactive    100.00
+171  terra1kewgm0rhyauawl\n89ttjyl8hjk8l5psjv45\n9r2j                                             terraform-validator   2.099800e+00            0.00               0.00  inactive    100.00
+170  terra1rnna7hcf88nzfq\nmc362egmmp76yeyzlepf\nc3ms                                      JT Stakers | 0% Commission   1.333680e+01            0.00               0.00    jailed    100.00
+169  terra1v5hrqlv8dqgzvy\n0pwzqzg0gxy899rm4kdn\n0jp4                                                    DokiaCapital   2.929683e+07            0.00               5.00  inactive    100.00
+168  terra1jaeca6lv7hn6r7\n6ed770vzamhx09956x73\nv87s                                                        Moonwalk   1.389578e+02            0.00               5.00  inactive    100.00
+167  terra14677aardvngtrf\nfjra8ht0dfw8acdgnejg\n8k4f                                                 Citadel Capital   1.999600e+00            0.00              50.00  inactive    100.00
+182  terra15urq2dtp9qce4f\nyc85m6upwm9xul30496l\nytpd                                                      Chorus One   2.691836e+06            0.00               8.00  inactive    100.00
+183  terra1q0muwurhexhk6h\ny5f69dyk4w8d8akhmmvd\n7wry                                                            1729   3.999600e+00            0.00              10.00    jailed    100.00
+181  terra1alpf6snw2d76kk\nwjv3dp4l7pcl6cn9uytq\n89zk                                    Shutdown - please redelegate   2.500149e+09            0.00               5.00  inactive    100.00
+185  terra1r08m7m7uwre343\nkveewluq4rh9ykup3060\nre47                                                  uber-validator   1.000000e-01            0.00               1.00  inactive    100.00
+199  terra1magm90vzn4t75d\na3jadmahcp5ya075ez9y\nk77w                                                   Craig Classic   1.236864e+08            0.00               3.00  inactive    100.00
+198  terra13slfa8cc7zvmjt\n4wkap2lwmlkp4h3azwly\nn02r                                                 do not delegate   6.615159e+07            0.00               5.00  inactive    100.00
+197  terra1p3tlranrm030e2\nx45eav9094xxwmq4qqpu\nfqt5                          WeCanDev - inactive, please redelegate   6.439200e+00            0.00               0.00    jailed    100.00
+184  terra1zp8kctpevdju30\nm2uwgtjdkg2qq4dxda93\nkuk0                                                      VALIDARIOS   6.929007e+05            0.00               1.00    jailed    100.00
+195  terra1vse7mfah2hmfar\nuum40hwnskkca3ygmmfx\nt8ks                                                        Beatrice   1.198800e+00            0.00               4.00  inactive    100.00
+194  terra1t90gxaawul292g\n2vvqnr3g0p39tw5v6vse\ncu4f                                                     Terra Bites   3.679391e+08            0.00               5.00    jailed    100.00
+193  terra1y75u3c9tpp7vcu\n8zkn9ya57fxz38fk5sd6\n8l0w                                                         abc.xyz   9.999300e+04            0.00              20.00    jailed    100.00
+196  terra1qxrrf73tf7agks\nyxs6v6zj2nrce63jk0p4\na8g2                                                         Celsius   3.884600e+00            0.00               4.00    jailed    100.00
+191  terra17l79pr9fqv9dqg\ntfg0v0qnhzpcxggdkpau\nhjxz                                                       ”optimus”   9.999000e+00            0.00               5.00  inactive    100.00
+190  terra1yad8pjqp93gvwk\nxa2aa5mh4vctzfs37eka\n279r                                                        healings   1.052500e+06            0.00              10.00    jailed    100.00
+189  terra1yu6gzu4xsfgqxz\nthgshqaxydfcqmmrxrpx\nq5lx                                                          Alpaca   5.000000e-03            0.00              10.00  inactive    100.00
+188  terra1rlxlvmm0fhpkfc\nu95gvzdzlcxyy9xycufr\n528w                                                       rocklords   1.999800e+00            0.00              10.00    jailed    100.00
+187  terra1rq65gnyxaxv2mz\nmna4rvpacyu7a4qanjta\n7jxe                                                    Easy Company   8.547400e+00            0.00             100.00    jailed    100.00
+186  terra1p3uz3qztr2faqq\nq0h20qdwmvkc3ugupgye\nea5m                   #decentralizehk - inactive, please redelegate   1.335810e+01            0.00               0.00    jailed    100.00
+192  terra1qrs8d7z4w0gz05\nc3llz3xsn5eh0tc9rejk\nutl9                                                Cosmos Validator   7.110000e-02            0.00               0.50    jailed    100.00
+85   terra13yagpgmqjr8nza\nvprn20j5sh8etc2xmm3y\nat0l                                                      Lunar City   8.614022e+07            0.01               5.00    active    100.00
+79   terra17zzn908aupr9zh\nzghegeth5xuxrnucsewh\n038z                                                      VALIDARIOS   1.500578e+08            0.01               0.00    active    100.00
+80   terra1rjmzlljxwu2qh6\ng2sm9uldmtg0kj4qgyy2\n7m6x                                                       AuraStake   1.417019e+08            0.01              11.00    active    100.00
+81   terra1542ek7muegmm80\n6akl0lam5vlqlph7spfs\n99vq                                                      blockscape   1.312963e+08            0.01               8.00    active    100.00
+83   terra1ryhpcmnkeqa6um\nrp06g9782qjwdqc8wfe7\nqqaw                                                       TaiPanich   1.208671e+08            0.01               1.00    active     52.31
+84   terra1kgddca7qj96z0q\ncxr2c45z73cfl0c75pae\nl9y2                                                      ChainLayer   1.080825e+08            0.01              10.00    active    100.00
+86   terra175hhkyxmkp8hf2\nzrzka7cnn7lk6mudtv4n\nsp2x                                                            DSRV   6.915437e+07            0.01              10.00    active    100.00
+82   terra16x9gyxllhcptd5\nnut58r5ss3my8hznkkwf\n2sj8                                                 tera bitz ❤ 🔥 ✅   1.230945e+08            0.01               0.50    active    100.00
+88   terra10h5x5v7a9mdw9f\n3gmv57s4clnx6454wke3\nm6p0                                                  Sokil Stake 🇺🇦   6.675688e+07            0.01               5.00    active     99.45
+94   terra1fvj38kgxhf3hqa\n8yxrartuguqjd4er5jf5\nh5wh                        💎 Diamond Nodes ⚡️ Auto-Compound Rewards   5.233689e+07            0.01               5.00    active    100.00
+93   terra1x6c5t235ralu2a\nxdz06y0sjw7s5pvjvyvx\n837z                                                     MoonStation   5.339234e+07            0.01               5.00    active     99.99
+92   terra1lfqrnd54e2uw6j\nrw99urd4lk4wege7sk8t\n04ng                                               🟢💰GoldenRush❤️‍🔥🚀   5.599508e+07            0.01               2.00    active     99.24
+87   terra1svcgzkp4lhvvlt\nce5uk73tnwxfrj6nlka6\nqxp4                                            KK Validator | == ==   6.796280e+07            0.01               5.00    active    100.00
+90   terra1zmklffsq3v306j\nda3h9t9n9xrlcylngces\nzvpz                                            thecryptoplatform.io   5.873990e+07            0.01               4.00    active    100.00
+89   terra1dx36g2fatt3xuj\n636w87pcwflpjptnzpce\nye92                                                       Stoale-IT   6.514432e+07            0.01               5.00    active     94.55
+91   terra1p54hc4yy2ajg67\nj645dn73w3378j6k05v5\n2cnk                                                          hashed   5.689463e+07            0.01              10.00    active    100.00
+70   terra1k4ef8m95t7eq52\n2evmmuzvfkpla04pezmn\ne0w9                                                        Bit Cat🐱   2.397630e+08            0.02               2.00    active     99.72
+71   terra1hqzf3tnw0py69x\nd5swwr3c7tqcumwjzdz0\n5qwv                                                            Wave   2.331157e+08            0.02               5.00    active    100.00
+73   terra1h5wavqp2uufp5m\n2dd7yljfsycwaljnpal9\n3mf0                                               Derksen-validator   1.816348e+08            0.02               0.00    active    100.00
+72   terra1nskmm3hfynhxu9\nlcn5qsy5dpyu2ky3my6p\nsn0c                                                         Vixello   2.260778e+08            0.02               5.00    active     99.30
+75   terra1ge7uwfeck00zac\nl08lm9a48gz790yu7tmh\nry77                                                    LevatharNode   1.753228e+08            0.02               3.00    active     99.97
+76   terra1epeqf5t6kj7wdr\n3zwqu38z4wayay3e6vp2\nufte                                                     MoonRunners   1.737678e+08            0.02               0.00    active     99.93
+77   terra15gs5cy87n5jxdd\nf4vq94efre9uwkrt9xaj\nzcjd                                               COSMEEK 🛸 🦝 🪐 ✨ 🌌   1.723132e+08            0.02               0.00    active     99.99
+78   terra15s5d4lm0n75af9\njxwawqzl73trnrypdslj\n7mjx                                                          Mosaic   1.573656e+08            0.02              10.00    active    100.00
+74   terra12jpzzmwthrljcv\nm48adncspxtchazkl8vj\nmrvx                                                   Synergy Nodes   1.800879e+08            0.02               5.00    active     99.77
+69   terra14qv3eec9chk0d5\n5ldjpffjwdet3wf4tdey\nvtxe                                                   Oneiric Stake   2.680652e+08            0.03               5.00    active     99.71
+68   terra1k3202kcypl5csd\ntyvr3qjmxzzjnyn84gha\nx7wh                                                       Terrarium   3.015384e+08            0.03               5.00    active     97.15
+67   terra1qfv3fyan5f4syl\nvnqzk9sxzlck823jy3a7\npncf                                      Cryptonian | Auto-compound   3.207631e+08            0.03               1.00    active     99.98
+62   terra183kevvgrqvav9s\na0lwzhr54jngxw6sac9q\n73qe                                                      NodeStaked   4.303048e+08            0.04             100.00    active     52.31
+63   terra15khv8dsaxqmf7n\nwu4jdlp9slxl7aczte3f\nr8ht                                                             ISS   3.962521e+08            0.04               4.00    active    100.00
+61   terra16qqdk3av8vy2l4\nslt5ekqfsx4tc8mh5nh7\nyykc                                                          ADDVOW   4.311845e+08            0.04               5.00    active     99.99
+65   terra1u6q92vhz6uxwr7\nez605p900ff3m9z93n9l\nu99r                           StellarDrift | 0% fee | Auto Compound   3.628163e+08            0.04               0.00    active     98.48
+64   terra1we68q2zel6ajpx\nuzw5aqhh07zlxxywrkx3\n79e3                                                    coinhall.org   3.805949e+08            0.04               5.00    active     99.42
+66   terra15zcjduavxc5mkp\n8qcqs9eyhwlqwdlrzy6a\nnwpg                                                       B-Harvest   3.532259e+08            0.04               5.00    active     99.22
+60   terra1fjuvyccn8hfmn5\nr7wc2t3kwqy09zzp6tya\n55yu                                                         DELIGHT   5.519661e+08            0.06              10.00    active    100.00
+59   terra12079m57cew2v02\nzs624zvyed5479an9wxc\nrveh                                                        0base.vc   5.713855e+08            0.06               5.00    active    100.00
+58   terra1j73n84drqm6q5w\nttadr9meg6jcldlkd5r0\nrpyv                                                  Crypto🔗Genesis   6.171792e+08            0.06               2.00    active     99.42
+57   terra1qfx03ywz9hhxup\nv73lq06da6jjrdwwrl37\nguh2                                                      🙏 uGaenn ⛅   6.295874e+08            0.06               0.10    active    100.00
+56   terra12r8929na0amxfj\n406zw7vk8jmd03fmzcj2\n0hcm                                              danku_zone w/ DAIC   6.808323e+08            0.07               5.90    active     99.85
+55   terra1audgfvmgt0js54\np3s8kj3r40uwej6vy2tr\nk7na                                                       FreshLUNC   7.017326e+08            0.07               8.90    active     99.97
+54   terra172kl72jlnar3md\n64t5ckqfwvnu9raz8n3n\nglua                                                     luna-legend   7.127995e+08            0.07               5.00    active     99.99
+53   terra1kjc6tsmtd0zu4z\na6meprzj664f9dpwawx5\n8733          CryptoMagma🔴🔥 100% UpTime🔥 Auto Compound enabled❤️LUNC   7.133115e+08            0.07               0.00    active    100.00
+52   terra1mn66epmhaz6aha\n0za0n3fw6nzzqucr45sy\n79rx                                                       SolidVote   7.973001e+08            0.08               5.00    active    100.00
+50   terra1k0ctjxnyd77lqc\nww83ldp32el57rww94ql\n969f                                                     Gridtek.com   9.932269e+08            0.10               5.00    active    100.00
+49   terra18kdk2kf8uvzs5g\nghky23hv4q7wdnk0ff2k\n83wt                                       Garuda Universe Validator   9.995950e+08            0.10               5.00    active     99.14
+51   terra1xl2ujgt7f6xn8v\n26rjkhy4f20x5plc3nq4\nla0d                                                    Luna Rewards   9.678939e+08            0.10               5.00    active    100.00
+48   terra1f2t96sz9hnwsqn\nneux6v28xfgn07pkxjdn\nqnz3                                    AutoStake 🛡️ Slash Protected   1.095091e+09            0.11               0.00    active     99.93
+47   terra1khfcg09plqw84j\nxy5e7fj6ag4s2r9wqsg5\njt4x                                                          01node   1.121867e+09            0.11               5.00    active     99.97
+46   terra1der0lqp4grpnmp\nuefhwlj72fzccqmhmwga\nm85r                                                   luncvalidator   1.449215e+09            0.14               5.00    active     99.99
+45   terra1hvq6xhknw8x2c7\n739wpvkmypx883jrckqr\ndan5                                                 Futura Meridian   1.493666e+09            0.15              16.00    active    100.00
+44   terra1xjlc2jl4nyywuw\ngttkcjqjgxxdkafqrexz\njy4v                ♥️♣️TerraCasino♦️♠️ + 0% fees & auto compounding   1.516877e+09            0.15               0.00    active    100.00
+43   terra1tpakapf24q0gpk\n35wfne8lxut6wpwf75dx\neaxn                                            Community First LUNC   1.841026e+09            0.18               5.00    active    100.00
+42   terra1qrgwphlf9c64m5\nys6pzsvy055ud03e4kr3\nuah0                                                      lunc_nymph   2.024864e+09            0.20               9.00    active    100.00
+40   terra1nhrg0r7aj4z8s4\n40g3fk2kmyazhaxjrmeg\nucnz                                     TdrSys | Project 0% forever   2.148506e+09            0.21               0.00    active    100.00
+41   terra150w5e8tjk20nfa\nfjzfhyht0aes8a5qr7mk\nm60m                                     ❤️ LunaPunks ❤️ | 0.69% fee   2.131445e+09            0.21               0.69    active     99.29
+39   terra10wjawj769nptj9\npp6ha65lsd033p83kcst\nt9n0                              LUX Blockchain Validators ⚡️5% fee   2.395638e+09            0.24               5.00    active     99.99
+38   terra1ptyzewnns2kn37\newtmv6ppsvhdnmeapvge\nks28                                                       WeStaking   2.460780e+09            0.25               7.00    active     99.92
+37   terra1zc9uadde55t4k3\naw9uvgpkhwpsyzkq3k2q\nyvhs                                                Autism Staking 🧩   2.655651e+09            0.26               5.00    active    100.00
+36   terra17x86f3frvfqdac\nctgqjt3tlnkr26ndqf4t\ntvtz                                           LUNC Development Fund   3.084307e+09            0.31               5.00    active     99.94
+35   terra1aa6f2qeu0hrqps\nxe4rggz0k7e43jfce43j\n0lhe                                                    Terra Rebels   3.147359e+09            0.31               5.00    active    100.00
+34   terra189nuq3qs6zhdh0\neuyrmlvadh4q2pt9jr2q\nqley                                Lunatics Treasury 100% LUNC Burn   3.166364e+09            0.32               5.00    active    100.00
+33   terra16e75e62ztl6yzk\nulfck0p99d4cua9zjcdj\n0wq3                                                            Nova   4.347238e+09            0.43               5.00    active     99.99
+32   terra1ef4hd8agtx8una\nut0fc99zs9928qzm6txa\n5m9u                                         Lunc Community ITALIA🇮🇹   4.392625e+09            0.44               5.00    active    100.00
+31   terra1c7dhgf6lx6fy82\n9tf30tvawj86u0gprda9\n449g                                                      LUNCLIVE🎙🔥   4.594415e+09            0.46               5.00    active     99.99
+30   terra1s00gyl6dlz6gkf\nj0mwcrcffu8mrw8dgr9e\na2xs                                                       SafePoint   5.534936e+09            0.55               0.00    active    100.00
+29   terra1f337thg2cxu6yn\ny9hquec42p4s2a27awyn\nt9c6                                                     🌠Lunanauts🌠   6.324621e+09            0.63               5.00    active    100.00
+28   terra1hme9uynnxf0ga7\n2xmwtdgztt2lmg0jlqj8\nu0yq                                                           8moon   6.468496e+09            0.64               0.00    active    100.00
+27   terra12g4nkvsjjnl0t7\nfvq3hdcw7y8dc9fq69nt\n4p4n             PFC - Auto compounding -  PhoLuna Friends Community   7.551378e+09            0.75               5.00    active     96.61
+26   terra1fuk24ujq5e7zrj\n7st2m4wvgczdfchhzm5x\nxx0u                                                    Atomic Nodes   7.658110e+09            0.76              10.00    active     96.76
+25   terra14xjkj5rv72fgqz\n3h78l883rw0njwhmzce6\ncjlf                                Classy's Sphere 🔮 | Auto-Restake   8.906166e+09            0.89              10.00    active    100.00
+24   terra1u7cfwp620pn8tj\nfth92t5dry3mhd3etc2n\n874x                                                     CryptoPlant   9.475655e+09            0.94               0.00    active     54.01
+23   terra1nwrksgv2vuadma\n8ygs8rhwffu2ygk4j24p\nxxx0                                                    Stakin.com 🌕   1.128133e+10            1.12              10.00    active    100.00
+22   terra1a0lhtrf5dcpdtl\nd9k5praqw0hp5n9plgq7\nn7mk                                                 LunaClassic.com   1.230678e+10            1.23               0.00    active    100.00
+21   terra1h7eetq4atvnxsa\namx9q5jmhu7jzdkx7f36\n0t0u                                   Burn And Build Community Node   1.268651e+10            1.26               5.00    active    100.00
+20   terra18hpew39uymssr5\n2w8euxqh4zrrjt02x7kq\n7x89                                                         OneStar   1.417779e+10            1.41               0.00    active    100.00
+18   terra1a9q6jl792qg36c\np025ccjtgyf4qxrwzqje\nhty7                                                   stake.systems   1.458617e+10            1.45               1.80    active    100.00
+19   terra1dx6ayr8w0vcm7v\ntkmkxldmp657jrcymsww\n2g47                                                      DFLunc.app   1.450575e+10            1.45               5.00    active    100.00
+17   terra19ne0aqltndwxl0\nn32zyuglp2z8mm3nu0gf\nd5da                                                        StakeBin   1.656514e+10            1.65               5.00    active    100.00
+16   terra1pe7y4czp9p5q8m\ndvr3vsl9h205s7lfxfkp\ny0m3                      TargetNodes 👉 0% Fees 👉 100% Decentralized   1.827018e+10            1.82               0.00    active     99.99
+15   terra1e6w5qgzs5rzrz8\nark25lagm2ga2h9n2tv8\nwuqv                                                    🔥 LUNC DAO 🔥   1.994282e+10            1.99               6.90    active     96.60
+14   terra1fg5g8acntt90n9\n303cm5fjza9s3newleq4\nrlmk                                       Interstellar Lounge 🥃 🍸 🍹   2.210415e+10            2.20               5.00    active    100.00
+13   terra15ahd0dg9qwkg5t\njmkn7fm6sdrpwa47m50s\nelnm                                              HappyCattyCrypto🔥🐧   2.229938e+10            2.22               7.00    active    100.00
+12   terra1xuxwc867udr9k8\n4zzqhaflf9sc00svvmjm\n4geh                                                        moonshot   2.257571e+10            2.25               5.00    active     99.99
+11   terra1j27nm2gjm0m4ls\nye8lspa46rax0rw4fge9\nawrs                                                 Luna Station 88   2.757152e+10            2.75               5.00    active    100.00
+10   terra108lmrztvc3pc3w\n774shgvpry4d3lf79k2n\nhxrw                                                      Stakely.io   2.979632e+10            2.97               5.00    active    100.00
+9    terra16e0s5t7q69elnl\nchrupryw3h7vu8zk23pk\ncn85                                    JESUSisLORD ✝️ Auto-Compound   3.147105e+10            3.14               5.00    active    100.00
+8    terra1pu8lpz64erz47e\nemtkhq9wzwu9st9ehywu\nnn9n  1% MAX fee | Auto-Compound (Terra Station & Keplr) | @MAX_fee1   3.183626e+10            3.17               0.00    active    100.00
+7    terra1uymwfafhq8fruv\ncjq8k67a29nqzrxnv9m4\nhg6d                                             TerraCVita 🌎 0% fee   3.952459e+10            3.94               0.00    active     99.99
+6    terra1ya23p5cxtxwcfd\nrq4dmd2h0p5nc0vcl96t\nm0nw                               Interstake One (prev. BTC.Secure)   4.307971e+10            4.29               5.00    active    100.00
+5    terra193zuma3tk69kvf\nfz9nqnca7z99tz7ej5zk\nfdw9                                                          NITAWA   4.488541e+10            4.47               0.00    active    100.00
+4    terra1zs9rrzwrrsj74g\nyrc2vs9veptw0gpl9sws\nvsjp                                                KuCoin LUNC Node   4.977325e+10            4.96               5.00    active     99.13
+3    terra1259cmu5zyklsdk\nmgstxhwqpe0utfe5hhyy\ngjdc                                           Orion - Auto-Compound   7.216846e+10            7.19               5.00    active    100.00
+2    terra1qk46lk4kt4f90y\n4quv9mds0q26khhwdsj5\n4h4y                                              Coinpayu ⚡️0% Fees   7.300603e+10            7.28               0.00    active    100.00
+1    terra1mpmn2y9qw4dn6z\n2q3a7hy4c3wjztmvu7wd\ne790                                        TCB @THORmaximalist - 0%   1.051393e+11           10.48               0.00    active    100.00
+0    terra120ppepaj2lh5vr\neadx42wnjjznh55vvktw\nj679        Allnodes.com ⚡️ Auto-compound (Ledger, Keplr or Station)   1.408534e+11           14.04              10.00    active     99.99

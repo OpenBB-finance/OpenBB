@@ -19,6 +19,7 @@ from openbb_terminal.stocks.options import (
     yfinance_model,
 )
 from openbb_terminal.stocks.options.op_helpers import Option
+from openbb_terminal.stocks.options.options_chains_model import OptionsChains
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ def get_full_option_chain(
     symbol : str
         Symbol to get chain for
     source : str, optional
-        Source to get data from, by default "Nasdaq". Can be YahooFinance, Tradier, Nasdaq, or Intrinio
+        Source to get data from, by default "Nasdaq". Can be YahooFinance, Tradier, Nasdaq, Intrinio, or TMX.
     expiration : Union[str, None], optional
         Date to get chain for.  By default returns all dates
 
@@ -63,11 +64,11 @@ def get_full_option_chain(
     elif source == "nasdaq":
         df = nasdaq_model.get_full_option_chain(symbol)
 
-    elif source == "yahoofinance":
-        df = yfinance_model.get_full_option_chain(symbol)
-
     elif source == "intrinio":
         df = intrinio_model.get_full_option_chain(symbol)
+
+    else:
+        df = yfinance_model.get_full_option_chain(symbol)
 
     if not isinstance(df, pd.DataFrame) or df.empty:
         logger.info("Invalid Source or Symbol")
@@ -312,3 +313,98 @@ def get_greeks(
     df = pd.DataFrame(strikes, columns=columns)
 
     return df
+
+
+def load_options_chains(
+    symbol: str, source: str = "CBOE", date: str = "", pydantic: bool = False
+) -> object:
+    """Loads all options chains from a specific source, fields returned to each attribute will vary.
+
+    Parameters
+    ----------
+    symbol: str
+        The ticker symbol to load the data for.
+    source: str
+        The source for the data. Defaults to "CBOE". ["CBOE", "Intrinio", "Nasdaq", "TMX", "Tradier", "YahooFinance"]
+    date: str
+        The date for EOD chains data.  Only available for "Intrinio" and "TMX".
+    pydantic: bool
+        Whether to return as a Pydantic Model or as a Pandas object.  Defaults to False.
+
+    Returns
+    -------
+    Object: Options
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data.
+        date: str
+            The date, when the chains data is historical EOD.
+        SYMBOLS: pd.DataFrame
+            The symbol directory for the source, when available.
+
+        Methods
+        -------
+        get_stats: Callable
+            Function to return a table of summary statistics, by strike or by expiration.
+        get_straddle: Callable
+            Function to calculate straddles and the payoff profile.
+        get_strangle: Callable
+            Function to calculate strangles and the payoff profile.
+        get_vertical_call_spread: Callable
+            Function to calculate vertical call spreads.
+        get_vertical_put_spreads: Callable
+            Function to calculate vertical put spreads.
+        get_strategies: Callable
+            Function for calculating multiple straddles and strangles at different expirations and moneyness.
+
+    Examples
+    --------
+    Loads SPY data from CBOE, returns as a Pydantic Model, and displays the longest-dated expiration chain.
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> import pandas as pd
+    >>> data = openbb.stocks.options.load_options_chains("SPY", pydantic = True)
+    >>> chains = pd.DataFrame(data.chains)
+    >>> chains[chains["expiration"] == data.expirations[-1]]
+
+    Loads QQQ data from Tradier as a Pydantic Model.
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> data = openbb.stocks.options.load_options_chains("QQQ", source = "Tradier", pydantic = True)
+
+    Loads VIX data from YahooFinance as a Pandas object.
+
+    >>> from openbb_terminal.sdk import openbb
+    >>> data = openbb.stocks.options.load_options_chains("^VIX", source = "YahooFinance")
+
+    Loads XIU data from TMX and displays the 25 highest open interest options.
+
+    >>> from openbb_terminal.sdk  import openbb
+    >>> data = openbb.stocks.options.load_options_chains("XIU", "TMX")
+    >>> data.chains.sort_values("openInterest", ascending=False).head(25)
+
+    Loads the EOD chains data for XIU.TO from March 15, 2020, sorted by number of transactions.
+
+    >>> from openbb_terminal.sdk  import openbb
+    >>> data = openbb.stocks.options.load_options_chains("XIU.TO", "TMX", "2020-03-15")
+    >>> data.chains.sort_values("transactions", ascending=False).head(25)
+    """
+
+    return OptionsChains(symbol, source, date, pydantic)

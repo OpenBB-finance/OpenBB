@@ -2,7 +2,7 @@
 import { PostHogProvider } from "posthog-js/react";
 import { useEffect, useState } from "react";
 import Chart from "./components/Chart";
-import { plotlyMockup, candlestickMockup } from "./data/mockup";
+import { candlestickMockup } from "./data/mockup";
 
 declare global {
   [Exposed === Window, SecureContext];
@@ -56,7 +56,7 @@ function App() {
       .replace(/ /g, "_");
     const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
     const time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
-    window.title = `openbb_${filename}_${date}_${time}`;
+    window.title = `openbb_${filename}_${date}_${time}`.replace(/_{2,}/g, "_");
 
     if (data.layout.annotations !== undefined) {
       data.layout.annotations.forEach(function (annotation) {
