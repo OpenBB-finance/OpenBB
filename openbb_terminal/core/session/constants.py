@@ -1,4 +1,4 @@
-BASE_URL = "https://payments.openbb.co/"
+BASE_URL = "https://payments.openbb.dev/"
 # BASE_URL = "http://127.0.0.1:8000/"
 
 HUB_URL = "https://my.openbb.co/"
@@ -14,3 +14,12 @@ DEFAULT_ROUTINES_URL = "https://openbb-cms.directus.app/items/Routines"
 TIMEOUT = 30
 CONNECTION_ERROR_MSG = "[red]Connection error.[/red]"
 CONNECTION_TIMEOUT_MSG = "[red]Connection timeout.[/red]"
+
+SCRIPT_TAGS = [
+    "stocks",
+    "due diligence",
+    "price targets",
+    "crypto",
+    "earnings",
+    "economy",
+]

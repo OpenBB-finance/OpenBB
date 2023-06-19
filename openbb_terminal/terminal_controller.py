@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import certifi
+from openbb_terminal.core.session.constants import SCRIPT_TAGS
 import pandas as pd
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
@@ -185,6 +186,7 @@ class TerminalController(BaseController):
             choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
             choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
+            choices["record"]["--tags"] = {c: None for c in SCRIPT_TAGS}
 
             if biztoc_model.BIZTOC_TAGS:
                 choices["news"]["--tag"] = {c: {} for c in biztoc_model.BIZTOC_TAGS}
