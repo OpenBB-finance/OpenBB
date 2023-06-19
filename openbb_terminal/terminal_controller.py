@@ -17,7 +17,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import certifi
-from openbb_terminal.core.session.constants import SCRIPT_TAGS
 import pandas as pd
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
