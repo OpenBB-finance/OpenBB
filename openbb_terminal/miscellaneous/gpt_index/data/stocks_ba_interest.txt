@@ -1,0 +1,10 @@
+parent_command: stocks/ba/
+usage: interest [-s START] [-w WORDS [WORDS ...]] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Plot interest over time of words/sentences versus stock price. [Source: Google]  optional arguments:   -s START, --start START                         starting date (format YYYY-MM-DD) of interest                         (default: 2021-04-17)   -w WORDS [WORDS ...], --words WORDS [WORDS ...]                         Select multiple sentences/words separated by commas.                         E.g. COVID,WW3,NFT (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about interest' to access the related guide.
+Summary: Plot interest over time of words or sentences against a stock's price, using Google as the data source. You can set a starting date, choose multiple words or sentences, and export the data in various formats. 
+
+Examples:
+- To plot interest over time for the default start date and specific words: stocks/load <SYMBOL>/ba/interest -w COVID,WW3,NFT
+- To plot interest over time for a custom start date and specific words: stocks/load <SYMBOL>/ba/interest -s 2020-01-01 -w COVID,WW3,NFT
+- To export the interest over time data in csv format: stocks/load <SYMBOL>/ba/interest -w COVID,WW3,NFT --export csv
+- To save the interest over time data to a specific excel sheet: stocks/load <SYMBOL>/ba/interest -w COVID,WW3,NFT --sheet-name Sheet1
+- To plot interest over time for a custom start date and single word: stocks/load <SYMBOL>/ba/interest -s 2020-01-01 -w COVID

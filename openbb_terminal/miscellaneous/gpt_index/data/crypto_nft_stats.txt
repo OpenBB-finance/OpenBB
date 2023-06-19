@@ -1,0 +1,13 @@
+parent_command:crypto/nft
+usage: info -s SLUG
+
+Display stats about an opensea nft collection. e.g. alien-frens [Source: https://opensea.io]
+
+optional arguments:
+  -s SLUG, --slug SLUG  Opensea collection slug (e.g., mutant-ape-yacht-club) (default: None)
+
+
+Examples:
+- To view stats about an NFT collection on Opensea, use: crypto/nft/info -s <SLUG>
+- Display information about a specific NFT collection: crypto/nft/info --slug <SLUG>
+- Retrieve stats for an Opensea NFT collection: crypto/nft/info -s <SLUG>

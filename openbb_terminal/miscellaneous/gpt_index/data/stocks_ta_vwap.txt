@@ -1,0 +1,17 @@
+parent_command:stocks/ta
+usage: vwap [-o N_OFFSET] [--start START] [--end END]
+
+The Volume Weighted Average Price that measures the average typical price by volume. It is typically used with intraday charts to identify general direction.
+
+optional arguments:
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+  --start START         Starting date to select (default: None)
+  --end END             Ending date to select (default: None)
+
+
+Examples:
+- To calculate the VWAP for a specific stock, use: stocks/load <SYMBOL>/ta/vwap
+- To calculate the VWAP for a stock with an offset of 10 days, use: stocks/load <SYMBOL>/ta/vwap -o 10
+- To calculate the VWAP for a stock between specific dates, use: stocks/load <SYMBOL>/ta/vwap --start 2022-01-01 --end 2022-01-31
+- To calculate the VWAP for a stock with an offset and specific dates, use: stocks/load <SYMBOL>/ta/vwap -o 5 --start 2022-01-01 --end 2022-01-31

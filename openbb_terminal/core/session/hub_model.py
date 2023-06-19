@@ -402,7 +402,7 @@ def upload_routine(
     description: str = "",
     routine: str = "",
     override: bool = False,
-    base_url=BASE_URL,
+    base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
     """Send a routine to the server.

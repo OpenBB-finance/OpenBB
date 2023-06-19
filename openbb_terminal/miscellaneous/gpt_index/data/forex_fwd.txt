@@ -1,0 +1,9 @@
+parent_command:forex
+usage: fwd
+
+Get forward rates for loaded pair.
+
+fwd
+Examples:
+- To get forward rates for a specific currency pair: forex/load <PAIR>/fwd
+- Retrieve forward rates after loading a currency pair: forex/load <PAIR>/fwd

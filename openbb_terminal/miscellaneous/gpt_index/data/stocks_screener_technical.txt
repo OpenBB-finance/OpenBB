@@ -1,0 +1,26 @@
+parent_command:stocks/screener
+usage: technical [-p Desired preset.] [-l LIMIT] [-r] [-s {ticker,beta,atr,sma20,sma50,sma200,52whigh,52wlow,rsi,price,change,fromopen,gap,volume}]
+
+Prints technical data of the companies that meet the pre-set filtering.
+
+optional arguments:
+  -p Desired preset., --preset Desired preset.
+                        Filter presets
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to print
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed.
+  -s {ticker,beta,atr,sma20,sma50,sma200,52whigh,52wlow,rsi,price,change,fromopen,gap,volume}, --sort {ticker,beta,atr,sma20,sma50,sma200,52whigh,52wlow,rsi,price,change,fromopen,gap,volume}
+                        Sort elements of the table.
+
+
+Examples:
+- To view technical data for companies using a specific preset: stocks/screener/technical -p Desired preset
+- To display technical data for a limited number of stocks: stocks/screener/technical -l LIMIT
+- To sort the technical data in ascending order: stocks/screener/technical -r
+- To sort the technical data by a specific parameter: stocks/screener/technical -s {parameter}
+- To display technical data using a preset and limit the number of stocks: stocks/screener/technical -p Desired preset -l LIMIT
+- To view technical data sorted by a specific parameter and in ascending order: stocks/screener/technical -s {parameter} -r
+- To display technical data using a preset, limit the number of stocks, and sort by a specific parameter: stocks/screener/technical -p Desired preset -l LIMIT -s {parameter}
+- To view technical data using a preset, sort by a specific parameter, and in ascending order: stocks/screener/technical -p Desired preset -s {parameter} -r
+- To display technical data with a limited number of stocks, sorted by a specific parameter and in ascending order: stocks/screener/technical -l LIMIT -s {parameter} -r
+- To use a preset, limit the number of stocks, sort by a specific parameter, and display the data in ascending order: stocks/screener/technical -p Desired preset -l LIMIT -s {parameter} -r

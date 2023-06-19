@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines
 
+# IMPORTS STANDARD LIBRARY
 # IMPORTS STANDARD
 import argparse
 import inspect
@@ -12,6 +13,7 @@ import logging
 import os
 import random
 import re
+import shutil
 import sys
 import urllib.parse
 import webbrowser
@@ -37,6 +39,16 @@ import pytz
 import requests
 import yfinance as yf
 from holidays import US as us_holidays
+from langchain.chat_models import ChatOpenAI
+from llama_index import (
+    GPTVectorStoreIndex,
+    LLMPredictor,
+    PromptHelper,
+    ServiceContext,
+    SimpleDirectoryReader,
+    StorageContext,
+    load_index_from_storage,
+)
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw
@@ -44,12 +56,16 @@ from rich.table import Table
 from screeninfo import get_monitors
 
 from openbb_terminal import OpenBBFigure, plots_backend
-from openbb_terminal.core.config.paths import HOME_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    HOME_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+)
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -69,6 +85,10 @@ EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
+
+GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
+GPT_INDEX_VER = 0.2
+
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
@@ -300,14 +320,19 @@ def print_rich_table(
         current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
     )
 
+    # Make a copy of the dataframe to avoid SettingWithCopyWarning
+    df = df.copy()
+
     show_index = not isinstance(df.index, pd.RangeIndex) and show_index
     #  convert non-str that are not timestamp or int into str
     # eg) praw.models.reddit.subreddit.Subreddit
     for col in df.columns:
         try:
-            if not isinstance(df[col].iloc[0], pd.Timestamp):
-                pd.to_numeric(df[col].iloc[0])
-
+            if not any(
+                isinstance(df[col].iloc[x], pd.Timestamp)
+                for x in range(min(10, len(df)))
+            ):
+                df[col] = pd.to_numeric(df[col])
         except (ValueError, TypeError):
             df[col] = df[col].astype(str)
 
@@ -2129,3 +2154,82 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         df.index.name = index_name
 
     return df
+
+
+@check_api_key(["API_OPENAI_KEY"])
+def query_LLM(query_text, gpt_model):
+    current_user = get_current_user()
+    os.environ["OPENAI_API_KEY"] = current_user.credentials.API_OPENAI_KEY
+
+    # check if index exists
+    index_path = GPT_INDEX_DIRECTORY / f"index_{GPT_INDEX_VER}.json"
+    old_index_paths = [
+        str(x) for x in GPT_INDEX_DIRECTORY.glob("index_*.json") if x != index_path
+    ]
+
+    # define LLM
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name=gpt_model))
+    # define prompt helper
+    prompt_helper = PromptHelper(max_input_size=4096, num_output=256)
+    service_context = ServiceContext.from_defaults(
+        llm_predictor=llm_predictor, prompt_helper=prompt_helper
+    )
+
+    if os.path.exists(index_path):
+        # rebuild storage context
+        storage_context = StorageContext.from_defaults(persist_dir=index_path)
+        index = load_index_from_storage(
+            service_context=service_context, storage_context=storage_context
+        )
+    else:
+        # If the index file doesn't exist or is of incorrect version, generate a new one
+        # First, remove old version(s), if any
+        for path in old_index_paths:
+            if os.path.isfile(path):
+                os.remove(path)
+            elif os.path.isdir(path):
+                shutil.rmtree(path)
+
+        # Then, generate and save new index
+        # import from print console and say generating index, this might take a while
+        console.print("Generating index, this might take a while....\n")
+
+        # read in documents
+        documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
+        index = GPTVectorStoreIndex.from_documents(
+            documents, service_context=service_context
+        )
+
+        # save to disk
+        console.print("Saving index to disk....\n")
+        index.storage_context.persist(index_path)
+
+    prompt_string = f"""From argparse help text above, provide the terminal
+        command for {query_text}.Provide the exact command along with the parent command
+        with a "/" separation to get that information,and nothing else including any
+        explanation. Don't add any other word such as 'Command to get', 'Answer' or the likes.
+        Remember, it is very important to provide the full path of the command. Pay
+        attention to the parent commands, and make sure that if you were to run a command that is located
+        in a submenu, that it will have the full path included as if you were running
+        from the root directory. If and only if there is no information in the argparse help text above,
+        then just provide information on how to find that answer through normal financial terms.
+        Only do what is asked and provide a single command string. Always use a comma to separate between countries but
+        never between full commands. Lower cap the country name.
+        """
+
+    # try to get the response from the index
+    try:
+        query_engine = index.as_query_engine()
+        response = query_engine.query(prompt_string)
+        return response.response
+    except Exception as e:
+        # check if the error has the following "The model: `gpt-4` does not exist"
+        if "The model: `gpt-4` does not exist" in str(e):
+            console.print(
+                "[red]You do not have access to GPT4 model with your API key."
+                " Please try again with valid API Access.[/red]"
+            )
+            return None
+
+        console.print(f"[red]Something went wrong with the query. {e}[/red]")
+        return None

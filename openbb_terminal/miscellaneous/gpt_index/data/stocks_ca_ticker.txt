@@ -1,0 +1,14 @@
+parent_command:stocks/ca
+usage: ticker -t TICKER
+
+Set ticker to extract similar from
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker get similar tickers from (default: None)
+
+
+Examples:
+- To extract similar tickers for a given stock, use: stocks/ca/ticker -t <SYMBOL>
+- Set a specific ticker to find similar stocks: stocks/load <SYMBOL>/ca/ticker --ticker <SYMBOL>
+- Find similar tickers for a stock by setting the ticker: stocks/ca/ticker --ticker <SYMBOL>

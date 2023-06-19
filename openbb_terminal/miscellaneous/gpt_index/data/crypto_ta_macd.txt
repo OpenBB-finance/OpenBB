@@ -1,0 +1,20 @@
+parent_command:crypto/ta
+usage: macd [--fast N_FAST] [--slow N_SLOW] [--signal N_SIGNAL]
+
+The Moving Average Convergence Divergence (MACD) is the difference between two Exponential Moving Averages. The Signal line is an Exponential Moving Average of the MACD. The MACD signals trend changes and indicates the start of new
+trend direction. High values indicate overbought conditions, low values indicate oversold conditions. Divergence with the price indicates an end to the current trend, especially if the MACD is at extreme high or low values. When
+the MACD line crosses above the signal line a buy signal is generated. When the MACD crosses below the signal line a sell signal is generated. To confirm the signal, the MACD should be above zero for a buy, and below zero for a
+sell.
+
+optional arguments:
+  --fast N_FAST      The short period. (default: 12)
+  --slow N_SLOW      The long period. (default: 26)
+  --signal N_SIGNAL  The signal period. (default: 9)
+
+
+Examples:
+- To display the MACD chart for a specific cryptocurrency with default settings: crypto/load <COIN>/ta/macd
+- To customize the MACD chart for a cryptocurrency with a fast period of 10, slow period of 30, and signal period of 7: crypto/load <COIN>/ta/macd --fast 10 --slow 30 --signal 7
+- To display the MACD chart for a cryptocurrency with a fast period of 15: crypto/load <COIN>/ta/macd --fast 15
+- To display the MACD chart for a cryptocurrency with a slow period of 20: crypto/load <COIN>/ta/macd --slow 20
+- To display the MACD chart for a cryptocurrency with a signal period of 5: crypto/load <COIN>/ta/macd --signal 5

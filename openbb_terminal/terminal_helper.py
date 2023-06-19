@@ -366,9 +366,9 @@ def reset(queue: Optional[List[str]] = None):
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
-    plots_backend().close()
-    debug = get_current_system().DEBUG_MODE
+    plots_backend().close(reset=True)
     load_env_files()
+    debug = get_current_system().DEBUG_MODE
 
     try:
         # save the current user
@@ -420,28 +420,6 @@ def suppress_stdout():
         finally:
             sys.stdout = old_stdout
             sys.stderr = old_stderr
-
-
-def is_reset(command: str) -> bool:
-    """Test whether a command is a reset command
-
-    Parameters
-    ----------
-    command : str
-        The command to test
-
-    Returns
-    -------
-    answer : bool
-        Whether the command is a reset command
-    """
-    if "reset" in command:
-        return True
-    if command == "r":
-        return True
-    if command == "r\n":
-        return True
-    return False
 
 
 def first_time_user() -> bool:

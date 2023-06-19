@@ -249,7 +249,9 @@ reit_wgresi                                                               Wilshi
 reit_wilreit                                                                                Wilshire US REIT Index       ^WILREIT
 reit_wilresi                                                                Wilshire US Real Estate Security Index       ^WILRESI
 cboe_bxm                                                                              CBOE Buy-Write Monthly Index           ^BXM
-cboe_vix                                                                                     CBOE Volatility Index           ^VIX
+cboe_vix                                                                             CBOE S&P 500 Volatility Index           ^VIX
+cboe_vix9d                                                                     CBOE S&P 500 9-Day Volatility Index         ^VIX9D
+cboe_vix3m                                                                   CBOE S&P 500 3-Month Volatility Index         ^VIX3M
 cboe_vin                                                                                  CBOE Near-Term VIX Index           ^VIN
 cboe_vvix                                                                                CBOE VIX Volatility Index          ^VVIX
 cboe_shortvol                                                                         CBOE Short VIX Futures Index      ^SHORTVOL
@@ -260,6 +262,7 @@ cboe_ovx                                                                        
 cboe_tnx                                                                         CBOE Interest Rate 10 Year T-Note           ^TNX
 cboe_tyx                                                                              CBOE 30 year Treasury Yields           ^TYX
 cboe_irx                                                                                CBOE 13 Week Treasury Bill           ^IRX
+cboe_evz                                                                       CBOE Euro Currency Volatility Index           ^EVZ
 move                                                                                         ICE BofAML Move Index          ^MOVE
 dxy                                                                                                US Dollar Index       DX-Y.NYB
 crypto200                                                                          CMC Crypto 200 Index by Solacti        ^CMC200

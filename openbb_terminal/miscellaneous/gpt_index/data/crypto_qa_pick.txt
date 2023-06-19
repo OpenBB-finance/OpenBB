@@ -1,0 +1,19 @@
+parent_command:crypto/qa
+usage: pick [-t {Open,High,Low,Close,Adj Close,Volume,Returns,LogRet}]
+
+Change target variable
+
+optional arguments:
+  -t {Open,High,Low,Close,Adj Close,Volume,Returns,LogRet}, --target {Open,High,Low,Close,Adj Close,Volume,Returns,LogRet}
+                        Select variable to analyze (default: None)
+
+
+Examples:
+- To change the target variable to Open: crypto/qa/pick -t Open
+- Select the High target variable for analysis: crypto/qa/pick --target High
+- Analyze the Low variable: crypto/qa/pick -t Low
+- Choose the Close target variable: crypto/qa/pick --target Close
+- Change the target variable to Adj Close: crypto/qa/pick -t Adj Close
+- Select Volume as the variable to analyze: crypto/qa/pick --target Volume
+- Analyze Returns variable: crypto/qa/pick -t Returns
+- Choose the LogRet target variable for analysis: crypto/qa/pick --target LogRet

@@ -1,0 +1,20 @@
+parent_command:economy/qa
+usage: unitroot [-r {c,ct,ctt,nc}] [-k {c,ct}]
+
+Unit root test / stationarity (ADF, KPSS)
+
+optional arguments:
+  -r {c,ct,ctt,nc}, --fuller_reg {c,ct,ctt,nc}
+                        Type of regression. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order (default: c)
+  -k {c,ct}, --kps_reg {c,ct}
+                        Type of regression. Can be ‘c’,’ct' (default: c)
+
+
+Examples:
+- To perform a unit root test with the default regression type for constant: economy/qa/unitroot
+- To perform a unit root test with a constant and linear trend regression: economy/qa/unitroot -r ct
+- To perform a unit root test with a constant and quadratic trend regression: economy/qa/unitroot -r ctt
+- To perform a unit root test with no constant or trend: economy/qa/unitroot -r nc
+- To perform a unit root test with a specified KPSS regression type for constant: economy/qa/unitroot -k c
+- To perform a unit root test with a specified KPSS regression type for constant and linear trend: economy/qa/unitroot -k ct
+- To perform a unit root test with both ADF and KPSS regression types specified: economy/qa/unitroot -r ct -k ct

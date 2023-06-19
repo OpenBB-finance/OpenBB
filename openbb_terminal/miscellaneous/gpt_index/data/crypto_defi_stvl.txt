@@ -1,0 +1,14 @@
+parent_command:crypto/defi
+usage: stvl [-l LIMIT]
+
+Displays historical values of the total sum of TVLs from all listed dApps. [Source: https://docs.llama.fi/api]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 10)
+
+
+Examples:
+- To view the historical total sum of TVLs for all listed dApps: crypto/defi/stvl
+- To display the top 5 historical values of the total sum of TVLs from all listed dApps: crypto/defi/stvl -l 5
+- For the top 20 historical values of the total sum of TVLs from all listed dApps: crypto/defi/stvl --limit 20

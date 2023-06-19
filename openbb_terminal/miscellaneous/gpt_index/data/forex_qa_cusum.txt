@@ -1,0 +1,17 @@
+parent_command:forex/qa
+usage: cusum [-t THRESHOLD] [-d DRIFT]
+
+Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
+
+optional arguments:
+  -t THRESHOLD, --threshold THRESHOLD
+                        threshold (default: 0.0036818355321884154)
+  -d DRIFT, --drift DRIFT
+                        drift (default: 0.0018409177660942077)
+
+
+Examples:
+- To apply the CUSUM algorithm on forex data with default threshold and drift values: forex/qa/cusum
+- To analyze abrupt changes in forex data using the CUSUM algorithm with a custom threshold: forex/qa/cusum -t 0.005
+- To apply the CUSUM algorithm on a specific forex pair with a custom drift value: forex/load <PAIR>/qa/cusum -d 0.002
+- To detect abrupt changes in a forex pair's data using custom threshold and drift values: forex/load <PAIR>/qa/cusum -t 0.004 -d 0.0015

@@ -1,0 +1,15 @@
+parent_command:portfolio/po
+usage: load [-f {} [{} ...]] [-e]
+
+Load file of stocks tickers with optional categories
+
+optional arguments:
+  -f {} [{} ...], --file {} [{} ...]
+                        Allocation file to be used
+  -e, --example         Run an example allocation file to understand how the portfolio optimization menu can be used.
+
+
+Examples:
+- To load a file of stock tickers with their categories: portfolio/po/load -f <FILE>
+- To load multiple files of stock tickers with their categories: portfolio/po/load -f <FILE1> <FILE2> <FILE3>
+- To run an example allocation file and explore the portfolio optimization menu: portfolio/po/load -e

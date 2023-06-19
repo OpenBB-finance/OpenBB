@@ -1,0 +1,9 @@
+parent_command: stocks/ba/
+usage: headlines [-h] [--export EXPORT]                  [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw]  FinBrain collects the news headlines from 15+ major financial news sources on a daily basis and analyzes them to generate sentiment scores for more than 4500 US stocks.FinBrain Technologies develops deep learning algorithms for financial analysis and prediction, which currently serves traders from more than 150 countries all around the world. [Source: https://finbrain.tech]  optional arguments:   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)  For more information and examples, use 'about headlines' to access the related guide.
+Summary: Display news headlines and sentiment scores for a specific stock symbol collected from 15+ major financial news sources, analyzed by FinBrain Technologies. You can export the data in various formats and display raw data.
+
+Examples:
+- Retrieve news headlines and sentiment scores for a stock: stocks/load <SYMBOL>/ba/headlines
+- Get news headlines and sentiment scores for a stock and display raw data: stocks/load <SYMBOL>/ba/headlines --raw
+- Export news headlines and sentiment scores for a stock in csv format: stocks/load <SYMBOL>/ba/headlines --export csv
+- Save news headlines and sentiment scores for a stock to a specific excel sheet: stocks/load <SYMBOL>/ba/headlines --sheet-name Sheet1

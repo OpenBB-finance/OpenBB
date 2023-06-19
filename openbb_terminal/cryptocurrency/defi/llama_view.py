@@ -9,7 +9,11 @@ from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.helper_funcs import (
+    export_data,
+    lambda_long_number_format,
+    print_rich_table,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +39,9 @@ def display_grouped_defi_protocols(
     """
 
     df = llama_model.get_defi_protocols(limit, drop_chain=False)
+
+    df["TVL ($)"] = df["TVL ($)"].apply(lambda x: lambda_long_number_format(x))
+
     chains = llama_model.get_grouped_defi_protocols(limit)
 
     fig = OpenBBFigure(

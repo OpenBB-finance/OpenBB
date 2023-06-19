@@ -1,0 +1,13 @@
+parent_command: stocks/options/
+usage: unu [-l LIMIT]            [-s {Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} [{Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} ...]]            [-r] [-p] [-c] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  This command gets unusual options from fdscanner.com  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of options to show. Each scraped page gives 20                         results. (default: 20)   -s {Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} [{Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} ...], --sortby {Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} [{Strike,Vol/OI,Vol,OI,Bid,Ask,Exp,Ticker} ...]                         Column to sort by. Vol/OI is the default and typical                         variable to be considered unusual. (default: Vol/OI)   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed. (default: False)   -p, --puts_only       Flag to show puts only (default: False)   -c, --calls_only      Flag to show calls only (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about unu' to access the related guide.
+Summary: The unu command retrieves unusual options data from fdscanner.com. You can set a limit on the number of options to display, sort the data by specific columns, and filter the data to show only puts or calls. Additionally, you can reverse the sorting order, export the data in various formats, and save it to a specific Excel sheet.
+
+Examples:
+- Retrieve unusual options data for a stock: stocks/options/unu
+- Retrieve unusual options data for a stock, limited to 40 results: stocks/options/unu -l 40
+- Retrieve unusual options data for a stock, sorted by strike price: stocks/options/unu -s Strike
+- Retrieve unusual options data for a stock, sorted by expiration date and reversed order: stocks/options/unu -s Exp -r
+- Retrieve unusual options data for a stock, displaying only put options: stocks/options/unu -p
+- Retrieve unusual options data for a stock, displaying only call options: stocks/options/unu -c
+- Retrieve unusual options data for a stock and export it in a CSV format: stocks/options/unu --export csv
+- Retrieve unusual options data for a stock and save it to a specific Excel sheet: stocks/options/unu --sheet-name Sheet1

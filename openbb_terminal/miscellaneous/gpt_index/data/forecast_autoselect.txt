@@ -1,0 +1,36 @@
+parent_command:forecast
+usage: autoselect [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
+
+Perform Automatic Statistical Forecast (select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, ...)
+
+optional arguments:
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -s {N,A,M}, --seasonal {N,A,M}
+                        Seasonality: N: None, A: Additive, M: Multiplicative. (default: A)
+  -p SEASONAL_PERIODS, --periods SEASONAL_PERIODS
+                        Seasonal periods: 4: Quarterly, 7: Daily (default: 7)
+  -w START_WINDOW, --window START_WINDOW
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+
+
+Examples:
+- Perform an automatic statistical forecast for the selected dataset: forecast/autoselect -d {AAPL}
+- Predict the next 10 days using the best statistical model: forecast/autoselect -n 10
+- Forecast using a specific target column and seasonal periods: forecast/autoselect -c TARGET_COLUMN -p 4
+- Perform an automatic forecast with a custom start and end date: forecast/autoselect --start 2022-01-01 --end 2022-12-31
+- Show the naive baseline for a model: forecast/autoselect --naive
+- Use a specific seasonality type and rolling training window: forecast/autoselect -s M -w 0.9
+- Display the residuals for the chosen model: forecast/autoselect --residuals
+- Plot only the forecast without historical data: forecast/autoselect --forecast-only
+- Export the predictions to a CSV file: forecast/autoselect --export-pred-raw

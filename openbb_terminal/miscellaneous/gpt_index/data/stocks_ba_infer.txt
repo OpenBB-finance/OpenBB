@@ -1,0 +1,9 @@
+parent_command: stocks/ba/
+usage: infer [-l LIMIT] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print quick sentiment inference from last tweets that contain the ticker. This model splits the text into character-level tokens and uses vader sentiment analysis. [Source: Twitter]  optional arguments:   -l LIMIT, --limit LIMIT                         limit of latest tweets to infer from. (default: 100)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about infer' to access the related guide.
+Summary: Perform a quick sentiment analysis on the latest tweets containing a stock ticker using the vader sentiment analysis model. You can set a limit for the number of tweets to analyze, and export the data in various formats. The source of the data is Twitter.
+
+Examples:
+- Analyze sentiment for <SYMBOL> from the last 100 tweets: stocks/load <SYMBOL>/ba/infer
+- Analyze sentiment for <SYMBOL> from the last 50 tweets: stocks/load <SYMBOL>/ba/infer -l 50
+- Analyze sentiment for <SYMBOL> and export the data in csv format: stocks/load <SYMBOL>/ba/infer --export csv
+- Analyze sentiment for <SYMBOL> and save the data to a specific excel sheet: stocks/load <SYMBOL>/ba/infer --sheet-name Sheet1

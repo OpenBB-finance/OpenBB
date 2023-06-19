@@ -1,0 +1,17 @@
+parent_command:crypto/qa
+usage: line [--log] [--ml ML] [--ms MS]
+
+Show line plot of selected data or highlight specific datetimes.
+
+optional arguments:
+  --log    Plot with y on log scale (default: False)
+  --ml ML  Draw vertical line markers to highlight certain events (comma separated dates, e.g. 2020-01-01,2020-02-01) (default: )
+  --ms MS  Draw scatter markers to highlight certain events (comma separated dates, e.g. 2021-01-01,2021-02-01) (default: )
+
+
+Examples:
+- To display a line plot of selected data for a specific cryptocurrency: crypto/load <COIN>/qa/line
+- To show a line plot of selected data with a log scale for a specific cryptocurrency: crypto/load <COIN>/qa/line --log
+- To plot a line chart with vertical line markers for specific dates: crypto/load <COIN>/qa/line --ml 2021-01-01,2021-02-01
+- To create a line plot with scatter markers for certain events: crypto/load <COIN>/qa/line --ms 2021-03-01,2021-04-01
+- To display a line chart with both vertical line markers and scatter markers for a specific cryptocurrency: crypto/load <COIN>/qa/line --ml 2021-01-01,2021-02-01 --ms 2021-03-01,2021-04-01

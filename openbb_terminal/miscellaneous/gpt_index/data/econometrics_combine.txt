@@ -1,0 +1,17 @@
+parent_command:econometrics
+usage: combine [-d {}] [-c COLUMNS]
+
+The columns you want to add to a dataset. The first argument is the dataset to add columns inand the remaining could be: <datasetX.column2>,<datasetY.column3>
+
+optional arguments:
+  -d {}, --dataset {}   Dataset to add columns to (default: None)
+  -c COLUMNS, --columns COLUMNS
+                        The columns we want to add <dataset.column>,<dataset.column2> (default: None)
+
+
+Examples:
+- To add columns from different datasets to a specific dataset: econometrics/combine -d dataset1 -c dataset2.column1,dataset3.column2
+- Combine columns from multiple datasets into dataset1: econometrics/combine --dataset dataset1 --columns dataset2.column3,dataset4.column4
+- Add specific columns to a dataset using the 'combine' command: econometrics/combine -d dataset1 -c dataset2.column5,dataset3.column6
+- Merge columns from various datasets into a single dataset: econometrics/combine --dataset dataset1 -c dataset4.column7,dataset5.column8
+- Use the 'combine' command to include columns from other datasets into dataset1: econometrics/combine -d dataset1 --columns dataset6.column9,dataset7.column10

@@ -1,0 +1,11 @@
+parent_command:etf/disc
+usage: decliners
+
+Displays top ETF/Mutual fund decliners from wsj.com/market-data
+
+decliners
+Examples:
+- To view the top ETF/Mutual fund decliners: etf/disc/decliners
+- Display the leading decliners in ETFs and Mutual funds: etf/disc/decliners
+- Show the top-performing declining ETFs and Mutual funds: etf/disc/decliners
+- Retrieve the list of top ETF and Mutual fund decliners: etf/disc/decliners

@@ -1,0 +1,11 @@
+parent_command: stocks/gov/
+usage: topbuys [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS]                [-l LIMIT] [--raw] [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Top buys for government trading. [Source: www.quiverquant.com]  optional arguments:   -g {congress,senate,house}, --govtype {congress,senate,house}   -p PAST_TRANSACTIONS_MONTHS, --past_transactions_months PAST_TRANSACTIONS_MONTHS                         Past transaction months (default: 6)   -l LIMIT, --limit LIMIT                         Limit of top tickers to display (default: 10)   --raw                 Print raw data. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about topbuys' to access the related guide.
+Summary: Display top buys for government trading based on the selected government type (congress, senate, or house) within a specified number of past transaction months. You can limit the number of top tickers displayed, print raw data, and export the data in various formats.
+
+Examples:
+- View top 10 buys for the entire congress in the past 6 months: stocks/gov/topbuys
+- Display top 5 buys for the senate in the past 3 months: stocks/gov/topbuys -g senate -p 3 -l 5
+- Show top 20 buys for the house in the past 12 months: stocks/gov/topbuys -g house -p 12 -l 20
+- View top buys for congress with raw data: stocks/gov/topbuys --raw
+- Export top buys for the senate in the past 6 months to a csv file: stocks/gov/topbuys -g senate --export csv
+- Save top buys for the house in the past 6 months to a specific excel sheet: stocks/gov/topbuys -g house --sheet-name Sheet1

@@ -1,0 +1,20 @@
+parent_command:crypto/disc
+usage: dapp_metrics [-d DAPP_ID] [-c CHAIN] [-t TIME_RANGE]
+
+Shows dapp metrics [Source: https://dappradar.com/] Accepts --dappId argument to specify the dapp --chain argument to filter by blockchain for multi-chain dapps --time_range argument to specify the time range. Default: 7d (can be
+24h, 7d, 30d)
+
+optional arguments:
+  -d DAPP_ID, --dappId DAPP_ID
+                        Dapp ID (default: None)
+  -c CHAIN, --chain CHAIN
+                        Filter by blockchain (default: None)
+  -t TIME_RANGE, --time_range TIME_RANGE
+                        Time range (default: 7d)
+
+
+Examples:
+- To view dapp metrics for a specific dapp ID: crypto/disc/dapp_metrics -d DAPP_ID
+- To display dapp metrics for a dapp ID on a particular blockchain: crypto/disc/dapp_metrics -d DAPP_ID -c CHAIN
+- To show dapp metrics for a dapp ID over a specified time range: crypto/disc/dapp_metrics -d DAPP_ID -t TIME_RANGE
+- To retrieve dapp metrics for a dapp ID on a specific blockchain and time range: crypto/disc/dapp_metrics -d DAPP_ID -c CHAIN -t TIME_RANGE

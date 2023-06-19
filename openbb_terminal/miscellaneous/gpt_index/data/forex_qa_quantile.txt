@@ -1,0 +1,18 @@
+parent_command:forex/qa
+usage: quantile [-w N_WINDOW] [-q N_QUANTILE]
+
+The quantiles are values which divide the distribution such that there is a given proportion of observations below the quantile. For example, the median is a quantile. The median is the central value of the distribution, such that
+half the points are less than or equal to it and half are greater than or equal to it. By default, q is set at 0.5, which effectively is median. Change q to get the desired quantile (0<q<1).
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        window length (default: 14)
+  -q N_QUANTILE, --quantile N_QUANTILE
+                        quantile (default: 0.5)
+
+
+Examples:
+- To calculate the median for a forex pair using the default window length and quantile: forex/load <PAIR>/qa/quantile
+- Calculate the 0.75 quantile for a forex pair using the default window length: forex/load <PAIR>/qa/quantile -q 0.75
+- Calculate the median for a forex pair with a custom window length of 30: forex/load <PAIR>/qa/quantile -w 30
+- Calculate the 0.25 quantile for a forex pair with a custom window length of 20: forex/load <PAIR>/qa/quantile -w 20 -q 0.25

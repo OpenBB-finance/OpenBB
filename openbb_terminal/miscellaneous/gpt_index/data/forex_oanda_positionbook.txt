@@ -1,0 +1,10 @@
+parent_command:forex/oanda
+usage: positionbook
+
+Plot a position book for an instrument if Oanda provides one.
+
+positionbook
+Examples:
+- To view the position book for a specific forex pair: forex/load <PAIR>/oanda/positionbook
+- Plot the position book of a forex instrument: forex/oanda/positionbook
+- Display the position book for a chosen forex instrument: forex/<PAIR>/oanda/positionbook

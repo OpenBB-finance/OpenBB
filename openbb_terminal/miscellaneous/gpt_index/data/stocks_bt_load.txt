@@ -1,0 +1,16 @@
+parent_command: stocks/bt/
+usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p]             [-f FILEPATH] [-m] [-w] [--performance] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]             [--source {YahooFinance,AlphaVantage,Polygon,EODHD}]  Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo- finance-sln2310.html.  optional arguments:   -t TICKER, --ticker TICKER                         Stock ticker (default: None)   -s START, --start START                         The starting date (format YYYY-MM-DD) of the stock                         (default: 2020-04-14)   -e END, --end END     The ending date (format YYYY-MM-DD) of the stock                         (default: 2023-04-19)   -i {1,5,15,30,60}, --interval {1,5,15,30,60}                         Intraday stock minutes (default: 1440)   -p, --prepost         Pre/After market hours. Only reflected in                         'YahooFinance' intraday data. (default: False)   -f FILEPATH, --file FILEPATH                         Path to load custom file. (default: None)   -m, --monthly         Load monthly data (default: False)   -w, --weekly          Load weekly data (default: False)   --performance         Show performance information. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --source {YahooFinance,AlphaVantage,Polygon,EODHD}                         Data source to select from (default: YahooFinance)  For more information and examples, use 'about load' to access the related guide.
+Summary: Load stock ticker data for analysis, specifying the start and end dates, data source, and time interval. You can also choose to load weekly or monthly data, include pre/after market hours, load data from a custom file, and export the data. The command supports various data sources and can show performance information.
+
+Examples:
+- Load stock data for a specific symbol: stocks/bt/load -t <SYMBOL>
+- Load stock data for a specific symbol with a custom start and end date: stocks/bt/load -t <SYMBOL> -s 2020-01-01 -e 2022-12-31
+- Load intraday stock data with a 30-minute interval: stocks/bt/load -t <SYMBOL> -i 30
+- Load stock data including pre/after market hours: stocks/bt/load -t <SYMBOL> -p
+- Load stock data from a custom file: stocks/bt/load -t <SYMBOL> -f FILEPATH
+- Load monthly stock data: stocks/bt/load -t <SYMBOL> -m
+- Load weekly stock data: stocks/bt/load -t <SYMBOL> -w
+- Load stock data and show performance information: stocks/bt/load -t <SYMBOL> --performance
+- Load stock data and export it to a csv file: stocks/bt/load -t <SYMBOL> --export csv
+- Load stock data and save it to a specific excel sheet: stocks/bt/load -t <SYMBOL> --sheet-name Sheet1
+- Load stock data from a specific data source: stocks/bt/load -t <SYMBOL> --source AlphaVantage

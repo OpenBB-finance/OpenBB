@@ -183,6 +183,8 @@ class CryptoController(model.CryptoRoot):
             `dapps_chart`: Prints table showing dapps [Source: https://dappradar.com/]\n
             `defi_chains`: Get defi chains [Source: https://dappradar.com/]\n
             `defi_chains_chart`: Prints table showing defi chains [Source: https://dappradar.com/]\n
+            `fees`: Show cryptos with most fees. [Source: CryptoStats]\n
+            `fees_chart`: Display crypto with most fees paid [Source: CryptoStats]\n
             `gainers`: Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
             `gainers_chart`: Prints table showing Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
             `losers`: Shows Largest Losers - coins which lose the most in given period. [Source: CoinGecko]\n

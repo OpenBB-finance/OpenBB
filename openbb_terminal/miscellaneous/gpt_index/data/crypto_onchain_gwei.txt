@@ -1,0 +1,12 @@
+parent_command:crypto/onchain
+usage: onchain
+
+Display ETH gas fees [Source: https://ethgasstation.info]
+
+gwei
+Examples:
+- To view the current ETH gas fees: crypto/onchain
+- Display Ethereum gas fees: crypto/onchain
+- Check the gas fees for Ethereum transactions: crypto/onchain
+- Find out the current gas fees for ETH: crypto/onchain
+- Retrieve the Ethereum gas fees information: crypto/onchain

@@ -1,0 +1,10 @@
+parent_command: stocks/fa/
+usage: mgmt [-t TICKER] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print management team. Namely: Name, Title, Information from google and (potentially) Insider Activity page. [Source: Business Insider]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about mgmt' to access the related guide.
+Summary: Display the management team information for a specific stock symbol, including name, title, and information from Google and Insider Activity page. You can export the data in various formats and save it to a specific excel sheet. [Source: Business Insider]
+
+Examples:
+- Retrieve the management team for a specific stock symbol: stocks/fa/mgmt -t <SYMBOL>
+- Export management team data for a stock symbol in csv format: stocks/fa/mgmt -t <SYMBOL> --export csv
+- Export management team data for a stock symbol in json format: stocks/fa/mgmt -t <SYMBOL> --export json
+- Export management team data for a stock symbol in xlsx format: stocks/fa/mgmt -t <SYMBOL> --export xlsx
+- Save management team data for a stock symbol to a specified excel sheet: stocks/fa/mgmt -t <SYMBOL> --sheet-name Sheet1

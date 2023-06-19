@@ -1,0 +1,25 @@
+parent_command:fixedincome
+usage: usrates [-m {4_week,1_month,3_month,6_month,1_year,2_year,3_year,5_year,7_year,10_year,20_year,30_year}] [-p {tbill,cmn,tips}] [-o] [-s START_DATE] [-e END_DATE]
+
+Plot various rates from the United States. This includes tbill (Treasury Bills), Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)
+
+optional arguments:
+  -m {4_week,1_month,3_month,6_month,1_year,2_year,3_year,5_year,7_year,10_year,20_year,30_year}, --maturity {4_week,1_month,3_month,6_month,1_year,2_year,3_year,5_year,7_year,10_year,20_year,30_year}
+                        Specific Treasury Bill Secondary Market Rate data to plot (default: 3_month)
+  -p {tbill,cmn,tips}, --parameter {tbill,cmn,tips}
+                        Choose either tbill (Treasury Bills), Constant Maturity treasuries (cmn) or Inflation Protected Treasuries (TIPS) (default: tbill)
+  -o, --options         See the available options (default: False)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: 1980-01-01)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- Plot 3-month Treasury Bills: fixedincome/usrates
+- Display available options for US rates: fixedincome/usrates -o
+- Plot 10-year Constant Maturity Treasuries: fixedincome/usrates -m 10_year -p cmn
+- Plot 5-year Inflation Protected Treasuries: fixedincome/usrates -m 5_year -p tips
+- Plot 1-year Treasury Bills from 2000 to 2020: fixedincome/usrates -m 1_year -s 2000-01-01 -e 2020-12-31
+- Plot 7-year Constant Maturity Treasuries between 2010 and 2015: fixedincome/usrates -m 7_year -p cmn -s 2010-01-01 -e 2015-12-31
+- Plot 20-year Inflation Protected Treasuries from 1990 to 2000: fixedincome/usrates -m 20_year -p tips -s 1990-01-01 -e 2000-12-31

@@ -1,0 +1,17 @@
+parent_command:stocks/qa
+usage: cusum [-t THRESHOLD] [-d DRIFT]
+
+Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
+
+optional arguments:
+  -t THRESHOLD, --threshold THRESHOLD
+                        threshold (default: 0.0036913509147768753)
+  -d DRIFT, --drift DRIFT
+                        drift (default: 0.0018456754573884376)
+
+
+Examples:
+- To apply the cumulative sum algorithm (CUSUM) on a stock with default threshold and drift values: stocks/load <SYMBOL>/qa/cusum
+- To apply the CUSUM algorithm on a stock with a custom threshold: stocks/load <SYMBOL>/qa/cusum -t 0.005
+- To apply the CUSUM algorithm on a stock with a custom drift value: stocks/load <SYMBOL>/qa/cusum -d 0.002
+- To apply the CUSUM algorithm on a stock with custom threshold and drift values: stocks/load <SYMBOL>/qa/cusum -t 0.005 -d 0.002

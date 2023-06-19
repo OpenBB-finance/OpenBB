@@ -1,0 +1,34 @@
+parent_command:forecast
+usage: whisper [--video VIDEO] [--model_name {tiny.en,tiny,base.en,base,small.en,small,medium.en,medium,large-v1,large-v2,large}] [--subtitles_format {vtt,srt}] [--verbose VERBOSE] [--task {transcribe,translate}]
+               [--language {af,am,ar,as,az,ba,be,bg,bn,bo,br,bs,ca,cs,cy,da,de,el,en,es,et,eu,fa,fi,fo,fr,gl,gu,ha,haw,he,hi,hr,ht,hu,hy,id,is,it,ja,jw,ka,kk,km,kn,ko,la,lb,ln,lo,lt,lv,mg,mi,mk,ml,mn,mr,ms,mt,my,ne,nl,nn,no,oc,pa,pl,ps,pt,ro,ru,sa,sd,si,sk,sl,sn,so,sq,sr,su,sv,sw,ta,te,tg,th,tk,tl,tr,tt,uk,ur,uz,vi,yi,yo,zh,Afrikaans,Albanian,Amharic,Arabic,Armenian,Assamese,Azerbaijani,Bashkir,Basque,Belarusian,Bengali,Bosnian,Breton,Bulgarian,Burmese,Castilian,Catalan,Chinese,Croatian,Czech,Danish,Dutch,English,Estonian,Faroese,Finnish,Flemish,French,Galician,Georgian,German,Greek,Gujarati,Haitian,Haitian Creole,Hausa,Hawaiian,Hebrew,Hindi,Hungarian,Icelandic,Indonesian,Italian,Japanese,Javanese,Kannada,Kazakh,Khmer,Korean,Lao,Latin,Latvian,Letzeburgesch,Lingala,Lithuanian,Luxembourgish,Macedonian,Malagasy,Malay,Malayalam,Maltese,Maori,Marathi,Moldavian,Moldovan,Mongolian,Myanmar,Nepali,Norwegian,Nynorsk,Occitan,Panjabi,Pashto,Persian,Polish,Portuguese,Punjabi,Pushto,Romanian,Russian,Sanskrit,Serbian,Shona,Sindhi,Sinhala,Sinhalese,Slovak,Slovenian,Somali,Spanish,Sundanese,Swahili,Swedish,Tagalog,Tajik,Tamil,Tatar,Telugu,Thai,Tibetan,Turkish,Turkmen,Ukrainian,Urdu,Uzbek,Valencian,Vietnamese,Welsh,Yiddish,Yoruba}]
+               [--breaklines BREAKLINES] [--save SAVE]
+
+Utilize Whisper Model to transcribe a video. Currently only supports Youtube URLS: https://github.com/openai/whisper
+
+optional arguments:
+  --video VIDEO         video URLs to transcribe (default: )
+  --model_name {tiny.en,tiny,base.en,base,small.en,small,medium.en,medium,large-v1,large-v2,large}
+                        name of the Whisper model to use (default: base)
+  --subtitles_format {vtt,srt}
+                        the subtitle format to output (default: None)
+  --verbose VERBOSE     Whether to print out the progress and debug messages (default: False)
+  --task {transcribe,translate}
+                        whether to perform X->X speech recognition ('transcribe') or X->English translation ('translate') (default: None)
+  --language {af,am,ar,as,az,ba,be,bg,bn,bo,br,bs,ca,cs,cy,da,de,el,en,es,et,eu,fa,fi,fo,fr,gl,gu,ha,haw,he,hi,hr,ht,hu,hy,id,is,it,ja,jw,ka,kk,km,kn,ko,la,lb,ln,lo,lt,lv,mg,mi,mk,ml,mn,mr,ms,mt,my,ne,nl,nn,no,oc,pa,pl,ps,pt,ro,ru,sa,sd,si,sk,sl,sn,so,sq,sr,su,sv,sw,ta,te,tg,th,tk,tl,tr,tt,uk,ur,uz,vi,yi,yo,zh,Afrikaans,Albanian,Amharic,Arabic,Armenian,Assamese,Azerbaijani,Bashkir,Basque,Belarusian,Bengali,Bosnian,Breton,Bulgarian,Burmese,Castilian,Catalan,Chinese,Croatian,Czech,Danish,Dutch,English,Estonian,Faroese,Finnish,Flemish,French,Galician,Georgian,German,Greek,Gujarati,Haitian,Haitian Creole,Hausa,Hawaiian,Hebrew,Hindi,Hungarian,Icelandic,Indonesian,Italian,Japanese,Javanese,Kannada,Kazakh,Khmer,Korean,Lao,Latin,Latvian,Letzeburgesch,Lingala,Lithuanian,Luxembourgish,Macedonian,Malagasy,Malay,Malayalam,Maltese,Maori,Marathi,Moldavian,Moldovan,Mongolian,Myanmar,Nepali,Norwegian,Nynorsk,Occitan,Panjabi,Pashto,Persian,Polish,Portuguese,Punjabi,Pushto,Romanian,Russian,Sanskrit,Serbian,Shona,Sindhi,Sinhala,Sinhalese,Slovak,Slovenian,Somali,Spanish,Sundanese,Swahili,Swedish,Tagalog,Tajik,Tamil,Tatar,Telugu,Thai,Tibetan,Turkish,Turkmen,Ukrainian,Urdu,Uzbek,Valencian,Vietnamese,Welsh,Yiddish,Yoruba}
+                        language spoken in the audio, skip to perform language detection (default: None)
+  --breaklines BREAKLINES
+                        Whether to break lines into a bottom-heavy pyramid shape if line length exceeds N characters. 0 disables line breaking. (default: 0)
+  --save SAVE           Directory to save the subtitles file (default: `USER_DATA_DIRECTORY`\exports\whisper)
+
+
+Examples:
+- Transcribe a video with the default model: forecast/whisper --video https://www.youtube.com/watch?v=example
+- Transcribe a video using the large-v2 model: forecast/whisper --video https://www.youtube.com/watch?v=example --model_name large-v2
+- Transcribe a video and output subtitles in SRT format: forecast/whisper --video https://www.youtube.com/watch?v=example --subtitles_format srt
+- Transcribe a video and translate it to Spanish: forecast/whisper --video https://www.youtube.com/watch?v=example --task translate --language es
+- Transcribe a video in Hindi without language detection: forecast/whisper --video https://www.youtube.com/watch?v=example --language hi
+- Transcribe a video with verbose output: forecast/whisper --video https://www.youtube.com/watch?v=example --verbose True
+- Transcribe a video and break lines at 50 characters: forecast/whisper --video https://www.youtube.com/watch?v=example --breaklines 50
+- Transcribe a video and save the subtitles to a custom directory: forecast/whisper --video https://www.youtube.com/watch?v=example --save C:\custom\directory
+- Transcribe a video using the medium model and output subtitles in VTT format: forecast/whisper --video https://www.youtube.com/watch?v=example --model_name medium --subtitles_format vtt
+- Transcribe and translate a video to French with the small model: forecast/whisper --video https://www.youtube.com/watch?v=example --task translate --language fr --model_name small

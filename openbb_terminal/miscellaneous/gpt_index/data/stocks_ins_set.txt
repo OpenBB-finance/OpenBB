@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: set [-p Desired preset] [-h]  Set preset from under presets folder.  optional arguments:   -p Desired preset, --preset Desired preset                         Filter presets   -h, --help            show this help message  For more information and examples, use 'about set' to access the related guide.
+Summary: Set a preset from the presets folder for stock analysis. You can choose a desired preset using the -p or --preset option.
+
+Examples:
+- Set a specific preset for stock analysis: stocks/ins/set -p MyPreset
+- Apply a desired preset to the loaded stock: stocks/load <SYMBOL>/ins/set --preset CustomPreset
+- Change the preset for stock analysis: stocks/ins/set --preset AnotherPreset
+- Set a preset for the analysis of a specific stock: stocks/load <SYMBOL>/ins/set -p PresetName

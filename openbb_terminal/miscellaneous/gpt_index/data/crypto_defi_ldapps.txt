@@ -1,0 +1,24 @@
+parent_command:crypto/defi
+usage: ldapps [-l LIMIT] [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}] [-r] [--desc]
+
+Display information about listed dApps on DeFi Llama. [Source: https://docs.llama.fi/api]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 10)
+  -s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}, --sort {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}
+                        Sort by given column. Default: tvl (default: tvl)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  --desc                Flag to display description of protocol (default: False)
+
+
+Examples:
+- Show the top 10 DeFi dApps sorted by TVL: crypto/defi/ldapps
+- Display the top 5 DeFi dApps sorted by 1-hour change: crypto/defi/ldapps -l 5 -s change_1h
+- Show the top 20 DeFi dApps sorted by category in ascending order: crypto/defi/ldapps -l 20 -s category -r
+- Display the top 10 DeFi dApps with descriptions: crypto/defi/ldapps --desc
+- Show the top 15 DeFi dApps sorted by 7-day change: crypto/defi/ldapps -l 15 -s change_7d
+- Display the top 10 DeFi dApps sorted by name in ascending order: crypto/defi/ldapps -s name -r
+- Show the top 8 DeFi dApps sorted by chains: crypto/defi/ldapps -l 8 -s chains
+- Display the top 10 DeFi dApps sorted by symbol: crypto/defi/ldapps -s symbol
+- Show the top 12 DeFi dApps sorted by 1-day change in ascending order: crypto/defi/ldapps -l 12 -s change_1d -r

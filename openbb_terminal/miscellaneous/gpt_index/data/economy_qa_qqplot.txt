@@ -1,0 +1,12 @@
+parent_command:economy/qa
+usage: qqplot
+
+Display QQ plot vs normal quantiles
+
+qqplot
+Examples:
+- To display a QQ plot for the economy data: economy/qa/qqplot
+- For visualizing the QQ plot against normal quantiles: economy/qa/qqplot
+- Generate a QQ plot for the economic data: economy/qa/qqplot
+- Visualize the distribution of economic data with a QQ plot: economy/qa/qqplot
+- Examine the economic data using a QQ plot: economy/qa/qqplot

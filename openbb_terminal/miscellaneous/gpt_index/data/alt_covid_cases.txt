@@ -1,0 +1,11 @@
+parent_command:alt/covid
+usage: cases
+
+Show historical cases for country.
+
+cases
+Examples:
+- Show historical cases for a specific country: alt/covid/cases
+- To view the historical COVID-19 cases of a country, use: alt/covid/cases
+- Display the historical cases of COVID-19 for a country with the command: alt/covid/cases
+- Use the following command to see the historical cases of a country: alt/covid/cases

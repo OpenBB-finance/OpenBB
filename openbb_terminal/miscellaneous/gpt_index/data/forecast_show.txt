@@ -1,0 +1,21 @@
+parent_command:forecast
+usage: show [-n {AAPL}] [-s SORTBY [SORTBY ...]] [-r] [--limit-col LIMIT_COL]
+
+Show a portion of the DataFrame
+
+optional arguments:
+  -n {AAPL}, --name {AAPL}
+                        The name of the database you want to show data for (default: None)
+  -s SORTBY [SORTBY ...], --sortby SORTBY [SORTBY ...]
+                        Sort based on a column in the DataFrame (default: )
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  --limit-col LIMIT_COL
+                        Set the number of columns to display when showing the dataset (default: 10)
+
+
+Examples:
+- To display a portion of the DataFrame for a specific stock: forecast/show -n <SYMBOL>
+- To show data for a particular stock and sort it based on a column: forecast/show -n <SYMBOL> -s <COLUMN>
+- Show data for a specific stock, sort it by a column, and display it in ascending order: forecast/show -n <SYMBOL> -s <COLUMN> -r
+- Display data for a stock with a limited number of columns: forecast/show -n <SYMBOL> --limit-col 5
+- Show data for a stock, sort it by multiple columns, and display it in ascending order: forecast/show -n <SYMBOL> -s <COLUMN1> <COLUMN2> -r

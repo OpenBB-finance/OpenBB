@@ -1,0 +1,11 @@
+parent_command: stocks/disc/
+usage: trending [-i N_ID] [-l LIMIT] [-d S_DATE] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Trending news articles. [Source: Seeking Alpha]  optional arguments:   -i N_ID, --id N_ID    article ID (default: -1)   -l LIMIT, --limit LIMIT                         limit of articles being printed (default: 5)   -d S_DATE, --date S_DATE                         starting date of articles (default: 2023-04-19)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about trending' to access the related guide.
+Summary: Display trending news articles related to stocks from Seeking Alpha. You can set a specific article ID, limit the number of articles displayed, choose a starting date for articles, and export the data in various formats.
+
+Examples:
+- Display the top 5 trending articles: stocks/disc/trending
+- Show the top 10 trending articles: stocks/disc/trending -l 10
+- Display articles with a specific article ID: stocks/disc/trending -i 12345
+- Show trending articles starting from a specific date: stocks/disc/trending -d 2023-05-01
+- Export the top 5 trending articles in json format: stocks/disc/trending --export json
+- Save the top 5 trending articles to a specific excel sheet: stocks/disc/trending --sheet-name Sheet1

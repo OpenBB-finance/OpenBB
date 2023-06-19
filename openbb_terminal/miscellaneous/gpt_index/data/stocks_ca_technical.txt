@@ -1,0 +1,10 @@
+parent_command: stocks/ca/
+usage: technical [-h] [--export EXPORT]                  [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints screener data of similar companies. [Source: Finviz]  optional arguments:   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about technical' to access the related guide.
+Summary: Display screener data of companies similar to a specific stock symbol using Finviz as the source. You can export the data in various formats and save it to a specific excel sheet if needed.
+
+Examples:
+- Retrieve screener data for similar companies to <SYMBOL>: stocks/load <SYMBOL>/ca/technical
+- Export screener data of companies similar to <SYMBOL> in csv format: stocks/load <SYMBOL>/ca/technical --export csv
+- Export screener data of companies similar to <SYMBOL> in json format: stocks/load <SYMBOL>/ca/technical --export json
+- Export screener data of companies similar to <SYMBOL> in xlsx format: stocks/load <SYMBOL>/ca/technical --export xlsx
+- Save screener data of companies similar to <SYMBOL> to a specific excel sheet: stocks/load <SYMBOL>/ca/technical --sheet-name Sheet1

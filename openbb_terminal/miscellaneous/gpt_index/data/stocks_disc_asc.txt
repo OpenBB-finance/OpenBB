@@ -1,0 +1,9 @@
+parent_command: stocks/disc/
+usage: asc [-l LIMIT] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print up to 25 small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of stocks to display. (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about asc' to access the related guide.
+Summary: Display a list of small cap stocks with earnings growth rates better than 25%, with options to limit the number of stocks displayed, and export the data in various formats. You can also specify the name of the excel sheet for .xlsx files.
+
+Examples:
+- Display the top 5 small cap stocks with high earnings growth rates: stocks/disc/asc
+- Show the top 10 small cap stocks with high earnings growth rates: stocks/disc/asc -l 10
+- Display the top 15 small cap stocks with high earnings growth rates and export the data to a csv file: stocks/disc/asc -l 15 --export csv
+- Show the top 20 small cap stocks with high earnings growth rates and save the data to an excel sheet named "HighGrowth": stocks/disc/asc -l 20 --export xlsx --sheet-name HighGrowth

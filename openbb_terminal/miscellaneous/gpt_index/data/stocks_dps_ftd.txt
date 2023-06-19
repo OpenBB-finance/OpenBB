@@ -1,0 +1,13 @@
+parent_command: stocks/dps/
+usage: ftd [-s START] [-e END] [-n N_NUM] [--raw] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints latest fails-to-deliver data. [Source: SEC]  optional arguments:   -s START, --start START                         start of datetime to see FTD   -e END, --end END     end of datetime to see FTD   -n N_NUM, --num N_NUM                         number of latest fails-to-deliver being printed   --raw                 Print raw data.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about ftd' to access the related guide.
+Summary: Prints the latest fails-to-deliver (FTD) data for a specific stock symbol, with options to set a start and end datetime, display a specific number of FTDs, export the data in various formats, and display raw data. The data source is the SEC.
+
+Examples:
+- Retrieve the latest fails-to-deliver data for a specific stock symbol: stocks/load <SYMBOL>/dps/ftd
+- Retrieve the latest 10 fails-to-deliver data for a specific stock symbol: stocks/load <SYMBOL>/dps/ftd -n 10
+- Retrieve fails-to-deliver data for a specific stock symbol between specific start and end dates: stocks/load <SYMBOL>/dps/ftd -s 2022-01-01 -e 2022-01-31
+- Display raw data for the latest fails-to-deliver data for a specific stock symbol: stocks/load <SYMBOL>/dps/ftd --raw
+- Export the latest fails-to-deliver data for a specific stock symbol in CSV format: stocks/load <SYMBOL>/dps/ftd --export csv
+- Export the latest fails-to-deliver data for a specific stock symbol in JSON format: stocks/load <SYMBOL>/dps/ftd --export json
+- Export the latest fails-to-deliver data for a specific stock symbol in XLSX format: stocks/load <SYMBOL>/dps/ftd --export xlsx
+- Save the latest fails-to-deliver data for a specific stock symbol to a specific Excel sheet: stocks/load <SYMBOL>/dps/ftd --sheet-name Sheet1

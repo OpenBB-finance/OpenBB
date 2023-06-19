@@ -1,0 +1,8 @@
+parent_command: stocks/scr/
+usage: view [-p Desired preset.] [-h]  View available presets under presets folder.  optional arguments:   -p Desired preset., --preset Desired preset.                         View specific custom preset   -h, --help            show this help message  For more information and examples, use 'about view' to access the related guide.
+Summary: View available presets under the presets folder or view a specific custom preset. The command allows you to select a desired preset using the -p or --preset option.
+
+Examples:
+- View all available presets: stocks/scr/view
+- View a specific custom preset: stocks/scr/view -p DesiredPreset
+- View a specific custom preset using the long option: stocks/scr/view --preset DesiredPreset

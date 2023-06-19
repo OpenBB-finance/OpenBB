@@ -1,0 +1,21 @@
+parent_command:crypto/tools
+usage: aprtoapy [--apr APR] [-c COMPOUNDING] [-n]
+
+Tool to calculate APY from APR value. Compouding periods, i.e., the number of times compounded per year can be defined with -c argument.
+
+optional arguments:
+  --apr APR             APR value in percentage to convert (default: 100)
+  -c COMPOUNDING, --compounding COMPOUNDING
+                        Number of compounded periods in a year. 12 means compounding monthly (default: 12)
+  -n, --narrative       Flag to show narrative instead of dataframe (default: False)
+
+
+Examples:
+- Calculate APY from APR of 8% with default compounding periods: crypto/tools/aprtoapy --apr 8
+- Calculate APY from APR of 8% with monthly compounding: crypto/tools/aprtoapy --apr 8 -c 12
+- Calculate APY from APR of 8% with daily compounding: crypto/tools/aprtoapy --apr 8 -c 365
+- Calculate APY from APR of 8% with quarterly compounding and display narrative: crypto/tools/aprtoapy --apr 8 -c 4 -n
+- Convert 5% APR to APY with weekly compounding: crypto/tools/aprtoapy --apr 5 -c 52
+- Calculate APY from 10% APR with semi-annual compounding: crypto/tools/aprtoapy --apr 10 -c 2
+- Convert 15% APR to APY with daily compounding and show narrative: crypto/tools/aprtoapy --apr 15 -c 365 -n
+- Calculate APY from 20% APR with default compounding periods and display narrative: crypto/tools/aprtoapy --apr 20 -n

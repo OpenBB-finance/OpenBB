@@ -32,5 +32,6 @@ divcal --help
 
 heatmap
 reset
+ns --ticker AAPL -s 2023-01-01
 r
 exit

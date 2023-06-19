@@ -1,0 +1,11 @@
+parent_command:crypto/dd
+usage: score
+
+In this view you can find different kind of scores for loaded coin. Those scores represents different rankings, sentiment metrics, some user stats and others. You will see CoinGecko scores, Developer Scores, Community Scores,
+Sentiment, Reddit scores and many others.
+
+score
+Examples:
+- To view scores for a specific coin: crypto/load <COIN>/dd/score
+- Display scores of the loaded coin: crypto/dd/score
+- Get various rankings and sentiment metrics for a coin: crypto/load <COIN>/dd/score

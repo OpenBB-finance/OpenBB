@@ -11,7 +11,7 @@ from openbb_terminal.core.session.session_model import (
     login,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.terminal_helper import bootup
+from openbb_terminal.terminal_helper import bootup, is_installer
 
 
 def display_welcome_message():
@@ -30,9 +30,15 @@ def get_user_input() -> Tuple[str, str, bool]:
     Tuple[str, str, bool]
         The user email, password and save login option.
     """
-    console.print(
-        "[info]\nPlease enter your credentials or press <ENTER> for guest mode:[/info]"
-    )
+
+    msg = "\nPlease enter your credentials"
+
+    if not is_installer():
+        msg += " or press <ENTER> for guest mode:"
+    else:
+        msg += ":"
+
+    console.print("[info]" + msg + "[/info]")
 
     s: PromptSession = PromptSession()
 
@@ -53,7 +59,7 @@ def get_user_input() -> Tuple[str, str, bool]:
     return email, password, remember
 
 
-def prompt(welcome=True):
+def prompt(welcome: bool = True):
     """Prompt and launch terminal if login is successful.
 
     Parameters
@@ -69,7 +75,8 @@ def prompt(welcome=True):
     while True:
         email, password, remember = get_user_input()
         if not email:
-            return launch_terminal()
+            return prompt(welcome=False) if is_installer() else launch_terminal()
+
         session = create_session(email, password, remember)
         if isinstance(session, dict) and session:
             return login_and_launch(session, remember)

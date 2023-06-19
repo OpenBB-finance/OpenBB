@@ -1,0 +1,65 @@
+parent_command:forecast
+usage: tft [--lstm-layers LSTM_LAYERS] [--num-attention-heads NUM_ATTENTION_HEADS] [--full-attention] [--hidden-continuous-size HIDDEN_CONTINUOUS_SIZE] [--hidden-size HIDDEN_SIZE] [--past-covariates PAST_COVARIATES]
+           [--all-past-covariates] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS]
+           [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
+           [--metric {rmse,mse,mape,smape}]
+
+Perform TFT forecast (Temporal Fusion Transformer): https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
+
+optional arguments:
+  --lstm-layers LSTM_LAYERS
+                        Number of LSTM layers. (default: 1)
+  --num-attention-heads NUM_ATTENTION_HEADS
+                        Number of attention heads. (default: 4)
+  --full-attention      Whether to apply a multi-head attention query. (default: False)
+  --hidden-continuous-size HIDDEN_CONTINUOUS_SIZE
+                        Default hidden size for processing continuous variables. (default: 8)
+  --hidden-size HIDDEN_SIZE
+                        Size for feature maps for each hidden RNN layer (h_n) (default: 16)
+  --past-covariates PAST_COVARIATES
+                        Past covariates(columns/features) in same dataset. Comma separated. (default: None)
+  --all-past-covariates
+                        Adds all rows as past covariates except for date and the target column. (default: False)
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  -i INPUT_CHUNK_LENGTH, --input-chunk-length INPUT_CHUNK_LENGTH
+                        Number of past time steps for forecasting module at prediction time. (default: 14)
+  -o OUTPUT_CHUNK_LENGTH, --output-chunk-length OUTPUT_CHUNK_LENGTH
+                        The length of the forecast of the model. (default: 5)
+  --force-reset FORCE_RESET
+                        If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). (default: True)
+  --save-checkpoints SAVE_CHECKPOINTS
+                        Whether to automatically save the untrained model and checkpoints. (default: True)
+  --model-save-name MODEL_SAVE_NAME
+                        Name of the model to save. (default: tft_model)
+  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 300)
+  --dropout DROPOUT     Fraction of neurons affected by Dropout, from 0 to 1. (default: 0.1)
+  --batch-size BATCH_SIZE
+                        Number of time series (input and output) used in each training pass (default: 32)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+  --metric {rmse,mse,mape,smape}
+                        Calculate precision based on a specific metric (rmse, mse, mape) (default: mape)
+
+
+Examples:
+- Perform a TFT forecast for <SYMBOL> using the default settings: forecast/tft -d <SYMBOL>
+- Perform a TFT forecast for <SYMBOL> with 2 LSTM layers and 6 attention heads: forecast/tft -d <SYMBOL> --lstm-layers 2 --num-attention-heads 6
+- Perform a TFT forecast for <SYMBOL> using full attention and a hidden size of 32: forecast/tft -d <SYMBOL> --full-attention --hidden-size 32
+- Perform a TFT forecast for <SYMBOL> with input chunk length of 20 and output chunk length of 10: forecast/tft -d <SYMBOL> -i 20 -o 10
+- Perform a TFT forecast for <SYMBOL> using the 'open' column as the target: forecast/tft -d <SYMBOL> -c open
+- Perform a TFT forecast for <SYMBOL> and show the naive baseline: forecast/tft -d <SYMBOL> --naive
+- Perform a TFT forecast for <SYMBOL> with a train split of 0.9 and 400 epochs: forecast/tft -d <SYMBOL> -t 0.9 --n-epochs 400
+- Perform a TFT forecast for <SYMBOL> using a start date and end date: forecast/tft -d <SYMBOL> --start 2020-01-01 --end 2021-12-31
+- Perform a TFT forecast for <SYMBOL> and export predictions to a CSV file: forecast/tft -d <SYMBOL> --export-pred-raw
+- Perform a TFT forecast for <SYMBOL> and calculate precision using the RMSE metric: forecast/tft -d <SYMBOL> --metric rmse
