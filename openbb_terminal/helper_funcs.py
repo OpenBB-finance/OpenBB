@@ -87,7 +87,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.23
+GPT_INDEX_VER = 0.3
 
 
 # Command location path to be shown in the figures depending on watermark flag
@@ -2168,7 +2168,7 @@ def query_LLM(query_text, gpt_model):
     ]
 
     # define LLM
-    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name=gpt_model))
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name=gpt_model))
     # define prompt helper
     prompt_helper = PromptHelper(max_input_size=4096, num_output=256)
     service_context = ServiceContext.from_defaults(
@@ -2238,7 +2238,7 @@ def query_LLM(query_text, gpt_model):
     try:
         query_engine = index.as_query_engine()
         response = query_engine.query(prompt_string)
-        return response.response
+        return response.response, response.source_nodes
     except Exception as e:
         # check if the error has the following "The model: `gpt-4` does not exist"
         if "The model: `gpt-4` does not exist" in str(e):
@@ -2249,4 +2249,4 @@ def query_LLM(query_text, gpt_model):
             return None
 
         console.print(f"[red]Something went wrong with the query. {e}[/red]")
-        return None
+        return None, None
