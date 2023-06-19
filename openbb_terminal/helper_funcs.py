@@ -2207,9 +2207,10 @@ def query_LLM(query_text, gpt_model):
     current_date = datetime.now().astimezone(pytz.timezone("America/New_York"))
 
     prompt_string = f"""From the cli argparse help text above, provide the terminal
-        command for {query_text}. Provide the exact command along with the parent command
-        with a "/" separation to get that information, and nothing else including any
-        explanation. Don't add any other word such as 'Command to get', 'Answer' or the likes.
+        command for {query_text}. If relevant, use the examples as guidance.
+        Provide the exact command along with the parent command with a "/" separation to get that information,
+        and nothing else including any explanation. Don't add any other word such as 'Command to get', 'Answer'
+        or the likes.  If you do not know, reply "I don't know"
 
         Current date: {current_date.strftime("%Y-%m-%d")}
         Current day of the week: {current_date.strftime("%A")}
@@ -2219,16 +2220,18 @@ def query_LLM(query_text, gpt_model):
         the particular target before running any subsequent commands
         2. If you are asked about dates or times, load the target dates, times span during the "load" command
         before running any subsequent commands. replace all <> with the actual dates and times.  The date format should
-        be YYYY-MM-DD. Reference the current date and day of the week in your command in case the user do not provide it.
-        3. Always use a comma to separate between countries and no spaces.
-        4. Country names should be snake case and lower case. example: united_states.
-        5. always use "load" command first before running any subsequent commands. example:
-        stocks/load <symbol>/ .... 
+        be YYYY-MM-DD. If there is no date included in the query, do not specify any.
+        3. Country names should be snake case and lower case. example: united_states.
+        4. Always use a comma to separate between countries and no spaces: example: united_states,italy,spain
+        5. Always use "load" command first before running any subsequent commands. example:
+        stocks/load <symbol>/ ....
         crypto/load <symbol>/ .... etc.
         6. Do not include --export unless the request asks for the data to be exported or saved to a specific file type.
         7. Do not make up any subcommands or options for the specific command.
+        8. Do not provide anything that could be interpreted as investment advice.
+        9. Any request asking for options refers to stocks/options.
 
-        Only do what is asked and provide a single command string, never more than one.
+        Only do what is asked and only provide a single command string, never more than one.
         """
 
     # try to get the response from the index

@@ -416,7 +416,7 @@ class TerminalController(BaseController):
                         )
                         user_response = input()
                         if user_response == "y":
-                            self.queue.append(response)
+                            self.queue.append(response + "/home")
                         elif user_response == "n":
                             console.print("Please refine your question and try again.")
                         elif user_response == "fb":
@@ -427,7 +427,7 @@ class TerminalController(BaseController):
 
                     else:
                         console.print(
-                            "[red]AskObb could not respond with an appropriate answer.[/red]"
+                            "[red]askobb could not respond with an appropriate answer.[/red]"
                         )
                         console.print("Please refine your question and try again.")
 

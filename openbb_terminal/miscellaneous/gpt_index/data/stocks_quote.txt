@@ -8,3 +8,4 @@ Examples:
 - Export the current quote for a stock in json format: stocks/quote -t <SYMBOL> --export json
 - Export the current quote for a stock in xlsx format: stocks/quote -t <SYMBOL> --export xlsx
 - Save the current quote for a stock to a specific excel sheet: stocks/quote -t <SYMBOL> --sheet-name Sheet1
+- What is the last price for a stock: stocks/quote -t <SYMBOL>
