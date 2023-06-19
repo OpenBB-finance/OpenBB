@@ -99,7 +99,7 @@ spy = openbb.stocks.options.load_options_chains("SPY")
 
 The result is returned as the object described in the previous section.
 
-![Options Data Object](options_chains1.png)
+![Options Data Object](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/fd581725-15aa-4ede-b302-10acac387f5c)
 
 The object is still returned if an unsupported symbol is requested and a message will be printed.
 
@@ -240,7 +240,7 @@ The class methods work with the Options data object to query the loaded chains d
 vix = openbb.stocks.options.load_options_chains("vix")
 ```
 
-![VIX Options Chains](options_chains3.png)
+![VIX Options Chains](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f9ba96fe-6726-49bf-8e41-c38daa045f38)
 
 #### `get_stats()`
 
@@ -368,7 +368,7 @@ structure = data.get_strategies()[["Expiration", "Cost"]].set_index("Expiration"
 openbb.qa.line(structure["Cost"], title = "Cost of ATM VIX Straddle", log_y= False)
 ```
 
-![Cost of Straddle](options_chains2.png)
+![Cost of Straddle](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/4d16778c-78bb-44e3-8068-3ba1ceca44c3)
 
 Additional strategies will be added in the future.
 
