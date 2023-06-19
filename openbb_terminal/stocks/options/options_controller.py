@@ -199,7 +199,9 @@ class OptionsController(BaseController):
                 last_price = tradier_model.get_last_price(self.ticker)
                 self.current_price = last_price or 0.0
             elif self.source == "Nasdaq":
-                self.current_price = nasdaq_model.get_last_price(self.ticker)
+                self.current_price = nasdaq_model.get_underlying_price(self.ticker)[
+                    "lastPrice"
+                ]
             elif self.source == "Intrinio":
                 self.current_price = intrinio_model.get_last_price(self.ticker)
             else:
