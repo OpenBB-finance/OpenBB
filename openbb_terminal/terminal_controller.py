@@ -416,7 +416,7 @@ class TerminalController(BaseController):
                         )
                         user_response = input()
                         if user_response == "y":
-                            self.queue.append(response)
+                            self.queue.append("home/" + response)
                         elif user_response == "n":
                             console.print("Please refine your question and try again.")
                         elif user_response == "fb":
