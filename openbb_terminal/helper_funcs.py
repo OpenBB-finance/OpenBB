@@ -2168,7 +2168,7 @@ def query_LLM(query_text, gpt_model):
     ]
 
     # define LLM
-    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name=gpt_model))
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name=gpt_model))
     # define prompt helper
     prompt_helper = PromptHelper(max_input_size=4096, num_output=256)
     service_context = ServiceContext.from_defaults(
