@@ -182,7 +182,6 @@ class TerminalController(BaseController):
             choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
             choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
-            choices["record"]["--tags"] = {c: None for c in SCRIPT_TAGS}
 
             if biztoc_model.BIZTOC_TAGS:
                 choices["news"]["--tag"] = {c: {} for c in biztoc_model.BIZTOC_TAGS}
