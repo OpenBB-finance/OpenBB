@@ -358,7 +358,7 @@ class Backend(PyWry):
     def check_backend(self):
         """Override to check if isatty."""
         if not self.isatty:
-            return
+            return None
 
         message = (
             "[bold red]PyWry version 0.5.12 or higher is required to use the "
@@ -385,7 +385,7 @@ class Backend(PyWry):
         try:
             return self.loop.run_until_complete(super().check_backend())
         except Exception:
-            pass
+            return None
 
     def close(self, reset: bool = False):
         """Close the backend."""
