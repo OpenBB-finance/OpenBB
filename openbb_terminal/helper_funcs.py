@@ -87,7 +87,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.23
+GPT_INDEX_VER = 0.3
 
 
 # Command location path to be shown in the figures depending on watermark flag
