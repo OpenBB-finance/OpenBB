@@ -183,7 +183,7 @@ class Backend(PyWry):
         export_image : str, optional
             Path to export image to, by default ""
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.check_backend()
         # pylint: disable=C0415
         from openbb_terminal.helper_funcs import command_location
 
@@ -261,7 +261,7 @@ class Backend(PyWry):
         theme : light or dark, optional
             Theme of the table, by default "light"
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.check_backend()
 
         if title:
             # We remove any html tags and markdown from the title
@@ -328,7 +328,7 @@ class Backend(PyWry):
         height : int, optional
             Height of the window, by default 800
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.check_backend()
         script = f"""
         <script>
             window.location.replace("{url}");
@@ -355,7 +355,7 @@ class Backend(PyWry):
         if self.isatty:
             super().start(debug)
 
-    async def check_backend(self):
+    def check_backend(self):
         """Override to check if isatty."""
         if self.isatty:
             message = (
@@ -378,7 +378,13 @@ class Backend(PyWry):
                 console.print(message)
                 self.max_retries = 0  # pylint: disable=W0201
                 return
-            await super().check_backend()
+            if version.parse(PyWry.__version__) < version.parse("0.5.13"):
+                try:
+                    return self.loop.run_until_complete(super().check_backend())
+                except Exception:
+                    pass
+
+            return super().check_backend()
 
     def close(self, reset: bool = False):
         """Close the backend."""
@@ -427,7 +433,7 @@ class Backend(PyWry):
         Optional[dict]
             The user data if login was successful, None otherwise.
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.check_backend()
         endpoint = {True: "login", False: "logout"}[login]
 
         outgoing = dict(
