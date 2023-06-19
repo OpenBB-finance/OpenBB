@@ -357,34 +357,35 @@ class Backend(PyWry):
 
     def check_backend(self):
         """Override to check if isatty."""
-        if self.isatty:
-            message = (
-                "[bold red]PyWry version 0.5.12 or higher is required to use the "
-                "OpenBB Plots backend.[/]\n"
-                "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
-            )
-            if not hasattr(PyWry, "__version__"):
-                try:
-                    # pylint: disable=C0415
-                    from pywry import __version__ as pywry_version
-                except ImportError:
-                    console.print(message)
-                    self.max_retries = 0
-                    return
+        if not self.isatty:
+            return
 
-                PyWry.__version__ = pywry_version  # pylint: disable=W0201
+        message = (
+            "[bold red]PyWry version 0.5.12 or higher is required to use the "
+            "OpenBB Plots backend.[/]\n"
+            "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
+        )
+        if not hasattr(PyWry, "__version__"):
+            try:
+                # pylint: disable=C0415
+                from pywry import __version__ as pywry_version
+            except ImportError:
+                self.max_retries = 0
+                return console.print(message)
 
-            if version.parse(PyWry.__version__) < version.parse("0.5.12"):
-                console.print(message)
-                self.max_retries = 0  # pylint: disable=W0201
-                return
-            if version.parse(PyWry.__version__) < version.parse("0.5.13"):
-                try:
-                    return self.loop.run_until_complete(super().check_backend())
-                except Exception:
-                    pass
+            PyWry.__version__ = pywry_version  # pylint: disable=W0201
 
+        if version.parse(PyWry.__version__) < version.parse("0.5.12"):
+            self.max_retries = 0  # pylint: disable=W0201
+            return console.print(message)
+
+        if version.parse(PyWry.__version__) > version.parse("0.5.12"):
             return super().check_backend()
+
+        try:
+            return self.loop.run_until_complete(super().check_backend())
+        except Exception:
+            pass
 
     def close(self, reset: bool = False):
         """Close the backend."""
