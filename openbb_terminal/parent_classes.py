@@ -800,7 +800,11 @@ class BaseController(metaclass=ABCMeta):
             global SESSION_RECORDED_DESCRIPTION
             global SESSION_RECORDED_TAGS
 
-            SESSION_RECORDED_NAME = ns_parser.name if ".openbb" in ns_parser.name else ns_parser.name + ".openbb"
+            SESSION_RECORDED_NAME = (
+                ns_parser.name
+                if ".openbb" in ns_parser.name
+                else ns_parser.name + ".openbb"
+            )
 
             SESSION_RECORDED_DESCRIPTION = " ".join(ns_parser.description)
             SESSION_RECORDED_TAGS = " ".join(ns_parser.tags) if ns_parser.tags else ""
