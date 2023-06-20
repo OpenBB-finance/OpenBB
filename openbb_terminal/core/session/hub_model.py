@@ -8,7 +8,6 @@ from openbb_terminal.core.session.constants import (
     CONNECTION_ERROR_MSG,
     CONNECTION_TIMEOUT_MSG,
     DEFAULT_ROUTINES_URL,
-    SCRIPT_TAGS,
     TIMEOUT,
 )
 from openbb_terminal.core.session.current_system import get_current_system
