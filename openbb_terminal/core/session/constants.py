@@ -1,4 +1,4 @@
-BASE_URL = "https://payments.openbb.dev/"
+BASE_URL = "https://payments.openbb.co/"
 # BASE_URL = "http://127.0.0.1:8000/"
 
 HUB_URL = "https://my.openbb.co/"
