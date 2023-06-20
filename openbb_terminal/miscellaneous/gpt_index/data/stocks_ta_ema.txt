@@ -19,3 +19,4 @@ Examples:
 - To calculate the Exponential Moving Average with an offset of 5: stocks/load <SYMBOL>/ta/ema -o 5
 - To calculate the Exponential Moving Average with a custom window length of 30 and an offset of 5: stocks/load <SYMBOL>/ta/ema -l 30 -o 5
 - To calculate the Exponential Moving Average with multiple custom window lengths, such as 10 and 40, and an offset of 5: stocks/load <SYMBOL>/ta/ema -l 10,40 -o 5
+- Show me the 30 day ema of SYMBOL stock: stocks/load <SYMBOL>/ta/ema -l 30

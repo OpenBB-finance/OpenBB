@@ -8,3 +8,4 @@ Examples:
 - Export the overview data for a stock in CSV format: stocks/fa/overview -t <SYMBOL> --export csv
 - Save the overview data for a stock to a specific Excel sheet: stocks/fa/overview -t <SYMBOL> --sheet-name Sheet1
 - Get an overview of a stock using FinancialModelingPrep as the data source: stocks/fa/overview -t <SYMBOL> --source FinancialModelingPrep
+- Get the p/e ratio for tesla stock: stocks/fa/overview -t TSLA --source FinancialModelingPrep

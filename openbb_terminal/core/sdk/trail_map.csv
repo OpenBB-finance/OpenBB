@@ -399,6 +399,7 @@ stocks.ba.headlines,stocks_ba_finbrain_model.get_sentiment,stocks_ba_finbrain_vi
 stocks.ba.infer,stocks_ba_twitter_model.load_analyze_tweets,stocks_ba_twitter_view.display_inference
 stocks.ba.mentions,stocks_ba_google_model.get_mentions,stocks_ba_google_view.display_mentions
 stocks.ba.messages,stocks_ba_stocktwits_model.get_messages,
+stocks.ba.ns,stocks_ba_news_sentiment_model.get_data,stocks_ba_news_sentiment_view.display_articles_data
 stocks.ba.popular,stocks_ba_reddit_model.get_popular_tickers,
 stocks.ba.queries,stocks_ba_google_model.get_queries,
 stocks.ba.redditsent,stocks_ba_reddit_model.get_posts_about,
@@ -410,7 +411,6 @@ stocks.ba.spacc,stocks_ba_reddit_model.get_spac_community,
 stocks.ba.stalker,stocks_ba_stocktwits_model.get_stalker,
 stocks.ba.text_sent,stocks_ba_reddit_model.get_sentiment,
 stocks.ba.trending,stocks_ba_stocktwits_model.get_trending,
-stocks.ba.ns,stocks_ba_news_sentiment_model.get_data,stocks_ba_news_sentiment_view.display_articles_data
 stocks.ba.wsb,stocks_ba_reddit_model.get_wsb_community,
 stocks.ca.balance,stocks_ca_marketwatch_model.get_balance_comparison,
 stocks.ca.cashflow,stocks_ca_marketwatch_model.get_cashflow_comparison,
@@ -523,11 +523,13 @@ stocks.options.dte,stocks_options_helpers.get_dte,
 stocks.options.eodchain,stocks_options_intrinio_model.get_full_chain_eod,
 stocks.options.expirations,stocks_options_sdk_helper.get_option_expirations,
 stocks.options.generate_data,stocks_options_yfinance_model.generate_data,
+stocks.options.get_strategies,stocks_options_options_chains_model.get_strategies,
 stocks.options.greeks,stocks_options_sdk_helper.get_greeks,
 stocks.options.grhist,stocks_options_intrinio_model.get_historical_options,stocks_options_intrinio_view.view_historical_greeks
 stocks.options.hist,stocks_options_sdk_helper.hist,
 stocks.options.info,stocks_options_barchart_model.get_options_info,stocks_options_barchart_view.print_options_data
 stocks.options.last_price,stocks_options_tradier_model.get_last_price,
+stocks.options.load_options_chains,stocks_options_sdk_helper.load_options_chains,
 stocks.options.oi,stocks_options_view.plot_oi,
 stocks.options.pcr,stocks_options_alphaquery_model.get_put_call_ratio,stocks_options_alphaquery_view.display_put_call_ratio
 stocks.options.price,stocks_options_sdk_helper.get_option_current_price,
