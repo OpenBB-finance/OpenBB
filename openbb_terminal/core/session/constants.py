@@ -1,4 +1,4 @@
-BASE_URL = "https://payments.openbb.dev/"  # TODO: Change this back to the .co domain
+BASE_URL = "https://payments.openbb.co/"
 # BASE_URL = "http://127.0.0.1:8000/"
 
 HUB_URL = "https://my.openbb.co/"

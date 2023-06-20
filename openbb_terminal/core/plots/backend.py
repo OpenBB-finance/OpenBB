@@ -438,7 +438,7 @@ class Backend(PyWry):
         endpoint = {True: "login", False: "logout"}[login]
 
         outgoing = dict(
-            json_data=dict(url=f"https://my.openbb.dev/{endpoint}?pywry=true"),
+            json_data=dict(url=f"https://my.openbb.co/{endpoint}?pywry=true"),
             **self.get_kwargs(endpoint.title()),
             width=900,
             height=800,
