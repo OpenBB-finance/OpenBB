@@ -140,10 +140,10 @@ export default async function autoScaling(
         }
       });
 
-      return {to_update, yaxis_fixedrange};
+      return { to_update, yaxis_fixedrange };
     }
   } catch (e) {
     console.log(`Error in AutoScaling: ${e}`);
   }
-  return {to_update: {}, yaxis_fixedrange: []};
+  return { to_update: {}, yaxis_fixedrange: [] };
 }
