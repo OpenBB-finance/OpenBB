@@ -159,7 +159,7 @@ class BaseController(metaclass=ABCMeta):
             self.controller_choices = self.CHOICES_COMMON
 
         self.completer: Union[None, NestedCompleter] = None
-        
+
         self.parser = argparse.ArgumentParser(
             add_help=False,
             prog=self.path[-1] if self.PATH != "/" else "terminal",
@@ -799,7 +799,7 @@ class BaseController(metaclass=ABCMeta):
             global SESSION_RECORDED_NAME
             global SESSION_RECORDED_DESCRIPTION
             global SESSION_RECORDED_TAGS
-            
+
             if ".openbb" in ns_parser.name:
                 SESSION_RECORDED_NAME = ns_parser.name
             else:
