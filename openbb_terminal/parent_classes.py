@@ -39,7 +39,8 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     parse_and_split_input,
     prefill_form,
-    query_LLM,
+    query_LLM_local,
+    query_LLM_remote,
     screenshot,
     search_wikipedia,
     set_command_location,
@@ -307,12 +308,29 @@ class BaseController(metaclass=ABCMeta):
             if len(ns_parser.question) < 2:
                 console.print("[red]Please enter a prompt with more than 1 word[/red]")
             else:
-                console.print(
-                    "[yellow]Thinking... This may take a few moments.\n[/yellow]"
-                )
-                response, source_nodes = query_LLM(
-                    " ".join(ns_parser.question), ns_parser.gpt_model
-                )
+                api_key = get_current_user().credentials.API_OPENAI_KEY
+
+                if ns_parser.gpt_model == "gpt-4" and api_key == "REPLACE_ME":
+                    console.print(
+                        "[red]GPT-4 only available with local OPENAI Key.\n[/]"
+                    )
+                    return
+
+                if api_key == "REPLACE_ME":
+                    response, source_nodes = query_LLM_remote(
+                        " ".join(ns_parser.question)
+                    )
+
+                else:
+                    if ns_parser.gpt_model != "gpt-4":
+                        console.print(
+                            "[yellow]Using local OpenAI Key"
+                            ".  Please remove from OpenBB Hub to query askobb remotely.[/]\n"
+                        )
+                    response, source_nodes = query_LLM_local(
+                        " ".join(ns_parser.question), ns_parser.gpt_model
+                    )
+
                 feedback = ""
                 if response is not None:
                     # check that "I don't know" and "Sorry" is not the response
@@ -341,10 +359,14 @@ class BaseController(metaclass=ABCMeta):
                         elif user_response == "n":
                             console.print("Please refine your question and try again.")
                         elif user_response == "fb":
-                            console.print("Please enter your feedback on askobb.")
+                            console.print(
+                                "\n[yellow]Please enter your feedback on askobb:[/] "
+                            )
                             feedback = input()
                             if feedback:
-                                console.print("Thank you for your feedback!")
+                                console.print(
+                                    "\n[green]Thank you for your feedback![/]"
+                                )
 
                     else:
                         console.print(

@@ -2157,7 +2157,7 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
 
 @check_api_key(["API_OPENAI_KEY"])
-def query_LLM(query_text, gpt_model):
+def query_LLM_local(query_text, gpt_model):
     current_user = get_current_user()
     os.environ["OPENAI_API_KEY"] = current_user.credentials.API_OPENAI_KEY
 
@@ -2250,3 +2250,25 @@ def query_LLM(query_text, gpt_model):
 
         console.print(f"[red]Something went wrong with the query. {e}[/red]")
         return None, None
+
+
+def query_LLM_remote(query_text: str):
+    """Query askobb on gpt-3.5 turbo hosted model
+
+    Parameters
+    ----------
+    query_text : str
+        Query string for askobb
+    """
+
+    url = "https://api.openbb.co/askobb"
+
+    data = {"prompt": query_text, "accessToken": get_current_user().profile.token}
+
+    ask_obbrequest_data = request(url, method="POST", json=data).json()
+
+    if "error" in ask_obbrequest_data:
+        console.print(f"[red]{ask_obbrequest_data['error']}[/red]")
+        return None, None
+
+    return ask_obbrequest_data["response"], ask_obbrequest_data["source_nodes"]
