@@ -377,6 +377,8 @@ def reset(queue: Optional[List[str]] = None):
             "access_token": user_profile.token,
             "token_type": user_profile.token_type,
             "uuid": user_profile.uuid,
+            "username": user_profile.username,
+            "remember": user_profile.remember,
         }
 
         # remove the hub routines

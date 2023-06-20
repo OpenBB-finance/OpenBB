@@ -2265,7 +2265,7 @@ def query_LLM_remote(query_text: str):
 
     data = {"prompt": query_text, "accessToken": get_current_user().profile.token}
 
-    ask_obbrequest_data = request(url, method="POST", json=data).json()
+    ask_obbrequest_data = request(url, method="POST", json=data, timeout=15).json()
 
     if "error" in ask_obbrequest_data:
         console.print(f"[red]{ask_obbrequest_data['error']}[/red]")
