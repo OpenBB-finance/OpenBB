@@ -13,8 +13,8 @@ optional arguments:
 
 
 Examples:
-- To view the general government debt-to-GDP ratio for the United States: economy/debt
+- To view the general government debt-to-GDP ratio for the <COUNTRY>: economy/debt -c <COUNTRY>
 - To view the general government debt-to-GDP ratio for a specific country, such as Germany: economy/debt -c germany
-- To view the general government debt-to-GDP ratio for multiple countries, like France and Italy: economy/debt -c france,italy
+- To view the general government debt-to-GDP ratio for multiple countries, like France and Italy: economy/debt -c <COUNTRY>,<COUNTRY>
 - To get the general government debt-to-GDP ratio data for a specific time range, for example, from 2000-01-01 to 2020-12-31: economy/debt -s 2000-01-01 -e 2020-12-31
-- To retrieve the general government debt-to-GDP ratio data for a specific country and time range, such as Canada between 2010-01-01 and 2020-12-31: economy/debt -c canada -s 2010-01-01 -e 2020-12-31
+- To retrieve the general government debt-to-GDP ratio data for a specific country and time range, such as <COUNTRY> between 2010-01-01 and 2020-12-31: economy/debt -c <COUNTRY> -s 2010-01-01 -e 2020-12-31

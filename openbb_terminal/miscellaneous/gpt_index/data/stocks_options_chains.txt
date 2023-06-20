@@ -12,3 +12,4 @@ Examples:
 - Display option chains for a stock symbol using a different data source: stocks/load <SYMBOL>/options/chains --source Nasdaq
 - Export option chains data for a stock symbol in csv format: stocks/load <SYMBOL>/options/chains --export csv
 - Save option chains data for a stock symbol to a specific excel sheet: stocks/load <SYMBOL>/options/chains --sheet-name Sheet1
+- What options are available for <SYMBOL> stock?: stocks/load <SYMBOL>/options/chains
