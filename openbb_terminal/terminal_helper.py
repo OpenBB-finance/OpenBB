@@ -10,7 +10,7 @@ import webbrowser
 
 # IMPORTATION STANDARD
 from contextlib import contextmanager
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import matplotlib.pyplot as plt
 
@@ -373,7 +373,7 @@ def reset(queue: Optional[List[str]] = None):
     try:
         # save the current user
         user_profile = get_current_user().profile
-        session: Dict[str, str] = {
+        session: Dict[str, Any] = {
             "access_token": user_profile.token,
             "token_type": user_profile.token_type,
             "uuid": user_profile.uuid,
