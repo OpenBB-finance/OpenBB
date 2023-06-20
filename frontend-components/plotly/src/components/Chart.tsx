@@ -468,7 +468,7 @@ export default function Chart({
         const extension = filename.split(".").pop().replace("jpg", "jpeg");
 
         if (["jpeg", "png", "svg", "pdf"].includes(extension))
-          non_blocking(async function () {
+          return non_blocking(async function () {
             await hideModebar();
             await saveImage("MainChart", filename.split(".")[0], extension);
           }, 2)();
