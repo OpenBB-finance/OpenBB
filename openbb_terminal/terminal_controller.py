@@ -908,7 +908,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
     if an_input in ("login", "logout") and get_show_prompt() and is_auth_enabled():
         set_show_prompt(False)
-        return session_controller.main()
+        return session_controller.main(welcome=False)
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:

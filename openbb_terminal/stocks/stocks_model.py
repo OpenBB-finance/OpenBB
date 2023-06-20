@@ -319,7 +319,7 @@ def get_quote(symbols: List[str]) -> pd.DataFrame:
     try:
         df_fa = fa.quote(
             symbol, get_current_user().credentials.API_KEY_FINANCIALMODELINGPREP
-        )
+        ).rename({"yearLow": "52 Week Low", "yearHigh": "52 Week High"})
     # Invalid API Keys
     except ValueError:
         console.print("[red]Invalid API Key[/red]\n")
