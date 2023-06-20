@@ -275,7 +275,8 @@ def make_request(org_slug=None, query_slug=None) -> Tuple[Optional[int], Any]:
 
 @log_start_end(log=logger)
 def get_topledger_data(org_slug: str = None, query_slug: str = None) -> pd.DataFrame:
-    """Returns Topledger's Data for the given Organization's Slug[org_slug] based on Query Slug[query_slug] [Source: Topledger]
+    """Returns Topledger's Data for the given Organization's Slug[org_slug] based
+    on Query Slug[query_slug] [Source: Topledger]
 
     Parameters
     ----------
