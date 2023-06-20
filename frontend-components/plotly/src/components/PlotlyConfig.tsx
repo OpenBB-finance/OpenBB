@@ -3,7 +3,7 @@ import { ICONS } from "./Config";
 import { useHotkeys } from "react-hotkeys-hook";
 import { downloadCSV, downloadImage } from "../utils/utils";
 
-export function hideModebar(hide: boolean = true) {
+export function hideModebar(hide = true) {
   return new Promise((resolve) => {
     if (!window.MODEBAR) {
       window.MODEBAR = window.document.getElementsByClassName(
