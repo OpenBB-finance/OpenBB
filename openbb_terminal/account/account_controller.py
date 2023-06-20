@@ -342,7 +342,7 @@ class AccountController(BaseController):
                         "routine": routine,
                         "tags": tags,
                     }
-                    response = Hub.upload_routine(**kwargs)
+                    response = Hub.upload_routine(**kwargs)  # type: ignore
 
                     if response is not None and response.status_code == 409:
                         i = console.input(
@@ -351,8 +351,8 @@ class AccountController(BaseController):
                         )
                         console.print("")
                         if i.lower() in ["y", "yes"]:
-                            kwargs["override"] = True
-                            response = Hub.upload_routine(**kwargs)
+                            kwargs["override"] = True  # type: ignore
+                            response = Hub.upload_routine(**kwargs)  # type: ignore
                         else:
                             console.print("[info]Aborted.[/info]")
 

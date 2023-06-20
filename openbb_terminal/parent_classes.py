@@ -861,7 +861,7 @@ class BaseController(metaclass=ABCMeta):
                         "routine": routine,
                         "tags": SESSION_RECORDED_TAGS,
                     }
-                    response = Hub.upload_routine(**kwargs)
+                    response = Hub.upload_routine(**kwargs)  # type: ignore
                     if response is not None and response.status_code == 409:
                         i = console.input(
                             "A routine with the same name already exists, "
@@ -869,8 +869,8 @@ class BaseController(metaclass=ABCMeta):
                         )
                         console.print("")
                         if i.lower() in ["y", "yes"]:
-                            kwargs["override"] = True
-                            response = Hub.upload_routine(**kwargs)
+                            kwargs["override"] = True  # type: ignore
+                            response = Hub.upload_routine(**kwargs)  # type: ignore
                         else:
                             console.print("[info]Aborted.[/info]")
 
