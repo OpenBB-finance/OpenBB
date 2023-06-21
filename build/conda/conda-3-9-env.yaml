@@ -21,6 +21,8 @@ dependencies:
   - pip:
     # Build dependencies
     - poetry ==1.4.0
+    - wheel ==0.40.0
+    - setuptools ==65.4.1
     # Main dependencies
     - charset-normalizer ==3.1.0
     # Forecasting dependencies
