@@ -430,6 +430,8 @@ def test_call_upload(mocker, test_user):
             "abc",
             "--name",
             "script1",
+            "--tags",
+            "stocks",
         ]
     )
 
@@ -439,6 +441,7 @@ def test_call_upload(mocker, test_user):
         name="script1",
         description="abc",
         routine="do something",
+        tags="stocks",
     )
 
 
