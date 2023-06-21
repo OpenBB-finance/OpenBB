@@ -1158,9 +1158,9 @@ def calculate_stats(options: object, by: Optional[str] = "expiration") -> pd.Dat
     stats["Total Volume"] = stats["Calls Volume"] + stats["Puts Volume"]
     stats["Volume Ratio"] = round(stats["Puts Volume"] / stats["Calls Volume"], 2)
     stats["Vol-OI Ratio"] = round(stats["Total Volume"] / stats["Total OI"], 2)
-    if by == "strike":
-        stats.rename_axis("Strike", inplace=True)
     stats.rename_axis("Expiration", inplace=True)
+    if by == "strike":
+        stats.rename_axis(index={"Expiration": "Strike"}, inplace=True)
     return stats.replace([np.nan, np.inf], None)
 
 
