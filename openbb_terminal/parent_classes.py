@@ -348,7 +348,9 @@ class BaseController(metaclass=ABCMeta):
                             "I cannot provide",
                         ]
                     ):
-                        console.print(f"[green]Suggested Command:[/green] {response}\n")
+                        console.print(
+                            f"[green]Suggested Command:[/green] /{response}\n"
+                        )
 
                         console.print(
                             "[yellow]Would you like to run this command?(y/n/fb)[/yellow]"
