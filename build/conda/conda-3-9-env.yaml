@@ -8,7 +8,7 @@ dependencies:
   - pip
   - pybind11
   - cmake
-  - wheel ==0.40.0
+  - wheel =0.40.0
   # System dependencies
   - openssl =1.1.1
   - libtiff
