@@ -88,7 +88,7 @@ def display_shareholders(
     """
     df = yahoo_finance_model.get_shareholders(symbol, holder)
     if holder == "major":
-        df.columns = ["", ""]
+        df.columns = ["Value", "Description"]
     if "Date Reported" in df.columns:
         df["Date Reported"] = df["Date Reported"].apply(
             lambda x: x.strftime("%Y-%m-%d")
