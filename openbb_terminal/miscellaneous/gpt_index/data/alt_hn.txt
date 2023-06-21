@@ -1,0 +1,12 @@
+parent_command:alt
+usage: hn
+
+Display Hacker News
+
+hn
+Examples:
+- To display Hacker News: alt/hn
+- Show Hacker News: alt/hn
+- Retrieve Hacker News: alt/hn
+- View Hacker News: alt/hn
+- Access Hacker News: alt/hn

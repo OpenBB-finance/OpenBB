@@ -1,0 +1,7 @@
+parent_command: stocks/ba/
+usage: trending [-h]  Stocks trending. [Source: Stocktwits]  optional arguments:   -h, --help  show this help message (default: False)  For more information and examples, use 'about trending' to access the related guide.
+Summary: Display stocks that are currently trending based on Stocktwits data.
+
+Examples:
+- View trending stocks: stocks/ba/trending
+- To see more information about trending stocks, use 'about trending' to access the related guide.

@@ -1,0 +1,10 @@
+parent_command: stocks/disc/
+usage: gtech [-l LIMIT] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of stocks to display. (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about gtech' to access the related guide.
+Summary: Display up to 25 top tech stocks with revenue and earnings growth in excess of 25% using the gtech command. You can set a limit to the number of stocks displayed, and export the data in various formats. The data source is Yahoo Finance.
+
+Examples:
+- View the top 5 tech stocks with revenue and earnings growth above 25%: stocks/disc/gtech
+- View the top 10 tech stocks with revenue and earnings growth above 25%: stocks/disc/gtech -l 10
+- Export the top 5 tech stocks with revenue and earnings growth above 25% in csv format: stocks/disc/gtech --export csv
+- Export the top 10 tech stocks with revenue and earnings growth above 25% in json format: stocks/disc/gtech -l 10 --export json
+- Save the top 5 tech stocks with revenue and earnings growth above 25% to a specific excel sheet: stocks/disc/gtech --sheet-name Sheet1

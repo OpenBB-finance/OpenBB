@@ -1,0 +1,13 @@
+parent_command: stocks/ba/
+usage: popular [-l LIMIT] [-n NUM] [-s S_SUBREDDIT] [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest popular tickers. [Source: Reddit]  optional arguments:   -l LIMIT, --limit LIMIT                         limit of top tickers to retrieve (default: 10)   -n NUM, --num NUM     number of posts retrieved per sub reddit. (default:                         10)   -s S_SUBREDDIT, --sub S_SUBREDDIT                         Subreddits to look for tickers, e.g.                         pennystocks,stocks. Default: pennystocks,                         RobinHoodPennyStocks, Daytrading, StockMarket, stocks,                         investing, wallstreetbets (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about popular' to access the related guide.
+Summary: Display the latest popular stock tickers from specified subreddits or the default subreddits. You can set a limit on the number of top tickers to retrieve and the number of posts to fetch per subreddit. Data can be exported in various formats, and you can specify the name of the excel sheet when exporting to .xlsx files.
+
+Examples:
+- Retrieve the top 10 popular tickers from the default subreddits: stocks/ba/popular
+- Retrieve the top 5 popular tickers from the default subreddits: stocks/ba/popular -l 5
+- Retrieve the top 10 popular tickers from a specific subreddit: stocks/ba/popular -s investing
+- Retrieve the top 10 popular tickers from multiple subreddits: stocks/ba/popular -s investing -s wallstreetbets
+- Retrieve the top 10 popular tickers based on 20 posts per subreddit: stocks/ba/popular -n 20
+- Export the top 10 popular tickers to a csv file: stocks/ba/popular --export csv
+- Export the top 10 popular tickers to an excel file with a custom sheet name: stocks/ba/popular --export xlsx --sheet-name PopularTickers
+- Retrieve the top 15 popular tickers from a specific subreddit and export to a json file: stocks/ba/popular -l 15 -s investing --export json

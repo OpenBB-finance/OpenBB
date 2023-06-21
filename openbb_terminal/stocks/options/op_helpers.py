@@ -8,6 +8,7 @@ from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
+from pydantic import BaseModel, Extra, Field
 from scipy.stats import norm
 
 from openbb_terminal.decorators import log_start_end
@@ -20,11 +21,12 @@ logger = logging.getLogger(__name__)
 
 
 def get_strikes(
-    min_sp: float, max_sp: float, current_price: float
+    min_sp: float, max_sp: float, chain: pd.DataFrame
 ) -> Tuple[float, float]:
-    min_strike = 0.75 * current_price if min_sp == -1 else min_sp
+    """Function to get the min and max strikes for a given expiry"""
 
-    max_strike = 1.25 * current_price if max_sp == -1 else max_sp
+    min_strike = chain["strike"].min() if min_sp == -1 else min_sp
+    max_strike = chain["strike"].max() if max_sp == -1 else max_sp
 
     return min_strike, max_strike
 
@@ -607,3 +609,98 @@ def get_dte(chain: pd.DataFrame) -> pd.DataFrame:
     chain["dte"] = temp_
 
     return chain
+
+
+class Options:  # pylint: disable=too-few-public-methods,too-many-instance-attributes
+    """The Options data object.
+
+    Returns
+    -------
+    object: Options
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data.
+        date: str
+            The date, when the chains data is historical EOD.
+        SYMBOLS: pd.DataFrame
+            The symbol directory for the source, when available.
+    """
+
+    chains = pd.DataFrame
+    expirations: list
+    strikes: list
+    last_price: float
+    underlying_name: str
+    underlying_price: pd.Series
+    hasIV: bool
+    hasGreeks: bool
+    symbol: str
+    source: str
+    date: str
+    SYMBOLS: pd.DataFrame
+
+
+class PydanticOptions(  # type: ignore [call-arg]
+    BaseModel, extra=Extra.allow
+):  # pylint: disable=too-few-public-methods
+
+    """Pydantic model for the Options data object.
+
+    Returns
+    -------
+    Pydantic: Options
+        chains: dict
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: dict
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data.
+        date: str
+            The date, when the chains data is historical EOD.
+        SYMBOLS: dict
+            The symbol directory for the source, when available.
+    """
+
+    chains: dict = Field(default=None)
+    expirations: list = Field(default=None)
+    strikes: list = Field(default=None)
+    last_price: float = Field(default=None)
+    underlying_name: str = Field(default=None)
+    underlying_price: dict = Field(default=None)
+    hasIV: bool = Field(default=False)
+    hasGreeks: bool = Field(default=False)
+    symbol: str = Field(default=None)
+    source: str = Field(default=None)
+    date: str = Field(default=None)
+    SYMBOLS: dict = Field(default=None)

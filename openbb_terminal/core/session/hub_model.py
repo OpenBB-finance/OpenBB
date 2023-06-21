@@ -402,7 +402,8 @@ def upload_routine(
     description: str = "",
     routine: str = "",
     override: bool = False,
-    base_url=BASE_URL,
+    tags: str = "",
+    base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
     """Send a routine to the server.
@@ -417,6 +418,8 @@ def upload_routine(
         The routine.
     override : bool
         Whether to override the routine if it already exists.
+    tags : str
+        The tags of the routine.
     base_url : str
         The base url, by default BASE_URL
     timeout : int
@@ -427,11 +430,13 @@ def upload_routine(
     Optional[requests.Response]
         The response from the post request.
     """
+
     data = {
         "name": name,
         "description": description,
         "script": routine,
         "override": override,
+        "tags": tags,
         "version": get_current_system().VERSION,
         "public": False,
     }

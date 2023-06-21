@@ -1,0 +1,24 @@
+parent_command:econometrics
+usage: clean [-n {}] [--fill {rfill,cfill,rbfill,cbfill,rffill,bffill}] [-d {rdrop,cdrop}]
+
+Clean a dataset by filling and dropping NaN values.
+
+optional arguments:
+  -n {}, --name {}      The name of the dataset you want to clean up (default: None)
+  --fill {rfill,cfill,rbfill,cbfill,rffill,bffill}
+                        The method of filling NaNs. This has options to fill rows (rfill, rbfill, rffill) or fill columns (cfill, cbfill, cffill). Furthermore, it has the option to forward fill and backward fill (up to --limit)
+                        which refer to how many rows/columns can be set equal to the last non-NaN value (default: )
+  -d {rdrop,cdrop}, --drop {rdrop,cdrop}
+                        The method of dropping NaNs. This either has the option rdrop (drop rows that contain NaNs) or cdrop (drop columns that contain NaNs) (default: )
+
+
+Examples:
+- Clean a dataset with a specific name: econometrics/clean -n DatasetName
+- Fill NaN values in rows using forward fill method: econometrics/clean --fill rffill
+- Fill NaN values in columns using backward fill method: econometrics/clean --fill cbfill
+- Drop rows containing NaN values from a dataset: econometrics/clean -d rdrop
+- Drop columns containing NaN values from a dataset: econometrics/clean -d cdrop
+- Clean a specific dataset and fill NaN values in rows using forward fill method: econometrics/clean -n DatasetName --fill rffill
+- Clean a specific dataset and fill NaN values in columns using backward fill method: econometrics/clean -n DatasetName --fill cbfill
+- Clean a specific dataset and drop rows containing NaN values: econometrics/clean -n DatasetName -d rdrop
+- Clean a specific dataset and drop columns containing NaN values: econometrics/clean -n DatasetName -d cdrop

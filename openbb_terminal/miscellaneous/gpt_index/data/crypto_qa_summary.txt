@@ -1,0 +1,9 @@
+parent_command:crypto/qa
+usage: summary
+
+Summary statistics
+
+summary
+Examples:
+- To display summary statistics for a specific cryptocurrency, use: crypto/load <COIN>/qa/summary
+- Obtain summary statistics of a cryptocurrency by entering: crypto/load <COIN>/qa/summary

@@ -1,0 +1,18 @@
+parent_command:portfolio
+usage: rsort [-p PERIOD] [-r RISK_FREE_RATE]
+
+Show rolling sortino portfolio vs benchmark
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        Period to apply rolling window (default: 1y)
+  -r RISK_FREE_RATE, --rfr RISK_FREE_RATE
+                        Set risk free rate for calculations. (default: 0)
+
+
+Examples:
+- To display the rolling Sortino ratio for your portfolio compared to the benchmark with a 1-year window: portfolio/rsort
+- To display the rolling Sortino ratio for your portfolio compared to the benchmark with a 6-month window: portfolio/rsort -p 6m
+- To display the rolling Sortino ratio for your portfolio compared to the benchmark with a 2-year window and a custom risk-free rate: portfolio/rsort -p 2y -r 0.02
+- To display the rolling Sortino ratio for your portfolio compared to the benchmark with a 3-month window and a custom risk-free rate: portfolio/rsort -p 3m -r 0.01
+- To show the rolling Sortino ratio for your portfolio compared to the benchmark with a 1-month window: portfolio/rsort -p 1m

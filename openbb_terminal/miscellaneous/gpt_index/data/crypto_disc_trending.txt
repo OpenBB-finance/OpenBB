@@ -1,0 +1,12 @@
+parent_command:crypto/disc
+usage: trending
+
+Discover trending coins (Top-7) on CoinGecko in the last 24 hours
+
+trending
+Examples:
+- To view the top 7 trending coins on CoinGecko in the last 24 hours: crypto/disc/trending
+- Find the most popular cryptocurrencies in the past day: crypto/disc/trending
+- Check out the top 7 coins gaining attention in the last day: crypto/disc/trending
+- Discover which cryptocurrencies are trending today: crypto/disc/trending
+- Uncover the top 7 coins with the most buzz in the last 24 hours: crypto/disc/trending

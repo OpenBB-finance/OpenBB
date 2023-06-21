@@ -1254,7 +1254,11 @@ def plot_icebofa(
 
     for column in df.columns:
         fig.add_scatter(
-            x=df.index, y=df[column].values, name=column, showlegend=len(df.columns) > 1
+            x=df.index,
+            y=df[column].values,
+            name=column,
+            showlegend=True,
+            connectgaps=True,
         )
 
     if raw:
@@ -1452,9 +1456,36 @@ def plot_cp(
         )
 
     if description:
-        for title, description_text in series[["Title", "Description"]].values:
-            console.print(f"\n[bold]{title}[/bold]")
-            console.print(description_text)
+        message = (
+            "To calculate CP interest rate indexes, the Federal Reserve Board uses DTCC's data for certain trades"
+            " to estimate a relation between interest rates on the traded securities and their maturities. In this"
+            " calculation, the trades represent sales of CP by dealers or direct issuers to investors (that is,"
+            " the offer side) and are weighted according to the face value of the CP so that larger trades have"
+            " a greater effect on the resulting index. With the relation between interest rates and maturities"
+            " established, the reported interest rates represent the estimated interest rates for the specified"
+            " maturities.\n\n"
+            "Interest rates calculated through the process described above are a statistical aggregation"
+            " of numerous data reflecting many trades for different issuers, maturities, and so forth."
+            " Accordingly, the reported interest rates purport to reflect activity in certain segments"
+            " of the market, but they may not equal interest rates for any specific trade. As with other"
+            " statistical processes, this one is designed to minimize the difference between the interest"
+            " rates at which actual trades occur and the estimated interest rates.\n\n"
+            "CP trades included in the calculation are chosen according to the specifications listed in the"
+            " table below. Data to assess CP trades relative to these criteria are updated daily from numerous"
+            " publicly available sources. Standard Industrial Classification (SIC) code classifications are"
+            " taken from the Securities and Exchange Commission (SEC) Directory of Companies Required to File"
+            ' Annual Reports with the SEC. When an issuer"s primary SIC code is not reported in the SEC'
+            ' directory, the primary SIC code reported in the issuer"s financial reports is used; otherwise,'
+            " SIC codes are determined upon consultation with the Office of Management and Budget's Standard "
+            "Industrial Classification Manual or its Supplement.\n\n"
+            "For a discussion of econometric techniques for fitting the term structure of interest rates, including"
+            ' bibliographic information, see, for example, William S. Cleveland, 1979, "Robust Locally'
+            ' Weighted Regression and Smoothing Scatterplots," Journal of the American Statistical Association,'
+            " 74, 829-36, or William S. Cleveland, Susan J. Devlin, and Eric Grosse, 1988,"
+            ' "Regression by Local Fitting," Journal of Econometrics, 37, 87-114.\n\n'
+            "Source: https://www.federalreserve.gov/releases/cp/about.htm"
+        )
+        console.print(message)
 
     export_data(
         export,
@@ -1510,7 +1541,6 @@ def plot_spot(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-    series = pd.read_csv(spot_rates_path)
     df = fred_model.get_spot(
         maturity=maturity, category=category, start_date=start_date, end_date=end_date
     )
@@ -1547,9 +1577,25 @@ def plot_spot(
         )
 
     if description:
-        for title, description_text in series[["Title", "Description"]].values:
-            console.print(f"\n[bold]{title}[/bold]")
-            console.print(description_text)
+        header1 = "T-Year High Quality Market (HQM) Corporate Bond Spot Rate"
+        message1 = (
+            "The spot rate for T-Year High Quality Market (HQM) Corporate Bond Spot Rate"
+            " is defined as the yield on a bond that gives a single payment after T year."
+            " This is called a zero coupon bond. Because high quality zero coupon bonds are"
+            " not generally available, the HQM methodology computes the spot rates so as to"
+            " make them consistent with the yields on other high quality bonds. The HQM"
+            " yield curve uses data from a set of high quality corporate bonds rated AAA"
+            ", AA, or A that accurately represent the high quality corporate bond market."
+        )
+        header2 = "T-Year High Quality Market (HQM) Corporate Bond Par Yield"
+        message2 = (
+            "The par yield for T-Year High Quality Market (HQM) Corporate Bond Par"
+            " Yield is the coupon rate at which bond prices are zero."
+        )
+        console.print(f"\n[bold]{header1}[/bold]")
+        console.print(message1)
+        console.print(f"\n[bold]{header2}[/bold]")
+        console.print(message2)
 
     export_data(
         export,

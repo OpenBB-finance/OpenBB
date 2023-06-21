@@ -1,0 +1,13 @@
+parent_command:crypto/ov
+usage: wfpe [-c COIN]
+
+Coin withdrawal fees per exchange [Source: https://withdrawalfees.com/]
+
+optional arguments:
+  -c COIN, --coin COIN  Coin to check withdrawal fees in long format (e.g., bitcoin, ethereum) (default: bitcoin)
+
+
+Examples:
+- To view withdrawal fees for all exchanges for Bitcoin: crypto/ov/wfpe
+- To check withdrawal fees for Ethereum across exchanges: crypto/ov/wfpe -c ethereum
+- Retrieve withdrawal fees for a specific coin by using its long format: crypto/ov/wfpe --coin litecoin

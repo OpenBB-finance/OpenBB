@@ -1,0 +1,58 @@
+parent_command:forecast
+usage: rnn [--hidden-dim HIDDEN_DIM] [--training_length TRAINING_LENGTH] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET]
+           [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--model-type MODEL_TYPE] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE]
+           [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only] [--export-pred-raw] [--metric {rmse,mse,mape,smape}]
+
+Perform RNN forecast (Vanilla RNN, LSTM, GRU): https://unit8co.github.io/darts/generated_api/darts.models.forecasting.rnn_model.html
+
+optional arguments:
+  --hidden-dim HIDDEN_DIM
+                        Size for feature maps for each hidden RNN layer (h_n) (default: 20)
+  --training_length TRAINING_LENGTH
+                        The length of both input (target and covariates) and output (target) time series used during training. Generally speaking, training_length should have a higher value than input_chunk_length because otherwise
+                        during training the RNN is never run for as many iterations as it will during training. (default: 20)
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  -i INPUT_CHUNK_LENGTH, --input-chunk-length INPUT_CHUNK_LENGTH
+                        Number of past time steps for forecasting module at prediction time. (default: 14)
+  --force-reset FORCE_RESET
+                        If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). (default: True)
+  --save-checkpoints SAVE_CHECKPOINTS
+                        Whether to automatically save the untrained model and checkpoints. (default: True)
+  --model-save-name MODEL_SAVE_NAME
+                        Name of the model to save. (default: rnn_model)
+  --n-epochs N_EPOCHS   Number of epochs over which to train the model. (default: 300)
+  --model-type MODEL_TYPE
+                        Enter a string specifying the RNN module type ("RNN", "LSTM" or "GRU") (default: LSTM)
+  --dropout DROPOUT     Fraction of neurons affected by Dropout, from 0 to 1. (default: 0)
+  --batch-size BATCH_SIZE
+                        Number of time series (input and output) used in each training pass (default: 32)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --learning-rate LEARNING_RATE
+                        Learning rate during training. (default: 0.001)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+  --metric {rmse,mse,mape,smape}
+                        Calculate precision based on a specific metric (rmse, mse, mape) (default: mape)
+
+
+Examples:
+- Perform RNN forecast using the default settings for <SYMBOL>: forecast/rnn -d <SYMBOL>
+- Perform RNN forecast for <SYMBOL> with a specific target column: forecast/rnn -d <SYMBOL> -c volume
+- Perform RNN forecast for <SYMBOL> using the GRU model type: forecast/rnn -d <SYMBOL> --model-type GRU
+- Perform RNN forecast for <SYMBOL> with a custom training length and input chunk length: forecast/rnn -d <SYMBOL> --training_length 30 --input-chunk-length 20
+- Perform RNN forecast for <SYMBOL> with a custom train split and number of prediction days: forecast/rnn -d <SYMBOL> -t 0.8 -n 10
+- Perform RNN forecast for <SYMBOL> and show the naive baseline: forecast/rnn -d <SYMBOL> --naive
+- Perform RNN forecast for <SYMBOL> and show the residuals: forecast/rnn -d <SYMBOL> --residuals
+- Perform RNN forecast for <SYMBOL> with a custom learning rate and batch size: forecast/rnn -d <SYMBOL> --learning-rate 0.01 --batch-size 64
+- Perform RNN forecast for <SYMBOL> using a custom date range: forecast/rnn -d <SYMBOL> --start 2020-01-01 --end 2022-01-01
+- Perform RNN forecast for <SYMBOL> and export predictions to a csv file: forecast/rnn -d <SYMBOL> --export-pred-raw

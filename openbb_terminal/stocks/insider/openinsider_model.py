@@ -1498,17 +1498,18 @@ def get_print_insider_data(type_insider: str = "lcb"):
         lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
     )
     df["Company Name"] = df["Company Name"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
+        lambda x: " ".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
     )
     df["Title"] = df["Title"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
     )
     if type_insider == "lcb":
         df["Industry"] = df["Industry"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
+            lambda x: " ".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
     else:
         df["Insider Name"] = df["Insider Name"].apply(
             lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
+
     return df

@@ -1,0 +1,13 @@
+parent_command: stocks/disc/
+usage: filings [-p pages] [-t] [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]] [-l LIMIT]  The most-recent filings submitted to the SEC  optional arguments:   -p pages, --pages pages                         The number of pages to get data from (1000                         entries/page; maximum 30 pages) (default: 1)   -t, --today           Show all filings from today (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   -l LIMIT, --limit LIMIT                         Number of entries to show in data. (default: 5)  For more information and examples, use 'about filings' to access the related guide.
+Summary: Display the most recent filings submitted to the SEC with options to set the number of pages to retrieve data from, show filings from today only, limit the number of entries displayed, and export the data in various formats. You can also specify the name of an Excel sheet to save the data to when exporting as an .xlsx file.
+
+Examples:
+- Retrieve the 5 most recent filings: stocks/disc/filings
+- Get the most recent filings from the first 3 pages: stocks/disc/filings -p 3
+- Show all filings submitted today: stocks/disc/filings -t
+- Display the 10 most recent filings: stocks/disc/filings -l 10
+- Retrieve filings from the first 2 pages and limit the display to 7 entries: stocks/disc/filings -p 2 -l 7
+- Export the most recent filings data to a csv file: stocks/disc/filings --export csv
+- Save the filings data to a specific Excel sheet: stocks/disc/filings --sheet-name Sheet1 --export xlsx
+- Get the most recent filings from today and export the data as a json file: stocks/disc/filings -t --export json

@@ -2,10 +2,10 @@
 import { PostHogProvider } from "posthog-js/react";
 import { useEffect, useState } from "react";
 import Chart from "./components/Chart";
-import { plotlyMockup, candlestickMockup } from "./data/mockup";
+import { candlestickMockup } from "./data/mockup";
 
 declare global {
-  [(Exposed = Window), SecureContext];
+  [Exposed === Window, SecureContext];
   interface Window {
     json_data: any;
     export_image: string;
@@ -20,7 +20,7 @@ declare global {
 
 function App() {
   const [data, setData] = useState(
-    process.env.NODE_ENV === "production" ? null : candlestickMockup
+    process.env.NODE_ENV === "production" ? null : candlestickMockup,
   );
   const [options, setOptions] = useState({});
 
@@ -40,7 +40,7 @@ function App() {
 
   const transformData = (data: any) => {
     if (!data) return null;
-    let globals = {
+    const globals = {
       added_traces: [],
       csv_yaxis_id: null,
       cmd_src_idx: null,
@@ -49,28 +49,28 @@ function App() {
       old_margin: null,
       title: "",
     };
-    let filename = data.layout?.title?.text
+    const filename = data.layout?.title?.text
       .replace(/ -/g, "")
       .replace(/-/g, "")
       .replace(/<b>|<\/b>/g, "")
       .replace(/ /g, "_");
-    let date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-    let time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
-    window.title = `openbb_${filename}_${date}_${time}`;
+    const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+    const time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
+    window.title = `openbb_${filename}_${date}_${time}`.replace(/_{2,}/g, "_");
 
-    if (data.layout.annotations != undefined) {
+    if (data.layout.annotations !== undefined) {
       data.layout.annotations.forEach(function (annotation) {
-        if (annotation.text != undefined)
-          if (annotation.text[0] == "/") {
+        if (annotation.text !== undefined)
+          if (annotation.text[0] === "/") {
             globals.cmd_src = annotation.text;
             globals.cmd_idx = data.layout.annotations.indexOf(annotation);
             annotation.text = "";
 
-            let margin = data.layout.margin;
+            const margin = data.layout.margin;
             globals.old_margin = { ...margin };
-            if (margin.t != undefined && margin.t > 40) margin.t = 40;
+            if (margin.t !== undefined && margin.t > 40) margin.t = 40;
 
-            if (data.cmd == "/stocks/candle") margin.r -= 50;
+            if (data.cmd === "/stocks/candle") margin.r -= 50;
           }
       });
     }
@@ -78,16 +78,16 @@ function App() {
     // We add spaces to all trace names, due to Fira Code font width issues
     // to make sure that the legend is not cut off
     data.data.forEach(function (trace) {
-      if (trace.name != undefined) {
+      if (trace.name !== undefined) {
         const name_length = trace.name.length;
-        trace.name = trace.name + "      ";
+        trace.name = `${trace.name}      `;
         trace.hoverlabel = {
           namelength: name_length,
         };
       }
     });
 
-    let title = data.layout?.title?.text || "Interactive Chart";
+    const title = data.layout?.title?.text || "Interactive Chart";
     globals.title = title;
     return {
       data: data,
@@ -98,6 +98,7 @@ function App() {
       python_version: data.python_version,
       pywry_version: data.pywry_version,
       terminal_version: data.terminal_version,
+      theme: data.theme,
       title,
     };
   };
@@ -115,7 +116,8 @@ function App() {
         loaded: function (posthog: any) {
           const log_id = transformedData?.log_id || "";
 
-          if (log_id != "" && log_id != "REPLACE_ME") posthog.identify(log_id);
+          if (log_id !== "" && log_id !== "REPLACE_ME")
+            posthog.identify(log_id);
 
           posthog.onFeatureFlags(function () {
             if (
@@ -155,6 +157,7 @@ function App() {
         cmd={transformedData.cmd}
         title={transformedData.title}
         globals={transformedData.globals}
+        theme={transformedData.theme}
         info={info}
       />
     );
@@ -187,12 +190,12 @@ function App() {
             r="10"
             stroke="currentColor"
             strokeWidth="4"
-          ></circle>
+          />
           <path
             className="opacity-75"
             fill="currentColor"
             d="M4 12a8 8 0 018-8v8z"
-          ></path>
+          />
         </svg>
       </div>
     );

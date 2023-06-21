@@ -1,0 +1,16 @@
+parent_command:crypto
+usage: price [-s SYMBOL]
+
+Display price and interval of confidence in real-time. [Source: Pyth]
+
+optional arguments:
+  -s SYMBOL, --symbol SYMBOL
+                        Symbol of coin to load data for, ~100 symbols are available (default: None)
+
+
+Examples:
+- To display the price and interval of confidence for a specific coin: crypto/price -s <COIN>
+- For real-time price and confidence interval of a chosen coin: crypto/price --symbol <COIN>
+- Show the current price and confidence interval for a particular cryptocurrency: crypto/price -s <COIN>
+- Retrieve real-time price and interval of confidence data for a specific cryptocurrency: crypto/price --symbol <COIN>
+- Get the live price and confidence interval for a selected coin: crypto/price -s <COIN>

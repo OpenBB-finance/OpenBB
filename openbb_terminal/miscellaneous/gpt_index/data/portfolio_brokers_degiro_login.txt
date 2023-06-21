@@ -1,0 +1,11 @@
+parent_command:portfolio/brokers/degiro
+usage: login [-otp ONE_TIME_PASSWORD]
+
+optional arguments:
+  -otp ONE_TIME_PASSWORD, --one-time-password ONE_TIME_PASSWORD
+                        One-time-password for 2FA.
+
+
+Examples:
+- To log in to your Degiro account without 2FA: portfolio/brokers/degiro/login
+- To log in to your Degiro account with a one-time password for 2FA: portfolio/brokers/degiro/login -otp <ONE_TIME_PASSWORD>

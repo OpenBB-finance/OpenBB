@@ -4,22 +4,28 @@ from prompt_toolkit import PromptSession
 
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
-from openbb_terminal.core.session.constants import REGISTER_URL, SUPPORT_URL
+from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.constants import (
+    REGISTER_URL,
+    SUPPORT_URL,
+)
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.session_model import (
     LoginStatus,
     create_session,
     login,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.terminal_helper import bootup
+from openbb_terminal.terminal_helper import bootup, is_installer
 
 
-def display_welcome_message():
+def display_welcome_message(links: bool = True) -> None:
     """Display welcome message"""
     with open(PACKAGE_DIRECTORY / "core" / "session" / "banner.txt") as f:
         console.print(f"[menu]{f.read()}[/menu]\n")
-        console.print(f"Register : [cmds]{REGISTER_URL}[/cmds]")
-        console.print(f"Support  : [cmds]{SUPPORT_URL}[/cmds]")
+        if links:
+            console.print(f"Register : [cmds]{REGISTER_URL}[/cmds]")
+            console.print(f"Support  : [cmds]{SUPPORT_URL}[/cmds]")
 
 
 def get_user_input() -> Tuple[str, str, bool]:
@@ -30,14 +36,20 @@ def get_user_input() -> Tuple[str, str, bool]:
     Tuple[str, str, bool]
         The user email, password and save login option.
     """
-    console.print(
-        "[info]\nPlease enter your credentials or press <ENTER> for guest mode:[/info]"
-    )
+
+    msg = "\nPlease enter your credentials"
+
+    if not is_installer():
+        msg += " or press <ENTER> for guest mode:"
+    else:
+        msg += ":"
+
+    console.print("[info]" + msg + "[/info]")
 
     s: PromptSession = PromptSession()
 
     email = s.prompt(
-        message="> Email: ",
+        message="> Email/Username: ",
     )
     if not email:
         return "", "", False
@@ -53,7 +65,48 @@ def get_user_input() -> Tuple[str, str, bool]:
     return email, password, remember
 
 
-def prompt(welcome=True):
+def pywry_login(welcome: bool = True):
+    """Login using PyWry window and launch terminal if login is successful.
+
+    Parameters
+    ----------
+    welcome : bool, optional
+        Display welcome message, by default True
+    """
+    bootup()
+
+    plots_backend().start(get_current_system().DEBUG_MODE)
+    if plots_backend().isatty:
+        if welcome:
+            display_welcome_message(False)
+        response = plots_backend().call_hub() or None
+    else:
+        return prompt_cli(welcome)
+
+    if response is None:
+        if is_installer():
+            return prompt_cli(welcome=False)
+        return launch_terminal()
+
+    if isinstance(response, dict) and response:
+        console.print("\n[info]Logging in... Please wait.[/info]\n")
+        response["token_type"] = "bearer"
+
+        for r_key, new_key in zip(
+            ["status", "accessToken", "primaryUsage"],
+            ["information_complete", "access_token", "primary_usage"],
+        ):
+            response[new_key] = response.pop(r_key, None)
+
+        if remember := response.get("remember", False):
+            Local.save_session(response)
+
+        return login_and_launch(response, remember)
+
+    return pywry_login(welcome=False)
+
+
+def prompt_cli(welcome: bool = True):
     """Prompt and launch terminal if login is successful.
 
     Parameters
@@ -69,7 +122,8 @@ def prompt(welcome=True):
     while True:
         email, password, remember = get_user_input()
         if not email:
-            return launch_terminal()
+            return prompt_cli(welcome=False) if is_installer() else launch_terminal()
+
         session = create_session(email, password, remember)
         if isinstance(session, dict) and session:
             return login_and_launch(session, remember)
@@ -97,18 +151,22 @@ def login_and_launch(session: dict, remember: bool = False):
     if status in [LoginStatus.SUCCESS, LoginStatus.NO_RESPONSE]:
         launch_terminal()
     elif status == LoginStatus.FAILED:
-        prompt(welcome=False)
+        pywry_login(welcome=False)
     else:
-        prompt(welcome=True)
+        pywry_login(welcome=True)
 
 
-def main(session: Optional[Dict] = None):
+def main(session: Optional[Dict] = None, welcome: bool = True, prompt: bool = True):
     """Main function"""
+
     local_session = Local.get_session() if session is None else session
-    if not local_session:
-        prompt()
-    else:
+
+    if not local_session and not prompt:
+        launch_terminal()
+    elif local_session:
         login_and_launch(session=local_session, remember=True)
+    else:
+        pywry_login(welcome)
 
 
 if __name__ == "__main__":

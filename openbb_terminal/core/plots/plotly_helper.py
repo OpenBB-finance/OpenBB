@@ -1,6 +1,7 @@
 """Chart and style helpers for Plotly."""
 # pylint: disable=C0302,R0902,W3301
 import json
+import sys
 import textwrap
 from datetime import datetime
 from math import floor
@@ -125,8 +126,7 @@ class TerminalStyle:
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
-        if not style:
-            style = get_current_user().preferences.CHART_STYLE
+        style = style or self.plt_style
 
         if style != self.plt_style:
             self.load_style(style)
@@ -140,8 +140,18 @@ class TerminalStyle:
             if "tables" in self.plt_styles_available:
                 tables = self.load_json_style(self.plt_styles_available["tables"])
                 pio.templates["openbb_tables"] = go.layout.Template(tables)
+            try:
+                pio.templates["openbb"] = go.layout.Template(self.plotly_template)
+            except ValueError as err:
+                if "plotly.graph_objs.Layout: 'legend2'" in str(err):
+                    console.print(
+                        "[red]Warning: Plotly multiple legends are "
+                        "not supported in currently installed version.[/]\n\n"
+                        "[yellow]Please update plotly to version >= 5.15.0[/]\n"
+                        "[green]pip install plotly --upgrade[/]"
+                    )
+                    sys.exit(1)
 
-            pio.templates["openbb"] = go.layout.Template(self.plotly_template)
             if style in ["dark", "white"]:
                 pio.templates.default = f"plotly_{style}+openbb"
                 return
@@ -1055,7 +1065,6 @@ class OpenBBFigure(go.Figure):
         if kwargs.pop("margin", True):
             self._adjust_margins()
 
-        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -1066,17 +1075,20 @@ class OpenBBFigure(go.Figure):
         )
 
         # Set modebar style
-        self.update_layout(  # type: ignore
-            newshape_line_color="gold" if theme.mapbox_style == "dark" else "#0d0887",
-            modebar=dict(
-                orientation="v",
-                bgcolor="#2A2A2A" if theme.mapbox_style == "dark" else "gray",
-                color="#FFFFFF" if theme.mapbox_style == "dark" else "black",
-                activecolor="#d1030d" if theme.mapbox_style == "dark" else "blue",
-            ),
-            spikedistance=2,
-            hoverdistance=2,
-        )
+        if plots_backend().isatty:
+            self.update_layout(  # type: ignore
+                newshape_line_color="gold"
+                if theme.mapbox_style == "dark"
+                else "#0d0887",
+                modebar=dict(
+                    orientation="v",
+                    bgcolor="#2A2A2A" if theme.mapbox_style == "dark" else "gray",
+                    color="#FFFFFF" if theme.mapbox_style == "dark" else "black",
+                    activecolor="#d1030d" if theme.mapbox_style == "dark" else "blue",
+                ),
+                spikedistance=2,
+                hoverdistance=2,
+            )
 
         if external or self._exported:
             return self  # type: ignore
@@ -1110,11 +1122,8 @@ class OpenBBFigure(go.Figure):
                         continue
                     pio.show(fig, *args, **kwargs)
 
-        height = 600 if not self.layout.height else self.layout.height
         self.update_layout(
             legend=dict(
-                tracegroupgap=height / 4.5,
-                groupclick="toggleitem",
                 orientation="v"
                 if not self.layout.legend.orientation
                 else self.layout.legend.orientation,
@@ -1128,18 +1137,23 @@ class OpenBBFigure(go.Figure):
 
     def _xaxis_tickformatstops(self) -> None:
         """Set the datetickformatstops for the xaxis if the x data is datetime."""
-        if (dateindex := self.get_dateindex()) is None:
+        if (dateindex := self.get_dateindex()) is None or list(
+            self.select_xaxes(lambda x: hasattr(x, "tickformat") and x.tickformat)
+        ):
             return
 
         tickformatstops = [
-            dict(dtickrange=[None, 86_400_000], value="%I%p\n%b,%d"),
+            dict(dtickrange=[None, 86_400_000], value="%I:%M%p\n%b,%d"),
             dict(dtickrange=[86_400_000, 604_800_000], value="%Y-%m-%d"),
         ]
         xhoverformat = "%I:%M%p %Y-%m-%d"
 
         # We check if daily data if the first and second time are the same
         # since daily data will have the same time (2021-01-01 00:00:00)
-        if dateindex[-1].time() == dateindex[-2].time():
+        if (
+            not hasattr(dateindex[-1], "time")
+            or dateindex[-1].time() == dateindex[-2].time()
+        ):
             xhoverformat = "%Y-%m-%d"
             tickformatstops = [dict(dtickrange=[None, 604_800_000], value="%Y-%m-%d")]
 
@@ -1151,7 +1165,9 @@ class OpenBBFigure(go.Figure):
                     dict(dtickrange=["M1", None], value="%Y-%m-%d"),
                 ],
                 type="date",
-                selector=dict(anchor=entry["yaxis"]),
+                row=entry["row"],
+                col=entry["col"],
+                tick0=0.5,
             )
             self.update_traces(
                 xhoverformat=xhoverformat, selector=dict(name=entry["name"])
@@ -1225,6 +1241,8 @@ class OpenBBFigure(go.Figure):
                         self._date_xaxs[trace.xaxis] = {
                             "yaxis": trace.yaxis,
                             "name": name,
+                            "row": row,
+                            "col": col,
                             "secondary_y": secondary_y,
                         }
                         self._subplot_xdates.setdefault(row, {}).setdefault(
@@ -1361,7 +1379,6 @@ class OpenBBFigure(go.Figure):
             The subplot with the figure added
         """
         for trace in self.data:
-            trace.legendgroup = f"{row}"
             if kwargs:
                 trace.update(**kwargs)
 
@@ -1381,28 +1398,34 @@ class OpenBBFigure(go.Figure):
                 full_html=False,
             )
         )
-        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
         if not plots_backend().isatty and self.data[0].type != "table":
-            margin = self.layout.margin
-            L, R, B, T = margin["l"], margin["r"], margin["b"], margin["t"]
-            for var, max_val in zip([L, R, B, T], [60, 50, 80, 40]):
-                if var is not None and var > max_val:
-                    var = max_val
+            for key, max_val in zip(["l", "r", "b", "t"], [60, 60, 80, 40]):
+                if key in self.layout.margin and (
+                    self.layout.margin[key] is None
+                    or (self.layout.margin[key] > max_val)
+                ):
+                    self.layout.margin[key] = max_val
 
-            self.layout.margin = dict(l=L, r=R, b=B, t=T, pad=0)
             orientation = "v" if self.layout.legend.orientation is None else "h"
 
-            if self._multi_rows:
-                height = 600 if not self.layout.height else self.layout.height
-                self.update_layout(
-                    legend=dict(tracegroupgap=height / 4.5, groupclick="toggleitem")
+            for annotation in self.select_annotations(
+                selector=dict(x=0, xanchor="right")
+            ):
+                annotation.font.size = (
+                    annotation.font.size - 1.8 if annotation.font.size else 10
                 )
 
+            for trace in self.select_traces(
+                lambda trace: hasattr(trace, "legend") and trace.legend is not None
+            ):
+                if trace.legend in self.layout:
+                    self.layout[trace.legend].font.size = 12
+
             self.update_layout(
-                legend=dict(orientation=orientation, x=1.10, font=dict(size=12)),
+                legend=dict(orientation=orientation, font=dict(size=12)),
                 font=dict(size=14),
             )
             self.update_xaxes(tickfont=dict(size=13))
@@ -1595,6 +1618,7 @@ class OpenBBFigure(go.Figure):
                 xref="paper",
                 x=1,
                 y=0,
+                showarrow=False,
                 text="OpenBB Terminal",
                 font_size=17,
                 font_color="gray",

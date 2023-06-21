@@ -35,6 +35,7 @@ from openbb_terminal.core.log.generation.settings import (
     LogSettings,
     Settings,
 )
+from openbb_terminal.core.log.generation.settings_logger import get_startup
 from openbb_terminal.core.log.generation.user_logger import (
     NO_USER_PLACEHOLDER,
     get_current_user,
@@ -134,8 +135,15 @@ class PosthogHandler(logging.Handler):
         self.settings = settings
         self.app_settings = settings.app_settings
         self.logged_in = False
+        self.disabled = openbb_posthog.feature_enabled(
+            "disable_analytics",
+            self.app_settings.identifier,
+            send_feature_flag_events=False,
+        )
 
     def emit(self, record: logging.LogRecord):
+        if self.disabled or "llama_index" in record.pathname:
+            return
         try:
             self.send(record=record)
         except Exception:
@@ -143,7 +151,7 @@ class PosthogHandler(logging.Handler):
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict"""
-        log_regex = r"(STARTUP|CMD): (.*)"
+        log_regex = r"(STARTUP|CMD|ASKOBB): (.*)"
         log_dict: Dict[str, Any] = {}
 
         for log in re.findall(log_regex, log_info):
@@ -184,7 +192,12 @@ class PosthogHandler(logging.Handler):
         ):
             self.logged_in = True
             openbb_posthog.identify(
-                get_user_uuid(), {"email": get_current_user().profile.email}
+                get_user_uuid(),
+                {
+                    "email": get_current_user().profile.email,
+                    "primaryUsage": get_current_user().profile.primary_usage,
+                    **get_startup(),
+                },
             )
             openbb_posthog.alias(get_user_uuid(), app_settings.identifier)
 
@@ -299,7 +312,6 @@ def setup_handlers(settings: Settings):
         FormatterWithExceptions.LOGPREFIXFORMAT.replace("|", "-"),
         FormatterWithExceptions.LOGFORMAT.replace("|", "-"),
     )
-
     if (
         posthog_active
         and not any(

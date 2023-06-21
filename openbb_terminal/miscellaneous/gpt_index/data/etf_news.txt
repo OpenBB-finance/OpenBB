@@ -1,0 +1,26 @@
+parent_command:etf
+usage: news [-l LIMIT] [-d N_START_DATE] [-o] [-s SOURCES]
+
+Prints latest news about ETF, including date, title and web link. [Source: News API]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of latest news being printed.
+  -d N_START_DATE, --date N_START_DATE
+                        The starting date (format YYYY-MM-DD) to search articles from
+  -o, --oldest          Show oldest articles first
+  -s SOURCES, --sources SOURCES
+                        Show news only from the sources specified (e.g bbc yahoo.com)
+
+
+Examples:
+- To display the latest news about an ETF: etf/news
+- To show the latest 5 news articles about an ETF: etf/news -l 5
+- To retrieve news about an ETF starting from a specific date: etf/news -d 2022-01-01
+- To display the oldest news articles first for an ETF: etf/news -o
+- To show news about an ETF only from specific sources: etf/news -s "bbc yahoo.com"
+- To display the 3 latest news articles about an ETF from a specific date: etf/news -l 3 -d 2022-01-01
+- To show the 5 oldest news articles about an ETF: etf/news -l 5 -o
+- To retrieve 3 news articles about an ETF from a specific source: etf/news -l 3 -s "bbc"
+- To display the oldest news articles from a specific date for an ETF: etf/news -d 2022-01-01 -o
+- To show the latest 5 news articles about an ETF from specific sources: etf/news -l 5 -s "bbc yahoo.com"

@@ -660,7 +660,7 @@ def display_seasonal(
         y=plot_data[target],
         name="Values",
         line_color=next(colors),
-        legendgroup="Values",
+        legend="legend",
         row=1,
         col=1,
     )
@@ -679,7 +679,7 @@ def display_seasonal(
                 y=plot_data[column[j]],
                 name=name[j],
                 line_color=next(colors) if i != 0 else theme.down_color,
-                legendgroup=f"{i}",
+                legend=f"legend{i + 2}",
                 row=i + 2,
                 col=1,
             )
@@ -689,9 +689,18 @@ def display_seasonal(
         y=plot_data["resid"],
         name="Residuals",
         line_color=next(colors),
-        legendgroup="Residuals",
+        legend="legend4",
         row=4,
         col=1,
+    )
+
+    legend_defaults = dict(
+        xanchor="left",
+        yanchor="top",
+        xref="paper",
+        yref="paper",
+        font=dict(size=13),
+        bgcolor="rgba(0, 0, 0, 0.4)",
     )
     fig.update_traces(selector=dict(name="Cyclic-Trend"), line_color=theme.down_color)
     fig.update_traces(
@@ -699,7 +708,12 @@ def display_seasonal(
         line=dict(color=theme.up_color, dash="dash"),
     )
     fig.update_yaxes(nticks=5)
-    fig.update_layout(legend=dict(tracegroupgap=120, groupclick="toggleitem"))
+    fig.update_layout(
+        legend=dict(**legend_defaults),
+        legend2=dict(x=0.01, y=0.73, **legend_defaults),
+        legend3=dict(x=0.01, y=0.46, **legend_defaults),
+        legend4=dict(x=0.01, y=0.20, **legend_defaults),
+    )
 
     # From #https:  // otexts.com/fpp2/seasonal-strength.html
     console.print("Time-Series Level is " + str(round(data.mean(), 2)))

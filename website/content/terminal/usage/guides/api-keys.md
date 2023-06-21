@@ -127,6 +127,33 @@ Enter this API key into the OpenBB Terminal by typing:
 
 </details>
 
+### BizToc
+
+> BizToc is the one-stop business and finance news hub, encapsulating the top 200 US news providers in real time.
+
+<details>
+<summary>Instructions</summary>
+
+The BizToc API is hosted on RapidAPI.  To set up, go to: https://rapidapi.com/thma/api/biztoc.
+
+![biztoc0](https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda)
+
+In the top right, select "Sign Up".  After answering some questions, you will be prompted to select one of their plans.
+
+![biztoc1](https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422)
+
+After signing up, navigate back to https://rapidapi.com/thma/api/biztoc.  If you are logged in, you will see a header called X-RapidAPI-Key.
+
+![biztoc2](https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f)
+
+Copy the key to the clipboard, and enter this key into the OpenBB Terminal with:
+
+```console
+/keys/biztoc REPLACE_WITH_KEY
+```
+
+</details>
+
 ### CoinMarketCap
 
 > CoinMarketCap is the world's most-referenced price-tracking website for cryptoassets in the rapidly growing cryptocurrency space. Its mission is to make crypto discoverable and efficient globally by empowering retail users with unbiased, high quality and accurate information for drawing their own informed conclusions.
@@ -429,37 +456,6 @@ Enter this key in the OpenBB terminal with:
 
 </details>
 
-### IEX Cloud (Apperate)
-
-> Apperate is a streaming data platform for finance with integrated IEX Cloud Data Bundles. We help developers skip the headaches of building with real-time data.
-
-<details>
-<summary>Instructions</summary>
-
-Go to: https://iexcloud.io
-
-![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833088-e879e9f2-3180-4e50-ba9e-f40ee958f98a.png)
-
-Click on, "Sign in", and then create a new account.
-
-![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833011-542d6ef0-0bdf-494a-83cb-c0a6741df2a3.png)
-
-After signing up, select a plan. There is a choice for a free plan at the bottom.
-
-![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833303-4ebb2880-0b4c-4008-9b33-0e8ee6836027.png)
-
-After completing the sign-up process, the API Keyis found under the, "Access & Security", tab.
-
-![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833540-c1e25500-22e9-43c3-a89e-b05dd446f2a5.png)
-
-Add this API key to the OpenBB Terminal by entering:
-
-```console
-/keys/iex REPLACE_WITH_KEY
-```
-
-</details>
-
 ### Intrinio
 
 > Intrinio is more than a financial data API provider – we're a real time data partner. That means we're your guide to every step of the financial data.
@@ -555,6 +551,40 @@ Upon completion of the account setup, enter the credentials into the OpenBB Term
 ```
 
 </details>
+  
+
+### OpenAI
+
+> An API for accessing new AI models developed by OpenAI.
+
+<details>
+<summary>Instructions</summary>
+
+Go to: https://openai.com/blog/openai-api
+
+![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/2b2b5f7c-745a-40d7-bd19-05ed3021f9da)
+
+Click sign up and create an account. Once done, you will be logged into the home page:
+![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/34976dce-bdf0-48cd-a9db-9e41eacdbc04)
+
+
+Click the top right "Personal" button to find the following drop down:
+![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/95987173-3884-462e-a03b-dff040f0acb4)
+
+
+Click `View API Keys`. This will take you to the api Keys menu. Then click `Create new secret key`:
+![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/210fa55b-8a33-4647-bdd4-28a478b02ba8)
+  
+Then enter the Secret key credentials into the OpenBB Terminal using the syntax:
+
+```console
+/keys/openai -k <OPENAI API KEY>
+```
+
+</details>
+  
+  
+  
 
 ### Polygon
 
@@ -840,33 +870,6 @@ Enter the key into the OpenBB Terminal by typing:
 
 ```console
 /keys/walert REPLACE_WITH_KEY
-```
-
-</details>
-
-### BizToc
-
-> BizToc is the one-stop business and finance news hub, encapsulating the top 200 US news providers in real time.
-
-<details>
-<summary>Instructions</summary>
-
-The BizToc API is hosted on RapidAPI.  To set up, go to: https://rapidapi.com/thma/api/biztoc.
-
-![biztoc0](https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda)
-
-In the top right, select "Sign Up".  After answering some questions, you will be prompted to select one of their plans.
-
-![biztoc1](https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422)
-
-After signing up, navigate back to https://rapidapi.com/thma/api/biztoc.  If you are logged in, you will see a header called X-RapidAPI-Key.
-
-![biztoc2](https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f)
-
-Copy the key to the clipboard, and enter this key into the OpenBB Terminal with:
-
-```console
-/keys/biztoc REPLACE_WITH_KEY
 ```
 
 </details>

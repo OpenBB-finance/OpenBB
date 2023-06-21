@@ -1,0 +1,11 @@
+parent_command: stocks/ba/
+usage: rise [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top rising related queries with this stock's query. [Source: Google]  optional arguments:   -l LIMIT, --limit LIMIT                         limit of top rising related queries to print.                         (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about rise' to access the related guide.
+Summary: Display the top rising related queries associated with a specific stock symbol, with options to limit the number of queries shown, export the data in various formats, and save the data to a specific Excel sheet. The data source is Google.
+
+Examples:
+- Show top 10 rising related queries for a stock: stocks/load <SYMBOL>/ba/rise
+- Show top 5 rising related queries for a stock: stocks/load <SYMBOL>/ba/rise -l 5
+- Export top rising related queries for a stock in csv format: stocks/load <SYMBOL>/ba/rise --export csv
+- Export top rising related queries for a stock in json format: stocks/load <SYMBOL>/ba/rise --export json
+- Export top rising related queries for a stock in xlsx format: stocks/load <SYMBOL>/ba/rise --export xlsx
+- Save top rising related queries for a stock to a specific Excel sheet: stocks/load <SYMBOL>/ba/rise --sheet-name Sheet1

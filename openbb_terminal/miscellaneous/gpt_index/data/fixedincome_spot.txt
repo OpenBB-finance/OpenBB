@@ -1,0 +1,26 @@
+parent_command:fixedincome
+usage: spot [-m MATURITY] [-c CATEGORY] [-d] [-s START_DATE] [-e END_DATE]
+
+The spot rate for any maturity is the yield on a bond that provides a single payment at that maturity. This is a zero coupon bond. Because each spot rate pertains to a single cashflow, it is the relevant interest rate concept for
+discounting a pension liability at the same maturity.
+
+optional arguments:
+  -m MATURITY, --maturity MATURITY
+                        What maturity you'd like to collect data for (default: 10y)
+  -c CATEGORY, --category CATEGORY
+                        What category you'd like to collect data for (default: spot_rate)
+  -d, --description     Whether to provide a description of the data. (default: False)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: 1980-01-01)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- Retrieve the 10-year spot rate for fixed income: fixedincome/spot
+- Obtain the 5-year spot rate for fixed income: fixedincome/spot -m 5y
+- Collect data for the 10-year spot rate in the category "forward_rate": fixedincome/spot -c forward_rate
+- Get the 10-year spot rate with a description: fixedincome/spot -d
+- Access the 10-year spot rate data from a specific start date: fixedincome/spot -s 2000-01-01
+- Fetch the 10-year spot rate data between a start and end date: fixedincome/spot -s 2000-01-01 -e 2020-12-31
+- Obtain the 7-year spot rate for the "forward_rate" category with a description: fixedincome/spot -m 7y -c forward_rate -d

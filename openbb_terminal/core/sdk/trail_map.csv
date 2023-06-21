@@ -96,6 +96,7 @@ crypto.disc.dapp_chains,crypto_disc_dappradar_model.get_dapp_chains,crypto_disc_
 crypto.disc.dapp_metrics,crypto_disc_dappradar_model.get_dapp_metrics,crypto_disc_dappradar_view.display_dapp_metrics
 crypto.disc.dapps,crypto_disc_dappradar_model.get_dapps,crypto_disc_dappradar_view.display_dapps
 crypto.disc.defi_chains,crypto_disc_dappradar_model.get_defi_chains,crypto_disc_dappradar_view.display_defi_chains
+crypto.disc.fees,crypto_disc_cryptostats_model.get_fees,crypto_disc_cryptostats_view.display_fees
 crypto.disc.gainers,crypto_disc_pycoingecko_model.get_gainers,crypto_disc_pycoingecko_view.display_gainers
 crypto.disc.losers,crypto_disc_pycoingecko_model.get_losers,crypto_disc_pycoingecko_view.display_losers
 crypto.disc.nft_mktp,crypto_disc_dappradar_model.get_nft_marketplaces,crypto_disc_dappradar_view.display_nft_marketplaces
@@ -173,6 +174,7 @@ econometrics.comparison,econometrics_regression_model.get_comparison,
 econometrics.dwat,econometrics_regression_model.get_dwat,econometrics_regression_view.display_dwat
 econometrics.fdols,econometrics_regression_model.get_fdols,
 econometrics.fe,econometrics_regression_model.get_fe,
+econometrics.garch,econometrics_model.get_garch,econometrics_view.display_garch
 econometrics.get_regression_data,econometrics_regression_model.get_regression_data,
 econometrics.granger,econometrics_model.get_granger_causality,econometrics_view.display_granger
 econometrics.load,common_model.load,
@@ -183,7 +185,7 @@ econometrics.panel,econometrics_regression_model.get_regressions_results,econome
 econometrics.pols,econometrics_regression_model.get_pols,
 econometrics.re,econometrics_regression_model.get_re,
 econometrics.root,econometrics_model.get_root,econometrics_view.display_root
-econometrics.garch,econometrics_model.get_garch,econometrics_view.display_garch
+econometrics.vif,econometrics_model.get_vif,
 economy.available_indices,economy_yfinance_model.get_available_indices,
 economy.balance,economy_oecd_model.get_balance,economy_oecd_view.plot_balance
 economy.bigmac,economy_nasdaq_model.get_big_mac_indices,economy_nasdaq_view.display_big_mac_index
@@ -285,6 +287,7 @@ futures.search,futures_yfinance_model.get_search_futures,
 keys.av,keys_model.set_av_key,
 keys.binance,keys_model.set_binance_key,
 keys.bitquery,keys_model.set_bitquery_key,
+keys.biztoc,keys_model.set_biztoc_key,
 keys.cmc,keys_model.set_cmc_key,
 keys.coinbase,keys_model.set_coinbase_key,
 keys.coinglass,keys_model.set_coinglass_key,
@@ -302,7 +305,6 @@ keys.glassnode,keys_model.set_glassnode_key,
 keys.messari,keys_model.set_messari_key,
 keys.mykeys,keys_model.get_keys,
 keys.news,keys_model.set_news_key,
-keys.biztoc,keys_model.set_biztoc_key,
 keys.oanda,keys_model.set_oanda_key,
 keys.polygon,keys_model.set_polygon_key,
 keys.quandl,keys_model.set_quandl_key,
@@ -390,6 +392,7 @@ stocks.ba.headlines,stocks_ba_finbrain_model.get_sentiment,stocks_ba_finbrain_vi
 stocks.ba.infer,stocks_ba_twitter_model.load_analyze_tweets,stocks_ba_twitter_view.display_inference
 stocks.ba.mentions,stocks_ba_google_model.get_mentions,stocks_ba_google_view.display_mentions
 stocks.ba.messages,stocks_ba_stocktwits_model.get_messages,
+stocks.ba.ns,stocks_ba_news_sentiment_model.get_data,stocks_ba_news_sentiment_view.display_articles_data
 stocks.ba.popular,stocks_ba_reddit_model.get_popular_tickers,
 stocks.ba.queries,stocks_ba_google_model.get_queries,
 stocks.ba.redditsent,stocks_ba_reddit_model.get_posts_about,
@@ -513,16 +516,16 @@ stocks.options.dte,stocks_options_helpers.get_dte,
 stocks.options.eodchain,stocks_options_intrinio_model.get_full_chain_eod,
 stocks.options.expirations,stocks_options_sdk_helper.get_option_expirations,
 stocks.options.generate_data,stocks_options_yfinance_model.generate_data,
+stocks.options.get_strategies,stocks_options_options_chains_model.get_strategies,
 stocks.options.greeks,stocks_options_sdk_helper.get_greeks,
-stocks.options.grhist,stocks_options_screen_syncretism_model.get_historical_greeks,stocks_options_screen_syncretism_view.view_historical_greeks
+stocks.options.grhist,stocks_options_intrinio_model.get_historical_options,stocks_options_intrinio_view.view_historical_greeks
 stocks.options.hist,stocks_options_sdk_helper.hist,
 stocks.options.info,stocks_options_barchart_model.get_options_info,stocks_options_barchart_view.print_options_data
 stocks.options.last_price,stocks_options_tradier_model.get_last_price,
+stocks.options.load_options_chains,stocks_options_sdk_helper.load_options_chains,
 stocks.options.oi,stocks_options_view.plot_oi,
 stocks.options.pcr,stocks_options_alphaquery_model.get_put_call_ratio,stocks_options_alphaquery_view.display_put_call_ratio
 stocks.options.price,stocks_options_sdk_helper.get_option_current_price,
-stocks.options.screen.check_presets,stocks_options_screen_syncretism_model.check_presets,
-stocks.options.screen.screener_output,stocks_options_screen_syncretism_model.get_screener_output,stocks_options_screen_syncretism_view.view_screener_output
 stocks.options.unu,stocks_options_fdscanner_model.unusual_options,stocks_options_fdscanner_view.display_options
 stocks.options.voi,stocks_options_view.plot_voi,
 stocks.options.vol,stocks_options_view.plot_vol,

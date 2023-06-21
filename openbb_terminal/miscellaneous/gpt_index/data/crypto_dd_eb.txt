@@ -1,0 +1,23 @@
+parent_command:crypto/dd
+usage: eb [-p] [-e {aggregated,binance,bittrex,coinex,gate.io,gemini,huobi,kucoin,poloniex,bibox,bigone,bitfinex,hitbtc,kraken,okex,bithumb,zb.com,cobinhood,bitmex,bitstamp,coinbase,coincheck,luno}] [-s SINCE] [-u UNTIL]
+
+Display active blockchain addresses over time [Source: https://glassnode.org] Note that free api keys only allow fetching data with a 1y lag
+
+optional arguments:
+  -p, --pct             Show percentage instead of stacked value. Default: False (default: False)
+  -e {aggregated,binance,bittrex,coinex,gate.io,gemini,huobi,kucoin,poloniex,bibox,bigone,bitfinex,hitbtc,kraken,okex,bithumb,zb.com,cobinhood,bitmex,bitstamp,coinbase,coincheck,luno}, --exchange {aggregated,binance,bittrex,coinex,gate.io,gemini,huobi,kucoin,poloniex,bibox,bigone,bitfinex,hitbtc,kraken,okex,bithumb,zb.com,cobinhood,bitmex,bitstamp,coinbase,coincheck,luno}
+                        Exchange to check change. Default: aggregated (default: aggregated)
+  -s SINCE, --since SINCE
+                        Initial date. Default: 2 years ago (default: 2021-06-02)
+  -u UNTIL, --until UNTIL
+                        Final date. Default: 1 year ago (default: 2022-05-31)
+
+
+Examples:
+- To display active blockchain addresses over time for all exchanges: crypto/dd/eb
+- To show active blockchain addresses over time as a percentage: crypto/dd/eb -p
+- To display active blockchain addresses for a specific exchange, such as Binance: crypto/dd/eb -e binance
+- To view active blockchain addresses from a specific start date: crypto/dd/eb -s 2021-01-01
+- To display active blockchain addresses until a specific end date: crypto/dd/eb -u 2021-12-31
+- To show active blockchain addresses for a specific exchange and time frame: crypto/dd/eb -e kraken -s 2021-01-01 -u 2021-12-31
+- To display active blockchain addresses as a percentage for a specific exchange: crypto/dd/eb -p -e huobi

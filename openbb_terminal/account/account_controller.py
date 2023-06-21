@@ -7,7 +7,9 @@ from openbb_terminal.account.account_view import (
     display_default_routines,
     display_personal_routines,
 )
+from openbb_terminal.account.show_prompt import set_show_prompt
 from openbb_terminal.core.session import hub_model as Hub
+from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -25,35 +27,9 @@ from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.terminal_helper import print_guest_block_msg
+from openbb_terminal.terminal_helper import is_installer, print_guest_block_msg
 
 logger = logging.getLogger(__name__)
-
-
-__login_called = False
-
-
-def get_login_called():
-    """Get the login/logout called flag.
-
-    Returns
-    -------
-    bool
-        The login/logout called flag.
-    """
-    return __login_called
-
-
-def set_login_called(value: bool):
-    """Set the login/logout called flag.
-
-    Parameters
-    ----------
-    value : bool
-        The login/logout called flag.
-    """
-    global __login_called  # pylint: disable=global-statement
-    __login_called = value
 
 
 class AccountController(BaseController):
@@ -88,6 +64,7 @@ class AccountController(BaseController):
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
+            self.choices["upload"]["--tags"] = {c: None for c in SCRIPT_TAGS}
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def update_runtime_choices(self):
@@ -175,7 +152,7 @@ class AccountController(BaseController):
             console.print("[info]You are already logged in.[/info]")
         else:
             if ns_parser:
-                set_login_called(True)
+                set_show_prompt(True)
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
@@ -197,7 +174,10 @@ class AccountController(BaseController):
                     token=current_user.profile.get_token(),
                     cls=True,
                 )
-                self.print_help()
+                if is_installer():
+                    set_show_prompt(True)
+                else:
+                    self.print_help()
 
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
@@ -325,13 +305,22 @@ class AccountController(BaseController):
             help="The name of the routine.",
             nargs="+",
         )
+        parser.add_argument(
+            "-t",
+            "--tags",
+            type=str,
+            dest="tags",
+            help="The tags of the routine",
+            default="",
+            nargs="+",
+        )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
         else:
             if ns_parser:
                 routine = read_routine(file_name=" ".join(ns_parser.file))
-                if routine:
+                if routine is not None:
                     description = " ".join(ns_parser.description)
 
                     name = (
@@ -342,14 +331,19 @@ class AccountController(BaseController):
                         ]
                     )
 
+                    tags = " ".join(ns_parser.tags) if ns_parser.tags else ""
+
                     current_user = get_current_user()
 
-                    response = Hub.upload_routine(
-                        auth_header=current_user.profile.get_auth_header(),
-                        name=name,
-                        description=description,
-                        routine=routine,
-                    )
+                    kwargs = {
+                        "auth_header": current_user.profile.get_auth_header(),
+                        "name": name,
+                        "description": description,
+                        "routine": routine,
+                        "tags": tags,
+                    }
+                    response = Hub.upload_routine(**kwargs)  # type: ignore
+
                     if response is not None and response.status_code == 409:
                         i = console.input(
                             "A routine with the same name already exists, "
@@ -357,13 +351,8 @@ class AccountController(BaseController):
                         )
                         console.print("")
                         if i.lower() in ["y", "yes"]:
-                            response = Hub.upload_routine(
-                                auth_header=current_user.profile.get_auth_header(),
-                                name=name,
-                                description=description,
-                                routine=routine,
-                                override=True,
-                            )
+                            kwargs["override"] = True  # type: ignore
+                            response = Hub.upload_routine(**kwargs)  # type: ignore
                         else:
                             console.print("[info]Aborted.[/info]")
 

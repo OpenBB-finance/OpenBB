@@ -3,7 +3,7 @@ import { ICONS } from "./Config";
 import { useHotkeys } from "react-hotkeys-hook";
 import { downloadCSV, downloadImage } from "../utils/utils";
 
-export function hideModebar(hide: boolean = true) {
+export function hideModebar(hide = true) {
   return new Promise((resolve) => {
     if (!window.MODEBAR) {
       window.MODEBAR = window.document.getElementsByClassName(
@@ -13,7 +13,7 @@ export function hideModebar(hide: boolean = true) {
     }
     let includes_text = "display: none";
     if (window.MODEBAR) {
-      if (window.MODEBAR.style.cssText.includes("display: none") && !hide) {
+      if (window.MODEBAR.style.cssText.includes("display: none") || !hide) {
         includes_text = "display: flex";
         window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:flex;`;
       } else {
@@ -61,7 +61,7 @@ export function PlotConfig({
     { preventDefault: true }
   );
   useHotkeys(
-    "ctrl+shift+h",
+    ["ctrl+shift+h", "ctrl+h"],
     () => {
       hideModebar();
     },

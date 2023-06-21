@@ -61,6 +61,10 @@ def display_historical(
         chain_id = f"{symbol}{''.join(expiry[2:].split('-'))}{'P' if put else 'C'}{str(int(1000*strike)).zfill(8)}"
         df_hist = intrinio_model.get_historical_options(chain_id)
 
+    if df_hist.empty:
+        console.print(f"[red]No data found for {chain_id}[/red]")
+        return None
+
     if raw:
         print_rich_table(
             df_hist,
@@ -71,13 +75,13 @@ def display_historical(
 
     df_hist.columns = [x.title() for x in df_hist.columns]
 
+    titles_list = [symbol, strike, op_type]
     fig = OpenBBFigure.create_subplots(
         rows=1,
         cols=1,
         specs=[[{"secondary_y": True}]],
         vertical_spacing=0.03,
-        subplot_titles=[f"{symbol} {strike} {op_type}"],
-    )
+    ).set_title(" ".join([str(x) for x in titles_list if x]))
 
     fig.add_candlestick(
         open=df_hist["Open"],
@@ -88,7 +92,7 @@ def display_historical(
         name=f"{symbol} OHLC",
         row=1,
         col=1,
-        secondary_y=True,
+        secondary_y=False,
     )
     fig.add_inchart_volume(df_hist)
     fig.hide_holidays()
@@ -108,9 +112,9 @@ def display_historical(
 
 @log_start_end(log=logger)
 def view_historical_greeks(
-    symbol: str,
-    expiry: str,
-    strike: Union[float, str],
+    symbol: str = "",
+    expiry: str = "",
+    strike: Union[float, str] = 0,
     greek: str = "Delta",
     chain_id: str = "",
     put: bool = False,
@@ -120,7 +124,7 @@ def view_historical_greeks(
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[None, OpenBBFigure]:
-    """Plots historical greeks for a given option. [Source: Syncretism]
+    """Plots historical greeks for a given option.
 
     Parameters
     ----------
@@ -154,9 +158,12 @@ def view_historical_greeks(
     else:
         chain_id = f"{symbol}{''.join(expiry[2:].split('-'))}{'P' if put else 'C'}{str(int(1000*strike)).zfill(8)}"
         df = intrinio_model.get_historical_options(chain_id)
-        title = f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
-
+        title = (
+            f"Historical {(greek).capitalize()} for {symbol.upper()}"
+            f"{strike} {['Call','Put'][put]} and {expiry} Expiration"
+        )
     if df.empty:
+        print(f"No data found for {chain_id}")
         return None
 
     df = df.rename(columns={"impliedVolatility": "iv", "close": "price"})
@@ -209,7 +216,7 @@ def view_historical_greeks(
     fig.update_layout(
         yaxis2=dict(
             side="left",
-            title=greek,
+            title=greek.title(),
             anchor="x",
             overlaying="y",
         ),

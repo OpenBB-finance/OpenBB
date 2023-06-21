@@ -1,0 +1,10 @@
+parent_command: stocks/ins/
+usage: toppm [-l LIMIT] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top officer purchases of the month. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about toppm' to access the related guide.
+Summary: Display the top officer purchases of the month for stocks with an optional limit on the number of data rows displayed. You can also export the raw data in various formats and choose a specific sheet name for .xlsx files. The data source for this command is OpenInsider.
+
+Examples:
+- Show top 10 officer purchases of the month: stocks/ins/toppm
+- Show top 5 officer purchases of the month: stocks/ins/toppm -l 5
+- Show top 20 officer purchases of the month and export data in csv format: stocks/ins/toppm -l 20 --export csv
+- Show top 15 officer purchases of the month and export data in json format: stocks/ins/toppm -l 15 --export json
+- Show top 10 officer purchases of the month and save data to a specific excel sheet: stocks/ins/toppm --sheet-name Sheet1

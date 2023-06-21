@@ -1,47 +1,68 @@
 """OpenBB Terminal SDK."""
 
+
 # ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
+
 
 # flake8: noqa
 
+
 # pylint: disable=unused-import,wrong-import-order
+
 
 # pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
 
+
 import logging
+
 
 import openbb_terminal.config_terminal as cfg
 
+
 from openbb_terminal import helper_funcs as helper  # noqa: F401
+
 
 from openbb_terminal.core.plots.plotly_helper import theme  # noqa: F401
 
+
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
+
 
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
 
+
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
+
 
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 
+
 from openbb_terminal.reports.reports_controller import ReportController
 
+
 import openbb_terminal.core.sdk.sdk_init as lib
+
 
 from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
 
+
 from openbb_terminal.core.session.current_system import get_current_system
+
 
 from openbb_terminal.core.session.current_user import is_local
 
+
 from openbb_terminal.terminal_helper import is_auth_enabled
+
 
 cfg.setup_config_terminal(is_sdk=True)
 
+
 logger = logging.getLogger(__name__)
+
 
 cfg.theme.applyMPLstyle()
 
@@ -140,6 +161,7 @@ class OpenBBSDK:
             `re`: The random effects model is virtually identical to the pooled OLS model except that is accounts for the\n
             `root`: Calculate test statistics for unit roots\n
             `root_chart`: Determine the normality of a timeseries.\n
+            `vif`: Calculates VIF (variance inflation factor), which tests collinearity.\n
         """
 
         return model.EconometricsRoot()

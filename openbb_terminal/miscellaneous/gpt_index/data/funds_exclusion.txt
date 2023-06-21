@@ -1,0 +1,10 @@
+parent_command:funds
+usage: exclusion
+
+Show funds exclsuion policy.
+
+exclusion
+Examples:
+- To display the exclusion policy for a specific fund: funds/load <SYMBOL>/exclusion
+- Display the exclusion policy for a fund: funds/exclusion
+- Check the exclusion policy of a specific fund: funds/load <SYMBOL>/exclusion

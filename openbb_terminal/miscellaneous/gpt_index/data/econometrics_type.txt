@@ -1,0 +1,19 @@
+parent_command:econometrics
+usage: type [-n {}] [--format {int,float,str,bool,category,date}]
+
+Show the type of the columns of the dataset and/or change the type of the column
+
+optional arguments:
+  -n {}, --name {}      Provide dataset.column series to change type or dataset to see types. (default: None)
+  --format {int,float,str,bool,category,date}
+                        Set the format for the dataset.column defined. This can be: date, int, float, str, bool or category (default: None)
+
+
+Examples:
+- To display the column types of a dataset: econometrics/type -n <DATASET>
+- To change the column type of a specific dataset and column to integer: econometrics/type -n <DATASET>.<COLUMN> --format int
+- To change the column type of a specific dataset and column to float: econometrics/type -n <DATASET>.<COLUMN> --format float
+- To change the column type of a specific dataset and column to string: econometrics/type -n <DATASET>.<COLUMN> --format str
+- To change the column type of a specific dataset and column to boolean: econometrics/type -n <DATASET>.<COLUMN> --format bool
+- To change the column type of a specific dataset and column to category: econometrics/type -n <DATASET>.<COLUMN> --format category
+- To change the column type of a specific dataset and column to date: econometrics/type -n <DATASET>.<COLUMN> --format date

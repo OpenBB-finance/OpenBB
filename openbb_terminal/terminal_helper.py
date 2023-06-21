@@ -10,7 +10,7 @@ import webbrowser
 
 # IMPORTATION STANDARD
 from contextlib import contextmanager
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import matplotlib.pyplot as plt
 
@@ -205,7 +205,7 @@ def open_openbb_documentation(
             "news",
             "account",
         ]:
-            path = "/guides"
+            path = "/usage"
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/usage?path=/usage/intros/common/{command}"
@@ -313,7 +313,7 @@ def check_for_updates() -> None:
                 )
                 if current_version < latest_version:
                     console.print(
-                        "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+                        "[yellow]Check for updates at https://my.openbb.co/app/terminal/download[/yellow]"
                     )
 
                 else:
@@ -366,17 +366,19 @@ def reset(queue: Optional[List[str]] = None):
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
-    plots_backend().close()
-    debug = get_current_system().DEBUG_MODE
+    plots_backend().close(reset=True)
     load_env_files()
+    debug = get_current_system().DEBUG_MODE
 
     try:
         # save the current user
         user_profile = get_current_user().profile
-        session: Dict[str, str] = {
+        session: Dict[str, Any] = {
             "access_token": user_profile.token,
             "token_type": user_profile.token_type,
             "uuid": user_profile.uuid,
+            "username": user_profile.username,
+            "remember": user_profile.remember,
         }
 
         # remove the hub routines
@@ -420,28 +422,6 @@ def suppress_stdout():
         finally:
             sys.stdout = old_stdout
             sys.stderr = old_stderr
-
-
-def is_reset(command: str) -> bool:
-    """Test whether a command is a reset command
-
-    Parameters
-    ----------
-    command : str
-        The command to test
-
-    Returns
-    -------
-    answer : bool
-        Whether the command is a reset command
-    """
-    if "reset" in command:
-        return True
-    if command == "r":
-        return True
-    if command == "r\n":
-        return True
-    return False
 
 
 def first_time_user() -> bool:

@@ -1,0 +1,13 @@
+parent_command:crypto
+usage: candle [--log]
+
+Display chart for loaded coin. You can specify currency vs which you want to show chart and also number of days to get data for.
+
+optional arguments:
+  --log  Plot with y axis on log scale (default: False)
+
+
+Examples:
+- To display a candlestick chart for a loaded coin: crypto/load <COIN>/candle
+- To display a candlestick chart for a loaded coin with a log scale on the y-axis: crypto/load <COIN>/candle --log
+- show me the candlestick chart for a loaded coin between start and end date: crypto/load <COIN> -s <START_DATE> -e <END_DATE>/candle

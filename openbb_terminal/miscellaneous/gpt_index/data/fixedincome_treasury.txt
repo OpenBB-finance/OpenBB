@@ -1,0 +1,26 @@
+parent_command:fixedincome
+usage: treasury [--short SHORT] [--long LONG] [-s START_DATE] [-e END_DATE] [--forecast]
+
+Plot short (3 month) and long (10 year) term interest rates from selected countries including the possibility to plot forecasts for the next years.
+
+optional arguments:
+  --short SHORT         Countries to get short term (3 month) interest rates for. (default: None)
+  --long LONG           Countries to get long term (10 year) interest rates for. (default: None)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format (default: None)
+  -e END_DATE, --end END_DATE
+                        End date of data, in YYYY-MM-DD format (default: None)
+  --forecast            If True, plot forecasts for each interest rate (default: False)
+
+
+Examples:
+- To plot short term interest rates for a specific country: fixedincome/treasury --short <COUNTRY>
+- To plot long term interest rates for a specific country: fixedincome/treasury --long <COUNTRY>
+- To plot both short and long term interest rates for a specific country: fixedincome/treasury --short <COUNTRY> --long <COUNTRY>
+- To plot short term interest rates for a specific country within a date range: fixedincome/treasury --short <COUNTRY> -s 2020-01-01 -e 2021-01-01
+- To plot long term interest rates for a specific country within a date range: fixedincome/treasury --long <COUNTRY> -s 2020-01-01 -e 2021-01-01
+- To plot short term interest rates with forecasts for a specific country: fixedincome/treasury --short <COUNTRY> --forecast
+- To plot long term interest rates with forecasts for a specific country: fixedincome/treasury --long <COUNTRY> --forecast
+- To plot short and long term interest rates with forecasts for a specific country: fixedincome/treasury --short <COUNTRY> --long <COUNTRY> --forecast
+- To plot short term interest rates for a specific country within a date range and with forecasts: fixedincome/treasury --short <COUNTRY> -s 2020-01-01 -e 2021-01-01 --forecast
+- To plot long term interest rates for a specific country within a date range and with forecasts: fixedincome/treasury --long <COUNTRY> -s 2020-01-01 -e 2021-01-01 --forecast

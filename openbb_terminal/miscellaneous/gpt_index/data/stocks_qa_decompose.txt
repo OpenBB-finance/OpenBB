@@ -1,0 +1,12 @@
+parent_command:stocks/qa
+usage: decompose [-m]
+
+Decompose time series as: - Additive Time Series = Level + CyclicTrend + Residual + Seasonality - Multiplicative Time Series = Level * CyclicTrend * Residual * Seasonality
+
+optional arguments:
+  -m, --multiplicative  decompose using multiplicative model instead of additive (default: False)
+
+
+Examples:
+- To decompose a time series for a stock using the additive model: stocks/load <SYMBOL>/qa/decompose
+- To decompose a time series for a stock using the multiplicative model: stocks/load <SYMBOL>/qa/decompose -m

@@ -1,0 +1,15 @@
+parent_command:funds
+usage: holdings [-t {all,equity,bond,other}]
+
+Show funds holdings.
+
+optional arguments:
+  -t {all,equity,bond,other}, --type {all,equity,bond,other}
+                        type of holdings (default: all)
+
+
+Examples:
+- To display all holdings of a fund: funds/holdings
+- To show only equity holdings of a fund: funds/holdings -t equity
+- To display bond holdings of a fund: funds/holdings --type bond
+- To view other types of holdings in a fund: funds/holdings -t other

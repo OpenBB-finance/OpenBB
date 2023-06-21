@@ -1,0 +1,14 @@
+parent_command:crypto/qa
+usage: rolling [-w N_WINDOW]
+
+Rolling mean and std deviation
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        Window length (default: 14)
+
+
+Examples:
+- Calculate the rolling mean and standard deviation for a cryptocurrency with a default window of 14: crypto/qa/rolling
+- Calculate the rolling mean and standard deviation for a specific cryptocurrency with a window of 30: crypto/load <COIN>/qa/rolling -w 30
+- Obtain the rolling mean and standard deviation for a cryptocurrency with a custom window length of 20: crypto/load <COIN>/qa/rolling --window 20
