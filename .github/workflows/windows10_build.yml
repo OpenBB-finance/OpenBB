@@ -94,7 +94,7 @@ jobs:
       - name: Sign Installer
         if: startsWith(github.ref, 'refs/heads/main')
         run: |
-          & 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x86\signtool.exe' sign /fd sha256 /tr http://ts.ssl.com /td sha256 /sha1 26a8e28dbe3b1db7407b92d7de97c290d4436a32 'C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\build\nsis\OpenBB Terminal Setup.exe'
+          & 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x86\signtool.exe' sign /fd sha256 /tr http://ts.ssl.com /td sha256 /sha1 0bf95b74b3b8763434e1782df36052d42c5c0bef 'C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\build\nsis\OpenBB Terminal Setup.exe'
 
       - name: Save Build Artifact
         uses: actions/upload-artifact@v3
