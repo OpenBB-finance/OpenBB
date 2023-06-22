@@ -352,7 +352,9 @@ def header(
         </style>
         """
         try:
-            plotly_script += f"""<script>{PLOTLYJS_PATH.read_text()}</script>"""
+            plotly_script += (
+                f"""<script>{PLOTLYJS_PATH.read_text(encoding="utf-8")}</script>"""
+            )
         except Exception:
             plotly_script += (
                 "<script src='https://cdn.plot.ly/plotly-2.24.2.min.js'></script>"
