@@ -463,7 +463,7 @@ class CryptoOnChain(Category):
         `token_decimals`: Helper methods that gets token decimals number. [Source: Ethplorer]\n
         `top`: Get top 50 tokens. [Source: Ethplorer]\n
         `top_chart`: Display top ERC20 tokens [Source: Ethplorer]\n
-        `topledger`: Returns Topledger's Data for the given Organization's Slug[org_slug] based on Query Slug[query_slug] [Source: Topledger]\n
+        `topledger`: Returns Topledger's Data for the given Organization's Slug[org_slug] based\n
         `topledger_chart`: Display on-chain data from Topledger. [Source: Topledger]\n
         `ttcp`: Get most traded crypto pairs on given decentralized exchange in chosen time period.\n
         `ttcp_chart`: Prints table showing most traded crypto pairs on given decentralized exchange in chosen time period.\n

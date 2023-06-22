@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Optional, Tuple
+from typing import Any, Optional, Tuple, Dict
 
 import pandas as pd
 
@@ -12,7 +12,7 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-MAPPING = {
+MAPPING: Dict[str, Any] = {
     "tensor": {
         "api_key": "8eSjJnSuOC7uLWkrTQoWADStkNS2ZIy94pH5CsNn",
         "tl_org_slug": "tensor",
@@ -201,7 +201,7 @@ MAPPING = {
 
 
 @log_start_end(log=logger)
-def make_request(org_slug=None, query_slug=None) -> Tuple[Optional[int], Any]:
+def make_request(org_slug="", query_slug="") -> Tuple[Optional[int], Any]:
     """Helper methods for requests to topledger's query results [Source: Topledger]
 
     Parameters
@@ -274,7 +274,7 @@ def make_request(org_slug=None, query_slug=None) -> Tuple[Optional[int], Any]:
 
 
 @log_start_end(log=logger)
-def get_topledger_data(org_slug: str = None, query_slug: str = None) -> pd.DataFrame:
+def get_topledger_data(org_slug: str, query_slug: str) -> pd.DataFrame:
     """Returns Topledger's Data for the given Organization's Slug[org_slug] based
     on Query Slug[query_slug] [Source: Topledger]
 

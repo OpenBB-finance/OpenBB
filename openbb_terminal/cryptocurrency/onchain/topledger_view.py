@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_topledger_data(
-    org_slug: str = None,
-    query_slug: str = None,
+    org_slug: str,
+    query_slug: str,
     export: str = "",
     sheet_name: Optional[str] = None,
 ) -> None:
