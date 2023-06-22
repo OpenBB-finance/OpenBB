@@ -37,7 +37,7 @@ jobs:
           python -m venv venv --upgrade-deps
           source venv/Scripts/activate
           python -m pip install setuptools==65.4.1 wheel
-          python -m pip install -r requirements-full.txt
+          python -m pip install -r requirements-full.txt --no-cache-dir
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
           python -m PyInstaller build/pyinstaller/terminal.spec --clean
