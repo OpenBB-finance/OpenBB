@@ -332,7 +332,6 @@ jobs:
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
-          pip install wheel==0.40.0 --user
           pip install --requirement requirements-full.txt
           pip uninstall Brotli -y
 
