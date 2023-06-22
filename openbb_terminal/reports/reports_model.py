@@ -411,7 +411,10 @@ def ipykernel_launcher(module_file: str, module_hist_file: str):
     module_hist_file: str
         History manager file.
     """
+    # pylint: disable=import-outside-toplevel
+    import matplotlib  # noqa
 
+    matplotlib.use("agg")
     IPKernelApp.launch_instance(
         argv=[
             "-f",

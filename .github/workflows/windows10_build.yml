@@ -16,7 +16,7 @@ concurrency:
 jobs:
   Windows-Build:
     name: Windows10 Build ENV
-    runs-on: windows-2019
+    runs-on: windows-latest
     # Configuring -------------
     steps:
       - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
@@ -30,13 +30,13 @@ jobs:
       - name: Set up Python & Create OpenBB Environment
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Create and start virtual environment
         run: |
           python -m venv venv --upgrade-deps
           source venv/Scripts/activate
-          python -m pip install setuptools==64.0.2 wheel
+          python -m pip install setuptools==65.4.1 wheel
           python -m pip install -r requirements-full.txt
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
