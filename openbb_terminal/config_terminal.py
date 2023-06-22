@@ -2,7 +2,7 @@
 from pathlib import Path
 
 # IMPORTATION THIRDPARTY
-from typing import Optional, Any
+from typing import TYPE_CHECKING, Optional, TypeVar
 
 import i18n
 
@@ -19,17 +19,22 @@ from openbb_terminal.core.session.current_user import get_current_user
 
 from .helper_classes import TerminalStyle as _TerminalStyle
 
+if TYPE_CHECKING:
+    from openbb_terminal import OpenBBFigure
 
-HOLD = False
-current_figure = None
+
+OpenBBFigureT = TypeVar("OpenBBFigureT", bound="OpenBBFigure")
+HOLD: bool = False
+current_figure: Optional[OpenBBFigureT] = None
 
 
-def get_current_figure():
-    global current_figure
+def get_current_figure() -> Optional["OpenBBFigure"]:
+    # pylint: disable=global-statement
+    global current_figure  # noqa
     return current_figure
 
 
-def set_current_figure(fig: Optional[Any] = None):
+def set_current_figure(fig: Optional[OpenBBFigureT] = None) -> Optional["OpenBBFigure"]:
     global current_figure
     current_figure = fig
 

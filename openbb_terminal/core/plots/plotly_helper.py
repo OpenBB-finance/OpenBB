@@ -1132,6 +1132,13 @@ class OpenBBFigure(go.Figure):
                 if export_image:
                     self._exported = True
                 if config_terminal.HOLD:
+                    from openbb_terminal.helper_funcs import command_location
+
+                    for trace in self.select_traces():
+                        if trace.name and "/" in trace.name:
+                            continue
+                        trace.name = f"{trace.name} {command_location}"
+
                     config_terminal.set_current_figure(self)
                     # We send the figure to the backend to be displayed
                     return None

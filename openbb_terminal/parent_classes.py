@@ -297,9 +297,10 @@ class BaseController(metaclass=ABCMeta):
                 config_terminal.HOLD = False
 
                 # create a subplot
-                fig = config_terminal.get_current_figure().set_subplots(
-                    1, 1, specs=[[{"secondary_y": True}]]
-                )
+                fig = config_terminal.get_current_figure()
+
+                if not fig.has_subplots:
+                    fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
 
                 for i, trace in enumerate(
                     config_terminal.get_current_figure().select_traces()
@@ -316,12 +317,17 @@ class BaseController(metaclass=ABCMeta):
                                     showline=False,
                                     zeroline=False,
                                     automargin=True,
+                                    ticksuffix="       " * (i - 1) if i > 1 else "",
+                                    tickfont=dict(size=13),
+                                    title=dict(font=dict(size=15), standoff=0),
                                 ),
                             }
                         )
+
+                fig.update_layout(margin=dict(l=30 * i))
                 fig.show()
 
-                config_terminal.current_figure = None
+                config_terminal.set_current_figure(None)
 
     def call_askobb(self, other_args: List[str]) -> None:
         """Accept user input as a string and return the most appropriate Terminal command"""

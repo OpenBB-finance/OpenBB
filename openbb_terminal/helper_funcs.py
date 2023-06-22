@@ -106,6 +106,8 @@ def set_command_location(cmd_loc: str):
     cmd_loc: str
         Command location called by user
     """
+    if cmd_loc.split("/")[-1] == "hold":
+        return
     global command_location  # noqa
     command_location = cmd_loc
 
