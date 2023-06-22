@@ -23,6 +23,7 @@ from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
 import openbb_terminal.core.session.local_model as Local
+from openbb_terminal import config_terminal
 from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
@@ -108,6 +109,7 @@ class BaseController(metaclass=ABCMeta):
         "stop",
         "screenshot",
         "askobb",
+        "hold",
     ]
 
     if is_auth_enabled():
@@ -261,6 +263,65 @@ class BaseController(metaclass=ABCMeta):
             old_class.queue = self.queue
             return old_class.menu()
         return class_ins(*args, **kwargs).menu()
+
+    def call_hold(self, other_args: List[str]) -> None:
+        self.save_class()
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hold",
+            description="Turn on figure holding",
+        )
+        parser.add_argument(
+            "-o",
+            "--option",
+            choices=["on", "off"],
+            type=str,
+            default="off",
+            dest="option",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-o")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
+        if ns_parser:
+            if ns_parser.option == "on":
+                config_terminal.HOLD = True
+            if (
+                ns_parser.option == "off"
+                and config_terminal.get_current_figure() is not None
+            ):
+                config_terminal.HOLD = False
+
+                # create a subplot
+                fig = config_terminal.get_current_figure().set_subplots(
+                    1, 1, specs=[[{"secondary_y": True}]]
+                )
+
+                for i, trace in enumerate(
+                    config_terminal.get_current_figure().select_traces()
+                ):
+                    trace.yaxis = f"y{i+1}"
+
+                    if i != 0:
+                        fig.update_layout(
+                            {
+                                f"yaxis{i+1}": dict(
+                                    side="left",
+                                    overlaying="y",
+                                    showgrid=False,
+                                    showline=False,
+                                    zeroline=False,
+                                    automargin=True,
+                                ),
+                            }
+                        )
+                fig.show()
+
+                config_terminal.current_figure = None
 
     def call_askobb(self, other_args: List[str]) -> None:
         """Accept user input as a string and return the most appropriate Terminal command"""

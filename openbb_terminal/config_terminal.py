@@ -2,7 +2,7 @@
 from pathlib import Path
 
 # IMPORTATION THIRDPARTY
-from typing import Optional
+from typing import Optional, Any
 
 import i18n
 
@@ -18,6 +18,20 @@ from openbb_terminal.core.session.current_system import (
 from openbb_terminal.core.session.current_user import get_current_user
 
 from .helper_classes import TerminalStyle as _TerminalStyle
+
+
+HOLD = False
+current_figure = None
+
+
+def get_current_figure():
+    global current_figure
+    return current_figure
+
+
+def set_current_figure(fig: Optional[Any] = None):
+    global current_figure
+    current_figure = fig
 
 
 def start_plot_backend():
