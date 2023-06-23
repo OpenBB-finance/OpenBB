@@ -98,6 +98,7 @@ def test_SYMBOLS(recorder):
     recorder.capture(results_df[0])
 
 
+@pytest.mark.timeout(90)
 @pytest.mark.vcr
 def test_load_options(recorder):
     data = intrinio_model.load_options("AAPL")
