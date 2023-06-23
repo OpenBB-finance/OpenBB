@@ -321,7 +321,7 @@ def display_usd_liquidity(
     show: bool = False,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: Optional[str] = "",
     external_axes: bool = False,
 ) -> Union[None, OpenBBFigure]:
     """Display US Dollar Liquidity
