@@ -32,6 +32,10 @@ Each command is listed below, with a short description.
 |bigmac |The Economist's Big Mac Index. |
 |events |The economic calendar. |
 |edebt |External debt statitistics for various countries. |
+|rtps |Real-time performance of S&P 500 sectors. |
+|valuation |Valuation of sectors, industries, and countries for US-listed stocks. |
+|performance |Performance of sectors, industry, and countries for US-listed stocks. |
+|usdli |USD Liquidity Index |
 
 ### Country Performance
 
@@ -113,6 +117,34 @@ Compare debt-to-GDP ratios between groups of countries by entering them as a com
 ```
 
 ![Debt-to-GDP](https://user-images.githubusercontent.com/85772166/236107021-231e7472-10a0-4208-a92e-fe56c81076c0.png)
+
+### usdli
+
+Compare the US Dollar Liquidity Index against a selection of indices published to FRED.
+
+```console
+/economy/usdli -o WILLSMLCAP
+```
+
+![USD Liquidity Index](usdli.png)
+
+The indices available to overlay are displayed in a table by adding, `--show`, to the command.
+
+```console
+/economy/usdli --show
+```
+
+### valuation
+
+Get valuations of industries and sectors for the US equity universe.  Select the focus by using the, `-g` (`--group`), parameter.
+
+![Valuation By Industry](valuation1.png)
+
+```console
+valuation --group consumer_cyclical
+```
+
+![Consumer Cyclical Valuations](valuation2.png)
 
 ### index
 

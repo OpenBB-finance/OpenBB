@@ -767,6 +767,7 @@ en:
   economy/spread: show bond spread matrix
   economy/events: show economic calendar
   economy/edebt: show external debt statistics for various countries
+  economy/usdli: Compare the USD Liquidity Index against a choice of indices
   economy/plot: plot data from the above commands together
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
