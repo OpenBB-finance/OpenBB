@@ -322,8 +322,6 @@ from openbb_terminal.fixedincome import (
 
 
 from openbb_terminal.economy import (
-    alphavantage_model as economy_alphavantage_model,
-    alphavantage_view as economy_alphavantage_view,
     econdb_model as economy_econdb_model,
     econdb_view as economy_econdb_view,
     finviz_model as economy_finviz_model,

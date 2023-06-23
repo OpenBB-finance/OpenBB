@@ -5,7 +5,6 @@
     events             show economic calendar                                                         [Nasdaq]
     edebt              show external debt statistics for various countries                            [Wikipedia]
 
-    rtps               real-time performance sectors                                                  [AlphaVantage]
     valuation          valuation of sectors, industry, country                                        [Finviz]
     performance        performance of sectors, industry, country                                      [Finviz]
 

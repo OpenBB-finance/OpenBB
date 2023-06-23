@@ -768,7 +768,6 @@ en:
   economy/events: show economic calendar
   economy/edebt: show external debt statistics for various countries
   economy/plot: plot data from the above commands together
-  economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
   economy/eval: create new series by performing operations on loaded data

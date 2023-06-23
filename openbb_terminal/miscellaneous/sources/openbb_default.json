@@ -513,7 +513,6 @@
     "bigmac": ["Nasdaq"],
     "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
-    "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],
     "performance": ["Finviz"],
     "gdp": ["OECD"],

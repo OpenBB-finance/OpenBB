@@ -19,7 +19,6 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import (
-    alphavantage_view,
     commodity_view,
     econdb_model,
     econdb_view,
@@ -77,7 +76,6 @@ class EconomyController(BaseController):
         "valuation",
         "performance",
         "map",
-        "rtps",
         "bigmac",
         "events",
         "edebt",
@@ -315,7 +313,6 @@ class EconomyController(BaseController):
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
-        mt.add_cmd("rtps")
         mt.add_cmd("valuation")
         mt.add_cmd("performance")
         mt.add_raw("\n")
@@ -2247,34 +2244,6 @@ class EconomyController(BaseController):
                         if ns_parser.sheet_name
                         else None,
                     )
-
-    @log_start_end(log=logger)
-    def call_rtps(self, other_args: List[str]):
-        """Process rtps command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rtps",
-            description="""
-                Real-time and historical sector performances calculated from
-                S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True,
-        )
-        if ns_parser:
-            alphavantage_view.realtime_performance_sector(
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
 
     @log_start_end(log=logger)
     def call_valuation(self, other_args: List[str]):
