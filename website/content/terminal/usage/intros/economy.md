@@ -32,7 +32,6 @@ Each command is listed below, with a short description.
 |bigmac |The Economist's Big Mac Index. |
 |events |The economic calendar. |
 |edebt |External debt statitistics for various countries. |
-|rtps |Real-time performance of S&P 500 sectors. |
 |valuation |Valuation of sectors, industries, and countries for US-listed stocks. |
 |performance |Performance of sectors, industry, and countries for US-listed stocks. |
 |usdli |USD Liquidity Index |
