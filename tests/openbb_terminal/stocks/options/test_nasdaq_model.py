@@ -47,19 +47,19 @@ def test_load_options_bad_symbol(mocker):
 
 @pytest.mark.vcr
 def test_load_options(recorder):
-    data = nasdaq_model.load_options(symbol="OXY")
+    data = nasdaq_model.load_options(symbol="SPY")
     assert isinstance(data.chains, pd.DataFrame)
     assert isinstance(data.last_price, float)
     assert isinstance(data.underlying_price, pd.Series)
     df1 = pd.DataFrame(data.chains)
-    data = nasdaq_model.load_options(symbol="OXY", pydantic=True)
+    data = nasdaq_model.load_options(symbol="SPY", pydantic=True)
     assert isinstance(data.chains, dict)
     assert isinstance(data.underlying_price, dict)
     assert isinstance(data.expirations, list)
     assert isinstance(data.strikes, list)
     df2 = pd.DataFrame(data.chains)
     assert df1.columns.equals(df2.columns)
-    df_greeks = data.get_available_greeks()
+    df_greeks = data.get_available_greeks(data.expirations[-1])
     recorder.capture(df2.columns.to_list())
     recorder.capture(list(data.underlying_price.keys()))
     recorder.capture(data.underlying_name)
