@@ -112,6 +112,7 @@ EQUITY_INDICES = {
     "WILLMICROCAP": "Wilshire US Micro-Cap Total Market Index",
     "WILLREITIND": "Wilshire US Real Estate Investment Trust Price Index",
     "WILLRESIPR": "Wilshire US Real Estate Securities Price Index",
+    "DTWEXBGS": "Nominal Broad US Dollar Index",
 }
 
 
