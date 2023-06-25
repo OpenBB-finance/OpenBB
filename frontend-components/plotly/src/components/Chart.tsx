@@ -1,9 +1,11 @@
 // @ts-nocheck
 import clsx from "clsx";
+import { debounce } from "lodash";
 import * as Plotly from "plotly.js-dist-min";
 import { Icons as PlotlyIcons } from "plotly.js-dist-min";
 import { usePostHog } from "posthog-js/react";
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import createPlotlyComponent from "react-plotly.js/factory";
 import { init_annotation } from "../utils/addAnnotation";
 import { non_blocking, saveImage } from "../utils/utils";
@@ -19,11 +21,50 @@ import { PlotConfig, hideModebar } from "./PlotlyConfig";
 import ResizeHandler from "./ResizeHandler";
 
 const Plot = createPlotlyComponent(Plotly);
+class PlotComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: props.data,
+      layout: props.layout,
+      frames: props.frames,
+      config: props.config,
+      useResizeHandler: props.useResizeHandler,
+      style: props.style,
+      className: props.className,
+      divId: props.divId,
+      revision: props.revision,
+      graphDiv: props.graphDiv,
+      debug: props.debug,
+      onInitialized: props.onInitialized,
+    };
+  }
+
+  render() {
+    return (
+      <Plot
+        data={this.state.data}
+        layout={this.state.layout}
+        frames={this.state.frames}
+        config={this.state.config}
+        useResizeHandler={this.state.useResizeHandler}
+        style={this.state.style}
+        className={this.state.className}
+        divId={this.state.divId}
+        revision={this.state.revision}
+        graphDiv={this.state.graphDiv}
+        debug={this.state.debug}
+        onInitialized={this.state.onInitialized}
+        onUpdate={(figure) => this.setState(figure)}
+      />
+    );
+  }
+}
 
 function CreateDataXrange(data: Plotly.PlotData[], xrange?: any) {
   if (!xrange) {
     xrange = [
-      data[0]?.x[data[0].x.length - 1000],
+      data[0]?.x[data[0].x.length - 2000],
       data[0]?.x[data[0].x.length - 1],
     ];
   }
@@ -43,7 +84,17 @@ function CreateDataXrange(data: Plotly.PlotData[], xrange?: any) {
     const xaxis = trace.x ? trace.x : [];
     const chunks = [];
     for (let i = 0; i < xaxis.length; i++) {
-      if (xaxis[i] >= xrange[0] && xaxis[i] <= xrange[1]) {
+      const isoDateRegex = new RegExp(
+        "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}",
+      );
+      if (isoDateRegex.test(xaxis[i])) {
+        const x_time = new Date(xaxis[i]).getTime();
+        const x0_min = new Date(xrange[0].replace(" ", "T")).getTime();
+        const x1_max = new Date(xrange[1].replace(" ", "T")).getTime();
+        if (x_time >= x0_min && x_time <= x1_max) {
+          chunks.push(i);
+        }
+      } else if (xaxis[i] >= xrange[0] && xaxis[i] <= xrange[1]) {
         chunks.push(i);
       }
     }
@@ -83,16 +134,15 @@ async function DynamicLoad({
     );
 
     if (XDATA.length === 0) return figure;
-    // We get the xaxis range, if no event is passed, we get the last 1000 points
+    // We get the xaxis range, if no event is passed, we get the last 2000 points
     const xaxis_range = event
       ? [event["xaxis.range[0]"], event["xaxis.range[1]"]]
       : [
-          XDATA[0]?.x[XDATA[0].x.length - 1000],
+          XDATA[0]?.x[XDATA[0].x.length - 2000],
           XDATA[0]?.x[XDATA[0].x.length - 1],
         ];
 
-    const new_data = CreateDataXrange(figure.data, xaxis_range);
-    figure.data = new_data;
+    figure.data = CreateDataXrange(figure.data, xaxis_range);
     figure.layout.xaxis.range = xaxis_range;
     return figure;
   } catch (e) {
@@ -100,7 +150,7 @@ async function DynamicLoad({
   }
 }
 
-export default function Chart({
+function Chart({
   json,
   date,
   cmd,
@@ -129,6 +179,7 @@ export default function Chart({
   if (json.layout?.title?.text) {
     json.layout.title.text = "";
   }
+  console.log("Rendering chart", title);
 
   const [originalData, setOriginalData] = useState(json);
   const [barButtons, setModeBarButtons] = useState({});
@@ -156,6 +207,67 @@ export default function Chart({
   const [yaxisFixedRange, setYaxisFixedRange] = useState([]);
 
   const onClose = () => setModal({ name: "" });
+  useHotkeys(
+    "ctrl+shift+t",
+    () => {
+      setModal({ name: "titleDialog" });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+t",
+    () => {
+      setModal({ name: "textDialog" });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+o",
+    () => {
+      setModal({ name: "overlayChart" });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    ["ctrl+shift+h", "ctrl+h"],
+    () => {
+      hideModebar();
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+e",
+    () => {
+      changeColor(true);
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+shift+s",
+    async () => {
+      setModal({ name: "downloadCsv" });
+      await downloadCSV(
+        document.getElementById("plotlyChart") as any,
+        downloadFinished,
+      );
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+s",
+    async () => {
+      hideModebar();
+      downloadImage("MainChart", hideModebar, Loading, downloadFinished);
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+w",
+    () => {
+      window.close();
+    },
+    { preventDefault: true },
+  );
 
   // @ts-ignore
   function onDeleteAnnotation(annotation) {
@@ -170,7 +282,6 @@ export default function Chart({
       setAnnotations(plotData?.layout?.annotations);
     }
   }
-
   // @ts-ignore
   function onAddAnnotation(data) {
     init_annotation({
@@ -187,13 +298,18 @@ export default function Chart({
       plotDiv,
     });
   }
-
   useEffect(() => {
     if (downloadFinished) {
       setModal({ name: "downloadFinished" });
       setDownloadFinished(false);
     }
   }, [downloadFinished]);
+
+  useEffect(() => {
+    if (plotDiv) {
+      Plotly.update(plotDiv, plotData.data, plotData.layout, plotData.config);
+    }
+  }, [plotData]);
 
   useEffect(() => {
     if (axesTitles && Object.keys(axesTitles).length > 0) {
@@ -240,8 +356,23 @@ export default function Chart({
     }
     setModeBarButtons({ ...barButtons, [title]: button });
   }
+  const debouncedDynamicLoad = useCallback(
+    debounce(async (eventData, figure) => {
+      const data = { ...figure };
+      const toUpdate = await DynamicLoad({
+        event: eventData,
+        figure: data,
+      });
+      setPlotData(toUpdate);
+      Plotly.react(plotDiv, toUpdate.data, toUpdate.layout);
+      const scaled = await autoScaling(eventData, plotDiv);
+      setYaxisFixedRange(scaled.yaxis_fixedrange);
+      Plotly.update(plotDiv, {}, scaled.to_update);
+    }, 150),
+    [setPlotData, plotDiv],
+  );
 
-  function autoscaleButton() {
+  const autoscaleButton = useCallback(() => {
     // We need to check if the button is active or not
     const title = "Auto Scale (Ctrl+Shift+A)";
     const button =
@@ -253,26 +384,16 @@ export default function Chart({
       active = false;
       plotDiv.on(
         "plotly_relayout",
-        non_blocking(async function (eventdata) {
+        debounce(async (eventdata) => {
           if (eventdata["xaxis.range[0]"] === undefined) return;
           if (dateSliced) {
-            const data = { ...originalData };
-            await DynamicLoad({
-              event: eventdata,
-              figure: data,
-            }).then(async (to_update) => {
-              setPlotData(to_update);
-              Plotly.react(plotDiv, to_update.data, to_update.layout);
-              const scaled = await autoScaling(eventdata, plotDiv);
-              setYaxisFixedRange(scaled.yaxis_fixedrange);
-              Plotly.update(plotDiv, {}, scaled.to_update);
-            });
+            debouncedDynamicLoad(eventdata, originalData);
           } else {
             const scaled = await autoScaling(eventdata, plotDiv);
             setYaxisFixedRange(scaled.yaxis_fixedrange);
             Plotly.update(plotDiv, {}, scaled.to_update);
           }
-        }, 100),
+        }, 500),
       );
     }
     // If the button isn't active, we remove the listener so
@@ -302,7 +423,14 @@ export default function Chart({
     }
 
     button_pressed(title, active);
-  }
+  }, [
+    barButtons,
+    dateSliced,
+    debouncedDynamicLoad,
+    originalData,
+    plotDiv,
+    yaxisFixedRange,
+  ]);
 
   function changecolorButton() {
     // We need to check if the button is active or not
@@ -500,7 +628,7 @@ export default function Chart({
       );
       if (
         (originalData.data[0]?.x !== undefined &&
-          originalData.data[0]?.x.length <= 1000) ||
+          originalData.data[0]?.x.length <= 2000) ||
         !traceTypes.includes(true)
       )
         return;
@@ -508,7 +636,7 @@ export default function Chart({
         name: "alertDialog",
         data: {
           title: "Warning",
-          content: `Data has been truncated to 1000 points for performance reasons.
+          content: `Data has been truncated to 2000 points for performance reasons.
 						Please use the zoom tool to see more data.`,
         },
       });
@@ -519,6 +647,126 @@ export default function Chart({
     }
   }, [plotLoaded]);
 
+  const plotComponent = useMemo(
+    () => (
+      <PlotComponent
+        onInitialized={() => {
+          if (!plotDiv) {
+            const plot = document.getElementById("plotlyChart");
+            console.log("plot", plot);
+            if (plot) setPlotDiv(plot);
+            plot.globals = globals;
+          }
+          if (!plotLoaded) setPlotLoaded(true);
+        }}
+        className="w-full h-full"
+        divId="plotlyChart"
+        data={plotData.data}
+        layout={plotData.layout}
+        config={PlotConfig({
+          setModal: setModal,
+          changeTheme: setChangeTheme,
+          autoScaling: setAutoScaling,
+          Loading: setLoading,
+          changeColor: onChangeColor,
+          downloadFinished: setDownloadFinished,
+        })}
+        onDoubleClick={() => {
+          if (dateSliced) {
+            setPlotData(originalData);
+          }
+        }}
+        o
+      />
+    ),
+    [
+      plotDiv,
+      plotLoaded,
+      plotData,
+      globals,
+      setPlotDiv,
+      setPlotLoaded,
+      setModal,
+      setChangeTheme,
+      setAutoScaling,
+      setLoading,
+      onChangeColor,
+      setDownloadFinished,
+    ],
+  );
+
+  const memoizedAlertDialog = useMemo(() => {
+    return (
+      <AlertDialog
+        title={modal?.data?.title}
+        content={modal?.data?.content}
+        open={modal?.name === "alertDialog"}
+        close={onClose}
+      />
+    );
+  }, [modal, onClose]);
+
+  const memoizedOverlayChartDialog = useMemo(() => {
+    return (
+      <OverlayChartDialog
+        addOverlay={(overlay) => {
+          console.log(overlay);
+          plotData.layout.showlegend = true;
+          setPlotData(overlay);
+          setPlotLoaded(false);
+        }}
+        plotlyData={plotData}
+        setLoading={setLoading}
+        open={modal?.name === "overlayChart"}
+        close={onClose}
+      />
+    );
+  }, [modal, plotData, onClose]);
+
+  const memoizedTitleChartDialog = useMemo(() => {
+    return (
+      <TitleChartDialog
+        updateTitle={(title) => setChartTitle(title)}
+        updateAxesTitles={(axesTitles) => setAxesTitles(axesTitles)}
+        defaultTitle={chartTitle}
+        plotlyData={plotData}
+        open={modal?.name === "titleDialog"}
+        close={onClose}
+      />
+    );
+  }, [modal, plotData, chartTitle, onClose]);
+
+  const memoizedTextChartDialog = useMemo(() => {
+    return (
+      <TextChartDialog
+        popupData={modal?.name === "textDialog" ? modal?.data : null}
+        open={modal?.name === "textDialog"}
+        close={onClose}
+        addAnnotation={(data) => onAddAnnotation(data)}
+        deleteAnnotation={(data) => onDeleteAnnotation(data)}
+      />
+    );
+  }, [
+    modal,
+    onAddAnnotation,
+    onDeleteAnnotation,
+    onClose,
+    plotData,
+    setPlotData,
+  ]);
+
+  const memoizedChangeColor = useMemo(() => {
+    return <ChangeColor open={colorActive} onColorChange={onChangeColor} />;
+  }, [colorActive, onChangeColor]);
+
+  const memoizedDownloadFinishedDialog = useMemo(() => {
+    return (
+      <DownloadFinishedDialog
+        open={modal?.name === "downloadFinished"}
+        close={onClose}
+      />
+    );
+  }, [modal, onClose]);
   return (
     <div className="relative h-full">
       {loading && (
@@ -549,44 +797,12 @@ export default function Chart({
         <div id="loading_text" className="loading_text" />
         <div id="loader" className="loader" />
       </div>
-      <AlertDialog
-        title={modal?.data?.title}
-        content={modal?.data?.content}
-        open={modal.name === "alertDialog"}
-        close={onClose}
-      />
-      <OverlayChartDialog
-        addOverlay={(overlay) => {
-          console.log(overlay);
-          plotData.layout.showlegend = true;
-          setPlotData(overlay);
-          setPlotLoaded(false);
-        }}
-        plotlyData={plotData}
-        setLoading={setLoading}
-        open={modal.name === "overlayChart"}
-        close={onClose}
-      />
-      <TitleChartDialog
-        updateTitle={(title) => setChartTitle(title)}
-        updateAxesTitles={(axesTitles) => setAxesTitles(axesTitles)}
-        defaultTitle={chartTitle}
-        plotlyData={plotData}
-        open={modal.name === "titleDialog"}
-        close={onClose}
-      />
-      <TextChartDialog
-        popupData={modal.name === "textDialog" ? modal?.data : null}
-        open={modal.name === "textDialog"}
-        close={onClose}
-        addAnnotation={(data) => onAddAnnotation(data)}
-        deleteAnnotation={(data) => onDeleteAnnotation(data)}
-      />
-      <ChangeColor open={colorActive} onColorChange={onChangeColor} />
-      <DownloadFinishedDialog
-        open={modal.name === "downloadFinished"}
-        close={onClose}
-      />
+      {memoizedAlertDialog}
+      {memoizedOverlayChartDialog}
+      {memoizedTitleChartDialog}
+      {memoizedTextChartDialog}
+      {memoizedChangeColor}
+      {memoizedDownloadFinishedDialog}
 
       <div className="relative h-full" id="MainChart">
         <div className="_header relative gap-4 py-2 text-center text-xs flex items-center justify-between px-4 text-white">
@@ -632,31 +848,11 @@ export default function Chart({
             "h-[calc(100%-50px)]": !maximizePlot,
           })}
         >
-          <Plot
-            onInitialized={() => {
-              if (!plotDiv) {
-                const plot = document.getElementById("plotlyChart");
-                console.log("plot", plot);
-                if (plot) setPlotDiv(plot);
-                plot.globals = globals;
-              }
-              if (!plotLoaded) setPlotLoaded(true);
-            }}
-            className="w-full h-full"
-            divId="plotlyChart"
-            data={plotData.data}
-            layout={plotData.layout}
-            config={PlotConfig({
-              setModal: setModal,
-              changeTheme: setChangeTheme,
-              autoScaling: setAutoScaling,
-              Loading: setLoading,
-              changeColor: setChangeColor,
-              downloadFinished: setDownloadFinished,
-            })}
-          />
+          {plotComponent}
         </div>
       </div>
     </div>
   );
 }
+
+export default React.memo(Chart);

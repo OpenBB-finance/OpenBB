@@ -14,28 +14,36 @@ export default async function autoScaling(
       let y_min;
       let y_max;
 
-      const YaxisData = graphs.data.filter(
-        (trace) => trace.yaxis !== undefined,
-      );
+      const get_all_yaxis_traces = {};
+      const get_all_yaxis_annotations = {};
+
       const yaxis_unique = [
         ...new Set(
-          YaxisData.map(
-            (trace) =>
-              trace.yaxis ||
-              trace.y !== undefined ||
-              trace.type === "candlestick",
-          ),
+          graphs.data.map((trace) => {
+            if (
+              trace.yaxis !== undefined &&
+              (trace.y !== undefined || trace.type === "candlestick")
+            ) {
+              get_all_yaxis_traces[trace.yaxis] =
+                get_all_yaxis_traces[trace.yaxis] || [];
+              get_all_yaxis_traces[trace.yaxis].push(trace);
+              return trace.yaxis;
+            }
+          }),
         ),
       ];
 
-      const get_all_yaxis_traces = (yaxis) => {
-        return graphs.data.filter(
-          (trace) =>
-            trace.yaxis === yaxis && (trace.y || trace.type === "candlestick"),
-        );
-      };
+      graphs.layout.annotations.map((annotation, i) => {
+        if (annotation.yref !== undefined && annotation.yref !== "paper") {
+          annotation.index = i;
+          const yaxis = `yaxis${annotation.yref.replace("y", "")}`;
+          get_all_yaxis_annotations[yaxis] =
+            get_all_yaxis_annotations[yaxis] || [];
+          get_all_yaxis_annotations[yaxis].push(annotation);
+        }
+      });
 
-      yaxis_unique.forEach((unique) => {
+      yaxis_unique.map((unique) => {
         if (typeof unique !== "string") {
           return;
         }
@@ -44,7 +52,7 @@ export default async function autoScaling(
         let y_values = [];
         let log_scale = graphs.layout[yaxis].type === "log";
 
-        get_all_yaxis_traces(unique).forEach((trace2) => {
+        get_all_yaxis_traces[unique].map((trace2) => {
           const x = trace2.x;
           log_scale = graphs.layout[yaxis].type === "log";
 
@@ -62,7 +70,23 @@ export default async function autoScaling(
 
           const yx_values = x.map((x, i) => {
             let out = null;
-            if (x >= x_min && x <= x_max) {
+            const isoDateRegex = new RegExp(
+              "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}",
+            );
+            if (isoDateRegex.test(x)) {
+              const x_time = new Date(x).getTime();
+              const x0_min = new Date(x_min.replace(" ", "T")).getTime();
+              const x1_max = new Date(x_max.replace(" ", "T")).getTime();
+              if (x_time >= x0_min && x_time <= x1_max) {
+                if (trace2.y !== undefined) {
+                  out = y[i];
+                }
+                if (trace2.type === "candlestick") {
+                  y_candle.push(y_low[i]);
+                  y_candle.push(y_high[i]);
+                }
+              }
+            } else if (x >= x_min && x <= x_max) {
               if (trace2.y !== undefined) {
                 out = y[i];
               }
@@ -137,8 +161,21 @@ export default async function autoScaling(
           to_update[`${yaxis}.range`] = [y_min, y_max];
           to_update[`${yaxis}.fixedrange`] = true;
           yaxis_fixedrange.push(yaxis);
+
+          console.log("get_all_yaxis_annotations", get_all_yaxis_annotations);
+          if (get_all_yaxis_annotations[yaxis] !== undefined) {
+            get_all_yaxis_annotations[yaxis].map((annotation) => {
+              if (annotation.ay !== undefined) {
+                const yshift = annotation.ay;
+                const yshift_new = Math.min(Math.max(yshift, y_min), y_max);
+
+                to_update[`annotations[${annotation.index}].ay`] = yshift_new;
+              }
+            });
+          }
         }
       });
+      console.log("to_update", to_update);
 
       return { to_update, yaxis_fixedrange };
     }

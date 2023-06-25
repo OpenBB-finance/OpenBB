@@ -266,8 +266,12 @@ def display_candle(
         data = stocks_helper.find_trendline(data, "OC_High", "high")
         data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
+    indicators = {}
+    if ma is not None and len(ma) > 0:
+        indicators = dict(rma=dict(length=ma))
+
     data.name = f"{from_symbol}/{to_symbol}"
-    fig = PlotlyTA.plot(data, dict(rma=dict(length=ma)), volume=has_volume)
+    fig = PlotlyTA.plot(data, indicators, volume=has_volume, is_stock=False)
     if add_trend:
         fig.add_trend(data, secondary_y=False)
 
