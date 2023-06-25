@@ -67,8 +67,6 @@ Below is brief description of each function within the Economy module:
 | openbb.economy.revenue_chart        |  Function  |                                            Chart for `revenue` |
 | openbb.economy.rgdp                 |  Function  |                                            Real GDP by Country |
 | openbb.economy.rgdp_chart           |  Function  |                                               Chart for `rgdp` |
-| openbb.economy.rtps                 |  Function  | Real-Time Performance by Sector (US Markets) from AlphaVantage |
-| openbb.economy.rtps_chart           |  Function  |                                                Chart of `rtps` |
 | openbb.economy.search_index         |  Function  |                              Search for a Global Index by Name |
 | openbb.economy.spending             |  Function  |                General Government Spending by Year and Country |
 | openbb.economy.spending_chart       |  Function  |                                           Chart for `spending` |
