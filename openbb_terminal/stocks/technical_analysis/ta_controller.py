@@ -154,7 +154,6 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_cmd("fisher", not self.stock.empty)
         mt.add_cmd("ichimoku", not self.stock.empty)
         mt.add_cmd("rsi", not self.stock.empty)
-        mt.add_cmd("rsp", not self.stock.empty)
         mt.add_cmd("stoch", not self.stock.empty)
         mt.add_info("_trend_")
         mt.add_cmd("adx", not self.stock.empty)
