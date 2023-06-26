@@ -267,7 +267,7 @@ def display_candle(
         data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
     indicators = {}
-    if ma is not None and len(ma) > 0:
+    if ma:
         indicators = dict(rma=dict(length=ma))
 
     data.name = f"{from_symbol}/{to_symbol}"

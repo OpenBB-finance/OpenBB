@@ -162,12 +162,14 @@ export default async function autoScaling(
           to_update[`${yaxis}.fixedrange`] = true;
           yaxis_fixedrange.push(yaxis);
 
-          console.log("get_all_yaxis_annotations", get_all_yaxis_annotations);
           if (get_all_yaxis_annotations[yaxis] !== undefined) {
             get_all_yaxis_annotations[yaxis].map((annotation) => {
               if (annotation.ay !== undefined) {
                 const yshift = annotation.ay;
-                const yshift_new = Math.min(Math.max(yshift, y_min), y_max);
+                const yshift_new = Math.min(
+                  Math.max(yshift, y_min + y_range * 0.2),
+                  y_max - y_range * 0.2,
+                );
 
                 to_update[`annotations[${annotation.index}].ay`] = yshift_new;
               }
@@ -175,7 +177,6 @@ export default async function autoScaling(
           }
         }
       });
-      console.log("to_update", to_update);
 
       return { to_update, yaxis_fixedrange };
     }

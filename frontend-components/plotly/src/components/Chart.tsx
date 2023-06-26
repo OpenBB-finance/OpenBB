@@ -56,6 +56,8 @@ class PlotComponent extends React.Component {
         debug={this.state.debug}
         onInitialized={this.state.onInitialized}
         onUpdate={(figure) => this.setState(figure)}
+        onRelayout={(figure) => this.setState(figure)}
+        onPurge={(figure) => this.setState(figure)}
       />
     );
   }
@@ -179,7 +181,6 @@ function Chart({
   if (json.layout?.title?.text) {
     json.layout.title.text = "";
   }
-  console.log("Rendering chart", title);
 
   const [originalData, setOriginalData] = useState(json);
   const [barButtons, setModeBarButtons] = useState({});
@@ -270,34 +271,42 @@ function Chart({
   );
 
   // @ts-ignore
-  function onDeleteAnnotation(annotation) {
-    console.log("onDeleteAnnotation", annotation);
-    const index = plotData?.layout?.annotations?.findIndex(
-      (a: any) => a.text === annotation.text,
-    );
-    console.log("index", index);
-    if (index > -1) {
-      plotData?.layout?.annotations?.splice(index, 1);
-      setPlotData({ ...plotData });
-      setAnnotations(plotData?.layout?.annotations);
-    }
-  }
+  const onDeleteAnnotation = useCallback(
+    (annotation) => {
+      console.log("onDeleteAnnotation", annotation);
+      const index = plotData?.layout?.annotations?.findIndex(
+        (a: any) => a.text === annotation.text,
+      );
+      console.log("index", index);
+      if (index > -1) {
+        plotData?.layout?.annotations?.splice(index, 1);
+        setPlotData({ ...plotData });
+        setAnnotations(plotData?.layout?.annotations);
+      }
+    },
+    [plotData],
+  );
+
   // @ts-ignore
-  function onAddAnnotation(data) {
-    init_annotation({
-      plotData,
-      popupData: data,
-      setPlotData,
-      setModal,
-      setOnAnnotationClick,
-      setAnnotations,
-      onAnnotationClick,
-      ohlcAnnotation,
-      setOhlcAnnotation,
-      annotations,
-      plotDiv,
-    });
-  }
+  const onAddAnnotation = useCallback(
+    (data) => {
+      init_annotation({
+        plotData,
+        popupData: data,
+        setPlotData,
+        setModal,
+        setOnAnnotationClick,
+        setAnnotations,
+        onAnnotationClick,
+        ohlcAnnotation,
+        setOhlcAnnotation,
+        annotations,
+        plotDiv,
+      });
+    },
+    [plotData, onAnnotationClick, ohlcAnnotation, annotations, plotDiv],
+  );
+
   useEffect(() => {
     if (downloadFinished) {
       setModal({ name: "downloadFinished" });
@@ -467,15 +476,15 @@ function Chart({
     if (changeTheme) {
       try {
         console.log("changeTheme", changeTheme);
-        const TRACES = plotData?.data.filter(
+        const TRACES = originalData?.data.filter(
           (trace) => trace?.name?.trim() === "Volume",
         );
         const darkmode = !darkMode;
 
         window.document.body.style.backgroundColor = darkmode ? "#000" : "#fff";
 
-        plotData.layout.font = {
-          ...(plotData.layout.font || {}),
+        originalData.layout.font = {
+          ...(originalData.layout.font || {}),
           color: darkmode ? "#fff" : "#000",
         };
 
@@ -508,11 +517,11 @@ function Chart({
               return volumeColors[color] || color;
             });
         });
-        plotData.layout.template = darkmode
+        originalData.layout.template = darkmode
           ? DARK_CHARTS_TEMPLATE
           : LIGHT_CHARTS_TEMPLATE;
-        setPlotData({ ...plotData });
-        Plotly.react(plotDiv, plotData.data, plotData.layout);
+        setPlotData({ ...originalData });
+        Plotly.react(plotDiv, originalData.data, originalData.layout);
         setDarkMode(darkmode);
         setChangeTheme(false);
       } catch (e) {
@@ -668,19 +677,14 @@ function Chart({
           changeTheme: setChangeTheme,
           autoScaling: setAutoScaling,
           Loading: setLoading,
-          changeColor: onChangeColor,
+          changeColor: setChangeColor,
           downloadFinished: setDownloadFinished,
         })}
-        onDoubleClick={() => {
-          if (dateSliced) {
-            setPlotData(originalData);
-          }
-        }}
-        o
       />
     ),
     [
       plotDiv,
+      originalData,
       plotLoaded,
       plotData,
       globals,
@@ -711,17 +715,18 @@ function Chart({
       <OverlayChartDialog
         addOverlay={(overlay) => {
           console.log(overlay);
-          plotData.layout.showlegend = true;
+          overlay.layout.showlegend = true;
+          setOriginalData(overlay);
           setPlotData(overlay);
-          setPlotLoaded(false);
+          Plotly.react(plotDiv, overlay.data, overlay.layout);
         }}
-        plotlyData={plotData}
+        plotlyData={originalData}
         setLoading={setLoading}
         open={modal?.name === "overlayChart"}
         close={onClose}
       />
     );
-  }, [modal, plotData, onClose]);
+  }, [modal, plotData, onClose, setPlotData, setLoading]);
 
   const memoizedTitleChartDialog = useMemo(() => {
     return (
@@ -767,6 +772,7 @@ function Chart({
       />
     );
   }, [modal, onClose]);
+
   return (
     <div className="relative h-full">
       {loading && (
