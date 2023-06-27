@@ -448,10 +448,10 @@ class Backend(PyWry):
         messages_dict = dict(
             login=dict(
                 message="Welcome to OpenBB Terminal! Please login to continue.",
-                interrupt="Login cancelled. Continuing as guest.",
+                interrupt="Window closed without authentication. Please proceed below.",
             ),
             logout=dict(
-                message="Sending logout request", interrupt="Continuing as guest."
+                message="Sending logout request", interrupt="Please login to continue."
             ),
         )
 

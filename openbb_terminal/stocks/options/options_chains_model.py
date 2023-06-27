@@ -1458,26 +1458,28 @@ def calculate_skew(
             ["expiration", "optionType", "strike", "impliedVolatility"]
         ]
         call = call.set_index("expiration")
-        call["skew"] = (
-            call.impliedVolatility
-            - call.query("`strike` == @atm_call_strike")["impliedVolatility"]
-        )[0]
+        call_atm_iv = call.query("`strike` == @atm_call_strike")[
+            "impliedVolatility"
+        ].iloc[0]
+        call["ATM IV"] = call_atm_iv
+        call["Skew"] = call["impliedVolatility"] - call["ATM IV"]
         call_skew = pd.concat([call_skew, call])
         atm_put_strike = get_nearest_put_strike(options, day)  # noqa:F841
         put = puts[puts["dte"] == day][
             ["expiration", "optionType", "strike", "impliedVolatility"]
         ]
         put = put.set_index("expiration")
-        put["skew"] = (
-            put.impliedVolatility
-            - put.query("`strike` == @atm_put_strike")["impliedVolatility"]
-        )[0]
+        put_atm_iv = put.query("`strike` == @atm_put_strike")["impliedVolatility"].iloc[
+            0
+        ]
+        put["ATM IV"] = put_atm_iv
+        put["Skew"] = put["impliedVolatility"] - put["ATM IV"]
         put_skew = pd.concat([put_skew, put])
 
     call_skew = call_skew.set_index(["strike", "optionType"], append=True)
     put_skew = put_skew.set_index(["strike", "optionType"], append=True)
     skew_df = pd.concat([call_skew, put_skew]).sort_index().reset_index()
-    cols = ["Expiration", "Strike", "Option Type", "IV", "Skew"]
+    cols = ["Expiration", "Strike", "Option Type", "IV", "ATM IV", "Skew"]
     skew_df.columns = cols
     if expiration != "":
         if expiration not in options.expirations:
