@@ -30,6 +30,7 @@ def load_stock_intrinio(
 ) -> pd.DataFrame:
     intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)
     api = intrinio.SecurityApi()
+    frequency: str = "daily"
     if weekly is True:
         frequency = "weekly"
     if monthly is True:
