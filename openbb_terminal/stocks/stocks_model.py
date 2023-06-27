@@ -22,15 +22,23 @@ logger = logging.getLogger(__name__)
 
 
 def load_stock_intrinio(
-    symbol: str, start_date: datetime, end_date: datetime
+    symbol: str,
+    start_date: datetime,
+    end_date: datetime,
+    weekly: bool = False,
+    monthly: bool = False,
 ) -> pd.DataFrame:
     intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)
     api = intrinio.SecurityApi()
+    if weekly is True:
+        frequency = "weekly"
+    if monthly is True:
+        frequency = "monthly"
     stock = api.get_security_stock_prices(
         symbol.upper(),
         start_date=start_date,
         end_date=end_date,
-        frequency="daily",
+        frequency=frequency,
         page_size=10000,
     )
     data = stock
