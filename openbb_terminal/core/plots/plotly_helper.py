@@ -1052,6 +1052,8 @@ class OpenBBFigure(go.Figure):
             The x shift of the command source annotation, by default 0
         bar_width : `float`, optional
             The width of the bars, by default 0.0001
+        date_xaxis : `bool`, optional
+            Whether to check if the xaxis is a date axis, by default True
         """
         self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
@@ -1066,7 +1068,8 @@ class OpenBBFigure(go.Figure):
             self._adjust_margins()
 
         self._apply_feature_flags()
-        self._xaxis_tickformatstops()
+        if kwargs.pop("date_xaxis", True):
+            self._xaxis_tickformatstops()
 
         self.update_traces(marker_line_width=self.bar_width, selector=dict(type="bar"))
         self.update_traces(
