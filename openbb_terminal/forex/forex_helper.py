@@ -159,17 +159,20 @@ def load(
                 end_date=end_date,
             )
             df.index.name = "date"
+            df.name = f"{from_symbol}/{to_symbol}"
             return df
 
         if source == "YahooFinance":
             df = yf.download(
                 f"{from_symbol}{to_symbol}=X",
                 start=datetime.strptime(start_date, "%Y-%m-%d"),
-                end=datetime.strptime(end_date, "%Y-%m-%d"),
+                end=datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1),
                 interval=clean_interval,
                 progress=verbose,
             )
+            df.index = pd.to_datetime(df.index).tz_localize(None)
             df.index.name = "date"
+            df.name = f"{from_symbol}/{to_symbol}"
             return df
 
     if source == "Polygon":
@@ -187,6 +190,7 @@ def load(
             end_date=end_date,
         )
         df.index.name = "date"
+        df.name = f"{from_symbol}/{to_symbol}"
         return df
 
     console.print(f"Source {source} not supported")
