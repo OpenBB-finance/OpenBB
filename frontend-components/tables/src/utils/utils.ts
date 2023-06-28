@@ -43,7 +43,10 @@ export function formatNumberMagnitude(value: number | string, column?: string) {
   }
 
   if (value > 1000 || value < -1000) {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const parts = value.toString().split(".");
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const decimalPart = parts[1] ? `.${parts[1]}` : "";
+    return `${integerPart}${decimalPart}`;
   }
 
   return value;

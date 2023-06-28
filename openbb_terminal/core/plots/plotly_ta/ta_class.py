@@ -86,7 +86,6 @@ class PlotlyTA(PltTA):
     has_volume: bool = True
     show_volume: bool = True
     prepost: bool = False
-    is_stock: bool = True
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
@@ -145,7 +144,6 @@ class PlotlyTA(PltTA):
         prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
-        **kwargs,
     ) -> OpenBBFigure:
         """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
         if isinstance(df_stock, pd.Series):
@@ -166,7 +164,6 @@ class PlotlyTA(PltTA):
         self.show_volume = volume and self.has_volume
 
         self.prepost = prepost
-        self.is_stock = kwargs.get("is_stock", True)
 
         return self.plot_fig(
             fig=fig, symbol=symbol, candles=candles, volume_ticks_x=volume_ticks_x
@@ -182,7 +179,6 @@ class PlotlyTA(PltTA):
         prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
-        **kwargs,
     ) -> OpenBBFigure:
         """Plot a chart with the given indicators.
 
@@ -211,22 +207,12 @@ class PlotlyTA(PltTA):
             Plotly figure to plot on, by default None
         volume_ticks_x : int, optional
             Number to multiply volume, by default 7
-        is_stock : bool, optional
-            If set to True, the chart no range breaks will be applied, by default True
         """
         if indicators is None and PLOTLY_TA is not None:
             indicators = PLOTLY_TA.indicators
 
         return PlotlyTA().__plot__(
-            df_stock,
-            indicators,
-            symbol,
-            candles,
-            volume,
-            prepost,
-            fig,
-            volume_ticks_x,
-            **kwargs,
+            df_stock, indicators, symbol, candles, volume, prepost, fig, volume_ticks_x
         )
 
     @staticmethod
@@ -508,9 +494,6 @@ class PlotlyTA(PltTA):
             selector=dict(type="scatter", mode="lines"), connectgaps=True
         )
         figure.update_layout(showlegend=False)
-
-        if self.is_stock:
-            figure.hide_holidays(self.prepost)
 
         if not self.show_volume:
             figure.update_layout(margin=dict(l=20))

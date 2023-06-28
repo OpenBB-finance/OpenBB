@@ -271,7 +271,7 @@ def display_candle(
         indicators = dict(rma=dict(length=ma))
 
     data.name = f"{from_symbol}/{to_symbol}"
-    fig = PlotlyTA.plot(data, indicators, volume=has_volume, is_stock=False)
+    fig = PlotlyTA.plot(data, indicators, volume=has_volume)
     if add_trend:
         fig.add_trend(data, secondary_y=False)
 
