@@ -1,184 +1,184 @@
 Wrong sort column provided! Provide one of these: Ticker, Company, Sector, Industry, Country, Market Cap, P/E, Price, Change, Volume
-    Ticker                                       Company                  Sector                                  Industry         Country    Market Cap      P/E   Price  Change      Volume
-0     NERV                    Minerva Neurosciences Inc.              Healthcare                             Biotechnology             USA  5.768000e+07      NaN   10.19  0.6927  53141438.0
-1     JOBY                            Joby Aviation Inc.             Industrials                   Airports & Air Services             USA  5.820000e+09      NaN    8.96  0.4022  48094691.0
-2     OPEN                    Opendoor Technologies Inc.             Real Estate                      Real Estate Services             USA  2.540000e+09      NaN    3.98  0.1706  48801309.0
-3      BOF              BranchOut Food Inc. Common Stock      Consumer Defensive                            Packaged Foods             USA  1.542000e+07      NaN    3.78  0.1703    495790.0
-4     MPAA                Motorcar Parts of America Inc.       Consumer Cyclical                                Auto Parts             USA  1.541000e+08      NaN    8.21  0.1662    720853.0
-5     OPAD                       Offerpad Solutions Inc.             Real Estate                      Real Estate Services             USA  3.176600e+08      NaN   11.93  0.1662    304384.0
-6     MKFG                Markforged Holding Corporation              Technology                         Computer Hardware             USA  2.542400e+08      NaN    1.27  0.1651   1521943.0
-7     NNVC                            NanoViricides Inc.              Healthcare                             Biotechnology             USA  1.463000e+07      NaN    1.28  0.1636    215597.0
-8     CVNA                                   Carvana Co.       Consumer Cyclical                  Auto & Truck Dealerships             USA  5.020000e+09      NaN   28.03  0.1535  34812660.0
-9     RDFN                            Redfin Corporation             Real Estate                      Real Estate Services             USA  1.470000e+09      NaN   13.87  0.1520   7329546.0
-10    BRFH                      Barfresh Food Group Inc.      Consumer Defensive                 Beverages - Non-Alcoholic             USA  1.361000e+07      NaN    1.39  0.1488     14278.0
-11    RGTI                        Rigetti Computing Inc.              Technology                         Computer Hardware             USA  1.601800e+08      NaN    1.24  0.1481   7001682.0
-12    TRVI                       Trevi Therapeutics Inc.              Healthcare                             Biotechnology             USA  1.383300e+08      NaN    2.27  0.1407    272990.0
-13     DNA                 Ginkgo Bioworks Holdings Inc.              Healthcare                             Biotechnology             USA  3.720000e+09      NaN    1.82  0.1375  22081216.0
-14    ACHR                          Archer Aviation Inc.             Industrials                       Aerospace & Defense             USA  1.010000e+09      NaN    3.85  0.1357   7920388.0
-15     DHC                  Diversified Healthcare Trust             Real Estate              REIT - Healthcare Facilities             USA  4.770400e+08      NaN    1.98  0.1314   2659740.0
-16    CXAI                                    CXApp Inc.              Technology                    Software - Application             USA  1.475600e+08      NaN   10.48  0.1281   1049287.0
-17     TMC                   TMC the metals company Inc.         Basic Materials          Other Industrial Metals & Mining          Canada  3.828300e+08      NaN    1.52  0.1259   2564168.0
-18    SIEN                                  Sientra Inc.              Healthcare                           Medical Devices             USA  3.787000e+07      NaN    3.22  0.1259    822763.0
-19    GEOS             Geospace Technologies Corporation                  Energy            Oil & Gas Equipment & Services             USA  1.075800e+08      NaN    7.56  0.1258     56710.0
-20    QBTS                           D-Wave Quantum Inc.              Technology                         Computer Hardware          Canada  3.006200e+08      NaN    2.25  0.1250   6763162.0
-21    ERES            East Resources Acquisition Company               Financial                           Shell Companies             USA  1.261700e+08      NaN   11.00  0.1224     52193.0
-22    APLM                               Apollomics Inc.              Healthcare                             Biotechnology             USA  4.856400e+08      NaN    5.70  0.1220     70523.0
-23    SOUN                            SoundHound AI Inc.              Technology                    Software - Application             USA  9.461400e+08      NaN    4.71  0.1214  30195415.0
-24    BIMI               BIMI International Medical Inc.              Healthcare                  Pharmaceutical Retailers             USA  5.870000e+06      NaN    1.33  0.1180     98319.0
-25    THRX                  Theseus Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  4.436600e+08      NaN   10.27  0.1175    238904.0
-26    EBIX                                     Ebix Inc.              Technology                    Software - Application             USA  8.416700e+08    16.21   27.65  0.1154   1167820.0
-27     WGS                         GeneDx Holdings Corp.              Healthcare               Health Information Services             USA  1.602000e+08      NaN    6.19  0.1153    261460.0
-28    JXJT                         JX Luxventure Limited       Consumer Cyclical                     Apparel Manufacturing           China  1.390000e+06      NaN    2.31  0.1127    134833.0
-29    ROIV                         Roivant Sciences Ltd.              Healthcare                             Biotechnology  United Kingdom  7.300000e+09      NaN   10.07  0.1127   9531280.0
-30    LFCR                      Lifecore Biomedical Inc.              Healthcare  Drug Manufacturers - Specialty & Generic             USA  2.611100e+08      NaN    9.22  0.1122    837666.0
-31    RMBL                                 RumbleON Inc.       Consumer Cyclical                  Auto & Truck Dealerships             USA  2.162300e+08      NaN   12.63  0.1118    294687.0
-32    CABA                            Cabaletta Bio Inc.              Healthcare                             Biotechnology             USA  5.381400e+08      NaN   13.35  0.1116    612323.0
-33    STBX                   Starbox Group Holdings Ltd.  Communication Services            Internet Content & Information        Malaysia  1.567000e+08    38.43    3.42  0.1104    418279.0
-34    LQDA                          Liquidia Corporation              Healthcare                             Biotechnology             USA  6.393400e+08      NaN    9.90  0.1099    635277.0
-35     BZH                         Beazer Homes USA Inc.       Consumer Cyclical                  Residential Construction             USA  8.673200e+08     4.19   27.30  0.1080   1017220.0
-36    EOSE                   Eos Energy Enterprises Inc.             Industrials              Electrical Equipment & Parts             USA  5.858400e+08      NaN    5.03  0.1079  12224333.0
-37    SLNO                      Soleno Therapeutics Inc.              Healthcare                             Biotechnology             USA  3.689000e+07      NaN    4.35  0.1069     65916.0
-38    BBIO                         BridgeBio Pharma Inc.              Healthcare                             Biotechnology             USA  3.000000e+09      NaN   18.01  0.1056   2658429.0
-39    AMTX                                  Aemetis Inc.                  Energy            Oil & Gas Refining & Marketing             USA  2.455700e+08      NaN    6.50  0.1054    917693.0
-40    LPTX                        Leap Therapeutics Inc.              Healthcare                             Biotechnology             USA  8.090000e+07      NaN    3.37  0.1049    194414.0
-41    FRGE                    Forge Global Holdings Inc.              Technology                    Software - Application             USA  4.306800e+08      NaN    2.44  0.1041    944668.0
-42    POAI                      Predictive Oncology Inc.              Healthcare            Medical Instruments & Supplies             USA  1.760000e+07     None    5.13  0.1032    262424.0
-43    PRAX               Praxis Precision Medicines Inc.              Healthcare                             Biotechnology             USA  7.233000e+07     None    1.18  0.1028   1171830.0
-44    BKSY                      BlackSky Technology Inc.              Technology        Scientific & Technical Instruments             USA  2.834400e+08     None    2.10  0.0995   2151065.0
-45    PRCH                              Porch Group Inc.              Technology                    Software - Application             USA  1.321500e+08     None    1.34  0.0984    985125.0
-46    REAL                             The RealReal Inc.       Consumer Cyclical                              Luxury Goods             USA  1.799900e+08     None    1.81  0.0970   5065367.0
-47    WETG                            WeTrade Group Inc.              Technology                    Software - Application           China  1.028000e+07     None    9.75  0.0955    113778.0
-48    MRNS                  Marinus Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  5.427700e+08     None   10.97  0.0954    850325.0
-49    EVGN                                  Evogene Ltd.              Healthcare                             Biotechnology          Israel  4.237000e+07     None    1.15  0.0952    530129.0
-50     CUK                    Carnival Corporation & plc       Consumer Cyclical                           Travel Services             USA  2.169000e+10     None   15.60  0.0932   4368198.0
-51    BYSI                             BeyondSpring Inc.              Healthcare                             Biotechnology             USA  5.395000e+07     None    1.30  0.0924     94087.0
-52    ASTC                         Astrotech Corporation             Industrials                       Aerospace & Defense             USA  2.414000e+07     None   14.20  0.0923     92094.0
-53    SPCE                 Virgin Galactic Holdings Inc.             Industrials                       Aerospace & Defense             USA  1.440000e+09     None    4.74  0.0922  43275802.0
-54    XPOF                       Xponential Fitness Inc.       Consumer Cyclical                                   Leisure             USA  8.753400e+08     None   17.13  0.0897   7850464.0
-55      EH                        EHang Holdings Limited             Industrials                       Aerospace & Defense           China  8.939600e+08     None   14.47  0.0888   1228821.0
-56    SCYX                                 SCYNEXIS Inc.              Healthcare  Drug Manufacturers - Specialty & Generic             USA  1.073000e+08     None    3.02  0.0884    424626.0
-57     CCL                    Carnival Corporation & plc       Consumer Cyclical                           Travel Services             USA  2.171000e+10     None   17.29  0.0881  95888003.0
-58    IPWR                              Ideal Power Inc.             Industrials              Electrical Equipment & Parts             USA  7.116000e+07     None   11.98  0.0881     23505.0
-59    PIXY                                ShiftPixy Inc.             Industrials            Staffing & Employment Services             USA  1.975000e+07     None    1.98  0.0879    354634.0
-60    AMSC           American Superconductor Corporation             Industrials            Specialty Industrial Machinery             USA  1.834900e+08     None    6.08  0.0877    191746.0
-61    GNFT                                   Genfit S.A.              Healthcare                             Biotechnology          France  2.379400e+08     None    4.28  0.0875     20362.0
-62    MDGL                 Madrigal Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  4.010000e+09      NaN  221.68  0.0873   1039822.0
-63    FTCH                              Farfetch Limited       Consumer Cyclical                           Internet Retail  United Kingdom  2.160000e+09      NaN    6.14  0.0867  15220583.0
-64   METCB                          Ramaco Resources Inc         Basic Materials                               Coking Coal             USA  4.592700e+08     3.68   10.94  0.0864     92018.0
-65     RGF               The Real Good Food Company Inc.      Consumer Defensive                            Packaged Foods             USA  9.329000e+07      NaN    3.65  0.0863     15699.0
-66    BFLY                        Butterfly Network Inc.              Healthcare                           Medical Devices             USA  4.868200e+08      NaN    2.27  0.0861   1778052.0
-67    MYNZ                             Mainz Biomed N.V.              Healthcare                    Diagnostics & Research         Germany  7.331000e+07      NaN    4.82  0.0856     13200.0
-68    GOGN               GoGreen Investments Corporation               Financial                           Shell Companies             USA  4.128500e+08  1045.45   11.50  0.0849     76157.0
-69    PHAT                  Phathom Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  7.242800e+08      NaN   13.45  0.0847    349115.0
-70    RKDA                      Arcadia Biosciences Inc.      Consumer Defensive                            Packaged Foods             USA  3.590000e+06      NaN    3.74  0.0844     20515.0
-71    ATIP                     ATI Physical Therapy Inc.              Healthcare                   Medical Care Facilities             USA  4.320000e+07      NaN   10.36  0.0837    173305.0
-72     AWH                    Aspira Women's Health Inc.              Healthcare                    Diagnostics & Research             USA  2.675000e+07      NaN    3.25  0.0833     22331.0
-73    CRVS                   Corvus Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  1.154600e+08      NaN    2.35  0.0829    407476.0
-74      QH                                 Quhuo Limited              Technology                    Software - Application           China  1.346000e+07      NaN    2.09  0.0829     25535.0
-75    GEVO                                     Gevo Inc.         Basic Materials                       Specialty Chemicals             USA  3.547300e+08      NaN    1.44  0.0827   6092023.0
-76    MGTX                         MeiraGTx Holdings plc              Healthcare                             Biotechnology             USA  4.105000e+08      NaN    6.86  0.0820    426465.0
-77    CBAY                     CymaBay Therapeutics Inc.              Healthcare                             Biotechnology             USA  7.879600e+08      NaN    8.08  0.0817   1819937.0
-78     QSI                       Quantum-Si incorporated              Healthcare                             Biotechnology             USA  2.352800e+08      NaN    1.73  0.0812    638049.0
-79    ARBE                            Arbe Robotics Ltd.              Technology                 Software - Infrastructure          Israel  1.978000e+08      NaN    2.93  0.0812    161831.0
-80    CYTH                       Cyclo Therapeutics Inc.              Healthcare  Drug Manufacturers - Specialty & Generic             USA  2.640000e+07      NaN    1.74  0.0807     66922.0
-81    KIND                        Nextdoor Holdings Inc.  Communication Services            Internet Content & Information             USA  1.170000e+09      NaN    3.22  0.0805   7137483.0
-82     VRM                                    Vroom Inc.       Consumer Cyclical                  Auto & Truck Dealerships             USA  1.918500e+08      NaN    1.48  0.0803   5608921.0
-83    ELYM                       Eliem Therapeutics Inc.              Healthcare                             Biotechnology             USA  7.478000e+07      NaN    2.97  0.0800     20388.0
-84    ATAI                       Atai Life Sciences N.V.              Healthcare                             Biotechnology         Germany  2.863100e+08      NaN    1.64  0.0789   1280367.0
-85    XFOR                       X4 Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  2.429200e+08      NaN    1.92  0.0787   3324539.0
-86    MAXN                Maxeon Solar Technologies Ltd.              Technology                                     Solar       Singapore  1.480000e+09      NaN   28.28  0.0786   1098168.0
-87     KOD                          Kodiak Sciences Inc.              Healthcare                             Biotechnology             USA  4.024100e+08      NaN    7.29  0.0784    936134.0
-88    TPIC                           TPI Composites Inc.             Industrials            Specialty Industrial Machinery             USA  4.421000e+08      NaN    9.82  0.0779    932140.0
-89    SQSP                              Squarespace Inc.              Technology                 Software - Infrastructure             USA  4.140000e+09      NaN   29.91  0.0778    829048.0
-90    PBLA                     Panbela Therapeutics Inc.              Healthcare                             Biotechnology             USA  3.240000e+06      NaN    2.22  0.0777    474452.0
-91    OCUL                       Ocular Therapeutix Inc.              Healthcare                             Biotechnology             USA  4.218200e+08      NaN    5.28  0.0776   1274432.0
-92    CLNE                      Clean Energy Fuels Corp.                  Energy            Oil & Gas Refining & Marketing             USA  1.080000e+09      NaN    4.90  0.0769   2960469.0
-93    IKNA                           Ikena Oncology Inc.              Healthcare                             Biotechnology             USA  2.997100e+08      NaN    6.92  0.0762    100280.0
-94    FTCI                                FTC Solar Inc.              Technology                                     Solar             USA  2.957600e+08      NaN    2.84  0.0758   1910689.0
-95     AMC               AMC Entertainment Holdings Inc.  Communication Services                             Entertainment             USA  2.490000e+09      NaN    4.41  0.0756  25405075.0
-96    NCLH           Norwegian Cruise Line Holdings Ltd.       Consumer Cyclical                           Travel Services             USA  9.000000e+09      NaN   21.07  0.0755  30644564.0
-97    SNPO                       Snap One Holdings Corp.              Technology       Electronics & Computer Distribution             USA  7.714400e+08      NaN   10.29  0.0752     33013.0
-98    BEST                                     BEST Inc.             Industrials                                  Trucking           China  4.612000e+07      NaN    2.29  0.0751     43920.0
-99    VRCA                  Verrica Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  2.380500e+08      NaN    5.75  0.0748    217626.0
-100   VATE                                INNOVATE Corp.             Industrials                Engineering & Construction             USA  1.389500e+08      NaN    1.88  0.0743    411700.0
-101   SRTS                        Sensus Healthcare Inc.              Healthcare                           Medical Devices             USA  5.125000e+07     8.06    3.04  0.0742    128300.0
-102   NAAS                          NaaS Technology Inc.       Consumer Cyclical                          Specialty Retail           China  1.070000e+09      NaN    5.08  0.0740   1051359.0
-103   VTEX                                          VTEX              Technology                    Software - Application  United Kingdom  8.555000e+08      NaN    4.80  0.0738   2941031.0
-104   BAOS         Baosheng Media Group Holdings Limited  Communication Services                      Advertising Agencies           China  1.160000e+07      NaN    8.00  0.0738   2809436.0
-105   GRTX                      Galera Therapeutics Inc.              Healthcare                             Biotechnology             USA  1.297600e+08      NaN    2.79  0.0731    645999.0
-106   UCAR                               U Power Limited       Consumer Cyclical                  Auto & Truck Dealerships           China  4.304200e+08      NaN    7.20  0.0730   1055663.0
-107   XPEV                                    XPeng Inc.       Consumer Cyclical                        Auto Manufacturers           China  1.024000e+10      NaN   11.78  0.0729  18934203.0
-108    SYM                                 Symbotic Inc.             Industrials            Specialty Industrial Machinery             USA  2.534000e+10      NaN   41.84  0.0728   1114411.0
-109   COMM                CommScope Holding Company Inc.              Technology                   Communication Equipment             USA  1.150000e+09      NaN    5.62  0.0725   4951126.0
-110   CSSE  Chicken Soup for the Soul Entertainment Inc.  Communication Services                             Entertainment             USA  3.666000e+07      NaN    1.19  0.0721    282962.0
-111   LFMD                                   LifeMD Inc.              Healthcare               Health Information Services             USA  1.350200e+08      NaN    3.94  0.0707    228159.0
-112   GDTC                  CytoMed Therapeutics Limited              Healthcare                             Biotechnology       Singapore  3.385000e+07      NaN    3.05  0.0702    101901.0
-113   RETA                    Reata Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  3.660000e+09      NaN   98.83  0.0697   2096237.0
-114     UP                     Wheels Up Experience Inc.             Industrials                   Airports & Air Services             USA  2.717000e+07      NaN    1.08  0.0693    887080.0
-115   ARIS                     Aris Water Solutions Inc.               Utilities               Utilities - Regulated Water             USA  6.065400e+08    38.03   10.23  0.0690    201840.0
-116   LUXH                          LuxUrban Hotels Inc.       Consumer Cyclical                                   Lodging             USA  9.952000e+07      NaN    3.11  0.0687    407727.0
-117   NMTC     NeuroOne Medical Technologies Corporation              Healthcare                           Medical Devices             USA  2.043000e+07      NaN    1.09  0.0686     64419.0
-118   VRPX                   Virpax Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  1.304000e+07      NaN    1.09  0.0686     43437.0
-119   BLDE                       Blade Air Mobility Inc.             Industrials                   Airports & Air Services             USA  2.981900e+08      NaN    3.90  0.0685    782434.0
-120    GWH                                 ESS Tech Inc.             Industrials              Electrical Equipment & Parts             USA  2.547900e+08      NaN    1.56  0.0685   1306501.0
-121   APLS                  Apellis Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  1.085000e+10      NaN   92.32  0.0683   1932380.0
-122   LIAN                                       LianBio              Healthcare                             Biotechnology             USA  2.582800e+08      NaN    2.37  0.0676     54386.0
-123   BKTI                   BK Technologies Corporation              Technology                   Communication Equipment             USA  5.316000e+07      NaN   15.68  0.0674     19187.0
-124   QMCO                           Quantum Corporation              Technology                         Computer Hardware             USA  1.118300e+08      NaN    1.11  0.0673    629579.0
-125   RKLB                           Rocket Lab USA Inc.             Industrials                       Aerospace & Defense             USA  2.860000e+09      NaN    5.87  0.0673   4339435.0
-126   USAP     Universal Stainless & Alloy Products Inc.         Basic Materials                                     Steel             USA  1.283800e+08      NaN   13.50  0.0672    106383.0
-127   PLBY                               PLBY Group Inc.       Consumer Cyclical                                   Leisure             USA  1.303900e+08      NaN    1.75  0.0671   1137207.0
-128   BREA                            Brera Holdings PLC  Communication Services                             Entertainment         Ireland  2.621000e+07      NaN    2.40  0.0666     27580.0
-129   GRPN                                  Groupon Inc.  Communication Services            Internet Content & Information             USA  1.611200e+08      NaN    5.93  0.0665   1151912.0
-130    MLP            Maui Land & Pineapple Company Inc.             Real Estate                      Real Estate Services             USA  2.571000e+08   265.96   13.83  0.0663     39240.0
-131    OBT                    Orange County Bancorp Inc.               Financial                          Banks - Regional             USA  2.155600e+08     9.81   38.84  0.0662     24723.0
-132   AAOI                  Applied Optoelectronics Inc.              Technology                   Communication Equipment             USA  1.667300e+08      NaN    5.17  0.0660   2036906.0
-133   PINS                                Pinterest Inc.  Communication Services            Internet Content & Information             USA  1.833000e+10      NaN   28.14  0.0659  15980430.0
-134   NTRB                                Nutriband Inc.              Healthcare                             Biotechnology             USA  1.986000e+07      NaN    2.60  0.0656     25389.0
-135   ICVX                                 Icosavax Inc.              Healthcare                             Biotechnology             USA  5.277600e+08      NaN   10.57  0.0655    167818.0
-136   HYLN                        Hyliion Holdings Corp.       Consumer Cyclical                                Auto Parts             USA  3.332600e+08      NaN    1.79  0.0655   1240250.0
-137   PYXS                           Pyxis Oncology Inc.              Healthcare                             Biotechnology             USA  1.053800e+08      NaN    2.62  0.0650    255433.0
-138   DNMR                       Danimer Scientific Inc.         Basic Materials                       Specialty Chemicals             USA  2.537000e+08      NaN    2.46  0.0649    901287.0
-139    CMT                Core Molding Technologies Inc.         Basic Materials                       Specialty Chemicals             USA  1.791100e+08    13.42   21.95  0.0645    106505.0
-140   SDGR                              Schrodinger Inc.              Healthcare               Health Information Services             USA  3.450000e+09   324.57   44.79  0.0644    935919.0
-141   DAWN               Day One Biopharmaceuticals Inc.              Healthcare                             Biotechnology             USA  1.140000e+09      NaN   12.59  0.0642   1058334.0
-142   LICY                       Li-Cycle Holdings Corp.             Industrials                          Waste Management          Canada  9.717100e+08      NaN    5.48  0.0641   1064148.0
-143   SLDP                              Solid Power Inc.             Industrials              Electrical Equipment & Parts             USA  4.566500e+08      NaN    2.50  0.0638   1810697.0
-144   RMTI                         Rockwell Medical Inc.              Healthcare  Drug Manufacturers - Specialty & Generic             USA  5.904000e+07      NaN    4.50  0.0638   1296835.0
-145   NVAX                                  Novavax Inc.              Healthcare                             Biotechnology             USA  6.752900e+08      NaN    7.53  0.0636   6561153.0
-146   BLNK                            Blink Charging Co.             Industrials                Engineering & Construction             USA  3.736600e+08      NaN    5.69  0.0636   2230763.0
-147   GROW                    U.S. Global Investors Inc.               Financial                          Asset Management             USA  4.387000e+07    89.12    3.03  0.0632    104422.0
-148     AI                                    C3.ai Inc.              Technology                    Software - Application             USA  4.210000e+09      NaN   35.46  0.0626  26288697.0
-149   IPDN           Professional Diversity Network Inc.             Industrials            Staffing & Employment Services             USA  4.577000e+07      NaN    4.50  0.0626     33117.0
-150   IVVD                                  Invivyd Inc.              Healthcare                             Biotechnology             USA  1.388700e+08      NaN    1.19  0.0625   2362064.0
-151   CHPT                     ChargePoint Holdings Inc.       Consumer Cyclical                          Specialty Retail             USA  3.110000e+09      NaN    8.36  0.0623  14186750.0
-152   EXTR                         Extreme Networks Inc.              Technology                   Communication Equipment             USA  3.110000e+09     55.7   24.23  0.0623   3353424.0
-153    FUV                                 Arcimoto Inc.       Consumer Cyclical                     Recreational Vehicles             USA  1.140000e+07      NaN    1.54  0.0621     95409.0
-154     EU                           enCore Energy Corp.                  Energy                                   Uranium             USA  4.683400e+08      NaN    2.40  0.0619    820978.0
-155    ADD                Color Star Technology Co. Ltd.  Communication Services                             Entertainment             USA  1.162000e+07      NaN    1.20  0.0619     47372.0
-156   FENG                     Phoenix New Media Limited  Communication Services            Internet Content & Information           China  2.519000e+07      NaN    2.06  0.0619     27273.0
-157    VVI                                     Viad Corp             Industrials               Specialty Business Services             USA  5.429700e+08    39.83   25.77  0.0618    222973.0
-158   TWOU                                       2U Inc.      Consumer Defensive             Education & Training Services             USA  3.295900e+08      NaN    3.96  0.0617    969756.0
-159   EVTL                       Vertical Aerospace Ltd.             Industrials                       Aerospace & Defense  United Kingdom  4.162700e+08      NaN    1.90  0.0615   1075796.0
-160   GBIO                            Generation Bio Co.              Healthcare                             Biotechnology             USA  3.254000e+08      NaN    5.01  0.0614    209739.0
-161     BW             Babcock & Wilcox Enterprises Inc.             Industrials            Specialty Industrial Machinery             USA  5.728100e+08      NaN    6.25  0.0611    546259.0
-162   APCX                        AppTech Payments Corp.              Technology                 Software - Infrastructure             USA  3.463000e+07      NaN    1.91  0.0611    157369.0
-163   OSTK                            Overstock.com Inc.       Consumer Cyclical                           Internet Retail             USA  9.843100e+08      NaN   25.54  0.0611   3754840.0
-164   LYFT                                     Lyft Inc.              Technology                    Software - Application             USA  3.730000e+09      NaN   10.45  0.0609  17899535.0
-165     ZI                    ZoomInfo Technologies Inc.              Technology                    Software - Application             USA  1.018000e+10   102.03   25.61  0.0609   7339796.0
-166   SEEL                      Seelos Therapeutics Inc.              Healthcare                             Biotechnology             USA  1.393900e+08      NaN    1.22  0.0609    954073.0
-167   RCAT                         Red Cat Holdings Inc.              Technology                         Computer Hardware             USA  6.823000e+07      NaN    1.22  0.0609   1408720.0
-168   DBRG                      DigitalBridge Group Inc.             Real Estate                      Real Estate Services             USA  2.280000e+09      NaN   13.85  0.0605   2156356.0
-169    GHG              GreenTree Hospitality Group Ltd.       Consumer Cyclical                                   Lodging           China  5.052900e+08      NaN    5.27  0.0604     11884.0
-170   LICN                          Lichen China Limited             Industrials               Specialty Business Services           China  3.956000e+07     4.06    1.41  0.0602     11505.0
-171     AZ                  A2Z Smart Technologies Corp.             Industrials                       Aerospace & Defense          Canada  1.238200e+08      NaN    2.31  0.0596    176223.0
-172    RHE               Regional Health Properties Inc.              Healthcare                   Medical Care Facilities             USA  6.790000e+06      NaN    3.38  0.0596     19067.0
-173   MLYS                   Mineralys Therapeutics Inc.              Healthcare                             Biotechnology             USA  7.130700e+08      NaN   17.10  0.0595     94201.0
-174   RCEL                            AVITA Medical Inc.              Healthcare                           Medical Devices             USA  4.137500e+08      NaN   16.59  0.0594    183347.0
-175    GME                                GameStop Corp.       Consumer Cyclical                          Specialty Retail             USA  7.650000e+09      NaN   24.98  0.0594   3479297.0
-176   BIOR                       Biora Therapeutics Inc.              Healthcare                             Biotechnology             USA  4.937000e+07      NaN    3.76  0.0592    156987.0
-177   ALTI                              AlTi Global Inc.               Financial                          Asset Management             USA  8.718400e+08      NaN    7.90  0.0590    164276.0
-178   PRVA                      Privia Health Group Inc.              Healthcare               Health Information Services             USA  3.170000e+09   209.85   27.49  0.0589   1399760.0
-179   TDUP                                  ThredUp Inc.       Consumer Cyclical                           Internet Retail             USA  2.629600e+08      NaN    2.52  0.0588    383334.0
-180   CRGO                             Freightos Limited             Industrials            Integrated Freight & Logistics          Israel  1.827400e+08      NaN    3.61  0.0587     16123.0
-181   CUBI                        Customers Bancorp Inc.               Financial                          Banks - Regional             USA  1.000000e+09     5.24   30.70  0.0586    570383.0
+    Ticker                                           Company                  Sector                                  Industry         Country    Market Cap      P/E   Price  Change       Volume
+0     CDIO                  Cardio Diagnostics Holdings Inc.              Healthcare                             Biotechnology             USA  3.357000e+07      NaN    3.45  1.5847  100099160.0
+1     LION                                Lionheart III Corp               Financial                           Shell Companies             USA  2.419200e+08      NaN   14.60  1.0563     739802.0
+2      CHS                                  Chico's FAS Inc.       Consumer Cyclical                            Apparel Retail             USA  7.147800e+08     6.40    5.75  0.1616    6759202.0
+3     VTNR                                Vertex Energy Inc.                  Energy            Oil & Gas Refining & Marketing             USA  7.436800e+08      NaN    9.47  0.1591   11711654.0
+4     HYPR                                    Hyperfine Inc.              Healthcare                           Medical Devices             USA  1.192200e+08      NaN    1.61  0.1583    1064605.0
+5     CNSP                          CNS Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  2.350000e+06      NaN    1.85  0.1562     338736.0
+6     PBLA                         Panbela Therapeutics Inc.              Healthcare                             Biotechnology             USA  8.840000e+06      NaN    1.37  0.1513    3973317.0
+7      GGE                                  Green Giant Inc.             Real Estate                 Real Estate - Development           China  1.340700e+08      NaN    2.37  0.1505      21798.0
+8     AMAM                              Ambrx Biopharma Inc.              Healthcare                             Biotechnology             USA  3.224000e+08      NaN    6.43  0.1503    2721628.0
+9     CLOV                   Clover Health Investments Corp.              Healthcare                          Healthcare Plans             USA  6.598800e+08      NaN    1.32  0.1478   20513328.0
+10    HSII           Heidrick & Struggles International Inc.             Industrials            Staffing & Employment Services             USA  6.996500e+08     9.23   34.33  0.1474     455535.0
+11    GOGO                                         Gogo Inc.  Communication Services                          Telecom Services             USA  2.200000e+09    10.99   16.46  0.1438    1542316.0
+12    CDNA                                        CareDx Inc              Healthcare                    Diagnostics & Research             USA  8.924700e+08      NaN   16.82  0.1434    2145992.0
+13     CCO               Clear Channel Outdoor Holdings Inc.  Communication Services                      Advertising Agencies             USA  8.801500e+08      NaN    1.77  0.1419    4386783.0
+14    CING                                    Cingulate Inc.              Healthcare                             Biotechnology             USA  1.446000e+07      NaN    1.79  0.1329    1401411.0
+15      AZ                      A2Z Smart Technologies Corp.             Industrials                       Aerospace & Defense          Canada  7.291000e+07      NaN    1.71  0.1325      61520.0
+16    DUOT                      Duos Technologies Group Inc.              Technology                    Software - Application             USA  3.232000e+07      NaN    5.18  0.1322     226033.0
+17     MSC        Studio City International Holdings Limited       Consumer Cyclical                         Resorts & Casinos       Hong Kong  1.650000e+09      NaN    7.00  0.1309      38358.0
+18    FOUR                              Shift4 Payments Inc.              Technology                 Software - Infrastructure             USA  5.390000e+09   163.71   64.50  0.1304    4936592.0
+19    TRDA                         Entrada Therapeutics Inc.              Healthcare                             Biotechnology             USA  4.170500e+08      NaN   12.75  0.1283      91273.0
+20     DRQ                                    Dril-Quip Inc.                  Energy            Oil & Gas Equipment & Services             USA  1.160000e+09      NaN   34.25  0.1237     610429.0
+21    CNTB                Connect Biopharma Holdings Limited              Healthcare                             Biotechnology           China  6.975000e+07      NaN    1.29  0.1217     194127.0
+22    RDNT                                       RadNet Inc.              Healthcare                    Diagnostics & Research             USA  1.380000e+09      NaN   23.58  0.1204     688194.0
+23    XPON                                    Expion360 Inc.             Industrials              Electrical Equipment & Parts             USA  3.165000e+07      NaN    4.47  0.1175     604501.0
+24    SKYT                          SkyWater Technology Inc.              Technology                            Semiconductors             USA  5.794300e+08      NaN   13.13  0.1174    1111233.0
+25    CMND                           Clearmind Medicine Inc.              Healthcare                             Biotechnology          Canada  1.089000e+07      NaN    3.24  0.1172      34343.0
+26    AAON                                         AAON Inc.             Industrials             Building Products & Equipment             USA  4.770000e+09    72.42   90.96  0.1162    1325186.0
+27    MRSN                         Mersana Therapeutics Inc.              Healthcare                             Biotechnology             USA  6.441800e+08      NaN    6.06  0.1160    1302610.0
+28    NCNA                                        NuCana plc              Healthcare                             Biotechnology  United Kingdom  9.835000e+07      NaN    1.45  0.1154      60524.0
+29    SKIN                         The Beauty Health Company      Consumer Defensive             Household & Personal Products             USA  1.720000e+09    70.06   12.61  0.1140    6050024.0
+30     BON                          Bon Natural Life Limited      Consumer Defensive                            Packaged Foods           China  2.901000e+07     3.30    2.45  0.1136     107052.0
+31    DOMH                            Dominari Holdings Inc.              Healthcare                             Biotechnology             USA  2.291000e+07      NaN    4.02  0.1136      44559.0
+32     NGL                            NGL Energy Partners LP                  Energy                       Oil & Gas Midstream             USA  4.078500e+08      NaN    3.44  0.1097    2528463.0
+33    BFLY                            Butterfly Network Inc.              Healthcare                           Medical Devices             USA  5.113400e+08      NaN    2.46  0.1081    2578906.0
+34    OMGA                           Omega Therapeutics Inc.              Healthcare                             Biotechnology             USA  3.169300e+08      NaN    6.46  0.1081     113341.0
+35    ILAG         Intelligent Living Application Group Inc.             Industrials             Building Products & Equipment       Hong Kong  2.461000e+07      NaN    1.34  0.1074    7407350.0
+36    GRFX                             Graphex Group Limited         Basic Materials          Other Industrial Metals & Mining       Hong Kong  5.822000e+07      NaN    1.76  0.1069      81932.0
+37    TYRA                             Tyra Biosciences Inc.              Healthcare                             Biotechnology             USA  5.435900e+08      NaN   13.21  0.1064      30531.0
+38    GNPX                                      Genprex Inc.              Healthcare                             Biotechnology             USA  6.287000e+07      NaN    1.28  0.1034     534141.0
+39    GSAT                                   Globalstar Inc.  Communication Services                          Telecom Services             USA  2.390000e+09      NaN    1.28  0.1034    9356512.0
+40    AMRN                            Amarin Corporation plc              Healthcare              Drug Manufacturers - General         Ireland  8.458400e+08      NaN    2.03  0.1033   18472440.0
+41    ROVR                                  Rover Group Inc.       Consumer Cyclical                         Personal Services             USA  7.821600e+08      NaN    4.18  0.1029    1000494.0
+42    THMO                       ThermoGenesis Holdings Inc.              Healthcare                           Medical Devices             USA  3.410000e+06      NaN    3.22  0.1027      26165.0
+43    RCON                             Recon Technology Ltd.                  Energy            Oil & Gas Equipment & Services           China  7.150000e+07     4.76    2.05  0.1022    1381984.0
+44    CJJD                       China Jo-Jo Drugstores Inc.              Healthcare                  Pharmaceutical Retailers           China  1.492000e+08      NaN    7.46  0.1019     156598.0
+45    XRAY                              DENTSPLY SIRONA Inc.              Healthcare            Medical Instruments & Supplies             USA  8.390000e+09      NaN   38.07  0.1019    5997282.0
+46    WIMI                          WiMi Hologram Cloud Inc.  Communication Services                      Advertising Agencies           China  1.096900e+08      NaN    1.19  0.1019     387869.0
+47    COIN                              Coinbase Global Inc.               Financial          Financial Data & Stock Exchanges             USA  1.601000e+10      NaN   64.83  0.0996   24843894.0
+48    VRTV                               Veritiv Corporation             Industrials                             Conglomerates             USA  2.110000e+09     6.95  151.44  0.0995     344220.0
+49    PPTA                          Perpetua Resources Corp.         Basic Materials            Other Precious Metals & Mining             USA  3.116600e+08      NaN    3.57  0.0985     115746.0
+50    DLHC                                DLH Holdings Corp.             Industrials               Specialty Business Services             USA  1.814300e+08    10.71   12.75  0.0982      68625.0
+51    RVMD                         Revolution Medicines Inc.              Healthcare                             Biotechnology             USA  2.380000e+09      NaN   26.76  0.0981    5593266.0
+52    NNVC                                NanoViricides Inc.              Healthcare                             Biotechnology             USA  1.689000e+07      NaN    1.38  0.0972      72467.0
+53    CHCI                   Comstock Holding Companies Inc.             Real Estate                 Real Estate - Diversified             USA  5.918000e+07     6.26    6.44  0.0967      64010.0
+54    AMST                                      Amesite Inc.              Technology                    Software - Application             USA  6.880000e+06      NaN    2.98  0.0956     319511.0
+55     BLX  Banco Latinoamericano de Comercio Exterior S. A.               Financial                          Banks - Regional          Panama  6.727100e+08     8.24   18.30  0.0925     311037.0
+56    DBGI                         Digital Brands Group Inc.       Consumer Cyclical                            Apparel Retail             USA  8.160000e+06      NaN    1.54  0.0922    1582629.0
+57    PIXY                                    ShiftPixy Inc.             Industrials            Staffing & Employment Services             USA  4.942000e+07      NaN    5.11  0.0919     210951.0
+58    AEVA                            Aeva Technologies Inc.       Consumer Cyclical                                Auto Parts             USA  4.029100e+08      NaN    1.79  0.0915    1334633.0
+59    AUPH                      Aurinia Pharmaceuticals Inc.              Healthcare                             Biotechnology          Canada  1.320000e+09      NaN    9.09  0.0912    5665507.0
+60    OUST                                       Ouster Inc.              Technology                     Electronic Components             USA  4.765000e+08      NaN    1.20  0.0909    2677185.0
+61    BGRY                               Berkshire Grey Inc.             Industrials            Specialty Industrial Machinery             USA  3.390600e+08      NaN    1.32  0.0909     843515.0
+62    INTZ                                    Intrusion Inc.              Technology                 Software - Infrastructure             USA  5.622000e+07      NaN    2.42  0.0901      16811.0
+63     NBY                      NovaBay Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  4.420000e+06      NaN    2.30  0.0900      29723.0
+64     SCU                  Sculptor Capital Management Inc.               Financial                          Asset Management             USA  5.312900e+08      NaN    8.97  0.0899     653746.0
+65    CTIB                                  Yunhong CTI Ltd.       Consumer Cyclical                          Specialty Retail             USA  3.078000e+07      NaN    1.83  0.0893      40708.0
+66    PXMD                                    PaxMedica Inc.              Healthcare                             Biotechnology             USA  2.500000e+07      NaN    2.08  0.0890     102509.0
+67    FTCI                                    FTC Solar Inc.              Technology                                     Solar             USA  3.311900e+08      NaN    3.07  0.0887    1500641.0
+68     MUX                                McEwen Mining Inc.         Basic Materials            Other Precious Metals & Mining          Canada  3.325200e+08      NaN    6.80  0.0880     800089.0
+69    DYAI                         Dyadic International Inc.              Healthcare                             Biotechnology             USA  4.033000e+07      NaN    1.37  0.0873      12204.0
+70    SDPI                   Superior Drilling Products Inc.                  Energy            Oil & Gas Equipment & Services             USA  3.272000e+07    23.27    1.14  0.0853     272010.0
+71    AAOI                      Applied Optoelectronics Inc.              Technology                            Semiconductors             USA  9.335000e+07      NaN    2.81  0.0849     177264.0
+72    BIVI                                       BioVie Inc.              Healthcare                             Biotechnology             USA  2.972200e+08      NaN    7.69  0.0831     636821.0
+73    ARBK                               Argo Blockchain plc               Financial                           Capital Markets  United Kingdom  8.594000e+07      NaN    1.70  0.0828     112313.0
+74      QH                                     Quhuo Limited              Technology                    Software - Application           China  8.630000e+06      NaN    1.44  0.0827      42565.0
+75    DPRO                                    Draganfly Inc.             Industrials                       Aerospace & Defense          Canada  1.043500e+08   175.00    2.10  0.0825     612276.0
+76    BFRG                         Bullfrog AI Holdings Inc.              Healthcare               Health Information Services             USA  1.894000e+07      NaN    2.95  0.0806     403699.0
+77     LAW                                     CS Disco Inc.              Technology                    Software - Application             USA  5.876500e+08      NaN    7.00  0.0802     876122.0
+78    CMCL                  Caledonia Mining Corporation Plc         Basic Materials                                      Gold             USA  2.447200e+08     5.93   14.04  0.0800      74027.0
+79     TDW                                    Tidewater Inc.                  Energy            Oil & Gas Equipment & Services             USA  2.440000e+09      NaN   48.84  0.0793    1519154.0
+80    SOPH                                SOPHiA GENETICS SA              Healthcare               Health Information Services     Switzerland  1.898000e+08      NaN    2.60  0.0788      41698.0
+81    ATAT                  Atour Lifestyle Holdings Limited       Consumer Cyclical                                   Lodging           China  3.450000e+09   146.83   26.43  0.0788     263611.0
+82    SOPA                         Society Pass Incorporated              Technology                    Software - Application       Singapore  2.958000e+07      NaN    1.10  0.0784     344242.0
+83    COEP                Coeptis Therapeutics Holdings Inc.              Healthcare                             Biotechnology             USA  3.224000e+07    13.98    1.65  0.0784     203948.0
+84    ISUN                                         iSun Inc.              Technology                                     Solar             USA  2.122000e+07      NaN    1.38  0.0781      39688.0
+85    XERS                     Xeris Biopharma Holdings Inc.              Healthcare                             Biotechnology             USA  1.847000e+08      NaN    1.38  0.0781    1836987.0
+86    HTGM                    HTG Molecular Diagnostics Inc.              Healthcare                    Diagnostics & Research             USA  7.290000e+06      NaN    3.59  0.0781     278852.0
+87    ITRI                                        Itron Inc.              Technology        Scientific & Technical Instruments             USA  2.560000e+09      NaN   55.77  0.0779     592725.0
+88    TKLF                                  Yoshitsu Co. Ltd      Consumer Defensive             Household & Personal Products           Japan  4.433000e+07    11.80    1.18  0.0776      41188.0
+89     ICD               Independence Contract Drilling Inc.                  Energy                        Oil & Gas Drilling             USA  4.986000e+07      NaN    3.80  0.0765     149828.0
+90    JRVR                   James River Group Holdings Ltd.               Financial                     Insurance - Specialty         Bermuda  9.170100e+08      NaN   24.10  0.0749     376197.0
+91    ENVX                                Enovix Corporation             Industrials              Electrical Equipment & Parts             USA  1.520000e+09      NaN    9.22  0.0746    4405546.0
+92    LOOP                              Loop Industries Inc.         Basic Materials                       Specialty Chemicals          Canada  1.218900e+08      NaN    2.60  0.0744      35421.0
+93      FA                       First Advantage Corporation             Industrials               Specialty Business Services             USA  2.220000e+09    36.92   14.51  0.0740     579272.0
+94    HOTH                            Hoth Therapeutics Inc.              Healthcare                             Biotechnology             USA  4.040000e+06      NaN    2.91  0.0738    1089768.0
+95    BKSY                          BlackSky Technology Inc.              Technology        Scientific & Technical Instruments             USA  2.358300e+08      NaN    1.91  0.0730     543765.0
+96     PLM                              PolyMet Mining Corp.         Basic Materials          Other Industrial Metals & Mining             USA  2.615000e+08      NaN    2.50  0.0730     179881.0
+97    IIPR             Innovative Industrial Properties Inc.             Real Estate                         REIT - Industrial             USA  2.330000e+09    17.00   88.41  0.0714     780148.0
+98     KAL                     Kalera Public Limited Company      Consumer Defensive                             Farm Products             USA  4.520000e+06      NaN    4.66  0.0713     291222.0
+99    CENX                          Century Aluminum Company         Basic Materials                                  Aluminum             USA  1.070000e+09     7.42   12.07  0.0700    2665182.0
+100   VMEO                                        Vimeo Inc.              Technology                    Software - Application             USA  6.709800e+08      NaN    3.83  0.0698    3840159.0
+101    DBD                      Diebold Nixdorf Incorporated              Technology                    Software - Application             USA  2.626200e+08      NaN    3.22  0.0698    1377507.0
+102   GRRR                     Gorilla Technology Group Inc.              Technology                 Software - Infrastructure          Taiwan  5.528900e+08      NaN    7.71  0.0697      32262.0
+103   VLCN                                       Volcon Inc.       Consumer Cyclical                        Auto Manufacturers             USA  4.230000e+07      NaN    1.69  0.0696     263204.0
+104   MULN                            Mullen Automotive Inc.       Consumer Cyclical                        Auto Manufacturers             USA  4.244000e+08      NaN    0.23  0.0696  238359920.0
+105   CXDO                                     Crexendo Inc.  Communication Services                          Telecom Services             USA  4.608000e+07      NaN    2.00  0.0695      74009.0
+106   ACRV                         Acrivon Therapeutics Inc.              Healthcare                             Biotechnology             USA  4.243800e+08      NaN   20.32  0.0695      35883.0
+107   USAP         Universal Stainless & Alloy Products Inc.         Basic Materials                                     Steel             USA  8.611000e+07      NaN    9.73  0.0692      50727.0
+108   ESTA                  Establishment Labs Holdings Inc.              Healthcare                           Medical Devices      Costa Rica  1.820000e+09      NaN   71.66  0.0689     298301.0
+109    OLK                           Olink Holding AB (publ)              Healthcare                    Diagnostics & Research          Sweden  2.960000e+09      NaN   23.44  0.0689     171895.0
+110   SLNO                          Soleno Therapeutics Inc.              Healthcare                             Biotechnology             USA  1.699000e+07      NaN    2.03  0.0684      57839.0
+111   AMRS                                       Amyris Inc.         Basic Materials                       Specialty Chemicals             USA  4.722500e+08      NaN    1.25  0.0684    6857576.0
+112   TCRR                            TCR2 Therapeutics Inc.              Healthcare                             Biotechnology             USA  5.227000e+07      NaN    1.25  0.0684     234751.0
+113   SHPH             Shuttle Pharmaceuticals Holdings Inc.              Healthcare  Drug Manufacturers - Specialty & Generic             USA  2.687000e+07      NaN    1.88  0.0682      40273.0
+114   NVAX                                      Novavax Inc.              Healthcare                             Biotechnology             USA  8.091400e+08      NaN    9.26  0.0681   11462643.0
+115   VANI                               Vivani Medical Inc.              Healthcare                           Medical Devices             USA  5.845000e+07      NaN    1.10  0.0680      28435.0
+116   YGMZ                MingZhu Logistics Holdings Limited             Industrials                                  Trucking           China  3.383000e+07    36.67    1.43  0.0672      42664.0
+117    BLI                              Berkeley Lights Inc.              Healthcare                             Biotechnology             USA  1.293900e+08      NaN    1.75  0.0671     633722.0
+118    JFU                                           9F Inc.              Technology           Information Technology Services           China  2.628000e+07      NaN    2.24  0.0667      84047.0
+119   VZIO                               VIZIO Holding Corp.              Technology                      Consumer Electronics             USA  2.020000e+09      NaN   10.25  0.0666    1124843.0
+120   ACAD                       ACADIA Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  3.380000e+09      NaN   20.69  0.0665    3622781.0
+121   APYX                          Apyx Medical Corporation              Healthcare                           Medical Devices             USA  1.175500e+08      NaN    3.25  0.0656     388112.0
+122    MCG                  Membership Collective Group Inc.       Consumer Cyclical                                   Lodging             USA  3.854100e+08      NaN    6.69  0.0653     252929.0
+123   GPCR                       Structure Therapeutics Inc.              Healthcare                             Biotechnology             USA  9.355000e+08      NaN   25.56  0.0650      60619.0
+124   VACC                                     Vaccitech plc              Healthcare                             Biotechnology  United Kingdom  1.232100e+08     7.50    2.79  0.0649      16656.0
+125   ATUS                                   Altice USA Inc.  Communication Services                          Telecom Services             USA  1.810000e+09     9.23    3.96  0.0645   14007096.0
+126   NVTA                               Invitae Corporation              Healthcare                    Diagnostics & Research             USA  5.570200e+08      NaN    2.15  0.0644    9365563.0
+127    ALT                                    Altimmune Inc.              Healthcare                             Biotechnology             USA  6.121300e+08      NaN   12.59  0.0642     968850.0
+128   BRFH                          Barfresh Food Group Inc.      Consumer Defensive                 Beverages - Non-Alcoholic             USA  1.703000e+07      NaN    1.16  0.0642      24318.0
+129   AXSM                          Axsome Therapeutics Inc.              Healthcare                             Biotechnology             USA  3.000000e+09      NaN   68.19  0.0641    1863069.0
+130   GTEC        Greenland Technologies Holding Corporation             Industrials            Specialty Industrial Machinery             USA  3.005000e+07     5.13    2.17  0.0637      31561.0
+131   LCTX                    Lineage Cell Therapeutics Inc.              Healthcare                             Biotechnology             USA  2.389100e+08      NaN    1.35  0.0630     264324.0
+132   BYRN                           Byrna Technologies Inc.             Industrials                       Aerospace & Defense             USA  1.858300e+08      NaN    8.27  0.0630      41566.0
+133   CRGO                                 Freightos Limited             Industrials            Integrated Freight & Logistics          Israel  2.479000e+08      NaN    4.40  0.0628      99095.0
+134   CECO                          CECO Environmental Corp.             Industrials            Pollution & Treatment Controls             USA  5.400200e+08    53.16   15.63  0.0625     765578.0
+135   STIX                                     Semantix Inc.              Technology                    Software - Application          Brazil  2.332100e+08      NaN    3.40  0.0625     188753.0
+136   HIPO                               Hippo Holdings Inc.               Financial                     Insurance - Specialty             USA  4.006500e+08      NaN   17.21  0.0623     105293.0
+137   CETX                                      Cemtrex Inc.              Technology                 Software - Infrastructure             USA  6.720000e+06      NaN    8.09  0.0622      10692.0
+138    BNR                      Burning Rock Biotech Limited              Healthcare                    Diagnostics & Research           China  3.629700e+08      NaN    3.26  0.0619     177162.0
+139   LWLG                              Lightwave Logic Inc.         Basic Materials                       Specialty Chemicals             USA  7.166700e+08      NaN    5.90  0.0612     739016.0
+140   TNGX                           Tango Therapeutics Inc.              Healthcare                             Biotechnology             USA  4.802200e+08      NaN    5.23  0.0609     161934.0
+141   AFRM                              Affirm Holdings Inc.              Technology                 Software - Infrastructure             USA  4.190000e+09      NaN   13.62  0.0607   25098420.0
+142     EH                            EHang Holdings Limited             Industrials                       Aerospace & Defense           China  6.855900e+08      NaN   11.48  0.0600    1002032.0
+143    ISO                             IsoPlexis Corporation              Healthcare                           Medical Devices             USA  4.367000e+07      NaN    1.06  0.0600      59812.0
+144   NAUT                       Nautilus Biotechnology Inc.              Healthcare                             Biotechnology             USA  2.747700e+08      NaN    2.12  0.0600     109728.0
+145      X                   United States Steel Corporation         Basic Materials                                     Steel             USA  6.950000e+09     3.43   30.63  0.0595    9773440.0
+146   SNCR                     Synchronoss Technologies Inc.              Technology                 Software - Infrastructure             USA  9.825000e+07      NaN    1.07  0.0594     111641.0
+147   EDBL                     Edible Garden AG Incorporated      Consumer Defensive                             Farm Products             USA  8.340000e+06      NaN    3.39  0.0594     120986.0
+148   PRIM                     Primoris Services Corporation             Industrials                Engineering & Construction             USA  1.450000e+09    12.24   27.50  0.0593     924778.0
+149   FUTU                             Futu Holdings Limited               Financial                           Capital Markets       Hong Kong  7.450000e+09    22.94   49.21  0.0590    2959332.0
+150   NCTY                                      The9 Limited  Communication Services            Electronic Gaming & Multimedia           China  2.817000e+07      NaN    1.08  0.0588      99372.0
+151   TRVN                                      Trevena Inc.              Healthcare                             Biotechnology             USA  8.550000e+06      NaN    1.08  0.0588      35252.0
+152    UVE                 Universal Insurance Holdings Inc.               Financial           Insurance - Property & Casualty             USA  4.902100e+08      NaN   19.33  0.0586     870749.0
+153   MOVE                                       Movano Inc.              Healthcare                           Medical Devices             USA  4.450000e+07      NaN    1.27  0.0583      60538.0
+154   IXHL                       Incannex Healthcare Limited              Healthcare  Drug Manufacturers - Specialty & Generic       Australia  1.637000e+08      NaN    2.55  0.0581      11497.0
+155    ODV                          Osisko Development Corp.         Basic Materials                                      Gold          Canada  4.624400e+08      NaN    4.38  0.0580      24847.0
+156   SWAG                              Stran & Company Inc.  Communication Services                      Advertising Agencies             USA  3.215000e+07      NaN    1.83  0.0579      41844.0
+157   INSW                        International Seaways Inc.                  Energy                       Oil & Gas Midstream             USA  2.450000e+09    18.86   51.44  0.0578    2173649.0
+158   GSHD                           Goosehead Insurance Inc               Financial                   Insurance - Diversified             USA  1.730000e+09  2332.50   46.65  0.0573     432319.0
+159   ASTL                           Algoma Steel Group Inc.         Basic Materials                                     Steel          Canada  8.405800e+08     2.26    8.02  0.0567    1768517.0
+160   KULR                        KULR Technology Group Inc.              Technology                     Electronic Components             USA  1.514800e+08      NaN    1.31  0.0565    1318247.0
+161   WKHS                              Workhorse Group Inc.       Consumer Cyclical                        Auto Manufacturers             USA  3.522400e+08      NaN    2.06  0.0564    3301611.0
+162   MFIN                         Medallion Financial Corp.               Financial                           Credit Services             USA  1.949400e+08     4.60    8.45  0.0562     131481.0
+163   GRPH                                 Graphite Bio Inc.              Healthcare                             Biotechnology             USA  1.547800e+08      NaN    2.63  0.0562     176325.0
+164   RLMD                         Relmada Therapeutics Inc.              Healthcare                             Biotechnology             USA  1.089700e+08      NaN    3.60  0.0557     207424.0
+165   RXRX                    Recursion Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  1.590000e+09      NaN    8.15  0.0557    1362852.0
+166   CRDF                             Cardiff Oncology Inc.              Healthcare                             Biotechnology             USA  8.344000e+07      NaN    1.73  0.0549     139553.0
+167   CVNA                                       Carvana Co.       Consumer Cyclical                  Auto & Truck Dealerships             USA  2.240000e+09      NaN    9.42  0.0549   20225034.0
+168   SNBR                          Sleep Number Corporation       Consumer Cyclical        Furnishings, Fixtures & Appliances             USA  8.829000e+08    24.83   39.86  0.0548     448341.0
+169   VINC                               Vincerx Pharma Inc.              Healthcare                             Biotechnology             USA  2.523000e+07      NaN    1.16  0.0545      50389.0
+170   MNSO                      MINISO Group Holding Limited       Consumer Cyclical                          Specialty Retail           China  6.390000e+09    42.72   17.90  0.0542   13542189.0
+171   OLMA                        Olema Pharmaceuticals Inc.              Healthcare                             Biotechnology             USA  1.751900e+08      NaN    4.10  0.0540      42010.0
+172   TWLO                                       Twilio Inc.  Communication Services            Internet Content & Information             USA  1.254000e+10      NaN   67.21  0.0539   11497556.0
+173   NUTX                                 Nutex Health Inc.              Healthcare               Health Information Services             USA  9.679200e+08      NaN    1.37  0.0538     958889.0
+174   MEGL                       Magic Empire Global Limited               Financial                           Capital Markets       Hong Kong  3.683000e+07    80.45    1.77  0.0536     153745.0
+175    HCM                          HUTCHMED (China) Limited              Healthcare  Drug Manufacturers - Specialty & Generic       Hong Kong  2.880000e+09      NaN   16.55  0.0535     201450.0
+176   ZEUS                                Olympic Steel Inc.         Basic Materials                                     Steel             USA  5.764500e+08     5.42   52.50  0.0534     217386.0
+177   TNYA                          Tenaya Therapeutics Inc.              Healthcare                             Biotechnology             USA  2.140100e+08      NaN    3.07  0.0532     245867.0
+178   YEXT                                         Yext Inc.              Technology                 Software - Infrastructure             USA  9.185300e+08      NaN    7.34  0.0531    1114565.0
+179     NM                     Navios Maritime Holdings Inc.             Industrials                           Marine Shipping  Cayman Islands  5.911000e+07      NaN    2.80  0.0526     168721.0
+180   VZLA                               Vizsla Silver Corp.         Basic Materials          Other Industrial Metals & Mining          Canada  3.257400e+08      NaN    1.32  0.0518     130191.0
+181   HROW                                Harrow Health Inc.              Healthcare  Drug Manufacturers - Specialty & Generic             USA  5.252400e+08      NaN   17.92  0.0516     462882.0
