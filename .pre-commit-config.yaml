@@ -73,3 +73,4 @@ repos:
         entry: python custom_pre_commit/check_reserved_args.py
         language: system
         types: [python]
+        files: .*_controller\.py$
