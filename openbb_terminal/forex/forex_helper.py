@@ -124,7 +124,11 @@ def load(
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
     if end_date is None:
-        end_date = datetime.now().strftime("%Y-%m-%d")
+        end_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+    else:
+        end_date = (
+            datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
+        ).strftime("%Y-%m-%d")
 
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
@@ -166,7 +170,7 @@ def load(
             df = yf.download(
                 f"{from_symbol}{to_symbol}=X",
                 start=datetime.strptime(start_date, "%Y-%m-%d"),
-                end=datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1),
+                end=datetime.strptime(end_date, "%Y-%m-%d"),
                 interval=clean_interval,
                 progress=verbose,
             )
