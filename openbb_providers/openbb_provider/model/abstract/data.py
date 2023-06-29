@@ -1,0 +1,23 @@
+# IMPORT STANDARD
+
+# IMPORT THIRD-PARTY
+from pydantic import BaseModel, Extra
+
+# IMPORT INTERNAL
+
+
+class Data(BaseModel):
+    """The OpenBB Standardized Data Model."""
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in self.dict().items()])})"
+
+    class Config:
+        extra = Extra.allow
+
+
+class QueryParams(BaseModel):
+    """The OpenBB Standardized QueryParams Model that holds the query input parameters."""
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in self.dict().items()])})"
