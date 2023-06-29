@@ -367,18 +367,25 @@ function Chart({
   }
   const debouncedDynamicLoad = useCallback(
     debounce(async (eventData, figure) => {
-      const data = { ...figure };
-      const toUpdate = await DynamicLoad({
-        event: eventData,
-        figure: data,
-      });
-      setPlotData(toUpdate);
-      Plotly.react(plotDiv, toUpdate.data, toUpdate.layout);
-      const scaled = await autoScaling(eventData, plotDiv);
-      setYaxisFixedRange(scaled.yaxis_fixedrange);
-      Plotly.update(plotDiv, {}, scaled.to_update);
+      if (dateSliced) {
+        const data = { ...figure };
+        await DynamicLoad({
+          event: eventData,
+          figure: data,
+        }).then(async (toUpdate) => {
+          setPlotData(toUpdate);
+          Plotly.react(plotDiv, toUpdate.data, toUpdate.layout);
+          const scaled = await autoScaling(eventData, plotDiv);
+          setYaxisFixedRange(scaled.yaxis_fixedrange);
+          Plotly.update(plotDiv, {}, scaled.to_update);
+        });
+      } else {
+        const scaled = await autoScaling(eventData, plotDiv);
+        setYaxisFixedRange(scaled.yaxis_fixedrange);
+        Plotly.update(plotDiv, {}, scaled.to_update);
+      }
     }, 150),
-    [setPlotData, plotDiv],
+    [setPlotData, plotDiv, setYaxisFixedRange, dateSliced],
   );
 
   const autoscaleButton = useCallback(() => {
@@ -395,13 +402,7 @@ function Chart({
         "plotly_relayout",
         debounce(async (eventdata) => {
           if (eventdata["xaxis.range[0]"] === undefined) return;
-          if (dateSliced) {
-            debouncedDynamicLoad(eventdata, originalData);
-          } else {
-            const scaled = await autoScaling(eventdata, plotDiv);
-            setYaxisFixedRange(scaled.yaxis_fixedrange);
-            Plotly.update(plotDiv, {}, scaled.to_update);
-          }
+          debouncedDynamicLoad(eventdata, originalData);
         }, 500),
       );
     }
@@ -416,17 +417,10 @@ function Chart({
       if (dateSliced) {
         plotDiv.on(
           "plotly_relayout",
-          non_blocking(async function (eventdata) {
+          debounce(async (eventdata) => {
             if (eventdata["xaxis.range[0]"] === undefined) return;
-            const data = { ...originalData };
-            await DynamicLoad({
-              event: eventdata,
-              figure: data,
-            }).then(async (to_update) => {
-              setPlotData(to_update);
-              Plotly.react(plotDiv, to_update.data, to_update.layout);
-            });
-          }, 100),
+            debouncedDynamicLoad(eventdata, originalData);
+          }, 500),
         );
       }
     }
@@ -624,7 +618,7 @@ function Chart({
         if (Object.keys(layout_update).length > 0) {
           setPlotData(newPlotData);
           setVolumeBars(volume_update);
-          Plotly.relayout(plotDiv, layout_update);
+          Plotly.update(plotDiv, {}, layout_update);
         }
       });
 

@@ -1,24 +1,28 @@
 ,Ticker,Company,Sector,Industry,Country,Market Cap,P/E,Price,Change,Volume
-0,ALPS,Alpine Summit Energy Partners Inc.,Energy,Oil & Gas E&P,USA,68570000.0,5.58,2.01,-0.0383,109999.0
-1,WATT,Energous Corporation,Technology,Scientific & Technical Instruments,USA,47910000.0,,0.58,-0.026699999999999998,425358.0
-2,INFI,Infinity Pharmaceuticals Inc.,Healthcare,Biotechnology,USA,22100000.0,,0.21,-0.1157,2137949.0
-3,GSMG,Glory Star New Media Group Holdings Limited,Communication Services,Advertising Agencies,China,53220000.0,1.75,0.75,-0.0169,33975.0
-4,ASTI,Ascent Solar Technologies Inc.,Technology,Solar,USA,19310000.0,,0.49,0.0103,219740.0
-5,JAGX,Jaguar Health Inc.,Healthcare,Biotechnology,USA,4190000.0000000005,,1.92,-0.030299999999999997,1114262.0
-6,GOOD,Gladstone Commercial Corporation,Real Estate,REIT - Diversified,USA,609850000.0,,13.68,-0.0318,511965.0
-7,SMSI,Smith Micro Software Inc.,Technology,Software - Application,USA,88480000.0,,1.4,-0.1195,1528649.0
-8,UEIC,Universal Electronics Inc.,Technology,Consumer Electronics,USA,169180000.0,385.45,12.72,-0.0327,173747.0
-9,FNGR,FingerMotion Inc.,Communication Services,Telecom Services,USA,77830000.0,,1.44,-0.1166,354671.0
-10,CCSI,Consensus Cloud Solutions Inc.,Technology,Software - Infrastructure,USA,864710000.0,11.3,41.04,-0.0291,378590.0
-11,GRNA,GreenLight Biosciences Holdings,Healthcare,Biotechnology,USA,78900000.0,,0.48,-0.013000000000000001,1392599.0
-12,IBRX,ImmunityBio Inc.,Healthcare,Biotechnology,USA,1070000000.0000001,,2.44,-0.0317,2822114.0
-13,GRNT,Granite Ridge Resources Inc.,Financial,Shell Companies,USA,776680000.0,,5.29,-0.0554,49952.0
-14,SBSW,Sibanye Stillwater Limited,Basic Materials,Gold,South Africa,5820000000.0,5.2,8.1,-0.0276,4403774.0
-15,NOTE,FiscalNote Holdings Inc.,Technology,Information Technology Services,USA,351940000.0,,2.35,-0.0637,372421.0
-16,UFAB,Unique Fabricating Inc.,Consumer Cyclical,Auto Parts,USA,2950000.0,,0.26,-0.0583,1696839.0
-17,TWKS,Thoughtworks Holding Inc.,Technology,Information Technology Services,USA,2480000000.0,,7.36,-0.1721,4361752.0
-18,KT,KT Corporation,Communication Services,Telecom Services,South Korea,6400000000.0,5.0,11.57,0.0105,1278821.0
-19,CISO,Cerberus Cyber Sentinel Corporation,Technology,Software - Infrastructure,USA,91890000.0,,0.57,0.0179,656013.0
-20,ENSV,Enservco Corporation,Energy,Oil & Gas Equipment & Services,USA,6570000.0,,0.59,-0.0168,236172.0
-21,ETAO,ETAO International Co. Ltd.,Healthcare,Health Information Services,Cayman Islands,8210000.000000001,,2.28,-0.1231,605377.0
-22,GETR,Getaround Inc.,Technology,Software - Application,USA,60230000.0,,0.47,0.0387,139168.0
+0,FGEN,FibroGen Inc.,Healthcare,Biotechnology,USA,247060000.0,,2.49,-0.008,6359332.0
+1,CGC,Canopy Growth Corporation,Healthcare,Drug Manufacturers - Specialty & Generic,Canada,225020000.0,,0.43,-0.0888,16540311.0
+2,CEI,Camber Energy Inc.,Energy,Oil & Gas E&P,USA,16510000.000000002,,0.62,-0.038599999999999995,1094991.0
+3,OSA,ProSomnus Inc.,Healthcare,Medical Devices,USA,61750000.0,,3.77,-0.0026,11029.0
+4,VNCE,Vince Holding Corp.,Consumer Cyclical,Apparel Manufacturing,USA,35280000.0,,2.85,0.0106,13647.0
+5,TCON,TRACON Pharmaceuticals Inc.,Healthcare,Biotechnology,USA,8880000.0,,0.34,-0.0571,296728.0
+6,SQZ,SQZ Biotechnologies Company,Healthcare,Biotechnology,USA,8870000.0,,0.3,-0.08929999999999999,122745.0
+7,AGRX,Agile Therapeutics Inc.,Healthcare,Drug Manufacturers - Specialty & Generic,USA,7690000.0,,2.48,-0.008,55380.0
+8,AUMN,Golden Minerals Company,Basic Materials,Other Precious Metals & Mining,USA,11230000.0,,1.58,0.0064,52427.0
+9,MCOM,Micromobility.com Inc.,Consumer Cyclical,Recreational Vehicles,USA,4430000.0,,0.11,-0.07519999999999999,7358625.0
+10,BENF,Beneficient,Financial,Asset Management,USA,98680000.0,17.5,3.43,0.2518,4350598.0
+11,NG,NovaGold Resources Inc.,Basic Materials,Gold,Canada,1770000000.0,,3.96,-0.1335,4817484.0
+12,AKU,Akumin Inc.,Healthcare,Diagnostics & Research,USA,17470000.0,,0.19,-0.08460000000000001,269233.0
+13,MARPS,Marine Petroleum Trust,Energy,Oil & Gas Midstream,USA,9810000.0,6.36,4.93,-0.0333,13884.0
+14,TNON,Tenon Medical Inc.,Healthcare,Medical Devices,USA,3380000.0,,0.28,-0.0278,362684.0
+15,RDHL,RedHill Biopharma Ltd.,Healthcare,Drug Manufacturers - Specialty & Generic,Israel,3600000.0,,1.19,-0.18789999999999998,557866.0
+16,XXII,22nd Century Group Inc.,Consumer Defensive,Tobacco,USA,85770000.0,,0.35,-0.07139999999999999,5120582.0
+17,KPRX,Kiora Pharmaceuticals Inc.,Healthcare,Biotechnology,USA,4059999.9999999995,,0.65,-0.010700000000000001,109020.0
+18,SNTI,Senti Biosciences Inc.,Healthcare,Biotechnology,USA,26520000.0,,0.6,-0.25,442966.0
+19,PIRS,Pieris Pharmaceuticals Inc.,Healthcare,Biotechnology,USA,16059999.999999998,,0.17,-0.0574,1609959.0
+20,MULN,Mullen Automotive Inc.,Consumer Cyclical,Auto Manufacturers,USA,30060000.0,,0.11,-0.19519999999999998,400652082.0
+21,GMBL,Esports Entertainment Group Inc.,Consumer Cyclical,Gambling,Malta,4190000.0000000005,,1.18,-0.0248,100174.0
+22,EBET,EBET Inc.,Consumer Cyclical,Gambling,USA,3880000.0,,0.13,-0.0378,975658.0
+23,NKTX,Nkarta Inc.,Healthcare,Biotechnology,USA,122440000.0,,2.48,-0.1174,1646480.0
+24,OP,OceanPal Inc.,Industrials,Marine Shipping,Greece,2130000.0,,1.69,0.0432,95735.0
+25,APTO,Aptose Biosciences Inc.,Healthcare,Biotechnology,Canada,28910000.0,,4.59,-0.0857,86980.0
+26,CHT,Chunghwa Telecom Co. Ltd.,Communication Services,Telecom Services,Taiwan,29900000000.0,24.88,38.07,-0.042,197746.0

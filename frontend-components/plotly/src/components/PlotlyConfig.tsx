@@ -2,7 +2,7 @@ import { Icons as PlotlyIcons } from "plotly.js-dist-min";
 import { downloadCSV, downloadImage } from "../utils/utils";
 import { ICONS } from "./Config";
 
-export function hideModebar(hide = true) {
+export function hideModebar(hide?: boolean) {
   return new Promise((resolve) => {
     if (!window.MODEBAR) {
       window.MODEBAR = window.document.getElementsByClassName(
@@ -10,10 +10,11 @@ export function hideModebar(hide = true) {
       )[0] as HTMLElement;
       window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:flex;`;
     }
-    let includes_text = "display: none";
+
     if (window.MODEBAR) {
-      if (window.MODEBAR.style.cssText.includes("display: none") || !hide) {
-        includes_text = "display: flex";
+      if (hide) {
+        window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:none;`;
+      } else if (window.MODEBAR.style.cssText.includes("none")) {
         window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:flex;`;
       } else {
         window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:none;`;
@@ -58,7 +59,7 @@ export function PlotConfig({
           name: "Download Chart as Image (Ctrl+S)",
           icon: ICONS.downloadImage,
           click: async function () {
-            hideModebar();
+            hideModebar(true);
             await downloadImage(
               "MainChart",
               hideModebar,

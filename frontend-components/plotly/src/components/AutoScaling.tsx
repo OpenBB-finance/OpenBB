@@ -16,14 +16,19 @@ export default async function autoScaling(
 
       const get_all_yaxis_traces = {};
       const get_all_yaxis_annotations = {};
+      let volumeTraceYaxis = null;
 
       const yaxis_unique = [
         ...new Set(
           graphs.data.map((trace) => {
             if (
-              trace.yaxis !== undefined &&
-              (trace.y !== undefined || trace.type === "candlestick")
+              trace.yaxis ||
+              trace.y !== undefined ||
+              trace.type === "candlestick"
             ) {
+              if (trace.type === "bar" && trace?.name?.trim() === "Volume") {
+                volumeTraceYaxis = `yaxis${trace.yaxis.replace("y", "")}`;
+              }
               get_all_yaxis_traces[trace.yaxis] =
                 get_all_yaxis_traces[trace.yaxis] || [];
               get_all_yaxis_traces[trace.yaxis].push(trace);
@@ -112,10 +117,6 @@ export default async function autoScaling(
         }
 
         const org_y_max = y_max;
-        const is_volume =
-          graphs.layout[yaxis].fixedrange !== undefined &&
-          yaxis !== "yaxis" &&
-          graphs.layout[yaxis].fixedrange === true;
 
         if (y_min !== undefined && y_max !== undefined) {
           const y_range = y_max - y_min;
@@ -127,7 +128,7 @@ export default async function autoScaling(
           y_min -= y_range * y_mult;
           y_max += y_range * y_mult;
 
-          if (is_volume) {
+          if (yaxis === volumeTraceYaxis) {
             if (graphs.layout[yaxis].tickvals !== undefined) {
               const range_x = 7;
               const volume_ticks = org_y_max;
