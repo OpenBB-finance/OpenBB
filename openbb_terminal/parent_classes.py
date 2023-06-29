@@ -1543,6 +1543,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 self.current_interval = ns_parser.interval
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin.lower()
+                self.data = self.current_df.copy()
                 cryptocurrency_helpers.show_quick_performance(
                     self.current_df,
                     self.symbol,
