@@ -30,7 +30,7 @@ class CryptoPriceQueryParams(QueryParams, BaseSymbol):
     __name__ = "CryptoPriceQueryParams"
 
     # These fields only work with Polygon
-    start_date: Optional[date] = Field(description=DESCRIPTIONS.get("start_date", ""))
+    start_date: date = Field(description=DESCRIPTIONS.get("start_date", ""))
     end_date: Optional[date] = Field(
         description=DESCRIPTIONS.get("end_date", ""), default=date.today()
     )

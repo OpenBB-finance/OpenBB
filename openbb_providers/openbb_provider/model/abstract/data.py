@@ -14,6 +14,7 @@ class Data(BaseModel):
 
     class Config:
         extra = Extra.allow
+        allow_population_by_field_name = True
 
 
 class QueryParams(BaseModel):

@@ -6,15 +6,11 @@ from typing import Dict, Generic, List, Optional, TypeVar, Union
 # IMPORT THIRD-PARTY
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
-from openbb_provider.model.abstract.provider_data import (
-    ProviderData,
-    ProviderQueryParams,
-)
 
 QueryParamsType = TypeVar("QueryParamsType", bound=QueryParams)
 DataType = TypeVar("DataType", bound=Data)
-ProviderQueryParamsType = TypeVar("ProviderQueryParamsType", bound=ProviderQueryParams)
-ProviderDataType = TypeVar("ProviderDataType", bound=ProviderData)
+ProviderQueryParamsType = TypeVar("ProviderQueryParamsType", bound=QueryParams)
+ProviderDataType = TypeVar("ProviderDataType", bound=Data)
 ReturnType = Union[List[ProviderDataType], ProviderDataType]
 UDataType = Union[List[DataType], DataType]
 
