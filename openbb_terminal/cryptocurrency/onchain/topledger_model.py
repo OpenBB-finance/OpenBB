@@ -219,7 +219,7 @@ def make_request(org_slug="", query_slug="") -> Tuple[Optional[int], Any]:
     org = MAPPING[org_slug]
     if not org:
         console.print(f"[red]Organization Slug[{org_slug}] is invalid[/red]\n")
-        logger.error(f"Organization Slug[{org_slug}] is invalid")
+        logger.error("Organization Slug[%s] is invalid", org_slug)
         return None, None
 
     query_items = [x for x in org["queries"] if x["slug"] == query_slug]
@@ -228,7 +228,7 @@ def make_request(org_slug="", query_slug="") -> Tuple[Optional[int], Any]:
             f"[red]Query Slug[{query_slug}] is invalid for Organization[{org_slug}][/red]\n"
         )
         logger.error(
-            f"Query Slug[{query_slug}] is invalid for Organization[{org_slug}]"
+            "Query Slug[%s] is invalid for Organization[%s]", query_slug, org_slug
         )
         return None, None
 
@@ -237,15 +237,15 @@ def make_request(org_slug="", query_slug="") -> Tuple[Optional[int], Any]:
     api_key = org["api_key"]
     tl_org_slug = org["tl_org_slug"]
 
-    """
-    API Documentation
-    ----------
-    :param string tl_org_slug: Slug of Topledger Organization
-    :param string query_id: the ID of the query to fetch result of
-    :param string api_key: Authentication Key to fetch result
-
-    API Format: HOST/<tl_org_slug>/api/queries/<query_id>/results.json?api_key=<api_key>
-    """
+    # """
+    # API Documentation
+    # ----------
+    # :param string tl_org_slug: Slug of Topledger Organization
+    # :param string query_id: the ID of the query to fetch result of
+    # :param string api_key: Authentication Key to fetch result
+    #
+    # API Format: HOST/<tl_org_slug>/api/queries/<query_id>/results.json?api_key=<api_key>
+    # """
 
     url = f"https://analytics.topledger.xyz/{tl_org_slug}/api/queries/{query_id}/results.json?api_key={api_key}"
     try:
