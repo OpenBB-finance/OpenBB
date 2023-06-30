@@ -7,7 +7,7 @@ authors = [
     "Igor Radovanovic <igorradovanovic20@gmail.com>"
 ]
 readme = "README.md"
-packages = [{ include = "openbb_sdk_core" }, { include = "builtin_extensions" }]
+packages = [{ include = "openbb_sdk_core" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"

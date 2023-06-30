@@ -2,15 +2,14 @@
 name = "openbb"
 version = "4.0.0"
 description = ""
-authors = [""]
+authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
-packages = [{ include = "openbb" }]
+packages = [{ include = "openbb" }, { include = "builtin_extensions" }]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openbb_sdk_core = { path = "openbb_sdk_core" }
-openbb_provider = { path = "openbb_providers" }
-openbb_builtin_extensions = { path = "builtin_extensions" }
+openbb_sdk_core = "^0.2.0"
+openbb_provider = "^0.1.0"
 
 [build-system]
 requires = ["poetry-core"]
