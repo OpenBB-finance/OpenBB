@@ -14,6 +14,7 @@ import xss from "xss";
 import useDarkMode from "../../utils/useDarkMode";
 import useLocalStorage from "../../utils/useLocalStorage";
 import {
+  formatNumber,
   formatNumberMagnitude,
   formatNumberNoMagnitude,
   fuzzyFilter,
@@ -24,7 +25,10 @@ import {
 import CloseIcon from "../Icons/Close";
 import Select from "../Select";
 import Toast from "../Toast";
-import DraggableColumnHeader, { magnitudeRegex } from "./ColumnHeader";
+import DraggableColumnHeader, {
+  isoYearRegex,
+  magnitudeRegex,
+} from "./ColumnHeader";
 import DownloadFinishedDialog from "./DownloadFinishedDialog";
 import Export from "./Export";
 import FilterColumns from "./FilterColumns";
@@ -69,7 +73,11 @@ function getCellWidth(row, column) {
     if (probablyLink || !probablyDate) {
       return value?.toString().length ?? 0;
     }
-    if (probablyDate) {
+    if (
+      probablyDate &&
+      !isNaN(new Date(value).getTime()) &&
+      !isoYearRegex.test(value?.toString())
+    ) {
       if (typeof value === "string") {
         return value?.toString().length ?? 0;
       }
@@ -164,22 +172,31 @@ export default function Table({
       ...columns.map((column: any, index: number) => ({
         accessorKey: column,
         accessorFn: (row: any) => {
+          const indexLabel = row.hasOwnProperty("index")
+            ? "index"
+            : row.hasOwnProperty("Index")
+            ? "Index"
+            : columns[0];
+          const indexValue = indexLabel ? row[indexLabel] : null;
           const value = row[column];
           const only_numbers = value?.toString().replace(/[^0-9]/g, "") ?? "";
           const probablyDate =
             only_numbers?.length >= 4 &&
             (includesDateNames(column) ||
               column.toLowerCase() === "index" ||
-              (value &&
-                typeof value === "string" &&
-                (column.toLowerCase().includes("date") ||
-                  column.toLowerCase().includes("time") ||
-                  column.toLowerCase().includes("timestamp") ||
-                  column.toLowerCase().includes("year") ||
-                  column.toLowerCase().includes("month") ||
-                  column.toLowerCase().includes("week") ||
-                  column.toLowerCase().includes("hour") ||
-                  column.toLowerCase().includes("minute"))));
+              (indexValue &&
+                typeof indexValue === "string" &&
+                (indexValue.toLowerCase().includes("date") ||
+                  indexValue.toLowerCase().includes("time") ||
+                  indexValue.toLowerCase().includes("timestamp") ||
+                  indexValue.toLowerCase().includes("year") ||
+                  indexValue.toLowerCase().includes("month") ||
+                  indexValue.toLowerCase().includes("week") ||
+                  indexValue.toLowerCase().includes("hour") ||
+                  indexValue.toLowerCase().includes("minute"))));
+
+          if (probablyDate && isoYearRegex.test(value?.toString()))
+            return value;
 
           if (probablyDate) {
             if (typeof value === "number") return value;
@@ -227,7 +244,14 @@ export default function Table({
               </a>
             );
           }
-          if (probablyDate) {
+          if (probablyDate && isoYearRegex.test(value?.toString())) {
+            return <p>{value}</p>;
+          }
+          if (
+            probablyDate &&
+            !isNaN(new Date(value).getTime()) &&
+            !isoYearRegex.test(value?.toString())
+          ) {
             if (typeof value === "string") {
               const date = value.split("T")[0];
               const time = value.split("T")[1]?.split(".")[0];
@@ -291,6 +315,7 @@ export default function Table({
                   "text-[#F87171]": valueFormattedNoMagnitude < 0 && colors,
                   "text-[#404040]": valueFormattedNoMagnitude === 0 && colors,
                 })}
+                title={formatNumber(value).toString() ?? ""}
               >
                 {valueFormattedNoMagnitude !== 0
                   ? valueFormattedNoMagnitude > 0

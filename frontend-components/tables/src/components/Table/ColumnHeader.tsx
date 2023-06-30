@@ -6,6 +6,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { includesDateNames } from "../../utils/utils";
 
 export const magnitudeRegex = new RegExp("^([0-9]+)(\\s)([kKmMbBtT])$");
+export const isoYearRegex = new RegExp("^\\d{4}$");
 export const isoDateRegex = new RegExp(
   "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}|\\d{4}-\\d{2}-\\d{2}$",
 );
@@ -59,6 +60,9 @@ function Filter({
     if (isoDateRegex.test(value?.toString())) {
       dateType = "datetime-local";
     }
+    if (isoYearRegex.test(value?.toString())) {
+      dateType = "number";
+    }
     return (
       only_numbers?.length >= 4 &&
       (includesDateNames(column.id) ||
@@ -66,7 +70,58 @@ function Filter({
     );
   });
 
-  if (isProbablyDate) {
+  if (isProbablyDate && dateType === "number") {
+    return (
+      <div className="flex gap-2 h-10">
+        <input
+          type={dateType}
+          value={(columnFilterValue as [string, string])?.[0] ?? ""}
+          onChange={(e) => {
+            column.setFilterValue((old: [string, string]) => [
+              `${e.target.value}`,
+              `${old?.[1]}`,
+            ]);
+          }}
+          min={values.reduce(
+            (acc: number, value: string) =>
+              Math.min(acc, parseInt(value, 10)),
+            Infinity,
+          )}
+          max={values.reduce(
+            (acc: number, value: string) =>
+              Math.max(acc, parseInt(value, 10)),
+            -Infinity,
+          )}
+          placeholder={"Start year"}
+          className="_input"
+        />
+        <input
+          type={dateType}
+          value={(columnFilterValue as [string, string])?.[1] ?? ""}
+          onChange={(e) => {
+            column.setFilterValue((old: [string, string]) => [
+              `${old?.[0]}`,
+              `${e.target.value}`,
+            ]);
+          }}
+          min={values.reduce(
+            (acc: number, value: string) =>
+              Math.min(acc, parseInt(value, 10)),
+            Infinity,
+          )}
+          max={values.reduce(
+            (acc: number, value: string) =>
+              Math.max(acc, parseInt(value, 10)),
+            -Infinity,
+          )}
+          placeholder={"End year"}
+          className="_input"
+        />
+      </div>
+    );
+  }
+
+  if (isProbablyDate && dateType !== "number") {
     return (
       <div className="flex gap-2 h-10">
         <input

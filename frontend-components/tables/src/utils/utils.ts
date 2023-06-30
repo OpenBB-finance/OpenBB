@@ -38,10 +38,16 @@ export function formatNumberMagnitude(value: number | string, column?: string) {
   ) {
     const magnitude = Math.min(4, Math.floor(Math.log10(Math.abs(value)) / 3));
     const suffix = ["", "K", "M", "B", "T"][magnitude];
-    const formatted = (value / 10 ** (magnitude * 3)).toFixed(2);
-    return `${formatted} ${suffix}`;
+    const formatted = (value / 10 ** (magnitude * 3)).toFixed(3);
+    return `${formatted.replace(/\.?0+$/, "")} ${suffix}`;
   }
 
+  if (value > 1000 || value < -1000) return formatNumber(value);
+
+  return value;
+}
+
+export function formatNumber(value: number) {
   if (value > 1000 || value < -1000) {
     const parts = value.toString().split(".");
     const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -59,7 +65,7 @@ export function includesDateNames(column: string) {
 }
 
 export function includesPriceNames(column: string) {
-  return ["price", "open", "close", "high", "low"].some((priceName) =>
+  return ["price", "open", "close"].some((priceName) =>
     column?.toLowerCase().includes(priceName),
   );
 }
