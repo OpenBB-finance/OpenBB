@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "openbb-provider"
+version = "0.1.1"
+description = ""
+authors = [
+    "Igor Radovanovic <igorradovanovic20@gmail.com>",
+    "Colin Delahunty",
+    "Chavithra PARANA <chavithra@gmail.com>",
+    "Theodore Aptekarev"
+]
+readme = "README.md"
+packages = [{ include = "openbb_provider" }, { include = "builtin_providers" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = { extras = ["dotenv"], version = "^1.10" }
+requests = "^2.31.0"
+urllib3 = "^1.26"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+fmp = "builtin_providers.fmp.provider:fmp_provider"
+benzinga = "builtin_providers.benzinga.provider:benzinga_provider"
+polygon = "builtin_providers.polygon.provider:polygon_provider"
+fred = "builtin_providers.fred.provider:fred_provider"
