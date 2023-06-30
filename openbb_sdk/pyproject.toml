@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "openbb"
+version = "4.0.0"
+description = ""
+authors = [""]
+readme = "README.md"
+packages = [{ include = "openbb" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openbb_sdk_core = { path = "openbb_sdk_core" }
+openbb_provider = { path = "openbb_providers" }
+openbb_builtin_extensions = { path = "builtin_extensions" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
