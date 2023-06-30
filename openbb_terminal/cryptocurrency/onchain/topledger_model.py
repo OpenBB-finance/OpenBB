@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Optional, Tuple, Dict
+from typing import Any, Dict, Optional, Tuple
 
 import pandas as pd
 
