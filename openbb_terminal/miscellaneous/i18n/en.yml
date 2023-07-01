@@ -539,6 +539,7 @@ en:
   crypto/onchain/btcblockdata: displays BTC single block data
   crypto/onchain/gwei: check current eth gas fees
   crypto/onchain/whales: check crypto wales transactions
+  crypto/onchain/topledger: get on-chain data from topledger
   crypto/onchain/lt: last trades by dex or month
   crypto/onchain/dvcp: daily volume for crypto pair
   crypto/onchain/tv: token volume on DEXes

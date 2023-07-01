@@ -411,7 +411,8 @@
       "holders": ["Ethplorer"],
       "th": ["Ethplorer"],
       "prices": ["Ethplorer"],
-      "tx": ["Ethplorer"]
+      "tx": ["Ethplorer"],
+      "topledger": ["Topledger"]
     },
     "defi": {
       "newsletter": ["Substack"],

@@ -4,6 +4,7 @@
     btcblockdata       displays BTC single block data                                  [Blockchain]
     gwei               check current eth gas fees                                      [ETHGasStations]
     whales             check crypto wales transactions                                 [WhaleAlert]
+    topledger          get on-chain data from topledger                                [Topledger]
     lt                 last trades by dex or month                                     [BitQuery]
     dvcp               daily volume for crypto pair                                    [BitQuery]
     tv                 token volume on DEXes                                           [BitQuery]
