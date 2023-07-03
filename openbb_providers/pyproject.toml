@@ -15,7 +15,7 @@ packages = [{ include = "openbb_provider" }, { include = "builtin_providers" }]
 python = "^3.9"
 pydantic = { extras = ["dotenv"], version = "^1.10" }
 requests = "^2.31.0"
-urllib3 = "^1.26"
+urllib3 = "<2.0.0"
 
 [build-system]
 requires = ["poetry-core"]
