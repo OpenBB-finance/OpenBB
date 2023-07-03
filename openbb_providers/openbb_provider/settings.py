@@ -16,9 +16,11 @@ def create_path(*path: str) -> str:
 
 
 class Settings(BaseSettings):
+    # TODO: Avoid using hardcoded values and add safer handling of the keys
     FMP_API_KEY: Optional[str] = None
     POLYGON_API_KEY: Optional[str] = None
     BENZINGA_API_KEY: Optional[str] = None
+    FRED_API_KEY: Optional[str] = None
     DEBUG_MODE: bool = False
 
 
