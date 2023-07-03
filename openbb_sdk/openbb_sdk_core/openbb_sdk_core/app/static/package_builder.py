@@ -1,7 +1,10 @@
-from inspect import Parameter, _empty, signature
+import builtins
+from dataclasses import MISSING
+from inspect import Parameter, _empty, isclass, signature
 from json import dumps
 from pathlib import Path
 from typing import (
+    Annotated,
     Callable,
     Dict,
     List,
@@ -14,6 +17,7 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
+from fastapi import Query
 from starlette.routing import BaseRoute
 
 from openbb_sdk_core.app.router import RouterLoader
@@ -26,8 +30,6 @@ class PackageBuilder:
         package_path = package_folder / f"{module_name}.{extension}"
 
         package_folder.mkdir(exist_ok=True)
-
-        print(package_path)
 
         with package_path.open("w") as file:
             file.write(module_code)
@@ -58,14 +60,19 @@ class PackageBuilder:
                 cls.write_to_package(module_code=module_code, module_name=module_name)
 
     @classmethod
-    def save_package_package(cls):
-        cls.write_to_package(module_code="", module_name="__init__")
+    def save_package(cls):
+        code = (
+            "import warnings\n"
+            + "warnings.formatwarning = "
+            + "lambda message, category, *args, **kwargs: f'{category.__name__}: {message}'\n"
+        )
+        cls.write_to_package(module_code=code, module_name="__init__")
 
     @classmethod
     def build(cls) -> None:
         cls.save_module_map()
         cls.save_modules()
-        cls.save_package_package()
+        cls.save_package()
 
 
 class ModuleBuilder:
@@ -128,17 +135,29 @@ class ImportDefinition:
     @classmethod
     def build(cls, path: str) -> str:
         hint_type_list = cls.get_path_hint_type_list(path=path)
-        code = "\nfrom openbb_sdk_core.app.static.container import Container\n"
-        code += "\nfrom openbb_sdk_core.app.model.command_output import CommandOutput\n"
-        # This is a patch, openbb_provider was not being imported for some reason. Remove when we merge the repos.
-        code += "\nimport openbb_provider\n"
+        code = "# MANUAL IMPORTS"
+        code += "\nfrom openbb_sdk_core.app.static.container import Container"
+        code += "\nfrom openbb_sdk_core.app.model.command_output import CommandOutput"
+
+        # These imports were not detected before build, so we add them manually.
+        # TODO: Find a better way to handle this. This is a temporary solution.
+        code += "\nimport openbb_provider"
+        code += "\nimport pandas"
+        code += "\nimport datetime"
+        code += "\nfrom types import NoneType"
+        code += "\nimport pydantic"
+        code += "\nfrom typing import List, Dict, Union, Optional, Literal"
+        code += "\nimport warnings"
+        code += "\nfrom builtin_extensions.common.utils import from_dataframe"
+        code += "\nfrom openbb_sdk_core.app.model.abstract.warning import OpenBBWarning"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
         module_list.sort()
 
+        code += "\n\n# AUTO IMPORTS\n"
         for module in module_list:
-            code += f"\nimport {module}\n"
+            code += f"import {module}\n"
 
         return code
 
@@ -181,38 +200,107 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def build_command_method_signature(
-        func_name: str, parameter_map: Dict[str, Parameter], return_type: type
-    ) -> str:
-        func_params = ", ".join(str(param) for param in parameter_map.values())
+    def get_type(field: Query) -> type:
+        if isclass(field.type):
+            name = field.type.__name__
+            if name.startswith("Constrained") and name.endswith("Value"):
+                name = name[11:-5].lower()
+                return getattr(builtins, name, field.type)
+        return field.type
 
-        # Populate this list exaustively or find a better solution to handle typing. types in signature
-        typing_types = ["List", "Literal", "Union", "Optional", "Dict"]
+    @staticmethod
+    def get_default(field: Callable):
+        field_default = getattr(field, "default", None)
+        if field_default is None or field_default is MISSING:
+            return Parameter.empty
 
-        for typing_type in typing_types:
-            func_params = func_params.replace(
-                f"{typing_type}[", f"typing.{typing_type}["
-            )
+        default_default = getattr(field_default, "default", None)
+        if default_default is MISSING or default_default is Ellipsis:
+            return Parameter.empty
 
-        # Return
+        return default_default
+
+    @staticmethod
+    def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
+        MAP = {
+            "data": pd.DataFrame,
+            "start_date": str,
+            "end_date": str,
+        }
+
+        parameter_map.pop("cc", None)
+
+        formatted: Dict[str, Parameter] = {}
+
+        for name, param in parameter_map.items():
+            if name == "extra_params":
+                formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
+
+            elif get_origin(param.annotation) == Annotated and isclass(
+                param.annotation.__args__[0]
+            ):
+                fields = param.annotation.__args__[0].__dataclass_fields__
+                for field_name, field in fields.items():
+                    name = field_name
+                    type_ = MethodDefinition.get_type(field)
+                    default = MethodDefinition.get_default(field)
+
+                    new_type = MAP.get(name, None)
+                    updated_type = type_ if new_type is None else Union[type_, new_type]
+
+                    formatted[name] = Parameter(
+                        name=name,
+                        kind=Parameter.POSITIONAL_OR_KEYWORD,
+                        annotation=updated_type,
+                        default=default,
+                    )
+            else:
+                new_type = MAP.get(name, None)
+                updated_type = (
+                    param.annotation
+                    if new_type is None
+                    else Union[param.annotation, new_type]
+                )
+
+                formatted[name] = Parameter(
+                    name=name,
+                    kind=Parameter.POSITIONAL_OR_KEYWORD,
+                    annotation=updated_type,
+                    default=param.default,
+                )
+
+        func_params = ", ".join(str(param) for param in formatted.values())
+
+        return func_params
+
+    @staticmethod
+    def build_func_returns(return_type: type) -> str:
         if return_type == _empty:
-            func_return = "None"
+            func_returns = "None"
         elif return_type.__module__ == "builtins":
-            func_return = return_type.__name__
+            func_returns = return_type.__name__
         else:
             item_type = get_args(get_type_hints(return_type)["item"])[0]
             if item_type.__module__ == "builtins":
-                func_return = f"CommandOutput[{item_type.__name__}]"
-            elif get_origin(item_type) == list:
-                inner_type = get_args(item_type)[0]
-                select = f"[{inner_type.__module__}.{inner_type.__name__}]"
-                func_return = f"CommandOutput[{item_type.__module__}.{item_type.__name__}{select}]"
+                func_returns = f"CommandOutput[{item_type.__name__}]"
+            # elif get_origin(item_type) == list:
+            #     inner_type = get_args(item_type)[0]
+            #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
+            #     func_returns = f"CommandOutput[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
-                func_return = (
+                func_returns = (
                     f"CommandOutput[{item_type.__module__}.{item_type.__name__}]"
                 )
 
-        code = f"\n    def {func_name}(self, {func_params}) -> {func_return}:\n"
+        return func_returns
+
+    @staticmethod
+    def build_command_method_signature(
+        func_name: str, parameter_map: Dict[str, Parameter], return_type: type
+    ) -> str:
+        func_params = MethodDefinition.build_func_params(parameter_map)
+        func_returns = MethodDefinition.build_func_returns(return_type)
+        code = f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code
 
@@ -228,12 +316,43 @@ class MethodDefinition:
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
 
-        code = "        return self._command_runner_session.run(\n"
+        code = ""
+        if "data" in parameter_map:
+            code += "        if isinstance(data, pandas.DataFrame):\n"
+            code += (
+                "            data = from_dataframe(data, data.index.name is not None)\n"
+            )
+            code += "\n"
+
+        code += "        o = self._command_runner_session.run(\n"
         code += f"""            "{path}",\n"""
-        for param in parameter_map:
-            param_var = "kwargs" if param == "extra_params" else param
-            code += f"            {param} = {param_var},\n"
+
+        for name, param in parameter_map.items():
+            if name == "extra_params":
+                code += f"            {name} = kwargs,\n"
+            elif get_origin(param.annotation) == Annotated and isclass(
+                param.annotation.__args__[0]
+            ):
+                fields = param.annotation.__args__[0].__dataclass_fields__
+                value = {k: k for k in fields}
+                code += f"            {name} = {{"
+                for k, v in value.items():
+                    code += f'"{k}": {v}, '
+                code += "},\n"
+            else:
+                code += f"            {name} = {name},\n"
         code += "        ).output\n"
+        code += "\n"
+        code += "        if o.warnings:\n"
+        code += "            for w in o.warnings:\n"
+        code += (
+            "                category = __builtins__.get(w.category, OpenBBWarning)\n"
+        )
+        code += "                warnings.warn(w.message, category)\n"
+        code += "\n"
+        code += "        if o.error:\n"
+        code += "            raise Exception(o.error.message)\n"
+        code += "        return o\n"
 
         return code
 
@@ -245,20 +364,6 @@ class MethodDefinition:
         # Parameters
         sig = signature(func)
         parameter_map = dict(sig.parameters)
-        parameter_map.pop("cc", None)
-        if "extra_params" in parameter_map:
-            parameter_map["extra_params"] = Parameter(
-                name="kwargs", kind=Parameter.VAR_KEYWORD
-            )
-
-        if "data" in parameter_map:
-            parameter_map["data"] = Parameter(
-                name="data",
-                kind=Parameter.POSITIONAL_OR_KEYWORD,
-                annotation=Union[
-                    pd.DataFrame, parameter_map["data"].annotation  # noqa: 258
-                ],
-            )
 
         code = cls.build_command_method_signature(
             func_name=func_name,
@@ -304,7 +409,7 @@ class PathHandler:
         direct_children = []
         for p in path_list:
             if p.startswith(path):
-                path_reminder = p[len(path) :]
+                path_reminder = p[len(path) :]  # noqa: E203
                 if path_reminder.count("/") == 1:
                     direct_children.append(p)
 

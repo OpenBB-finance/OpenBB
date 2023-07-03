@@ -1,1 +1,2 @@
-from openbb_sdk_core.app.static.app import *  # noqa: F403, F401
+# flake8: noqa
+from openbb_sdk_core.app.static.command_runner_wrapper import app as openbb

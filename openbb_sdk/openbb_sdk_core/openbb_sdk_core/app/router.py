@@ -158,18 +158,18 @@ class Router:
         api_router = self._api_router
 
         query = kwargs.pop("query", "")
-        func = self.bind_signature(func, query)
         if query:
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = {"query": query}
+
+        func = self.bind_signature(func, query)
 
         CommandValidator.check(func=func)
 
         kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
         kwargs["endpoint"] = func
         kwargs["methods"] = kwargs.get("methods", ["GET"])
-        kwargs["description"] = kwargs.get("description", func.__doc__)
-        func.__doc__ = kwargs.pop("override_doc", func.__doc__)
+        kwargs["description"] = self.format_docstring(func)
 
         api_router.add_api_route(**kwargs)
 
@@ -218,14 +218,24 @@ class Router:
             # return
             data = provider_interface.merged_data[query]
             func.__annotations__["return"] = CommandOutput[List[data]]  # type: ignore
-        else:
-            if (
-                "provider" in func.__annotations__
-                and func.__annotations__["provider"] == ProviderChoices
-            ):
-                func.__annotations__["provider"] = provider_interface.providers
+        elif (
+            "provider" in func.__annotations__
+            and func.__annotations__["provider"] == ProviderChoices
+        ):
+            func.__annotations__["provider"] = provider_interface.providers
 
         return func
+
+    @staticmethod
+    def format_docstring(func: Callable) -> str:
+        doc = func.__doc__
+        if doc:
+            sliced = doc.split("    Parameters\n    ----------")[0]
+            sliced = sliced.split("    Returns\n    -------")[0]
+            sliced = "\n".join([line.strip() for line in sliced.split("\n")])
+
+            return sliced
+        return ""
 
 
 class CommandMap:

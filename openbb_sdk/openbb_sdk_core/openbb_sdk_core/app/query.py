@@ -4,9 +4,10 @@ import warnings
 from dataclasses import asdict
 from typing import Any, Dict, Optional
 
-from openbb_provider_plugin.model.item.registry import build_registry
+from builtin_extensions.providers.model.item.registry import build_registry
 from pydantic import BaseModel
 
+from openbb_sdk_core.app.model.abstract.warning import OpenBBWarning
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.provider_interface import (
     ExtraParams,
@@ -53,7 +54,8 @@ class Query:
                     filtered[k] = v
                 else:
                     warnings.warn(
-                        f"Parameter '{k}' is not supported by {provider_name}."
+                        message=f"Parameter '{k}' is not supported by {provider_name}.",
+                        category=OpenBBWarning,
                     )
 
         return filtered

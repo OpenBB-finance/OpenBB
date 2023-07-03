@@ -9,7 +9,21 @@ from openbb_sdk_core.api.router.system import router as router_system
 from openbb_sdk_core.app.model.profile import Profile
 from openbb_sdk_core.app.model.user_settings import UserSettings
 
-app = FastAPI()
+app = FastAPI(
+    title="OpenBB SDK API",
+    description="This is the OpenBB SDK API.",
+    version="0.0.1",
+    terms_of_service="http://example.com/terms/",
+    contact={
+        "name": "OpenBB Team",
+        "url": "https://openbb.co",
+        "email": "hello@openbb.co",
+    },
+    license_info={
+        "name": "MIT",
+        "url": "https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/LICENSE",
+    },
+)
 app.include_router(router=router_account, prefix="/api/v1")
 app.include_router(router=router_settings, prefix="/api/v1")
 app.include_router(router=router_system, prefix="/api/v1")

@@ -13,3 +13,7 @@ def cast_warning(w: WarningMessage) -> Warning_:
         message=str(w.message),
         category=w.category.__name__,
     )
+
+
+class OpenBBWarning(Warning):
+    pass
