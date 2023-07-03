@@ -23,18 +23,4 @@ def df_to_basemodel(
     return [BaseModel(**d) for d in df.to_dict(orient="records")]
 
 
-def get_target_column(df: pd.DataFrame, target: str) -> pd.Series:
-    """Get target column from time series data."""
-    if target not in df.columns:
-        choices = ", ".join(df.columns)
-        raise ValueError(
-            f"Target column '{target}' not found in data. Choose from {choices}"
-        )
-    return df[target]
-
-
-def get_target_columns(df: pd.DataFrame, target_columns: List[str]) -> pd.DataFrame:
-    df_result = pd.DataFrame()
-    for target in target_columns:
-        df_result[target] = get_target_column(df, target).to_frame()
-    return df_result
+# TODO: Move utils in common used in ta and qa to here
