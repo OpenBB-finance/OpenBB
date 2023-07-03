@@ -53,8 +53,9 @@ class Query:
                 if provider_name in providers:
                     filtered[k] = v
                 else:
+                    available = ", ".join(providers)
                     warnings.warn(
-                        message=f"Parameter '{k}' is not supported by {provider_name}.",
+                        message=f"Parameter '{k}' is not supported by {provider_name}. Available for: {available}.",
                         category=OpenBBWarning,
                     )
 
