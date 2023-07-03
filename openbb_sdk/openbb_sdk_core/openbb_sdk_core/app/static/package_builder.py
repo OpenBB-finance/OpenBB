@@ -148,7 +148,7 @@ class ImportDefinition:
         code += "\nimport pydantic"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nimport warnings"
-        code += "\nfrom builtin_extensions.common.utils import from_dataframe"
+        code += "\nfrom openbb_sdk_core.app.utils import to_dataframe"
         code += "\nfrom openbb_sdk_core.app.model.abstract.warning import OpenBBWarning"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
