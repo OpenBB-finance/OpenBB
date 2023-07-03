@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "openbb"
+name = "openbb_sdk"
 version = "4.0.0"
 description = ""
 authors = ["OpenBB Team <hello@openbb.co>"]
@@ -21,5 +21,5 @@ economy = "builtin_extensions.economy.economy_router:router"
 fixedincome = "builtin_extensions.fixedincome.fixedincome_router:router"
 forex = "builtin_extensions.forex.forex_router:router"
 news = "builtin_extensions.news.news_router:router"
-providers = "openbb_provider_plugin.router.openbb_provider_router:router"
+providers = "builtin_extensions.providers.router.openbb_provider_router:router"
 stocks = "builtin_extensions.stocks.stocks_router:router"
