@@ -6,14 +6,14 @@ from copy import deepcopy
 from enum import Enum
 from typing import Any, Dict
 
-# IMPORT THIRD-PARTY
-from posthog import Posthog
-
 # IMPORT INTERNAL
 from openbb_sdk_core.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
 from openbb_sdk_core.logs.models.logging_settings import LoggingSettings
+
+# IMPORT THIRD-PARTY
+from posthog import Posthog
 
 openbb_posthog = Posthog(
     "phc_kbMqB2PNpBEkfAwQZWzbQJReplLIu8Ya6OfXcAayao9",

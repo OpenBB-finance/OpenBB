@@ -4,9 +4,6 @@ import logging
 from enum import Enum
 from typing import Any, Callable, Dict, Optional
 
-# IMPORT THIRD-PARTY
-from pydantic.json import pydantic_encoder
-
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.model.system_settings import SystemSettings
 from openbb_sdk_core.app.model.user_settings import UserSettings
@@ -19,6 +16,9 @@ from openbb_sdk_core.logs.formatters.formatter_with_exceptions import (
 )
 from openbb_sdk_core.logs.handlers_manager import HandlersManager
 from openbb_sdk_core.logs.models.logging_settings import LoggingSettings
+
+# IMPORT THIRD-PARTY
+from pydantic.json import pydantic_encoder
 
 
 class LoggingManager:

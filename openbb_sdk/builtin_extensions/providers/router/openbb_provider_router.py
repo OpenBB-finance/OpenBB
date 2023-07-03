@@ -6,11 +6,11 @@ from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.abstract.provider import ProviderName
 from openbb_provider.provider.provider_map import build_provider_mapping
-from openbb_sdk.builtin_extensions.providers.model.item.registry import build_registry
-
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.router import Router
+
+from openbb_sdk.builtin_extensions.providers.model.item.registry import build_registry
 
 registry = build_registry()
 meta_router = Router()
