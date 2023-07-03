@@ -24,6 +24,9 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         description="Exported data (csv, excel, jpeg, parquet, feather, hdf...).",
     )
 
+    def __repr__(self) -> str:
+        return "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
+
     def to_dataframe(self) -> pd.DataFrame:
         """Converts item field to pandas dataframe.
 
