@@ -20,6 +20,10 @@ def run_async(func: Callable, *args, **kwargs):
     return result
 
 
+def create_app():
+    return CommandRunnerWrapper(command_runner_session=CommandRunnerSession())
+
+
 try:
     from openbb_sdk_core.app.command_runner import CommandRunnerSession
     from openbb_sdk_core.app.static.account import Account
@@ -49,4 +53,4 @@ else:
         def system(self) -> SystemSettings:
             return run_async(get_system_settings)
 
-    app = CommandRunnerWrapper(command_runner_session=CommandRunnerSession())
+    app = create_app()
