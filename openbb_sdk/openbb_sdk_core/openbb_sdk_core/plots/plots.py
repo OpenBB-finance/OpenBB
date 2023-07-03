@@ -1,12 +1,8 @@
-# IMPORT STANDARD
 from datetime import datetime
 from typing import List
 
-# IMPORT THIRD-PARTY
 from plotly import graph_objects as go
 from pydantic import BaseModel
-
-# IMPORT INTERNAL
 
 
 class YTimeSeries(BaseModel):

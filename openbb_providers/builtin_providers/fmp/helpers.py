@@ -6,9 +6,6 @@ from typing import List, Optional, Type, TypeVar, Union
 
 # IMPORT THIRD-PARTY
 import requests
-from pydantic import BaseModel, NonNegativeInt, PositiveFloat, validator
-from requests.exceptions import SSLError
-
 from openbb_provider.model.abstract.data import Data
 
 # IMPORT INTERNAL
@@ -18,6 +15,8 @@ from openbb_provider.provider.provider_helpers import (
     get_querystring,
     request,
 )
+from pydantic import BaseModel, NonNegativeInt, PositiveFloat, validator
+from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
 

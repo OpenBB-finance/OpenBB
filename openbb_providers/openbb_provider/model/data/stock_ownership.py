@@ -1,13 +1,13 @@
 """Stock owner data model."""
 
-# IMPORT STANDARD
-from datetime import date as dateType
-from datetime import datetime
 
-# IMPORT THIRD-PARTY
+from datetime import (
+    date as dateType,
+    datetime,
+)
+
 from pydantic import validator
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
 

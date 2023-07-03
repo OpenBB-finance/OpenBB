@@ -2,12 +2,6 @@
 from datetime import date as dateType
 from typing import Dict, List, Optional
 
-# IMPORT THIRD-PARTY
-from pydantic import Field
-
-from builtin_providers.polygon.helpers import get_data
-from builtin_providers.polygon.types import PolygonFundamentalQueryParams
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data
 from openbb_provider.model.data.balance_sheet import (
@@ -16,6 +10,12 @@ from openbb_provider.model.data.balance_sheet import (
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer, get_querystring
+
+# IMPORT THIRD-PARTY
+from pydantic import Field
+
+from builtin_providers.polygon.helpers import get_data
+from builtin_providers.polygon.types import PolygonFundamentalQueryParams
 
 
 class PolygonBalanceSheetQueryParams(PolygonFundamentalQueryParams):

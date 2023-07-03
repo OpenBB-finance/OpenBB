@@ -1,10 +1,8 @@
 """Abstract class for the fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Dict, Generic, List, Optional, TypeVar, Union
 
-# IMPORT THIRD-PARTY
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 
 QueryParamsType = TypeVar("QueryParamsType", bound=QueryParams)

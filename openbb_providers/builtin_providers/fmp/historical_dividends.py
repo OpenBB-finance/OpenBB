@@ -1,13 +1,11 @@
 """FMP Historical Dividends fetcher."""
 # IMPORT STANDARD
-from datetime import date as dateType
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Dict, List, Optional
 
-# IMPORT THIRD-PARTY
-from pydantic import validator
-
-from builtin_providers.fmp.helpers import create_url, get_data_many
 from openbb_provider.model.abstract.data import Data
 
 # IMPORT INTERNAL
@@ -17,6 +15,11 @@ from openbb_provider.model.data.historical_dividends import (
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
+
+# IMPORT THIRD-PARTY
+from pydantic import validator
+
+from builtin_providers.fmp.helpers import create_url, get_data_many
 
 
 class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):

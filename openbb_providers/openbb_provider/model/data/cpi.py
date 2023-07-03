@@ -1,13 +1,9 @@
-# IMPORT STANDARD
 from datetime import date as dateType
 from typing import Dict, List, Optional
 
-# IMPORT THIRD-PARTY
+from builtin_providers.fred.fred_helpers import CPI_COUNTRIES, CPI_FREQUENCY, CPI_UNITS
 from pydantic import BaseModel, validator
 
-from builtin_providers.fred.fred_helpers import CPI_COUNTRIES, CPI_FREQUENCY, CPI_UNITS
-
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 
 

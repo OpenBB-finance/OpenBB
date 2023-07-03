@@ -1,13 +1,11 @@
 """Provider helpers."""
 
-# IMPORT STANDARD
+
 import json
 import re
 from io import StringIO
 from typing import Callable, Dict, List, Optional, Type, Union
 
-# IMPORT THIRD-PARTY
-# IMPORT INTERNAL
 from openbb_provider.provider.abstract.fetcher import DataType, ProviderDataType
 
 

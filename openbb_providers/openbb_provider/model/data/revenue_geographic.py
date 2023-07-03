@@ -1,15 +1,12 @@
 """Revenue by geographic segments data model."""
 
-# IMPORT STANDARD
+
 from datetime import date
 from typing import Literal, Optional
 
-# IMPORT THIRD-PARTY
 from pydantic import Field
 
 from openbb_provider.metadata import DESCRIPTIONS
-
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
 

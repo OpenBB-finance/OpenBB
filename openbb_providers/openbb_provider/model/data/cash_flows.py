@@ -1,10 +1,9 @@
 """Cash Flow Statement Data Model."""
 
-# IMPORT STANDARD
+
 from datetime import date as dateType
 from typing import Optional
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data
 from openbb_provider.model.data.base import FinancialStatementQueryParams
 

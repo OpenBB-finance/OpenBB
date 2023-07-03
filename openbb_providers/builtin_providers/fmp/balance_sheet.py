@@ -1,14 +1,11 @@
 """FMP Balance Sheet Fetcher."""
 
 # IMPORT STANDARD
-from datetime import date as dateType
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Dict, List, Literal, Optional
-
-# IMPORT THIRD-PARTY
-from pydantic import Field, NonNegativeInt, root_validator
-
-from builtin_providers.fmp.helpers import create_url, get_data_many
 
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
@@ -17,6 +14,11 @@ from openbb_provider.model.data.balance_sheet import (
     BalanceSheetQueryParams,
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
+
+# IMPORT THIRD-PARTY
+from pydantic import Field, NonNegativeInt, root_validator
+
+from builtin_providers.fmp.helpers import create_url, get_data_many
 
 
 class FMPBalanceSheetQueryParams(QueryParams):

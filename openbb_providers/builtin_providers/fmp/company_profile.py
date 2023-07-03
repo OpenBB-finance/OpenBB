@@ -3,7 +3,6 @@
 # IMPORT STANDARD
 from typing import Dict, Optional
 
-from builtin_providers.fmp.helpers import get_data
 from openbb_provider.model.abstract.data import Data
 
 # IMPORT INTERNAL
@@ -13,6 +12,8 @@ from openbb_provider.model.data.company_overview import (
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
+
+from builtin_providers.fmp.helpers import get_data
 
 # IMPORT THIRD-PARTY
 

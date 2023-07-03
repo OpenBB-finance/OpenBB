@@ -1,10 +1,7 @@
-# IMPORT STANDARD
 from typing import Literal
 
-# IMPORT THIRD-PARTY
 from pydantic import BaseModel, Field, validator
 
-# IMPORT INTERNAL
 from openbb_provider.metadata import DESCRIPTIONS
 from openbb_provider.model.abstract.data import QueryParams
 

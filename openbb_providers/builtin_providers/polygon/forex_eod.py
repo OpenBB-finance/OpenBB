@@ -4,16 +4,16 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
+# IMPORT INTERNAL
+from openbb_provider.model.data.forex_eod import ForexEODData, ForexEODQueryParams
+from openbb_provider.provider.abstract.fetcher import Fetcher
+from openbb_provider.provider.provider_helpers import data_transformer
+
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
 
 from builtin_providers.polygon.helpers import get_data
 from builtin_providers.polygon.types import BaseStockData, BaseStockQueryParams
-
-# IMPORT INTERNAL
-from openbb_provider.model.data.forex_eod import ForexEODData, ForexEODQueryParams
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer
 
 
 class PolygonForexEODQueryParams(BaseStockQueryParams):

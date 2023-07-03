@@ -6,10 +6,10 @@ from typing import List
 
 # IMPORT THIRD-PARTY
 import requests
-from pydantic import BaseModel, Field, validator
 
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data
+from pydantic import BaseModel, Field, validator
 
 
 def get_data(url: str) -> dict:

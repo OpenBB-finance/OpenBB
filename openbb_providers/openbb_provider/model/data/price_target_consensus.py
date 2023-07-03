@@ -1,8 +1,6 @@
 """Price target consensus data model."""
 
-# IMPORT STANDARD
-# IMPORT THIRD-PARTY
-# IMPORT INTERNAL
+
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
 

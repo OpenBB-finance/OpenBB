@@ -5,11 +5,11 @@ from datetime import date, datetime
 from enum import Enum
 from typing import Literal, Optional, Union
 
-# IMPORT THIRD-PARTY
-from pydantic import Field, PositiveFloat, PositiveInt, validator
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
+
+# IMPORT THIRD-PARTY
+from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 
 class Timespan(str, Enum):

@@ -1,14 +1,11 @@
 """FMP Share Statistics Fetcher."""
 
 # IMPORT STANDARD
-from datetime import date as dateType
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Dict, List, Optional
-
-# IMPORT THIRD-PARTY
-from pydantic import validator
-
-from builtin_providers.fmp.helpers import create_url, get_data_many
 
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
@@ -19,6 +16,11 @@ from openbb_provider.model.data.share_statistics import (
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
+
+# IMPORT THIRD-PARTY
+from pydantic import validator
+
+from builtin_providers.fmp.helpers import create_url, get_data_many
 
 
 class FMPShareStatisticsQueryParams(QueryParams, BaseSymbol):

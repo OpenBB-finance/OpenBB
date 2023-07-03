@@ -1,16 +1,15 @@
 """Treasury Rates Data Model."""
 
-# IMPORT STANDARD
-from datetime import date as dateType
-from datetime import datetime
+
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Optional
 
-# IMPORT THIRD-PARTY
 from pydantic import Field
 
 from openbb_provider.metadata import DESCRIPTIONS
-
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 
 

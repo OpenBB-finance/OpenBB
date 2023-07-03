@@ -1,15 +1,12 @@
 """Institutional Ownership Data Model."""
 
-# IMPORT STANDARD
+
 from datetime import date as dateType
 from typing import Optional
 
-# IMPORT THIRD-PARTY
 from pydantic import Field
 
 from openbb_provider.metadata import DESCRIPTIONS
-
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
 

@@ -2,6 +2,9 @@
 
 # IMPORT STANDARD
 
+# IMPORT INTERNAL
+from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
+
 from builtin_providers.polygon.balance_sheet import PolygonBalanceSheetFetcher
 from builtin_providers.polygon.cash_flow import PolygonCashFlowStatementFetcher
 from builtin_providers.polygon.crypto_eod import PolygonCryptoEODFetcher
@@ -17,15 +20,11 @@ from builtin_providers.polygon.stock_eod import PolygonStockEODFetcher
 from builtin_providers.polygon.stock_news import PolygonStockNewsFetcher
 from builtin_providers.polygon.stock_price import PolygonStockPriceFetcher
 
-# IMPORT INTERNAL
-from openbb_provider.provider.abstract.provider import Provider
-
 # IMPORT THIRD-PARTY
 
 # mypy: disable-error-code="list-item"
-# ignoring because I dont know how to type the string properly
 polygon_provider = Provider(
-    name="polygon",  # type: ignore
+    name=ProviderNameType("polygon"),
     description="Provider for Polygon.",
     fetcher_list=[
         PolygonStockEODFetcher,

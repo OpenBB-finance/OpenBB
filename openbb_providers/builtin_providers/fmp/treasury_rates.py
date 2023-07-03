@@ -4,11 +4,6 @@
 from datetime import date as dateType
 from typing import Dict, List, Optional
 
-# IMPORT THIRD-PARTY
-from pydantic import Field
-
-from builtin_providers.fmp.helpers import get_data_many
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data
 from openbb_provider.model.data.treasury_rates import (
@@ -17,6 +12,11 @@ from openbb_provider.model.data.treasury_rates import (
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer, get_querystring
+
+# IMPORT THIRD-PARTY
+from pydantic import Field
+
+from builtin_providers.fmp.helpers import get_data_many
 
 
 class FMPTreasuryRatesQueryParams(TreasuryRatesQueryParams):

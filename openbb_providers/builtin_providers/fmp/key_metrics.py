@@ -4,16 +4,16 @@
 from datetime import date as dateType
 from typing import Dict, List, Literal, Optional
 
-# IMPORT THIRD-PARTY
-from pydantic import Field
-
-from builtin_providers.fmp.helpers import create_url, get_data_many
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.key_metrics import KeyMetricsData, KeyMetricsQueryParams
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
+
+# IMPORT THIRD-PARTY
+from pydantic import Field
+
+from builtin_providers.fmp.helpers import create_url, get_data_many
 
 
 class FMPKeyMetricsQueryParams(QueryParams):

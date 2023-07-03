@@ -1,13 +1,9 @@
 """Abstract class for providers."""
 
-# IMPORT STANDARD
+
 from typing import Any, Dict, List, Literal
 
 import pkg_resources
-
-# IMPORT THIRD-PARTY
-
-# IMPORT INTERNAL
 
 
 def build_provider_name():
@@ -32,6 +28,9 @@ ProviderName = build_provider_name()
 class ProviderNameType(type):
     __args__ = ProviderName.__args__
     __str__ = ProviderName.__str__
+
+    def __new__(mcs, value):
+        return value
 
     def __init__(cls, value):
         if value not in ProviderName.__args__:

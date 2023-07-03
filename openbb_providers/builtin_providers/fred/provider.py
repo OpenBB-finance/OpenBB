@@ -4,13 +4,12 @@
 # IMPORT THIRD-PARTY
 # IMPORT INTERNAL
 from builtin_providers.fred.cpi import FREDCPIFetcher
-from openbb_provider.provider.abstract.provider import Provider
+from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
 
 # mypy: disable-error-code="list-item"
 
-# ignoring because I dont know how to type the string properly
 fred_provider = Provider(
-    name="fred",  # type: ignore
+    name=ProviderNameType("fred"),
     description="Provider for FRED.",
     fetcher_list=[FREDCPIFetcher],
 )

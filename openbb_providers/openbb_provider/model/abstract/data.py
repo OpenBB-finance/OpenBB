@@ -1,9 +1,4 @@
-# IMPORT STANDARD
-
-# IMPORT THIRD-PARTY
 from pydantic import BaseModel, Extra
-
-# IMPORT INTERNAL
 
 
 class Data(BaseModel):

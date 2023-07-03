@@ -1,9 +1,7 @@
-# IMPORT STANDARD
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
 from pathlib import Path
 from typing import List, Literal, Optional
 
-# IMPORT THIRD-PARTY
 import tomli
 from pydantic import Field, root_validator, validator
 

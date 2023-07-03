@@ -1,11 +1,7 @@
 """ESG Sector data model."""
 
-# IMPORT STANDARD
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
-
-# IMPORT THIRD-PARTY
 
 
 class ESGSectorQueryParams(QueryParams):

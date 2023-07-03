@@ -1,10 +1,6 @@
-# IMPORT STANDARD
 from pathlib import Path
 
-# IMPORT THIRD-PARTY
 from pydantic import BaseModel
-
-# IMPORT INTERNAL
 
 
 class Preferences(BaseModel):

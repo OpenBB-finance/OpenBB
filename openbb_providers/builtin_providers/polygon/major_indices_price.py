@@ -4,10 +4,6 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-# IMPORT THIRD-PARTY
-from builtin_providers.polygon.helpers import get_data
-from builtin_providers.polygon.types import BaseStockData, BaseStockQueryParams
-
 # IMPORT INTERNAL
 from openbb_provider.model.data.major_indices_price import (
     MajorIndicesPriceData,
@@ -15,6 +11,10 @@ from openbb_provider.model.data.major_indices_price import (
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
+
+# IMPORT THIRD-PARTY
+from builtin_providers.polygon.helpers import get_data
+from builtin_providers.polygon.types import BaseStockData, BaseStockQueryParams
 
 
 class PolygonMajorIndicesPriceQueryParams(BaseStockQueryParams):

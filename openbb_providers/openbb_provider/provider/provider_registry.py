@@ -1,18 +1,14 @@
 """ProviderRegistry class and Builder class."""
 
-# IMPORT STANDARD
+
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 import pkg_resources
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import QueryParams
 from openbb_provider.provider.abstract.fetcher import ProviderDataType
 from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
 from openbb_provider.settings import settings
-
-# IMPORT THIRD-PARTY
-
 
 orients = Literal["LIST", "RECORDS"]
 

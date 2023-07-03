@@ -1,10 +1,9 @@
 """Key Metrics Data Model."""
 
-# IMPORT STANDARD
+
 from datetime import date as DateType
 from typing import Literal, Optional
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
 

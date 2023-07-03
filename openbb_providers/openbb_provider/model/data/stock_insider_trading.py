@@ -1,14 +1,11 @@
 """Stock insider trading data model."""
 
-# IMPORT STANDARD
+
 from datetime import date, datetime
 from enum import Enum
 from typing import List, Optional
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
-
-# IMPORT THIRD-PARTY
 
 
 class TransactionTypes(str, Enum):

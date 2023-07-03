@@ -1,11 +1,9 @@
 """Company Overview Data Model."""
 
-# IMPORT STANDARD
+
 from datetime import date
 from typing import Optional
 
-# IMPORT THIRD-PARTY
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
 

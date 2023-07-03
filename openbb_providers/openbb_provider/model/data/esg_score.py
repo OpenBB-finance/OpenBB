@@ -1,13 +1,10 @@
 """ESG Score data model."""
 
-# IMPORT STANDARD
+
 from datetime import date, datetime
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
-
-# IMPORT THIRD-PARTY
 
 
 class ESGScoreQueryParams(QueryParams, BaseSymbol):

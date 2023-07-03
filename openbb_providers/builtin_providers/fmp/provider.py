@@ -4,6 +4,9 @@
 
 # IMPORT THIRD-PARTY
 
+# IMPORT INTERNAL
+from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
+
 from builtin_providers.fmp.analyst_estimates import FMPAnalystEstimatesFetcher
 from builtin_providers.fmp.balance_sheet import FMPBalanceSheetFetcher
 from builtin_providers.fmp.cash_flow import FMPCashFlowStatementFetcher
@@ -46,14 +49,10 @@ from builtin_providers.fmp.stock_ownership import FMPStockOwnershipFetcher
 from builtin_providers.fmp.stock_price import FMPStockPriceFetcher
 from builtin_providers.fmp.treasury_rates import FMPTreasuryRatesFetcher
 
-# IMPORT INTERNAL
-from openbb_provider.provider.abstract.provider import Provider
-
 # mypy: disable-error-code="list-item"
 
-# ignoring because I dont know how to type the string properly
 fmp_provider = Provider(
-    name="fmp",  # type: ignore
+    name=ProviderNameType("fmp"),
     description="Provider for FMP.",
     fetcher_list=[
         FMPKeyExecutivesFetcher,

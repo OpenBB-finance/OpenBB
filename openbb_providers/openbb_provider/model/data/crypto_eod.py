@@ -1,15 +1,12 @@
 """Crypto aggregate end of day price data model."""
 
-# IMPORT STANDARD
+
 from datetime import date, datetime
 from typing import Optional
 
-# IMPORT THIRD-PARTY
 from pydantic import Field, PositiveFloat
 
 from openbb_provider.metadata import DESCRIPTIONS
-
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
 

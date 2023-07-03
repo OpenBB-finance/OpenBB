@@ -1,14 +1,11 @@
 """Settings for the openbb_provider package."""
 
-# IMPORT STANDARD
+
 import os
 from typing import Optional
 
-# IMPORT THIRD-PARTY
 from pydantic import BaseSettings
 from pydantic.error_wrappers import ValidationError
-
-# IMPORT INTERNAL
 
 
 def create_path(*path: str) -> str:

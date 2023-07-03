@@ -1,13 +1,10 @@
 """ESG Risk Rating data model."""
 
-# IMPORT STANDARD
+
 from typing import Literal
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
-
-# IMPORT THIRD-PARTY
 
 
 class ESGRiskRatingQueryParams(QueryParams, BaseSymbol):

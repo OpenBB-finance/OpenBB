@@ -1,12 +1,10 @@
 """Earnings call transcript data model."""
 
-# IMPORT STANDARD
+
 from datetime import datetime
 
-# IMPORT THIRD-PARTY
 from pydantic import validator
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
 

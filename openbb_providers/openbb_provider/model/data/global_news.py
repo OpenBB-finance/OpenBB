@@ -1,13 +1,11 @@
 """Global News Data Model."""
 
-# IMPORT STANDARD
+
 from datetime import datetime
 from typing import Optional
 
-# IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeInt
 
-# IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 
 
