@@ -1,5 +1,9 @@
 import pkg_resources
-from openbb_provider.provider.provider_registry import Builder, ProviderRegistry
+
+from openbb_providers.openbb_provider.provider.provider_registry import (
+    Builder,
+    ProviderRegistry,
+)
 
 
 # This could get more complicated as we add more things.

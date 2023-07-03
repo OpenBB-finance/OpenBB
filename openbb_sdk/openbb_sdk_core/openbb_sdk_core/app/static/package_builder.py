@@ -5,6 +5,7 @@ from json import dumps
 from pathlib import Path
 from typing import (
     Annotated,
+    Any,
     Callable,
     Dict,
     List,
@@ -17,7 +18,6 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
-from fastapi import Query
 from starlette.routing import BaseRoute
 
 from openbb_sdk_core.app.router import RouterLoader
@@ -200,16 +200,18 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def get_type(field: Query) -> type:
-        if isclass(field.type):
-            name = field.type.__name__
+    def get_type(field: Any) -> type:
+        field_type = getattr(field, "type", Parameter.empty)
+        if isclass(field_type):
+            name = field_type.__name__
             if name.startswith("Constrained") and name.endswith("Value"):
                 name = name[11:-5].lower()
-                return getattr(builtins, name, field.type)
-        return field.type
+                return getattr(builtins, name, field_type)
+            return field_type
+        return field_type
 
     @staticmethod
-    def get_default(field: Callable):
+    def get_default(field: Any):
         field_default = getattr(field, "default", None)
         if field_default is None or field_default is MISSING:
             return Parameter.empty
@@ -219,6 +221,12 @@ class MethodDefinition:
             return Parameter.empty
 
         return default_default
+
+    @staticmethod
+    def is_annotated_dc(annotation) -> bool:
+        return get_origin(annotation) == Annotated and hasattr(
+            annotation.__args__[0], "__dataclass_fields__"
+        )
 
     @staticmethod
     def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
@@ -236,9 +244,7 @@ class MethodDefinition:
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
 
-            elif get_origin(param.annotation) == Annotated and isclass(
-                param.annotation.__args__[0]
-            ):
+            elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 for field_name, field in fields.items():
                     name = field_name
@@ -330,9 +336,7 @@ class MethodDefinition:
         for name, param in parameter_map.items():
             if name == "extra_params":
                 code += f"            {name} = kwargs,\n"
-            elif get_origin(param.annotation) == Annotated and isclass(
-                param.annotation.__args__[0]
-            ):
+            elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 value = {k: k for k in fields}
                 code += f"            {name} = {{"
