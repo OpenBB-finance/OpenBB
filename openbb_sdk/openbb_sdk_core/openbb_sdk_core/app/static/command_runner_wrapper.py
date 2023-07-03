@@ -27,7 +27,7 @@ try:
         CLASS_4ebd0208_8328_5d69_8c44_ec50939c0967,
     )
 except ImportError:
-    raise
+    app = None
 else:
 
     class CommandRunnerWrapper(CLASS_4ebd0208_8328_5d69_8c44_ec50939c0967):

@@ -4,7 +4,7 @@ import pandas as pd
 from pydantic import BaseModel
 
 
-def to_dataframe(data: List[BaseModel], index: Optional[str] = None) -> pd.DataFrame:
+def basemodel_to_df(data: List[BaseModel], index: Optional[str] = None) -> pd.DataFrame:
     """Convert to a Pandas DataFrame."""
     df = pd.DataFrame([d.dict() for d in data])
     if index and index in df.columns:
@@ -12,7 +12,7 @@ def to_dataframe(data: List[BaseModel], index: Optional[str] = None) -> pd.DataF
     return df
 
 
-def from_dataframe(
+def df_to_basemodel(
     df: Union[pd.DataFrame, pd.Series], index: bool = False
 ) -> List[BaseModel]:
     """Convert from a Pandas DataFrame."""

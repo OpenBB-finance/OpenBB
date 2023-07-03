@@ -148,7 +148,7 @@ class ImportDefinition:
         code += "\nimport pydantic"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nimport warnings"
-        code += "\nfrom openbb_sdk_core.app.utils import to_dataframe"
+        code += "\nfrom openbb_sdk_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_sdk_core.app.model.abstract.warning import OpenBBWarning"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
@@ -325,9 +325,7 @@ class MethodDefinition:
         code = ""
         if "data" in parameter_map:
             code += "        if isinstance(data, pandas.DataFrame):\n"
-            code += (
-                "            data = from_dataframe(data, data.index.name is not None)\n"
-            )
+            code += "            data = df_to_basemodel(data, data.index.name is not None)\n"
             code += "\n"
 
         code += "        o = self._command_runner_session.run(\n"
