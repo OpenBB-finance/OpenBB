@@ -17,7 +17,7 @@
     - [3. Provider QueryParams -\> OpenBB Data](#3-provider-queryparams---openbb-data)
     - [4. Provider QueryParams -\> Provider Data](#4-provider-queryparams---provider-data)
 - [Data Mapping](#data-mapping)
-- [Package extension : Adding a new Provider extension](#package-extension--adding-a-new-provider-extension)
+- [Package extension : Adding a new Data Provider extension](#package-extension--adding-a-new-data-provider-extension)
   - [1. Build a Python package](#1-build-a-python-package)
   - [2. Entrypoint](#2-entrypoint)
   - [3. Install the extension](#3-install-the-extension)
@@ -48,6 +48,7 @@ Close for closing price column name in data from one provider might be coded as 
 - **Fetcher** : A provider-specific object (FMPStockPriceFetcher) that holds executable logic that performs the standardization procedure going from QueryParams to the Data.
 - **Provider** : An object that is specific to a data provider (i.e. PolygonProvider) which holds Provider attributes and unites all of the provider's fetchers into a list.
 - **Provider Registry** : An aggregation of all the Provider objects and their API keys. It is the main point of usage and is responsible for dynamically serving the data by finding the correct Provider and Fetcher based on the given QueryParams.
+
 # How to use it?
 
 ### Prerequisites
@@ -64,7 +65,7 @@ Close for closing price column name in data from one provider might be coded as 
 ### 1. Defining : OpenBB QueryParams
 
 ```python
-from openbb_provider.model.data.stock_eod import StockEODQueryParams
+from openbb_providers.openbb_provider.model.data.stock_eod import StockEODQueryParams
 
 query = StockEODQueryParams(
   symbol="AAPL",
@@ -75,7 +76,7 @@ query = StockEODQueryParams(
 ### 2. Querying the Provider Table : OpenBB QueryParams -> OpenBB Data
 
 ```python
-from openbb_provider.provider.provider_registry import provider_registry
+from openbb_providers.openbb_provider.provider.provider_registry import provider_registry
 
 data = provider_registry.fetch(provider_name="fmp", query=query)
 print(data)
@@ -111,8 +112,6 @@ provider_registry.standardized(provider_name="fmp", query=provider_query)
 
 This way uses the Provider QueryParams to obtain the raw data from the Provider. This is useful when the user wants specific data that is not available in the standardized data and wants to use a specific query field that is not available in the standardized query. It is the same a using the Provider directly.
 
-This will primarily be used for integration tests so that we can notice Provider API changes in time and adjust the mapping accordingly.
-
 ```python
 provider_registry.simple(provider_name="fmp", query=provider_query)
 ```
@@ -122,7 +121,7 @@ provider_registry.simple(provider_name="fmp", query=provider_query)
 The data mapping is done in the following [file](https://docs.google.com/spreadsheets/d/1AhmQWGRDqORk8nlcNclcnCuPpWsdMuaHwxujMMdzcsk/edit#gid=152728452
 ).
 
-# Package extension : Adding a new Provider extension
+# Package extension : Adding a new Data Provider extension
 
 ## 1. Build a Python package
 
@@ -135,9 +134,9 @@ poetry new opebb-provider-your_extension
 Add an entrypoint for the extension inside your `pyproject.toml` file
 
 ```toml
-# File pyproject.toml
+# File openbb_providers/pyproject.toml
 ...
-[tool.poetry.extensions."openbb_provider_extension"]
+[tool.poetry.plugins."openbb_provider_extension"]
 extension_name_space = "my_extension.provider:provider_module"
 ```
 
