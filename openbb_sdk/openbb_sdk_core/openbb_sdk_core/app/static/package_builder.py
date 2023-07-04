@@ -32,6 +32,7 @@ class PackageBuilder:
 
         package_folder.mkdir(exist_ok=True)
 
+        print(package_path)
         with package_path.open("w") as file:
             file.write(module_code)
 
@@ -44,29 +45,35 @@ class PackageBuilder:
         }
         module_code = dumps(obj=module_map, indent=4)
         module_name = "module_map"
+        print("Writing module map...")
         cls.write_to_package(
             module_code=module_code, module_name=module_name, extension="json"
         )
 
     @classmethod
     def save_modules(cls):
+        print("\nWriting modules...")
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
+
+        MAX_LEN = max([len(path) for path in path_list if path != "/"])
 
         for path in path_list:
             route = PathHandler.get_route(path=path, route_map=route_map)
             if route is None:
                 module_code = ModuleBuilder.build(path=path)
                 module_name = PathHandler.build_module_name(path=path)
-                print(f"Writing module: {module_name} ({path})")
+                print(f"({path})", end=" " * (MAX_LEN - len(path)))
                 cls.write_to_package(module_code=module_code, module_name=module_name)
 
     @classmethod
     def save_package(cls):
+        print("\nWriting package __init__...")
         code = (
             "import warnings\n"
-            + "warnings.formatwarning = "
+            + "warnings.formatwarning = ("
             + "lambda message, category, *args, **kwargs: f'{category.__name__}: {message}'\n"
+            + ")\n"
         )
         cls.write_to_package(module_code=code, module_name="__init__")
 
