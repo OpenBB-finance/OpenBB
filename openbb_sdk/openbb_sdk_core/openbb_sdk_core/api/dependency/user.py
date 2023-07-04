@@ -80,7 +80,7 @@ async def get_user_service(
     if __user_service is None:
         dbms_uri = system_settings.dbms_uri
         if dbms_uri and dbms_uri.startswith("mongodb://"):
-            mongodb_client = MongoClient(dbms_uri)
+            mongodb_client: MongoClient = MongoClient(dbms_uri)
             __user_service = UserService(mongodb_client=mongodb_client)
         else:
             __user_service = UserService()

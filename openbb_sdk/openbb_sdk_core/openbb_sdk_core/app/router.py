@@ -182,7 +182,7 @@ class Router:
     ):
         tags = [prefix[1:]] if prefix else None
         self._api_router.include_router(
-            router=router.api_router, prefix=prefix, tags=tags
+            router=router.api_router, prefix=prefix, tags=tags  # type: ignore
         )
 
     @staticmethod
@@ -248,7 +248,7 @@ class CommandMap:
         return command_map
 
     @staticmethod
-    def get_provider_coverage(router: Router) -> Dict[str, str]:
+    def get_provider_coverage(router: Router) -> Dict[str, List[str]]:
         api_router = router.api_router
 
         mapping = build_provider_mapping()
@@ -274,7 +274,7 @@ class CommandMap:
         return self._map
 
     @property
-    def coverage(self) -> Dict[str, str]:
+    def coverage(self) -> Dict[str, List[str]]:
         return self._coverage
 
     def __init__(self, router: Optional[Router] = None) -> None:

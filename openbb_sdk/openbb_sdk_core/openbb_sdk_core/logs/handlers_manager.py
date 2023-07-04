@@ -70,4 +70,4 @@ class HandlersManager:
         for hdlr in logger.handlers:
             if isinstance(hdlr, (PathTrackingFileHandler, PosthogHandler)):
                 hdlr.settings = settings
-                hdlr.formatter.settings = settings
+                hdlr.formatter.settings = settings  # type: ignore
