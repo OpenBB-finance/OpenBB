@@ -30,7 +30,7 @@ app.include_router(router=router_system, prefix="/api/v1")
 app.include_router(router=router_commands, prefix="/api/v1")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # react renders on this port
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )

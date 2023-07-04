@@ -147,11 +147,10 @@ class ParametersBuilder:
             extra = Extra.allow
 
         sig = inspect.signature(func)
-        # pylint: disable=W0212
         fields = {
             n: (
                 p.annotation,
-                ... if p.default is inspect._empty else p.default,
+                ... if p.default is Parameter.empty else p.default,
             )
             for n, p in sig.parameters.items()
         }
