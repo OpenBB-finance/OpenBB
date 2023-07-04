@@ -10,6 +10,8 @@ from typing import (
     Callable,
     Dict,
     List,
+    Literal,
+    Optional,
     Type,
     Union,
     get_args,
@@ -457,23 +459,28 @@ class Linters:
     def print_separator(symbol: str, length: int = 160):
         print(symbol * length)
 
+    @staticmethod
+    def run(
+        linter: Literal["black", "ruff", "mypy"], flags: Optional[List[str]] = None
+    ):
+        """Run linter with flags."""
+        print(f"\n* {linter}")
+        Linters.print_separator("^")
+        command = [linter, Linters.current_folder]
+        if flags:
+            command.extend(flags)
+
+        subprocess.run(command, check=True)
+        Linters.print_separator("-")
+
     @classmethod
     def black(cls):
-        print("\nblack")
-        cls.print_separator("^")
-        subprocess.run(["black", cls.current_folder])
-        cls.print_separator("-")
+        cls.run(linter="black")
 
     @classmethod
     def ruff(cls):
-        print("\nruff")
-        cls.print_separator("^")
-        subprocess.run(["ruff", cls.current_folder, "--fix"])
-        cls.print_separator("-")
+        cls.run(linter="ruff", flags=["--fix"])
 
     @classmethod
     def mypy(cls):
-        print("\nmypy")
-        cls.print_separator("^")
-        subprocess.run(["mypy", cls.current_folder, "--ignore-missing-imports"])
-        cls.print_separator("-")
+        cls.run(linter="mypy", flags=["--ignore-missing-imports"])
