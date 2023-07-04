@@ -1,4 +1,5 @@
 import builtins
+import subprocess
 from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
@@ -18,7 +19,6 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
-from mypy import api
 from starlette.routing import BaseRoute
 
 from openbb_sdk_core.app.router import RouterLoader
@@ -58,6 +58,7 @@ class PackageBuilder:
             if route is None:
                 module_code = ModuleBuilder.build(path=path)
                 module_name = PathHandler.build_module_name(path=path)
+                print(f"Saving module: {module_name} ({path})")
                 cls.write_to_package(module_code=module_code, module_name=module_name)
 
     @classmethod
@@ -71,12 +72,14 @@ class PackageBuilder:
 
     @classmethod
     def run_linters(cls):
+        print("\n\nLinting...")
         Linters.black()
         Linters.ruff()
         Linters.mypy()
 
     @classmethod
     def build(cls, lint: bool = True) -> None:
+        print("\nBuilding package...\n")
         cls.save_module_map()
         cls.save_modules()
         cls.save_package()
@@ -144,8 +147,7 @@ class ImportDefinition:
     @classmethod
     def build(cls, path: str) -> str:
         hint_type_list = cls.get_path_hint_type_list(path=path)
-        code = "# MANUAL IMPORTS"
-        code += "\nfrom openbb_sdk_core.app.static.container import Container"
+        code = "\nfrom openbb_sdk_core.app.static.container import Container"
         code += "\nfrom openbb_sdk_core.app.model.command_output import CommandOutput"
 
         # These imports were not detected before build, so we add them manually.
@@ -165,7 +167,7 @@ class ImportDefinition:
         module_list = list(set(module_list))
         module_list.sort()
 
-        code += "\n\n# AUTO IMPORTS\n"
+        code += "\n"
         for module in module_list:
             code += f"import {module}\n"
 
@@ -442,26 +444,29 @@ class PathHandler:
 
 
 class Linters:
-    @staticmethod
-    def black():
-        pass
+    current_folder = str(Path(Path(__file__).parent, "package").absolute())
 
     @staticmethod
-    def ruff():
-        pass
+    def print_separator(symbol: str, length: int = 160):
+        print(symbol * length)
 
-    @staticmethod
-    def mypy():
-        current_folder = str(Path(__file__).parent)
-        # pylint: disable=I1101:c-extension-no-member
-        result = api.run([current_folder, "--ignore-missing-imports"])
+    @classmethod
+    def black(cls):
+        print("\nblack")
+        cls.print_separator("^")
+        subprocess.run(["black", cls.current_folder])
+        cls.print_separator("-")
 
-        if result[0]:
-            print("\nmypy report:\n")
-            print(result[0])  # stdout
+    @classmethod
+    def ruff(cls):
+        print("\nruff")
+        cls.print_separator("^")
+        subprocess.run(["ruff", cls.current_folder, "--fix"])
+        cls.print_separator("-")
 
-        if result[1]:
-            print("\nError report:\n")
-            print(result[1])  # stderr
-
-        print("\nExit status:", result[2])
+    @classmethod
+    def mypy(cls):
+        print("\nmypy")
+        cls.print_separator("^")
+        subprocess.run(["mypy", cls.current_folder, "--ignore-missing-imports"])
+        cls.print_separator("-")
