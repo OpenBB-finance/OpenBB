@@ -169,7 +169,7 @@ class Router:
         kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
         kwargs["endpoint"] = func
         kwargs["methods"] = kwargs.get("methods", ["GET"])
-        kwargs["description"] = self.format_docstring(func)
+        kwargs["description"] = self.slice_docstring(func)
 
         api_router.add_api_route(**kwargs)
 
@@ -227,7 +227,7 @@ class Router:
         return func
 
     @staticmethod
-    def format_docstring(func: Callable) -> str:
+    def slice_docstring(func: Callable) -> str:
         doc = func.__doc__
         if doc:
             sliced = doc.split("    Parameters\n    ----------")[0]
