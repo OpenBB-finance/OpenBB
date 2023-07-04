@@ -35,7 +35,7 @@ class ProfileModel(BaseModel):
         self.uuid = session.get("uuid", "")
         self.email = email
         self.username = session.get("username", None) or email.split("@").pop(0)
-        self.primary_usage = session.get("primary_usage", "")
+        self.primary_usage = session.get("primary_usage", None) or "personal"
         self.remember = remember
 
     def get_uuid(self) -> str:
