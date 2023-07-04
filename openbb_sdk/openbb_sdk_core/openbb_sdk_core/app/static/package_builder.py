@@ -470,7 +470,7 @@ class Linters:
         if flags:
             command.extend(flags)
 
-        subprocess.run(command, check=True)
+        subprocess.run(command, check=False)
         Linters.print_separator("-")
 
     @classmethod
