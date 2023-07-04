@@ -148,6 +148,7 @@ class ImportDefinition:
         code += "\nimport pydantic"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nimport warnings"
+        code += "\nimport builtins"
         code += "\nfrom openbb_sdk_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_sdk_core.app.model.abstract.warning import OpenBBWarning"
 
@@ -190,7 +191,7 @@ class MethodDefinition:
         class_name = PathHandler.build_module_class(path=path)
         function_name = path.rsplit("/", maxsplit=1)[-1].strip("/")
 
-        code = "    @property\n"
+        code = "\n    @property\n"
         code += f'    def {function_name}(self):  # route = "{path}"\n'
         code += (
             f"        from openbb_sdk_core.app.static.package import {module_name}\n"
@@ -333,22 +334,22 @@ class MethodDefinition:
 
         for name, param in parameter_map.items():
             if name == "extra_params":
-                code += f"            {name} = kwargs,\n"
+                code += f"            {name}=kwargs,\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 value = {k: k for k in fields}
-                code += f"            {name} = {{"
+                code += f"            {name}={{"
                 for k, v in value.items():
                     code += f'"{k}": {v}, '
                 code += "},\n"
             else:
-                code += f"            {name} = {name},\n"
+                code += f"            {name}={name},\n"
         code += "        ).output\n"
         code += "\n"
         code += "        if o.warnings:\n"
         code += "            for w in o.warnings:\n"
         code += (
-            "                category = __builtins__.get(w.category, OpenBBWarning)\n"
+            "                category = getattr(builtins, w.category, OpenBBWarning)\n"
         )
         code += "                warnings.warn(w.message, category)\n"
         code += "\n"
