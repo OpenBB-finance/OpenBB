@@ -69,10 +69,18 @@ class PackageBuilder:
         cls.write_to_package(module_code=code, module_name="__init__")
 
     @classmethod
-    def build(cls) -> None:
+    def run_linters(cls):
+        Linters.black()
+        Linters.ruff()
+        Linters.mypy()
+
+    @classmethod
+    def build(cls, lint: bool = True) -> None:
         cls.save_module_map()
         cls.save_modules()
         cls.save_package()
+        if lint:
+            cls.run_linters()
 
 
 class ModuleBuilder:
@@ -430,3 +438,30 @@ class PathHandler:
     @classmethod
     def build_module_class(cls, path: str) -> str:
         return f"CLASS_{cls.hash_path(path=path)}"
+
+
+class Linters:
+    @staticmethod
+    def black():
+        pass
+
+    @staticmethod
+    def ruff():
+        pass
+
+    @staticmethod
+    def mypy():
+        from mypy import api
+
+        current_folder = str(Path(__file__).parent)
+        result = api.run([current_folder, "--ignore-missing-imports"])
+
+        if result[0]:
+            print("\nType checking report:\n")
+            print(result[0])  # stdout
+
+        if result[1]:
+            print("\nError report:\n")
+            print(result[1])  # stderr
+
+        print("\nExit status:", result[2])
