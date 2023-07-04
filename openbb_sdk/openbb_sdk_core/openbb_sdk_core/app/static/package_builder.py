@@ -58,7 +58,7 @@ class PackageBuilder:
             if route is None:
                 module_code = ModuleBuilder.build(path=path)
                 module_name = PathHandler.build_module_name(path=path)
-                print(f"Saving module: {module_name} ({path})")
+                print(f"Writing module: {module_name} ({path})")
                 cls.write_to_package(module_code=module_code, module_name=module_name)
 
     @classmethod
