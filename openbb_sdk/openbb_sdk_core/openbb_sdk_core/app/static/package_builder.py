@@ -2,6 +2,7 @@ import builtins
 from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
+from mypy import api
 from pathlib import Path
 from typing import (
     Annotated,
@@ -451,13 +452,12 @@ class Linters:
 
     @staticmethod
     def mypy():
-        from mypy import api
-
         current_folder = str(Path(__file__).parent)
+        # pylint: disable=I1101:c-extension-no-member
         result = api.run([current_folder, "--ignore-missing-imports"])
 
         if result[0]:
-            print("\nType checking report:\n")
+            print("\nmypy report:\n")
             print(result[0])  # stdout
 
         if result[1]:
