@@ -81,6 +81,8 @@ SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 RECORD_SESSION = False
 SESSION_RECORDED = list()
 SESSION_RECORDED_NAME = ""
+SESSION_RECORDED_DESCRIPTION = ""
+SESSION_RECORDED_TAGS = ""
 
 
 class BaseController(metaclass=ABCMeta):
@@ -346,7 +348,9 @@ class BaseController(metaclass=ABCMeta):
                             "I cannot provide",
                         ]
                     ):
-                        console.print(f"[green]Suggested Command:[/green] {response}\n")
+                        console.print(
+                            f"[green]Suggested Command:[/green] /{response}\n"
+                        )
 
                         console.print(
                             "[yellow]Would you like to run this command?(y/n/fb)[/yellow]"
@@ -762,25 +766,50 @@ class BaseController(metaclass=ABCMeta):
             description="Start recording session into .openbb routine file",
         )
         parser.add_argument(
-            "-r",
-            "--routine",
+            "-n",
+            "--name",
             action="store",
-            dest="routine_name",
+            dest="name",
             type=str,
             default=datetime.now().strftime("%Y%m%d_%H%M%S_routine.openbb"),
             help="Routine file name to be saved.",
         )
+        parser.add_argument(
+            "-d",
+            "--description",
+            type=str,
+            dest="description",
+            help="The description of the routine",
+            default="",
+            nargs="+",
+        )
+        parser.add_argument(
+            "-t",
+            "--tags",
+            type=str,
+            dest="tags",
+            help="The tags of the routine",
+            default="",
+            nargs="+",
+        )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
+            other_args.insert(0, "-n")
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            global SESSION_RECORDED_NAME
             global RECORD_SESSION
-            if ".openbb" in ns_parser.routine_name:
-                SESSION_RECORDED_NAME = ns_parser.routine_name
-            else:
-                SESSION_RECORDED_NAME = ns_parser.routine_name + ".openbb"
+            global SESSION_RECORDED_NAME
+            global SESSION_RECORDED_DESCRIPTION
+            global SESSION_RECORDED_TAGS
+
+            SESSION_RECORDED_NAME = (
+                ns_parser.name
+                if ".openbb" in ns_parser.name
+                else ns_parser.name + ".openbb"
+            )
+
+            SESSION_RECORDED_DESCRIPTION = " ".join(ns_parser.description)
+            SESSION_RECORDED_TAGS = " ".join(ns_parser.tags) if ns_parser.tags else ""
 
             console.print(
                 "[green]The session is successfully being recorded."
@@ -827,11 +856,14 @@ class BaseController(metaclass=ABCMeta):
                 routine = read_routine(file_name=routine_file)
                 if routine is not None:
                     name = SESSION_RECORDED_NAME.split(sep=".openbb", maxsplit=-1)[0]
-                    response = Hub.upload_routine(
-                        auth_header=current_user.profile.get_auth_header(),
-                        name=name,
-                        routine=routine,
-                    )
+                    kwargs = {
+                        "auth_header": current_user.profile.get_auth_header(),
+                        "name": name,
+                        "description": SESSION_RECORDED_DESCRIPTION,
+                        "routine": routine,
+                        "tags": SESSION_RECORDED_TAGS,
+                    }
+                    response = Hub.upload_routine(**kwargs)  # type: ignore
                     if response is not None and response.status_code == 409:
                         i = console.input(
                             "A routine with the same name already exists, "
@@ -839,12 +871,8 @@ class BaseController(metaclass=ABCMeta):
                         )
                         console.print("")
                         if i.lower() in ["y", "yes"]:
-                            response = Hub.upload_routine(
-                                auth_header=current_user.profile.get_auth_header(),
-                                name=name,
-                                routine=routine,
-                                override=True,
-                            )
+                            kwargs["override"] = True  # type: ignore
+                            response = Hub.upload_routine(**kwargs)  # type: ignore
                         else:
                             console.print("[info]Aborted.[/info]")
 
