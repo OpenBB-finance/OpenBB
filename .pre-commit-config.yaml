@@ -64,6 +64,10 @@ repos:
             "record/*",
             "--exclude-files",
             "website/content/api/*",
+            "--exclude-files",
+            "openbb_extensions/charting/openbb_charting/infrastructure/assets/*.js",
+            "--exclude-files",
+            "openbb_extensions/charting/openbb_charting/infrastructure/*.html"
           ]
         exclude: package.lock.json
   - repo: local

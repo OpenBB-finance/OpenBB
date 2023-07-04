@@ -13,7 +13,7 @@ from charting_extensions.openbb_custom.infrastructure.plotly_ta.data_classes imp
 
 
 class Volume(PltTA):
-    """Volume technical indicators"""
+    """Volume technical indicators."""
 
     __subplots__ = ["ad", "adosc", "obv"]
 
