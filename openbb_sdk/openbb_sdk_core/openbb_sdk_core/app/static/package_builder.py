@@ -2,7 +2,6 @@ import builtins
 from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
-from mypy import api
 from pathlib import Path
 from typing import (
     Annotated,
@@ -19,6 +18,7 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
+from mypy import api
 from starlette.routing import BaseRoute
 
 from openbb_sdk_core.app.router import RouterLoader
