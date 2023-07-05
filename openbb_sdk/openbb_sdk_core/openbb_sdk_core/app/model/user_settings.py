@@ -10,3 +10,10 @@ class UserSettings(Tagged):
     profile: Profile = Field(default_factory=Profile)
     credentials: Credentials = Field(default_factory=Credentials)
     preferences: Preferences = Field(default_factory=Preferences)
+
+    def __repr__(self) -> str:
+        return (
+            self.__class__.__name__
+            + "\n\n"
+            + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
+        )

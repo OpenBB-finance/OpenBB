@@ -7,3 +7,10 @@ class HubSession(BaseModel):
     user_uuid: str
     email: str
     primary_usage: str
+
+    def __repr__(self) -> str:
+        return (
+            self.__class__.__name__
+            + "\n\n"
+            + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
+        )
