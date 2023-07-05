@@ -81,9 +81,7 @@ def _extract_fields(
     for field in standard_fields:
         standard_dict[standard_fields[field].alias] = {
             "type": standard_fields[field].annotation,
-            "default": standard_fields[field].default
-            if standard_fields[field].default
-            else None,
+            "default": standard_fields[field].default,
             "required": standard_fields[field].required,
         }
 
