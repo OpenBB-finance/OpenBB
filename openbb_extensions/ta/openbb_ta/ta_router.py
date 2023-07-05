@@ -1,13 +1,8 @@
 from typing import List, Literal, Optional
+from openbb_sdk_core.app.utils import basemodel_to_df, df_to_basemodel, get_target_column, get_target_columns
 
 import pandas as pd
 from builtin_extensions.common.ta import ta_helpers
-from builtin_extensions.common.utils import (
-    from_dataframe,
-    get_target_column,
-    get_target_columns,
-    to_dataframe,
-)
 from openbb_provider.model.abstract.data import Data
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.model.export.plotly import Plotly
@@ -64,13 +59,13 @@ def atr(
     >>> atr_data = openbb.ta.atr(data=stock_data.results)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     df_atr = pd.DataFrame(
         df_target.ta.atr(length=length, mamode=mamode, drift=drift, offset=offset)
     )
 
-    results = from_dataframe(df_target.join(df_atr, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(df_atr, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -108,7 +103,7 @@ def fib(
     >>> fib_data = openbb.ta.fib(data=stock_data.results, period=120)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
 
     (
         df_fib,
@@ -131,7 +126,7 @@ def fib(
     df_fib["max_pr"] = max_pr
     df_fib["lvl_text"] = lvl_text
 
-    results = from_dataframe(df_fib)
+    results = df_to_basemodel(df_fib)
 
     return CommandOutput(results=results)
 
@@ -172,11 +167,11 @@ def obv(
     >>> obv_data = openbb.ta.obv(data=stock_data.results, offset=0)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "volume"])
     df_obv = pd.DataFrame(df_target.ta.obv(offset=offset))
 
-    results = from_dataframe(df_target.join(df_obv, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(df_obv, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -218,11 +213,11 @@ def fisher(
     >>> fisher_data = openbb.ta.fisher(data=stock_data.results, length=14, signal=1)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
     df_fisher = pd.DataFrame(df_target.ta.fisher(length=length, signal=signal))
 
-    results = from_dataframe(df_target.join(df_fisher, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(df_fisher, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -266,11 +261,11 @@ def adosc(
     >>> adosc_data = openbb.ta.adosc(data=stock_data.results, fast=3, slow=10, offset=0)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume", "open"])
     df_adosc = pd.DataFrame(df_target.ta.adosc(fast=fast, slow=slow, offset=offset))
 
-    results = from_dataframe(df_target.join(df_adosc, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(df_adosc, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -335,13 +330,13 @@ def bbands(
     >>> bbands_data = openbb.ta.bbands(data=stock_data.results, column="close", length=50, std=2, mamode="sma", offset=0)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     bbands_df = pd.DataFrame(
         df_target.ta.bbands(length=length, std=std, mamode=mamode, offset=offset)
     )
 
-    results = from_dataframe(df_target.join(bbands_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(bbands_df, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -418,23 +413,13 @@ def zlma(
 
         return Plotly(content=fig.to_plotly_json())
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     zlma_df = pd.DataFrame(df_target.ta.zlma(length=length, offset=offset)).dropna()
 
-    results = from_dataframe(df_target.join(zlma_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(zlma_df, how="left"), index=True)
 
-    return CommandOutput(
-        results=results,
-        export_list=[
-            _zlma_export_plotly(
-                data=df_target,
-                zlma_data=zlma_df,
-                zlma_column=zlma_df.columns[0],
-                title=f"ZLMA {str(length)} with a offset of {str(offset)}",
-            ),
-        ],
-    )
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -504,22 +489,13 @@ def aroon(
 
         return Plotly(content=fig.to_plotly_json())
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     aroon_df = pd.DataFrame(df_target.ta.aroon(length=length, scalar=scalar)).dropna()
 
-    results = from_dataframe(df_target.join(aroon_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(aroon_df, how="left"), index=True)
 
-    return CommandOutput(
-        results=results,
-        export_list=[
-            _aroon_export_plotly(
-                data=df_target,
-                aroon_data=aroon_df,
-                title=f"AROON {str(length)} with a scalar of {str(scalar)}",
-            ),
-        ],
-    )
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -585,23 +561,13 @@ def sma(
 
         return Plotly(content=fig.to_plotly_json())
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     sma_df = pd.DataFrame(df_target.ta.sma(length=length, offset=offset).dropna())
 
-    results = from_dataframe(df_target.join(sma_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(sma_df, how="left"), index=True)
 
-    return CommandOutput(
-        results=results,
-        export_list=[
-            _sma_export_plotly(
-                data=df_target,
-                sma_data=sma_df,
-                sma_column=sma_df.columns[0],
-                title=f"SMA {str(length)} with a offset of {str(offset)}",
-            ),
-        ],
-    )
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -643,13 +609,13 @@ def demark(
     >>> demark_data = openbb.ta.demark(data=stock_data.results,offset=0)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     demark_df = pd.DataFrame(
         df_target.ta.td_seq(offset=offset, show_all=show_all, asint=asint).dropna()
     )
 
-    results = from_dataframe(df_target.join(demark_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(demark_df, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -690,11 +656,11 @@ def vwap(
     >>> vwap_data = openbb.ta.vwap(data=stock_data.results,anchor="D",offset=0)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     df_vwap = pd.DataFrame(df_target.ta.vwap(anchor=anchor, offset=offset).dropna())
 
-    results = from_dataframe(df_target.join(df_vwap, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(df_vwap, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -775,25 +741,15 @@ def macd(
 
         return Plotly(content=fig.to_plotly_json())
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     macd_df = pd.DataFrame(
         df_target.ta.macd(fast=fast, slow=slow, signal=signal).dropna()
     )
 
-    results = from_dataframe(df_target.join(macd_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(macd_df, how="left"), index=True)
 
-    return CommandOutput(
-        results=results,
-        export_list=[
-            _macd_export_plotly(
-                data=df_target,
-                macd_data=macd_df,
-                macd_column=macd_df.columns[0],
-                title=f"MACD {str(fast)}-{str(slow)}-{str(signal)}",
-            ),
-        ],
-    )
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -856,23 +812,13 @@ def hma(
 
         return Plotly(content=fig.to_plotly_json())
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     hma_df = pd.DataFrame(df_target.ta.hma(length=length, offset=offset).dropna())
 
-    results = from_dataframe(df_target.join(hma_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(hma_df, how="left"), index=True)
 
-    return CommandOutput(
-        results=results,
-        export_list=[
-            _hma_export_plotly(
-                data=df_target,
-                hma_data=hma_df,
-                hma_column=hma_df.columns[0],
-                title=f"HMA {str(length)} with a offset of {str(offset)}",
-            ),
-        ],
-    )
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -916,7 +862,7 @@ def donchian(
     >>> donchian_data = openbb.ta.donchian(data=stock_data.results,lower_length=20,upper_length=20,offset=0)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
     donchian_df = pd.DataFrame(
         df_target.ta.donchian(
@@ -924,7 +870,7 @@ def donchian(
         ).dropna()
     )
 
-    results = from_dataframe(df_target.join(donchian_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(donchian_df, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -963,7 +909,7 @@ def ichimoku(
         drops the Chikou Span Column to prevent potential data leak
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     df_ichimoku, df_span = df_target.ta.ichimoku(
         tenkan=conversion,
@@ -976,7 +922,7 @@ def ichimoku(
     df_result = df_target.join(df_span.add_prefix("span_"), how="left")
     df_result = df_result.join(df_ichimoku, how="left")
 
-    results = from_dataframe(df_result, index=True)
+    results = df_to_basemodel(df_result, index=True)
 
     return CommandOutput(results=results)
 
@@ -1014,7 +960,7 @@ def clenow(
     >>> clenow_data = openbb.ta.clenow(data=stock_data.results,period=90)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target)
 
     r2, coef, _ = ta_helpers.clenow_momentum(df_target, period)
@@ -1028,7 +974,7 @@ def clenow(
         orient="index",
     ).transpose()
 
-    results = from_dataframe(df_clenow)
+    results = df_to_basemodel(df_clenow)
 
     return CommandOutput(results=results)
 
@@ -1069,11 +1015,11 @@ def ad(
     >>> ad_data = openbb.ta.ad(data=stock_data.results,offset=0)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     ad_df = pd.DataFrame(df_target.ta.ad(offset=offset).dropna())
 
-    results = from_dataframe(df_target.join(ad_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(ad_df, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -1139,26 +1085,15 @@ def adx(
 
         return Plotly(content=fig.to_plotly_json())
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     adx_df = pd.DataFrame(
         df_target.ta.adx(length=length, scalar=scalar, drift=drift).dropna()
     )
 
-    results = from_dataframe(df_target.join(adx_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(adx_df, how="left"), index=True)
 
-    return CommandOutput(
-        results=results,
-        export_list=[
-            _adx_export_plotly(
-                data=df_target,
-                column="close",
-                adx_data=adx_df,
-                adx_columns=adx_df.columns,
-                title=f"ADX {str(length)}-{str(scalar)}-{str(drift)}",
-            ),
-        ],
-    )
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1221,23 +1156,13 @@ def wma(
 
         return Plotly(content=fig.to_plotly_json())
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     wma_df = pd.DataFrame(df_target.ta.wma(length=length, offset=offset).dropna())
 
-    results = from_dataframe(df_target.join(wma_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(wma_df, how="left"), index=True)
 
-    return CommandOutput(
-        results=results,
-        export_list=[
-            _wma_export_plotly(
-                data=df_target,
-                wma_data=wma_df,
-                wma_column=wma_df.columns[0],
-                title=f"WMA {str(length)} with a offset of {str(offset)}",
-            ),
-        ],
-    )
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1271,11 +1196,11 @@ def cci(
         The CCI data.
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     cci_df = pd.DataFrame(df_target.ta.cci(length=length, scalar=scalar).dropna())
 
-    results = from_dataframe(df_target.join(cci_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(cci_df, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -1344,25 +1269,15 @@ def rsi(
 
         return Plotly(content=fig.to_plotly_json())
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     rsi_df = pd.DataFrame(
         df_target.ta.rsi(length=length, scalar=scalar, drift=drift).dropna()
     )
 
-    results = from_dataframe(df_target.join(rsi_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(rsi_df, how="left"), index=True)
 
-    return CommandOutput(
-        results=results,
-        export_list=[
-            _rsi_export_plotly(
-                data=df_target,
-                rsi_data=rsi_df,
-                rsi_column=rsi_df.columns[0],
-                title=f"RSI {str(length)} with a scalar of {str(scalar)} and a drift of {str(drift)}",
-            ),
-        ],
-    )
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1416,7 +1331,7 @@ def stoch(
     >>> stoch_data = openbb.ta.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     stoch_df = pd.DataFrame(
         df_target.ta.stoch(
@@ -1426,7 +1341,7 @@ def stoch(
         ).dropna()
     )
 
-    results = from_dataframe(df_target.join(stoch_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(stoch_df, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -1483,7 +1398,7 @@ def kc(
     >>> kc_data = openbb.ta.kc(data=stock_data.results, length=20, scalar=20, ma_mode="ema", offset=0)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     kc_df = pd.DataFrame(
         df_target.ta.kc(
@@ -1494,7 +1409,7 @@ def kc(
         ).dropna()
     )
 
-    results = from_dataframe(df_target.join(kc_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(kc_df, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -1531,11 +1446,11 @@ def cg(
     >>> cg_data = openbb.ta.cg(data=stock_data.results, length=14)
     """
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     cg_df = pd.DataFrame(df_target.ta.cg(length=length).dropna())
 
-    results = from_dataframe(df_target.join(cg_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(cg_df, how="left"), index=True)
 
     return CommandOutput(results=results)
 
@@ -1610,12 +1525,12 @@ def cones(
     if lower_q > upper_q:
         lower_q, upper_q = upper_q, lower_q
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_cones = ta_helpers.calculate_cones(
         data=df, lower_q=lower_q, upper_q=upper_q, model=model, is_crypto=is_crypto
     )
 
-    results = from_dataframe(df_cones, index=True)
+    results = df_to_basemodel(df_cones, index=True)
 
     return CommandOutput(results=results)
 
@@ -1685,20 +1600,10 @@ def ema(
 
         return Plotly(content=fig.to_plotly_json())
 
-    df = to_dataframe(data, index=index)
+    df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     ema_df = pd.DataFrame(df_target.ta.ema(length=length, offset=offset).dropna())
 
-    results = from_dataframe(df_target.join(ema_df, how="left"), index=True)
+    results = df_to_basemodel(df_target.join(ema_df, how="left"), index=True)
 
-    return CommandOutput(
-        results=results,
-        export_list=[
-            _ema_export_plotly(
-                data=df_target,
-                ema_data=ema_df,
-                ema_column=ema_df.columns[0],
-                title=f"EMA {str(length)} with a offset of {str(offset)}",
-            ),
-        ],
-    )
+    return CommandOutput(results=results)

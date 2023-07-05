@@ -1,7 +1,7 @@
 from charting_extensions.openbb_custom.infrastructure.plotly_ta.ta_class import PlotlyTA
 from openbb_sdk_core.app.model.chart import ChartFormat
 from openbb_sdk_core.app.router import Router
-from openbb_sdk_core.utils.utils import to_dataframe
+from openbb_sdk_core.app.utils import basemodel_to_df
 
 router = Router(prefix="")
 
@@ -1653,7 +1653,7 @@ def stocks_options_vsurf(**kwargs):
 
 
 def stocks_load(**kwargs):
-    data = to_dataframe(
+    data = basemodel_to_df(
         kwargs["command_output_item"], index=kwargs.get("index", "date")
     )
     ma = kwargs.get("ma", None)
@@ -1698,7 +1698,7 @@ def stocks_search(**kwargs):
 
 
 def _ta_ma(ma_type: str, **kwargs):
-    data = to_dataframe(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     window = kwargs.get("window", 50)
     offset = kwargs.get("offset", 0)
     symbol = kwargs.get("symbol", "")
@@ -1753,7 +1753,7 @@ def ta_zlma(**kwargs):
 
 
 def ta_aroon(**kwargs):
-    data = to_dataframe(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     length = kwargs.get("length", 25)
     scalar = kwargs.get("scalar", 100)
     symbol = kwargs.get("symbol", "")
@@ -1788,7 +1788,7 @@ def ta_recom(**kwargs):
 
 
 def ta_macd(**kwargs):
-    data = to_dataframe(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     fast = kwargs.get("fast", 12)
     slow = kwargs.get("slow", 26)
     signal = kwargs.get("signal", 9)
@@ -1828,7 +1828,7 @@ def ta_ad(**kwargs):
 
 
 def ta_adx(**kwargs):
-    data = to_dataframe(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     length = kwargs.get("length", 14)
     scalar = kwargs.get("scalar", 100.0)
     drift = kwargs.get("drift", 1)
@@ -1856,7 +1856,7 @@ def ta_cci(**kwargs):
 
 
 def ta_rsi(**kwargs):
-    data = to_dataframe(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     window = kwargs.get("window", 14)
     scalar = kwargs.get("scalar", 100.0)
     drift = kwargs.get("drift", 1)

@@ -1,6 +1,7 @@
 from typing import List, Literal
 
 import numpy as np
+from openbb_sdk_core.app.utils import basemodel_to_df, df_to_basemodel, get_target_column, get_target_columns
 import pandas as pd
 import pandas_ta as ta
 import statsmodels.api as sm
@@ -14,12 +15,6 @@ from builtin_extensions.common.qa.qa_models import (
     SummaryModel,
     TestModel,
     UnitRootModel,
-)
-from builtin_extensions.common.utils import (
-    from_dataframe,
-    get_target_column,
-    get_target_columns,
-    to_dataframe,
 )
 from openbb_provider.model.abstract.data import Data
 from openbb_sdk_core.app.model.command_output import CommandOutput
@@ -56,7 +51,7 @@ def normality(data: List[Data], target: str) -> CommandOutput[NormalityModel]:
         Normality tests summary. See qa_models.NormalityModel for details.
     """
 
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
     kt_statistic, kt_pvalue = stats.kurtosistest(series_target)
@@ -80,7 +75,7 @@ def normality(data: List[Data], target: str) -> CommandOutput[NormalityModel]:
 def capm(data: List[Data], target: str) -> CommandOutput[CAPMModel]:
     """Capital Asset Pricing Model."""
 
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
 
     df_target = get_target_columns(df, ["date", target])
     df_target = df_target.set_index("date")
@@ -140,7 +135,7 @@ def om(
         Omega ratios.
     """
 
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
     def get_omega_ratio(df_target: pd.Series, threshold: float) -> float:
@@ -178,10 +173,10 @@ def kurtosis(
     CommandOutput[List[Data]]
         Kurtosis.
     """
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
     results = ta.kurtosis(close=series_target, length=window).dropna()
-    results = from_dataframe(results)
+    results = df_to_basemodel(results)
 
     return CommandOutput(results=results)
 
@@ -251,7 +246,7 @@ def unitroot(
         Unit root tests summary.
     """
 
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
     adf = stattools.adfuller(series_target, regression=fuller_reg)
@@ -303,14 +298,14 @@ def sh(
         Sharpe ratio.
     """
 
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
     returns = series_target.pct_change().dropna().rolling(window).sum()
     std = series_target.rolling(window).std() / np.sqrt(window)
     results = ((returns - rfr) / std).dropna()
 
-    results = from_dataframe(results)
+    results = df_to_basemodel(results)
 
     return CommandOutput(results=results)
 
@@ -346,7 +341,7 @@ def so(
         Sortino ratio.
     """
 
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
     returns = series_target.pct_change().dropna().rolling(window).sum()
@@ -358,7 +353,7 @@ def so(
     if adjusted:
         results = result / np.sqrt(2)
 
-    results = from_dataframe(results)
+    results = df_to_basemodel(results)
 
     return CommandOutput(results=results)
 
@@ -407,10 +402,10 @@ def skew(
     CommandOutput[List[Data]]
         Skewness.
     """
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
     results = ta.skew(close=series_target, length=window).dropna()
-    results = from_dataframe(results)
+    results = df_to_basemodel(results)
 
     return CommandOutput(results=results)
 
@@ -424,14 +419,14 @@ def quantile(
 ) -> CommandOutput[List[Data]]:
     """Quantile."""
 
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
     df_median = ta.median(close=series_target, length=window).to_frame()
     df_quantile = ta.quantile(series_target, length=window, q=quantile_pct).to_frame()
     results = pd.concat([df_median, df_quantile], axis=1).dropna()
 
-    results = from_dataframe(results)
+    results = df_to_basemodel(results)
 
     return CommandOutput(results=results)
 
@@ -471,7 +466,7 @@ def summary(data: List[Data], target: str) -> CommandOutput[SummaryModel]:
         Summary table.
     """
 
-    df = to_dataframe(data)
+    df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
     df_stats = series_target.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])

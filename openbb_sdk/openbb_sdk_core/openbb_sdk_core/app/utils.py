@@ -24,3 +24,9 @@ def df_to_basemodel(
 
 
 # TODO: Move utils in common used in ta and qa to here
+
+def get_target_column(*args, **kwargs):
+    raise NotImplementedError
+
+def get_target_columns(*args, **kwargs):
+    raise NotImplementedError
