@@ -2462,6 +2462,7 @@ class EconomyController(BaseController):
             fred_view.display_usd_liquidity(
                 overlay=ns_parser.overlay,
                 show=ns_parser.show,
+                raw=ns_parser.raw,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
