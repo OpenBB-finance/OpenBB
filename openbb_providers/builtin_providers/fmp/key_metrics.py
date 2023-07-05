@@ -31,16 +31,12 @@ class FMPKeyMetricsQueryParams(QueryParams):
         The limit of the key metrics to be returned.
     """
 
-    __name__ = "FMPKeyMetricsQueryParams"
-
     symbol: str
     period: Literal["quarter", "annual"] = "annual"
     limit: Optional[int] = None
 
 
 class FMPKeyMetricsData(Data):
-    __name__ = "FMPKeyMetricsData"
-
     symbol: str
     date: dateType
     period: str

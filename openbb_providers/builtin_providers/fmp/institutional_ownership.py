@@ -38,13 +38,11 @@ class FMPInstitutionalOwnershipQueryParams(QueryParams, BaseSymbol):
         A specific date to get data for.
     """
 
-    __name__ = "FMPInstitutionalOwnershipQueryParams"
     includeCurrentQuarter: bool = Field(default=False, alias="include_current_quarter")
     date: Optional[dateType]
 
 
 class FMPInstitutionalOwnershipData(Data):
-    __name__ = "FMPInstitutionalOwnershipData"
     symbol: str = Field(min_length=1)
     cik: str = Field(min_length=1)
     date: dateType

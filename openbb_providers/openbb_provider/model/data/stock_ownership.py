@@ -54,7 +54,6 @@ class StockOwnershipQueryParams(QueryParams, BaseSymbol):
         The CIK of the company owner.
     """
 
-    __name__ = "StockOwnershipQueryParams"
     page: int = 0
     date: dateType = most_recent_quarter()
 

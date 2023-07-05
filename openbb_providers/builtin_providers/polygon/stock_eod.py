@@ -41,11 +41,8 @@ class PolygonStockEODQueryParams(BaseStockQueryParams):
         The multiplier of the query, by default 1
     """
 
-    __name__ = "PolygonStockEODQueryParams"
-
 
 class PolygonStockEODData(BaseStockData):
-    __name__ = "PolygonEODStockData"
     v: NonNegativeFloat = Field(alias="volume")
     n: PositiveInt
     vw: PositiveFloat

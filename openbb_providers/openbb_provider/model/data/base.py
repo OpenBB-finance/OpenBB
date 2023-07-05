@@ -15,7 +15,6 @@ class BaseSymbol(BaseModel):
 
 
 class FinancialStatementQueryParams(QueryParams, BaseSymbol):
-    __name__ = "FinancialStatementQueryParams"
     period: Literal["annually", "quarterly"] = Field(
         default="annually", description=DESCRIPTIONS.get("period", "")
     )

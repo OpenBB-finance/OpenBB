@@ -42,11 +42,11 @@ class PolygonMajorIndicesEODQueryParams(BaseStockQueryParams):
         The multiplier of the query, by default 1
     """
 
-    __name__ = "PolygonMajorIndicesEODQueryParams"
+
 
 
 class PolygonMajorIndicesEODData(BaseStockData):
-    __name__ = "PolygonEODMajorIndicesData"
+    """Polygon major indices end of day data."""
 
 
 class PolygonMajorIndicesEODFetcher(

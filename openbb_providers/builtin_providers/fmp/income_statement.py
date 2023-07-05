@@ -41,7 +41,6 @@ class FMPIncomeStatementQueryParams(QueryParams):
         The limit of the income statement.
     """
 
-    __name__ = "FMPIncomeStatementQueryParams"
     symbol: Optional[str]
     cik: Optional[str]
     period: PeriodType = Field(default="annual")
@@ -55,7 +54,6 @@ class FMPIncomeStatementQueryParams(QueryParams):
 
 
 class FMPIncomeStatementData(Data):
-    __name__ = "FMPIncomeStatementData"
     date: dateType
     symbol: str
     reportedCurrency: str = Field(alias="currency")

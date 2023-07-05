@@ -34,11 +34,8 @@ class FMPShareStatisticsQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "FMPShareStatisticsQueryParams"
-
 
 class FMPShareStatisticsData(Data):
-    __name__ = "FMPShareStatisticsData"
     symbol: str
     date: dateType
     freeFloat: float

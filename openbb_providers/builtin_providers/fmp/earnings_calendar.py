@@ -30,12 +30,8 @@ class FMPEarningsCalendarQueryParams(EarningsCalendarQueryParams):
     limit : int
     """
 
-    __name__ = "FMPEarningsCalendarQueryParams"
-
 
 class FMPEarningsCalendarData(Data):
-    __name__ = "FMPEarningsCalendarData"
-
     date: dateType
     symbol: str
     eps: Optional[float]

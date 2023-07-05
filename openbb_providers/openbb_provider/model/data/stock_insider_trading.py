@@ -50,7 +50,6 @@ class StockInsiderTradingQueryParams(QueryParams):
         The page number to get
     """
 
-    __name__ = "StockInsiderTradingQueryParams"
     transactionType: List[TransactionTypes] = []
     symbol: Optional[str]
     reportingCik: Optional[int]

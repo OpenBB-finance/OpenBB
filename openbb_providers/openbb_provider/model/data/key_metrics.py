@@ -17,7 +17,6 @@ class KeyMetricsQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "KeyMetricsQueryParams"
     period: Literal["annually", "quarterly"] = "annually"
     limit: Optional[int] = None
 

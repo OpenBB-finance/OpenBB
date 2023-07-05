@@ -26,11 +26,9 @@ class FMPHistoricalStockSplitsQueryParams(HistoricalStockSplitsQueryParams):
         The symbol of the company.
     """
 
-    __name__ = "FMPHistoricalStockSplitsQueryParams"
-
 
 class FMPHistoricalStockSplitsData(HistoricalStockSplitsData):
-    __name__ = "FMPHistoricalStockSplitsData"
+    """FMP Historical Stock Splits data."""
 
 
 class FMPHistoricalStockSplitsFetcher(

@@ -27,8 +27,6 @@ class CPIQueryParams(QueryParams):
         End date, formatted YYYY-MM-DD
     """
 
-    __name__ = "CPIQueryParams"
-
     countries: List[CPI_COUNTRIES]
     units: CPI_UNITS = "growth_same"
     frequency: CPI_FREQUENCY = "monthly"
@@ -51,6 +49,5 @@ class CPIDataPoint(BaseModel):
 
 
 class CPIData(Data):
-    __name__ = "FREDCPIData"
     # I don't love this, but the keys are dynamic based on input so I don't know another way
     data: Dict[str, List[CPIDataPoint]]

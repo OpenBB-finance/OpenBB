@@ -34,12 +34,8 @@ class FMPESGRiskRatingQueryParams(ESGRiskRatingQueryParams):
         The symbol of the company.
     """
 
-    __name__ = "FMPESGRiskRatingQueryParams"
-
 
 class FMPESGRiskRatingData(Data):
-    __name__ = "FMPESGRiskRatingData"
-
     symbol: str
     cik: int
     companyName: str

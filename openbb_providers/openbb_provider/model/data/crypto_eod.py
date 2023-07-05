@@ -24,7 +24,6 @@ class CryptoEODQueryParams(QueryParams, BaseSymbol):
         The end date of the stock data up to which to retrieve the data.
     """
 
-    __name__ = "CryptoEODQueryParams"
     start_date: date = Field(description=DESCRIPTIONS.get("start_date", ""))
     end_date: Optional[date] = Field(
         description=DESCRIPTIONS.get("end_date", ""), default=date.today()

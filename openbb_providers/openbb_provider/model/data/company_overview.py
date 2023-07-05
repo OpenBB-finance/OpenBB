@@ -17,8 +17,6 @@ class CompanyOverviewQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "CompanyOverviewQueryParams"
-
 
 class CompanyOverviewData(Data):
     """Company Overview data.

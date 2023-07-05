@@ -24,7 +24,6 @@ class TreasuryRatesQueryParams(QueryParams):
         End date of the data, default is today.
     """
 
-    __name__ = "TreasuryRatesQueryParams"
     start_date: Optional[str] = Field(
         default=None, description=DESCRIPTIONS["start_date"]
     )

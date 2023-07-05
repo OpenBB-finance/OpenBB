@@ -35,7 +35,6 @@ class FMPForexEODQueryParams(QueryParams):
         The type of the series. Only "line" is supported.
     """
 
-    __name__ = "FMPForexEODQueryParams"
     symbol: str = Field(min_length=1)
     serietype: Optional[Literal["line"]] = None
     start_date: date
@@ -44,7 +43,6 @@ class FMPForexEODQueryParams(QueryParams):
 
 
 class FMPForexEODData(Data):
-    __name__ = "FMPForexEODData"
     date: datetime
     open: float
     high: float

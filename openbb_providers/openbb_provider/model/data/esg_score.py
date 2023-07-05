@@ -16,8 +16,6 @@ class ESGScoreQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "ESGScoreQueryParams"
-
 
 class ESGScoreData(Data):
     """ESG Score data.

@@ -26,11 +26,9 @@ class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
         The symbol of the company.
     """
 
-    __name__ = "FMPEarningsCallTranscriptQueryParams"
-
 
 class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
-    __name__ = "FMPEarningsCallTranscriptData"
+    """FMP Earnings Call Transcript data."""
 
 
 class FMPEarningsCallTranscriptFetcher(

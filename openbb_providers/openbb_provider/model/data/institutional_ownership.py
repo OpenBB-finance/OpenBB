@@ -24,7 +24,6 @@ class InstitutionalOwnershipQueryParams(QueryParams, BaseSymbol):
         A specific date to get data for.
     """
 
-    __name__ = "InstitutionalOwnershipQueryParams"
     include_current_quarter: bool = Field(
         default=False, description="Include current quarter data."
     )

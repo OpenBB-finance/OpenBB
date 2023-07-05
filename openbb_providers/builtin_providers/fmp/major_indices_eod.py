@@ -38,7 +38,6 @@ class FMPMajorIndicesEODQueryParams(QueryParams):
         The type of the series. Only "line" is supported.
     """
 
-    __name__ = "FMPMajorIndicesEODQueryParams"
     symbol: str = Field(min_length=1)
     serietype: Optional[Literal["line"]]
     start_date: date
@@ -47,7 +46,6 @@ class FMPMajorIndicesEODQueryParams(QueryParams):
 
 
 class FMPMajorIndicesEODData(Data):
-    __name__ = "FMPMajorIndicesEODData"
     date: datetime
     open: float
     high: float

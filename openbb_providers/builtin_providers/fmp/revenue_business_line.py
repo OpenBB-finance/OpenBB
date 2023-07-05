@@ -35,12 +35,8 @@ class FMPRevenueBusinessLineQueryParams(RevenueBusinessLineQueryParams):
         The structure of the revenue business line. Default is "flat".
     """
 
-    __name__ = "FMPRevenueBusinessLineQueryParams"
-
 
 class FMPRevenueBusinessLineData(RevenueBusinessLineData):
-    __name__ = "FMPRevenueBusinessLineData"
-
     @validator("date", pre=True)
     def time_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")

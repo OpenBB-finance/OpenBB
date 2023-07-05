@@ -19,8 +19,6 @@ class IncomeStatementQueryParams(FinancialStatementQueryParams):
         The period of the income statement.
     """
 
-    __name__ = "IncomeStatementQueryParams"
-
 
 class IncomeStatementData(Data):
     """Income Statement Data.

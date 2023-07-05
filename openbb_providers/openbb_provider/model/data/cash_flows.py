@@ -19,8 +19,6 @@ class CashFlowStatementQueryParams(FinancialStatementQueryParams):
         The period of the income statement.
     """
 
-    __name__ = "CashFlowStatementQueryParams"
-
 
 class CashFlowStatementData(Data):
     """Return Cash Flow Statement Data.

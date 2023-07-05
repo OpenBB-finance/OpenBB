@@ -16,8 +16,6 @@ class ESGRiskRatingQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "ESGRiskRatingQueryParams"
-
 
 class ESGRiskRatingData(Data, BaseSymbol):
     """ESG Risk Rating data.

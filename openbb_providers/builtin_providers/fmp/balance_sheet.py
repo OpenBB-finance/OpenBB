@@ -38,7 +38,6 @@ class FMPBalanceSheetQueryParams(QueryParams):
         The limit of the balance sheet.
     """
 
-    __name__ = "FMPBalanceSheetQueryParams"
     symbol: Optional[str]
     cik: Optional[str]
     period: Literal["annual", "quarter"] = Field(default="annual")
@@ -52,7 +51,6 @@ class FMPBalanceSheetQueryParams(QueryParams):
 
 
 class FMPBalanceSheetData(Data):
-    __name__ = "FMPBalanceSheetData"
     date: dateType
     symbol: str
     cik: Optional[int]

@@ -26,11 +26,8 @@ class FMPESGScoreQueryParams(ESGScoreQueryParams):
         The symbol of the company.
     """
 
-    __name__ = "FMPESGScoreQueryParams"
-
 
 class FMPESGScoreData(Data):
-    __name__ = "FMPESGScoreData"
     symbol: str
     cik: int
     companyName: str

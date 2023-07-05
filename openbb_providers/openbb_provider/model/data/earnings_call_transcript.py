@@ -20,8 +20,6 @@ class EarningsCallTranscriptQueryParams(QueryParams, BaseSymbol):
         The year of the earnings call transcript.
     """
 
-    __name__ = "EarningsCallTranscriptQueryParams"
-
     year: int
 
     @validator("year", pre=True)

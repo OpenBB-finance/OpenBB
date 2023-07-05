@@ -41,13 +41,13 @@ class FMPCryptoPriceQueryParams(QueryParams):
         The interval of the data.
     """
 
-    __name__ = "FMPCryptoPriceQueryParams"
+
     symbol: str = Field(min_length=1)
     interval: Interval = Field(default=Interval.onehour)
 
 
 class FMPCryptoPriceData(BaseStockPriceData):
-    __name__ = "FMPCryptoPriceData"
+    """FMP Crypto Price data."""
 
 
 class FMPCryptoPriceFetcher(

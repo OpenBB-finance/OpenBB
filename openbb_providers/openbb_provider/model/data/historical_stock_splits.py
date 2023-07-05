@@ -16,8 +16,6 @@ class HistoricalStockSplitsQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "HistoricalStockSplitsQueryParams"
-
 
 class HistoricalStockSplitsData(Data):
     """Historical stock splits data.

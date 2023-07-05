@@ -18,8 +18,6 @@ class EarningsCalendarQueryParams(QueryParams, BaseSymbol):
     limit : int
     """
 
-    __name__ = "EarningsCalendarQueryParams"
-
     limit: Optional[int]
 
 

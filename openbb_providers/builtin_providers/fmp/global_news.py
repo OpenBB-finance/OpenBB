@@ -27,12 +27,10 @@ class FMPGlobalNewsQueryParams(QueryParams):
         The page of the data to retrieve.
     """
 
-    __name__ = "FMPGlobalNewsQueryParams"
     page: int = Field(default=0)
 
 
 class FMPGlobalNewsData(Data):
-    __name__ = "FMPGlobalNewsData"
     publishedDate: datetime = Field(alias="date")
     title: str
     image: str

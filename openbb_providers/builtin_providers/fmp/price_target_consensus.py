@@ -39,12 +39,8 @@ class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
         The symbol of the company.
     """
 
-    __name__ = "FMPPriceTargetConsensusQueryParams"
-
 
 class FMPPriceTargetConsensusData(Data):
-    __name__ = "FMPPriceTargetConsensusData"
-
     symbol: str
     targetHigh: float
     targetLow: float

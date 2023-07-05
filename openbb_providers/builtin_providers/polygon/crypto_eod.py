@@ -41,11 +41,8 @@ class PolygonCryptoEODQueryParams(BaseStockQueryParams):
         The multiplier of the query, by default 1
     """
 
-    __name__ = "PolygonCryptoEODQueryParams"
-
 
 class PolygonCryptoEODData(BaseStockData):
-    __name__ = "PolygonEODCryptoData"
     v: NonNegativeFloat = Field(alias="volume")
     n: PositiveInt
     vw: PositiveFloat

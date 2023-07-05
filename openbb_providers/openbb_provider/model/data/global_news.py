@@ -18,7 +18,6 @@ class GlobalNewsQueryParams(QueryParams):
         The page of the global news to be retrieved.
     """
 
-    __name__ = "GlobalNewsQueryParams"
     page: NonNegativeInt = Field(default=0)
 
 

@@ -35,7 +35,6 @@ class FMPCryptoEODQueryParams(QueryParams):
         The type of the series. Only "line" is supported.
     """
 
-    __name__ = "FMPCryptoEODQueryParams"
     symbol: str = Field(min_length=1)
     serietype: Optional[Literal["line"]]
     start_date: date
@@ -44,7 +43,6 @@ class FMPCryptoEODQueryParams(QueryParams):
 
 
 class FMPCryptoEODData(Data):
-    __name__ = "FMPCryptoEODData"
     date: datetime
     open: float
     high: float

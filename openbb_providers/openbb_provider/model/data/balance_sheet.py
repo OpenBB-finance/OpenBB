@@ -21,8 +21,6 @@ class BalanceSheetQueryParams(FinancialStatementQueryParams):
         The period of the balance sheet.
     """
 
-    __name__ = "BalanceSheetQueryParams"
-
 
 class BalanceSheetData(Data):
     """Return Balance Sheet Data.

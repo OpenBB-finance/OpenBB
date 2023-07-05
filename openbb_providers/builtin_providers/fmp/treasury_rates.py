@@ -32,11 +32,8 @@ class FMPTreasuryRatesQueryParams(TreasuryRatesQueryParams):
         The end date of the data. Default is today.
     """
 
-    __name__ = "FMPTreasuryRatesQueryParams"
-
 
 class FMPTreasuryRatesData(Data):
-    __name__ = "FMPTreasuryRatesData"
     date: dateType
     month1: float = Field(alias="month_1")
     month2: float = Field(alias="month_2")

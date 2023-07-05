@@ -41,13 +41,12 @@ class FMPMajorIndicesPriceQueryParams(QueryParams):
         The interval of the data.
     """
 
-    __name__ = "FMPMajorIndicesPriceQueryParams"
     symbol: str = Field(min_length=1)
     interval: Interval = Field(default=Interval.onehour)
 
 
 class FMPMajorIndicesPriceData(BaseStockPriceData):
-    __name__ = "FMPMajorIndicesPriceData"
+    """FMP MajorIndices Price data."""
 
 
 class FMPMajorIndicesPriceFetcher(

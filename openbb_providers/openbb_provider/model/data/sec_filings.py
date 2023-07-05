@@ -22,7 +22,6 @@ class SECFilingsQueryParams(QueryParams, BaseSymbol):
         The limit of the results.
     """
 
-    __name__ = "SECFilingsQueryParams"
     symbol: str
     type: Optional[str] = None
     page: Optional[int] = 0

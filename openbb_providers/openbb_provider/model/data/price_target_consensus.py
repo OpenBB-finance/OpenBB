@@ -14,8 +14,6 @@ class PriceTargetConsensusQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "PriceTargetConsensusQueryParams"
-
 
 class PriceTargetConsensusData(Data):
     """Price target consensus data.

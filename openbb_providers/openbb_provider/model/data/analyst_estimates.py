@@ -21,7 +21,6 @@ class AnalystEstimatesQueryParams(QueryParams, BaseSymbol):
         The limit of the analyst estimates.
     """
 
-    __name__ = "AnalystEstimatesQueryParams"
     period: Literal["quarter", "annual"] = "annual"
     limit: int = 30
 

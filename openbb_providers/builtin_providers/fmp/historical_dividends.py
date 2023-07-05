@@ -33,12 +33,8 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
         The symbol of the company.
     """
 
-    __name__ = "FMPHistoricalDividendsQueryParams"
-
 
 class FMPHistoricalDividendsData(Data):
-    __name__ = "FMPHistoricalDividendsData"
-
     date: dateType
     label: str
     adjDividend: float

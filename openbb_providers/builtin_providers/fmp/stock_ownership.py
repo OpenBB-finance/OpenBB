@@ -30,11 +30,11 @@ class FMPStockOwnershipQueryParams(StockOwnershipQueryParams):
         The CIK of the company owner.
     """
 
-    __name__ = "FMPStockOwnershipQueryParams"
+
 
 
 class FMPStockOwnershipData(StockOwnershipData):
-    __name__ = "FMPStockOwnershipData"
+    """FMP Stock Ownership data."""
 
 
 class FMPStockOwnershipFetcher(

@@ -58,7 +58,6 @@ class BenzingaGlobalNewsQueryParams(QueryParams):
         The content types of the news to retrieve.
     """
 
-    __name__ = "BenzingaGlobalNewsQueryParams"
     page: int = Field(default=0)
     pageSize: int = Field(default=15)
     displayOutput: str = Field(default="headline")
@@ -78,7 +77,6 @@ class BenzingaGlobalNewsQueryParams(QueryParams):
 
 
 class BenzingaGlobalNewsData(BenzingaBaseNewsData):
-    __name__ = "BenzingaGlobalNewsData"
     url: str
 
 

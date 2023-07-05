@@ -33,11 +33,9 @@ class FREDCPIQueryParams(CPIQueryParams):
         End date, formatted YYYY-MM-DD
     """
 
-    __name__ = "FREDCPIQueryParams"
-
 
 class FREDCPIData(CPIData):
-    __name__ = "FREDCPIData"
+    """CPI data."""
 
 
 class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCPIData]):

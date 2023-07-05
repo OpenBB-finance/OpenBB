@@ -32,11 +32,7 @@ class FMPCompanyOverviewQueryParams(CompanyOverviewQueryParams):
         The symbol of the company.
     """
 
-    __name__ = "FMPCompanyOverviewQueryParams"
-
-
 class FMPCompanyOverviewData(Data):
-    __name__ = "FMPCompanyOverviewData"
     symbol: str
     price: float
     beta: float

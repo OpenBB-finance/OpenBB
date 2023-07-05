@@ -24,7 +24,6 @@ class RevenueGeographicQueryParams(QueryParams, BaseSymbol):
         The structure of the revenue geographic. Should always be flat.
     """
 
-    __name__ = "RevenueGeographicQueryParams"
     period: Literal["quarterly", "annually"] = Field(
         default="quarterly", description=DESCRIPTIONS.get("period", "")
     )

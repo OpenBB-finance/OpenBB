@@ -17,8 +17,6 @@ class ExecutiveCompensationQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "ExecutiveCompensationQueryParams"
-
 
 class ExecutiveCompensationData(Data):
     """Return Executive Compensation Data.

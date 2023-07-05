@@ -39,7 +39,6 @@ class FMPCashFlowStatementQueryParams(QueryParams):
         The limit of the cash flow statement.
     """
 
-    __name__ = "FMPCashFlowStatementQueryParams"
     symbol: Optional[str]
     cik: Optional[str]
     period: Literal["annual", "quarter"] = Field(default="annual")
@@ -53,7 +52,6 @@ class FMPCashFlowStatementQueryParams(QueryParams):
 
 
 class FMPCashFlowStatementData(Data):
-    __name__ = "FMPCashFlowStatementData"
     date: dateType
     symbol: str
     cik: Optional[int]

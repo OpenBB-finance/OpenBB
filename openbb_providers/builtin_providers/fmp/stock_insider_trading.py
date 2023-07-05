@@ -37,11 +37,11 @@ class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
         The page number to get
     """
 
-    __name__ = "FMPStockInsiderTradingQueryParams"
+
 
 
 class FMPStockInsiderTradingData(StockInsiderTradingData):
-    __name__ = "FMPStockInsiderTradingData"
+    """FMP Stock Insider Trading data."""
 
 
 class FMPStockInsiderTradingFetcher(

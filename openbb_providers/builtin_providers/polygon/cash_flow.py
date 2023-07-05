@@ -26,11 +26,8 @@ from builtin_providers.polygon.types import PolygonFundamentalQueryParams
 class PolygonCashFlowStatementQueryParams(PolygonFundamentalQueryParams):
     """Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials"""
 
-    __name__ = "PolygonCashFlowStatementQueryParams"
-
 
 class PolygonCashFlowStatementData(Data):
-    __name__ = "PolygonCashFlowStatementData"
     start_date: dateType = Field(alias="date")
     tickers: Optional[List[str]] = Field(alias="symbol")
     cik: Optional[str]

@@ -25,7 +25,6 @@ class RevenueBusinessLineQueryParams(QueryParams, BaseSymbol):
         The structure of the revenue business line. Should always be flat.
     """
 
-    __name__ = "RevenueBusinessLineQueryParams"
     period: Literal["quarterly", "annually"] = Field(
         default="quarterly", description=DESCRIPTIONS.get("period", "")
     )

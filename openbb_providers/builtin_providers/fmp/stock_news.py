@@ -31,14 +31,12 @@ class FMPStockNewsQueryParams(QueryParams):
         The limit of the data to retrieve.
     """
 
-    __name__ = "FMPStockNewsQueryParams"
     tickers: str = Field(min_length=1, alias="symbols")
     page: int = Field(default=0)
     limit: Optional[NonNegativeInt]
 
 
 class FMPStockNewsData(Data):
-    __name__ = "FMPStockNewsData"
     symbol: str
     publishedDate: datetime = Field(alias="date")
     title: str

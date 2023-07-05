@@ -27,7 +27,6 @@ class KeyExecutivesQueryParams(QueryParams, BaseSymbol):
         The gender of the key executive to be retrieved.
     """
 
-    __name__ = "KeyExecutivesQueryParams"
     key_executive_name: Optional[str]
     key_executive_title: Optional[str]
     key_executive_title_since: Optional[datetime]

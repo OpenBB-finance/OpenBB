@@ -22,7 +22,6 @@ class StockNewsQueryParams(QueryParams):
         The page of the stock news to be retrieved.
     """
 
-    __name__ = "StockNewsQueryParams"
     symbols: str = Field(min_length=1, description=DESCRIPTIONS.get("symbols", ""))
     page: int = Field(default=0)
 

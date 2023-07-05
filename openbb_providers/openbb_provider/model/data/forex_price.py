@@ -24,8 +24,6 @@ class ForexPriceQueryParams(QueryParams, BaseSymbol):
         The end date of the query.
     """
 
-    __name__ = "ForexPriceQueryParams"
-
     # These fields only work with Polygon
     start_date: date = Field(description=DESCRIPTIONS.get("start_date", ""))
     end_date: Optional[date] = Field(

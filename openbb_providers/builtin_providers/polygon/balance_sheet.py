@@ -21,11 +21,8 @@ from builtin_providers.polygon.types import PolygonFundamentalQueryParams
 class PolygonBalanceSheetQueryParams(PolygonFundamentalQueryParams):
     """Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials"""
 
-    __name__ = "PolygonBalanceSheetQueryParams"
-
 
 class PolygonBalanceSheetData(Data):
-    __name__ = "PolygonBalanceSheetData"
     cik: Optional[str]
     start_date: dateType = Field(alias="date")
     assets: Optional[int]

@@ -36,12 +36,8 @@ class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
         The symbol of the company.
     """
 
-    __name__ = "FMPExecutiveCompensationQueryParams"
-
 
 class FMPExecutiveCompensationData(Data):
-    __name__ = "FMPExecutiveCompensationData"
-
     cik: Optional[str]
     symbol: str
     filingDate: dateType

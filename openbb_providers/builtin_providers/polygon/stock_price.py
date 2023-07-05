@@ -41,11 +41,8 @@ class PolygonStockPriceQueryParams(BaseStockQueryParams):
         The multiplier of the query, by default 1
     """
 
-    __name__ = "PolygonStockPriceQueryParams"
-
 
 class PolygonStockPriceData(BaseStockData):
-    __name__ = "PolygonPriceStockData"
     v: NonNegativeFloat = Field(alias="volume")
     n: PositiveInt
     vw: PositiveFloat

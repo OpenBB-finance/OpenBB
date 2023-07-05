@@ -41,11 +41,8 @@ class PolygonForexPriceQueryParams(BaseStockQueryParams):
         The multiplier of the query, by default 1
     """
 
-    __name__ = "PolygonForexPriceQueryParams"
-
 
 class PolygonForexPriceData(BaseStockData):
-    __name__ = "PolygonPriceForexData"
     v: NonNegativeFloat = Field(alias="volume")
     n: PositiveInt
     vw: Optional[PositiveFloat]

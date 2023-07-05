@@ -30,12 +30,8 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
     limit : int
     """
 
-    __name__ = "FMPAnalystEstimatesQueryParams"
-
 
 class FMPAnalystEstimatesData(Data):
-    __name__ = "FMPAnalystEstimatesData"
-
     symbol: str
     date: dateType
     estimatedRevenueLow: int

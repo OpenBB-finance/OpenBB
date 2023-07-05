@@ -35,7 +35,6 @@ class FMPStockEODQueryParams(QueryParams):
         The type of the series. Only "line" is supported.
     """
 
-    __name__ = "FMPStockEODQueryParams"
     symbol: str = Field(min_length=1)
     serietype: Optional[Literal["line"]]
     start_date: date
@@ -44,7 +43,6 @@ class FMPStockEODQueryParams(QueryParams):
 
 
 class FMPStockEODData(Data):
-    __name__ = "FMPStockEODData"
     date: datetime
     open: float
     high: float

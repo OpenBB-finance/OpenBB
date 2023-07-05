@@ -17,8 +17,6 @@ class HistoricalDividendsQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "HistoricalDividendsQueryParams"
-
 
 class HistoricalDividendsData(Data):
     """Historical dividends data.

@@ -42,11 +42,11 @@ class PolygonMajorIndicesPriceQueryParams(BaseStockQueryParams):
         The multiplier of the query, by default 1
     """
 
-    __name__ = "PolygonMajorIndicesPriceQueryParams"
+
 
 
 class PolygonMajorIndicesPriceData(BaseStockData):
-    __name__ = "PolygonPriceMajorIndicesData"
+    """Polygon major indices price data."""
 
 
 class PolygonMajorIndicesPriceFetcher(

@@ -58,7 +58,6 @@ class BenzingaStockNewsQueryParams(QueryParams):
         The content types of the news to retrieve.
     """
 
-    __name__ = "BenzingaStockNewsQueryParams"
     tickers: str = Field(alias="symbols")
     page: int = Field(default=0)
     pageSize: int = Field(default=15)
@@ -78,7 +77,7 @@ class BenzingaStockNewsQueryParams(QueryParams):
 
 
 class BenzingaStockNewsData(BenzingaBaseNewsData):
-    __name__ = "BenzingaStocklNewsData"
+    """Benzinga Stock News data."""
 
 
 class BenzingaStockNewsFetcher(

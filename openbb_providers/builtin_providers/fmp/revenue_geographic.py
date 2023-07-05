@@ -35,12 +35,8 @@ class FMPRevenueGeographicQueryParams(RevenueGeographicQueryParams):
         The structure of the revenue geographic. Default is "flat".
     """
 
-    __name__ = "FMPRevenueGeographicQueryParams"
-
 
 class FMPRevenueGeographicData(RevenueGeographicData):
-    __name__ = "FMPRevenueGeographicData"
-
     @validator("date", pre=True)
     def time_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")

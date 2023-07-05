@@ -51,7 +51,6 @@ class PolygonStockNewsQueryParams(QueryParams):
         The sort of the query, by default None
     """
 
-    __name__ = "PolygonStockNewsQueryParams"
     ticker: str = Field(alias="symbols")
     ticker_lt: Optional[str] = Field(alias="ticker.lt", default=None)
     ticker_lte: Optional[str] = Field(alias="ticker.lte", default=None)
@@ -77,7 +76,6 @@ class PolygonPublisher(BaseModel):
 class PolygonStockNewsData(Data):
     """Source: https://polygon.io/docs/stocks/get_v2_reference_news"""
 
-    __name__ = "PolygonStockNewsData"
     amp_url: Optional[str]
     article_url: str = Field(alias="url")
     author: Optional[str]

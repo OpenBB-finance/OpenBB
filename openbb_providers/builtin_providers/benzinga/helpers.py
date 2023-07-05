@@ -32,7 +32,6 @@ class BenzingaImage(BaseModel):
 
 
 class BenzingaBaseNewsData(Data):
-    __name__ = "BenzingaGlobalNewsData"
     created: datetime = Field(alias="date")
     title: str
     image: List[BenzingaImage]

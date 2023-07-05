@@ -17,8 +17,6 @@ class PriceTargetQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "PriceTargetQueryParams"
-
 
 class PriceTargetData(Data, BaseSymbol):
     """Price target data.

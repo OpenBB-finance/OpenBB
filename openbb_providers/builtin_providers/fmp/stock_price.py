@@ -38,13 +38,12 @@ class FMPStockPriceQueryParams(QueryParams):
         The interval of the data.
     """
 
-    __name__ = "FMPStockPriceQueryParams"
     symbol: str = Field(min_length=1)
     interval: Literal["1min", "5min", "15min", "30min", "1hour", "4hour"] = "1hour"
 
 
 class FMPStockPriceData(BaseStockPriceData):
-    __name__ = "FMPStockPriceData"
+    """FMP Stock Price data."""
 
 
 class FMPStockPriceFetcher(

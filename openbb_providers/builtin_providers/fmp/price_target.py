@@ -31,12 +31,8 @@ class FMPPriceTargetQueryParams(PriceTargetQueryParams):
         The symbol of the company.
     """
 
-    __name__ = "FMPPriceTargetQueryParams"
-
 
 class FMPPriceTargetData(Data):
-    __name__ = "FMPPriceTargetData"
-
     symbol: str
     publishedDate: datetime
     newsURL: str = Field(alias="news_url")

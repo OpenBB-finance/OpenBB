@@ -39,7 +39,6 @@ class FMPKeyExecutivesQueryParams(QueryParams, BaseSymbol):
         The gender of the key executive.
     """
 
-    __name__ = "FMPKeyExecutivesQueryParams"
     key_executive_name: Optional[str]
     key_executive_title: Optional[str]
     key_executive_title_since: Optional[datetime]
@@ -48,7 +47,6 @@ class FMPKeyExecutivesQueryParams(QueryParams, BaseSymbol):
 
 
 class FMPKeyExecutivesData(Data):
-    __name__ = "FMPKeyExecutivesData"
     name: str
     title: str
     titleSince: Optional[datetime]

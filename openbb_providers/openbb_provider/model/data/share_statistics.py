@@ -16,8 +16,6 @@ class ShareStatisticsQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     """
 
-    __name__ = "ShareStatisticsQueryParams"
-
 
 class ShareStatisticsData(Data):
     """Return Share Statistics Data.

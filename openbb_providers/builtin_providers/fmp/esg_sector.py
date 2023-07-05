@@ -28,13 +28,10 @@ class FMPESGSectorQueryParams(QueryParams):
         The year of the data.
     """
 
-    __name__ = "FMPESGSectorQueryParams"
-
     year: int = Field(ge=2000, le=current_year)
 
 
 class FMPESGSectorData(Data):
-    __name__ = "FMPESGSectorData"
     year: int
     sector: str
     environmentalScore: float

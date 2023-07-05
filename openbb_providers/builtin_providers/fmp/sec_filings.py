@@ -35,12 +35,8 @@ class FMPSECFilingsQueryParams(SECFilingsQueryParams):
         The limit of the results.
     """
 
-    __name__ = "FMPSECFilingsQueryParams"
-
 
 class FMPSECFilingsData(Data):
-    __name__ = "FMPSECFilingsData"
-
     symbol: str
     fillingDate: dateType
     acceptedDate: dateType

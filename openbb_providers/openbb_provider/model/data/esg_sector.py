@@ -13,7 +13,6 @@ class ESGSectorQueryParams(QueryParams):
         The year to get ESG information for
     """
 
-    __name__ = "ESGSectorQueryParams"
     year: int
 
 
