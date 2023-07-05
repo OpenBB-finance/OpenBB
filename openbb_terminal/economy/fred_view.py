@@ -367,11 +367,15 @@ def display_usd_liquidity(
         title=dict(text="USD Liquidity Index"),
         margin=dict(l=125, t=100),
         yaxis=dict(
+            showgrid=False,
             title=dict(
                 text="USD Liquidity Index (Billions of USD)",
             ),
         ),
-        yaxis2=dict(title=data.columns[1]),
+        yaxis2=dict(
+            title=data.columns[1],
+            showgrid=True,
+        ),
         title_y=0.97,
         title_x=0.5,
         legend=dict(
