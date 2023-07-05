@@ -43,8 +43,6 @@ class PolygonMajorIndicesPriceQueryParams(BaseStockQueryParams):
     """
 
 
-
-
 class PolygonMajorIndicesPriceData(BaseStockData):
     """Polygon major indices price data."""
 

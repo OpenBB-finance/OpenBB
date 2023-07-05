@@ -41,7 +41,6 @@ class FMPCryptoPriceQueryParams(QueryParams):
         The interval of the data.
     """
 
-
     symbol: str = Field(min_length=1)
     interval: Interval = Field(default=Interval.onehour)
 

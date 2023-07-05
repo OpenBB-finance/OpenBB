@@ -108,7 +108,7 @@ class ParametersBuilder:
                 )
 
                 if journal_entry and journal_entry.journal_id == journal.id:
-                    kwargs[parameter_name] = journal_entry.output.item
+                    kwargs[parameter_name] = journal_entry.output.results
                 else:
                     raise AttributeError(
                         f"Cannot find JournalEntry for the JournalQuery: {journal_query}.\n"

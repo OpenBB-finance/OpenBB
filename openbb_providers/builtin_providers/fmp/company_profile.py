@@ -32,6 +32,7 @@ class FMPCompanyOverviewQueryParams(CompanyOverviewQueryParams):
         The symbol of the company.
     """
 
+
 class FMPCompanyOverviewData(Data):
     symbol: str
     price: float

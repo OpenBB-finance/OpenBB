@@ -1,7 +1,12 @@
 from typing import List, Literal
 
 import numpy as np
-from openbb_sdk_core.app.utils import basemodel_to_df, df_to_basemodel, get_target_column, get_target_columns
+from openbb_sdk_core.app.utils import (
+    basemodel_to_df,
+    df_to_basemodel,
+    get_target_column,
+    get_target_columns,
+)
 import pandas as pd
 import pandas_ta as ta
 import statsmodels.api as sm

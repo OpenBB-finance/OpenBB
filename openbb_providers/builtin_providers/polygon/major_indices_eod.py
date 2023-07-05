@@ -43,8 +43,6 @@ class PolygonMajorIndicesEODQueryParams(BaseStockQueryParams):
     """
 
 
-
-
 class PolygonMajorIndicesEODData(BaseStockData):
     """Polygon major indices end of day data."""
 

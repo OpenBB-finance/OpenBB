@@ -31,8 +31,6 @@ class FMPStockOwnershipQueryParams(StockOwnershipQueryParams):
     """
 
 
-
-
 class FMPStockOwnershipData(StockOwnershipData):
     """FMP Stock Ownership data."""
 

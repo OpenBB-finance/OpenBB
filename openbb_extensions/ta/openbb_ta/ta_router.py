@@ -1,5 +1,10 @@
 from typing import List, Literal, Optional
-from openbb_sdk_core.app.utils import basemodel_to_df, df_to_basemodel, get_target_column, get_target_columns
+from openbb_sdk_core.app.utils import (
+    basemodel_to_df,
+    df_to_basemodel,
+    get_target_column,
+    get_target_columns,
+)
 
 import pandas as pd
 from builtin_extensions.common.ta import ta_helpers

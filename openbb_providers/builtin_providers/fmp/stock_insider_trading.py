@@ -38,8 +38,6 @@ class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
     """
 
 
-
-
 class FMPStockInsiderTradingData(StockInsiderTradingData):
     """FMP Stock Insider Trading data."""
 
