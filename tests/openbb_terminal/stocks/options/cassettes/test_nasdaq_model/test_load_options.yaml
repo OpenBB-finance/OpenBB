@@ -3619,4 +3619,85 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.nasdaq.com/api/quote/OXY/option-chain/greeks?assetclass=stocks&date=2023-07-07
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAALWYXU8rNxCG/0q01yx4xuMv7lChnHNaigQItap6sYQ9ELEkUbKhPUL89443hPV4
+        E7UXBCGEnVnPzLOvx+O8FvdVWxXHr8W8eqhvJm1TF8fF5e9/jC7n7WQ2XY7OF3X9tCwOira6ix++
+        FtXy8ntxPF01zUHxWFf39WIZp8endROXKk7Pfr054QfG59Xzc5w4P7m46CauHmc8vPpyGQc3j3Vn
+        fvPlbG1+Wz/E8e3ZeTf8essD/nNQXLeLyVOM6/rm6usvZzwzz33Nc1/z1Nc89zWXvuYbX28HxWL2
+        N6fzZ5+POgwheNvnow5V/NnkE4cWVJ9RGWeMxY+U+geiHx5BN1q+p2XoMA43OcXHwSrsk4oTxuAm
+        qW59BdDn1T2CpD8SixbYPbH2SKBihKtFw3kePVeLp7otq3E7eZm0P46W7Wz8tDya/fPjaNa99XL8
+        WE2mR+Oqacr5qi3Xs51FWZaolVNuzDEY4j8MTcDySnkBCxGdgNV9nobuwQpYOmb/DksTgktgmSGs
+        oEDA4gcgg6UzWOC9hBV6WFqHGPCnwzJbYP23sjTmygrqfyvLDmBpUkHAIojKSGFhDstaqSxy9gMW
+        gwPaAyy7BRaF+B4TWI7ISGUFCQs1kYBljfuAxbq0NoHlBrAskITlId+GhBIWggEBy1nTw9LW7AOW
+        G8LyZEnAggDWp7BMDDSFRUrWLE6+VxYECyGB5XNYYMHYFFZ0KJUFnfQSj9r6kMICQ9DD4jKwD1h+
+        CMt4dpbC0mi0TmFpryUs2735HhZSoiyuSDatWSGHReBQFHiNLjgBC322DY3ucKYe+20IPqh91Kww
+        hIXWeZfCQqcRUljgXKas4LyApZxOYAH5HpZVOSyH3qgUFjoVt3UCi4KXsIhIFHhUPoEVKPr/bFix
+        ZOWwgCuOOA1BY6AUlnLZNtQdjmQbQlqzeB8myrKQw/ImdAWnd0gKJCy2yLbhWozJxlf9achthIU9
+        wIIhLGVAG1HgLUll8fGVFXhA2Tp0Z9UGluUil8DCHFbQEKWcFHiWshawbFxBFHhEWeA9Jqehp6iz
+        T4eFW2Bp9ixgEaA4DVn0WZ9FJFsH0j6B5bwSsMwAFpKAZdHK09DarClFR1bC0mmfZcwemlKLZggL
+        XTxpElhad41XDwvyppS8bB1I9crSrERMYOmhspwS21AZNLIptU5lsLwTBV65WEc3sJw2+1CW3qIs
+        blNkn4VroSSwbAbLmCA7+K65eA/d6rR1sIPrDrcW8bRNYOmuM0thdadj6jGAEbBMsg1pXQY+HdaW
+        6w6jMFJZ3AhlysoKPKCXsND2fRaHrlJlDa47XN6tbErRkITlIG9KucRnHXyvLHLozB5gra87f/GV
+        +vukabsvCfhW3VR3dXT0bTUdaXUwQlYb38BfqmYVb/hxWCpb6jXn3roZuR3Gjn8Hxnzk7bIGGlhz
+        Rd9ljTC09rutvbA+WT2MdgXiS0UDY9gViC8Bhta7AmFrGch1PR/xftluHUowwvpy3LLldmtQJcp3
+        89vsZQQ7Xg5ACfLlnNbjnZEA5pF8q6Yjrh3RmqQ1lYrXDsL65/puxHtvuzWvbSXB+WL32pSvHfX6
+        LpOhtR3IJMa9ZmKktenizgU73fAeWtuOd9xGz/VyWT3Um6/elm3Vrrpv3hY/ze55GmOluIv/X0jL
+        +/qlbmbzeiHm397+Bar8G+L9EwAA
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1275'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 04 Jul 2023 20:08:49 GMT
+      Expires:
+      - Tue, 04 Jul 2023 20:08:49 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - ak_bmsc=CA48A533C03E0AB2A41A8D97062CF8CC~000000000000000000000000000000~YAAQhZTYF28GQBaJAQAAwp2FIhRdz367h0Ji8WTTdZSoEFsqSCvXO790g4NFi2qD5zcoNgxmcBbWBjrXS9SEuLNFDn95C/GDserdhsQErPwoxFAK9lKFj87cMQd9CUhIJ899pQcCiL+nr+ZdebD5ITC47/qdJPVb3gHbI/Zjdc3LlbY+pUjiIIUlQSeV/VXROpFyvFYCeCZuq8KMbUG3yWADY9FAAuqtKkWJxYe0yfn3Lwg1GpXEVXeXAbTVoFagHewEYAw4gRAQ8YNvozFClD7PcYJx/9BuovcauM99kqeaJgssAXIZDnyGBtKriFTPCjeLVKAxEbz+Inv64Wn7jlx/A+zfeWEljW21k6KdIPNlobhe6rqiMJnpxVc=;
+        Domain=.nasdaq.com; Path=/; Expires=Tue, 04 Jul 2023 22:08:48 GMT; Max-Age=7199;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '1'
+      - '54'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '558'
+      - '558'
+      gid:
+      - '203'
+      lang:
+      - en
+      rid:
+      - 4f45a04f-62f4-4363-b113-406929761c89
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
 version: 1
