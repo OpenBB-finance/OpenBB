@@ -5,7 +5,6 @@ from pydantic import Field
 from pydantic.generics import GenericModel
 
 from openbb_sdk_core.app.model.abstract.error import Error
-from openbb_sdk_core.app.model.abstract.export import Export
 from openbb_sdk_core.app.model.abstract.tagged import Tagged
 from openbb_sdk_core.app.model.abstract.warning import Warning_
 
@@ -17,12 +16,12 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         default=None,
         description="Serializable results.",
     )
+    provider: Optional[str] = Field(
+        default=None,
+        description="Provider name.",
+    )
     warnings: Optional[List[Warning_]] = None
     error: Optional[Error] = None
-    export_list: List[Export] = Field(
-        default_factory=list,
-        description="Exported data (csv, excel, jpeg, parquet, feather, hdf...).",
-    )
 
     def __repr__(self) -> str:
         return (
