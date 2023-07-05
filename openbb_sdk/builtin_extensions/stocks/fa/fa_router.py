@@ -15,7 +15,7 @@ router = Router(prefix="/fa")
 @router.command(query="BalanceSheet")
 def balance(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Balance Sheet."""
@@ -27,7 +27,7 @@ def balance(
 @router.command(query="CashFlowStatement")
 def cash(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Cash Flow Statement."""
@@ -39,7 +39,7 @@ def cash(
 @router.command(query="ExecutiveCompensation")
 def comp(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Executive Compensation."""
@@ -51,7 +51,7 @@ def comp(
 @router.command(query="EarningsCalendar")
 def earning(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Earnings Calendar."""
@@ -69,7 +69,7 @@ def emp() -> CommandOutput[Empty]:  # type: ignore
 @router.command(query="AnalystEstimates")
 def est(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Analyst Estimates."""
@@ -81,7 +81,7 @@ def est(
 @router.command(query="IncomeStatement")
 def income(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Income Statement."""
@@ -93,7 +93,7 @@ def income(
 @router.command(query="StockInsiderTrading")
 def ins(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Stock Insider Trading."""
@@ -105,7 +105,7 @@ def ins(
 @router.command(query="KeyMetrics")
 def metrics(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Key Metrics."""
@@ -117,7 +117,7 @@ def metrics(
 @router.command(query="KeyExecutives")
 def mgmt(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Key Executives."""
@@ -129,7 +129,7 @@ def mgmt(
 @router.command(query="CompanyOverview")
 def overview(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Company Overview."""
@@ -141,7 +141,7 @@ def overview(
 @router.command(query="InstitutionalOwnership")
 def own(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Institutional Ownership."""
@@ -153,7 +153,7 @@ def own(
 @router.command(query="PriceTarget")
 def pta(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Price Target."""
@@ -165,7 +165,7 @@ def pta(
 @router.command(query="PriceTargetConsensus")
 def pt(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Price Target Consensus."""
@@ -177,7 +177,7 @@ def pt(
 @router.command(query="RevenueGeographic")
 def revgeo(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Revenue Geographic."""
@@ -189,7 +189,7 @@ def revgeo(
 @router.command(query="RevenueBusinessLine")
 def revseg(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Revenue Business Line."""
@@ -201,7 +201,7 @@ def revseg(
 @router.command(query="ShareStatistics")
 def shrs(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Share Statistics."""
@@ -218,7 +218,7 @@ def shares() -> CommandOutput[Empty]:  # type: ignore
 @router.command(query="EarningsCallTranscript")
 def transcript(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Earnings Call Transcript."""
@@ -230,7 +230,7 @@ def transcript(
 @router.command(query="HistoricalStockSplits")
 def split(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Historical Stock Splits."""
@@ -242,7 +242,7 @@ def split(
 @router.command(query="HistoricalDividends")
 def cal(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Historical Dividends."""

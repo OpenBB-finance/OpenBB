@@ -14,7 +14,7 @@ router = Router(prefix="")
 @router.command(query="TreasuryRates")
 def treasury(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Get treasury rates."""

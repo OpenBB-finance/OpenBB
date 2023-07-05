@@ -21,12 +21,12 @@ class Query:
     def __init__(
         self,
         cc: CommandContext,
-        provider: ProviderChoices,
+        provider_choices: ProviderChoices,
         standard_params: StandardParams,
         extra_params: Optional[ExtraParams] = None,
     ) -> None:
         self.cc = cc
-        self.provider = provider
+        self.provider = str(provider_choices.provider)
         self.standard_params = standard_params
         self.extra_params = extra_params
         self.name = self.standard_params.__class__.__name__
@@ -72,20 +72,19 @@ class Query:
         """Execute the query."""
 
         registry = build_registry()
-        provider_name = str(self.provider.provider)
         creds = self.cc.user_settings.credentials
-        registry.api_keys[provider_name] = getattr(creds, provider_name + "_api_key")  # type: ignore
+        registry.api_keys[self.provider] = getattr(creds, self.provider + "_api_key")  # type: ignore
 
         query_params = self.to_query_params(self.standard_params)
 
         filtered = (
-            self.filter_extra_params(self.extra_params, provider_name)
+            self.filter_extra_params(self.extra_params, self.provider)
             if self.extra_params
             else None
         )
 
         return registry.fetch(
-            provider_name=provider_name,  # type: ignore
+            provider_name=self.provider,  # type: ignore
             # TODO: provider_name should accept a general object, otherwise we need to import from provider.
             query=query_params,  # type: ignore
             # TODO: query should accept a general object, otherwise we need to import from provider.

@@ -37,26 +37,26 @@ router.include_router(options_router)
 @router.command(query="StockEOD")
 def load(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: Optional[ExtraParams] = None,
 ) -> CommandOutput[BaseModel]:
     """Load stock data for a specific ticker."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
 @router.command(query="StockNews")
 def news(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: Optional[ExtraParams] = None,
 ) -> CommandOutput[BaseModel]:
     """Get news for one or more stock tickers."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 

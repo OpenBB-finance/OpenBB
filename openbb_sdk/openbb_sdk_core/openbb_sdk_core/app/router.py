@@ -193,7 +193,7 @@ class Router:
         provider_interface = get_provider_interface()
         if query:
             if (
-                "provider" not in func.__annotations__
+                "provider_choices" not in func.__annotations__
                 or "standard_params" not in func.__annotations__
             ):  # "extra_params" not in func.__annotations__:
                 raise AttributeError(f"Invalid signature: {func.__name__}")
@@ -205,7 +205,7 @@ class Router:
 
             # provider
             provider_choices = provider_interface.provider_choices[query]
-            func.__annotations__["provider"] = Annotated[provider_choices, Depends()]  # type: ignore
+            func.__annotations__["provider_choices"] = Annotated[provider_choices, Depends()]  # type: ignore
 
             # standard_params
             standard_params = provider_interface.params[query]["standard"]
@@ -219,10 +219,10 @@ class Router:
             data = provider_interface.merged_data[query]
             func.__annotations__["return"] = CommandOutput[List[data]]  # type: ignore
         elif (
-            "provider" in func.__annotations__
-            and func.__annotations__["provider"] == ProviderChoices
+            "provider_choices" in func.__annotations__
+            and func.__annotations__["provider_choices"] == ProviderChoices
         ):
-            func.__annotations__["provider"] = provider_interface.providers
+            func.__annotations__["provider_choices"] = provider_interface.providers
 
         return func
 

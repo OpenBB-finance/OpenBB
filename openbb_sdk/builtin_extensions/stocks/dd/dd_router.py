@@ -14,7 +14,7 @@ router = Router(prefix="/dd")
 @router.command(query="SECFilings")
 def sec(
     cc: CommandContext,
-    provider: ProviderChoices,
+    provider_choices: ProviderChoices,
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """SEC Filings."""
