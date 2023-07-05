@@ -95,7 +95,7 @@ class ProviderInterface:
         return list(self.__map.keys())
 
     @staticmethod
-    def merge_fields(
+    def __merge_fields(
         current: DataclassField, incoming: DataclassField, query: bool = False
     ) -> DataclassField:
         current_name = current.name
@@ -190,7 +190,7 @@ class ProviderInterface:
                                 current = DataclassField(
                                     *extra_fields_dict[incoming.name]
                                 )
-                                updated = self.merge_fields(current, incoming)
+                                updated = self.__merge_fields(current, incoming)
                             else:
                                 updated = incoming
 
@@ -322,7 +322,7 @@ class ProviderInterface:
                                 current = DataclassField(
                                     *extra_fields_dict[incoming.name]
                                 )
-                                updated = self.merge_fields(current, incoming)
+                                updated = self.__merge_fields(current, incoming)
                             else:
                                 updated = incoming
 
