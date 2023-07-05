@@ -388,13 +388,13 @@ def get_cpi(
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def get_usd_liquidity(overlay: str = "SP500", show: bool = False) -> pd.DataFrame:
+def get_usd_liquidity(overlay: str = "", show: bool = False) -> pd.DataFrame:
     """The USD Liquidity Index is defined as: [WALCL - WLRRAL - WDTGAL]. It is expressed in billions of USD.
 
     Parameters
     -----------
     overlay: str
-        An equity index to overlay, as a FRED Series ID. Defaults to "SP500".
+        An equity index to overlay, as a FRED Series ID. Defaults to none.
     show: bool
         Shows the list of valid equity indices to overlay.
 
@@ -425,16 +425,18 @@ def get_usd_liquidity(overlay: str = "SP500", show: bool = False) -> pd.DataFram
         (data["WALCL"] - data["WLRRAL"] - data["WDTGAL"]) / 1000000000, 2
     )
 
-    overlay = overlay.upper()
-    if overlay not in EQUITY_INDICES:
-        print(
-            "Invalid choice for the overlay."
-            "Use `get_usd_liquidity(show = True)` to see display the list of choices."
-        )
-        return pd.DataFrame()
+    if overlay != "":
+        overlay = overlay.upper()
+        if overlay not in EQUITY_INDICES:
+            print(
+                "Invalid choice for the overlay."
+                "Use `get_usd_liquidity(show = True)` to see display the list of choices."
+            )
+            return pd.DataFrame()
 
-    overlay_df = pd.DataFrame()
-    overlay_df[f"{EQUITY_INDICES[overlay]}"] = get_series_data(overlay)
-    liquidity_df = data[["USD Liquidity Index (Billions of USD)"]].join(overlay_df)
+        overlay_df = pd.DataFrame()
+        overlay_df[f"{EQUITY_INDICES[overlay]}"] = get_series_data(overlay)
+        liquidity_df = data[["USD Liquidity Index (Billions of USD)"]].join(overlay_df)
+        return liquidity_df.dropna()
 
-    return liquidity_df.dropna()
+    return data[["USD Liquidity Index (Billions of USD)"]]
