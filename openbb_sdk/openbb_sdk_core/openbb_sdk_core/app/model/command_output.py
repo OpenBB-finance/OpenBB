@@ -52,7 +52,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
 
         return df
 
-    def to_lists(self, fields: Optional[List[str]] = None) -> Dict[str, List]:
+    def to_dict(self) -> Dict[str, List]:
         """Converts results field to list of values.
 
         Returns
@@ -61,11 +61,8 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             Dictionary of lists.
         """
         df = self.to_dataframe()
-        target_fields = df.columns if fields is None else fields
         results = {}
-        for field in target_fields:
-            if field not in df.columns:
-                choices = ", ".join(df.columns)
-                raise ValueError(f"Field {field} not found, choose from: {choices}.")
+        for field in df.columns:
             results[field] = df[field].tolist()
+
         return results
