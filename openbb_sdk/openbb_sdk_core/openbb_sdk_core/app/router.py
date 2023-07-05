@@ -163,14 +163,14 @@ class Router:
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = {"query": query}
 
-        func = SignatureTransformer.complete_signature(func, query)
+        func = SignatureInspector.complete_signature(func, query)
 
         CommandValidator.check(func=func)
 
         kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
         kwargs["endpoint"] = func
         kwargs["methods"] = kwargs.get("methods", ["GET"])
-        kwargs["description"] = SignatureTransformer.get_description(func)
+        kwargs["description"] = SignatureInspector.get_description(func)
 
         api_router.add_api_route(**kwargs)
 
@@ -187,7 +187,7 @@ class Router:
         )
 
 
-class SignatureTransformer:
+class SignatureInspector:
     @classmethod
     def complete_signature(
         cls, func: Callable[P, CommandOutput], query: str
