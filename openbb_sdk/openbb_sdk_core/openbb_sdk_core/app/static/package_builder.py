@@ -69,7 +69,8 @@ class PackageBuilder:
     @classmethod
     def save_package(cls):
         print("\nWriting package __init__...")
-        code = (
+        code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
+        code += (
             "import warnings\n"
             + "warnings.formatwarning = ("
             + "lambda message, category, *args, **kwargs: f'{category.__name__}: {message}'\n"
@@ -79,7 +80,7 @@ class PackageBuilder:
 
     @classmethod
     def run_linters(cls):
-        print("Running linters...")
+        print("\nRunning linters...")
         Linters.black()
         Linters.ruff()
         Linters.mypy()
@@ -99,7 +100,8 @@ class PackageBuilder:
 class ModuleBuilder:
     @staticmethod
     def build(path: str) -> str:
-        code = ImportDefinition.build(path=path)
+        code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
+        code += ImportDefinition.build(path=path)
         code += ClassDefinition.build(path=path)
 
         return code
