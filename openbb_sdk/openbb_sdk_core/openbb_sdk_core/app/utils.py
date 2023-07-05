@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 
 def basemodel_to_df(data: List[BaseModel], index: Optional[str] = None) -> pd.DataFrame:
-    """Convert to a Pandas DataFrame."""
+    """Convert list of BaseModel to a Pandas DataFrame."""
     df = pd.DataFrame([d.dict() for d in data])
     if index and index in df.columns:
         df = df.set_index(index)
@@ -15,7 +15,7 @@ def basemodel_to_df(data: List[BaseModel], index: Optional[str] = None) -> pd.Da
 def df_to_basemodel(
     df: Union[pd.DataFrame, pd.Series], index: bool = False
 ) -> List[BaseModel]:
-    """Convert from a Pandas DataFrame."""
+    """Convert from a Pandas DataFrame to list of BaseModel."""
     if index:
         df = df.reset_index()
     if isinstance(df, pd.Series):
