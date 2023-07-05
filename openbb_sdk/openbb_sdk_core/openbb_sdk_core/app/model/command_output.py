@@ -66,3 +66,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             results[field] = df[field].tolist()
 
         return results
+
+    def to_chart(self):
+        """Converts results field to chart."""
+        raise NotImplementedError
