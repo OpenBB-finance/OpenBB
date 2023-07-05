@@ -74,9 +74,7 @@ def _extract_fields(
     for field in provider_fields:
         provider_dict[provider_fields[field].alias] = {
             "type": provider_fields[field].annotation,
-            "default": provider_fields[field].default
-            if provider_fields[field].default
-            else None,
+            "default": provider_fields[field].default,
             "required": provider_fields[field].required,
         }
 
