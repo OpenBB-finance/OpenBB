@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
 from openbb_provider.provider.provider_map import build_provider_mapping
+
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 
 
@@ -37,28 +38,42 @@ class ExtraData(BaseModel):
 
 
 class ProviderInterface:
+    """Provider interface class. Provides access to 'openbb_provider' package information.
+
+    Attributes
+    ----------
+    map : Dict[str, Dict[str, Dict[str, Any]]]
+        Dictionary of provider information.
+    query_providers : Dict[str, ProviderChoices]
+        Dictionary of provider choices by query.
+    params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
+        Dictionary of params by query.
+    merged_data : Dict[str, StandardData]
+        Dictionary of data by query.
+    providers : Literal
+        Literal of provider names.
+    queries : List[str]
+        List of query names.
+    """
+
     def __init__(self) -> None:
-        self.__mapping = build_provider_mapping()
-        self.__params = self.generate_params()
-        self.__provider_choices = self.generate_provider_choices()
-        self.__data = self.generate_data()
-        self.__merged_data = self.generate_merged_data()
+        self.__map = build_provider_mapping()
+        self.__query_providers_map = self.__generate_query_providers_dc()
+        self.__params = self.__generate_params_dc()
+        data = self.__generate_data_dc()
+        self.__merged_data = self.__merge_data_dc(data)
 
     @property
-    def mapping(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
-        return self.__mapping
+    def map(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
+        return self.__map
+
+    @property
+    def query_providers(self) -> Dict[str, ProviderChoices]:
+        return self.__query_providers_map
 
     @property
     def params(self) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
         return self.__params
-
-    @property
-    def provider_choices(self) -> Dict[str, ProviderChoices]:
-        return self.__provider_choices
-
-    @property
-    def data(self) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
-        return self.__data
 
     @property
     def merged_data(self) -> Dict[str, StandardData]:
@@ -67,7 +82,7 @@ class ProviderInterface:
     @property
     def providers(self) -> Literal:  # type: ignore
         providers = []
-        for _, provider in self.mapping.items():
+        for _, provider in self.map.items():
             providers.extend(list(provider.keys()))
         providers = list(set(providers))
         if "openbb" in providers:
@@ -77,7 +92,7 @@ class ProviderInterface:
 
     @property
     def queries(self) -> List[str]:
-        return list(self.mapping.keys())
+        return list(self.__map.keys())
 
     @staticmethod
     def merge_fields(
@@ -108,7 +123,7 @@ class ProviderInterface:
         )
 
     @staticmethod
-    def create_field(
+    def __create_field(
         name: str,
         field: Dict[str, Any],
         description: Optional[str] = None,
@@ -125,7 +140,7 @@ class ProviderInterface:
 
         return DataclassField(new_name, type_, default)
 
-    def generate_params(
+    def __generate_params_dc(
         self,
     ) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
         """Generate dataclasses for params.
@@ -151,13 +166,13 @@ class ProviderInterface:
 
         result: Dict = {}
 
-        for query_name, providers in self.__mapping.items():
+        for query_name, providers in self.__map.items():
             standard_fields_dict: Dict[str, Tuple[str, Any, Any]] = {}
             extra_fields_dict: Dict[str, Tuple[str, Any, Any]] = {}
             for provider_name, query_details in providers.items():
                 if provider_name == "openbb":
                     for name, field in query_details["QueryParams"]["fields"].items():
-                        incoming = self.create_field(name, field, query=True)
+                        incoming = self.__create_field(name, field, query=True)
 
                         standard_fields_dict[incoming.name] = (
                             incoming.name,
@@ -167,7 +182,7 @@ class ProviderInterface:
                 else:
                     for name, field in query_details["QueryParams"]["fields"].items():
                         if name not in providers["openbb"]["QueryParams"]["fields"]:
-                            incoming = self.create_field(
+                            incoming = self.__create_field(
                                 name, field, provider_name, query=True
                             )
 
@@ -208,10 +223,11 @@ class ProviderInterface:
 
         return result
 
-    def generate_provider_choices(self) -> Dict[str, ProviderChoices]:
-        """Generate dataclasses for provider choices.
+    def __generate_query_providers_dc(self) -> Dict[str, ProviderChoices]:
+        """Generate dataclasses for provider choices by query.
 
-        This creates a dictionary of dataclasses that can be used as provider choices.
+        This creates a dictionary that maps query names to dataclasses that can be used
+        as provider choices.
 
         Example:
 
@@ -222,7 +238,7 @@ class ProviderInterface:
 
         result: Dict = {}
 
-        for query_name, providers in self.__mapping.items():
+        for query_name, providers in self.__map.items():
             choices = list(providers.keys())
             if "openbb" in choices:
                 choices.remove("openbb")
@@ -235,9 +251,9 @@ class ProviderInterface:
 
         return result
 
-    def generate_merged_data(self) -> Dict[str, StandardData]:
+    def __merge_data_dc(self, data: Dict) -> Dict[str, StandardData]:
         result: Dict = {}
-        for query_name, dataclasses in self.__data.items():
+        for query_name, dataclasses in data.items():
             standard = dataclasses["standard"]
             extra = dataclasses["extra"]
 
@@ -264,7 +280,9 @@ class ProviderInterface:
 
         return result
 
-    def generate_data(self) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
+    def __generate_data_dc(
+        self,
+    ) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
         """Generate dataclasses for data.
 
         This creates a dictionary of dataclasses that can be used as data.
@@ -282,13 +300,13 @@ class ProviderInterface:
         """
         result: Dict = {}
 
-        for query_name, providers in self.__mapping.items():
+        for query_name, providers in self.__map.items():
             standard_fields_dict: Dict[str, Tuple[str, Any, Any]] = {}
             extra_fields_dict: Dict[str, Tuple[str, Any, Any]] = {}
             for provider_name, query_details in providers.items():
                 if provider_name == "openbb":
                     for name, field in query_details["Data"]["fields"].items():
-                        incoming = self.create_field(name, field, provider_name)
+                        incoming = self.__create_field(name, field, provider_name)
 
                         standard_fields_dict[incoming.name] = (
                             incoming.name,
@@ -298,7 +316,7 @@ class ProviderInterface:
                 else:
                     for name, field in query_details["Data"]["fields"].items():
                         if name not in providers["openbb"]["Data"]["fields"]:
-                            incoming = self.create_field(name, field, provider_name)
+                            incoming = self.__create_field(name, field, provider_name)
 
                             if incoming.name in extra_fields_dict:
                                 current = DataclassField(

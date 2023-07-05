@@ -198,13 +198,13 @@ class Router:
             ):  # "extra_params" not in func.__annotations__:
                 raise AttributeError(f"Invalid signature: {func.__name__}")
 
-            if query not in provider_interface.mapping:
+            if query not in provider_interface.queries:
                 raise AttributeError(
                     f"Invalid query: {query}. Check available queries with get_provider_interface().queries"
                 )
 
             # provider
-            provider_choices = provider_interface.provider_choices[query]
+            provider_choices = provider_interface.query_providers[query]
             func.__annotations__["provider_choices"] = Annotated[provider_choices, Depends()]  # type: ignore
 
             # standard_params
