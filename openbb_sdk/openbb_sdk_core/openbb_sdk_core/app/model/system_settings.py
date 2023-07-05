@@ -49,6 +49,13 @@ class SystemSettings(Tagged):
     # Others
     test_mode: bool = False
 
+    def __repr__(self) -> str:
+        return (
+            self.__class__.__name__
+            + "\n\n"
+            + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
+        )
+
     @root_validator(allow_reuse=True)
     @classmethod
     def validate_posthog_handler(cls, values):
