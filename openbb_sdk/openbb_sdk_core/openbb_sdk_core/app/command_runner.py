@@ -231,9 +231,8 @@ class StaticCommandRunner:
                 else:
                     command_output = func(**kwargs)
 
-                command_output.warnings = (
-                    list(map(cast_warning, warning_list)) if warning_list else None
-                )
+                if warning_list:
+                    command_output.warnings = list(map(cast_warning, warning_list))
 
         except Exception as e:
             command_output = CommandOutput(error=Error(message=str(e)))
