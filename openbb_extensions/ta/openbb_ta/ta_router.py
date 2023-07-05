@@ -1,10 +1,4 @@
 from typing import List, Literal, Optional
-from openbb_sdk_core.app.utils import (
-    basemodel_to_df,
-    df_to_basemodel,
-    get_target_column,
-    get_target_columns,
-)
 
 import pandas as pd
 from builtin_extensions.common.ta import ta_helpers
@@ -13,6 +7,12 @@ from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.model.export.plotly import Plotly
 from openbb_sdk_core.app.model.results.empty import Empty
 from openbb_sdk_core.app.router import Router
+from openbb_sdk_core.app.utils import (
+    basemodel_to_df,
+    df_to_basemodel,
+    get_target_column,
+    get_target_columns,
+)
 from openbb_sdk_core.plots.plots import YTimeSeries, plot_timeseries
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 

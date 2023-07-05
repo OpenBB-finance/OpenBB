@@ -163,14 +163,14 @@ class Router:
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = {"query": query}
 
-        func = self.bind_signature(func, query)
+        func = SignatureTransformer.complete_signature(func, query)
 
         CommandValidator.check(func=func)
 
         kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
         kwargs["endpoint"] = func
         kwargs["methods"] = kwargs.get("methods", ["GET"])
-        kwargs["description"] = self.slice_docstring(func)
+        kwargs["description"] = SignatureTransformer.slice_docstring(func)
 
         api_router.add_api_route(**kwargs)
 
@@ -185,6 +185,50 @@ class Router:
         self._api_router.include_router(
             router=router.api_router, prefix=prefix, tags=tags  # type: ignore
         )
+
+
+class SignatureTransformer:
+    @classmethod
+    def complete_signature(
+        cls, func: Callable[P, CommandOutput], query: str
+    ) -> Callable[P, CommandOutput]:
+        """Complete function signature."""
+        provider_interface = get_provider_interface()
+        if query:
+            if query not in provider_interface.queries:
+                raise AttributeError(
+                    f"Invalid query: {query}. Check available queries in ProviderInterface().queries"
+                )
+
+            cls.validate_signature(func=func)
+
+            func = cls.inject_dependency(
+                func=func,
+                arg="provider_choices",
+                callable_=provider_interface.query_providers[query],
+            )
+
+            func = cls.inject_dependency(
+                func=func,
+                arg="standard_params",
+                callable_=provider_interface.params[query]["standard"],
+            )
+
+            func = cls.inject_dependency(
+                func=func,
+                arg="extra_params",
+                callable_=provider_interface.params[query]["extra"],
+            )
+
+            data_type = provider_interface.merged_data[query]
+            func.__annotations__["return"] = CommandOutput[List[data_type]]  # type: ignore
+        elif (
+            "provider_choices" in func.__annotations__
+            and func.__annotations__["provider_choices"] == ProviderChoices
+        ):
+            func.__annotations__["provider_choices"] = provider_interface.providers
+
+        return func
 
     @staticmethod
     def validate_signature(func: Callable[P, CommandOutput]) -> None:
@@ -229,49 +273,8 @@ class Router:
         return func
 
     @staticmethod
-    def bind_signature(
-        func: Callable[P, CommandOutput], query: str
-    ) -> Callable[P, CommandOutput]:
-        """Bind function signature to a query."""
-        provider_interface = get_provider_interface()
-        if query:
-            if query not in provider_interface.queries:
-                raise AttributeError(
-                    f"Invalid query: {query}. Check available queries in ProviderInterface().queries"
-                )
-
-            Router.validate_signature(func=func)
-
-            func = Router.inject_dependency(
-                func=func,
-                arg="provider_choices",
-                callable_=provider_interface.query_providers[query],
-            )
-
-            func = Router.inject_dependency(
-                func=func,
-                arg="standard_params",
-                callable_=provider_interface.params[query]["standard"],
-            )
-
-            func = Router.inject_dependency(
-                func=func,
-                arg="extra_params",
-                callable_=provider_interface.params[query]["extra"],
-            )
-
-            data_type = provider_interface.merged_data[query]
-            func.__annotations__["return"] = CommandOutput[List[data_type]]  # type: ignore
-        elif (
-            "provider_choices" in func.__annotations__
-            and func.__annotations__["provider_choices"] == ProviderChoices
-        ):
-            func.__annotations__["provider_choices"] = provider_interface.providers
-
-        return func
-
-    @staticmethod
     def slice_docstring(func: Callable) -> str:
+        """Slice docstring to remove Parameters and Returns sections."""
         doc = func.__doc__
         if doc:
             sliced = doc.split("    Parameters\n    ----------")[0]

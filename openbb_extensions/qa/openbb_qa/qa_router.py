@@ -1,12 +1,6 @@
 from typing import List, Literal
 
 import numpy as np
-from openbb_sdk_core.app.utils import (
-    basemodel_to_df,
-    df_to_basemodel,
-    get_target_column,
-    get_target_columns,
-)
 import pandas as pd
 import pandas_ta as ta
 import statsmodels.api as sm
@@ -25,6 +19,12 @@ from openbb_provider.model.abstract.data import Data
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.model.results.empty import Empty
 from openbb_sdk_core.app.router import Router
+from openbb_sdk_core.app.utils import (
+    basemodel_to_df,
+    df_to_basemodel,
+    get_target_column,
+    get_target_columns,
+)
 from pydantic import NonNegativeFloat, PositiveInt
 from scipy import stats
 from statsmodels.tsa import stattools
@@ -356,7 +356,7 @@ def so(
     results = ((returns - target_return) / downside_deviation).dropna()
 
     if adjusted:
-        results = result / np.sqrt(2)
+        results = results / np.sqrt(2)
 
     results = df_to_basemodel(results)
 
