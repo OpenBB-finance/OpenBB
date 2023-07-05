@@ -251,7 +251,7 @@ class MethodDefinition:
 
     @staticmethod
     def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
-        ADDITIONAL_TYPES = {
+        TYPE_EXPANSION = {
             "data": pd.DataFrame,
             "start_date": str,
             "end_date": str,
@@ -272,7 +272,7 @@ class MethodDefinition:
                     type_ = MethodDefinition.get_type(field)
                     default = MethodDefinition.get_default(field)
 
-                    new_type = ADDITIONAL_TYPES.get(name, None)
+                    new_type = TYPE_EXPANSION.get(name, None)
                     updated_type = type_ if new_type is None else Union[type_, new_type]
 
                     formatted[name] = Parameter(
@@ -282,7 +282,7 @@ class MethodDefinition:
                         default=default,
                     )
             else:
-                new_type = ADDITIONAL_TYPES.get(name, None)
+                new_type = TYPE_EXPANSION.get(name, None)
                 updated_type = (
                     param.annotation
                     if new_type is None
