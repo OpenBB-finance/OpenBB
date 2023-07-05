@@ -19,7 +19,7 @@ def treasury(
 ) -> CommandOutput[BaseModel]:
     """Get treasury rates."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 

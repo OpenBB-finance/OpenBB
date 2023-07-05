@@ -70,7 +70,9 @@ def cpi(
 
 
 @router.command
-def cpi_options(cc: CommandContext, provider_choices: ProviderChoices) -> CommandOutput[Empty]:
+def cpi_options(
+    cc: CommandContext, provider_choices: ProviderChoices
+) -> CommandOutput[Empty]:
     """Get the options for v3 cpi(options=True)"""
     return CommandOutput(results=Empty())
 

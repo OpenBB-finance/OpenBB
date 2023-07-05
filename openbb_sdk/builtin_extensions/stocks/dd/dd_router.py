@@ -19,5 +19,5 @@ def sec(
 ) -> CommandOutput[BaseModel]:
     """SEC Filings."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )

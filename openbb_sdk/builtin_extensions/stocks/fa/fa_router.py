@@ -20,7 +20,7 @@ def balance(
 ) -> CommandOutput[BaseModel]:
     """Balance Sheet."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -32,7 +32,7 @@ def cash(
 ) -> CommandOutput[BaseModel]:
     """Cash Flow Statement."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -44,7 +44,7 @@ def comp(
 ) -> CommandOutput[BaseModel]:
     """Executive Compensation."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -56,7 +56,7 @@ def earning(
 ) -> CommandOutput[BaseModel]:
     """Earnings Calendar."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -74,7 +74,7 @@ def est(
 ) -> CommandOutput[BaseModel]:
     """Analyst Estimates."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -86,7 +86,7 @@ def income(
 ) -> CommandOutput[BaseModel]:
     """Income Statement."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -98,7 +98,7 @@ def ins(
 ) -> CommandOutput[BaseModel]:
     """Stock Insider Trading."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -110,7 +110,7 @@ def metrics(
 ) -> CommandOutput[BaseModel]:
     """Key Metrics."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -122,7 +122,7 @@ def mgmt(
 ) -> CommandOutput[BaseModel]:
     """Key Executives."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -134,7 +134,7 @@ def overview(
 ) -> CommandOutput[BaseModel]:
     """Company Overview."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -146,7 +146,7 @@ def own(
 ) -> CommandOutput[BaseModel]:
     """Institutional Ownership."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -158,7 +158,7 @@ def pta(
 ) -> CommandOutput[BaseModel]:
     """Price Target."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -170,7 +170,7 @@ def pt(
 ) -> CommandOutput[BaseModel]:
     """Price Target Consensus."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -182,7 +182,7 @@ def revgeo(
 ) -> CommandOutput[BaseModel]:
     """Revenue Geographic."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -194,7 +194,7 @@ def revseg(
 ) -> CommandOutput[BaseModel]:
     """Revenue Business Line."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -206,7 +206,7 @@ def shrs(
 ) -> CommandOutput[BaseModel]:
     """Share Statistics."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -223,7 +223,7 @@ def transcript(
 ) -> CommandOutput[BaseModel]:
     """Earnings Call Transcript."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -235,7 +235,7 @@ def split(
 ) -> CommandOutput[BaseModel]:
     """Historical Stock Splits."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
@@ -247,7 +247,7 @@ def cal(
 ) -> CommandOutput[BaseModel]:
     """Historical Dividends."""
     return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider.provider
+        results=Query(**locals()).execute(), provider=provider_choices.provider
     )
 
 
