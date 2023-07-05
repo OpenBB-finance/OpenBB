@@ -4,7 +4,7 @@ from typing import Optional
 
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
-from openbb_sdk_core.app.model.item.empty import Empty
+from openbb_sdk_core.app.model.results.empty import Empty
 from openbb_sdk_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -42,7 +42,7 @@ def load(
     extra_params: Optional[ExtraParams] = None,
 ) -> CommandOutput[BaseModel]:
     """Load stock data for a specific ticker."""
-    return CommandOutput(item=Query(**locals()).execute())
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command(query="StockNews")
@@ -53,22 +53,22 @@ def news(
     extra_params: Optional[ExtraParams] = None,
 ) -> CommandOutput[BaseModel]:
     """Get news for one or more stock tickers."""
-    return CommandOutput(item=Query(**locals()).execute())
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command
 def tob() -> CommandOutput[Empty]:
     """View top of book for loaded ticker (US exchanges only)."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command
 def quote() -> CommandOutput[Empty]:
     """View the current price for a specific stock ticker."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command
 def search() -> CommandOutput[Empty]:
     """Search a specific stock ticker for analysis."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())

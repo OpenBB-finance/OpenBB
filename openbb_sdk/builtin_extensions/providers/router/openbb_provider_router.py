@@ -31,11 +31,11 @@ def create_standardized(
         registry.api_keys[provider] = getattr(
             cc.user_settings.credentials, provider + "_api_key"
         )
-        item = registry.standardized(
+        results = registry.standardized(
             provider_name=provider,
             query=query,
         )
-        return CommandOutput(item=item)
+        return CommandOutput(results=results)
 
     return standardized
 
@@ -52,11 +52,11 @@ def create_simple(
         registry.api_keys[provider] = getattr(
             cc.user_settings.credentials, provider + "_api_key"
         )
-        item = registry.simple(
+        results = registry.simple(
             provider_name=provider,
             query=query,
         )
-        return CommandOutput(item=item)
+        return CommandOutput(results=results)
 
     return simple
 

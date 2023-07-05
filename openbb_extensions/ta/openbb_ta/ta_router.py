@@ -11,7 +11,7 @@ from builtin_extensions.common.utils import (
 from openbb_provider.model.abstract.data import Data
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.model.export.plotly import Plotly
-from openbb_sdk_core.app.model.item.empty import Empty
+from openbb_sdk_core.app.model.results.empty import Empty
 from openbb_sdk_core.app.router import Router
 from openbb_sdk_core.plots.plots import YTimeSeries, plot_timeseries
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
@@ -61,7 +61,7 @@ def atr(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> atr_data = openbb.ta.atr(data=stock_data.item)
+    >>> atr_data = openbb.ta.atr(data=stock_data.results)
     """
 
     df = to_dataframe(data, index=index)
@@ -70,9 +70,9 @@ def atr(
         df_target.ta.atr(length=length, mamode=mamode, drift=drift, offset=offset)
     )
 
-    item = from_dataframe(df_target.join(df_atr, how="left"), index=True)
+    results = from_dataframe(df_target.join(df_atr, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -105,7 +105,7 @@ def fib(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> fib_data = openbb.ta.fib(data=stock_data.item, period=120)
+    >>> fib_data = openbb.ta.fib(data=stock_data.results, period=120)
     """
 
     df = to_dataframe(data, index=index)
@@ -131,9 +131,9 @@ def fib(
     df_fib["max_pr"] = max_pr
     df_fib["lvl_text"] = lvl_text
 
-    item = from_dataframe(df_fib)
+    results = from_dataframe(df_fib)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -169,16 +169,16 @@ def obv(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> obv_data = openbb.ta.obv(data=stock_data.item, offset=0)
+    >>> obv_data = openbb.ta.obv(data=stock_data.results, offset=0)
     """
 
     df = to_dataframe(data, index=index)
     df_target = get_target_columns(df, ["close", "volume"])
     df_obv = pd.DataFrame(df_target.ta.obv(offset=offset))
 
-    item = from_dataframe(df_target.join(df_obv, how="left"), index=True)
+    results = from_dataframe(df_target.join(df_obv, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -215,16 +215,16 @@ def fisher(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> fisher_data = openbb.ta.fisher(data=stock_data.item, length=14, signal=1)
+    >>> fisher_data = openbb.ta.fisher(data=stock_data.results, length=14, signal=1)
     """
 
     df = to_dataframe(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
     df_fisher = pd.DataFrame(df_target.ta.fisher(length=length, signal=signal))
 
-    item = from_dataframe(df_target.join(df_fisher, how="left"), index=True)
+    results = from_dataframe(df_target.join(df_fisher, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -263,16 +263,16 @@ def adosc(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> adosc_data = openbb.ta.adosc(data=stock_data.item, fast=3, slow=10, offset=0)
+    >>> adosc_data = openbb.ta.adosc(data=stock_data.results, fast=3, slow=10, offset=0)
     """
 
     df = to_dataframe(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume", "open"])
     df_adosc = pd.DataFrame(df_target.ta.adosc(fast=fast, slow=slow, offset=offset))
 
-    item = from_dataframe(df_target.join(df_adosc, how="left"), index=True)
+    results = from_dataframe(df_target.join(df_adosc, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -281,7 +281,7 @@ def tv() -> CommandOutput[Empty]:
 
     # TODO : probably out of scope for now
 
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -332,7 +332,7 @@ def bbands(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> bbands_data = openbb.ta.bbands(data=stock_data.item, column="close", length=50, std=2, mamode="sma", offset=0)
+    >>> bbands_data = openbb.ta.bbands(data=stock_data.results, column="close", length=50, std=2, mamode="sma", offset=0)
     """
 
     df = to_dataframe(data, index=index)
@@ -341,9 +341,9 @@ def bbands(
         df_target.ta.bbands(length=length, std=std, mamode=mamode, offset=offset)
     )
 
-    item = from_dataframe(df_target.join(bbands_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(bbands_df, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -352,7 +352,7 @@ def multi() -> CommandOutput[Empty]:
 
     # TODO : probably out of scope for now
 
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -394,7 +394,7 @@ def zlma(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> zlma_data = openbb.ta.zlma(data=stock_data.item, column="close", length=50, offset=0)
+    >>> zlma_data = openbb.ta.zlma(data=stock_data.results, column="close", length=50, offset=0)
     """
 
     def _zlma_export_plotly(
@@ -422,10 +422,10 @@ def zlma(
     df_target = get_target_column(df, target).to_frame()
     zlma_df = pd.DataFrame(df_target.ta.zlma(length=length, offset=offset)).dropna()
 
-    item = from_dataframe(df_target.join(zlma_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(zlma_df, how="left"), index=True)
 
     return CommandOutput(
-        item=item,
+        results=results,
         export_list=[
             _zlma_export_plotly(
                 data=df_target,
@@ -476,7 +476,7 @@ def aroon(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> aroon_data = openbb.ta.aroon(data=stock_data.item, length=25, scalar=100)
+    >>> aroon_data = openbb.ta.aroon(data=stock_data.results, length=25, scalar=100)
     """
 
     def _aroon_export_plotly(
@@ -508,10 +508,10 @@ def aroon(
     df_target = get_target_columns(df, ["high", "low", "close"])
     aroon_df = pd.DataFrame(df_target.ta.aroon(length=length, scalar=scalar)).dropna()
 
-    item = from_dataframe(df_target.join(aroon_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(aroon_df, how="left"), index=True)
 
     return CommandOutput(
-        item=item,
+        results=results,
         export_list=[
             _aroon_export_plotly(
                 data=df_target,
@@ -561,7 +561,7 @@ def sma(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> sma_data = openbb.ta.sma(data=stock_data.item,column="close",length=50,offset=0)
+    >>> sma_data = openbb.ta.sma(data=stock_data.results,column="close",length=50,offset=0)
     """
 
     def _sma_export_plotly(
@@ -589,10 +589,10 @@ def sma(
     df_target = get_target_column(df, target).to_frame()
     sma_df = pd.DataFrame(df_target.ta.sma(length=length, offset=offset).dropna())
 
-    item = from_dataframe(df_target.join(sma_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(sma_df, how="left"), index=True)
 
     return CommandOutput(
-        item=item,
+        results=results,
         export_list=[
             _sma_export_plotly(
                 data=df_target,
@@ -640,7 +640,7 @@ def demark(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> demark_data = openbb.ta.demark(data=stock_data.item,offset=0)
+    >>> demark_data = openbb.ta.demark(data=stock_data.results,offset=0)
     """
 
     df = to_dataframe(data, index=index)
@@ -649,9 +649,9 @@ def demark(
         df_target.ta.td_seq(offset=offset, show_all=show_all, asint=asint).dropna()
     )
 
-    item = from_dataframe(df_target.join(demark_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(demark_df, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -687,16 +687,16 @@ def vwap(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> vwap_data = openbb.ta.vwap(data=stock_data.item,anchor="D",offset=0)
+    >>> vwap_data = openbb.ta.vwap(data=stock_data.results,anchor="D",offset=0)
     """
 
     df = to_dataframe(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     df_vwap = pd.DataFrame(df_target.ta.vwap(anchor=anchor, offset=offset).dropna())
 
-    item = from_dataframe(df_target.join(df_vwap, how="left"), index=True)
+    results = from_dataframe(df_target.join(df_vwap, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -706,7 +706,7 @@ def recom() -> CommandOutput[Empty]:
     # TODO : this command does only a call to a Tradingview's endpoint
     #        thus, it should probably be implement on a provider level
 
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -751,7 +751,7 @@ def macd(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> macd_data = openbb.ta.macd(data=stock_data.item,column="close",fast=12,slow=26,signal=9)
+    >>> macd_data = openbb.ta.macd(data=stock_data.results,column="close",fast=12,slow=26,signal=9)
     """
 
     def _macd_export_plotly(
@@ -781,10 +781,10 @@ def macd(
         df_target.ta.macd(fast=fast, slow=slow, signal=signal).dropna()
     )
 
-    item = from_dataframe(df_target.join(macd_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(macd_df, how="left"), index=True)
 
     return CommandOutput(
-        item=item,
+        results=results,
         export_list=[
             _macd_export_plotly(
                 data=df_target,
@@ -832,7 +832,7 @@ def hma(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> hma_data = openbb.ta.hma(data=stock_data.item,column="close",length=50,offset=0)
+    >>> hma_data = openbb.ta.hma(data=stock_data.results,column="close",length=50,offset=0)
     """
 
     def _hma_export_plotly(
@@ -860,10 +860,10 @@ def hma(
     df_target = get_target_column(df, target).to_frame()
     hma_df = pd.DataFrame(df_target.ta.hma(length=length, offset=offset).dropna())
 
-    item = from_dataframe(df_target.join(hma_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(hma_df, how="left"), index=True)
 
     return CommandOutput(
-        item=item,
+        results=results,
         export_list=[
             _hma_export_plotly(
                 data=df_target,
@@ -913,7 +913,7 @@ def donchian(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> donchian_data = openbb.ta.donchian(data=stock_data.item,lower_length=20,upper_length=20,offset=0)
+    >>> donchian_data = openbb.ta.donchian(data=stock_data.results,lower_length=20,upper_length=20,offset=0)
     """
 
     df = to_dataframe(data, index=index)
@@ -924,9 +924,9 @@ def donchian(
         ).dropna()
     )
 
-    item = from_dataframe(df_target.join(donchian_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(donchian_df, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -976,9 +976,9 @@ def ichimoku(
     df_result = df_target.join(df_span.add_prefix("span_"), how="left")
     df_result = df_result.join(df_ichimoku, how="left")
 
-    item = from_dataframe(df_result, index=True)
+    results = from_dataframe(df_result, index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1011,7 +1011,7 @@ def clenow(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> clenow_data = openbb.ta.clenow(data=stock_data.item,period=90)
+    >>> clenow_data = openbb.ta.clenow(data=stock_data.results,period=90)
     """
 
     df = to_dataframe(data, index=index)
@@ -1028,9 +1028,9 @@ def clenow(
         orient="index",
     ).transpose()
 
-    item = from_dataframe(df_clenow)
+    results = from_dataframe(df_clenow)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1066,16 +1066,16 @@ def ad(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> ad_data = openbb.ta.ad(data=stock_data.item,offset=0)
+    >>> ad_data = openbb.ta.ad(data=stock_data.results,offset=0)
     """
 
     df = to_dataframe(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     ad_df = pd.DataFrame(df_target.ta.ad(offset=offset).dropna())
 
-    item = from_dataframe(df_target.join(ad_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(ad_df, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1113,7 +1113,7 @@ def adx(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> adx_data = openbb.ta.adx(data=stock_data.item,length=50,scalar=100.0,drift=1)
+    >>> adx_data = openbb.ta.adx(data=stock_data.results,length=50,scalar=100.0,drift=1)
     """
 
     def _adx_export_plotly(data, column, adx_data, adx_columns, title) -> Plotly:
@@ -1145,10 +1145,10 @@ def adx(
         df_target.ta.adx(length=length, scalar=scalar, drift=drift).dropna()
     )
 
-    item = from_dataframe(df_target.join(adx_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(adx_df, how="left"), index=True)
 
     return CommandOutput(
-        item=item,
+        results=results,
         export_list=[
             _adx_export_plotly(
                 data=df_target,
@@ -1197,7 +1197,7 @@ def wma(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> wma_data = openbb.ta.wma(data=stock_data.item, column="close", length=50, offset=0)
+    >>> wma_data = openbb.ta.wma(data=stock_data.results, column="close", length=50, offset=0)
     """
 
     def _wma_export_plotly(
@@ -1225,10 +1225,10 @@ def wma(
     df_target = get_target_column(df, target).to_frame()
     wma_df = pd.DataFrame(df_target.ta.wma(length=length, offset=offset).dropna())
 
-    item = from_dataframe(df_target.join(wma_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(wma_df, how="left"), index=True)
 
     return CommandOutput(
-        item=item,
+        results=results,
         export_list=[
             _wma_export_plotly(
                 data=df_target,
@@ -1275,9 +1275,9 @@ def cci(
     df_target = get_target_columns(df, ["close", "high", "low"])
     cci_df = pd.DataFrame(df_target.ta.cci(length=length, scalar=scalar).dropna())
 
-    item = from_dataframe(df_target.join(cci_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(cci_df, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1320,7 +1320,7 @@ def rsi(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> rsi_data = openbb.ta.rsi(data=stock_data.item, column="close", length=14, scalar=100.0, drift=1)
+    >>> rsi_data = openbb.ta.rsi(data=stock_data.results, column="close", length=14, scalar=100.0, drift=1)
     """
 
     def _rsi_export_plotly(
@@ -1350,10 +1350,10 @@ def rsi(
         df_target.ta.rsi(length=length, scalar=scalar, drift=drift).dropna()
     )
 
-    item = from_dataframe(df_target.join(rsi_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(rsi_df, how="left"), index=True)
 
     return CommandOutput(
-        item=item,
+        results=results,
         export_list=[
             _rsi_export_plotly(
                 data=df_target,
@@ -1372,7 +1372,7 @@ def summary() -> CommandOutput[Empty]:
     # TODO : this command does only a call to a finbrain's endpoint
     #        thus, it should probably be implement on a provider level
 
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -1413,7 +1413,7 @@ def stoch(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> stoch_data = openbb.ta.stoch(data=stock_data.item, fast_k_period=14, slow_d_period=3, slow_k_period=3)
+    >>> stoch_data = openbb.ta.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)
     """
 
     df = to_dataframe(data, index=index)
@@ -1426,9 +1426,9 @@ def stoch(
         ).dropna()
     )
 
-    item = from_dataframe(df_target.join(stoch_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(stoch_df, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1437,7 +1437,7 @@ def rsp() -> CommandOutput[Empty]:
 
     # TODO : https://github.com/OpenBB-finance/OpenBBTerminal/issues/5167
 
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -1480,7 +1480,7 @@ def kc(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> kc_data = openbb.ta.kc(data=stock_data.item, length=20, scalar=20, ma_mode="ema", offset=0)
+    >>> kc_data = openbb.ta.kc(data=stock_data.results, length=20, scalar=20, ma_mode="ema", offset=0)
     """
 
     df = to_dataframe(data, index=index)
@@ -1494,9 +1494,9 @@ def kc(
         ).dropna()
     )
 
-    item = from_dataframe(df_target.join(kc_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(kc_df, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1528,16 +1528,16 @@ def cg(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> cg_data = openbb.ta.cg(data=stock_data.item, length=14)
+    >>> cg_data = openbb.ta.cg(data=stock_data.results, length=14)
     """
 
     df = to_dataframe(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     cg_df = pd.DataFrame(df_target.ta.cg(length=length).dropna())
 
-    item = from_dataframe(df_target.join(cg_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(cg_df, how="left"), index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1604,7 +1604,7 @@ def cones(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> cones_data = openbb.ta.cones(data=stock_data.item, lower_q=0.25, upper_q=0.75, model="STD")
+    >>> cones_data = openbb.ta.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model="STD")
     """
 
     if lower_q > upper_q:
@@ -1615,9 +1615,9 @@ def cones(
         data=df, lower_q=lower_q, upper_q=upper_q, model=model, is_crypto=is_crypto
     )
 
-    item = from_dataframe(df_cones, index=True)
+    results = from_dataframe(df_cones, index=True)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1660,7 +1660,7 @@ def ema(
     --------
     >>> from openbb_sdk_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
-    >>> ema_data = openbb.ta.ema(data=stock_data.item,column="close",length=50,offset=0)
+    >>> ema_data = openbb.ta.ema(data=stock_data.results,column="close",length=50,offset=0)
 
     """
 
@@ -1689,10 +1689,10 @@ def ema(
     df_target = get_target_column(df, target).to_frame()
     ema_df = pd.DataFrame(df_target.ta.ema(length=length, offset=offset).dropna())
 
-    item = from_dataframe(df_target.join(ema_df, how="left"), index=True)
+    results = from_dataframe(df_target.join(ema_df, how="left"), index=True)
 
     return CommandOutput(
-        item=item,
+        results=results,
         export_list=[
             _ema_export_plotly(
                 data=df_target,

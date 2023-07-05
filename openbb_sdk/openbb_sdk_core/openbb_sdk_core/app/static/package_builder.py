@@ -129,7 +129,7 @@ class ImportDefinition:
             hint_type_list.append(parameter.annotation)
 
         if return_type:
-            hint_type = get_args(get_type_hints(return_type)["item"])[0]
+            hint_type = get_args(get_type_hints(return_type)["results"])[0]
             hint_type_list.append(hint_type)
 
         hint_type_list = cls.filter_hint_type_list(hint_type_list=hint_type_list)
@@ -308,7 +308,7 @@ class MethodDefinition:
         elif return_type.__module__ == "builtins":
             func_returns = return_type.__name__
         else:
-            item_type = get_args(get_type_hints(return_type)["item"])[0]
+            item_type = get_args(get_type_hints(return_type)["results"])[0]
             if item_type.__module__ == "builtins":
                 func_returns = f"CommandOutput[{item_type.__name__}]"
             # elif get_origin(item_type) == list:

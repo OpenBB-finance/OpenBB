@@ -98,11 +98,11 @@ class CommandValidator:
         return_type = sig.return_annotation
 
         if issubclass(return_type, CommandOutput):
-            item_type = get_type_hints(return_type)["item"]
-            if isinstance(item_type, type(None)):
+            results_type = get_type_hints(return_type)["results"]
+            if isinstance(results_type, type(None)):
                 valid_return_type = False
             else:
-                generic_type_list = get_args(item_type)
+                generic_type_list = get_args(results_type)
                 valid_return_type = cls.is_serializable_value_type(
                     value_type=generic_type_list[0]
                 )

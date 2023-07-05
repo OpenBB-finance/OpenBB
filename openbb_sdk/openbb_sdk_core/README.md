@@ -169,14 +169,14 @@ provider = ProviderName.fmp
 ### 5.4. Run the command
 
 ```python
-command_result = app.run(
+command_output = app.run(
     "/openbb/stocks/fetch",
     query=stock_query,
     provider=provider,
 ).output
 
 # Access the StockData
-command_result.item
+command_output.results
 ```
 
 ### 5.5 Run the static version (LEAST STABLE ON DEVELOP)

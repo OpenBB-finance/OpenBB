@@ -23,7 +23,7 @@ from builtin_extensions.common.utils import (
 )
 from openbb_provider.model.abstract.data import Data
 from openbb_sdk_core.app.model.command_output import CommandOutput
-from openbb_sdk_core.app.model.item.empty import Empty
+from openbb_sdk_core.app.model.results.empty import Empty
 from openbb_sdk_core.app.router import Router
 from pydantic import NonNegativeFloat, PositiveInt
 from scipy import stats
@@ -73,7 +73,7 @@ def normality(data: List[Data], target: str) -> CommandOutput[NormalityModel]:
         kolmogorov_smirnov=TestModel(statistic=ks_statistic, p_value=ks_pvalue),
     )
 
-    return CommandOutput(item=norm_summary)
+    return CommandOutput(results=norm_summary)
 
 
 @router.command(methods=["POST"])
@@ -99,19 +99,19 @@ def capm(data: List[Data], target: str) -> CommandOutput[CAPMModel]:
     x = sm.add_constant(x)
     model = sm.OLS(y, x).fit()
 
-    item = CAPMModel(
+    results = CAPMModel(
         market_risk=model.params["excess_mkt"],
         systematic_risk=model.rsquared,
         idiosyncratic_risk=1 - model.rsquared,
     )
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
 def qqplot() -> CommandOutput[Empty]:
     """QQ Plot."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -151,11 +151,11 @@ def om(
         return omega
 
     threshold = np.linspace(threshold_start, threshold_end, 50)
-    item = []
+    results = []
     for i in threshold:
-        item.append(OmegaModel(threshold=i, omega=get_omega_ratio(series_target, i)))
+        results.append(OmegaModel(threshold=i, omega=get_omega_ratio(series_target, i)))
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -180,46 +180,46 @@ def kurtosis(
     """
     df = to_dataframe(data)
     series_target = get_target_column(df, target)
-    result = ta.kurtosis(close=series_target, length=window).dropna()
-    item = from_dataframe(result)
+    results = ta.kurtosis(close=series_target, length=window).dropna()
+    results = from_dataframe(results)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
 def pick() -> CommandOutput[Empty]:
     """Pick."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def spread() -> CommandOutput[Empty]:
     """Spread."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def rolling() -> CommandOutput[Empty]:
     """Rolling."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def var() -> CommandOutput[Empty]:
     """Value at Risk."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def line() -> CommandOutput[Empty]:
     """Line."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def hist() -> CommandOutput[Empty]:
     """Histogram."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -271,13 +271,13 @@ def unitroot(
             nlags=kpss[2],
         ),
     )
-    return CommandOutput(item=unitroot_summary)
+    return CommandOutput(results=unitroot_summary)
 
 
 @router.command(methods=["POST"])
 def beta() -> CommandOutput[Empty]:
     """Beta."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -308,11 +308,11 @@ def sh(
 
     returns = series_target.pct_change().dropna().rolling(window).sum()
     std = series_target.rolling(window).std() / np.sqrt(window)
-    result = ((returns - rfr) / std).dropna()
+    results = ((returns - rfr) / std).dropna()
 
-    item = from_dataframe(result)
+    results = from_dataframe(results)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -353,38 +353,38 @@ def so(
     downside_deviation = returns.rolling(window).apply(
         lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
     )
-    result = ((returns - target_return) / downside_deviation).dropna()
+    results = ((returns - target_return) / downside_deviation).dropna()
 
     if adjusted:
-        result = result / np.sqrt(2)
+        results = result / np.sqrt(2)
 
-    item = from_dataframe(result)
+    results = from_dataframe(results)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
 def cusum() -> CommandOutput[Empty]:
     """Cumulative Sum."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def raw() -> CommandOutput[Empty]:
     """Raw."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def cdf() -> CommandOutput[Empty]:
     """Cumulative Distribution Function."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def decompose() -> CommandOutput[Empty]:
     """Decompose."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -409,10 +409,10 @@ def skew(
     """
     df = to_dataframe(data)
     series_target = get_target_column(df, target)
-    result = ta.skew(close=series_target, length=window).dropna()
-    item = from_dataframe(result)
+    results = ta.skew(close=series_target, length=window).dropna()
+    results = from_dataframe(results)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
@@ -429,29 +429,29 @@ def quantile(
 
     df_median = ta.median(close=series_target, length=window).to_frame()
     df_quantile = ta.quantile(series_target, length=window, q=quantile_pct).to_frame()
-    result = pd.concat([df_median, df_quantile], axis=1).dropna()
+    results = pd.concat([df_median, df_quantile], axis=1).dropna()
 
-    item = from_dataframe(result)
+    results = from_dataframe(results)
 
-    return CommandOutput(item=item)
+    return CommandOutput(results=results)
 
 
 @router.command(methods=["POST"])
 def bw() -> CommandOutput[Empty]:
     """Bandwidth."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def es() -> CommandOutput[Empty]:
     """Expected Shortfall."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
 def acf() -> CommandOutput[Empty]:
     """Autocorrelation Function."""
-    return CommandOutput(item=Empty())
+    return CommandOutput(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -476,7 +476,7 @@ def summary(data: List[Data], target: str) -> CommandOutput[SummaryModel]:
 
     df_stats = series_target.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])
     df_stats.loc["var"] = df_stats.loc["std"] ** 2
-    result = SummaryModel(
+    results = SummaryModel(
         count=df_stats.loc["count"],
         mean=df_stats.loc["mean"],
         std=df_stats.loc["std"],
@@ -488,4 +488,4 @@ def summary(data: List[Data], target: str) -> CommandOutput[SummaryModel]:
         max=df_stats.loc["max"],
     )
 
-    return CommandOutput(item=result)
+    return CommandOutput(results=results)

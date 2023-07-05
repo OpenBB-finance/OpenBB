@@ -1,3 +1,3 @@
 from pydantic import BaseModel
 
-Item = BaseModel
+Result = BaseModel

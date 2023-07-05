@@ -11,7 +11,7 @@ def __create_command_coverage(provider_name: ProviderName):
     def command_coverage() -> CommandOutput[list]:
         """Get command coverage for a specific provider."""
         provider_coverage = CommandMap().coverage
-        return CommandOutput(item=provider_coverage[provider_name])
+        return CommandOutput(results=provider_coverage[provider_name])
 
     command_coverage.__name__ = provider_name
     return command_coverage
