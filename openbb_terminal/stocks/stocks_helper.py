@@ -380,7 +380,9 @@ def load(  # pylint: disable=too-many-return-statements
             )
 
         elif source == "Intrinio":
-            df_stock_candidate = load_stock_intrinio(symbol, start_date, end_date)
+            df_stock_candidate = load_stock_intrinio(
+                symbol, start_date, end_date, weekly, monthly
+            )
 
         elif source == "DataBento":
             df_stock_candidate = databento_model.get_historical_stock(
