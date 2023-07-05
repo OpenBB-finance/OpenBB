@@ -10,7 +10,7 @@ from openbb_sdk_core.app.model.abstract.warning import Warning_
 from openbb_sdk_core.app.provider_interface import get_provider_interface
 
 T = TypeVar("T")
-PROVIDERS = get_provider_interface().providers
+PROVIDERS = get_provider_interface().providers_literal
 
 
 class CommandOutput(GenericModel, Generic[T], Tagged):

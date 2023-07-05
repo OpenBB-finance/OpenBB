@@ -49,8 +49,10 @@ class ProviderInterface:
         Dictionary of params by query.
     merged_data : Dict[str, StandardData]
         Dictionary of data by query.
-    providers : Literal
+    providers_literal : type
         Literal of provider names.
+    provider_choices : type
+        Dataclass with literal of provider names.
     queries : List[str]
         List of query names.
     """
@@ -79,7 +81,7 @@ class ProviderInterface:
         return self.__merged_data
 
     @property
-    def providers(self) -> Literal:  # type: ignore
+    def providers_literal(self) -> type:
         providers = []
         for _, provider in self.map.items():
             providers.extend(list(provider.keys()))
@@ -88,6 +90,13 @@ class ProviderInterface:
             providers.remove("openbb")
 
         return Literal[tuple(providers)]  # type: ignore
+
+    @property
+    def provider_choices(self) -> type:
+        return make_dataclass(
+            cls_name="ProviderChoices",
+            fields=[("provider", self.providers_literal)],
+        )
 
     @property
     def queries(self) -> List[str]:

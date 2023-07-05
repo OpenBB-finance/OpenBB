@@ -1,5 +1,6 @@
 import builtins
 import subprocess
+from collections import OrderedDict
 from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
@@ -298,7 +299,19 @@ class MethodDefinition:
                     default=param.default,
                 )
 
-        func_params = ", ".join(str(param) for param in formatted.values())
+        formatted_keys = list(formatted.keys())
+        for k in ["provider", "extra_params"]:
+            if k in formatted_keys:
+                formatted_keys.remove(k)
+                formatted_keys.append(k)
+
+        od = OrderedDict()
+        for k in formatted_keys:
+            if k == "provider":
+                od["*"] = "*"
+            od[k] = formatted[k]
+
+        func_params = ", ".join(str(param) for param in od.values())
         func_params = func_params.replace("NoneType", "None")
 
         return func_params

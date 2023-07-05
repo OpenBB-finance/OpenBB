@@ -226,8 +226,11 @@ class SignatureInspector:
             "provider_choices" in func.__annotations__
             and func.__annotations__["provider_choices"] == ProviderChoices
         ):
-            func.__annotations__["provider_choices"] = provider_interface.providers
-
+            func = cls.inject_dependency(
+                func=func,
+                arg="provider_choices",
+                callable_=provider_interface.provider_choices,
+            )
         return func
 
     @staticmethod
