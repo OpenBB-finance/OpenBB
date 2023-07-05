@@ -27,16 +27,14 @@ from openbb_sdk_core.app.router import RouterLoader
 
 
 class PackageBuilder:
-    @staticmethod
-    def write_to_package(module_code: str, module_name, extension="py") -> None:
-        package_folder = Path(__file__).parent / "package"
-        package_path = package_folder / f"{module_name}.{extension}"
-
-        package_folder.mkdir(exist_ok=True)
-
-        print(package_path)
-        with package_path.open("w") as file:
-            file.write(module_code)
+    @classmethod
+    def build(cls, lint: bool = True) -> None:
+        print("\nBuilding package...\n")
+        cls.save_module_map()
+        cls.save_modules()
+        cls.save_package()
+        if lint:
+            cls.run_linters()
 
     @classmethod
     def save_module_map(cls):
@@ -81,19 +79,21 @@ class PackageBuilder:
 
     @classmethod
     def run_linters(cls):
-        print("\n\nLinting...")
+        print("Running linters...")
         Linters.black()
         Linters.ruff()
         Linters.mypy()
 
-    @classmethod
-    def build(cls, lint: bool = True) -> None:
-        print("\nBuilding package...\n")
-        cls.save_module_map()
-        cls.save_modules()
-        cls.save_package()
-        if lint:
-            cls.run_linters()
+    @staticmethod
+    def write_to_package(module_code: str, module_name, extension="py") -> None:
+        package_folder = Path(__file__).parent / "package"
+        package_path = package_folder / f"{module_name}.{extension}"
+
+        package_folder.mkdir(exist_ok=True)
+
+        print(package_path)
+        with package_path.open("w") as file:
+            file.write(module_code)
 
 
 class ModuleBuilder:
