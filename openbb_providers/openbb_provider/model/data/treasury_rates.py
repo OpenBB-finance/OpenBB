@@ -18,14 +18,16 @@ class TreasuryRatesQueryParams(QueryParams):
 
     Parameter
     ---------
-    start_date : str
-        Start date of the data.
-    end_date : str
-        End date of the data. Default is today.
+    start_date : Optional[str]
+        Start date of the data, default is None.
+    end_date : Optional[str]
+        End date of the data, default is today.
     """
 
     __name__ = "TreasuryRatesQueryParams"
-    start_date: str = Field(default=None, description=DESCRIPTIONS["start_date"])
+    start_date: Optional[str] = Field(
+        default=None, description=DESCRIPTIONS["start_date"]
+    )
     end_date: Optional[str] = Field(
         default=datetime.today().strftime("%Y-%m-%d"),
         description=DESCRIPTIONS["end_date"],
