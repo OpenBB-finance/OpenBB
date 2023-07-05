@@ -7,8 +7,10 @@ from pydantic.generics import GenericModel
 from openbb_sdk_core.app.model.abstract.error import Error
 from openbb_sdk_core.app.model.abstract.tagged import Tagged
 from openbb_sdk_core.app.model.abstract.warning import Warning_
+from openbb_sdk_core.app.provider_interface import get_provider_interface
 
 T = TypeVar("T")
+PROVIDERS = get_provider_interface().providers
 
 
 class CommandOutput(GenericModel, Generic[T], Tagged):
@@ -16,7 +18,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         default=None,
         description="Serializable results.",
     )
-    provider: Optional[str] = Field(
+    provider: Optional[PROVIDERS] = Field(  # type: ignore
         default=None,
         description="Provider name.",
     )

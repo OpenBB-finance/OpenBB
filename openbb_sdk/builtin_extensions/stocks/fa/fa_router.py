@@ -19,7 +19,9 @@ def balance(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Balance Sheet."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="CashFlowStatement")
@@ -29,7 +31,9 @@ def cash(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Cash Flow Statement."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="ExecutiveCompensation")
@@ -39,7 +43,9 @@ def comp(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Executive Compensation."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="EarningsCalendar")
@@ -49,7 +55,9 @@ def earning(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Earnings Calendar."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command
@@ -65,7 +73,9 @@ def est(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Analyst Estimates."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="IncomeStatement")
@@ -75,7 +85,9 @@ def income(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Income Statement."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="StockInsiderTrading")
@@ -85,7 +97,9 @@ def ins(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Stock Insider Trading."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="KeyMetrics")
@@ -95,7 +109,9 @@ def metrics(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Key Metrics."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="KeyExecutives")
@@ -105,7 +121,9 @@ def mgmt(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Key Executives."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="CompanyOverview")
@@ -115,7 +133,9 @@ def overview(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Company Overview."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="InstitutionalOwnership")
@@ -125,7 +145,9 @@ def own(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Institutional Ownership."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="PriceTarget")
@@ -135,7 +157,9 @@ def pta(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Price Target."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="PriceTargetConsensus")
@@ -145,7 +169,9 @@ def pt(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Price Target Consensus."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="RevenueGeographic")
@@ -155,7 +181,9 @@ def revgeo(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Revenue Geographic."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="RevenueBusinessLine")
@@ -165,7 +193,9 @@ def revseg(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Revenue Business Line."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="ShareStatistics")
@@ -175,7 +205,9 @@ def shrs(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Share Statistics."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command
@@ -190,7 +222,9 @@ def transcript(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Earnings Call Transcript."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="HistoricalStockSplits")
@@ -200,7 +234,9 @@ def split(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Historical Stock Splits."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="HistoricalDividends")
@@ -210,7 +246,9 @@ def cal(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Historical Dividends."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command

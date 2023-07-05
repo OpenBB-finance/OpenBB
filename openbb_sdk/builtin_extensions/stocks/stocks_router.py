@@ -42,7 +42,9 @@ def load(
     extra_params: Optional[ExtraParams] = None,
 ) -> CommandOutput[BaseModel]:
     """Load stock data for a specific ticker."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command(query="StockNews")
@@ -53,7 +55,9 @@ def news(
     extra_params: Optional[ExtraParams] = None,
 ) -> CommandOutput[BaseModel]:
     """Get news for one or more stock tickers."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
 
 
 @router.command

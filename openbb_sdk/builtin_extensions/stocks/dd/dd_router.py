@@ -18,4 +18,6 @@ def sec(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """SEC Filings."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider.provider
+    )
