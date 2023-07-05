@@ -209,6 +209,17 @@ class Router:
                 f"Invalid signature: {func.__name__}. standard_params parameter must be of type StandardParams."
             )
 
+        # TODO: Uncomment if we want extra_params to be mandatory
+        # if "extra_params" not in func.__annotations__:
+        #     raise AttributeError(
+        #         f"Invalid signature: {func.__name__}. Missing extra_params parameter."
+        #     )
+
+        # if func.__annotations__["extra_params"] != ExtraParams:
+        #     raise TypeError(
+        #         f"Invalid signature: {func.__name__}. extra_params parameter must be of type ExtraParams."
+        #     )
+
     @staticmethod
     def inject_dependency(
         func: Callable[P, CommandOutput], arg: str, callable_: Any
