@@ -98,7 +98,12 @@ def pywry_login(welcome: bool = True):
         ):
             response[new_key] = response.pop(r_key, None)
 
-        if remember := response.get("remember", False):
+        response["primary_usage"] = response.get("primary_usage", None) or "personal"
+
+        if remember := (
+            response.get("remember", False) or response.get("is_oauth", False)
+        ):
+            response["remember"] = remember
             Local.save_session(response)
 
         return login_and_launch(response, remember)
