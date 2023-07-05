@@ -170,7 +170,7 @@ class Router:
         kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
         kwargs["endpoint"] = func
         kwargs["methods"] = kwargs.get("methods", ["GET"])
-        kwargs["description"] = SignatureTransformer.slice_docstring(func)
+        kwargs["description"] = SignatureTransformer.get_description(func)
 
         api_router.add_api_route(**kwargs)
 
@@ -273,15 +273,15 @@ class SignatureTransformer:
         return func
 
     @staticmethod
-    def slice_docstring(func: Callable) -> str:
-        """Slice docstring to remove Parameters and Returns sections."""
+    def get_description(func: Callable) -> str:
+        """Get description from docstring."""
         doc = func.__doc__
         if doc:
-            sliced = doc.split("    Parameters\n    ----------")[0]
-            sliced = sliced.split("    Returns\n    -------")[0]
-            sliced = "\n".join([line.strip() for line in sliced.split("\n")])
+            description = doc.split("    Parameters\n    ----------")[0]
+            description = description.split("    Returns\n    -------")[0]
+            description = "\n".join([line.strip() for line in description.split("\n")])
 
-            return sliced
+            return description
         return ""
 
 
