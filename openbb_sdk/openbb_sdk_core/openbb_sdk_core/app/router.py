@@ -24,6 +24,7 @@ from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.provider_interface import (
     ProviderChoices,
+    StandardParams,
     get_provider_interface,
 )
 
@@ -186,38 +187,70 @@ class Router:
         )
 
     @staticmethod
+    def validate_signature(func: Callable[P, CommandOutput]) -> None:
+        """Validate function signature before binding to query."""
+        if "provider_choices" not in func.__annotations__:
+            raise AttributeError(
+                f"Invalid signature: {func.__name__}. Missing provider_choices parameter."
+            )
+
+        if func.__annotations__["provider_choices"] != ProviderChoices:
+            raise TypeError(
+                f"Invalid signature: {func.__name__}. provider_choices parameter must be of type ProviderChoices."
+            )
+
+        if "standard_params" not in func.__annotations__:
+            raise AttributeError(
+                f"Invalid signature: {func.__name__}. Missing standard_params parameter."
+            )
+
+        if func.__annotations__["standard_params"] != StandardParams:
+            raise TypeError(
+                f"Invalid signature: {func.__name__}. standard_params parameter must be of type StandardParams."
+            )
+
+    @staticmethod
+    def inject_dependency(
+        func: Callable[P, CommandOutput], arg: str, callable_: Any
+    ) -> Callable[P, CommandOutput]:
+        """Annotate function with dependency injection."""
+        func.__annotations__[arg] = Annotated[callable_, Depends()]  # type: ignore
+        return func
+
+    @staticmethod
     def bind_signature(
         func: Callable[P, CommandOutput], query: str
     ) -> Callable[P, CommandOutput]:
         """Bind function signature to a query."""
         provider_interface = get_provider_interface()
         if query:
-            if (
-                "provider_choices" not in func.__annotations__
-                or "standard_params" not in func.__annotations__
-            ):  # "extra_params" not in func.__annotations__:
-                raise AttributeError(f"Invalid signature: {func.__name__}")
-
             if query not in provider_interface.queries:
                 raise AttributeError(
-                    f"Invalid query: {query}. Check available queries with get_provider_interface().queries"
+                    f"Invalid query: {query}. Check available queries in ProviderInterface().queries"
                 )
 
-            # provider
-            provider_choices = provider_interface.query_providers[query]
-            func.__annotations__["provider_choices"] = Annotated[provider_choices, Depends()]  # type: ignore
+            Router.validate_signature(func=func)
 
-            # standard_params
-            standard_params = provider_interface.params[query]["standard"]
-            func.__annotations__["standard_params"] = Annotated[standard_params, Depends()]  # type: ignore
+            func = Router.inject_dependency(
+                func=func,
+                arg="provider_choices",
+                callable_=provider_interface.query_providers[query],
+            )
 
-            # extra_params
-            extra_params = provider_interface.params[query]["extra"]
-            func.__annotations__["extra_params"] = Annotated[extra_params, Depends()]  # type: ignore
+            func = Router.inject_dependency(
+                func=func,
+                arg="standard_params",
+                callable_=provider_interface.params[query]["standard"],
+            )
 
-            # return
-            data = provider_interface.merged_data[query]
-            func.__annotations__["return"] = CommandOutput[List[data]]  # type: ignore
+            func = Router.inject_dependency(
+                func=func,
+                arg="extra_params",
+                callable_=provider_interface.params[query]["extra"],
+            )
+
+            data_type = provider_interface.merged_data[query]
+            func.__annotations__["return"] = CommandOutput[List[data_type]]  # type: ignore
         elif (
             "provider_choices" in func.__annotations__
             and func.__annotations__["provider_choices"] == ProviderChoices
