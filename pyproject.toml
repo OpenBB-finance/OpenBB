@@ -18,7 +18,7 @@ openbb = 'terminal:main'
 
 [tool.poetry.dependencies]
 python = "^3.8.1,<3.11, !=3.9.7"
-scipy = "^1.9.3"
+scipy = "1.10.1" #Pinning on July 6 for pip issues
 iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
 requests = "^2.25.1"
