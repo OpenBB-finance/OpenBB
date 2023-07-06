@@ -59,6 +59,7 @@ class ProviderRegistry:
         self.api_keys: Dict[ProviderNameType, str] = {}
 
     def add(self, provider: Provider) -> None:
+        """Add a provider to the ProviderRegistry."""
         if provider.name not in self.provider_mapping:
             self.provider_mapping[provider.name] = provider
         else:
@@ -75,6 +76,7 @@ class ProviderRegistry:
         data_name: str,  # type: ignore
         data_orientation: orients,
     ):
+        """A factory method for fetching data from a provider."""
         if not self.provider_mapping:
             raise ValueError(
                 "Provider Mapping is empty. Please confirm plugins are loaded."
@@ -114,6 +116,7 @@ class ProviderRegistry:
         extra_params: Optional[Dict] = None,
         data_orientation: orients = "RECORDS",
     ):
+        """Fetch data from a provider by using the OpenBB standard."""
         return self.__fetch_factory__(
             provider_name,
             query,
@@ -130,6 +133,7 @@ class ProviderRegistry:
         extra_params: Optional[Dict] = None,
         data_orientation: orients = "RECORDS",
     ):
+        """Fetch data from a provider by using provider-specific QueryParams."""
         return self.__fetch_factory__(
             provider_name,
             query,
@@ -146,6 +150,7 @@ class ProviderRegistry:
         extra_params: Optional[Dict] = None,
         data_orientation: orients = "RECORDS",
     ):
+        """Obtain only standardized data from a provider by using the OpenBB standard."""
         return self.__fetch_factory__(
             provider_name,
             query,
@@ -162,6 +167,7 @@ class ProviderRegistry:
         extra_params: Optional[Dict] = None,
         data_orientation: orients = "RECORDS",
     ):
+        """Obtain raw data from a provider by only using provider-specific QueryParams."""
         return self.__fetch_factory__(
             provider_name,
             query,
@@ -183,11 +189,13 @@ class Builder:
         self.api_keys: Dict[ProviderNameType, str] = {}
 
     def add_providers(self, providers: List[Provider]):
+        """Add a list of providers to the ProviderRegistry."""
         for provider in providers:
             self.provider_registry.add(provider)
         return f"{len(providers)} providers have been added."
 
     def add_api_key(self, provider_name: ProviderNameType, api_key: str) -> str:
+        """Add an API key to the ProviderRegistry."""
         if provider_name not in self.api_keys:
             self.api_keys[provider_name] = api_key
         else:
@@ -199,12 +207,14 @@ class Builder:
         return f"API key for {provider_name} has been added."
 
     def add_keys(self, api_keys: Dict[ProviderNameType, str]) -> str:
+        """Add a dictionary of API keys to the ProviderRegistry."""
         for provider_name, api_key in api_keys.items():
             self.add_api_key(provider_name, api_key)
 
         return f"{len(api_keys)} API keys have been added."
 
     def build(self) -> ProviderRegistry:
+        """Build the ProviderRegistry."""
         return self.provider_registry
 
 
@@ -241,6 +251,19 @@ def load_extensions(
             raise ValueError(f"API key for {extension_name} is not set.") from exc
 
     return extensions, extension_api_keys
+
+
+def build_provider_registry() -> ProviderRegistry:
+    """Build a provider registry that is used outside of the openbb_providers."""
+    provider_registry_builder = Builder()
+    extensions = []
+
+    entry_points = pkg_resources.iter_entry_points("openbb_provider_extension")
+    for entry_point in entry_points:
+        extensions.append(entry_point.load())
+
+    provider_registry_builder.add_providers(extensions)
+    return provider_registry_builder.build()
 
 
 entry_point_extensions, entry_point_extension_api_keys = load_extensions(

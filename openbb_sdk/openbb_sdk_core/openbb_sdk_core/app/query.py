@@ -4,9 +4,11 @@ import warnings
 from dataclasses import asdict
 from typing import Any, Dict, Optional
 
-from builtin_extensions.providers.model.item.registry import build_registry
 from pydantic import BaseModel
 
+from openbb_providers.openbb_provider.provider.provider_registry import (
+    build_provider_registry,
+)
 from openbb_sdk_core.app.model.abstract.warning import OpenBBWarning
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.provider_interface import (
@@ -71,7 +73,7 @@ class Query:
     def execute(self) -> BaseModel:
         """Execute the query."""
 
-        registry = build_registry()
+        registry = build_provider_registry()
         creds = self.cc.user_settings.credentials
         registry.api_keys[self.provider] = getattr(creds, self.provider + "_api_key")  # type: ignore
 

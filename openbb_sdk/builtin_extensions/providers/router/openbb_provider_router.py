@@ -10,9 +10,11 @@ from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.router import Router
 
-from openbb_sdk.builtin_extensions.providers.model.item.registry import build_registry
+from openbb_providers.openbb_provider.provider.provider_registry import (
+    build_provider_registry,
+)
 
-registry = build_registry()
+registry = build_provider_registry()
 meta_router = Router()
 
 Q = TypeVar("Q", bound=QueryParams)
