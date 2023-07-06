@@ -7,6 +7,7 @@
 
     valuation          valuation of sectors, industry, country                                        [Finviz]
     performance        performance of sectors, industry, country                                      [Finviz]
+    usdli              Compare the USD Liquidity Index against a choice of indices                    [FRED]
 
 Country Performance:
     gdp                Show nominal Gross Domestic Product (GDP)                                      [OECD]

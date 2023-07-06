@@ -79,6 +79,7 @@ class EconomyController(BaseController):
         "bigmac",
         "events",
         "edebt",
+        "usdli",
     ]
 
     CHOICES_MENUS = [
@@ -315,6 +316,7 @@ class EconomyController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("valuation")
         mt.add_cmd("performance")
+        mt.add_cmd("usdli")
         mt.add_raw("\n")
         mt.add_info("_country_")
         mt.add_cmd("gdp")
@@ -2390,6 +2392,51 @@ class EconomyController(BaseController):
                 if ns_parser.sheet_name
                 else None,
                 limit=ns_parser.limit,
+            )
+
+    @log_start_end(log=logger)
+    def call_usdli(self, other_args: List[str]):
+        """Process usdli command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="usdli",
+            description="""
+            The USD Liquidity Index is defined as: [WALCL - WLRRAL - WDTGAL]. It is expressed in billions of USD.
+            """,
+        )
+        parser.add_argument(
+            "-o",
+            "--overlay",
+            type=str,
+            choices=list(fred_model.EQUITY_INDICES.keys()),
+            default="SP500",
+            dest="overlay",
+            help="The equity index to compare against.  Set `show = True` for the list of choices.",
+        )
+        parser.add_argument(
+            "-s",
+            "--show",
+            action="store_true",
+            dest="show",
+            default=False,
+            help="Show the list of available equity indices to overlay.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+        )
+        if ns_parser:
+            fred_view.display_usd_liquidity(
+                overlay=ns_parser.overlay,
+                show=ns_parser.show,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)

@@ -57,6 +57,8 @@ class EconomyRoot(Category):
         `trust`: Trust in government refers to the share of people who report having confidence in\n
         `trust_chart`: Trust in government refers to the share of people who report having confidence in\n
         `usbonds`: Scrape data for us bonds\n
+        `usdli`: The USD Liquidity Index is defined as: [WALCL - WLRRAL - WDTGAL]. It is expressed in billions of USD.\n
+        `usdli_chart`: Display US Dollar Liquidity\n
         `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
     """
 
@@ -112,4 +114,6 @@ class EconomyRoot(Category):
         self.trust = lib.economy_oecd_model.get_trust
         self.trust_chart = lib.economy_oecd_view.plot_trust
         self.usbonds = lib.economy_wsj_model.us_bonds
+        self.usdli = lib.economy_fred_model.get_usd_liquidity
+        self.usdli_chart = lib.economy_fred_view.display_usd_liquidity
         self.valuation = lib.economy_finviz_model.get_valuation_data

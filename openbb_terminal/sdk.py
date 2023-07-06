@@ -219,6 +219,8 @@ class OpenBBSDK:
             `trust`: Trust in government refers to the share of people who report having confidence in\n
             `trust_chart`: Trust in government refers to the share of people who report having confidence in\n
             `usbonds`: Scrape data for us bonds\n
+            `usdli`: The USD Liquidity Index is defined as: [WALCL - WLRRAL - WDTGAL]. It is expressed in billions of USD.\n
+            `usdli_chart`: Display US Dollar Liquidity\n
             `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
         """
 
