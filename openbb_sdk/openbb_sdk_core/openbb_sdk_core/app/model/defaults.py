@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class Defaults(BaseModel):
     """Defaults."""
 
-    # TODO: Understand if this is good to sync with the hub
+    # TODO: Understand if this is good and if it should be in the hub or just locally
     endpoints: Dict[str, Dict[str, str]] = {
         "/stocks/load": {"provider": "polygon"},
         "/stocks/news": {"provider": "fmp"},
