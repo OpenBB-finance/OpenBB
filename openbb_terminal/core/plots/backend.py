@@ -6,9 +6,9 @@ import os
 import re
 import subprocess  # nosec: B404
 import sys
-import threading
 from multiprocessing import current_process
 from pathlib import Path
+from threading import Thread
 from typing import Any, Dict, Optional, Union
 
 import aiohttp
@@ -502,4 +502,4 @@ def plots_backend() -> Backend:
 # To avoid having plotly.js in the repo, we download it if it's not present
 if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
     # We run this in a thread so we don't block the main thread
-    threading.Thread(target=asyncio.run, args=(download_plotly_js(),)).start()
+    Thread(target=asyncio.run, args=(download_plotly_js(),)).start()
