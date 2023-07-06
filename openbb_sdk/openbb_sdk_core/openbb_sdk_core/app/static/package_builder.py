@@ -254,7 +254,29 @@ class MethodDefinition:
         )
 
     @staticmethod
-    def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
+    def reorder_params(
+        params: Dict[str, Parameter]
+    ) -> OrderedDict[str, Union[str, Parameter]]:
+        formatted_keys = list(params.keys())
+        for k in ["provider", "extra_params"]:
+            if k in formatted_keys:
+                formatted_keys.remove(k)
+                formatted_keys.append(k)
+
+        od: OrderedDict[str, Union[str, Parameter]] = OrderedDict()
+        for k in formatted_keys:
+            if k == "provider":
+                od["*"] = "*"
+            od[k] = params[k]
+
+        return od
+
+    @staticmethod
+    def format_params(
+        parameter_map: Dict[str, Parameter]
+    ) -> OrderedDict[str, Union[str, Parameter]]:
+        # These are types we want to expand.
+        # For example, start_date is always a 'date', but we also accept 'str' as input.
         TYPE_EXPANSION = {
             "data": pd.DataFrame,
             "start_date": str,
@@ -300,19 +322,11 @@ class MethodDefinition:
                     default=param.default,
                 )
 
-        # Send provider and extra_params to the end
-        formatted_keys = list(formatted.keys())
-        for k in ["provider", "extra_params"]:
-            if k in formatted_keys:
-                formatted_keys.remove(k)
-                formatted_keys.append(k)
+        return MethodDefinition.reorder_params(params=formatted)
 
-        od: OrderedDict[str, Union[str, Parameter]] = OrderedDict()
-        for k in formatted_keys:
-            if k == "provider":
-                od["*"] = "*"
-            od[k] = formatted[k]
-
+    @staticmethod
+    def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
+        od = MethodDefinition.format_params(parameter_map=parameter_map)
         func_params = ", ".join(str(param) for param in od.values())
         func_params = func_params.replace("NoneType", "None")
 
