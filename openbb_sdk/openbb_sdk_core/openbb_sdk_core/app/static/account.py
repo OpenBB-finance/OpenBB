@@ -50,7 +50,7 @@ class Account:
         password: Optional[str] = None,
         sdk_token: Optional[str] = None,
         remember_me: bool = False,
-    ):
+    ) -> UserSettings:
         """Login to hub.
 
         Parameters
@@ -81,6 +81,8 @@ class Account:
                     raise OpenBBError("Not connected to hub.")
 
                 json.dump(hm.session.dict(), f, indent=4)
+
+        return self._wrapper._command_runner_session.user_settings
 
     def save(self) -> UserSettings:
         """Save user settings.
