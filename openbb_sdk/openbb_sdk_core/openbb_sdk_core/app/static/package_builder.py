@@ -170,6 +170,7 @@ class ImportDefinition:
         code += "\nfrom types import NoneType"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import validate_arguments"
+        code += "\nfrom inspect import Parameter"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nimport warnings"
         code += "\nimport builtins"
@@ -254,19 +255,15 @@ class MethodDefinition:
         )
 
     @staticmethod
-    def reorder_params(
-        params: Dict[str, Parameter]
-    ) -> OrderedDict[str, Union[str, Parameter]]:
+    def reorder_params(params: Dict[str, Parameter]) -> OrderedDict[str, Parameter]:
         formatted_keys = list(params.keys())
         for k in ["provider", "extra_params"]:
             if k in formatted_keys:
                 formatted_keys.remove(k)
                 formatted_keys.append(k)
 
-        od: OrderedDict[str, Union[str, Parameter]] = OrderedDict()
+        od: OrderedDict[str, Parameter] = OrderedDict()
         for k in formatted_keys:
-            if k == "provider":
-                od["*"] = "*"
             od[k] = params[k]
 
         return od
@@ -274,7 +271,7 @@ class MethodDefinition:
     @staticmethod
     def format_params(
         parameter_map: Dict[str, Parameter]
-    ) -> OrderedDict[str, Union[str, Parameter]]:
+    ) -> OrderedDict[str, Parameter]:
         # These are types we want to expand.
         # For example, start_date is always a 'date', but we also accept 'str' as input.
         # Be careful, if the type is not coercible by pydantic to the original type, you
@@ -283,6 +280,7 @@ class MethodDefinition:
             "data": pd.DataFrame,
             "start_date": str,
             "end_date": str,
+            "provider": None,
         }
 
         parameter_map.pop("cc", None)
@@ -292,13 +290,16 @@ class MethodDefinition:
         for name, param in parameter_map.items():
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
-
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 for field_name, field in fields.items():
                     name = field_name
                     type_ = MethodDefinition.get_type(field)
-                    default = MethodDefinition.get_default(field)
+                    default = (
+                        None
+                        if name == "provider"
+                        else MethodDefinition.get_default(field)
+                    )
 
                     new_type = TYPE_EXPANSION.get(name, ...)
                     updated_type = type_ if new_type is ... else Union[type_, new_type]
@@ -382,6 +383,15 @@ class MethodDefinition:
         if "data" in parameter_map:
             code += "        if isinstance(data, pandas.DataFrame):\n"
             code += "            data = df_to_basemodel(data, data.index.name is not None)\n"
+            code += "\n"
+
+        if "provider_choices" in parameter_map:
+            code += "        if provider is None:\n"
+            code += "            defaults = self._command_runner_session.user_settings.defaults.endpoints.get(\n"
+            code += f'                "{path}",\n'
+            code += "                None,\n"
+            code += "            )\n"
+            code += '            provider = defaults.get("provider", None) if defaults else Parameter.empty\n'
             code += "\n"
 
         code += "        o = self._command_runner_session.run(\n"
