@@ -291,6 +291,24 @@ class SignatureInspector:
 class CommandMap:
     """Matching Routes with Commands."""
 
+    def __init__(self, router: Optional[Router] = None) -> None:
+        self._router = router or RouterLoader.from_plugins()
+        self._map = self.get_command_map(router=self._router)
+        self._provider_coverage = self.get_provider_coverage(router=self._router)
+        self._command_coverage = self.get_command_coverage(router=self._router)
+
+    @property
+    def map(self) -> Dict[str, Callable]:
+        return self._map
+
+    @property
+    def provider_coverage(self) -> Dict[str, List[str]]:
+        return self._provider_coverage
+
+    @property
+    def command_coverage(self) -> Dict[str, List[str]]:
+        return self._command_coverage
+
     @staticmethod
     def get_command_map(router: Router) -> Dict[str, Callable]:
         api_router = router.api_router
@@ -315,22 +333,32 @@ class CommandMap:
                     for provider in providers:
                         if provider not in coverage_map:
                             coverage_map[provider] = []
-                        coverage_map[provider].append(route.path)  # type: ignore
+                        if hasattr(route, "path"):
+                            coverage_map[provider].append(route.path)
 
         return coverage_map
 
-    @property
-    def map(self) -> Dict[str, Callable]:
-        return self._map
+    @staticmethod
+    def get_command_coverage(router: Router) -> Dict[str, List[str]]:
+        api_router = router.api_router
 
-    @property
-    def coverage(self) -> Dict[str, List[str]]:
-        return self._coverage
+        mapping = build_provider_mapping()
 
-    def __init__(self, router: Optional[Router] = None) -> None:
-        self._router = router or RouterLoader.from_plugins()
-        self._map = self.get_command_map(router=self._router)
-        self._coverage = self.get_provider_coverage(router=self._router)
+        coverage_map: Dict[Any, Any] = {}
+        for route in api_router.routes:
+            openapi_extra = getattr(route, "openapi_extra")
+            if openapi_extra:
+                query = openapi_extra.get("query", None)
+                if query:
+                    providers = list(mapping[query].keys())
+                    if "openbb" in providers:
+                        providers.remove("openbb")
+
+                    if hasattr(route, "path"):
+                        if route.path not in coverage_map:
+                            coverage_map[route.path] = []
+                        coverage_map[route.path] = providers
+        return coverage_map
 
     def get_command(self, route: str) -> Optional[Callable]:
         return self._map.get(route, None)
