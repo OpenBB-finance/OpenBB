@@ -277,6 +277,8 @@ class MethodDefinition:
     ) -> OrderedDict[str, Union[str, Parameter]]:
         # These are types we want to expand.
         # For example, start_date is always a 'date', but we also accept 'str' as input.
+        # Be careful, if the type is not coercible by pydantic to the original type, you
+        # will need to had some conversion code to the method implementation.
         TYPE_EXPANSION = {
             "data": pd.DataFrame,
             "start_date": str,
