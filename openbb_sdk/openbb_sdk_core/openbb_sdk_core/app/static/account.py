@@ -63,6 +63,11 @@ class Account:
             SDK token, by default None
         remember_me : bool, optional
             Remember me, by default False
+
+        Returns
+        -------
+        UserSettings
+            User settings: profile, credentials, preferences
         """
         hm = self.create_hub_manager(email, password, sdk_token)
         incoming = hm.pull()
@@ -90,7 +95,7 @@ class Account:
         Returns
         -------
         UserSettings
-            User settings
+            User settings: profile, credentials, preferences
         """
         hub_session = (
             self._wrapper._command_runner_session.user_settings.profile.hub_session
@@ -110,7 +115,7 @@ class Account:
         Returns
         -------
         UserSettings
-            User settings
+            User settings: profile, credentials, preferences
         """
         hub_session = (
             self._wrapper._command_runner_session.user_settings.profile.hub_session
@@ -132,7 +137,7 @@ class Account:
         Returns
         -------
         UserSettings
-            User settings
+            User settings: profile, credentials, preferences
         """
         hub_session = (
             self._wrapper._command_runner_session.user_settings.profile.hub_session
