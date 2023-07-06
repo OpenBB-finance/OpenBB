@@ -298,8 +298,8 @@ class MethodDefinition:
                     type_ = MethodDefinition.get_type(field)
                     default = MethodDefinition.get_default(field)
 
-                    new_type = TYPE_EXPANSION.get(name, None)
-                    updated_type = type_ if new_type is None else Union[type_, new_type]
+                    new_type = TYPE_EXPANSION.get(name, ...)
+                    updated_type = type_ if new_type is ... else Union[type_, new_type]
 
                     formatted[name] = Parameter(
                         name=name,
@@ -308,10 +308,10 @@ class MethodDefinition:
                         default=default,
                     )
             else:
-                new_type = TYPE_EXPANSION.get(name, None)
+                new_type = TYPE_EXPANSION.get(name, ...)
                 updated_type = (
                     param.annotation
-                    if new_type is None
+                    if new_type is ...
                     else Union[param.annotation, new_type]
                 )
 
