@@ -7,7 +7,7 @@ from typing import Callable
 from openbb_sdk_core.api.dependency.system import get_system_settings
 from openbb_sdk_core.app.model.system_settings import SystemSettings
 from openbb_sdk_core.app.model.user_settings import UserSettings
-from openbb_sdk_core.app.static.coverage import Coverage
+from openbb_sdk_core.app.static.provider import Provider
 
 
 def run_async(func: Callable, *args, **kwargs):
@@ -41,7 +41,7 @@ else:
         def __init__(self, command_runner_session):
             self._command_runner_session = command_runner_session
             self._account = Account(self)
-            self._coverage = Coverage()
+            self._provider = Provider()
 
         @property
         def account(self) -> Account:
@@ -56,7 +56,7 @@ else:
             return run_async(get_system_settings)
 
         @property
-        def coverage(self) -> Coverage:
-            return self._coverage
+        def provider(self) -> Provider:
+            return self._provider
 
     app = create_app()
