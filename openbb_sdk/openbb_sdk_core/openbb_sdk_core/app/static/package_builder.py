@@ -169,6 +169,7 @@ class ImportDefinition:
         code += "\nimport datetime"
         code += "\nfrom types import NoneType"
         code += "\nimport pydantic"
+        code += "\nfrom pydantic import validate_arguments"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nimport warnings"
         code += "\nimport builtins"
@@ -299,13 +300,14 @@ class MethodDefinition:
                     default=param.default,
                 )
 
+        # Send provider and extra_params to the end
         formatted_keys = list(formatted.keys())
         for k in ["provider", "extra_params"]:
             if k in formatted_keys:
                 formatted_keys.remove(k)
                 formatted_keys.append(k)
 
-        od = OrderedDict()
+        od: OrderedDict[str, Union[str, Parameter]] = OrderedDict()
         for k in formatted_keys:
             if k == "provider":
                 od["*"] = "*"
@@ -343,7 +345,8 @@ class MethodDefinition:
     ) -> str:
         func_params = MethodDefinition.build_func_params(parameter_map)
         func_returns = MethodDefinition.build_func_returns(return_type)
-        code = f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
+        code = "    @validate_arguments\n"
+        code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code
 
