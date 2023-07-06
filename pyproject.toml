@@ -116,8 +116,8 @@ pydantic = "^1.10.5"
 posthog = "^3.0.1"
 reportlab = "<4" #Pinning due to build error on MacOs
 arch = "^5.5.0"
-llama-index = "^0.6.20"
-langchain = "^0.0.191"
+llama-index = "^0.7.2"
+langchain = "^0.0.225"
 
 
 
