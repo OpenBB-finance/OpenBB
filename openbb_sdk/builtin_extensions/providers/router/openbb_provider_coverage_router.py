@@ -1,6 +1,8 @@
-from openbb_provider.provider.abstract.provider import ProviderName
+"""OpenBB Provider command Coverage Router."""
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.router import CommandMap, Router
+
+from openbb_providers.openbb_provider.provider.abstract.provider import ProviderName
 
 router = Router()
 
