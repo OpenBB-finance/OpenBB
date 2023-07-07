@@ -25,6 +25,7 @@ pymongo = "^4.3.3"
 posthog = "^3.0.1"
 python-multipart = "^0.0.6"
 bcrypt = "^4.0.1"
+urllib3 = "<2.0.0"
 
 [build-system]
 requires = ["poetry-core"]
