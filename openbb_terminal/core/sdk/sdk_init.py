@@ -324,8 +324,6 @@ from openbb_terminal.fixedincome import (
 
 
 from openbb_terminal.economy import (
-    alphavantage_model as economy_alphavantage_model,
-    alphavantage_view as economy_alphavantage_view,
     econdb_model as economy_econdb_model,
     econdb_view as economy_econdb_view,
     finviz_model as economy_finviz_model,
@@ -553,8 +551,6 @@ from openbb_terminal.stocks.screener import (
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_model as stocks_ta_finbrain_model,
     finbrain_view as stocks_ta_finbrain_view,
-    rsp_model as stocks_ta_rsp_model,
-    rsp_view as stocks_ta_rsp_view,
     tradingview_model as stocks_ta_tradingview_model,
     tradingview_view as stocks_ta_tradingview_view,
 )

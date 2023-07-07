@@ -319,8 +319,6 @@ class StocksController(model.StocksRoot):
         Attributes:
             `recom`: Get tradingview recommendation based on technical indicators\n
             `recom_chart`: Print tradingview recommendation based on technical indicators\n
-            `rsp`: Relative strength percentile [Source: https://github.com/skyte/relative-strength]\n
-            `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
             `summary`: Get technical summary report provided by FinBrain's API\n
             `summary_chart`: Print technical summary report provided by FinBrain's API\n
         """

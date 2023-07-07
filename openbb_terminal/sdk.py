@@ -210,8 +210,6 @@ class OpenBBSDK:
             `revenue_chart`: Governments collect revenues mainly for two purposes: to finance the goods\n
             `rgdp`: Gross domestic product (GDP) is the standard measure of the value added\n
             `rgdp_chart`: Gross domestic product (GDP) is the standard measure of the value added\n
-            `rtps`: Get real-time performance sector data\n
-            `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
             `spending`: General government spending provides an indication of the size\n
             `spending_chart`: General government spending provides an indication of the size\n
