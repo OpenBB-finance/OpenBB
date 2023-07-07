@@ -47,7 +47,7 @@ openbb_terminal/core/plots/assets/plotly*.js
 **/node_modules/*
 # pyinstaller artifacts
 *.pyo
-dist/*
+**/dist/*
 build/terminal
 build/nsis/app
 DMG/*
