@@ -377,10 +377,7 @@ class MethodDefinition:
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
 
-        code = "        parse_command_input(locals())\n"
-        code += "        o = self._command_runner_session.run(\n"
-        code += f"""            "{path}",\n"""
-
+        code = "        inputs = parse_command_input(\n"
         for name, param in parameter_map.items():
             if name == "extra_params":
                 code += f"            {name}=kwargs,\n"
@@ -393,6 +390,10 @@ class MethodDefinition:
                 code += "},\n"
             else:
                 code += f"            {name}={name},\n"
+        code += "        )\n"
+        code += "        o = self._command_runner_session.run(\n"
+        code += f"""            "{path}",\n"""
+        code += "            **inputs,\n"
         code += "        ).output\n"
         code += "\n"
         code += "        return parse_command_output(o)\n"

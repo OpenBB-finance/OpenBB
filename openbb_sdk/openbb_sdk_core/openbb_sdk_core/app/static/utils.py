@@ -5,16 +5,24 @@ from openbb_sdk_core.app.model.abstract.warning import OpenBBWarning
 from openbb_sdk_core.app.model.command_output import CommandOutput
 
 
-def parse_command_input(arguments: dict) -> dict:
-    return arguments
+def parse_command_input(**kwargs) -> dict:
+    # Here we can inject provider defaults
+    # Covert data from pandas.DataFrame to BaseModel
+    # And other input parsing stuff
+    if "provider_choices" in kwargs:
+        if kwargs["provider_choices"].get("provider", None) is None:
+            raise NotImplementedError(
+                "'provider' cannot be None, defaults are not implemented yet."
+            )
+    return kwargs
 
 
+# POC
 # if "data" in parameter_map:
 #     code += "        if isinstance(data, pandas.DataFrame):\n"
 #     code += "            data = df_to_basemodel(data, data.index.name is not None)\n"
 #     code += "\n"
 
-# TODO: Uncomment when ready
 # if "provider_choices" in parameter_map:
 #     code += "        if provider is None:\n"
 #     code += "            defaults = self._command_runner_session.user_settings.defaults.endpoints.get(\n"
