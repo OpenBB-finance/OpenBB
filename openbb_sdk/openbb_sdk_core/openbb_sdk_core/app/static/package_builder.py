@@ -173,7 +173,7 @@ class ImportDefinition:
         code += "\nfrom inspect import Parameter"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nfrom openbb_sdk_core.app.utils import df_to_basemodel"
-        code += "\nfrom utils import parse_command_input, parse_command_output\n"
+        code += "\nfrom openbb_sdk_core.app.static.utils import parse_command_input, parse_command_output\n"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
@@ -267,7 +267,9 @@ class MethodDefinition:
         return od
 
     @staticmethod
-    def format_params(parameter_map: Dict[str, Parameter]) -> Dict[str, Parameter]:
+    def format_params(
+        parameter_map: Dict[str, Parameter]
+    ) -> OrderedDict[str, Parameter]:
         # These are types we want to expand.
         # For example, start_date is always a 'date', but we also accept 'str' as input.
         # Be careful, if the type is not coercible by pydantic to the original type, you
@@ -276,7 +278,11 @@ class MethodDefinition:
             "data": pd.DataFrame,
             "start_date": str,
             "end_date": str,
-            # "provider": None,
+            "provider": None,
+        }
+
+        DEFAULT_SUB = {
+            "provider": None,
         }
 
         parameter_map.pop("cc", None)
@@ -300,7 +306,7 @@ class MethodDefinition:
                         name=name,
                         kind=Parameter.POSITIONAL_OR_KEYWORD,
                         annotation=updated_type,
-                        default=default,
+                        default=DEFAULT_SUB.get(name, default),
                     )
             else:
                 new_type = TYPE_EXPANSION.get(name, ...)
@@ -314,10 +320,10 @@ class MethodDefinition:
                     name=name,
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=updated_type,
-                    default=param.default,
+                    default=DEFAULT_SUB.get(name, param.default),
                 )
 
-        return formatted
+        return MethodDefinition.reorder_params(params=formatted)
 
     @staticmethod
     def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
