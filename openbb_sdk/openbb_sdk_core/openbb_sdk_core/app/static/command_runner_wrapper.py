@@ -4,10 +4,6 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable
 
-from openbb_sdk_core.api.dependency.system import get_system_settings
-from openbb_sdk_core.app.model.system_settings import SystemSettings
-from openbb_sdk_core.app.model.user_settings import UserSettings
-
 
 def run_async(func: Callable, *args, **kwargs):
     try:
@@ -25,6 +21,9 @@ def create_app():
 
 
 try:
+    from openbb_sdk_core.api.dependency.system import get_system_settings
+    from openbb_sdk_core.app.model.system_settings import SystemSettings
+    from openbb_sdk_core.app.model.user_settings import UserSettings
     from openbb_sdk_core.app.command_runner import CommandRunnerSession
     from openbb_sdk_core.app.static.account import Account
     from openbb_sdk_core.app.static.providers import Providers
