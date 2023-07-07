@@ -269,9 +269,7 @@ class MethodDefinition:
         return od
 
     @staticmethod
-    def format_params(
-        parameter_map: Dict[str, Parameter]
-    ) -> OrderedDict[str, Parameter]:
+    def format_params(parameter_map: Dict[str, Parameter]) -> Dict[str, Parameter]:
         # These are types we want to expand.
         # For example, start_date is always a 'date', but we also accept 'str' as input.
         # Be careful, if the type is not coercible by pydantic to the original type, you
@@ -280,7 +278,7 @@ class MethodDefinition:
             "data": pd.DataFrame,
             "start_date": str,
             "end_date": str,
-            "provider": None,
+            # "provider": None,
         }
 
         parameter_map.pop("cc", None)
@@ -295,11 +293,7 @@ class MethodDefinition:
                 for field_name, field in fields.items():
                     name = field_name
                     type_ = MethodDefinition.get_type(field)
-                    default = (
-                        None
-                        if name == "provider"
-                        else MethodDefinition.get_default(field)
-                    )
+                    default = MethodDefinition.get_default(field)
 
                     new_type = TYPE_EXPANSION.get(name, ...)
                     updated_type = type_ if new_type is ... else Union[type_, new_type]
@@ -325,7 +319,7 @@ class MethodDefinition:
                     default=param.default,
                 )
 
-        return MethodDefinition.reorder_params(params=formatted)
+        return formatted
 
     @staticmethod
     def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
@@ -385,14 +379,15 @@ class MethodDefinition:
             code += "            data = df_to_basemodel(data, data.index.name is not None)\n"
             code += "\n"
 
-        if "provider_choices" in parameter_map:
-            code += "        if provider is None:\n"
-            code += "            defaults = self._command_runner_session.user_settings.defaults.endpoints.get(\n"
-            code += f'                "{path}",\n'
-            code += "                None,\n"
-            code += "            )\n"
-            code += '            provider = defaults.get("provider", None) if defaults else Parameter.empty\n'
-            code += "\n"
+        # TODO: Uncomment when ready
+        # if "provider_choices" in parameter_map:
+        #     code += "        if provider is None:\n"
+        #     code += "            defaults = self._command_runner_session.user_settings.defaults.endpoints.get(\n"
+        #     code += f'                "{path}",\n'
+        #     code += "                None,\n"
+        #     code += "            )\n"
+        #     code += '            provider = defaults.get("provider", None) if defaults else Parameter.empty\n'
+        #     code += "\n"
 
         code += "        o = self._command_runner_session.run(\n"
         code += f"""            "{path}",\n"""
