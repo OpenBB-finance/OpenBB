@@ -118,3 +118,15 @@ def test_get_cpi(func, kwargs_dict, recorder):
 
     assert isinstance(result_df, pd.DataFrame)
     recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+def test_EQUITY_INDICES(recorder):
+    assert isinstance(fred_model.EQUITY_INDICES, dict)
+    recorder.capture(fred_model.EQUITY_INDICES)
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_get_usd_liquidity_BAD_SYMBOL():
+    fred_model.get_usd_liquidity("BAD_SYMBOL")

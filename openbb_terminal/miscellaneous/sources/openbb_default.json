@@ -514,6 +514,7 @@
     "bigmac": ["Nasdaq"],
     "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
+    "usdli": ["FRED"],
     "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],
     "performance": ["Finviz"],
