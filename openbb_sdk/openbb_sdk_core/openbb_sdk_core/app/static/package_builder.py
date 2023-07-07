@@ -172,10 +172,8 @@ class ImportDefinition:
         code += "\nfrom pydantic import validate_arguments"
         code += "\nfrom inspect import Parameter"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
-        code += "\nimport warnings"
-        code += "\nimport builtins"
         code += "\nfrom openbb_sdk_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_sdk_core.app.model.abstract.warning import OpenBBWarning"
+        code += "\nfrom utils import parse_command_input, parse_command_output\n"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
@@ -373,22 +371,7 @@ class MethodDefinition:
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
 
-        code = ""
-        if "data" in parameter_map:
-            code += "        if isinstance(data, pandas.DataFrame):\n"
-            code += "            data = df_to_basemodel(data, data.index.name is not None)\n"
-            code += "\n"
-
-        # TODO: Uncomment when ready
-        # if "provider_choices" in parameter_map:
-        #     code += "        if provider is None:\n"
-        #     code += "            defaults = self._command_runner_session.user_settings.defaults.endpoints.get(\n"
-        #     code += f'                "{path}",\n'
-        #     code += "                None,\n"
-        #     code += "            )\n"
-        #     code += '            provider = defaults.get("provider", None) if defaults else Parameter.empty\n'
-        #     code += "\n"
-
+        code = "        parse_command_input(locals())\n"
         code += "        o = self._command_runner_session.run(\n"
         code += f"""            "{path}",\n"""
 
@@ -406,16 +389,7 @@ class MethodDefinition:
                 code += f"            {name}={name},\n"
         code += "        ).output\n"
         code += "\n"
-        code += "        if o.warnings:\n"
-        code += "            for w in o.warnings:\n"
-        code += (
-            "                category = getattr(builtins, w.category, OpenBBWarning)\n"
-        )
-        code += "                warnings.warn(w.message, category)\n"
-        code += "\n"
-        code += "        if o.error:\n"
-        code += "            raise Exception(o.error.message)\n"
-        code += "        return o\n"
+        code += "        return parse_command_output(o)\n"
 
         return code
 
