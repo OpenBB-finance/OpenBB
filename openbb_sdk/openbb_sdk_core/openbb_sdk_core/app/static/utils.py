@@ -1,5 +1,6 @@
 import builtins
 import warnings
+
 from openbb_sdk_core.app.model.abstract.warning import OpenBBWarning
 from openbb_sdk_core.app.model.command_output import CommandOutput
 
