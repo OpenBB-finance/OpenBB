@@ -2,16 +2,10 @@ import platform as pl  # I do this so that the import doesn't conflict with the 
 from pathlib import Path
 from typing import List, Literal, Optional
 
-import tomli
 from pydantic import Field, root_validator, validator
 
 from openbb_sdk_core.app.model.abstract.tagged import Tagged
 from openbb_sdk_core.logs.utils.system_utils import get_branch, get_commit_hash
-
-with open(
-    Path(__file__).parent.parent.parent.parent / "pyproject.toml", mode="rb"
-) as f:
-    pyproject = tomli.load(f)
 
 
 class SystemSettings(Tagged):
@@ -30,7 +24,8 @@ class SystemSettings(Tagged):
     platform: str = str(pl.platform())
 
     # OpenBB section
-    version: str = pyproject["tool"]["poetry"]["version"]
+    # TODO: Get the version of the SDK from somewhere that's not pyproject.toml
+    version: str = "4.0.0dev"
     home_directory: str = str(Path.home())
     openbb_directory: str = str(Path(home_directory, ".openbb"))
 

@@ -4,11 +4,9 @@ import warnings
 from dataclasses import asdict
 from typing import Any, Dict, Optional
 
+from openbb_provider.provider.provider_registry import build_provider_registry
 from pydantic import BaseModel
 
-from openbb_providers.openbb_provider.provider.provider_registry import (
-    build_provider_registry,
-)
 from openbb_sdk_core.app.model.abstract.warning import OpenBBWarning
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.provider_interface import (

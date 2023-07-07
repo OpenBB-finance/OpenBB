@@ -65,7 +65,7 @@ Close for closing price column name in data from one provider might be coded as 
 ### 1. Defining : OpenBB QueryParams
 
 ```python
-from openbb_providers.openbb_provider.model.data.stock_eod import StockEODQueryParams
+from openbb_provider.model.data.stock_eod import StockEODQueryParams
 
 query = StockEODQueryParams(
   symbol="AAPL",
@@ -76,7 +76,7 @@ query = StockEODQueryParams(
 ### 2. Querying the Provider Table : OpenBB QueryParams -> OpenBB Data
 
 ```python
-from openbb_providers.openbb_provider.provider.provider_registry import provider_registry
+from openbb_provider.provider.provider_registry import provider_registry
 
 data = provider_registry.fetch(provider_name="fmp", query=query)
 print(data)
