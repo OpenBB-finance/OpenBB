@@ -3,9 +3,7 @@ usage: income [-q] [-t S_TIMEFRAME] [-h] [--export EXPORT]               [--shee
 Summary: The income command prints either yearly or quarterly income statement for a specific company and compares it against similar companies. You can specify the timeframe, choose to display quarterly data, and export the data in various formats.
 
 Examples:
-- To display the yearly income statement for a company: stocks/load <SYMBOL>/ca/income
-- To display the quarterly income statement for a company: stocks/load <SYMBOL>/ca/income -q
-- To display the income statement for a specific timeframe: stocks/load <SYMBOL>/ca/income -t 2020
-- To display the income statement for a specific quarter: stocks/load <SYMBOL>/ca/income -q -t Q2
-- To export the income statement data in csv format: stocks/load <SYMBOL>/ca/income --export csv
-- To export the income statement data in xlsx format and save it to a specific sheet: stocks/load <SYMBOL>/ca/income --export xlsx --sheet-name Sheet1
+- To compare the yearly income statement for multiple companies: stocks/load <SYMBOL>/ca/set <SYMBOL2>/income
+- To compare the quarterly income statement for multiple companies: stocks/load <SYMBOL>/ca/set <SYMBOL2>/income -q
+- To compare the income statement for a specific timeframe: stocks/load <SYMBOL>/ca/set <SYMBOL2>/income -t YEAR
+- To compare the income statement for a specific quarter: stocks/load <SYMBOL>/ca/set <SYMBOL2>/income -q -t Q2
