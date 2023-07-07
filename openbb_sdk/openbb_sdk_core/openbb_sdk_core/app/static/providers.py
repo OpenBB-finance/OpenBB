@@ -1,7 +1,7 @@
 from openbb_sdk_core.app.router import CommandMap
 
 
-class Provider:
+class Providers:
     def __init__(self):
         self.cmap = CommandMap()
 
