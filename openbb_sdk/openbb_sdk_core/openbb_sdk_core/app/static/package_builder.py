@@ -360,7 +360,7 @@ class MethodDefinition:
     ) -> str:
         func_params = MethodDefinition.build_func_params(parameter_map)
         func_returns = MethodDefinition.build_func_returns(return_type)
-        code = "    @validate_arguments\n"
+        code = "\n    @validate_arguments"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code
