@@ -1,5 +1,6 @@
+from functools import reduce
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, List, MutableMapping, Optional
 
 from openbb_sdk_core.app.model.user_settings import UserSettings
 from openbb_sdk_core.app.repository.abstract.access_token_repository import (
@@ -26,7 +27,7 @@ from pymongo.mongo_client import MongoClient
 class UserService:
     REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent
     USER_SETTINGS_PATH = Path(REPOSITORY_DIRECTORY, "settings", "user_settings.json")
-    SYSTEM_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "profile"}
+    SYSTEM_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
 
     @staticmethod
     def build_token_repository(
@@ -102,6 +103,33 @@ class UserService:
         )
         with path.open(mode="w") as file:
             file.write(user_settings_json)
+
+    @classmethod
+    def update_default(cls, user_settings: UserSettings) -> UserSettings:
+        d1 = cls.read_default_user_settings().dict()
+        d2 = user_settings.dict() if user_settings else {}
+        updated = cls.merge_dicts([d1, d2])
+
+        return UserSettings.parse_obj(updated)
+
+    @staticmethod
+    def merge_dicts(list_of_dicts: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Merge a list of dictionaries."""
+
+        def recursive_merge(d1: Dict, d2: Dict) -> Dict:
+            """Recursively merge dict d2 into dict d1 if d2 is value is not None."""
+            for k, v in d1.items():
+                if k in d2 and all(isinstance(e, MutableMapping) for e in (v, d2[k])):
+                    d2[k] = recursive_merge(v, d2[k])
+
+            d3 = d1.copy()
+            d3.update((k, v) for k, v in d2.items() if v is not None)
+            return d3
+
+        result: Dict[str, Any] = {}
+        for d in list_of_dicts:
+            result = reduce(recursive_merge, (result, d))
+        return result
 
     def __init__(
         self,

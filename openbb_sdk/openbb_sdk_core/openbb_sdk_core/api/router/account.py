@@ -36,7 +36,8 @@ async def login_for_access_token(
         if user_settings:
             user_settings.profile.username = form_data.username
             user_settings.profile.password_hash = get_password_hash(form_data.password)
-            user_service.user_settings_repository.create(user_settings)
+            updated_user_settings = UserService.update_default(user_settings)
+            user_service.user_settings_repository.create(updated_user_settings)
 
     if not user_settings:
         raise HTTPException(

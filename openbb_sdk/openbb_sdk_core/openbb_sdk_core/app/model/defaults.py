@@ -1,16 +1,15 @@
 from typing import Dict
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Defaults(BaseModel):
     """Defaults."""
 
-    # TODO: Understand if this is good and if it should be in the hub or just locally
-    endpoints: Dict[str, Dict[str, str]] = {
-        "/stocks/load": {"provider": "polygon"},
-        "/stocks/news": {"provider": "fmp"},
-    }
+    class Config:
+        validate_assignment = True
+
+    routes: Dict[str, Dict[str, str]] = Field(default_factory=dict)
 
     def __repr__(self) -> str:
         return (

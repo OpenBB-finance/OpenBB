@@ -1,5 +1,7 @@
 import sys
-from inspect import signature
+from functools import partial
+from inspect import Parameter, Signature, signature
+from types import MappingProxyType
 from typing import (
     Annotated,
     Any,
@@ -9,6 +11,7 @@ from typing import (
     Optional,
     Type,
     get_args,
+    get_origin,
     get_type_hints,
     overload,
 )
@@ -23,6 +26,7 @@ from pydantic.validators import find_validators
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.provider_interface import (
+    ExtraParams,
     ProviderChoices,
     StandardParams,
     get_provider_interface,
@@ -66,21 +70,44 @@ class CommandValidator:
             value_type=value_type
         ) or cls.is_valid_pydantic_model_type(model_type=value_type)
 
+    @staticmethod
+    def is_annotated_dc(annotation) -> bool:
+        return get_origin(annotation) == Annotated and hasattr(
+            annotation.__args__[0], "__dataclass_fields__"
+        )
+
+    @staticmethod
+    def check_reserved_param(
+        name: str,
+        expected_annot: Any,
+        parameter_map: MappingProxyType[str, Parameter],
+        func: Callable,
+        sig: Signature,
+    ):
+        if name in parameter_map:
+            annotation = getattr(parameter_map[name], "annotation", None)
+            if annotation is not None and CommandValidator.is_annotated_dc(annotation):
+                annotation = annotation.__args__[0].__bases__[0]
+            if not annotation == expected_annot:
+                raise TypeError(
+                    f"The parameter `{name}` must be a {expected_annot}.\n"
+                    f"module    = {func.__module__}\n"
+                    f"function  = {func.__name__}\n"
+                    f"signature = {sig}\n"
+                )
+
     @classmethod
     def check_parameters(cls, func: Callable):
         sig = signature(func)
         parameter_map = sig.parameters
 
-        if (
-            "cc" in parameter_map
-            and not parameter_map["cc"].annotation == CommandContext
-        ):
-            raise TypeError(
-                "The parameter `cc` must be a CommandContext.\n"
-                f"module    = {func.__module__}\n"
-                f"function  = {func.__name__}\n"
-                f"signature = {sig}\n"
-            )
+        check_res = partial(
+            cls.check_reserved_param, parameter_map=parameter_map, func=func, sig=sig
+        )
+        check_res("cc", CommandContext)
+        check_res("provider_choices", ProviderChoices)
+        check_res("standard_params", StandardParams)
+        check_res("extra_params", ExtraParams)
 
         for parameter in parameter_map.values():
             if not cls.is_serializable_value_type(value_type=parameter.annotation):

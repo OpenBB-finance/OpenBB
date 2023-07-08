@@ -134,6 +134,30 @@ class ParametersBuilder:
 
         return kwargs
 
+    @staticmethod
+    def update_provider_choices(
+        route: str,
+        kwargs: Dict[str, Any],
+        user_settings: UserSettings,
+    ) -> Dict[str, Any]:
+        provider_choices = kwargs.get("provider_choices", None)
+        if provider_choices and isinstance(provider_choices, dict):
+            provider = provider_choices.get("provider", None)
+            if provider is None:
+                route_defaults = user_settings.defaults.routes.get(route, None)
+                if route_defaults is None:
+                    raise ValueError(
+                        f"'provider' not found: route '{route}' not found in settings.defaults."
+                    )
+
+                provider = route_defaults.get("provider", None)
+                if provider is None:
+                    raise ValueError(
+                        f"'provider' not found: default 'provider' not found in settings.defaults for '{route}'."
+                    )
+                kwargs["provider_choices"] = {"provider": provider}
+        return kwargs
+
     @classmethod
     def validate_kwargs(
         cls,
@@ -166,6 +190,7 @@ class ParametersBuilder:
         args: Tuple[Any],
         execution_context: ExecutionContext,
         func: Callable,
+        route: str,
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
         func = cls.get_polished_func(func=func)
@@ -188,6 +213,11 @@ class ParametersBuilder:
             func=func,
             kwargs=kwargs,
             system_settings=system_settings,
+            user_settings=user_settings,
+        )
+        kwargs = cls.update_provider_choices(
+            route=route,
+            kwargs=kwargs,
             user_settings=user_settings,
         )
         kwargs = cls.validate_kwargs(func=func, kwargs=kwargs)
@@ -221,6 +251,7 @@ class StaticCommandRunner:
             args=args,
             execution_context=execution_context,
             func=func,
+            route=route,
             kwargs=kwargs,
         )
 
@@ -384,7 +415,11 @@ class CommandRunnerSession:
     ) -> None:
         self._command_runner = command_runner or CommandRunner()
         self._journal = journal or Journal()
-        self._user_settings = user_settings or UserService.read_default_user_settings()
+        self._user_settings = (
+            UserService.update_default(user_settings)
+            if user_settings
+            else UserService.read_default_user_settings()
+        )
 
     @property
     def command_runner(self) -> CommandRunner:

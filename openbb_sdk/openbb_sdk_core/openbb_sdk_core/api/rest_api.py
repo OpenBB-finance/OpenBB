@@ -69,7 +69,10 @@ async def setup_default_user_settings():
             user_settings_repository.update(model=user_settings)
         else:
             default_user_settings = UserSettings(
-                profile=default_profile, credentials=default_user_settings.credentials
+                profile=default_profile,
+                credentials=default_user_settings.credentials,
+                preferences=default_user_settings.preferences,
+                defaults=default_user_settings.defaults,
             )
             user_settings_repository.create(model=default_user_settings)
 
