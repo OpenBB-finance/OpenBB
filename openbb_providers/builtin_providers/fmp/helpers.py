@@ -90,6 +90,11 @@ def get_data_many(
         The schema to convert the data to.
     sub_dict: Optional[str]
         The sub-dictionary to use.
+
+    Returns:
+    --------
+    List[T]
+        The list of schemas.
     """
     data = get_data(url)
     if sub_dict and isinstance(data, dict):
