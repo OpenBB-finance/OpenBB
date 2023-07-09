@@ -251,6 +251,18 @@ def cal(
     )
 
 
+@router.command(query="StockSplitCalendar")
+def comsplit(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+) -> CommandOutput[BaseModel]:
+    """Stock Split Calendar."""
+    return CommandOutput(
+        results=Query(**locals()).execute(), provider=provider_choices.provider
+    )
+
+
 @router.command
 def customer() -> CommandOutput[Empty]:  # type: ignore
     """List of customers of the company."""

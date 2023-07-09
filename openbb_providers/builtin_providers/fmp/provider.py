@@ -47,6 +47,7 @@ from builtin_providers.fmp.stock_insider_trading import FMPStockInsiderTradingFe
 from builtin_providers.fmp.stock_news import FMPStockNewsFetcher
 from builtin_providers.fmp.stock_ownership import FMPStockOwnershipFetcher
 from builtin_providers.fmp.stock_price import FMPStockPriceFetcher
+from builtin_providers.fmp.stock_splits import FMPStockSplitCalendarFetcher
 from builtin_providers.fmp.treasury_rates import FMPTreasuryRatesFetcher
 
 # mypy: disable-error-code="list-item"
@@ -80,6 +81,7 @@ fmp_provider = Provider(
         FMPEarningsCalendarFetcher,
         FMPEarningsCallTranscriptFetcher,
         FMPHistoricalStockSplitsFetcher,
+        FMPStockSplitCalendarFetcher,
         FMPHistoricalDividendsFetcher,
         FMPKeyMetricsFetcher,
         FMPSECFilingsFetcher,
