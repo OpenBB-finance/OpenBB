@@ -31,12 +31,12 @@ class FMPStockEODQueryParams(QueryParams):
         The end date of the stock data up to which to retrieve the data.
     timeseries : Optional[int]
         The number of days to look back.
-    serietype : Optional[Literal["line"]]
+    series_type : Optional[Literal["line"]]
         The type of the series. Only "line" is supported.
     """
 
     symbol: str = Field(min_length=1)
-    serietype: Optional[Literal["line"]]
+    series_type: Optional[Literal["line"]]
     start_date: date
     end_date: date
     timeseries: Optional[NonNegativeInt]  # Number of days to looks back
@@ -86,10 +86,10 @@ class FMPStockEODFetcher(
     def extract_data(
         query: FMPStockEODQueryParams, api_key: str
     ) -> List[FMPStockEODData]:
-        base_url = "https://financialmodelingprep.com/api/v3/"
+        base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.dict(), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
-        url = f"{base_url}historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
+        url = f"{base_url}/historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
         return get_data_many(url, FMPStockEODData, "historical")
 
     @staticmethod
