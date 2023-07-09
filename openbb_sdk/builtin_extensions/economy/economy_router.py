@@ -5,9 +5,9 @@ from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.model.results.empty import Empty
 from openbb_sdk_core.app.provider_interface import (
+    ExtraParams,
     ProviderChoices,
     StandardParams,
-    ExtraParams,
 )
 from openbb_sdk_core.app.query import Query
 from openbb_sdk_core.app.router import Router
