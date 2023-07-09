@@ -92,7 +92,7 @@ class ProviderInterface:
         return Literal[tuple(providers)]  # type: ignore
 
     @property
-    def provider_choices(self) -> ProviderChoices:
+    def provider_choices(self) -> type:
         return make_dataclass(
             cls_name="ProviderChoices",
             fields=[("provider", self.providers_literal)],

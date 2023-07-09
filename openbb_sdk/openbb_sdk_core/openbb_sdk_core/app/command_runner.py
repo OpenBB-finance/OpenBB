@@ -136,6 +136,7 @@ class ParametersBuilder:
 
     @staticmethod
     def update_provider_choices(
+        command_map: CommandMap,
         route: str,
         kwargs: Dict[str, Any],
         user_settings: UserSettings,
@@ -145,16 +146,12 @@ class ParametersBuilder:
             provider = provider_choices.get("provider", None)
             if provider is None:
                 route_defaults = user_settings.defaults.routes.get(route, None)
-                if route_defaults is None:
-                    raise ValueError(
-                        f"'provider' not found: route '{route}' not found in settings.defaults."
-                    )
-
-                provider = route_defaults.get("provider", None)
-                if provider is None:
-                    raise ValueError(
-                        f"'provider' not found: default 'provider' not found in settings.defaults for '{route}'."
-                    )
+                random_choice = command_map.command_coverage[route][0]
+                provider = (
+                    random_choice
+                    if route_defaults is None
+                    else route_defaults.get("provider", random_choice)
+                )
                 kwargs["provider_choices"] = {"provider": provider}
         return kwargs
 
@@ -198,6 +195,7 @@ class ParametersBuilder:
         system_settings = execution_context.system_settings
         user_settings = execution_context.user_settings
         journal_service = execution_context.journal_service
+        command_map = execution_context.command_map
 
         kwargs = cls.merge_args_and_kwargs(
             func=func,
@@ -216,6 +214,7 @@ class ParametersBuilder:
             user_settings=user_settings,
         )
         kwargs = cls.update_provider_choices(
+            command_map=command_map,
             route=route,
             kwargs=kwargs,
             user_settings=user_settings,
