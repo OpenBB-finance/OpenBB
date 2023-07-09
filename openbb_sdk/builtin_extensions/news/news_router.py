@@ -25,9 +25,7 @@ def globalnews(
     extra_params: Optional[ExtraParams] = None,
 ) -> CommandOutput[BaseModel]:
     """Global News."""
-    return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider_choices.provider
-    )
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command

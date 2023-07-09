@@ -261,6 +261,10 @@ class StaticCommandRunner:
                 else:
                     command_output = func(**kwargs)
 
+                command_output.provider = getattr(
+                    kwargs.get("provider_choices", None), "provider", None
+                )
+
                 if warning_list:
                     command_output.warnings = list(map(cast_warning, warning_list))
 

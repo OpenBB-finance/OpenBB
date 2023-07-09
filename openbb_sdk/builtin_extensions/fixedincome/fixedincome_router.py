@@ -18,9 +18,7 @@ def treasury(
     standard_params: StandardParams,
 ) -> CommandOutput[BaseModel]:
     """Get treasury rates."""
-    return CommandOutput(
-        results=Query(**locals()).execute(), provider=provider_choices.provider
-    )
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command
