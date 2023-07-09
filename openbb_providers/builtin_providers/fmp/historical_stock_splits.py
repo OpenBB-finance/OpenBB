@@ -18,7 +18,7 @@ from builtin_providers.fmp.helpers import create_url, get_data_many
 class FMPHistoricalStockSplitsQueryParams(HistoricalStockSplitsQueryParams):
     """FMP Historical Stock Splits query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api/
+    Source: https://site.financialmodelingprep.com/developer/docs/historical-stock-splits-api/
 
     Parameter
     ---------
