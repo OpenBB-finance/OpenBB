@@ -41,7 +41,7 @@ from builtin_providers.fmp.price_target_consensus import FMPPriceTargetConsensus
 from builtin_providers.fmp.revenue_business_line import FMPRevenueBusinessLineFetcher
 from builtin_providers.fmp.revenue_geographic import FMPRevenueGeographicFetcher
 from builtin_providers.fmp.sec_filings import FMPSECFilingsFetcher
-from builtin_providers.fmp.share_stats import FMPShareStatisticsFetcher
+from builtin_providers.fmp.share_statistics import FMPShareStatisticsFetcher
 from builtin_providers.fmp.stock_eod import FMPStockEODFetcher
 from builtin_providers.fmp.stock_insider_trading import FMPStockInsiderTradingFetcher
 from builtin_providers.fmp.stock_news import FMPStockNewsFetcher
