@@ -4,7 +4,12 @@ from typing import List, Literal, Union
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.model.results.empty import Empty
-from openbb_sdk_core.app.provider_interface import ProviderChoices
+from openbb_sdk_core.app.provider_interface import (
+    ProviderChoices,
+    StandardParams,
+    ExtraParams,
+)
+from openbb_sdk_core.app.query import Query
 from openbb_sdk_core.app.router import Router
 
 datetype = Union[datetime.datetime, str]
@@ -53,20 +58,15 @@ def corecpi(
 
 
 # pylint: disable=too-many-arguments
-@router.command
+@router.command(query="CPI")
 def cpi(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
-    units: Literal["growth_previous", "growth_same", "index_2015"] = "growth_same",
-    frequency: Literal["annual", "monthly", "quarterly"] = "monthly",
-    harmonized: bool = False,
-    smart_select: bool = True,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[Empty]:  # type: ignore
     """CPI."""
-    return CommandOutput(results=Empty())
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command

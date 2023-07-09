@@ -207,6 +207,7 @@ class HubManager:
         credentials = Credentials(
             fmp_api_key=settings.features_keys.API_KEY_FINANCIALMODELINGPREP,
             polygon_api_key=settings.features_keys.API_POLYGON_KEY,
+            fred_api_key=settings.features_keys.API_FRED_KEY,
         )
         return credentials
 
@@ -216,6 +217,7 @@ class HubManager:
         features_keys = FeaturesKeys(
             API_KEY_FINANCIALMODELINGPREP=credentials.fmp_api_key,
             API_POLYGON_KEY=credentials.polygon_api_key,
+            API_FRED_KEY=credentials.fred_api_key,
         )
         hub_user_settings = HubUserSettings(features_keys=features_keys)
         return hub_user_settings
