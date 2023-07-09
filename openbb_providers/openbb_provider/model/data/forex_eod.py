@@ -4,7 +4,7 @@
 from datetime import date, datetime
 from typing import Optional
 
-from pydantic import Field, PositiveFloat
+from pydantic import Field, NonNegativeFloat, PositiveFloat
 
 from openbb_provider.metadata import DESCRIPTIONS
 from openbb_provider.model.abstract.data import Data, QueryParams
@@ -57,4 +57,4 @@ class ForexEODData(Data):
     low: PositiveFloat
     close: PositiveFloat
     adj_close: Optional[PositiveFloat]
-    volume: PositiveFloat
+    volume: NonNegativeFloat

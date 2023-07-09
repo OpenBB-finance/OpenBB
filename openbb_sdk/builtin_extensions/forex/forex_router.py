@@ -12,7 +12,7 @@ from openbb_sdk_core.app.router import Router
 router = Router(prefix="")
 
 
-@router.command(query="ForexPrice")
+@router.command(query="ForexEOD")
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,
