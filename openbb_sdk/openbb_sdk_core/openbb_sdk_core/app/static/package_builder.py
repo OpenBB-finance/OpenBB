@@ -22,10 +22,9 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
-from starlette.routing import BaseRoute
-
 from openbb_sdk_core.app.provider_interface import get_provider_interface
 from openbb_sdk_core.app.router import RouterLoader
+from starlette.routing import BaseRoute
 
 
 class PackageBuilder:
@@ -428,22 +427,43 @@ class MethodDefinition:
                 # {FMP: {QueryParams: {'fields':{}, 'docstring': '...'}}, Data:{'fields':{}, 'docstring': '...'}}
                 # We want to only keep the {FMP: {QueryParams: {'docstring': '...'}}, {Data:{'docstring'}}} part
                 for provider, provider_mapping in query_mapping.items():
-                    for query_params, query_params_mapping in provider_mapping.items():
+                    for _, query_params_mapping in provider_mapping.items():
                         query_params_mapping.pop("fields", None)
 
                 docstring = func.__doc__ or ""
-                docstring += (
-                    f"\n\nAvailable providers: {', '.join(query_mapping.keys())}\n"
-                )
+
+                available_providers = ", ".join(query_mapping.keys())
+                available_providers = available_providers.replace("openbb, ", "")
+
+                docstring += f"\n\nAvailable providers: {available_providers}\n"
 
                 for provider, provider_mapping in query_mapping.items():
+                    # make the provider name bold and make it a header
                     docstring += f"\n{provider}"
-                    for query_params, query_params_mapping in provider_mapping.items():
-                        # TODO: Clean the docstring from the standard params for provider specific queries
-                        docstring += f"\n {query_params}"
-                        docstring += f"\n {query_params_mapping['docstring']}"
+                    docstring += f"\n{'-' * len(provider)}"
+                    for section_name, section_docstring in provider_mapping.items():
+                        # TODO: Clean the docstring from the standard params for provider specific fields
+                        docstring += f"\n{section_name}"
+                        docstring += f"\n{'-' * len(section_name)}"
+                        section_docstring = (
+                            section_docstring["docstring"]
+                            if section_docstring["docstring"]
+                            else "\n    Documentation not available.\n\n"
+                        )
+                        # clean the docstring from its original indentation
+                        if (
+                            "\n    Documentation not available.\n\n"
+                            != section_docstring
+                        ):
+                            section_docstring = "\n".join(
+                                line[4:] for line in section_docstring.split("\n")[1:]
+                            )
+                            section_docstring = "\n".join(
+                                f"    {line}" for line in section_docstring.split("\n")
+                            )
+                        docstring += f"\n{section_docstring}"
 
-                func.__doc__ = docstring
+            func.__doc__ = docstring
 
         code = cls.build_command_method_signature(
             func_name=func_name,
