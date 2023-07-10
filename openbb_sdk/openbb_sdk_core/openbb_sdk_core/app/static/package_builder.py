@@ -22,9 +22,9 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
-from starlette.routing import BaseRoute
-
+from openbb_sdk_core.app.provider_interface import get_provider_interface
 from openbb_sdk_core.app.router import RouterLoader
+from starlette.routing import BaseRoute
 
 
 class PackageBuilder:
@@ -200,7 +200,13 @@ class ClassDefinition:
         for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)
             if route:
-                code += MethodDefinition.build_command_method(path=route.path, func=route.endpoint)  # type: ignore
+                code += MethodDefinition.build_command_method(
+                    path=route.path,
+                    func=route.endpoint,
+                    query_name=route.openapi_extra.get("query", None)
+                    if route.openapi_extra
+                    else None,
+                )  # type: ignore
             else:
                 code += MethodDefinition.build_class_loader_method(path=child_path)
 
@@ -401,13 +407,42 @@ class MethodDefinition:
         return code
 
     @classmethod
-    def build_command_method(cls, path: str, func: Callable) -> str:
+    def build_command_method(
+        cls, path: str, func: Callable, query_name: Optional[str]
+    ) -> str:
         # Name
         func_name = func.__name__
 
         # Parameters
         sig = signature(func)
         parameter_map = dict(sig.parameters)
+
+        # Docstrings
+        if query_name:
+            provider_interface_mapping = get_provider_interface().map
+
+            query_mapping = provider_interface_mapping.get(query_name, None)
+            if query_mapping:
+                # the query_mapping is a dict with the following structure:
+                # {FMP: {QueryParams: {'fields':{}, 'docstring': '...'}}, Data:{'fields':{}, 'docstring': '...'}}
+                # We want to only keep the {FMP: {QueryParams: {'docstring': '...'}}, {Data:{'docstring'}}} part
+                for provider, provider_mapping in query_mapping.items():
+                    for query_params, query_params_mapping in provider_mapping.items():
+                        query_params_mapping.pop("fields", None)
+
+                docstring = func.__doc__ or ""
+                docstring += (
+                    f"\n\nAvailable providers: {', '.join(query_mapping.keys())}\n"
+                )
+
+                for provider, provider_mapping in query_mapping.items():
+                    docstring += f"\n{provider}"
+                    for query_params, query_params_mapping in provider_mapping.items():
+                        # TODO: Clean the docstring from the standard params for provider specific queries
+                        docstring += f"\n {query_params}"
+                        docstring += f"\n {query_params_mapping['docstring']}"
+
+                func.__doc__ = docstring
 
         code = cls.build_command_method_signature(
             func_name=func_name,
