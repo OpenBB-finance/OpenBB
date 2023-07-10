@@ -22,10 +22,9 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
-from starlette.routing import BaseRoute
-
 from openbb_sdk_core.app.provider_interface import get_provider_interface
 from openbb_sdk_core.app.router import RouterLoader
+from starlette.routing import BaseRoute
 
 
 class PackageBuilder:
@@ -424,9 +423,6 @@ class MethodDefinition:
 
             query_mapping = provider_interface_mapping.get(query_name, None)
             if query_mapping:
-                # the query_mapping is a dict with the following structure:
-                # {FMP: {QueryParams: {'fields':{}, 'docstring': '...'}}, Data:{'fields':{}, 'docstring': '...'}}
-                # We want to only keep the {FMP: {QueryParams: {'docstring': '...'}}, {Data:{'docstring'}}} part
                 for provider, provider_mapping in query_mapping.items():
                     for _, query_params_mapping in provider_mapping.items():
                         query_params_mapping.pop("fields", None)
@@ -438,8 +434,12 @@ class MethodDefinition:
 
                 docstring += f"\n\nAvailable providers: {available_providers}\n"
 
+                query_mapping = {
+                    "Standard": query_mapping.pop("openbb", None),  # type: ignore
+                    **query_mapping,
+                }
+
                 for provider, provider_mapping in query_mapping.items():
-                    # make the provider name bold and make it a header
                     docstring += f"\n{provider}"
                     docstring += f"\n{'-' * len(provider)}"
                     for section_name, section_docstring in provider_mapping.items():
@@ -451,6 +451,7 @@ class MethodDefinition:
                             if section_docstring["docstring"]
                             else "\n    Documentation not available.\n\n"
                         )
+
                         # clean the docstring from its original indentation
                         if (
                             "\n    Documentation not available.\n\n"  # noqa: SIM300
