@@ -22,9 +22,10 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
+from starlette.routing import BaseRoute
+
 from openbb_sdk_core.app.provider_interface import get_provider_interface
 from openbb_sdk_core.app.router import RouterLoader
-from starlette.routing import BaseRoute
 
 
 class PackageBuilder:
@@ -452,7 +453,7 @@ class MethodDefinition:
                         )
                         # clean the docstring from its original indentation
                         if (
-                            "\n    Documentation not available.\n\n"
+                            "\n    Documentation not available.\n\n"  # noqa: SIM300
                             != section_docstring
                         ):
                             section_docstring = "\n".join(
