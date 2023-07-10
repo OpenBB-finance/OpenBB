@@ -22,9 +22,10 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
-from openbb_sdk_core.app.provider_interface import get_provider_interface
-from openbb_sdk_core.app.router import RouterLoader
 from starlette.routing import BaseRoute
+
+from openbb_sdk_core.app.router import RouterLoader
+from openbb_sdk_core.app.static.helpers import generate_command_docstring
 
 
 class PackageBuilder:
@@ -417,55 +418,9 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
 
-        # Docstrings
+        # Docstring
         if query_name:
-            provider_interface_mapping = get_provider_interface().map
-
-            query_mapping = provider_interface_mapping.get(query_name, None)
-            if query_mapping:
-                for provider, provider_mapping in query_mapping.items():
-                    for _, query_params_mapping in provider_mapping.items():
-                        query_params_mapping.pop("fields", None)
-
-                docstring = func.__doc__ or ""
-
-                available_providers = ", ".join(query_mapping.keys())
-                available_providers = available_providers.replace("openbb, ", "")
-
-                docstring += f"\n\nAvailable providers: {available_providers}\n"
-
-                query_mapping = {
-                    "Standard": query_mapping.pop("openbb", None),  # type: ignore
-                    **query_mapping,
-                }
-
-                for provider, provider_mapping in query_mapping.items():
-                    docstring += f"\n{provider}"
-                    docstring += f"\n{'-' * len(provider)}"
-                    for section_name, section_docstring in provider_mapping.items():
-                        # TODO: Clean the docstring from the standard params for provider specific fields
-                        docstring += f"\n{section_name}"
-                        docstring += f"\n{'-' * len(section_name)}"
-                        section_docstring = (
-                            section_docstring["docstring"]
-                            if section_docstring["docstring"]
-                            else "\n    Documentation not available.\n\n"
-                        )
-
-                        # clean the docstring from its original indentation
-                        if (
-                            "\n    Documentation not available.\n\n"  # noqa: SIM300
-                            != section_docstring
-                        ):
-                            section_docstring = "\n".join(
-                                line[4:] for line in section_docstring.split("\n")[1:]
-                            )
-                            section_docstring = "\n".join(
-                                f"    {line}" for line in section_docstring.split("\n")
-                            )
-                        docstring += f"\n{section_docstring}"
-
-            func.__doc__ = docstring
+            func = generate_command_docstring(func=func, query_name=query_name)
 
         code = cls.build_command_method_signature(
             func_name=func_name,
