@@ -7,17 +7,19 @@ import logging
 from copy import deepcopy
 
 # IMPORTATION THIRDPARTY
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 import numpy as np
 import pandas as pd
 
 # IMPORTATION INTERNAL
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.options.cboe_model import load_options as load_cboe
 from openbb_terminal.stocks.options.intrinio_model import load_options as load_intrinio
 from openbb_terminal.stocks.options.nasdaq_model import load_options as load_nasdaq
 from openbb_terminal.stocks.options.op_helpers import Options
+from openbb_terminal.stocks.options.options_chains_view import display_skew, display_stats, display_surface
 from openbb_terminal.stocks.options.tmx_model import load_options as load_tmx
 from openbb_terminal.stocks.options.tradier_model import load_options as load_tradier
 from openbb_terminal.stocks.options.yfinance_model import load_options as load_yfinance
@@ -294,6 +296,20 @@ def validate_object(
     )
 
     return not valid
+
+
+def get_nearest_expiration(options: object, expiration: str) -> str:
+    """Gets the closest expiration date to the target date."""
+
+    if validate_object(options, scope="object") is False:
+        return pd.DataFrame()
+
+    _expirations = pd.Series(pd.to_datetime(options.expirations))
+    _expiration = pd.to_datetime(expiration)
+    _nearest = pd.DataFrame(_expirations - _expiration)
+    _nearest_exp = abs(_nearest[0].astype(int)).idxmin()
+
+    return options.expirations[_nearest_exp]
 
 
 def get_nearest_dte(options: object, days: Optional[int] = 30) -> int:
@@ -1429,10 +1445,10 @@ def calculate_skew(
             )[["expiration", "strike", "impliedVolatility"]]
             atm_put_iv = pd.concat([atm_put_iv, atm_put])
 
-        calls = calls.set_index("expiration")
-        atm_call_iv = atm_call_iv.set_index("expiration")
-        puts = puts.set_index("expiration")
-        atm_put_iv = atm_put_iv.set_index("expiration")
+        calls = calls.drop_duplicates(subset=["expiration"]).set_index("expiration")
+        atm_call_iv = atm_call_iv.drop_duplicates(subset=["expiration"]).set_index("expiration")
+        puts = puts.drop_duplicates(subset=["expiration"]).set_index("expiration")
+        atm_put_iv = atm_put_iv.drop_duplicates(subset=["expiration"]).set_index("expiration")
         skew_df["Call Strike"] = calls["strike"]
         skew_df["Call IV"] = calls["impliedVolatility"]
         skew_df["Call ATM IV"] = atm_call_iv["impliedVolatility"]
@@ -1483,8 +1499,8 @@ def calculate_skew(
     skew_df.columns = cols
     if expiration != "":
         if expiration not in options.expirations:
-            print(expiration, "is not a valid expiration.")
-            return skew_df
+            expiration = get_nearest_expiration(options, expiration)
+
         return skew_df.query("`Expiration` == @expiration")
 
     return skew_df
@@ -1508,7 +1524,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
     -------
     Object: Options
         chains: pd.DataFrame
-            The complete options chain for the ticker.
+            The complete options chain for the ticker. Returns as a dictionary if pydantic is True.
         expirations: list[str]
             List of unique expiration dates. (YYYY-MM-DD)
         strikes: list[float]
@@ -1518,7 +1534,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         underlying_name: str
             The name of the underlying asset.
         underlying_price: pd.Series
-            The price and recent performance of the underlying asset.
+            The price and recent performance of the underlying asset. Returns as a dictionary if pydantic is True.
         hasIV: bool
             Returns implied volatility.
         hasGreeks: bool
@@ -1530,7 +1546,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         date: str
             The date, when the chains data is historical EOD.
         SYMBOLS: pd.DataFrame
-            The symbol directory for the source, when available.
+            The symbol directory for the source, when available. Returns as a dictionary if pydantic is True.
 
         Methods
         -------
@@ -1541,11 +1557,11 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         get_strangle: Callable
             Function to calculate strangles and the payoff profile.
         get_vertical_call_spread: Callable
-            Function to get vertical call spreads.
+            Function to get vertical call spreads and the payoff profile.
         get_vertical_put_spreads: Callable
-            Function to get vertical put spreads.
+            Function to get vertical put spreads and the payoff profile.
         get_strategies: Callable
-            Function to get multiple straddles and strangles at different expirations and moneyness.
+            Function to get multiple straddles, spreads, and strangles at different expirations.
         get_skew: Callable
             Function to get the vertical or horizontal skewness of the options.
 
@@ -1555,7 +1571,8 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
     >>> spy = OptionsChains("SPY")
     >>> spy.__dict__
 
-    >>> xiu = OptionsChains("xiu.to", "TMX")
+    Return as a Pydantic model:
+    >>> xiu = OptionsChains("xiu.to", "TMX", pydantic = True)
     >>> xiu.get_straddle()
     """
 
@@ -1571,7 +1588,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
             self.chains = pd.DataFrame()
 
     def __repr__(self) -> str:
-        return f"OptionsChains(symbol={self.symbol}, source ={self.source})"
+        return f"OptionsChains(symbol={self.symbol}, source={self.source})"
 
     def get_stats(self, by="expiration", query=None):
         """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
@@ -1845,3 +1862,144 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         >>> skew = data.get_skew(moneyness = 10)
         """
         return calculate_skew(self, expiration, moneyness)
+
+    def chart_surface(
+        self,
+        option_type: str = "otm",
+        raw: bool = False,
+        export: str = "",
+        sheet_name: Optional[str] = "",
+        external_axes: bool = False,
+    ) -> Union[None, OpenBBFigure]:
+        """Chart the implied volatility as a 3-D surface.
+
+        Parameters
+        -----------
+        option_type: str
+            The type of data to display. Default is "otm".
+            Choices are: ["otm", "puts", "calls"]
+        raw: bool
+            Display the raw data instead of the chart.
+        export: str
+            Export dataframe data to csv,json,xlsx file.
+        sheet_name: str
+            Name of the sheet to save the data to. Only valid when `export` is a `xlsx` file.
+        external_axes: bool
+            Retun the OpenBB Figure Object to a variable.
+
+        Examples
+        ----------
+        >>> from openbb_terminal.sdk import openbb
+        >>> spy = openbb.stocks.options.load_options_chains("SPY")
+        >>> spy.chart_surface()
+
+        Display only calls:
+        >>> spy.chart_surface("calls")
+
+        Display only puts:
+        >>> spy.chart_surface("puts")
+        """
+
+        display_surface(
+            self,
+            option_type,
+            raw,
+            export,
+            sheet_name,
+            external_axes
+        )
+
+    def chart_stats(
+        self,
+        by: str = "expiration",
+        expiry: str = "",
+        oi: Optional[bool] = False,
+        percent: Optional[bool] =  False,
+        ratios: Optional[bool] = False,
+        raw: bool = False,
+        export: str = "",
+        sheet_name: Optional[str] = "",
+        external_axes: bool = False,
+    ) -> Union[None, OpenBBFigure]:
+
+        """Chart a variety of volume and open interest statistics.
+
+        Parameters
+        -----------
+        by: str
+            Statistics can be displayed by either "expiration" or "strike". Default is "expiration".
+        expiry: str
+            The target expiration date to display. Only valid when `percent` is False.
+        oi: bool
+            Display open interest if True, else volume. Default is False.
+        percent: bool
+            Displays volume or open interest as a percentage of the total across all expirations. Default is False.
+        ratios: bool
+            Displays Put/Call ratios. This parameter overrides the others when True. Default is False.
+        raw: bool
+            Displays the raw data table instead of a chart.
+        export: str
+            Export the data to a csv,json,xlsx file.
+        sheet_name: str
+            Name of the sheet to save the data to. Only valid when `export` is a `xlsx` file.
+        external_axes: bool
+            Retun the OpenBB Figure Object to a variable.
+
+        Examples
+        ----------
+        >>> from openbb_terminal.sdk import openbb
+        >>> spy = openbb.stocks.options.load_options_chains("SPY")
+
+        Display volume by expiration:
+        >>> spy.chart_stats()
+
+        Display volume by strike:
+        >>> spy.chart_stats("strike")
+
+        Display open interest by expiration:
+        >>> spy.chart_stats(oi=True)
+
+        Display open interest, by expiration, as a percentage of the total:
+        >>> spy.chart_stats(percent=True, oi=True)
+
+        Display volume and open interest put/call ratios:
+        >>> spy.chart_stats(ratios=True)
+        """
+
+        display_stats(
+            self,
+            by,
+            expiry,
+            oi,
+            percent,
+            ratios,
+            raw,
+            export,
+            sheet_name,
+            external_axes
+        )
+
+    def chart_skew(
+        self,
+        expirations: Optional[list[str]] = "",
+        moneyness: Optional[float] = None,
+        atm: bool = False,
+        otm_only: bool = False,
+        raw: bool = False,
+        export: str = "",
+        sheet_name: Optional[str] = "",
+        external_axes: bool = False,
+    ) -> Union[None, OpenBBFigure]:
+        """Chart the vertical skew of an option expiration, or the horizontal skew of equidistant % moneyness options."""
+
+        display_skew(
+            self,
+            expirations,
+            moneyness,
+            atm,
+            otm_only,
+            raw,
+            export,
+            sheet_name,
+            external_axes,
+        )
