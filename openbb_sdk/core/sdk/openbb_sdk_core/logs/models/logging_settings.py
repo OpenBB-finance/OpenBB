@@ -6,6 +6,7 @@ from openbb_sdk_core.app.model.user_settings import UserSettings
 from openbb_sdk_core.logs.utils.utils import get_app_id, get_log_dir, get_session_id
 
 
+# pylint: disable=too-many-instance-attributes
 class LoggingSettings:
     def __init__(self, user_settings: UserSettings, system_settings: SystemSettings):
         user_data_directory = (

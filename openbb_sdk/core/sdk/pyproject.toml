@@ -2,10 +2,7 @@
 name = "openbb-sdk-core"
 version = "0.2.0"
 description = ""
-authors = [
-    "Chavithra PARANA <chavithra@gmail.com>",
-    "Igor Radovanovic <igorradovanovic20@gmail.com>"
-]
+authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_sdk_core" }]
 
@@ -16,7 +13,6 @@ websockets = "^10.4"
 pandas = "^1.5.3"
 requests = "^2.28.2"
 html5lib = "^1.1"
-openbb-provider = "^0.1.0"
 fastapi = "^0.95.2"
 passlib = "^1.7.4"
 python-jose = "^3.3.0"
@@ -26,6 +22,9 @@ posthog = "^3.0.1"
 python-multipart = "^0.0.6"
 bcrypt = "^4.0.1"
 urllib3 = "<2.0.0"
+
+[tool.poetry.group.dev.dependencies]
+openbb-provider = { path = "../provider" }
 
 [build-system]
 requires = ["poetry-core"]
