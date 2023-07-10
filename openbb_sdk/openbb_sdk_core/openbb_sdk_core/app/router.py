@@ -19,6 +19,10 @@ from typing import (
 import pkg_resources
 from fastapi import APIRouter, Depends
 from openbb_provider.provider.provider_map import build_provider_mapping
+from pydantic import BaseModel
+from pydantic.config import BaseConfig
+from pydantic.validators import find_validators
+
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.provider_interface import (
@@ -27,9 +31,6 @@ from openbb_sdk_core.app.provider_interface import (
     StandardParams,
     get_provider_interface,
 )
-from pydantic import BaseModel
-from pydantic.config import BaseConfig
-from pydantic.validators import find_validators
 
 if sys.version_info < (3, 10):
     from typing_extensions import ParamSpec

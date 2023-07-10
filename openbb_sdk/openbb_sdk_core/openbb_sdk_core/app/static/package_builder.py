@@ -22,9 +22,10 @@ from typing import (
 from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
+from starlette.routing import BaseRoute
+
 from openbb_sdk_core.app.provider_interface import get_provider_interface
 from openbb_sdk_core.app.router import RouterLoader
-from starlette.routing import BaseRoute
 
 
 class PackageBuilder:
