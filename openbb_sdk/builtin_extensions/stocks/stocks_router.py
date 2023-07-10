@@ -1,6 +1,5 @@
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 """Stocks Router."""
-from typing import Optional
 
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
@@ -39,7 +38,7 @@ def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
-    extra_params: Optional[ExtraParams] = None,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Load stock data for a specific ticker."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -50,7 +49,7 @@ def news(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
-    extra_params: Optional[ExtraParams] = None,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Get news for one or more stock tickers."""
     return CommandOutput(results=Query(**locals()).execute())

@@ -2,7 +2,7 @@
 
 import warnings
 from dataclasses import asdict
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from openbb_provider.provider.provider_registry import build_provider_registry
 from pydantic import BaseModel
@@ -23,7 +23,7 @@ class Query:
         cc: CommandContext,
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
-        extra_params: Optional[ExtraParams] = None,
+        extra_params: ExtraParams,
     ) -> None:
         self.cc = cc
         self.provider = str(provider_choices.provider)

@@ -1,6 +1,5 @@
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 """News Router."""
-from typing import Optional
 
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
@@ -22,7 +21,7 @@ def globalnews(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
-    extra_params: Optional[ExtraParams] = None,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Global News."""
     return CommandOutput(results=Query(**locals()).execute())
