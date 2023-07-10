@@ -50,7 +50,7 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
             harmonized=query.harmonized,
             start_date=query.start_date,
             end_date=query.end_date,
-            **extra_params if extra_params else {}
+            **extra_params if extra_params else {},
         )
 
     @staticmethod
