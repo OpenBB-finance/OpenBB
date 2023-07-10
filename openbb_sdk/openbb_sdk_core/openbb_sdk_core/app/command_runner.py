@@ -175,7 +175,7 @@ class ParametersBuilder:
             )
             for n, p in sig.parameters.items()
         }
-        ValidationModel = create_model("ValidationModel", __config__=Config, **fields)  # type: ignore
+        ValidationModel = create_model(func.__name__, __config__=Config, **fields)  # type: ignore
         model = ValidationModel(**kwargs)
         result = dict(model)
 
