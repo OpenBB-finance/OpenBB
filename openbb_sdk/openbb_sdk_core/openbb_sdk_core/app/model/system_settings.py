@@ -27,7 +27,7 @@ class SystemSettings(Tagged):
     # TODO: Get the version of the SDK from somewhere that's not pyproject.toml
     version: str = "4.0.0dev"
     home_directory: str = str(Path.home())
-    openbb_directory: str = str(Path(home_directory, ".openbb"))
+    openbb_directory: str = str(Path(home_directory, ".openbb_sdk"))
 
     # Logging section
     logging_app_name: str = "gst"

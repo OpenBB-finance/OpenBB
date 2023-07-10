@@ -105,6 +105,7 @@ class HubManager:
                 token_type=session.get("token_type"),
                 user_uuid=session.get("uuid"),
                 email=session.get("email"),
+                username=session.get("username"),
                 primary_usage=session.get("primary_usage"),
             )
             return hub_session
@@ -132,6 +133,7 @@ class HubManager:
                 access_token=session.get("access_token"),
                 token_type=session.get("token_type"),
                 user_uuid=session.get("uuid"),
+                username=session.get("username"),
                 email=session.get("email"),
                 primary_usage=session.get("primary_usage"),
             )
