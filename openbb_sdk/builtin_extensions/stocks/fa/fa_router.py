@@ -4,7 +4,11 @@
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.model.results.empty import Empty
-from openbb_sdk_core.app.provider_interface import ProviderChoices, StandardParams
+from openbb_sdk_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
 from openbb_sdk_core.app.query import Query
 from openbb_sdk_core.app.router import Router
 from pydantic import BaseModel
@@ -17,6 +21,7 @@ def balance(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Balance Sheet."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -27,6 +32,7 @@ def cash(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Cash Flow Statement."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -37,6 +43,7 @@ def comp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Executive Compensation."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -47,6 +54,7 @@ def earning(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Earnings Calendar."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -63,6 +71,7 @@ def est(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Analyst Estimates."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -73,6 +82,7 @@ def income(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Income Statement."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -83,6 +93,7 @@ def ins(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Stock Insider Trading."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -93,6 +104,7 @@ def metrics(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Key Metrics."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -103,6 +115,7 @@ def mgmt(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Key Executives."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -113,6 +126,7 @@ def overview(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Company Overview."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -123,6 +137,7 @@ def own(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Institutional Ownership."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -133,6 +148,7 @@ def pta(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Price Target."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -143,6 +159,7 @@ def pt(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Price Target Consensus."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -153,6 +170,7 @@ def revgeo(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Revenue Geographic."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -163,6 +181,7 @@ def revseg(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Revenue Business Line."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -173,6 +192,7 @@ def shrs(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Share Statistics."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -188,6 +208,7 @@ def transcript(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Earnings Call Transcript."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -198,6 +219,7 @@ def split(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Historical Stock Splits."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -208,6 +230,7 @@ def cal(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Historical Dividends."""
     return CommandOutput(results=Query(**locals()).execute())
@@ -218,6 +241,7 @@ def comsplit(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
+    extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Stock Split Calendar."""
     return CommandOutput(results=Query(**locals()).execute())
