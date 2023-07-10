@@ -44,7 +44,13 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
         query: CPIQueryParams, extra_params: Optional[Dict] = None
     ) -> FREDCPIQueryParams:
         return FREDCPIQueryParams(
-            **query.dict(), **extra_params if extra_params else {}
+            countries=query.countries,
+            units=query.units,
+            frequency=query.frequency,
+            harmonized=query.harmonized,
+            start_date=query.start_date,
+            end_date=query.end_date,
+            **extra_params if extra_params else {}
         )
 
     @staticmethod
