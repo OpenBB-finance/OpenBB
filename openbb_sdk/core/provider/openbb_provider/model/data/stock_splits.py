@@ -1,13 +1,15 @@
 """Stock Split Calendar data model."""
 
 
-from datetime import date as dateType, datetime, timedelta
-from typing import Optional
+from datetime import (
+    date as dateType,
+    datetime,
+    timedelta,
+)
 
 from pydantic import Field
 
 from openbb_provider.metadata import DESCRIPTIONS
-
 from openbb_provider.model.abstract.data import Data, QueryParams
 
 

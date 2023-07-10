@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "openbb-provider"
+version = "0.2.0"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_provider" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = { extras = ["dotenv"], version = "^1.10" }
+requests = "^2.31.0"
+urllib3 = "<2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
