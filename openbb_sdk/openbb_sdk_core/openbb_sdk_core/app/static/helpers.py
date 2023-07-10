@@ -44,10 +44,9 @@ def generate_provider_docstrings(docstring: str, docstring_mapping: dict) -> str
 
             # clean the docstring from its original indentation
             if (
-                "\n    Returns\n-------\n    Documentation not available.\n\n"  # noqa: SIM300
+                "\n    Returns\n    -------\n    Documentation not available.\n\n"  # noqa: SIM300
                 != section_docstring
             ):
-                # re
                 section_docstring = "\n".join(
                     line[4:] for line in section_docstring.split("\n")[1:]
                 )
