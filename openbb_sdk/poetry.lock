@@ -547,22 +547,6 @@ type = "directory"
 url = "core/provider"
 
 [[package]]
-name = "openbb-providers"
-version = "0.1.1"
-description = ""
-optional = false
-python-versions = "^3.8"
-files = []
-develop = false
-
-[package.dependencies]
-openbb-sdk-core = {path = "../../core/sdk"}
-
-[package.source]
-type = "directory"
-url = "extensions/providers"
-
-[[package]]
 name = "openbb-sdk-core"
 version = "0.2.0"
 description = ""
@@ -1150,4 +1134,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "c4a073a32d26e100cb7d054b6b22dfa5275e1281553c5dc41d1b031465b821ed"
+content-hash = "b12624c1471166473af6338ea742445807cf917a723e108e4461f066ea83c1dd"
