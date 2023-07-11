@@ -45,17 +45,18 @@ Below is brief description of each function within the Economy module:
 | openbb.economy.events               |  Function  |                                              Economic Calendar |
 | openbb.economy.fgdp                 |  Function  |                                   Real GDP Forecast by Country |
 | openbb.economy.fgdp_chart           |  Function  |                                               Chart for `fgdp` |
+| openbb.economy.fred                   |  Function  |                                          Get FRED series data |
 | openbb.economy.fred_ids             |  Function  |                         Search for a FRED series ID by keyword |
 | openbb.economy.fred_notes           |  Function  |                       Search by Keyword for Series Information |
 | openbb.economy.future               |  Function  |          Current Prices of Commodities and Futures from FinViz |
 | openbb.economy.futures              |  Function  |             Current Prices of Commodities and Futures from WSJ |
-| openbb.economy.gdpc                 |  Function  |                            US GDP per Capita from AlphaVantage |
-| openbb.economy.gdpc_chart           |  Function  |                                               Chart for `gdpc` |
+| openbb.economy.gdp                 |  Function  |                            US GDP per Capita from AlphaVantage |
+| openbb.economy.gdp_chart           |  Function  |                                               Chart for `gdp` |
 | openbb.economy.get_groups           |    List    |         List of Groups for Performance and Valuation Functions |
 | openbb.economy.glbonds              |  Function  |               Table of Select 10 Year Sovereign Bonds from WSJ |
-| openbb.economy.indices              |  Function  |                                        Top US Indices from WSJ |
 | openbb.economy.index                |  Function  |            Historical Daily Data for Indices from YahooFinance |
 | openbb.economy.index_chart          |  Function  |                                              Chart for `index` |
+| openbb.economy.indices              |  Function  |                                        Top US Indices from WSJ |
 | openbb.economy.macro                |  Function  |                                   Gets Series Data from EconDB |
 | openbb.economy.macro_chart          |  Function  |                                              Chart for `macro` |
 | openbb.economy.macro_countries      |    List    |                   List of Countries Accepted by Macro Function |
@@ -67,8 +68,6 @@ Below is brief description of each function within the Economy module:
 | openbb.economy.revenue_chart        |  Function  |                                            Chart for `revenue` |
 | openbb.economy.rgdp                 |  Function  |                                            Real GDP by Country |
 | openbb.economy.rgdp_chart           |  Function  |                                               Chart for `rgdp` |
-| openbb.economy.rtps                 |  Function  | Real-Time Performance by Sector (US Markets) from AlphaVantage |
-| openbb.economy.rtps_chart           |  Function  |                                                Chart of `rtps` |
 | openbb.economy.search_index         |  Function  |                              Search for a Global Index by Name |
 | openbb.economy.spending             |  Function  |                General Government Spending by Year and Country |
 | openbb.economy.spending_chart       |  Function  |                                           Chart for `spending` |
@@ -78,6 +77,8 @@ Below is brief description of each function within the Economy module:
 | openbb.economy.trust                |  Function  |                   Trust in Government (OECD) as a % by Country |
 | openbb.economy.trust_chart          |  Function  |                                              Chart for `trust` |
 | openbb.economy.usbonds              |  Function  |                 Table of Current Rate, Yield, and Yield Change |
+| openbb.economy.usdli              |  Function  |              The USD Liquidity Index |
+| openbb.economy.usdli_chart        |  Function  |          Chart for `usdli` |
 | openbb.economy.valuation            |  Function  |                          Valuation for Group from (get_gropus) |
 
 Alternatively, the contents of the economy, or function docstrings, is printed with:

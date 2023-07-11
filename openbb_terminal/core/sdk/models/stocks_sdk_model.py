@@ -551,8 +551,6 @@ class StocksTechnicalAnalysis(Category):
     Attributes:
         `recom`: Get tradingview recommendation based on technical indicators\n
         `recom_chart`: Print tradingview recommendation based on technical indicators\n
-        `rsp`: Relative strength percentile [Source: https://github.com/skyte/relative-strength]\n
-        `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
         `summary`: Get technical summary report provided by FinBrain's API\n
         `summary_chart`: Print technical summary report provided by FinBrain's API\n
     """
@@ -563,8 +561,6 @@ class StocksTechnicalAnalysis(Category):
         super().__init__()
         self.recom = lib.stocks_ta_tradingview_model.get_tradingview_recommendation
         self.recom_chart = lib.stocks_ta_tradingview_view.print_recommendation
-        self.rsp = lib.stocks_ta_rsp_model.get_rsp
-        self.rsp_chart = lib.stocks_ta_rsp_view.display_rsp
         self.summary = lib.stocks_ta_finbrain_model.get_technical_summary_report
         self.summary_chart = lib.stocks_ta_finbrain_view.technical_summary_report
 
