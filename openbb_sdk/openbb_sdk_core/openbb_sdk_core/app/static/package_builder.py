@@ -277,10 +277,10 @@ class DocstringGenerator:
         for i, line in enumerate(cleaned_lines):
             try:
                 if line == "    ---------" and cleaned_lines[i + 1] == "    ":
-                    cleaned_lines[i + 1] = "    All fields are standardized."
+                    cleaned_lines[i + 1] = "    All fields are standardized.\n"
                     break
             except IndexError:
-                cleaned_lines.append("    All fields are standardized.")
+                cleaned_lines.append("    All fields are standardized.\n")
 
         return "\n".join(cleaned_lines)
 
