@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{ include = "openbb_fmp" }]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 openbb-provider = { path = "../../core/provider" }
 
 [build-system]
