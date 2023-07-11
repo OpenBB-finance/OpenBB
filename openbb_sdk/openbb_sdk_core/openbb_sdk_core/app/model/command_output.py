@@ -47,6 +47,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             df = pd.DataFrame(self.dict()["results"])
             if "date" in df.columns:
                 df = df.set_index("date")
+                df.index = pd.to_datetime(df.index)
         except ValueError:
             df = pd.DataFrame(self.dict()["results"], index=["values"]).T
 

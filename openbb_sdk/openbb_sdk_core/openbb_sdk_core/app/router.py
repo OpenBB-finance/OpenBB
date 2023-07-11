@@ -18,7 +18,6 @@ from typing import (
 
 import pkg_resources
 from fastapi import APIRouter, Depends
-from openbb_provider.provider.provider_map import build_provider_mapping
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
@@ -345,7 +344,7 @@ class CommandMap:
     def get_provider_coverage(router: Router) -> Dict[str, List[str]]:
         api_router = router.api_router
 
-        mapping = build_provider_mapping()
+        mapping = get_provider_interface().map
 
         coverage_map: Dict[Any, Any] = {}
         for route in api_router.routes:
@@ -368,7 +367,7 @@ class CommandMap:
     def get_command_coverage(router: Router) -> Dict[str, List[str]]:
         api_router = router.api_router
 
-        mapping = build_provider_mapping()
+        mapping = get_provider_interface().map
 
         coverage_map: Dict[Any, Any] = {}
         for route in api_router.routes:

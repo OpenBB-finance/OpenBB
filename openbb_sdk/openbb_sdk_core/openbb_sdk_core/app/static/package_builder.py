@@ -1,4 +1,5 @@
 import builtins
+import shutil
 import subprocess
 from collections import OrderedDict
 from dataclasses import MISSING
@@ -628,14 +629,17 @@ class Linters:
         linter: Literal["black", "ruff", "mypy"], flags: Optional[List[str]] = None
     ):
         """Run linter with flags."""
-        print(f"\n* {linter}")
-        Linters.print_separator("^")
-        command = [linter, Linters.current_folder]
-        if flags:
-            command.extend(flags)
+        if shutil.which(linter):
+            print(f"\n* {linter}")
+            Linters.print_separator("^")
+            command = [linter, Linters.current_folder]
+            if flags:
+                command.extend(flags)
 
-        subprocess.run(command, check=False)
-        Linters.print_separator("-")
+            subprocess.run(command, check=False)  # noqa: S603
+            Linters.print_separator("-")
+        else:
+            print(f"\n* {linter} not found")
 
     @classmethod
     def black(cls):
