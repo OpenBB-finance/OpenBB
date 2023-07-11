@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -6,7 +8,7 @@ class HubSession(BaseModel):
     token_type: str
     user_uuid: str
     email: str
-    username: str
+    username: Optional[str]
     primary_usage: str
 
     def __repr__(self) -> str:
