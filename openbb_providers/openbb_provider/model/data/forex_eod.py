@@ -18,16 +18,19 @@ class ForexEODQueryParams(QueryParams, BaseSymbol):
     ---------
     symbol : str
         The symbol of the company.
-    start_date : date
+    start_date : Optional[date]
         The start date of the stock data from which to retrieve the data.
+        If None, defaults to yesterday.
     end_date : Optional[date]
         The end date of the stock data up to which to retrieve the data.
+        If None, defaults to today.
     """
 
-    start_date: date = Field(description=DESCRIPTIONS.get("start_date", ""))
-    end_date: Optional[date] = Field(
-        description=DESCRIPTIONS.get("end_date", ""), default=date.today()
+    start_date: date = Field(
+        description=DESCRIPTIONS.get("start_date", ""),
+        default=None,
     )
+    end_date: date = Field(description=DESCRIPTIONS.get("end_date", ""), default=None)
 
 
 class ForexEODData(Data):

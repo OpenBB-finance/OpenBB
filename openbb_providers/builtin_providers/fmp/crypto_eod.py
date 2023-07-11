@@ -1,7 +1,7 @@
 """FMP Cryptos end of day fetcher."""
 
 # IMPORT STANDARD
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Dict, List, Literal, Optional
 
 # IMPORT INTERNAL
@@ -74,11 +74,13 @@ class FMPCryptoEODFetcher(
     def transform_query(
         query: CryptoEODQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPCryptoEODQueryParams:
-        raw_end = query.end_date if query.end_date else datetime.now()
+        now = datetime.now()
+        start_date = query.start_date if query.start_date else now - timedelta(days=1)
+        end_date = query.end_date if query.end_date else now
         return FMPCryptoEODQueryParams(
             symbol=query.symbol,
-            start_date=query.start_date,
-            end_date=raw_end,
+            start_date=start_date,
+            end_date=end_date,
             **extra_params if extra_params else {},
         )
 
