@@ -230,10 +230,11 @@ class DocstringGenerator:
         -------
             dict: A dictionary with the docstrings.
         """
-        for _, provider_mapping in query_mapping.items():
+        mapping = query_mapping.copy()
+        for _, provider_mapping in mapping.items():
             for _, query_params_mapping in provider_mapping.items():
                 query_params_mapping.pop("fields", None)
-        return query_mapping
+        return mapping
 
     @staticmethod
     def clean_provider_docstring(
@@ -277,6 +278,7 @@ class DocstringGenerator:
         for i, line in enumerate(cleaned_lines):
             try:
                 if line == "    ---------" and cleaned_lines[i + 1] == "    ":
+                    cleaned_lines[i] = "---------"
                     cleaned_lines[i + 1] = "    All fields are standardized.\n"
                     break
             except IndexError:
@@ -301,7 +303,7 @@ class DocstringGenerator:
         """
         for provider, provider_mapping in docstring_mapping.items():
             docstring += f"\n{provider}"
-            docstring += f"\n{'-' * len(provider)}"
+            docstring += f"\n{'=' * len(provider)}"
             for section_name, section_docstring in provider_mapping.items():
                 section_docstring = (
                     section_docstring["docstring"]
@@ -346,7 +348,6 @@ class DocstringGenerator:
             function: The function with the updated docstring.
         """
         provider_interface_mapping = get_provider_interface().map
-
         query_mapping = provider_interface_mapping.get(query_name, None)
         if query_mapping:
             docstring_mapping = cls.get_docstrings(query_mapping)
@@ -358,13 +359,13 @@ class DocstringGenerator:
 
             docstring += f"\n\nAvailable providers: {available_providers}\n"
 
-            docstring_mapping = {
+            docstring_mapping_ordered = {
                 "Standard": docstring_mapping.pop("openbb", None),  # type: ignore
                 **docstring_mapping,
             }
 
             docstring = cls.generate_provider_docstrings(
-                docstring, docstring_mapping, query_name
+                docstring, docstring_mapping_ordered, query_name
             )
 
             func.__doc__ = docstring
