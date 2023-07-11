@@ -345,7 +345,9 @@ class ProviderInterface:
 
         return result
 
-    def __merge_data_dc(self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]) -> Dict[str, BaseModel]:
+    def __merge_data_dc(
+        self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]
+    ) -> Dict[str, BaseModel]:
         """Merge standard data with extra data into a single BaseModel"""
         result: Dict = {}
         for query_name, dataclasses in data.items():
