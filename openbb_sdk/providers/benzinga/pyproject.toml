@@ -16,6 +16,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
 benzinga = "openbb_benzinga.provider:benzinga_provider"
-# fmp = "builtin_providers.fmp.provider:fmp_provider"
-# polygon = "builtin_providers.polygon.provider:polygon_provider"
-# fred = "builtin_providers.fred.provider:fred_provider"
