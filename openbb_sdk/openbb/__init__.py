@@ -1,5 +1,7 @@
 # flake8: noqa
-from openbb_sdk_core.app.static.command_runner_wrapper import app as openbb
+from openbb_sdk_core.app.static.command_runner_wrapper import app as obb
+
+sdk = obb
 
 
 def _rebuild_python_interface() -> None:
