@@ -2,7 +2,6 @@ from openbb_sdk_core.app.router import CommandMap
 
 
 class Coverage:
-
     __command_map = CommandMap()
 
     @property

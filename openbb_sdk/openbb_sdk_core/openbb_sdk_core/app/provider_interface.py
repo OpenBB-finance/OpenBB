@@ -158,7 +158,6 @@ class ProviderInterface:
         cls,
         providers: Any,
     ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
-
         standard: Dict[str, Tuple[str, Any, Any]] = {}
         extra: Dict[str, Tuple[str, Any, Any]] = {}
 
@@ -206,7 +205,6 @@ class ProviderInterface:
         cls,
         providers: Any,
     ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
-
         standard: Dict[str, Tuple[str, Any, Any]] = {}
         extra: Dict[str, Tuple[str, Any, Any]] = {}
 
