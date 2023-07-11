@@ -61,8 +61,8 @@ class ProviderInterface:
         self.__map = build_provider_mapping()
         self.__query_providers_map = self.__generate_query_providers_dc()
         self.__params = self.__generate_params_dc()
-        data = self.__generate_data_dc()
-        self.__merged_data = self.__merge_data_dc(data)
+        self.__data = self.__generate_data_dc()
+        self.__merged_data = self.__merge_data_dc(self.__data)
 
     @property
     def map(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
@@ -75,6 +75,10 @@ class ProviderInterface:
     @property
     def params(self) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
         return self.__params
+
+    @property
+    def data(self) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
+        return self.__data
 
     @property
     def merged_data(self) -> Dict[str, StandardData]:
