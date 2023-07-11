@@ -197,6 +197,44 @@ class ProviderInterface:
 
         return standard, extra
 
+    @classmethod
+    def __extract_data(
+        cls,
+        providers: Any,
+    ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
+
+        standard: Dict[str, Tuple[str, Any, Any]] = {}
+        extra: Dict[str, Tuple[str, Any, Any]] = {}
+
+        for provider_name, query_details in providers.items():
+            if provider_name == "openbb":
+                for name, field in query_details["Data"]["fields"].items():
+                    incoming = cls.__create_field(name, field, provider_name)
+
+                    standard[incoming.name] = (
+                        incoming.name,
+                        incoming.type_,
+                        incoming.default,
+                    )
+            else:
+                for name, field in query_details["Data"]["fields"].items():
+                    if name not in providers["openbb"]["Data"]["fields"]:
+                        incoming = cls.__create_field(name, field, provider_name)
+
+                        if incoming.name in extra:
+                            current = DataclassField(*extra[incoming.name])
+                            updated = cls.__merge_fields(current, incoming)
+                        else:
+                            updated = incoming
+
+                        extra[updated.name] = (
+                            updated.name,
+                            updated.type_,
+                            updated.default,
+                        )
+
+        return standard, extra
+
     def __generate_params_dc(
         self,
     ) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
@@ -237,44 +275,6 @@ class ProviderInterface:
                 ),
             }
         return result
-
-    @classmethod
-    def __extract_data(
-        cls,
-        providers: Any,
-    ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
-
-        standard: Dict[str, Tuple[str, Any, Any]] = {}
-        extra: Dict[str, Tuple[str, Any, Any]] = {}
-
-        for provider_name, query_details in providers.items():
-            if provider_name == "openbb":
-                for name, field in query_details["Data"]["fields"].items():
-                    incoming = cls.__create_field(name, field, provider_name)
-
-                    standard[incoming.name] = (
-                        incoming.name,
-                        incoming.type_,
-                        incoming.default,
-                    )
-            else:
-                for name, field in query_details["Data"]["fields"].items():
-                    if name not in providers["openbb"]["Data"]["fields"]:
-                        incoming = cls.__create_field(name, field, provider_name)
-
-                        if incoming.name in extra:
-                            current = DataclassField(*extra[incoming.name])
-                            updated = cls.__merge_fields(current, incoming)
-                        else:
-                            updated = incoming
-
-                        extra[updated.name] = (
-                            updated.name,
-                            updated.type_,
-                            updated.default,
-                        )
-
-        return standard, extra
 
     def __generate_query_providers_dc(self) -> Dict[str, ProviderChoices]:
         """Generate dataclasses for provider choices by query.
