@@ -4,9 +4,9 @@ from openbb_sdk_core.api.dependency.system import get_system_settings
 from openbb_sdk_core.api.dependency.user import get_user_service
 from openbb_sdk_core.api.router.account import router as router_account
 from openbb_sdk_core.api.router.commands import router as router_commands
+from openbb_sdk_core.api.router.coverage import router as router_coverage
 from openbb_sdk_core.api.router.settings import router as router_settings
 from openbb_sdk_core.api.router.system import router as router_system
-from openbb_sdk_core.api.router.coverage import router as router_coverage
 from openbb_sdk_core.app.model.profile import Profile
 from openbb_sdk_core.app.model.user_settings import UserSettings
 

@@ -236,19 +236,28 @@ class DocstringGenerator:
         return query_mapping
 
     @staticmethod
-    def clean_provider_docstring(docstring: str, query_name: str) -> str:
+    def clean_provider_docstring(
+        section_name: str, docstring: str, query_name: str
+    ) -> str:
         """Clean the provider docstring from standard fields."""
         provider_interface = get_provider_interface()
-        standard_params = provider_interface.params[query_name][
-            "standard"
-        ].__dataclass_fields__.keys()
+        if section_name == "QueryParams":
+            standard_fields = provider_interface.params[query_name][
+                "standard"
+            ].__dataclass_fields__.keys()
+        elif section_name == "Data":
+            standard_fields = provider_interface.data[query_name][
+                "standard"
+            ].__dataclass_fields__.keys()
+        else:
+            standard_fields = []  # type: ignore
 
         doc_lines = docstring.split("\n")
         skip_next_line = False
         cleaned_lines = []
 
         for line in doc_lines:
-            if any(word in line for word in standard_params) or skip_next_line:
+            if any(word in line for word in standard_fields) or skip_next_line:
                 skip_next_line = not skip_next_line
                 continue
 
@@ -274,7 +283,7 @@ class DocstringGenerator:
         for provider, provider_mapping in docstring_mapping.items():
             docstring += f"\n{provider}"
             docstring += f"\n{'-' * len(provider)}"
-            for _, section_docstring in provider_mapping.items():
+            for section_name, section_docstring in provider_mapping.items():
                 section_docstring = (
                     section_docstring["docstring"]
                     if section_docstring["docstring"]
@@ -297,7 +306,9 @@ class DocstringGenerator:
                     # check if we are on the first provider and skip the cleaning
                     if provider != "Standard":
                         section_docstring = cls.clean_provider_docstring(
-                            docstring=section_docstring, query_name=query_name
+                            section_name,
+                            docstring=section_docstring,
+                            query_name=query_name,
                         )
 
                 docstring += f"\n{section_docstring}"
