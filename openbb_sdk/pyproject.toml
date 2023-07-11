@@ -17,6 +17,10 @@ openbb-news = { path = "./extensions/news" }
 openbb-economy = { path = "./extensions/economy" }
 openbb-fixedincome = { path = "./extensions/fixedincome" }
 openbb-providers = { path = "./extensions/providers" }
+openbb-benzinga = { path = "./providers/benzinga" }
+openbb-fmp = { path = "./providers/fmp" }
+openbb-polygon = { path = "./providers/polygon" }
+openbb-fred = { path = "./providers/fred" }
 
 [build-system]
 requires = ["poetry-core"]

@@ -385,6 +385,22 @@ files = [
 ]
 
 [[package]]
+name = "openbb-benzinga"
+version = "0.1.1"
+description = ""
+optional = false
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+openbb-provider = {path = "../../core/provider"}
+
+[package.source]
+type = "directory"
+url = "providers/benzinga"
+
+[[package]]
 name = "openbb-crypto"
 version = "0.1.1"
 description = ""
@@ -433,6 +449,22 @@ type = "directory"
 url = "extensions/fixedincome"
 
 [[package]]
+name = "openbb-fmp"
+version = "0.1.1"
+description = ""
+optional = false
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+openbb-provider = {path = "../../core/provider"}
+
+[package.source]
+type = "directory"
+url = "providers/fmp"
+
+[[package]]
 name = "openbb-forex"
 version = "0.1.1"
 description = ""
@@ -449,6 +481,22 @@ type = "directory"
 url = "extensions/forex"
 
 [[package]]
+name = "openbb-fred"
+version = "0.1.1"
+description = ""
+optional = false
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+openbb-provider = {path = "../../core/provider"}
+
+[package.source]
+type = "directory"
+url = "providers/fred"
+
+[[package]]
 name = "openbb-news"
 version = "0.1.1"
 description = ""
@@ -463,6 +511,22 @@ openbb-sdk-core = {path = "../../core/sdk"}
 [package.source]
 type = "directory"
 url = "extensions/news"
+
+[[package]]
+name = "openbb-polygon"
+version = "0.1.1"
+description = ""
+optional = false
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+openbb-provider = {path = "../../core/provider"}
+
+[package.source]
+type = "directory"
+url = "providers/polygon"
 
 [[package]]
 name = "openbb-provider"
@@ -1086,4 +1150,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "a862558b1663d294447109bb597a62486667b9591a799407e5c43bf34827efe7"
+content-hash = "c4a073a32d26e100cb7d054b6b22dfa5275e1281553c5dc41d1b031465b821ed"
