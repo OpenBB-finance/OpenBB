@@ -59,7 +59,7 @@ repos:
             "--baseline",
             ".secrets.baseline",
             "--exclude-files",
-            "cassettes/.*|record/.*|website/content/api/.*|openbb_extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_extensions/charting/openbb_charting/infrastructure/.*\\.html",
+            "cassettes/.*|record/.*|website/content/api/.*|openbb_sdk/extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_sdk/extensions/charting/openbb_charting/infrastructure/.*\\.html",
           ]
     exclude: package.lock.json
   - repo: local
