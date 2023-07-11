@@ -1,7 +1,7 @@
 """FMP Forex end of day fetcher."""
 
 # IMPORT STANDARD
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Dict, List, Literal, Optional
 
 # IMPORT INTERNAL
@@ -74,11 +74,13 @@ class FMPForexEODFetcher(
     def transform_query(
         query: ForexEODQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPForexEODQueryParams:
-        raw_end = query.end_date if query.end_date else datetime.now()
+        now = datetime.now()
+        start_date = query.start_date if query.start_date else now
+        end_date = query.end_date if query.end_date else now
         return FMPForexEODQueryParams(
             symbol=query.symbol,
-            start_date=query.start_date,
-            end_date=raw_end,
+            start_date=start_date,
+            end_date=end_date,
         )
 
     @staticmethod
