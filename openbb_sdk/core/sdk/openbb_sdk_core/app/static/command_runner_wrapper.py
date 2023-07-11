@@ -28,6 +28,7 @@ try:
 
     # from openbb_sdk_core.app.router import CommandMap
     from openbb_sdk_core.app.static.account import Account
+    from openbb_sdk_core.app.static.coverage import Coverage
     from openbb_sdk_core.app.static.package.MODULE_4ebd0208_8328_5d69_8c44_ec50939c0967 import (
         CLASS_4ebd0208_8328_5d69_8c44_ec50939c0967,
     )
@@ -41,6 +42,7 @@ else:
         def __init__(self, command_runner_session):
             self._command_runner_session = command_runner_session
             self._account = Account(self)
+            self._coverage = Coverage()
 
         @property
         def account(self) -> Account:
@@ -54,9 +56,8 @@ else:
         def system(self) -> SystemSettings:
             return run_async(get_system_settings)
 
-        # This would be a better option to expose provider coverage
-        # @property
-        # def providers(self) -> Dict:
-        #     return CommandMap().provider_coverage
+        @property
+        def coverage(self) -> Coverage:
+            return self._coverage
 
     app = create_app()

@@ -4,6 +4,7 @@ from openbb_sdk_core.api.dependency.system import get_system_settings
 from openbb_sdk_core.api.dependency.user import get_user_service
 from openbb_sdk_core.api.router.account import router as router_account
 from openbb_sdk_core.api.router.commands import router as router_commands
+from openbb_sdk_core.api.router.coverage import router as router_coverage
 from openbb_sdk_core.api.router.settings import router as router_settings
 from openbb_sdk_core.api.router.system import router as router_system
 from openbb_sdk_core.app.model.profile import Profile
@@ -27,6 +28,7 @@ app = FastAPI(
 app.include_router(router=router_account, prefix="/api/v1")
 app.include_router(router=router_settings, prefix="/api/v1")
 app.include_router(router=router_system, prefix="/api/v1")
+app.include_router(router=router_coverage, prefix="/api/v1")
 app.include_router(router=router_commands, prefix="/api/v1")
 app.add_middleware(
     CORSMiddleware,

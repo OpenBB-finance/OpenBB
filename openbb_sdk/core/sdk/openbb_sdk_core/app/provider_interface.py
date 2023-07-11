@@ -47,7 +47,7 @@ class ProviderInterface:
         Dictionary of provider choices by query.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
         Dictionary of params by query.
-    merged_data : Dict[str, StandardData]
+    merged_data : Dict[str, BaseModel]
         Dictionary of data by query.
     providers_literal : type
         Literal of provider names.
@@ -61,8 +61,8 @@ class ProviderInterface:
         self.__map = build_provider_mapping()
         self.__query_providers_map = self.__generate_query_providers_dc()
         self.__params = self.__generate_params_dc()
-        data = self.__generate_data_dc()
-        self.__merged_data = self.__merge_data_dc(data)
+        self.__data = self.__generate_data_dc()
+        self.__merged_data = self.__merge_data_dc(self.__data)
 
     @property
     def map(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
@@ -77,7 +77,11 @@ class ProviderInterface:
         return self.__params
 
     @property
-    def merged_data(self) -> Dict[str, StandardData]:
+    def data(self) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
+        return self.__data
+
+    @property
+    def merged_data(self) -> Dict[str, BaseModel]:
         return self.__merged_data
 
     @property
@@ -196,6 +200,43 @@ class ProviderInterface:
 
         return standard, extra
 
+    @classmethod
+    def __extract_data(
+        cls,
+        providers: Any,
+    ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
+        standard: Dict[str, Tuple[str, Any, Any]] = {}
+        extra: Dict[str, Tuple[str, Any, Any]] = {}
+
+        for provider_name, query_details in providers.items():
+            if provider_name == "openbb":
+                for name, field in query_details["Data"]["fields"].items():
+                    incoming = cls.__create_field(name, field, provider_name)
+
+                    standard[incoming.name] = (
+                        incoming.name,
+                        incoming.type_,
+                        incoming.default,
+                    )
+            else:
+                for name, field in query_details["Data"]["fields"].items():
+                    if name not in providers["openbb"]["Data"]["fields"]:
+                        incoming = cls.__create_field(name, field, provider_name)
+
+                        if incoming.name in extra:
+                            current = DataclassField(*extra[incoming.name])
+                            updated = cls.__merge_fields(current, incoming)
+                        else:
+                            updated = incoming
+
+                        extra[updated.name] = (
+                            updated.name,
+                            updated.type_,
+                            updated.default,
+                        )
+
+        return standard, extra
+
     def __generate_params_dc(
         self,
     ) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
@@ -237,43 +278,6 @@ class ProviderInterface:
             }
         return result
 
-    @classmethod
-    def __extract_data(
-        cls,
-        providers: Any,
-    ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
-        standard: Dict[str, Tuple[str, Any, Any]] = {}
-        extra: Dict[str, Tuple[str, Any, Any]] = {}
-
-        for provider_name, query_details in providers.items():
-            if provider_name == "openbb":
-                for name, field in query_details["Data"]["fields"].items():
-                    incoming = cls.__create_field(name, field, provider_name)
-
-                    standard[incoming.name] = (
-                        incoming.name,
-                        incoming.type_,
-                        incoming.default,
-                    )
-            else:
-                for name, field in query_details["Data"]["fields"].items():
-                    if name not in providers["openbb"]["Data"]["fields"]:
-                        incoming = cls.__create_field(name, field, provider_name)
-
-                        if incoming.name in extra:
-                            current = DataclassField(*extra[incoming.name])
-                            updated = cls.__merge_fields(current, incoming)
-                        else:
-                            updated = incoming
-
-                        extra[updated.name] = (
-                            updated.name,
-                            updated.type_,
-                            updated.default,
-                        )
-
-        return standard, extra
-
     def __generate_query_providers_dc(self) -> Dict[str, ProviderChoices]:
         """Generate dataclasses for provider choices by query.
 
@@ -284,7 +288,7 @@ class ProviderInterface:
 
         @dataclass
         class StockNews(ProviderChoices):
-            provider: Literal["benzinga", "polygon", "openbb"]
+            provider: Literal["benzinga", "polygon"]
         """
 
         result: Dict = {}
@@ -298,35 +302,6 @@ class ProviderInterface:
                 cls_name=query_name,
                 fields=[("provider", Literal[tuple(choices)])],  # type: ignore
                 bases=(ProviderChoices,),
-            )
-
-        return result
-
-    def __merge_data_dc(self, data: Dict) -> Dict[str, StandardData]:
-        result: Dict = {}
-        for query_name, dataclasses in data.items():
-            standard = dataclasses["standard"]
-            extra = dataclasses["extra"]
-
-            fields = standard.__fields__.copy()
-            fields.update(extra.__fields__)
-
-            fields_dict: Dict[str, Tuple[Any, Any]] = {}
-            for name, field in fields.items():
-                fields_dict[name] = (
-                    field.type_,
-                    Field(
-                        default=field.default, description=field.field_info.description
-                    ),
-                )
-
-            class Config(BaseConfig):
-                extra = Extra.allow
-
-            result[query_name] = create_model(  # type: ignore
-                query_name,
-                __config__=Config,
-                **fields_dict,  # type: ignore
             )
 
         return result
@@ -365,6 +340,38 @@ class ProviderInterface:
                     bases=(ExtraData,),
                 ),
             }
+
+        return result
+
+    def __merge_data_dc(
+        self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]
+    ) -> Dict[str, BaseModel]:
+        """Merge standard data with extra data into a single BaseModel"""
+        result: Dict = {}
+        for query_name, dataclasses in data.items():
+            standard = dataclasses["standard"]
+            extra = dataclasses["extra"]
+
+            fields = standard.__fields__.copy()
+            fields.update(extra.__fields__)
+
+            fields_dict: Dict[str, Tuple[Any, Any]] = {}
+            for name, field in fields.items():
+                fields_dict[name] = (
+                    field.type_,
+                    Field(
+                        default=field.default, description=field.field_info.description
+                    ),
+                )
+
+            class Config(BaseConfig):
+                extra = Extra.allow
+
+            result[query_name] = create_model(  # type: ignore
+                query_name,
+                __config__=Config,
+                **fields_dict,  # type: ignore
+            )
 
         return result
 

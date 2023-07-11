@@ -18,15 +18,18 @@ class CryptoEODQueryParams(QueryParams, BaseSymbol):
     ---------
     symbol : str
         The symbol of the company.
-    start_date : date
+    start_date : Optional[date]
         The start date of the stock data from which to retrieve the data.
     end_date : Optional[date]
         The end date of the stock data up to which to retrieve the data.
     """
 
-    start_date: date = Field(description=DESCRIPTIONS.get("start_date", ""))
+    start_date: Optional[date] = Field(
+        description=DESCRIPTIONS.get("start_date", ""),
+        default=None,
+    )
     end_date: Optional[date] = Field(
-        description=DESCRIPTIONS.get("end_date", ""), default=date.today()
+        description=DESCRIPTIONS.get("end_date", ""), default=None
     )
 
 
