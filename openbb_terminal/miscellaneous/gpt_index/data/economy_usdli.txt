@@ -1,0 +1,30 @@
+parent_command:economy
+usage: usdli [-o {SP500,CBBTCUSD,CBETHUSD,DJCA,DJIA,DJTA,DJUA,NASDAQCOM,NASDAQ100,WILL2500PR,WILL2500PRGR,WILL2500INDGR,WILL2500PRVAL,WILL2500INDVAL,WILL4500PR,WILL5000PR,WILL5000PRFC,WILLLRGCAP,WILLLRGCAPPR,WILLLRGCAPGRPR,WILLLRGCAPVALPR,WILLMIDCAP,WILLMIDCAPPR,WILLMIDCAPGRPR,WILLMIDCAPVALPR,WILLSMLCAP,WILLSMLCAPPR,WILLSMLCAPGR,WILLSMLCAPVAL,WILLMICROCAP,WILLREITIND,WILLRESIPR,DTWEXBGS}]
+             [-s] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw]
+
+The USD Liquidity Index is defined as: [WALCL - WLRRAL - WDTGAL]. It is expressed in billions of USD.
+
+options:
+  -o {SP500,CBBTCUSD,CBETHUSD,DJCA,DJIA,DJTA,DJUA,NASDAQCOM,NASDAQ100,WILL2500PR,WILL2500PRGR,WILL2500INDGR,WILL2500PRVAL,WILL2500INDVAL,WILL4500PR,WILL5000PR,WILL5000PRFC,WILLLRGCAP,WILLLRGCAPPR,WILLLRGCAPGRPR,WILLLRGCAPVALPR,WILLMIDCAP,WILLMIDCAPPR,WILLMIDCAPGRPR,WILLMIDCAPVALPR,WILLSMLCAP,WILLSMLCAPPR,WILLSMLCAPGR,WILLSMLCAPVAL,WILLMICROCAP,WILLREITIND,WILLRESIPR,DTWEXBGS}, --overlay {SP500,CBBTCUSD,CBETHUSD,DJCA,DJIA,DJTA,DJUA,NASDAQCOM,NASDAQ100,WILL2500PR,WILL2500PRGR,WILL2500INDGR,WILL2500PRVAL,WILL2500INDVAL,WILL4500PR,WILL5000PR,WILL5000PRFC,WILLLRGCAP,WILLLRGCAPPR,WILLLRGCAPGRPR,WILLLRGCAPVALPR,WILLMIDCAP,WILLMIDCAPPR,WILLMIDCAPGRPR,WILLMIDCAPVALPR,WILLSMLCAP,WILLSMLCAPPR,WILLSMLCAPGR,WILLSMLCAPVAL,WILLMICROCAP,WILLREITIND,WILLRESIPR,DTWEXBGS}
+                        The equity index to compare against. Set `show = True` for the list of choices. (default: SP500)
+  -s, --show            Show the list of available equity indices to overlay. (default: False)
+  -h, --help            show this help message (default: False)
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
+  --raw                 Flag to display raw data (default: False)
+
+For more information and examples, use 'about usdli' to access the related guide.
+
+
+Examples:
+- display the USD Liquidity Index along with the S&P 500 Index:economy/usdli -o SP500
+- show the list of available equity indices to overlay with the USD Liquidity Index:economy/usdli --show
+- display the USD Liquidity Index along with the NASDAQ Composite Index:economy/usdli -o NASDAQCOM
+- display the USD Liquidity Index along with the Dow Jones Industrial Average (DJIA):economy/usdli --overlay DJIA
+- export raw data of the USD Liquidity Index to a JSON file:economy/usdli --export data.json --raw
+- export raw data of the USD Liquidity Index and overlay with NASDAQ 100 Index into an Excel file with a custom sheet name:economy/usdli -o NASDAQ100 --export data.xlsx --sheet-name LiquidityData --raw
+- display the USD Liquidity Index compared against the Dow Jones Composite Average (DJCA) Index:economy/usdli --overlay DJCA
+- export a graph of the USD Liquidity Index and overlay with the Wilshire 5000 Index to a PNG image:economy/usdli -o WILL5000PR --export graph.png
+- display raw data of the USD Liquidity Index:economy/usdli --raw
+- export raw data of the USD Liquidity Index with an overlay of the Coinbase Bitcoin to USD (CBBTCUSD) index into a CSV file:economy/usdli -o CBBTCUSD --export data.csv --raw
