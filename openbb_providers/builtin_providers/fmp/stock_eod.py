@@ -75,8 +75,8 @@ class FMPStockEODFetcher(
         query: StockEODQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPStockEODQueryParams:
         now = datetime.now()
-        start_date = query.start_date if query.start_date else now
-        end_date = query.end_date if query.end_date else now
+        start_date = query.start_date if query.start_date else now - timedelta(days=1)
+        end_date = query.end_date if query.end_date else now - timedelta(days=1)
         return FMPStockEODQueryParams(
             symbol=query.symbol,
             start_date=start_date,
