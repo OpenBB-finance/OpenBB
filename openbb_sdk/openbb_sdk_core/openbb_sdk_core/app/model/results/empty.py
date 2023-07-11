@@ -1,5 +1,5 @@
-from openbb_sdk_core.app.model.abstract.results import Result
+from openbb_sdk_core.app.model.abstract.results import Results
 
 
-class Empty(Result):
+class Empty(Results):
     pass
