@@ -25,6 +25,7 @@ from uuid import NAMESPACE_DNS, uuid5
 import pandas as pd
 from starlette.routing import BaseRoute
 
+from openbb_sdk_core.app.provider_interface import get_provider_interface
 from openbb_sdk_core.app.router import RouterLoader
 
 
@@ -201,11 +202,174 @@ class ClassDefinition:
         for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)
             if route:
-                code += MethodDefinition.build_command_method(path=route.path, func=route.endpoint)  # type: ignore
+                code += MethodDefinition.build_command_method(
+                    path=route.path,
+                    func=route.endpoint,
+                    query_name=route.openapi_extra.get("query", None)
+                    if route.openapi_extra
+                    else None,
+                )  # type: ignore
             else:
                 code += MethodDefinition.build_class_loader_method(path=child_path)
 
         return code
+
+
+class DocstringGenerator:
+    """Generate docstrings for the commands dynamically."""
+
+    @staticmethod
+    def get_docstrings(query_mapping: dict) -> dict:
+        """Get docstrings from the query mapping.
+
+        Parameter
+        ---------
+            query_mapping (dict): The query mapping.
+
+        Returns
+        -------
+            dict: A dictionary with the docstrings.
+        """
+        mapping = query_mapping.copy()
+        for _, provider_mapping in mapping.items():
+            for _, query_params_mapping in provider_mapping.items():
+                query_params_mapping.pop("fields", None)
+        return mapping
+
+    @staticmethod
+    def clean_provider_docstring(
+        section_name: str, docstring: str, query_name: str
+    ) -> str:
+        """Clean the provider docstring from standard fields.
+
+        Parameter
+        ---------
+            section_name (str): The section name. Should be either "QueryParams" or "Data".
+            docstring (str): The docstring.
+            query_name (str): The query name.
+
+        Returns
+        -------
+            str: The cleaned docstring.
+        """
+        provider_interface = get_provider_interface()
+        if section_name == "QueryParams":
+            standard_fields = provider_interface.params[query_name][
+                "standard"
+            ].__dataclass_fields__.keys()
+        elif section_name == "Data":
+            standard_fields = provider_interface.data[query_name][
+                "standard"
+            ].__dataclass_fields__.keys()
+        else:
+            return docstring
+
+        doc_lines = docstring.split("\n")
+        skip_next_line = False
+        cleaned_lines = []
+
+        for line in doc_lines:
+            if any(word in line for word in standard_fields) or skip_next_line:
+                skip_next_line = not skip_next_line
+                continue
+
+            cleaned_lines.append(line)
+
+        for i, line in enumerate(cleaned_lines):
+            try:
+                if line == "    ---------" and cleaned_lines[i + 1] == "    ":
+                    cleaned_lines[i] = "---------"
+                    cleaned_lines[i + 1] = "    All fields are standardized.\n"
+                    break
+            except IndexError:
+                cleaned_lines.append("    All fields are standardized.\n")
+
+        return "\n".join(cleaned_lines)
+
+    @classmethod
+    def generate_provider_docstrings(
+        cls, docstring: str, docstring_mapping: dict, query_name: str
+    ) -> str:
+        """Generate the docstring for the provider.
+
+        Parameter
+        ----------
+            docstring (str): The docstring.
+            docstring_mapping (dict): The docstring mapping.
+
+        Returns
+        -------
+            str: The final docstring.
+        """
+        for provider, provider_mapping in docstring_mapping.items():
+            docstring += f"\n{provider}"
+            docstring += f"\n{'=' * len(provider)}"
+            for section_name, section_docstring in provider_mapping.items():
+                section_docstring = (
+                    section_docstring["docstring"]
+                    if section_docstring["docstring"]
+                    else "\n    Returns\n-------\n    Documentation not available.\n\n"
+                )
+
+                # clean the docstring from its original indentation
+                if (
+                    "\n    Returns\n-------\n    Documentation not available.\n\n"  # noqa: SIM300
+                    != section_docstring
+                ):
+                    section_docstring = "\n".join(
+                        line[4:] for line in section_docstring.split("\n")[1:]
+                    )
+                    section_docstring = "\n".join(
+                        f"    {line}" for line in section_docstring.split("\n")
+                    )
+
+                    if provider != "Standard":
+                        section_docstring = cls.clean_provider_docstring(
+                            section_name,
+                            docstring=section_docstring,
+                            query_name=query_name,
+                        )
+
+                docstring += f"\n{section_docstring}"
+
+        return docstring
+
+    @classmethod
+    def generate_command_docstring(cls, func, query_name: str):
+        """Generate the docstring for the command.
+
+        Parameter
+        ----------
+            func (function): The command function.
+            query_name (str): The query name.
+
+        Returns
+        -------
+            function: The function with the updated docstring.
+        """
+        provider_interface_mapping = get_provider_interface().map
+        query_mapping = provider_interface_mapping.get(query_name, None)
+        if query_mapping:
+            docstring_mapping = cls.get_docstrings(query_mapping)
+
+            docstring = func.__doc__ or ""
+
+            available_providers = ", ".join(docstring_mapping.keys())
+            available_providers = available_providers.replace("openbb, ", "")
+
+            docstring += f"\n\nAvailable providers: {available_providers}\n"
+
+            docstring_mapping_ordered = {
+                "Standard": docstring_mapping.pop("openbb", None),  # type: ignore
+                **docstring_mapping,
+            }
+
+            docstring = cls.generate_provider_docstrings(
+                docstring, docstring_mapping_ordered, query_name
+            )
+
+            func.__doc__ = docstring
+        return func
 
 
 class MethodDefinition:
@@ -402,13 +566,21 @@ class MethodDefinition:
         return code
 
     @classmethod
-    def build_command_method(cls, path: str, func: Callable) -> str:
+    def build_command_method(
+        cls, path: str, func: Callable, query_name: Optional[str]
+    ) -> str:
         # Name
         func_name = func.__name__
 
         # Parameters
         sig = signature(func)
         parameter_map = dict(sig.parameters)
+
+        # Docstring
+        if query_name:
+            func = DocstringGenerator.generate_command_docstring(
+                func=func, query_name=query_name
+            )
 
         code = cls.build_command_method_signature(
             func_name=func_name,
