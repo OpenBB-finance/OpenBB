@@ -81,7 +81,7 @@ class ProviderInterface:
         return self.__data
 
     @property
-    def merged_data(self) -> Dict[str, StandardData]:
+    def merged_data(self) -> Dict[str, BaseModel]:
         return self.__merged_data
 
     @property
