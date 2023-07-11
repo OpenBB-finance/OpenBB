@@ -3,21 +3,22 @@
 # IMPORT STANDARD
 
 # IMPORT INTERNAL
-from builtin_providers.polygon.balance_sheet import PolygonBalanceSheetFetcher
-from builtin_providers.polygon.cash_flow import PolygonCashFlowStatementFetcher
-from builtin_providers.polygon.crypto_eod import PolygonCryptoEODFetcher
-from builtin_providers.polygon.crypto_price import PolygonCryptoPriceFetcher
-from builtin_providers.polygon.forex_eod import PolygonForexEODFetcher
-from builtin_providers.polygon.forex_price import PolygonForexPriceFetcher
-from builtin_providers.polygon.income_statement import PolygonIncomeStatementFetcher
-from builtin_providers.polygon.major_indices_eod import PolygonMajorIndicesEODFetcher
-from builtin_providers.polygon.major_indices_price import (
+from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
+
+from openbb_polygon.balance_sheet import PolygonBalanceSheetFetcher
+from openbb_polygon.cash_flow import PolygonCashFlowStatementFetcher
+from openbb_polygon.crypto_eod import PolygonCryptoEODFetcher
+from openbb_polygon.crypto_price import PolygonCryptoPriceFetcher
+from openbb_polygon.forex_eod import PolygonForexEODFetcher
+from openbb_polygon.forex_price import PolygonForexPriceFetcher
+from openbb_polygon.income_statement import PolygonIncomeStatementFetcher
+from openbb_polygon.major_indices_eod import PolygonMajorIndicesEODFetcher
+from openbb_polygon.major_indices_price import (
     PolygonMajorIndicesPriceFetcher,
 )
-from builtin_providers.polygon.stock_eod import PolygonStockEODFetcher
-from builtin_providers.polygon.stock_news import PolygonStockNewsFetcher
-from builtin_providers.polygon.stock_price import PolygonStockPriceFetcher
-from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
+from openbb_polygon.stock_eod import PolygonStockEODFetcher
+from openbb_polygon.stock_news import PolygonStockNewsFetcher
+from openbb_polygon.stock_price import PolygonStockPriceFetcher
 
 # IMPORT THIRD-PARTY
 

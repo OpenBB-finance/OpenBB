@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from builtin_extensions.common.ta.ta_helpers import calculate_fib_levels
 from charting_extensions.openbb_custom.infrastructure.config.openbb_styles import (
     PLT_FIB_COLORWAY,
 )
@@ -11,6 +10,7 @@ from charting_extensions.openbb_custom.infrastructure.plotly_ta.base import (
     PltTA,
     indicator,
 )
+from openbb_ta.ta_helpers import calculate_fib_levels
 
 
 class Custom(PltTA):

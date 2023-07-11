@@ -1,14 +1,6 @@
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 """Stocks Router."""
 
-from builtin_extensions.stocks.ca.ca_router import router as ca_router
-from builtin_extensions.stocks.dd.dd_router import router as dd_router
-from builtin_extensions.stocks.disc.disc_router import router as disc_router
-from builtin_extensions.stocks.dps.dps_router import router as dps_router
-from builtin_extensions.stocks.fa.fa_router import router as fa_router
-from builtin_extensions.stocks.gov.gov_router import router as gov_router
-from builtin_extensions.stocks.ins.ins_router import router as ins_router
-from builtin_extensions.stocks.options.options_router import router as options_router
 from openbb_sdk_core.app.model.command_context import CommandContext
 from openbb_sdk_core.app.model.command_output import CommandOutput
 from openbb_sdk_core.app.model.results.empty import Empty
@@ -20,6 +12,15 @@ from openbb_sdk_core.app.provider_interface import (
 from openbb_sdk_core.app.query import Query
 from openbb_sdk_core.app.router import Router
 from pydantic import BaseModel
+
+from openbb_stocks.ca.ca_router import router as ca_router
+from openbb_stocks.dd.dd_router import router as dd_router
+from openbb_stocks.disc.disc_router import router as disc_router
+from openbb_stocks.dps.dps_router import router as dps_router
+from openbb_stocks.fa.fa_router import router as fa_router
+from openbb_stocks.gov.gov_router import router as gov_router
+from openbb_stocks.ins.ins_router import router as ins_router
+from openbb_stocks.options.options_router import router as options_router
 
 router = Router(prefix="")
 router.include_router(fa_router)

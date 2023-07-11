@@ -4,8 +4,6 @@
 from datetime import datetime
 from typing import Dict, List, Literal, Optional
 
-from builtin_providers.polygon.helpers import get_data
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.stock_news import StockNewsData, StockNewsQueryParams
@@ -14,6 +12,8 @@ from openbb_provider.provider.provider_helpers import data_transformer, get_quer
 
 # IMPORT THIRD-PARTY
 from pydantic import BaseModel, Field
+
+from openbb_polygon.helpers import get_data
 
 
 class PolygonStockNewsQueryParams(QueryParams):

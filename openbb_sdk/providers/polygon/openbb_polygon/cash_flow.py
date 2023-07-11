@@ -5,9 +5,6 @@ from datetime import (
 )
 from typing import Dict, List, Optional
 
-from builtin_providers.polygon.helpers import get_data
-from builtin_providers.polygon.types import PolygonFundamentalQueryParams
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data
 from openbb_provider.model.data.cash_flows import (
@@ -19,6 +16,9 @@ from openbb_provider.provider.provider_helpers import data_transformer, get_quer
 
 # IMPORT THIRD-PARTY
 from pydantic import Field
+
+from openbb_polygon.helpers import get_data
+from openbb_polygon.types import PolygonFundamentalQueryParams
 
 # noqa: E501
 

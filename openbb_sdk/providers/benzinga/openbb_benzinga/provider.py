@@ -5,9 +5,10 @@
 # IMPORT THIRD-PARTY
 
 # IMPORT INTERNAL
-from builtin_providers.benzinga.global_news import BenzingaGlobalNewsFetcher
-from builtin_providers.benzinga.stock_news import BenzingaStockNewsFetcher
 from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
+
+from openbb_benzinga.global_news import BenzingaGlobalNewsFetcher
+from openbb_benzinga.stock_news import BenzingaStockNewsFetcher
 
 # mypy: disable-error-code="list-item"
 

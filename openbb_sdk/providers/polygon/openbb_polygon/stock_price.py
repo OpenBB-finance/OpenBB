@@ -4,9 +4,6 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from builtin_providers.polygon.helpers import get_data
-from builtin_providers.polygon.types import BaseStockData, BaseStockQueryParams
-
 # IMPORT INTERNAL
 from openbb_provider.model.data.stock_price import StockPriceData, StockPriceQueryParams
 from openbb_provider.provider.abstract.fetcher import Fetcher
@@ -14,6 +11,9 @@ from openbb_provider.provider.provider_helpers import data_transformer
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
+
+from openbb_polygon.helpers import get_data
+from openbb_polygon.types import BaseStockData, BaseStockQueryParams
 
 
 class PolygonStockPriceQueryParams(BaseStockQueryParams):
