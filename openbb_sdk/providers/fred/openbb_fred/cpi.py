@@ -3,14 +3,14 @@
 # IMPORT STANDARD
 from typing import Dict, List, Optional
 
-from builtin_providers.fred.fred_base import Fred
-from builtin_providers.fred.fred_helpers import all_cpi_options
-
 # IMPORT THIRD-PARTY
 # IMPORT INTERNAL
 from openbb_provider.model.data.cpi import CPIData, CPIDataPoint, CPIQueryParams
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
+
+from openbb_fred.fred_base import Fred
+from openbb_fred.fred_helpers import all_cpi_options
 
 
 class FREDCPIQueryParams(CPIQueryParams):

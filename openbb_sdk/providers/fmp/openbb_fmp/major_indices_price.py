@@ -4,8 +4,6 @@
 from enum import Enum
 from typing import Dict, List, Optional
 
-from builtin_providers.fmp.helpers import BaseStockPriceData, create_url, get_data_many
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import QueryParams
 from openbb_provider.model.data.major_indices_price import (
@@ -17,6 +15,8 @@ from openbb_provider.provider.provider_helpers import data_transformer
 
 # IMPORT THIRD-PARTY
 from pydantic import Field
+
+from openbb_fmp.helpers import BaseStockPriceData, create_url, get_data_many
 
 
 class Interval(str, Enum):

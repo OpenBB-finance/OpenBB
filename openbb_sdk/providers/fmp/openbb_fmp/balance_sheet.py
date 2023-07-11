@@ -7,8 +7,6 @@ from datetime import (
 )
 from typing import Dict, List, Literal, Optional
 
-from builtin_providers.fmp.helpers import create_url, get_data_many
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.balance_sheet import (
@@ -19,6 +17,8 @@ from openbb_provider.provider.abstract.fetcher import Fetcher
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeInt, root_validator
+
+from openbb_fmp.helpers import create_url, get_data_many
 
 
 class FMPBalanceSheetQueryParams(QueryParams):

@@ -4,8 +4,6 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from builtin_providers.fmp.helpers import create_url, get_data
-
 # IMPORT INTERNAL
 from openbb_provider.model.data.revenue_business_line import (
     RevenueBusinessLineData,
@@ -16,6 +14,8 @@ from openbb_provider.provider.provider_helpers import data_transformer
 
 # IMPORT THIRD-PARTY
 from pydantic import validator
+
+from openbb_fmp.helpers import create_url, get_data
 
 # This part is only provided by FMP and not by the other providers for now.
 

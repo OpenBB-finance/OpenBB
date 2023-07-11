@@ -7,15 +7,15 @@ from datetime import (
 )
 from typing import Dict, List, Optional
 
-# IMPORT THIRD-PARTY
-from builtin_providers.fmp.helpers import create_url, get_data_many
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data
 from openbb_provider.model.data.sec_filings import SECFilingsData, SECFilingsQueryParams
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
 from pydantic import validator
+
+# IMPORT THIRD-PARTY
+from openbb_fmp.helpers import create_url, get_data_many
 
 
 class FMPSECFilingsQueryParams(SECFilingsQueryParams):

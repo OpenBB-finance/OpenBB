@@ -7,8 +7,6 @@ from datetime import (
 )
 from typing import Dict, List, Optional
 
-from builtin_providers.fmp.helpers import create_url, get_data_many
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
@@ -21,6 +19,8 @@ from openbb_provider.provider.provider_helpers import data_transformer
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, validator
+
+from openbb_fmp.helpers import create_url, get_data_many
 
 
 class FMPInstitutionalOwnershipQueryParams(QueryParams, BaseSymbol):

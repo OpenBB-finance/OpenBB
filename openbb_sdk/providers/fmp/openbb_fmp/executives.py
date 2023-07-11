@@ -4,9 +4,6 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-# IMPORT THIRD-PARTY
-from builtin_providers.fmp.helpers import get_data
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
@@ -16,6 +13,9 @@ from openbb_provider.model.data.key_executives import (
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
+
+# IMPORT THIRD-PARTY
+from openbb_fmp.helpers import get_data
 
 
 class FMPKeyExecutivesQueryParams(QueryParams, BaseSymbol):

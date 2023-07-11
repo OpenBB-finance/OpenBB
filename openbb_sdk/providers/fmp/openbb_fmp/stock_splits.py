@@ -4,9 +4,6 @@
 from datetime import date
 from typing import Dict, List, Optional
 
-# IMPORT THIRD-PARTY
-from builtin_providers.fmp.helpers import create_url, get_data_many
-
 # IMPORT INTERNAL
 from openbb_provider.model.data.stock_splits import (
     StockSplitCalendarData,
@@ -14,6 +11,9 @@ from openbb_provider.model.data.stock_splits import (
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
+
+# IMPORT THIRD-PARTY
+from openbb_fmp.helpers import create_url, get_data_many
 
 
 class FMPStockSplitCalendarQueryParams(StockSplitCalendarQueryParams):

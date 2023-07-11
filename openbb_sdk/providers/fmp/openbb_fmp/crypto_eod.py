@@ -4,8 +4,6 @@
 from datetime import date, datetime
 from typing import Dict, List, Literal, Optional
 
-from builtin_providers.fmp.helpers import get_data_many
-
 # IMPORT INTERNAL
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.crypto_eod import CryptoEODData, CryptoEODQueryParams
@@ -14,6 +12,8 @@ from openbb_provider.provider.provider_helpers import data_transformer, get_quer
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeInt, validator
+
+from openbb_fmp.helpers import get_data_many
 
 
 class FMPCryptoEODQueryParams(QueryParams):

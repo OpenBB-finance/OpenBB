@@ -3,8 +3,9 @@
 # IMPORT STANDARD
 # IMPORT THIRD-PARTY
 # IMPORT INTERNAL
-from builtin_providers.fred.cpi import FREDCPIFetcher
 from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
+
+from openbb_fred.cpi import FREDCPIFetcher
 
 # mypy: disable-error-code="list-item"
 
