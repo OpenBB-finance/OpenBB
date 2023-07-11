@@ -239,7 +239,18 @@ class DocstringGenerator:
     def clean_provider_docstring(
         section_name: str, docstring: str, query_name: str
     ) -> str:
-        """Clean the provider docstring from standard fields."""
+        """Clean the provider docstring from standard fields.
+
+        Parameter
+        ---------
+            section_name (str): The section name. Should be either "QueryParams" or "Data".
+            docstring (str): The docstring.
+            query_name (str): The query name.
+
+        Returns
+        -------
+            str: The cleaned docstring.
+        """
         provider_interface = get_provider_interface()
         if section_name == "QueryParams":
             standard_fields = provider_interface.params[query_name][
@@ -287,7 +298,7 @@ class DocstringGenerator:
                 section_docstring = (
                     section_docstring["docstring"]
                     if section_docstring["docstring"]
-                    else "\n    Returns\n-------\n    Documentation not available.\n\n"
+                    else "\n    Returns\n-------\n        Documentation not available.\n\n"
                 )
 
                 # clean the docstring from its original indentation
@@ -302,8 +313,6 @@ class DocstringGenerator:
                         f"    {line}" for line in section_docstring.split("\n")
                     )
 
-                    # TODO: Clean the provider specific docstring from standard fields
-                    # check if we are on the first provider and skip the cleaning
                     if provider != "Standard":
                         section_docstring = cls.clean_provider_docstring(
                             section_name,
@@ -332,7 +341,6 @@ class DocstringGenerator:
 
         query_mapping = provider_interface_mapping.get(query_name, None)
         if query_mapping:
-            # call the get_docstrings function
             docstring_mapping = cls.get_docstrings(query_mapping)
 
             docstring = func.__doc__ or ""
