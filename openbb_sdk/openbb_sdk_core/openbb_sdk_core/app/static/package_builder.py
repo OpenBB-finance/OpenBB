@@ -262,7 +262,7 @@ class DocstringGenerator:
                 "standard"
             ].__dataclass_fields__.keys()
         else:
-            standard_fields = []  # type: ignore
+            return docstring
 
         doc_lines = docstring.split("\n")
         skip_next_line = False
