@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "openbb-benzinga"
+version = "0.1.1"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_benzinga" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openbb-provider = { path = "../../core/provider" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+benzinga = "openbb_benzinga.provider:benzinga_provider"
+# fmp = "builtin_providers.fmp.provider:fmp_provider"
+# polygon = "builtin_providers.polygon.provider:polygon_provider"
+# fred = "builtin_providers.fred.provider:fred_provider"

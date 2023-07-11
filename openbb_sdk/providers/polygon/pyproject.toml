@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-polygon"
+version = "0.1.1"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_polygon" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openbb-provider = { path = "../../core/provider" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+polygon = "openbb_polygon.provider:polygon_provider"
