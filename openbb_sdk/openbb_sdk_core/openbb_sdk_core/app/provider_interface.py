@@ -47,7 +47,7 @@ class ProviderInterface:
         Dictionary of provider choices by query.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
         Dictionary of params by query.
-    merged_data : Dict[str, StandardData]
+    merged_data : Dict[str, BaseModel]
         Dictionary of data by query.
     providers_literal : type
         Literal of provider names.
