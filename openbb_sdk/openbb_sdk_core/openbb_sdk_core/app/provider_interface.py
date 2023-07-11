@@ -290,7 +290,7 @@ class ProviderInterface:
 
         @dataclass
         class StockNews(ProviderChoices):
-            provider: Literal["benzinga", "polygon", "openbb"]
+            provider: Literal["benzinga", "polygon"]
         """
 
         result: Dict = {}
@@ -304,35 +304,6 @@ class ProviderInterface:
                 cls_name=query_name,
                 fields=[("provider", Literal[tuple(choices)])],  # type: ignore
                 bases=(ProviderChoices,),
-            )
-
-        return result
-
-    def __merge_data_dc(self, data: Dict) -> Dict[str, StandardData]:
-        result: Dict = {}
-        for query_name, dataclasses in data.items():
-            standard = dataclasses["standard"]
-            extra = dataclasses["extra"]
-
-            fields = standard.__fields__.copy()
-            fields.update(extra.__fields__)
-
-            fields_dict: Dict[str, Tuple[Any, Any]] = {}
-            for name, field in fields.items():
-                fields_dict[name] = (
-                    field.type_,
-                    Field(
-                        default=field.default, description=field.field_info.description
-                    ),
-                )
-
-            class Config(BaseConfig):
-                extra = Extra.allow
-
-            result[query_name] = create_model(  # type: ignore
-                query_name,
-                __config__=Config,
-                **fields_dict,  # type: ignore
             )
 
         return result
@@ -371,6 +342,36 @@ class ProviderInterface:
                     bases=(ExtraData,),
                 ),
             }
+
+        return result
+
+    def __merge_data_dc(self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]) -> Dict[str, BaseModel]:
+        """Merge standard data with extra data into a single BaseModel"""
+        result: Dict = {}
+        for query_name, dataclasses in data.items():
+            standard = dataclasses["standard"]
+            extra = dataclasses["extra"]
+
+            fields = standard.__fields__.copy()
+            fields.update(extra.__fields__)
+
+            fields_dict: Dict[str, Tuple[Any, Any]] = {}
+            for name, field in fields.items():
+                fields_dict[name] = (
+                    field.type_,
+                    Field(
+                        default=field.default, description=field.field_info.description
+                    ),
+                )
+
+            class Config(BaseConfig):
+                extra = Extra.allow
+
+            result[query_name] = create_model(  # type: ignore
+                query_name,
+                __config__=Config,
+                **fields_dict,  # type: ignore
+            )
 
         return result
 
