@@ -19,10 +19,8 @@ class StockEODQueryParams(QueryParams, BaseSymbol):
         The symbol of the company.
     start_date : Optional[date]
         The start date of the stock data from which to retrieve the data.
-        If None, defaults to yesterday.
     end_date : Optional[date]
         The end date of the stock data up to which to retrieve the data.
-        If None, defaults to today.
     """
 
     start_date: Optional[date] = Field(

@@ -75,7 +75,7 @@ class FMPForexEODFetcher(
         query: ForexEODQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPForexEODQueryParams:
         now = datetime.now()
-        start_date = query.start_date if query.start_date else now - timedelta(days=1)
+        start_date = query.start_date if query.start_date else now
         end_date = query.end_date if query.end_date else now
         return FMPForexEODQueryParams(
             symbol=query.symbol,
