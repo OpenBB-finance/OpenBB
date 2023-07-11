@@ -274,6 +274,14 @@ class DocstringGenerator:
 
             cleaned_lines.append(line)
 
+        for i, line in enumerate(cleaned_lines):
+            try:
+                if line == "    ---------" and cleaned_lines[i + 1] == "    ":
+                    cleaned_lines[i + 1] = "    All fields are standardized."
+                    break
+            except IndexError:
+                cleaned_lines.append("    All fields are standardized.")
+
         return "\n".join(cleaned_lines)
 
     @classmethod
@@ -298,12 +306,12 @@ class DocstringGenerator:
                 section_docstring = (
                     section_docstring["docstring"]
                     if section_docstring["docstring"]
-                    else "\n    Returns\n-------\n        Documentation not available.\n\n"
+                    else "\n    Returns\n-------\n    Documentation not available.\n\n"
                 )
 
                 # clean the docstring from its original indentation
                 if (
-                    "\n    Returns\n    -------\n    Documentation not available.\n\n"  # noqa: SIM300
+                    "\n    Returns\n-------\n    Documentation not available.\n\n"  # noqa: SIM300
                     != section_docstring
                 ):
                     section_docstring = "\n".join(
