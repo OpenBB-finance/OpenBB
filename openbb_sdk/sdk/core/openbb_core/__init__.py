@@ -1,2 +1,2 @@
 # flake8: noqa
-from openbb_core.app.static.command_runner_wrapper import app as openbb
+from openbb_core.app.static.app_factory import app as openbb

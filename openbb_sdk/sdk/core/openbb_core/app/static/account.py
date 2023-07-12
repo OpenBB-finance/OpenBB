@@ -10,7 +10,7 @@ from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.user_service import UserService
 
 if TYPE_CHECKING:
-    from openbb_core.app.static.command_runner_wrapper import CommandRunnerWrapper
+    from openbb_core.app.static.app_factory import App
 
 
 class OpenBBError(Exception):
@@ -18,8 +18,8 @@ class OpenBBError(Exception):
 
 
 class Account:
-    def __init__(self, wrapper: "CommandRunnerWrapper"):
-        self._wrapper = wrapper
+    def __init__(self, app: "App"):
+        self._app = app
 
     def create_hub_manager(
         self,
@@ -29,7 +29,7 @@ class Account:
     ) -> HubManager:
         if email is None and password is None and sdk_token is None:
             session_file = Path(
-                self._wrapper.system.openbb_directory, ".sdk_hub_session.json"
+                self._app.system.openbb_directory, ".sdk_hub_session.json"
             )
             if not session_file.exists():
                 raise OpenBBError("Session not found.")
@@ -71,15 +71,11 @@ class Account:
         """
         hm = self.create_hub_manager(email, password, sdk_token)
         incoming = hm.pull()
-        self._wrapper._command_runner_session = CommandRunnerSession(
-            user_settings=incoming
-        )
+        self._app._command_runner_session = CommandRunnerSession(user_settings=incoming)
         if remember_me:
-            Path(self._wrapper.system.openbb_directory).mkdir(
-                parents=False, exist_ok=True
-            )
+            Path(self._app.system.openbb_directory).mkdir(parents=False, exist_ok=True)
             session_file = Path(
-                self._wrapper.system.openbb_directory, ".sdk_hub_session.json"
+                self._app.system.openbb_directory, ".sdk_hub_session.json"
             )
             with open(session_file, "w") as f:
                 if not hm.session:
@@ -87,7 +83,7 @@ class Account:
 
                 json.dump(hm.session.dict(), f, indent=4)
 
-        return self._wrapper._command_runner_session.user_settings
+        return self._app._command_runner_session.user_settings
 
     def save(self) -> UserSettings:
         """Save user settings.
@@ -98,16 +94,16 @@ class Account:
             User settings: profile, credentials, preferences
         """
         hub_session = (
-            self._wrapper._command_runner_session.user_settings.profile.hub_session
+            self._app._command_runner_session.user_settings.profile.hub_session
         )
         if not hub_session:
             UserService.write_default_user_settings(
-                self._wrapper._command_runner_session.user_settings
+                self._app._command_runner_session.user_settings
             )
         else:
             hm = HubManager(hub_session)
-            hm.push(self._wrapper._command_runner_session.user_settings)
-        return self._wrapper._command_runner_session.user_settings
+            hm.push(self._app._command_runner_session.user_settings)
+        return self._app._command_runner_session.user_settings
 
     def refresh(self) -> UserSettings:
         """Refresh user settings.
@@ -118,18 +114,18 @@ class Account:
             User settings: profile, credentials, preferences
         """
         hub_session = (
-            self._wrapper._command_runner_session.user_settings.profile.hub_session
+            self._app._command_runner_session.user_settings.profile.hub_session
         )
         if not hub_session:
-            self._wrapper._command_runner_session = CommandRunnerSession()
+            self._app._command_runner_session = CommandRunnerSession()
         else:
             hm = HubManager(hub_session)
             user_settings = hm.pull()
-            user_settings.id = self._wrapper._command_runner_session.user_settings.id
-            self._wrapper._command_runner_session = CommandRunnerSession(
+            user_settings.id = self._app._command_runner_session.user_settings.id
+            self._app._command_runner_session = CommandRunnerSession(
                 user_settings=user_settings
             )
-        return self._wrapper._command_runner_session.user_settings
+        return self._app._command_runner_session.user_settings
 
     def logout(self) -> UserSettings:
         """Logout from hub.
@@ -140,7 +136,7 @@ class Account:
             User settings: profile, credentials, preferences
         """
         hub_session = (
-            self._wrapper._command_runner_session.user_settings.profile.hub_session
+            self._app._command_runner_session.user_settings.profile.hub_session
         )
         if not hub_session:
             raise OpenBBError("Not connected to hub.")
@@ -148,11 +144,9 @@ class Account:
         hm = HubManager(hub_session)
         hm.disconnect()
 
-        session_file = Path(
-            self._wrapper.system.openbb_directory, ".sdk_hub_session.json"
-        )
+        session_file = Path(self._app.system.openbb_directory, ".sdk_hub_session.json")
         if session_file.exists():
             session_file.unlink()
 
-        self._wrapper._command_runner_session = CommandRunnerSession()
-        return self._wrapper._command_runner_session.user_settings
+        self._app._command_runner_session = CommandRunnerSession()
+        return self._app._command_runner_session.user_settings

@@ -17,7 +17,7 @@ def run_async(func: Callable, *args, **kwargs):
 
 
 def create_app():
-    return CommandRunnerWrapper(command_runner_session=CommandRunnerSession())
+    return App(command_runner_session=CommandRunnerSession())
 
 
 try:
@@ -34,10 +34,11 @@ try:
     )
 except ImportError:
     app = None
+    raise
 else:
 
-    class CommandRunnerWrapper(CLASS_4ebd0208_8328_5d69_8c44_ec50939c0967):
-        """CommandRunnerWrapper class."""
+    class App(CLASS_4ebd0208_8328_5d69_8c44_ec50939c0967):
+        """App class."""
 
         def __init__(self, command_runner_session):
             self._command_runner_session = command_runner_session
