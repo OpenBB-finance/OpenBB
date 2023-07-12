@@ -85,7 +85,7 @@ class FMPCashFlowStatementData(Data):
     commonStockIssued: Optional[int]
     commonStockRepurchased: Optional[int]
     dividendsPaid: Optional[int]
-    otherFinancingActivites: Optional[int]
+    otherFinancingActivites: Optional[int] = Field(alias="other_financing_activities")
     netCashUsedProvidedByFinancingActivities: Optional[int] = Field(
         alias="net_cash_flow_from_financing_activities"
     )

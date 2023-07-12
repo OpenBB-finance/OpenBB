@@ -65,8 +65,8 @@ class CashFlowStatementData(Data):
         The common stock repurchased.
     debt_repayment : Optional[int]
         The debt repayment.
-    other_financing_activites : Optional[int]
-        The other financing activites.
+    other_financing_activities : Optional[int]
+        The other financing activities.
     net_cash_flow_from_financing_activities : Optional[int]
         The net cash flow from financing activities.
     net_cash_flow : Optional[int]
@@ -107,7 +107,7 @@ class CashFlowStatementData(Data):
     common_stock_repurchased: Optional[int]
     debt_repayment: Optional[int]
 
-    other_financing_activites: Optional[int]
+    other_financing_activities: Optional[int]
     # REPAYMENT OF COMMERCIAL PAPER
     # OTHER
 
