@@ -385,7 +385,7 @@ files = [
 ]
 
 [[package]]
-name = "openbb-sdk-core"
+name = "openbb-core"
 version = "0.2.0"
 description = ""
 optional = false
@@ -397,6 +397,7 @@ develop = false
 bcrypt = "^4.0.1"
 fastapi = "^0.95.2"
 html5lib = "^1.1"
+openbb-provider = {path = "../provider"}
 pandas = "^1.5.3"
 passlib = "^1.7.4"
 posthog = "^3.0.1"
@@ -411,7 +412,25 @@ websockets = "^10.4"
 
 [package.source]
 type = "directory"
-url = "../../core/sdk"
+url = "../../sdk/core"
+
+[[package]]
+name = "openbb-provider"
+version = "0.2.0"
+description = ""
+optional = false
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+pydantic = {version = "^1.10", extras = ["dotenv"]}
+requests = "^2.31.0"
+urllib3 = "<2.0.0"
+
+[package.source]
+type = "directory"
+url = "../../sdk/provider"
 
 [[package]]
 name = "pandas"
@@ -558,6 +577,7 @@ files = [
 ]
 
 [package.dependencies]
+python-dotenv = {version = ">=0.10.4", optional = true, markers = "extra == \"dotenv\""}
 typing-extensions = ">=4.2.0"
 
 [package.extras]
@@ -671,6 +691,20 @@ files = [
 
 [package.dependencies]
 six = ">=1.5"
+
+[[package]]
+name = "python-dotenv"
+version = "1.0.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
+    {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
 
 [[package]]
 name = "python-jose"
@@ -941,4 +975,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "10ff1cc7143a7f206d554a68853872726cadcdb84164cfdfabc109a5e7fdfc15"
+content-hash = "ed5c1001c4f47bae1cfde8d8509294643e3b3ea101a8482c3f0248085360bb18"

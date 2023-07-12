@@ -8,7 +8,7 @@ packages = [{ include = "openbb_economy" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-sdk-core = { path = "../../core/sdk" }
+openbb-core = { path = "../../sdk/core" }
 
 [build-system]
 requires = ["poetry-core"]

@@ -4,8 +4,22 @@ import numpy as np
 import pandas as pd
 import pandas_ta as ta
 import statsmodels.api as sm
-from builtin_extensions.common.qa.qa_helpers import get_fama_raw
-from builtin_extensions.common.qa.qa_models import (
+from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.results.empty import Empty
+from openbb_core.app.router import Router
+from openbb_core.app.utils import (
+    basemodel_to_df,
+    df_to_basemodel,
+    get_target_column,
+    get_target_columns,
+)
+from openbb_provider.model.abstract.data import Data
+from pydantic import NonNegativeFloat, PositiveInt
+from scipy import stats
+from statsmodels.tsa import stattools
+
+from .qa_helpers import get_fama_raw
+from .qa_models import (
     ADFTestModel,
     CAPMModel,
     KPSSTestModel,
@@ -15,19 +29,6 @@ from builtin_extensions.common.qa.qa_models import (
     TestModel,
     UnitRootModel,
 )
-from openbb_provider.model.abstract.data import Data
-from openbb_sdk_core.app.model.command_output import CommandOutput
-from openbb_sdk_core.app.model.results.empty import Empty
-from openbb_sdk_core.app.router import Router
-from openbb_sdk_core.app.utils import (
-    basemodel_to_df,
-    df_to_basemodel,
-    get_target_column,
-    get_target_columns,
-)
-from pydantic import NonNegativeFloat, PositiveInt
-from scipy import stats
-from statsmodels.tsa import stattools
 
 router = Router(prefix="")
 

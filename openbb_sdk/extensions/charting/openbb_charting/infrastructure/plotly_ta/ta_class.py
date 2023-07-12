@@ -11,7 +11,7 @@ from charting_extensions.openbb_custom.infrastructure.plotly_helper import (
     OpenBBFigure,
     theme,
 )
-from openbb_sdk_core.app.paths import REPOSITORY_DIRECTORY
+from openbb_core.app.paths import REPOSITORY_DIRECTORY
 
 from .base import PltTA
 from .data_classes import ChartIndicators

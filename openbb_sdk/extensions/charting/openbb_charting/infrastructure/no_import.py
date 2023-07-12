@@ -3,7 +3,7 @@ from queue import Queue
 from typing import List
 
 import dotenv
-from openbb_sdk_core.app.paths import SETTINGS_ENV_FILE
+from openbb_core.app.paths import SETTINGS_ENV_FILE
 
 pywry_missing = """
 [red]PyWry is not installed or missing required linux dependencies.[/]

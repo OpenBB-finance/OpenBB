@@ -8,8 +8,8 @@ packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-provider = { path = "./core/provider" }
-openbb-sdk-core = { path = "./core/sdk" }
+openbb-provider = { path = "./sdk/provider" }
+openbb-core = { path = "./sdk/core" }
 openbb-stocks = { path = "./extensions/stocks" }
 openbb-crypto = { path = "./extensions/crypto" }
 openbb-forex = { path = "./extensions/forex" }

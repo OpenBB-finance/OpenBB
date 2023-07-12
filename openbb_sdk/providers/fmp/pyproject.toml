@@ -8,7 +8,7 @@ packages = [{ include = "openbb_fmp" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-provider = { path = "../../core/provider" }
+openbb-provider = { path = "../../sdk/provider" }
 
 [build-system]
 requires = ["poetry-core"]

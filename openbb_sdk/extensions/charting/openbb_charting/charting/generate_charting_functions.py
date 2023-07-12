@@ -1,14 +1,14 @@
 from inspect import getmembers, isfunction
 from typing import List
 
-from openbb_sdk_core.app.router import RouterLoader
+from openbb_core.app.router import RouterLoader
 
-CHARTING_ROUTER = "charting_extensions/openbb_custom/charting/charting_router.py"
+CHARTING_ROUTER = "./charting_router.py"
 
 
 def get_routes() -> List[str]:
     router = RouterLoader.from_plugins()
-    return [route.path for route in router.api_router.routes]
+    return [route.path for route in router.api_router.routes]  # type: ignore
 
 
 def create_charting_functions_w_routes(routes_to_add: List[str]):
@@ -25,9 +25,7 @@ def {route}(**kwargs):
 
 
 def get_charting_functions() -> List[str]:
-    from charting_extensions.openbb_custom.charting import (  # pylint: disable=import-outside-toplevel
-        charting_router,
-    )
+    from . import charting_router  # pylint: disable=import-outside-toplevel
 
     functions = getmembers(charting_router, isfunction)
     if functions:

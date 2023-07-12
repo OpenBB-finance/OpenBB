@@ -8,7 +8,7 @@ packages = [{ include = "openbb_ta" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"  # scipy forces python <4.0 explicitly
-openbb-sdk-core = { path = "../../core/sdk" }
+openbb-core = { path = "../../sdk/core" }
 scipy = "^1.10.1"
 statsmodels = "^0.14.0"
 

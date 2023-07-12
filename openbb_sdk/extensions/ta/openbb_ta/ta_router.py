@@ -1,18 +1,18 @@
 from typing import List, Literal, Optional
 
 import pandas as pd
-from openbb_provider.model.abstract.data import Data
-from openbb_sdk_core.app.model.command_output import CommandOutput
-from openbb_sdk_core.app.model.export.plotly import Plotly
-from openbb_sdk_core.app.model.results.empty import Empty
-from openbb_sdk_core.app.router import Router
-from openbb_sdk_core.app.utils import (
+from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.export.plotly import Plotly
+from openbb_core.app.model.results.empty import Empty
+from openbb_core.app.router import Router
+from openbb_core.app.utils import (
     basemodel_to_df,
     df_to_basemodel,
     get_target_column,
     get_target_columns,
 )
-from openbb_sdk_core.plots.plots import YTimeSeries, plot_timeseries
+from openbb_core.plots.plots import YTimeSeries, plot_timeseries
+from openbb_provider.model.abstract.data import Data
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 
 from . import ta_helpers
@@ -60,7 +60,7 @@ def atr(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> atr_data = openbb.ta.atr(data=stock_data.results)
     """
@@ -104,7 +104,7 @@ def fib(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> fib_data = openbb.ta.fib(data=stock_data.results, period=120)
     """
@@ -168,7 +168,7 @@ def obv(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> obv_data = openbb.ta.obv(data=stock_data.results, offset=0)
     """
@@ -214,7 +214,7 @@ def fisher(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> fisher_data = openbb.ta.fisher(data=stock_data.results, length=14, signal=1)
     """
@@ -262,7 +262,7 @@ def adosc(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> adosc_data = openbb.ta.adosc(data=stock_data.results, fast=3, slow=10, offset=0)
     """
@@ -331,7 +331,7 @@ def bbands(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> bbands = openbb.ta.bbands(data=stock_data.results, column="close", length=50, std=2, mamode="sma", offset=0)
     """
@@ -393,7 +393,7 @@ def zlma(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> zlma_data = openbb.ta.zlma(data=stock_data.results, column="close", length=50, offset=0)
     """
@@ -465,7 +465,7 @@ def aroon(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> aroon_data = openbb.ta.aroon(data=stock_data.results, length=25, scalar=100)
     """
@@ -541,7 +541,7 @@ def sma(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> sma_data = openbb.ta.sma(data=stock_data.results,column="close",length=50,offset=0)
     """
@@ -610,7 +610,7 @@ def demark(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> demark_data = openbb.ta.demark(data=stock_data.results,offset=0)
     """
@@ -657,7 +657,7 @@ def vwap(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> vwap_data = openbb.ta.vwap(data=stock_data.results,anchor="D",offset=0)
     """
@@ -721,7 +721,7 @@ def macd(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> macd_data = openbb.ta.macd(data=stock_data.results,column="close",fast=12,slow=26,signal=9)
     """
@@ -792,7 +792,7 @@ def hma(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> hma_data = openbb.ta.hma(data=stock_data.results,column="close",length=50,offset=0)
     """
@@ -863,7 +863,7 @@ def donchian(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> donchian_data = openbb.ta.donchian(data=stock_data.results,lower_length=20,upper_length=20,offset=0)
     """
@@ -961,7 +961,7 @@ def clenow(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> clenow_data = openbb.ta.clenow(data=stock_data.results,period=90)
     """
@@ -1016,7 +1016,7 @@ def ad(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> ad_data = openbb.ta.ad(data=stock_data.results,offset=0)
     """
@@ -1063,7 +1063,7 @@ def adx(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> adx_data = openbb.ta.adx(data=stock_data.results,length=50,scalar=100.0,drift=1)
     """
@@ -1136,7 +1136,7 @@ def wma(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> wma_data = openbb.ta.wma(data=stock_data.results, column="close", length=50, offset=0)
     """
@@ -1249,7 +1249,7 @@ def rsi(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> rsi_data = openbb.ta.rsi(data=stock_data.results, column="close", length=14, scalar=100.0, drift=1)
     """
@@ -1332,7 +1332,7 @@ def stoch(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> stoch_data = openbb.ta.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)
     """
@@ -1399,7 +1399,7 @@ def kc(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> kc_data = openbb.ta.kc(data=stock_data.results, length=20, scalar=20, ma_mode="ema", offset=0)
     """
@@ -1447,7 +1447,7 @@ def cg(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> cg_data = openbb.ta.cg(data=stock_data.results, length=14)
     """
@@ -1523,7 +1523,7 @@ def cones(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> cones_data = openbb.ta.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model="STD")
     """
@@ -1579,7 +1579,7 @@ def ema(
 
     Examples
     --------
-    >>> from openbb_sdk_core import openbb
+    >>> from openbb_core import openbb
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> ema_data = openbb.ta.ema(data=stock_data.results,column="close",length=50,offset=0)
 
