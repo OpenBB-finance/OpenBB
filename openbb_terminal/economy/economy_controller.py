@@ -23,6 +23,8 @@ from openbb_terminal.economy import (
     econdb_model,
     econdb_view,
     economy_helpers,
+    fedreserve_model,
+    fedreserve_view,
     finviz_model,
     finviz_view,
     fred_model,
@@ -235,10 +237,6 @@ class EconomyController(BaseController):
             }
             choices["trust"]["-c"] = "--countries"
 
-            choices["treasury"]["--type"] = {
-                c: {} for c in econdb_model.TREASURIES["instruments"]
-            }
-            choices["treasury"]["-t"] = "--type"
             choices["macro"]["--parameters"] = {c: {} for c in econdb_model.PARAMETERS}
             choices["macro"]["-p"] = "--parameters"
             choices["macro"]["--countries"] = {
@@ -1637,22 +1635,6 @@ class EconomyController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "--freq",
-            type=str,
-            dest="frequency",
-            choices=econdb_model.TREASURIES["frequencies"],
-            help="The frequency, this can be annually, monthly, weekly or daily",
-            default="monthly",
-        )
-        parser.add_argument(
-            "-t",
-            "--type",
-            type=str,
-            dest="type",
-            help="Choose from: nominal, inflation, average, secondary",
-            default="nominal",
-        )
-        parser.add_argument(
             "-s",
             "--start",
             dest="start_date",
@@ -1677,65 +1659,23 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             maturities = list_from_str(ns_parser.maturity)
-            types = list_from_str(ns_parser.type)
-            for item in types:
-                if item not in econdb_model.TREASURIES["instruments"]:
-                    print(f"{item} is not a valid instrument type.\n")
-                    return self.queue
             if ns_parser.show_maturities:
-                econdb_view.show_treasury_maturities()
-                return self.queue
+                console.print(",".join(fedreserve_model._all))
+                return None
 
-            if ns_parser.maturity and ns_parser.type:
-                df = econdb_model.get_treasuries(
-                    instruments=types,
-                    maturities=maturities,
-                    frequency=ns_parser.frequency,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                )
+            fedreserve_view.show_treasuries(
+                maturities=maturities,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
-                if not df.empty:
-                    cols = []
-                    for column in df.columns:
-                        if isinstance(column, tuple):
-                            cols.append("_".join(column))
-                        else:
-                            cols.append(column)
-                    df.columns = cols
-
-                    for column in df.columns:
-                        if column in self.DATASETS["treasury"].columns:
-                            self.DATASETS["treasury"].drop(column, axis=1, inplace=True)
-
-                    self.DATASETS["treasury"] = pd.concat(
-                        [
-                            self.DATASETS["treasury"],
-                            df,
-                        ],
-                        axis=1,
-                    )
-
-                    self.stored_datasets = (
-                        economy_helpers.update_stored_datasets_string(self.DATASETS)
-                    )
-
-                    econdb_view.show_treasuries(
-                        instruments=types,
-                        maturities=maturities,
-                        frequency=ns_parser.frequency,
-                        start_date=ns_parser.start_date,
-                        end_date=ns_parser.end_date,
-                        raw=ns_parser.raw,
-                        export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
-                    )
-
-                    self.update_runtime_choices()
-                    if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
-                        self.print_help()
+            if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
+                self.print_help()
 
     @log_start_end(log=logger)
     def call_cpi(self, other_args: List[str]):
