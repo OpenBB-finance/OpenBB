@@ -273,16 +273,37 @@ command_map.map
 
 ## 7. Using the REST API
 
-Setup `settings/user_settings.json`:
+Setup `<your_home_directory>/.openbb_sdk/user_settings.json`:
 
 ```
-# FILE settings/user_settings.json
+# FILE <your_home_directory>/.openbb_sdk/user_settings.json
 {
-  "credentials": {
-      "benzinga_api_key": null,
-      "fmp_api_key": null,
-      "polygon_api_key": null
-  }
+    "credentials": {
+        "benzinga_api_key": null,
+        "fmp_api_key": null,
+        "polygon_api_key": null
+    },
+    "defaults": {
+        "routes": {
+            "/stocks/fa/balance": {
+                "provider": "polygon"
+            },
+            "/stocks/load": {
+                "provider": "fmp"
+            },
+            "/stocks/news": {
+                "provider": "benzinga"
+            }
+        }
+    }
+}
+```
+
+```
+# FILE <your_home_directory>/.openbb_sdk/system_settings.json
+{
+    "run_in_isolation": null,
+    "dbms_uri": null
 }
 ```
 
