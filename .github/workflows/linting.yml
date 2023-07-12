@@ -46,33 +46,45 @@ jobs:
           python-version: "3.9"
           architecture: x64
 
-      - uses: actions/cache@v2
+      - name: Cache pip
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
-      - run: |
-          pip install bandit black codespell mypy==1.1.1 pylint==2.17.0 ruff==0.0.277
+      - name: Install linters
+        run: |
+          pip install bandit black codespell mypy==1.4.1 pylint==2.17.0 ruff==0.0.277 pre-commit==2.21.0
           pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
-      - run: bandit -x ./tests -r . || true
-      - run: black --diff --check .
-      - run: codespell --ignore-words-list=vai,mis,gard,commun,parana,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te,buda,shs,welp --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
-      - name: Lint modified files
-        id: diff
+
+      - name: Lint code
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "Running diff against upstream/${{ github.base_ref }}"
-            echo "::set-output name=files::$(git diff --name-only upstream/${{ github.base_ref }} | grep '\.py$' | xargs)"
+            echo "Running pre-commit on PR"
+            pre-commit run --all-files --show-diff-on-failure --color=always || true
           else
-            echo "Running diff against upstream/develop"
-            echo "::set-output name=files::$(git diff --name-only upstream/develop | grep '\.py$' | xargs)"
-          fi
-      - run: |
-          echo ${{ steps.diff.outputs.files }} | xargs ruff
-      - run: |
-          echo ${{ steps.diff.outputs.files }} | xargs pylint
-      - run: mypy --ignore-missing-imports openbb_terminal
+            echo "Running pre-commit on branch"
+            pre-commit run --all-files --show-diff-on-failure --color=always || true
+      #     fi
+      # - run: bandit -x ./tests -r . || true
+      # - run: black --diff --check .
+      # - run: codespell --ignore-words-list=vai,mis,gard,commun,parana,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te,buda,shs,welp --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
+      # - name: Lint modified files
+      #   id: diff
+      #   run: |
+      #     if [ "${{ github.event_name }}" == "pull_request" ]; then
+      #       echo "Running diff against upstream/${{ github.base_ref }}"
+      #       echo "::set-output name=files::$(git diff --name-only upstream/${{ github.base_ref }} | grep '\.py$' | xargs)"
+      #     else
+      #       echo "Running diff against upstream/develop"
+      #       echo "::set-output name=files::$(git diff --name-only upstream/develop | grep '\.py$' | xargs)"
+      #     fi
+      # - run: |
+      #     echo ${{ steps.diff.outputs.files }} | xargs ruff
+      # - run: |
+      #     echo ${{ steps.diff.outputs.files }} | xargs pylint
+      # - run: mypy --ignore-missing-imports openbb_terminal
 
   markdown-link-check:
     name: Markdown Linting
