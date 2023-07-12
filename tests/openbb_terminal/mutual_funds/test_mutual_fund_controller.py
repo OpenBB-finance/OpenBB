@@ -10,7 +10,6 @@ from openbb_terminal.core.session.current_user import PreferencesModel, copy_use
 # IMPORTATION INTERNAL
 from openbb_terminal.mutual_funds import mutual_fund_controller
 
-
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111

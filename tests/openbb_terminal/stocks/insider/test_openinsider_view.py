@@ -7,7 +7,6 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.insider import openinsider_view
 
-
 # pylint: disable=E1101
 
 

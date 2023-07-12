@@ -654,7 +654,7 @@ class OpenBBFigure(go.Figure):
                         col=col,
                     )
 
-                    max_y = max(max_y, max(y * 2))
+                    max_y = max(max_y, *(y * 2))
 
         self.update_yaxes(
             position=0.0,
