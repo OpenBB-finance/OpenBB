@@ -485,6 +485,7 @@ def display_skew(
     put_skew = pd.DataFrame()
     call_skew = pd.DataFrame()
     skew_df = pd.DataFrame()
+    export_df = pd.DataFrame()
     colors = (
         [
             "blue", "red", "burlywood", "orange", "green",
@@ -500,7 +501,6 @@ def display_skew(
 
     if moneyness is None:
         fig = OpenBBFigure()
-        export_df = pd.DataFrame()
         color = -1
         for expiration in expirations:
             if expiration == "":
@@ -589,6 +589,7 @@ def display_skew(
             name="OTM IV Skew",
             marker=dict(color="green")
         )
+        fig.update_xaxes(type="category")
         if atm:
             fig = OpenBBFigure()
             fig.add_scatter(
@@ -597,7 +598,8 @@ def display_skew(
                 mode="lines+markers",
                 name="ATM IV Skew",
                 marker=dict(color="green")
-        )
+            )
+            fig.update_xaxes(type="category")
 
     fig.update_layout(
         title=dict(text=title, x = 0.5, y = 0.97),
