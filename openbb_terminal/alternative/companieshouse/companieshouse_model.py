@@ -475,7 +475,7 @@ def get_charge(company_number: str, charge_id: str) -> pd.DataFrame:
             charge.update({"type": part.get("type")})
 
     if returned_data.get("persons_entitled"):
-        for entitled in enumerate(returned_data.get("persons_entitled")):
+        for entitled in returned_data.get("persons_entitled"):
             charge.update({"persons_entitled_name": entitled.get("name")})
 
     return pd.DataFrame([charge])
