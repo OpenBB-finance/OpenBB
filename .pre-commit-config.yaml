@@ -14,7 +14,7 @@ repos:
     hooks:
       - id: black
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.0.275"
+    rev: "v0.0.256"
     hooks:
       - id: ruff
   - repo: https://github.com/codespell-project/codespell
@@ -59,7 +59,7 @@ repos:
             "--baseline",
             ".secrets.baseline",
             "--exclude-files",
-            "cassettes/.*|record/.*|website/content/api/.*|openbb_extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_extensions/charting/openbb_charting/infrastructure/.*\\.html",
+            "cassettes/.*|record/.*|website/content/api/.*|openbb_sdk/extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_sdk/extensions/charting/openbb_charting/infrastructure/.*\\.html",
           ]
     exclude: package.lock.json
   - repo: local

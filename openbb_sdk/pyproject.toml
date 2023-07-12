@@ -1,24 +1,26 @@
 [tool.poetry]
-name = "openbb_sdk"
+name = "openbb-sdk"
 version = "4.0.0"
 description = ""
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
-packages = [{ include = "openbb" }, { include = "builtin_extensions" }]
+packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-openbb_sdk_core = "^0.2.0"
-openbb_provider = "^0.1.0"
+python = "^3.8"
+openbb-provider = { path = "./sdk/provider" }
+openbb-core = { path = "./sdk/core" }
+openbb-stocks = { path = "./extensions/stocks" }
+openbb-crypto = { path = "./extensions/crypto" }
+openbb-forex = { path = "./extensions/forex" }
+openbb-news = { path = "./extensions/news" }
+openbb-economy = { path = "./extensions/economy" }
+openbb-fixedincome = { path = "./extensions/fixedincome" }
+openbb-benzinga = { path = "./providers/benzinga" }
+openbb-fmp = { path = "./providers/fmp" }
+openbb-polygon = { path = "./providers/polygon" }
+openbb-fred = { path = "./providers/fred" }
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.plugins."openbb_sdk_core_extension"]
-crypto = "builtin_extensions.crypto.crypto_router:router"
-economy = "builtin_extensions.economy.economy_router:router"
-fixedincome = "builtin_extensions.fixedincome.fixedincome_router:router"
-forex = "builtin_extensions.forex.forex_router:router"
-news = "builtin_extensions.news.news_router:router"
-stocks = "builtin_extensions.stocks.stocks_router:router"

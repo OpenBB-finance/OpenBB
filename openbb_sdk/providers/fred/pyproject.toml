@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-fred"
+version = "0.1.1"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_fred" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-provider = { path = "../../sdk/provider" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+fred = "openbb_fred.provider:fred_provider"
