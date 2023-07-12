@@ -54,10 +54,9 @@ class BalanceSheetData(Data):
     """
 
     date: dateType
-    # symbol: List[Optional[str]]
-    # currency: List[Optional[str]]
+    # currency: Optional[str]
     cik: Optional[int]
-    # period: List[Optional[str]]
+    # period: Optional[str]
     assets: Optional[int]
     current_assets: Optional[int]
     current_liabilities: Optional[int]

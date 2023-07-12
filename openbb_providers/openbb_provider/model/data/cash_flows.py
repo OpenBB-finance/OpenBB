@@ -35,24 +35,44 @@ class CashFlowStatementData(Data):
         The Central Index Key (CIK) of the company.
     period : Optional[str]
         The period of the cash flow statement.
-    exchange_gain_losses : Optional[int]
-        The exchange gain losses of the cash flow statement.
-    net_cash_flow : Optional[int]
-        The net cash flow of the cash flow statement.
-    net_cash_flow_continuing : Optional[int]
-        The net cash flow continuing of the cash flow statement.
-    net_cash_flow_from_financing_activities : Optional[int]
-        The net cash flow from financing activities of the cash flow statement.
-    net_cash_flow_from_financing_activities_continuing : Optional[int]
-        The net cash flow from financing activities continuing of the cash flow statement.
-    net_cash_flow_from_investing_activities : Optional[int]
-        The net cash flow from investing activities of the cash flow statement.
-    net_cash_flow_from_investing_activities_continuing : Optional[int]
-        The net cash flow from investing activities continuing of the cash flow statement.
+    cash_at_beginning_of_period : Optional[int]
+        The cash at the beginning of the period.
+    net_income : Optional[int]
+        The net income.
+    depreciation_and_amortization : Optional[int]
+        The depreciation and amortization.
+    stock_based_compensation : Optional[int]
+        The stock based compensation.
+    accounts_receivables : Optional[int]
+        The accounts receivables.
+    inventory : Optional[int]
+        The inventory.
+    accounts_payables : Optional[int]
+        The accounts payables.
     net_cash_flow_from_operating_activities : Optional[int]
-        The net cash flow from operating activities of the cash flow statement.
-    net_cash_flow_from_operating_activities_continuing : Optional[int]
-        The net cash flow from operating activities continuing of the cash flow statement.
+        The net cash flow from operating activities.
+    purchases_of_investments : Optional[int]
+        The purchases of investments.
+    sales_maturities_of_investments : Optional[int]
+        The sales maturities of investments.
+    investments_in_property_plant_and_equipment : Optional[int]
+        The investments in property plant and equipment.
+    net_cash_flow_from_investing_activities : Optional[int]
+        The net cash flow from investing activities.
+    dividends_paid : Optional[int]
+        The dividends paid.
+    common_stock_repurchased : Optional[int]
+        The common stock repurchased.
+    debt_repayment : Optional[int]
+        The debt repayment.
+    other_financing_activites : Optional[int]
+        The other financing activites.
+    net_cash_flow_from_financing_activities : Optional[int]
+        The net cash flow from financing activities.
+    net_cash_flow : Optional[int]
+        The net cash flow.
+    cash_at_end_of_period : Optional[int]
+        The cash at the end of the period.
     """
 
     date: dateType
@@ -60,12 +80,38 @@ class CashFlowStatementData(Data):
     currency: Optional[str] = None
     cik: Optional[int]
     period: Optional[str]
-    exchange_gain_losses: Optional[int] = None
-    net_cash_flow: Optional[int]
-    net_cash_flow_continuing: Optional[int]
-    net_cash_flow_from_financing_activities: Optional[int]
-    net_cash_flow_from_financing_activities_continuing: Optional[int]
-    net_cash_flow_from_investing_activities: Optional[int]
-    net_cash_flow_from_investing_activities_continuing: Optional[int]
+
+    cash_at_beginning_of_period: Optional[int]
+    net_income: Optional[int]
+    depreciation_and_amortization: Optional[int]
+    stock_based_compensation: Optional[int]
+    # OTHER
+
+    accounts_receivables: Optional[int]
+    inventory: Optional[int]
+    # VENDOR NON-TRADE_RECEIVABLES
+    # OTHER CURRENT AND NON-CURRENT ASSETS
+    accounts_payables: Optional[int]
+    # DEFERRED_REVENUE
+    # OTHER CURRENT AND NON-CURRENT LIABILITIES
+
     net_cash_flow_from_operating_activities: Optional[int]
-    net_cash_flow_from_operating_activities_continuing: Optional[int]
+
+    purchases_of_investments: Optional[int]
+    sales_maturities_of_investments: Optional[int]
+    investments_in_property_plant_and_equipment: Optional[int]
+    # OTHER
+    net_cash_flow_from_investing_activities: Optional[int]
+
+    dividends_paid: Optional[int]
+    common_stock_repurchased: Optional[int]
+    debt_repayment: Optional[int]
+
+    other_financing_activites: Optional[int]
+    # REPAYMENT OF COMMERCIAL PAPER
+    # OTHER
+
+    net_cash_flow_from_financing_activities: Optional[int]
+
+    net_cash_flow: Optional[int]
+    cash_at_end_of_period: Optional[int]
