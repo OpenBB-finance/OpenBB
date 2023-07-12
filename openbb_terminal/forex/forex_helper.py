@@ -29,6 +29,7 @@ FOREX_SOURCES: Dict = {
     "YahooFinance": "YahooFinance",
     "AlphaVantage": "AlphaAdvantage",
     "Polygon": "Polygon",
+    "Oanda": "Oanda",
 }
 
 SOURCES_INTERVALS: Dict = {
