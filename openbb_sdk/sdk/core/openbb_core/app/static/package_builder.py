@@ -59,8 +59,8 @@ class PackageBuilder:
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
 
-        MAX_LEN = max([len(path) for path in path_list if path != "/"])
-
+        p = [len(path) for path in path_list if path != "/"]
+        MAX_LEN = max(p) if p else 0
         for path in path_list:
             route = PathHandler.get_route(path=path, route_map=route_map)
             if route is None:
