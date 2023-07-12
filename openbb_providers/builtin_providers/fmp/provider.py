@@ -24,6 +24,7 @@ from builtin_providers.fmp.executive_compensation import FMPExecutiveCompensatio
 from builtin_providers.fmp.executives import FMPKeyExecutivesFetcher
 from builtin_providers.fmp.forex_eod import FMPForexEODFetcher
 from builtin_providers.fmp.forex_price import FMPForexPriceFetcher
+from builtin_providers.fmp.forex_pairs import FMPForexPairsFetcher
 from builtin_providers.fmp.global_news import FMPGlobalNewsFetcher
 from builtin_providers.fmp.historical_dividends import FMPHistoricalDividendsFetcher
 from builtin_providers.fmp.historical_stock_splits import (
@@ -92,5 +93,6 @@ fmp_provider = Provider(
         FMPMajorIndicesPriceFetcher,
         FMPForexEODFetcher,
         FMPForexPriceFetcher,
+        FMPForexPairsFetcher,
     ],
 )
