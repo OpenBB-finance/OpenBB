@@ -23,6 +23,54 @@ class Timespan(str, Enum):
 
 
 class PolygonFundamentalQueryParams(QueryParams):
+    """Polygon Fundamental QueryParams.
+
+    Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
+
+    Parameter
+    ---------
+    symbol : Optional[str]
+        The symbol of the company if no CIK is provided.
+    cik : Optional[str]
+        The CIK of the company if no symbol is provided.
+    company_name : Optional[str]
+        The name of the company.
+    company_name_search : Optional[str]
+        The name of the company to search.
+    sic : Optional[str]
+        The Standard Industrial Classification (SIC) of the company.
+    filing_date : Optional[date]
+        The filing date of the financial statement.
+    filing_date_lt : Optional[date]
+        The filing date less than the given date.
+    filing_date_lte : Optional[date]
+        The filing date less than or equal to the given date.
+    filing_date_gt : Optional[date]
+        The filing date greater than the given date.
+    filing_date_gte : Optional[date]
+        The filing date greater than or equal to the given date.
+    period_of_report_date : Optional[date]
+        The period of report date of the financial statement.
+    period_of_report_date_lt : Optional[date]
+        The period of report date less than the given date.
+    period_of_report_date_lte : Optional[date]
+        The period of report date less than or equal to the given date.
+    period_of_report_date_gt : Optional[date]
+        The period of report date greater than the given date.
+    period_of_report_date_gte : Optional[date]
+        The period of report date greater than or equal to the given date.
+    timeframe : Optional[Literal["annual", "quarterly", "ttm"]]
+        The timeframe of the financial statement.
+    include_sources : Optional[bool]
+        Whether to include the sources of the financial statement.
+    order : Optional[Literal["asc", "desc"]]
+        The order of the financial statement.
+    limit : Optional[PositiveInt]
+        The limit of the financial statement.
+    sort : Optional[Literal["filing_date", "period_of_report_date"]]
+        The sort of the financial statement.
+    """
+
     ticker: Optional[str] = Field(alias="symbol")
     cik: Optional[str]
     company_name: Optional[str]

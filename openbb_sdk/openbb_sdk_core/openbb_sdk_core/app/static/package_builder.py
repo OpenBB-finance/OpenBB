@@ -356,6 +356,7 @@ class DocstringGenerator:
 
             available_providers = ", ".join(docstring_mapping.keys())
             available_providers = available_providers.replace("openbb, ", "")
+            available_providers = available_providers.replace("openbb", "")
 
             docstring += f"\n\nAvailable providers: {available_providers}\n"
 
