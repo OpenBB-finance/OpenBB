@@ -12,9 +12,9 @@ on:
     types: [opened, synchronize, edited]
   push:
     branches:
-      - 'feature/*'
-      - 'hotfix/*'
-      - 'release/*'
+      - "feature/*"
+      - "hotfix/*"
+      - "release/*"
   merge_group:
     types: [checks_requested]
 
@@ -30,6 +30,15 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
+
+      - name: Fetch target branch
+        run: |
+          git remote add upstream https://github.com/${{ github.repository }}
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            git fetch upstream ${{ github.base_ref }}
+          else
+            git fetch upstream develop
+          fi
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
@@ -52,18 +61,18 @@ jobs:
       - name: Lint modified files
         id: diff
         run: |
-          BRANCH="${{ github.base_ref }}"
-          if [ -z "$BRANCH" ]; then
-            BRANCH="develop"
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "Running diff against upstream/${{ github.base_ref }}"
+            echo "::set-output name=files::$(git diff --name-only upstream/${{ github.base_ref }} | grep '\.py$' | xargs)"
+          else
+            echo "Running diff against upstream/develop"
+            echo "::set-output name=files::$(git diff --name-only upstream/develop | grep '\.py$' | xargs)"
           fi
-          echo "Running diff against $BRANCH"
-          echo "::set-output name=files::$(git diff --name-only origin/$BRANCH | grep '\.py$' | xargs)"
       - run: |
           echo ${{ steps.diff.outputs.files }} | xargs ruff
       - run: |
           echo ${{ steps.diff.outputs.files }} | xargs pylint
       - run: mypy --ignore-missing-imports openbb_terminal
-
 
   markdown-link-check:
     name: Markdown Linting
