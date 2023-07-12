@@ -393,3 +393,89 @@ def get_filing_document(company_number: str, transactionID: str) -> CompanyDocum
         return CompanyDocument(
             category, date, description, paper_filed, pages, transaction_id, content
         )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_COMPANIESHOUSE_KEY"])
+def get_charges(company_number: str) -> pd.DataFrame:
+    auth = requests.auth.HTTPBasicAuth(
+        get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
+    )
+    r = requests.get(
+        f"https://api.company-information.service.gov.uk/company/{company_number}/charges",
+        auth=auth,
+        timeout=TIMEOUT,
+    )
+
+    returned_data = r.json()
+
+    charges = pd.DataFrame()
+    for index, item in enumerate(returned_data["items"]):
+        url = item.get("links").get("self")
+        id = url[url.rfind("/") + 1 :]
+        charges = pd.concat(
+            [charges, get_charge(company_number, id)], ignore_index=True
+        )
+
+    return charges
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_COMPANIESHOUSE_KEY"])
+def get_charge(company_number: str, charge_id: str) -> pd.DataFrame:
+    auth = requests.auth.HTTPBasicAuth(
+        get_current_user().credentials.API_COMPANIESHOUSE_KEY, ""
+    )
+    r = requests.get(
+        f"https://api.company-information.service.gov.uk/company/{company_number}/charges/{charge_id}",
+        auth=auth,
+        timeout=TIMEOUT,
+    )
+
+    returned_data = r.json()
+
+    charge = {}
+    if returned_data.get("acquired_on"):
+        charge.update({"acquired_on": returned_data.get("acquired_on")})
+    if returned_data.get("assests_ceased_released"):
+        charge.update(
+            {"assests_ceased_released": returned_data.get("assests_ceased_released")}
+        )
+
+    if returned_data.get("charge_number"):
+        charge.update({"charge_number": returned_data.get("charge_number")})
+
+    if returned_data.get("covering_instrument_date"):
+        charge.update(
+            {"covering_instrument_date": returned_data.get("covering_instrument_date")}
+        )
+
+    if returned_data.get("created_on"):
+        charge.update({"created_on": returned_data.get("created_on")})
+
+    if returned_data.get("delivered_on"):
+        charge.update({"delivered_on": returned_data.get("delivered_on")})
+
+    if returned_data.get("id"):
+        charge.update({"id": returned_data.get("id")})
+
+    if returned_data.get("status"):
+        charge.update({"status": returned_data.get("status")})
+
+    if returned_data.get("particulars"):
+        part = returned_data.get("particulars")
+
+        if part.get("description"):
+            charge.update({"description": part.get("description")})
+        if part.get("floating_charge_covers_all"):
+            charge.update(
+                {"floating_charge_covers_all": part.get("floating_charge_covers_all")}
+            )
+        if part.get("type"):
+            charge.update({"type": part.get("type")})
+
+    if returned_data.get("persons_entitled"):
+        for entitled in enumerate(returned_data.get("persons_entitled")):
+            charge.update({"persons_entitled_name": entitled.get("name")})
+
+    return pd.DataFrame([charge])

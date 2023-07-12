@@ -30,9 +30,8 @@ class CompaniesHouseController(BaseController):
         "officers",
         "signifcontrol",
         "filings",
-        "filings_previous",
-        "filings_next",
         "filingdocument",
+        "charges",
     ]
     PATH = "/alternative/companieshouse/"
     CHOICES_GENERATION = True
@@ -65,9 +64,8 @@ class CompaniesHouseController(BaseController):
         mt.add_cmd("officers")
         mt.add_cmd("signifcontrol")
         mt.add_cmd("filings")
-        mt.add_cmd("filings_previous")
-        mt.add_cmd("filings_next")
         mt.add_cmd("filingdocument")
+        mt.add_cmd("charges")
 
         console.print(text=mt.menu_text, menu="UK Companies House Data")
 
@@ -263,43 +261,6 @@ class CompaniesHouseController(BaseController):
 
     @log_start_end(log=logger)
     @check_api_key(["API_COMPANIESHOUSE_KEY"])
-    def call_filings_next(self, other_args: List[str]):
-        # check against filing_total_count to see if > 0
-        # check filing_end_index see if == to total_count
-        # only if both pass then make call
-        if self.filing_end_index != 0:
-            if self.filing_end_index < self.filing_total_count:
-                filing_data = companieshouse_view.display_filings(
-                    self.companyNo, self.filingCategory, self.filing_end_index
-                )
-                self.filing_total_count = filing_data.total_count
-                self.filing_end_index = filing_data.end_index
-                self.filing_start_index = filing_data.start_index
-            else:
-                console.print("No further entries")
-        else:
-            console.print("Cannot use <next> in this context")
-
-    @log_start_end(log=logger)
-    @check_api_key(["API_COMPANIESHOUSE_KEY"])
-    def call_filings_previous(self, other_args: List[str]):
-        # check against filing_total_count to see if > 0
-        # check filing_end_index see if == to total_count
-        # only if both pass then make call
-        start_index = self.filing_start_index
-        if start_index > 0:
-            start_index = 0 if start_index - 100 < 0 else start_index - 100
-            filing_data = companieshouse_view.display_filings(
-                self.companyNo, self.filingCategory, start_index
-            )
-            self.filing_total_count = filing_data.total_count
-            self.filing_end_index = filing_data.end_index
-            self.filing_start_index = filing_data.start_index
-        else:
-            console.print("Cannot use <previous> in this context")
-
-    @log_start_end(log=logger)
-    @check_api_key(["API_COMPANIESHOUSE_KEY"])
     def call_filingdocument(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -338,6 +299,28 @@ class CompaniesHouseController(BaseController):
                     self.companyName,
                     ns_parser.transactionID,
                     export=ns_parser.export,
+                )
+        else:
+            console.print("Must load a company prior to using this command")
+
+    @log_start_end(log=logger)
+    @check_api_key(["API_COMPANIESHOUSE_KEY"])
+    def call_charges(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="charges",
+            description="Select the company number to retrieve officers for. [Source: UK Companies House]",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if self.companyNo:
+            if ns_parser:
+                companieshouse_view.display_charges(
+                    self.companyNo, export=ns_parser.export
                 )
         else:
             console.print("Must load a company prior to using this command")

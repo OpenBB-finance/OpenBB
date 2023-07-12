@@ -146,12 +146,22 @@ def display_filings(
     """
     results = companieshouse_model.get_filings(company_number, category, start_index)
 
-    console.print(
-        f"Retrieved {results.start_index} to {results.end_index} of {results.total_count} filings"
-    )
+    start = int(results.start_index)
+
+    data = results
+    total = int(results.total_count)
+
+    while start < total - 100:
+        results = companieshouse_model.get_filings(
+            company_number, start_index=start + 100
+        )
+        data.filings = data.filings.append(results.filings)
+        start = start + 100
+
+    console.print(f"Retrieved {len(data.filings)} filings")
 
     print_rich_table(
-        results.filings,
+        data.filings,
         show_index=False,
         title=f"[bold]{company_number}[/bold]",
         export=bool(export),
@@ -161,7 +171,7 @@ def display_filings(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "results",
-        results,
+        data.filings,
     )
 
     return results
@@ -209,3 +219,27 @@ def download_filing_document(
             )
     else:
         console.print("[red]" + "Document not found" + "[/red]\n")
+
+
+@log_start_end(log=logger)
+def display_charges(company_number: str, export: str = "") -> None:
+    results = companieshouse_model.get_charges(company_number)
+
+    if len(results) > 0:
+        print_rich_table(
+            results,
+            show_index=False,
+            title=f"[bold]{company_number}[/bold]",
+            export=bool(export),
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "results",
+            results,
+        )
+    else:
+        console.print("[red]" + "No Charges found" + "[/red]\n")
+
+    return results
