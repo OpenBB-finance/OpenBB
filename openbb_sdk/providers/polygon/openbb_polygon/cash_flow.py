@@ -31,7 +31,7 @@ class PolygonCashFlowStatementData(Data):
     start_date: dateType = Field(alias="date")
     tickers: Optional[List[str]] = Field(alias="symbol")
     cik: Optional[str]
-    filing_date: dateType
+    filing_date: Optional[dateType]
     acceptance_datetime: Optional[datetime]
     fiscal_period: Optional[str] = Field(alias="period")
     net_cash_flow: int
