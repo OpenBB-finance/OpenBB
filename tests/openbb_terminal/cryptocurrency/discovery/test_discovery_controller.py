@@ -9,7 +9,6 @@ import pytest
 from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.cryptocurrency.discovery import discovery_controller
 
-
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
