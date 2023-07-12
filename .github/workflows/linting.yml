@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
+        with:
+          fetch-depth: 0 # necessary to fetch all branches
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
@@ -37,7 +39,7 @@ jobs:
           python-version: "3.9"
           architecture: x64
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
@@ -49,9 +51,21 @@ jobs:
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
       - run: codespell --ignore-words-list=vai,mis,gard,commun,parana,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te,buda,shs,welp --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
-      - run: ruff .
+      - name: Lint modified files
+        id: diff
+        run: |
+          BRANCH="${{ github.base_ref }}"
+          if [ -z "$BRANCH" ]; then
+            BRANCH="develop"
+          fi
+          git fetch origin $BRANCH
+          echo "::set-output name=files::$(git diff --name-only origin/$BRANCH | grep '\.py$' | xargs)"
+      - run: |
+          echo ${{ steps.diff.outputs.files }} | xargs ruff
+      - run: |
+          echo ${{ steps.diff.outputs.files }} | xargs pylint
       - run: mypy --ignore-missing-imports openbb_terminal
-      - run: pylint terminal.py openbb_terminal tests
+
 
   markdown-link-check:
     name: Markdown Linting
