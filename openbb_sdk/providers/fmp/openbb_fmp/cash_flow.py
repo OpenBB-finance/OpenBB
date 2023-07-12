@@ -77,7 +77,7 @@ class FMPCashFlowStatementData(Data):
     acquisitionsNet: Optional[int]
     purchasesOfInvestments: Optional[int]
     salesMaturitiesOfInvestments: Optional[int]
-    otherInvestingActivites: Optional[int]
+    otherInvestingActivites: Optional[int] = Field(alias="other_investing_activities")
     netCashUsedForInvestingActivites: Optional[int] = Field(
         alias="net_cash_flow_from_investing_activities"
     )

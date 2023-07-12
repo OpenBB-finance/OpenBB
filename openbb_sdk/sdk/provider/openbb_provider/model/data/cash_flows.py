@@ -94,7 +94,7 @@ class CashFlowStatementData(Data):
     accounts_payables: Optional[int]
     # DEFERRED_REVENUE
     # OTHER CURRENT AND NON-CURRENT LIABILITIES
-
+    other_investing_activities: Optional[int]
     net_cash_flow_from_operating_activities: Optional[int]
 
     purchases_of_investments: Optional[int]
