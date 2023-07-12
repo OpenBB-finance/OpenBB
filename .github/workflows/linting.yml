@@ -30,8 +30,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
-        with:
-          fetch-depth: 0 # necessary to fetch all branches
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
@@ -58,7 +56,7 @@ jobs:
           if [ -z "$BRANCH" ]; then
             BRANCH="develop"
           fi
-          git fetch origin $BRANCH
+          echo "Running diff against $BRANCH"
           echo "::set-output name=files::$(git diff --name-only origin/$BRANCH | grep '\.py$' | xargs)"
       - run: |
           echo ${{ steps.diff.outputs.files }} | xargs ruff
