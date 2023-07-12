@@ -179,7 +179,7 @@ class ImportDefinition:
         code += "\nfrom inspect import Parameter"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.parsers import parse_command_inputs, parse_command_output\n"
+        code += "\nfrom openbb_core.app.static.filters import filter_inputs, filter_output\n"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
@@ -545,7 +545,7 @@ class MethodDefinition:
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
 
-        code = "        inputs = parse_command_inputs(\n"
+        code = "        inputs = filter_inputs(\n"
         for name, param in parameter_map.items():
             if name == "extra_params":
                 code += f"            {name}=kwargs,\n"
@@ -564,7 +564,7 @@ class MethodDefinition:
         code += "            **inputs,\n"
         code += "        ).output\n"
         code += "\n"
-        code += "        return parse_command_output(o)\n"
+        code += "        return filter_output(o)\n"
 
         return code
 
