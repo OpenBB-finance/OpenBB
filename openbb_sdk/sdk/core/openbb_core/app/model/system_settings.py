@@ -1,10 +1,10 @@
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
-from pathlib import Path
 from typing import List, Literal, Optional
 
 from pydantic import Field, root_validator, validator
 
 from openbb_core.app.model.abstract.tagged import Tagged
+from openbb_core.app.model.constants import HOME_DIRECTORY, OPENBB_DIRECTORY
 from openbb_core.logs.utils.system_utils import get_branch, get_commit_hash
 
 
@@ -26,8 +26,8 @@ class SystemSettings(Tagged):
     # OpenBB section
     # TODO: Get the version of the SDK from somewhere that's not pyproject.toml
     version: str = "4.0.0dev"
-    home_directory: str = str(Path.home())
-    openbb_directory: str = str(Path(home_directory, ".openbb_sdk"))
+    home_directory: str = str(HOME_DIRECTORY)
+    openbb_directory: str = str(OPENBB_DIRECTORY)
 
     # Logging section
     logging_app_name: str = "gst"
