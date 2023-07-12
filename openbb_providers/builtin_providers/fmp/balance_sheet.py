@@ -14,6 +14,7 @@ from openbb_provider.model.data.balance_sheet import (
     BalanceSheetQueryParams,
 )
 from openbb_provider.provider.abstract.fetcher import Fetcher
+from openbb_provider.provider.provider_helpers import data_transformer
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeInt, root_validator
@@ -135,35 +136,36 @@ class FMPBalanceSheetFetcher(
     def transform_data(
         data: List[FMPBalanceSheetData],
     ) -> List[BalanceSheetData]:
-        final_items = []
-        for item in data:
-            tot_se = item.totalStockholdersEquity
-            minority = item.minorityInterest
-            parent: Optional[int] = None
-            if tot_se:
-                if tot_se is None:
-                    pass
-                elif minority is None:
-                    parent = tot_se
-                else:
-                    parent = tot_se - minority
+        # final_items = []
+        # for item in data:
+        #     tot_se = item.totalStockholdersEquity
+        #     minority = item.minorityInterest
+        #     parent: Optional[int] = None
+        #     if tot_se:
+        #         if tot_se is None:
+        #             pass
+        #         elif minority is None:
+        #             parent = tot_se
+        #         else:
+        #             parent = tot_se - minority
 
-            final = BalanceSheetData(
-                date=item.date,
-                # symbol=item.symbol,
-                # currency=item.reportedCurrency,
-                cik=item.cik,
-                # period=item.period,
-                assets=item.totalAssets,
-                current_assets=item.totalCurrentAssets,
-                current_liabilities=item.totalCurrentLiabilities,
-                equity=item.totalStockholdersEquity,
-                equity_attributable_to_noncontrolling_interest=item.minorityInterest,
-                equity_attributable_to_parent=parent,
-                liabilities=item.totalLiabilities,
-                liabilities_and_equity=item.totalLiabilitiesAndTotalEquity,
-                noncurrent_assets=item.totalNonCurrentAssets,
-                noncurrent_liabilities=item.totalNonCurrentLiabilities,
-            )
-            final_items.append(final)
-        return final_items
+        # final = BalanceSheetData(
+        #     date=item.date,
+        #     # symbol=item.symbol,
+        #     # currency=item.reportedCurrency,
+        #     cik=item.cik,
+        #     # period=item.period,
+        #     assets=item.totalAssets,
+        #     current_assets=item.totalCurrentAssets,
+        #     current_liabilities=item.totalCurrentLiabilities,
+        #     equity=item.totalStockholdersEquity,
+        #     equity_attributable_to_noncontrolling_interest=item.minorityInterest,
+        #     equity_attributable_to_parent=parent,
+        #     liabilities=item.totalLiabilities,
+        #     liabilities_and_equity=item.totalLiabilitiesAndTotalEquity,
+        #     noncurrent_assets=item.totalNonCurrentAssets,
+        #     noncurrent_liabilities=item.totalNonCurrentLiabilities,
+        # )
+        # final_items.append(final)
+        return data_transformer(data, BalanceSheetData)
+        # return final_items
