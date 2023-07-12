@@ -87,7 +87,7 @@ class FMPIncomeStatementData(Data):
     netIncome: Optional[int]
     netIncomeRatio: Optional[float]
     eps: Optional[float]
-    epsdiluted: Optional[float]
+    epsdiluted: Optional[float] = Field(alias="eps_diluted")
     weightedAverageShsOut: Optional[int] = Field(
         alias="weighted_average_shares_outstanding"
     )
