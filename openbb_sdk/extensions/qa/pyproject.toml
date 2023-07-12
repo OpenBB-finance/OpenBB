@@ -17,5 +17,5 @@ pandas-ta = "^0.3.13"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.plugins."openbb_sdk_core_extension"]
+[tool.poetry.plugins."openbb_core_extension"]
 qa = "openbb_qa.qa_router:router"

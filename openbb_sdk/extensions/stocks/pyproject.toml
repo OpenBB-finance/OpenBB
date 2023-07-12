@@ -14,5 +14,5 @@ openbb-core = { path = "../../sdk/core" }
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.plugins."openbb_sdk_core_extension"]
+[tool.poetry.plugins."openbb_core_extension"]
 stocks = "openbb_stocks.stocks_router:router"

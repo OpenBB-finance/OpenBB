@@ -82,4 +82,4 @@ async def setup_default_user_settings():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("openbb_sdk_core.api.rest_api:app", reload=True)
+    uvicorn.run("openbb_core.api.rest_api:app", reload=True)

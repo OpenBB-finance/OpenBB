@@ -22,5 +22,5 @@ nbformat = "^5.9.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.plugins."openbb_sdk_core_extension"]
+[tool.poetry.plugins."openbb_core_extension"]
 charts = "openbb_charting.charting.charting_router:router"

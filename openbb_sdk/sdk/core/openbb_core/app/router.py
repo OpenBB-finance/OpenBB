@@ -393,7 +393,7 @@ class RouterLoader:
     @staticmethod
     def from_plugins() -> Router:
         router = Router()
-        for entry_point in pkg_resources.iter_entry_points("openbb_sdk_core_extension"):
+        for entry_point in pkg_resources.iter_entry_points("openbb_core_extension"):
             try:
                 router.include_router(
                     router=entry_point.load(),

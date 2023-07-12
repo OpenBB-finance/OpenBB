@@ -16,5 +16,5 @@ statsmodels = "^0.14.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.plugins."openbb_sdk_core_extension"]
+[tool.poetry.plugins."openbb_core_extension"]
 ta = "openbb_ta.ta_router:router"

@@ -289,7 +289,7 @@ Setup `settings/user_settings.json`:
 Start the application:
 
 ```bash
-uvicorn openbb_sdk_core.api.rest_api:app --reload
+uvicorn openbb_core.api.rest_api:app --reload
 ```
 
 
