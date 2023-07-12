@@ -12,7 +12,7 @@ from openbb_provider.provider.provider_helpers import data_transformer
 from pydantic import Field
 
 # IMPORT THIRD-PARTY
-from openbb_fmp.helpers import create_url, get_data_many
+from .helpers import create_url, get_data_many
 
 current_year = date.today().year
 

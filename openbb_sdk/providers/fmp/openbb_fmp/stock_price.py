@@ -13,7 +13,7 @@ from openbb_provider.provider.provider_helpers import data_transformer
 # IMPORT THIRD-PARTY
 from pydantic import Field
 
-from openbb_fmp.helpers import BaseStockPriceData, create_url, get_data_many
+from .helpers import BaseStockPriceData, create_url, get_data_many
 
 
 class Interval(str, Enum):

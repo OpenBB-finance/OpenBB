@@ -13,7 +13,7 @@ from openbb_provider.model.data.company_overview import (
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
 
-from openbb_fmp.helpers import get_data
+from .helpers import get_data
 
 # IMPORT THIRD-PARTY
 

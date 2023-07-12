@@ -20,7 +20,7 @@ from openbb_provider.provider.provider_helpers import data_transformer
 # IMPORT THIRD-PARTY
 from pydantic import validator
 
-from openbb_fmp.helpers import create_url, get_data_many
+from .helpers import create_url, get_data_many
 
 
 class FMPShareStatisticsQueryParams(QueryParams, BaseSymbol):

@@ -16,7 +16,7 @@ from openbb_provider.provider.provider_helpers import data_transformer, get_quer
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeInt, validator
 
-from openbb_fmp.helpers import get_data_many
+from .helpers import get_data_many
 
 
 class FMPMajorIndicesEODQueryParams(QueryParams):

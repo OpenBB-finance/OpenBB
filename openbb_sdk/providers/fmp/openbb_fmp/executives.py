@@ -15,7 +15,7 @@ from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
 
 # IMPORT THIRD-PARTY
-from openbb_fmp.helpers import get_data
+from .helpers import get_data
 
 
 class FMPKeyExecutivesQueryParams(QueryParams, BaseSymbol):
