@@ -52,19 +52,21 @@ class IncomeStatementData(Data):
     selling_and_marketing_expenses : Optional[float]
         The selling and marketing expenses of the income statement.
     selling_general_and_administrative_expenses : Optional[int]
-        The selling general and administrative expenses of the income statement.
+        The selling, general and administrative expenses of the income statement.
     other_expenses : Optional[int]
         The other expenses of the income statement.
     operating_expenses : Optional[int]
         The operating expenses of the income statement.
-    cost_and_expenses : Optional[int]
-        The cost and expenses of the income statement.
     depreciation_and_amortization : Optional[int]
         The depreciation and amortization of the income statement.
     ebitda : Optional[int]
-        The earnings before interest, taxes, depreciation, and amortization of the income statement.
+        The earnings before interest, taxes, depreciation and amortization of the income statement.
     operating_income : Optional[int]
         The operating income of the income statement.
+    interest_income : Optional[int]
+        The interest income of the income statement.
+    interest_expense : Optional[int]
+        The interest expense of the income statement.
     total_other_income_expenses_net : Optional[int]
         The total other income expenses net of the income statement.
     income_before_tax : Optional[int]
@@ -76,11 +78,7 @@ class IncomeStatementData(Data):
     eps : Optional[float]
         The earnings per share of the income statement.
     eps_diluted : Optional[float]
-        The earnings per share diluted of the income statement.
-    interest_expense : Optional[int]
-        The interest expense of the income statement.
-    interest_income : Optional[int]
-        The interest income of the income statement.
+        The diluted earnings per share of the income statement.
     weighted_average_shares_outstanding : Optional[int]
         The weighted average shares outstanding of the income statement.
     weighted_average_shares_outstanding_dil : Optional[int]
@@ -88,32 +86,34 @@ class IncomeStatementData(Data):
     """
 
     date: dateType
-    symbol: str
     currency: Optional[str] = None
-    cik: Optional[int]
-    filing_date: dateType
+    filing_date: Optional[dateType] = None
     accepted_date: Optional[dateType] = None
     period: Optional[str]
+
     revenue: Optional[int]
     cost_of_revenue: Optional[int]
     gross_profit: Optional[int]
+
     research_and_development_expenses: Optional[int] = None
     general_and_administrative_expenses: Optional[int] = None
     selling_and_marketing_expenses: Optional[float] = None
     selling_general_and_administrative_expenses: Optional[int] = None
     other_expenses: Optional[int] = None
     operating_expenses: Optional[int]
-    cost_and_expenses: Optional[int]
+
     depreciation_and_amortization: Optional[int] = None
     ebitda: Optional[int] = None
     operating_income: Optional[int] = None
+
+    interest_income: Optional[int] = None
+    interest_expense: Optional[int] = None
     total_other_income_expenses_net: Optional[int] = None
     income_before_tax: Optional[int]
     income_tax_expense: Optional[int]
+
     net_income: Optional[int]
     eps: Optional[float]
     eps_diluted: Optional[float]
-    interest_expense: Optional[int] = None
-    interest_income: Optional[int] = None
     weighted_average_shares_outstanding: Optional[int] = None
     weighted_average_shares_outstanding_dil: Optional[int] = None

@@ -19,7 +19,7 @@ from openbb_polygon.types import PolygonFundamentalQueryParams
 
 
 class PolygonBalanceSheetQueryParams(PolygonFundamentalQueryParams):
-    """Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials"""
+    __doc__ = PolygonFundamentalQueryParams.__doc__
 
 
 class PolygonBalanceSheetData(Data):

@@ -13,12 +13,24 @@ router = Router(prefix="")
 
 
 # pylint: disable=unused-argument
+@router.command(query="ForexPairs")
+def pairs(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[Data]:
+    """Forex Available Pairs."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
+# pylint: disable=unused-argument
 @router.command(query="ForexEOD")
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[Data]:  # type: ignore
+) -> CommandOutput[Data]:
     """Forex Intraday Price."""
     return CommandOutput(results=Query(**locals()).execute())

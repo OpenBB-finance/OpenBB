@@ -22,21 +22,20 @@ from openbb_polygon.types import PolygonFundamentalQueryParams
 
 
 class PolygonIncomeStatementQueryParams(PolygonFundamentalQueryParams):
-    """Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials"""
+    __doc__ = PolygonFundamentalQueryParams.__doc__
 
 
 class PolygonIncomeStatementData(Data):
     start_date: dateType = Field(alias="date")
-    tickers: Optional[List[str]] = Field(alias="symbol")
+    tickers: Optional[List[str]]
     cik: Optional[str]
-    filing_date: dateType
+    filing_date: Optional[dateType]
     acceptance_datetime: Optional[datetime] = Field(alias="accepted_date")
     fiscal_period: Optional[str] = Field(alias="period")
     revenues: Optional[float] = Field(alias="revenue")
     cost_of_revenue: Optional[float]
     gross_profit: Optional[float]
     operating_expenses: Optional[float]
-    costs_and_expenses: Optional[float]
     income_loss_from_continuing_operations_before_tax: Optional[float] = Field(
         alias="income_before_tax"
     )
@@ -91,16 +90,14 @@ class PolygonIncomeStatementFetcher(
             new = {"acceptance_datetime": item.get("acceptance_datetime")}
             new["start_date"] = item["start_date"]
             new["filing_date"] = item.get("filing_date")
-            new["cik"] = item["cik"]
             new["fiscal_period"] = item["fiscal_period"]
             new["tickers"] = item["tickers"]
-            to_return.append(PolygonIncomeStatementData(**new))
+            new["cik"] = item["cik"]
             incs = item["financials"]["income_statement"]
             new["revenues"] = incs["revenues"].get("value")
-            new["cost_of_revenue"] = incs["cost_of_revenue"].get("value")
-            new["gross_profit"] = incs["gross_profit"].get("value")
+            new["cost_of_revenue"] = incs.get("cost_of_revenue", {}).get("value", 0)
+            new["gross_profit"] = incs.get("gross_profit", {}).get("value", 0)
             new["operating_expenses"] = incs["operating_expenses"].get("value")
-            new["costs_and_expenses"] = incs["costs_and_expenses"].get("value")
             new["income_loss_from_continuing_operations_before_tax"] = incs[
                 "income_loss_from_continuing_operations_before_tax"
             ].get("value")
@@ -140,9 +137,9 @@ class PolygonIncomeStatementFetcher(
             new["benefits_costs_expenses"] = incs["benefits_costs_expenses"].get(
                 "value"
             )
-            new["interest_expense_operating"] = incs["interest_expense_operating"].get(
-                "value"
-            )
+            new["interest_expense_operating"] = incs.get(
+                "interest_expense_operating", {}
+            ).get("value", 0)
             to_return.append(PolygonIncomeStatementData(**new))
         return to_return
 

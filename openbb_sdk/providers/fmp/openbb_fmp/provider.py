@@ -23,6 +23,7 @@ from openbb_fmp.esg_sector import FMPESGSectorFetcher
 from openbb_fmp.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.executives import FMPKeyExecutivesFetcher
 from openbb_fmp.forex_eod import FMPForexEODFetcher
+from openbb_fmp.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.forex_price import FMPForexPriceFetcher
 from openbb_fmp.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.historical_dividends import FMPHistoricalDividendsFetcher
@@ -92,5 +93,6 @@ fmp_provider = Provider(
         FMPMajorIndicesPriceFetcher,
         FMPForexEODFetcher,
         FMPForexPriceFetcher,
+        FMPForexPairsFetcher,
     ],
 )

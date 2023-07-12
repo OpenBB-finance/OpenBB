@@ -24,7 +24,7 @@ from openbb_polygon.types import PolygonFundamentalQueryParams
 
 
 class PolygonCashFlowStatementQueryParams(PolygonFundamentalQueryParams):
-    """Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials"""
+    __doc__ = PolygonFundamentalQueryParams.__doc__
 
 
 class PolygonCashFlowStatementData(Data):
@@ -34,7 +34,6 @@ class PolygonCashFlowStatementData(Data):
     filing_date: dateType
     acceptance_datetime: Optional[datetime]
     fiscal_period: Optional[str] = Field(alias="period")
-    # exchange_gain_losses: int
     net_cash_flow: int
     net_cash_flow_from_financing_activities: int
     net_cash_flow_from_investing_activities: int

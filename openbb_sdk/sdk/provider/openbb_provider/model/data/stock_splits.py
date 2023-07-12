@@ -1,11 +1,7 @@
 """Stock Split Calendar data model."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-    timedelta,
-)
+from datetime import date as dateType
 
 from pydantic import Field
 
@@ -25,12 +21,10 @@ class StockSplitCalendarQueryParams(QueryParams):
     """
 
     start_date: dateType = Field(
-        description=DESCRIPTIONS.get("start_date", ""),
-        default=(datetime.now() - timedelta(days=90)).date(),
+        description=DESCRIPTIONS.get("start_date", ""), default=None
     )
     end_date: dateType = Field(
-        description=DESCRIPTIONS.get("end_date", ""),
-        default=datetime.now().date(),
+        description=DESCRIPTIONS.get("end_date", ""), default=None
     )
 
 
