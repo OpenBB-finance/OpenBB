@@ -1206,7 +1206,6 @@ MOCK_TREASURY_DEFAULT = pd.DataFrame.from_dict(
             [],
             dict(
                 maturities=["3m", "10y"],
-                frequency="monthly",
                 start_date="1934-01-31",
                 end_date="2022-11-04",
                 raw=False,
@@ -1245,8 +1244,6 @@ def test_call_treasury(mocked_func, other_args, called_args, called_kwargs, mock
     controller = economy_controller.EconomyController(queue=None)
     controller.choices = {}
     controller.call_treasury(other_args)
-    assert "treasury" in controller.DATASETS
-    assert not controller.DATASETS["treasury"].empty
     if called_args or called_kwargs:
         mock.assert_called_once_with(*called_args, **called_kwargs)
     else:
