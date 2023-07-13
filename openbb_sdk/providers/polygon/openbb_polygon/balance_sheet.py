@@ -28,11 +28,13 @@ class PolygonBalanceSheetData(Data):
     assets: Optional[int]
     current_assets: Optional[int]
     current_liabilities: Optional[int]
-    equity: Optional[int]
+    equity: Optional[int] = Field(alias="total_equity")
     equity_attributable_to_noncontrolling_interest: Optional[int]
     equity_attributable_to_parent: Optional[int]
     liabilities: Optional[int]
-    liabilities_and_equity: Optional[int]
+    liabilities_and_equity: Optional[int] = Field(
+        alias="total_liabilities_and_stockholders_equity"
+    )
     noncurrent_assets: Optional[int]
     noncurrent_liabilities: Optional[int]
 
