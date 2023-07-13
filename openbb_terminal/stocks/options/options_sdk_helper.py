@@ -800,6 +800,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         self,
         expirations: Optional[list[str]] = "",
         moneyness: Optional[float] = None,
+        strike: Optional[float] = None,
         atm: Optional[bool] = False,
         otm_only: Optional[bool] = False,
         raw: Optional[bool] = False,
@@ -809,6 +810,13 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
     ) -> Union[None, OpenBBFigure]:
         """Chart the vertical skew of an option expiration, or the horizontal skew of equidistant % moneyness options.
 
+        The vertical skew for each expiry and option is calculated by subtracting the IV of the ATM call or put.
+        Returns only where the IV is greater than 0.
+
+        Horizontal skew is returned if a value for moneyness, or a strike price, is supplied.
+        With a strike price specified, both call and put IV skew are displayed. For moneyness,
+        it is expressed as the difference between skews of two equidistant OTM strikes (the closest call and put).
+
         Parameters
         -----------
         expirations: list[str]
@@ -816,6 +824,8 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
             Format as YYYY-MM-DD.
         moneyness: float
             The % moneyess. When specified, this returns the forward skew curve at the target moneyness.
+        strike: float
+        A target strike price to observe the skew vs. contract. This argument overrides other parameters.
         atm: bool
             When true, returns the ATM skew curve. This will override other parameters.
         otm_only: bool
@@ -846,7 +856,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         >>> spy.chart_skew(expirations=spy.expirations[1:11], otm_only=True)
         """
         return options_chains_view.display_skew(
-            self, expirations, moneyness, atm, otm_only, raw, export, sheet_name, external_axes
+            self, expirations, moneyness, strike, atm, otm_only, raw, export, sheet_name, external_axes
         )
 
 

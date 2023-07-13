@@ -445,6 +445,7 @@ def display_skew(
     options: Options,
     expirations: Optional[list[str]] = "",
     moneyness: Optional[float] = None,
+    strike: Optional[float] = None,
     atm: Optional[bool] = False,
     otm_only: Optional[bool] = False,
     raw: Optional[bool] = False,
@@ -453,6 +454,13 @@ def display_skew(
     external_axes: Optional[bool] = False,
 ) -> Union[None, OpenBBFigure]:
     """Chart the vertical skew of an option expiration, or the horizontal skew of equidistant % moneyness options.
+
+    The vertical skew for each expiry and option is calculated by subtracting the IV of the ATM call or put.
+    Returns only where the IV is greater than 0.
+
+    Horizontal skew is returned if a value for moneyness, or a strike price, is supplied.
+    With a strike price specified, both call and put IV skew are displayed. For moneyness,
+    it is expressed as the difference between skews of two equidistant OTM strikes (the closest call and put).
 
     Parameters
     -----------
@@ -463,6 +471,8 @@ def display_skew(
         Format as YYYY-MM-DD.
     moneyness: float
         The % moneyess. When specified, this returns the forward skew curve at the target moneyness.
+    strike: float
+        A target strike price to observe the skew vs. contract. This argument overrides other parameters.
     atm: bool
         When true, returns the ATM skew curve. This will override other parameters.
     otm_only: bool
@@ -479,7 +489,7 @@ def display_skew(
 
     if options.hasIV is False:
         return print("Options data object does not have Implied Volatility and is required for this function.")
-
+    options = deepcopy(options)
     options.chains = options_chains_model.validate_object(options.chains, "chains")
 
     put_skew = pd.DataFrame()
@@ -567,7 +577,7 @@ def display_skew(
             title = "OTM " + title
         fig.update_layout(title=title)
 
-    if atm or moneyness:
+    if atm or moneyness or strike:
         if moneyness is None:
             moneyness = 0
         skew_df = options_chains_model.calculate_skew(options, moneyness = moneyness)
@@ -598,6 +608,35 @@ def display_skew(
                 mode="lines+markers",
                 name="ATM IV Skew",
                 marker=dict(color="green")
+            )
+            fig.update_xaxes(type="category")
+        if strike and strike > 0.25:
+            fig = OpenBBFigure()
+            strike = options_chains_model.get_nearest_call_strike(options, strike_price = strike)
+            skew_df = options_chains_model.calculate_skew(options).query("`Strike` == @strike")
+            call_df = skew_df.query("`Option Type` == 'call'").set_index("Expiration")
+            call_idx = call_df.index
+            call_df = call_df[~call_idx.duplicated(keep="first")]
+            call_df = call_df.reset_index()
+            put_df = skew_df.query("`Option Type` == 'put'").set_index("Expiration")
+            put_idx = put_df.index
+            put_df = put_df[~put_idx.duplicated(keep="first")]
+            put_df = put_df.reset_index()
+            title = f"IV Skew for {options.symbol} at ${strike}"
+            expirations = skew_df.Expiration.unique().tolist()
+            fig.add_scatter(
+                x=expirations,
+                y=call_df.Skew,
+                mode="lines+markers",
+                name="Call IV Skew",
+                marker_color="blue",
+            )
+            fig.add_scatter(
+                x=expirations,
+                y=put_df.Skew,
+                mode="lines+markers",
+                name="Put IV Skew",
+                marker_color="red",
             )
             fig.update_xaxes(type="category")
 
