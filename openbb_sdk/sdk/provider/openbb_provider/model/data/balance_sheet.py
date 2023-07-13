@@ -30,7 +30,7 @@ class BalanceSheetData(Data):
     date : date
         The date of the balance sheet.
     cik : Optional[int]
-        The CIK of the balance sheet.
+        The CIK of the company.
     cash_and_cash_equivalents : Optional[int]
         The cash and cash equivalents of the balance sheet.
     short_term_investments : Optional[int]
