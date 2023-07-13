@@ -11,7 +11,7 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 
-maturities = Literal[
+maturities_types = Literal[
     "1m",
     "3m",
     "6m",
@@ -24,7 +24,7 @@ maturities = Literal[
     "20y",
     "30y",
 ]
-maturityType = Union[maturities, List[maturities]]
+maturityType = Union[maturities_types, List[maturities_types]]
 
 
 @log_start_end(log=logger)

@@ -21,7 +21,7 @@ maturities = Literal[
     "30y",
 ]
 maturityType = Union[maturities, List[maturities]]
-_all = [
+all_mat = [
     "1m",
     "3m",
     "6m",
@@ -37,7 +37,7 @@ _all = [
 
 
 def get_treasury_rates(
-    maturity: maturityType = ["1y"],
+    maturity: Optional[maturityType] = None,
     start_date: str = "2005-01-01",
     end_date: Optional[str] = datetime.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
@@ -68,13 +68,15 @@ def get_treasury_rates(
     )
     r = request(url)
     df = pd.read_csv(BytesIO(r.content), header=5, index_col=None, parse_dates=True)
-    df.columns = ["date"] + _all
+    df.columns = ["date"] + all_mat
     df = df.replace("ND", np.nan).fillna("-").dropna(axis=0)
     df = df[
         (pd.to_datetime(df.date) >= pd.to_datetime(start_date))
         & (pd.to_datetime(df.date) <= pd.to_datetime(end_date))
     ]
-    df[_all] = df[_all].applymap(lambda x: float(x) if x != "-" else x)
+    df[all_mat] = df[all_mat].applymap(lambda x: float(x) if x != "-" else x)
     df["date"] = pd.to_datetime(df["date"])
     df = df.reset_index(drop=True).set_index("date")
+    if not maturity:
+        return df
     return df[maturity]

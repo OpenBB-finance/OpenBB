@@ -255,7 +255,9 @@ class EconomyController(BaseController):
                 c: {} for c in nasdaq_model.get_country_names()
             }
             choices["events"]["-c"] = "--countries"
-            choices["treasury"]["--maturity"] = {c: None for c in fedreserve_model._all}
+            choices["treasury"]["--maturity"] = {
+                c: None for c in fedreserve_model.all_mat
+            }
             choices["treasury"]["-m"] = "--maturity"
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -1659,7 +1661,7 @@ class EconomyController(BaseController):
         if ns_parser:
             maturities = list_from_str(ns_parser.maturity)
             if ns_parser.show_maturities:
-                console.print(",".join(fedreserve_model._all))
+                console.print(",".join(fedreserve_model.all_mat))
                 return None
 
             fedreserve_view.show_treasuries(
