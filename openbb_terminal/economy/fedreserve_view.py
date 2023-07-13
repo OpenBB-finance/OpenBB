@@ -1,6 +1,7 @@
 import logging
 import os
 from typing import List, Literal, Optional, Union
+from datetime import datetime
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
@@ -31,7 +32,7 @@ maturityType = Union[maturities_types, List[maturities_types]]
 def show_treasuries(
     maturities: maturityType = "1y",
     start_date: str = "1900-01-01",
-    end_date: Optional[str] = None,
+    end_date: Optional[str] = datetime.now().strftime("%Y-%m-%d"),
     raw: bool = False,
     external_axes: bool = False,
     export: str = "",
