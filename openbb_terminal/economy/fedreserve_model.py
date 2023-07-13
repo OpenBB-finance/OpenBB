@@ -37,7 +37,7 @@ _all = [
 
 
 def get_treasury_rates(
-    maturity: maturityType = _all,
+    maturity: maturityType = ["1y"],
     start_date: str = "2005-01-01",
     end_date: Optional[str] = datetime.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
