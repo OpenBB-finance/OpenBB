@@ -859,6 +859,41 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
             self, expirations, moneyness, strike, atm, otm_only, raw, export, sheet_name, external_axes
         )
 
+    def chart_volatility(
+        self,
+        expirations: Optional[list[str]] = None,
+        moneyness: Optional[float] = None,
+        strike: Optional[float] = None,
+        oi: bool = False,
+        volume: bool = False,
+        raw: bool = False,
+        export: str = "",
+        sheet_name: Optional[str] = "",
+        external_axes: bool = False,
+    ) -> Union[None, OpenBBFigure]:
+        """Chart the implied volatility smile.
+
+        Parameters
+        -----------
+        expirations: list[str]
+            Select up to five expiration(s) to display.  Format as YYYY-MM-DD.
+        moneyness: float
+            Specify a target % moneyness to display vs. contract dates. This argument overrides expirations.
+        strike: float
+            Specify a target strike price to display vs. contract dates.
+            Returned strike price is estimated as the closest one listed at approximately one year forward.
+            This argument overrides moneyness.
+        raw: bool
+            Display the raw data instead of the chart.
+        export: str
+            Export dataframe data to csv,json,xlsx file.
+        external_axes: bool
+            Retun the OpenBB Figure Object to a variable.
+        """
+        return options_chains_view.display_volatility(
+            self, expirations, moneyness, strike, oi, volume, raw, export, sheet_name, external_axes
+        )
+
 
 @log_start_end(log=logger)
 def load_options_chains(

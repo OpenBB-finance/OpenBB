@@ -685,3 +685,213 @@ def display_skew(
         return None
 
     return fig.show(external=raw or external_axes)
+
+
+@log_start_end(log=logger)
+def display_volatility(
+    options: Options,
+    expirations: Optional[list[str]] = None,
+    moneyness: Optional[float] = None,
+    strike: Optional[float] = None,
+    oi: bool = False,
+    volume: bool = False,
+    raw: bool = False,
+    export: str = "",
+    sheet_name: Optional[str] = "",
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
+    """Chart the implied volatility smile.
+
+    Parameters
+    -----------
+    options: Options
+        The options data object.
+    expirations: list[str]
+        Select up to five expiration(s) to display.  Format as YYYY-MM-DD.
+    moneyness: float
+        Specify a target % moneyness to display vs. contract dates. This argument overrides expirations.
+    strike: float
+        Specify a target strike price to display vs. contract dates.
+        Returned strike price is estimated as the closest one listed at approximately one year forward.
+        This argument overrides moneyness.
+    raw: bool
+        Display the raw data instead of the chart.
+    export: str
+        Export dataframe data to csv,json,xlsx file.
+    external_axes: bool
+        Retun the OpenBB Figure Object to a variable.
+    """
+
+    if options.hasIV is False:
+        return print("Options data object does not have Implied Volatility and is required for this function.")
+    options = deepcopy(options)
+    options.chains = options_chains_model.validate_object(options.chains, "chains")
+    colors = (
+        [
+            "blue", "red", "burlywood", "orange", "green",
+            "grey", "magenta", "cyan", "indigo", "yellowgreen"
+        ]
+    )
+
+    index_name = ""
+    title = f"{options.symbol} Volatility"
+    export_df = pd.DataFrame()
+
+    iv_df = (
+        options.chains[options.chains["impliedVolatility"] > 0]
+        [["expiration", "strike", "optionType", "dte", "openInterest", "volume", "impliedVolatility"]]
+    )
+
+    if moneyness is not None:
+        fig = OpenBBFigure()
+        calls = pd.DataFrame()
+        puts = pd.DataFrame()
+        title = title + f" at {moneyness}% OTM" if strike is None else title
+        strikes = options_chains_model.get_nearest_otm_strike(options, moneyness)
+        if expirations is None:
+            days = options.chains.dte.unique().tolist()
+        for day in days:
+            call_strike = options_chains_model.get_nearest_call_strike(options, day, strikes["call"])
+            call = (
+                iv_df[iv_df["strike"] == call_strike]
+                .query("`optionType` == 'call' & `dte` == @day")
+                .set_index("expiration")
+            )
+            put_strike = options_chains_model.get_nearest_put_strike(options, day, strikes["put"])
+            put = (
+                iv_df[iv_df["strike"] == put_strike]
+                .query("`optionType` == 'put' & `dte` == @day")
+                .set_index("expiration")
+            )
+            calls = pd.concat([calls, call])
+            puts = pd.concat([puts, put])
+        expirations = iv_df["expiration"].unique().tolist()
+        export_df = pd.concat([export_df, calls, puts])
+        fig.add_scatter(
+            x=expirations,
+            y=calls["impliedVolatility"],
+            mode="lines+markers",
+            name="Calls",
+            marker_color="blue",
+        )
+        fig.add_scatter(
+            x=expirations,
+            y=puts["impliedVolatility"],
+            mode="lines+markers",
+            name="Puts",
+            marker_color="red",
+        )
+        fig.update_xaxes(type="category")
+
+    if strike is not None:
+        fig = OpenBBFigure()
+        strike = (
+            options_chains_model.get_nearest_call_strike(options, 300, strike_price = strike)
+            if strike > options.last_price
+            else options_chains_model.get_nearest_put_strike(options, 300, strike_price = strike)
+        )
+        title = title + f" at ${strike}"
+        calls = iv_df[iv_df["strike"] == strike].query("`optionType` == 'call'")
+        puts = iv_df[iv_df["strike"] == strike].query("`optionType` == 'put'")
+        expirations = iv_df["expiration"].unique().tolist()
+        export_df = pd.concat([export_df, calls, puts])
+        fig.add_scatter(
+            x=expirations,
+            y=calls["impliedVolatility"],
+            mode="lines+markers",
+            name="Calls",
+            marker_color="blue",
+        )
+        fig.add_scatter(
+            x=expirations,
+            y=puts["impliedVolatility"],
+            mode="lines+markers",
+            name="Puts",
+            marker_color="red",
+        )
+        fig.update_xaxes(type="category")
+
+    if moneyness is None and strike is None:
+        expirations = options.expirations[1] if expirations is None else expirations
+
+    if expirations is not None:
+        fig = OpenBBFigure()
+        color = -1
+        expirations = [expirations] if isinstance(expirations, str) else expirations
+        if len(expirations) > 5:
+            expirations = expirations[:5]
+        if oi is True:
+            iv_df = iv_df[iv_df["openInterest"] > 0]
+        if volume is True:
+            iv_df = iv_df[iv_df["volume"] > 0]
+        for expiration in expirations:
+            expiration = options_chains_model.get_nearest_expiration(options, expiration)
+            data = iv_df[iv_df["expiration"] == expiration]
+            calls = data[data["optionType"] == "call"]
+            puts = data[data["optionType"] == "put"]
+            color = color + 1
+            fig.add_scatter(
+                x = calls["strike"].unique().tolist(),
+                y = calls["impliedVolatility"],
+                mode="lines+markers",
+                name="Calls" if len(expirations) <= 1 else f"Calls at {expiration}",
+                marker_color=colors[color] if len(expirations) > 1 else "blue",
+            )
+            color = color + 1
+            fig.add_scatter(
+                x = puts["strike"].unique().tolist(),
+                y = puts["impliedVolatility"],
+                mode="lines+markers",
+                name="Puts" if len(expirations) <= 1 else f"Puts at {expiration}",
+                marker_color=colors[color] if len(expirations) > 1 else "red",
+            )
+            export_df = pd.concat([export_df, data])
+        index_name = expiration if len(expirations) <= 1 else None
+        title = title + " With Open Interest" if oi else title
+        title = title + " Excluding Untraded Contracts" if volume else title
+
+    fig.update_layout(
+        title=dict(text=title, x = 0.5, y = 0.97),
+        yaxis=dict(
+            title=dict(
+                text="IV",
+            ),
+            ticklen=0,
+        ),
+        xaxis=dict(
+            showgrid=False,
+            autorange=True,
+            title=dict(text = index_name),
+        ),
+        legend=dict(
+            font=dict(size=12),
+            orientation="v",
+            yanchor="top",
+            y=0.97,
+            xanchor="center",
+            x=0.525,
+        )
+    )
+
+    if raw:
+        print_rich_table(
+            export_df,
+            title=title,
+            show_index=False,
+            floatfmt=".4f",
+            export=bool(export),
+        )
+        return None
+
+    if export and export != "":
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "volatility",
+            export_df,
+            sheet_name,
+            fig,
+        )
+        return None
+
+    return fig.show(external=raw or external_axes)
