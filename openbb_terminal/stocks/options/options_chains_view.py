@@ -361,29 +361,28 @@ def display_stats(
         xtitle = None
         if by != "expiration":
             by = "expiration"
-        if by == "expiration":
-            stats = options.get_stats(by)
-            fig.add_scatter(
-                x=stats.index,
-                y=stats["OI Ratio"].dropna(),
-                mode="lines+markers",
-                name="Put/Call OI Ratio",
-                marker=dict(color="blue")
-            )
-            fig.add_scatter(
-                x=stats.index,
-                y=stats["Vol-OI Ratio"].dropna(),
-                mode="lines+markers",
-                name="Volume/OI Ratio",
-                marker=dict(color="red")
-            )
-            fig.add_scatter(
-                x=stats.index,
-                y=stats["Volume Ratio"].dropna(),
-                mode="lines+markers",
-                name="Put/Call Volume Ratio",
-                marker=dict(color="orange")
-            )
+        stats = options.get_stats(by)
+        fig.add_scatter(
+            x=stats.index,
+            y=stats["OI Ratio"].dropna(),
+            mode="lines+markers",
+            name="Put/Call OI Ratio",
+            marker=dict(color="blue")
+        )
+        fig.add_scatter(
+            x=stats.index,
+            y=stats["Vol-OI Ratio"].dropna(),
+            mode="lines+markers",
+            name="Volume/OI Ratio",
+            marker=dict(color="red")
+        )
+        fig.add_scatter(
+            x=stats.index,
+            y=stats["Volume Ratio"].dropna(),
+            mode="lines+markers",
+            name="Put/Call Volume Ratio",
+            marker=dict(color="orange")
+        )
 
     fig.update_xaxes(type="category")
     fig.update_traces(
@@ -474,7 +473,7 @@ def display_skew(
     strike: float
         A target strike price to observe the skew vs. contract. This argument overrides other parameters.
     atm: bool
-        When true, returns the ATM skew curve. This will override other parameters.
+        When true, returns the ATM skew curve. This will override other parameters, but is overriden by strike.
     otm_only: bool
         When true, returns only OTM portions of the put/call skew curves.
     raw: bool

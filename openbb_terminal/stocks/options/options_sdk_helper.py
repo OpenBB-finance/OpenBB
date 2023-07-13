@@ -827,7 +827,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         strike: float
         A target strike price to observe the skew vs. contract. This argument overrides other parameters.
         atm: bool
-            When true, returns the ATM skew curve. This will override other parameters.
+            When true, returns the ATM skew curve. This will override other parameters, but is overriden by strike.
         otm_only: bool
             When true, returns only OTM portions of the put/call skew curves.
         raw: bool
