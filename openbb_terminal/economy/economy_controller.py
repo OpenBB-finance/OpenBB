@@ -255,7 +255,8 @@ class EconomyController(BaseController):
                 c: {} for c in nasdaq_model.get_country_names()
             }
             choices["events"]["-c"] = "--countries"
-
+            choices["treasury"]["--maturity"] = {c: None for c in fedreserve_model._all}
+            choices["treasury"]["-m"] = "--maturity"
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
