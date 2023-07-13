@@ -1,12 +1,11 @@
 """Forex aggregate end of day price data model."""
 
 
-from datetime import date, datetime
+from datetime import datetime
 from typing import Optional
 
-from pydantic import Field, NonNegativeFloat, PositiveFloat
+from pydantic import NonNegativeFloat, PositiveFloat
 
-from openbb_provider.metadata import DESCRIPTIONS
 from openbb_provider.model.abstract.data import Data, QueryParams
 from openbb_provider.model.data.base import BaseSymbol
 
@@ -17,18 +16,8 @@ class ForexEODQueryParams(QueryParams, BaseSymbol):
     Parameter
     ---------
     symbol : str
-        The symbol of the company.
-    start_date : Optional[date]
-        The start date of the stock data from which to retrieve the data.
-    end_date : Optional[date]
-        The end date of the stock data up to which to retrieve the data.
+        The symbol of the forex currency pair.
     """
-
-    start_date: date = Field(
-        description=DESCRIPTIONS.get("start_date", ""),
-        default=None,
-    )
-    end_date: date = Field(description=DESCRIPTIONS.get("end_date", ""), default=None)
 
 
 class ForexEODData(Data):
@@ -37,19 +26,17 @@ class ForexEODData(Data):
     Returns
     -------
     date : datetime
-        The date of the stock.
+        The date of the forex currency pair.
     open : PositiveFloat
-        The open price of the stock.
+        The open price of the forex currency pair.
     high : PositiveFloat
-        The high price of the stock.
+        The high price of the forex currency pair.
     low : PositiveFloat
-        The low price of the stock.
+        The low price of the forex currency pair.
     close : PositiveFloat
-        The close price of the stock.
+        The close price of the forex currency pair.
     adj_close : Optional[PositiveFloat]
-        The adjusted close price of the stock.
-    volume : PositiveFloat
-        The volume of the stock.
+        The adjusted close price of the forex currency pair.
     """
 
     date: datetime

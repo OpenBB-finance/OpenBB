@@ -1,22 +1,24 @@
 """Polygon forex end of day fetcher."""
 
 # IMPORT STANDARD
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from datetime import date, datetime, timedelta
+from typing import Dict, List, Optional, Union, Literal
 
 # IMPORT INTERNAL
+from openbb_provider.model.abstract.data import QueryParams
 from openbb_provider.model.data.forex_eod import ForexEODData, ForexEODQueryParams
 from openbb_provider.provider.abstract.fetcher import Fetcher
 from openbb_provider.provider.provider_helpers import data_transformer
+from openbb_polygon.types import Timespan
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
 
 from openbb_polygon.helpers import get_data
-from openbb_polygon.types import BaseStockData, BaseStockQueryParams
+from openbb_polygon.types import BaseStockData
 
 
-class PolygonForexEODQueryParams(BaseStockQueryParams):
+class PolygonForexEODQueryParams(QueryParams):
     """Polygon forex end of day query.
 
     Source: https://polygon.io/docs/forex/get_v2_aggs_ticker__forexticker__range__multiplier___timespan___from___to
@@ -25,9 +27,9 @@ class PolygonForexEODQueryParams(BaseStockQueryParams):
     ----------
     stocksTicker : str
         The ticker symbol of the stocks to fetch.
-    start_date : Union[date, datetime]
+    start_date : Union[date, datetime], optional
         The start date of the query.
-    end_date : Union[date, datetime]
+    end_date : Union[date, datetime], optional
         The end date of the query.
     timespan : Timespan, optional
         The timespan of the query, by default Timespan.day
@@ -40,6 +42,15 @@ class PolygonForexEODQueryParams(BaseStockQueryParams):
     multiplier : PositiveInt, optional
         The multiplier of the query, by default 1
     """
+
+    stocksTicker: str = Field(alias="symbol")
+    start_date: Optional[Union[date, datetime]]
+    end_date: Optional[Union[date, datetime]]
+    timespan: Optional[Timespan] = Field(default=Timespan.day)
+    sort: Optional[Literal["asc", "desc"]] = Field(default="desc")
+    limit: Optional[PositiveInt] = Field(default=49999)
+    adjusted: Optional[bool] = Field(default=True)
+    multiplier: Optional[PositiveInt] = Field(default=1)
 
 
 class PolygonForexEODData(BaseStockData):
@@ -60,24 +71,22 @@ class PolygonForexEODFetcher(
     def transform_query(
         query: ForexEODQueryParams, extra_params: Optional[Dict] = None
     ) -> PolygonForexEODQueryParams:
-        now = datetime.now()
-        start_date = query.start_date if query.start_date else now - timedelta(days=1)
-        end_date = query.end_date if query.end_date else now
         return PolygonForexEODQueryParams(
             symbol=query.symbol,
-            start_date=start_date,
-            end_date=end_date,
-            **extra_params if extra_params else {},
+            **extra_params or {},
         )
 
     @staticmethod
     def extract_data(
         query: PolygonForexEODQueryParams, api_key: str
     ) -> List[PolygonForexEODData]:
+        now = datetime.now()
+        start_date = query.start_date or (now - timedelta(days=7)).date()
+        end_date = query.end_date or now.date()
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"C:{query.stocksTicker.upper()}/range/1/{query.timespan}/"
-            f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
+            f"C:{query.stocksTicker.upper()}/range/1/{query.timespan.value}/"
+            f"{start_date}/{end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"
         )
