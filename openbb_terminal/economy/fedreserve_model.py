@@ -1,6 +1,6 @@
 from datetime import datetime
 from io import BytesIO
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -39,7 +39,7 @@ _all = [
 def get_treasury_rates(
     maturity: maturityType = _all,
     start_date: str = "2005-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: Optional[str] = datetime.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
     """Get treasury rates from Federal Reserve
 

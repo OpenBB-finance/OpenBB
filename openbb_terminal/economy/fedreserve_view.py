@@ -12,24 +12,24 @@ logger = logging.getLogger(__name__)
 
 
 maturities = Literal[
-    "1month",
-    "3month",
-    "6month",
-    "1year",
-    "2year",
-    "3year",
-    "5year",
-    "7year",
-    "10year",
-    "20year",
-    "30year",
+    "1m",
+    "3m",
+    "6m",
+    "1y",
+    "2y",
+    "3y",
+    "5y",
+    "7y",
+    "10y",
+    "20y",
+    "30y",
 ]
 maturityType = Union[maturities, List[maturities]]
 
 
 @log_start_end(log=logger)
 def show_treasuries(
-    maturities: Optional[maturityType] = None,
+    maturities: maturityType = "1y",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,
     raw: bool = False,
