@@ -127,7 +127,8 @@ INCOME_PLOT = {
         "provision_for_loan_lease_and_other_losses": "provision_for_loan_lease_and_other_losses",
         "income_loss_from_discontinued_operations_net_of_tax": "income_loss_from_discontinued_operations_net_of_tax",
         "cost_of_revenue_services": "cost_of_revenue_services",
-        "income_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal": "income_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal",
+        "income_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal": "income"
+        "_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal",
     },
     "YahooFinance": {
         "total_revenue": "total_revenue",
