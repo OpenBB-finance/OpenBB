@@ -3,6 +3,8 @@ import os
 from datetime import datetime
 from typing import List, Literal, Optional, Union
 
+import numpy as np
+
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import fedreserve_model
@@ -66,9 +68,18 @@ def show_treasuries(
         console.print("No data found matching the input.\n")
         return None
 
+    # This drops any nan values so that the ful index isn't shown when not all data present
+    treasury_data = treasury_data.replace("-", np.nan).dropna(how="all")
+
+    title = (
+        "U.S. Treasuries"
+        if treasury_data.shape[1] > 1
+        else f"{maturities[0].replace('m',' Month').replace('y',' Year')} U.S. Treasury Rate"
+    )
+
     fig = OpenBBFigure(
         yaxis=dict(side="right", title="Yield (%)"),
-        title="U.S. Treasuries",
+        title=title,
     )
 
     for col in treasury_data.columns:
@@ -76,7 +87,7 @@ def show_treasuries(
             x=treasury_data.index,
             y=treasury_data[col],
             mode="lines",
-            name=col,
+            name=col.replace("m", " Month").replace("y", " Year"),
         )
 
     if raw:
@@ -95,7 +106,7 @@ def show_treasuries(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "treasuries_data",
-            treasury_data / 100,
+            treasury_data,
             sheet_name,
             fig,
         )
