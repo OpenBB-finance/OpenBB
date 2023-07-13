@@ -17,7 +17,13 @@ To develop you need:
 
 ## Installation
 
-This will install the SDK in the virtual environment.
+To install the SDK in the virtual environment from the repo root run:
+
+```bash
+pip install ./openbb-sdk
+```
+
+This will install the SDK and all the dependencies into the site-packages folder of the virtual environment.
 
 When working with the source code of the SDK it is required to create the static python interface:
 
@@ -26,6 +32,27 @@ import openbb
 openbb._rebuild_python_interface()
 exit()
 ```
+
+## API keys
+
+To connect to APIs you need to provide the API keys.
+
+When developing locally you can specify your keys in the `~/.openbb_sdk/user_settings.json`.
+
+Create this file with the following contents:
+
+```json
+{
+  "credentials": {
+    "fmp_api_key": "REPLACE_ME",
+    "polygon_api_key": "REPLACE_ME",
+    "benzinga_api_key": "REPLACE_ME",
+    "fred_api_key": "REPLACE_ME"
+  }
+}
+```
+
+Then add your API keys there and it should work.
 
 ## Python Usage
 
@@ -37,12 +64,6 @@ Import and basic usage:
  df = aapl.to_dataframe()
  df.head()
  ```
-
-API keys:
-
-To connect to APIs you need to provide the API keys.
-
-
 
 ## API Usage
 
