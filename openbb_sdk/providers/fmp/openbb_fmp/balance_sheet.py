@@ -60,13 +60,14 @@ class FMPBalanceSheetData(Data):
     acceptedDate: Optional[datetime]
     calendarYear: Optional[int]
     period: Optional[str]
+
     cashAndCashEquivalents: Optional[int]
     shortTermInvestments: Optional[int]
     cashAndShortTermInvestments: Optional[int]
     netReceivables: Optional[int]
     inventory: Optional[int]
     otherCurrentAssets: Optional[int]
-    totalCurrentAssets: Optional[int]
+    totalCurrentAssets: Optional[int] = Field(alias="current_assets")
     propertyPlantEquipmentNet: Optional[int]
     goodwill: Optional[int]
     intangibleAssets: Optional[int]
@@ -74,33 +75,37 @@ class FMPBalanceSheetData(Data):
     longTermInvestments: Optional[int]
     taxAssets: Optional[int]
     otherNonCurrentAssets: Optional[int]
-    totalNonCurrentAssets: Optional[int]
+    totalNonCurrentAssets: Optional[int] = Field(alias="noncurrent_assets")
     otherAssets: Optional[int]
-    totalAssets: Optional[int]
+    totalAssets: Optional[int] = Field(alias="assets")
     accountPayables: Optional[int]
     shortTermDebt: Optional[int]
     taxPayables: Optional[int]
     deferredRevenue: Optional[int]
     otherCurrentLiabilities: Optional[int]
-    totalCurrentLiabilities: Optional[int]
+    totalCurrentLiabilities: Optional[int] = Field(alias="current_liabilities")
     longTermDebt: Optional[int]
     deferredRevenueNonCurrent: Optional[int]
     deferredTaxLiabilitiesNonCurrent: Optional[int]
     otherNonCurrentLiabilities: Optional[int]
-    totalNonCurrentLiabilities: Optional[int]
+    totalNonCurrentLiabilities: Optional[int] = Field(alias="noncurrent_liabilities")
     otherLiabilities: Optional[int]
     capitalLeaseObligations: Optional[int]
-    totalLiabilities: Optional[int]
+    totalLiabilities: Optional[int] = Field(alias="liabilities")
     preferredStock: Optional[int]
     commonStock: Optional[int]
     retainedEarnings: Optional[int]
     accumulatedOtherComprehensiveIncomeLoss: Optional[int]
-    othertotalStockholdersEquity: Optional[int]
+    othertotalStockholdersEquity: Optional[int] = Field(name="equity")
     totalStockholdersEquity: Optional[int]
     totalLiabilitiesAndStockholdersEquity: Optional[int]
-    minorityInterest: Optional[int]
+    minorityInterest: Optional[int] = Field(
+        alias="equity_attributable_to_noncontrolling_interest"
+    )
     totalEquity: Optional[int]
-    totalLiabilitiesAndTotalEquity: Optional[int]
+    totalLiabilitiesAndTotalEquity: Optional[int] = Field(
+        alias="liabilities_and_equity"
+    )
     totalInvestments: Optional[int]
     netDebt: Optional[int]
     finalLink: Optional[str]
@@ -136,6 +141,8 @@ class FMPBalanceSheetFetcher(
     def transform_data(
         data: List[FMPBalanceSheetData],
     ) -> List[BalanceSheetData]:
+        # TODO: Consider if we want to calculate this
+        # What are the goals of standardization?
         # final_items = []
         # for item in data:
         #     tot_se = item.totalStockholdersEquity
@@ -168,4 +175,3 @@ class FMPBalanceSheetFetcher(
         # )
         # final_items.append(final)
         return data_transformer(data, BalanceSheetData)
-        # return final_items
