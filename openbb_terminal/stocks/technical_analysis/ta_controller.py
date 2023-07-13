@@ -39,7 +39,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_view,
-    rsp_view,
     tradingview_model,
     tradingview_view,
 )
@@ -69,7 +68,6 @@ class TechnicalAnalysisController(StockBaseController):
         "macd",
         "ichimoku",
         "rsi",
-        "rsp",
         "stoch",
         "fisher",
         "cg",
@@ -156,7 +154,6 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_cmd("fisher", not self.stock.empty)
         mt.add_cmd("ichimoku", not self.stock.empty)
         mt.add_cmd("rsi", not self.stock.empty)
-        mt.add_cmd("rsp", not self.stock.empty)
         mt.add_cmd("stoch", not self.stock.empty)
         mt.add_info("_trend_")
         mt.add_cmd("adx", not self.stock.empty)
@@ -804,51 +801,6 @@ class TechnicalAnalysisController(StockBaseController):
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_rsp(self, other_args: List[str]):
-        """Process rsp command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rsp",
-            description="""
-                IBD Style Relative Strength Percentile Ranking of Stocks (i.e. 0-100 Score).
-                Ranks stocks on the basis of relative strength as calculated by Investor's
-                Business Daily (Yearly performance of stock (most recent quarter is weighted
-                double) divided by yearly performance of reference index (here, we use SPY)
-                Export table to view the entire ranking
-                Data taken from https://github.com/skyte/relative-strength
-            """,
-        )
-
-        parser.add_argument(
-            "-t",
-            "--tickers",
-            action="store_true",
-            default=False,
-            dest="disp_tickers",
-            help="Show other tickers in the industry the stock is part of",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            EXPORT_ONLY_RAW_DATA_ALLOWED,
-        )
-
-        if ns_parser:
-            if not self.ticker:
-                no_ticker_message()
-                return
-            rsp_view.display_rsp(
-                s_ticker=self.ticker,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-                tickers_show=ns_parser.disp_tickers,
             )
 
     @log_start_end(log=logger)
