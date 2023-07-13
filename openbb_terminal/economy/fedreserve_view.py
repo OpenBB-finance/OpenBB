@@ -1,7 +1,7 @@
 import logging
 import os
-from typing import List, Literal, Optional, Union
 from datetime import datetime
+from typing import List, Literal, Optional, Union
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
