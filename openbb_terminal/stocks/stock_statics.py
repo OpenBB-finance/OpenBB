@@ -296,6 +296,7 @@ BALANCE_PLOT = {
         "fixed_assets": "fixed_assets",
         "other_than_fixed_noncurrent_assets": "other_than_fixed_non_current_assets",
         "liabilities_and_equity": "liabilities_and_equity",
+        "commitments_and_contingencies": "commitments_and_contingencies",
     },
     "YahooFinance": {
         "cash_and_cash_equivalents": "cash_and_cash_equivalents",
