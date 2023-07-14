@@ -717,7 +717,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         sheet_name: str
             Name of the sheet to save the data to. Only valid when `export` is a `xlsx` file.
         external_axes: bool
-            Retun the OpenBB Figure Object to a variable.
+            Return the OpenBB Figure Object to a variable.
 
         Examples
         ----------
@@ -787,7 +787,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         export: str
             Export dataframe data to csv,json,xlsx file.
         external_axes: bool
-            Retun the OpenBB Figure Object to a variable.
+            Return the OpenBB Figure Object to a variable.
 
         Examples
         ----------
@@ -852,7 +852,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         strike: float
             A target strike price to observe the skew vs. contract. This argument overrides other parameters.
         atm: bool
-            When true, returns the ATM skew curve. This will override other parameters, but is overriden by strike.
+            When true, returns the ATM skew curve. This will override other parameters, but is overridden by strike.
         otm_only: bool
             When true, returns only OTM portions of the put/call skew curves.
         raw: bool
@@ -910,7 +910,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         Parameters
         -----------
         expirations: list[str]
-            Select up to five expiration(s) to display.  Overriden by moneyness or strike. Format as YYYY-MM-DD.
+            Select up to five expiration(s) to display.  Overridden by moneyness or strike. Format as YYYY-MM-DD.
         moneyness: float
             Specify a target % moneyness to display vs. contract dates. This argument overrides expirations.
         strike: float
@@ -926,7 +926,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         export: str
             Export dataframe data to csv,json,xlsx file.
         external_axes: bool
-            Retun the OpenBB Figure Object to a variable.
+            Return the OpenBB Figure Object to a variable.
 
         Examples
         ----------
