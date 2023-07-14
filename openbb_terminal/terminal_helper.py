@@ -393,7 +393,7 @@ def reset(queue: Optional[List[str]] = None):
             if parts[0] == "openbb_terminal":
                 del sys.modules[module]
 
-        queue_list = ["/".join(queue) if len(queue) > 0 else ""]
+        queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
         # pylint: disable=import-outside-toplevel
         # we run the terminal again
         if is_local():
