@@ -55,6 +55,17 @@ def news(
     return CommandOutput(results=Query(**locals()).execute())
 
 
+@router.command(query="StockMultiples")
+def multiples(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Get valuation multiples for a stock ticker."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
 @router.command
 def tob() -> CommandOutput[Empty]:
     """View top of book for loaded ticker (US exchanges only)."""

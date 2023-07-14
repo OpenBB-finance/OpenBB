@@ -39,6 +39,7 @@ from .sec_filings import FMPSECFilingsFetcher
 from .share_statistics import FMPShareStatisticsFetcher
 from .stock_eod import FMPStockEODFetcher
 from .stock_insider_trading import FMPStockInsiderTradingFetcher
+from .stock_multiples import FMPStockMultiplesFetcher
 from .stock_news import FMPStockNewsFetcher
 from .stock_ownership import FMPStockOwnershipFetcher
 from .stock_peers import FMPStockPeersFetcher
@@ -90,5 +91,6 @@ fmp_provider = Provider(
         FMPForexPriceFetcher,
         FMPForexPairsFetcher,
         FMPStockPeersFetcher,
+        FMPStockMultiplesFetcher,
     ],
 )
