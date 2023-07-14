@@ -68,8 +68,8 @@ You can also specify the keys at runtime:
 
 ```python
 from openbb import obb
-openbb.settings.credentials.fmp_api_key = "REPLACE_ME"
-openbb.settings.credentials.polygon_api_key = "REPLACE_ME"
+obb.settings.credentials.fmp_api_key = "REPLACE_ME"
+obb.settings.credentials.polygon_api_key = "REPLACE_ME"
 ```
 
 ### From OpenBB Hub
