@@ -1527,6 +1527,15 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 and ns_parser.vs == "usdt"
             ):
                 ns_parser.vs = "usd"
+            if ns_parser.source == "YahooFinance" and ns_parser.interval in [
+                "240",
+                "10080",
+                "43200",
+            ]:
+                console.print(
+                    f"[red]YahooFinance does not support {ns_parser.interval}min interval[/red]"
+                )
+                return
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
                 to_symbol=ns_parser.vs,
