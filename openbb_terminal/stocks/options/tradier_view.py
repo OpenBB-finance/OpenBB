@@ -100,7 +100,6 @@ def display_historical(
         secondary_y=False,
     )
     fig.add_inchart_volume(df_hist)
-    fig.hide_holidays()
 
     if export:
         export_data(
