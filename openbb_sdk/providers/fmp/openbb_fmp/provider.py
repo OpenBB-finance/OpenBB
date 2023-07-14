@@ -41,6 +41,7 @@ from .stock_eod import FMPStockEODFetcher
 from .stock_insider_trading import FMPStockInsiderTradingFetcher
 from .stock_news import FMPStockNewsFetcher
 from .stock_ownership import FMPStockOwnershipFetcher
+from .stock_peers import FMPStockPeersFetcher
 from .stock_price import FMPStockPriceFetcher
 from .stock_splits import FMPStockSplitCalendarFetcher
 from .treasury_rates import FMPTreasuryRatesFetcher
@@ -88,5 +89,6 @@ fmp_provider = Provider(
         FMPForexEODFetcher,
         FMPForexPriceFetcher,
         FMPForexPairsFetcher,
+        FMPStockPeersFetcher,
     ],
 )
