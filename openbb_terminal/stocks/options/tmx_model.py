@@ -287,7 +287,7 @@ def get_chains(symbol: str = "") -> object:
     return OptionsChains
 
 
-def get_eodchains(symbol: str = "", date: str = "") -> object:
+def get_eodchains(symbol: str = "", date: str = "") -> Options:
     """Gets the complete options chain for the EOD on a specific date.
     Open Interest values are from the previous day.
 
@@ -566,7 +566,7 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> Options
             )
             return OptionsChainsPydantic
 
-        return None
+        return Options()
 
     OptionsChainsChains = get_chains(symbol)
     if not pydantic:
@@ -588,4 +588,4 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> Options
         )
         return OptionsChainsPydantic
 
-    return None
+    return Options()

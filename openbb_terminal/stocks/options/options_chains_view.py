@@ -88,7 +88,7 @@ def display_surface(
 
     if options.hasIV is False:
         return print(
-            "Implied Volatility was not found and is required for this function."
+            "Options data object does not have Implied Volatility and is required for this function."
         )
 
     options = deepcopy(options)

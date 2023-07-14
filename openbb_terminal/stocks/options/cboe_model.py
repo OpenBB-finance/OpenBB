@@ -571,4 +571,4 @@ def load_options(symbol: str, pydantic: bool = False) -> Options:
 
         return OptionsChains
 
-    return None
+    return Options()

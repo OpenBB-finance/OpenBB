@@ -496,4 +496,4 @@ def load_options(symbol: str, pydantic: bool = False) -> Options:
         setattr(OptionsChainsPydantic, "get_available_greeks", get_greeks)
         return OptionsChainsPydantic
 
-    return None
+    return Options()

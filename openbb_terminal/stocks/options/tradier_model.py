@@ -412,7 +412,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
     return underlying_price
 
 
-def get_chains(symbol: str) -> object:
+def get_chains(symbol: str) -> Options:
     """OptionsChains data object for Tradier.
 
     Parameters
@@ -565,4 +565,4 @@ def load_options(symbol: str, pydantic: bool = False) -> Options:
         )
         return OptionsChainsPydantic
 
-    return None
+    return Options()

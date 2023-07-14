@@ -277,12 +277,14 @@ def validate_object(
         if (
             options.source == "TMX"
             or options.source == "YahooFinance"
+            or options.source == "Nasdaq"
             and options.chains.query("`dte` == @dte_estimate")["ask"].sum() == 0
         ):
             options.chains["ask"] = options.chains["lastPrice"]
         if (
             options.source == "TMX"
             or options.source == "YahooFinance"
+            or options.source == "Nasdaq"
             and options.chains.query("`dte` == @dte_estimate")["bid"].sum() == 0
         ):
             options.chains["bid"] = options.chains["lastPrice"]
@@ -1357,7 +1359,6 @@ def get_strategies(
     strategies = pd.concat([straddles, strangles, call_spreads, put_spreads])
 
     if strategies.empty:
-        print("No strategy was selected, returning all ATM straddles.")
         return get_strategies(options, straddle_strike=options.last_price)
 
     strategies = strategies.reset_index().rename(columns={"index": "Strategy"})
