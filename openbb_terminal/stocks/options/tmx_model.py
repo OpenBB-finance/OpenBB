@@ -138,7 +138,7 @@ def check_symbol(symbol: str) -> bool:
     return len(SYMBOLS.query("`Underlying Symbol` == @symbol")) == 1
 
 
-def get_chains(symbol: str = "") -> object:
+def get_chains(symbol: str = "") -> Options:
     """Gets the current quotes for the complete options chain.
     No implied volatility is returned from this method.
     Use `get_eodchains()` to get the implied volatility.
