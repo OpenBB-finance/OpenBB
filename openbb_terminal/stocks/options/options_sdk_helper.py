@@ -25,7 +25,7 @@ from openbb_terminal.stocks.options.op_helpers import Option, Options
 
 logger = logging.getLogger(__name__)
 
-# pylint:disable=C0302
+# pylint:disable=C0302,R0913
 
 
 @log_start_end(log=logger)
@@ -367,6 +367,8 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
             Function to chart a variety of volume and open interest statistics.
         chart_surface: Callable
             Function to chart the volatility as a 3-D surface.
+        chart_volatility: Callable
+            Function to chart the implied volatility smile.
         get_skew: Callable
             Function to calculate horizontal and vertical skewness.
         get_stats: Callable
@@ -384,7 +386,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
 
     Examples
     --------
-    >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
+    >>> from openbb_terminal.stocks.options.options_sdk_helper import OptionsChains
     >>> spy = OptionsChains("SPY")
     >>> spy.__dict__
 
@@ -394,7 +396,9 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
 
     def __init__(self, symbol, source="CBOE", date="", pydantic=False):
         try:
-            options = options_chains_model.load_options_chains(symbol, source, date, pydantic)
+            options = options_chains_model.load_options_chains(
+                symbol, source, date, pydantic
+            )
             items = list(options.__dict__.keys())
             for item in items:
                 setattr(self, item, options.__dict__[item])
@@ -530,7 +534,9 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         >>> data.get_vertical_call_spread(days=10, sold_strike=350, bought_strike=355)
         """
 
-        return options_chains_model.calculate_vertical_call_spread(self, days, sold_strike, bought_strike)
+        return options_chains_model.calculate_vertical_call_spread(
+            self, days, sold_strike, bought_strike
+        )
 
     def get_vertical_put_spread(self, days=0, sold_strike=0, bought_strike=0):
         """Calculates the vertical put spread for the target DTE.
@@ -566,7 +572,9 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         >>> data.get_vertical_put_spread(days=10, sold_strike=355, bought_strike=350)
         """
 
-        return options_chains_model.calculate_vertical_put_spread(self, days, sold_strike, bought_strike)
+        return options_chains_model.calculate_vertical_put_spread(
+            self, days, sold_strike, bought_strike
+        )
 
     def get_strategies(
         self,
@@ -688,7 +696,6 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         sheet_name: Optional[str] = "",
         external_axes: bool = False,
     ) -> Union[None, OpenBBFigure]:
-
         """Chart a variety of volume and open interest statistics.
 
         Parameters
@@ -733,7 +740,16 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         >>> spy.chart_stats(ratios=True)
         """
         return options_chains_view.display_stats(
-            self, by, expiry, oi, percent, ratios, raw, export, sheet_name, external_axes
+            self,
+            by,
+            expiry,
+            oi,
+            percent,
+            ratios,
+            raw,
+            export,
+            sheet_name,
+            external_axes,
         )
 
     def chart_surface(
@@ -792,13 +808,22 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         >>> spy.chart_surface(strike_range=[400, 500], oi=True, volume=True)
         """
         return options_chains_view.display_surface(
-            self, option_type, dte_range, moneyness, strike_range,
-            oi, volume, raw, export, sheet_name, external_axes
+            self,
+            option_type,
+            dte_range,
+            moneyness,
+            strike_range,
+            oi,
+            volume,
+            raw,
+            export,
+            sheet_name,
+            external_axes,
         )
 
     def chart_skew(
         self,
-        expirations: Optional[list[str]] = "",
+        expirations: Optional[list[str]] = None,
         moneyness: Optional[float] = None,
         strike: Optional[float] = None,
         atm: Optional[bool] = False,
@@ -825,7 +850,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         moneyness: float
             The % moneyess. When specified, this returns the forward skew curve at the target moneyness.
         strike: float
-        A target strike price to observe the skew vs. contract. This argument overrides other parameters.
+            A target strike price to observe the skew vs. contract. This argument overrides other parameters.
         atm: bool
             When true, returns the ATM skew curve. This will override other parameters, but is overriden by strike.
         otm_only: bool
@@ -856,7 +881,16 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         >>> spy.chart_skew(expirations=spy.expirations[1:11], otm_only=True)
         """
         return options_chains_view.display_skew(
-            self, expirations, moneyness, strike, atm, otm_only, raw, export, sheet_name, external_axes
+            self,
+            expirations,
+            moneyness,
+            strike,
+            atm,
+            otm_only,
+            raw,
+            export,
+            sheet_name,
+            external_axes,
         )
 
     def chart_volatility(
@@ -876,22 +910,50 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         Parameters
         -----------
         expirations: list[str]
-            Select up to five expiration(s) to display.  Format as YYYY-MM-DD.
+            Select up to five expiration(s) to display.  Overriden by moneyness or strike. Format as YYYY-MM-DD.
         moneyness: float
             Specify a target % moneyness to display vs. contract dates. This argument overrides expirations.
         strike: float
             Specify a target strike price to display vs. contract dates.
             Returned strike price is estimated as the closest one listed at approximately one year forward.
-            This argument overrides moneyness.
+            This argument overrides moneyness and expirations.
+        oi: bool
+            Return only contracts with open interest. Only valid for IV vs. Strike charts. Default is False.
+        volume: bool
+            Return only contracts with trading volume. Only valid for IV vs. Strike charts. Default is False.
         raw: bool
             Display the raw data instead of the chart.
         export: str
             Export dataframe data to csv,json,xlsx file.
         external_axes: bool
             Retun the OpenBB Figure Object to a variable.
+
+        Examples
+        ----------
+        >>> from openbb_terminal.sdk import openbb
+        >>> spy = openbb.stocks.options.load_options_chains("SPY")
+        >>> spy.chart_volatility()
+
+        Plot IV @ Strike vs. contract dates:
+        >>> spy.chart_volatility(strike=450)
+
+        Plot IV @ % OTM vs. contract dates:
+        >>> spy.chart_volatility(moneyness=20)
+
+        Plot multiple expirations at once, and filter for only contracts with open interest:
+        >>> spy.chart_volatility(expirations=["2024-12-30", "2025-12-30"], oi=True)
         """
         return options_chains_view.display_volatility(
-            self, expirations, moneyness, strike, oi, volume, raw, export, sheet_name, external_axes
+            self,
+            expirations,
+            moneyness,
+            strike,
+            oi,
+            volume,
+            raw,
+            export,
+            sheet_name,
+            external_axes,
         )
 
 
@@ -914,7 +976,7 @@ def load_options_chains(
 
     Returns
     -------
-    Object: Options
+    Object: OptionsChains
         chains: pd.DataFrame
             The complete options chain for the ticker. Returns as a dictionary if pydantic is True.
         expirations: list[str]
@@ -948,6 +1010,8 @@ def load_options_chains(
             Function to chart a variety of volume and open interest statistics.
         chart_surface: Callable
             Function to chart the volatility as a 3-D surface.
+        chart_volatility: Callable
+            Function to chart the implied volatility smile.
         get_skew: Callable
             Function to calculate horizontal and vertical skewness.
         get_stats: Callable

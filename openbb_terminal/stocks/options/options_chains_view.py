@@ -1,4 +1,5 @@
-#%%
+# mypy: disable-error-code=arg-type
+
 # IMPORTATION STANDARD
 import logging
 import os
@@ -21,6 +22,7 @@ from openbb_terminal.stocks.options.op_helpers import Options
 logger = logging.getLogger(__name__)
 
 # pylint: disable=C0302,R0913
+
 
 @log_start_end(log=logger)
 def display_surface(
@@ -85,19 +87,25 @@ def display_surface(
         return None
 
     if options.hasIV is False:
-        return print("Implied Volatility was not found and is required for this function.")
+        return print(
+            "Implied Volatility was not found and is required for this function."
+        )
 
     options = deepcopy(options)
     options.chains = options_chains_model.validate_object(options.chains, "chains")
 
     last_price = options.last_price  # noqa:F841
 
-    calls = options.chains.query("`optionType` == 'call' & `dte` >= 0 & `impliedVolatility` > 0")
-    puts = options.chains.query("`optionType` == 'put' & `dte` >= 0 & `impliedVolatility` > 0")
+    calls = options.chains.query(
+        "`optionType` == 'call' & `dte` >= 0 & `impliedVolatility` > 0"
+    )
+    puts = options.chains.query(
+        "`optionType` == 'put' & `dte` >= 0 & `impliedVolatility` > 0"
+    )
 
     if option_type not in ["otm", "itm", "puts", "calls"]:
         print("Invalid option type, defaulting to 'otm'.")
-        option_type="otm"
+        option_type = "otm"
 
     if oi:
         calls = calls[calls["openInterest"] > 0]
@@ -108,52 +116,78 @@ def display_surface(
         puts = puts[puts["volume"] > 0]
 
     if dte_range is not None:
-        dte_range = [dte_range] if isinstance(dte_range, int) else dte_range
+        dte_range = [dte_range] if isinstance(dte_range, int) else dte_range  # type: ignore [list-item]
         if len(dte_range) > 1:
-            far = dte_range[1] if dte_range[1] > dte_range[0] else dte_range[0]  # noqa:F841
-            near = dte_range[0] if dte_range[1] > dte_range[0] else dte_range[1]  # noqa:F841
+            far = (  # noqa:F841 pylint: disable=unused-variable
+                dte_range[1] if dte_range[1] > dte_range[0] else dte_range[0]
+            )
+            near = (  # noqa:F841 pylint: disable=unused-variable
+                dte_range[0] if dte_range[1] > dte_range[0] else dte_range[1]
+            )
             calls = calls.query("@near <= `dte` <= @far")
             puts = puts.query("@near <= `dte` <= @far")
 
     if moneyness is not None and moneyness > 0:
-        high = (1 +(moneyness/100)) * last_price  # noqa:F841
-        low = (1 - (moneyness/100)) * last_price  # noqa:F841
+        high = (  # noqa:F841 pylint: disable=unused-variable
+            1 + (moneyness / 100)
+        ) * last_price
+        low = (  # noqa:F841 pylint: disable=unused-variable
+            1 - (moneyness / 100)
+        ) * last_price
         calls = calls.query("@low <= `strike` <= @high")
         puts = puts.query("@low <= `strike` <= @high")
 
     if strike_range is not None and len(strike_range) > 1:
-        high = strike_range[1] if strike_range[1] > strike_range[0] else strike_range[0]  # noqa:F841
-        low = strike_range[0] if strike_range[1] > strike_range[0] else strike_range[1]  # noqa:F841
+        high = (  # noqa:F841 pylint: disable=unused-variable
+            strike_range[1] if strike_range[1] > strike_range[0] else strike_range[0]
+        )
+        low = (  # noqa:F841 pylint: disable=unused-variable
+            strike_range[0] if strike_range[1] > strike_range[0] else strike_range[1]
+        )
         calls = calls.query("@low <= `strike` <= @high")
         puts = puts.query("@low <= `strike` <= @high")
 
     if option_type == "otm":
-        otm_calls = calls.query("`strike` > @last_price").set_index(["expiration", "strike", "optionType"])
-        otm_puts = puts.query("`strike` < @last_price").set_index(["expiration", "strike", "optionType"])
-        data = pd.concat([otm_calls,otm_puts]).sort_index().reset_index()
+        otm_calls = calls.query("`strike` > @last_price").set_index(
+            ["expiration", "strike", "optionType"]
+        )
+        otm_puts = puts.query("`strike` < @last_price").set_index(
+            ["expiration", "strike", "optionType"]
+        )
+        data = pd.concat([otm_calls, otm_puts]).sort_index().reset_index()
 
     if option_type == "itm":
-        itm_calls = calls.query("`strike` < @last_price").set_index(["expiration", "strike", "optionType"])
-        itm_puts = puts.query("`strike` > @last_price").set_index(["expiration", "strike", "optionType"])
-        data = pd.concat([itm_calls,itm_puts]).sort_index().reset_index()
+        itm_calls = calls.query("`strike` < @last_price").set_index(
+            ["expiration", "strike", "optionType"]
+        )
+        itm_puts = puts.query("`strike` > @last_price").set_index(
+            ["expiration", "strike", "optionType"]
+        )
+        data = pd.concat([itm_calls, itm_puts]).sort_index().reset_index()
 
     if option_type == "calls":
         data = calls
     if option_type == "puts":
         data = puts
 
-    data  = data[["expiration", "strike", "optionType", "dte", "impliedVolatility", "openInterest", "volume"]]
+    data = data[
+        [
+            "expiration",
+            "strike",
+            "optionType",
+            "dte",
+            "impliedVolatility",
+            "openInterest",
+            "volume",
+        ]
+    ]
     cols = ["Expiration", "Strike", "Type", "DTE", "IV", "OI", "Volume"]
     data.columns = cols
 
-    label_dict = {
-        "calls": "Call",
-        "puts": "Put",
-        "otm": "OTM",
-        "itm": "ITM"
-    }
+    label_dict = {"calls": "Call", "puts": "Put", "otm": "OTM", "itm": "ITM"}
     label = (
-        label_dict[option_type] + " Options IV Surface" if not oi
+        label_dict[option_type] + " Options IV Surface"
+        if not oi
         else label_dict[option_type] + " Options IV Surface With Open Interest"
     )
     label = label + " Excluding Untraded Contracts" if volume else label
@@ -176,9 +210,20 @@ def display_surface(
         opacity=1,
         contour=dict(color="black", show=True, width=15),
         colorscale=[
-            [0, "darkred"], [0.001, "crimson"], [0.005, "red"], [0.0075, "orangered"], [0.015, "darkorange"],
-            [0.025, "orange"], [0.04, "goldenrod"], [0.055, "gold"], [0.11, "magenta"], [0.15, "plum"],
-            [0.4, "lightblue"], [0.7, "royalblue"], [0.9, "blue"], [1, "darkblue"]
+            [0, "darkred"],
+            [0.001, "crimson"],
+            [0.005, "red"],
+            [0.0075, "orangered"],
+            [0.015, "darkorange"],
+            [0.025, "orange"],
+            [0.04, "goldenrod"],
+            [0.055, "gold"],
+            [0.11, "magenta"],
+            [0.15, "plum"],
+            [0.4, "lightblue"],
+            [0.7, "royalblue"],
+            [0.9, "blue"],
+            [1, "darkblue"],
         ],
         hovertemplate="<b>DTE</b>: %{x} <br><b>Strike</b>: %{y} <br><b>"
         + "IV"
@@ -186,14 +231,19 @@ def display_surface(
         showscale=True,
         flatshading=True,
         lighting=dict(
-            ambient=0.95, diffuse=0.9, roughness=0.8, specular=0.9, fresnel=0.001,
-            vertexnormalsepsilon=0.0001, facenormalsepsilon=0.0001
-        )
+            ambient=0.95,
+            diffuse=0.9,
+            roughness=0.8,
+            specular=0.9,
+            fresnel=0.001,
+            vertexnormalsepsilon=0.0001,
+            facenormalsepsilon=0.0001,
+        ),
     )
     tick_kwargs = dict(tickfont=dict(size=12), titlefont=dict(size=14))
     fig.update_layout(
         scene=dict(
-            xaxis=dict(title="DTE", autorange = "reversed", **tick_kwargs),
+            xaxis=dict(title="DTE", autorange="reversed", **tick_kwargs),
             yaxis=dict(title="Strike", **tick_kwargs),
             zaxis=dict(title="IV", **tick_kwargs),
         ),
@@ -202,12 +252,11 @@ def display_surface(
             up=dict(x=0, y=0, z=0.75),
             center=dict(x=-0.01, y=0, z=-0.3),
             eye=dict(x=1.75, y=1.75, z=0.69),
-        )
+        ),
     )
-    fig.update_scenes(aspectmode="manual",aspectratio=dict(x=1.5,y=2.0,z=0.75))
+    fig.update_scenes(aspectmode="manual", aspectratio=dict(x=1.5, y=2.0, z=0.75))
 
     if raw:
-        data = data
         print_rich_table(
             data,
             title=label,
@@ -217,7 +266,6 @@ def display_surface(
         return None
 
     if export and export != "":
-        data=data
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -244,7 +292,6 @@ def display_stats(
     sheet_name: Optional[str] = "",
     external_axes: bool = False,
 ) -> Union[None, OpenBBFigure]:
-
     """Chart a variety of volume and open interest statistics.
 
     Parameters
@@ -299,13 +346,12 @@ def display_stats(
     if options_chains_model.validate_object(options, "object") is False:
         return None
     options = deepcopy(options)
-    stats = options_chains_model.calculate_stats(options, by = by)
+    stats = options_chains_model.calculate_stats(options, by=by)
 
     if by == "strike" and expiry != "" and percent is False:
         expiry = options_chains_model.get_nearest_expiration(options, expiry)
         stats = options_chains_model.calculate_stats(
-            options.chains[options.chains["expiration"] == expiry],
-            "strike"
+            options.chains[options.chains["expiration"] == expiry], "strike"
         )
 
     net_volume = stats.sum()["Total Volume"]
@@ -316,107 +362,120 @@ def display_stats(
 
     stats["Puts OI"] = stats["Puts OI"] * (-1)
     stats["Puts Volume"] = stats["Puts Volume"] * (-1)
-    expiry = None if oi is True and by == "expiration" else expiry
-    title = f"Percentage of Total {options.symbol} {stat_type}" if percent is True else f"{options.symbol} {stat_type}"
-    xtitle = f"{index_name}s With {stat_type}  > 0.5% of Total {stat_type}" if percent is True else expiry
+    expiry = "" if oi is True and by == "expiration" else expiry
+    title = (
+        f"Percentage of Total {options.symbol} {stat_type}"
+        if percent is True
+        else f"{options.symbol} {stat_type}"
+    )
+    xtitle = (
+        f"{index_name}s With {stat_type}  > 0.5% of Total {stat_type}"
+        if percent is True
+        else expiry
+    )
     ytitle = f"% of Total {stat_type}" if percent is True else stat_type
 
     fig = OpenBBFigure()
     if ratios is False:
         if percent is True:
-            stats["% of Total Volume"] = round(stats["Total Volume"]/net_volume * 100, 4)
-            stats["% of Total OI"] = round(stats["Total OI"]/net_oi * 100, 4)
-            stats_df = stats.query("`% of Total Volume` > 0.5") if oi is False else stats.query("`% of Total OI` > 0.5")
+            stats["% of Total Volume"] = round(
+                stats["Total Volume"] / net_volume * 100, 4
+            )
+            stats["% of Total OI"] = round(stats["Total OI"] / net_oi * 100, 4)
+            stats_df = (
+                stats.query("`% of Total Volume` > 0.5")
+                if oi is False
+                else stats.query("`% of Total OI` > 0.5")
+            )
             fig.add_bar(
                 x=stats_df.index,
-                y=stats_df["% of Total Volume"] if oi is False else stats_df["% of Total OI"],
+                y=stats_df["% of Total Volume"]
+                if oi is False
+                else stats_df["% of Total OI"],
                 name=f"% of Total {stat_type}",
                 orientation="v",
             )
         if percent is False:
             fig.add_bar(
-                x = stats.index,
+                x=stats.index,
                 y=stats["Puts Volume"] if oi is False else stats["Puts OI"],
                 name="Puts",
                 orientation="v",
-                marker=dict(color="red")
+                marker=dict(color="red"),
             )
             fig.add_bar(
-                x= stats.index,
+                x=stats.index,
                 y=stats["Calls Volume"] if oi is False else stats["Calls OI"],
                 name="Calls",
                 orientation="v",
-                marker=dict(color="blue")
+                marker=dict(color="blue"),
             )
-        fig.update_layout(legend=dict(
-            orientation="h",
-            yanchor="top",
-            y=1.125,
-            xanchor="left",
-            x=0.01,
-        ))
+        fig.update_layout(
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=1.125,
+                xanchor="left",
+                x=0.01,
+            )
+        )
     if ratios is True:
         title = f"{options.symbol} Ratios"
-        ytitle = None
-        xtitle = None
+        ytitle = ""
+        xtitle = ""
         if by != "expiration":
             by = "expiration"
-        stats = options.get_stats(by)
+        stats = options_chains_model.calculate_stats(options, by)
         fig.add_scatter(
             x=stats.index,
             y=stats["OI Ratio"].dropna(),
             mode="lines+markers",
             name="Put/Call OI Ratio",
-            marker=dict(color="blue")
+            marker=dict(color="blue"),
         )
         fig.add_scatter(
             x=stats.index,
             y=stats["Vol-OI Ratio"].dropna(),
             mode="lines+markers",
             name="Volume/OI Ratio",
-            marker=dict(color="red")
+            marker=dict(color="red"),
         )
         fig.add_scatter(
             x=stats.index,
             y=stats["Volume Ratio"].dropna(),
             mode="lines+markers",
             name="Put/Call Volume Ratio",
-            marker=dict(color="orange")
+            marker=dict(color="orange"),
         )
 
     fig.update_xaxes(type="category")
-    fig.update_traces(
-        width=0.98,
-        selector=dict(type="bar")
-    )
+    fig.update_traces(width=0.98, selector=dict(type="bar"))
     fig.update_layout(
-        title=dict(text=title, x = 0.5, y = 0.97),
+        title=dict(text=title, x=0.5, y=0.97),
         barmode="overlay",
         bargap=0,
         bargroupgap=0,
         yaxis=dict(
-            title=dict(
-                text=ytitle,
-                font=dict(size=16)
-            ),
+            title=dict(text=ytitle, font=dict(size=16)),
             ticklen=0,
             showgrid=True,
-            tickfont=dict(size = 14)
+            tickfont=dict(size=14),
         ),
         xaxis=dict(
             title=dict(text=xtitle, font=dict(size=16)),
             showgrid=False,
             autorange=True,
             tickangle=90,
-            tickfont=dict(size = 11)
+            tickfont=dict(size=11),
         ),
     )
     if raw:
         print_rich_table(
             stats,
             title=(
-                f"{options.symbol} Stats" if expiry == "" or percent is True
-                else  f"{options.symbol} for {expiry} Expiration"
+                f"{options.symbol} Stats"
+                if expiry == "" or percent is True
+                else f"{options.symbol} for {expiry} Expiration"
             ),
             show_index=True,
             index_name=index_name,
@@ -442,7 +501,7 @@ def display_stats(
 @log_start_end(log=logger)
 def display_skew(
     options: Options,
-    expirations: Optional[list[str]] = "",
+    expirations: Optional[list[str]] = None,
     moneyness: Optional[float] = None,
     strike: Optional[float] = None,
     atm: Optional[bool] = False,
@@ -487,7 +546,9 @@ def display_skew(
     """
 
     if options.hasIV is False:
-        return print("Options data object does not have Implied Volatility and is required for this function.")
+        return print(
+            "Options data object does not have Implied Volatility and is required for this function."
+        )
     options = deepcopy(options)
     options.chains = options_chains_model.validate_object(options.chains, "chains")
 
@@ -495,38 +556,44 @@ def display_skew(
     call_skew = pd.DataFrame()
     skew_df = pd.DataFrame()
     export_df = pd.DataFrame()
-    colors = (
-        [
-            "blue", "red", "burlywood", "orange", "green",
-            "grey", "magenta", "cyan", "indigo", "yellowgreen"
-        ]
-    )
+    colors = [
+        "blue",
+        "red",
+        "burlywood",
+        "orange",
+        "green",
+        "grey",
+        "magenta",
+        "cyan",
+        "indigo",
+        "yellowgreen",
+    ]
 
-    expirations = [expirations] if isinstance(expirations, str) else expirations
+    expirations = options.expirations[1] if expirations is None else expirations
+    expirations = [expirations] if isinstance(expirations, str) else expirations  # type: ignore [list-item]
     if len(expirations) > 10 and otm_only is True:
-        expirations = expirations[:10]
+        expirations = expirations[:10]  # type: ignore [index]
     elif len(expirations) > 5 and otm_only is False:
-        expirations = expirations[:5]
+        expirations = expirations[:5]  # type: ignore [index]
 
     if moneyness is None:
         fig = OpenBBFigure()
         color = -1
-        for expiration in expirations:
+        for expiration in expirations:  # type: ignore [union-attr]
             if expiration == "":
                 expiration = options.expirations[1]
             if expiration not in options.expirations:
-                expiration = options_chains_model.get_nearest_expiration(options, expiration)
-            color = color+1
-            skew = (
-                options_chains_model.calculate_skew(
-                    options, expiration, moneyness
-                )[["Expiration", "Strike", "Option Type", "IV", "ATM IV", "Skew"]]
-            )
-            if skew["IV"].sum() == 0:
-                if len(expirations) == 1:
-                    return print("No IV data available for this expiration.")
-                pass
-            index_name = "Strike"
+                expiration = options_chains_model.get_nearest_expiration(
+                    options, expiration
+                )
+            color = color + 1
+            skew = options_chains_model.calculate_skew(options, expiration, moneyness)[
+                ["Expiration", "Strike", "Option Type", "IV", "ATM IV", "Skew"]
+            ]
+            if skew["IV"].sum() == 0 and len(expirations) == 1:
+                return print("No IV data available for this expiration.")
+
+            index_name = "Strike" if len(expirations) > 1 else expiration
             call_skew = skew.query("`Option Type` == 'call'").set_index("Strike")
             call_idx = call_skew.index
             call_skew = call_skew[~call_idx.duplicated(keep="first")]
@@ -537,21 +604,21 @@ def display_skew(
             put_skew = put_skew["Skew"]
             skew_df["Call Skew"] = call_skew
             skew_df["Put Skew"] = put_skew
-            export_df = pd.concat([export_df,skew])
+            export_df = pd.concat([export_df, skew])
             if otm_only is True:
                 calls = skew.query("`Option Type` == 'call'").reset_index()
                 puts = skew.query("`Option Type` == 'put'").reset_index()
                 put_idx = puts[puts["Skew"] == 0].index.values[0]
                 call_idx = calls[calls["Skew"] == 0].index.values[0]
-                call_skew = calls.iloc[call_idx-1:-1]
+                call_skew = calls.iloc[call_idx - 1 : -1]
                 call_skew = call_skew.set_index("Strike")["Skew"]
                 call_idx = call_skew.index
                 call_skew = call_skew[~call_idx.duplicated(keep="first")]
-                put_skew = puts.iloc[0:put_idx+2]
+                put_skew = puts.iloc[0 : put_idx + 2]
                 put_skew = put_skew.set_index("Strike")["Skew"]
                 put_idx = put_skew.index
                 put_skew = put_skew[~put_idx.duplicated(keep="first")]
-                export_df = pd.concat([export_df,skew])
+                export_df = pd.concat([export_df, skew])
             fig.add_scatter(
                 x=call_skew.index,
                 y=call_skew.values,
@@ -568,10 +635,7 @@ def display_skew(
                 marker_color=colors[color] if len(expirations) > 1 else "red",
             )
 
-        title = (
-            f"IV Skew for {options.symbol}" if len(expirations) > 1
-            else f"IV Skew for {options.symbol} at {expiration}"
-        )
+        title = f"IV Skew for {options.symbol}"
         if otm_only is True:
             title = "OTM " + title
         fig.update_layout(title=title)
@@ -579,11 +643,11 @@ def display_skew(
     if atm or moneyness or strike:
         if moneyness is None:
             moneyness = 0
-        skew_df = options_chains_model.calculate_skew(options, moneyness = moneyness)
+        skew_df = options_chains_model.calculate_skew(options, moneyness=moneyness)
         skew = skew_df.copy()
         call_skew = skew_df["Call Skew"]
         put_skew = skew_df["Put Skew"]
-        export_df = pd.concat([export_df,skew_df])
+        export_df = pd.concat([export_df, skew_df])
         title = (
             f"IV Skew for {options.symbol} at {moneyness}% OTM"
             if moneyness != 0 and atm is False
@@ -596,7 +660,7 @@ def display_skew(
             y=skew_df["IV Skew"],
             mode="lines+markers",
             name="OTM IV Skew",
-            marker=dict(color="green")
+            marker=dict(color="green"),
         )
         fig.update_xaxes(type="category")
         if atm:
@@ -606,13 +670,17 @@ def display_skew(
                 y=skew_df["ATM Skew"],
                 mode="lines+markers",
                 name="ATM IV Skew",
-                marker=dict(color="green")
+                marker=dict(color="green"),
             )
             fig.update_xaxes(type="category")
         if strike and strike > 0.25:
             fig = OpenBBFigure()
-            strike = options_chains_model.get_nearest_call_strike(options, strike_price = strike)
-            skew_df = options_chains_model.calculate_skew(options).query("`Strike` == @strike")
+            strike = options_chains_model.get_nearest_call_strike(
+                options, strike_price=strike
+            )
+            skew_df = options_chains_model.calculate_skew(options).query(
+                "`Strike` == @strike"
+            )
             call_df = skew_df.query("`Option Type` == 'call'").set_index("Expiration")
             call_idx = call_df.index
             call_df = call_df[~call_idx.duplicated(keep="first")]
@@ -640,7 +708,7 @@ def display_skew(
             fig.update_xaxes(type="category")
 
     fig.update_layout(
-        title=dict(text=title, x = 0.5, y = 0.97),
+        title=dict(text=title, x=0.5, y=0.97),
         yaxis=dict(
             title=dict(
                 text="IV Skew",
@@ -650,7 +718,7 @@ def display_skew(
         xaxis=dict(
             showgrid=False,
             autorange=True,
-            title=dict(text = index_name),
+            title=dict(text=index_name),
         ),
         legend=dict(
             font=dict(size=12),
@@ -659,7 +727,7 @@ def display_skew(
             y=0.97,
             xanchor="center",
             x=0.525,
-        )
+        ),
     )
 
     if raw:
@@ -707,42 +775,76 @@ def display_volatility(
     options: Options
         The options data object.
     expirations: list[str]
-        Select up to five expiration(s) to display.  Format as YYYY-MM-DD.
+        Select up to five expiration(s) to display.  Overriden by moneyness or strike. Format as YYYY-MM-DD.
     moneyness: float
         Specify a target % moneyness to display vs. contract dates. This argument overrides expirations.
     strike: float
         Specify a target strike price to display vs. contract dates.
         Returned strike price is estimated as the closest one listed at approximately one year forward.
-        This argument overrides moneyness.
+        This argument overrides moneyness and expirations.
+    oi: bool
+        Return only contracts with open interest. Only valid for IV vs. Strike charts. Default is False.
+    volume: bool
+        Return only contracts with trading volume. Only valid for IV vs. Strike charts. Default is False.
     raw: bool
         Display the raw data instead of the chart.
     export: str
         Export dataframe data to csv,json,xlsx file.
     external_axes: bool
         Retun the OpenBB Figure Object to a variable.
+
+    Examples
+    ----------
+    >>> from openbb_terminal.stocks.options import options_chains_model, options_chains_view
+    >>> spy = options_chains_model.load_options_chains("SPY")
+    >>> options_chains_view(spy)
+
+    Plot IV @ Strike vs. contract dates:
+    >>> options_chains_view(spy, strike=450)
+
+    Plot IV @ % OTM vs. contract dates:
+    >>> options_chains_view(spy, moneyness=20)
+
+    Plot multiple expirations at once, and filter for only contracts with open interest:
+    >>> options_chains_view(spy, expirations=["2024-12-30", "2025-12-30"], oi=True)
     """
 
     if options.hasIV is False:
-        return print("Options data object does not have Implied Volatility and is required for this function.")
+        return print(
+            "Options data object does not have Implied Volatility and is required for this function."
+        )
     options = deepcopy(options)
     options.chains = options_chains_model.validate_object(options.chains, "chains")
-    colors = (
-        [
-            "blue", "red", "burlywood", "orange", "green",
-            "grey", "magenta", "cyan", "indigo", "yellowgreen"
-        ]
-    )
+    colors = [
+        "blue",
+        "red",
+        "burlywood",
+        "orange",
+        "green",
+        "grey",
+        "magenta",
+        "cyan",
+        "indigo",
+        "yellowgreen",
+    ]
 
     index_name = ""
     title = f"{options.symbol} Volatility"
     export_df = pd.DataFrame()
 
-    iv_df = (
-        options.chains[options.chains["impliedVolatility"] > 0]
-        [["expiration", "strike", "optionType", "dte", "openInterest", "volume", "impliedVolatility"]]
-    )
+    iv_df = options.chains[options.chains["impliedVolatility"] > 0][
+        [
+            "expiration",
+            "strike",
+            "optionType",
+            "dte",
+            "openInterest",
+            "volume",
+            "impliedVolatility",
+        ]
+    ]
 
-    if moneyness is not None:
+    if moneyness is not None and strike is None:
         fig = OpenBBFigure()
         calls = pd.DataFrame()
         puts = pd.DataFrame()
@@ -751,13 +853,17 @@ def display_volatility(
         if expirations is None:
             days = options.chains.dte.unique().tolist()
         for day in days:
-            call_strike = options_chains_model.get_nearest_call_strike(options, day, strikes["call"])
+            call_strike = options_chains_model.get_nearest_call_strike(
+                options, day, strikes["call"]
+            )
             call = (
                 iv_df[iv_df["strike"] == call_strike]
                 .query("`optionType` == 'call' & `dte` == @day")
                 .set_index("expiration")
             )
-            put_strike = options_chains_model.get_nearest_put_strike(options, day, strikes["put"])
+            put_strike = options_chains_model.get_nearest_put_strike(
+                options, day, strikes["put"]
+            )
             put = (
                 iv_df[iv_df["strike"] == put_strike]
                 .query("`optionType` == 'put' & `dte` == @day")
@@ -783,12 +889,59 @@ def display_volatility(
         )
         fig.update_xaxes(type="category")
 
+    if moneyness is None and strike is None:
+        expirations = options.expirations[1] if expirations is None else expirations
+
+    if expirations is not None and moneyness is None:
+        fig = OpenBBFigure()
+        color = -1
+        expirations = [expirations] if isinstance(expirations, str) else expirations  # type: ignore [list-item]
+        if len(expirations) > 5:
+            expirations = expirations[:5]
+        if oi is True:
+            iv_df = iv_df[iv_df["openInterest"] > 0]
+        if volume is True:
+            iv_df = iv_df[iv_df["volume"] > 0]
+        for expiration in expirations:
+            expiration = options_chains_model.get_nearest_expiration(
+                options, expiration
+            )
+            data = iv_df[iv_df["expiration"] == expiration]
+            calls = data[data["optionType"] == "call"]
+            puts = data[data["optionType"] == "put"]
+            color = color + 1
+            fig.add_scatter(
+                x=calls["strike"].unique().tolist(),
+                y=calls["impliedVolatility"],
+                mode="lines+markers",
+                name="Calls" if len(expirations) <= 1 else f"Calls at {expiration}",
+                marker_color=colors[color] if len(expirations) > 1 else "blue",
+            )
+            color = color + 1
+            fig.add_scatter(
+                x=puts["strike"].unique().tolist(),
+                y=puts["impliedVolatility"],
+                mode="lines+markers",
+                name="Puts" if len(expirations) <= 1 else f"Puts at {expiration}",
+                marker_color=colors[color] if len(expirations) > 1 else "red",
+            )
+            export_df = pd.concat([export_df, data])
+        index_name = expiration if len(expirations) <= 1 else ""
+        title = title + " With Open Interest" if oi and not strike else title
+        title = (
+            title + " Excluding Untraded Contracts" if volume and not strike else title
+        )
+
     if strike is not None:
         fig = OpenBBFigure()
         strike = (
-            options_chains_model.get_nearest_call_strike(options, 300, strike_price = strike)
+            options_chains_model.get_nearest_call_strike(
+                options, 300, strike_price=strike
+            )
             if strike > options.last_price
-            else options_chains_model.get_nearest_put_strike(options, 300, strike_price = strike)
+            else options_chains_model.get_nearest_put_strike(
+                options, 300, strike_price=strike
+            )
         )
         title = title + f" at ${strike}"
         calls = iv_df[iv_df["strike"] == strike].query("`optionType` == 'call'")
@@ -811,47 +964,8 @@ def display_volatility(
         )
         fig.update_xaxes(type="category")
 
-    if moneyness is None and strike is None:
-        expirations = options.expirations[1] if expirations is None else expirations
-
-    if expirations is not None:
-        fig = OpenBBFigure()
-        color = -1
-        expirations = [expirations] if isinstance(expirations, str) else expirations
-        if len(expirations) > 5:
-            expirations = expirations[:5]
-        if oi is True:
-            iv_df = iv_df[iv_df["openInterest"] > 0]
-        if volume is True:
-            iv_df = iv_df[iv_df["volume"] > 0]
-        for expiration in expirations:
-            expiration = options_chains_model.get_nearest_expiration(options, expiration)
-            data = iv_df[iv_df["expiration"] == expiration]
-            calls = data[data["optionType"] == "call"]
-            puts = data[data["optionType"] == "put"]
-            color = color + 1
-            fig.add_scatter(
-                x = calls["strike"].unique().tolist(),
-                y = calls["impliedVolatility"],
-                mode="lines+markers",
-                name="Calls" if len(expirations) <= 1 else f"Calls at {expiration}",
-                marker_color=colors[color] if len(expirations) > 1 else "blue",
-            )
-            color = color + 1
-            fig.add_scatter(
-                x = puts["strike"].unique().tolist(),
-                y = puts["impliedVolatility"],
-                mode="lines+markers",
-                name="Puts" if len(expirations) <= 1 else f"Puts at {expiration}",
-                marker_color=colors[color] if len(expirations) > 1 else "red",
-            )
-            export_df = pd.concat([export_df, data])
-        index_name = expiration if len(expirations) <= 1 else None
-        title = title + " With Open Interest" if oi else title
-        title = title + " Excluding Untraded Contracts" if volume else title
-
     fig.update_layout(
-        title=dict(text=title, x = 0.5, y = 0.97),
+        title=dict(text=title, x=0.5, y=0.97),
         yaxis=dict(
             title=dict(
                 text="IV",
@@ -861,7 +975,7 @@ def display_volatility(
         xaxis=dict(
             showgrid=False,
             autorange=True,
-            title=dict(text = index_name),
+            title=dict(text=index_name),
         ),
         legend=dict(
             font=dict(size=12),
@@ -870,7 +984,7 @@ def display_volatility(
             y=0.97,
             xanchor="center",
             x=0.525,
-        )
+        ),
     )
 
     if raw:
