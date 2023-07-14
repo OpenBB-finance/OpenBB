@@ -5,7 +5,7 @@
 # IMPORT THIRD-PARTY
 
 # IMPORT INTERNAL
-from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
+from openbb_provider.abstract.provider import Provider, ProviderNameType
 
 from openbb_benzinga.global_news import BenzingaGlobalNewsFetcher
 from openbb_benzinga.stock_news import BenzingaStockNewsFetcher

@@ -3,7 +3,7 @@
 # IMPORT STANDARD
 # IMPORT THIRD-PARTY
 # IMPORT INTERNAL
-from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
+from openbb_provider.abstract.provider import Provider, ProviderNameType
 
 from openbb_fred.cpi import FREDCPIFetcher
 

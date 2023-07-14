@@ -6,7 +6,7 @@ from enum import Enum
 from typing import Literal, Optional, Union
 
 # IMPORT INTERNAL
-from openbb_provider.model.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data, QueryParams
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, PositiveFloat, PositiveInt, validator

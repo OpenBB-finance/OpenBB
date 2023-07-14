@@ -6,13 +6,13 @@ from datetime import (
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
-from openbb_provider.model.abstract.data import Data
-from openbb_provider.model.data.cash_flows import (
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer, get_querystring
+from openbb_provider.models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer, get_querystring
 
 # IMPORT THIRD-PARTY
 from pydantic import Field

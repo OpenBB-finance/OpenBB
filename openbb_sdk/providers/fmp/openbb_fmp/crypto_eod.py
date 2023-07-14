@@ -5,10 +5,10 @@ from datetime import date, datetime
 from typing import Dict, List, Literal, Optional
 
 # IMPORT INTERNAL
-from openbb_provider.model.abstract.data import Data, QueryParams
-from openbb_provider.model.data.crypto_eod import CryptoEODData, CryptoEODQueryParams
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer, get_querystring
+from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer, get_querystring
+from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeInt, validator

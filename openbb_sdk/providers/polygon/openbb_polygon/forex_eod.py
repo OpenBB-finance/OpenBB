@@ -2,20 +2,19 @@
 
 # IMPORT STANDARD
 from datetime import date, datetime, timedelta
-from typing import Dict, List, Optional, Union, Literal
+from typing import Dict, List, Literal, Optional, Union
 
 # IMPORT INTERNAL
-from openbb_provider.model.abstract.data import QueryParams
-from openbb_provider.model.data.forex_eod import ForexEODData, ForexEODQueryParams
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer
-from openbb_polygon.types import Timespan
+from openbb_provider.abstract.data import QueryParams
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer
+from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
 
 from openbb_polygon.helpers import get_data
-from openbb_polygon.types import BaseStockData
+from openbb_polygon.types import BaseStockData, Timespan
 
 
 class PolygonForexEODQueryParams(QueryParams):

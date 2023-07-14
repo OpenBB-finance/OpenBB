@@ -4,8 +4,8 @@ import warnings
 from dataclasses import asdict
 from typing import Any, Dict
 
-from openbb_provider.model.abstract.data import Data
-from openbb_provider.provider.provider_registry import build_provider_registry
+from openbb_provider.abstract.data import Data
+from openbb_provider.registry import build_provider_registry
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext

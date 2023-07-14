@@ -2,7 +2,7 @@ from dataclasses import dataclass, make_dataclass
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
-from openbb_provider.provider.provider_map import build_provider_mapping
+from openbb_provider.map import build_provider_mapping
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 
 

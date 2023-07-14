@@ -1,7 +1,7 @@
 from typing import List, Optional, Union
 
 import pandas as pd
-from openbb_provider.model.abstract.data import Data
+from openbb_provider.abstract.data import Data
 
 
 def basemodel_to_df(data: List[Data], index: Optional[str] = None) -> pd.DataFrame:
