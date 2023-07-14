@@ -47,5 +47,6 @@ SCRIPT_TAGS = [
     "overview',
     "rates",
     "econometrics",
-    "portfolio"
+    "portfolio",
+    "real estate",
 ]
