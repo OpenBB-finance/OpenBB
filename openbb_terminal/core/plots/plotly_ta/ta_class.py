@@ -494,7 +494,6 @@ class PlotlyTA(PltTA):
             selector=dict(type="scatter", mode="lines"), connectgaps=True
         )
         figure.update_layout(showlegend=False)
-        figure.hide_holidays(self.prepost)
 
         if not self.show_volume:
             figure.update_layout(margin=dict(l=20))

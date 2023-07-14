@@ -860,7 +860,6 @@ def display_raw(
         df1 = df1.sort_values(by=data.columns[sort_col], ascending=ascend)
     else:
         df1 = df1.sort_index(ascending=ascend)
-    df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
         df1,
