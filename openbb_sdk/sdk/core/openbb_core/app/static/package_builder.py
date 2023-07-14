@@ -309,17 +309,17 @@ class DocstringGenerator:
             docstring += f"\n{provider}"
             docstring += f"\n{'=' * len(provider)}"
             for section_name, section_docstring in provider_mapping.items():
+                missing_doc = (
+                    "\n    Returns\n-------\n        Documentation not available.\n\n"
+                )
                 section_docstring = (
                     section_docstring["docstring"]
                     if section_docstring["docstring"]
-                    else "\n    Returns\n-------\n    Documentation not available.\n\n"
+                    else missing_doc
                 )
 
                 # clean the docstring from its original indentation
-                if (
-                    "\n    Returns\n-------\n    Documentation not available.\n\n"  # noqa: SIM300
-                    != section_docstring
-                ):
+                if missing_doc != section_docstring:
                     section_docstring = "\n".join(
                         line[4:] for line in section_docstring.split("\n")[1:]
                     )
