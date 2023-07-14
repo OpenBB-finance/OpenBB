@@ -8,14 +8,14 @@ from datetime import (
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
-from openbb_provider.model.abstract.data import Data, QueryParams
-from openbb_provider.model.data.base import BaseSymbol
-from openbb_provider.model.data.share_statistics import (
+from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer
+from openbb_provider.models.base import BaseSymbol
+from openbb_provider.models.share_statistics import (
     ShareStatisticsData,
     ShareStatisticsQueryParams,
 )
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer
 
 # IMPORT THIRD-PARTY
 from pydantic import validator

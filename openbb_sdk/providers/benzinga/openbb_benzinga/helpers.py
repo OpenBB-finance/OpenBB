@@ -8,7 +8,7 @@ from typing import List
 import requests
 
 # IMPORT INTERNAL
-from openbb_provider.model.abstract.data import Data
+from openbb_provider.abstract.data import Data
 from pydantic import BaseModel, Field, validator
 
 

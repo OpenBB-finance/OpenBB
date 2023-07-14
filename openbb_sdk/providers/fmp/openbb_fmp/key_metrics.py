@@ -5,10 +5,10 @@ from datetime import date as dateType
 from typing import Dict, List, Literal, Optional
 
 # IMPORT INTERNAL
-from openbb_provider.model.abstract.data import Data, QueryParams
-from openbb_provider.model.data.key_metrics import KeyMetricsData, KeyMetricsQueryParams
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer
+from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer
+from openbb_provider.models.key_metrics import KeyMetricsData, KeyMetricsQueryParams
 
 # IMPORT THIRD-PARTY
 from pydantic import Field

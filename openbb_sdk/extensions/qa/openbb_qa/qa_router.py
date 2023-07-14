@@ -13,7 +13,7 @@ from openbb_core.app.utils import (
     get_target_column,
     get_target_columns,
 )
-from openbb_provider.model.abstract.data import Data
+from openbb_provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
 from scipy import stats
 from statsmodels.tsa import stattools

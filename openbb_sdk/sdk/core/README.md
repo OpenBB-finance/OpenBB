@@ -175,10 +175,10 @@ hm.disconnect()
 
 ```python
 from datetime import datetime
-from openbb_provider.model.query.stock_query import StockQueryParams
-from openbb_provider.provider.provider_registry import ProviderName
+from openbb_provider.models.stock_eod import StockEODQueryParams
+from openbb_provider.registry import ProviderName
 
-stock_query = StockQueryParams(
+stock_query = StockEODQueryParams(
     symbol="TSLA",
     start_date=datetime.fromisoformat("2023-05-01"),
     end_date=datetime.fromisoformat("2023-05-04"),

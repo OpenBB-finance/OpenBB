@@ -12,7 +12,7 @@ from openbb_core.app.utils import (
     get_target_columns,
 )
 from openbb_core.plots.plots import YTimeSeries, plot_timeseries
-from openbb_provider.model.abstract.data import Data
+from openbb_provider.abstract.data import Data
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 
 from . import ta_helpers

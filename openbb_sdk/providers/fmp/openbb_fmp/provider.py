@@ -5,7 +5,7 @@
 # IMPORT THIRD-PARTY
 
 # IMPORT INTERNAL
-from openbb_provider.provider.abstract.provider import Provider, ProviderNameType
+from openbb_provider.abstract.provider import Provider, ProviderNameType
 
 from .analyst_estimates import FMPAnalystEstimatesFetcher
 from .balance_sheet import FMPBalanceSheetFetcher
@@ -14,9 +14,7 @@ from .company_profile import FMPCompanyProfileFetcher
 from .crypto_eod import FMPCryptoEODFetcher
 from .crypto_price import FMPCryptoPriceFetcher
 from .earnings_calendar import FMPEarningsCalendarFetcher
-from .earnings_call_transcript import (
-    FMPEarningsCallTranscriptFetcher,
-)
+from .earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from .esg_risk_rating import FMPESGRiskRatingFetcher
 from .esg_score import FMPESGScoreFetcher
 from .esg_sector import FMPESGSectorFetcher
@@ -27,13 +25,9 @@ from .forex_pairs import FMPForexPairsFetcher
 from .forex_price import FMPForexPriceFetcher
 from .global_news import FMPGlobalNewsFetcher
 from .historical_dividends import FMPHistoricalDividendsFetcher
-from .historical_stock_splits import (
-    FMPHistoricalStockSplitsFetcher,
-)
+from .historical_stock_splits import FMPHistoricalStockSplitsFetcher
 from .income_statement import FMPIncomeStatementFetcher
-from .institutional_ownership import (
-    FMPInstitutionalOwnershipFetcher,
-)
+from .institutional_ownership import FMPInstitutionalOwnershipFetcher
 from .key_metrics import FMPKeyMetricsFetcher
 from .major_indices_eod import FMPMajorIndicesEODFetcher
 from .major_indices_price import FMPMajorIndicesPriceFetcher

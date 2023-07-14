@@ -5,10 +5,10 @@ from enum import Enum
 from typing import Dict, List, Literal, Optional
 
 # IMPORT INTERNAL
-from openbb_provider.model.abstract.data import QueryParams
-from openbb_provider.model.data.stock_price import StockPriceData, StockPriceQueryParams
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer
+from openbb_provider.abstract.data import QueryParams
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer
+from openbb_provider.models.stock_price import StockPriceData, StockPriceQueryParams
 
 # IMPORT THIRD-PARTY
 from pydantic import Field

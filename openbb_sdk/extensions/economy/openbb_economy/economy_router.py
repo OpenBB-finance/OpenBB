@@ -11,7 +11,7 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from openbb_provider.model.abstract.data import Data
+from openbb_provider.abstract.data import Data
 
 datetype = Union[datetime.datetime, str]
 list_str = Union[List[str], str]

@@ -4,13 +4,14 @@
 from datetime import date
 from typing import Dict, List, Optional
 
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer
+
 # IMPORT INTERNAL
-from openbb_provider.model.data.stock_splits import (
+from openbb_provider.models.stock_splits import (
     StockSplitCalendarData,
     StockSplitCalendarQueryParams,
 )
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer
 
 # IMPORT THIRD-PARTY
 from .helpers import create_url, get_data_many

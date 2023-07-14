@@ -3,15 +3,15 @@
 # IMPORT STANDARD
 from typing import Dict, Optional
 
-from openbb_provider.model.abstract.data import Data
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer
 
 # IMPORT INTERNAL
-from openbb_provider.model.data.company_overview import (
+from openbb_provider.models.company_overview import (
     CompanyOverviewData,
     CompanyOverviewQueryParams,
 )
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer
 
 from .helpers import get_data
 

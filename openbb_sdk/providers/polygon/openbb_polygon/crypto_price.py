@@ -4,13 +4,11 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer
+
 # IMPORT INTERNAL
-from openbb_provider.model.data.crypto_price import (
-    CryptoPriceData,
-    CryptoPriceQueryParams,
-)
-from openbb_provider.provider.abstract.fetcher import Fetcher
-from openbb_provider.provider.provider_helpers import data_transformer
+from openbb_provider.models.crypto_price import CryptoPriceData, CryptoPriceQueryParams
 
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
