@@ -1,7 +1,7 @@
 """FMP Historical Employees fetcher."""
 
 # IMPORT STANDARD
-from datetime import date, datetime
+from datetime import date, datetime, strptime
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
@@ -14,7 +14,7 @@ from openbb_provider.models.historical_employees import (
 )
 
 # IMPORT THIRD-PARTY
-from pydantic import Field
+from pydantic import Field, validator
 
 from .helpers import create_url, get_data_many
 
@@ -32,6 +32,8 @@ class FMPHistoricalEmployeesQueryParams(HistoricalEmployeesQueryParams):
 
 
 class FMPHistoricalEmployeesData(Data):
+    """FMP Historical Employees data."""
+
     symbol: str = Field(min_length=1)
     cik: int
     acceptanceTime: datetime = Field(alias="acceptance_time")
@@ -41,6 +43,18 @@ class FMPHistoricalEmployeesData(Data):
     filingDate: date = Field(alias="filing_date")
     employeeCount: int = Field(alias="employee_count")
     source: str
+
+    @validator("acceptanceTime", pre=True)
+    def acceptance_time_validate(cls, v):  # pylint: disable=E0213
+        return strptime(v, "%Y-%m-%d %H:%M:%S")
+
+    @validator("periodOfReport", pre=True)
+    def period_of_report_validate(cls, v):  # pylint: disable=E0213
+        return strptime(v, "%Y-%m-%d")
+
+    @validator("filingDate", pre=True)
+    def filing_date_validate(cls, v):  # pylint: disable=E0213
+        return strptime(v, "%Y-%m-%d")
 
 
 class FMPHistoricalEmployeesFetcher(
