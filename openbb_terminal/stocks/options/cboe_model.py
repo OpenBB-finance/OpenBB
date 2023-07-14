@@ -471,7 +471,7 @@ def get_quotes(symbol: str) -> pd.DataFrame:
     return quotes.reset_index()
 
 
-def load_options(symbol: str, pydantic: bool = False) -> object:
+def load_options(symbol: str, pydantic: bool = False) -> Options:
     """OptionsChains data object for CBOE.
 
     Parameters

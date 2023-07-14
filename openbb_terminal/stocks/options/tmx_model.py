@@ -487,7 +487,7 @@ def get_eodchains(symbol: str = "", date: str = "") -> object:
     return OptionsChains
 
 
-def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
+def load_options(symbol: str, date: str = "", pydantic: bool = False) -> Options:
     """Options data object for TMX.
 
     Parameters

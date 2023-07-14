@@ -492,7 +492,7 @@ def get_chains(symbol: str) -> object:
     return OptionsChains
 
 
-def load_options(symbol: str, pydantic: bool = False) -> object:
+def load_options(symbol: str, pydantic: bool = False) -> Options:
     """OptionsChains data object for Tradier.
 
     Parameters

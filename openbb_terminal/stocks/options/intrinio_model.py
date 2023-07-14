@@ -601,7 +601,7 @@ def get_eod_chains(symbol: str, date: str) -> object:
 
 
 @check_api_key(["API_INTRINIO_KEY"])
-def load_options(symbol: str, date: str = "", pydantic=False) -> object:
+def load_options(symbol: str, date: str = "", pydantic=False) -> Options:
     """OptionsChains data object for Intrinio.
 
     Parameters

@@ -52,7 +52,7 @@ def load_options_chains(
 
     Returns
     -------
-    object: Options data object
+    Options: Options data object
 
         chains: dict
             All options chains data from a specific source.  Returns as a Pandas DataFrame if pydantic is False.
@@ -112,7 +112,7 @@ def load_options_chains(
 
     if source not in SOURCES:
         print("Invalid choice. Choose from: ", list(SOURCES), sep=None)
-        return None
+        return Options()
 
     if source == "Nasdaq":
         return load_nasdaq(symbol, pydantic)
@@ -133,7 +133,7 @@ def load_options_chains(
 
 
 def validate_object(
-    options: object, scope: Optional[str] = "object", days: Optional[int] = None
+    options: Options, scope: Optional[str] = "object", days: Optional[int] = None
 ) -> Any:
     """This is an internal helper function for validating the Options data object passed
     through the input of functions defined in the OptionsChains class.  The purpose is to handle
@@ -296,7 +296,7 @@ def validate_object(
     return not valid
 
 
-def get_nearest_expiration(options: Options, expiration: str) -> str:
+def get_nearest_expiration(options: Options, expiration: Optional[str] = "") -> str:
     """Gets the closest expiration date to the target date."""
 
     if validate_object(options, scope="object") is False:
@@ -399,7 +399,7 @@ def get_nearest_call_strike(
         )
         == 0
     ):
-        return None
+        return pd.DataFrame()
 
     nearest = (
         (
@@ -468,7 +468,7 @@ def get_nearest_put_strike(
         )
         == 0
     ):
-        return None
+        return pd.DataFrame()
 
     nearest = (
         (
@@ -617,7 +617,7 @@ def calculate_straddle(
 
     straddle_cost = call_premium + put_premium
 
-    straddle = {}
+    straddle: dict[str, Any] = {}
 
     # Include the as-of date if the data is historical EOD.
     if (
@@ -755,7 +755,7 @@ def calculate_strangle(
 
     strangle_cost = call_premium + put_premium
 
-    strangle = {}
+    strangle: dict[str, Any] = {}
 
     # Includees the as-of date if it is historical EOD data.
     if (
@@ -888,7 +888,7 @@ def calculate_vertical_call_spread(
     spread_cost = bought_premium - sold_premium
     breakeven_price = bought + spread_cost[0]
     max_profit = sold - bought - spread_cost[0]
-    call_spread_ = {}
+    call_spread_: dict[str, Any] = {}
     if sold != bought and spread_cost != 0:
         # Includees the as-of date if it is historical EOD data.
         if (
@@ -1032,7 +1032,7 @@ def calculate_vertical_put_spread(
     max_profit = abs(spread_cost[0])
     breakeven_price = sold - max_profit
     max_loss = (sold - bought - max_profit) * -1
-    put_spread_ = {}
+    put_spread_: dict[str, Any] = {}
     if sold != bought and max_loss != 0:
         # Includees the as-of date if it is historical EOD data.
         if (
