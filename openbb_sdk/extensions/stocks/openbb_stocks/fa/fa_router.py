@@ -60,10 +60,15 @@ def earning(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command
-def emp() -> CommandOutput[Empty]:  # type: ignore
+@router.command(query="HistoricalEmployees")
+def emp(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
     """Number of Employees."""
-    return CommandOutput(results=Empty())
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command(query="AnalystEstimates")

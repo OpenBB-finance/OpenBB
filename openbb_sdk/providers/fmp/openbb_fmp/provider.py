@@ -25,6 +25,7 @@ from .forex_pairs import FMPForexPairsFetcher
 from .forex_price import FMPForexPriceFetcher
 from .global_news import FMPGlobalNewsFetcher
 from .historical_dividends import FMPHistoricalDividendsFetcher
+from .historical_employees import FMPHistoricalEmployeesFetcher
 from .historical_stock_splits import FMPHistoricalStockSplitsFetcher
 from .income_statement import FMPIncomeStatementFetcher
 from .institutional_ownership import FMPInstitutionalOwnershipFetcher
@@ -92,5 +93,6 @@ fmp_provider = Provider(
         FMPForexPairsFetcher,
         FMPStockPeersFetcher,
         FMPStockMultiplesFetcher,
+        FMPHistoricalEmployeesFetcher,
     ],
 )
