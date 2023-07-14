@@ -1,6 +1,5 @@
 """Stock Peers data model."""
 
-from typing import List, Optional
 
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.models.base import BaseSymbol

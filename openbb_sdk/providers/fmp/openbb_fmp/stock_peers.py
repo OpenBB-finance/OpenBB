@@ -3,13 +3,13 @@
 # IMPORT STANDARD
 from typing import Dict, List, Optional
 
-# IMPORT INTERNAL
-from openbb_provider.models.stock_peers import StockPeersData, StockPeersQueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 
-from .helpers import get_data_many
+# IMPORT INTERNAL
+from openbb_provider.models.stock_peers import StockPeersData, StockPeersQueryParams
 
+from .helpers import get_data_many
 
 # FMP SPECIFIC FUNCTIONALITY CURRENTLY
 
