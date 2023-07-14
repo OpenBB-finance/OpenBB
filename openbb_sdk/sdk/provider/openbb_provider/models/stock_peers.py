@@ -1,6 +1,8 @@
 """Stock Peers data model."""
 
 
+from typing import List
+
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.models.base import BaseSymbol
 
@@ -20,5 +22,11 @@ class StockPeersData(Data):
 
     Returns
     -------
-    A list of stock peers based on sector, exchange and market cap
+    symbol : str
+        The symbol of the company to retrieve the stock peers of.
+    peers_list : List[str]
+        A list of stock peers based on sector, exchange and market cap
     """
+
+    symbol: str
+    peers_list: List[str]
