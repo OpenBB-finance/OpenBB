@@ -5,7 +5,6 @@ from datetime import date, datetime, strptime
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.historical_employees import (
@@ -31,7 +30,7 @@ class FMPHistoricalEmployeesQueryParams(HistoricalEmployeesQueryParams):
     """
 
 
-class FMPHistoricalEmployeesData(Data):
+class FMPHistoricalEmployeesData(HistoricalEmployeesData):
     """FMP Historical Employees data."""
 
     symbol: str = Field(min_length=1)
