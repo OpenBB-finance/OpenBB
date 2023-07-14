@@ -46,10 +46,6 @@ def get_financials(
         f"&apiKey={get_current_user().credentials.API_POLYGON_KEY}"
     ).json()
 
-    if statement == "cash" and quarterly:
-        console.print(
-            "[red]Quarterly information not available for statement of cash flows[/red]\n"
-        )
     if statement not in ["balance", "income", "cash"]:
         console.print("financial must be 'balance' or 'income'.\n")
         return pd.DataFrame()
@@ -94,19 +90,18 @@ def get_financials(
             income_statements = income_statements[["value"]]
             income_statements.columns = [single_thing["filing_date"]]
 
-            if not quarterly:
-                cash_flows = pd.concat(
-                    [
-                        pd.DataFrame(),
-                        pd.DataFrame.from_dict(
-                            single_thing["financials"]["cash_flow_statement"],
-                            orient="index",
-                        ),
-                    ],
-                    axis=1,
-                )
-                cash_flows = cash_flows[["value"]]
-                cash_flows.columns = [single_thing["filing_date"]]
+            cash_flows = pd.concat(
+                [
+                    pd.DataFrame(),
+                    pd.DataFrame.from_dict(
+                        single_thing["financials"]["cash_flow_statement"],
+                        orient="index",
+                    ),
+                ],
+                axis=1,
+            )
+            cash_flows = cash_flows[["value"]]
+            cash_flows.columns = [single_thing["filing_date"]]
 
             first = False
         else:
@@ -125,7 +120,7 @@ def get_financials(
             )
             values.columns = [single_thing["filing_date"]]
             income_statements = pd.concat([income_statements, values], axis=1)
-            if not quarterly:
+            if "cash_flow_statement" in single_thing["financials"]:
                 values = pd.DataFrame(
                     pd.DataFrame.from_dict(
                         single_thing["financials"]["cash_flow_statement"],

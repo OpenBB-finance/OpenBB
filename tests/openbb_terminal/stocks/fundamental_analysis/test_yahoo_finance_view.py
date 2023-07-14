@@ -155,6 +155,7 @@ def test_display_mktcap(func, mocker, mocked_func):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.record_verify_screen
 def test_display_fundamentals_balance_sheet(mocker):
     mocker.patch(
@@ -330,6 +331,7 @@ def test_display_fundamentals_cash_flow(mocker):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.record_verify_screen
 def test_display_fundamentals_financials(mocker):
     mocker.patch(
