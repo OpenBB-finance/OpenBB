@@ -393,16 +393,17 @@ def reset(queue: Optional[List[str]] = None):
             if parts[0] == "openbb_terminal":
                 del sys.modules[module]
 
+        queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
         # pylint: disable=import-outside-toplevel
         # we run the terminal again
         if is_local():
             from openbb_terminal.terminal_controller import main
 
-            main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+            main(debug, queue_list, module="")  # type: ignore
         else:
             from openbb_terminal.core.session import session_controller
 
-            session_controller.main(session)
+            session_controller.main(session, queue=queue_list)
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))
