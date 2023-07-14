@@ -7,13 +7,13 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.options import options_chains_model
+from openbb_terminal.stocks.options import options_sdk_helper
 
 
 @pytest.mark.vcr
 def test_OptionsChains(recorder):
-    df1 = options_chains_model.OptionsChains("AAPL")
-    df2 = options_chains_model.OptionsChains("AAPL", "YahooFinance", pydantic=True)
+    df1 = options_sdk_helper.OptionsChains("AAPL")
+    df2 = options_sdk_helper.OptionsChains("AAPL", "YahooFinance", pydantic=True)
     assert hasattr(df1, "chains")
     assert hasattr(df2, "underlying_price")
     assert isinstance(df1.underlying_price, pd.Series)
