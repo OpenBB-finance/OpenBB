@@ -2,10 +2,11 @@ from typing import Optional
 
 import requests
 from fastapi import HTTPException
-from openbb_core.app.hub.model.features_keys import FeaturesKeys
-from openbb_core.app.hub.model.hub_session import HubSession
-from openbb_core.app.hub.model.hub_user_settings import HubUserSettings
+
 from openbb_core.app.model.credentials import Credentials
+from openbb_core.app.model.hub.features_keys import FeaturesKeys
+from openbb_core.app.model.hub.hub_session import HubSession
+from openbb_core.app.model.hub.hub_user_settings import HubUserSettings
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
 

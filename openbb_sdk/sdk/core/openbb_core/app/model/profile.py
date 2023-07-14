@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from openbb_core.app.hub.model.hub_session import HubSession
+from openbb_core.app.model.hub.hub_session import HubSession
 
 
 class Profile(BaseModel):

@@ -418,11 +418,7 @@ class CommandRunnerSession:
     ) -> None:
         self._command_runner = command_runner or CommandRunner()
         self._journal = journal or Journal()
-        self._user_settings = (
-            UserService.update_default(user_settings)
-            if user_settings
-            else UserService.read_default_user_settings()
-        )
+        self._user_settings = user_settings or UserService.read_default_user_settings()
 
     @property
     def command_runner(self) -> CommandRunner:

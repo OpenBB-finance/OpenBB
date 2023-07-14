@@ -12,7 +12,7 @@ from openbb_core.api.dependency.user import (
     get_user_service,
 )
 from openbb_core.api.model.token_response import TokenResponse
-from openbb_core.app.hub.hub_manager import HubManager
+from openbb_core.app.hub_manager import HubManager
 from openbb_core.app.model.user_settings import UserSettings
 
 router = APIRouter(prefix="/account", tags=["Account"])
@@ -36,8 +36,7 @@ async def login_for_access_token(
         if user_settings:
             user_settings.profile.username = form_data.username
             user_settings.profile.password_hash = get_password_hash(form_data.password)
-            updated_user_settings = UserService.update_default(user_settings)
-            user_service.user_settings_repository.create(updated_user_settings)
+            user_service.user_settings_repository.create(user_settings)
 
     if not user_settings:
         raise HTTPException(
@@ -77,7 +76,9 @@ async def pull_user_settings_from_hub(
         hm = HubManager(user_settings.profile.hub_session)
         incoming = hm.pull()
         incoming.id = user_settings.id
-        user_service.user_settings_repository.update(incoming)
+        d = incoming.dict(exclude_none=True)
+        filtered_incoming = UserSettings.parse_obj(d)
+        user_service.user_settings_repository.update(filtered_incoming)
         return incoming
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

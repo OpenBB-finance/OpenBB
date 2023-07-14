@@ -1,7 +1,7 @@
 # from typing import Dict, List, Union
 
 
-from openbb_core.app.hub.model.features_keys import FeaturesKeys
+from openbb_core.app.model.hub.features_keys import FeaturesKeys
 from pydantic import BaseModel
 
 

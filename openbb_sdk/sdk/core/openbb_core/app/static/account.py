@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Optional
 
 from openbb_core.app.command_runner import CommandRunnerSession
-from openbb_core.app.hub.hub_manager import HubManager
-from openbb_core.app.hub.model.hub_session import HubSession
+from openbb_core.app.hub_manager import HubManager
+from openbb_core.app.model.hub.hub_session import HubSession
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.user_service import UserService
 
