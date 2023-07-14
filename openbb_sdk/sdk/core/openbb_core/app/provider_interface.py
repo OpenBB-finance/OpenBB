@@ -180,7 +180,7 @@ class ProviderInterface:
 
                         if incoming.name in extra:
                             current = DataclassField(*extra[incoming.name])
-                            updated = cls.__merge_fields(current, incoming)
+                            updated = cls.__merge_fields(current, incoming, query=True)
                         else:
                             updated = incoming
 
