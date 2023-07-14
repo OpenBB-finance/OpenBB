@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
-from openbb_core.app.model.constants import OPENBB_DIRECTORY
+from openbb_core.app.constants import OPENBB_DIRECTORY
 from openbb_core.app.model.system_settings import SystemSettings
 
 

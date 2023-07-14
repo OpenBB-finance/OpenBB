@@ -3,8 +3,8 @@ from typing import List, Literal, Optional
 
 from pydantic import Field, root_validator, validator
 
+from openbb_core.app.constants import HOME_DIRECTORY, OPENBB_DIRECTORY
 from openbb_core.app.model.abstract.tagged import Tagged
-from openbb_core.app.model.constants import HOME_DIRECTORY, OPENBB_DIRECTORY
 from openbb_core.logs.utils.system_utils import get_branch, get_commit_hash
 
 

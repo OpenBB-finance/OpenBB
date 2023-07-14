@@ -2,7 +2,7 @@ from functools import reduce
 from pathlib import Path
 from typing import Any, Dict, List, MutableMapping, Optional
 
-from openbb_core.app.model.constants import OPENBB_DIRECTORY
+from openbb_core.app.constants import OPENBB_DIRECTORY
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.repository.abstract.access_token_repository import (
     AccessTokenRepository as AbstractAccessTokenRepository,
