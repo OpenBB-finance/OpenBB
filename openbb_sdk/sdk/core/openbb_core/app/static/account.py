@@ -71,7 +71,8 @@ class Account:
         """
         hm = self.create_hub_manager(email, password, sdk_token)
         incoming = hm.pull()
-        self._app._command_runner_session = CommandRunnerSession(user_settings=incoming)
+        updated = UserService.update_default(incoming)
+        self._app._command_runner_session = CommandRunnerSession(user_settings=updated)
         if remember_me:
             Path(self._app.system.openbb_directory).mkdir(parents=False, exist_ok=True)
             session_file = Path(
@@ -120,10 +121,11 @@ class Account:
             self._app._command_runner_session = CommandRunnerSession()
         else:
             hm = HubManager(hub_session)
-            user_settings = hm.pull()
-            user_settings.id = self._app._command_runner_session.user_settings.id
+            incoming = hm.pull()
+            updated = UserService.update_default(incoming)
+            updated.id = self._app._command_runner_session.user_settings.id
             self._app._command_runner_session = CommandRunnerSession(
-                user_settings=user_settings
+                user_settings=updated
             )
         return self._app._command_runner_session.user_settings
 
