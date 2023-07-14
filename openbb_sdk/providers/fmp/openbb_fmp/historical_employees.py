@@ -1,7 +1,7 @@
 """FMP Historical Employees fetcher."""
 
 # IMPORT STANDARD
-from datetime import date, datetime, strptime
+from datetime import date, datetime
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
@@ -45,15 +45,15 @@ class FMPHistoricalEmployeesData(HistoricalEmployeesData):
 
     @validator("acceptanceTime", pre=True)
     def acceptance_time_validate(cls, v):  # pylint: disable=E0213
-        return strptime(v, "%Y-%m-%d %H:%M:%S")
+        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
     @validator("periodOfReport", pre=True)
     def period_of_report_validate(cls, v):  # pylint: disable=E0213
-        return strptime(v, "%Y-%m-%d")
+        return datetime.strptime(v, "%Y-%m-%d")
 
     @validator("filingDate", pre=True)
     def filing_date_validate(cls, v):  # pylint: disable=E0213
-        return strptime(v, "%Y-%m-%d")
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPHistoricalEmployeesFetcher(
