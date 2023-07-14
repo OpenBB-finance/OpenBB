@@ -89,7 +89,7 @@ class PolygonFundamentalQueryParams(QueryParams):
     timeframe: Optional[Literal["annual", "quarterly", "ttm"]] = Field(alias="period")
     include_sources: Optional[bool]
     order: Optional[Literal["asc", "desc"]]
-    limit: Optional[PositiveInt] = 10
+    limit: Optional[PositiveInt] = 100
     sort: Optional[Literal["filing_date", "period_of_report_date"]]
 
 

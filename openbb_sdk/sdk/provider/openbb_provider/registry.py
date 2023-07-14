@@ -4,7 +4,6 @@
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 import pkg_resources
-
 from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import ProviderDataType
 from openbb_provider.abstract.provider import Provider, ProviderNameType
@@ -17,7 +16,7 @@ def process(
     data: Union[List[ProviderDataType], ProviderDataType], orientation: orients
 ) -> Any:
     """
-    Converts the data into the desired orientation.
+    Convert the data into the desired orientation.
 
     Naming is based on the pandas to_dict() method:
     https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.from_dict.html
@@ -50,9 +49,7 @@ def process(
 
 
 class ProviderRegistry:
-    """A Provider Registry is the "brain" of the openbb_provider library
-    with which users and the SDK v4 interact for retrieving data.
-    """
+    """A Provider Registry is the central executor for dynamically retrieving data."""
 
     def __init__(self) -> None:
         self.provider_mapping: Dict[ProviderNameType, Provider] = {}
@@ -76,7 +73,7 @@ class ProviderRegistry:
         data_name: str,  # type: ignore
         data_orientation: orients,
     ):
-        """A factory method for fetching data from a provider."""
+        """Create method for fetching data from a provider."""
         if not self.provider_mapping:
             raise ValueError(
                 "Provider Mapping is empty. Please confirm plugins are loaded."
@@ -179,9 +176,9 @@ class ProviderRegistry:
 
 
 class Builder:
-    """A Builder class builds out the provider table by adding providers and their
-    API keys to it. It can build multiple different types of Provider Registries
-    with their own state.
+    """Build out the provider table by adding providers and their API keys to it.
+
+    It can build multiple different types of Provider Registries with their own state.
     """
 
     def __init__(self) -> None:
@@ -254,7 +251,7 @@ def load_extensions(
 
 
 def build_provider_registry() -> ProviderRegistry:
-    """Build a provider registry that is used outside of the openbb_providers."""
+    """Build a provider registry."""
     provider_registry_builder = Builder()
     extensions = []
 
