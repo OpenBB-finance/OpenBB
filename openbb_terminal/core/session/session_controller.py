@@ -134,7 +134,7 @@ def prompt_cli(welcome: bool = True):
             return login_and_launch(session, remember)
 
 
-# pylint disable=inconsistent-return-statements
+# pylint: disable=inconsistent-return-statements
 def launch_terminal(debug: bool = False, queue: Optional[List[str]] = None):
     """Launch terminal"""
     # pylint: disable=import-outside-toplevel
