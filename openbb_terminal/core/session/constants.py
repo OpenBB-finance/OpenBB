@@ -44,7 +44,7 @@ SCRIPT_TAGS = [
     "off chain",
     "screener",
     "report",
-    "overview',
+    "overview",
     "rates",
     "econometrics",
     "portfolio",
