@@ -14,7 +14,7 @@ from openbb_provider.models.stock_multiples import (
 # IMPORT THIRD-PARTY
 from pydantic import Field
 
-from .helpers import create_url, get_data_many, get_data_one
+from .helpers import create_url, get_data_one
 
 
 class FMPStockMultiplesQueryParams(StockMultiplesQueryParams):

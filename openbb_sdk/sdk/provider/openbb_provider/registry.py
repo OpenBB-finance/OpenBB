@@ -4,6 +4,7 @@
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 import pkg_resources
+
 from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import ProviderDataType
 from openbb_provider.abstract.provider import Provider, ProviderNameType
