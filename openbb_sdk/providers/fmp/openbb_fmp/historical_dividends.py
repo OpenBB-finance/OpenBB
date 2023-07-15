@@ -23,7 +23,7 @@ from .helpers import create_url, get_data_many
 
 
 class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
-    """FMP Earnings Calendar query.
+    """FMP Historical Dividends query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Dividends
 
@@ -35,6 +35,8 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 
 
 class FMPHistoricalDividendsData(Data):
+    """FMP Historical Dividends data."""
+
     date: dateType
     label: str
     adjDividend: float
@@ -45,21 +47,15 @@ class FMPHistoricalDividendsData(Data):
 
     @validator("declarationDate", pre=True)
     def declaration_date_validate(cls, v: str):  # pylint: disable=E0213
-        if v:
-            return datetime.strptime(v, "%Y-%m-%d").date()
-        return None
+        return datetime.strptime(v, "%Y-%m-%d").date() if v else None
 
     @validator("recordDate", pre=True)
     def record_date_validate(cls, v: str):  # pylint: disable=E0213
-        if v:
-            return datetime.strptime(v, "%Y-%m-%d").date()
-        return None
+        return datetime.strptime(v, "%Y-%m-%d").date() if v else None
 
     @validator("paymentDate", pre=True)
     def payment_date_validate(cls, v: str):  # pylint: disable=E0213
-        if v:
-            return datetime.strptime(v, "%Y-%m-%d").date()
-        return None
+        return datetime.strptime(v, "%Y-%m-%d").date() if v else None
 
 
 class FMPHistoricalDividendsFetcher(
@@ -74,7 +70,10 @@ class FMPHistoricalDividendsFetcher(
     def transform_query(
         query: HistoricalDividendsQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPHistoricalDividendsQueryParams:
-        return FMPHistoricalDividendsQueryParams(symbol=query.symbol)
+        return FMPHistoricalDividendsQueryParams(
+            symbol=query.symbol,
+            **extra_params or {},
+        )
 
     @staticmethod
     def extract_data(
