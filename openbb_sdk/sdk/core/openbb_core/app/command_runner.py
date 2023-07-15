@@ -269,6 +269,8 @@ class StaticCommandRunner:
                     command_output.warnings = list(map(cast_warning, warning_list))
 
         except Exception as e:
+            # TODO: Raise exception in debug mode
+            # TODO: Save traceback to provide more detailed error
             command_output = CommandOutput(error=Error(message=str(e)))
 
         cls.logging_manager.log(
