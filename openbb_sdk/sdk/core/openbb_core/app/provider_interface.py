@@ -1,8 +1,9 @@
 from dataclasses import dataclass, make_dataclass
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
 from openbb_provider.map import build_provider_mapping
+from openbb_provider.registry import build_provider_registry
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 
 
@@ -106,6 +107,10 @@ class ProviderInterface:
     @property
     def models(self) -> List[str]:
         return list(self.__map.keys())
+
+    @property
+    def registry(self) -> Callable:
+        return build_provider_registry
 
     @staticmethod
     def __merge_fields(

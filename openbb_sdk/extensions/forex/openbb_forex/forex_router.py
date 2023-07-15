@@ -7,7 +7,7 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from openbb_provider.abstract.data import Data
+from pydantic import BaseModel
 
 router = Router(prefix="")
 
@@ -19,7 +19,7 @@ def pairs(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[Data]:
+) -> CommandOutput[BaseModel]:
     """Forex Available Pairs."""
     return CommandOutput(results=Query(**locals()).execute())
 
@@ -31,6 +31,6 @@ def load(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[Data]:
+) -> CommandOutput[BaseModel]:
     """Forex Intraday Price."""
     return CommandOutput(results=Query(**locals()).execute())

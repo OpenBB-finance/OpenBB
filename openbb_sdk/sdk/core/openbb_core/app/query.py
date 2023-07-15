@@ -4,8 +4,7 @@ import warnings
 from dataclasses import asdict
 from typing import Any, Dict
 
-from openbb_provider.abstract.data import Data
-from openbb_provider.registry import build_provider_registry
+from pydantic import BaseModel
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
@@ -68,10 +67,10 @@ class Query:
         standard_params.__name__ = self.name + "QueryParams"  # type: ignore
         return standard_params
 
-    def execute(self) -> Data:
+    def execute(self) -> BaseModel:
         """Execute the query."""
 
-        registry = build_provider_registry()
+        registry = get_provider_interface().registry()
         creds = self.cc.user_settings.credentials
         registry.api_keys[self.provider] = getattr(creds, self.provider + "_api_key")  # type: ignore
 

@@ -3,7 +3,6 @@ from typing import List, Optional, Union
 import pandas as pd
 from openbb_provider.abstract.data import Data
 
-
 def basemodel_to_df(data: List[Data], index: Optional[str] = None) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
     df = pd.DataFrame([d.dict() for d in data])
