@@ -56,6 +56,11 @@ class ProviderInterface:
         Dataclass with literal of provider names.
     models : List[str]
         List of model names.
+
+    Methods
+    -------
+    create_registry : Callable
+        Create provider registry
     """
 
     def __init__(self) -> None:
@@ -108,8 +113,7 @@ class ProviderInterface:
     def models(self) -> List[str]:
         return list(self.__map.keys())
 
-    @property
-    def registry(self) -> Callable:
+    def create_registry(self) -> Callable:
         return build_provider_registry
 
     @staticmethod

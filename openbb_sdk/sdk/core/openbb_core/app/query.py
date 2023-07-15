@@ -70,7 +70,7 @@ class Query:
     def execute(self) -> BaseModel:
         """Execute the query."""
 
-        registry = get_provider_interface().registry()
+        registry = get_provider_interface().create_registry()
         creds = self.cc.user_settings.credentials
         registry.api_keys[self.provider] = getattr(creds, self.provider + "_api_key")  # type: ignore
 
