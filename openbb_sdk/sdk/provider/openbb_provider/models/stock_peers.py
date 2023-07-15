@@ -1,7 +1,6 @@
 """Stock Peers data model."""
 
-
-from typing import List
+from typing import List, Optional
 
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.models.base import BaseSymbol
@@ -29,4 +28,4 @@ class StockPeersData(Data):
     """
 
     symbol: str
-    peers_list: List[str]
+    peers_list: Optional[List[str]]

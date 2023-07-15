@@ -9,9 +9,6 @@ from openbb_provider.helpers import data_transformer
 # IMPORT INTERNAL
 from openbb_provider.models.stock_peers import StockPeersData, StockPeersQueryParams
 
-# IMPORT THIRD-PARTY
-from pydantic import Field
-
 from .helpers import create_url, get_data_many
 
 # FMP SPECIFIC FUNCTIONALITY CURRENTLY
@@ -31,9 +28,6 @@ class FMPStockPeersQueryParams(StockPeersQueryParams):
 
 class FMPStockPeersData(StockPeersData):
     """FMP Stock Peers data."""
-
-    symbol: str = Field(min_length=1)
-    peers_list: List[str] = Field(alias="peersList")
 
 
 class FMPStockPeersFetcher(
@@ -55,7 +49,7 @@ class FMPStockPeersFetcher(
         query: FMPStockPeersQueryParams, api_key: str
     ) -> List[FMPStockPeersData]:
         url = create_url(4, "stock_peers", api_key, query)
-        return get_data_many(url, FMPStockPeersData, "peersList")
+        return get_data_many(url, FMPStockPeersData)
 
     @staticmethod
     def transform_data(data: List[FMPStockPeersData]) -> List[StockPeersData]:
