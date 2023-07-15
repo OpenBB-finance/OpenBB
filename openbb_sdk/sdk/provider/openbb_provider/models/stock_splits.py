@@ -2,6 +2,7 @@
 
 
 from datetime import date as dateType
+from typing import Optional
 
 from pydantic import Field
 
@@ -20,10 +21,10 @@ class StockSplitCalendarQueryParams(QueryParams):
         The end date of the stock splits up to which to retrieve the data.
     """
 
-    start_date: dateType = Field(
+    start_date: Optional[dateType] = Field(
         description=DESCRIPTIONS.get("start_date", ""), default=None
     )
-    end_date: dateType = Field(
+    end_date: Optional[dateType] = Field(
         description=DESCRIPTIONS.get("end_date", ""), default=None
     )
 
