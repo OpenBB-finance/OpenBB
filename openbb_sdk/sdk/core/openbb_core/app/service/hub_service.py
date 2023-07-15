@@ -2,7 +2,6 @@ from typing import Optional
 
 import requests
 from fastapi import HTTPException
-
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.hub.features_keys import FeaturesKeys
 from openbb_core.app.model.hub.hub_session import HubSession
@@ -15,7 +14,7 @@ class OpenBBError(Exception):
     pass
 
 
-class HubManager:
+class HubService:
     """Hub manager class"""
 
     BASE_URL = "https://payments.openbb.dev"

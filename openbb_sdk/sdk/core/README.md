@@ -150,13 +150,13 @@ app = CommandRunnerSession()
 ```python
 
 # Create Hub manager
-hm = HubManager()
+hs = HubService()
 
 # Connect with email, password or SDK token
-hm.connect(email="your_email", password="your_password")  # pragma: allowlist secret
+hs.connect(email="your_email", password="your_password")  # pragma: allowlist secret
 
 # Pull your settings
-user_settings = hm.pull()
+user_settings = hs.pull()
 
 # Make the app aware
 app = CommandRunnerSession(user_settings=user_settings)
@@ -165,10 +165,10 @@ app = CommandRunnerSession(user_settings=user_settings)
 user_settings.credentials.polygon_api_key = "new_key"  # pragma: allowlist secret
 
 # Send change back to Hub
-hm.push(user_settings)
+hs.push(user_settings)
 
 # Disconnect
-hm.disconnect()
+hs.disconnect()
 ```
 
 ### 5.3. Define the Command parameters

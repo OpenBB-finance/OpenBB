@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Optional
 
 from openbb_core.app.command_runner import CommandRunnerSession
-from openbb_core.app.hub_manager import HubManager
 from openbb_core.app.model.hub.hub_session import HubSession
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.service.hub_service import HubService
 from openbb_core.app.service.user_service import UserService
 
 if TYPE_CHECKING:
@@ -21,12 +21,12 @@ class Account:
     def __init__(self, app: "App"):
         self._app = app
 
-    def create_hub_manager(
+    def create_hub_service(
         self,
         email: Optional[str] = None,
         password: Optional[str] = None,
         sdk_token: Optional[str] = None,
-    ) -> HubManager:
+    ) -> HubService:
         if email is None and password is None and sdk_token is None:
             session_file = Path(
                 self._app.system.openbb_directory, ".sdk_hub_session.json"
@@ -38,11 +38,11 @@ class Account:
                 session_dict = json.load(f)
 
             hub_session = HubSession(**session_dict)
-            hm = HubManager(hub_session)
+            hs = HubService(hub_session)
         else:
-            hm = HubManager()
-            hm.connect(email, password, sdk_token)
-        return hm
+            hs = HubService()
+            hs.connect(email, password, sdk_token)
+        return hs
 
     def login(
         self,
@@ -69,8 +69,8 @@ class Account:
         UserSettings
             User settings: profile, credentials, preferences
         """
-        hm = self.create_hub_manager(email, password, sdk_token)
-        incoming = hm.pull()
+        hs = self.create_hub_service(email, password, sdk_token)
+        incoming = hs.pull()
         updated = UserService.update_default(incoming)
         self._app._command_runner_session = CommandRunnerSession(user_settings=updated)
         if remember_me:
@@ -79,10 +79,10 @@ class Account:
                 self._app.system.openbb_directory, ".sdk_hub_session.json"
             )
             with open(session_file, "w") as f:
-                if not hm.session:
+                if not hs.session:
                     raise OpenBBError("Not connected to hub.")
 
-                json.dump(hm.session.dict(), f, indent=4)
+                json.dump(hs.session.dict(), f, indent=4)
 
         return self._app._command_runner_session.user_settings
 
@@ -102,8 +102,8 @@ class Account:
                 self._app._command_runner_session.user_settings
             )
         else:
-            hm = HubManager(hub_session)
-            hm.push(self._app._command_runner_session.user_settings)
+            hs = HubService(hub_session)
+            hs.push(self._app._command_runner_session.user_settings)
         return self._app._command_runner_session.user_settings
 
     def refresh(self) -> UserSettings:
@@ -120,8 +120,8 @@ class Account:
         if not hub_session:
             self._app._command_runner_session = CommandRunnerSession()
         else:
-            hm = HubManager(hub_session)
-            incoming = hm.pull()
+            hs = HubService(hub_session)
+            incoming = hs.pull()
             updated = UserService.update_default(incoming)
             updated.id = self._app._command_runner_session.user_settings.id
             self._app._command_runner_session = CommandRunnerSession(
@@ -143,8 +143,8 @@ class Account:
         if not hub_session:
             raise OpenBBError("Not connected to hub.")
 
-        hm = HubManager(hub_session)
-        hm.disconnect()
+        hs = HubService(hub_session)
+        hs.disconnect()
 
         session_file = Path(self._app.system.openbb_directory, ".sdk_hub_session.json")
         if session_file.exists():
