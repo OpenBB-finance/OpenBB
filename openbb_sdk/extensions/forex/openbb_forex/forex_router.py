@@ -13,7 +13,7 @@ router = Router(prefix="")
 
 
 # pylint: disable=unused-argument
-@router.command(query="ForexPairs")
+@router.command(model="ForexPairs")
 def pairs(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -25,7 +25,7 @@ def pairs(
 
 
 # pylint: disable=unused-argument
-@router.command(query="ForexEOD")
+@router.command(model="ForexEOD")
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,

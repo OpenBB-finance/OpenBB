@@ -15,7 +15,7 @@ from pydantic import BaseModel
 router = Router(prefix="/dd")
 
 
-@router.command(query="SECFilings")
+@router.command(model="SECFilings")
 def sec(
     cc: CommandContext,
     provider_choices: ProviderChoices,

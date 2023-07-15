@@ -184,12 +184,12 @@ class Router:
 
         api_router = self._api_router
 
-        query = kwargs.pop("query", "")
-        if query:
+        model = kwargs.pop("model", "")
+        if model:
             kwargs["response_model_exclude_unset"] = True
-            kwargs["openapi_extra"] = {"query": query}
+            kwargs["openapi_extra"] = {"model": model}
 
-        func = SignatureInspector.complete_signature(func, query)
+        func = SignatureInspector.complete_signature(func, model)
 
         CommandValidator.check(func=func)
 
@@ -216,14 +216,14 @@ class Router:
 class SignatureInspector:
     @classmethod
     def complete_signature(
-        cls, func: Callable[P, CommandOutput], query: str
+        cls, func: Callable[P, CommandOutput], model: str
     ) -> Callable[P, CommandOutput]:
         """Complete function signature."""
         provider_interface = get_provider_interface()
-        if query:
-            if query not in provider_interface.queries:
+        if model:
+            if model not in provider_interface.models:
                 raise AttributeError(
-                    f"Invalid query: {query}. Check available queries in ProviderInterface().queries"
+                    f"Invalid model: {model}. Check available models in ProviderInterface().models"
                 )
 
             cls.validate_signature(func=func)
@@ -231,22 +231,22 @@ class SignatureInspector:
             func = cls.inject_dependency(
                 func=func,
                 arg="provider_choices",
-                callable_=provider_interface.query_providers[query],
+                callable_=provider_interface.model_providers[model],
             )
 
             func = cls.inject_dependency(
                 func=func,
                 arg="standard_params",
-                callable_=provider_interface.params[query]["standard"],
+                callable_=provider_interface.params[model]["standard"],
             )
 
             func = cls.inject_dependency(
                 func=func,
                 arg="extra_params",
-                callable_=provider_interface.params[query]["extra"],
+                callable_=provider_interface.params[model]["extra"],
             )
 
-            data_type = provider_interface.merged_data[query]
+            data_type = provider_interface.merged_data[model]
             func.__annotations__["return"] = CommandOutput[List[data_type]]  # type: ignore
         elif (
             "provider_choices" in func.__annotations__
@@ -261,7 +261,7 @@ class SignatureInspector:
 
     @staticmethod
     def validate_signature(func: Callable[P, CommandOutput]) -> None:
-        """Validate function signature before binding to query."""
+        """Validate function signature before binding to model."""
         if "provider_choices" not in func.__annotations__:
             raise AttributeError(
                 f"Invalid signature: {func.__name__}. Missing provider_choices parameter."
@@ -350,9 +350,9 @@ class CommandMap:
         for route in api_router.routes:
             openapi_extra = getattr(route, "openapi_extra")
             if openapi_extra:
-                query = openapi_extra.get("query", None)
-                if query:
-                    providers = list(mapping[query].keys())
+                model = openapi_extra.get("model", None)
+                if model:
+                    providers = list(mapping[model].keys())
                     if "openbb" in providers:
                         providers.remove("openbb")
                     for provider in providers:
@@ -373,9 +373,9 @@ class CommandMap:
         for route in api_router.routes:
             openapi_extra = getattr(route, "openapi_extra")
             if openapi_extra:
-                query = openapi_extra.get("query", None)
-                if query:
-                    providers = list(mapping[query].keys())
+                model = openapi_extra.get("model", None)
+                if model:
+                    providers = list(mapping[model].keys())
                     if "openbb" in providers:
                         providers.remove("openbb")
 

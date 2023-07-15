@@ -59,7 +59,7 @@ def corecpi(
 
 
 # pylint: disable=too-many-arguments
-@router.command(query="CPI")
+@router.command(model="CPI")
 def cpi(
     cc: CommandContext,
     provider_choices: ProviderChoices,

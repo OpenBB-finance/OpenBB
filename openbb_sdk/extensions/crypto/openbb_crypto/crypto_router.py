@@ -13,7 +13,7 @@ router = Router(prefix="")
 
 
 # pylint: disable=unused-argument
-@router.command(query="CryptoEOD")
+@router.command(model="CryptoEOD")
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,

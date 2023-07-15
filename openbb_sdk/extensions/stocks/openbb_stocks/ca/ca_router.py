@@ -16,7 +16,7 @@ from pydantic import BaseModel
 router = Router(prefix="/ca")
 
 
-@router.command(query="StockPeers")
+@router.command(model="StockPeers")
 def get(
     cc: CommandContext,
     provider_choices: ProviderChoices,

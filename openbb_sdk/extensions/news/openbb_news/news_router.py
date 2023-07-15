@@ -16,7 +16,7 @@ from pydantic import BaseModel
 router = Router(prefix="")
 
 
-@router.command(query="GlobalNews")
+@router.command(model="GlobalNews")
 def globalnews(
     cc: CommandContext,
     provider_choices: ProviderChoices,

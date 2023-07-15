@@ -22,7 +22,7 @@ def analysis() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command(query="BalanceSheet")
+@router.command(model="BalanceSheet")
 def balance(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -33,7 +33,7 @@ def balance(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="HistoricalDividends")
+@router.command(model="HistoricalDividends")
 def cal(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -44,7 +44,7 @@ def cal(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="CashFlowStatement")
+@router.command(model="CashFlowStatement")
 def cash(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -55,7 +55,7 @@ def cash(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="ExecutiveCompensation")
+@router.command(model="ExecutiveCompensation")
 def comp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -66,7 +66,7 @@ def comp(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="StockSplitCalendar")
+@router.command(model="StockSplitCalendar")
 def comsplit(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -101,7 +101,7 @@ def dupont() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command(query="EarningsCalendar")
+@router.command(model="EarningsCalendar")
 def earning(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -112,7 +112,7 @@ def earning(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="HistoricalEmployees")
+@router.command(model="HistoricalEmployees")
 def emp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -135,7 +135,7 @@ def epsfc() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command(query="AnalystEstimates")
+@router.command(model="AnalystEstimates")
 def est(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -175,7 +175,7 @@ def historical_5() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command(query="IncomeStatement")
+@router.command(model="IncomeStatement")
 def income(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -186,7 +186,7 @@ def income(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="StockInsiderTrading")
+@router.command(model="StockInsiderTrading")
 def ins(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -202,7 +202,7 @@ def key() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command(query="KeyMetrics")
+@router.command(model="KeyMetrics")
 def metrics(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -213,7 +213,7 @@ def metrics(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="KeyExecutives")
+@router.command(model="KeyExecutives")
 def mgmt(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -235,7 +235,7 @@ def news() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command(query="CompanyOverview")
+@router.command(model="CompanyOverview")
 def overview(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -246,7 +246,7 @@ def overview(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="InstitutionalOwnership")
+@router.command(model="InstitutionalOwnership")
 def own(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -257,7 +257,7 @@ def own(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="PriceTargetConsensus")
+@router.command(model="PriceTargetConsensus")
 def pt(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -268,7 +268,7 @@ def pt(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="PriceTarget")
+@router.command(model="PriceTarget")
 def pta(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -297,7 +297,7 @@ def revfc() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command(query="RevenueGeographic")
+@router.command(model="RevenueGeographic")
 def revgeo(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -308,7 +308,7 @@ def revgeo(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="RevenueBusinessLine")
+@router.command(model="RevenueBusinessLine")
 def revseg(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -341,7 +341,7 @@ def shares() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command(query="ShareStatistics")
+@router.command(model="ShareStatistics")
 def shrs(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -352,7 +352,7 @@ def shrs(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="HistoricalStockSplits")
+@router.command(model="HistoricalStockSplits")
 def split(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -369,7 +369,7 @@ def supplier() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command(query="EarningsCallTranscript")
+@router.command(model="EarningsCallTranscript")
 def transcript(
     cc: CommandContext,
     provider_choices: ProviderChoices,

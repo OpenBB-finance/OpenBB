@@ -15,7 +15,7 @@ from pydantic import BaseModel
 router = Router(prefix="")
 
 
-@router.command(query="TreasuryRates")
+@router.command(model="TreasuryRates")
 def treasury(
     cc: CommandContext,
     provider_choices: ProviderChoices,

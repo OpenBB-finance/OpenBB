@@ -43,23 +43,23 @@ class ProviderInterface:
     ----------
     map : Dict[str, Dict[str, Dict[str, Any]]]
         Dictionary of provider information.
-    query_providers : Dict[str, ProviderChoices]
-        Dictionary of provider choices by query.
+    model_providers : Dict[str, ProviderChoices]
+        Dictionary of provider choices by model.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
-        Dictionary of params by query.
+        Dictionary of params by model.
     merged_data : Dict[str, BaseModel]
-        Dictionary of data by query.
+        Dictionary of data by model.
     providers_literal : type
         Literal of provider names.
     provider_choices : type
         Dataclass with literal of provider names.
-    queries : List[str]
-        List of query names.
+    models : List[str]
+        List of model names.
     """
 
     def __init__(self) -> None:
         self.__map = build_provider_mapping()
-        self.__query_providers_map = self.__generate_query_providers_dc()
+        self.__model_providers_map = self.__generate_model_providers_dc()
         self.__params = self.__generate_params_dc()
         self.__data = self.__generate_data_dc()
         self.__merged_data = self.__merge_data_dc(self.__data)
@@ -69,8 +69,8 @@ class ProviderInterface:
         return self.__map
 
     @property
-    def query_providers(self) -> Dict[str, ProviderChoices]:
-        return self.__query_providers_map
+    def model_providers(self) -> Dict[str, ProviderChoices]:
+        return self.__model_providers_map
 
     @property
     def params(self) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
@@ -104,7 +104,7 @@ class ProviderInterface:
         )
 
     @property
-    def queries(self) -> List[str]:
+    def models(self) -> List[str]:
         return list(self.__map.keys())
 
     @staticmethod
@@ -161,9 +161,9 @@ class ProviderInterface:
         standard: Dict[str, Tuple[str, Any, Any]] = {}
         extra: Dict[str, Tuple[str, Any, Any]] = {}
 
-        for provider_name, query_details in providers.items():
+        for provider_name, model_details in providers.items():
             if provider_name == "openbb":
-                for name, field in query_details["QueryParams"]["fields"].items():
+                for name, field in model_details["QueryParams"]["fields"].items():
                     incoming = cls.__create_field(name, field, query=True)
 
                     standard[incoming.name] = (
@@ -172,7 +172,7 @@ class ProviderInterface:
                         incoming.default,
                     )
             else:
-                for name, field in query_details["QueryParams"]["fields"].items():
+                for name, field in model_details["QueryParams"]["fields"].items():
                     if name not in providers["openbb"]["QueryParams"]["fields"]:
                         incoming = cls.__create_field(
                             name, field, provider_name, query=True
@@ -208,9 +208,9 @@ class ProviderInterface:
         standard: Dict[str, Tuple[str, Any, Any]] = {}
         extra: Dict[str, Tuple[str, Any, Any]] = {}
 
-        for provider_name, query_details in providers.items():
+        for provider_name, model_details in providers.items():
             if provider_name == "openbb":
-                for name, field in query_details["Data"]["fields"].items():
+                for name, field in model_details["Data"]["fields"].items():
                     incoming = cls.__create_field(name, field, provider_name)
 
                     standard[incoming.name] = (
@@ -219,7 +219,7 @@ class ProviderInterface:
                         incoming.default,
                     )
             else:
-                for name, field in query_details["Data"]["fields"].items():
+                for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
                         incoming = cls.__create_field(name, field, provider_name)
 
@@ -261,27 +261,27 @@ class ProviderInterface:
 
         result: Dict = {}
 
-        for query_name, providers in self.__map.items():
+        for model_name, providers in self.__map.items():
             standard, extra = self.__extract_params(providers)
 
-            result[query_name] = {
+            result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
-                    cls_name=query_name,
+                    cls_name=model_name,
                     fields=list(standard.values()),
                     bases=(StandardParams,),
                 ),
                 "extra": make_dataclass(  # type: ignore
-                    cls_name=query_name,
+                    cls_name=model_name,
                     fields=list(extra.values()),
                     bases=(ExtraParams,),
                 ),
             }
         return result
 
-    def __generate_query_providers_dc(self) -> Dict[str, ProviderChoices]:
-        """Generate dataclasses for provider choices by query.
+    def __generate_model_providers_dc(self) -> Dict[str, ProviderChoices]:
+        """Generate dataclasses for provider choices by model.
 
-        This creates a dictionary that maps query names to dataclasses that can be used
+        This creates a dictionary that maps model names to dataclasses that can be used
         as provider choices.
 
         Example:
@@ -293,13 +293,13 @@ class ProviderInterface:
 
         result: Dict = {}
 
-        for query_name, providers in self.__map.items():
+        for model_name, providers in self.__map.items():
             choices = list(providers.keys())
             if "openbb" in choices:
                 choices.remove("openbb")
 
-            result[query_name] = make_dataclass(  # type: ignore
-                cls_name=query_name,
+            result[model_name] = make_dataclass(  # type: ignore
+                cls_name=model_name,
                 fields=[("provider", Literal[tuple(choices)])],  # type: ignore
                 bases=(ProviderChoices,),
             )
@@ -326,16 +326,16 @@ class ProviderInterface:
         """
         result: Dict = {}
 
-        for query_name, providers in self.__map.items():
+        for model_name, providers in self.__map.items():
             standard, extra = self.__extract_data(providers)
-            result[query_name] = {
+            result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
-                    cls_name=query_name,
+                    cls_name=model_name,
                     fields=list(standard.values()),
                     bases=(StandardData,),
                 ),
                 "extra": make_dataclass(  # type: ignore
-                    cls_name=query_name,
+                    cls_name=model_name,
                     fields=list(extra.values()),
                     bases=(ExtraData,),
                 ),
@@ -348,7 +348,7 @@ class ProviderInterface:
     ) -> Dict[str, BaseModel]:
         """Merge standard data with extra data into a single BaseModel"""
         result: Dict = {}
-        for query_name, dataclasses in data.items():
+        for model_name, dataclasses in data.items():
             standard = dataclasses["standard"]
             extra = dataclasses["extra"]
 
@@ -367,8 +367,8 @@ class ProviderInterface:
             class Config(BaseConfig):
                 extra = Extra.allow
 
-            result[query_name] = create_model(  # type: ignore
-                query_name,
+            result[model_name] = create_model(  # type: ignore
+                model_name,
                 __config__=Config,
                 **fields_dict,  # type: ignore
             )

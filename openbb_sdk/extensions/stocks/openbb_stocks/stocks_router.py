@@ -33,7 +33,7 @@ router.include_router(ins_router)
 router.include_router(options_router)
 
 
-@router.command(query="StockEOD")
+@router.command(model="StockEOD")
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -44,7 +44,7 @@ def load(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="StockNews")
+@router.command(model="StockNews")
 def news(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -55,7 +55,7 @@ def news(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(query="StockMultiples")
+@router.command(model="StockMultiples")
 def multiples(
     cc: CommandContext,
     provider_choices: ProviderChoices,
