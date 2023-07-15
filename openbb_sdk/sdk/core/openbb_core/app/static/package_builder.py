@@ -168,7 +168,8 @@ class ImportDefinition:
         code = "\nfrom openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.command_output import CommandOutput"
 
-        # These imports were not detected before build, so we add them manually.
+        # These imports were not detected before build, so we add them manually and
+        # ruff --fix the resulting code to remove unused imports.
         # TODO: Find a better way to handle this. This is a temporary solution.
         code += "\nimport openbb_provider"
         code += "\nimport pandas"
@@ -209,7 +210,7 @@ class ClassDefinition:
                 code += MethodDefinition.build_command_method(
                     path=route.path,
                     func=route.endpoint,
-                    query_name=route.openapi_extra.get("query", None)
+                    model_name=route.openapi_extra.get("model", None)
                     if route.openapi_extra
                     else None,
                 )  # type: ignore
@@ -224,16 +225,7 @@ class DocstringGenerator:
 
     @staticmethod
     def get_docstrings(query_mapping: dict) -> dict:
-        """Get docstrings from the query mapping.
-
-        Parameter
-        ---------
-            query_mapping (dict): The query mapping.
-
-        Returns
-        -------
-            dict: A dictionary with the docstrings.
-        """
+        """Get docstrings from the query mapping."""
         mapping = query_mapping.copy()
         for _, provider_mapping in mapping.items():
             for _, query_params_mapping in provider_mapping.items():
@@ -242,27 +234,16 @@ class DocstringGenerator:
 
     @staticmethod
     def clean_provider_docstring(
-        section_name: str, docstring: str, query_name: str
+        section_name: Literal["QueryParams", "Data"], docstring: str, model_name: str
     ) -> str:
-        """Clean the provider docstring from standard fields.
-
-        Parameter
-        ---------
-            section_name (str): The section name. Should be either "QueryParams" or "Data".
-            docstring (str): The docstring.
-            query_name (str): The query name.
-
-        Returns
-        -------
-            str: The cleaned docstring.
-        """
+        """Clean the provider docstring from standard fields."""
         provider_interface = get_provider_interface()
         if section_name == "QueryParams":
-            standard_fields = provider_interface.params[query_name][
+            standard_fields = provider_interface.params[model_name][
                 "standard"
             ].__dataclass_fields__.keys()
         elif section_name == "Data":
-            standard_fields = provider_interface.data[query_name][
+            standard_fields = provider_interface.data[model_name][
                 "standard"
             ].__dataclass_fields__.keys()
         else:
@@ -292,19 +273,9 @@ class DocstringGenerator:
 
     @classmethod
     def generate_provider_docstrings(
-        cls, docstring: str, docstring_mapping: dict, query_name: str
+        cls, docstring: str, docstring_mapping: dict, model_name: str
     ) -> str:
-        """Generate the docstring for the provider.
-
-        Parameter
-        ----------
-            docstring (str): The docstring.
-            docstring_mapping (dict): The docstring mapping.
-
-        Returns
-        -------
-            str: The final docstring.
-        """
+        """Generate the docstring for the provider."""
         for provider, provider_mapping in docstring_mapping.items():
             docstring += f"\n{provider}"
             docstring += f"\n{'=' * len(provider)}"
@@ -331,7 +302,7 @@ class DocstringGenerator:
                         section_docstring = cls.clean_provider_docstring(
                             section_name,
                             docstring=section_docstring,
-                            query_name=query_name,
+                            model_name=model_name,
                         )
 
                 docstring += f"\n{section_docstring}"
@@ -339,20 +310,10 @@ class DocstringGenerator:
         return docstring
 
     @classmethod
-    def generate_command_docstring(cls, func, query_name: str):
-        """Generate the docstring for the command.
-
-        Parameter
-        ----------
-            func (function): The command function.
-            query_name (str): The query name.
-
-        Returns
-        -------
-            function: The function with the updated docstring.
-        """
+    def generate_command_docstring(cls, func: Callable, model_name: str) -> Callable:
+        """Generate the docstring for the command."""
         provider_interface_mapping = get_provider_interface().map
-        query_mapping = provider_interface_mapping.get(query_name, None)
+        query_mapping = provider_interface_mapping.get(model_name, None)
         if query_mapping:
             docstring_mapping = cls.get_docstrings(query_mapping)
 
@@ -370,7 +331,7 @@ class DocstringGenerator:
             }
 
             docstring = cls.generate_provider_docstrings(
-                docstring, docstring_mapping_ordered, query_name
+                docstring, docstring_mapping_ordered, model_name
             )
 
             func.__doc__ = docstring
@@ -516,9 +477,8 @@ class MethodDefinition:
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
             #     func_returns = f"CommandOutput[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
-                func_returns = (
-                    f"CommandOutput[{item_type.__module__}.{item_type.__name__}]"
-                )
+                inner_type = getattr(item_type, "__name__", "_name")
+                func_returns = f"CommandOutput[{item_type.__module__}.{inner_type}]"
 
         return func_returns
 
@@ -570,19 +530,17 @@ class MethodDefinition:
 
     @classmethod
     def build_command_method(
-        cls, path: str, func: Callable, query_name: Optional[str]
+        cls, path: str, func: Callable, model_name: Optional[str]
     ) -> str:
-        # Name
+
         func_name = func.__name__
 
-        # Parameters
         sig = signature(func)
         parameter_map = dict(sig.parameters)
 
-        # Docstring
-        if query_name:
+        if model_name:
             func = DocstringGenerator.generate_command_docstring(
-                func=func, query_name=query_name
+                func=func, model_name=model_name
             )
 
         code = cls.build_command_method_signature(

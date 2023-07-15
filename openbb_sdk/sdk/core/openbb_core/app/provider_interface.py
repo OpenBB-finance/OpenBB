@@ -261,6 +261,7 @@ class ProviderInterface:
 
         result: Dict = {}
 
+        # TODO: Consider multiprocessing this loop to speed startup
         for model_name, providers in self.__map.items():
             standard, extra = self.__extract_params(providers)
 
@@ -326,6 +327,7 @@ class ProviderInterface:
         """
         result: Dict = {}
 
+        # TODO: Consider multiprocessing this loop to speed startup
         for model_name, providers in self.__map.items():
             standard, extra = self.__extract_data(providers)
             result[model_name] = {
