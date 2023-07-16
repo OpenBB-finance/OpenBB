@@ -1,4 +1,4 @@
-# pylint: disable=C0302, R0911, W0612
+# pylint: disable=C0302, R0911, W0612, R0912
 """ Options Chains Module """
 __docformat__ = "numpy"
 
@@ -1095,6 +1095,204 @@ def calculate_vertical_put_spread(
     return pd.DataFrame()
 
 
+def calculate_synthetic_long(
+    options: Options,
+    days: Optional[int] = 30,
+    strike: float = 0,
+) -> pd.DataFrame:
+    """Calculates the cost of a synthetic long position at a given strike.
+    It is expressed as the difference between a bought call and a sold put.
+    Requires the Options data object.
+
+    Parameters
+    -----------
+    options : Options
+        The Options data object. Use load_options_chains() to load the data.
+    days: int
+        The target number of days until expiry. Default is 30 days.
+    strike: float
+        The target strike price. Default is the last price of the underlying stock.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with the results. Strike1 is the purchased call strike, strike2 is the sold put strike.
+
+    Example
+    --------
+    >>> from openbb_terminal.stocks.options import options_chains_model
+    >>> data = options_chains_model.load_options_chains('SPY')
+    >>> options_chains_model.calculate_synthetic_long(data)
+    """
+
+    options = deepcopy(options)
+
+    if not days:
+        days = 30
+    if days and days == 0:
+        days = -1
+
+    if validate_object(options, scope="object") is False:
+        return pd.DataFrame()
+
+    if validate_object(options, scope="strategies") is False:
+        print("`last_price` was not found in the OptionsChain data object.")
+        return pd.DataFrame()
+
+    if isinstance(options.chains, dict):
+        options.chains = pd.DataFrame(options.chains)
+
+    dte_estimate = get_nearest_dte(options, days)
+
+    options = validate_object(options, "nonZeroPrices", dte_estimate)
+
+    strike_price = options.last_price if strike == 0 else strike
+
+    strike_estimate = get_nearest_call_strike(options, dte_estimate, strike_price)
+
+    call_premium = options.chains.query(
+        "`strike` == @strike_estimate and `dte` == @dte_estimate and `optionType` == 'call'"
+    )["ask"].values
+
+    put_premium = options.chains.query(
+        "`strike` == @strike_estimate and `dte` == @dte_estimate and `optionType` == 'put'"
+    )["bid"].values * (-1)
+
+    position_cost = call_premium[0] + put_premium[0]
+    breakeven = strike_estimate + position_cost
+    synthetic_long: dict[str, Any] = {}
+
+    synthetic_long.update(
+        {
+            "Symbol": options.symbol,
+            "Underlying Price": options.last_price,
+            "Expiration": options.chains.query("`dte` == @dte_estimate")[
+                "expiration"
+            ].unique()[0],
+            "DTE": dte_estimate,
+            "Strike 1": strike_estimate,
+            "Strike 2": strike_estimate,
+            "Strike 1 Premium": call_premium[0],
+            "Strike 2 Premium": put_premium[0],
+            "Cost": position_cost,
+            "Cost Percent": round(position_cost / options.last_price * 100, ndigits=4),
+            "Breakeven Lower": np.nan,
+            "Breakeven Lower Percent": np.nan,
+            "Breakeven Upper": breakeven,
+            "Breakeven Upper Percent": round(
+                ((breakeven - options.last_price) / options.last_price) * 100, ndigits=4
+            ),
+            "Max Profit": np.inf,
+            "Max Loss": breakeven * (-1),
+        }
+    )
+
+    strategy = pd.DataFrame(
+        data=synthetic_long.values(), index=synthetic_long.keys()
+    ).rename(columns={0: "Synthetic Long"})
+
+    return strategy
+
+
+def calculate_synthetic_short(
+    options: Options,
+    days: Optional[int] = 30,
+    strike: float = 0,
+) -> pd.DataFrame:
+    """Calculates the cost of a synthetic short position at a given strike.
+    It is expressed as the difference between a sold call and a purchased put.
+    Requires the Options data object.
+
+    Parameters
+    -----------
+    options : Options
+        The Options data object. Use load_options_chains() to load the data.
+    days: int
+        The target number of days until expiry. Default is 30 days.
+    strike: float
+        The target strike price. Default is the last price of the underlying stock.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with the results. Strike1 is the sold call strike, strike2 is the purchased put strike.
+
+    Example
+    --------
+    >>> from openbb_terminal.stocks.options import options_chains_model
+    >>> data = options_chains_model.load_options_chains('SPY')
+    >>> options_chains_model.calculate_synthetic_short(data)
+    """
+
+    options = deepcopy(options)
+
+    if not days:
+        days = 30
+    if days and days == 0:
+        days = -1
+
+    if validate_object(options, scope="object") is False:
+        return pd.DataFrame()
+
+    if validate_object(options, scope="strategies") is False:
+        print("`last_price` was not found in the OptionsChain data object.")
+        return pd.DataFrame()
+
+    if isinstance(options.chains, dict):
+        options.chains = pd.DataFrame(options.chains)
+
+    dte_estimate = get_nearest_dte(options, days)
+
+    options = validate_object(options, "nonZeroPrices", dte_estimate)
+
+    strike_price = options.last_price if strike == 0 else strike
+
+    strike_estimate = get_nearest_call_strike(options, dte_estimate, strike_price)
+
+    call_premium = options.chains.query(
+        "`strike` == @strike_estimate and `dte` == @dte_estimate and `optionType` == 'call'"
+    )["bid"].values * (-1)
+
+    put_premium = options.chains.query(
+        "`strike` == @strike_estimate and `dte` == @dte_estimate and `optionType` == 'put'"
+    )["ask"].values
+
+    position_cost = put_premium[0] + call_premium[0]
+    breakeven = strike_estimate - position_cost
+    synthetic_short: dict[str, Any] = {}
+
+    synthetic_short.update(
+        {
+            "Symbol": options.symbol,
+            "Underlying Price": options.last_price,
+            "Expiration": options.chains.query("`dte` == @dte_estimate")[
+                "expiration"
+            ].unique()[0],
+            "DTE": dte_estimate,
+            "Strike 1": strike_estimate,
+            "Strike 2": strike_estimate,
+            "Strike 1 Premium": call_premium[0],
+            "Strike 2 Premium": put_premium[0],
+            "Cost": position_cost,
+            "Cost Percent": round(position_cost / options.last_price * 100, ndigits=4),
+            "Breakeven Lower": breakeven,
+            "Breakeven Lower Percent": round(
+                ((breakeven - options.last_price) / options.last_price) * 100, ndigits=4
+            ),
+            "Breakeven Upper": np.nan,
+            "Breakeven Upper Percent": np.nan,
+            "Max Profit": breakeven,
+            "Max Loss": np.inf,
+        }
+    )
+
+    strategy = pd.DataFrame(
+        data=synthetic_short.values(), index=synthetic_short.keys()
+    ).rename(columns={0: "Synthetic Short"})
+
+    return strategy
+
+
 @log_start_end(log=logger)
 def calculate_stats(options: Options, by: Optional[str] = "expiration") -> pd.DataFrame:
     """Calculates basic statistics for the options chains, like OI and Vol/OI ratios.
@@ -1206,13 +1404,16 @@ def get_strategies(
     days: Optional[list[int]] = None,
     straddle_strike: Optional[float] = 0,
     strangle_moneyness: Optional[list[float]] = None,
+    synthetic_longs: Optional[list[float]] = None,
+    synthetic_shorts: Optional[list[float]] = None,
     vertical_calls: Optional[list[float]] = None,
     vertical_puts: Optional[list[float]] = None,
 ) -> pd.DataFrame:
     """Gets options strategies for all, or a list of, DTE(s).
     Currently supports straddles, strangles, and vertical spreads.
     Multiple strategies, expirations, and % moneyness can be returned.
-    To get short options, use a negative value for the `straddle_strike` price or `strangle_moneyness`.
+    A negative value for `straddle_strike` or `strangle_moneyness` returns short options.
+    A synthetic long/short position is a bought/sold call and sold/bought put at the same strike.
     A sold call strike that is lower than the bought strike, or a sold put strike that is higher than the bought strike,
     is a bearish vertical spread.
 
@@ -1227,6 +1428,10 @@ def get_strategies(
     strangle_moneyness: list[float]
         List of OTM moneyness to target, expressed as a percent value between 0 and 100.
         Enter a single value, or multiple as a list. Defaults to 5.
+    synthetic_long: list[float]
+        List of strikes for a synthetic long position.
+    synthetic_short: list[float]
+        List of strikes for a synthetic short position.
     vertical_calls: list[float]
         Call strikes for vertical spreads, listed as [sold strike, bought strike].
     vertical_puts: list[float]
@@ -1239,21 +1444,27 @@ def get_strategies(
     Examples
     --------
     Load data
-    >>> from openbb_terminal.stocks.options.options_chains_model import OptionsChains
-    >>> data = OptionsChains("SPY")
+    >>> from openbb_terminal.stocks.options import options_chains_model
+    >>> data = options_chains_model.load_options_chains("SPY")
 
     Return just straddles
-    >>> data.get_strategies()
+    >>> options_chains_model.calculate_strategies(data)
 
     Return strangles
-    >>> data.get_strategies()
+    >>> options_chains_model.calculate_strategies(data, strangle_moneyness = 10)
 
     Return multiple values for both moneness and days:
-    >>> data.get_strategies(days = [10,30,60,90], moneyness = [2.5,-5,10,-20])
+    >>> options_chains_model.calculate_strategies(data, days = [10,30,60,90], moneyness = [2.5,-5,10,-20])
 
     Return vertical spreads for all expirations.
-    >>> data.get_strategies(vertical_calls=[430,427], vertical_puts=[420,426])
+    >>> options_chains_model.calculate_strategies(data, vertical_calls=[430,427], vertical_puts=[420,426])
+
+    Return synthetic short and long positions:
+    >>> options_chains_model.calculate_strategies(
+        data, days = [30,60], synthetic_short = [450,445], synthetic_long = [450,455]
+    )
     """
+
     options = deepcopy(options)
 
     if validate_object(options, scope="object") is False:
@@ -1293,12 +1504,29 @@ def get_strategies(
             else strangle_moneyness
         )
 
-    days_list = []
+    if synthetic_longs is not None:
+        synthetic_longs = (
+            [synthetic_longs]  # type: ignore[list-item]
+            if not isinstance(synthetic_longs, list)
+            else synthetic_longs
+        )
 
+    if synthetic_shorts is not None:
+        synthetic_shorts = (
+            [synthetic_shorts]  # type: ignore[list-item]
+            if not isinstance(synthetic_shorts, list)
+            else synthetic_shorts
+        )
+
+    days_list = []
     strategies = pd.DataFrame()
     straddles = pd.DataFrame()
     strangles = pd.DataFrame()
     strangles_ = pd.DataFrame()
+    synthetic_longs_df = pd.DataFrame()
+    _synthetic_longs = pd.DataFrame()
+    synthetic_shorts_df = pd.DataFrame()
+    _synthetic_shorts = pd.DataFrame()
     call_spreads = pd.DataFrame()
     put_spreads = pd.DataFrame()
 
@@ -1356,7 +1584,50 @@ def get_strategies(
         strangles = pd.concat([strangles, strangles_])
         strangles = strangles.query("`Strike 1` != `Strike 2`").drop_duplicates()
 
-    strategies = pd.concat([straddles, strangles, call_spreads, put_spreads])
+    if synthetic_longs:
+        strikes = synthetic_longs
+        for day in days:
+            for strike in strikes:
+                _synthetic_long = calculate_synthetic_long(
+                    options, day, strike
+                ).transpose()
+                if _synthetic_long.iloc[0]["Strike 1 Premium"] != 0:
+                    _synthetic_longs = pd.concat(
+                        [
+                            _synthetic_longs,
+                            _synthetic_long,
+                        ]
+                    )
+
+        synthetic_longs_df = pd.concat([synthetic_longs_df, _synthetic_longs])
+
+    if synthetic_shorts:
+        strikes = synthetic_shorts
+        for day in days:
+            for strike in strikes:
+                _synthetic_short = calculate_synthetic_short(
+                    options, day, strike
+                ).transpose()
+                if _synthetic_short.iloc[0]["Strike 1 Premium"] != 0:
+                    _synthetic_shorts = pd.concat(
+                        [
+                            _synthetic_shorts,
+                            _synthetic_short,
+                        ]
+                    )
+
+        synthetic_shorts_df = pd.concat([synthetic_shorts_df, _synthetic_shorts])
+
+    strategies = pd.concat(
+        [
+            straddles,
+            strangles,
+            synthetic_longs_df,
+            synthetic_shorts_df,
+            call_spreads,
+            put_spreads,
+        ]
+    )
 
     if strategies.empty:
         return get_strategies(options, straddle_strike=options.last_price)

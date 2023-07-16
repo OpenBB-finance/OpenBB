@@ -500,6 +500,64 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
 
         return options_chains_model.calculate_strangle(self, days, moneyness)
 
+    def get_synthetic_long(
+        self,
+        days: Optional[int] = 30,
+        strike: float = 0,
+    ) -> pd.DataFrame:
+        """Calculates the cost of a synthetic long position at a given strike.
+        It is expressed as the difference between a bought call and a sold put.
+        Requires the Options data object.
+
+        Parameters
+        -----------
+        days: int
+            The target number of days until expiry. Default is 30 days.
+        strike: float
+            The target strike price. Default is the last price of the underlying stock.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with the results. Strike1 is the purchased call strike, strike2 is the sold put strike.
+
+        Example
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> data = openbb.stocks.options.load_options_chains('SPY')
+        >>> data.get_synthetic_long()
+        """
+        return options_chains_model.calculate_synthetic_long(self, days, strike)
+
+    def calculate_synthetic_short(
+        self,
+        days: Optional[int] = 30,
+        strike: float = 0,
+    ) -> pd.DataFrame:
+        """Calculates the cost of a synthetic short position at a given strike.
+        It is expressed as the difference between a sold call and a purchased put.
+        Requires the Options data object.
+
+        Parameters
+        -----------
+        days: int
+            The target number of days until expiry. Default is 30 days.
+        strike: float
+            The target strike price. Default is the last price of the underlying stock.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with the results. Strike1 is the sold call strike, strike2 is the purchased put strike.
+
+        Example
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> data = openbb.stocks.options.load_options_chains('SPY')
+        >>> data.get_synthetic_short()
+        """
+        return options_chains_model.calculate_synthetic_short(self, days, strike)
+
     def get_vertical_call_spread(self, days=0, sold_strike=0, bought_strike=0):
         """Calculates the vertical call spread for the target DTE.
         A bull call spread is when the sold strike is above the bought strike.
@@ -581,28 +639,33 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         days: Optional[list[int]] = None,
         straddle_strike: Optional[float] = None,
         strangle_moneyness: Optional[float] = None,
+        synthetic_longs: Optional[list[float]] = None,
+        synthetic_shorts: Optional[list[float]] = None,
         vertical_calls: Optional[list[float]] = None,
         vertical_puts: Optional[list[float]] = None,
     ):
         """Gets options strategies for all, or a list of, DTE(s).
         Currently supports straddles, strangles, and vertical spreads.
         Multiple strategies, expirations, and % moneyness can be returned.
-        To get short options, use a negative value for the `straddle_strike` price or `strangle_moneyness`.
+        A negative value for `straddle_strike` or `strangle_moneyness` returns short options.
+        A synthetic long/short position is a bought/sold call and sold/bought put at the same strike.
         A sold call strike that is lower than the bought strike,
-        and a sold put strike that is higher than the bought strike,
-        are both bearish.
+        or a sold put strike that is higher than the bought strike,
+        is a bearish vertical spread.
 
         Parameters
         ----------
         days: list[int]
             List of DTE(s) to get strategies for. Enter a single value, or multiple as a list. Defaults to all.
-            This is the only shared parameter across strategies.
         strike_price: float
-            The target strike price for straddles. Defaults to the last price of the underlying stock.
-            Enter a negative value for short straddles.
+            The target strike price. Defaults to the last price of the underlying stock.
         strangle_moneyness: list[float]
             List of OTM moneyness to target, expressed as a percent value between 0 and 100.
-            Enter a single value, or multiple as a list. Defaults to 5. Enter a negative value for short straddles.
+            Enter a single value, or multiple as a list. Defaults to 5.
+        synthetic_long: list[float]
+            List of strikes for a synthetic long position.
+        synthetic_short: list[float]
+            List of strikes for a synthetic short position.
         vertical_calls: list[float]
             Call strikes for vertical spreads, listed as [sold strike, bought strike].
         vertical_puts: list[float]
@@ -630,6 +693,9 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
 
         Return vertical spreads for all expirations.
         >>> data.get_strategies(vertical_calls=[430,427], vertical_puts=[420,426])
+
+        Return synthetic short and long positions:
+        >>> data.get_strategies(days = [30,60], synthetic_short = [450,445], synthetic_long = [450,455])
         """
 
         if strangle_moneyness is None:
@@ -640,6 +706,8 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
             days,
             straddle_strike,
             strangle_moneyness,
+            synthetic_longs,
+            synthetic_shorts,
             vertical_calls,
             vertical_puts,
         )
