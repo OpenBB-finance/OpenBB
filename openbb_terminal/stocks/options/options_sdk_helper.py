@@ -529,7 +529,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         """
         return options_chains_model.calculate_synthetic_long(self, days, strike)
 
-    def calculate_synthetic_short(
+    def get_synthetic_short(
         self,
         days: Optional[int] = 30,
         strike: float = 0,
