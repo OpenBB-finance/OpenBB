@@ -7,6 +7,11 @@ from openbb_core.app.model.command_output import CommandOutput
 
 def filter_inputs(**kwargs) -> dict:
     """Filter command inputs"""
+    chart = kwargs.get("chart", None)
+    if chart is None:
+        extra_params = kwargs.get("extra_params", None)
+        if "chart" in extra_params:
+            kwargs["chart"] = extra_params["chart"]
     return kwargs
 
 

@@ -1,18 +1,18 @@
 import numpy as np
 import pandas as pd
 import pandas_ta as ta
-from charting_extensions.openbb_custom.infrastructure.plotly_helper import (
+from openbb_charting.backend.plotly_helper import (
     OpenBBFigure,
     theme,
 )
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.base import (
+from openbb_charting.backend.plotly_ta.base import (
     PltTA,
     indicator,
 )
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.data_classes import (
+from openbb_charting.backend.plotly_ta.data_classes import (
     columns_regex,
 )
-from openbb_ta.ta_helpers import clenow_momentum
+# from openbb_ta.ta_helpers import clenow_momentum
 
 
 class Momentum(PltTA):
@@ -154,36 +154,36 @@ class Momentum(PltTA):
 
         return fig, subplot_row + 1
 
-    @indicator()
-    def plot_clenow(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
-        """Add current close price to plotly figure."""
-        window = self.params["clenow"].get_argument_values("window") or 90
-        _, _, fit_data = clenow_momentum(df_ta[self.close_column], window=window)
+    # @indicator()
+    # def plot_clenow(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
+    #     """Add current close price to plotly figure."""
+    #     window = self.params["clenow"].get_argument_values("window") or 90
+    #     _, _, fit_data = clenow_momentum(df_ta[self.close_column], window=window)
 
-        fig.add_scatter(
-            x=df_ta.index[-window:],  # type: ignore
-            y=pow(np.e, fit_data),
-            name="CLenow",
-            mode="lines",
-            line=dict(color=self.inchart_colors[inchart_index], width=2),
-            row=1,
-            col=1,
-            secondary_y=False,
-        )
-        fig.add_annotation(
-            xref="paper",
-            yref="paper",
-            text="<b>CLenow</b>",
-            x=0,
-            xanchor="right",
-            xshift=-6,
-            yshift=-inchart_index * 18,
-            y=0.98,
-            font_size=14,
-            font_color=self.inchart_colors[inchart_index],
-            opacity=1,
-        )
-        return fig, inchart_index + 1
+    #     fig.add_scatter(
+    #         x=df_ta.index[-window:],  # type: ignore
+    #         y=pow(np.e, fit_data),
+    #         name="CLenow",
+    #         mode="lines",
+    #         line=dict(color=self.inchart_colors[inchart_index], width=2),
+    #         row=1,
+    #         col=1,
+    #         secondary_y=False,
+    #     )
+    #     fig.add_annotation(
+    #         xref="paper",
+    #         yref="paper",
+    #         text="<b>CLenow</b>",
+    #         x=0,
+    #         xanchor="right",
+    #         xshift=-6,
+    #         yshift=-inchart_index * 18,
+    #         y=0.98,
+    #         font_size=14,
+    #         font_color=self.inchart_colors[inchart_index],
+    #         opacity=1,
+    #     )
+    #     return fig, inchart_index + 1
 
     @indicator()
     def plot_demark(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):

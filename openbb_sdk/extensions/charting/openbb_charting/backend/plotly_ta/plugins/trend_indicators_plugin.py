@@ -1,13 +1,13 @@
 import pandas as pd
-from charting_extensions.openbb_custom.infrastructure.plotly_helper import (
+from openbb_charting.backend.plotly_helper import (
     OpenBBFigure,
     theme,
 )
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.base import (
+from openbb_charting.backend.plotly_ta.base import (
     PltTA,
     indicator,
 )
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.data_classes import (
+from openbb_charting.backend.plotly_ta.data_classes import (
     columns_regex,
 )
 

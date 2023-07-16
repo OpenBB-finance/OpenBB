@@ -49,6 +49,16 @@ def build_new_signature(func):
             )
         )
 
+    # add chart argument
+    new_parameter_list.append(
+        Parameter(
+            "chart",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            default=False,
+            annotation=bool,
+        )
+    )
+
     # TELLS FASTAPI TO INJECT THE USER_SETTINGS
     annotated_user_settings = Annotated[UserSettings, Depends(get_user)]
     new_parameter_list.append(

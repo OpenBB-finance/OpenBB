@@ -9,6 +9,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from pydantic import BaseConfig, Extra, create_model
 
+from openbb_core.app.model.abstract.chart import Chart
 from openbb_core.app.model.abstract.warning import cast_warning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput, Error
@@ -21,6 +22,7 @@ from openbb_core.app.router import CommandMap
 from openbb_core.app.service.journal_service import JournalService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
+from openbb_core.charts.charting_manager import ChartingManager
 from openbb_core.logs.logging_manager import LoggingManager
 
 
@@ -225,6 +227,7 @@ class ParametersBuilder:
 
 class StaticCommandRunner:
     logging_manager = LoggingManager()
+    charting_manager = ChartingManager()
 
     @staticmethod
     def __run_in_isolation(func, args=None, kwargs=None) -> CommandOutput:
@@ -245,6 +248,7 @@ class StaticCommandRunner:
         func: Callable,
         kwargs: Dict[str, Any],
     ) -> CommandOutput:
+        chart = kwargs.pop("chart", None)
         system_settings = execution_context.system_settings
         kwargs = ParametersBuilder.build(
             args=args,
@@ -272,6 +276,18 @@ class StaticCommandRunner:
             # TODO: Raise exception in debug mode
             # TODO: Save traceback to provide more detailed error
             command_output = CommandOutput(error=Error(message=str(e)))
+
+        try:
+            if chart:
+                command_output.chart = cls.charting_manager.chart(
+                    user_settings=execution_context.user_settings,
+                    route=route,
+                    command_output_item=command_output.results,
+                    **kwargs,
+                )
+        except Exception as e:
+            raise
+            command_output.chart = Chart(error=Error(message=str(e)))
 
         cls.logging_manager.log(
             user_settings=execution_context.user_settings,

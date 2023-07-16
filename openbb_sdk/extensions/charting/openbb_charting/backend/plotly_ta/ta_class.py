@@ -7,11 +7,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
-from charting_extensions.openbb_custom.infrastructure.plotly_helper import (
+from openbb_charting.backend.plotly_helper import (
     OpenBBFigure,
     theme,
 )
-from openbb_core.app.paths import REPOSITORY_DIRECTORY
+from openbb_core.app.constants import REPOSITORY_DIRECTORY
 
 from .base import PltTA
 from .data_classes import ChartIndicators
@@ -225,6 +225,7 @@ class PlotlyTA(PltTA):
             if hasattr(sys, "frozen")
             else REPOSITORY_DIRECTORY
         )
+        print(REPOSITORY_DIRECTORY)
         # TODO : figure this out regarding the system preferences
         # current_system = get_current_system()
 

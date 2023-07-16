@@ -3,7 +3,7 @@ from typing import List
 
 from openbb_core.app.router import RouterLoader
 
-CHARTING_ROUTER = "./charting_router.py"
+CHARTING_ROUTER = "./router.py"
 
 
 def get_routes() -> List[str]:

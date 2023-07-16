@@ -1,8 +1,8 @@
-from openbb_core.app.model.chart import ChartFormat
+from openbb_core.app.model.abstract.chart import ChartFormat
 from openbb_core.app.router import Router
 from openbb_core.app.utils import basemodel_to_df
 
-from openbb_charting.infrastructure.plotly_ta.ta_class import PlotlyTA
+from .backend.plotly_ta.ta_class import PlotlyTA
 
 router = Router(prefix="")
 
