@@ -114,7 +114,7 @@ class ProviderInterface:
         return list(self.__map.keys())
 
     def create_registry(self) -> Callable:
-        return build_provider_registry
+        return build_provider_registry()
 
     @staticmethod
     def __merge_fields(
