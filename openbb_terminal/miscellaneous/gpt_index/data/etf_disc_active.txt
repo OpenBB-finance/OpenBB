@@ -1,0 +1,12 @@
+parent_command:etf/disc
+usage: active
+
+Displays most active ETF/Mutual funds from wsj.com/market-data
+
+active
+Examples:
+- To display the most active ETFs and mutual funds: etf/disc/active
+- Show the most active ETFs and mutual funds: etf/disc/active
+- View the top active ETFs and mutual funds: etf/disc/active
+- Retrieve the most active ETFs and mutual funds from WSJ Market Data: etf/disc/active
+- Get a list of the most active ETFs and mutual funds: etf/disc/active

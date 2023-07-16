@@ -1,12 +1,23 @@
 ---
 title: FAQs
 sidebar_position: 1
-description: Frequently Asked Questions
+description: Frequently asked questions about the OpenBB Terminal.
 keywords:
   [
     faqs,
     questions,
-    troubleshooting
+    troubleshooting,
+    answers,
+    installation,
+    updates,
+    general operation,
+    data sources,
+    bug,
+    support,
+    feedback,
+    developer issues,
+    issue,
+    openbb terminal
   ]
 ---
 

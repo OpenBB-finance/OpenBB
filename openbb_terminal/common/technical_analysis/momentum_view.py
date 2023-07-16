@@ -444,3 +444,80 @@ def display_demark(
     )
 
     return fig.show(external=external_axes)
+
+
+# pylint: disable=too-many-arguments,R0913
+@log_start_end(log=logger)
+def display_ichimoku(
+    data: pd.DataFrame,
+    symbol: str = "",
+    conversion_period: int = 9,
+    base_period: int = 26,
+    lagging_line_period: int = 52,
+    displacement: int = 26,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
+    """Plots Ichimoku clouds
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        OHLC data
+    conversion_period: int
+        Conversion line period
+    base_period: int
+        Base line period
+    lagging_line_period: int
+        Lagging line period
+    displacement: int
+        Displacement variable
+    symbol: str
+        Ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export data
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.stocks.load(symbol="aapl")
+    >>> openbb.ta.ichimoku_clouds(data=df)
+    """
+
+    data = pd.DataFrame(data)
+    data.index.name = "date"
+
+    if ta_helpers.check_columns(data) is None:
+        return None
+
+    ta = PlotlyTA()
+    fig = ta.plot(
+        data,
+        dict(
+            ichimoku=dict(
+                conversion_period=conversion_period,
+                base_period=base_period,
+                lagging_line_period=lagging_line_period,
+                displacement=displacement,
+            )
+        ),
+        f"Ichimoku Clouds for {symbol.upper()}",
+        True,
+        volume=False,
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "ichimoku",
+        ta.df_ta,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=external_axes)

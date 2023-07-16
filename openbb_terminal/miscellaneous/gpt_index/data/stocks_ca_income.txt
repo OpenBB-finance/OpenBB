@@ -1,0 +1,9 @@
+parent_command: stocks/ca/
+usage: income [-q] [-t S_TIMEFRAME] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints either yearly or quarterly income statement the company, and compares it against similar companies.  optional arguments:   -q, --quarter         Quarter financial data flag. (default: False)   -t S_TIMEFRAME, --timeframe S_TIMEFRAME                         Specify yearly/quarterly timeframe. Default is last.                         (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about income' to access the related guide.
+Summary: The income command prints either yearly or quarterly income statement for a specific company and compares it against similar companies. You can specify the timeframe, choose to display quarterly data, and export the data in various formats.
+
+Examples:
+- To compare the yearly income statement for multiple companies: stocks/load <SYMBOL>/ca/set <SYMBOL2>/income
+- To compare the quarterly income statement for multiple companies: stocks/load <SYMBOL>/ca/set <SYMBOL2>/income -q
+- To compare the income statement for a specific timeframe: stocks/load <SYMBOL>/ca/set <SYMBOL2>/income -t YEAR
+- To compare the income statement for a specific quarter: stocks/load <SYMBOL>/ca/set <SYMBOL2>/income -q -t Q2

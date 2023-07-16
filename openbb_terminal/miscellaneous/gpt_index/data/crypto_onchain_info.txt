@@ -1,0 +1,16 @@
+parent_command:crypto/onchain
+usage: info [--social]
+
+Display info about ERC20 token. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 [Source: Ethplorer]
+
+optional arguments:
+  --social  Flag to show social media links (default: False)
+
+
+Examples:
+- To display information about an ERC20 token: crypto/onchain/info <TOKEN_ADDRESS>
+- To display information and social media links for an ERC20 token: crypto/onchain/info <TOKEN_ADDRESS> --social
+- Show ERC20 token details without social media links: crypto/onchain/info <TOKEN_ADDRESS>
+- Retrieve information about an ERC20 token along with its social media links: crypto/onchain/info <TOKEN_ADDRESS> --social
+- Display ERC20 token data: crypto/onchain/info <TOKEN_ADDRESS>
+- Display ERC20 token information and include social media links: crypto/onchain/info <TOKEN_ADDRESS> --social

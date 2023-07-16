@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622, C0201
 import argparse
 import logging
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 from openbb_terminal.core.session.current_user import get_current_user
@@ -12,6 +13,7 @@ from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_view,
     coinpaprika_model,
     coinpaprika_view,
+    cryptostats_view,
     dappradar_model,
     dappradar_view,
     pycoingecko_model,
@@ -22,6 +24,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -40,10 +43,15 @@ class DiscoveryController(BaseController):
         "trending",
         "gainers",
         "losers",
-        "nft",
-        "games",
+        "nft_mktp_chains",
+        "nft_mktp",
         "dapps",
-        "dex",
+        "fees",
+        "dapp_categories",
+        "dapp_chains",
+        "dapp_metrics",
+        "defi_chains",
+        "tokens",
     ]
 
     PATH = "/crypto/disc/"
@@ -84,11 +92,92 @@ class DiscoveryController(BaseController):
         mt.add_cmd("gainers")
         mt.add_cmd("losers")
         mt.add_cmd("search")
-        mt.add_cmd("nft")
-        mt.add_cmd("games")
+        mt.add_cmd("nft_mktp_chains")
+        mt.add_cmd("nft_mktp")
         mt.add_cmd("dapps")
-        mt.add_cmd("dex")
+        mt.add_cmd("fees")
+        mt.add_cmd("dapp_categories")
+        mt.add_cmd("dapp_chains")
+        mt.add_cmd("dapp_metrics")
+        mt.add_cmd("defi_chains")
+        mt.add_cmd("tokens")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
+
+    @log_start_end(log=logger)
+    def call_fees(self, other_args: List[str]):
+        """Process fees command"""
+
+        parser = argparse.ArgumentParser(
+            prog="fees",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Cryptos where users pay most fees on [Source: CryptoStats]
+            """,
+        )
+
+        parser.add_argument(
+            "--mc",
+            action="store_true",
+            dest="marketcap",
+            default=False,
+            help="Include the market cap rank",
+        )
+        parser.add_argument(
+            "--tvl",
+            action="store_true",
+            dest="tvl",
+            default=False,
+            help="Include the total value locked",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="date",
+            type=valid_date,
+            help="Initial date. Default: yesterday",
+            default=(datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: One Day Fees",
+            default="One Day Fees",
+            choices=["One Day Fees", "Market Cap Rank"],
+            metavar="SORTBY",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+
+        if ns_parser:
+            cryptostats_view.display_fees(
+                marketcap=ns_parser.marketcap,
+                tvl=ns_parser.tvl,
+                date=ns_parser.date,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.reverse,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_top(self, other_args):
@@ -190,37 +279,44 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Shows top decentralized applications [Source: https://dappradar.com/]
-            Accepts --sort {Name,Category,Protocols,Daily Users,Daily Volume [$]}
-            to sort by column
+            Shows available decentralized applications [Source: https://dappradar.com/]
+            Accepts --chain argument to filter by blockchain
+                    --page argument to show a specific page. Default: 1
+                    --limit argument to limit the number of records per page. Default: 15
             """,
         )
-
+        parser.add_argument(
+            "-c",
+            "--chain",
+            dest="chain",
+            help="Filter by blockchain",
+            metavar="CHAIN",
+        )
+        parser.add_argument(
+            "-p",
+            "--page",
+            dest="page",
+            type=check_positive,
+            help="Page number",
+            default=1,
+        )
         parser.add_argument(
             "-l",
             "--limit",
             dest="limit",
             type=check_positive,
-            help="Number of records to display",
+            help="Number of records to display per page",
             default=15,
         )
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            nargs="+",
-            help="Sort by given column. Default: Daily Volume [$]",
-            default="Daily Volume [$]",
-            choices=stocks_helper.format_parse_choices(dappradar_model.DAPPS_COLUMNS),
-            metavar="SORTBY",
-        )
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            dappradar_view.display_top_dapps(
-                sortby=" ".join(ns_parser.sortby),
-                limit=ns_parser.limit,
+            dappradar_view.display_dapps(
+                chain=ns_parser.chain,
+                page=ns_parser.page,
+                resultPerPage=ns_parser.limit,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
@@ -228,44 +324,21 @@ class DiscoveryController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_games(self, other_args):
-        """Process games command"""
+    def call_dapp_categories(self, other_args):
+        """Process dapp_categories command"""
         parser = argparse.ArgumentParser(
-            prog="games",
+            prog="dapp_categories",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Shows top blockchain games [Source: https://dappradar.com/]
-            Accepts --sort {Name,Daily Users,Daily Volume [$]}
-            to sort by column
+            Shows available dapp categories [Source: https://dappradar.com/]
             """,
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=15,
-        )
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            nargs="+",
-            help="Sort by given column. Default: Daily Volume [$]",
-            default="Daily Volume [$]",
-            choices=stocks_helper.format_parse_choices(dappradar_model.DEX_COLUMNS),
-            metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            dappradar_view.display_top_games(
-                sortby=" ".join(ns_parser.sortby),
-                limit=ns_parser.limit,
+            dappradar_view.display_dapp_categories(
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
@@ -273,44 +346,21 @@ class DiscoveryController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_dex(self, other_args):
-        """Process dex command"""
+    def call_dapp_chains(self, other_args):
+        """Process dapp_chains command"""
         parser = argparse.ArgumentParser(
-            prog="dex",
+            prog="dapp_chains",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Shows top decentralized exchanges [Source: https://dappradar.com/]
-            Accepts --sort {Name,Daily Users,Daily Volume [$]}
-            to sort by column
+            Shows available dapp chains [Source: https://dappradar.com/]
             """,
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=15,
-        )
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            nargs="+",
-            help="Sort by given column. Default: Daily Volume [$]",
-            default="Daily Volume [$]",
-            choices=stocks_helper.format_parse_choices(dappradar_model.DEX_COLUMNS),
-            metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            dappradar_view.display_top_dexes(
-                sortby=" ".join(ns_parser.sortby),
-                limit=ns_parser.limit,
+            dappradar_view.display_dapp_chains(
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
@@ -318,43 +368,51 @@ class DiscoveryController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_nft(self, other_args):
-        """Process nft command"""
+    def call_dapp_metrics(self, other_args):
+        """Process dapp_metrics command"""
         parser = argparse.ArgumentParser(
-            prog="nft",
+            prog="dapp_metrics",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Shows top NFT collections [Source: https://dappradar.com/]
-            Accepts --sort {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap,Volume [$]}
-            to sort by column
+            Shows dapp metrics [Source: https://dappradar.com/]
+            Accepts --dappId argument to specify the dapp
+                    --chain argument to filter by blockchain for multi-chain dapps
+                    --time_range argument to specify the time range. Default: 7d (can be 24h, 7d, 30d)
             """,
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=15,
+            "-d",
+            "--dappId",
+            dest="dappId",
+            help="Dapp ID",
+            metavar="DAPP_ID",
         )
         parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            nargs="+",
-            help="Sort by given column. Default: Market Cap",
-            default="Market Cap",
-            choices=stocks_helper.format_parse_choices(dappradar_model.NFT_COLUMNS),
-            metavar="SORTBY",
+            "-c",
+            "--chain",
+            dest="chain",
+            help="Filter by blockchain",
+            metavar="CHAIN",
         )
+        parser.add_argument(
+            "-t",
+            "--time_range",
+            dest="time_range",
+            help="Time range",
+            metavar="TIME_RANGE",
+            choices=["24h", "7d", "30d"],
+            default="7d",
+        )
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            dappradar_view.display_top_nfts(
-                sortby=" ".join(ns_parser.sortby),
-                limit=ns_parser.limit,
+            dappradar_view.display_dapp_metrics(
+                dappId=ns_parser.dappId,
+                chain=ns_parser.chain,
+                time_range=ns_parser.time_range,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
@@ -609,4 +667,135 @@ class DiscoveryController(BaseController):
                 else None,
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,
+            )
+
+    @log_start_end(log=logger)
+    def call_nft_mktp_chains(self, other_args):
+        """Process nft_mktp_chains command"""
+        parser = argparse.ArgumentParser(
+            prog="nft_mktp_chains",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows NFT marketplace chains [Source: https://dappradar.com/]
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            dappradar_view.display_nft_marketplace_chains(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_defi_chains(self, other_args):
+        """Process defi_chains command"""
+        parser = argparse.ArgumentParser(
+            prog="defi_chains",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows DeFi chains [Source: https://dappradar.com/]
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            dappradar_view.display_defi_chains(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_nft_mktp(self, other_args):
+        """Process nft_mktp command"""
+        parser = argparse.ArgumentParser(
+            prog="nft_mktp",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows NFT marketplaces [Source: https://dappradar.com/]
+            Accepts --chain  to filter by blockchain
+                    --sortby {name, avgPrice, volume, traders...} to sort by column
+                    --order {asc, desc} to sort ascending or descending
+                    --limit to limit number of records
+            """,
+        )
+        parser.add_argument(
+            "-c",
+            "--chain",
+            dest="chain",
+            help="Name of the blockchain to filter by.",
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column.",
+            choices=stocks_helper.format_parse_choices(dappradar_model.NFT_COLUMNS),
+            metavar="SORTBY",
+        )
+        parser.add_argument(
+            "-o",
+            "--order",
+            dest="order",
+            help="Order of sorting. Default: desc",
+            default="desc",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="Number of records to display",
+            default=10,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            dappradar_view.display_nft_marketplaces(
+                sortby=ns_parser.sortby,
+                order=ns_parser.order,
+                chain=ns_parser.chain,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_tokens(self, other_args):
+        """Process tokens command"""
+        parser = argparse.ArgumentParser(
+            prog="tokens",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Shows chains that support tokens [Source: https://dappradar.com/]
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            dappradar_view.display_token_chains(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

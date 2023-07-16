@@ -10,17 +10,18 @@ import webbrowser
 
 # IMPORTATION STANDARD
 from contextlib import contextmanager
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 import matplotlib.pyplot as plt
 
 # IMPORTATION THIRDPARTY
 from packaging import version
 
-from openbb_terminal import thought_of_the_day as thought
-
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+import openbb_terminal.core.session.local_model as Local
+from openbb_terminal import thought_of_the_day as thought
+from openbb_terminal.base_helpers import load_env_files
+from openbb_terminal.core.config.paths import HIST_FILE_PATH, SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.current_system import get_current_system
@@ -130,7 +131,7 @@ def update_terminal():
 
 def open_openbb_documentation(
     path,
-    url="https://my.openbb.dev/app/terminal",
+    url="https://my.openbb.co/app/terminal",
     command=None,
     arg_type="",
 ):
@@ -160,7 +161,7 @@ def open_openbb_documentation(
                 path = "/usage?path=/usage/guides/customizing-the-terminal"
                 command = ""
             else:
-                path = f"/reference?path={path}"
+                path = f"/commands?path={path}"
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
@@ -204,7 +205,7 @@ def open_openbb_documentation(
             "news",
             "account",
         ]:
-            path = "/guides"
+            path = "/usage"
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/usage?path=/usage/intros/common/{command}"
@@ -312,7 +313,7 @@ def check_for_updates() -> None:
                 )
                 if current_version < latest_version:
                     console.print(
-                        "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+                        "[yellow]Check for updates at https://my.openbb.co/app/terminal/download[/yellow]"
                     )
 
                 else:
@@ -361,29 +362,48 @@ def welcome_message():
 
 
 def reset(queue: Optional[List[str]] = None):
-    """Resets the terminal.  Allows for checking code or keys without quitting"""
+    """Resets the terminal.  Allows for checking code without quitting"""
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
     plots_backend().close(reset=True)
+    load_env_files()
     debug = get_current_system().DEBUG_MODE
 
-    # we clear all openbb_terminal modules from sys.modules
     try:
+        # save the current user
+        user_profile = get_current_user().profile
+        session: Dict[str, Any] = {
+            "access_token": user_profile.token,
+            "token_type": user_profile.token_type,
+            "uuid": user_profile.uuid,
+            "username": user_profile.username,
+            "remember": user_profile.remember,
+        }
+
+        # remove the hub routines
+        if not is_local():
+            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
+            if not get_current_user().profile.remember:
+                Local.remove(HIST_FILE_PATH)
+
+        # we clear all openbb_terminal modules from sys.modules
         for module in list(sys.modules.keys()):
             parts = module.split(".")
             if parts[0] == "openbb_terminal":
                 del sys.modules[module]
 
+        queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
         # pylint: disable=import-outside-toplevel
         # we run the terminal again
-        from openbb_terminal.core.session import session_controller
-        from openbb_terminal.terminal_controller import main
-
         if is_local():
-            main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+            from openbb_terminal.terminal_controller import main
+
+            main(debug, queue_list, module="")  # type: ignore
         else:
-            session_controller.main()
+            from openbb_terminal.core.session import session_controller
+
+            session_controller.main(session, queue=queue_list)
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))
@@ -403,28 +423,6 @@ def suppress_stdout():
         finally:
             sys.stdout = old_stdout
             sys.stderr = old_stderr
-
-
-def is_reset(command: str) -> bool:
-    """Test whether a command is a reset command
-
-    Parameters
-    ----------
-    command : str
-        The command to test
-
-    Returns
-    -------
-    answer : bool
-        Whether the command is a reset command
-    """
-    if "reset" in command:
-        return True
-    if command == "r":
-        return True
-    if command == "r\n":
-        return True
-    return False
 
 
 def first_time_user() -> bool:

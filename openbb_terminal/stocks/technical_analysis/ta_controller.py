@@ -30,6 +30,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_indicator_parameters,
     check_positive,
+    check_positive_float,
     check_positive_list,
     valid_date,
 )
@@ -38,8 +39,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.technical_analysis import (
     finbrain_view,
-    finviz_view,
-    rsp_view,
     tradingview_model,
     tradingview_view,
 )
@@ -67,8 +66,8 @@ class TechnicalAnalysisController(StockBaseController):
         "zlma",
         "cci",
         "macd",
+        "ichimoku",
         "rsi",
-        "rsp",
         "stoch",
         "fisher",
         "cg",
@@ -130,15 +129,14 @@ class TechnicalAnalysisController(StockBaseController):
             stock_str = f"{s_intraday} {self.ticker}"
 
         mt = MenuText("stocks/ta/", 90)
+        mt.add_cmd("load")
+        mt.add_raw("\n")
         mt.add_param(
             "_ticker", stock_str if not self.stock.empty else "No ticker loaded"
         )
         mt.add_raw("\n")
-        mt.add_cmd("load")
-        mt.add_raw("\n")
-        mt.add_cmd("recom")
-        mt.add_cmd("summary")
-        mt.add_cmd("view")
+        mt.add_cmd("recom", not self.stock.empty)
+        mt.add_cmd("summary", not self.stock.empty)
         mt.add_raw("\n")
         mt.add_info("_overlap_")
         mt.add_cmd("ema", not self.stock.empty)
@@ -154,8 +152,8 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_cmd("demark", not self.stock.empty)
         mt.add_cmd("macd", not self.stock.empty)
         mt.add_cmd("fisher", not self.stock.empty)
+        mt.add_cmd("ichimoku", not self.stock.empty)
         mt.add_cmd("rsi", not self.stock.empty)
-        mt.add_cmd("rsp", not self.stock.empty)
         mt.add_cmd("stoch", not self.stock.empty)
         mt.add_info("_trend_")
         mt.add_cmd("adx", not self.stock.empty)
@@ -180,25 +178,6 @@ class TechnicalAnalysisController(StockBaseController):
         if self.ticker:
             return ["stocks", f"load {self.ticker}", "ta"]
         return []
-
-    # SPECIFIC
-    @log_start_end(log=logger)
-    def call_view(self, other_args: List[str]):
-        """Process view command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="view",
-            description="""View historical price with trendlines. [Source: Finviz]""",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
-            if not self.ticker:
-                no_ticker_message()
-                return
-            finviz_view.view(self.ticker)
 
     @log_start_end(log=logger)
     def call_summary(self, other_args: List[str]):
@@ -825,51 +804,6 @@ class TechnicalAnalysisController(StockBaseController):
             )
 
     @log_start_end(log=logger)
-    def call_rsp(self, other_args: List[str]):
-        """Process rsp command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rsp",
-            description="""
-                IBD Style Relative Strength Percentile Ranking of Stocks (i.e. 0-100 Score).
-                Ranks stocks on the basis of relative strength as calculated by Investor's
-                Business Daily (Yearly performance of stock (most recent quarter is weighted
-                double) divided by yearly performance of reference index (here, we use SPY)
-                Export table to view the entire ranking
-                Data taken from https://github.com/skyte/relative-strength
-            """,
-        )
-
-        parser.add_argument(
-            "-t",
-            "--tickers",
-            action="store_true",
-            default=False,
-            dest="disp_tickers",
-            help="Show other tickers in the industry the stock is part of",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            EXPORT_ONLY_RAW_DATA_ALLOWED,
-        )
-
-        if ns_parser:
-            if not self.ticker:
-                no_ticker_message()
-                return
-            rsp_view.display_rsp(
-                s_ticker=self.ticker,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-                tickers_show=ns_parser.disp_tickers,
-            )
-
-    @log_start_end(log=logger)
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
         parser = argparse.ArgumentParser(
@@ -1180,7 +1114,7 @@ class TechnicalAnalysisController(StockBaseController):
             "--std",
             action="store",
             dest="n_std",
-            type=check_positive,
+            type=check_positive_float,
             default=2,
             help="std",
         )
@@ -1779,6 +1713,83 @@ class TechnicalAnalysisController(StockBaseController):
                 upper_q=ns_parser.upper_q,
                 model=ns_parser.model,
                 is_crypto=ns_parser.is_crypto,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_ichimoku(self, other_args: List[str]):
+        """Process ichimoku command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ichimoku",
+            description="""
+                The Ichimoku Cloud, also known as Ichimoku Kinko Hyo, is a versatile indicator that
+                defines support and resistance, identifies trend direction, gauges momentum and provides
+                trading signals. Ichimoku Kinko Hyo translates into "one look equilibrium chart". With
+                one look, chartists can identify the trend and look for potential signals within that trend.
+            """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--conversion",
+            action="store",
+            dest="n_conversion",
+            type=check_positive,
+            default=9,
+            help="conversion line period",
+        )
+        parser.add_argument(
+            "-b",
+            "--base",
+            action="store",
+            dest="n_base",
+            type=check_positive,
+            default=26,
+            help="base line period",
+        )
+        parser.add_argument(
+            "-l",
+            "--lagging",
+            action="store",
+            dest="n_lagging",
+            type=check_positive,
+            default=52,
+            help="lagging span period",
+        )
+        parser.add_argument(
+            "-f",
+            "--forward",
+            action="store",
+            dest="n_forward",
+            type=check_positive,
+            default=26,
+            help="forward span period",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
+
+            momentum_view.display_ichimoku(
+                data=self.stock,
+                symbol=self.ticker,
+                conversion_period=ns_parser.n_conversion,
+                base_period=ns_parser.n_base,
+                lagging_line_period=ns_parser.n_lagging,
+                displacement=ns_parser.n_forward,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name

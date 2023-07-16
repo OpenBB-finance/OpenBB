@@ -1,23 +1,22 @@
 Other available quarterly timeframes are: 30-Sep-2021, 31-Dec-2021, 31-Mar-2022, 30-Jun-2022, 30-Sep-2022
 
-                                       31-Dec-2021            
-                                              TSLA          GM
-Item                                                          
-Net Income before Extraordinaries            2.34B       1.77B
-Net Income Growth                           41.23%     -25.98%
-Depreciation, Depletion & Amortization        848M       2.94B
-Depreciation and Depletion                    530M           -
-Amortization of Intangible Assets             318M           -
-Deferred Taxes & Investment Tax Credit           -        251M
-Deferred Taxes                                   -        251M
-Investment Tax Credit                            -           -
-Other Funds                                   539M      (783M)
-Funds from Operations                        3.73B       4.17B
-Extraordinaries                                  -           -
-Changes in Working Capital                    855M       2.64B
-Receivables                                    18M           -
-Accounts Payable                             1.81B           -
-Other Assets/Liabilities                    (443M)       4.59B
-Net Operating Cash Flow                      4.59B       6.81B
-Net Operating Cash Flow Growth              45.69%  13,995.92%
-Net Operating Cash Flow / Sales             25.88%      20.27%
+                                       TSLA (31-Dec-2021) GM (31-Dec-2021)
+Item                                                                      
+Net Income before Extraordinaries                   2.34B            1.77B
+Net Income Growth                                  41.23%          -25.98%
+Depreciation, Depletion & Amortization               848M            2.94B
+Depreciation and Depletion                           530M                 
+Amortization of Intangible Assets                    318M                 
+Deferred Taxes & Investment Tax Credit                                251M
+Deferred Taxes                                                        251M
+Investment Tax Credit                                                     
+Other Funds                                          539M           (783M)
+Funds from Operations                               3.73B            4.17B
+Extraordinaries                                                           
+Changes in Working Capital                           855M            2.64B
+Receivables                                           18M                 
+Accounts Payable                                    1.81B                 
+Other Assets/Liabilities                           (443M)            4.59B
+Net Operating Cash Flow                             4.59B            6.81B
+Net Operating Cash Flow Growth                     45.69%       13,995.92%
+Net Operating Cash Flow / Sales                    25.88%           20.27%

@@ -1,0 +1,14 @@
+parent_command:stocks/screener
+usage: view [-p Desired preset.]
+
+View available presets under presets folder.
+
+optional arguments:
+  -p Desired preset., --preset Desired preset.
+                        View specific custom preset
+
+
+Examples:
+- To view all available presets: stocks/screener/view
+- To view a specific custom preset: stocks/screener/view -p <Desired preset>
+- Display a particular preset: stocks/screener/view --preset <Desired preset>

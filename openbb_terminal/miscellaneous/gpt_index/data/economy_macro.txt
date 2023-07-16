@@ -1,0 +1,37 @@
+parent_command:economy
+usage: macro [-p PARAMETERS] [-c COUNTRIES] [-t {,TPOP,TOYA,TUSD,TPGP,TNOR}] [--show {parameters,countries,transform}] [-s START_DATE] [-e END_DATE]
+             [--convert {ALL,ARS,AUD,EUR,AZN,BDT,BYR,EUR,BTN,BAM,BWP,BRL,BGN,KHR,XAF,CAD,CLP,CNY,COP,HRK,EUR,CZK,DKK,DOP,EGP,EUR,EUR,EUR,EUR,EUR,EUR,HNL,HKD,HUF,INR,IDR,IRR,EUR,ILS,EUR,JPY,KZT,LAK,EUR,LBP,EUR,EUR,MKD,MYR,EUR,MXN,MNT,EUR,NZD,NGN,NOK,OMR,PKR,PAB,PYG,PEN,PHP,PLN,EUR,QAR,RON,RUB,SAR,RSD,SGD,EUR,EUR,ZAR,KRW,EUR,SEK,CHF,TWD,THB,TND,TRY,UAH,AED,GBP,USD,UZS,VEF,VND}]
+
+Get a broad selection of macro data from one or multiple countries. This includes Gross Domestic Product (RGDP & GDP) and the underlying components, Treasury Yields (Y10YD & M3YD), Employment/Unemployment rate/figures (URATE, EMP, AC0I0 and
+EMRATIO), Government components (e.g. GBAL & GREV), Consumer and Producer Indices (CPI & PPI) and a variety of other indicators. [Source: EconDB]
+
+optional arguments:
+  -p PARAMETERS, --parameters PARAMETERS
+                        Abbreviation(s) of the Macro Economic data (default: CPI)
+  -c COUNTRIES, --countries COUNTRIES
+                        The country or countries you wish to show data for (default: united_states)
+  -t {,TPOP,TOYA,TUSD,TPGP,TNOR}, --transform {,TPOP,TOYA,TUSD,TPGP,TNOR}
+                        The transformation to apply to the data (default: )
+  --show {parameters,countries,transform}
+                        Show parameters and what they represent using 'parameters' or countries and their currencies using 'countries' (default: None)
+  -s START_DATE, --start START_DATE
+                        The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) (default: None)
+  -e END_DATE, --end END_DATE
+                        The end date of the data (format: YEAR-MONTH-DAY, i.e. 2021-06-20) (default: None)
+  --convert {ALL,ARS,AUD,EUR,AZN,BDT,BYR,EUR,BTN,BAM,BWP,BRL,BGN,KHR,XAF,CAD,CLP,CNY,COP,HRK,EUR,CZK,DKK,DOP,EGP,EUR,EUR,EUR,EUR,EUR,EUR,HNL,HKD,HUF,INR,IDR,IRR,EUR,ILS,EUR,JPY,KZT,LAK,EUR,LBP,EUR,EUR,MKD,MYR,EUR,MXN,MNT,EUR,NZD,NGN,NOK,OMR,PKR,PAB,PYG,PEN,PHP,PLN,EUR,QAR,RON,RUB,SAR,RSD,SGD,EUR,EUR,ZAR,KRW,EUR,SEK,CHF,TWD,THB,TND,TRY,UAH,AED,GBP,USD,UZS,VEF,VND}
+                        Convert the currency of the chosen country to a specified currency. To find the currency symbols use '--show countries' (default: False)
+
+
+Examples:
+- Retrieve macro data for the a specific country with default parameters: economy/macro -c <COUNTRY>
+- Get macro data for GDP and CPI of <COUNTRY> and <COUNTRY> between specific dates: economy/macro -p GDP CPI -c <COUNTRY> <COUNTRY> -s 2015-01-01 -e 2020-12-31
+- Show the available parameters and their meanings: economy/macro --show parameters
+- Display the available countries and their currencies: economy/macro --show countries
+- Fetch macro data for <COUNTRY> with currency conversion to USD: economy/macro -c <COUNTRY> --convert USD
+- Obtain macro data for the <COUNTRY> with a specific transformation applied: economy/macro -c <COUNTRY> -t TPOP
+- Retrieve macro data for <COUNTRY> and <COUNTRY> with default parameters and currency conversion to EUR: economy/macro -c <COUNTRY> <COUNTRY> --convert EUR
+- Get macro data for <COUNTRY> with a specific start date: economy/macro -c <COUNTRY> -s 2010-01-01
+- Fetch macro data for <COUNTRY> with a specific end date: economy/macro -c <COUNTRY> -e 2020-12-31
+- Obtain macro data for <COUNTRY> and <COUNTRY> with specific parameters and transformations: economy/macro -p RGDP Y10YD -c <COUNTRY> <COUNTRY> -t TOYA
+- Obtain unemployment rate for <COUNTRY> and <COUNTRY>: economy/macro -p URATE -c <COUNTRY>,<COUNTRY>
+- unemployment rate in the <COUNTRY>: economy/macro -p URATE -c <COUNTRY>

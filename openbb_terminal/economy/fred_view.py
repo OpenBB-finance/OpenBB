@@ -12,6 +12,7 @@ import pandas as pd
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import fred_model
+from openbb_terminal.economy.plot_view import show_plot
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
@@ -298,7 +299,7 @@ def plot_cpi(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:
@@ -313,3 +314,100 @@ def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame,
     data_to_plot.index = pd.to_datetime(data_to_plot.index)
 
     return data_to_plot, title
+
+
+def display_usd_liquidity(
+    overlay: str = "SP500",
+    show: bool = False,
+    raw: bool = False,
+    export: str = "",
+    sheet_name: Optional[str] = "",
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
+    """Display US Dollar Liquidity
+    Parameters
+    -----------
+    overlay: str
+        An equity index to overlay, as a FRED Series ID. Defaults to "SP500".
+    show: bool
+        Shows the list of valid equity indices to overlay.
+    raw: bool
+        Show raw data
+    export: str
+        Export data to csv or excel file
+    sheet_name: str
+        Name of the sheet to export to
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
+    """
+
+    if show:
+        print_rich_table(
+            fred_model.get_usd_liquidity(show=True),
+            title="Available Equity Indices to Overlay",
+            show_index=True,
+            index_name="FRED Series ID",
+            export=bool(export),
+        )
+        return None
+
+    overlay = overlay.upper()
+    if overlay not in fred_model.EQUITY_INDICES:
+        print(
+            "Invalid choice. Display available choices by adding the parameter, `show = True`."
+        )
+        return None
+
+    data = fred_model.get_usd_liquidity(overlay=overlay)
+    y1 = pd.DataFrame(data.iloc[:, 0])
+    y2 = pd.DataFrame(data.iloc[:, 1])
+    fig = show_plot(y1, y2, external_axes=True)
+
+    fig.update_layout(
+        title=dict(text="USD Liquidity Index"),
+        margin=dict(l=125, t=100),
+        yaxis=dict(
+            showgrid=False,
+            title=dict(
+                text="USD Liquidity Index (Billions of USD)",
+            ),
+        ),
+        yaxis2=dict(
+            title=data.columns[1],
+            showgrid=True,
+        ),
+        title_y=0.97,
+        title_x=0.5,
+        legend=dict(
+            orientation="h",
+            yanchor="top",
+            y=1.075,
+            xanchor="center",
+            x=0.5,
+        ),
+    )
+    fig.update_yaxes(title_font=dict(size=16))
+
+    if raw:
+        print_rich_table(
+            data,
+            title="USD Liquidity Index",
+            show_index=True,
+            index_name="Date",
+            floatfmt=".2f",
+            export=bool(export),
+        )
+        return None
+
+    if export and export != "":
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "usd_liquidity",
+            data,
+            sheet_name,
+            fig,
+        )
+        return None
+
+    return fig.show(external=raw or external_axes)

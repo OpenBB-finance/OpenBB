@@ -1,359 +1,186 @@
 ---
 title: Economy
-keywords: [economy, macro, index, treasury, fred, market, econdb, index, yield, curve, economic, indicators, micro, inflation, interest rate, interest, unemployment, gdp, gross domestic product, openbb terminal]
-description: The Economy menu enables you to obtain market overviews, see yield curves of any country and discover sector, industry and country performance. Next to that, the databases of EconDB, FRED and Yahoo Finance can be accessed. All of this can also be further analyzed within the Forecasting menu and with Quantitative Techniques.
+keywords: [economy, macro, index, treasury, fred, market, econdb, index, yield, curve, economic, indicators, micro, inflation, interest rate, interest, unemployment, gdp, gross domestic product, openbb terminal, how to, example, overview, futures, econdb, fred, yahoo finance, macro, index, forecasting, quantitative]
+description: A brief guide to the Economy menu. It includes an introduction to the commands, functionality, data, and provides examples for use.
 ---
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-The Economy menu enables you to obtain market overviews (<a href="/terminal/reference/economy/overview" target="_blank" rel="noreferrer noopener">overview</a> and <a href="/terminal/reference/economy/futures" target="_blank" rel="noreferrer noopener">futures</a>), see yield curves of any country (<a href="/terminal/reference/economy/ycrv" target="_blank" rel="noreferrer noopener">ycrv</a>) and discover sector, industry and country performance (<a href="/terminal/reference/economy/performance" target="_blank" rel="noreferrer noopener">performance</a>). Next to that, the databases of <a href="https://www.econdb.com/" target="_blank" rel="noreferrer noopener">EconDB</a>, <a href="https://fred.stlouisfed.org/" target="_blank" rel="noreferrer noopener">FRED</a> and <a href="https://finance.yahoo.com/" target="_blank" rel="noreferrer noopener">Yahoo Finance</a> can be accessed via <a href="/terminal/reference/economy/macro" target="_blank" rel="noreferrer noopener">macro</a>, <a href="/terminal/reference/economy/fred" target="_blank" rel="noreferrer noopener">fred</a> and <a href="/terminal/reference/economy/index_cmd" target="_blank" rel="noreferrer noopener">index</a> respectively. All of this can also be further analysed with <a href="/terminal/usage/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a> (`forecast`) and <a href="/terminal/usage/intros/common/qa" target="_blank" rel="noreferrer noopener">Quantitative Techniques</a> (`qa`).
+`<HeadTitle title="Economny - Terminal | OpenBB Docs" />`
 
-## How to use
+## Overview
 
-The Economy menu is called upon by typing `economy` which opens the following menu:
+The `/economy` menu provides methods for querying macroeconomic data sets from sources like FRED, OECD, and EconDB.  To get the most out of this menu, sign up for a free API key from the [Federal Reserve of St. Louis](https://fred.stlouisfed.org/), and enter it into the OpenBB Terminal from the [`/keys` menu](https://docs.openbb.co/terminal/usage/guides/api-keys).  
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218990930-84338dbb-64eb-4243-82ff-8d0423f7066c.png"></img>
+## The Economy Menu
 
-Within the Economy menu you have a variety of options ranging from treasury rates to population growth to country financial performance. As this is quite extensive, the guide has two sections. The first section will discuss valuations and performance and the second section discusses the databases.
+The menu is divided into four general sections:
 
-### Performance and valuations
+- **Broad market**: General headline statistics from the markets today.
+- **Country performance**: Country-specific data published by the OECD.
+- **Databases**: Query time series.
+- **Stored datasets**: Compare and chart multiple time series together.
 
-By using <a href="/terminal/reference/economy/overview" target="_blank" rel="noreferrer noopener">overview</a> we can look into market overviews from the perspective of indices (`indices`), bonds (`usbonds` and `glbonds`), currencies (`currencies`) and in general. E.g. let's look at global bond performance by adding the `-t` argument:
+Each command is listed below, with a short description.
 
-```
-(🦋) /economy/ $ overview -t glbonds
+### Broad Market
 
-                              Global Bonds
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┓
-┃                                   ┃ Rate (%) ┃ Yld (%) ┃ Yld Chg (%) ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━┩
-│ U.S. 10 Year Treasury Note        │ 2.875    │ 3.164   │ -0.016      │
-├───────────────────────────────────┼──────────┼─────────┼─────────────┤
-│ Germany 10 Year Government Bond   │ 0.000    │ 1.582   │ -0.046      │
-├───────────────────────────────────┼──────────┼─────────┼─────────────┤
-│ U.K. 10 Year Gilt                 │ 4.250    │ 2.440   │ -0.028      │
-├───────────────────────────────────┼──────────┼─────────┼─────────────┤
-│ Japan 10 Year Government Bond     │ 0.200    │ 0.232   │ -0.002      │
-├───────────────────────────────────┼──────────┼─────────┼─────────────┤
-│ Australia 10 Year Government Bond │ 1.000    │ 3.703   │ -0.041      │
-├───────────────────────────────────┼──────────┼─────────┼─────────────┤
-│ China 10 Year Government Bond     │ 2.760    │ 2.851   │ -0.010      │
-└───────────────────────────────────┴──────────┴─────────┴─────────────┘
-```
+|Function Key |Description |
+|:-----|-----:|
+|overview |Market overview of either indices, bonds or currencies. |
+|futures |Futures and commodities overview. |
+|map |S&P 500 heat map. |
+|bigmac |The Economist's Big Mac Index. |
+|events |The economic calendar. |
+|edebt |External debt statitistics for various countries. |
+|valuation |Valuation of sectors, industries, and countries for US-listed stocks. |
+|performance |Performance of sectors, industry, and countries for US-listed stocks. |
+|usdli |USD Liquidity Index |
 
-Next to that, to better understand the current commodity market we can look into the <a href="/terminal/reference/economy/futures" target="_blank" rel="noreferrer noopener">futures</a> of a variety of commodities. For example, let's look at a general overview:
+### Country Performance
 
-```
-(🦋) /economy/ $ futures
+|Function Key |Description |
+|:-----|-----:|
+|gdp |Nominal Gross Domestic Product (GDP). |
+|rgdp |Real Gross Domestic Product (GDP). |
+|fgdp |Forecasts of nominal and real Gross Domestic Product (GDP). |
+|debt |Government debt-to-GDP ratios. |
+|cpi |Harmonized CPI. |
+|ccpi |CPI Components. |
+|balance |Government tax revenues. |
+|spending |Government spending. |
+|trust |Confidence in government surveys. |
 
-     Futures/Commodities [Source: Wall St. Journal]
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┓
-┃                           ┃ Price   ┃ Chg     ┃ %Chg  ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━┩
-│ Crude Oil Futures         │ 113.10  │ 1.34    │ 1.20  │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Brent Crude Futures       │ 115.24  │ 1.44    │ 1.27  │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Gold Futures              │ 1823.50 │ 2.30    │ 0.13  │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Silver Futures            │ 20.690  │ -0.116  │ -0.56 │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Natural Gas Futures       │ 6.738   │ 0.187   │ 2.85  │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Unleaded Gasoline Futures │ 3.8239  │ -0.0203 │ -0.53 │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Copper Futures            │ 3.7905  │ 0.0105  │ 0.28  │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Corn Futures              │ 653.75  │ -5.50   │ -0.83 │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Wheat Futures             │ 938.25  │ 2.25    │ 0.24  │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Bloomberg Commodity Index │ 123.95  │ 1.25    │ 1.02  │
-└───────────────────────────┴─────────┴─────────┴───────┘
-```
+### Databases
 
-We can also show industry, sector and country performance with <a href="/terminal/reference/economy/performance" target="_blank" rel="noreferrer noopener">performance</a>. For example, looking at the `sectors` returns the following:
+|Function Key |Description |
+|:-----|-----:|
+|macro |Time series data by country and indicator. |
+|treasury |Historical US Treasury rates. |
+|fred |Query the FRED. |
+|index |Historical daily time series for most major global indices. |
 
-```
-(🦋) /economy/ $ performance -g sector
+### Stored Datasets
 
-                                                         Group Performance Data
-┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━┓
-┃ Name                   ┃ Week  ┃ Month ┃ 3Month ┃ 6Month ┃ 1Year ┃ YTD   ┃ Recom ┃ AvgVolume [1M] ┃ RelVolume ┃ Change ┃ Volume [1M] ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━┩
-│ Utilities              │ 0.04  │ -0.08 │ -0.07  │ -0.03  │ 0.06  │ -0.04 │ 2.37  │ 171.85         │ 0.50      │ -0.00  │ 8.05        │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Technology             │ 0.01  │ -0.10 │ -0.25  │ -0.31  │ -0.22 │ -0.31 │ 2.00  │ 1660.00        │ 1.08      │ -0.01  │ 168.13      │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Real Estate            │ 0.01  │ -0.06 │ -0.15  │ -0.21  │ -0.24 │ -0.22 │ 2.21  │ 396.36         │ 0.68      │ -0.02  │ 25.29       │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Industrials            │ 0.01  │ -0.09 │ -0.18  │ -0.20  │ -0.17 │ -0.20 │ 2.26  │ 656.49         │ 0.99      │ -0.01  │ 61.12       │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Healthcare             │ 0.03  │ -0.04 │ -0.10  │ -0.14  │ -0.12 │ -0.14 │ 2.07  │ 1530.00        │ 3.02      │ -0.00  │ 434.03      │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Financial              │ 0.01  │ -0.10 │ -0.19  │ -0.18  │ -0.16 │ -0.17 │ 2.26  │ 1010.00        │ 0.67      │ -0.00  │ 63.28       │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Energy                 │ 0.04  │ -0.12 │ -0.03  │ 0.24   │ 0.29  │ 0.26  │ 2.21  │ 851.32         │ 0.82      │ 0.00   │ 65.35       │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Consumer Defensive     │ 0.02  │ -0.04 │ -0.08  │ -0.08  │ -0.05 │ -0.09 │ 2.28  │ 384.26         │ 0.84      │ -0.00  │ 30.44       │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Consumer Cyclical      │ 0.00  │ -0.07 │ -0.26  │ -0.31  │ -0.32 │ -0.31 │ 2.12  │ 1390.00        │ 1.25      │ -0.01  │ 163.60      │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Communication Services │ 0.01  │ -0.05 │ -0.22  │ -0.28  │ -0.28 │ -0.28 │ 1.90  │ 745.84         │ 0.77      │ -0.01  │ 53.75       │
-├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
-│ Basic Materials        │ -0.00 │ -0.15 │ -0.20  │ -0.13  │ -0.13 │ -0.13 │ 2.26  │ 529.64         │ 0.76      │ -0.01  │ 37.97       │
-└────────────────────────┴───────┴───────┴────────┴────────┴───────┴───────┴───────┴────────────────┴───────────┴────────┴─────────────┘
-```
-
-### Economic Databases
-
-Starting with the EconDB database (via <a href="/terminal/reference/economy/macro" target="_blank" rel="noreferrer noopener">macro</a>) a large selection of Economic data can be obtained. What can be obtained is easily found by typing `macro --show parameters` which returns the following:
-
-```
-(🦋) /economy/ $ macro --show parameters
-
-┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Parameter ┃ Name                                                ┃ Period    ┃ Description                                                                                                                          ┃
-┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ RGDP      │ Real gross domestic product                         │ Quarterly │ Inflation-adjusted measure that reflects the value of all goods and services produced by an economy in a given year (chain-linked    │
-│           │                                                     │           │ series).                                                                                                                             │
-├───────────┼─────────────────────────────────────────────────────┼───────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ RPRC      │ Real private consumption                            │ Quarterly │ All purchases made by consumers adjusted by inflation (chain-linked series).                                                         │
-├───────────┼─────────────────────────────────────────────────────┼───────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ RPUC      │ Real public consumption                             │ Quarterly │ All purchases made by the government adjusted by inflation (chain-linked series).                                                    │
-├───────────┼─────────────────────────────────────────────────────┼───────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ RGFCF     │ Real gross fixed capital formation                  │ Quarterly │ The acquisition of produced assets adjusted by inflation (chain-linked series).                                                      │
-├───────────┼─────────────────────────────────────────────────────┼───────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ REXP      │ Real exports of goods and services                  │ Quarterly │ Transactions in goods and services from residents to non-residents adjusted for inflation (chain-linked series)                      │
-├───────────┼─────────────────────────────────────────────────────┼───────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ RIMP      │ Real imports of goods and services                  │ Quarterly │ Transactions in goods and services to residents from non-residents adjusted for inflation (chain-linked series)                      │
-├───────────┼─────────────────────────────────────────────────────┼───────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-<continues>
-```
-
-As well as the available countries with `macro --show countries`:
-
-```
-(🦋) /economy/ $ macro --show countries
-
-┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ Country                ┃ Currency ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ Albania                │ ALL      │
-├────────────────────────┼──────────┤
-│ Argentina              │ ARS      │
-├────────────────────────┼──────────┤
-│ Australia              │ AUD      │
-├────────────────────────┼──────────┤
-│ Austria                │ EUR      │
-├────────────────────────┼──────────┤
-│ Azerbaijan             │ AZN      │
-├────────────────────────┼──────────┤
-│ Bangladesh             │ BDT      │
-├────────────────────────┼──────────┤
-│ Belarus                │ BYR      │
-├────────────────────────┼──────────┤
-│ Belgium                │ EUR      │
-├────────────────────────┼──────────┤
-<continues>
-```
-
-Then, with these parameters and countries, you can now plot macroeconomic data. For example, we can look at unemployment rate (`URATE`) of the Netherlands, Germany and France with the following:
-
-```
-(🦋) /economy/ $ macro --countries Netherlands Germany France --parameters URATE
-```
-
-This returns the following graph:
-
-![Unemployment Rates](https://user-images.githubusercontent.com/46355364/176680030-b7936018-16ae-4dce-b652-5718977e9d57.png)
-
-The FRED database similarly has a lot of macroeconomic data, do note that you need an API key to do this which is explained in more detail in the <a href="/terminal/usage/guides/changing-sources" target="_blank" rel="noreferrer noopener">Accessing other sources of data via API keys</a> section.
-
-You have the ability to query the entire FRED database with the `-q` argument. For example, down below we look for datasets that are centered around inflation. The `-l` argument is set to show a maximum of 10 datasets:
-
-```
-(🦋) /economy/ $ fred -q inflation -l 10
-
-                                                                         Search results for inflation
-┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Series ID       ┃ Title                                              ┃ Description                                                                                          ┃
-┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ T10YIE          │ 10-Year Breakeven Inflation Rate                   │ The breakeven inflation rate represents a measure of expected inflation derived from 10-Year         │
-│                 │                                                    │ Treasury Constant Maturity Securities (BC_10YEAR) and 10-Year Treasury Inflation-Indexed Constant    │
-│                 │                                                    │ Maturity Securities (TC_10YEAR). The latest value implies what market participants expect inflation  │
-│                 │                                                    │ to be in the next 10 years, on average. Starting with the update on June 21, 2019, the Treasury bond │
-│                 │                                                    │ data used in calculating interest rate spreads is obtained directly from the U.S. Treasury           │
-│                 │                                                    │ Department (https://www.treasury.gov/resource-center/data-chart-center/interest-                     │
-│                 │                                                    │ rates/Pages/TextView.aspx?data=yield).                                                               │
-├─────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ DFII10          │ Market Yield on U.S. Treasury Securities at        │ For further information regarding treasury constant maturity data, please refer to the H.15          │
-│                 │ 10-Year Constant Maturity, Quoted on an Investment │ Statistical Release notes (https://www.federalreserve.gov/releases/h15/default.htm) and the Treasury │
-│                 │ Basis, Inflation-Indexed                           │ Yield Curve Methodology (https://home.treasury.gov/policy-issues/financing-the-government/interest-  │
-│                 │                                                    │ rate-statistics/treasury-yield-curve-methodology).                                                   │
-├─────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ T10YIEM         │ 10-Year Breakeven Inflation Rate                   │ The breakeven inflation rate represents a measure of expected inflation derived from 10-Year         │
-│                 │                                                    │ Treasury Constant Maturity Securities (BC_10YEARM) and 10-Year Treasury Inflation-Indexed Constant   │
-│                 │                                                    │ Maturity Securities (TC_10YEARM). The latest value implies what market participants expect inflation │
-│                 │                                                    │ to be in the next 10 years, on average. Starting with the update on June 21, 2019, the Treasury bond │
-│                 │                                                    │ data used in calculating interest rate spreads is obtained directly from the U.S. Treasury           │
-│                 │                                                    │ Department (https://www.treasury.gov/resource-center/data-chart-center/interest-                     │
-│                 │                                                    │ rates/Pages/TextView.aspx?data=yield).                                                               │
-├─────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ FII10           │ Market Yield on U.S. Treasury Securities at        │ For further information regarding treasury constant maturity data, please refer to the H.15          │
-│                 │ 10-Year Constant Maturity, Quoted on an Investment │ Statistical Release notes (https://www.federalreserve.gov/releases/h15/default.htm) and the Treasury │
-│                 │ Basis, Inflation-Indexed                           │ Yield Curve Methodology (https://home.treasury.gov/policy-issues/financing-the-government/interest-  │
-│                 │                                                    │ rate-statistics/treasury-yield-curve-methodology).                                                   │
-├─────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ WFII10          │ Market Yield on U.S. Treasury Securities at        │ For further information regarding treasury constant maturity data, please refer to the H.15          │
-│                 │ 10-Year Constant Maturity, Quoted on an Investment │ Statistical Release notes (https://www.federalreserve.gov/releases/h15/default.htm) and the Treasury │
-│                 │ Basis, Inflation-Indexed                           │ Yield Curve Methodology (https://home.treasury.gov/policy-issues/financing-the-government/interest-  │
-│                 │                                                    │ rate-statistics/treasury-yield-curve-methodology).                                                   │
-├─────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ RIFLGFCY10XIINA │ Market Yield on U.S. Treasury Securities at        │ Averages of daily figures.  For further information regarding treasury constant maturity data,       │
-│                 │ 10-Year Constant Maturity, Quoted on an Investment │ please refer to the H.15 Statistical release notes                                                   │
-│                 │ Basis, Inflation-Indexed                           │ (https://www.federalreserve.gov/releases/h15/default.htm) and the Treasury Yield Curve Methodology   │
-│                 │                                                    │ (https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/treasury- │
-│                 │                                                    │ yield-curve-methodology).                                                                            │
-├─────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ T5YIFR          │ 5-Year, 5-Year Forward Inflation Expectation Rate  │ This series is a measure of expected inflation (on average) over the five-year period that begins    │
-│                 │                                                    │ five years from today.  This series is constructed as: (((((1+((BC_10YEAR-                           │
-│                 │                                                    │ TC_10YEAR)/100))^10)/((1+((BC_5YEAR-TC_5YEAR)/100))^5))^0.2)-1)*100  where BC10_YEAR, TC_10YEAR,     │
-│                 │                                                    │ BC_5YEAR, and TC_5YEAR are the 10 year and 5 year nominal and inflation adjusted Treasury            │
-│                 │                                                    │ securities. All of those are the actual series IDs in FRED. Starting with the update on June 21,     │
-│                 │                                                    │ 2019, the Treasury bond data used in calculating interest rate spreads is obtained directly from the │
-│                 │                                                    │ U.S. Treasury Department (https://www.treasury.gov/resource-center/data-chart-center/interest-       │
-│                 │                                                    │ rates/Pages/TextView.aspx?data=yield).                                                               │
-├─────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ T5YIE           │ 5-Year Breakeven Inflation Rate                    │ The breakeven inflation rate represents a measure of expected inflation derived from 5-Year Treasury │
-│                 │                                                    │ Constant Maturity Securities (BC_5YEAR) and 5-Year Treasury Inflation-Indexed Constant Maturity      │
-│                 │                                                    │ Securities (TC_5YEAR). The latest value implies what market participants expect inflation to be in   │
-│                 │                                                    │ the next 5 years, on average. Starting with the update on June 21, 2019, the Treasury bond data used │
-│                 │                                                    │ in calculating interest rate spreads is obtained directly from the U.S. Treasury Department          │
-│                 │                                                    │ (https://www.treasury.gov/resource-center/data-chart-center/interest-                                │
-│                 │                                                    │ rates/Pages/TextView.aspx?data=yield).                                                               │
-├─────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ T5YIFRM         │ 5-Year, 5-Year Forward Inflation Expectation Rate  │ This series is a measure of expected inflation (on average) over the five-year period that begins    │
-│                 │                                                    │ five years from today.  This series is constructed as: (((((1+((BC_10YEAR-                           │
-│                 │                                                    │ TC_10YEAR)/100))^10)/((1+((BC_5YEAR-TC_5YEAR)/100))^5))^0.2)-1)*100  where BC10_YEAR, TC_10YEAR,     │
-│                 │                                                    │ BC_5YEAR, and TC_5YEAR are the 10 year and 5 year nominal and inflation adjusted Treasury            │
-│                 │                                                    │ securities. All of those are the actual series IDs in FRED. Starting with the update on June 21,     │
-│                 │                                                    │ 2019, the Treasury bond data used in calculating interest rate spreads is obtained directly from the │
-│                 │                                                    │ U.S. Treasury Department (https://www.treasury.gov/resource-center/data-chart-center/interest-       │
-│                 │                                                    │ rates/Pages/TextView.aspx?data=yield).                                                               │
-├─────────────────┼────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ T5YIEM          │ 5-Year Breakeven Inflation Rate                    │ The breakeven inflation rate represents a measure of expected inflation derived from 5-Year Treasury │
-│                 │                                                    │ Constant Maturity Securities (BC_5YEAR) and 5-Year Treasury Inflation-Indexed Constant Maturity      │
-│                 │                                                    │ Securities (TC_5YEAR). The latest value implies what market participants expect inflation to be in   │
-│                 │                                                    │ the next 5 years, on average. Starting with the update on June 21, 2019, the Treasury bond data used │
-│                 │                                                    │ in calculating interest rate spreads is obtained directly from the U.S. Treasury Department          │
-│                 │                                                    │ (https://www.treasury.gov/resource-center/data-chart-center/interest-                                │
-│                 │                                                    │ rates/Pages/TextView.aspx?data=yield).                                                               │
-└─────────────────┴────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-With this information, we can now plot datasets, e.g. the 5-year, 10-year, 20-year and 30-year break-even inflation rates, with the following. Note that I added some additional series not in the above table. This is because you can recognise the structure relatively easy of the break-even inflation rates, the number after the `T` refers to the amount of years.
-
-```
-(🦋) /economy/ $ fred T5YIEM,T10YIEM,T20YIEM,T30YIEM
-```
-
-Which returns the following graph:
-
-![Break-Even Inflation Rates](https://user-images.githubusercontent.com/46355364/176680117-6d2b53e4-4980-42e6-a46c-4da34001ad46.png)
-
-Furthermore, understanding the influence macroeconomic trends have to indices, the `index` command can be used. This has a large set of pre-configured indices but has the possibility to add your own if you enter the ticker. Which plots the following:
-
-![Index Plot](https://user-images.githubusercontent.com/46355364/176680336-9ce60aa4-b2f7-4199-be42-62a8d78b1f5c.png)
-
-This then all comes together within the <a href="/terminal/reference/economy/plot" target="_blank" rel="noreferrer noopener">plot</a> command where you can combine the datasets from the above commands into one graph. For example, it seems there is a relationship between the inflation rates and the unemployment rate (<a href="https://www.investopedia.com/articles/markets/081515/how-inflation-and-unemployment-are-related.asp" target="_blank" rel="noreferrer noopener">source</a>) which we can graphically show with:
-
-```
-(🦋) /economy/ $ macro -p URATE -s 2010-01-01
-
-(🦋) /economy/ $ fred T5YIEM -s 2010-01-01
-
-🦋) /economy/ $ plot --y1 United_States_URATE --y2 T5YIEM
-```
-
-Resulting in the following graph:
-
-![Combine plots of Unemployment Rate and Break Even Inflation](https://user-images.githubusercontent.com/46355364/176680454-b878604e-08a2-474e-ad9f-3b695ee958d1.png)
+|Function Key |Description |
+|:-----|-----:|
+|eval |A method for performing basic `eval` operations on a time series.
+|plot |Plot multiple time series together. |
 
 ## Examples
 
-Starting off, let's looking at current performance of energy futures with `futures`.
+This section will demonstrate some basic operations within the menu.
 
-```
-(🦋) /economy/ $ futures energy
+### events
 
-            Future Table [Source: FinViz]
-┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
-┃                 ┃ prevClose ┃ last   ┃ change (%) ┃
-┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
-│ Ethanol         │ 2.16      │ 2.22   │ 2.78       │
-├─────────────────┼───────────┼────────┼────────────┤
-│ Gasoline RBOB   │ 3.72      │ 3.66   │ -1.82      │
-├─────────────────┼───────────┼────────┼────────────┤
-│ Crude Oil Brent │ 116.26    │ 112.73 │ -3.04      │
-├─────────────────┼───────────┼────────┼────────────┤
-│ Natural Gas     │ 6.50      │ 6.50   │ 0.03       │
-├─────────────────┼───────────┼────────┼────────────┤
-│ Heating Oil     │ 3.96      │ 4.00   │ 1.06       │
-├─────────────────┼───────────┼────────┼────────────┤
-│ Crude Oil WTI   │ 109.78    │ 110.02 │ 0.22       │
-└─────────────────┴───────────┴────────┴────────────┘
+A morning ritual might begin with checking the economic calendar for the day's - or week's - events.  The `events` command can browse the calendar by country and date.  By default, the current day for all countries will display in a table.
+
+```console
+/economy/events
 ```
 
-This gives insights in the current future contracts and their (relative) performance. Here, we take a closer look at `Crude Oil Brent` by querying the FRED database, with `fred`, for a dataset that is relevant:
+![Economic Calendar](https://user-images.githubusercontent.com/85772166/236106887-07732390-bee3-44e0-a69f-a71c8ee90a8e.png)
 
-```
-(🦋) /economy/ $ fred -q oil index
-                                                                         Search results for oil index
-┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Series ID       ┃ Title                                             ┃ Description                                                                                          ┃
-┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ OVXCLS          │ CBOE Crude Oil ETF Volatility Index               │ Exchange Traded Funds (ETFs) are shares of trusts that hold portfolios of stocks designed to closely │
-│                 │                                                   │ track the price performance and yield of specific indices. Copyright, 2016, Chicago Board Options    │
-│                 │                                                   │ Exchange, Inc. Reprinted with permission.                                                            │
-├─────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ IPG211111CS     │ Industrial Production: Mining, Quarrying, and Oil │ The industrial production (IP) index measures the real output of all relevant establishments located │
-│                 │ and Gas Extraction: Crude Oil (NAICS = 211111pt.) │ in the United States, regardless of their ownership, but not those located in U.S. territories.      │
-│                 │                                                   │ NAICS = 211111pt.  Source Code: IP.G211111C.S                                                        │
-├─────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ PCU333132333132 │ Producer Price Index by Industry: Oil and Gas     │ No description provided.                                                                             │
-│                 │ Field Machinery and Equipment Manufacturing       │                                                                                                      │
-├─────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ IPG211111CN     │ Industrial Production: Mining, Quarrying, and Oil │ The industrial production (IP) index measures the real output of all relevant establishments located │
-│                 │ and Gas Extraction: Crude Oil (NAICS = 211111pt.) │ in the United States, regardless of their ownership, but not those located in U.S. territories.      │
-│                 │                                                   │ NAICS = 211111pt.  Source Code: IP.G211111C.N                                                        │
-├─────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ IPG211111CSQ    │ Industrial Production: Mining, Quarrying, and Oil │ The industrial production (IP) index measures the real output of all relevant establishments located │
-│                 │ and Gas Extraction: Crude Oil (NAICS = 211111pt.) │ in the United States, regardless of their ownership, but not those located in U.S. territories.      │
-│                 │                                                   │ NAICS = 211111pt.  Source Code: IP.G211111C.S                                                        │
-└─────────────────┴───────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+To select a specific country, attach `--countries` to the command, then press the space bar.  Use the up or down arrow keys to browse the choices.
+
+![Economic Calendar Countries](https://user-images.githubusercontent.com/85772166/236106932-473c0f02-af80-49a6-bdb3-548ac1e689fa.png)
+
+### overview
+
+The `overview` fetches the headline levels and rates from the Wall Street Journal.  Choose from of the categories by attaching the `-t` argument to the command.
+
+```console
+/economy/overview -t usbonds
 ```
 
-Here, we take the `CBOE Crude OIL ETF Volatility Index` to get some understanding of how volatile oil is. Here, a period is defined from 2008 to 2015, showing the influence of the <a href="https://en.wikipedia.org/wiki/Financial_crisis_of_2007%E2%80%932008" target="_blank" rel="noreferrer noopener">Financial Crisis of 2008</a>.
+![Overview](https://user-images.githubusercontent.com/85772166/236106975-961d7163-2ac8-4e05-b8df-34f2cf4908e7.png)
 
+|              |   Rate (%) |   Yld (%) |   Yld Chg (%) |
+|:-------------|-----------:|----------:|--------------:|
+| 30-Year Bond |      3.625 |     3.686 |        -0.028 |
+| 10-Year Note |      3.5   |     3.343 |        -0.085 |
+| 7-Year Note  |      3.5   |     3.323 |        -0.122 |
+| 5-Year Note  |      3.5   |     3.305 |        -0.162 |
+| 3-Year Note  |      3.75  |     3.513 |        -0.18  |
+| 2-Year Note  |      3.875 |     3.838 |        -0.144 |
+| 1-Year Bill  |      0     |     4.665 |        -0.09  |
+| 6-Month Bill |      0     |     4.98  |         0.005 |
+| 3-Month Bill |      0     |     5.212 |         0.064 |
+| 1-Month Bill |      0     |     4.452 |         0.114 |
+
+### debt
+
+Compare debt-to-GDP ratios between groups of countries by entering them as a comma-separated list.
+
+```console
+/economy/debt -c australia,norway,united_states,italy,japan
 ```
-(🦋) /economy/ $ fred OVXCLS -s 2008-01-01 -e 2015-01-01
+
+![Debt-to-GDP](https://user-images.githubusercontent.com/85772166/236107021-231e7472-10a0-4208-a92e-fe56c81076c0.png)
+
+### usdli
+
+Compare the US Dollar Liquidity Index against a selection of indices published to FRED.
+
+```console
+/economy/usdli -o WILLSMLCAP
 ```
 
-This plots the following graph:
+![USD Liquidity Index](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/1a2abf90-aa81-4d02-a77a-c913bfef14d7)
 
-![CBOE Crude OIL ETF Volatility Index](https://user-images.githubusercontent.com/46355364/176680559-2806bd91-2938-47be-8074-43b8f071aaad.png)
+The indices available to overlay are displayed in a table by adding, `--show`, to the command.
 
-A hypothesis could be that the more volatile the price of oil is, the lower the confidence of the consumers is. It is possible to visually depict this. First, let's plot the consumer confidence of Germany.
-
-```
-(🦋) /economy/ $ macro -p CONF -c Germany -s 2008-01-01 -e 2015-01-01
+```console
+/economy/usdli --show
 ```
 
-![Consumer Confidence Germany](https://user-images.githubusercontent.com/46355364/176680603-1ace9534-f18a-4362-a1c0-d28c675d9415.png)
+### valuation
 
-Now, combine these two graphs with the `plot` command. This helps in visually depicting a (negative) relationship.
+Get valuations of industries and sectors for the US equity universe.  Select the focus by using the, `-g` (`--group`), parameter.
 
+![Valuation By Industry](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/0793bd01-95b9-46f3-90b5-5c4af851283f)
+
+```console
+valuation --group consumer_cyclical
 ```
-(🦋) /economy/ $ plot --y1 Germany_CONF --y2 OVXCLS
+
+![Consumer Cyclical Valuations](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/53e670fc-34cd-444f-9aa9-79fe5714e786)
+
+### index
+
+Major global indices are curated under the `index` command.  Adding `--show` to the command will display a table with the list.
+
+```console
+index --show
 ```
 
-![CBOE Crude OIL ETF Volatility Index and Consumer Confidence Germany](https://user-images.githubusercontent.com/46355364/176680645-79b8f44d-adc7-49e4-b749-80188f22850f.png)
+![Curated Index List](https://user-images.githubusercontent.com/85772166/236107143-a3e260e0-9530-4448-a552-12b46ae0aa72.png)
+
+The cumulative returns of an index is displayed instead of the levels by attaching `-r` to the command. Multiple indices can be queried simultaneously.
+
+```console
+index sp500,sp400,sp600 --start 2023-01-01 -r
+```
+
+![Indices](https://user-images.githubusercontent.com/85772166/236107229-410673db-e1ce-4e93-9e96-7821328e04dd.png)
+
+### fred
+
+To lookup FRED series by keywords attach, `-q`, to the `fred` command.
+
+```console
+fred -q PCE
+```
+
+![Fred Series](https://user-images.githubusercontent.com/85772166/236107269-8f126f17-3da7-4bb3-8acb-35f3ad783f84.png)
+
+### plot
+
+After requesting a time series, it gets populated under `Stored datasets`.  Plot them together, on a shared or separate y-axis, by using the `plot` command.
+
+![Multi-Axis Plots](https://user-images.githubusercontent.com/85772166/236107312-95ed4b92-e418-444c-b436-f45a1fc0a75d.png)
+
+```console
+plot --y1 PCE --y2 sp500
+```
+
+![Plot Multiple Time Series](https://user-images.githubusercontent.com/85772166/236107339-46037f4b-bc4f-458c-9f17-55a4cc6a61bc.png)

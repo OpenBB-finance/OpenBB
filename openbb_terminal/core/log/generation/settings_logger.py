@@ -24,23 +24,22 @@ logger = logging.getLogger(__name__)
 
 def log_all_settings(with_rollover: bool = True) -> None:
     """Log all settings"""
-    log_system()
-    log_credentials()
-    log_preferences()
+    log_startup()
 
     if with_rollover:
         do_rollover()
 
 
-def log_system() -> None:
+def get_system() -> dict:
     """Log system"""
     system_dict = get_current_system().to_dict()
     system_dict.pop("LOGGING_AWS_ACCESS_KEY_ID", None)
     system_dict.pop("LOGGING_AWS_SECRET_ACCESS_KEY", None)
-    logger.info("SYSTEM: %s ", json.dumps(system_dict))
+
+    return system_dict
 
 
-def log_credentials() -> None:
+def get_credentials() -> dict:
     """Log credentials"""
 
     current_user = get_current_user()
@@ -57,7 +56,7 @@ def log_credentials() -> None:
         else:
             current_keys[cfg_var_name] = "not_defined"
 
-    logger.info("KEYS: %s ", json.dumps(current_keys))
+    return current_keys
 
 
 def log_preferences() -> None:
@@ -65,3 +64,16 @@ def log_preferences() -> None:
     logger.info(
         "PREFERENCES: %s ", json.dumps(get_current_user().preferences.to_dict())
     )
+
+
+def log_startup() -> None:
+    """Combined logging of all settings"""
+    logger.info("STARTUP: %s ", json.dumps(get_startup()))
+
+
+def get_startup():
+    return {
+        "PREFERENCES": get_current_user().preferences.to_dict(),
+        "KEYS": get_credentials(),
+        "SYSTEM": get_system(),
+    }

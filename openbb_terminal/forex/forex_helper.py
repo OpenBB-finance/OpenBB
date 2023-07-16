@@ -29,6 +29,7 @@ FOREX_SOURCES: Dict = {
     "YahooFinance": "YahooFinance",
     "AlphaVantage": "AlphaAdvantage",
     "Polygon": "Polygon",
+    "Oanda": "Oanda",
 }
 
 SOURCES_INTERVALS: Dict = {
@@ -124,7 +125,11 @@ def load(
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
     if end_date is None:
-        end_date = datetime.now().strftime("%Y-%m-%d")
+        end_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+    else:
+        end_date = (
+            datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
+        ).strftime("%Y-%m-%d")
 
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
@@ -159,6 +164,7 @@ def load(
                 end_date=end_date,
             )
             df.index.name = "date"
+            df.name = f"{from_symbol}/{to_symbol}"
             return df
 
         if source == "YahooFinance":
@@ -169,7 +175,9 @@ def load(
                 interval=clean_interval,
                 progress=verbose,
             )
+            df.index = pd.to_datetime(df.index).tz_localize(None)
             df.index.name = "date"
+            df.name = f"{from_symbol}/{to_symbol}"
             return df
 
     if source == "Polygon":
@@ -187,6 +195,7 @@ def load(
             end_date=end_date,
         )
         df.index.name = "date"
+        df.name = f"{from_symbol}/{to_symbol}"
         return df
 
     console.print(f"Source {source} not supported")
@@ -266,12 +275,16 @@ def display_candle(
         data = stocks_helper.find_trendline(data, "OC_High", "high")
         data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
-    data.name = f"{from_symbol}/{to_symbol}"
-    fig = PlotlyTA.plot(data, dict(rma=dict(length=ma)), volume=has_volume)
-    if add_trend:
-        fig.add_trend(data, secondary_y=has_volume)
+    indicators = {}
+    if ma:
+        indicators = dict(rma=dict(length=ma))
 
-    fig.update_yaxes(type=yscale, row=1, col=1, nticks=20, secondary_y=has_volume)
+    data.name = f"{from_symbol}/{to_symbol}"
+    fig = PlotlyTA.plot(data, indicators, volume=has_volume)
+    if add_trend:
+        fig.add_trend(data, secondary_y=False)
+
+    fig.update_yaxes(type=yscale, row=1, col=1, nticks=20, secondary_y=False)
 
     return fig.show(external=external_axes)
 

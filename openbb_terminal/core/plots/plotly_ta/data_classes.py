@@ -255,7 +255,7 @@ class TA_Data:
         pd.DataFrame
             Dataframe with indicator data
         """
-        output = None
+        output: Optional[pd.DataFrame] = None
         if indicator and indicator.name in self.ma_mode:
             if isinstance(indicator.get_argument_values("length"), list):
                 df_ta = pd.DataFrame()
@@ -264,6 +264,12 @@ class TA_Data:
                     df_ma = getattr(ta, indicator.name)(
                         self.df_ta[self.close_col], length=length
                     )
+                    if not isinstance(df_ma, pd.Series) or df_ma.empty:
+                        console.print(
+                            f"Error processing {indicator.name.upper()}({length}) not enough data",
+                            style="bold red",
+                        )
+                        continue
                     df_ta.insert(0, f"{indicator.name.upper()}_{length}", df_ma)
 
                 output = df_ta
@@ -296,8 +302,12 @@ class TA_Data:
 
         # Drop NaN values from output and return None if empty
         if output is not None:
-            output.dropna(inplace=True)
+            output = output.dropna()
             if output.empty:
+                console.print(
+                    f"{indicator.name.upper()} {args} returned empty dataframe",
+                    style="yellow",
+                )
                 output = None
 
         return output
@@ -317,7 +327,7 @@ class TA_Data:
                 and not self.has_volume
             ):
                 continue
-            if indicator.name in ["fib", "srlines", "clenow", "demark"]:
+            if indicator.name in ["fib", "srlines", "clenow", "demark", "ichimoku"]:
                 continue
             try:
                 indicator_data = self.get_indicator_data(
@@ -326,7 +336,8 @@ class TA_Data:
                 )
             except Exception as e:
                 console.print(
-                    f"[red]Error processing indicator {indicator.name}: {e}[/red]"
+                    f"Error processing indicator {indicator.name}: {e}",
+                    style="bold red",
                 )
                 indicator_data = None
 

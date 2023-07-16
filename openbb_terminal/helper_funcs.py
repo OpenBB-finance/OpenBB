@@ -1,7 +1,9 @@
 """Helper functions."""
 __docformat__ = "numpy"
+
 # pylint: disable=too-many-lines
 
+# IMPORTS STANDARD LIBRARY
 # IMPORTS STANDARD
 import argparse
 import inspect
@@ -11,6 +13,7 @@ import logging
 import os
 import random
 import re
+import shutil
 import sys
 import urllib.parse
 import webbrowser
@@ -34,47 +37,36 @@ import pandas.io.formats.format
 import pandas_ta as ta
 import pytz
 import requests
-import tweepy
 import yfinance as yf
-from dateutil.relativedelta import relativedelta
 from holidays import US as us_holidays
+from langchain.chat_models import ChatOpenAI
+from llama_index import (
+    LLMPredictor,
+    PromptHelper,
+    ServiceContext,
+    SimpleDirectoryReader,
+    StorageContext,
+    VectorStoreIndex,
+    load_index_from_storage,
+)
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-from openbb_terminal import (
-    OpenBBFigure,
-    plots_backend,
+from openbb_terminal import OpenBBFigure, plots_backend
+from openbb_terminal.core.config.paths import (
+    HOME_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
 )
-from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
-from openbb_terminal.core.session.current_user import get_current_user, set_preference
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
-
-try:
-    twitter_api = tweepy.API(
-        tweepy.OAuth2BearerHandler(
-            get_current_user().credentials.API_TWITTER_BEARER_TOKEN,
-        ),
-        timeout=5,
-    )
-    if (
-        get_current_user().preferences.TOOLBAR_TWEET_NEWS
-        and get_current_user().credentials.API_TWITTER_BEARER_TOKEN != "REPLACE_ME"
-    ):
-        # A test to ensure that the Twitter API key is correct,
-        # otherwise we disable the Toolbar with Tweet News
-        twitter_api.get_user(screen_name="openbb_finance")
-except Exception as exc:
-    # Set toolbar tweet news to False because the Twitter API is not set up correctly
-    set_preference("TOOLBAR_TWEET_NEWS", False)
-    console.print(f"Error enabling tweet news: {exc}")
-
 
 logger = logging.getLogger(__name__)
 
@@ -94,10 +86,13 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
-LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
+GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
+GPT_INDEX_VER = 0.4
+
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
+
 
 # pylint: disable=R1702,R0912
 
@@ -170,7 +165,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
-    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb|.ipynb)"
+    known_extensions = r"(\.(xlsx|csv|xls|tsv|json|yaml|ini|openbb|ipynb))"
     unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
 
     # Add custom expressions to handle edge cases of individual controllers
@@ -325,6 +320,22 @@ def print_rich_table(
         current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
     )
 
+    # Make a copy of the dataframe to avoid SettingWithCopyWarning
+    df = df.copy()
+
+    show_index = not isinstance(df.index, pd.RangeIndex) and show_index
+    #  convert non-str that are not timestamp or int into str
+    # eg) praw.models.reddit.subreddit.Subreddit
+    for col in df.columns:
+        try:
+            if not any(
+                isinstance(df[col].iloc[x], pd.Timestamp)
+                for x in range(min(10, len(df)))
+            ):
+                df[col] = pd.to_numeric(df[col], errors="ignore")
+        except (ValueError, TypeError):
+            df[col] = df[col].astype(str)
+
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
         """Check if headers are valid and return them."""
         output = _headers
@@ -352,19 +363,16 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        theme = current_user.preferences.THEME
-        table_theme = "white" if theme == "light" else theme
-
         plots_backend().send_table(
             df_table=df_outgoing,
             title=title,
             source=source,  # type: ignore
-            theme=table_theme,
+            theme=current_user.preferences.TABLE_STYLE,
         )
         return
 
     df = df.copy() if not limit else df.copy().iloc[:limit]
-    if current_user.preferences.USE_COLOR and automatic_coloring:
+    if automatic_coloring:
         if columns_to_auto_color:
             for col in columns_to_auto_color:
                 # checks whether column exists
@@ -630,7 +638,7 @@ def check_indicator_parameters(args: str, _help: bool = False) -> str:
 
 
 def check_positive_float(value) -> float:
-    """Argparse type to check positive int."""
+    """Argparse type to check positive float."""
     new_value = float(value)
     if new_value <= 0:
         log_and_raise(
@@ -838,6 +846,11 @@ def us_market_holidays(years) -> list:
 
 def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return num
+
+    if num == float("inf"):
+        return "inf"
 
     if isinstance(num, float):
         magnitude = 0
@@ -1209,38 +1222,40 @@ def lett_to_num(word: str) -> str:
     return word
 
 
+AVAILABLE_FLAIRS = {
+    ":openbb": "(🦋)",
+    ":bug": "(🐛)",
+    ":rocket": "(🚀)",
+    ":diamond": "(💎)",
+    ":stars": "(✨)",
+    ":baseball": "(⚾)",
+    ":boat": "(⛵)",
+    ":phone": "(☎)",
+    ":mercury": "(☿)",
+    ":hidden": "",
+    ":sun": "(☼)",
+    ":moon": "(☾)",
+    ":nuke": "(☢)",
+    ":hazard": "(☣)",
+    ":tunder": "(☈)",
+    ":king": "(♔)",
+    ":queen": "(♕)",
+    ":knight": "(♘)",
+    ":recycle": "(♻)",
+    ":scales": "(⚖)",
+    ":ball": "(⚽)",
+    ":golf": "(⛳)",
+    ":piece": "(☮)",
+    ":yy": "(☯)",
+}
+
+
 def get_flair() -> str:
     """Get a flair icon."""
-    available_flairs = {
-        ":openbb": "(🦋)",
-        ":bug": "(🐛)",
-        ":rocket": "(🚀)",
-        ":diamond": "(💎)",
-        ":stars": "(✨)",
-        ":baseball": "(⚾)",
-        ":boat": "(⛵)",
-        ":phone": "(☎)",
-        ":mercury": "(☿)",
-        ":hidden": "",
-        ":sun": "(☼)",
-        ":moon": "(☾)",
-        ":nuke": "(☢)",
-        ":hazard": "(☣)",
-        ":tunder": "(☈)",
-        ":king": "(♔)",
-        ":queen": "(♕)",
-        ":knight": "(♘)",
-        ":recycle": "(♻)",
-        ":scales": "(⚖)",
-        ":ball": "(⚽)",
-        ":golf": "(⛳)",
-        ":piece": "(☮)",
-        ":yy": "(☯)",
-    }
 
     current_user = get_current_user()  # pylint: disable=redefined-outer-name
     current_flair = str(current_user.preferences.FLAIR)
-    flair = available_flairs.get(current_flair, current_flair)
+    flair = AVAILABLE_FLAIRS.get(current_flair, current_flair)
 
     if (
         current_user.preferences.USE_DATETIME
@@ -1593,6 +1608,8 @@ def export_data(
 
             console.print(f"Saved file: {saved_path}")
 
+        figure._exported = True  # pylint: disable=protected-access
+
 
 def get_rf() -> float:
     """Use the fiscaldata.gov API to get most recent T-Bill rate.
@@ -1655,7 +1672,7 @@ def handle_error_code(requests_obj, error_code_map):
 
 def prefill_form(ticket_type, menu, path, command, message):
     """Pre-fill Google Form and open it in the browser."""
-    form_url = "https://openbb.co/support?"
+    form_url = "https://my.openbb.co/app/terminal/support?"
 
     params = {
         "type": ticket_type,
@@ -2024,105 +2041,6 @@ def str_date_to_timestamp(date: str) -> int:
     return date_ts
 
 
-def update_news_from_tweet_to_be_displayed() -> str:
-    """Update news from tweet to be displayed.
-
-    Returns
-    -------
-    str
-        The news from tweet to be displayed
-    """
-    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME  # noqa
-
-    news_tweet = ""
-
-    current_user = get_current_user()
-    # Check whether it has passed a certain amount of time since the last news update
-    if LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None or (
-        (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds()
-        > current_user.preferences.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
-    ):
-        # This doesn't depende on the time of the tweet but the time that the check was made
-        LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc)
-
-        dhours = 0
-        dminutes = 0
-        # Get timezone that corresponds to the user
-        if (
-            current_user.preferences.USE_DATETIME
-            and get_user_timezone_or_invalid() != "INVALID"
-        ):
-            utcnow = pytz.timezone("utc").localize(datetime.utcnow())  # generic time
-            here = utcnow.astimezone(pytz.timezone("Etc/UTC")).replace(tzinfo=None)
-            there = utcnow.astimezone(pytz.timezone(get_user_timezone())).replace(
-                tzinfo=None
-            )
-
-            offset = relativedelta(here, there)
-            dhours = offset.hours
-            dminutes = offset.minutes
-
-        if "," in current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
-            news_sources_twitter_handles = (
-                current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK.split(",")
-            )
-        else:
-            news_sources_twitter_handles = [
-                current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK
-            ]
-
-        news_tweet_to_use = ""
-        handle_to_use = ""
-        url = ""
-        last_tweet_dt: Optional[datetime] = None
-        for handle in news_sources_twitter_handles:
-            try:
-                # Get last N tweets from each handle
-                timeline = twitter_api.user_timeline(
-                    screen_name=handle,
-                    count=current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
-                )
-                timeline = timeline[
-                    : current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ
-                ]
-                for last_tweet in timeline:
-                    keywords = (
-                        current_user.preferences.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
-                    )
-                    more_recent = (
-                        last_tweet_dt is None or last_tweet.created_at > last_tweet_dt
-                    )
-                    with_keyword = any(key in last_tweet.text for key in keywords)
-
-                    if more_recent and with_keyword:
-                        handle_to_use = handle
-                        last_tweet_dt = last_tweet.created_at
-
-                        news_tweet_to_use = last_tweet.text
-
-                        url = f"https://twitter.com/x/status/{last_tweet.id_str}"
-
-            # In case the handle provided doesn't exist, we skip it
-            except Exception as e:
-                console.print(f"Error enabling tweet news: {handle} - {e}\n")
-
-        if last_tweet_dt and news_tweet_to_use:
-            tweet_hr = f"{last_tweet_dt.hour}"
-            tweet_min = f"{last_tweet_dt.minute}"
-            # Update time based on timezone specified by user
-            if (
-                current_user.preferences.USE_DATETIME
-                and get_user_timezone_or_invalid() != "INVALID"
-            ) and (dhours > 0 or dminutes > 0):
-                tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
-                tweet_min = f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"
-
-            # Update NEWS_TWEET with the new news tweet found
-            news_tweet = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
-
-    return news_tweet
-
-
 def check_start_less_than_end(start_date: str, end_date: str) -> bool:
     """Check if start_date is equal to end_date.
 
@@ -2238,3 +2156,121 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         df.index.name = index_name
 
     return df
+
+
+@check_api_key(["API_OPENAI_KEY"])
+def query_LLM_local(query_text, gpt_model):
+    current_user = get_current_user()
+    os.environ["OPENAI_API_KEY"] = current_user.credentials.API_OPENAI_KEY
+
+    # check if index exists
+    index_path = GPT_INDEX_DIRECTORY / f"index_{GPT_INDEX_VER}.json"
+    old_index_paths = [
+        str(x) for x in GPT_INDEX_DIRECTORY.glob("index_*.json") if x != index_path
+    ]
+
+    # define LLM
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name=gpt_model))
+    # define prompt helper
+    prompt_helper = PromptHelper(context_window=4096, num_output=256)
+    service_context = ServiceContext.from_defaults(
+        llm_predictor=llm_predictor, prompt_helper=prompt_helper
+    )
+
+    if os.path.exists(index_path):
+        # rebuild storage context
+        storage_context = StorageContext.from_defaults(persist_dir=index_path)
+        index = load_index_from_storage(
+            service_context=service_context, storage_context=storage_context
+        )
+    else:
+        # If the index file doesn't exist or is of incorrect version, generate a new one
+        # First, remove old version(s), if any
+        for path in old_index_paths:
+            if os.path.isfile(path):
+                os.remove(path)
+            elif os.path.isdir(path):
+                shutil.rmtree(path)
+
+        # Then, generate and save new index
+        # import from print console and say generating index, this might take a while
+        console.print("Generating index, this might take a while....\n")
+
+        # read in documents
+        documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
+        index = VectorStoreIndex.from_documents(
+            documents, service_context=service_context
+        )
+
+        # save to disk
+        console.print("Saving index to disk....\n")
+        index.storage_context.persist(index_path)
+
+    current_date = datetime.now().astimezone(pytz.timezone("America/New_York"))
+
+    prompt_string = f"""From the cli argparse help text above, provide the terminal
+        command for {query_text}. If relevant, use the examples as guidance.
+        Provide the exact command along with the parent command with a "/" separation to get that information,
+        and nothing else including any explanation. Don't add any other word such as 'Command to get', 'Answer'
+        or the likes.  If you do not know, reply "I don't know"
+
+        Current date: {current_date.strftime("%Y-%m-%d")}
+        Current day of the week: {current_date.strftime("%A")}
+
+        Remember:
+        1. It is very important to provide the full path of the command including the parent command and loading
+        the particular target before running any subsequent commands
+        2. If you are asked about dates or times, load the target dates, times span during the "load" command
+        before running any subsequent commands. replace all <> with the actual dates and times.  The date format should
+        be YYYY-MM-DD. If there is no date included in the query, do not specify any.
+        3. Country names should be snake case and lower case. example: united_states.
+        4. Always use a comma to separate between countries and no spaces: example: united_states,italy,spain
+        5. Always use "load" command first before running any subsequent commands. example:
+        stocks/load <symbol>/ ....
+        crypto/load <symbol>/ .... etc.
+        6. Do not include --export unless the request asks for the data to be exported or saved to a specific file type.
+        7. Do not make up any subcommands or options for the specific command.
+        8. Do not provide anything that could be interpreted as investment advice.
+        9. Any request asking for options refers to stocks/options.
+
+        Only do what is asked and only provide a single command string, never more than one.
+        """
+
+    # try to get the response from the index
+    try:
+        query_engine = index.as_query_engine()
+        response = query_engine.query(prompt_string)
+        return response.response, response.source_nodes
+    except Exception as e:
+        # check if the error has the following "The model: `gpt-4` does not exist"
+        if "The model: `gpt-4` does not exist" in str(e):
+            console.print(
+                "[red]You do not have access to GPT4 model with your API key."
+                " Please try again with valid API Access.[/red]"
+            )
+            return None
+
+        console.print(f"[red]Something went wrong with the query. {e}[/red]")
+        return None, None
+
+
+def query_LLM_remote(query_text: str):
+    """Query askobb on gpt-3.5 turbo hosted model
+
+    Parameters
+    ----------
+    query_text : str
+        Query string for askobb
+    """
+
+    url = "https://api.openbb.co/askobb"
+
+    data = {"prompt": query_text, "accessToken": get_current_user().profile.token}
+
+    ask_obbrequest_data = request(url, method="POST", json=data, timeout=15).json()
+
+    if "error" in ask_obbrequest_data:
+        console.print(f"[red]{ask_obbrequest_data['error']}[/red]")
+        return None, None
+
+    return ask_obbrequest_data["response"], ask_obbrequest_data["source_nodes"]

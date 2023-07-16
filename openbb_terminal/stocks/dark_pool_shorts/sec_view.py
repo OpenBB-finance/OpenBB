@@ -100,7 +100,6 @@ def fails_to_deliver(
         xaxis_title="Date",
         legend=dict(yanchor="bottom", y=0, xanchor="right", x=0.95),
     )
-    fig.hide_holidays()
 
     if raw:
         print_rich_table(
@@ -120,4 +119,4 @@ def fails_to_deliver(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

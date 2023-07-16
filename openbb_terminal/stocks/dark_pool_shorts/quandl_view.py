@@ -8,6 +8,7 @@ from typing import Optional
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure, theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -130,13 +131,14 @@ def short_interest(
     fig = plot_short_interest(symbol, df_short_interest, nyse, True)
 
     if raw:
-        df_short_interest["% of Volume Shorted"] = df_short_interest[
-            "% of Volume Shorted"
-        ].apply(lambda x: f"{x/100:.2%}")
+        if not get_current_user().preferences.USE_INTERACTIVE_DF:
+            df_short_interest["% of Volume Shorted"] = df_short_interest[
+                "% of Volume Shorted"
+            ].apply(lambda x: f"{x/100:.2%}")
 
-        df_short_interest = df_short_interest.applymap(
-            lambda x: lambda_long_number_format(x)
-        ).sort_index(ascending=False)
+            df_short_interest = df_short_interest.applymap(
+                lambda x: lambda_long_number_format(x)
+            ).sort_index(ascending=False)
 
         print_rich_table(
             df_short_interest,
@@ -155,4 +157,4 @@ def short_interest(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)

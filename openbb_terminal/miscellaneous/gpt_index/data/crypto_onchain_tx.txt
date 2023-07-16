@@ -1,0 +1,12 @@
+parent_command:crypto/onchain
+usage: tx
+
+Display info ERC20 token transaction on ethereum blockchain. e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6 [Source: Ethplorer]
+
+tx
+Examples:
+- To view information about an ERC20 token transaction on the Ethereum blockchain, use: crypto/onchain/tx
+- Display ERC20 token transaction details on the Ethereum blockchain with: crypto/onchain/tx
+- Retrieve information about an ERC20 token transaction on Ethereum by entering: crypto/onchain/tx
+- To access ERC20 token transaction data on the Ethereum blockchain, input: crypto/onchain/tx
+- Get details about an ERC20 token transaction on the Ethereum blockchain with the command: crypto/onchain/tx

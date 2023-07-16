@@ -1,0 +1,51 @@
+forex
+load ${currency=EUR}${currency_vs=USD} --source YahooFinance
+load
+ta
+ema
+ema -l 20,30 -o 1
+sma
+sma -l 20,30 -o 1
+zlma
+zlma -l 20,30 -o 1
+cci
+cci -l 7 -s 2
+macd
+macd --fast 10 --slow 30 --signal 5
+rsi
+rsi -l 10 -s 50 -d 2
+stoch
+stoch --fastkperiod 2 --slowdperiod 2 --slowkperiod 7
+fisher
+fisher --length 2
+cg
+cg -l 7
+adx
+adx -l 10 -s 110 -d 2
+aroon
+aroon --length 1 --scalar 10
+bbands
+bbands -l 1 -s 0.25 -m ema
+donchian
+donchian --length_upper 10 --length_lower 1
+fib
+load ${currency=USD}${currency_vs=EUR} --source Polygon
+ta
+ema
+sma
+zlma
+cci
+macd
+rsi
+stoch
+fisher
+cg
+adx
+aroon
+bbands
+donchian
+fib
+ad -l 15 -d 2
+help
+reset
+exit

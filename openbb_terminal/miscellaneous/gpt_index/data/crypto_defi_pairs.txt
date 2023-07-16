@@ -1,0 +1,27 @@
+parent_command:crypto/defi
+usage: pairs [-l LIMIT] [-v VOL] [-tx TX] [--days DAY] [-s {created,pair,token0,token1,volumeUSD,txCount,totalSupply}] [-r]
+
+Displays Lastly added pairs on Uniswap DEX. [Source: https://thegraph.com/en/]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 10)
+  -v VOL, --vol VOL     Minimum trading volume (default: 100)
+  -tx TX, --tx TX       Minimum number of transactions (default: 100)
+  --days DAY            Number of days the pair has been active, (default: 10)
+  -s {created,pair,token0,token1,volumeUSD,txCount,totalSupply}, --sort {created,pair,token0,token1,volumeUSD,txCount,totalSupply}
+                        Sort by given column. Default: created (default: created)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the latest added pairs on Uniswap DEX with default settings: crypto/defi/pairs
+- To display the top 20 recently added pairs on Uniswap DEX: crypto/defi/pairs -l 20
+- To show pairs with a minimum trading volume of 500: crypto/defi/pairs -v 500
+- To display pairs with at least 200 transactions: crypto/defi/pairs -tx 200
+- To list pairs active for the past 5 days: crypto/defi/pairs --days 5
+- To sort the displayed pairs by token0: crypto/defi/pairs -s token0
+- To sort the displayed pairs by total supply in ascending order: crypto/defi/pairs -s totalSupply -r
+- To display pairs with a minimum trading volume of 1000 and at least 50 transactions: crypto/defi/pairs -v 1000 -tx 50
+- To show the top 15 pairs active for the past 7 days, sorted by volumeUSD: crypto/defi/pairs -l 15 --days 7 -s volumeUSD
+- To display pairs with a minimum of 300 transactions, active for the past 20 days, and sorted by txCount in ascending order: crypto/defi/pairs -tx 300 --days 20 -s txCount -r

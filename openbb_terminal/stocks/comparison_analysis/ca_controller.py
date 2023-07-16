@@ -173,6 +173,7 @@ class ComparisonAnalysisController(BaseController):
                     )
                 else:
                     self.ticker = ns_parser.ticker.upper()
+                    self.similar = []
 
     @log_start_end(log=logger)
     def call_tsne(self, other_args: List[str]):
@@ -292,7 +293,6 @@ class ComparisonAnalysisController(BaseController):
 
                         console.print(
                             f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
-                            "\n",
                         )
                 elif ns_parser.source == "Polygon":
                     self.similar = polygon_model.get_similar_companies(
@@ -442,7 +442,7 @@ class ComparisonAnalysisController(BaseController):
             other_args.insert(0, "-s")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.similar = list(set(ns_parser.l_similar))
+            self.similar = list(set(ns_parser.l_similar + [self.ticker.upper()]))
             self.user = "Custom"
             console.print(
                 f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"

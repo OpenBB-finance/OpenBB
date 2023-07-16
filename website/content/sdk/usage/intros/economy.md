@@ -1,8 +1,12 @@
 ---
 title: Economy
-keywords: [economy, macro, index, treasury, fred, market, econdb, index, yield, curve, economic, indicators, micro, inflation, interest rate, interest, unemploymeny, gdp, gross domestic product, openbb sdk]
-description: The Economy menu enables you to obtain market overviews, see yield curves of any country and discover sector, industry and country performance. Next to that, the databases of EconDB, FRED and Yahoo Finance can be accessed. All of this can also be further analysed within the Forecasting menu and with Quantitative Techniques.
+keywords: [economy, macro, index, treasury, fred, market, econdb, index, yield, curve, economic, indicators, micro, inflation, interest rate, interest, unemploymeny, gdp, gross domestic product, openbb sdk, fred, quandl, nasdaq, alphavantage]
+description: Learn and see examples for the Economy menu, which enables users to obtain market overviews, see yield curves of any country and discover sector, industry and country performance.
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Economy - SDK | OpenBB Docs" />
 
 The Economy module wraps the functions from the Economy menu of the OpenBB Terminal, and provides the user with more control over their workflow. In a Jupyter Notebook environment, it is quick and easy to get going. To get the most out of these functions, it is highly recommended to acquire API keys for:
 
@@ -26,26 +30,33 @@ Below is brief description of each function within the Economy module:
 | Path                                |    Type    |                                                    Description |
 | :---------------------------------- | :--------: | -------------------------------------------------------------: |
 | openbb.economy.available_indices    | Dictionary |                                 Curated List of Global Indices |
+| openbb.economy.balance              |  Function  |                              Global Government Deficit/Surplus |
+| openbb.economy.balance_chart        |  Function  |                                            Chart for `balance` |
 | openbb.economy.bigmac               |  Function  |                                              The Big Mac Index |
 | openbb.economy.bigmac_chart         |  Function  |                                             Chart for `bigmac` |
+| openbb.economy.ccpi                 |  Function  |                                 CPI Components Data by Country |
+| openbb.economy.ccpi_chart           |  Function  |                                               Chart for `ccpi` |
 | openbb.economy.country_codes        |  Function  |                         List of Three-Letter ISO Country Codes |
-| openbb.economy.cpi                  |  Function  |                               Monthly US CPI from AlphaVantage |
+| openbb.economy.cpi                  |  Function  |                                 Harmonized CPI Data by Country |
 | openbb.economy.cpi_chart            |  Function  |                                                Chart for `cpi` |
 | openbb.economy.currencies           |  Function  |                                            Currencies from WSJ |
+| openbb.economy.debt                 |  Function  |                                   Government Debt-to-GDP Ratio |
+| openbb.economy.debt_chart           |  Function  |                                               Chart for `debt` |
 | openbb.economy.events               |  Function  |                                              Economic Calendar |
+| openbb.economy.fgdp                 |  Function  |                                   Real GDP Forecast by Country |
+| openbb.economy.fgdp_chart           |  Function  |                                               Chart for `fgdp` |
+| openbb.economy.fred                   |  Function  |                                          Get FRED series data |
 | openbb.economy.fred_ids             |  Function  |                         Search for a FRED series ID by keyword |
 | openbb.economy.fred_notes           |  Function  |                       Search by Keyword for Series Information |
-| openbb.economy.futures              |  Function  |                                  Current Prices of Commodities |
-| openbb.economy.gdpc                 |  Function  |                            US GDP per Capita from AlphaVantage |
-| openbb.economy.gdpc_chart           |  Function  |                                               Chart for `gdpc` |
-| openbb.economy.get_events_countries |    List    |                          List of Countries for Events Function |
+| openbb.economy.future               |  Function  |          Current Prices of Commodities and Futures from FinViz |
+| openbb.economy.futures              |  Function  |             Current Prices of Commodities and Futures from WSJ |
+| openbb.economy.gdp                 |  Function  |                            US GDP per Capita from AlphaVantage |
+| openbb.economy.gdp_chart           |  Function  |                                               Chart for `gdp` |
 | openbb.economy.get_groups           |    List    |         List of Groups for Performance and Valuation Functions |
 | openbb.economy.glbonds              |  Function  |               Table of Select 10 Year Sovereign Bonds from WSJ |
-| openbb.economy.indices              |  Function  |                                        Top US Indices from WSJ |
 | openbb.economy.index                |  Function  |            Historical Daily Data for Indices from YahooFinance |
 | openbb.economy.index_chart          |  Function  |                                              Chart for `index` |
-| openbb.economy.inf                  |  Function  |                          US Inflation Prints from AlphaVantage |
-| openbb.economy.inf_chart            |  Function  |                                                Chart for `inf` |
+| openbb.economy.indices              |  Function  |                                        Top US Indices from WSJ |
 | openbb.economy.macro                |  Function  |                                   Gets Series Data from EconDB |
 | openbb.economy.macro_chart          |  Function  |                                              Chart for `macro` |
 | openbb.economy.macro_countries      |    List    |                   List of Countries Accepted by Macro Function |
@@ -53,20 +64,22 @@ Below is brief description of each function within the Economy module:
 | openbb.economy.overview             |  Function  |                               General Market Overview from WSJ |
 | openbb.economy.perfmap              |  Function  |                 Opens a Browser to Performance Map from Finviz |
 | openbb.economy.performance          |  Function  |                                  Performance Data (get_groups) |
-| openbb.economy.rtps                 |  Function  | Real-Time Performance by Sector (US Markets) from AlphaVantage |
-| openbb.economy.rtps_chart           |  Function  |                                                Chart of `rtps` |
+| openbb.economy.revenue              |  Function  |                                 Government Revenues by Country |
+| openbb.economy.revenue_chart        |  Function  |                                            Chart for `revenue` |
+| openbb.economy.rgdp                 |  Function  |                                            Real GDP by Country |
+| openbb.economy.rgdp_chart           |  Function  |                                               Chart for `rgdp` |
 | openbb.economy.search_index         |  Function  |                              Search for a Global Index by Name |
+| openbb.economy.spending             |  Function  |                General Government Spending by Year and Country |
+| openbb.economy.spending_chart       |  Function  |                                           Chart for `spending` |
 | openbb.economy.treasury             |  Function  |                                             US Treasuries Data |
 | openbb.economy.treasury_chart       |  Function  |                                           Chart for `treasury` |
 | openbb.economy.treasury_maturities  |  Function  | Table of Accepted Values for Maturities Argument in `treasury` |
-| openbb.economy.tyld                 |  Function  |                   Historical Treasury Yields from AlphaVantage |
-| openbb.economy.tyld_chart           |  Function  |                                                Chart of `tyld` |
-| openbb.economy.unemp                |  Function  |              Historical US Unemployment Data from AlphaVantage |
-| openbb.economy.unemp_chart          |  Function  |                                               Chart of `unemp` |
+| openbb.economy.trust                |  Function  |                   Trust in Government (OECD) as a % by Country |
+| openbb.economy.trust_chart          |  Function  |                                              Chart for `trust` |
 | openbb.economy.usbonds              |  Function  |                 Table of Current Rate, Yield, and Yield Change |
+| openbb.economy.usdli              |  Function  |              The USD Liquidity Index |
+| openbb.economy.usdli_chart        |  Function  |          Chart for `usdli` |
 | openbb.economy.valuation            |  Function  |                          Valuation for Group from (get_gropus) |
-| openbb.economy.ycrv                 |  Function  |           Current and Historical US Yield Curve Data from FRED |
-| openbb.economy.ycrv_chart           |  Function  |                                               Chart for `ycrv` |
 
 Alternatively, the contents of the economy, or function docstrings, is printed with:
 
@@ -83,7 +96,6 @@ The examples will assume that this code block is included with the import statem
 ```python
 from openbb_terminal.sdk import openbb
 import pandas as pd
-%matplotlib inline
 ```
 
 ### Index
@@ -112,21 +124,22 @@ indexes
 This list can be filtered:
 
 ```python
-indexes.filter(like = 'sp_', axis = 0)
+filtered = indexes.name.str.contains('s&p', case = False)
+indexes[filtered].head(10)
 ```
 
-|                          | name                                               | ticker        |
-| :----------------------- | :------------------------------------------------- | :------------ |
-| sp_xsp                   | S&P 500 Mini SPX Options Index                     | ^XSP          |
-| sp_energy_ig             | S&P 500 Energy (Industry Group) Index              | ^SP500-1010   |
-| sp_energy_equipment      | S&P 500 Energy Equipment & Services Industry Index | ^SP500-101010 |
-| sp_energy_oil            | S&P 500 Oil, Gas & Consumable Fuels Industry Index | ^SP500-101020 |
-| sp_materials_sector      | S&P 500 Materials Sector Index                     | ^SP500-15     |
-| sp_utilities_sector      | S&P 500 Utilities Sector Index                     | ^SP500-55     |
-| sp_utilities_electricity | S&P 500 Electric Utilities Index                   | ^SP500-551010 |
-| sp_utilities_multis      | S&P 500 Multi-Utilities Industry Index             | ^SP500-551030 |
-| sp_re_sector             | S&P 500 Real Estate Sector Index                   | ^SP500-60     |
-| sp_re_ig                 | S&P 500 Real Estate (Industry Group) Index         | ^SP500-6010   |
+|           | name                                | ticker   |
+|:----------|:------------------------------------|:---------|
+| sp500     | S&P 500 Index                       | ^GSPC    |
+| sp400     | S&P 400 Mid Cap Index               | ^SP400   |
+| sp600     | S&P 600 Small Cap Index             | ^SP600   |
+| sp500tr   | S&P 500 TR Index                    | ^SP500TR |
+| sp_xsp    | S&P 500 Mini SPX Options Index      | ^XSP     |
+| ca_banks  | S&P/TSX Composite Banks Index (CAD) | TXBA.TS  |
+| ar_mervel | S&P MERVAL TR Index (USD)           | M.BA     |
+| eu_speup  | S&P Europe 350 Index (EUR)          | ^SPEUP   |
+| uk_spuk   | S&P United Kingdom Index (PDS)      | ^SPUK    |
+| in_bse    | S&P Bombay SENSEX (INR)             | ^BSESN   |
 
 One index, or multiple, can be requested as a single DataFrame:
 
@@ -148,7 +161,7 @@ This can also be displayed as a chart:
 openbb.economy.index_chart(indices = ['sp_energy_oil', 'sp_energy_equipment', 'sp_energy_ig'])
 ```
 
-![openbb.economy.index_chart](https://user-images.githubusercontent.com/85772166/202557572-b67f35e1-a17a-4724-83b3-1b1175e0445d.png "openbb.economy.index_chart")
+![openbb.economy.index_chart](https://user-images.githubusercontent.com/85772166/231894118-c3773acc-a40f-482d-838b-81118a011b0e.png "openbb.economy.index_chart")
 
 ### Performance
 
@@ -219,35 +232,35 @@ Help on Operation in module openbb_terminal.core.library.operation:
 With no arguments, `events` will return the calendar from today:
 
 ```python
-openbb.economy.events()
+openbb.economy.events().head(10)
 ```
 
-|     | Time (GMT) | Country        | Event                    | actual | consensus | previous | Date       |
-| --: | :--------- | :------------- | :----------------------- | :----- | :-------- | :------- | :--------- |
-|   0 | 02:00      | United Kingdom | Car Registration         | -40.4% | -         | 227.2%   | 2022-11-17 |
-|   1 | 02:00      | United Kingdom | Car Registration         | 26.4%  | -         | 4.6%     | 2022-11-17 |
-|   2 | 02:00      | Italy          | Italian Car Registration | 14.6%  | -         | 5.4%     | 2022-11-17 |
-|   3 | 02:00      | Italy          | Italian Car Registration | 4.4%   | -         | 55.9%    | 2022-11-17 |
-|   4 | 02:00      | Switzerland    | Trade Balance            | 4.140B | -         | 4.193B   | 2022-11-17 |
-|  56 | 13:00      | United States  | 10-Year TIPS Auction     | 1.485% | -         | 1.248%   | 2022-11-17 |
-|  57 | 18:30      | Japan          | CPI, n.s.a               | -      | -         | 0.4%     | 2022-11-17 |
-|  58 | 18:30      | Japan          | National Core CPI        | -      | 3.5%      | 3.0%     | 2022-11-17 |
-|  59 | 18:30      | Japan          | National CPI             | -      | -         | 3.0%     | 2022-11-17 |
-|  60 | 19:01      | United Kingdom | GfK Consumer Confidence  | -      | -52       | -47      | 2022-11-17 |
+|    | Time (ET)   | Country        | Event                                  | Actual   | Consensus   | Previous   | Date       |
+|---:|:------------|:---------------|:---------------------------------------|:---------|:------------|:-----------|:-----------|
+|  0 | 01:45       | Germany        | German Buba President Nagel Speaks     | -        | -           | -          | 2023-04-13 |
+|  1 | 01:45       | Germany        | German Buba Vice President Buch Speaks | -        | -           | -          | 2023-04-13 |
+|  2 | 02:00       | United Kingdom | Construction Output                    | 2.4%     | 0.9%        | -1.7%      | 2023-04-13 |
+|  3 | 02:00       | United Kingdom | U.K. Construction Output               | 5.7%     | 1.6%        | 3.3%       | 2023-04-13 |
+|  4 | 02:00       | United Kingdom | GDP                                    | 0.0%     | 0.1%        | 0.4%       | 2023-04-13 |
+|  5 | 02:00       | United Kingdom | Index of Services                      | 0.1%     | -0.2%       | 0.1%       | 2023-04-13 |
+|  6 | 02:00       | United Kingdom | Industrial Production                  | -0.2%    | 0.2%        | -0.5%      | 2023-04-13 |
+|  7 | 02:00       | United Kingdom | Industrial Production                  | -3.1%    | -3.7%       | -3.2%      | 2023-04-13 |
+|  8 | 02:00       | United Kingdom | Manufacturing Production               | -2.4%    | -4.7%       | -2.8%      | 2023-04-13 |
+|  9 | 02:00       | United Kingdom | Manufacturing Production               | 0.0%     | 0.2%        | -0.1%      | 2023-04-13 |
 
 Calendar events can be requested for a specific countries and date ranges:
 
 ```python
-openbb.economy.events(countries = ['United States'], start_date = '2022-11-18', end_date = '2022-11-18')
+openbb.economy.events(countries = ['United States'], start_date = '2022-11-18', end_date = '2022-11-18').head(5)
 ```
 
-|     | Time (GMT) | Country       | Event                             | actual | consensus | previous | Date       |
-| --: | :--------- | :------------ | :-------------------------------- | :----- | :-------- | :------- | :--------- |
-|   0 | 10:00      | United States | Existing Home Sales               | -      | 4.38M     | 4.71M    | 2022-11-18 |
-|   1 | 10:00      | United States | Existing Home Sales               | -      | -         | -1.5%    | 2022-11-18 |
-|   2 | 10:00      | United States | US Leading Index                  | -      | -0.4%     | -0.4%    | 2022-11-18 |
-|   3 | 13:00      | United States | U.S. Baker Hughes Oil Rig Count   | -      | -         | 622      | 2022-11-18 |
-|   4 | 13:00      | United States | U.S. Baker Hughes Total Rig Count | -      | -         | 779      | 2022-11-18 |
+|    | Time (ET)   | Country       | Event                           | Actual   | Consensus   | Previous   | Date       |
+|---:|:------------|:--------------|:--------------------------------|:---------|:------------|:-----------|:-----------|
+|  0 | 09:40       | United States | Fed Collins Speaks              | -        | -           | -          | 2022-11-18 |
+|  1 | 11:00       | United States | Existing Home Sales             | -5.9%    | -           | -1.5%      | 2022-11-18 |
+|  2 | 11:00       | United States | Existing Home Sales             | 4.43M    | 4.38M       | 4.71M      | 2022-11-18 |
+|  3 | 11:00       | United States | US Leading Index                | -0.8%    | -0.4%       | -0.5%      | 2022-11-18 |
+|  4 | 14:00       | United States | U.S. Baker Hughes Oil Rig Count | 623      | -           | 622        | 2022-11-18 |
 
 ### FRED
 
@@ -332,15 +345,15 @@ data,units,denomination = openbb.economy.macro(parameters = ['Y10YD'], countries
 data.tail(10)
 ```
 
-| date                | France | Germany | Italy | Poland | Spain | United States |
-| :------------------ | -----: | ------: | ----: | -----: | ----: | ------------: |
-| 2022-01-01 00:00:00 |   0.31 |   -0.12 |  1.35 |      4 |  0.66 |          1.76 |
-| 2022-02-01 00:00:00 |   0.68 |    0.15 |  1.79 |   3.95 |  1.11 |          1.93 |
-| 2022-03-01 00:00:00 |   0.78 |    0.28 |  1.85 |   4.83 |  1.22 |          2.13 |
-| 2022-04-01 00:00:00 |   1.28 |    0.75 |  2.44 |   5.96 |  1.69 |          2.75 |
-| 2022-05-01 00:00:00 |   1.52 |    0.95 |  2.99 |   6.64 |  2.04 |           2.9 |
-| 2022-06-01 00:00:00 |   2.06 |    1.45 |  3.64 |   7.14 |  2.63 |          3.14 |
-| 2022-07-01 00:00:00 |   1.71 |    1.08 |  3.36 |   6.37 |  2.31 |           2.9 |
-| 2022-08-01 00:00:00 |   1.69 |    1.03 |   3.3 |    5.8 |  2.15 |           2.9 |
-| 2022-09-01 00:00:00 |   2.41 |     1.8 |  4.14 |   6.28 |  2.92 |          3.52 |
-| 2022-10-01 00:00:00 |   2.77 |    2.19 |  4.53 |   7.82 |  3.29 |          3.98 |
+| date                |   France |   Germany |   Italy |   Poland |   Spain |   United States |
+|:--------------------|----------------------:|-----------------------:|---------------------:|----------------------:|---------------------:|-----------------------------:|
+| 2022-05-01 |                  1.52 |                   0.95 |                 2.99 |                  6.64 |                 2.04 |                         2.9  |
+| 2022-06-01 |                  2.06 |                   1.45 |                 3.64 |                  7.14 |                 2.63 |                         3.14 |
+| 2022-07-01 |                  1.71 |                   1.08 |                 3.36 |                  6.37 |                 2.31 |                         2.9  |
+| 2022-08-01 |                  1.69 |                   1.03 |                 3.3  |                  5.8  |                 2.15 |                         2.9  |
+| 2022-09-01 |                  2.41 |                   1.8  |                 4.14 |                  6.28 |                 2.92 |                         3.52 |
+| 2022-10-01 |                  2.77 |                   2.19 |                 4.53 |                  7.82 |                 3.29 |                         3.98 |
+| 2022-11-01 |                  2.58 |                   2.07 |                 4.24 |                  7.24 |                 3.07 |                         3.89 |
+| 2022-12-01 |                  2.62 |                   2.09 |                 4.26 |                  6.61 |                 3.09 |                         3.62 |
+| 2023-01-01 |                  2.69 |                   2.19 |                 4.24 |                  6.02 |                 3.2  |                         3.53 |
+| 2023-02-01 |                  2.87 |                   2.37 |                 4.27 |                  6.18 |                 3.39 |                         3.75 |

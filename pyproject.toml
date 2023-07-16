@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "3.0.0rc1"
+version = "3.1.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -17,21 +17,21 @@ documentation = "https://docs.openbb.co/sdk"
 openbb = 'terminal:main'
 
 [tool.poetry.dependencies]
-python = "^3.8,<3.11, !=3.9.7"
-scipy = "^1.9.3"
+python = "^3.8.1,<3.11, !=3.9.7"
+scipy = "1.10.1" #Pinning on July 6 for pip issues
 iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
 requests = "^2.25.1"
 alpha-vantage = "^2.3.1"
-finviz = "^1.3.4, !=1.4.5"
+finviz = "^1.4.6"
 bs4 = "^0.0.1"
 yfinance = "^0.2.12"
 pmaw = "^3.0.0"
 praw = "^7.1.4"
 Quandl = "^3.6.0"
-pytrends = "^4.7.3"
+pytrends = "4.9.2"
 matplotlib = "^3.3.3"
-plotly = "^5.0.0"
+plotly = "^5.15.0"
 prompt-toolkit = "^3.0.16"
 jupyterlab = "^3.2.4"
 mplfinance = "^0.12.7-alpha.7"
@@ -63,7 +63,6 @@ openpyxl = "^3.0.9"
 pandas = "^1.5.0"
 pandas-market-calendars = "~3.2"
 ipympl = "^0.8.2"
-voila = ">=0.3.0"
 rich = "^12.6.0"
 dnspython = "^2.1.0"
 python-dotenv = "^0.19.2"
@@ -101,22 +100,24 @@ grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
-rapidfuzz = "^2.13.7"
-streamlit = "^1.17.0"
-pywry = "^0.4.5"
+streamlit = "^1.22.0"
+pywry = "^0.5.13"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
 psutil = "!=5.9.4"  # Forecasting menu and IPyKernel dependency broken on MacOs
-tenacity = "<8.0.0"  # Finviz, papermill and plotly dep. Pinned to avoid pip resolution conflict due to finviz 1.4.5 release bug
 intrinio-sdk = "^6.22.2"
 yahooquery = "^2.3.0"
-tweepy = "^4.12.1"
 openai-whisper = {version = "^20230124", optional = true}
 setuptools-rust = {version = "^1.5.2", optional = true}
 transformers = {version = "^4.26.1", optional = true}
 yt-dlp = {version = "^2023.2.17", optional = true}
 pydantic = "^1.10.5"
+posthog = "^3.0.1"
+reportlab = "<4" #Pinning due to build error on MacOs
+arch = "^5.5.0"
+llama-index = "^0.7.2"
+langchain = "^0.0.225"
 
 
 
@@ -156,6 +157,7 @@ nbmake = ">0.5.0"
 ruff = "^0.0.256"
 pytest-timeout = "^2.1.0"
 pytest-recorder = "^0.2.1"
+freezegun = "^1.2.2"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
@@ -164,6 +166,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.pydocstyle]
 convention = "numpy"
 match = '((?!test_).)*\.py'
+ignore = "D401"
 
 
 [tool.ruff]

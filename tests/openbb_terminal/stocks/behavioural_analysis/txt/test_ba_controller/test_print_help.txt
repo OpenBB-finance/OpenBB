@@ -1,4 +1,4 @@
-    load               load a specific stock ticker for analysis                       [YahooFinance, AlphaVantage, Polygon, EODHD]
+    load               load a specific stock ticker for analysis                       [YahooFinance, AlphaVantage, Polygon, EODHD, AlthubPlatform]
 
 Ticker: TSLA
 
@@ -20,4 +20,5 @@ Ticker: TSLA
     interest           interest over time of sentences versus stock price              [Google]
     queries            top related queries with this stock                             [Google]
     rise               top rising related queries with stock                           [Google]
+    ns                 Top news articles and sentiment provided by Onclusive           [Althub Platform]
 

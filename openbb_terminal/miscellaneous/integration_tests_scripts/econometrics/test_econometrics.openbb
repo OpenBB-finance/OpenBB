@@ -1,0 +1,66 @@
+econometrics
+
+## Exploration
+
+load nile
+ret -v nile.volume
+garch -v nile.volume_returns
+desc nile
+load nile -a nile_2
+eval double_volume = volume * 2
+lag -v custom.double -l 5
+combine nile -c nile_2.volume
+load -f 20221008_221605_dataset.xlsx
+rename -d 20221008_221605_dataset -o population -n pop
+load -e
+load -f wage_panel -a wp
+corr -d wp
+season wp.hours
+add -n wp.after_1990 -b wp.year -s > -c 1990
+add -n wp.after_1985 -b wp.year -s > -c 1985
+show -n wp -s year -l 20
+plot -v wp.nr,wp.exper,wp.hours
+index -n wp -i nr,year -a
+type
+type wp.year --format category
+desc -n wp.expersq
+clean wp --fill cfill
+clean wp -d rdrop
+delete -d wp.black
+
+## Tests
+
+load fair
+root fair.yrs_married
+
+## Load custom datasets - this can only be tested locally for now
+## load -f 20221031_095631_AAPL.xlsx -a aapl
+## load -f 20221031_095653_TSLA.xlsx -a tsla
+## load -f 20221031_095706_MSFT.xlsx -a msft
+## coint msft.adj_close,aapl.adj_close,tsla.adj_close
+## norm tsla.adj_close -p
+## norm msft.volume -p
+
+load strikes
+granger strikes.duration,strikes.iprod
+
+## Regression
+
+panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year
+panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.married,wp.educ,wp.union -r bols
+
+load longley -a ll
+ols -d ll.totemp -i ll.gnpdefl,ll.gnp,ll.unemp,ll.armed,ll.pop,ll.year
+vif ll.totemp,ll.unemp,ll.armed
+
+## Regression Tests
+
+dwat -p
+bgod -l 2
+bpag
+
+remove -n fair
+
+help
+reset
+exit

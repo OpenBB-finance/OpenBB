@@ -14,8 +14,10 @@ class ProfileModel(BaseModel):
     uuid: str = ""
     email: str = ""
     username: str = ""
+    primary_usage: str = ""
+    remember: bool = True
 
-    def load_user_info(self, session: dict, email: str):
+    def load_user_info(self, session: dict, email: str, remember: bool):
         """Load user info from login info.
 
         Parameters
@@ -24,12 +26,17 @@ class ProfileModel(BaseModel):
             The login info.
         email : str
             The email.
+        remember : bool
+            Remember the session.
         """
+
         self.token_type = session.get("token_type", "")
         self.token = session.get("access_token", "")
         self.uuid = session.get("uuid", "")
         self.email = email
-        self.username = self.email[: self.email.find("@")]
+        self.username = session.get("username", None) or email.split("@").pop(0)
+        self.primary_usage = session.get("primary_usage", None) or "personal"
+        self.remember = remember
 
     def get_uuid(self) -> str:
         """Get uuid.

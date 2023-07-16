@@ -1,0 +1,11 @@
+parent_command: stocks/dps/
+usage: shorted [-l LIMIT] [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print up to 25 top ticker most shorted. [Source: Yahoo Finance]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of the most shorted stocks to retrieve.                         (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about shorted' to access the related guide.
+Summary: Display a list of the top most shorted stocks, with the option to limit the number of stocks shown. You can also export the data in various formats and specify the name of an excel sheet to save the data to.
+
+Examples:
+- Show the top 10 most shorted stocks: stocks/dps/shorted
+- Show the top 5 most shorted stocks: stocks/dps/shorted -l 5
+- Show the top 25 most shorted stocks: stocks/dps/shorted -l 25
+- Export the top 10 most shorted stocks in csv format: stocks/dps/shorted --export csv
+- Export the top 15 most shorted stocks in json format: stocks/dps/shorted -l 15 --export json
+- Save the top 20 most shorted stocks to an excel sheet named "ShortedStocks": stocks/dps/shorted -l 20 --sheet-name ShortedStocks

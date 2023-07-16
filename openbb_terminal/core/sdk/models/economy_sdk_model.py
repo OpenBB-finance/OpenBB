@@ -48,18 +48,16 @@ class EconomyRoot(Category):
         `revenue_chart`: Governments collect revenues mainly for two purposes: to finance the goods\n
         `rgdp`: Gross domestic product (GDP) is the standard measure of the value added\n
         `rgdp_chart`: Gross domestic product (GDP) is the standard measure of the value added\n
-        `rtps`: Get real-time performance sector data\n
-        `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
         `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
-        `spectrum`: Display finviz spectrum in system viewer [Source: Finviz]\n
         `spending`: General government spending provides an indication of the size\n
         `spending_chart`: General government spending provides an indication of the size\n
-        `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
+        `treasury`: Get treasury rates from Federal Reserve\n
         `treasury_chart`: Display U.S. Treasury rates [Source: EconDB]\n
-        `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
         `trust`: Trust in government refers to the share of people who report having confidence in\n
         `trust_chart`: Trust in government refers to the share of people who report having confidence in\n
         `usbonds`: Scrape data for us bonds\n
+        `usdli`: The USD Liquidity Index is defined as: [WALCL - WLRRAL - WDTGAL]. It is expressed in billions of USD.\n
+        `usdli_chart`: Display US Dollar Liquidity\n
         `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
     """
 
@@ -106,16 +104,14 @@ class EconomyRoot(Category):
         self.revenue_chart = lib.economy_oecd_view.plot_revenue
         self.rgdp = lib.economy_oecd_model.get_real_gdp
         self.rgdp_chart = lib.economy_oecd_view.plot_real_gdp
-        self.rtps = lib.economy_alphavantage_model.get_sector_data
-        self.rtps_chart = lib.economy_alphavantage_view.realtime_performance_sector
         self.search_index = lib.economy_yfinance_model.get_search_indices
-        self.spectrum = lib.economy_finviz_view.display_spectrum
         self.spending = lib.economy_oecd_model.get_spending
         self.spending_chart = lib.economy_oecd_view.plot_spending
-        self.treasury = lib.economy_econdb_model.get_treasuries
-        self.treasury_chart = lib.economy_econdb_view.show_treasuries
-        self.treasury_maturities = lib.economy_econdb_model.get_treasury_maturities
+        self.treasury = lib.economy_fedreserve_model.get_treasury_rates
+        self.treasury_chart = lib.economy_fedreserve_view.show_treasuries
         self.trust = lib.economy_oecd_model.get_trust
         self.trust_chart = lib.economy_oecd_view.plot_trust
         self.usbonds = lib.economy_wsj_model.us_bonds
+        self.usdli = lib.economy_fred_model.get_usd_liquidity
+        self.usdli_chart = lib.economy_fred_view.display_usd_liquidity
         self.valuation = lib.economy_finviz_model.get_valuation_data

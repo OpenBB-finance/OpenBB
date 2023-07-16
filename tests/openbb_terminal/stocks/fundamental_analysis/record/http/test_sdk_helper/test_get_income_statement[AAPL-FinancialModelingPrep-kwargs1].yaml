@@ -1,0 +1,740 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/income-statement/AAPL?apikey=MOCK_API_KEY&limit=0&period=annual
+  response:
+    body:
+      string: "[\n  {\n    \"date\": \"2022-09-24\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"2022-10-28\",\n    \"acceptedDate\": \"2022-10-27 18:01:14\",\n    \"calendarYear\":
+        \"2022\",\n    \"period\": \"FY\",\n    \"revenue\": 394328000000,\n    \"costOfRevenue\":
+        223546000000,\n    \"grossProfit\": 170782000000,\n    \"grossProfitRatio\":
+        0.43309630561360085,\n    \"researchAndDevelopmentExpenses\": 26251000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 25094000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 51345000000,\n    \"costAndExpenses\": 274891000000,\n
+        \   \"interestIncome\": 2825000000,\n    \"interestExpense\": 2931000000,\n
+        \   \"depreciationAndAmortization\": 11104000000,\n    \"ebitda\": 133138000000,\n
+        \   \"ebitdaratio\": 0.33763263070337385,\n    \"operatingIncome\": 119437000000,\n
+        \   \"operatingIncomeRatio\": 0.30288744395528594,\n    \"totalOtherIncomeExpensesNet\":
+        -334000000,\n    \"incomeBeforeTax\": 119103000000,\n    \"incomeBeforeTaxRatio\":
+        0.30204043334482966,\n    \"incomeTaxExpense\": 19300000000,\n    \"netIncome\":
+        99803000000,\n    \"netIncomeRatio\": 0.2530964070519973,\n    \"eps\": 6.15,\n
+        \   \"epsdiluted\": 6.11,\n    \"weightedAverageShsOut\": 16215963000,\n    \"weightedAverageShsOutDil\":
+        16325819000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019322000108/0000320193-22-000108-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019322000108/aapl-20220924.htm\"\n
+        \ },\n  {\n    \"date\": \"2021-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2021-10-29\",\n
+        \   \"acceptedDate\": \"2021-10-28 18:04:28\",\n    \"calendarYear\": \"2021\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 365817000000,\n    \"costOfRevenue\":
+        212981000000,\n    \"grossProfit\": 152836000000,\n    \"grossProfitRatio\":
+        0.4177935962516778,\n    \"researchAndDevelopmentExpenses\": 21914000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 21973000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 43887000000,\n    \"costAndExpenses\": 256868000000,\n
+        \   \"interestIncome\": 2843000000,\n    \"interestExpense\": 2645000000,\n
+        \   \"depreciationAndAmortization\": 11284000000,\n    \"ebitda\": 123136000000,\n
+        \   \"ebitdaratio\": 0.33660546120054563,\n    \"operatingIncome\": 108949000000,\n
+        \   \"operatingIncomeRatio\": 0.29782377527561593,\n    \"totalOtherIncomeExpensesNet\":
+        258000000,\n    \"incomeBeforeTax\": 109207000000,\n    \"incomeBeforeTaxRatio\":
+        0.2985290459437369,\n    \"incomeTaxExpense\": 14527000000,\n    \"netIncome\":
+        94680000000,\n    \"netIncomeRatio\": 0.2588179335569424,\n    \"eps\": 5.67,\n
+        \   \"epsdiluted\": 5.61,\n    \"weightedAverageShsOut\": 16701272000,\n    \"weightedAverageShsOutDil\":
+        16864919000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019321000105/0000320193-21-000105-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019321000105/aapl-20210925.htm\"\n
+        \ },\n  {\n    \"date\": \"2020-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2020-10-30\",\n
+        \   \"acceptedDate\": \"2020-10-29 18:06:25\",\n    \"calendarYear\": \"2020\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 274515000000,\n    \"costOfRevenue\":
+        169559000000,\n    \"grossProfit\": 104956000000,\n    \"grossProfitRatio\":
+        0.38233247727810865,\n    \"researchAndDevelopmentExpenses\": 18752000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 19916000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 38668000000,\n    \"costAndExpenses\": 208227000000,\n
+        \   \"interestIncome\": 3763000000,\n    \"interestExpense\": 2873000000,\n
+        \   \"depreciationAndAmortization\": 11056000000,\n    \"ebitda\": 81020000000,\n
+        \   \"ebitdaratio\": 0.2951386991603373,\n    \"operatingIncome\": 66288000000,\n
+        \   \"operatingIncomeRatio\": 0.24147314354406862,\n    \"totalOtherIncomeExpensesNet\":
+        803000000,\n    \"incomeBeforeTax\": 67091000000,\n    \"incomeBeforeTaxRatio\":
+        0.24439830246070343,\n    \"incomeTaxExpense\": 9680000000,\n    \"netIncome\":
+        57411000000,\n    \"netIncomeRatio\": 0.20913611278072236,\n    \"eps\": 3.31,\n
+        \   \"epsdiluted\": 3.28,\n    \"weightedAverageShsOut\": 17352119000,\n    \"weightedAverageShsOutDil\":
+        17528214000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019320000096/0000320193-20-000096-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019320000096/aapl-20200926.htm\"\n
+        \ },\n  {\n    \"date\": \"2019-09-28\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2019-10-31\",\n
+        \   \"acceptedDate\": \"2019-10-30 18:12:36\",\n    \"calendarYear\": \"2019\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 260174000000,\n    \"costOfRevenue\":
+        161782000000,\n    \"grossProfit\": 98392000000,\n    \"grossProfitRatio\":
+        0.3781776810903472,\n    \"researchAndDevelopmentExpenses\": 16217000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 18245000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 34462000000,\n    \"costAndExpenses\": 196244000000,\n
+        \   \"interestIncome\": 4961000000,\n    \"interestExpense\": 3576000000,\n
+        \   \"depreciationAndAmortization\": 12547000000,\n    \"ebitda\": 81860000000,\n
+        \   \"ebitdaratio\": 0.3146355900282119,\n    \"operatingIncome\": 63930000000,\n
+        \   \"operatingIncomeRatio\": 0.24572017188496928,\n    \"totalOtherIncomeExpensesNet\":
+        1807000000,\n    \"incomeBeforeTax\": 65737000000,\n    \"incomeBeforeTaxRatio\":
+        0.2526655238417367,\n    \"incomeTaxExpense\": 10481000000,\n    \"netIncome\":
+        55256000000,\n    \"netIncomeRatio\": 0.21238094505984456,\n    \"eps\": 2.9925,\n
+        \   \"epsdiluted\": 2.9725,\n    \"weightedAverageShsOut\": 18471336000,\n
+        \   \"weightedAverageShsOutDil\": 18595652000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019319000119/0000320193-19-000119-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019319000119/a10-k20199282019.htm\"\n
+        \ },\n  {\n    \"date\": \"2018-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2018-11-05\",\n
+        \   \"acceptedDate\": \"2018-11-05 08:01:40\",\n    \"calendarYear\": \"2018\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 265595000000,\n    \"costOfRevenue\":
+        163756000000,\n    \"grossProfit\": 101839000000,\n    \"grossProfitRatio\":
+        0.38343718820007905,\n    \"researchAndDevelopmentExpenses\": 14236000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 16705000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 30941000000,\n    \"costAndExpenses\": 194697000000,\n
+        \   \"interestIncome\": 5686000000,\n    \"interestExpense\": 3240000000,\n
+        \   \"depreciationAndAmortization\": 10903000000,\n    \"ebitda\": 87046000000,\n
+        \   \"ebitdaratio\": 0.327739603531693,\n    \"operatingIncome\": 70898000000,\n
+        \   \"operatingIncomeRatio\": 0.26694026619477024,\n    \"totalOtherIncomeExpensesNet\":
+        2005000000,\n    \"incomeBeforeTax\": 72903000000,\n    \"incomeBeforeTaxRatio\":
+        0.27448935409175623,\n    \"incomeTaxExpense\": 13372000000,\n    \"netIncome\":
+        59531000000,\n    \"netIncomeRatio\": 0.22414202074587247,\n    \"eps\": 3.0025,\n
+        \   \"epsdiluted\": 2.9775,\n    \"weightedAverageShsOut\": 19821508000,\n
+        \   \"weightedAverageShsOutDil\": 20000436000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019318000145/0000320193-18-000145-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019318000145/a10-k20189292018.htm\"\n
+        \ },\n  {\n    \"date\": \"2017-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2017-11-03\",\n
+        \   \"acceptedDate\": \"2017-11-03 08:01:37\",\n    \"calendarYear\": \"2017\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 229234000000,\n    \"costOfRevenue\":
+        141048000000,\n    \"grossProfit\": 88186000000,\n    \"grossProfitRatio\":
+        0.38469860491899105,\n    \"researchAndDevelopmentExpenses\": 11581000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 15261000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 26842000000,\n    \"costAndExpenses\": 167890000000,\n
+        \   \"interestIncome\": 5201000000,\n    \"interestExpense\": 2323000000,\n
+        \   \"depreciationAndAmortization\": 10157000000,\n    \"ebitda\": 76569000000,\n
+        \   \"ebitdaratio\": 0.33402113124580124,\n    \"operatingIncome\": 61344000000,\n
+        \   \"operatingIncomeRatio\": 0.2676042820872994,\n    \"totalOtherIncomeExpensesNet\":
+        2745000000,\n    \"incomeBeforeTax\": 64089000000,\n    \"incomeBeforeTaxRatio\":
+        0.27957894553164014,\n    \"incomeTaxExpense\": 15738000000,\n    \"netIncome\":
+        48351000000,\n    \"netIncomeRatio\": 0.21092420845075338,\n    \"eps\": 2.3175,\n
+        \   \"epsdiluted\": 2.3025,\n    \"weightedAverageShsOut\": 20868968000,\n
+        \   \"weightedAverageShsOutDil\": 21006768000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019317000070/0000320193-17-000070-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019317000070/a10-k20179302017.htm\"\n
+        \ },\n  {\n    \"date\": \"2016-09-24\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2016-10-26\",\n
+        \   \"acceptedDate\": \"2016-10-26 16:42:16\",\n    \"calendarYear\": \"2016\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 215639000000,\n    \"costOfRevenue\":
+        131376000000,\n    \"grossProfit\": 84263000000,\n    \"grossProfitRatio\":
+        0.3907595564809705,\n    \"researchAndDevelopmentExpenses\": 10045000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 14194000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 24239000000,\n    \"costAndExpenses\": 155615000000,\n
+        \   \"interestIncome\": 3999000000,\n    \"interestExpense\": 1456000000,\n
+        \   \"depreciationAndAmortization\": 10505000000,\n    \"ebitda\": 73333000000,\n
+        \   \"ebitdaratio\": 0.34007299236223504,\n    \"operatingIncome\": 60024000000,\n
+        \   \"operatingIncomeRatio\": 0.27835410106706115,\n    \"totalOtherIncomeExpensesNet\":
+        1348000000,\n    \"incomeBeforeTax\": 61372000000,\n    \"incomeBeforeTaxRatio\":
+        0.284605289395703,\n    \"incomeTaxExpense\": 15685000000,\n    \"netIncome\":
+        45687000000,\n    \"netIncomeRatio\": 0.211867983064288,\n    \"eps\": 2.0875,\n
+        \   \"epsdiluted\": 2.0775,\n    \"weightedAverageShsOut\": 21883280000,\n
+        \   \"weightedAverageShsOutDil\": 22001124000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000162828016020309/0001628280-16-020309-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000162828016020309/a201610-k9242016.htm\"\n
+        \ },\n  {\n    \"date\": \"2015-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2015-10-28\",\n
+        \   \"acceptedDate\": \"2015-10-28 16:31:09\",\n    \"calendarYear\": \"2015\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 233715000000,\n    \"costOfRevenue\":
+        140089000000,\n    \"grossProfit\": 93626000000,\n    \"grossProfitRatio\":
+        0.4005990201741437,\n    \"researchAndDevelopmentExpenses\": 8067000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 14329000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 22396000000,\n    \"costAndExpenses\": 162485000000,\n
+        \   \"interestIncome\": 2921000000,\n    \"interestExpense\": 733000000,\n
+        \   \"depreciationAndAmortization\": 11257000000,\n    \"ebitda\": 84505000000,\n
+        \   \"ebitdaratio\": 0.3615728558286802,\n    \"operatingIncome\": 71230000000,\n
+        \   \"operatingIncomeRatio\": 0.3047729071732666,\n    \"totalOtherIncomeExpensesNet\":
+        1285000000,\n    \"incomeBeforeTax\": 72515000000,\n    \"incomeBeforeTaxRatio\":
+        0.31027105662880006,\n    \"incomeTaxExpense\": 19121000000,\n    \"netIncome\":
+        53394000000,\n    \"netIncomeRatio\": 0.22845773698735639,\n    \"eps\": 2.32,\n
+        \   \"epsdiluted\": 2.305,\n    \"weightedAverageShsOut\": 23013684000,\n
+        \   \"weightedAverageShsOutDil\": 23172276000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312515356351/0001193125-15-356351-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312515356351/d17062d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2014-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2014-10-27\",\n
+        \   \"acceptedDate\": \"2014-10-27 17:11:55\",\n    \"calendarYear\": \"2014\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 182795000000,\n    \"costOfRevenue\":
+        112258000000,\n    \"grossProfit\": 70537000000,\n    \"grossProfitRatio\":
+        0.3858803577778386,\n    \"researchAndDevelopmentExpenses\": 6041000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 11993000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 18034000000,\n    \"costAndExpenses\": 130292000000,\n
+        \   \"interestIncome\": 1795000000,\n    \"interestExpense\": 384000000,\n
+        \   \"depreciationAndAmortization\": 7946000000,\n    \"ebitda\": 61813000000,\n
+        \   \"ebitdaratio\": 0.3381547635329194,\n    \"operatingIncome\": 52503000000,\n
+        \   \"operatingIncomeRatio\": 0.28722339232473537,\n    \"totalOtherIncomeExpensesNet\":
+        980000000,\n    \"incomeBeforeTax\": 53483000000,\n    \"incomeBeforeTaxRatio\":
+        0.29258458929401787,\n    \"incomeTaxExpense\": 13973000000,\n    \"netIncome\":
+        39510000000,\n    \"netIncomeRatio\": 0.21614376760852322,\n    \"eps\": 1.6225,\n
+        \   \"epsdiluted\": 1.6125,\n    \"weightedAverageShsOut\": 24342288000,\n
+        \   \"weightedAverageShsOutDil\": 24490652000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312514383437/0001193125-14-383437-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312514383437/d783162d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2013-09-28\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2013-10-30\",\n
+        \   \"acceptedDate\": \"2013-10-29 20:38:28\",\n    \"calendarYear\": \"2013\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 170910000000,\n    \"costOfRevenue\":
+        106606000000,\n    \"grossProfit\": 64304000000,\n    \"grossProfitRatio\":
+        0.3762448072084723,\n    \"researchAndDevelopmentExpenses\": 4475000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 10830000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 15305000000,\n    \"costAndExpenses\": 121911000000,\n
+        \   \"interestIncome\": 1616000000,\n    \"interestExpense\": 136000000,\n
+        \   \"depreciationAndAmortization\": 6757000000,\n    \"ebitda\": 57048000000,\n
+        \   \"ebitdaratio\": 0.3337897138845006,\n    \"operatingIncome\": 48999000000,\n
+        \   \"operatingIncomeRatio\": 0.2866947516236616,\n    \"totalOtherIncomeExpensesNet\":
+        1156000000,\n    \"incomeBeforeTax\": 50155000000,\n    \"incomeBeforeTaxRatio\":
+        0.293458545433269,\n    \"incomeTaxExpense\": 13118000000,\n    \"netIncome\":
+        37037000000,\n    \"netIncomeRatio\": 0.21670469837926393,\n    \"eps\": 1.429643,\n
+        \   \"epsdiluted\": 1.419643,\n    \"weightedAverageShsOut\": 25909268000,\n
+        \   \"weightedAverageShsOutDil\": 26086536000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312513416534/0001193125-13-416534-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312513416534/d590790d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2012-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2012-10-31\",\n
+        \   \"acceptedDate\": \"2012-10-31 17:07:19\",\n    \"calendarYear\": \"2012\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 156508000000,\n    \"costOfRevenue\":
+        87846000000,\n    \"grossProfit\": 68662000000,\n    \"grossProfitRatio\":
+        0.4387123980882766,\n    \"researchAndDevelopmentExpenses\": 3381000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 10040000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 13421000000,\n    \"costAndExpenses\": 101267000000,\n
+        \   \"interestIncome\": 1088000000,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\":
+        3277000000,\n    \"ebitda\": 59040000000,\n    \"ebitdaratio\": 0.3772331126843356,\n
+        \   \"operatingIncome\": 55241000000,\n    \"operatingIncomeRatio\": 0.35295959311984054,\n
+        \   \"totalOtherIncomeExpensesNet\": 522000000,\n    \"incomeBeforeTax\":
+        55763000000,\n    \"incomeBeforeTaxRatio\": 0.35629488588442765,\n    \"incomeTaxExpense\":
+        14030000000,\n    \"netIncome\": 41733000000,\n    \"netIncomeRatio\": 0.26665090602397323,\n
+        \   \"eps\": 1.594286,\n    \"epsdiluted\": 1.576786,\n    \"weightedAverageShsOut\":
+        26174904000,\n    \"weightedAverageShsOutDil\": 26469940000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/320193/000119312512444068/0001193125-12-444068-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312512444068/d411355d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2011-09-24\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2011-10-26\",\n
+        \   \"acceptedDate\": \"2011-10-26 16:35:25\",\n    \"calendarYear\": \"2011\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 108249000000,\n    \"costOfRevenue\":
+        64431000000,\n    \"grossProfit\": 43818000000,\n    \"grossProfitRatio\":
+        0.40478895878945764,\n    \"researchAndDevelopmentExpenses\": 2429000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 7599000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 10028000000,\n    \"costAndExpenses\": 74459000000,\n
+        \   \"interestIncome\": 519000000,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\":
+        1814000000,\n    \"ebitda\": 36019000000,\n    \"ebitdaratio\": 0.3327421038531534,\n
+        \   \"operatingIncome\": 33790000000,\n    \"operatingIncomeRatio\": 0.31215068961376086,\n
+        \   \"totalOtherIncomeExpensesNet\": 415000000,\n    \"incomeBeforeTax\":
+        34205000000,\n    \"incomeBeforeTaxRatio\": 0.31598444327430275,\n    \"incomeTaxExpense\":
+        8283000000,\n    \"netIncome\": 25922000000,\n    \"netIncomeRatio\": 0.2394664153941376,\n
+        \   \"eps\": 1.001786,\n    \"epsdiluted\": 0.988571,\n    \"weightedAverageShsOut\":
+        25879224000,\n    \"weightedAverageShsOutDil\": 26226060000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/320193/000119312511282113/0001193125-11-282113-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312511282113/d220209d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2010-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2010-10-27\",\n
+        \   \"acceptedDate\": \"2010-10-27 16:36:21\",\n    \"calendarYear\": \"2010\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 65225000000,\n    \"costOfRevenue\":
+        39541000000,\n    \"grossProfit\": 25684000000,\n    \"grossProfitRatio\":
+        0.39377539287083174,\n    \"researchAndDevelopmentExpenses\": 1782000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 5517000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 7299000000,\n    \"costAndExpenses\": 46840000000,\n
+        \   \"interestIncome\": 311000000,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\":
+        1027000000,\n    \"ebitda\": 19567000000,\n    \"ebitdaratio\": 0.29999233422767346,\n
+        \   \"operatingIncome\": 18385000000,\n    \"operatingIncomeRatio\": 0.2818704484476811,\n
+        \   \"totalOtherIncomeExpensesNet\": 155000000,\n    \"incomeBeforeTax\":
+        18540000000,\n    \"incomeBeforeTaxRatio\": 0.2842468378689153,\n    \"incomeTaxExpense\":
+        4527000000,\n    \"netIncome\": 14013000000,\n    \"netIncomeRatio\": 0.21484093522422384,\n
+        \   \"eps\": 0.550357,\n    \"epsdiluted\": 0.541071,\n    \"weightedAverageShsOut\":
+        25464908000,\n    \"weightedAverageShsOutDil\": 25891936000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/320193/000119312510238044/0001193125-10-238044-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312510238044/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2009-09-26\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2009-10-27\",\n
+        \   \"acceptedDate\": \"2009-10-27 16:18:29\",\n    \"calendarYear\": \"2009\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 36537000000,\n    \"costOfRevenue\":
+        23397000000,\n    \"grossProfit\": 13140000000,\n    \"grossProfitRatio\":
+        0.3596354380491009,\n    \"researchAndDevelopmentExpenses\": 1333000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 4149000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 5482000000,\n    \"costAndExpenses\": 28879000000,\n
+        \   \"interestIncome\": 407000000,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\":
+        703000000,\n    \"ebitda\": 8687000000,\n    \"ebitdaratio\": 0.23775898404357226,\n
+        \   \"operatingIncome\": 7658000000,\n    \"operatingIncomeRatio\": 0.2095957522511427,\n
+        \   \"totalOtherIncomeExpensesNet\": 326000000,\n    \"incomeBeforeTax\":
+        7984000000,\n    \"incomeBeforeTaxRatio\": 0.21851821441278704,\n    \"incomeTaxExpense\":
+        2280000000,\n    \"netIncome\": 5704000000,\n    \"netIncomeRatio\": 0.15611571831294305,\n
+        \   \"eps\": 0.228214,\n    \"epsdiluted\": 0.224643,\n    \"weightedAverageShsOut\":
+        25004448000,\n    \"weightedAverageShsOutDil\": 25396140000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/320193/000119312509214859/0001193125-09-214859-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312509214859/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2008-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2008-11-05\",\n
+        \   \"acceptedDate\": \"2008-11-05 06:16:23\",\n    \"calendarYear\": \"2008\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 32479000000,\n    \"costOfRevenue\":
+        21334000000,\n    \"grossProfit\": 11145000000,\n    \"grossProfitRatio\":
+        0.3431448012561963,\n    \"researchAndDevelopmentExpenses\": 1109000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 3761000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 4870000000,\n    \"costAndExpenses\": 26204000000,\n
+        \   \"interestIncome\": 653000000,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\":
+        473000000,\n    \"ebitda\": 7368000000,\n    \"ebitdaratio\": 0.22685427507004527,\n
+        \   \"operatingIncome\": 6275000000,\n    \"operatingIncomeRatio\": 0.19320176113796608,\n
+        \   \"totalOtherIncomeExpensesNet\": 620000000,\n    \"incomeBeforeTax\":
+        6895000000,\n    \"incomeBeforeTaxRatio\": 0.21229101881215554,\n    \"incomeTaxExpense\":
+        2061000000,\n    \"netIncome\": 4834000000,\n    \"netIncomeRatio\": 0.14883463160811602,\n
+        \   \"eps\": 0.195714,\n    \"epsdiluted\": 0.191429,\n    \"weightedAverageShsOut\":
+        24684576000,\n    \"weightedAverageShsOutDil\": 25259892000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/320193/000119312508224958/0001193125-08-224958-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000119312508224958/d10k.htm\"\n
+        \ },\n  {\n    \"date\": \"2007-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2007-11-15\",\n
+        \   \"acceptedDate\": \"2007-11-15 16:49:37\",\n    \"calendarYear\": \"2007\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 24006000000,\n    \"costOfRevenue\":
+        15852000000,\n    \"grossProfit\": 8154000000,\n    \"grossProfitRatio\":
+        0.33966508372906773,\n    \"researchAndDevelopmentExpenses\": 782000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 2963000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 3745000000,\n    \"costAndExpenses\": 19597000000,\n
+        \   \"interestIncome\": 647000000,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\":
+        317000000,\n    \"ebitda\": 5325000000,\n    \"ebitdaratio\": 0.22181954511372157,\n
+        \   \"operatingIncome\": 4409000000,\n    \"operatingIncomeRatio\": 0.1836624177289011,\n
+        \   \"totalOtherIncomeExpensesNet\": 599000000,\n    \"incomeBeforeTax\":
+        5008000000,\n    \"incomeBeforeTaxRatio\": 0.20861451303840706,\n    \"incomeTaxExpense\":
+        1512000000,\n    \"netIncome\": 3496000000,\n    \"netIncomeRatio\": 0.1456302591018912,\n
+        \   \"eps\": 0.144286,\n    \"epsdiluted\": 0.140357,\n    \"weightedAverageShsOut\":
+        24208660000,\n    \"weightedAverageShsOutDil\": 24900176000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/320193/000104746907009340/0001047469-07-009340-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746907009340/a2181030z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2006-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2006-12-29\",\n
+        \   \"acceptedDate\": \"2006-12-29 06:05:58\",\n    \"calendarYear\": \"2006\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 19315000000,\n    \"costOfRevenue\":
+        13717000000,\n    \"grossProfit\": 5598000000,\n    \"grossProfitRatio\":
+        0.2898265596686513,\n    \"researchAndDevelopmentExpenses\": 712000000,\n
+        \   \"generalAndAdministrativeExpenses\": 0,\n    \"sellingAndMarketingExpenses\":
+        0,\n    \"sellingGeneralAndAdministrativeExpenses\": 2433000000,\n    \"otherExpenses\":
+        0,\n    \"operatingExpenses\": 3145000000,\n    \"costAndExpenses\": 16862000000,\n
+        \   \"interestIncome\": 394000000,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\":
+        225000000,\n    \"ebitda\": 3043000000,\n    \"ebitdaratio\": 0.1575459487444991,\n
+        \   \"operatingIncome\": 2453000000,\n    \"operatingIncomeRatio\": 0.1269997411338338,\n
+        \   \"totalOtherIncomeExpensesNet\": 365000000,\n    \"incomeBeforeTax\":
+        2818000000,\n    \"incomeBeforeTaxRatio\": 0.14589697126585555,\n    \"incomeTaxExpense\":
+        829000000,\n    \"netIncome\": 1989000000,\n    \"netIncomeRatio\": 0.1029769609112089,\n
+        \   \"eps\": 0.084286,\n    \"epsdiluted\": 0.081071,\n    \"weightedAverageShsOut\":
+        23633624000,\n    \"weightedAverageShsOutDil\": 24570728000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/320193/000110465906084288/a06-25759_210k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465906084288/a06-25759_210k.htm\"\n
+        \ },\n  {\n    \"date\": \"2005-09-24\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2005-12-01\",\n
+        \   \"acceptedDate\": \"2005-11-30 21:22:48\",\n    \"calendarYear\": \"2005\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 13931000000,\n    \"costOfRevenue\":
+        9888000000,\n    \"grossProfit\": 4043000000,\n    \"grossProfitRatio\": 0.29021606489124974,\n
+        \   \"researchAndDevelopmentExpenses\": 534000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1859000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 2393000000,\n
+        \   \"costAndExpenses\": 12281000000,\n    \"interestIncome\": 0,\n    \"interestExpense\":
+        0,\n    \"depreciationAndAmortization\": 179000000,\n    \"ebitda\": 1994000000,\n
+        \   \"ebitdaratio\": 0.14313401765845954,\n    \"operatingIncome\": 1650000000,\n
+        \   \"operatingIncomeRatio\": 0.11844088722991888,\n    \"totalOtherIncomeExpensesNet\":
+        165000000,\n    \"incomeBeforeTax\": 1815000000,\n    \"incomeBeforeTaxRatio\":
+        0.13028497595291078,\n    \"incomeTaxExpense\": 480000000,\n    \"netIncome\":
+        1335000000,\n    \"netIncomeRatio\": 0.09582944512238892,\n    \"eps\": 0.058929,\n
+        \   \"epsdiluted\": 0.055714,\n    \"weightedAverageShsOut\": 22636292000,\n
+        \   \"weightedAverageShsOutDil\": 23989840000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465905058421/a05-20674_110k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000110465905058421/a05-20674_110k.htm\"\n
+        \ },\n  {\n    \"date\": \"2004-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2004-12-03\",\n
+        \   \"acceptedDate\": \"2004-12-02 18:05:49\",\n    \"calendarYear\": \"2004\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 8279000000,\n    \"costOfRevenue\":
+        6020000000,\n    \"grossProfit\": 2259000000,\n    \"grossProfitRatio\": 0.2728590409469743,\n
+        \   \"researchAndDevelopmentExpenses\": 489000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1421000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1910000000,\n
+        \   \"costAndExpenses\": 7930000000,\n    \"interestIncome\": 64000000,\n
+        \   \"interestExpense\": 3000000,\n    \"depreciationAndAmortization\": 150000000,\n
+        \   \"ebitda\": 536000000,\n    \"ebitdaratio\": 0.0647421186133591,\n    \"operatingIncome\":
+        326000000,\n    \"operatingIncomeRatio\": 0.03937673632081169,\n    \"totalOtherIncomeExpensesNet\":
+        57000000,\n    \"incomeBeforeTax\": 383000000,\n    \"incomeBeforeTaxRatio\":
+        0.04626162580021742,\n    \"incomeTaxExpense\": 107000000,\n    \"netIncome\":
+        276000000,\n    \"netIncomeRatio\": 0.03333735958449088,\n    \"eps\": 0.013214,\n
+        \   \"epsdiluted\": 0.012679,\n    \"weightedAverageShsOut\": 20809040000,\n
+        \   \"weightedAverageShsOutDil\": 21689416000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746904035975/a2147337z10-k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746904035975/a2147337z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2003-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2003-12-19\",\n
+        \   \"acceptedDate\": \"2003-12-19 17:25:45\",\n    \"calendarYear\": \"2003\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 6207000000,\n    \"costOfRevenue\":
+        4499000000,\n    \"grossProfit\": 1708000000,\n    \"grossProfitRatio\": 0.2751731915579185,\n
+        \   \"researchAndDevelopmentExpenses\": 471000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1212000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1683000000,\n
+        \   \"costAndExpenses\": 6182000000,\n    \"interestIncome\": 69000000,\n
+        \   \"interestExpense\": 8000000,\n    \"depreciationAndAmortization\": 113000000,\n
+        \   \"ebitda\": 214000000,\n    \"ebitdaratio\": 0.03447720315772515,\n    \"operatingIncome\":
+        -1000000,\n    \"operatingIncomeRatio\": -0.00016110842597067828,\n    \"totalOtherIncomeExpensesNet\":
+        93000000,\n    \"incomeBeforeTax\": 92000000,\n    \"incomeBeforeTaxRatio\":
+        0.014821975189302401,\n    \"incomeTaxExpense\": 24000000,\n    \"netIncome\":
+        69000000,\n    \"netIncomeRatio\": 0.011116481391976801,\n    \"eps\": 0.003393,\n
+        \   \"epsdiluted\": 0.003393,\n    \"weightedAverageShsOut\": 20195336000,\n
+        \   \"weightedAverageShsOutDil\": 20354096000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746903041604/a2124888z10-k.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746903041604/a2124888z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2002-09-28\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2002-12-19\",\n
+        \   \"acceptedDate\": \"2002-12-19 17:20:21\",\n    \"calendarYear\": \"2002\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 5742000000,\n    \"costOfRevenue\":
+        4139000000,\n    \"grossProfit\": 1603000000,\n    \"grossProfitRatio\": 0.2791710205503309,\n
+        \   \"researchAndDevelopmentExpenses\": 447000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1111000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1558000000,\n
+        \   \"costAndExpenses\": 5697000000,\n    \"interestIncome\": 118000000,\n
+        \   \"interestExpense\": 11000000,\n    \"depreciationAndAmortization\": 118000000,\n
+        \   \"ebitda\": 216000000,\n    \"ebitdaratio\": 0.03761755485893417,\n    \"operatingIncome\":
+        17000000,\n    \"operatingIncomeRatio\": 0.0029606408916753742,\n    \"totalOtherIncomeExpensesNet\":
+        70000000,\n    \"incomeBeforeTax\": 87000000,\n    \"incomeBeforeTaxRatio\":
+        0.015151515151515152,\n    \"incomeTaxExpense\": 22000000,\n    \"netIncome\":
+        65000000,\n    \"netIncomeRatio\": 0.011320097526994078,\n    \"eps\": 0.003214,\n
+        \   \"epsdiluted\": 0.003214,\n    \"weightedAverageShsOut\": 19881232000,\n
+        \   \"weightedAverageShsOutDil\": 20259960000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746902007674/0001047469-02-007674-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000104746902007674/a2096490z10-k.htm\"\n
+        \ },\n  {\n    \"date\": \"2001-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2001-12-21\",\n
+        \   \"acceptedDate\": \"2001-12-21 00:00:00\",\n    \"calendarYear\": \"2001\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 5363000000,\n    \"costOfRevenue\":
+        4128000000,\n    \"grossProfit\": 1235000000,\n    \"grossProfitRatio\": 0.2302815588290136,\n
+        \   \"researchAndDevelopmentExpenses\": 441000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1138000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1579000000,\n
+        \   \"costAndExpenses\": 5707000000,\n    \"interestIncome\": 218000000,\n
+        \   \"interestExpense\": 16000000,\n    \"depreciationAndAmortization\": 102000000,\n
+        \   \"ebitda\": 78000000,\n    \"ebitdaratio\": 0.014544098452358755,\n    \"operatingIncome\":
+        -344000000,\n    \"operatingIncomeRatio\": -0.06414320343091554,\n    \"totalOtherIncomeExpensesNet\":
+        292000000,\n    \"incomeBeforeTax\": -52000000,\n    \"incomeBeforeTaxRatio\":
+        -0.009696065634905836,\n    \"incomeTaxExpense\": -15000000,\n    \"netIncome\":
+        -25000000,\n    \"netIncomeRatio\": -0.004661570016781652,\n    \"eps\": -0.00125,\n
+        \   \"epsdiluted\": -0.00125,\n    \"weightedAverageShsOut\": 19354328000,\n
+        \   \"weightedAverageShsOutDil\": 19354328000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205701544436/a2066171z10-k405.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205701544436/a2066171z10-k405.htm\"\n
+        \ },\n  {\n    \"date\": \"2000-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"2000-12-14\",\n
+        \   \"acceptedDate\": \"2000-12-14 00:00:00\",\n    \"calendarYear\": \"2000\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 7983000000,\n    \"costOfRevenue\":
+        5817000000,\n    \"grossProfit\": 2166000000,\n    \"grossProfitRatio\": 0.27132656895903795,\n
+        \   \"researchAndDevelopmentExpenses\": 380000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1166000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1546000000,\n
+        \   \"costAndExpenses\": 7363000000,\n    \"interestIncome\": 210000000,\n
+        \   \"interestExpense\": 21000000,\n    \"depreciationAndAmortization\": 84000000,\n
+        \   \"ebitda\": 1197000000,\n    \"ebitdaratio\": 0.14994363021420518,\n    \"operatingIncome\":
+        522000000,\n    \"operatingIncomeRatio\": 0.06538895152198422,\n    \"totalOtherIncomeExpensesNet\":
+        570000000,\n    \"incomeBeforeTax\": 1092000000,\n    \"incomeBeforeTaxRatio\":
+        0.13679068019541527,\n    \"incomeTaxExpense\": 306000000,\n    \"netIncome\":
+        786000000,\n    \"netIncomeRatio\": 0.09845922585494175,\n    \"eps\": 0.043214,\n
+        \   \"epsdiluted\": 0.038929,\n    \"weightedAverageShsOut\": 18175808000,\n
+        \   \"weightedAverageShsOutDil\": 20178144000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205700053623/0000912057-00-053623-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205700053623/a2032880z10-k.txt\"\n
+        \ },\n  {\n    \"date\": \"1999-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1999-12-22\",\n
+        \   \"acceptedDate\": \"1999-12-22 00:00:00\",\n    \"calendarYear\": \"1999\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 6134000000,\n    \"costOfRevenue\":
+        4438000000,\n    \"grossProfit\": 1696000000,\n    \"grossProfitRatio\": 0.2764916856863384,\n
+        \   \"researchAndDevelopmentExpenses\": 314000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        996000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1310000000,\n
+        \   \"costAndExpenses\": 5748000000,\n    \"interestIncome\": 144000000,\n
+        \   \"interestExpense\": 47000000,\n    \"depreciationAndAmortization\": 85000000,\n
+        \   \"ebitda\": 808000000,\n    \"ebitdaratio\": 0.1317248125203782,\n    \"operatingIncome\":
+        359000000,\n    \"operatingIncomeRatio\": 0.05852624714704923,\n    \"totalOtherIncomeExpensesNet\":
+        317000000,\n    \"incomeBeforeTax\": 676000000,\n    \"incomeBeforeTaxRatio\":
+        0.11020541245516792,\n    \"incomeTaxExpense\": 75000000,\n    \"netIncome\":
+        601000000,\n    \"netIncomeRatio\": 0.09797848059993479,\n    \"eps\": 0.0375,\n
+        \   \"epsdiluted\": 0.032232,\n    \"weightedAverageShsOut\": 16033584000,\n
+        \   \"weightedAverageShsOutDil\": 19506368000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000091205799010244/0000912057-99-010244-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000912057-99-010244.txt\"\n
+        \ },\n  {\n    \"date\": \"1998-09-25\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1998-12-23\",\n
+        \   \"acceptedDate\": \"1998-12-23 00:00:00\",\n    \"calendarYear\": \"1998\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 5941000000,\n    \"costOfRevenue\":
+        4462000000,\n    \"grossProfit\": 1479000000,\n    \"grossProfitRatio\": 0.24894798855411546,\n
+        \   \"researchAndDevelopmentExpenses\": 310000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        908000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1218000000,\n
+        \   \"costAndExpenses\": 5680000000,\n    \"interestIncome\": 100000000,\n
+        \   \"interestExpense\": 62000000,\n    \"depreciationAndAmortization\": 111000000,\n
+        \   \"ebitda\": 502000000,\n    \"ebitdaratio\": 0.08449755933344555,\n    \"operatingIncome\":
+        261000000,\n    \"operatingIncomeRatio\": 0.04393199798013803,\n    \"totalOtherIncomeExpensesNet\":
+        68000000,\n    \"incomeBeforeTax\": 329000000,\n    \"incomeBeforeTaxRatio\":
+        0.05537788251136173,\n    \"incomeTaxExpense\": 20000000,\n    \"netIncome\":
+        309000000,\n    \"netIncomeRatio\": 0.05201144588453122,\n    \"eps\": 0.020893,\n
+        \   \"epsdiluted\": 0.01875,\n    \"weightedAverageShsOut\": 14781088000,\n
+        \   \"weightedAverageShsOutDil\": 18806704000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1997-09-26\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1997-12-05\",\n    \"acceptedDate\": \"1997-12-05 00:00:00\",\n    \"calendarYear\":
+        \"1997\",\n    \"period\": \"FY\",\n    \"revenue\": 7081000000,\n    \"costOfRevenue\":
+        5713000000,\n    \"grossProfit\": 1368000000,\n    \"grossProfitRatio\": 0.19319305182883773,\n
+        \   \"researchAndDevelopmentExpenses\": 860000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1286000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 2146000000,\n
+        \   \"costAndExpenses\": 7859000000,\n    \"interestIncome\": 82000000,\n
+        \   \"interestExpense\": 71000000,\n    \"depreciationAndAmortization\": 118000000,\n
+        \   \"ebitda\": -856000000,\n    \"ebitdaratio\": -0.12088688038412654,\n
+        \   \"operatingIncome\": -1070000000,\n    \"operatingIncomeRatio\": -0.15110860048015817,\n
+        \   \"totalOtherIncomeExpensesNet\": 25000000,\n    \"incomeBeforeTax\": -1045000000,\n
+        \   \"incomeBeforeTaxRatio\": -0.14757802570258438,\n    \"incomeTaxExpense\":
+        0,\n    \"netIncome\": -1045000000,\n    \"netIncomeRatio\": -0.14757802570258438,\n
+        \   \"eps\": -0.074018,\n    \"epsdiluted\": -0.074018,\n    \"weightedAverageShsOut\":
+        14118944000,\n    \"weightedAverageShsOutDil\": 14118944000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/320193/000104746997006960/0001047469-97-006960-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0001047469-97-006960.txt\"\n
+        \ },\n  {\n    \"date\": \"1996-09-27\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1996-12-19\",\n
+        \   \"acceptedDate\": \"1996-12-19 00:00:00\",\n    \"calendarYear\": \"1996\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 9833000000,\n    \"costOfRevenue\":
+        8865000000,\n    \"grossProfit\": 968000000,\n    \"grossProfitRatio\": 0.09844401505135768,\n
+        \   \"researchAndDevelopmentExpenses\": 604000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1568000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 2172000000,\n
+        \   \"costAndExpenses\": 11037000000,\n    \"interestIncome\": 60000000,\n
+        \   \"interestExpense\": 60000000,\n    \"depreciationAndAmortization\": 156000000,\n
+        \   \"ebitda\": -1079000000,\n    \"ebitdaratio\": -0.10973253330621377,\n
+        \   \"operatingIncome\": -1383000000,\n    \"operatingIncomeRatio\": -0.14064883555374758,\n
+        \   \"totalOtherIncomeExpensesNet\": 88000000,\n    \"incomeBeforeTax\": -1295000000,\n
+        \   \"incomeBeforeTaxRatio\": -0.1316993796399878,\n    \"incomeTaxExpense\":
+        -479000000,\n    \"netIncome\": -816000000,\n    \"netIncomeRatio\": -0.08298586392759076,\n
+        \   \"eps\": -0.058839,\n    \"epsdiluted\": -0.058839,\n    \"weightedAverageShsOut\":
+        13858208000,\n    \"weightedAverageShsOutDil\": 13858208000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/320193/000032019396000023/0000320193-96-000023-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-96-000023.txt\"\n
+        \ },\n  {\n    \"date\": \"1995-09-29\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1995-12-19\",\n
+        \   \"acceptedDate\": \"1995-12-19 00:00:00\",\n    \"calendarYear\": \"1995\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 11062000000,\n    \"costOfRevenue\":
+        8204000000,\n    \"grossProfit\": 2858000000,\n    \"grossProfitRatio\": 0.25836195986259264,\n
+        \   \"researchAndDevelopmentExpenses\": 614000000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1583000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 2197000000,\n
+        \   \"costAndExpenses\": 10401000000,\n    \"interestIncome\": 100000000,\n
+        \   \"interestExpense\": 48000000,\n    \"depreciationAndAmortization\": 127000000,\n
+        \   \"ebitda\": 849000000,\n    \"ebitdaratio\": 0.07674923160368831,\n    \"operatingIncome\":
+        684000000,\n    \"operatingIncomeRatio\": 0.061833303200144636,\n    \"totalOtherIncomeExpensesNet\":
+        -10000000,\n    \"incomeBeforeTax\": 674000000,\n    \"incomeBeforeTaxRatio\":
+        0.06092930753932381,\n    \"incomeTaxExpense\": 250000000,\n    \"netIncome\":
+        424000000,\n    \"netIncomeRatio\": 0.03832941601880311,\n    \"eps\": 0.030804,\n
+        \   \"epsdiluted\": 0.030804,\n    \"weightedAverageShsOut\": 13781264000,\n
+        \   \"weightedAverageShsOutDil\": 13781264000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019395000016/0000320193-95-000016-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-95-000016.txt\"\n
+        \ },\n  {\n    \"date\": \"1994-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1994-12-13\",\n
+        \   \"acceptedDate\": \"1994-12-13 00:00:00\",\n    \"calendarYear\": \"1994\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 9188748000,\n    \"costOfRevenue\":
+        6844915000,\n    \"grossProfit\": 2343833000,\n    \"grossProfitRatio\": 0.25507642608111575,\n
+        \   \"researchAndDevelopmentExpenses\": 564303000,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1384111000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 1948414000,\n
+        \   \"costAndExpenses\": 8793329000,\n    \"interestIncome\": 43284000,\n
+        \   \"interestExpense\": 39653000,\n    \"depreciationAndAmortization\": 167958000,\n
+        \   \"ebitda\": 707897000,\n    \"ebitdaratio\": 0.07703954880469026,\n    \"operatingIncome\":
+        522274000,\n    \"operatingIncomeRatio\": 0.05683842891327524,\n    \"totalOtherIncomeExpensesNet\":
+        -21988000,\n    \"incomeBeforeTax\": 500286000,\n    \"incomeBeforeTaxRatio\":
+        0.05444550225993792,\n    \"incomeTaxExpense\": 190108000,\n    \"netIncome\":
+        310178000,\n    \"netIncomeRatio\": 0.03375628540471455,\n    \"eps\": 0.023304,\n
+        \   \"epsdiluted\": 0.023304,\n    \"weightedAverageShsOut\": 13298320000,\n
+        \   \"weightedAverageShsOutDil\": 13306720000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/320193/000032019394000016/0000320193-94-000016-index.html\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/320193/0000320193-94-000016.txt\"\n
+        \ },\n  {\n    \"date\": \"1993-09-30\",\n    \"symbol\": \"AAPL\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\": \"1993-09-30\",\n
+        \   \"acceptedDate\": \"1993-09-29 20:00:00\",\n    \"calendarYear\": \"1993\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 7977000000,\n    \"costOfRevenue\":
+        5082700000,\n    \"grossProfit\": 2894300000,\n    \"grossProfitRatio\": 0.3628306380844929,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        2617800000,\n    \"otherExpenses\": 166100000,\n    \"operatingExpenses\":
+        2783900000,\n    \"costAndExpenses\": 7866600000,\n    \"interestIncome\":
+        0,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\": 166100000,\n
+        \   \"ebitda\": 305800000,\n    \"ebitdaratio\": 0.038335213739501064,\n    \"operatingIncome\":
+        110400000,\n    \"operatingIncomeRatio\": 0.013839789394509213,\n    \"totalOtherIncomeExpensesNet\":
+        29300000,\n    \"incomeBeforeTax\": 139700000,\n    \"incomeBeforeTaxRatio\":
+        0.01751284944214617,\n    \"incomeTaxExpense\": 53100000,\n    \"netIncome\":
+        86600000,\n    \"netIncomeRatio\": 0.010856211608374076,\n    \"eps\": 0.006607,\n
+        \   \"epsdiluted\": 0.006607,\n    \"weightedAverageShsOut\": 13107027027,\n
+        \   \"weightedAverageShsOutDil\": 13107027027,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1992-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1992-09-30\",\n    \"acceptedDate\": \"1992-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1992\",\n    \"period\": \"FY\",\n    \"revenue\": 7086500000,\n    \"costOfRevenue\":
+        3774200000,\n    \"grossProfit\": 3312300000,\n    \"grossProfitRatio\": 0.46740986382558386,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        2289400000,\n    \"otherExpenses\": 217200000,\n    \"operatingExpenses\":
+        2506600000,\n    \"costAndExpenses\": 6280800000,\n    \"interestIncome\":
+        0,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\": 217200000,\n
+        \   \"ebitda\": 1072700000,\n    \"ebitdaratio\": 0.15137232766527906,\n    \"operatingIncome\":
+        805700000,\n    \"operatingIncomeRatio\": 0.11369505397586961,\n    \"totalOtherIncomeExpensesNet\":
+        49800000,\n    \"incomeBeforeTax\": 855500000,\n    \"incomeBeforeTaxRatio\":
+        0.12072250052917519,\n    \"incomeTaxExpense\": 325100000,\n    \"netIncome\":
+        530400000,\n    \"netIncomeRatio\": 0.07484653919424257,\n    \"eps\": 0.03875,\n
+        \   \"epsdiluted\": 0.03875,\n    \"weightedAverageShsOut\": 13687741935,\n
+        \   \"weightedAverageShsOutDil\": 13687741935,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1991-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1991-09-30\",\n    \"acceptedDate\": \"1991-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1991\",\n    \"period\": \"FY\",\n    \"revenue\": 6308800000,\n    \"costOfRevenue\":
+        3109700000,\n    \"grossProfit\": 3199100000,\n    \"grossProfitRatio\": 0.5070853411108294,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        2547400000,\n    \"otherExpenses\": 204400000,\n    \"operatingExpenses\":
+        2751800000,\n    \"costAndExpenses\": 5861500000,\n    \"interestIncome\":
+        0,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\": 204400000,\n
+        \   \"ebitda\": 704100000,\n    \"ebitdaratio\": 0.11160601065178798,\n    \"operatingIncome\":
+        447300000,\n    \"operatingIncomeRatio\": 0.07090096373319807,\n    \"totalOtherIncomeExpensesNet\":
+        52400000,\n    \"incomeBeforeTax\": 499700000,\n    \"incomeBeforeTaxRatio\":
+        0.07920682221658636,\n    \"incomeTaxExpense\": 189900000,\n    \"netIncome\":
+        309800000,\n    \"netIncomeRatio\": 0.049106010651787976,\n    \"eps\": 0.023036,\n
+        \   \"epsdiluted\": 0.023036,\n    \"weightedAverageShsOut\": 13448682171,\n
+        \   \"weightedAverageShsOutDil\": 13448682171,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1990-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1990-09-30\",\n    \"acceptedDate\": \"1990-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1990\",\n    \"period\": \"FY\",\n    \"revenue\": 5558400000,\n    \"costOfRevenue\":
+        2403500000,\n    \"grossProfit\": 3154900000,\n    \"grossProfitRatio\": 0.5675913932066782,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        2240200000,\n    \"otherExpenses\": 202700000,\n    \"operatingExpenses\":
+        2442900000,\n    \"costAndExpenses\": 4846400000,\n    \"interestIncome\":
+        0,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\": 202700000,\n
+        \   \"ebitda\": 981200000,\n    \"ebitdaratio\": 0.17652561888313184,\n    \"operatingIncome\":
+        712000000,\n    \"operatingIncomeRatio\": 0.1280944156591825,\n    \"totalOtherIncomeExpensesNet\":
+        66500000,\n    \"incomeBeforeTax\": 778500000,\n    \"incomeBeforeTaxRatio\":
+        0.1400582901554404,\n    \"incomeTaxExpense\": 303600000,\n    \"netIncome\":
+        474900000,\n    \"netIncomeRatio\": 0.08543825561312608,\n    \"eps\": 0.03375,\n
+        \   \"epsdiluted\": 0.03375,\n    \"weightedAverageShsOut\": 14071111111,\n
+        \   \"weightedAverageShsOutDil\": 14071111111,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1989-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1989-09-30\",\n    \"acceptedDate\": \"1989-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1989\",\n    \"period\": \"FY\",\n    \"revenue\": 5284000000,\n    \"costOfRevenue\":
+        2570000000,\n    \"grossProfit\": 2714000000,\n    \"grossProfitRatio\": 0.5136260408781226,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1954900000,\n    \"otherExpenses\": 124800000,\n    \"operatingExpenses\":
+        2079700000,\n    \"costAndExpenses\": 4649700000,\n    \"interestIncome\":
+        0,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\": 124800000,\n
+        \   \"ebitda\": 869100000,\n    \"ebitdaratio\": 0.1644776684330053,\n    \"operatingIncome\":
+        634300000,\n    \"operatingIncomeRatio\": 0.12004163512490537,\n    \"totalOtherIncomeExpensesNet\":
+        110000000,\n    \"incomeBeforeTax\": 744300000,\n    \"incomeBeforeTaxRatio\":
+        0.14085919757759274,\n    \"incomeTaxExpense\": 290300000,\n    \"netIncome\":
+        454000000,\n    \"netIncomeRatio\": 0.08591975775927328,\n    \"eps\": 0.031607,\n
+        \   \"epsdiluted\": 0.031607,\n    \"weightedAverageShsOut\": 14363841808,\n
+        \   \"weightedAverageShsOutDil\": 14363841808,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1988-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1988-09-30\",\n    \"acceptedDate\": \"1988-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1988\",\n    \"period\": \"FY\",\n    \"revenue\": 4071400000,\n    \"costOfRevenue\":
+        1913200000,\n    \"grossProfit\": 2158200000,\n    \"grossProfitRatio\": 0.5300879304416172,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        1460200000,\n    \"otherExpenses\": 77700000,\n    \"operatingExpenses\":
+        1537900000,\n    \"costAndExpenses\": 3451100000,\n    \"interestIncome\":
+        0,\n    \"interestExpense\": 0,\n    \"depreciationAndAmortization\": 77700000,\n
+        \   \"ebitda\": 733900000,\n    \"ebitdaratio\": 0.18025740531512502,\n    \"operatingIncome\":
+        620300000,\n    \"operatingIncomeRatio\": 0.15235545512600088,\n    \"totalOtherIncomeExpensesNet\":
+        35900000,\n    \"incomeBeforeTax\": 656200000,\n    \"incomeBeforeTaxRatio\":
+        0.16117306086358502,\n    \"incomeTaxExpense\": 255900000,\n    \"netIncome\":
+        400300000,\n    \"netIncomeRatio\": 0.09831998821044358,\n    \"eps\": 0.0275,\n
+        \   \"epsdiluted\": 0.0275,\n    \"weightedAverageShsOut\": 14556363636,\n
+        \   \"weightedAverageShsOutDil\": 14556363636,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1987-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1987-09-30\",\n    \"acceptedDate\": \"1987-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1987\",\n    \"period\": \"FY\",\n    \"revenue\": 2661100000,\n    \"costOfRevenue\":
+        1225700000,\n    \"grossProfit\": 1435400000,\n    \"grossProfitRatio\": 0.5394009995866371,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        993400000,\n    \"otherExpenses\": 70500000,\n    \"operatingExpenses\": 1063900000,\n
+        \   \"costAndExpenses\": 2289600000,\n    \"interestIncome\": 0,\n    \"interestExpense\":
+        0,\n    \"depreciationAndAmortization\": 70500000,\n    \"ebitda\": 480900000,\n
+        \   \"ebitdaratio\": 0.18071474202397506,\n    \"operatingIncome\": 371500000,\n
+        \   \"operatingIncomeRatio\": 0.13960392318965842,\n    \"totalOtherIncomeExpensesNet\":
+        38900000,\n    \"incomeBeforeTax\": 410400000,\n    \"incomeBeforeTaxRatio\":
+        0.1542219382961933,\n    \"incomeTaxExpense\": 192900000,\n    \"netIncome\":
+        217500000,\n    \"netIncomeRatio\": 0.08173311788358198,\n    \"eps\": 0.014821,\n
+        \   \"epsdiluted\": 0.014821,\n    \"weightedAverageShsOut\": 14674698795,\n
+        \   \"weightedAverageShsOutDil\": 14674698795,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1986-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1986-09-30\",\n    \"acceptedDate\": \"1986-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1986\",\n    \"period\": \"FY\",\n    \"revenue\": 1901900000,\n    \"costOfRevenue\":
+        840000000,\n    \"grossProfit\": 1061900000,\n    \"grossProfitRatio\": 0.5583364004416635,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        737300000,\n    \"otherExpenses\": 51100000,\n    \"operatingExpenses\": 788400000,\n
+        \   \"costAndExpenses\": 1628400000,\n    \"interestIncome\": 0,\n    \"interestExpense\":
+        0,\n    \"depreciationAndAmortization\": 51100000,\n    \"ebitda\": 360900000,\n
+        \   \"ebitdaratio\": 0.1897576108102424,\n    \"operatingIncome\": 273500000,\n
+        \   \"operatingIncomeRatio\": 0.14380356485619644,\n    \"totalOtherIncomeExpensesNet\":
+        36300000,\n    \"incomeBeforeTax\": 309800000,\n    \"incomeBeforeTaxRatio\":
+        0.16288974183711025,\n    \"incomeTaxExpense\": 155800000,\n    \"netIncome\":
+        154000000,\n    \"netIncomeRatio\": 0.08097165991902834,\n    \"eps\": 0.010714,\n
+        \   \"epsdiluted\": 0.010714,\n    \"weightedAverageShsOut\": 14373333333,\n
+        \   \"weightedAverageShsOutDil\": 14373333333,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  },\n  {\n    \"date\": \"1985-09-30\",\n    \"symbol\": \"AAPL\",\n
+        \   \"reportedCurrency\": \"USD\",\n    \"cik\": \"0000320193\",\n    \"fillingDate\":
+        \"1985-09-30\",\n    \"acceptedDate\": \"1985-09-29 20:00:00\",\n    \"calendarYear\":
+        \"1985\",\n    \"period\": \"FY\",\n    \"revenue\": 1918300000,\n    \"costOfRevenue\":
+        1076000000,\n    \"grossProfit\": 842300000,\n    \"grossProfitRatio\": 0.43908669134129175,\n
+        \   \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        0,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        653200000,\n    \"otherExpenses\": 41800000,\n    \"operatingExpenses\": 695000000,\n
+        \   \"costAndExpenses\": 1771000000,\n    \"interestIncome\": 0,\n    \"interestExpense\":
+        0,\n    \"depreciationAndAmortization\": 41800000,\n    \"ebitda\": 161800000,\n
+        \   \"ebitdaratio\": 0.08434551425741542,\n    \"operatingIncome\": 147300000,\n
+        \   \"operatingIncomeRatio\": 0.07678673825783246,\n    \"totalOtherIncomeExpensesNet\":
+        -27300000,\n    \"incomeBeforeTax\": 120000000,\n    \"incomeBeforeTaxRatio\":
+        0.06255538758275557,\n    \"incomeTaxExpense\": 58800000,\n    \"netIncome\":
+        61200000,\n    \"netIncomeRatio\": 0.031903247667205335,\n    \"eps\": 0.004464,\n
+        \   \"epsdiluted\": 0.004464,\n    \"weightedAverageShsOut\": 13708800000,\n
+        \   \"weightedAverageShsOutDil\": 13708800000,\n    \"link\": \"\",\n    \"finalLink\":
+        \"\"\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '55276'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 12 Apr 2023 14:40:19 GMT
+      ETag:
+      - W/"d7ec-q7vlghftX9Wxiob6DYbt5Hv2eOc"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -5,10 +5,9 @@
     events             show economic calendar                                                         [Nasdaq]
     edebt              show external debt statistics for various countries                            [Wikipedia]
 
-    rtps               real-time performance sectors                                                  [AlphaVantage]
     valuation          valuation of sectors, industry, country                                        [Finviz]
     performance        performance of sectors, industry, country                                      [Finviz]
-    spectrum           spectrum of sectors, industry, country                                         [Finviz]
+    usdli              Compare the USD Liquidity Index against a choice of indices                    [FRED]
 
 Country Performance:
     gdp                Show nominal Gross Domestic Product (GDP)                                      [OECD]
@@ -24,7 +23,7 @@ Country Performance:
 
 Databases:
     macro              collect macro data for a country or countries
-    treasury           obtain U.S. treasury rates                                                     [EconDB]
+    treasury           obtain U.S. treasury rates                                                     [FED]
     fred               collect macro data from FRED based on a series ID                              [FRED]
     index              find and plot any (major) index on the market                                  [YahooFinance]
 

@@ -1,0 +1,89 @@
+crypto
+onchain
+
+# hr
+
+btccp
+btccp --since 2012-01-01 --until 2022-01-01
+
+btcct
+btcct --since 2012-01-01 --until 2022-01-01
+
+gwei
+
+whales
+whales --address # this is bugged
+whales --min 5000000 --limit 3 --sort amount
+whales --sort amount_usd -r
+
+# topledger
+topledger -o tensor -q daily-transactions
+topledger -o tensor -q weekly-users
+
+baas -c ETH -vs BTC -l 10 -s date -r
+
+
+lt
+lt --kind time --vs ${crypto=ETH} --limit 3 --days 7 --sort tradeAmount
+
+dvcp --coin ${crypto=ETH}
+dvcp --coin ${crypto=ETH} --limit 3 --vs ${crypto=BTC} --days 20 --sort high # limit is bugged
+
+tv --coin ${crypto=ETH}
+tv --coin ${crypto=ETH} --limit 3 --vs ${crypto=BTC} --sort tradeAmount
+
+ueat
+ueat --limit 3 --sort transactions --interval month
+
+# ttcp BUGGED
+ttcp
+ttcp Bitox --limit 3
+ttcp Bitox --days 10
+ttcp Bitox --sort tradeAmount
+
+# baas BROKEN
+
+# dt
+
+# ds
+
+# tvl
+
+# address
+address 0x71C7656EC7ab88b098defB751B7401B5f6d8976F
+
+# top
+top
+top --limit 3 --sort price
+
+# balance
+balance --sort index -r
+
+# hist
+hist --sort value -r --limit 20
+
+# loads ECR20 token
+address 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 -t
+
+# info
+info --social
+
+# holders
+holders --sort share -r
+
+# th
+th --sort value --reverse
+
+# prices
+prices --sort volumeConverted --reverse
+
+# loads transaction hash
+address 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6 -tx
+
+hr -i 1w
+
+tx
+
+help
+reset
+exit

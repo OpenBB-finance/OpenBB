@@ -1,37 +1,42 @@
 import asyncio
 import re
 from datetime import date, datetime, timedelta
-from typing import Any, List
+from typing import List
 from unittest.mock import patch
 
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 from streamlit.delta_generator import DeltaGenerator
 
 from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.core.session.current_system import set_system_variable
+from openbb_terminal.dashboards.stream import (
+    common_vars,
+    streamlit_helpers as st_helpers,
+)
+from openbb_terminal.dashboards.stream.streamlit_helpers import load_state
 from openbb_terminal.rich_config import console
 
 # Suppressing sdk logs
 set_system_variable("LOGGING_SUPPRESS", True)
 
-# Import the OpenBB SDK
-# pylint: disable=wrong-import-position
-from openbb_terminal.sdk import openbb  # noqa: E402
 
 pd.options.plotting.backend = "plotly"
+
 st.set_page_config(
     layout="wide",
     page_title="Indicators",
     initial_sidebar_state="expanded",
 )
+st_helpers.set_current_page("Indicators")
+st_helpers.set_css()
 
 logger = st.empty()
 page_title = st.empty()
-plotly_chart = st.empty()
-
+plotly_chart, table_container = st.columns([4, 1.5])
 
 TA_CLASS = PlotlyTA()
 indicators_opts = sorted(
@@ -39,7 +44,6 @@ indicators_opts = sorted(
     + TA_CLASS.ma_mode
 )
 
-interval_opts = ["5m", "15m", "30m", "1d"]
 source_opts = [
     "AlphaVantage",
     "YahooFinance",
@@ -49,11 +53,6 @@ source_opts = [
     "DataBento",
 ]
 MAIN_LOOP: asyncio.AbstractEventLoop = None  # type: ignore
-
-
-def load_state(name: str, default: Any):
-    if name not in st.session_state:
-        st.session_state[name] = default
 
 
 def special_st(text: str):
@@ -103,7 +102,7 @@ async def plot_indicators(
         main_ticker,
         candles=not tickers,
         volume=not tickers,
-        volume_ticks_x=5,
+        volume_ticks_x=7,
     )
 
     fig.update_traces(showlegend=False)
@@ -150,31 +149,36 @@ async def plot_indicators(
             showline=False,
             zeroline=False,
             title_text="% Change",
-            ticksuffix=f"{'':>20}",
             side="left",
+            title_standoff=5,
             tickformat=".2%",
             overlaying="y",
         )
 
     for annotation in fig.select_annotations(
-        selector=dict(xanchor="left", x=0, xref="paper")
+        selector=lambda x: hasattr(x, "xshift") and x.xshift < 0
     ):
         annotation.xshift += -5
-
-    fig.hide_holidays()
 
     y_min, y_max = data["Low"].min().min(), data["High"].max().max()
     y_range = y_max - y_min
     y_min -= y_range * 0.05
     y_max += y_range * 0.05
 
-    yaxis = "yaxis" if tickers else "yaxis2"
-
     fig.update_layout(
-        {yaxis: dict(range=[y_min, y_max], autorange=False)},
+        yaxis=dict(range=[y_min, y_max], autorange=False),
         title=dict(x=0.5, xanchor="center", yanchor="top", y=0.99, text=title),
         showlegend=True,
-        height=650,
+        height=550 + (20 * rows),
+        legend=dict(
+            bgcolor="rgba(0,0,0,0.5)",
+            bordercolor="#F5EFF3",
+            borderwidth=1,
+            x=0.01,
+            y=0.01,
+            xanchor="left",
+            yanchor="bottom",
+        ),
     )
 
     return fig
@@ -257,33 +261,6 @@ class Handler:
                 fig = await plot_indicators(data, tickers_l, indicators)
 
                 with plotly_chart.container():
-                    last_day = data.loc[data.index.date == data.index.date[-1]]
-
-                    if not last_day.empty:
-                        last_day.index = pd.to_datetime(last_day.index).date
-                        weeks52 = data.loc[
-                            data.index.date >= data.index.date[-1] - timedelta(weeks=52)
-                        ]
-                        stats_df = pd.DataFrame(
-                            {
-                                "Open": last_day["Open"].head(1).values[0],
-                                "High": last_day["High"].max(),
-                                "Low": last_day["Low"].min(),
-                                "Close": last_day["Close"].tail(1).values[0],
-                                "Volume": last_day["Volume"].sum(),
-                                "52 week high": weeks52["High"].values.max(),
-                                "52 week low": weeks52["Low"].values.min(),
-                            },
-                            index=[
-                                last_day.tail(1).index.values[0].strftime("%Y-%m-%d")
-                            ],
-                        )
-                        st.table(
-                            stats_df.style.format(
-                                {"Volume": "{:,.0f}"}, precision=2, thousands=","
-                            )
-                        )
-
                     dt_now = datetime.now().strftime("%Y%m%d_%H%M%S")
                     filename = f"{dt_now}_{main_ticker}_technical_analysis"
                     fig.show(external=True, bar_width=0.00001)
@@ -307,8 +284,41 @@ class Handler:
                                 format="png",
                                 filename=filename,
                             ),
+                            **common_vars.PLOTLY_CONFIG,
                         ),
                     )
+                    components.html(common_vars.PLOTLY_MODEBAR)
+
+                with table_container:
+                    last_day = data.loc[data.index.date == data.index.date[-1]]
+
+                    if not last_day.empty:
+                        last_day.index = pd.to_datetime(last_day.index).date
+                        weeks52 = data.loc[
+                            data.index.date >= data.index.date[-1] - timedelta(weeks=52)
+                        ]
+                        stats_df = pd.DataFrame(
+                            {
+                                "Open": last_day["Open"].head(1).values[0],
+                                "High": last_day["High"].max(),
+                                "Low": last_day["Low"].min(),
+                                "Close": last_day["Close"].tail(1).values[0],
+                                "Volume": last_day["Volume"].sum(),
+                                "52w high": weeks52["High"].values.max(),
+                                "52w low": weeks52["Low"].values.min(),
+                            },
+                            index=[
+                                last_day.tail(1).index.values[0].strftime("%Y-%m-%d")
+                            ],
+                        )
+                        stats_df["Volume"] = stats_df["Volume"].apply(
+                            lambda x: f"{x:,.0f}"
+                        )
+                        st.table(
+                            stats_df.transpose().style.format(
+                                precision=2, thousands=","
+                            )
+                        )
 
     async def load_ticker_data(
         self, ticker: str, interval: str, start: date, end: date, source: str
@@ -321,7 +331,7 @@ class Handler:
             kwargs.update(dict(interval=int(interval.replace("m", ""))))  # type: ignore
 
         with patch.object(console, "print", special_st):
-            df = openbb.stocks.load(ticker, **kwargs, source=source)
+            df = common_vars.openbb.stocks.load(ticker, **kwargs, source=source)
 
         if df.empty:
             with logger.container():
@@ -423,6 +433,11 @@ class Handler:
                 "length": st.session_state[f"{indicator}_length"]
             }
 
+    async def on_update(self):
+        """Handle the update button"""
+        st.session_state["indicators_dfs"] = {}
+        await self.async_on_ticker_change()
+
     async def run(self):
         """Run the app"""
 
@@ -457,7 +472,7 @@ class Handler:
                 "Interval",
                 index=3,
                 key="indicators_interval",
-                options=interval_opts,
+                options=common_vars.INTERVAL_OPTS,
                 on_change=self.on_ticker_change,
             )
         with indicators_sideopts:
@@ -470,7 +485,8 @@ class Handler:
             )
 
         st.sidebar.markdown("""---""")
-        if st.sidebar.button("Plot Data"):
+        plot_data, reset_data = st.sidebar.columns([1, 1])
+        if plot_data.button("Plot", use_container_width=True):
             if ticker:
                 await self.handle_changes(
                     start_date,
@@ -481,6 +497,15 @@ class Handler:
             else:
                 with logger.container():
                     logger.error("Please enter a ticker", icon="❗")
+        if reset_data.button("Update", use_container_width=True):
+            await self.on_update()
+            if ticker:
+                await self.handle_changes(
+                    start_date,
+                    end_date,
+                    ticker,
+                    indicators,
+                )
 
 
 if __name__ == "__main__":

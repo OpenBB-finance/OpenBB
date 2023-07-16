@@ -351,12 +351,10 @@ class TerminalStyle:
         self, force_tight_layout: bool = True, external_axes: bool = False
     ):
         """Show chart in an interactive widget."""
-        current_user = get_current_user()
 
-        if current_user.preferences.USE_CMD_LOCATION_FIGURE:
-            self.add_cmd_source(plt.gcf())
-        if current_user.preferences.USE_WATERMARK:
-            self.add_label(plt.gcf())
+        self.add_cmd_source(plt.gcf())
+        self.add_label(plt.gcf())
+
         if force_tight_layout:
             plt.tight_layout(pad=self.tight_layout_padding)
 
@@ -375,12 +373,8 @@ class TerminalStyle:
                 height=im.height,
             )
         else:
-            if current_user.preferences.USE_ION:
-                plt.ion()
-
             fig = None
             plt.show()
-
         return fig
 
 

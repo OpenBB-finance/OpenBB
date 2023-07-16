@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      X-BLOBR-KEY:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://api.dappradar.com/4tsxo4vuhotaojtl/nfts/marketplaces/chains
+  response:
+    body:
+      string: '{"success":true,"chains":["algorand","aurora","avalanche","binance-smart-chain","celo","ethereum","flow","hedera","immutablex","loopring","moonbeam","moonriver","near","polygon","ronin","solana","stacks","tezos","theta","tron","waves","wax","zilliqa"]}'
+    headers:
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - '*'
+      Access-Control-Allow-Origin:
+      - '*'
+      Apicache-Store:
+      - memory
+      Apicache-Version:
+      - 1.6.3
+      Cache-Control:
+      - max-age=80
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '252'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Apr 2023 13:23:58 GMT
+      Etag:
+      - W/"fc-Nhjxoe6YsA2gDFImWUnsPfbWOT8"
+      Via:
+      - 1.1 4e3b2e1fa2acb7612ea516b89c06af70.cloudfront.net (CloudFront)
+      X-Amz-Apigw-Id:
+      - ECeZSF8oFiAFuUw=
+      X-Amz-Cf-Id:
+      - nFZwzVm-8bC4ArVTJqkSduPBm9Pd09grld3KqdrCHtVrUz7_Dl67ng==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Amzn-Remapped-Connection:
+      - keep-alive
+      X-Amzn-Remapped-Content-Length:
+      - '252'
+      X-Amzn-Remapped-Date:
+      - Thu, 27 Apr 2023 13:23:58 GMT
+      X-Amzn-Remapped-Server:
+      - nginx/1.23.3
+      X-Amzn-Requestid:
+      - d21ba0db-0c95-487d-a37e-8acbd04d9d81
+      X-Amzn-Trace-Id:
+      - Root=1-644a776e-9fe8578a8428221f836e8265
+      X-Blobr-Request-Id:
+      - 1682601838314911917-YXdzLWV1LXdlc3QtMQ==-96618217751b48deaad97087f1aae38f035b8ed57ee2419fab85504b992d2fb9
+      X-Blobr-Version:
+      - 2.9.0
+      X-Cache:
+      - Miss from cloudfront
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

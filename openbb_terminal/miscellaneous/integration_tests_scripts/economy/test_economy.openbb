@@ -10,87 +10,73 @@ futures -c metals --source Finviz
 futures -c meats --source Finviz
 futures -c grains --source Finviz
 futures -c softs --source Finviz
-futures -c energy -s ticker --reverse --source Finviz
 map
 map -p 1w -t world
 bigmac
 bigmac -c USA,ESP,LVA,DEU,FRA,FIN
 events
-events --country united_states -s 2022-07-07 -e 2022-07-08
-events -c spain,canada
+events --countries united_states
+events -c united_states,united_kingdom
 events -n
 edebt --limit 10
-rtps
+usdli
+usdli -o NASDAQ100
 valuation
-valuation --group sector --sortby MarketCap --reverse
+valuation --group sector
 performance
-performance -g basic_materials -s Month -a
-spectrum
-spectrum --group consumer_defensive
+performance -g basic_materials
+performance -g energy
 gdp
 rgdp
 fgdp
-debt
+debt --countries australia
+debt --raw
 cpi
 ccpi
 balance
 revenue
 spending
 trust
+trust --export csv
+trust --help
 gdp --units USD_CAP
 rgdp --units IDX
 fgdp --quarterly
-debt --start 2010-01-01 --end 2020-01-01
+debt 
 cpi --units growth_same
-ccpi --perspective FOOD
+ccpi
 balance --countries austria,belgium,canada
 revenue --countries united_states,germany,japan
 spending --perspective ENVPROT
-trust --countries belgium --start 2010-01-01
 macro
 macro -p RGDP,CPI
-macro -p URATE -c Netherlands,Germany
-macro -p URATE -c United_States  --start 2008-01-01
-macro -p GDP --countries Portugal,France,United_Kingdom,Spain,Italy,Poland --start 2000-01-10
+macro -p URATE -c Netherlands,Germany --transform TOYA
+macro -p URATE -c United_States
+macro -p GDP --countries Portugal,France,United_Kingdom,Spain,Italy,Poland
+macro --help
 treasury
 treasury --maturity 20y --type nominal
 treasury --raw
-treasury --type inflation --start 2020-01-01 --limit 10
-fred -p T10Y2Y,DFII10 -s 2019-01-01 -e 2022-01-01
+treasury --type inflation
+treasury -m 10y
+fred -p T10Y2Y,DFII10
 fred -q treasury
-fred -p T10Y2Y,FII10 -s 2005-01-01
+fred -p T10Y2Y,FII10
 fred -p T5YIEM,T10YIEM,T20YIEM,T30YIEM
-index -i nasdaq,dow_djus,sp500 -s 2005-01-01
-macro -p URATE -c Netherlands,Germany -s 2005-01-01
-index -i sp500 -s 2005-01-01
+fred -h
+index -i nasdaq,dow_djus,sp500
+macro -p URATE -c Netherlands,Germany
+index -i sp500
+index -i sp500 --raw
+index -q ftse --limit 30
 plot --y1 T10Y2Y --y2 T5YIEM
 plot --y1 T10Y2Y,T20YIEM
-rtps
 valuation
 performance
-spectrum
 fred -p DGS2,DGS5
 eval spread = DGS2 - DGS5
-qa
-summary
-normality
-unitroot --fuller_reg c --kps_reg ct
-line
-line --log
-hist
-hist -b 10
-cdf
-bw
-bw --yearly
-acf --lags 5
-qqplot
-rolling
-rolling -w 5
-spread -w 10
-quantile --window 5 --quantile 0.01
-skew --window 5
-kurtosis --window 9
-raw --limit 2 --reverse
-cusum --threshold 10 --drift 10
-decompose
+help
+..
+reset
+quit
 exit

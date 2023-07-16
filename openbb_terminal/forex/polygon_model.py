@@ -8,7 +8,7 @@ import pandas as pd
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key
-from openbb_terminal.helper_funcs import get_user_agent, request
+from openbb_terminal.helper_funcs import get_user_agent, get_user_timezone, request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unsupported-assignment-operation
@@ -77,4 +77,9 @@ def get_historical(
     historical["date"] = pd.to_datetime(historical.date, unit="ms")
     historical = historical.sort_values(by="date", ascending=True)
     historical = historical.set_index("date")
+    historical.index = (
+        historical.index.tz_localize(tz="UTC")
+        .tz_convert(get_user_timezone())
+        .tz_localize(None)
+    )
     return historical

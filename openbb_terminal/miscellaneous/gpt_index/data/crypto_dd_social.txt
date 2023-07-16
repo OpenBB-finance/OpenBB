@@ -1,0 +1,9 @@
+parent_command:crypto/dd
+usage: social
+
+Shows social media corresponding to loaded coin. You can find there name of telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.
+
+social
+Examples:
+- To view social media information for a specific coin: crypto/load <COIN>/dd/social
+- Display social media channels for a loaded cryptocurrency: crypto/dd/social

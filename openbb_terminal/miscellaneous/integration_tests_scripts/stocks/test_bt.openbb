@@ -1,0 +1,105 @@
+stocks
+load ${ticker=tsla}
+bt
+whatif
+whatif -n 2.34
+whatif 2021-01-01
+ema
+ema --spy
+ema --spy --no_bench
+ema -l 2
+emacross
+emacross -l 10 -s 3
+emacross --spy --no_bench --no_short
+rsi
+rsi -l 20 -u 80 -p 12
+rsi --spy
+rsi --no_bench --no_short
+..
+load ${ticker=tsla} --source YahooFinance
+bt
+whatif
+whatif -n 2.34
+whatif 2021-01-01
+ema
+ema --spy
+ema --spy --no_bench
+ema -l 2
+emacross
+emacross -l 10 -s 3
+emacross --spy --no_bench --no_short
+rsi
+rsi -l 20 -u 80 -p 12
+rsi --spy
+rsi --no_bench --no_short
+..
+load ${ticker=tsla}
+bt
+whatif
+whatif -n 2.34
+whatif 2021-01-01
+ema
+ema --spy
+ema --spy --no_bench
+ema -l 2
+emacross
+emacross -l 10 -s 3
+emacross --spy --no_bench --no_short
+rsi
+rsi -l 20 -u 80 -p 12
+rsi --spy
+rsi --no_bench --no_short
+..
+load ${ticker=tsla} --source AlphaVantage
+bt
+whatif
+whatif -n 2.34
+whatif 2021-01-01
+ema
+ema --spy
+ema --spy --no_bench
+ema -l 2
+emacross
+emacross -l 10 -s 3
+emacross --spy --no_bench --no_short
+rsi
+rsi -l 20 -u 80 -p 12
+rsi --spy
+rsi --no_bench --no_short
+..
+load ${ticker=tsla} --source Polygon
+bt
+whatif
+whatif -n 2.34
+whatif 2021-01-01
+ema
+ema --spy
+ema --spy --no_bench
+ema -l 2
+emacross
+emacross -l 10 -s 3
+emacross --spy --no_bench --no_short
+rsi
+rsi -l 20 -u 80 -p 12
+rsi --spy
+rsi --no_bench --no_short
+..
+load ${ticker=tsla} --source EODHD
+bt
+whatif
+whatif -n 2.34
+whatif 2021-01-01
+ema
+ema --spy
+ema --spy --no_bench
+ema -l 2
+emacross
+emacross -l 10 -s 3
+emacross --spy --no_bench --no_short
+rsi
+rsi -l 20 -u 80 -p 12
+rsi --spy
+rsi --no_bench --no_short
+help
+reset
+exit

@@ -1,0 +1,37 @@
+stocks
+options
+unu -l 2 -s Strike -r -c
+unu -l 2 -s Vol
+calc
+load aapl
+exp 0
+pcr
+info
+chains
+oi
+vol
+voi
+hist 100
+grhist 100
+greeks
+plot -x ltd -y iv
+parity -p -m 150 -M 175
+binom -s 150
+load spy
+vsurf
+load NDX --source Nasdaq
+exp 0
+chains --source Nasdaq
+chains -M -1 -m -1 -e 2025-12-19
+eodchain -d 2025-12-19
+oi
+vol
+voi
+
+hedge
+..
+
+load --help
+help
+reset
+exit

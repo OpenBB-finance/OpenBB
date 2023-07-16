@@ -11,37 +11,37 @@ Sector,MANUFACTURING
 Industry,MOTOR VEHICLES & PASSENGER CAR BODIES
 Address,"3500 DEER CREEK RD, PALO ALTO, CA, US"
 FiscalYearEnd,December
-LatestQuarter,2022-12-31
-MarketCapitalization,595.705 B
-EBITDA,17.439 B
-PERatio,49.68
+LatestQuarter,2023-03-31
+MarketCapitalization,536120885000
+EBITDA,16666000000
+PERatio,49.75
 PEGRatio,1.281
-BookValue,14.13
+BookValue,15.16
 DividendPerShare,0
 DividendYield,0
-EPS,3.79
-RevenuePerShareTTM,26.03
-ProfitMargin,0.154
-OperatingMarginTTM,0.168
-ReturnOnAssetsTTM,0.118
-ReturnOnEquityTTM,0.325
-RevenueTTM,81.462 B
-GrossProfitTTM,20.853 B
-DilutedEPSTTM,3.79
-QuarterlyEarningsGrowthYOY,0.569
-QuarterlyRevenueGrowthYOY,0.372
-AnalystTargetPrice,190.68
-TrailingPE,49.68
+EPS,3.4
+RevenuePerShareTTM,27.35
+ProfitMargin,0.137
+OperatingMarginTTM,0.148
+ReturnOnAssetsTTM,0.104
+ReturnOnEquityTTM,0.28
+RevenueTTM,86034997000
+GrossProfitTTM,20853000000
+DilutedEPSTTM,3.4
+QuarterlyEarningsGrowthYOY,-0.232
+QuarterlyRevenueGrowthYOY,0.244
+AnalystTargetPrice,181.21
+TrailingPE,49.75
 ForwardPE,28.82
 PriceToSalesRatioTTM,6.65
 PriceToBookRatio,12.42
 EVToRevenue,6.41
 EVToEBITDA,29.61
-Beta,2.03
-52WeekHigh,384.29
+Beta,2.003
+52WeekHigh,314.67
 52WeekLow,101.81
-50DayMovingAverage,150.4
-200DayMovingAverage,230.59
-SharesOutstanding,3.164 B
+50DayMovingAverage,181.18
+200DayMovingAverage,207.43
+SharesOutstanding,3169500000
 DividendDate,None
 ExDividendDate,None

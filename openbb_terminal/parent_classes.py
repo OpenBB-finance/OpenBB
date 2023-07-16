@@ -22,8 +22,13 @@ from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
+import openbb_terminal.core.session.local_model as Local
+from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
+from openbb_terminal.core.config.paths import HIST_FILE_PATH
+from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.routines_handler import read_routine
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -34,12 +39,13 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     parse_and_split_input,
     prefill_form,
+    query_LLM_local,
+    query_LLM_remote,
     screenshot,
     search_wikipedia,
     set_command_location,
     support_message,
     system_clear,
-    update_news_from_tweet_to_be_displayed,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -75,6 +81,8 @@ SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 RECORD_SESSION = False
 SESSION_RECORDED = list()
 SESSION_RECORDED_NAME = ""
+SESSION_RECORDED_DESCRIPTION = ""
+SESSION_RECORDED_TAGS = ""
 
 
 class BaseController(metaclass=ABCMeta):
@@ -99,6 +107,7 @@ class BaseController(metaclass=ABCMeta):
         "record",
         "stop",
         "screenshot",
+        "askobb",
     ]
 
     if is_auth_enabled():
@@ -184,7 +193,17 @@ class BaseController(metaclass=ABCMeta):
         self.SUPPORT_CHOICES = support_choices
 
         # Add in news options
-        news_choices = ["--term", "-t", "--sources", "-s", "--help", "-h"]
+        news_choices = [
+            "--term",
+            "-t",
+            "--sources",
+            "-s",
+            "--help",
+            "-h",
+            "--tag",
+            "--taglist",
+            "--sourcelist",
+        ]
         self.NEWS_CHOICES = {c: None for c in news_choices}
 
     def check_path(self) -> None:
@@ -243,6 +262,133 @@ class BaseController(metaclass=ABCMeta):
             return old_class.menu()
         return class_ins(*args, **kwargs).menu()
 
+    def call_askobb(self, other_args: List[str]) -> None:
+        """Accept user input as a string and return the most appropriate Terminal command"""
+        self.save_class()
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="askobb",
+            description="Accept input as a string and return the most appropriate Terminal command",
+        )
+        parser.add_argument(
+            "--prompt",
+            "-p",
+            action="store",
+            type=str,
+            nargs="+",
+            dest="question",
+            required="-h" not in other_args and "--help" not in other_args,
+            default="",
+            help="Question for Askobb LLM",
+        )
+
+        parser.add_argument(
+            "--model",
+            "-m",
+            action="store",
+            type=str,
+            dest="gpt_model",
+            required=False,
+            default="gpt-3.5-turbo",
+            choices=["gpt-3.5-turbo", "gpt-4"],
+            help="GPT Model to use for Askobb LLM (default: gpt-3.5-turbo) or gpt-4 (beta)",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
+
+        if ns_parser:
+            # check if user has passed a question with 2 or more words
+            if len(ns_parser.question) < 2:
+                console.print("[red]Please enter a prompt with more than 1 word[/red]")
+            else:
+                api_key = get_current_user().credentials.API_OPENAI_KEY
+
+                if ns_parser.gpt_model == "gpt-4" and api_key == "REPLACE_ME":
+                    console.print(
+                        "[red]GPT-4 only available with local OPENAI Key.\n[/]"
+                    )
+                    return
+
+                if api_key == "REPLACE_ME":
+                    response, source_nodes = query_LLM_remote(
+                        " ".join(ns_parser.question)
+                    )
+
+                else:
+                    if ns_parser.gpt_model != "gpt-4":
+                        console.print(
+                            "[yellow]Using local OpenAI Key"
+                            ".  Please remove from OpenBB Hub to query askobb remotely.[/]\n"
+                        )
+                    response, source_nodes = query_LLM_local(
+                        " ".join(ns_parser.question), ns_parser.gpt_model
+                    )
+
+                feedback = ""
+                if response is not None:
+                    # check that "I don't know" and "Sorry" is not the response
+                    if all(
+                        phrase not in response
+                        for phrase in [
+                            "I don't know",
+                            "Sorry",
+                            "I am not sure",
+                            "no terminal command provided",
+                            "no available",
+                            "no command provided",
+                            "no information",
+                            "does not contain",
+                            "I cannot provide",
+                        ]
+                    ):
+                        console.print(
+                            f"[green]Suggested Command:[/green] /{response}\n"
+                        )
+
+                        console.print(
+                            "[yellow]Would you like to run this command?(y/n/fb)[/yellow]"
+                        )
+                        user_response = input()
+                        if user_response == "y":
+                            self.queue.append("home/" + response)
+                        elif user_response == "n":
+                            console.print("Please refine your question and try again.")
+                        elif user_response == "fb":
+                            console.print(
+                                "\n[yellow]Please enter your feedback on askobb:[/] "
+                            )
+                            feedback = input()
+                            if feedback:
+                                console.print(
+                                    "\n[green]Thank you for your feedback![/]"
+                                )
+
+                    else:
+                        console.print(
+                            "[red]askobb could not respond with an appropriate answer.[/red]"
+                        )
+                        console.print("Please refine your question and try again.")
+
+                logger.info(
+                    "ASKOBB: %s ",
+                    json.dumps(
+                        {
+                            "Question": " ".join(ns_parser.question),
+                            "Model": ns_parser.gpt_model,
+                            "Response": response,
+                            "Nodes": str(source_nodes),
+                            "Feedback": feedback,
+                        }
+                    ),
+                )
+
     def save_class(self) -> None:
         """Save the current instance of the class to be loaded later."""
         if get_current_user().preferences.REMEMBER_CONTEXTS:
@@ -299,10 +445,9 @@ class BaseController(metaclass=ABCMeta):
         if self.queue:
             joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
             if not self.contains_keys(joined_queue):
+                queue = {"path": self.PATH, "queue": joined_queue}
                 logger.info(
-                    "QUEUE: {'path': '%s', 'queue': '%s'}",
-                    self.PATH,
-                    joined_queue,
+                    "QUEUE: %s", json.dumps(queue, default=str, ensure_ascii=False)
                 )
 
     def log_cmd_and_queue(
@@ -342,7 +487,8 @@ class BaseController(metaclass=ABCMeta):
         """
         actions = self.parse_input(an_input)
 
-        console.print()
+        if an_input and an_input != "reset":
+            console.print()
 
         # Empty command
         if len(actions) == 0:
@@ -393,7 +539,13 @@ class BaseController(metaclass=ABCMeta):
 
         self.log_queue()
 
-        if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+        if (
+            an_input
+            and an_input != "reset"
+            and (
+                not self.queue or (self.queue and self.queue[0] not in ("quit", "help"))
+            )
+        ):
             console.print()
 
         return self.queue
@@ -472,6 +624,11 @@ class BaseController(metaclass=ABCMeta):
         self.save_class()
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
+
+        if not is_local():
+            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
+            if not get_current_user().profile.remember:
+                Local.remove(HIST_FILE_PATH)
 
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
@@ -609,25 +766,50 @@ class BaseController(metaclass=ABCMeta):
             description="Start recording session into .openbb routine file",
         )
         parser.add_argument(
-            "-r",
-            "--routine",
+            "-n",
+            "--name",
             action="store",
-            dest="routine_name",
+            dest="name",
             type=str,
             default=datetime.now().strftime("%Y%m%d_%H%M%S_routine.openbb"),
             help="Routine file name to be saved.",
         )
+        parser.add_argument(
+            "-d",
+            "--description",
+            type=str,
+            dest="description",
+            help="The description of the routine",
+            default="",
+            nargs="+",
+        )
+        parser.add_argument(
+            "-t",
+            "--tags",
+            type=str,
+            dest="tags",
+            help="The tags of the routine",
+            default="",
+            nargs="+",
+        )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
+            other_args.insert(0, "-n")
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            global SESSION_RECORDED_NAME
             global RECORD_SESSION
-            if ".openbb" in ns_parser.routine_name:
-                SESSION_RECORDED_NAME = ns_parser.routine_name
-            else:
-                SESSION_RECORDED_NAME = ns_parser.routine_name + ".openbb"
+            global SESSION_RECORDED_NAME
+            global SESSION_RECORDED_DESCRIPTION
+            global SESSION_RECORDED_TAGS
+
+            SESSION_RECORDED_NAME = (
+                ns_parser.name
+                if ".openbb" in ns_parser.name
+                else ns_parser.name + ".openbb"
+            )
+
+            SESSION_RECORDED_DESCRIPTION = " ".join(ns_parser.description)
+            SESSION_RECORDED_TAGS = " ".join(ns_parser.tags) if ns_parser.tags else ""
 
             console.print(
                 "[green]The session is successfully being recorded."
@@ -669,6 +851,30 @@ class BaseController(metaclass=ABCMeta):
             console.print(
                 f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
             )
+
+            if not is_local():
+                routine = read_routine(file_name=routine_file)
+                if routine is not None:
+                    name = SESSION_RECORDED_NAME.split(sep=".openbb", maxsplit=-1)[0]
+                    kwargs = {
+                        "auth_header": current_user.profile.get_auth_header(),
+                        "name": name,
+                        "description": SESSION_RECORDED_DESCRIPTION,
+                        "routine": routine,
+                        "tags": SESSION_RECORDED_TAGS,
+                    }
+                    response = Hub.upload_routine(**kwargs)  # type: ignore
+                    if response is not None and response.status_code == 409:
+                        i = console.input(
+                            "A routine with the same name already exists, "
+                            "do you want to replace it? (y/n): "
+                        )
+                        console.print("")
+                        if i.lower() in ["y", "yes"]:
+                            kwargs["override"] = True  # type: ignore
+                            response = Hub.upload_routine(**kwargs)  # type: ignore
+                        else:
+                            console.print("[info]Aborted.[/info]")
 
             # Clear session to be recorded again
             RECORD_SESSION = False
@@ -935,55 +1141,8 @@ class BaseController(metaclass=ABCMeta):
                 try:
                     # Get input from user using auto-completion
                     if session and current_user.preferences.USE_PROMPT_TOOLKIT:
-                        # Check if tweet news is enabled
-                        if current_user.preferences.TOOLBAR_TWEET_NEWS:
-                            news_tweet = update_news_from_tweet_to_be_displayed()
-
-                            # Check if there is a valid tweet news to be displayed
-                            if news_tweet:
-                                an_input = session.prompt(
-                                    f"{get_flair()} {self.PATH} $ ",
-                                    completer=self.completer,
-                                    search_ignore_case=True,
-                                    bottom_toolbar=HTML(news_tweet),
-                                    style=Style.from_dict(
-                                        {
-                                            "bottom-toolbar": "#ffffff bg:#333333",
-                                        }
-                                    ),
-                                )
-
-                            else:
-                                # Check if toolbar hint was enabled
-                                if current_user.preferences.TOOLBAR_HINT:
-                                    an_input = session.prompt(
-                                        f"{get_flair()} {self.PATH} $ ",
-                                        completer=self.completer,
-                                        search_ignore_case=True,
-                                        bottom_toolbar=HTML(
-                                            '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
-                                            '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu'
-                                            '    <style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
-                                            '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
-                                            "see usage and available options    "
-                                            f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
-                                            f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
-                                        ),
-                                        style=Style.from_dict(
-                                            {
-                                                "bottom-toolbar": "#ffffff bg:#333333",
-                                            }
-                                        ),
-                                    )
-                                else:
-                                    an_input = session.prompt(
-                                        f"{get_flair()} {self.PATH} $ ",
-                                        completer=self.completer,
-                                        search_ignore_case=True,
-                                    )
-
                         # Check if toolbar hint was enabled
-                        elif current_user.preferences.TOOLBAR_HINT:
+                        if current_user.preferences.TOOLBAR_HINT:
                             an_input = session.prompt(
                                 f"{get_flair()} {self.PATH} $ ",
                                 completer=self.completer,
@@ -1025,10 +1184,8 @@ class BaseController(metaclass=ABCMeta):
                 # Process the input command
                 self.queue = self.switch(an_input)
 
-                if is_local() and an_input == "login":
-                    return ["login"]
-                if not is_local() and an_input == "logout":
-                    return ["logout"]
+                if get_show_prompt() and an_input in ("login", "logout"):
+                    return [an_input]
 
             except SystemExit:
                 if not self.contains_keys(an_input):
@@ -1060,7 +1217,11 @@ class BaseController(metaclass=ABCMeta):
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
-                    if not self.contains_keys(an_input):
+                    if not self.contains_keys(an_input) and an_input not in [
+                        "exit",
+                        "quit",
+                        "help",
+                    ]:
                         logger.warning("Replacing by %s", an_input)
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
@@ -1230,6 +1391,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
+                    if "." not in self.ticker:
+                        self.ticker = ns_parser.ticker.upper()
                 else:
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
@@ -1242,7 +1405,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
 
-                if self.PATH in ["/stocks/qa/", "/stocks/pred/"]:
+                if self.PATH in ["/stocks/qa/"]:
                     self.stock["Returns"] = self.stock["Adj Close"].pct_change()
                     self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
                         self.stock["Adj Close"].shift(1)
@@ -1251,6 +1414,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                     self.stock = self.stock.dropna()
                     self.stock.columns = [x.lower() for x in self.stock.columns]
+                    # pylint: disable=attribute-defined-outside-init
+                    self.target = "returns" if not self.stock.empty else ""
 
                 export_data(
                     ns_parser.export,
@@ -1362,6 +1527,15 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 and ns_parser.vs == "usdt"
             ):
                 ns_parser.vs = "usd"
+            if ns_parser.source == "YahooFinance" and ns_parser.interval in [
+                "240",
+                "10080",
+                "43200",
+            ]:
+                console.print(
+                    f"[red]YahooFinance does not support {ns_parser.interval}min interval[/red]"
+                )
+                return
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
                 to_symbol=ns_parser.vs,
@@ -1378,6 +1552,9 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 self.current_interval = ns_parser.interval
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin.lower()
+                self.data = (  # pylint: disable=attribute-defined-outside-init
+                    self.current_df.copy()
+                )
                 cryptocurrency_helpers.show_quick_performance(
                     self.current_df,
                     self.symbol,

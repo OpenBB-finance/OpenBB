@@ -7,11 +7,13 @@ import contextlib
 import io
 import logging
 import sys
+from datetime import date
 from enum import Enum
 from typing import Dict, List, Union
 
 import binance
 import oandapyV20.endpoints.pricing
+import openai
 import pandas as pd
 import praw
 import quandl
@@ -23,14 +25,8 @@ from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
 
-from openbb_terminal.core.models.credentials_model import LOCAL_CREDENTIALS
-from openbb_terminal.core.session.current_user import (
-    get_current_user,
-    is_local,
-    set_credential,
-)
+from openbb_terminal.core.session.current_user import get_current_user, set_credential
 from openbb_terminal.core.session.env_handler import write_to_dotenv
-from openbb_terminal.core.session.hub_model import upload_config
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseApiException,
     CoinbaseProAuth,
@@ -63,6 +59,7 @@ API_DICT: Dict = {
     "ultima": "ULTIMA",
     "fred": "FRED",
     "news": "NEWSAPI",
+    "biztoc": "BIZTOC",
     "tradier": "TRADIER",
     "cmc": "COINMARKETCAP",
     "finnhub": "FINNHUB",
@@ -87,6 +84,8 @@ API_DICT: Dict = {
     "tokenterminal": "TOKEN_TERMINAL",
     "shroom": "SHROOM",
     "stocksera": "STOCKSERA",
+    "dappradar": "DAPPRADAR",
+    "openai": "OPENAI",
 }
 
 # sorting api key section by name
@@ -250,7 +249,7 @@ def get_keys(show: bool = False) -> pd.DataFrame:
 
 
 def handle_credential(name: str, value: str, persist: bool = False):
-    """Handle credential
+    """Handle credential: set it for current user and optionally write to .env file.
 
     Parameters
     ----------
@@ -261,20 +260,9 @@ def handle_credential(name: str, value: str, persist: bool = False):
     persist: bool, optional
         Write to .env file. By default, False.
     """
-    current_user = get_current_user()
-    local_user = is_local()
-
     set_credential(name, value)
-
-    if local_user and persist:
+    if persist:
         write_to_dotenv("OPENBB_" + name, value)
-    elif not local_user and name not in LOCAL_CREDENTIALS:
-        upload_config(
-            key=name,
-            value=str(value),
-            type_="keys",
-            auth_header=current_user.profile.get_auth_header(),
-        )
 
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -328,7 +316,6 @@ def check_av_key(show_output: bool = False) -> str:
     if (
         current_user.credentials.API_KEY_ALPHAVANTAGE == "REPLACE_ME"
     ):  # pragma: allowlist secret
-        logger.info("Alpha Vantage key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         df = TimeSeries(
@@ -338,7 +325,6 @@ def check_av_key(show_output: bool = False) -> str:
             logger.warning("Alpha Vantage key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         else:
-            logger.info("Alpha Vantage key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
@@ -398,7 +384,6 @@ def check_fmp_key(show_output: bool = False) -> str:
         current_user.credentials.API_KEY_FINANCIALMODELINGPREP
         == "REPLACE_ME"  # pragma: allowlist secret
     ):  # pragma: allowlist secret
-        logger.info("Financial Modeling Prep key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -409,7 +394,6 @@ def check_fmp_key(show_output: bool = False) -> str:
             logger.warning("Financial Modeling Prep key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
-            logger.info("Financial Modeling Prep key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Financial Modeling Prep key defined, test inconclusive")
@@ -472,13 +456,11 @@ def check_quandl_key(show_output: bool = False) -> str:
     if (
         current_user.credentials.API_KEY_QUANDL == "REPLACE_ME"
     ):  # pragma: allowlist secret
-        logger.info("Quandl key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         try:
             quandl.save_key(current_user.credentials.API_KEY_QUANDL)
             quandl.get("EIA/PET_RWTC_D")
-            logger.info("Quandl key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         except Exception as _:  # noqa: F841
             logger.warning("Quandl key defined, test failed")
@@ -539,18 +521,17 @@ def check_polygon_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_POLYGON_KEY == "REPLACE_ME":
-        logger.info("Polygon key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
+        check_date = date(date.today().year, date.today().month, 1).isoformat()
         r = request(
-            "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
-            f"?apiKey={current_user.credentials.API_POLYGON_KEY}"
+            f"https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/{check_date}"
+            f"/{check_date}?apiKey={current_user.credentials.API_POLYGON_KEY}"
         )
         if r.status_code in [403, 401]:
             logger.warning("Polygon key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
-            logger.info("Polygon key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Polygon key defined, test inconclusive")
@@ -611,7 +592,6 @@ def check_fred_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_FRED_KEY == "REPLACE_ME":
-        logger.info("FRED key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -621,7 +601,6 @@ def check_fred_key(show_output: bool = False) -> str:
             logger.warning("FRED key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
-            logger.info("FRED key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("FRED key defined, test inconclusive")
@@ -682,7 +661,6 @@ def check_news_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
-        logger.info("News API key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -692,10 +670,82 @@ def check_news_key(show_output: bool = False) -> str:
             logger.warning("News API key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
-            logger.info("News API key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("News API key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+def set_biztoc_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set BizToc key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.biztoc(key="example_key")
+    """
+
+    handle_credential("API_BIZTOC_TOKEN", key, persist)
+    return check_biztoc_key(show_output)
+
+
+def check_biztoc_key(show_output: bool = False) -> str:
+    """Check BizToc key
+
+    Parameters
+    ----------
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    if show_output:
+        console.print("Checking status...")
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_BIZTOC_TOKEN == "REPLACE_ME":  # nosec
+        status = KeyStatus.NOT_DEFINED
+    else:
+        r = request(
+            "https://biztoc.p.rapidapi.com/pages",
+            headers={
+                "X-RapidAPI-Key": current_user.credentials.API_BIZTOC_TOKEN,
+                "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
+            },
+        )
+        if r.status_code in [401, 403, 404]:
+            logger.warning("BizToc API key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("BizToc API key defined, test inconclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
@@ -753,7 +803,6 @@ def check_tradier_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
-        logger.info("Tradier key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -768,7 +817,6 @@ def check_tradier_key(show_output: bool = False) -> str:
             logger.warning("Tradier key not defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
-            logger.info("Tradier key not defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Tradier key not defined, test inconclusive")
@@ -828,17 +876,14 @@ def check_cmc_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_CMC_KEY == "REPLACE_ME":
-        logger.info("Coinmarketcap key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         cmc = CoinMarketCapAPI(current_user.credentials.API_CMC_KEY)
 
         try:
             cmc.cryptocurrency_map()
-            logger.info("Coinmarketcap key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         except Exception:
-            logger.info("Coinmarketcap key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
@@ -896,7 +941,6 @@ def check_finnhub_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_FINNHUB_KEY == "REPLACE_ME":
-        logger.info("Finnhub key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = r = request(
@@ -906,7 +950,6 @@ def check_finnhub_key(show_output: bool = False) -> str:
             logger.warning("Finnhub key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
-            logger.info("Finnhub key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Finnhub key defined, test inconclusive")
@@ -1001,7 +1044,6 @@ def check_reddit_key(show_output: bool = False) -> str:
         current_user.credentials.API_REDDIT_USER_AGENT,
     ]
     if "REPLACE_ME" in reddit_keys:
-        logger.info("Reddit key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         try:
@@ -1027,7 +1069,6 @@ def check_reddit_key(show_output: bool = False) -> str:
                 )
 
                 praw_api.user.me()
-            logger.info("Reddit key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         except (Exception, ResponseException):
             logger.warning("Reddit key defined, test failed")
@@ -1090,7 +1131,6 @@ def check_bitquery_key(show_output: bool = False) -> str:
 
     bitquery = current_user.credentials.API_BITQUERY_KEY
     if "REPLACE_ME" in bitquery:
-        logger.info("Bitquery key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         headers = {"x-api-key": current_user.credentials.API_BITQUERY_KEY}
@@ -1109,7 +1149,6 @@ def check_bitquery_key(show_output: bool = False) -> str:
             headers=headers,
         )
         if r.status_code == 200:
-            logger.info("Bitquery key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Bitquery key defined, test failed")
@@ -1185,7 +1224,6 @@ def check_twitter_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
     if current_user.credentials.API_TWITTER_BEARER_TOKEN == "REPLACE_ME":
-        logger.info("Twitter key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         params = {
@@ -1202,7 +1240,6 @@ def check_twitter_key(show_output: bool = False) -> str:
             },
         )
         if r.status_code == 200:
-            logger.info("Twitter key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         elif r.status_code in [401, 403]:
             logger.warning("Twitter key defined, test failed")
@@ -1280,12 +1317,11 @@ def check_rh_key(show_output: bool = False) -> str:
         current_user.credentials.RH_USERNAME,
         current_user.credentials.RH_PASSWORD,
     ]
-    if "REPLACE_ME" in rh_keys:
-        logger.info("Robinhood key not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        logger.info("Robinhood key defined, not tested")
-        status = KeyStatus.DEFINED_NOT_TESTED
+    status = (
+        KeyStatus.NOT_DEFINED
+        if "REPLACE_ME" in rh_keys
+        else KeyStatus.DEFINED_NOT_TESTED
+    )
 
     if show_output:
         console.print(status.colorize())
@@ -1363,7 +1399,6 @@ def check_degiro_key(show_output: bool = False) -> str:
         current_user.credentials.DG_TOTP_SECRET,
     ]
     if "REPLACE_ME" in dg_keys:
-        logger.info("Degiro key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         dg = DegiroModel()
@@ -1373,16 +1408,13 @@ def check_degiro_key(show_output: bool = False) -> str:
                 check_creds = dg.check_credentials()  # pylint: disable=no-member
 
             if "2FA is enabled" in f.getvalue() or check_creds:
-                logger.info("Degiro key defined, test passed")
                 status = KeyStatus.DEFINED_TEST_PASSED
             else:
                 raise Exception
 
-            logger.info("Degiro key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 
         except Exception:
-            logger.info("Degiro key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
         del dg  # ensure the object is destroyed explicitly
@@ -1463,7 +1495,6 @@ def check_oanda_key(show_output: bool = False) -> str:
         current_user.credentials.OANDA_ACCOUNT,
     ]
     if "REPLACE_ME" in oanda_keys:
-        logger.info("Oanda key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         client = oanda_API(access_token=current_user.credentials.OANDA_TOKEN)
@@ -1474,11 +1505,9 @@ def check_oanda_key(show_output: bool = False) -> str:
                 accountID=account, params=parameters
             )
             client.request(request_)
-            logger.info("Oanda key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 
         except Exception:
-            logger.info("Oanda key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
@@ -1551,7 +1580,6 @@ def check_binance_key(show_output: bool = False) -> str:
         current_user.credentials.API_BINANCE_KEY,
         current_user.credentials.API_BINANCE_SECRET,
     ]:
-        logger.info("Binance key not defined")
         status = KeyStatus.NOT_DEFINED
 
     else:
@@ -1561,7 +1589,6 @@ def check_binance_key(show_output: bool = False) -> str:
                 current_user.credentials.API_BINANCE_SECRET,
             )
             client.get_account_api_permissions()
-            logger.info("Binance key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         except Exception:
             logger.warning("Binance key defined, test failed")
@@ -1642,7 +1669,6 @@ def check_coinbase_key(show_output: bool = False) -> str:
         current_user.credentials.API_COINBASE_SECRET,
         current_user.credentials.API_COINBASE_PASS_PHRASE,
     ]:
-        logger.info("Coinbase key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         auth = CoinbaseProAuth(
@@ -1658,7 +1684,6 @@ def check_coinbase_key(show_output: bool = False) -> str:
             logger.warning("Coinbase key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         else:
-            logger.info("Coinbase key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
@@ -1716,7 +1741,6 @@ def check_walert_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_WHALE_ALERT_KEY == "REPLACE_ME":
-        logger.info("Walert key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         url = (
@@ -1729,10 +1753,8 @@ def check_walert_key(show_output: bool = False) -> str:
                 logger.warning("Walert key defined, test failed")
                 status = KeyStatus.DEFINED_TEST_FAILED
             else:
-                logger.info("Walert key defined, test passed")
                 status = KeyStatus.DEFINED_TEST_PASSED
         except Exception:
-            logger.info("Walert key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
@@ -1792,7 +1814,6 @@ def check_glassnode_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_GLASSNODE_KEY == "REPLACE_ME":
-        logger.info("Glassnode key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         url = "https://api.glassnode.com/v1/metrics/market/price_usd_close"
@@ -1807,7 +1828,6 @@ def check_glassnode_key(show_output: bool = False) -> str:
 
         r = request(url, params=parameters)
         if r.status_code == 200:
-            logger.info("Glassnode key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Glassnode key defined, test failed")
@@ -1870,7 +1890,6 @@ def check_coinglass_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_COINGLASS_KEY == "REPLACE_ME":
-        logger.info("Coinglass key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         url = "https://open-api.coinglass.com/api/pro/v1/futures/openInterest/chart?&symbol=BTC&interval=0"
@@ -1883,7 +1902,6 @@ def check_coinglass_key(show_output: bool = False) -> str:
             logger.warning("Coinglass key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif response.status_code == 200:
-            logger.info("Coinglass key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Coinglass key defined, test inconclusive")
@@ -1944,7 +1962,6 @@ def check_cpanic_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
-        logger.info("cpanic key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         crypto_panic_url = (
@@ -1954,7 +1971,6 @@ def check_cpanic_key(show_output: bool = False) -> str:
         response = request(crypto_panic_url)
 
         if response.status_code == 200:
-            logger.info("Cpanic key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Cpanic key defined, test failed")
@@ -2017,7 +2033,6 @@ def check_ethplorer_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_ETHPLORER_KEY == "REPLACE_ME":
-        logger.info("ethplorer key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         ethplorer_url = "https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey="
@@ -2026,13 +2041,11 @@ def check_ethplorer_key(show_output: bool = False) -> str:
         try:
             response = request(ethplorer_url)
             if response.status_code == 200:
-                logger.info("ethplorer key defined, test passed")
                 status = KeyStatus.DEFINED_TEST_PASSED
             else:
                 logger.warning("ethplorer key defined, test failed")
                 status = KeyStatus.DEFINED_TEST_FAILED
         except Exception as _:  # noqa: F841
-            logger.info("ethplorer key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
@@ -2122,7 +2135,6 @@ def check_smartstake_key(show_output: bool = False) -> str:
                 logger.warning("Smartstake key defined, test failed")
                 status = KeyStatus.DEFINED_TEST_FAILED
             elif 200 <= response.status_code < 300:
-                logger.info("Smartstake key defined, test passed")
                 status = KeyStatus.DEFINED_TEST_PASSED
             else:
                 logger.warning("Smartstake key defined, test inconclusive")
@@ -2188,7 +2200,6 @@ def check_github_key(show_output: bool = False) -> str:
     if (
         current_user.credentials.API_GITHUB_KEY == "REPLACE_ME"
     ):  # pragma: allowlist secret
-        logger.info("GitHub key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         status = KeyStatus.DEFINED_NOT_TESTED
@@ -2253,7 +2264,6 @@ def check_messari_key(show_output: bool = False) -> str:
         current_user.credentials.API_MESSARI_KEY
         == "REPLACE_ME"  # pragma: allowlist secret
     ):  # pragma: allowlist secret
-        logger.info("Messari key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
@@ -2262,7 +2272,6 @@ def check_messari_key(show_output: bool = False) -> str:
         r = request(url, headers=headers, params=params)
 
         if r.status_code == 200:
-            logger.info("Messari key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Messari key defined, test failed")
@@ -2323,7 +2332,6 @@ def check_eodhd_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_EODHD_KEY == "REPLACE_ME":  # nosec
-        logger.info("End of Day Historical Data key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         request_url = (
@@ -2332,7 +2340,6 @@ def check_eodhd_key(show_output: bool = False) -> str:
         )
         r = request(request_url)
         if r.status_code == 200:
-            logger.info("Eodhd key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Eodhd key defined, test failed")
@@ -2395,7 +2402,6 @@ def check_santiment_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_SANTIMENT_KEY == "REPLACE_ME":
-        logger.info("santiment key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         headers = {
@@ -2414,13 +2420,11 @@ def check_santiment_key(show_output: bool = False) -> str:
         )
         try:
             if response.status_code == 200:
-                logger.info("santiment key defined, test passed")
                 status = KeyStatus.DEFINED_TEST_PASSED
             else:
                 logger.warning("santiment key defined, test failed")
                 status = KeyStatus.DEFINED_TEST_FAILED
         except Exception as _:  # noqa: F841
-            logger.info("santiment key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
@@ -2478,7 +2482,6 @@ def check_shroom_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_SHROOM_KEY == "REPLACE_ME":
-        logger.info("Shroom key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         try:
@@ -2489,7 +2492,6 @@ def check_shroom_key(show_output: bool = False) -> str:
             )
             if response.status_code == 400:
                 # this is expected because shroom returns 400 when query is not passed
-                logger.info("Shroom key defined, test passed")
                 status = KeyStatus.DEFINED_TEST_PASSED
             elif response.status_code == 401:
                 logger.warning("Shroom key defined, test failed")
@@ -2556,7 +2558,6 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
-        logger.info("Token Terminal key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         token_terminal = TokenTerminal(
@@ -2567,7 +2568,6 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
             logger.warning("Token Terminal key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         else:
-            logger.info("Token Terminal key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
@@ -2624,14 +2624,12 @@ def check_stocksera_key(show_output: bool = False):
     current_user = get_current_user()
 
     if current_user.credentials.API_STOCKSERA_KEY == "REPLACE_ME":
-        logger.info("Stocksera key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         client = stocksera.Client(api_key=current_user.credentials.API_STOCKSERA_KEY)
 
         try:
             client.borrowed_shares(ticker="AAPL")
-            logger.info("Stocksera key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         except Exception as _:  # noqa: F841
             logger.warning("Stocksera key defined, test failed")
@@ -2691,7 +2689,6 @@ def check_intrinio_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_INTRINIO_KEY == "REPLACE_ME":
-        logger.info("Intrinio key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -2701,7 +2698,6 @@ def check_intrinio_key(show_output: bool = False) -> str:
             logger.warning("Intrinio key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
-            logger.info("Intrinio key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Intrinio key defined, test inconclusive")
@@ -2764,7 +2760,6 @@ def check_databento_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_DATABENTO_KEY == "REPLACE_ME":
-        logger.info("DataBento key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -2775,7 +2770,6 @@ def check_databento_key(show_output: bool = False) -> str:
             logger.warning("DataBento key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
-            logger.info("DataBento key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("DataBento key defined, test inconclusive")
@@ -2833,7 +2827,6 @@ def check_ultima_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if current_user.credentials.API_ULTIMA_KEY == "REPLACE_ME":
-        logger.info("Ultima Insights key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -2846,10 +2839,161 @@ def check_ultima_key(show_output: bool = False) -> str:
             logger.warning("Ultima Insights key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
-            logger.info("Ultima Insights key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Ultima Insights key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+def set_dappradar_key(
+    key: str, persist: bool = False, show_output: bool = False
+) -> str:
+    """Set DappRadar key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.dappradar(key="example_key")
+    """
+
+    handle_credential("API_DAPPRADAR_KEY", key, persist)
+    return check_dappradar_key(show_output)
+
+
+def check_dappradar_key(show_output: bool = False) -> str:
+    """Check DappRadar key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_DAPPRADAR_KEY == "REPLACE_ME":
+        status = KeyStatus.NOT_DEFINED
+    else:
+        r = request(
+            "https://api.dappradar.com/4tsxo4vuhotaojtl/tokens/chains",
+            headers={"X-BLOBR-KEY": current_user.credentials.API_DAPPRADAR_KEY},
+        )
+        if r.status_code in [403, 401, 429]:
+            logger.warning("DappRadar key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("DappRadar key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+# Set OpenAI key
+def set_openai_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set OpenAI key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.openai(key="example_key")
+    """
+
+    handle_credential("API_OPENAI_KEY", key, persist)
+    return check_openai_key(show_output)
+
+
+def check_openai_key(show_output: bool = False) -> str:
+    """Check OpenAI key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    if show_output:
+        console.print("Checking status...")
+
+    current_user = get_current_user()
+
+    if current_user.credentials.API_OPENAI_KEY == "REPLACE_ME":
+        logger.info("OpenAI key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        # Set the endpoint URL and data to be sent
+        data = {
+            "prompt": "Hello, Open AI!",
+        }
+
+        # Make the API call and print the response
+        try:
+            openai.api_key = current_user.credentials.API_OPENAI_KEY
+            # Make the API call and print the response
+            openai.Completion.create(engine="davinci", prompt=data["prompt"])
+            status = KeyStatus.DEFINED_TEST_PASSED
+            logger.info("OpenAI key defined, test passed")
+
+        except openai.error.AuthenticationError:
+            # Handle authentication errors
+            logger.warning("OpenAI key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+
+        except openai.error.APIError as e:
+            console.print(e)
+            # Handle other API errors
+            logger.warning("OpenAI key defined, test inclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:

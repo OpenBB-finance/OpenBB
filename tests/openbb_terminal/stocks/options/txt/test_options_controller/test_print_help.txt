@@ -1,23 +1,21 @@
     unu                show unusual options activity                                   [FDScanner]
     calc               basic call/put PnL calculator
 
->   screen             screens tickers based on preset
-
     load               load new ticker                                                 [YahooFinance, Tradier, Nasdaq, Intrinio]
-[unvl]    exp                see and set expiration dates[/unvl]                                    [YahooFinance, Tradier, Nasdaq, Intrinio]
+[unvl]    exp                see and set expiration dates[/unvl]
 
 Ticker: 
 Expiry: 
 
 [unvl]    pcr                display put call ratio for ticker[/unvl]                               [AlphaQuery]
 [unvl]    info               display option information (volatility, IV rank etc)[/unvl]            [Barchart]
-[unvl]    chains             display option chains with greeks[/unvl]                               [YahooFinance, Tradier, Nasdaq, Intrinio]
-[unvl]    oi                 plot open interest[/unvl]                                              [YahooFinance, Tradier, Nasdaq]
-[unvl]    vol                plot volume[/unvl]                                                     [YahooFinance, Tradier, Nasdaq]
-[unvl]    voi                plot volume and open interest[/unvl]                                   [YahooFinance, Tradier, Nasdaq]
+[unvl]    chains             display option chains with greeks[/unvl]
+[unvl]    oi                 plot open interest[/unvl]
+[unvl]    vol                plot volume[/unvl]
+[unvl]    voi                plot volume and open interest[/unvl]
 [unvl]    hist               plot option history[/unvl]                                             [ChartExchange, Tradier, Intrinio]
 [unvl]    vsurf              show 3D volatility surface[/unvl]                                      [YahooFinance]
-[unvl]    grhist             plot option greek history[/unvl]                                       [Syncretism, Intrinio]
+[unvl]    grhist             plot option greek history[/unvl]                                       [Intrinio]
 [unvl]    plot               plot variables provided by the user[/unvl]                             [YahooFinance]
 [unvl]    greeks             shows the greeks for a given option[/unvl]                             [YahooFinance]
 [unvl]    eodchain           gets option chain at a specific date[/unvl]                            [Intrinio]

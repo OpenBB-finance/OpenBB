@@ -48,16 +48,12 @@ class FeatureFlagsController(BaseController):
         "tab",
         "interactive",
         "cls",
-        "color",
-        "ion",
         "watermark",
-        "cmdloc",
         "promptkit",
         "thoughts",
         "reporthtml",
         "exithelp",
         "rcontext",
-        "rich",
         "richpanel",
         "tbhint",
         "overwrite",
@@ -81,20 +77,14 @@ class FeatureFlagsController(BaseController):
         mt.add_info("_info_")
         mt.add_raw("\n")
         mt.add_setting("retryload", current_user.preferences.RETRY_WITH_LOAD)
-        mt.add_setting("tab", current_user.preferences.USE_TABULATE_DF)
         mt.add_setting("interactive", current_user.preferences.USE_INTERACTIVE_DF)
         mt.add_setting("cls", current_user.preferences.USE_CLEAR_AFTER_CMD)
-        mt.add_setting("color", current_user.preferences.USE_COLOR)
         mt.add_setting("promptkit", current_user.preferences.USE_PROMPT_TOOLKIT)
         mt.add_setting("thoughts", current_user.preferences.ENABLE_THOUGHTS_DAY)
         mt.add_setting("reporthtml", current_user.preferences.OPEN_REPORT_AS_HTML)
         mt.add_setting("exithelp", current_user.preferences.ENABLE_EXIT_AUTO_HELP)
         mt.add_setting("rcontext", current_user.preferences.REMEMBER_CONTEXTS)
-        mt.add_setting("rich", current_user.preferences.ENABLE_RICH)
         mt.add_setting("richpanel", current_user.preferences.ENABLE_RICH_PANEL)
-        mt.add_setting("ion", current_user.preferences.USE_ION)
-        mt.add_setting("watermark", current_user.preferences.USE_WATERMARK)
-        mt.add_setting("cmdloc", current_user.preferences.USE_CMD_LOCATION_FIGURE)
         mt.add_setting("tbhint", current_user.preferences.TOOLBAR_HINT)
         mt.add_setting("overwrite", current_user.preferences.FILE_OVERWRITE)
         mt.add_setting("version", current_user.preferences.SHOW_VERSION)
@@ -104,7 +94,7 @@ class FeatureFlagsController(BaseController):
     def call_overwrite(self, _):
         """Process overwrite command"""
         set_and_save_preference(
-            "FILE_OVERWITE", not get_current_user().preferences.FILE_OVERWRITE
+            "FILE_OVERWRITE", not get_current_user().preferences.FILE_OVERWRITE
         )
 
     def call_version(self, _):
@@ -120,13 +110,6 @@ class FeatureFlagsController(BaseController):
         )
 
     @log_start_end(log=logger)
-    def call_tab(self, _):
-        """Process tab command"""
-        set_and_save_preference(
-            "USE_TABULATE_DF", not get_current_user().preferences.USE_TABULATE_DF
-        )
-
-    @log_start_end(log=logger)
     def call_interactive(self, _):
         """Process interactive command"""
         set_and_save_preference(
@@ -139,13 +122,6 @@ class FeatureFlagsController(BaseController):
         set_and_save_preference(
             "USE_CLEAR_AFTER_CMD",
             not get_current_user().preferences.USE_CLEAR_AFTER_CMD,
-        )
-
-    @log_start_end(log=logger)
-    def call_color(self, _):
-        """Process color command"""
-        set_and_save_preference(
-            "USE_COLOR", not get_current_user().preferences.USE_COLOR
         )
 
     @log_start_end(log=logger)
@@ -196,38 +172,11 @@ class FeatureFlagsController(BaseController):
         )
 
     @log_start_end(log=logger)
-    def call_rich(self, _):
-        """Process rich command"""
-        set_and_save_preference(
-            "ENABLE_RICH", not get_current_user().preferences.ENABLE_RICH
-        )
-
-    @log_start_end(log=logger)
     def call_richpanel(self, _):
         """Process richpanel command"""
         set_and_save_preference(
             "ENABLE_RICH_PANEL",
             not get_current_user().preferences.ENABLE_RICH_PANEL,
-        )
-
-    @log_start_end(log=logger)
-    def call_ion(self, _):
-        """Process ion command"""
-        set_and_save_preference("USE_ION", not get_current_user().preferences.USE_ION)
-
-    @log_start_end(log=logger)
-    def call_watermark(self, _):
-        """Process watermark command"""
-        set_and_save_preference(
-            "USE_WATERMARK", not get_current_user().preferences.USE_WATERMARK
-        )
-
-    @log_start_end(log=logger)
-    def call_cmdloc(self, _):
-        """Process cmdloc command"""
-        set_and_save_preference(
-            "USE_CMD_LOCATION_FIGURE",
-            not get_current_user().preferences.USE_CMD_LOCATION_FIGURE,
         )
 
     @log_start_end(log=logger)

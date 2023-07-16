@@ -8,6 +8,7 @@ from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
+from pydantic import BaseModel, Extra, Field
 from scipy.stats import norm
 
 from openbb_terminal.decorators import log_start_end
@@ -19,18 +20,17 @@ logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
 
 
-@log_start_end(log=logger)
 def get_strikes(
-    min_sp: float, max_sp: float, current_price: float
+    min_sp: float, max_sp: float, chain: pd.DataFrame
 ) -> Tuple[float, float]:
-    min_strike = 0.75 * current_price if min_sp == -1 else min_sp
+    """Function to get the min and max strikes for a given expiry"""
 
-    max_strike = 1.25 * current_price if max_sp == -1 else max_sp
+    min_strike = chain["strike"].min() if min_sp == -1 else min_sp
+    max_strike = chain["strike"].max() if max_sp == -1 else max_sp
 
     return min_strike, max_strike
 
 
-@log_start_end(log=logger)
 def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     """Function to get the loss at the given expiry
 
@@ -59,7 +59,6 @@ def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     return loss
 
 
-@log_start_end(log=logger)
 def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     """Returns the max pain for a given call/put dataframe
 
@@ -86,7 +85,6 @@ def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
     return max_pain
 
 
-@log_start_end(log=logger)
 def convert(orig: str, to: str) -> float:
     """Convert a string to a specific type of number
     Parameters
@@ -106,7 +104,6 @@ def convert(orig: str, to: str) -> float:
     raise ValueError("Invalid to format, please use '%' or ','.")
 
 
-@log_start_end(log=logger)
 def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> float:
     """The risk neutral payoff for a stock
     Parameters
@@ -598,169 +595,112 @@ class Option:
         )
 
 
-def delta_at_strike(
-    strike: Union[float, pd.Series, np.ndarray],
-    underlying_price: float,
-    iv: Union[float, pd.Series, np.ndarray],
-    dte: Union[float, pd.Series, np.ndarray],
-    option: Union[str, pd.Series, np.ndarray] = "call",
-    rf_rate: float = 0.03,
-) -> Union[float, pd.Series, np.ndarray]:
-    """Gets delta at a theoretical underlying
+def get_dte(chain: pd.DataFrame) -> pd.DataFrame:
+    """
+    Returns a new column containing the DTE as an integer, including 0.
+    Requires the chain to have the column labeled as, expiration.
+    """
+    if "expiration" not in chain.columns:
+        raise ValueError("No column labeled 'expiration' was found.")
 
-    Parameters
-    ----------
-    strike : float
-        Option strike price
-    underlying_price : float
-        Underlying price for Black-Scholes calculation
-    iv : float
-        Implied volatility for calculation
-    dte : float
-        Time to expiration in years
-    option : str, optional
-        Type of option, either "call" or "put", by default "call"
-    rf_rate : float, optional
-        Risk free rate for calculation, by default 0.03
+    now = datetime.now()
+    temp = pd.DatetimeIndex(chain.expiration)
+    temp_ = (temp - now).days + 1
+    chain["dte"] = temp_
+
+    return chain
+
+
+class Options:  # pylint: disable=too-few-public-methods,too-many-instance-attributes
+    """The Options data object.
 
     Returns
     -------
-    float
-        Value of delta at theoretical underlying
+    object: Options
+        chains: pd.DataFrame
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: pd.Series
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data.
+        date: str
+            The date, when the chains data is historical EOD.
+        SYMBOLS: pd.DataFrame
+            The symbol directory for the source, when available.
     """
 
-    d1 = (np.log(underlying_price / strike) + (rf_rate + 0.5 * iv**2) * dte) / (
-        iv * np.sqrt(dte)
-    )
-    return np.where(option == "call", norm.cdf(d1), norm.cdf(d1) - 1)
+    chains = pd.DataFrame
+    expirations: list
+    strikes: list
+    last_price: float
+    underlying_name: str
+    underlying_price: pd.Series
+    hasIV: bool
+    hasGreeks: bool
+    symbol: str
+    source: str
+    date: str
+    SYMBOLS: pd.DataFrame
 
 
-def gamma_at_strike(
-    strike: Union[float, pd.Series, np.ndarray],
-    underlying_price: float,
-    iv: Union[float, pd.Series, np.ndarray],
-    dte: Union[float, pd.Series, np.ndarray],
-    rf_rate: float = 0.03,
-) -> Union[float, pd.Series, np.ndarray]:
-    """Get gamma at a theoretical underlying
+class PydanticOptions(  # type: ignore [call-arg]
+    BaseModel, extra=Extra.allow
+):  # pylint: disable=too-few-public-methods
 
-    Parameters
-    ----------
-    strike : Union[float,pd.Series]
-        Option strike price
-    underlying_price : float
-        Underlying price for Black-Scholes calculation
-    iv : float
-        Implied volatility for calculation
-    dte : float
-        Time to expiration in years
-    rf_rate : float, optional
-        Risk free rate for calculation, by default 0.03
+    """Pydantic model for the Options data object.
 
     Returns
     -------
-    float
-        Value of delta at theoretical underlying
+    Pydantic: Options
+        chains: dict
+            The complete options chain for the ticker.
+        expirations: list[str]
+            List of unique expiration dates. (YYYY-MM-DD)
+        strikes: list[float]
+            List of unique strike prices.
+        last_price: float
+            The last price of the underlying asset.
+        underlying_name: str
+            The name of the underlying asset.
+        underlying_price: dict
+            The price and recent performance of the underlying asset.
+        hasIV: bool
+            Returns implied volatility.
+        hasGreeks: bool
+            Returns greeks data.
+        symbol: str
+            The symbol entered by the user.
+        source: str
+            The source of the data.
+        date: str
+            The date, when the chains data is historical EOD.
+        SYMBOLS: dict
+            The symbol directory for the source, when available.
     """
-    d1 = (np.log(underlying_price / strike) + (rf_rate + 0.5 * iv**2) * dte) / (
-        iv * np.sqrt(dte)
-    )
-    return norm.pdf(d1) / (underlying_price * iv * np.sqrt(dte))
 
-
-@log_start_end(log=logger)
-def get_abs_market_delta(
-    underlying_price: float, df: pd.DataFrame, rf_rate: float = 0.03
-) -> float:
-    """
-    Get the total market delta across entire chain.
-    In this calculation, we find delta at a theoretical underlying and then take the sum of delta x open interest.
-    Delta neutral is the theoretical underlying where this sum is 0.  To prepare the minimization, we take the absolute
-    value of this sum.
-
-    Parameters
-    ----------
-    underlying_price : float
-        Theoretical underlying price
-    df : pd.DataFrame
-        Dataframe of option chain.  Requires the following columns: impliedVolatility,dte,openInterest,strike,optionType
-    rf_rate : float, optional
-        Optional risk free rate for calculation, by default 0.03
-
-    Returns
-    -------
-    float
-        Market delta at underlying price.
-
-    Raises
-    ------
-    ValueError
-        If any of the required columns are not in the dataframe
-    """
-    for col in ["impliedVolatility", "dte", "openInterest", "strike", "optionType"]:
-        if col not in df.columns:
-            raise ValueError(f"{col} needs to be in df")
-    df["new_delta"] = delta_at_strike(
-        df.strike.to_numpy(),
-        underlying_price,
-        df.impliedVolatility.to_numpy(),
-        df.dte.to_numpy(),
-        df.optionType.to_numpy(),
-        rf_rate,
-    )
-    return np.abs(np.sum(df["new_delta"].to_numpy() * df["openInterest"].to_numpy()))
-
-
-@log_start_end(log=logger)
-def get_market_gamma(
-    underlying_price: float,
-    df: pd.DataFrame,
-    abs_mg: bool = True,
-    rf_rate: float = 0.03,
-):
-    """
-    Get the total market gamma across entire chain.
-    In this calculation, we find gamma at a theoretical underlying and then take the sum of delta x open interest.
-    Because gamma is positive, we define gamma for puts to be negative when taking the sum.
-    Gamma neutral is the theoretical underlying where this sum is 0.  To prepare the minimization, we take the absolute
-    value of this sum.
-    Gamma max is where the sum of the abolutele value of gamma x open interest is maximized.
-
-    Parameters
-    ----------
-    underlying_price : float
-        Theoretical underlying price
-    df : pd.DataFrame
-        Dataframe of option chain.  Requires the following columns: impliedVolatility,dte,openInterest,strike,optionType
-    abs_mg : bool, optional
-        Flag to indicate if getting gamma neutral by default True
-    rf_rate : float, optional
-        Optional float value for risk free rate, by default 0.03
-
-    Returns
-    -------
-    float
-        Value of gamma max or gamma neutral at the underlying price
-
-    Raises
-    ------
-    ValueError
-        If any of the required columns are not in the dataframe
-    """
-    for col in ["impliedVolatility", "dte", "openInterest", "strike", "optionType"]:
-        if col not in df.columns:
-            raise ValueError(f"{col} needs to be in df")
-    df["new_gamma"] = gamma_at_strike(
-        df.strike.to_numpy(),
-        underlying_price,
-        df.impliedVolatility.to_numpy(),
-        df.dte.to_numpy(),
-        rf_rate,
-    )
-    fact = np.where(df.optionType == "put", -1, 1)
-    mg = np.sum(df["new_gamma"].to_numpy() * df["openInterest"].to_numpy() * fact)
-    if abs_mg:
-        # gamma neutral
-        return np.abs(np.sum(mg))
-    # Gamma max
-    return -1 * np.sum(np.abs(mg))
+    chains: dict = Field(default=None)
+    expirations: list = Field(default=None)
+    strikes: list = Field(default=None)
+    last_price: float = Field(default=None)
+    underlying_name: str = Field(default=None)
+    underlying_price: dict = Field(default=None)
+    hasIV: bool = Field(default=False)
+    hasGreeks: bool = Field(default=False)
+    symbol: str = Field(default=None)
+    source: str = Field(default=None)
+    date: str = Field(default=None)
+    SYMBOLS: dict = Field(default=None)

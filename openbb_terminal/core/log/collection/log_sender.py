@@ -115,6 +115,7 @@ class LogSender(Thread):
             self.start_required()
             and not self.max_fails_reached()
             and not self.max_size_exceeded(file=file)
+            and get_current_system().LOGGING_SEND_TO_S3
         )
 
     def fails_increment(self):

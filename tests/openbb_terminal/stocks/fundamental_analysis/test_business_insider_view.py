@@ -50,7 +50,7 @@ def test_display_management_nodata():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_price_target_from_analysts_raw():
-    business_insider_view.price_target_from_analysts(
+    business_insider_view.display_price_target_from_analysts(
         symbol="TSLA",
         start_date=None,
         data=None,
@@ -68,7 +68,7 @@ def test_price_target_from_analysts_plt():
     start = datetime.strptime("2021-12-05", "%Y-%m-%d")
     stock = load(symbol=ticker, start_date=start, interval=interval)
 
-    business_insider_view.price_target_from_analysts(
+    business_insider_view.display_price_target_from_analysts(
         symbol=ticker,
         start_date=start,
         data=stock,
@@ -82,6 +82,6 @@ def test_price_target_from_analysts_plt():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_estimates():
-    business_insider_view.estimates(
-        symbol="TSLA", estimate="annualearnings", export=None
+    business_insider_view.display_estimates(
+        symbol="TSLA", estimate="annual_earnings", export=None
     )

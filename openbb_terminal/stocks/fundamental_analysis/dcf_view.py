@@ -145,7 +145,8 @@ class CreateExcelFA:
 
         i = 0
         while True:
-            path = dcf_model.generate_path(i, self.info["symbol"], self.data["now"])
+            file_name = f"{self.data['now'].replace('-', '')}_dcf_{self.info['symbol']}"
+            path = dcf_model.generate_path(i, file_name)
             path.parent.mkdir(parents=True, exist_ok=True)
 
             if not path.is_file():
@@ -982,7 +983,6 @@ class CreateExcelFA:
         if text:
             self.custom_exp(row, text)
 
-    @log_start_end(log=logger)
     def title_to_row(self, title: str) -> int:
         df = (
             self.df["IS"]

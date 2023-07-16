@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from datetime import datetime
 from typing import List, Optional, Union
 
 import pandas as pd
@@ -81,7 +82,7 @@ def view_ma(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",  # type: ignore
-        price_df,
+        ta.df_ta,
         sheet_name,
         fig,
     )
@@ -93,8 +94,8 @@ def view_ma(
 def view_vwap(
     data: pd.DataFrame,
     symbol: str = "",
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
     offset: int = 0,
     interval: str = "",
     export: str = "",
@@ -129,18 +130,19 @@ def view_vwap(
         start = data.index[0].date()
         console.print(f"No start date specified. Start date: {start}")
     else:
-        start = start_date
+        start = datetime.date(start_date)
 
     if end_date is None:
         end = data.index[-1].date()
         console.print(f"No end date specified. End date: {end}")
     else:
-        end = end_date
+        end = datetime.date(end_date)
 
     day_df = data[(start <= data.index.date) & (data.index.date <= end)]
+
     if len(day_df) == 0:
         return console.print(
-            f"[red]No data found between {start.strftime('%Y-%m-%d')} and {end.strftime('%Y-%m-%d')}\n[/red]"
+            f"[red]No data found between {start.strftime('%Y-%m-%d')} and {end.strftime('%Y-%m-%d')}[/red]"
         )
 
     ta = PlotlyTA()

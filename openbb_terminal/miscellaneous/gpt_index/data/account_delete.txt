@@ -1,0 +1,15 @@
+parent_command:account
+usage: delete [-n NAME [NAME ...]]
+
+Delete a routine on the cloud.
+
+optional arguments:
+  -n NAME [NAME ...], --name NAME [NAME ...]
+                        The name of the routine (default: None)
+
+
+Examples:
+- To delete a single routine named "MorningRoutine": account/delete -n MorningRoutine
+- For deleting multiple routines at once, such as "MorningRoutine" and "EveningRoutine": account/delete -n MorningRoutine EveningRoutine
+- Remove a routine called "WeeklyUpdate" from the cloud: account/delete --name WeeklyUpdate
+- Delete two routines named "DailyCheck" and "MonthlyReport": account/delete --name DailyCheck MonthlyReport

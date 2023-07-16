@@ -1,7 +1,7 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: Data Sources and Providers.
+description: Information about data sources and providers offered through the OpenBB Terminal.
 keywords:
   [
     installation,
@@ -17,8 +17,17 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    data,
+    data provider,
+    india,
+    binance
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Sources - Terminal | OpenBB Docs" />
+
 ## Data and Sources
 
 Please note that OpenBB does not provide any data, it is an aggregator which provides users access to data from a variety of sources. OpenBB does not maintain or have any control over the raw data supplied. If there is a specific problem with the output from a data provider, please consider contacting them first.
@@ -29,7 +38,13 @@ The complete list is found [here](https://docs.openbb.co/terminal/usage/guides/a
 
 </details>
 
-<details><summary>How do I load a ticker symbol from India?</summary>
+<details><summary>How do I find and load a ticker symbol from India, or any other country?</summary>
+
+Use the [`/stocks/search`](https://docs.openbb.co/terminal/usage/intros/stocks#search) command.
+
+```console
+search --country canada --industrygroup banks
+```
 
 Ticker symbols listed on exchanges outside of the US will have a suffix attached, for example, Rico Auto Industries Limited:
 

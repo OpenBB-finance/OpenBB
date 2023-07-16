@@ -1,0 +1,19 @@
+parent_command:economy
+usage: treasury [-m MATURITY] [--show] [--freq {annually,monthly,weekly,daily}] [-t TYPE] [-s START_DATE] [-e END_DATE]
+
+Obtain US treasury rates
+
+optional arguments:
+  -m MATURITY, --maturity MATURITY
+                        The preferred maturity which is dependent on the type of the treasury (default: 10y)
+  --show                Show the maturities available for every instrument. (default: False)
+  -s START_DATE, --start START_DATE
+                        The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) (default: 1934-01-31)
+  -e END_DATE, --end END_DATE
+                        The end date of the data (format: YEAR-DAY-MONTH, i.e. 2021-06-02) (default: 2023-06-02)
+
+
+Examples:
+- To plot 10-year nominal U.S. treasuries with monthly frequency: economy/treasury
+- For plotting 5-year U.S. treasury rates: economy/treasury -m 5y
+- To show the maturities available for every instrument: economy/treasury --show

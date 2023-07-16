@@ -1,0 +1,16 @@
+parent_command:alt/covid
+usage: country [-c country_name]
+
+Select a country to look at data for.
+
+optional arguments:
+  -c country_name, --country country_name
+                        Country to get data for. (default: None)
+
+
+Examples:
+- To view COVID data for a specific country, use: alt/covid/country -c <country_name>
+- For COVID data in the United States, enter: alt/covid/country --country United States
+- To check COVID data in India, type: alt/covid/country -c India
+- Get COVID data for Brazil with this command: alt/covid/country --country Brazil
+- To access COVID data for the United Kingdom, input: alt/covid/country -c United Kingdom

@@ -1,0 +1,10 @@
+parent_command: stocks/ins/
+usage: lis [-l LIMIT] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest insider sales. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about lis' to access the related guide.
+Summary: Display the latest insider sales for a specific stock symbol, with options to limit the number of rows displayed, export the data in various formats, and save the data to a specific excel sheet. The data source for this command is OpenInsider.
+
+Examples:
+- Display the latest 10 insider sales for a stock: stocks/load <SYMBOL>/ins/lis
+- Show the latest 5 insider sales for a stock: stocks/load <SYMBOL>/ins/lis -l 5
+- Display the latest insider sales for a stock and export the data to a csv file: stocks/load <SYMBOL>/ins/lis --export csv
+- Show the latest insider sales for a stock and save the data to a specific excel sheet: stocks/load <SYMBOL>/ins/lis --sheet-name Sheet1
+- Display the latest 20 insider sales for a stock: stocks/load <SYMBOL>/ins/lis -l 20

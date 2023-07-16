@@ -1,0 +1,19 @@
+parent_command:etf
+usage: search -n NAME [NAME ...] [-d DESCRIPTION [DESCRIPTION ...]]
+
+Search ETF by name [Source: FinanceDatabase/StockAnalysis.com]
+
+optional arguments:
+  -n NAME [NAME ...], --name NAME [NAME ...]
+                        Name to look for ETFs (default: )
+  -d DESCRIPTION [DESCRIPTION ...], --description DESCRIPTION [DESCRIPTION ...]
+                        Name to look for ETFs (default: )
+
+
+Examples:
+- To search for ETFs by name: etf/search -n <NAME>
+- To search for ETFs by description: etf/search -d <DESCRIPTION>
+- To search for ETFs by both name and description: etf/search -n <NAME> -d <DESCRIPTION>
+- Find ETFs with a specific name: etf/search --name <NAME>
+- Locate ETFs with a certain description: etf/search --description <DESCRIPTION>
+- Discover ETFs using both name and description criteria: etf/search --name <NAME> --description <DESCRIPTION>

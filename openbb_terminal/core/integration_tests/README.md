@@ -160,16 +160,35 @@ the tests.
     python terminal.py -t forex --subproc 4
     ```
 
+- To have a more responsive console output we run the tests in parallel and return the
+  output of each script as soon as it is ready. This means that test results might not
+  be displayed in the same order as they were started. To force displaying tests results
+  in the order they start, use the option `--ordered`:
+
+    ```zsh
+    python terminal.py -t --ordered
+    ```
+
 - To see terminal outputs being printed during the test session, use `--verbose` or `-v`:
 
     ```zsh
     python terminal.py -t -v
     ```
 
-- In verbose mode the tests are run sequentially, by default. This avoids mixing the outputs from several scripts in the console. If you still want to see the outputs during a parallel run, just specify the number of subprocesses you wish to launch with verbose flag, it will force multiprocessing.
+- To run the tests sequentially (it will be way slower for a large number of scripts),
+  use `--subproc 0`:
 
     ```zsh
-    python terminal.py -t forex --subproc 7 -v
+    python terminal.py -t --subproc 0
+    ```
+
+- Enabling verbose mode and running scripts in several processes will mix the output
+  each script in the console. In this case it is advisable to run tests with the option
+  `--subproc 0`, this will run the tests sequentially. It will be slower, but the outputs
+  of each test will not be mixed up.
+
+    ```zsh
+    python terminal.py -t forex --subproc 0 -v
     ```
 
 ### Installer Terminal
@@ -194,6 +213,12 @@ To run the tests on installers you can use the same syntax as above, just substi
 
     ```zsh
     /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t alternative/test_alt_covid.openbb
+    ```
+
+- Get integration test coverage:
+
+    ```zsh
+    /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t --coverage
     ```
 
 ## 4. Test report
@@ -263,7 +288,7 @@ Traceback:
     1 / 0
 Exception type: ZeroDivisionError
 Detail: division by zero
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ================================ integration test summary ================================
 FAILED forex/test_forex_qa.openbb -> command: qa

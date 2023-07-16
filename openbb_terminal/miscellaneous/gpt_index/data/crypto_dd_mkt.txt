@@ -1,0 +1,28 @@
+parent_command:crypto/dd
+usage: mkt [--vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}] [-l LIMIT]
+           [-s {pct_volume_share,exchange,pair,trust_score,volume,price}] [-r] [-u]
+
+Get all markets found for given coin. You can display only N number of markets with --limt parameter. You can sort data by pct_volume_share, exchange, pair, trust_score, volume, price --sort parameter and also with --reverse flag
+to sort ascending. You can use additional flag --urls to see urls for each market Displays: exchange, pair, trust_score, volume, price, pct_volume_share,
+
+optional arguments:
+  --vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}
+                        Quoted currency. Default USD (default: USD)
+  -l LIMIT, --limit LIMIT
+                        Limit of records (default: 20)
+  -s {pct_volume_share,exchange,pair,trust_score,volume,price}, --sort {pct_volume_share,exchange,pair,trust_score,volume,price}
+                        Sort by given column. Default: pct_volume_share (default: pct_volume_share)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -u, --urls            Flag to show urls. If you will use that flag you will see only: exchange, pair, trust_score, market_url columns (default: False)
+
+
+Examples:
+- To display all markets for a specific coin: crypto/dd/mkt <COIN>
+- To show the top 5 markets sorted by volume for a coin: crypto/dd/mkt <COIN> -l 5 -s volume
+- To view markets for a coin quoted in EUR: crypto/dd/mkt <COIN> --vs EUR
+- To see markets for a coin with ascending trust scores: crypto/dd/mkt <COIN> -s trust_score -r
+- To display all markets for a coin with market URLs: crypto/dd/mkt <COIN> -u
+- To show the top 10 markets for a coin sorted by price in descending order: crypto/dd/mkt <COIN> -l 10 -s price
+- To view markets for a coin quoted in GBP and sorted by exchange: crypto/dd/mkt <COIN> --vs GBP -s exchange
+- To display the top 3 markets for a coin with market URLs and sorted by pair: crypto/dd/mkt <COIN> -l 3 -s pair -u
+- To show markets for a coin sorted by percentage volume share in ascending order: crypto/dd/mkt <COIN> -s pct_volume_share -r

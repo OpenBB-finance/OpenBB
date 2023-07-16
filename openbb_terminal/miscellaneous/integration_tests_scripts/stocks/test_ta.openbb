@@ -1,0 +1,82 @@
+stocks
+load ${ticker=aapl}
+ta
+recom
+summary
+ema -l 20,30,50
+sma
+wma
+hma
+zlma
+vwap
+cci
+macd
+rsi
+stoch
+fisher
+cg
+clenow
+demark
+adx
+aroon
+bbands
+donchian
+kc
+ad
+adosc
+obv
+fib
+load ${ticker=ionq} -i 1
+ema -l 20,30,50
+sma -l 3
+wma -l 5
+hma -l 10
+zlma -l 20
+vwap
+cci -l 12
+macd --fast 10 --slow 20 --signal 5
+rsi -l 10 -s 90 -d 2
+stoch -k 10 -d 2 --slowkperiod 2
+fisher -l 10
+cg -l 10
+clenow
+demark
+adx -l 10 -s 90 -d 2
+aroon -l 20 -s 120
+bbands -l 10 -s 1
+donchian -u 30 -l 3-
+kc -l 10 -s 3 -o 1
+ad --open
+adosc --open --fast 4 --slow 10
+obv
+fib
+load ${ticker=aapl} --source Polygon
+ema
+sma
+wma
+hma
+zlma
+vwap
+cci
+macd
+rsi
+stoch
+fisher
+cg
+clenow
+demark
+adx
+aroon
+bbands
+donchian
+kc
+ad
+adosc
+obv
+fib
+atr
+cones
+multi -i macd[12,26,9],rsi,sma[20]
+help
+reset
+exit

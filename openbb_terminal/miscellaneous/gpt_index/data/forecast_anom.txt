@@ -1,0 +1,28 @@
+parent_command:forecast
+usage: anom [-d {AAPL}] [-c TARGET_COLUMN] [-t TRAIN_SPLIT] [--end S_END_DATE] [--start S_START_DATE] [--forecast-only]
+
+Perform a Quantile Anomaly detection on a given dataset: https://unit8co.github.io/darts/generated_api/darts.ad.detectors.quantile_detector.html
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -t TRAIN_SPLIT, --train-split TRAIN_SPLIT
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+
+
+Examples:
+- Perform a quantile anomaly detection on the default dataset: forecast/anom
+- Perform a quantile anomaly detection on a specific dataset: forecast/anom -d AAPL
+- Perform a quantile anomaly detection using a specific target column: forecast/anom -c volume
+- Perform a quantile anomaly detection with a custom train split: forecast/anom -t 0.75
+- Perform a quantile anomaly detection for a specific date range: forecast/anom --start 2021-01-01 --end 2021-12-31
+- Perform a quantile anomaly detection on a specific dataset and target column: forecast/anom -d AAPL -c volume
+- Perform a quantile anomaly detection on a specific dataset with a custom train split: forecast/anom -d AAPL -t 0.75
+- Perform a quantile anomaly detection with a custom train split and specific date range: forecast/anom -t 0.75 --start 2021-01-01 --end 2021-12-31
+- Perform a quantile anomaly detection without plotting historical data: forecast/anom --forecast-only
+- Perform a quantile anomaly detection on a specific dataset without plotting historical data: forecast/anom -d AAPL --forecast-only

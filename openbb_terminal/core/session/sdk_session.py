@@ -14,27 +14,38 @@ from openbb_terminal.terminal_helper import print_guest_block_msg
 
 logger = logging.getLogger(__name__)
 
+console_print = console.print
+
+
+def set_silent_console_print(silent: bool = False):
+    global console_print  # pylint: disable=global-statement # noqa
+    console_print = console.print if not silent else lambda *args, **kwargs: None
+
 
 def get_session(email: str, password: str, token: str, save: bool) -> dict:
     session = dict()
 
     if token:
-        console.print("Creating session from token.")
+        console_print("Creating session from token.")
         session = session_model.create_session_from_token(token, save)  # type: ignore
 
     if not session and email:
-        console.print("Creating session from email and password.")
+        console_print("Creating session from email and password.")
         session = session_model.create_session(email, password, save)  # type: ignore
 
     if not (isinstance(session, dict) and session):
-        raise Exception("Failed to create session.")
+        console_print("[red]Failed to create session.[/red]")
 
     return session
 
 
 @log_start_end(log=logger)
 def login(
-    email: str = "", password: str = "", token: str = "", keep_session: bool = False
+    email: str = "",
+    password: str = "",
+    token: str = "",
+    keep_session: bool = False,
+    silent: bool = False,
 ):
     """
     Login and load user info.
@@ -53,12 +64,16 @@ def login(
     keep_session : bool
         Keep the session, i.e., next time the user logs in,
         there is no need to enter the email and password or the token.
+    silent : bool
+        If True, the console print will be silent.
 
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.login(email="your_email", password="your_password")
     """
+    set_silent_console_print(silent=silent)
+
     session = {}
     if not (email or token):
         session = Local.get_session()
@@ -66,13 +81,16 @@ def login(
     if not session:
         session = get_session(email, password, token, keep_session)
     else:
-        console.print("Using local session to login.")
+        console_print("Using local session to login.")
 
-    status = session_model.login(session)
-    if status != session_model.LoginStatus.SUCCESS:
-        raise Exception(f"Login failed with status `{status.value}`.")
-
-    console.print("[green]Login successful.[/green]")
+    if not session:
+        console_print("[red]Failed to obtain session.[/red]")
+    else:
+        status = session_model.login(session)
+        if status != session_model.LoginStatus.SUCCESS:
+            console_print(f"[red]Login failed with status `{status.value}`.[/red]")
+        else:
+            console_print("[green]Login successful.[/green]")
 
 
 @log_start_end(log=logger)
@@ -102,10 +120,13 @@ def whoami():
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.whoami()
     """
+    set_silent_console_print(silent=False)
+
     current_user = get_current_user()
     local_user = is_local()
     if not local_user:
-        console.print(f"[info]email:[/info] {current_user.profile.email}")
-        console.print(f"[info]uuid:[/info] {current_user.profile.uuid}")
+        console_print(f"[info]email:[/info] {current_user.profile.email}")
+        console_print(f"[info]username:[/info] {current_user.profile.username}")
+        console_print(f"[info]uuid:[/info] {current_user.profile.uuid}")
     else:
         print_guest_block_msg()

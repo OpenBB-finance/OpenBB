@@ -1,0 +1,17 @@
+parent_command:econometrics
+usage: eval -q QUERY [QUERY ...]
+
+Create custom data column from loaded datasets. Can be mathematical expressions supported by pandas.eval() function. Example. If I have loaded `fred DGS2,DGS5` and I want to create a new column that is the difference between these
+two, I can create a new column by doing `eval spread = DGS2 - DGS5`. Notice that the command is case sensitive, i.e., `DGS2` is not the same as `dgs2`.
+
+optional arguments:
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
+                        Query to evaluate on loaded datasets (default: None)
+
+
+Examples:
+- Create a custom data column for the difference between two loaded datasets: econometrics/eval -q spread=DGS2-DGS5
+- Calculate the ratio of two loaded datasets and create a new column: econometrics/eval -q ratio=DGS2/DGS5
+- Create a new column with the sum of two loaded datasets: econometrics/eval -q sum=DGS2+DGS5
+- Calculate the percentage change between two loaded datasets and create a new column: econometrics/eval -q pct_change=(DGS2-DGS5)/DGS5*100
+- Create a custom data column for the absolute difference between two loaded datasets: econometrics/eval -q abs_diff=abs(DGS2-DGS5)

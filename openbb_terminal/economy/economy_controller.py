@@ -19,11 +19,12 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import (
-    alphavantage_view,
     commodity_view,
     econdb_model,
     econdb_view,
     economy_helpers,
+    fedreserve_model,
+    fedreserve_view,
     finviz_model,
     finviz_view,
     fred_model,
@@ -39,7 +40,6 @@ from openbb_terminal.economy import (
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     list_from_str,
     parse_and_split_input,
@@ -77,12 +77,11 @@ class EconomyController(BaseController):
         "plot",
         "valuation",
         "performance",
-        "spectrum",
         "map",
-        "rtps",
         "bigmac",
         "events",
         "edebt",
+        "usdli",
     ]
 
     CHOICES_MENUS = [
@@ -238,10 +237,6 @@ class EconomyController(BaseController):
             }
             choices["trust"]["-c"] = "--countries"
 
-            choices["treasury"]["--type"] = {
-                c: {} for c in econdb_model.TREASURIES["instruments"]
-            }
-            choices["treasury"]["-t"] = "--type"
             choices["macro"]["--parameters"] = {c: {} for c in econdb_model.PARAMETERS}
             choices["macro"]["-p"] = "--parameters"
             choices["macro"]["--countries"] = {
@@ -260,7 +255,10 @@ class EconomyController(BaseController):
                 c: {} for c in nasdaq_model.get_country_names()
             }
             choices["events"]["-c"] = "--countries"
-
+            choices["treasury"]["--maturity"] = {
+                c: None for c in fedreserve_model.all_mat
+            }
+            choices["treasury"]["-m"] = "--maturity"
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -317,10 +315,9 @@ class EconomyController(BaseController):
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
-        mt.add_cmd("rtps")
         mt.add_cmd("valuation")
         mt.add_cmd("performance")
-        mt.add_cmd("spectrum")
+        mt.add_cmd("usdli")
         mt.add_raw("\n")
         mt.add_info("_country_")
         mt.add_cmd("gdp")
@@ -346,6 +343,7 @@ class EconomyController(BaseController):
         mt.add_cmd("plot")
         mt.add_raw("\n")
         mt.add_menu("qa")
+
         console.print(text=mt.menu_text, menu="Economy")
 
     @log_start_end(log=logger)
@@ -1389,13 +1387,8 @@ class EconomyController(BaseController):
                 query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(search_query=query)
 
-                if isinstance(df_search, pd.DataFrame) and not df_search.empty:
-                    fred_view.notes(
-                        search_query=query,
-                        limit=ns_parser.limit,
-                        export=ns_parser.export,
-                        sheet_name=ns_parser.sheet_name,
-                    )
+                if not df_search.empty:
+                    fred_view.notes(search_query=query, limit=ns_parser.limit)
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
@@ -1436,7 +1429,7 @@ class EconomyController(BaseController):
                     get_data=True,
                 )
 
-                if isinstance(df, pd.DataFrame) and not df.empty:
+                if not df.empty:
                     for series_id, data in detail.items():
                         self.FRED_TITLES[
                             series_id
@@ -1453,7 +1446,7 @@ class EconomyController(BaseController):
                     if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
-                elif not ns_parser.export and not ns_parser.raw:
+                else:
                     console.print("[red]No data found for the given Series ID[/red]")
 
             elif not parameters and ns_parser.raw:
@@ -1624,9 +1617,7 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="treasury",
-            description="Obtain any set of U.S. treasuries and plot them together. These can be a range of maturities "
-            "for nominal, inflation-adjusted (on long term average of inflation adjusted) and secondary "
-            "markets over a lengthy period. Note: 3-month and 10-year treasury yields for other countries "
+            description="Obtain US treasury rates.  Note: 3-month and 10-year treasury yields for other countries "
             "are available via the command 'macro' and parameter 'M3YD' and 'Y10YD'. [Source: EconDB / FED]",
         )
         parser.add_argument(
@@ -1643,22 +1634,6 @@ class EconomyController(BaseController):
             help="Show the maturities available for every instrument.",
             action="store_true",
             default=False,
-        )
-        parser.add_argument(
-            "--freq",
-            type=str,
-            dest="frequency",
-            choices=econdb_model.TREASURIES["frequencies"],
-            help="The frequency, this can be annually, monthly, weekly or daily",
-            default="monthly",
-        )
-        parser.add_argument(
-            "-t",
-            "--type",
-            type=str,
-            dest="type",
-            help="Choose from: nominal, inflation, average, secondary",
-            default="nominal",
         )
         parser.add_argument(
             "-s",
@@ -1685,65 +1660,23 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             maturities = list_from_str(ns_parser.maturity)
-            types = list_from_str(ns_parser.type)
-            for item in types:
-                if item not in econdb_model.TREASURIES["instruments"]:
-                    print(f"{item} is not a valid instrument type.\n")
-                    return self.queue
             if ns_parser.show_maturities:
-                econdb_view.show_treasury_maturities()
-                return self.queue
+                console.print(",".join(fedreserve_model.all_mat))
+                return None
 
-            if ns_parser.maturity and ns_parser.type:
-                df = econdb_model.get_treasuries(
-                    instruments=types,
-                    maturities=maturities,
-                    frequency=ns_parser.frequency,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                )
+            fedreserve_view.show_treasuries(
+                maturities=maturities,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
-                if not df.empty:
-                    cols = []
-                    for column in df.columns:
-                        if isinstance(column, tuple):
-                            cols.append("_".join(column))
-                        else:
-                            cols.append(column)
-                    df.columns = cols
-
-                    for column in df.columns:
-                        if column in self.DATASETS["treasury"].columns:
-                            self.DATASETS["treasury"].drop(column, axis=1, inplace=True)
-
-                    self.DATASETS["treasury"] = pd.concat(
-                        [
-                            self.DATASETS["treasury"],
-                            df,
-                        ],
-                        axis=1,
-                    )
-
-                    self.stored_datasets = (
-                        economy_helpers.update_stored_datasets_string(self.DATASETS)
-                    )
-
-                    econdb_view.show_treasuries(
-                        instruments=types,
-                        maturities=maturities,
-                        frequency=ns_parser.frequency,
-                        start_date=ns_parser.start_date,
-                        end_date=ns_parser.end_date,
-                        raw=ns_parser.raw,
-                        export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
-                    )
-
-                    self.update_runtime_choices()
-                    if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
-                        self.print_help()
+            if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
+                self.print_help()
 
     @log_start_end(log=logger)
     def call_cpi(self, other_args: List[str]):
@@ -1942,7 +1875,8 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="events",
-            description="Economic calendar. If no start or end dates, default is the current day high importance events.",
+            description="Economic calendar. If no start or end dates,"
+            "default is the current day high importance events.",
         )
         parser.add_argument(
             "-c",
@@ -2255,34 +2189,6 @@ class EconomyController(BaseController):
                     )
 
     @log_start_end(log=logger)
-    def call_rtps(self, other_args: List[str]):
-        """Process rtps command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rtps",
-            description="""
-                Real-time and historical sector performances calculated from
-                S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True,
-        )
-        if ns_parser:
-            alphavantage_view.realtime_performance_sector(
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -2430,42 +2336,49 @@ class EconomyController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_spectrum(self, other_args: List[str]):
-        """Process spectrum command"""
+    def call_usdli(self, other_args: List[str]):
+        """Process usdli command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spectrum",
+            prog="usdli",
             description="""
-                View group (sectors, industry or country) spectrum data. [Source: Finviz]
+            The USD Liquidity Index is defined as: [WALCL - WLRRAL - WDTGAL]. It is expressed in billions of USD.
             """,
         )
         parser.add_argument(
-            "-g",
-            "--group",
+            "-o",
+            "--overlay",
             type=str,
-            choices=list(self.d_GROUPS.keys()),
-            default="sector",
-            dest="group",
-            help="Data group (sector, industry or country)",
+            choices=list(fred_model.EQUITY_INDICES.keys()),
+            default="SP500",
+            dest="overlay",
+            help="The equity index to compare against.  Set `show = True` for the list of choices.",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-g")
-
+        parser.add_argument(
+            "-s",
+            "--show",
+            action="store_true",
+            dest="show",
+            default=False,
+            help="Show the list of available equity indices to overlay.",
+        )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
         if ns_parser:
-            ns_group = (
-                " ".join(ns_parser.group)
-                if isinstance(ns_parser.group, list)
-                else ns_parser.group
+            fred_view.display_usd_liquidity(
+                overlay=ns_parser.overlay,
+                show=ns_parser.show,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
-            finviz_view.display_spectrum(group=ns_group)
-
-            # # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
-            # # after saving it and displaying it to the user
-            os.remove(self.d_GROUPS[ns_group] + ".jpg")
 
     @log_start_end(log=logger)
     def call_eval(self, other_args):
@@ -2487,7 +2400,7 @@ class EconomyController(BaseController):
             type=str,
             nargs="+",
             dest="query",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             help="Query to evaluate on loaded datasets",
         )
         if other_args and "-" not in other_args[0][0]:

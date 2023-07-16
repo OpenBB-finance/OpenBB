@@ -1,61 +1,61 @@
 Fiscal Date Ending                                              2018                 2019                 2020                 2021                 2022
 Reported Currency                                                USD                  USD                  USD                  USD                  USD
 Cik                                                       0001413329           0001413329           0001413329           0001413329           0001413329
-Filing Date                                      2019-02-07 00:00:00  2020-02-07 00:00:00  2021-02-09 00:00:00  2022-02-11 00:00:00  2022-10-27 00:00:00
-Accepted Date                                    2019-02-07 15:09:20  2020-02-07 06:47:13  2021-02-09 16:20:37  2022-02-11 08:29:22  2022-10-27 08:17:59
+Filing Date                                      2019-02-07 00:00:00  2020-02-07 00:00:00  2021-02-09 00:00:00  2022-02-11 00:00:00  2023-02-10 00:00:00
+Accepted Date                                    2019-02-07 15:09:20  2020-02-07 06:47:13  2021-02-09 16:20:37  2022-02-11 08:29:22  2023-02-10 08:20:35
 Calendar Year                                    2018-01-01 00:00:00  2019-01-01 00:00:00  2020-01-01 00:00:00  2021-01-01 00:00:00  2022-01-01 00:00:00
 Period                                                            FY                   FY                   FY                   FY                   FY
-Cash And Cash Equivalents                                    6.593 B              6.861 B              7.280 B              4.496 B              5.368 B
+Cash And Cash Equivalents                                 6593000000           6861000000           7280000000           4496000000           3207000000
 Short Term Investments                                             0                    0                    0                    0                    0
-Cash And Short Term Investments                              6.593 B              6.861 B              7.280 B              4.496 B              5.368 B
-Net Receivables                                              3.564 B              3.717 B              3.761 B              3.940 B                    0
-Inventory                                                    8.804 B              9.235 B              9.591 B              8.720 B                    0
-Other Current Assets                                           481 M                701 M                860 M                561 M                    0
-Total Current Assets                                        19.442 B             20.514 B             21.492 B             17.717 B              5.368 B
-Property Plant Equipment                                     7.201 B              6.631 B              6.365 B              6.168 B              5.610 B
-Goodwill                                                     7.189 B              5.858 B              5.964 B              6.680 B              6.127 B
-Intangible Assets Excluding Goodwill                         2.278 B              2.113 B              2.019 B              2.818 B              2.224 B
-Intangible Assets                                            9.467 B              7.971 B              7.983 B              9.498 B              8.351 B
-Long Term Investments                                        1.269 B              4.635 B              4.798 B              4.463 B              4.087 B
-Tax Assets                                                     977 M              1.153 B              1.410 B                895 M                    0
-Other Non Currrent Assets                                    1.445 B              1.971 B              2.767 B              2.549 B                    0
-Total Non Current Assets                                    20.359 B             22.361 B             23.323 B             23.573 B             18.048 B
-Other Assets                                                       0                    0                    0                    0             17.301 B
-Total Assets                                                39.801 B             42.875 B             44.815 B             41.290 B             40.717 B
-Current Accounts Payable                                     2.068 B              2.299 B              2.780 B              3.331 B                    0
-Current Debt                                                 4.784 B              4.389 B              3.368 B              3.023 B              2.818 B
-Tax Payables                                                       0                    0              7.494 B              7.349 B                    0
+Cash And Short Term Investments                           6593000000           6861000000           7280000000           4496000000           3207000000
+Net Receivables                                           3564000000           3717000000           3761000000           3940000000           4756000000
+Inventory                                                 8804000000           9235000000           9591000000           8720000000           9886000000
+Other Current Assets                                       481000000          13653000000          14212000000            561000000           1770000000
+Total Current Assets                                     19442000000          20514000000          21492000000          17717000000          19619000000
+Property Plant Equipment                                  7201000000           6631000000           6365000000           6168000000           6710000000
+Goodwill                                                  7189000000           5858000000           5964000000           6680000000          19655000000
+Intangible Assets Excluding Goodwill                      2278000000           2113000000           2019000000           2818000000           6732000000
+Intangible Assets                                         9467000000           7971000000           7983000000           9498000000          26387000000
+Long Term Investments                                     1269000000           4635000000           4798000000           4463000000           4431000000
+Tax Assets                                                 977000000           1153000000           1410000000            895000000            603000000
+Other Non Currrent Assets                                 1445000000           1971000000           2767000000           2549000000           3931000000
+Total Non Current Assets                                 20359000000          22361000000          23323000000          23573000000          42062000000
+Other Assets                                                       0                    0                    0                    0                    0
+Total Assets                                             39801000000          42875000000          44815000000          41290000000          61681000000
+Current Accounts Payable                                  2068000000           2299000000           2780000000           3331000000           4076000000
+Current Debt                                              4784000000           4389000000           3368000000           3023000000           8248000000
+Tax Payables                                              5664000000           6633000000           7494000000           7349000000           8480000000
 Deferred Revenue                                                   0                    0                    0                    0                    0
-Other Non Current Liabilities                               10.339 B             12.145 B              5.973 B             16.232 B                    0
-Total Current Liabilities                                   17.191 B             18.833 B             19.615 B             19.255 B              2.818 B
-Long Term Debt Non Current                                  26.975 B             26.656 B             28.168 B             24.783 B             21.762 B
+Other Non Current Liabilities                            10339000000          12145000000          13467000000          12901000000          15012000000
+Total Current Liabilities                                17191000000          18833000000          19615000000          19255000000          27336000000
+Long Term Debt Non Current                               26975000000          26656000000          28168000000          24783000000          34875000000
 Deferred Revenue Non Current                                       0                    0                    0                    0                    0
-Deferred Tax Liabilities                                       898 M                908 M                684 M                726 M                923 M
-Other Non Current Liabilities                                5.476 B              6.077 B              6.979 B              4.734 B             22.617 B
-Total Non Current Liabilities                               33.349 B             33.641 B             35.831 B             30.243 B             45.302 B
+Deferred Tax Liabilities                                   898000000            908000000            684000000            726000000           1956000000
+Other Non Current Liabilities                             5476000000          26953000000          29683000000          23889000000          28332000000
+Total Non Current Liabilities                            33349000000          33641000000          35831000000          30243000000          40656000000
 Other Liabilities                                                  0                    0                    0                    0                    0
 Capital Lease Obligations                                          0                    0                    0                    0                    0
-Total Liabilities                                           50.540 B             52.474 B             55.446 B             49.498 B             48.120 B
+Total Liabilities                                        50540000000          52474000000          55446000000          49498000000          67992000000
 Preferred Stock                                                    0                    0                    0                    0                    0
 Common Stock                                                       0                    0                    0                    0                    0
-Retained Earnings                                           31.014 B             30.987 B             31.638 B             33.082 B                    0
-Accumulated Other Comprehensive Income                     -10.111 B             -9.363 B            -11.181 B             -9.577 B                    0
-Other Total Stockholders Equity                            -33.362 B            -33.201 B            -33.024 B                    0                    0
-Total Shareholder Equity                                   -12.459 B            -11.577 B            -12.567 B            -10.106 B             -9.137 B
-Equity                                                     -12.459 B            -11.577 B            -12.567 B            -10.106 B             -9.137 B
-Total Liabilities And Stockholders Equity                   38.081 B             40.897 B             42.879 B             49.498 B             38.983 B
+Retained Earnings                                        31014000000          30987000000          31638000000          33082000000          34289000000
+Accumulated Other Comprehensive Income                  -10111000000          -9363000000         -11181000000          -9577000000          -9559000000
+Other Total Stockholders Equity                         -33362000000         -33201000000         -33024000000         -33611000000         -33687000000
+Total Shareholder Equity                                -12459000000         -11577000000         -12567000000         -10106000000          -8957000000
+Equity                                                  -12459000000         -11577000000         -12567000000         -10106000000          -8957000000
+Total Liabilities And Stockholders Equity                39801000000          42875000000          44815000000          41290000000          59035000000
 Equity Attributable To Non Controlling Interest                    0                    0                    0                    0                    0
-Liabilities And Equity                                      38.081 B             40.897 B             42.879 B             49.498 B             38.983 B
-Total Investments                                                  0                    0                    0                    0                    0
-Total Debt                                                  31.759 B             31.045 B             31.536 B             27.806 B             24.580 B
-Net Debt                                                    25.166 B             24.184 B             24.256 B             23.310 B             19.212 B
+Liabilities And Equity                                   39801000000          42875000000          44815000000          41290000000          59035000000
+Total Investments                                                  0           4635000000           4798000000           4463000000           4431000000
+Total Debt                                               31759000000          31045000000          31536000000          27806000000          43123000000
+Net Debt                                                 25166000000          24184000000          24256000000          23310000000          39916000000
                                                                                                            Final Link
 Fiscal Date Ending                                                                                                   
 2018                https://www.sec.gov/Archives/edgar/data/1413329/000141332919000007/pm123118form10kwrapinclfsm.htm
 2019                    https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/pm123119form10kwrapinc.htm
 2020                               https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/pm-20201231.htm
 2021                               https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm
-2022                               https://www.sec.gov/Archives/edgar/data/1413329/000141332922000114/pm-20220930.htm
+2022                               https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/pm-20221231.htm
 
                                                                                                                  Link
 Fiscal Date Ending                                                                                                   
@@ -63,5 +63,5 @@ Fiscal Date Ending
 2019                https://www.sec.gov/Archives/edgar/data/1413329/000141332920000007/0001413329-20-000007-index.htm
 2020                https://www.sec.gov/Archives/edgar/data/1413329/000141332921000007/0001413329-21-000007-index.htm
 2021                https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm
-2022                https://www.sec.gov/Archives/edgar/data/1413329/000141332922000114/0001413329-22-000114-index.htm
+2022                https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/0001413329-23-000025-index.htm
 

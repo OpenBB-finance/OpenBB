@@ -1,0 +1,20 @@
+parent_command:econometrics
+usage: season [-v {}] [-m M] [--max_lag MAX_LAG] [-a ALPHA]
+
+The seasonality for a given column
+
+optional arguments:
+  -v {}, --values {}    Dataset.column values to be displayed in a plot (default: None)
+  -m M                  A time lag to highlight on the plot (default: None)
+  --max_lag MAX_LAG     The maximal lag order to consider (default: 24)
+  -a ALPHA, --alpha ALPHA
+                        The confidence interval to display (default: 0.05)
+
+
+Examples:
+- To analyze the seasonality of a specific dataset column: econometrics/season -v Dataset.column
+- To highlight a time lag of 5 on the seasonality plot: econometrics/season -v Dataset.column -m 5
+- To set the maximal lag order to 12 for the seasonality analysis: econometrics/season -v Dataset.column --max_lag 12
+- To display the seasonality plot with a 0.01 confidence interval: econometrics/season -v Dataset.column -a 0.01
+- To analyze the seasonality of a dataset column and highlight a time lag of 3 with a maximal lag order of 18: econometrics/season -v Dataset.column -m 3 --max_lag 18
+- To display the seasonality plot with a 0.1 confidence interval and a highlighted time lag of 4: econometrics/season -v Dataset.column -m 4 -a 0.1

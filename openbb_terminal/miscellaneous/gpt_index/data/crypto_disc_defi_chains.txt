@@ -1,0 +1,12 @@
+parent_command:crypto/disc
+usage: defi_chains
+
+Shows DeFi chains [Source: https://dappradar.com/]
+
+defi_chains
+Examples:
+- To view DeFi chains, simply use the command: crypto/disc/defi_chains
+- Display a list of DeFi chains with the following command: crypto/disc/defi_chains
+- Retrieve information on DeFi chains using this command: crypto/disc/defi_chains
+- To get a list of DeFi chains, enter the command: crypto/disc/defi_chains
+- Use the command crypto/disc/defi_chains to show DeFi chains available

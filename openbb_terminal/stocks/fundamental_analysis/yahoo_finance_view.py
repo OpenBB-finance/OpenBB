@@ -16,7 +16,6 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     print_rich_table,
 )
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
@@ -89,7 +88,7 @@ def display_shareholders(
     """
     df = yahoo_finance_model.get_shareholders(symbol, holder)
     if holder == "major":
-        df.columns = ["", ""]
+        df.columns = ["Value", "Description"]
     if "Date Reported" in df.columns:
         df["Date Reported"] = df["Date Reported"].apply(
             lambda x: x.strftime("%Y-%m-%d")
@@ -329,7 +328,7 @@ def display_mktcap(
         fig,
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
@@ -392,8 +391,6 @@ def display_fundamentals(
             for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
         ]
 
-    symbol_currency = yahoo_finance_model.get_currency(symbol)
-
     if plot:
         plot = [x.lower() for x in plot]
         rows_plot = len(plot)
@@ -403,40 +400,29 @@ def display_fundamentals(
             fundamentals_plot_data = fundamentals_plot_data.drop(["ttm"])
         fundamentals_plot_data = fundamentals_plot_data.sort_index()
 
-        if not ratios:
-            maximum_value = fundamentals_plot_data[plot[0]].max()
-            (df_rounded, denomination) = transform_by_denomination(
-                fundamentals_plot_data, maxValue=maximum_value
-            )
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = fundamentals_plot_data
-            denomination = ""
-
         if rows_plot == 1:
-            fig.add_bar(
-                x=df_rounded.index,
-                y=df_rounded[plot[0]],
+            fig.add_scatter(
+                x=fundamentals_plot_data.index,
+                y=fundamentals_plot_data[plot[0]],
                 name=plot[0].replace("_", " "),
             )
             title = (
                 f"{plot[0].replace('_', ' ').capitalize()} QoQ Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ').capitalize()} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ').capitalize()} of {symbol.upper()}"
             )
             fig.set_title(title)
         else:
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                fig.add_bar(
-                    x=df_rounded.index,
-                    y=df_rounded[plot[i]],
+                fig.add_scatter(
+                    x=fundamentals_plot_data.index,
+                    y=fundamentals_plot_data[plot[i]],
                     name=plot[i].replace("_", " "),
                     row=i + 1,
                     col=1,
                 )
-                title = f"{plot[i].replace('_', ' ')} {denomination}"
+                title = f"{plot[i].replace('_', ' ')}"
                 fig.add_annotation(x=0.5, y=1, row=i + 1, col=1, text=title)
 
         fig.show(external=fig.is_image_export(export))
@@ -451,7 +437,8 @@ def display_fundamentals(
         print_rich_table(
             formatted_df.applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
-            title=f"{symbol} {title_str} Currency: {symbol_currency}",
+            index_name="Item",
+            title=f"{symbol} {title_str}",
             export=bool(export),
             limit=limit,
         )

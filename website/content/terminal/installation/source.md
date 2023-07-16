@@ -1,7 +1,7 @@
 ---
 title: Source
 sidebar_position: 3
-description: This section provides steps to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems.
+description: This section provides steps to install the OpenBB Terminal from source. This installation type supports Windows, macOS and Linux systems.
 keywords:
   [
     installation,
@@ -17,8 +17,20 @@ keywords:
     how to,
     explanation,
     openbb terminal,
+    pypi,
+    miniconda,
+    git,
+    c++,
+    rosetta2,
+    libomp,
+    vcxsrv,
+    gtk
   ]
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Source - Terminal | OpenBB Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -196,6 +208,10 @@ Create the environment by copying the code below into the command line and agree
 ```shell
 conda env create -n obb --file build/conda/conda-3-9-env.yaml
 ```
+
+:::note
+Additional `YAML` files provide support for Python versions 3.8 and 3.10.  Substitute the `9`, in the command above, with the desired version.
+:::
 
 After the obb environment is created, activate it by entering:
 

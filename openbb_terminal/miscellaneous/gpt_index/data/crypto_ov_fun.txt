@@ -1,0 +1,29 @@
+parent_command:crypto/ov
+usage: fun -m {twitter_followers,gmv_annualized,market_cap,take_rate,revenue,revenue_protocol,tvl,pe,pe_circulating,ps,ps_circulating}
+           [-c {Asset Management,Blockchain,DeFi,Exchange,Gaming,Insurance,Interoperability,Lending,NFT,Other,Prediction Market,Stablecoin}] [-t {24h,7d,30d,90d,180d,365d}] [-r] [-l LIMIT]
+
+Display fundamental metrics overview [Source: Token Terminal]
+
+optional arguments:
+  -m {twitter_followers,gmv_annualized,market_cap,take_rate,revenue,revenue_protocol,tvl,pe,pe_circulating,ps,ps_circulating}, --metric {twitter_followers,gmv_annualized,market_cap,take_rate,revenue,revenue_protocol,tvl,pe,pe_circulating,ps,ps_circulating}
+                        Choose metric of interest (default: None)
+  -c {Asset Management,Blockchain,DeFi,Exchange,Gaming,Insurance,Interoperability,Lending,NFT,Other,Prediction Market,Stablecoin}, --category {Asset Management,Blockchain,DeFi,Exchange,Gaming,Insurance,Interoperability,Lending,NFT,Other,Prediction Market,Stablecoin}
+                        Choose category of interest (default: )
+  -t {24h,7d,30d,90d,180d,365d}, --timeline {24h,7d,30d,90d,180d,365d}
+                        Choose timeline of interest (default: 24h)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -l LIMIT, --limit LIMIT
+                        Display N items (default: 10)
+
+
+Examples:
+- To display market cap for DeFi projects in the last 30 days: crypto/ov -m market_cap -c DeFi -t 30d
+- Show the top 5 NFT projects by revenue in the past 7 days: crypto/ov -m revenue -c NFT -t 7d -l 5
+- Get the twitter followers for Exchange category projects in the last 90 days: crypto/ov -m twitter_followers -c Exchange -t 90d
+- Display the annualized GMV for Gaming projects in the last 180 days: crypto/ov -m gmv_annualized -c Gaming -t 180d
+- View the price-to-sales ratio for Prediction Market projects in the past 24 hours: crypto/ov -m ps -c Prediction Market -t 24h
+- Display the top 10 projects by TVL in the Lending category in the last 365 days: crypto/ov -m tvl -c Lending -t 365d -l 10
+- Show the price-to-earnings ratio for Asset Management projects in the last 30 days in ascending order: crypto/ov -m pe -c Asset Management -t 30d -r
+- Get the revenue_protocol for Interoperability projects in the past 90 days: crypto/ov -m revenue_protocol -c Interoperability -t 90d
+- Display take rate for Insurance projects in the last 7 days: crypto/ov -m take_rate -c Insurance -t 7d
+- View the top 3 projects by pe_circulating in the Stablecoin category in the past 180 days: crypto/ov -m pe_circulating -c Stablecoin -t 180d -l 3

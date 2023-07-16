@@ -22,6 +22,8 @@ class EconometricsRoot(Category):
         `dwat_chart`: Show Durbin-Watson autocorrelation tests\n
         `fdols`: First differencing is an alternative to using fixed effects when there might be correlation.\n
         `fe`: When effects are correlated with the regressors the RE and BE estimators are not consistent.\n
+        `garch`: Calculates volatility forecasts based on GARCH.\n
+        `garch_chart`: Plots the volatility forecasts based on GARCH\n
         `get_regression_data`: This function creates a DataFrame with the required regression data as\n
         `granger`: Calculate granger tests\n
         `granger_chart`: Show granger tests\n
@@ -37,6 +39,7 @@ class EconometricsRoot(Category):
         `re`: The random effects model is virtually identical to the pooled OLS model except that is accounts for the\n
         `root`: Calculate test statistics for unit roots\n
         `root_chart`: Determine the normality of a timeseries.\n
+        `vif`: Calculates VIF (variance inflation factor), which tests collinearity.\n
     """
 
     _location_path = "econometrics"
@@ -56,6 +59,8 @@ class EconometricsRoot(Category):
         self.dwat_chart = lib.econometrics_regression_view.display_dwat
         self.fdols = lib.econometrics_regression_model.get_fdols
         self.fe = lib.econometrics_regression_model.get_fe
+        self.garch = lib.econometrics_model.get_garch
+        self.garch_chart = lib.econometrics_view.display_garch
         self.get_regression_data = lib.econometrics_regression_model.get_regression_data
         self.granger = lib.econometrics_model.get_granger_causality
         self.granger_chart = lib.econometrics_view.display_granger
@@ -71,3 +76,4 @@ class EconometricsRoot(Category):
         self.re = lib.econometrics_regression_model.get_re
         self.root = lib.econometrics_model.get_root
         self.root_chart = lib.econometrics_view.display_root
+        self.vif = lib.econometrics_model.get_vif

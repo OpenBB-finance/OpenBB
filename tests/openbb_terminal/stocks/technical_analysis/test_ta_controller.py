@@ -309,15 +309,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_view",
-            [],
-            "finviz_view.view",
-            [
-                "MOCK_TICKER",
-            ],
-            dict(),
-        ),
-        (
             "call_summary",
             [],
             "finbrain_view.technical_summary_report",
@@ -513,21 +504,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 window=1,
                 scalar=2,
                 drift=3,
-                export="csv",
-                sheet_name=None,
-            ),
-        ),
-        (
-            "call_rsp",
-            [
-                "-t",
-                "--export=csv",
-            ],
-            "rsp_view.display_rsp",
-            [],
-            dict(
-                s_ticker="MOCK_TICKER",
-                tickers_show=True,
                 export="csv",
                 sheet_name=None,
             ),

@@ -1,0 +1,18 @@
+parent_command:econometrics
+usage: vif [-d DATA]
+
+Calculates VIF (variance inflation factor), which tests collinearity. It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square root of the variance inflation factor indicates how
+much larger the standard error increases compared to if that variable had 0 correlation to other predictor variables in the model. It is defined as: $ VIF_i = 1 / (1 - R_i^2) $ where $ R_i $ is the coefficient of determination of
+the regression equation with the column i being the result from the i:th series being the exogenous variable. A VIF over 5 indicates a high collinearity and correlation. Values over 10 indicates causes problems, while a value of 1
+indicates no correlation. Thus VIF values between 1 and 5 are most commonly considered acceptable. In order to improve the results one can often remove a column with high VIF. For further information see:
+https://en.wikipedia.org/wiki/Variance_inflation_factor
+
+optional arguments:
+  -d DATA, --data DATA  The datasets and columns we want to add <dataset>,<dataset2.column>,<dataset2.column2> (default: None)
+
+
+Examples:
+- Calculate VIF for a specific dataset: econometrics/vif -d dataset1
+- Calculate VIF for selected columns from multiple datasets: econometrics/vif -d dataset1,dataset2.column1,dataset2.column2
+- Analyze VIF for a single column in a dataset: econometrics/vif -d dataset1.column1
+- Evaluate VIF for multiple columns within a single dataset: econometrics/vif -d dataset1.column1,dataset1.column2

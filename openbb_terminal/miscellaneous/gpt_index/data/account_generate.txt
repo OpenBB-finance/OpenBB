@@ -1,0 +1,15 @@
+parent_command:account
+usage: generate [-d DAYS] [-s]
+
+Generate an OpenBB Personal Access Token.
+
+optional arguments:
+  -d DAYS, --days DAYS  Number of days the token will be valid (default: 30)
+  -s, --save            Save the token to the keys (default: False)
+
+
+Examples:
+- To generate a token with the default validity of 30 days: account/generate
+- Generate a token valid for 60 days: account/generate -d 60
+- Create a token and save it to the keys: account/generate -s
+- Generate a token valid for 45 days and save it to the keys: account/generate -d 45 -s
