@@ -333,7 +333,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
 
     Returns
     -------
-    Object: OptionsChains
+    OptionsChains
         chains: pd.DataFrame
             The complete options chain for the ticker. Returns as a dictionary if pydantic is True.
         expirations: list[str]
@@ -377,6 +377,10 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
             Function to calculate straddles and the payoff profile.
         get_strangle: Callable
             Function to calculate strangles and the payoff profile.
+        get_synthetic_long: Callable
+            Function to calculate a synthetic long position.
+        get_synthetic_short: Callable
+            Function to calculate a synthetic short position.
         get_vertical_call_spread: Callable
             Function to calculate vertical call spreads.
         get_vertical_put_spreads: Callable
@@ -385,10 +389,12 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
             Function for calculating multiple straddles and strangles at different expirations and moneyness.
 
     Examples
-    --------
+    ----------
     >>> from openbb_terminal.stocks.options.options_sdk_helper import OptionsChains
     >>> spy = OptionsChains("SPY")
     >>> spy.__dict__
+
+    >>> spy.chains.query("`expiration` == spy.expirations[1]")
 
     >>> xiu = OptionsChains("xiu.to", "TMX")
     >>> xiu.get_straddle()
@@ -1032,7 +1038,7 @@ def load_options_chains(
     """Loads all options chains from a specific source, fields returned to each attribute will vary.
 
     Parameters
-    ----------
+    -----------
     symbol: str
         The ticker symbol to load the data for.
     source: str
@@ -1044,7 +1050,7 @@ def load_options_chains(
 
     Returns
     -------
-    Object: OptionsChains
+    Class: OptionsChains
         chains: pd.DataFrame
             The complete options chain for the ticker. Returns as a dictionary if pydantic is True.
         expirations: list[str]
@@ -1071,7 +1077,7 @@ def load_options_chains(
             The symbol directory for the source, when available. Returns as a dictionary if pydantic is True.
 
         Methods
-        -------
+        ---------
         chart_skew: Callable
             Function to chart the implied volatility skew.
         chart_stats: Callable
@@ -1088,6 +1094,10 @@ def load_options_chains(
             Function to calculate straddles and the payoff profile.
         get_strangle: Callable
             Function to calculate strangles and the payoff profile.
+        get_synthetic_long: Callable
+            Function to calculate a synthetic long position.
+        get_synthetic_short: Callable
+            Function to calculate a synthetic short position.
         get_vertical_call_spread: Callable
             Function to calculate vertical call spreads.
         get_vertical_put_spreads: Callable
