@@ -33,15 +33,10 @@ def balance(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(model="HistoricalDividends")
-def cal(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> CommandOutput[BaseModel]:
-    """Historical Dividends."""
-    return CommandOutput(results=Query(**locals()).execute())
+@router.command
+def cal() -> CommandOutput[Empty]:  # type: ignore
+    """Dividend Calendar."""
+    return CommandOutput(results=Empty())
 
 
 @router.command(model="CashFlowStatement")
@@ -89,10 +84,15 @@ def dcfc() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
 
 
-@router.command
-def divs() -> CommandOutput[Empty]:  # type: ignore
-    """Show historical dividends for company."""
-    return CommandOutput(results=Empty())
+@router.command(model="HistoricalDividends")
+def divs(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Historical Dividends."""
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command
