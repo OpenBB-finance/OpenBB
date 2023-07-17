@@ -313,14 +313,13 @@ class BaseController(metaclass=ABCMeta):
 
                 # create a subplot
                 fig = config_terminal.get_current_figure()
-
+                if fig is None:
+                    return
                 if not fig.has_subplots and not config_terminal.make_new_axis():
                     fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
 
                 if config_terminal.make_new_axis():
-                    for i, trace in enumerate(
-                        config_terminal.get_current_figure().select_traces()
-                    ):
+                    for i, trace in enumerate(fig.select_traces()):
                         trace.yaxis = f"y{i+1}"
 
                         if i != 0:
