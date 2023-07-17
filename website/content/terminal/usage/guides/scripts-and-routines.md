@@ -87,7 +87,7 @@ est
 home
 ```
 
-## Creating and running a routine script
+## Creating and Running a Routine Script
 
 As a starting point, let's use the example above.
 
@@ -99,7 +99,7 @@ Now you should expect the contents of the example above to be run. This means th
 
 ![OpenBB Routine Script Execution](https://user-images.githubusercontent.com/46355364/223207167-dfab3a74-d34d-47d4-bf6e-44944e8fbfa2.png)
 
-## Input variables
+## Input Variables
 
 The previous example shows the promise of this language. However, it would be exhausting to have to create one file per ticker of interest. And this is why we allow the user to create arguments within a script that will be populated at the time of execution, which provides a more efficient experience.
 
@@ -140,7 +140,7 @@ This script includes `$ARGV[0]`, `$ARGV[1]` and `$ARGV[2]`. This means that the 
 
 Note: Make sure you saved this script in the `~/OpenBBUserData/routines/` folder else you are not able to execute it.
 
-## Set variables
+## Set Variables
 
 In addition, OpenBB accepts the creation of variables inside the script. This can be useful when the user utilizes a ticker as a benchmark/reference, and therefore instead of having to change the ticker of interest in multiple places they can just change the variable. Example of script below:
 
@@ -169,7 +169,11 @@ When a single element is defined, then the user can access it through the variab
 
 Note that slicing is also possible, and the same convention as python is utilized. If the user has defined inputs `AAPL,MSFT,TSLA,NVDA,GOOG` then by selecting `$ARGV[1:3]` the tickers `MSFT,TSLA` are selected.
 
-## Relative time kewyword variables
+## Relative Time Kewyword Variables
+
+:::note
+**This functionality requires OpenBB V 3.1.0 or later.**
+:::
 
 The previous input variables are very powerful and can be used for a wide range of functionalities - one of them being dates. E.g. a typical example could be running a script routine with `exe myscript -i TSLA,2010-01-01` where `$ARGV[1]=2010-01-01` and thus it denotes an instant of time.
 
@@ -185,7 +189,11 @@ However, what if instead of wanting an absolute date we want a relative date? Th
 
 The result will be a date with the conventional date associated with OpenBB, i.e. `YYYY-MM-dd`.
 
-## Foreach loop
+## Foreach Loop
+
+:::note
+**This functionality requires OpenBB V 3.1.0 or later.**
+:::
 
 To be a powerful scripting language, we needed to introduce the concept of foreach loops. These allows to iterate through a list of variables / arguments to execute a sequence commands.
 
