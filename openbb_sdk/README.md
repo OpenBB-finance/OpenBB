@@ -100,7 +100,7 @@ Launch the API with:
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Navigate to http://0.0.0.0:8000/docs to see the swagger API documentation.
+Navigate to <http://0.0.0.0:8000/docs> to see the swagger API documentation.
 
 Authorize with the developer credentials: openbb/openbb
 
