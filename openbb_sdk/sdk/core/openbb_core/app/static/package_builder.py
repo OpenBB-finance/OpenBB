@@ -413,7 +413,7 @@ class MethodDefinition:
             "provider": None,
         }
 
-        DEFAULT_SUB = {
+        DEFAULT_REPLACEMENT = {
             "provider": None,
         }
 
@@ -438,7 +438,7 @@ class MethodDefinition:
                         name=name,
                         kind=Parameter.POSITIONAL_OR_KEYWORD,
                         annotation=updated_type,
-                        default=DEFAULT_SUB.get(name, default),
+                        default=DEFAULT_REPLACEMENT.get(name, default),
                     )
             else:
                 new_type = TYPE_EXPANSION.get(name, ...)
@@ -452,7 +452,7 @@ class MethodDefinition:
                     name=name,
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=updated_type,
-                    default=DEFAULT_SUB.get(name, param.default),
+                    default=DEFAULT_REPLACEMENT.get(name, param.default),
                 )
 
         return MethodDefinition.reorder_params(params=formatted)
