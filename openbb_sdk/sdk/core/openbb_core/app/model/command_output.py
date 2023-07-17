@@ -76,7 +76,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         It is a proxy to the `chart.content` attribute that contains it already.
         Returns
         -------
-        Dict[str, Any]
+        Optional[Dict[str, Any]]
             Plotly json.
         """
         if not self.chart:
