@@ -98,7 +98,9 @@ def get_cboe_index_directory() -> pd.DataFrame:
             "Time Zone",
         ]
 
-        CBOE_INDEXES = pd.DataFrame(CBOE_INDEXES, columns=indices_order).set_index("Ticker")
+        CBOE_INDEXES = pd.DataFrame(CBOE_INDEXES, columns=indices_order).set_index(
+            "Ticker"
+        )
 
         return CBOE_INDEXES
 
