@@ -60,7 +60,6 @@ def plot_chart(
         secondary_y=False,
     )
     fig.add_inchart_volume(df)
-    fig.hide_holidays()
 
     return fig
 

@@ -23,7 +23,7 @@ Country Performance:
 
 Databases:
     macro              collect macro data for a country or countries
-    treasury           obtain U.S. treasury rates                                                     [EconDB]
+    treasury           obtain U.S. treasury rates                                                     [FED]
     fred               collect macro data from FRED based on a series ID                              [FRED]
     index              find and plot any (major) index on the market                                  [YahooFinance]
 
