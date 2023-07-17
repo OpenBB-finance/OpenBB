@@ -1,5 +1,3 @@
-import datetime
-from typing import List, Literal, Union
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput
@@ -12,28 +10,6 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
-
-datetype = Union[datetime.datetime, str]
-list_str = Union[List[str], str]
-
-groups = Literal[
-    "sector",
-    "industry",
-    "basic_materials",
-    "communication_services",
-    "consumer_cyclical",
-    "consumer_defensive",
-    "energy",
-    "financial",
-    "healthcare",
-    "industrials",
-    "real_Estate",
-    "technology",
-    "utilities",
-    "country",
-    "capitalization",
-]
-
 
 router = Router(prefix="")
 
