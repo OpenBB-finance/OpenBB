@@ -1,3 +1,4 @@
+import os
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
 from typing import List, Literal, Optional
 
@@ -50,6 +51,15 @@ class SystemSettings(Tagged):
             + "\n\n"
             + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
         )
+
+    @root_validator(allow_reuse=True)
+    @classmethod
+    def create_openbb_directory(cls, values):
+        obb_dir = values["openbb_directory"]
+        if not os.path.exists(obb_dir):
+            os.makedirs(obb_dir)
+
+        return values
 
     @root_validator(allow_reuse=True)
     @classmethod
