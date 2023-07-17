@@ -1,11 +1,11 @@
 import asyncio
-from pathlib import Path
 from queue import Queue
 from typing import List
 
 import dotenv
+from openbb_core.app.constants import OPENBB_DIRECTORY
 
-SETTINGS_ENV_FILE = Path.home() / ".openbb_sdk" / ".env"
+SETTINGS_ENV_FILE = OPENBB_DIRECTORY / ".env"
 
 pywry_missing = """
 [red]PyWry is not installed or missing required linux dependencies.[/]
