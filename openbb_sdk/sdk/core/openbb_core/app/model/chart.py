@@ -7,26 +7,21 @@ from openbb_core.app.model.abstract.error import Error
 
 
 class ChartFormat(str, Enum):
-
     plotly = "plotly"
 
 
 class Chart(BaseModel):
-
     content: Optional[Dict[str, Any]] = None
     format: Optional[ChartFormat] = ChartFormat.plotly
     error: Optional[Error] = None
 
     class Config:
-
         validate_assignment = True
 
     def show(self):
         """Shows the chart in PyWry, browser or notebook."""
 
         if self.format == ChartFormat.plotly:
-
-            # Importing an extension to the core does not sound good
             from openbb_charting.backend.plotly_helper import (
                 OpenBBFigure,
             )
@@ -38,5 +33,4 @@ class Chart(BaseModel):
             chart.show()
 
         else:
-
             raise ValueError(f"Chart format {self.format} not supported.")

@@ -2,7 +2,7 @@ from importlib import import_module
 from typing import Callable, Generic, Optional, TypeVar
 
 import pkg_resources
-from openbb_core.app.model.abstract.chart import Chart, ChartFormat
+from openbb_core.app.model.chart import Chart, ChartFormat
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.user_service import UserService
 

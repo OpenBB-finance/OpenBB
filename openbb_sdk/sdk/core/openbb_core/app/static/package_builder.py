@@ -415,6 +415,12 @@ class MethodDefinition:
         }
 
         parameter_map.pop("cc", None)
+        parameter_map["chart"] = Parameter(
+            name="chart",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=bool,
+            default=False,
+        )
 
         formatted: Dict[str, Parameter] = {}
 
@@ -477,8 +483,10 @@ class MethodDefinition:
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
             #     func_returns = f"CommandOutput[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
-                inner_type = getattr(item_type, "__name__", "_name")
-                func_returns = f"CommandOutput[{item_type.__module__}.{inner_type}]"
+                # inner_type = getattr(item_type, "__name__", "_name")
+                func_returns = (
+                    f"CommandOutput[{item_type.__module__}.{item_type.__name__}]"
+                )
 
         return func_returns
 
@@ -504,6 +512,12 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
+        parameter_map["chart"] = Parameter(
+            name="chart",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=bool,
+            default=False,
+        )
 
         code = "        inputs = filter_inputs(\n"
         for name, param in parameter_map.items():
@@ -532,7 +546,6 @@ class MethodDefinition:
     def build_command_method(
         cls, path: str, func: Callable, model_name: Optional[str]
     ) -> str:
-
         func_name = func.__name__
 
         sig = signature(func)

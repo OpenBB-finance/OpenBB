@@ -2,14 +2,12 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from openbb_charting.backend.config.openbb_styles import (
-    PLT_FIB_COLORWAY,
-)
 from openbb_charting.backend.plotly_helper import OpenBBFigure
 from openbb_charting.backend.plotly_ta.base import (
     PltTA,
     indicator,
 )
+
 # from openbb_ta.ta_helpers import calculate_fib_levels
 
 

@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import pandas_ta as ta
 from openbb_charting.backend.plotly_helper import (
@@ -12,6 +11,7 @@ from openbb_charting.backend.plotly_ta.base import (
 from openbb_charting.backend.plotly_ta.data_classes import (
     columns_regex,
 )
+
 # from openbb_ta.ta_helpers import clenow_momentum
 
 

@@ -9,8 +9,8 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from pydantic import BaseConfig, Extra, create_model
 
-from openbb_core.app.model.abstract.chart import Chart
 from openbb_core.app.model.abstract.warning import cast_warning
+from openbb_core.app.model.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput, Error
 from openbb_core.app.model.journal import Journal
@@ -248,8 +248,9 @@ class StaticCommandRunner:
         func: Callable,
         kwargs: Dict[str, Any],
     ) -> CommandOutput:
-        chart = kwargs.pop("chart", None)
         system_settings = execution_context.system_settings
+
+        chart = kwargs.pop("chart", False)
         kwargs = ParametersBuilder.build(
             args=args,
             execution_context=execution_context,
@@ -286,7 +287,7 @@ class StaticCommandRunner:
                     **kwargs,
                 )
         except Exception as e:
-            raise
+            # TODO: Raise exception in debug mode
             command_output.chart = Chart(error=Error(message=str(e)))
 
         cls.logging_manager.log(
