@@ -882,12 +882,12 @@ def calculate_vertical_call_spread(
 
     sold_premium = options.chains.query(
         "`strike` == @sold and `dte` == @dte_estimate and `optionType` == 'call'"
-    )["bid"].values
+    )["bid"].values * (-1)
     bought_premium = options.chains.query(
         "`strike` == @bought and `dte` == @dte_estimate and `optionType` == 'call'"
     )["ask"].values
 
-    spread_cost = bought_premium - sold_premium
+    spread_cost = bought_premium + sold_premium
     breakeven_price = bought + spread_cost[0]
     max_profit = sold - bought - spread_cost[0]
     call_spread_: dict[str, Any] = {}
@@ -1025,12 +1025,12 @@ def calculate_vertical_put_spread(
 
     sold_premium = options.chains.query(
         "`strike` == @sold and `dte` == @dte_estimate and `optionType` == 'put'"
-    )["bid"].values
+    )["bid"].values * (-1)
     bought_premium = options.chains.query(
         "`strike` == @bought and `dte` == @dte_estimate and `optionType` == 'put'"
     )["ask"].values
 
-    spread_cost = bought_premium - sold_premium
+    spread_cost = bought_premium + sold_premium
     max_profit = abs(spread_cost[0])
     breakeven_price = sold - max_profit
     max_loss = (sold - bought - max_profit) * -1

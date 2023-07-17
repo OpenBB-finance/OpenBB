@@ -1049,7 +1049,7 @@ def load_options_chains(
         Whether to return as a Pydantic Model or as a Pandas object.  Defaults to False.
 
     Returns
-    -------
+    ------
     Class: OptionsChains
         chains: pd.DataFrame
             The complete options chain for the ticker. Returns as a dictionary if pydantic is True.
@@ -1077,7 +1077,7 @@ def load_options_chains(
             The symbol directory for the source, when available. Returns as a dictionary if pydantic is True.
 
         Methods
-        ---------
+        ------
         chart_skew: Callable
             Function to chart the implied volatility skew.
         chart_stats: Callable
@@ -1106,7 +1106,7 @@ def load_options_chains(
             Function for calculating multiple straddles and strangles at different expirations and moneyness.
 
     Examples
-    --------
+    ------
     Loads SPY data from CBOE, returns as a Pydantic Model, and displays the longest-dated expiration chain.
 
     >>> from openbb_terminal.sdk import openbb
