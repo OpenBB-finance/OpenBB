@@ -1139,6 +1139,7 @@ class OpenBBFigure(go.Figure):
                 if export_image:
                     self._exported = True
                 if config_terminal.HOLD:
+                    # pylint: disable=import-outside-toplevel
                     from openbb_terminal.helper_funcs import command_location
 
                     for trace in self.select_traces():

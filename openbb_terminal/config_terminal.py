@@ -42,17 +42,16 @@ def set_new_axis() -> None:
 
 
 def make_new_axis() -> bool:
-    global new_axis
     return new_axis
 
 
 def get_current_figure() -> Optional["OpenBBFigure"]:
     # pylint: disable=global-statement
-    global current_figure  # noqa
     return current_figure
 
 
 def set_current_figure(fig: Optional[OpenBBFigureT] = None):
+    # pylint: disable=global-statement
     global current_figure
     current_figure = fig
 

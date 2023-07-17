@@ -340,7 +340,7 @@ class BaseController(metaclass=ABCMeta):
                                     ),
                                 }
                             )
-
+                    # pylint: disable=undefined-loop-variable
                     fig.update_layout(margin=dict(l=30 * i))
 
                 else:
