@@ -34,7 +34,6 @@ try:
     )
 except ImportError:
     app = None
-    raise
 else:
 
     class App(CLASS_4ebd0208_8328_5d69_8c44_ec50939c0967):
