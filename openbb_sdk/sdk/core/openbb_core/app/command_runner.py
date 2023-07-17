@@ -152,6 +152,7 @@ class ParametersBuilder:
                 provider = (
                     random_choice
                     if route_defaults is None
+                    or route_defaults.get("provider", None) is None
                     else route_defaults.get("provider", random_choice)
                 )
                 kwargs["provider_choices"] = {"provider": provider}

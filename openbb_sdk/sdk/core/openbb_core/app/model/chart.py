@@ -11,7 +11,7 @@ class ChartFormat(str, Enum):
 
 
 class Chart(BaseModel):
-    content: Optional[Dict[str, Any]] = None
+    content: Dict[str, Any]
     format: Optional[ChartFormat] = ChartFormat.plotly
     error: Optional[Error] = None
 
@@ -21,6 +21,7 @@ class Chart(BaseModel):
     def show(self):
         """Shows the chart in PyWry, browser or notebook."""
 
+        #pylint: disable=import-outside-toplevel
         if self.format == ChartFormat.plotly:
             from openbb_charting.backend.plotly_helper import (
                 OpenBBFigure,
