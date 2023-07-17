@@ -46,7 +46,7 @@ class PolygonStockEODQueryParams(BaseStockQueryParams):
 class PolygonStockEODData(BaseStockData):
     v: NonNegativeFloat = Field(alias="volume")
     n: PositiveInt
-    vw: PositiveFloat
+    vw: Optional[PositiveFloat]
 
 
 class PolygonStockEODFetcher(
@@ -62,8 +62,8 @@ class PolygonStockEODFetcher(
         query: StockEODQueryParams, extra_params: Optional[Dict] = None
     ) -> PolygonStockEODQueryParams:
         now = datetime.now()
-        start_date = query.start_date if query.start_date else now - timedelta(days=1)
-        end_date = query.end_date if query.end_date else now
+        start_date = query.start_date or (now - timedelta(days=1)).date()
+        end_date = query.end_date or now.date()
         return PolygonStockEODQueryParams(
             symbol=query.symbol,
             start_date=start_date,
