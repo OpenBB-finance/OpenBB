@@ -225,7 +225,8 @@ class PlotlyTA(PltTA):
             if hasattr(sys, "frozen")
             else REPOSITORY_DIRECTORY
         )
-        print(REPOSITORY_DIRECTORY)
+        # TODO: Use import relative to the package instead of REPO
+
         # TODO : figure this out regarding the system preferences
         # current_system = get_current_system()
 
