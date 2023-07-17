@@ -532,7 +532,6 @@ class MethodDefinition:
     def build_command_method(
         cls, path: str, func: Callable, model_name: Optional[str]
     ) -> str:
-
         func_name = func.__name__
 
         sig = signature(func)
