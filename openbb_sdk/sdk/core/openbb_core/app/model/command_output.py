@@ -70,7 +70,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
 
         return results
 
-    def to_plotly_json(self) -> Dict[str, Any]:
+    def to_plotly_json(self) -> Optional[Dict[str, Any]]:
         """
         Outputs the plotly json.
         It is a proxy to the `chart.content` attribute that contains it already.
@@ -86,7 +86,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         return self.chart.content
 
     def show(self):
-        """Converts results field to chart."""
+        """Displays chart."""
         if not self.chart:
             raise ValueError("Chart not found.")
         self.chart.show()
