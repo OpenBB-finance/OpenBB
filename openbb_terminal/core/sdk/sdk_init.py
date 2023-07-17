@@ -338,6 +338,8 @@ from openbb_terminal.economy import (
     yfinance_view as economy_yfinance_view,
     oecd_model as economy_oecd_model,
     oecd_view as economy_oecd_view,
+    fedreserve_model as economy_fedreserve_model,
+    fedreserve_view as economy_fedreserve_view,
 )
 
 
