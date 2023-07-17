@@ -29,6 +29,7 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
+from openbb_terminal import config_terminal
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
@@ -462,6 +463,10 @@ class StocksController(StockBaseController):
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=20,
         )
+        if config_terminal.HOLD:
+            console.print("[red]Hold functionality not supported with candle.[/]")
+            return
+
         if ns_parser:
             figure_export = None
             if ns_parser.ticker:
