@@ -559,7 +559,7 @@ class MethodDefinition:
 class PathHandler:
     @staticmethod
     def build_route_map() -> Dict[str, BaseRoute]:
-        router = RouterLoader.from_plugins()
+        router = RouterLoader.from_extensions()
         route_map = {route.path: route for route in router.api_router.routes}  # type: ignore
 
         return route_map

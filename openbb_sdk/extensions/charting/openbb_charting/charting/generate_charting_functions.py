@@ -7,7 +7,7 @@ CHARTING_ROUTER = "./charting_router.py"
 
 
 def get_routes() -> List[str]:
-    router = RouterLoader.from_plugins()
+    router = RouterLoader.from_extensions()
     return [route.path for route in router.api_router.routes]  # type: ignore
 
 
