@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 
 from pydantic import BaseModel, Field
 
@@ -9,7 +9,7 @@ class Defaults(BaseModel):
     class Config:
         validate_assignment = True
 
-    routes: Dict[str, Dict[str, str]] = Field(default_factory=dict)
+    routes: Dict[str, Dict[str, Optional[str]]] = Field(default_factory=dict)
 
     def __repr__(self) -> str:
         return (
