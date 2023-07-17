@@ -45,14 +45,7 @@ router = Router(prefix="")
 
 @router.command
 def corecpi(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    start_date: datetype,
-    end_date: datetype,
-    countries: Union[List[str], str] = "united_states",
-    perspective: Literal["ENRG", "FOOD", "TOT", "TOT_FOODENG"] = "TOT",
-    frequency: Literal["M", "Q", "A"] = "M",
-    units: Literal["AGRWTH", "IDX2015"] = "AGRWTH",
+    cc: CommandContext, provider_choices: ProviderChoices
 ) -> CommandOutput[Empty]:  # type: ignore
     """CORECPI."""
     return CommandOutput(results=Empty())
@@ -82,26 +75,6 @@ def cpi_options(
 def index(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    indices_: list_str,  # without the underscore pylint raises "redefined-outer-name"
-    start_date: datetype,
-    end_date: datetype,
-    interval: Literal[
-        "1m",
-        "2m",
-        "5m",
-        "15m",
-        "30m",
-        "60m",
-        "90m",
-        "1h",
-        "1d",
-        "5d",
-        "1wk",
-        "1mo",
-        "3mo",
-    ] = "1d",
-    column: str = "close",
-    returns: bool = False,
 ) -> CommandOutput[Empty]:  # type: ignore
     """Get index from yfinance."""
     return CommandOutput(results=Empty())
@@ -120,11 +93,6 @@ def available_indices(
 def macro(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    parameters: list_str,
-    countries: list_str,
-    transform: str,
-    start_date: datetype,
-    end_date: datetype,
 ) -> CommandOutput[Empty]:  # type: ignore
     """Query EconDB for macro data."""
     return CommandOutput(results=Empty())
@@ -152,9 +120,6 @@ def macro_parameters(
 def balance(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
 ) -> CommandOutput[Empty]:
     """BALANCE."""
     return CommandOutput(results=Empty())
@@ -164,7 +129,6 @@ def balance(
 def bigmac(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
 ) -> CommandOutput[Empty]:
     """BIGMAC."""
     return CommandOutput(results=Empty())
@@ -192,9 +156,6 @@ def currencies(
 def debt(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
 ) -> CommandOutput[Empty]:
     """DEBT."""
     return CommandOutput(results=Empty())
@@ -204,9 +165,6 @@ def debt(
 def events(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
 ) -> CommandOutput[Empty]:
     """EVENTS."""
     return CommandOutput(results=Empty())
@@ -216,11 +174,6 @@ def events(
 def fgdp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
-    type_: Literal["real", "nominal"] = "real",  # type is a reserved word
-    units: Literal["Q", "A"] = "A",
 ) -> CommandOutput[Empty]:
     """FGDP."""
     return CommandOutput(results=Empty())
@@ -230,9 +183,6 @@ def fgdp(
 def fred(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    series_id: list_str,
-    start_date: datetype,
-    end_date: datetype,
 ) -> CommandOutput[Empty]:
     """FRED."""
     return CommandOutput(results=Empty())
@@ -250,9 +200,6 @@ def fred_search(
 def futures(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    future_type: Literal[
-        "Indices", "Energy", "Metals", "Meats", "Grains", "Softs", "Bonds", "Currencies"
-    ],
 ) -> CommandOutput[Empty]:
     """FUTURES. 2 sources"""
     return CommandOutput(results=Empty())
@@ -262,10 +209,6 @@ def futures(
 def gdp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
-    units: Literal["USD_CAP", "MLN_USD"] = "USD_CAP",
 ) -> CommandOutput[Empty]:
     """GDP."""
     return CommandOutput(results=Empty())
@@ -300,7 +243,8 @@ def overview(
 
 @router.command
 def perfmap(
-    cc: CommandContext, provider_choices: ProviderChoices, group: groups
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
 ) -> CommandOutput[Empty]:
     """PERFMAP."""
     return CommandOutput(results=Empty())
@@ -308,7 +252,8 @@ def perfmap(
 
 @router.command
 def performance(
-    cc: CommandContext, provider_choices: ProviderChoices, group: groups
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
 ) -> CommandOutput[Empty]:
     """PERFORMANCE."""
     return CommandOutput(results=Empty())
@@ -318,10 +263,6 @@ def performance(
 def revenue(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
-    units: Literal["PC_GDP", "THOUSAND_USD_PER_CAPITA"] = "PC_GDP",
 ) -> CommandOutput[Empty]:
     """REVENUE."""
     return CommandOutput(results=Empty())
@@ -331,10 +272,6 @@ def revenue(
 def rgdp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
-    units: Literal["IDX", "PC_CHGPP", "PC_CHGPY"],
 ) -> CommandOutput[Empty]:
     """RGDP."""
     return CommandOutput(results=Empty())
@@ -351,7 +288,8 @@ def rtps(
 
 @router.command
 def search_index(
-    cc: CommandContext, provider_choices: ProviderChoices, keyword: str
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
 ) -> CommandOutput[Empty]:
     """SEARCH_INDEX."""
     return CommandOutput(results=Empty())
@@ -361,23 +299,6 @@ def search_index(
 def spending(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
-    units: Literal["PC_GDP", "THOUSAND_USD_PER_CAPITA"] = "PC_GDP",
-    perspective: Literal[
-        "TOT",
-        "RECULTREL",
-        "HOUCOMM",
-        "PUBORN",
-        "EDU",
-        "ENVPORT",
-        "GRALPUBSER",
-        "SOCPROT",
-        "ECOAFF",
-        "DEF",
-        "HEALTH",
-    ] = "TOT",
 ) -> CommandOutput[Empty]:
     """SPENDING."""
     return CommandOutput(results=Empty())
@@ -387,9 +308,6 @@ def spending(
 def trust(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-    countries: list_str,
-    start_date: datetype,
-    end_date: datetype,
 ) -> CommandOutput[Empty]:
     """TRUST."""
     return CommandOutput(results=Empty())
@@ -406,7 +324,8 @@ def usbonds(
 
 @router.command
 def valuation(
-    cc: CommandContext, provider_choices: ProviderChoices, group: groups
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
 ) -> CommandOutput[Empty]:
     """VALUATION."""
     return CommandOutput(results=Empty())
