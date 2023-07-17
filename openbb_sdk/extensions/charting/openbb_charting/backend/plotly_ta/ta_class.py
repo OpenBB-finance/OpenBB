@@ -11,12 +11,13 @@ from openbb_charting.backend.plotly_helper import (
     OpenBBFigure,
     theme,
 )
-from openbb_core.app.constants import REPOSITORY_DIRECTORY
 
 from .base import PltTA
 from .data_classes import ChartIndicators
 from .ta_helpers import check_columns
 
+OPENBB_CHARTING_EXTENSION_PATH = Path(__file__).parent.parent.parent
+CHARTING_INSTALL_PATH = OPENBB_CHARTING_EXTENSION_PATH.parent
 PLUGINS_PATH = Path(__file__).parent / "plugins"
 PLOTLY_TA: Optional["PlotlyTA"] = None
 
@@ -223,9 +224,8 @@ class PlotlyTA(PltTA):
         path = (
             Path(sys.executable).parent
             if hasattr(sys, "frozen")
-            else REPOSITORY_DIRECTORY
+            else CHARTING_INSTALL_PATH
         )
-        # TODO: Use import relative to the package instead of REPO
 
         # TODO : figure this out regarding the system preferences
         # current_system = get_current_system()
