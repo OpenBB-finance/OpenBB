@@ -273,7 +273,7 @@ class BaseController(metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="hold",
-            description="Turn on figure holding",
+            description="Turn on figure holding.  This will stop showing images until hold off is run.",
         )
         parser.add_argument(
             "-o",
@@ -288,7 +288,7 @@ class BaseController(metaclass=ABCMeta):
             "--sameaxis",
             action="store_true",
             default=False,
-            help="Put plots on new axes",
+            help="Put plots on the same axis.  Best when numbers are on similar scales",
             dest="axes",
         )
         if other_args and "-" not in other_args[0][0]:
