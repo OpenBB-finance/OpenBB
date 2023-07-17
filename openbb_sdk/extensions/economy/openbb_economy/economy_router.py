@@ -1,4 +1,3 @@
-
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.model.results.empty import Empty
@@ -166,7 +165,8 @@ def fred(
 
 @router.command
 def fred_search(
-    cc: CommandContext, provider_choices: ProviderChoices, term: str
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
 ) -> CommandOutput[Empty]:
     """FRED Search (was fred_notes)."""
     return CommandOutput(results=Empty())
