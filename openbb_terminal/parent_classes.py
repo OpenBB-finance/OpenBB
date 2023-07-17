@@ -280,6 +280,14 @@ class BaseController(metaclass=ABCMeta):
             default="off",
             dest="option",
         )
+        parser.add_argument(
+            "-s",
+            "--sameaxis",
+            action="store_true",
+            default=False,
+            help="Put plots on new axes",
+            dest="axes",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-o")
 
@@ -290,6 +298,10 @@ class BaseController(metaclass=ABCMeta):
         if ns_parser:
             if ns_parser.option == "on":
                 config_terminal.HOLD = True
+                if ns_parser.axes:
+                    config_terminal.set_same_axis()
+                else:
+                    config_terminal.set_new_axis()
             if (
                 ns_parser.option == "off"
                 and config_terminal.get_current_figure() is not None
@@ -300,7 +312,10 @@ class BaseController(metaclass=ABCMeta):
                 fig = config_terminal.get_current_figure()
 
                 if not fig.has_subplots:
-                    fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
+                    if config_terminal.make_new_axis():
+                        fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
+                    else:
+                        fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
 
                 for i, trace in enumerate(
                     config_terminal.get_current_figure().select_traces()
@@ -311,7 +326,9 @@ class BaseController(metaclass=ABCMeta):
                         fig.update_layout(
                             {
                                 f"yaxis{i+1}": dict(
-                                    side="left",
+                                    side="left"
+                                    if config_terminal.make_new_axis()
+                                    else "right",
                                     overlaying="y",
                                     showgrid=False,
                                     showline=False,

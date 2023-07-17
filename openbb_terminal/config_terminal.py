@@ -26,6 +26,24 @@ if TYPE_CHECKING:
 OpenBBFigureT = TypeVar("OpenBBFigureT", bound="OpenBBFigure")
 HOLD: bool = False
 current_figure: Optional[OpenBBFigureT] = None
+new_axis: bool = True
+
+
+def set_same_axis() -> None:
+    # pylint: disable=global-statement
+    global new_axis
+    new_axis = False
+
+
+def set_new_axis() -> None:
+    # pylint: disable=global-statement
+    global new_axis
+    new_axis = True
+
+
+def make_new_axis() -> bool:
+    global new_axis
+    return new_axis
 
 
 def get_current_figure() -> Optional["OpenBBFigure"]:
