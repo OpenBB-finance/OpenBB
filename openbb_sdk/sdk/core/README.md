@@ -1,25 +1,24 @@
 # THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE
 
-# Table of contents
+
 - [THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE](#this-readme-is-a-work-in-progress-and-can-be-very-much-out-of-date-refresh-the-page-until-this-banner-is-gone)
-- [Table of contents](#table-of-contents)
   - [1. Introduction](#1-introduction)
   - [2. How to install?](#2-how-to-install)
   - [3. How to add a plugin?](#3-how-to-add-a-plugin)
-  - [5. Usage](#5-usage)
-    - [5.1. Update the settings](#51-update-the-settings)
-    - [5.2. Define the CommandRunnerSession](#52-define-the-commandrunnersession)
-      - [5.2.1. Use your OpenBB Hub account](#521-use-your-openbb-hub-account)
-    - [5.3. Define the Command parameters](#53-define-the-command-parameters)
-    - [5.4. Run the command](#54-run-the-command)
-    - [5.5 Run the static version (LEAST STABLE ON DEVELOP)](#55-run-the-static-version-least-stable-on-develop)
-      - [5.5.1. App settings and system](#551-app-settings-and-system)
-      - [5.5.2. Use your OpenBB Hub account](#552-use-your-openbb-hub-account)
-  - [6. See routes](#6-see-routes)
-  - [7. Using the REST API](#7-using-the-rest-api)
-  - [8. Static version (BEING REFACTORED)](#8-static-version-being-refactored)
-  - [9. Front-end typing](#9-front-end-typing)
-  - [10. Default User](#10-default-user)
+  - [4. Usage](#4-usage)
+    - [4.1. Update the settings](#41-update-the-settings)
+    - [4.2. Define the CommandRunnerSession](#42-define-the-commandrunnersession)
+      - [4.2.1. Use your OpenBB Hub account](#421-use-your-openbb-hub-account)
+    - [4.3. Define the Command parameters](#43-define-the-command-parameters)
+    - [4.4. Run the command](#44-run-the-command)
+    - [4.5 Run the static version (LEAST STABLE ON DEVELOP)](#45-run-the-static-version-least-stable-on-develop)
+      - [4.5.1. App settings and system](#451-app-settings-and-system)
+      - [4.5.2. Use your OpenBB Hub account](#452-use-your-openbb-hub-account)
+  - [5. See routes](#5-see-routes)
+  - [6. Using the REST API](#6-using-the-rest-api)
+  - [7. Static version (BEING REFACTORED)](#7-static-version-being-refactored)
+  - [8. Front-end typing](#8-front-end-typing)
+  - [9. Default User](#9-default-user)
 
 
 ## 1. Introduction
@@ -31,7 +30,6 @@ These functions are special:
 - They provide configuration
 - They will be automatically turned into REST API endpoint
 - They allow sharing data between commands
-
 
 
 ## 2. How to install?
@@ -103,9 +101,9 @@ Install your plugin.
 poetry install
 ```
 
-## 5. Usage
+## 4. Usage
 
-### 5.1. Update the settings
+### 4.1. Update the settings
 
 ```
 # FILE <your_home_directory>/.openbb_sdk/user_settings.json
@@ -139,7 +137,7 @@ poetry install
 }
 ```
 
-### 5.2. Define the CommandRunnerSession
+### 4.2. Define the CommandRunnerSession
 
 ```python
 from datetime import datetime
@@ -148,7 +146,8 @@ from openbb_core.app.command_runner import CommandRunner, CommandRunnerSession
 app = CommandRunnerSession()
 ```
 
-#### 5.2.1. Use your OpenBB Hub account
+#### 4.2.1. Use your OpenBB Hub account
+
 ```python
 
 # Create Hub manager
@@ -173,7 +172,7 @@ hs.push(user_settings)
 hs.disconnect()
 ```
 
-### 5.3. Define the Command parameters
+### 4.3. Define the Command parameters
 
 ```python
 from datetime import datetime
@@ -189,7 +188,7 @@ provider = ProviderName.fmp
 ```
 
 
-### 5.4. Run the command
+### 4.4. Run the command
 
 ```python
 command_output = app.run(
@@ -202,7 +201,7 @@ command_output = app.run(
 command_output.results
 ```
 
-### 5.5 Run the static version (LEAST STABLE ON DEVELOP)
+### 4.5 Run the static version (LEAST STABLE ON DEVELOP)
 
 You also have the static version.
 
@@ -223,7 +222,8 @@ stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider
 stock_data.dataframe()
 ```
 
-#### 5.5.1. App settings and system
+#### 4.5.1. App settings and system
+
 ```python
 from openbb_core.app.static import app
 app.settings
@@ -234,7 +234,8 @@ app.settings.preferences
 app.system
 ```
 
-#### 5.5.2. Use your OpenBB Hub account
+#### 4.5.2. Use your OpenBB Hub account
+
 ```python
 from openbb_core.app.static import app
 
@@ -254,7 +255,7 @@ app.account.refresh()
 app.account.logout()
 ```
 
-## 6. See routes
+## 5. See routes
 
 ```python
 from openbb_core.app.router import CommandMap
@@ -273,7 +274,7 @@ command_map.map
 }
 ```
 
-## 7. Using the REST API
+## 6. Using the REST API
 
 Setup `<your_home_directory>/.openbb_sdk/user_settings.json`:
 
@@ -316,7 +317,7 @@ uvicorn openbb_core.api.rest_api:app --reload
 ```
 
 
-## 8. Static version (BEING REFACTORED)
+## 7. Static version (BEING REFACTORED)
 
 Usage
 
@@ -334,7 +335,7 @@ openbb.stocks.load(...)
 
 
 
-## 9. Front-end typing
+## 8. Front-end typing
 
 Here are libraries to get frontend typing.
 
@@ -346,7 +347,7 @@ openapi-generator
 - https://fastapi.tiangolo.com/advanced/generate-clients/
 
 
-## 10. Default User
+## 9. Default User
 
 There are 2 default users for testing purpose:
 
